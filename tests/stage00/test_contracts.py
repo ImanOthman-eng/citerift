@@ -153,3 +153,19 @@ def test_contracts_cli_rejects_invalid_record(tmp_path: Path, capsys: pytest.Cap
     bad.write_text(json.dumps({"schema_version": "1.0.0"}), encoding="utf-8")
     assert contracts_main(["--schemas", str(SCHEMAS), "validate", str(bad)]) == 1
     assert "INVALID" in capsys.readouterr().out
+
+
+@pytest.mark.negative
+def test_malformed_or_unversioned_schema_is_reported() -> None:
+    from citerift.contracts.validate import ContractSet
+
+    broken = ContractSet({"urn:citerift:schema:test:broken": {"type": "no-such-type"}})
+    codes = {p.code for p in broken.meta_problems()}
+    assert codes == {"SCHEMA_INVALID", "SCHEMA_UNVERSIONED"}
+
+
+@pytest.mark.negative
+def test_structural_violation_is_reported_as_schema_violation(contracts) -> None:  # type: ignore[no-untyped-def]
+    problems = contracts.validate({"schema_version": "1.0.0"})
+    assert problems
+    assert {p.code for p in problems} == {"SCHEMA_VIOLATION"}
