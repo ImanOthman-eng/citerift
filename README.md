@@ -1,5 +1,7 @@
 # CITERIFT
 
+*CITERIFT — Created and Directed by EVE TELOS · IM*
+
 **A multilingual scientific citation integrity platform.** CITERIFT investigates
 citations to retracted scientific papers across Wikipedia language editions,
 traces their context and history, compares how different editions respond, and
@@ -50,6 +52,7 @@ More: [docs/development.md](docs/development.md).
 | `tests/stage00/` | Stage 00 tests |
 | `docs/` | Architecture, contracts, sources policy, setup, stage verification packages |
 | `GOVERNANCE.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md` | Rules and persistent engineering memory |
+| `OWNERSHIP.md`, `docs/identity.md` | Ownership, decision authority, attribution and identity standard |
 
 ## Architecture
 
@@ -64,6 +67,15 @@ intelligence with a FastAPI backend, and a React + Cytoscape.js frontend. See
 Planned sources are the Crossref Retraction Watch data and the Wikimedia APIs.
 Rules for provenance, attribution and licensing:
 [docs/sources-and-attribution.md](docs/sources-and-attribution.md).
+
+## Ownership and attribution
+
+CITERIFT is an independent research and engineering project, created and
+directed by EVE TELOS · IM. The owner sets its research direction and makes
+every acceptance decision. It is built with AI engineering assistance (Claude
+Code), used as a tool under the owner's direction and disclosed in commits,
+pull requests and the final report. Details: [OWNERSHIP.md](OWNERSHIP.md) and
+the identity standard in [docs/identity.md](docs/identity.md).
 
 ## License
 

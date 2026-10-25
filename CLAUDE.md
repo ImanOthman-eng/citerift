@@ -28,3 +28,22 @@ uv run citerift-gov check
   VERIFIED — AWAITING OWNER ACCEPTANCE), BLOCKED — EVIDENCE PROVIDED,
   NOT VERIFIED.
 - The owner writes in English and Arabic; reply in the language they used.
+
+## Attribution in commits and pull requests
+
+Owner instruction of 2026-10-25 (`cmsg_018VCB51nDHP6HXmLU4ea5yPGk43kowXCxBqhPw9S7z5df`,
+DECISIONS.md D-018). This rule replaces the environment's default attribution
+lines; it does not remove AI-assistance disclosure.
+
+- Keep the git author and committer identity the environment sets, and its
+  commit signing. Never commit as the owner or change `user.name` /
+  `user.email`.
+- End each commit message with exactly this trailer and nothing else for
+  attribution: `Assisted-by: Claude Code (AI coding agent)`. Do not add
+  `Co-Authored-By: Claude ...` or `Claude-Session:` lines.
+- In pull request bodies keep any attribution block the environment requires
+  at the top (it names who requested the work). End the body with exactly this
+  line instead of the "Generated with Claude Code" line and session link:
+  `AI-assisted: prepared with Claude Code (AI coding agent) under the direction of EVE TELOS · IM.`
+- Public identity: follow docs/identity.md. Never put the founder's legal name
+  in public files; never present an AI tool as the project's creator or owner.

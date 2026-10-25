@@ -6,6 +6,19 @@ what changed in the repository.
 
 ## [Unreleased]
 
+### Added (project identity and ownership, no Stage 00 change)
+
+- OWNERSHIP.md: owner, decision authority, original contributions,
+  AI-assisted engineering disclosure, copyright and license status.
+- docs/identity.md: identity standard "CITERIFT — Created and Directed by
+  EVE TELOS · IM" and usage rules for later stages (D-017).
+- `.github/CODEOWNERS` naming the owner account for every path.
+- AI-assistance attribution rule for commits and pull requests in CLAUDE.md
+  and `.claude/settings.json` (D-018).
+- README founder line and "Ownership and attribution" section; GOVERNANCE.md
+  "Project identity and attribution" section; package author
+  `EVE TELOS · IM`.
+
 ### Added (Stage 00, Engineering Foundation)
 
 - Project Orchestrator (`src/citerift/governance/`): stage state model with an

@@ -97,6 +97,15 @@ gate to obtain a pass. Prefer minimum complexity; MCP stays optional.
   (Prompt 02 wording for a stage: `VERIFIED — AWAITING OWNER ACCEPTANCE`),
   `BLOCKED — EVIDENCE PROVIDED`, `NOT VERIFIED`.
 
+## Project identity and attribution
+
+CITERIFT is presented as "CITERIFT — Created and Directed by EVE TELOS · IM"
+(owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPGk43kowXCxBqhPw9S7z5df`). Every
+stage follows docs/identity.md and OWNERSHIP.md: EVE TELOS stays the prominent
+creator identity, IM is a secondary signature, the founder's legal name is not
+put in public materials, AI tools are disclosed as tools and never presented as
+owner or creator, and historical attribution is never rewritten.
+
 ## Owner approval needed before
 
 Starting another stage, destructive changes, deleting data, security changes,

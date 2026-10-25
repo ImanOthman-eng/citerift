@@ -286,3 +286,52 @@ VERIFIED -> IN_PROGRESS (rework) re-entered the active set while another stage
 was active. The rule now applies to every edge that enters the active set, and
 the implementation enforces it as a state invariant. See
 docs/verification/stage-00/SIMULATION_REPORT.md.
+
+## D-017 — Project identity and founder signature
+- Status: accepted
+- Topic: project-identity
+- Date: 2026-10-25
+- Stage: project
+- Supersedes: none
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPGk43kowXCxBqhPw9S7z5df`):
+the public creator identity is EVE TELOS, IM is a secondary founder monogram,
+the professional signature is "EVE TELOS · IM", and the identity standard is
+"CITERIFT — Created and Directed by EVE TELOS · IM". The owner's legal name is
+not used in public materials; the association with the legitimate owner is the
+repository owner account `ImanOthman-eng` (OWNERSHIP.md). The monogram is not
+presented as proof of authorship, copyright or trademark. Usage rules:
+docs/identity.md.
+
+## D-018 — AI-assistance attribution in commits and pull requests
+- Status: accepted
+- Topic: ai-attribution
+- Date: 2026-10-25
+- Stage: project
+- Supersedes: none
+
+Owner instruction (same message as D-017): avoid unnecessary AI promotional
+signatures and session links, keep truthful authorship and AI-assistance
+disclosure, never rewrite history.
+
+Verified facts (2026-10-25, cloud project thread): the environment's git
+configuration sets author and committer to the AI agent identity and SSH-signs
+each commit (GitHub shows it as verified, account `claude`). Git adds no
+trailers by itself: a test commit in a scratch repository carried only the
+message given. The `Co-Authored-By` and `Claude-Session` lines and the PR
+"Generated with Claude Code" line come from the agent's instructions, which
+let the owner's CLAUDE.md or project-memory rules take precedence.
+
+Decision: agent commits keep the environment identity and signature and end
+with `Assisted-by: Claude Code (AI coding agent)`; pull requests keep the
+environment's requester block and end with a neutral AI-assistance line; no
+session links or promotional lines. Mechanisms: CLAUDE.md (read in sessions on
+a branch that contains it), project memory (all project threads), and
+`.claude/settings.json` `attribution` (read, per the Claude Code
+documentation, by single-repository cloud sessions and local CLI sessions, not
+by project threads; not verified in a live session of those kinds).
+
+Rejected: rewriting commit authors or trailers (falsifies history); committing
+agent work under the owner's identity (misattributes who did the work);
+removing disclosure entirely (AI assistance must stay disclosed).
+
