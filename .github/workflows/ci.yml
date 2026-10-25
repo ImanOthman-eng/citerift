@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "claude/**"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify (python ${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13"]
+    steps:
+      - name: Check out full history (revision checks need it)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: "0.11.32"
+          python-version: ${{ matrix.python }}
+          enable-cache: false
+
+      - name: Lockfile is up to date
+        run: uv lock --check
+
+      - name: Install locked environment
+        run: uv sync --locked
+
+      - name: Static analysis (ruff lint and format, mypy strict)
+        run: |
+          uv run --no-sync ruff check .
+          uv run --no-sync ruff format --check .
+          uv run --no-sync mypy
+
+      - name: Schema validation
+        run: uv run --no-sync citerift-contracts check-schemas
+
+      - name: Governance state and memory consistency
+        run: |
+          uv run --no-sync citerift-gov check
+          uv run --no-sync citerift-gov render-status --check
+
+      - name: Tests (orchestrator, memory, contracts, integration, recovery, simulation)
+        run: uv run --no-sync pytest --citerift-report ci-test-report.json
+
+      - name: Dependency vulnerability audit
+        run: |
+          uv export --locked --format requirements-txt --no-emit-project --all-groups > audit-requirements.txt
+          uv run --no-sync pip-audit --strict --disable-pip --require-hashes -r audit-requirements.txt
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-report-python-${{ matrix.python }}
+          path: ci-test-report.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  ci-gate:
+    name: ci-gate
+    if: always()
+    needs: [verify]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: All required jobs succeeded
+        env:
+          RESULT: ${{ needs.verify.result }}
+        run: |
+          echo "verify matrix result: $RESULT"
+          test "$RESULT" = "success"

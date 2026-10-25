@@ -1,0 +1,477 @@
+{
+  "$schema": "../schemas/governance/stage_registry.schema.json",
+  "registry_version": "1.0.0",
+  "project": {
+    "name": "CITERIFT",
+    "repository": "ImanOthman-eng/citerift",
+    "owner": {
+      "display_name": "EVE TELOS",
+      "github_login": "ImanOthman-eng"
+    }
+  },
+  "policy": {
+    "single_active_engineering_stage": true,
+    "required_artifacts": [
+      "SPECIFICATION.md",
+      "MATHEMATICAL_MODEL.md",
+      "RISK_ANALYSIS.md",
+      "SIMULATION_REPORT.md",
+      "TEST_RESULTS.md",
+      "CREATIVE_DIFFERENTIATION_REVIEW.md",
+      "HANDOFF.md"
+    ],
+    "handoff_file": "HANDOFF.md",
+    "handoff_required_sections": [
+      "Stage and status",
+      "Verified completed work",
+      "Inputs and outputs",
+      "Test evidence",
+      "Known limitations",
+      "Open blockers",
+      "Dependency versions",
+      "Verified Git commit",
+      "Acceptance decision",
+      "Requirements for the next stage"
+    ],
+    "test_report_file": "test-report.json"
+  },
+  "stages": [
+    {
+      "id": "00",
+      "name": "Engineering Foundation",
+      "executor": "engineering-agent",
+      "depends_on": [],
+      "verification_dir": "docs/verification/stage-00",
+      "owned_paths": [
+        "src/citerift/__init__.py",
+        "src/citerift/governance",
+        "src/citerift/contracts",
+        "schemas/governance",
+        "schemas/contracts/v1",
+        "simulations/stage00",
+        "tests/stage00"
+      ],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression",
+        "reproducibility",
+        "security",
+        "contracts",
+        "simulation"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "00-A",
+          "requirement": "Repository initialized safely with verified Git revision"
+        },
+        {
+          "id": "00-B",
+          "requirement": "Reproducible engineering environment"
+        },
+        {
+          "id": "00-C",
+          "requirement": "Operational Project Orchestrator"
+        },
+        {
+          "id": "00-D",
+          "requirement": "Persistent Project Memory"
+        },
+        {
+          "id": "00-E",
+          "requirement": "Successful Orchestrator-Memory integration"
+        },
+        {
+          "id": "00-F",
+          "requirement": "Validated stage-transition rules"
+        },
+        {
+          "id": "00-G",
+          "requirement": "Versioned data contracts with positive and negative tests"
+        },
+        {
+          "id": "00-H",
+          "requirement": "Completed relevant pre-implementation simulations"
+        },
+        {
+          "id": "00-I",
+          "requirement": "Successful unit and integration tests"
+        },
+        {
+          "id": "00-J",
+          "requirement": "Successful regression and consistency tests"
+        },
+        {
+          "id": "00-K",
+          "requirement": "Successful GitHub Actions verification"
+        },
+        {
+          "id": "00-L",
+          "requirement": "Effective branch protection verified"
+        },
+        {
+          "id": "00-M",
+          "requirement": "Security and adversarial review completed"
+        },
+        {
+          "id": "00-N",
+          "requirement": "Creative Differentiation Review completed"
+        },
+        {
+          "id": "00-O",
+          "requirement": "Reproducible Stage 00 documentation and handoff"
+        },
+        {
+          "id": "00-P",
+          "requirement": "No known unresolved critical foundational defect"
+        }
+      ],
+      "status": "IN_PROGRESS",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV",
+        "scope": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
+        "recorded_at": "2026-10-25T10:02:03Z"
+      },
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": [],
+      "required_artifacts": [
+        "SPECIFICATION.md",
+        "MATHEMATICAL_MODEL.md",
+        "RISK_ANALYSIS.md",
+        "SIMULATION_REPORT.md",
+        "TEST_RESULTS.md",
+        "CREATIVE_DIFFERENTIATION_REVIEW.md",
+        "HANDOFF.md"
+      ]
+    },
+    {
+      "id": "01",
+      "name": "Independent Feasibility Investigation",
+      "executor": "external-agent",
+      "depends_on": [],
+      "verification_dir": "docs/verification/stage-01",
+      "owned_paths": [],
+      "required_test_suites": [],
+      "acceptance_gates": [
+        {
+          "id": "01-A",
+          "requirement": "Retraction data accessibility evidenced"
+        },
+        {
+          "id": "01-B",
+          "requirement": "Wikipedia citation discoverability evidenced"
+        },
+        {
+          "id": "01-C",
+          "requirement": "Verified positive and negative examples"
+        },
+        {
+          "id": "01-D",
+          "requirement": "Initial cross-language feasibility evidenced"
+        },
+        {
+          "id": "01-E",
+          "requirement": "Coverage limitations documented"
+        },
+        {
+          "id": "01-F",
+          "requirement": "Source references and reproducible findings"
+        },
+        {
+          "id": "01-G",
+          "requirement": "Critical blockers and recommendations stated"
+        }
+      ],
+      "status": "AUTHORIZED",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
+        "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
+        "recorded_at": "2026-10-25T08:12:56Z"
+      },
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": [],
+      "required_artifacts": [
+        "HANDOFF.md"
+      ],
+      "ci_required": false,
+      "notes": "Executed by a separate external agent. The owner reports the investigation was reported externally; its handoff has not been supplied to this repository and none of its findings are accepted. The exact evidence file set is fixed when the owner delivers the handoff."
+    },
+    {
+      "id": "02",
+      "name": "Retraction Data Engine",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "00",
+        "01"
+      ],
+      "verification_dir": "docs/verification/stage-02",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "02-A",
+          "requirement": "Successful positive, negative, malformed-data, duplicate, and conflict-resolution tests"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "03",
+      "name": "Wikipedia Extraction Engine",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "00",
+        "01"
+      ],
+      "verification_dir": "docs/verification/stage-03",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "03-A",
+          "requirement": "Extraction results match an independently inspected sample, with failures and unsupported cases documented"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "04",
+      "name": "Detection Engine and Vertical Slice",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "02",
+        "03"
+      ],
+      "verification_dir": "docs/verification/stage-04",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "04-A",
+          "requirement": "A real documented investigation succeeds end-to-end, alongside negative and failure-case tests"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "05",
+      "name": "Citation Context and Evidence Preparation",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "04"
+      ],
+      "verification_dir": "docs/verification/stage-05",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "05-A",
+          "requirement": "Context extraction is independently checked and the evaluation dataset has documented annotation rules"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "06",
+      "name": "AI Investigation and Scientific Evaluation",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "05"
+      ],
+      "verification_dir": "docs/verification/stage-06",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "06-A",
+          "requirement": "Reproducible empirical evaluation demonstrating the model's measured strengths, weaknesses, and permitted role"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "07",
+      "name": "Cross-Wiki Intelligence and Backend API",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "06"
+      ],
+      "verification_dir": "docs/verification/stage-07",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "07-A",
+          "requirement": "Cross-language reports are source-backed, API contracts are stable, and complete backend tests pass"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "08",
+      "name": "Creative Interactive Frontend",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "07"
+      ],
+      "verification_dir": "docs/verification/stage-08",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "08-A",
+          "requirement": "A user can complete an investigation through the browser using authentic backend results"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    },
+    {
+      "id": "09",
+      "name": "Release, Research Report, and Submission",
+      "executor": "engineering-agent",
+      "depends_on": [
+        "08"
+      ],
+      "verification_dir": "docs/verification/stage-09",
+      "owned_paths": [],
+      "required_test_suites": [
+        "unit",
+        "integration",
+        "negative",
+        "regression"
+      ],
+      "acceptance_gates": [
+        {
+          "id": "09-A",
+          "requirement": "Public repository, working demonstration, documentation and video verified; Devpost submission confirmed as Submitted, not Draft"
+        }
+      ],
+      "status": "NOT_STARTED",
+      "authorization": null,
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
+      "blockers": [],
+      "amendments": []
+    }
+  ],
+  "history": [
+    {
+      "seq": 1,
+      "at": "2026-10-25T08:12:56Z",
+      "stage": "01",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu"
+    },
+    {
+      "seq": 2,
+      "at": "2026-10-25T10:02:03Z",
+      "stage": "00",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV"
+    },
+    {
+      "seq": 3,
+      "at": "2026-10-25T10:30:37Z",
+      "stage": "00",
+      "from": "AUTHORIZED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 00 implementation started.",
+      "owner_ref": null
+    }
+  ]
+}
