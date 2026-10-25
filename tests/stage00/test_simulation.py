@@ -188,3 +188,19 @@ def test_differential_fixed_case_reopen_foundation_after_dependent_accepted(mode
     result = sandbox.go("00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref="cmsg_TESTREOPENREF01")
     assert expected is True
     assert result.allowed is expected, [str(f) for f in result.findings]
+
+
+def test_history_replay_conforms_to_the_model_exhaustively() -> None:
+    """Every reachable status vector of a 3-stage configuration, every possible next history entry."""
+    spec = importlib.util.spec_from_file_location(
+        "citerift_replay_conformance", MODEL_PATH.with_name("replay_conformance.py")
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    deps, engineering = module.CONFIGS["small"]
+    result = module.explore(module.load_model(), module.Config(deps, engineering), Path.cwd())
+    assert result["disagreements"] == 0, result["disagreement_examples"]
+    assert result["cases"] == 45024 and result["reachable_status_vectors"] == 134
+    assert 0 < result["model_permitted"] < result["cases"]

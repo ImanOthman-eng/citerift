@@ -1,0 +1,87 @@
+{
+  "exhaustive_reduced_model": {
+    "all_stages_accepted_reachable": true,
+    "attempts_permitted": 106400,
+    "attempts_rejected": 1649760,
+    "dependencies": {
+      "0": [],
+      "1": [
+        0
+      ],
+      "2": [
+        1
+      ],
+      "3": []
+    },
+    "edges_into_accepted_closed_from": [
+      "VERIFIED_AWAITING_OWNER_ACCEPTANCE"
+    ],
+    "engineering_stages": [
+      0,
+      1,
+      2
+    ],
+    "invariant_violations": 0,
+    "reachable_nodes": 490,
+    "reachable_status_vectors": 490,
+    "shortest_counterexample": null,
+    "stages": 4,
+    "states_reachable_per_stage": {
+      "0": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "1": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "2": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "3": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ]
+    },
+    "transition_attempts": 1756160,
+    "violation_examples": []
+  },
+  "guided_full_completion": {
+    "completed": true,
+    "steps": 50
+  },
+  "model": "citerift-stage-governance-abstract/1",
+  "random_walks_full_model": {
+    "attempts": 4000000,
+    "attempts_permitted": 263926,
+    "attempts_rejected": 3736074,
+    "authorizations_without_owner": 0,
+    "invariant_violations": 0,
+    "length": 200,
+    "max_stages_accepted_in_one_walk": 2,
+    "seed": 20261025,
+    "violation_examples": [],
+    "walks": 20000
+  }
+}
