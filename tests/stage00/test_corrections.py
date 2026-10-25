@@ -405,6 +405,41 @@ def test_v01_narrowing_by_configuration_or_conftest_is_partial(
 
 
 @pytest.mark.integration
+@pytest.mark.parametrize(
+    ("conftest", "args", "field", "value"),
+    [
+        (None, ["-o", "python_functions=test_[adg]*"], "override_ini", ["python_functions=test_[adg]*"]),
+        (
+            "def pytest_collection_modifyitems(items):\n    items[:] = [i for i in items if i.name != 'test_beta']\n",
+            [],
+            "dropped",
+            1,
+        ),
+    ],
+    ids=["override_within_files", "conftest_drops_within_files"],
+)
+def test_v01_narrowing_that_keeps_every_file_is_partial(
+    tmp_path: Path, conftest: str | None, args: list[str], field: str, value: object
+) -> None:
+    """Every test file still runs, so only the override or dropped-item rule can see the narrowing."""
+    project = _plugin_project(tmp_path)
+    if conftest is not None:
+        (project / "tests" / "conftest.py").write_text(conftest, encoding="utf-8")
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "narrowing")
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json", *args)
+    assert code == 0 and data["totals"] == {"passed": 3}, output
+    assert data["selection"]["files"] == ["tests/test_other.py", "tests/test_sample.py"]
+    assert data["selection"][field] == value
+    shutil.copy(reports / "r.json", project / "r.json")
+    head = git(project, "rev-parse", "HEAD")
+    problems = evidence.check_test_report(project, "r.json", None, head, ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, (data["selection"], problems)
+
+
+@pytest.mark.integration
 def test_v01_strict_markers_keeps_the_run_complete(tmp_path: Path) -> None:
     project = _plugin_project(tmp_path)
     code, data, output = _run_plugin(project, tmp_path / "r.json", "--strict-markers")
