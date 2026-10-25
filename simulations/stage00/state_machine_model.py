@@ -15,7 +15,7 @@ Two analyses are run:
 2. Seeded random walks over the full approved 10-stage dependency graph.
 
 The output is written as JSON so that SIMULATION_REPORT.md can cite the actual
-numbers. The tests in ``tests/test_simulation.py`` re-run a smaller version
+numbers. The tests in ``tests/stage00/test_simulation.py`` re-run a smaller version
 and the differential test compares this model with the implementation.
 
 Limits: this checks the rule design over synthetic inputs. It says nothing

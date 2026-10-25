@@ -199,6 +199,22 @@ def test_06b_fabricated_acceptance_in_files_is_detected(sandbox: Sandbox) -> Non
 
 
 @pytest.mark.negative
+def test_06c_acceptance_of_another_revision_is_detected(sandbox: Sandbox) -> None:
+    sandbox.drive_to_accepted("00")
+    assert "ACCEPTANCE_STALE" not in sandbox.codes(sandbox.orc().check())
+    reg = sandbox.registry()
+    acceptance = reg["stages"][0]["acceptance"]
+    acceptance["accepted_revision"] = "0" * 40
+    sandbox.save_registry(reg)
+    assert "ACCEPTANCE_STALE" in sandbox.codes(sandbox.orc().check())
+    # An acceptance recorded before the verification it claims to accept is also stale.
+    acceptance["accepted_revision"] = reg["stages"][0]["verification"]["revision"]
+    acceptance["recorded_at"] = "2000-01-01T00:00:00Z"
+    sandbox.save_registry(reg)
+    assert "ACCEPTANCE_STALE" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.negative
 def test_07_unauthorized_next_stage_request(sandbox: Sandbox) -> None:
     jump = sandbox.go("02", IP, actor=Actor.ENGINEERING_AGENT)
     assert not jump.allowed
