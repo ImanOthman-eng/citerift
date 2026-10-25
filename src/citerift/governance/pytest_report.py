@@ -76,7 +76,11 @@ def pytest_configure(config: pytest.Config) -> None:
         if report:
             resolved = Path(report).resolve()
             if resolved.is_relative_to(root.resolve()):
-                exclude = (resolved.relative_to(root.resolve()).as_posix(),)
+                rel = resolved.relative_to(root.resolve()).as_posix()
+                # The report about to be written is not a change of the tested tree, unless it is written
+                # over a tracked file: then that file's edit would be hidden (Y-01).
+                if not gitutil.is_tracked(root, rel):
+                    exclude = (rel,)
         _state["revision"] = gitutil.head(root)
         _state["dirty_paths"] = gitutil.dirty_paths(root, exclude=exclude)
     except (gitutil.GitUnavailableError, OSError, subprocess.SubprocessError, ValueError):

@@ -1509,3 +1509,304 @@ def test_x13_a_versioned_compatible_enhancement_is_accepted(accepted_with_fixtur
     _enhance(sandbox, bump=True, owner_ref="cmsg_TESTENHANCE001")
     sandbox.commit("record the enhancement")
     assert not errors(sandbox.orc().check(include_status_doc=False))
+
+
+# ---------------------------------------------------------------------------------------------------------
+# Third final independent review (docs/verification/stage-00/review/4a396fb/), Y-01 to Y-13, and the rules
+# that the 73-mutant check at 564030b found without a test of their own (M57, M58, M59).
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("how", ["repeats_only", "harmless_plugin", "untracked_harmless_conftest"])
+def test_x03_each_partial_run_rule_holds_on_its_own(tmp_path: Path, how: str) -> None:
+    """Repeats alone, a ``-p`` plugin alone and an untracked conftest alone each make the run partial."""
+    import os
+
+    project = _plugin_project(tmp_path)
+    args: list[str] = []
+    env = None
+    if how == "repeats_only":
+        (project / "tests" / "conftest.py").write_text(
+            "def pytest_collection_modifyitems(items):\n    items.append(items[0])\n", encoding="utf-8"
+        )
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "repeating conftest")
+    elif how == "harmless_plugin":
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        (outside / "harmless.py").write_text("VALUE = 1\n", encoding="utf-8")
+        env = {**os.environ, "PYTHONPATH": os.pathsep.join([str(outside), os.environ.get("PYTHONPATH", "")])}
+        args = ["-p", "harmless"]
+    else:
+        (project / "tests" / "conftest.py").write_text("VALUE = 1\n", encoding="utf-8")
+        with (project / ".git" / "info" / "exclude").open("a", encoding="utf-8") as fh:
+            fh.write("tests/conftest.py\n")
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json", *args, env=env)
+    assert code == 0 and data["dirty"] is False, output
+    shutil.copy(reports / "r.json", project / "r.json")
+    problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+
+
+@pytest.mark.integration
+def test_y01_a_report_written_over_a_tracked_file_does_not_hide_its_change(tmp_path: Path) -> None:
+    """Y-01: the report path was left out of the dirty check, even when it was a tracked test file."""
+    project = _plugin_project(tmp_path)
+    narrowed = project / "tests" / "test_sample.py"
+    narrowed.write_text("import pytest\n\n@pytest.mark.unit\ndef test_alpha():\n    pass\n", encoding="utf-8")
+    code, data, output = _run_plugin(project, narrowed)
+    assert code == 0, output
+    assert data["dirty"] is True and "tests/test_sample.py" in data["dirty_paths"], data
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("flag", ["--skip-worktree", "--assume-unchanged"])
+def test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty(tmp_path: Path, flag: str) -> None:
+    """Y-02: ``git status`` does not show a tracked file flagged skip-worktree or assume-unchanged."""
+    project = _plugin_project(tmp_path)
+    (project / "tests" / "test_sample.py").write_text(
+        "import pytest\n\n@pytest.mark.unit\ndef test_alpha():\n    pass\n", encoding="utf-8"
+    )
+    git(project, "update-index", flag, "tests/test_sample.py")
+    assert git(project, "status", "--porcelain") == ""
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json")
+    assert code == 0, output
+    assert data["dirty"] is True and "tests/test_sample.py" in data["dirty_paths"], data
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("marker", ["skip", "xfail"])
+def test_y03_skipped_or_expected_failures_make_the_run_partial(tmp_path: Path, marker: str) -> None:
+    """Y-03: a committed conftest skipping most tests gave a complete run."""
+    project = _plugin_project(tmp_path)
+    (project / "tests" / "conftest.py").write_text(
+        "import pytest\n\n"
+        "def pytest_collection_modifyitems(items):\n"
+        "    for item in items:\n"
+        "        if item.name != 'test_alpha':\n"
+        f"            item.add_marker(pytest.mark.{marker}(reason='narrowed'))\n",
+        encoding="utf-8",
+    )
+    git(project, "add", "-A")
+    git(project, "commit", "-q", "-m", "conftest that skips")
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json")
+    assert code == 0 and data["selection"]["complete"] is True, output
+    shutil.copy(reports / "r.json", project / "r.json")
+    problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["totals"]
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("digits", ["٠٠", "００", "۰۰"], ids=["arabic_indic", "fullwidth", "extended_arabic_indic"])
+def test_y04_stage_and_id_digits_must_be_ascii(tmp_path: Path, digits: str) -> None:
+    """Y-04: ``\\d`` matched non-ASCII digits, so a Stage field in Arabic-Indic digits did not block Stage 00."""
+    from citerift.governance import memory
+
+    path = tmp_path / "RISKS.md"
+    path.write_text(
+        "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+        f"- Stage: {digits}\n\nBody.\n\n## R-{digits}1 — Same id in other digits\n- Status: open\n"
+        "- Severity: low\n- Kind: limitation\n- Stage: 00\n\nBody.\n",
+        encoding="utf-8",
+    )
+    _, problems = memory.check_risks(path)
+    codes = {p.code for p in problems}
+    assert {"RISK_INVALID_FIELD", "MEMORY_MALFORMED"} <= codes, problems
+
+
+@pytest.mark.negative
+def test_y04_a_critical_defect_with_non_ascii_stage_digits_blocks_verification(sandbox: Sandbox) -> None:
+    sandbox.write(
+        "RISKS.md",
+        "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+        "- Stage: ٠٠\n\nBody.\n",
+    )
+    sandbox.commit("critical defect with Arabic-Indic digits")
+    with pytest.raises(AssertionError):
+        sandbox.drive_to_verified("00")
+    assert "RISK_INVALID_FIELD" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.negative
+def test_y04_arabic_tatweel_and_short_vowels_do_not_split_a_topic(tmp_path: Path) -> None:
+    """Observation O-1 of the third review: topics differing only by tatweel or harakat are one topic."""
+    from citerift.governance import memory
+
+    path = tmp_path / "DECISIONS.md"
+    path.write_text(
+        "# Decisions\n\n## D-001 — One\n- Status: accepted\n- Topic: ترخيص\n\nBody.\n\n"
+        "## D-002 — Two\n- Status: accepted\n- Topic: تـرْخيص\n\nBody.\n",
+        encoding="utf-8",
+    )
+    _, problems = memory.check_decisions(path)
+    assert "DECISION_CONTRADICTION" in {p.code for p in problems}, problems
+
+
+def _hand_written_enhancement(sandbox: Sandbox, revision: str, at: str, owner_ref: str) -> None:
+    report = "docs/amendments/enhancement-report.json"
+    stage = sandbox.orc().stage("00")
+    sandbox.write(
+        report,
+        json.dumps(
+            {
+                "format": "citerift.test-report/1",
+                "revision": revision,
+                "dirty": False,
+                "exit_status": 0,
+                "totals": {"passed": 10 * len(stage["required_test_suites"])},
+                "selection": {"args": ["tests"], "deselected": 0, "complete": True, "files": []},
+                "suites": {s: {"passed": 10} for s in stage["required_test_suites"]},
+            }
+        ),
+    )
+    reg = sandbox.registry()
+    reg["stages"][0]["amendments"].append(
+        {
+            "id": "A-00-001",
+            "kind": "enhancement",
+            "reason": "hand-written enhancement",
+            "evidence": [report],
+            "owner_ref": owner_ref,
+            "revision": revision,
+            "test_report": {"path": report, "sha256": evidence.sha256_file(sandbox.root / report)},
+            "recorded_at": at,
+        }
+    )
+    sandbox.save_registry(reg)
+
+
+@pytest.mark.negative
+def test_y06_an_amendment_on_a_stage_that_is_not_accepted_is_an_error(sandbox: Sandbox) -> None:
+    """Y-06: a hand-written enhancement on a verified stage passed check and covered owned changes."""
+    sandbox.drive_to_verified("00")
+    sandbox.write(OWNED_FILE, "BEHAVIOUR = 'different'\n")
+    changed = sandbox.commit("owned change after verification")
+    _hand_written_enhancement(sandbox, changed, sandbox.tick(), sandbox.new_ref())
+    sandbox.commit("hand-written amendment")
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    assert {"AMENDMENT_NOT_APPLICABLE", "VERIFICATION_STALE"} <= codes, codes
+    assert not sandbox.go("00", Status.ACCEPTED_CLOSED).allowed
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("when", ["same_second", "between_verification_and_acceptance"])
+def test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time(sandbox: Sandbox, when: str) -> None:
+    """Y-07: the reuse rule compared self-chosen times, so the acceptance's reference passed with ``--at``."""
+    sandbox.drive_to_verified("00")
+    between = [sandbox.tick() for _ in range(3)][1]
+    assert sandbox.go("00", Status.ACCEPTED_CLOSED).allowed
+    sandbox.commit("accept")
+    acceptance = sandbox.registry()["stages"][0]["acceptance"]
+    sandbox.write(OWNED_FILE, "y = 2\n")
+    rev = sandbox.commit("enhancement")
+    at = acceptance["recorded_at"] if when == "same_second" else between
+    _hand_written_enhancement(sandbox, rev, at, acceptance["owner_ref"])
+    sandbox.commit("amendment")
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    expected = "OWNER_REF_REUSED" if when == "same_second" else "AMENDMENT_NOT_APPLICABLE"
+    assert expected in codes, codes
+
+
+@pytest.mark.negative
+def test_y09_an_ignored_owned_file_is_not_pinned_gate_evidence(sandbox: Sandbox) -> None:
+    """Y-09: a git-ignored file under an owned path counted as pinned, but nothing pins it."""
+    sandbox.write(".gitignore", "src/citerift/governance/notes.txt\n")
+    sandbox.write("src/citerift/governance/notes.txt", "gate evidence nobody committed\n")
+    sandbox.commit("ignore a file under an owned path")
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    gates = sandbox.gates("00")
+    gates["00-A"]["evidence"] = ["src/citerift/governance/notes.txt"]
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+    assert not result.allowed and "GATE_EVIDENCE_UNPINNED" in sandbox.codes(result.findings)
+
+
+@pytest.mark.negative
+def test_y10_the_ci_run_must_belong_to_the_project_repository(sandbox: Sandbox) -> None:
+    """Y-10: a run of any GitHub repository was accepted as the CI record."""
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    ci = {**sandbox.ci(rev), "run_url": "https://github.com/someone-else/other/actions/runs/7"}
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+    assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "damage", ["non_utf8_evidence_name", "damaged_index", "absolute_verification_dir", "deep_registry"]
+)
+def test_y11_more_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str) -> None:
+    """Y-11: five more inputs ended in a traceback."""
+    import os
+
+    root = sandbox.root
+    command = ["check"]
+    if damage == "non_utf8_evidence_name":
+        sandbox.drive_to_verified("00")
+        (root / "docs/verification/stage-00").joinpath(os.fsdecode(b"bad-\xff.txt")).write_text("x", encoding="utf-8")
+    elif damage == "damaged_index":
+        sandbox.drive_to_verified("00")
+        (root / ".git" / "index").write_bytes(b"DIRC damaged")
+        command = ["recover"]
+    elif damage == "absolute_verification_dir":
+        reg = sandbox.registry()
+        reg["stages"][0]["verification_dir"] = str(root / "docs/verification/stage-00")
+        sandbox.save_registry(reg)
+    else:
+        (root / "governance/stage_registry.json").write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+    out = _cli(root, *command)
+    assert "Traceback" not in out.stdout + out.stderr, out.stdout + out.stderr
+    if command == ["recover"]:
+        # recover reports and exits 0 by design; the damage must be named in what it reports.
+        assert "REVISION_UNVERIFIABLE" in out.stdout, out.stdout
+    else:
+        assert out.returncode in (1, 2), out.stdout
+
+
+@pytest.mark.negative
+def test_y11_deep_json_record_is_unreadable_not_a_crash(tmp_path: Path) -> None:
+    record = tmp_path / "deep.json"
+    record.write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+    out = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "citerift.contracts.validate",
+            "--schemas",
+            str(REPO / "schemas/contracts"),
+            "validate",
+            str(record),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert out.returncode == 1 and "Traceback" not in out.stderr and "UNREADABLE" in out.stdout, out.stderr
+
+
+@pytest.mark.integration
+def test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools() -> None:
+    """Y-08 and observation O-6: CI runs check before ruff, mypy and pytest, then checks its own report and
+    that no step changed a tracked file."""
+    steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    order = [
+        steps.index("citerift.governance.cli check\n"),
+        steps.index("ruff check ."),
+        steps.index("--no-sync mypy"),
+        steps.index("-m pytest"),
+        steps.index("check-report ci-test-report.json"),
+        steps.index("git diff --exit-code"),
+    ]
+    assert order == sorted(order)

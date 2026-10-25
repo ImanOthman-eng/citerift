@@ -10,6 +10,7 @@ Validation has two layers:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -107,11 +108,31 @@ def semantic_problems(record: dict[str, Any]) -> list[ContractProblem]:
         for path, value in candidates:
             if isinstance(value, str) and not is_calendar_partial_date(value):
                 problems.append(ContractProblem("INVALID_DATE", path, f"{value!r} is not a calendar date"))
+    problems += _conflicts_without_disagreement(record, "")
     status = record["status"]
     if status in ("partial", "failed") and not record["limitations"]:
         problems.append(
             ContractProblem("LIMITATIONS_REQUIRED", "/limitations", f"status '{status}' must state its limitations")
         )
+    return problems
+
+
+def _conflicts_without_disagreement(node: Any, path: str) -> list[ContractProblem]:
+    """A ``conflicting`` assertion must hold at least two different values; alternatives that all agree
+    describe no conflict (Y-05)."""
+    problems: list[ContractProblem] = []
+    if isinstance(node, dict):
+        alternatives = node.get("alternatives")
+        if node.get("status") == "conflicting" and isinstance(alternatives, list):
+            values = {json.dumps(a.get("value"), sort_keys=True) for a in alternatives if isinstance(a, dict)}
+            if len(values) < 2:
+                message = "conflicting alternatives all hold one value"
+                problems.append(ContractProblem("CONFLICT_WITHOUT_DISAGREEMENT", path, message))
+        for key, value in node.items():
+            problems += _conflicts_without_disagreement(value, f"{path}/{key}")
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            problems += _conflicts_without_disagreement(value, f"{path}/{i}")
     return problems
 
 

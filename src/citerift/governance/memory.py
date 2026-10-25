@@ -17,9 +17,11 @@ RISK_STATUSES = frozenset({"open", "mitigated", "accepted", "closed"})
 RISK_SEVERITIES = frozenset({"critical", "high", "medium", "low"})
 RISK_KINDS = frozenset({"risk", "defect", "limitation"})
 
-_HEADING = re.compile(r"^## ([DR]-\d{3}) — (.+?)\s*$")
+# Ids and stage numbers are ASCII digits. Python's \d also matches Arabic-Indic, fullwidth and other
+# digits, so an id or stage written in Arabic-Indic digits would parse but never equal "R-001" or "00" (Y-04).
+_HEADING = re.compile(r"^## ([DR]-[0-9]{3}) — (.+?)\s*$")
 # Anything that looks like an entry heading but is not exactly the form above (another dash,
-# another heading level, missing digits) is reported instead of being skipped (F-06).
+# another heading level, missing or non-ASCII digits) is reported instead of being skipped (F-06, Y-04).
 _HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*[-\u2010-\u2015\u2212_]?\s*\d+")
 _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
 # Fields that only an entry carries. One of them outside a parsed entry means the entry's heading
@@ -27,6 +29,8 @@ _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
 _ENTRY_FIELDS = frozenset({"Status", "Severity", "Kind", "Topic"})
 _ENTRY_FIELDS_FOLDED = frozenset(f.casefold() for f in _ENTRY_FIELDS)
 _SEPARATORS = re.compile(r"[\s_\-\u2010-\u2015\u2212]+")
+# Arabic tatweel and short-vowel marks change the spelling of a topic but not the word.
+_ARABIC_MARKS = re.compile(r"[\u0640\u064b-\u065f\u0670]")
 # An entry field written another way: indented, another bullet, bold, or another case (X-06).
 _FIELD_LIKE = re.compile(r"^\s*[-*+]\s*[*_]*\s*([A-Za-z][A-Za-z-]*)\s*[*_]*\s*:")
 
@@ -86,9 +90,10 @@ def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str)
 
 
 def normalize_topic(topic: str) -> str:
-    """Compatibility-normalized, case-folded, without invisible format characters (X-06), and with every
-    run of spaces, hyphens or underscores as one hyphen."""
+    """Compatibility-normalized, case-folded, without invisible format characters (X-06) or Arabic tatweel
+    and short-vowel marks, and with every run of spaces, hyphens or underscores as one hyphen."""
     visible = "".join(c for c in unicodedata.normalize("NFKC", topic) if unicodedata.category(c) != "Cf")
+    visible = _ARABIC_MARKS.sub("", visible)
     return _SEPARATORS.sub("-", visible).strip("-").casefold()
 
 
@@ -230,7 +235,7 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
                 problems.append(
                     MemoryProblem("RISK_INVALID_FIELD", name, f"{e.id} has invalid {fname} '{e.get(fname)}'")
                 )
-        if not re.fullmatch(r"\d{2}(, ?\d{2})*|project", e.get("Stage")):
+        if not re.fullmatch(r"[0-9]{2}(, ?[0-9]{2})*|project", e.get("Stage")):
             problems.append(MemoryProblem("RISK_INVALID_FIELD", name, f"{e.id} has invalid Stage '{e.get('Stage')}'"))
     return entries, problems
 

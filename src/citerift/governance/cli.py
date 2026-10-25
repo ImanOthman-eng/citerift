@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from citerift.contracts.formats import loads_strict
-from citerift.governance import gitutil
+from citerift.governance import evidence, gitutil
 from citerift.governance.model import EDGES, Actor, Status
 from citerift.governance.orchestrator import (
     STATUS_DOC_PATH,
@@ -255,6 +255,24 @@ def cmd_recover(orc: Orchestrator, args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_check_report(orc: Orchestrator, args: argparse.Namespace) -> int:
+    """Check a test report as verification would, against HEAD: CI runs this on its own report (O-6)."""
+    try:
+        stage = orc.stage(args.stage)
+    except KeyError as exc:
+        print(f"ERROR STAGE_UNKNOWN: {exc}")
+        return 2
+    revision = gitutil.head(orc.root)
+    if revision is None:
+        print("ERROR REVISION_NOT_FOUND: HEAD cannot be read")
+        return 1
+    problems = evidence.check_test_report(orc.root, args.report, None, revision, stage["required_test_suites"])
+    for p in problems:
+        print(f"ERROR {p.code}: {p.message}")
+    print(f"Test report {args.report} at {revision[:12]}: {len(problems)} problems")
+    return 1 if problems else 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="citerift-gov", description="CITERIFT Project Orchestrator")
     p.add_argument("--root", type=Path, help="repository root (default: search upwards from cwd)")
@@ -325,13 +343,21 @@ def build_parser() -> argparse.ArgumentParser:
     rs.set_defaults(func=cmd_render_status)
 
     sub.add_parser("recover", help="reconstruct project state from the repository alone").set_defaults(func=cmd_recover)
+
+    cr = sub.add_parser("check-report", help="check a test report against HEAD as verification would")
+    cr.add_argument("report", help="repository-relative path of the report")
+    cr.add_argument("--stage", default="00", help="stage whose required suites apply")
+    cr.set_defaults(func=cmd_check_report)
     return p
 
 
 def _git_hint(root: Path, command: str) -> int:
     if command == "recover" and gitutil.is_repository(root):
         print(f"HEAD: {gitutil.head(root)} on {gitutil.branch(root)}")
-        print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
+        try:
+            print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
+        except gitutil.GitUnavailableError as exc:
+            print(f"Uncommitted changes: unknown ({exc})")
         print("Restore the registry from git (git log -- governance/stage_registry.json) before any other step.")
     return 1
 
@@ -367,7 +393,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "blocker" and args.action == "resolve" and not args.id:
         print("error: blocker resolve needs --id", file=sys.stderr)
         return 2
-    result: int = args.func(orc, args)
+    try:
+        result: int = args.func(orc, args)
+    except gitutil.GitUnavailableError as exc:
+        # Last resort for a damaged repository (for example a broken index) that a check did not catch (Y-11).
+        print(f"ERROR REVISION_UNVERIFIABLE: git cannot read the repository: {exc}")
+        return 1
     return result
 
 

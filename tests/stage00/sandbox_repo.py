@@ -174,7 +174,7 @@ class Sandbox:
 
     def ci(self, revision: str, conclusion: str = "success") -> dict[str, Any]:
         return {
-            "run_url": "https://github.com/example/repo/actions/runs/1",
+            "run_url": f"https://github.com/{self.registry()['project']['repository']}/actions/runs/1",
             "head_sha": revision,
             "conclusion": conclusion,
         }

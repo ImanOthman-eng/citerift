@@ -34,8 +34,18 @@ def manifest(root: Path, directory: str) -> list[dict[str, str]]:
     if not base.is_dir():
         return []
     files = sorted(p.relative_to(root).as_posix() for p in base.rglob("*") if p.is_file())
+    for rel in files:
+        try:
+            rel.encode("utf-8")
+        except UnicodeEncodeError:
+            # Such a name cannot be recorded in the registry or passed to git as text (Y-11).
+            raise EvidenceNameError(f"{rel!r} is not a UTF-8 file name and cannot be pinned") from None
     skip = gitutil.ignored(root, files)
     return [{"path": rel, "sha256": sha256_file(root / rel)} for rel in files if rel not in skip]
+
+
+class EvidenceNameError(ValueError):
+    """A file in an evidence directory has a name that cannot be recorded."""
 
 
 def canonical_sha256(data: Any) -> str:
@@ -166,6 +176,13 @@ def check_test_report(
         problems.extend(_untracked_conftests(root, rel, revision, selection.get("conftests")))
     if isinstance(totals, dict) and totals.get("not_run", 0):
         problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records {totals['not_run']} tests that did not run"))
+    # A skipped or expected-to-fail test was selected but did not show that its rule holds, so a run is
+    # complete only when every test passed (Y-03: a conftest skipping 355 of 363 tests gave a complete run).
+    counted = ("passed", "failed", "error", "not_run")
+    unproven = {k: v for k, v in totals.items() if k not in counted and v} if isinstance(totals, dict) else {}
+    if unproven:
+        shown = ", ".join(f"{v} {k}" for k, v in sorted(unproven.items()))
+        problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records tests that did not pass or fail: {shown}"))
     if report.get("exit_status") != 0:
         problems.append(Problem("TESTS_FAILED", f"{rel} records pytest exit status {report.get('exit_status')}"))
     suites = report.get("suites", {})

@@ -35,6 +35,14 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["identifiers", "retraction_status"],
+      "if": {
+        "properties": {"retraction_status": {"properties": {"value": {"const": "not_found_in_checked_sources"}}, "required": ["value"]}},
+        "required": ["retraction_status"]
+      },
+      "then": {
+        "description": "No retraction record was found, so no retraction date can be stated (Y-12).",
+        "properties": {"retraction_date": {"properties": {"value": {"type": "null"}}, "not": {"required": ["alternatives"]}}}
+      },
       "properties": {
         "identifiers": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/paper_identifiers"},
         "title": {
@@ -44,7 +52,7 @@
           ]
         },
         "retraction_status": {
-          "description": "There is deliberately no value meaning 'not retracted', in 'value' or in any conflicting alternative. 'not_found_in_checked_sources' says only that the checked sources hold no record, so it must be marked uncertain. A retraction status never comes from a model: no model_inference status, and no model or confidence fields under any status.",
+          "description": "There is deliberately no value meaning 'not retracted', in 'value' or in any conflicting alternative. 'not_found_in_checked_sources' says only that the checked sources hold no record, so it must be marked uncertain, and it is never one side of a conflict: an absent record does not disagree with a present one (Y-05). Conflicting alternatives must differ; that is a semantic check. A retraction status never comes from a model: no model_inference status, and no model or confidence fields under any status.",
           "allOf": [
             {"$ref": "#/$defs/assertion"},
             {
@@ -56,7 +64,7 @@
                 "alternatives": {
                   "items": {
                     "properties": {
-                      "value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources"]}
+                      "value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}
                     }
                   }
                 }

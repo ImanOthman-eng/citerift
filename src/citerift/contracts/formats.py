@@ -72,5 +72,10 @@ def _reject_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 
 def loads_strict(text: str) -> Any:
-    """Parse JSON, rejecting duplicate object keys (the stdlib keeps the last one silently)."""
-    return json.loads(text, object_pairs_hook=_reject_duplicates)
+    """Parse JSON, rejecting duplicate object keys (the stdlib keeps the last one silently).
+
+    Nesting too deep for the parser is a ``ValueError`` like any other unreadable input (Y-11)."""
+    try:
+        return json.loads(text, object_pairs_hook=_reject_duplicates)
+    except RecursionError:
+        raise ValueError("JSON nested too deeply to read") from None

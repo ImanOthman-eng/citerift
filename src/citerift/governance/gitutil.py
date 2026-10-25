@@ -30,6 +30,9 @@ def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
         [git, "--no-replace-objects", "-C", str(root), *args],
         capture_output=True,
         text=True,
+        # A file name that is not UTF-8 must reach the caller, which reports it, not break decoding (Y-11).
+        encoding="utf-8",
+        errors="surrogateescape",
         check=False,
         env=_env(),
     )
@@ -132,13 +135,36 @@ def changed_paths(root: Path, base: str, paths: list[str], rev: str = "HEAD") ->
 
 
 def dirty_paths(root: Path, exclude: tuple[str, ...] = ()) -> list[str]:
-    """Paths with uncommitted changes, including untracked files."""
-    out = _git(root, "status", "--porcelain", "--untracked-files=all")
+    """Paths with uncommitted changes, including untracked files, and tracked files whose changes git
+    is told to hide (``--assume-unchanged`` or ``--skip-worktree``, which ``git status`` does not show; Y-02)."""
+    out = _git(root, "status", "--porcelain=v1", "-z", "--untracked-files=all")
     if out.returncode != 0:
         raise GitUnavailableError(out.stderr.strip())
     paths = []
-    for line in out.stdout.splitlines():
-        path = line[3:].split(" -> ")[-1].strip('"')
-        if path not in exclude:
-            paths.append(path)
-    return paths
+    fields = out.stdout.split("\0")
+    i = 0
+    while i < len(fields):
+        entry = fields[i]
+        i += 1
+        if len(entry) < 4:
+            continue
+        paths.append(entry[3:])
+        if entry[0] in "RC":
+            # With -z a rename is "XY new\0old\0"; the old path is changed too (O-5 of the third review).
+            paths.append(fields[i])
+            i += 1
+    flags = _git(root, "ls-files", "-v", "-z")
+    if flags.returncode != 0:
+        raise GitUnavailableError(flags.stderr.strip())
+    paths += [e[2:] for e in flags.stdout.split("\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]
+    return [p for p in dict.fromkeys(paths) if p not in exclude]
+
+
+def is_tracked(root: Path, path: str) -> bool:
+    """True when ``path`` is a file in the index."""
+    return _git(root, "ls-files", "--error-unmatch", "--", path).returncode == 0
+
+
+def exists_at(root: Path, rev: str, path: str) -> bool:
+    """True when ``path`` is committed at ``rev``."""
+    return _git(root, "cat-file", "-e", f"{rev}:{path}").returncode == 0

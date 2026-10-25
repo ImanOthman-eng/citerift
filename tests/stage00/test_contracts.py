@@ -325,6 +325,7 @@ def test_schema_patterns_agree_with_ecma262_on_random_strings(seed: int) -> None
     [
         ("/citations/0/article/title", "حمض نووي"),
         ("/subject_paper/identifiers/doi", "10.5555/بحث-٢٠٢٠"),
+        ("/subject_paper/identifiers/doi", "10.1000.10/abc"),  # Y-13: subdivided registrant code
         ("/citations/1/article/language", "zh-yue"),
         ("/created_at", "2026-10-25T12:00:00.123456Z"),
         ("/subject_paper/retraction_date/value", "2020-02-29"),

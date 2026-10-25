@@ -58,6 +58,13 @@ jobs:
           uv run --no-sync python -P -c "import citerift, pathlib, sys;
           sys.exit(not pathlib.Path(citerift.__file__).resolve().is_relative_to(pathlib.Path('src').resolve()))"
 
+      - name: Governance state and memory consistency
+        # Runs before any tool that pyproject.toml configures: a mypy, ruff or pytest setting there can run
+        # code, which could rewrite the checker on disk before a later check step (Y-08).
+        run: |
+          uv run --no-sync python -P -m citerift.governance.cli check
+          uv run --no-sync python -P -m citerift.governance.cli render-status --check
+
       - name: Static analysis (ruff lint and format, mypy strict)
         run: |
           uv run --no-sync ruff check .
@@ -67,13 +74,16 @@ jobs:
       - name: Schema validation
         run: uv run --no-sync python -P -m citerift.contracts.validate check-schemas
 
-      - name: Governance state and memory consistency
-        run: |
-          uv run --no-sync python -P -m citerift.governance.cli check
-          uv run --no-sync python -P -m citerift.governance.cli render-status --check
-
       - name: Tests (orchestrator, memory, contracts, integration, recovery, simulation)
         run: uv run --no-sync python -P -m pytest --citerift-report ci-test-report.json
+
+      - name: Test report records a complete run of a clean tree
+        # A green run must not come from a partial one, for example with tests skipped (O-6, Y-03).
+        run: uv run --no-sync python -P -m citerift.governance.cli check-report ci-test-report.json
+
+      - name: No tracked file was changed by the steps above
+        # A tool configured in pyproject.toml could rewrite tracked files, the checker included (Y-08).
+        run: git diff --exit-code
 
       - name: Dependency vulnerability audit
         run: |
