@@ -614,3 +614,24 @@ def test_f23_package_is_marked_typed_and_owned() -> None:
     stage00 = json.loads((REPO / "governance/stage_registry.json").read_text(encoding="utf-8"))["stages"][0]
     assert (REPO / "src/citerift/py.typed").is_file()
     assert "src/citerift/py.typed" in stage00["owned_paths"]
+
+
+# ------------------------------------------- new defect found during A-00-001
+
+
+@pytest.mark.integration
+def test_n01_files_git_ignores_are_not_evidence(sandbox: Sandbox) -> None:
+    """N-01: the manifest hashed every file on disk, so a byte-code cache next to an evidence script
+    (ignored by git, absent from any clone) was pinned at verification or reported as unlisted later."""
+    sandbox.write(".gitignore", "__pycache__/\n")
+    sandbox.commit("ignore byte code")
+    sandbox.drive_to_verified("00")
+    vdir = sandbox.registry()["stages"][0]["verification_dir"]
+    cache = sandbox.root / vdir / "__pycache__" / "script.cpython-312.pyc"
+    cache.parent.mkdir()
+    cache.write_bytes(b"\x00compiled")
+    assert not errors(sandbox.orc().check())
+    recorded = [e["path"] for e in sandbox.registry()["stages"][0]["verification"]["evidence_manifest"]]
+    assert all("__pycache__" not in p for p in recorded)
+    sandbox.write(f"{vdir}/added-later.md", "not ignored, so it is reported\n")
+    assert "EVIDENCE_UNLISTED" in sandbox.codes(sandbox.orc().check())

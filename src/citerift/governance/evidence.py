@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from citerift.contracts.formats import loads_strict
+from citerift.governance import gitutil
 
 TEST_REPORT_FORMAT = "citerift.test-report/1"
 MIN_ARTIFACT_BYTES = 300
@@ -24,12 +25,17 @@ def sha256_file(path: Path) -> str:
 
 
 def manifest(root: Path, directory: str) -> list[dict[str, str]]:
-    """sha256 of every file under ``directory``, sorted by repository-relative path."""
+    """sha256 of every file under ``directory`` that git does not ignore, sorted by repository-relative path.
+
+    Ignored files (byte-code caches and the like) never reach a clone, so pinning them would make
+    every clone report the evidence as missing.
+    """
     base = root / directory
     if not base.is_dir():
         return []
-    files = sorted(p for p in base.rglob("*") if p.is_file())
-    return [{"path": p.relative_to(root).as_posix(), "sha256": sha256_file(p)} for p in files]
+    files = sorted(p.relative_to(root).as_posix() for p in base.rglob("*") if p.is_file())
+    skip = gitutil.ignored(root, files)
+    return [{"path": rel, "sha256": sha256_file(root / rel)} for rel in files if rel not in skip]
 
 
 def canonical_sha256(data: Any) -> str:

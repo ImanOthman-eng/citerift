@@ -165,6 +165,7 @@ M = [
         '"single_active_engineering_stage": {"const": true}',
         '"single_active_engineering_stage": {"type": "boolean"}',
     ),
+    ("M34 N-01 files git ignores pinned as evidence", EVI, "skip = gitutil.ignored(root, files)", "skip = set()"),
 ]
 
 

@@ -33,6 +33,25 @@ def is_repository(root: Path) -> bool:
         return False
 
 
+def ignored(root: Path, paths: list[str]) -> set[str]:
+    """The subset of untracked ``paths`` that git ignores; empty outside a repository."""
+    if not paths or not is_repository(root):
+        return set()
+    git = shutil.which("git")
+    if git is None:
+        return set()
+    out = subprocess.run(  # noqa: S603 - fixed executable, no shell, list arguments
+        [git, "-C", str(root), "check-ignore", "-z", "--stdin"],
+        input="\0".join(paths) + "\0",
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if out.returncode not in (0, 1):
+        raise GitUnavailableError(out.stderr.strip())
+    return {p for p in out.stdout.split("\0") if p}
+
+
 def is_shallow(root: Path) -> bool:
     out = _git(root, "rev-parse", "--is-shallow-repository")
     return out.returncode == 0 and out.stdout.strip() == "true"
