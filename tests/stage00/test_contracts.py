@@ -284,6 +284,41 @@ def test_schema_patterns_agree_with_ecma262() -> None:
     assert any(js), "the samples must exercise matching strings, not only rejections"
 
 
+@pytest.mark.regression
+@pytest.mark.parametrize("seed", [3, 20261025])
+def test_schema_patterns_agree_with_ecma262_on_random_strings(seed: int) -> None:
+    """Seeded property: random strings over an adversarial alphabet get the same verdict in both engines."""
+    import os
+    import random
+    import re
+    import subprocess
+
+    node = _node()
+    if node is None:
+        if os.environ.get("CI"):
+            pytest.fail("node is required in CI for the ECMA-262 differential test")
+        pytest.skip("node not installed")
+    rng = random.Random(seed)
+    alphabet = [*"0123456789abcfz-./:_TZ", *EDGE_CHARACTERS, "\u062d", "\u00e9", "\U0001f600"]
+    cases = []
+    for _, pattern in _schema_patterns():
+        for _ in range(60):
+            base = rng.choice(PATTERN_SAMPLES)
+            if rng.random() < 0.5:
+                i = rng.randrange(len(base) + 1)
+                base = base[:i] + "".join(rng.choice(alphabet) for _ in range(rng.randint(1, 3))) + base[i:]
+            cases.append((pattern, base))
+    script = (
+        "const cases = JSON.parse(require('fs').readFileSync(0, 'utf8'));"
+        "process.stdout.write(JSON.stringify(cases.map(([p, s]) => new RegExp(p, 'u').test(s))));"
+    )
+    result = subprocess.run([node, "-e", script], input=json.dumps(cases), capture_output=True, text=True, check=True)
+    js = json.loads(result.stdout)
+    disagreements = [(p, s) for (p, s), j in zip(cases, js, strict=True) if (re.search(p, s) is not None) != j]
+    assert disagreements == [], f"seed {seed}: {disagreements[:10]}"
+    assert 0 < sum(js) < len(js)
+
+
 @pytest.mark.parametrize(
     ("pointer", "value"),
     [
