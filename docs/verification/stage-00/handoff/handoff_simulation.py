@@ -201,12 +201,21 @@ def main(revision: str, output: Path) -> int:
             dep.returncode == 1 and "DEPENDENCY_NOT_ACCEPTED" in dep.stdout,
             dep.stdout.strip()[:400],
         )
-        acc = gov("transition", "00", "ACCEPTED_CLOSED", "--actor", "engineering-agent", "--reason", "self acceptance")
         auth = gov("transition", "03", "AUTHORIZED", "--actor", "engineering-agent", "--reason", "self authorization")
+        no_ref = gov("transition", "03", "AUTHORIZED", "--actor", "owner", "--reason", "owner without a reference")
+        stage00 = data.get("verified_awaiting_owner_acceptance", [])
+        acc = gov("transition", "00", "ACCEPTED_CLOSED", "--actor", "engineering-agent", "--reason", "self acceptance")
+        acc_ok = acc.returncode == 1 and ("OWNER_DECISION_REQUIRED" in acc.stdout or "00" not in stage00)
         record(
             "6 approval gates enforced",
-            acc.returncode == 1 and "OWNER_DECISION_REQUIRED" in acc.stdout and auth.returncode == 1,
-            acc.stdout.strip()[:300] + " | " + auth.stdout.strip()[:300],
+            auth.returncode == 1
+            and "OWNER_DECISION_REQUIRED" in auth.stdout
+            and no_ref.returncode == 1
+            and "OWNER_REF_REQUIRED" in no_ref.stdout
+            and acc_ok,
+            " | ".join(
+                x.stdout.strip().splitlines()[1] for x in (auth, no_ref, acc) if len(x.stdout.strip().splitlines()) > 1
+            ),
         )
 
         # 9. Clear diagnostics: a damaged registry and a forged hand edit get named errors, not tracebacks.
