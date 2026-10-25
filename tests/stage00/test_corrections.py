@@ -174,6 +174,33 @@ def test_f03_weakening_the_rules_in_the_registry_is_an_error(sandbox: Sandbox, n
     assert {f.code for f in found} & {"REGISTRY_SCHEMA", "DEFINITION_CHANGED", "GATE_EVIDENCE_MISSING"}
 
 
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "edit",
+    ["single_active_off", "fewer_artifacts_policy", "no_handoff_sections", "other_report_file", "ci_not_required"],
+)
+def test_f03_policy_is_fixed_by_the_schema_before_any_verification(sandbox: Sandbox, edit: str) -> None:
+    """Without a verification there is no definition hash yet; the schema alone must refuse the weakening.
+
+    Found by mutant M33 of the correction's mutation check, which survived before this test existed.
+    """
+    assert sandbox.go("00", Status.AUTHORIZED).allowed
+    reg = sandbox.registry()
+    policy = reg["policy"]
+    if edit == "single_active_off":
+        policy["single_active_engineering_stage"] = False
+    elif edit == "fewer_artifacts_policy":
+        policy["required_artifacts"] = policy["required_artifacts"][:1]
+    elif edit == "no_handoff_sections":
+        policy["handoff_required_sections"] = []
+    elif edit == "other_report_file":
+        policy["test_report_file"] = "partial-report.json"
+    else:
+        reg["stages"][2]["ci_required"] = False
+    sandbox.save_registry(reg)
+    assert sandbox.codes(sandbox.orc().check()) == {"REGISTRY_SCHEMA"}
+
+
 # ------------------------------------------------------------------ F-07
 
 
