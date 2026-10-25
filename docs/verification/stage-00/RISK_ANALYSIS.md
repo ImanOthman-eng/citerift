@@ -110,7 +110,7 @@ were all killed (TEST_RESULTS.md).
 | R-010 hackathon deadline | high | open | owner acceptance turnaround is on the critical path |
 | R-011 ephemeral container | medium | mitigated | everything pushed; recovery tested |
 | R-012 clock-dependent ordering | low | accepted | fail-closed |
-| R-014 Actions jobs not started (billing lock) | high | open | **blocks gate 00-K** (B-00-001) |
+| R-014 Actions jobs not started (billing lock) | high | closed | resolved by the owner; CI passed at `741476c` (B-00-001 resolved) |
 | R-015 protection defined but inactive | high | open | **blocks gate 00-L** (B-00-002) |
 
 No open critical defect is recorded; `citerift-gov check` reports

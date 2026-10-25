@@ -95,6 +95,7 @@ does not predict or assume any Stage 01 finding.
 
 ## Open items requiring the owner
 
-- Resolve the GitHub account billing lock so Actions jobs can start (B-00-001).
+- ~~Resolve the GitHub account billing lock (B-00-001).~~ Resolved by the owner
+  on 2026-10-25; CI passed at `741476c`.
 - Import `.github/rulesets/main-protection.json` (B-00-002, D-011).
 - License decision (D-007) and optional signed acceptance (D-006).

@@ -143,7 +143,7 @@ reordered. Pass `--at` to record an explicit time.
 Mitigated in advance by testing 3.13 in CI (D-001).
 
 ## R-014 — GitHub Actions jobs do not start (owner account billing lock)
-- Status: open
+- Status: closed
 - Severity: high
 - Kind: risk
 - Stage: 00
@@ -153,6 +153,10 @@ and `ecaa845`) failed before a runner was assigned, with the annotation "The job
 account is locked due to a billing issue." No CI evidence can exist until the
 owner resolves it in GitHub billing settings. Recorded as Stage 00 blocker
 B-00-001.
+
+Closed 2026-10-25: after the owner updated billing, re-runs of CI runs
+40188172695 and 40188175045 at `741476c` ran on GitHub-hosted runners and
+succeeded. Blocker B-00-001 resolved.
 
 ## R-015 — Branch protection is defined but not active
 - Status: open

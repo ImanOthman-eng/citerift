@@ -29,7 +29,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Open blockers
 
-- Stage 00 B-00-001: GitHub Actions jobs are not started: GitHub reports 'The job was not started because your account is locked due to a billing issue' (CI runs 40185612324 and 40185625790). Owner must resolve billing; gate 00-K cannot pass until then.
 - Stage 00 B-00-002: Branch protection cannot be created from this session: ruleset write refused by the session's GitHub proxy (HTTP 403) and classic protection API returns 403 'Resource not accessible by integration'. Owner must import .github/rulesets/main-protection.json; gate 00-L cannot pass until then.
 
 ## Stage notes

@@ -5,11 +5,13 @@
 - Stage: 00, Engineering Foundation. Executor: engineering agent.
 - Authorized by the owner on 2026-10-25 (`owner_ref`
   `cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`), Stage 00 only.
-- Recorded status: **`IMPLEMENTED_NOT_VERIFIED`** at revision
-  `30e4462e9ae71016dbc6f04cdda19106babd4a34`, with two open blockers.
-- Final verdict of this handoff: **BLOCKED — EVIDENCE PROVIDED.** Fourteen of
-  the sixteen gates pass on local evidence; gates 00-K (GitHub Actions) and
-  00-L (branch protection) cannot pass for reasons outside the repository.
+- Recorded status: **`IMPLEMENTED_NOT_VERIFIED`** (implementation revision
+  `30e4462e9ae71016dbc6f04cdda19106babd4a34`), with one open blocker.
+- Candidate verified revision: `741476c7da8dde4d077e97ae0302a331ef5fdef5`,
+  the commit GitHub Actions tested successfully (same code as `30e4462`).
+- Current verdict: **BLOCKED — EVIDENCE PROVIDED.** Fifteen of the sixteen
+  gates pass, 00-K now on real GitHub Actions evidence; gate 00-L (branch
+  protection) still needs the owner to import the ruleset.
 - The stage is **not** verified and **not** accepted. No later stage is
   authorized.
 
@@ -21,16 +23,16 @@ does not mean the owner accepted it.
 | Gate | Requirement | Result | Evidence |
 |---|---|---|---|
 | 00-A | Repository initialized safely with verified Git revision | pass | bootstrap `e19b559` on `main` (no history rewritten, no force push); work on `claude/project-thread-9lab67` (`b13f910`, `ecaa845`, `2bf7d60`, `30e4462`), PR #1 |
-| 00-B | Reproducible engineering environment | pass (local) | `uv.lock`; `uv lock --check`; 161/161 tests in a fresh worktree on Python 3.12.3 and 3.13.17; fresh-clone recovery test. Not yet reproduced on a GitHub runner (00-K) |
+| 00-B | Reproducible engineering environment | pass | `uv.lock`; `uv lock --check`; 161/161 tests in a fresh local worktree (Python 3.12.3, 3.13.17) and on GitHub-hosted runners (3.12.3, 3.13.14); fresh-clone recovery test |
 | 00-C | Operational Project Orchestrator | pass | `src/citerift/governance/`, `citerift-gov`; TEST_RESULTS.md sections 1 to 3 |
 | 00-D | Persistent Project Memory | pass | `governance/stage_registry.json`, generated `PROJECT_STATUS.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md`; 19 hand-edit detections |
 | 00-E | Orchestrator-Memory integration | pass | 12 mandatory scenarios, `test_integration_scenarios.py` |
 | 00-F | Validated stage-transition rules | pass | exhaustive model check, differential test, 9/9 mutants killed |
 | 00-G | Versioned data contracts, positive and negative tests | pass | `schemas/contracts/v1/`; 3 valid fixtures, 35 invalid cases, compatibility test |
 | 00-H | Pre-implementation simulations | pass | SIMULATION_REPORT.md; found and drove the fix of D-016 |
-| 00-I | Unit and integration tests | pass (local) | `test-report.json`: unit 29, integration 59 |
-| 00-J | Regression and consistency tests | pass (local) | regression 12; `citerift-gov check` 0 errors; `render-status --check` |
-| 00-K | Successful GitHub Actions verification | **not verified** | 4 runs, every job "not started because your account is locked due to a billing issue" (TEST_RESULTS.md section 6). Blocker B-00-001 |
+| 00-I | Unit and integration tests | pass | `test-report.json` (from CI): unit 29, integration 59 |
+| 00-J | Regression and consistency tests | pass | regression 12; `citerift-gov check` 0 errors locally and in CI; `render-status --check` |
+| 00-K | Successful GitHub Actions verification | pass | runs [40188172695](https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695) (push) and [40188175045](https://github.com/ImanOthman-eng/citerift/actions/runs/40188175045) (pull_request), attempt 2, at `741476c`: all jobs and steps succeeded, 161 passed per verify job (TEST_RESULTS.md section 6). B-00-001 resolved |
 | 00-L | Effective branch protection verified | **not verified** | read back: no rulesets, no rules on `main`; ruleset write refused by this session's GitHub proxy (TEST_RESULTS.md section 7). Blocker B-00-002 |
 | 00-M | Security and adversarial review | pass | RISK_ANALYSIS.md; security suite 8; pip-audit clean; zizmor offline clean; secret scan |
 | 00-N | Creative Differentiation Review | pass | CREATIVE_DIFFERENTIATION_REVIEW.md |
@@ -62,14 +64,17 @@ Outputs (all in the repository):
 ## Test evidence
 
 - `test-report.json` (Python 3.12.3) and `test-report-python3.13.json`
-  (3.13.17): revision `30e4462`, clean tree, 161 collected, 161 passed, 0
-  failed, all 8 required suites passed. sha256 values in TEST_RESULTS.md.
+  (3.13.14): produced by GitHub Actions run 40188172695 at `741476c`, clean
+  tree, 161 collected, 161 passed, 0 failed, all 8 required suites passed;
+  copied unchanged from the run's artifacts. sha256 values in TEST_RESULTS.md.
+  The same 161 tests also pass locally at `30e4462` (`superseded/30e4462/`).
 - Mutation: 9 of 9 killed at `30e4462` (`mutation/results-30e4462.txt`).
 - Simulation: exhaustive reduced model 0 violations over 1,756,160 attempts;
   4,000,000 random-walk attempts 0 violations; output reproduced exactly.
 - Static: ruff, mypy strict, schema meta-validation, governance check, status
   document check, pip-audit, zizmor: all clean (TEST_RESULTS.md section 4).
-- GitHub Actions: no job has run (00-K).
+- GitHub Actions: both runs at `741476c` green; logs show 0 governance
+  errors and no known vulnerabilities (00-K).
 
 ## Known limitations
 
@@ -90,9 +95,11 @@ From RISKS.md and RISK_ANALYSIS.md, stated plainly:
 
 ## Open blockers
 
+B-00-001 (GitHub Actions billing lock) was resolved on 2026-10-25 after the
+owner updated billing; see 00-K.
+
 | Id | Blocker | Evidence | Minimum owner action |
 |---|---|---|---|
-| B-00-001 | GitHub Actions jobs are not started: "The job was not started because your account is locked due to a billing issue." | runs 40185612324, 40185625790, 40186100011, 40186103825; annotations read through the API | resolve the billing issue at GitHub, Settings, Billing and plans. Nothing in the repository can work around it |
 | B-00-002 | Branch protection cannot be created from this session | `POST /rulesets` refused by the session's GitHub proxy; classic protection API 403; read back shows no rules on `main` | GitHub, repository Settings, Rules, Rulesets, New ruleset, Import a ruleset, choose `.github/rulesets/main-protection.json` |
 
 ## Dependency versions
@@ -117,38 +124,37 @@ CI actions are pinned to commit SHAs in `.github/workflows/ci.yml`.
 
 ## Verified Git commit
 
-No commit is verified yet. The candidate is the recorded implementation
-revision:
+No commit is verified yet. The candidate verified revision is
 
-`30e4462e9ae71016dbc6f04cdda19106babd4a34`
+`741476c7da8dde4d077e97ae0302a331ef5fdef5`
 
 on branch `claude/project-thread-9lab67`, in
-<https://github.com/ImanOthman-eng/citerift> (PR #1). The registry and this
-package are committed after it; they do not touch Stage 00 owned paths, so
-they do not make the evidence stale. PR #1 must be merged with a merge commit
-(not squash or rebase) so the cited commits stay in `main`'s history.
+<https://github.com/ImanOthman-eng/citerift> (PR #1): the commit both green CI
+runs tested. Its code equals the recorded implementation revision `30e4462`;
+the commits after `30e4462` change only the verification package, evidence and
+registry, none under a Stage 00 owned path, so they do not make the evidence
+stale. PR #1 must be merged with a merge commit (not squash or rebase) so the
+cited commits stay in `main`'s history.
 
-Dry run of the verification transition at this revision, with the gate
-results from the table above (recorded 2026-10-25):
+Dry run of the verification transition at `741476c` with
+`verification-record.json` (gate results and the CI record), recorded
+2026-10-25 after CI passed:
 
 ```
 Transition stage 00 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: REJECTED
-  ERROR BLOCKER_OPEN: [stage 00] unresolved blocker B-00-001: GitHub Actions jobs are not started: GitHub reports 'The job was not started because your account is locked due to a billing issue' (CI runs 40185612324 and 40185625790). Owner must resolve billing; gate 00-K cannot pass until then.
   ERROR BLOCKER_OPEN: [stage 00] unresolved blocker B-00-002: Branch protection cannot be created from this session: ruleset write refused by the session's GitHub proxy (HTTP 403) and classic protection API returns 403 'Resource not accessible by integration'. Owner must import .github/rulesets/main-protection.json; gate 00-L cannot pass until then.
-  ERROR GATE_NOT_PASSED: [stage 00] gate 00-K is 'not_verified'
   ERROR GATE_NOT_PASSED: [stage 00] gate 00-L is 'not_verified'
-  ERROR CI_EVIDENCE_MISSING: [stage 00] no CI run is recorded for the verified revision
 ```
 
-Only the two blockers, the two unpassed gates and the missing CI record are
-reported. The orchestrator raised no finding about the seven artifacts, the
-handoff sections, the cited revision, or the test report, which it checks on
-the same call. A dry run writes nothing.
+Only blocker B-00-002 and gate 00-L remain. The orchestrator checked the seven
+artifacts, the handoff sections, the cited revision, both test reports and the
+CI record on the same call and raised nothing about them. A dry run writes
+nothing.
 
 ## Acceptance decision
 
 Not requested. Stage 00 is not verified, so owner acceptance cannot be
-recorded; the orchestrator would refuse it. When 00-K and 00-L pass and the
+recorded; the orchestrator would refuse it. When 00-L passes and the
 stage reaches `VERIFIED_AWAITING_OWNER_ACCEPTANCE`, acceptance is the owner's
 decision alone, recorded with an `owner_ref` to the owner's own message.
 
@@ -165,13 +171,12 @@ Owner decisions also pending, not blocking Stage 00 verification: license
   placed in `docs/verification/stage-01/HANDOFF.md`, satisfy gates 01-A to
   01-G, and be accepted by the owner. Stage 00 does not assume any Stage 01
   finding.
-- To finish Stage 00 after the owner resolves B-00-001 and B-00-002:
-  1. Re-run CI on `30e4462` (or on the PR head, if it still contains no change
-     to Stage 00 owned paths) and inspect the result.
-  2. Read back the ruleset (`GET /repos/ImanOthman-eng/citerift/rulesets`).
-  3. `citerift-gov blocker resolve 00 "<resolution and evidence>" --id B-00-001`,
-     then the same for `B-00-002`.
-  4. `citerift-gov transition 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE --record <gates and CI JSON> --apply`.
-  5. Merge PR #1 with a merge commit once `ci-gate` is green.
+- To finish Stage 00 after the owner imports the ruleset (B-00-002):
+  1. Read back the ruleset (`GET /repos/ImanOthman-eng/citerift/rulesets` and
+     `GET …/rules/branches/main`).
+  2. `citerift-gov blocker resolve 00 "<resolution and evidence>" --id B-00-002`.
+  3. `citerift-gov transition 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE --revision 741476c… --record <gates and CI JSON> --apply`.
+  4. PR #1 is merged only with the owner's explicit authorization, with a
+     merge commit, once `ci-gate` is green.
 - Session start for any later work: `uv sync --locked`, `uv run citerift-gov recover`,
   `uv run citerift-gov check`.

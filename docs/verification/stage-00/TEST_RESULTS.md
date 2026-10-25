@@ -1,28 +1,35 @@
 # Stage 00 Test Results
 
-Revision under test: `30e4462e9ae71016dbc6f04cdda19106babd4a34` (branch
-`claude/project-thread-9lab67`, PR #1). It is the implementation revision
-recorded in the registry. It adds the final-review fixes to `ecaa845` in two
-commits: `2bf7d60` (regex and `ACCEPTANCE_STALE` test) and `30e4462` (tests
-for every finding code; no production code change). See RISK_ANALYSIS.md
-sections 2 and 4. Every result here was produced and
-read on 2026-10-25. Local results come from the CITERIFT cloud container.
-**No GitHub Actions job has run successfully** (section 6). CI has not been
-triggered for `30e4462` yet; it is pushed together with this package.
+Revision verified: `741476c7da8dde4d077e97ae0302a331ef5fdef5` (branch
+`claude/project-thread-9lab67`, PR #1), the commit GitHub Actions tested
+successfully (section 6). Its code is identical to the implementation revision
+`30e4462` recorded in the registry; `741476c` adds only this package, evidence
+and registry state, none of it under a Stage 00 owned path. `30e4462` adds the
+final-review fixes to `ecaa845` in two commits: `2bf7d60` (regex and
+`ACCEPTANCE_STALE` test) and `30e4462` (tests for every finding code; no
+production code change). See RISK_ANALYSIS.md sections 2 and 4. Every result
+here was produced and read on 2026-10-25.
 
 ## 1. Test suite
 
 | Report | sha256 | Python | Collected | Passed | Failed | Dirty tree |
 |---|---|---|---|---|---|---|
-| `test-report.json` | `804b76c61af42a22de11e64c1f25cdc0f534ae8770b2eb2a893728604c9f768e` | 3.12.3 | 161 | 161 | 0 | no |
-| `test-report-python3.13.json` | `35a438a949e998bdc17385e924bc66a94dbf4ae35c6bd9b00e539e281e8438ba` | 3.13.17 | 161 | 161 | 0 | no |
+| `test-report.json` | `a371e89a02195e64babdfac0cce8946c211908f3123a0203ae728745850dea6e` | 3.12.3 | 161 | 161 | 0 | no |
+| `test-report-python3.13.json` | `ac2643ba6bf4d3213a5e4f4be19cb809d7d2faa63fd462ce9e76709f6d299837` | 3.13.14 | 161 | 161 | 0 | no |
 
-Both reports: format `citerift.test-report/1`, revision `30e4462…`,
-`exit_status` 0, pytest 9.1.1. Produced with
-`uv run pytest --citerift-report <file>` in a separate git worktree checked out
-at that revision, one report at a time so each saw a clean tree. Earlier reports
-are kept in `superseded/`: `ecaa845` (137 passed on both versions) and
-`2bf7d60` (138 passed on both versions).
+Both reports were produced **on GitHub-hosted runners** by CI run
+[40188172695](https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695)
+(attempt 2) at revision `741476c…` and are copied unchanged from its artifacts:
+`test-report-python-3.12` (artifact 12599957779, zip sha256 `67a60bfa…`) and
+`test-report-python-3.13` (artifact 12599728087, zip sha256 `e9d23872…`).
+Each zip's sha256 equals the digest the upload step printed in the job log.
+Format `citerift.test-report/1`, `exit_status` 0, pytest 9.1.1, platform
+`Linux-6.17.0-1022-azure-x86_64`.
+
+Earlier local reports, produced in a separate clean git worktree in the
+CITERIFT container, are kept in `superseded/`: `ecaa845` (137 passed on both
+versions), `2bf7d60` (138) and `30e4462` (161 on Python 3.12.3 and 3.13.17,
+the same code as `741476c`).
 
 Per suite (a test can belong to more than one suite, so the sum exceeds 161):
 
@@ -134,18 +141,32 @@ location-independent (`superseded/ecaa845/results-ecaa845*.txt`). Every
 mutated file was restored; `git status` showed no change under `src/` or
 `schemas/` afterwards.
 
-## 6. GitHub Actions (gate 00-K): BLOCKED
+## 6. GitHub Actions (gate 00-K): PASSED
 
-| Run | Event | Commit | Conclusion | Cause (check-run annotation, read via the API) |
+After the owner updated GitHub billing, the two latest runs on PR #1 were
+re-run on 2026-10-25 at 13:19 UTC. Both ran on GitHub-hosted runners and
+succeeded:
+
+| Run (attempt 2) | Event | Commit | Jobs | Conclusion |
 |---|---|---|---|---|
-| [40185612324](https://github.com/ImanOthman-eng/citerift/actions/runs/40185612324) | push | `b13f910` | failure | "The job was not started because your account is locked due to a billing issue." |
-| [40185625790](https://github.com/ImanOthman-eng/citerift/actions/runs/40185625790) | pull_request | `b13f910` | failure | same |
-| [40186100011](https://github.com/ImanOthman-eng/citerift/actions/runs/40186100011) | push | `ecaa845` | failure | same (annotation read for job 121147086302) |
-| [40186103825](https://github.com/ImanOthman-eng/citerift/actions/runs/40186103825) | pull_request | `ecaa845` | failure | same (annotation read for job 121147096876); job logs return HTTP 404 because no runner started |
+| [40188172695](https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695) | push | `741476c` | verify (python 3.12) 121180206311, verify (python 3.13) 121180206446, ci-gate 121180395707 | success |
+| [40188175045](https://github.com/ImanOthman-eng/citerift/actions/runs/40188175045) | pull_request | `741476c` | verify (python 3.13) 121180211905, verify (python 3.12) 121180212159, ci-gate 121180397278 | success |
 
-Every job finished within about 2 seconds with no steps executed. These runs
-say nothing about the code; they show the workflow is registered and triggers
-on push and pull request. CI evidence for Stage 00 does not exist yet.
+Every step of every verify job succeeded: checkout with full history, uv
+install, lockfile check, locked install, ruff lint and format, mypy strict,
+schema validation, governance check, tests, dependency audit, report upload.
+Read from the job logs: `Consistency check: 0 errors, 2 warnings` (the two
+then-open blockers); `161 passed` (32.51 s on 3.12, 28.96 s on 3.13 in the
+push run); pip-audit `No known vulnerabilities found`. All six check runs
+belong to the GitHub Actions app (id 15368), the integration the ruleset
+requires for `ci-gate`.
+
+Earlier runs, kept for the record: attempt 1 of runs 40185612324,
+40185625790, 40186100011, 40186103825, 40188172695 and 40188175045 (commits
+`b13f910`, `ecaa845`, `741476c`) all failed in about 2 seconds with zero
+steps, with the check-run annotation "The job was not started because your
+account is locked due to a billing issue." They said nothing about the code.
+Blocker B-00-001 is resolved.
 
 ## 7. Branch protection (gate 00-L): BLOCKED
 
@@ -159,6 +180,9 @@ Read back on 2026-10-25 with the session's token:
   GitHub proxy: "Write access to this GitHub API path is not permitted through
   this proxy". The classic protection API returned 403 "Resource not
   accessible by integration".
+- Retried after CI passed (2026-10-25, about 13:22 UTC): `POST …/rulesets`
+  with the file's JSON → HTTP 403, same proxy message. Creating the ruleset
+  needs the owner (blocker B-00-002).
 
 The ruleset is defined in `.github/rulesets/main-protection.json` and its
 content is checked by `test_branch_ruleset_definition`, but **`main` is not
@@ -166,12 +190,10 @@ protected**.
 
 ## 8. Governance dry run
 
-With Stage 00 in `IMPLEMENTED_NOT_VERIFIED` at `30e4462` and both blockers open, a dry-run
-transition to `VERIFIED_AWAITING_OWNER_ACCEPTANCE` is refused by the
-orchestrator (output recorded in HANDOFF.md). This is the expected result: the
-orchestrator will not let this stage be called verified without CI evidence.
+The orchestrator refuses the transition to `VERIFIED_AWAITING_OWNER_ACCEPTANCE`
+while any gate is unpassed or any blocker is open (output recorded in
+HANDOFF.md). This is the expected behavior.
 
 ## 9. Gaps in test coverage
 
 - Content of evidence documents is not judged by any test (structural checks only).
-- No test runs inside GitHub Actions yet (section 6).
