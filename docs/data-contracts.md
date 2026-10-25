@@ -93,15 +93,25 @@ investigations must state their limitations.
   violation of the rules above (trailing newlines and control characters in
   identifiers, impossible dates, untyped or forbidden alternatives, model
   fields in `retraction_status`); every valid fixture of 1.0.0 is still valid.
-  Corrections need an owner-authorized `correction` amendment to Stage 00.
+  1.0.1 also accepts language subtags of up to 12 characters, because
+  `zh-classical`, an open Wikipedia edition, was rejected (second final
+  review, X-11). Corrections need an owner-authorized `correction` amendment
+  to Stage 00.
 - Adding a schema or a field under `schemas/contracts/v1/` changes a Stage 00
   owned path and makes Stage 00 stale: a minor version needs an owner-approved
   `enhancement` amendment to Stage 00 (independent review 2026-10-25, F-22).
+  `citerift-gov check` enforces part of this for an enhancement: it must cite
+  an owner statement not cited before, every changed schema must raise its
+  `x-citerift-version`, and every valid fixture of the accepted revision must
+  still validate (X-13). Whether the change only adds optional fields or
+  relaxes constraints, and keeps the epistemic rules above, is judged by the
+  owner and by the tests at the new revision.
   A later stage can instead define its own schemas outside `v1/` that `$ref`
   the v1 definitions by URN, with no Stage 00 change.
 - Breaking changes need a new major directory (`v2/`), a migration note in
   DECISIONS.md, and, because `schemas/contracts/v1` is a Stage 00 owned path,
-  a recorded amendment.
+  a recorded amendment. This is a documented rule; the tool checks only
+  changes under the owned `v1/` directory.
 - Field formats that real data has not yet confirmed (DOI, PMID, language
   codes) are deliberately permissive (R-006).
 

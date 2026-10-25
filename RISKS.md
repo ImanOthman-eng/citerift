@@ -54,8 +54,9 @@ the history entry that created them; duplicate amendment or blocker ids; an
 acceptance citing an owner reference used before the verification; every file
 in the verification directory (except files git ignores), the stage definition
 and the policy pinned by hash; policy values, the engineering artifact list and
-the executor of each stage fixed in the registry schema; owned-path content
-compared with the verified revision; duplicate JSON keys rejected.
+the executor and dependencies of each stage fixed in the registry schema;
+owned-path content compared with the verified revision; duplicate JSON keys
+rejected; an amendment citing an owner reference cited before.
 
 What it cannot detect: a forgery that is consistent everywhere, that is,
 history, records, evidence files and their recorded hashes rewritten together
@@ -66,6 +67,7 @@ honest copy of the code; CI runs it on every push, but CI itself can be
 changed by the gated change (R-016). Stage definitions (gates, suites, owned
 paths, verification directory) can still be edited before a stage is verified;
 that edit shows only in the reviewed diff of `governance/stage_registry.json`.
+Executors, artifact lists and dependencies cannot (V-03, X-07).
 
 ## R-004 — CI evidence in the registry is entered by the agent
 - Status: open
@@ -78,9 +80,15 @@ revision and succeeded as recorded, but it cannot fetch the run. The run URL is
 public for this repository and can be checked by anyone. The required
 `ci-gate` check on `main` is a control on the honest workflow only; it is not
 independent of the change it gates (R-016). The test report is written by the
-test process: the checker rejects narrowed or partial runs and test files that
-did not run, but code committed in a test or `conftest.py` file runs in that
-process and could write a false report.
+test process. The checker rejects the narrowing an honest run can show:
+narrowing options, ini overrides, another ini file, changed collection
+settings, dropped or repeated tests, extra `-p` or `PYTEST_PLUGINS` plugins,
+conftest files not committed at the revision, and committed test files that
+did not run (V-01, X-02, X-03). It cannot bind code that runs inside the test
+process: committed test or conftest code, a module the run imports from
+outside the tree, or an installed dependency can rewrite the report or the
+plugin's state. In CI the checkout is fresh, so such code must be committed
+or come from `uv.lock`, and a reviewer can see it in the diff.
 
 ## R-005 — Contract compatibility is checked against fixtures, not proven
 - Status: open
@@ -225,11 +233,15 @@ correction A-00-001: `.github/workflows`, `.github/rulesets` and
 `.gitattributes` are Stage 00 owned paths, so a change to them makes Stage 00
 `VERIFICATION_STALE` at the next `check` run from an honest copy. CI runs the
 checked-out `src/` modules directly, so the entry points in `pyproject.toml`
-cannot replace the checker (V-04). Not covered: `pyproject.toml` (test
-configuration) and `uv.lock` (dependencies) are not Stage 00 owned paths, and a
-dependency runs in the same process as the checks; a change to them can change
-what CI executes without making Stage 00 stale. The test report check rejects
-the narrowing that such a configuration change could cause (V-01). Prevention
+cannot replace the checker (V-04), and a shell step refuses anything in `src/`
+beside the `citerift` package before any Python runs, because a
+`sitecustomize.py` or a package shadowing a dependency there would run inside
+every check (X-04). Not covered: `pyproject.toml` (build and test settings) and
+`uv.lock` (dependencies) are not Stage 00 owned paths, and a dependency runs
+in the same process as the checks; a change to them can change what CI
+executes without making Stage 00 stale. The test report records collection
+settings that differ from the fixed values (X-02), but a dependency or
+committed test code can still write a false report (R-004). Prevention
 needs a required code-owner review from an identity the agent does not hold
 (D-006 or a bot account), an owner decision.
 
@@ -264,3 +276,20 @@ tests/stage00/; the tests that reproduce a behavior fail on `135e4ac`
 (docs/verification/stage-00/fail-first/results-135e4ac.txt). Closed when the
 fixes were committed in `5749e9c`. Residual limitations stay open as R-002,
 R-003, R-004, R-012 and R-016.
+
+## R-019 — Stage 00 second final independent review findings (A-00-001)
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 00
+
+The second final independent review, of `9e025c9`
+(docs/verification/stage-00/review/), reproduced 14 further findings, X-01
+to X-14 (1 medium, 5 low-medium, 8 low; none critical). The most serious was
+X-02: one committed `python_functions` line in `pyproject.toml` ran 92 of 308
+tests, and the report was still complete. X-14 (two surviving mutants) was
+fixed in `7138d6d`. X-01 to X-13 were fixed in `564030b`; their regression
+tests fail on `7138d6d`
+(docs/verification/stage-00/fail-first/results-7138d6d.txt), except X-12,
+which is a defect in a test. Residual limitations stay open as R-002, R-003,
+R-004 and R-016.

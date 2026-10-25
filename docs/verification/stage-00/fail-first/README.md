@@ -67,3 +67,39 @@ Two findings have no failing test here, by their nature:
 - V-15 asked for tests of checks that already worked. Those tests pass on
   the old code by design. Their purpose is to kill mutants
   (`../mutation/mutation_check.py`).
+
+## Second final review findings X-01 to X-13 (`results-7138d6d.txt`)
+
+The second final independent review (`../review/9e025c9/`) raised X-01 to
+X-14. X-14 (mutants M35 and M37 survived) was fixed in `7138d6d` by tests
+that kill both mutants. The tests for X-01 to X-13 were run the same way
+against `7138d6d`, with the tests of `564030b`:
+
+    git -C $W checkout --detach 7138d6d
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 46 failed, 317 passed. The same suite passes on `564030b`.
+
+| Finding | Failing tests at `7138d6d` |
+|---|---|
+| X-01 | 2 (`..` path, symlink) |
+| X-02 | 1 |
+| X-03 | 3 (committed padding conftest, untracked conftest hidden by `.git/info/exclude`, `-p` plugin from outside the tree) |
+| X-04 | 2 (`SRC_FOREIGN_MODULE` in `check`, the CI guard step) |
+| X-05 | 17 (every damaged input) |
+| X-06 | 7 (bold, lowercase and indented fields; four invisible characters) |
+| X-07 | 6 (four dependency edits, and the two tampering cases now reported by the schema) |
+| X-08 | 2 |
+| X-09, X-10, X-11 | 1 each |
+| X-13 | 3 (no version increase, reused owner reference, accepted fixture rejected) |
+
+No failing test here, by nature:
+
+- X-12 is a defect in a test (`test_repository.py` asserted today's state).
+  The rewritten test asserts the rule, and
+  `test_x12_the_authorization_rule_holds_after_later_owner_decisions` shows
+  the rule on a sandbox where Stage 01 is accepted and Stage 02 authorized.
+  The old assertion fails there, as the review showed.
+- Controls that pass on both revisions: `test_x06_...[nbsp_heading]` and
+  `test_x13_a_versioned_compatible_enhancement_is_accepted`.

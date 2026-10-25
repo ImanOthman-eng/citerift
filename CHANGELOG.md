@@ -22,24 +22,33 @@ the reopened revision `ae2ce9e`.
   detected; uncommitted owned-path changes are reported (F-01, F-19).
 - Every file in a verification directory (except files git ignores), the
   stage definition and the policy are pinned by hash; every file a gate cites
-  must be pinned, and a URL alone is not; policy values, the CI requirement and
-  artifact list of engineering stages, and each stage's executor are fixed in
-  the registry schema (F-02, F-03, V-02, V-03, S-01).
-- Test reports record how tests were selected and which test files ran; a
-  report is rejected when a narrowing option, an ini override, another ini
-  file or a hook narrowed the run, or when a test file committed under `tests/`
-  did not run (F-07, V-01). The report is still written by the test process
-  itself (R-004). A report path outside the repository or in a new directory
+  must be pinned and named by a plain path (no `..`, `.` or symbolic link),
+  and a URL alone is not pinned; policy values, the CI requirement and
+  artifact list of engineering stages, and each stage's executor and
+  dependencies are fixed in the registry schema (F-02, F-03, V-02, V-03, S-01,
+  X-01, X-07).
+- Test reports record how tests were selected, which test files ran and which
+  conftest files were loaded; a report is partial when a narrowing option, an
+  ini override, another ini file, changed collection settings, a `-p` or
+  `PYTEST_PLUGINS` plugin, or a hook that dropped or repeated tests changed the
+  run, when a loaded conftest is not committed, or when a test file committed
+  under `tests/` did not run (F-07, V-01, X-02, X-03). This makes an honest
+  narrowing visible; code running inside the test process can still write a
+  false report (R-004). A report path outside the repository or in a new directory
   no longer crashes the plugin (F-14, V-16). `.gitattributes` keeps LF so CRLF
   checkouts do not change evidence hashes, and a nested `.gitattributes` is an
   error (F-12, V-12).
 - History replay checks each entry against the transition rules (single
-  active stage, dependencies, correction amendment, blockers); a reopened
+  active stage, dependencies, correction amendment, blockers, including at
+  acceptance); a reopened
   dependency is a warning, so a foundation stage can be corrected after a
   dependent was accepted (F-04, F-05, F-11).
-- Unparsed entry headings and entry fields outside a recognized heading are
-  errors; topics are compared after Unicode and separator normalization; a
-  project-wide critical defect blocks every stage (F-06, V-06).
+- Entry headings that look like entries but do not parse, entry fields outside
+  a recognized heading, and entry fields not written as `- Name: value` are
+  errors; topics are compared after Unicode, separator and invisible-character
+  normalization; a project-wide critical defect blocks every stage (F-06,
+  V-06, X-06). An entry written in neither form (for example a table row) is
+  still not recognized.
 - Unreadable registry reported without a traceback; blocker resolution
   records the real actor; future timestamps refused; records must match their
   history entries and an acceptance must cite a new owner statement (F-13,
@@ -55,7 +64,20 @@ the reopened revision `ae2ce9e`.
   record times never precede recorded times (V-11); git queries ignore replace
   refs (V-13); CI runs the checked-out `src/` modules, not the entry points
   (V-04).
-- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018),
+- Second final independent review (X-01 to X-14): besides the items above, CI
+  refuses anything in `src/` beside the package before any Python runs, and
+  `check` reports it (X-04); unknown stage ids, invalid schemas, non-UTF-8
+  status or handoff files, malformed `--record` files, a missing amendment
+  test report and wrongly typed report counts give named errors (X-05); a
+  blocker resolution defaults to a time after the last entry (X-08); git
+  ignores grafts (X-09); `wiki_language` accepts subtags of up to 12
+  characters, so `zh-classical` is valid, as part of the unreleased 1.0.1
+  (X-11); the repository test checks the authorization rule rather than
+  today's state (X-12); an amendment must cite an owner statement not cited
+  before, and an enhancement that changes a contract must raise its version
+  and keep the accepted valid fixtures valid (X-13); the mutation check runs
+  a baseline first and covers the new rules (X-14).
+- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).
 

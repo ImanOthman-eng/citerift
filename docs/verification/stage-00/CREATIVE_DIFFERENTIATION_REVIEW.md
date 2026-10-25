@@ -60,9 +60,10 @@ new owner statement. The next stage needs a third, separate authorization.
 - **Corrected claim:** hand edits are *detected*, not prevented. A consistent
   forgery is not detected (R-003). The accepted review did not say this.
   "Complete run" is judged from a report the test process writes about
-  itself, so test code can forge it (R-004).
+  itself, so code inside that process, such as committed test code or a
+  dependency, can forge it (R-004).
 - **Verification now:** 12 mandatory scenarios, 19 hand edits, and 19 seeded
-  mutation classes (120 cases) all pass. 54 rule-disabling mutants are run
+  mutation classes (120 cases) all pass. 73 rule-disabling mutants are run
   (TEST_RESULTS.md §5). On the live registry, the orchestrator refuses
   verification while CI evidence is missing. The accepted review cited
   TEST_RESULTS §8 for that, but §8 recorded other codes. The refusal is now
@@ -78,8 +79,10 @@ new owner statement. The next stage needs a third, separate authorization.
 - **Verification now:** a fixed differential case for F-11. And an exhaustive
   conformance check of the replay against the model, which found 12,872
   disagreements at `ae2ce9e` and 0 after the correction (SIMULATION_REPORT.md
-  §2). The model itself is unchanged, and its output is byte-identical to the
-  accepted run.
+  §2). The model changed once: the second independent review found that
+  both the model and the replay let a stage be accepted with a blocker open
+  (X-10). Both were corrected, so the model's permitted counts are lower
+  than in the accepted run, with 0 violations (SIMULATION_REPORT.md §1).
 
 ### 1.4 Recovery from the repository alone
 
@@ -102,7 +105,9 @@ simulation exercises recovery from a clean clone with a minimal environment
     differences. It is required in CI.
   - Multilingual positives (`test_multilingual_and_precise_values_accepted`):
     an Arabic title, a DOI with Arabic letters and Arabic-Indic digits, and the
-    language code `zh-yue`. The valid fixtures keep their Arabic (`ar`) and
+    language code `zh-yue`. Since X-11, also the edition codes
+    `zh-classical`, `zh-min-nan`, `be-tarask`, `simple` and `ar`
+    (`test_x11_*`; five codes, not the full list of editions). The valid fixtures keep their Arabic (`ar`) and
     English (`en`) citations.
   - Citations still carry the wiki edition and revision id.
 

@@ -1,8 +1,9 @@
 # Stage 00 Mathematical Model (correction A-00-001)
 
 Sections 1 to 5 of the accepted model (`superseded/741476c/MATHEMATICAL_MODEL.md`)
-still hold, and the abstract model `simulations/stage00/state_machine_model.py`
-has not changed. This document restates them briefly. It then adds what the
+still hold, with one guard added: an acceptance needs no open blocker (X-10).
+The abstract model `simulations/stage00/state_machine_model.py` changed only
+there. This document restates them briefly. It then adds what the
 correction needed: the model of the history replay, its conformance with the
 transition model, and the evidence-binding rules for the manifest, definition
 and selection. Every check here is exhaustive over a finite configuration or
@@ -16,7 +17,13 @@ seeded and reproducible. None is statistical.
   acyclic dependency relation.
 
 The relation `T` has 11 edges, 4 of them owner-only. The guards are those of
-the accepted model, table 2.
+the accepted model, table 2, except that VA→AC also requires no open blocker
+(X-10). Before this, both the model and the replay let a stage be accepted
+with a blocker open.
+
+`D` is fixed by the registry schema for every stage (X-07). Without that, an
+edit of `depends_on` before authorization was not a history entry, so it
+could remove a dependency that the guards would then never check.
 
 A move `μ = (k, t, actor, inputs)` is permitted iff all four hold:
 
@@ -27,7 +34,7 @@ A move `μ = (k, t, actor, inputs)` is permitted iff all four hold:
 
 ## 2. Invariants
 
-I1 to I7 are as before. The correction strengthens two of them and adds three.
+I1 to I7 are as before. The correction strengthens two of them and adds four.
 
 - **I6 (replay consistency), strengthened.** Before the correction, `check`
   required only `fold(H, NSⁿ) = σ`, with each entry an edge of `T` taken by
@@ -39,9 +46,11 @@ I1 to I7 are as before. The correction strengthens two of them and adds three.
   - a correction amendment recorded at or before a reopening, not cited by
     an earlier reopening (V-08)
   - an open blocker at a block (IP→BL), and none at start (AU→IP), unblock
-    (BL→IP) or verify (IM→VA)
+    (BL→IP), verify (IM→VA) or accept (VA→AC, X-10)
   - an `owner_ref` on owner edges; for an acceptance, one not used by a
     history entry or an amendment at or before the last VA entry (F-17, V-07)
+  - for an amendment, an `owner_ref` not cited by an earlier history entry or
+    an earlier amendment (X-13)
 - **I7 (evidence immutability), strengthened.** For a verified stage the
   record pins the following, each by sha256:
   - `M = {(p, sha256(p)) : p ∈ files(vdir) ∖ ignored}` (the manifest;
@@ -62,6 +71,12 @@ I1 to I7 are as before. The correction strengthens two of them and adds three.
   the clock of the machine running `check` (V-11, R-012).
 - **I10 (unique ids).** Amendment ids are unique within a stage, and blocker
   ids are unique within a stage (V-09).
+- **I11 (enhancement contracts).** If an enhancement amendment changes a
+  contract under `schemas/contracts/` from its content at the stage's last
+  acceptance, the contract's version must increase, and every accepted valid
+  fixture must still validate against the changed contracts (X-13). Whether
+  the change keeps the contract's meaning is not decided here; it is the
+  owner's judgment.
 
 ## 3. Why the replay has to check each prefix
 
@@ -122,9 +137,14 @@ by I7 and their own tests.
 
 | Configuration | Stages (engineering) | Reachable vectors | Cases | Permitted by model | Disagreements |
 |---|---|---|---|---|---|
-| `small` (in the test suite) | 3 (2), 02 depends on 00 and 01 | 134 | 45,024 | 4,218 | 0 |
-| `full` | 4 (3), 02 and 03 depend on 00 and 01 | 459 | 205,632 | 15,640 | **0** |
-| `full` at `ae2ce9e` (before the correction) | same | 459 | 205,632 | 15,640 | **12,872** |
+| `small` (in the test suite) | 3 (2), 02 depends on 00 and 01 | 134 | 45,024 | 4,104 | 0 |
+| `full` | 4 (3), 02 and 03 depend on 00 and 01 | 459 | 205,632 | 15,160 | **0** |
+| `full` at `ae2ce9e` (before the correction), model before X-10 | same | 459 | 205,632 | 15,640 | **12,872** |
+
+The permitted counts fell from 4,218 and 15,640 when the model gained the
+X-10 guard: acceptances with an open blocker are no longer permitted. The
+`ae2ce9e` row was measured with the model as it was then, so its 12,872 are
+disagreements with the earlier model.
 
 Count check: `459 × 4 × 7 × 16 = 205,632` and `134 × 3 × 7 × 16 = 45,024`. The first disagreements
 at `ae2ce9e` are owner authorizations of Stage 02 with its dependencies
@@ -141,16 +161,20 @@ A test report `r` supports verification at revision `ρ` iff all of the
 following hold:
 
 - the conditions of the accepted model §7 hold
+- the counts in `r` are non-negative integers, and its file and conftest
+  lists are lists of strings (X-05)
 - `r.selection.complete = true`
 - no test recorded as not run (`totals.not_run = 0`)
 - `tests(ρ) ⊆ r.selection.files`, where `tests(ρ)` is the set of committed
   files `tests/**/test_*.py` and `tests/**/*_test.py` in the tree of `ρ`
   (V-01)
 
-Let `C` be the items pytest collected, `F` the items left after every
-`collection_modifyitems` hook (the plugin's hook runs last), and `D` the
-items reported as deselected. `complete` holds iff all of the following hold
-(F-07, V-01):
+Let `C` be the node ids pytest collected, `F` the node ids left after every
+`collection_modifyitems` hook (the plugin's hook runs last), and `D` the node
+ids reported as deselected. These are lists, compared as sets of node ids,
+not as counts: a conftest that removes tests and adds repeats of others keeps
+the counts equal (X-03). `complete` holds iff all of the following hold
+(F-07, V-01, X-02, X-03):
 
 - every argument resolves to the repository root or a configured test path
 - no argument names a node id (`::`)
@@ -158,13 +182,20 @@ items reported as deselected. `complete` holds iff all of the following hold
 - every `-o` override is in the allowlist `{strict_markers=true}`, which is
   how pytest records `--strict-markers`
 - the ini file is the repository's `pyproject.toml`
-- `|D| = 0` and `|C| − |F| − |D| = 0` (no item dropped silently)
+- the collection settings `python_files`, `python_classes`,
+  `python_functions` and `testpaths` have their fixed values (X-02)
+- no plugin was loaded with `-p` or `PYTEST_PLUGINS` (X-03)
+- every conftest pytest loaded is tracked at `ρ` (X-03)
+- `D = ∅` and `C ∖ (F ∪ D) = ∅` (no test dropped silently)
+- `|F| = |set(F)|` (no test repeated)
 - every item in `F` has an outcome
 
 `tests(ρ) ⊆ files` catches a file never collected at all, for example through
-`collect_ignore` in a conftest. Neither rule binds test code that writes a
-false report itself: the report is produced by the process it describes
-(R-004).
+`collect_ignore` in a conftest. None of these rules binds code that runs
+inside the test process and writes a false report itself, or changes the
+plugin's lists before they are written: the report is produced by the process
+it describes (R-004). CI's check of the committed tree, and review of
+committed test code, are what stand against that.
 
 A JSON document is accepted only if no object has duplicate keys (F-18).
 Without this rule, a reviewer and the checker can read different values from
@@ -177,6 +208,9 @@ Gate evidence. For a gate `g` with cited references `E(g)`, let
 `files(g) = E(g) ∖ URLs`. The gate is supported iff `files(g) ≠ ∅` and every
 `p ∈ files(g)` is pinned: `p ∈ dom(M)`, or `p` lies under an owned path (its
 content is then bound by I7's drift rule). A URL is never pinned (F-02, V-02).
+Every `p` must also be a plain path: no empty, `.` or `..` segment and no
+symbolic link on the way, so `p` names the file that `M` or the drift rule
+actually binds (X-01).
 
 ## 7. Date and time model (contracts and registry)
 
@@ -192,6 +226,8 @@ Guard inputs are booleans chosen by an adversary. The model cannot tell:
 
 - whether an `owner_ref` contains approval (R-002)
 - whether a forgery that is consistent everywhere is genuine (R-003)
-- whether CI ran the unmodified workflow (R-016)
+- whether CI ran the unmodified workflow, or with an unmodified
+  `pyproject.toml` and `uv.lock` (R-016)
+- whether code inside the test process wrote its own report (R-004)
 
 These are outside any check that reads only the repository.

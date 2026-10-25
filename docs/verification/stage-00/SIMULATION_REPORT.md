@@ -11,20 +11,28 @@ the verification record.
 
 ## 1. Abstract model, re-run
 
-`simulations/stage00/state_machine_model.py` has not changed since `741476c`.
-It was re-run at `{{RVER7}}` with the default seed 20261025:
+`simulations/stage00/state_machine_model.py` changed once since `741476c`.
+The second final review found that the replay let a stage be accepted while a
+blocker was open (X-10). The implementation and the model had the same gap,
+so both were corrected in `564030b`: the model's accept guard now also needs
+no open blocker. It was re-run with the default seed 20261025:
 
 ```
 uv run python simulations/stage00/state_machine_model.py --output simulation/model-results.json
 ```
 
-The output is byte-identical to the accepted `final-results.json`. Both files
-have sha256 `55ed9851ea007d4fb10253aad1a6cfe733c474dbc876097d6923e2985dcb2ff0`.
+The output differs from the accepted `final-results.json` (sha256
+`55ed9851…2ff0`, kept under `superseded/741476c/`) only in the permitted and
+rejected counts. Fewer moves are permitted, because accepting with an open
+blocker is now refused. Every other field, including the 490 reachable nodes,
+the reachable states per stage and the guided path, is unchanged. The new
+file has sha256
+`f41c757fa892cc8adba88cecf09271b973a5ce4825a98fe582e66f13dd1e6dcd`.
 
 | Analysis | Result |
 |---|---|
-| Exhaustive reduced model (4 stages) | 490 nodes, 1,756,160 attempts, 106,400 permitted, **0 violations** |
-| Random walks, full 10-stage graph | 4,000,000 attempts, 263,926 permitted, **0 violations** |
+| Exhaustive reduced model (4 stages) | 490 nodes, 1,756,160 attempts, 103,936 permitted (was 106,400), **0 violations** |
+| Random walks, full 10-stage graph | 4,000,000 attempts, 263,659 permitted (was 263,926), **0 violations** |
 | Guided completion | all 10 stages reach AC in 50 moves |
 
 The iteration-1 defect (D-016) is still re-found when its rule is
@@ -32,9 +40,11 @@ re-introduced (`test_simulation.py`).
 
 ## 2. History replay conformance, exhaustive (new)
 
-`simulations/stage00/replay_conformance.py` checks that `check` accepts
-exactly the histories the model permits, one move beyond every reachable
-state. The method is in MATHEMATICAL_MODEL.md §5.
+`simulations/stage00/replay_conformance.py` checks that the history replay
+(`Orchestrator._history_findings`) accepts exactly the histories the model
+permits, one move beyond every reachable state. It does not run the whole of
+`check`: evidence, tests and revisions are taken as satisfied there and are
+tested separately. The method is in MATHEMATICAL_MODEL.md §5.
 
 | Run | Revision | Cases | Disagreements | Output |
 |---|---|---|---|---|

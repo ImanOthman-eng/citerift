@@ -41,11 +41,12 @@ copy of the code. Detection does not stop a commit.
 | Threat | Prevented by | Detected by | Not enforceable by repository code |
 |---|---|---|---|
 | R-001 agent acts as the owner on GitHub | nothing in the repository | nothing: GitHub shows one account | separating the identities; needs D-006 (owner signature) or a bot identity |
-| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification by a history entry or an amendment (F-17, V-07) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
-| Owner authorization skipped (agent authorizes, accepts, withdraws or reopens) | `OWNER_DECISION_REQUIRED`; owner edges require an `owner_ref`; reopening requires a correction amendment not used by an earlier reopening | replay of every history entry: `HISTORY_ACTOR`, `HISTORY_AMENDMENT_MISSING`, `HISTORY_AMENDMENT_REUSED`, `HISTORY_DEPENDENCY`, `HISTORY_SINGLE_ACTIVE` (F-04, F-05, V-08) | `--actor owner` is a flag the agent can pass; the reference is the only control (R-002) |
-| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values, artifact list, executor and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys and duplicate amendment or blocker ids; future times (F-03 to F-05, F-16 to F-18, V-03, V-09) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
-| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale or partial evidence, including a run narrowed by ini override, other ini file or conftest, and a run missing a committed test file (F-02, F-07, V-01, V-02) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED` (a URL is not pinned); owned-path content compared with the verified revision, with replace refs ignored (F-01, V-13); nested `.gitattributes` (V-12) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked; test code can write a false report |
-| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion; CI runs the owned sources with `python -P -m`, not entry points that `pyproject.toml` defines, and asserts the package comes from `src` (V-04) | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection) | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed; `pyproject.toml` and `uv.lock` are not owned, so a change of dependencies or pytest options is not detected as Stage 00 drift |
+| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification by a history entry or an amendment, and an amendment citing a reference used before (F-17, V-07, X-13) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
+| Owner authorization skipped (agent authorizes, accepts, withdraws or reopens) | `OWNER_DECISION_REQUIRED`; owner edges require an `owner_ref`; reopening requires a correction amendment not used by an earlier reopening; acceptance requires no open blocker | replay of every history entry: `HISTORY_ACTOR`, `HISTORY_AMENDMENT_MISSING`, `HISTORY_AMENDMENT_REUSED`, `HISTORY_BLOCKER`, `HISTORY_DEPENDENCY`, `HISTORY_SINGLE_ACTIVE` (F-04, F-05, V-08, X-10) | `--actor owner` is a flag the agent can pass; the reference is the only control (R-002) |
+| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values, artifact list, executor, dependencies and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys and duplicate amendment or blocker ids; future times (F-03 to F-05, F-16 to F-18, V-03, V-09, X-07) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
+| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale, malformed or partial evidence. Partial includes a run narrowed by ini override, other ini file, changed collection settings, a conftest that drops or repeats tests, an uncommitted conftest, a `-p` or `PYTEST_PLUGINS` plugin, and a run missing a committed test file (F-02, F-07, V-01, V-02, X-02, X-03, X-05) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED` (a URL, or a path through `..` or a symbolic link, is not pinned); owned-path content compared with the verified revision, with replace refs and grafts ignored (F-01, V-13, X-01, X-09); nested `.gitattributes` (V-12) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked; code inside the test process (committed tests, conftests, dependencies) can write a false report |
+| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion; CI runs the owned sources with `python -P -m`, not entry points that `pyproject.toml` defines, and asserts the package comes from `src` (V-04); a shell step refuses anything in `src/` beside the `citerift` package before any Python runs (X-04) | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection); `SRC_FOREIGN_MODULE` for a tracked module beside the package | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed; `pyproject.toml` and `uv.lock` are not owned, so a change of dependencies or pytest options is not detected as Stage 00 drift |
+| Enhancement that changes an accepted contract | an enhancement amendment needs an owner reference not cited before (X-13) | `CONTRACT_VERSION_NOT_INCREASED`; `CONTRACT_INCOMPATIBLE` when an accepted valid fixture no longer validates (X-13) | whether the change keeps the contract's meaning; an enhancement has no CI record of its own |
 | Uncommitted local changes | none | `UNCOMMITTED_OWNED_CHANGE` (warning, F-19); the test report records a dirty tree | changes never committed are invisible to CI |
 
 ## 3. Adversarial review
@@ -99,12 +100,34 @@ V-14 (tests reading JSON last-key-wins) and V-16 (report into a missing
 directory) are test and robustness defects, not attacks. Both are fixed
 (`review/README.md`).
 
+Attacks 51 to 61 are the bypasses found by the second final independent
+review (`review/9e025c9/`, X-01 to X-14). The column "At `7138d6d`" is the
+revision before their fixes.
+
+| # | Attack | Outcome now | At `7138d6d` | Test |
+|---|---|---|---|---|
+| 51 | Cite gate evidence as `docs/../src/x` or through a symbolic link inside an owned path | `GATE_EVIDENCE_UNPINNED` | accepted | `test_x01_*` |
+| 52 | Commit `python_functions = test_[a-m]*` in `pyproject.toml` so 92 of 308 tests run | `TEST_EVIDENCE_PARTIAL` | complete | `test_x02_*` |
+| 53 | A conftest that removes tests and pads the list with repeats; the same as an uncommitted conftest, a `-p` plugin or `PYTEST_PLUGINS` | `TEST_EVIDENCE_PARTIAL` | complete with 21 of 308 tests | `test_x03_*` |
+| 54 | Commit `src/sitecustomize.py` that changes the checker's output inside every CI step | CI step fails before Python runs; `SRC_FOREIGN_MODULE` | CI passed | `test_ci_refuses_modules_beside_the_package_before_running_python`, `test_x04_*` |
+| 55 | 17 malformed inputs (counts as strings, a list as `--record`, a symlinked schema, an unknown stage, undecodable HANDOFF) | named error, exit 1 or 2 | traceback | `test_x05_*` |
+| 56 | Write a critical defect's fields as `- **Status**: open`, `- status: open` or indented, under a heading the parser misses; split a topic with a zero-width character | `MEMORY_MALFORMED`, `DECISION_CONTRADICTION` | ignored | `test_x06_*` |
+| 57 | Remove Stage 01 from Stage 02's `depends_on` before authorizing it | `REGISTRY_SCHEMA` | Stage 02 accepted without Stage 01 | `test_x07_*` |
+| 58 | Add, block and resolve a blocker within one second | allowed | refused, labelled pre-existing | `test_x08_*` |
+| 59 | Hide owned-path drift with `.git/info/grafts` | `VERIFICATION_STALE` | 0 errors | `test_x09_*` |
+| 60 | Accept a stage while a blocker is open | `HISTORY_BLOCKER` | accepted by the replay and the model | `test_x10_*`, replay conformance |
+| 61 | Change an accepted contract through an enhancement amendment with a reused owner reference and no version change | `OWNER_REF_REUSED`, `CONTRACT_VERSION_NOT_INCREASED`, `CONTRACT_INCOMPATIBLE` | accepted | `test_x13_*` |
+
+X-11 (`zh-classical` rejected by the language pattern) is a contract defect,
+X-12 a defect in a test and X-14 two surviving mutants. All three are fixed.
+
 Seeded property tests apply 19 classes of single mutation to an accepted
 registry, 60 cases for each of 2 seeds. Every mutation is detected
 (`test_properties.py`). Random byte damage never produces an exception.
 
-Mutation testing: 54 mutants each disable one rule (M1 to M54, including the
-new checks for S-01 and V-01 to V-16). Results are in TEST_RESULTS.md §5.
+Mutation testing: 73 mutants each disable one rule (M1 to M73, including the
+new checks for S-01, V-01 to V-16 and X-01 to X-13). Results are in
+TEST_RESULTS.md §5.
 
 ## 4. Residual exposure, stated plainly
 
@@ -112,8 +135,8 @@ new checks for S-01 and V-01 to V-16). Results are in TEST_RESULTS.md §5.
 |---|---|---|---|
 | R-001 shared GitHub identity | high | open | the agent can do on GitHub whatever the owner can, including merging and editing the ruleset; nothing in the repository changes that |
 | R-002 owner references not read | high | open | a reference that does not contain approval is accepted if it is present, well-formed and not reused |
-| R-003 hand edits | medium | open | detection only; a consistent forgery is not detectable; stage definitions can be edited *before* verification, visible only in the reviewed diff |
-| R-004 CI record entered by the agent | medium | open | the offline check cannot fetch the run; the run URL is public |
+| R-003 hand edits | medium | open | detection only; a consistent forgery is not detectable; stage definitions other than the schema-fixed fields (executor, artifacts, dependencies, policy) can be edited *before* verification, visible only in the reviewed diff |
+| R-004 CI record and test report entered by the agent | medium | open | the offline check cannot fetch the run; the run URL is public. Code inside the test process, committed or from a dependency, can write a false test report; in CI it must be committed or locked, so it is visible in review |
 | R-016 CI gate editable by the gated change | medium | open | a pull request can change `ci.yml` so that `ci-gate` passes; Stage 00 then becomes stale, but only someone running `check` from an honest copy sees it. `pyproject.toml` and `uv.lock` are not owned: later stages must be able to add dependencies |
 | Structural evidence checks | medium | disclosed | document *content* is not judged; the owner's reading of the handoff is the control |
 | R-012 clock dependence | low | accepted | the 5-minute bound is relative to the writer's clock: a writer whose clock is fast can record a time that blocks correct machines until real time catches up (detected, fail closed) |
@@ -128,10 +151,12 @@ implemented. They add no paid infrastructure, but they do add process.
 - No new runtime dependency. The date-time checker uses the standard library.
   `uv.lock` is unchanged.
 - No shell: new git calls (`diff --no-renames`, `check-ignore --stdin`,
-  `ls-tree`) use argument lists and `--no-replace-objects`
+  `ls-tree`, `show`) use argument lists, `--no-replace-objects`,
+  `GIT_NO_REPLACE_OBJECTS=1` and an empty graft file
   (`test_governance_code_runs_no_shell`).
 - The workflow changed only to run the owned sources with `python -P -m`
-  from `src` and to assert where the package was imported from (V-04).
+  from `src`, to assert where the package was imported from (V-04), and to
+  refuse anything in `src/` beside the package (X-04).
   Permissions stay `contents: read` and actions stay SHA-pinned.
 - New failure modes fail closed. An unreadable registry or report is an error,
   a shallow clone reports `REVISION_NOT_FOUND` without a false staleness
@@ -141,6 +166,7 @@ implemented. They add no paid infrastructure, but they do add process.
 ## 6. Independent review
 
 Separate reviewer agents with no part in writing the correction review the
-integrated revision. The first review, at `ee46423`, found V-01 to V-16; their
-dispositions are in `review/README.md`. The final review and its dispositions
-are in TEST_RESULTS.md §9 and `review/`.
+integrated revision. The first review, at `ee46423`, found V-01 to V-16. The
+second, at `9e025c9`, found X-01 to X-14. Their dispositions are in
+`review/README.md`. The final review and its dispositions are in
+TEST_RESULTS.md §9 and `review/`.
