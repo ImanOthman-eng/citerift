@@ -729,6 +729,19 @@ def test_f06_heading_level_and_topic_case(tmp_path: Path) -> None:
     assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
 
 
+@pytest.mark.negative
+@pytest.mark.parametrize("heading", ["### R-001 — Wrong level", "## R-01 — Short id", "## R-001 - Hyphen"])
+def test_f06_malformed_heading_without_fields_is_malformed(tmp_path: Path, heading: str) -> None:
+    """The heading rule on its own: with no field lines below it, the orphan-field rule (V-06) cannot see it."""
+    from citerift.governance import memory
+
+    risks = tmp_path / "RISKS.md"
+    risks.write_text(f"# Risks\n\n{heading}\n\nProse only.\n", encoding="utf-8")
+    problems = memory.check_risks(risks)[1]
+    assert [p.code for p in problems] == ["MEMORY_MALFORMED"]
+    assert "heading is not" in problems[0].message
+
+
 FIELDS = "- Status: open\n- Severity: critical\n- Kind: defect\n- Stage: 00\n\nBody.\n"
 
 

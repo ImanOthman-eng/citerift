@@ -8,8 +8,9 @@ history entry 11). This package is the result of the corrected stage. The
 accepted package is kept unchanged in `superseded/741476c/`.
 
 Scope of the correction: the confirmed findings F-01 to F-23 of the
-independent review in `docs/audits/stage-00-2026-10-25/`, inside Stage 00's
-original scope. No later stage is touched or authorized. Stage 01 belongs to
+independent review in `docs/audits/stage-00-2026-10-25/`, the defect S-01
+found during the correction, and the findings V-01 to V-16 of the first final
+independent review (`review/`), all inside Stage 00's original scope. No later stage is touched or authorized. Stage 01 belongs to
 the external agent and nothing here assumes any of its findings.
 
 ## Purpose (unchanged)
@@ -27,7 +28,7 @@ by a new session from a clone alone. Stage 00 reads no external data.
 | Data contracts v1, version 1.0.1 | `schemas/contracts/v1/`, `src/citerift/contracts/` (`validate.py`, new `formats.py`), CLI `citerift-contracts` | explicit accepted values for all alternatives; date-time and calendar checks; portable patterns; duplicate keys rejected |
 | Test evidence plugin | `src/citerift/governance/pytest_report.py` | records how tests were selected; partial runs are not evidence |
 | Simulations | `simulations/stage00/state_machine_model.py` (unchanged), new `replay_conformance.py` | exhaustive check of the history replay against the model |
-| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` | now Stage 00 owned paths (detection for F-20) |
+| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` | now Stage 00 owned paths (detection for F-20); CI runs the checks as `python -P -m` from `src`, not through entry points, and asserts that the imported package is the one in `src` (V-04) |
 | Repository foundation | `.gitattributes` (new, LF), `src/citerift/py.typed` (new) | owned paths |
 
 ## State machine (unchanged edges)
@@ -41,7 +42,8 @@ entry is checked against them at its own position in `check`:
 
 - single active engineering stage after the entry
 - dependencies accepted at authorize, verify and accept
-- a correction amendment recorded before a reopening
+- a correction amendment recorded before a reopening, and not cited by an
+  earlier reopening (V-08)
 - a blocker open for a block, and none open for start, unblock or verify
 
 A hand-written history must pass the same rules as one written by the tool.
@@ -59,7 +61,10 @@ All of the requirements of `741476c`, plus:
    directory (`evidence_manifest`), not only the seven artifacts. Each gate
    evidence path must be a pinned file inside that directory, or a file under
    the stage's owned paths (whose content the drift check compares with the
-   verified revision), or an https URL (F-02).
+   verified revision). An https URL may be cited as well, but it is not
+   pinned: every gate must cite at least one pinned file, and every file it
+   cites must be pinned (F-02, V-02). Files git ignores are not evidence and
+   are left out of the manifest (S-01).
 2. The record pins `definition_sha256` over the stage definition and the
    policy. The definition covers the owned paths, gates, suites, artifacts,
    dependencies, executor and `ci_required`. Weakening them after
@@ -67,10 +72,18 @@ All of the requirements of `741476c`, plus:
    paths, gates or suites cannot be verified (`DEFINITION_WEAK`, F-03).
 3. The registry schema fixes the policy values (`single_active`, artifacts,
    handoff file and sections, report file) and `ci_required: true` for
-   engineering stages (F-03).
+   engineering stages. A stage cannot override the artifact list with a
+   shorter one, and the executor is fixed per stage: Stage 01 is
+   `external-agent`, every other stage `engineering-agent`. The handoff file
+   is always a required artifact (F-03, V-03).
 4. The test report must record a complete selection. That means the whole
    `tests` tree, with no `-k`, `-m`, `--deselect`, `--ignore`, `--lf` or
-   stepwise run, and nothing deselected or not run (F-07).
+   stepwise run, no `-o` ini override other than the one `--strict-markers`
+   sets, no other ini file, nothing deselected, nothing removed by a conftest
+   hook, and nothing not run. Every committed `tests/**/test_*.py` file at the
+   verified revision must appear among the files that ran (F-07, V-01). The
+   report is written by the test process itself, so test code can forge it
+   (R-004).
 5. The handoff, report and record are read with duplicate-key rejection
    (F-18).
 
@@ -81,19 +94,31 @@ Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
 - Rule 2, replay. Each entry is also checked against the transition guards at
   its own time (F-04, F-05).
 - Rule 3, ordering. A time more than 5 minutes ahead of the local clock is
-  refused when written and reported by `check` (F-16).
+  refused when written and reported by `check` (F-16). A default time is
+  never earlier than the last recorded time (V-11). The bound is relative to
+  the writer's clock, so a writer whose clock is fast still blocks correct
+  machines until real time catches up (R-012, detected).
 - Rule 5, records. Authorization, verification and acceptance records must
   equal their history entry (time, owner reference). An acceptance must cite
-  an owner reference not used before the verification (F-17).
+  an owner reference not used before the verification, by a history entry or
+  by an amendment (F-17, V-07). One owner message may still cover several
+  decisions, such as accepting two stages (R-002). Amendment and blocker ids
+  are unique (V-09).
 - Rule 7, hashes. They cover every file in the verification directory, and
-  the line-ending policy is fixed by `.gitattributes` (F-02, F-12).
+  the line-ending policy is fixed by the root `.gitattributes`. A tracked
+  nested `.gitattributes` is an error (`ATTRIBUTES_NESTED`) (F-02, F-12,
+  V-12).
 - Rule 8, drift. It is decided by comparing owned-path *content* at the
   verified revision and at `HEAD` (`git diff --no-renames`). A merge that
-  restores old content is therefore detected. Uncommitted owned changes give
-  the warning `UNCOMMITTED_OWNED_CHANGE` (F-01, F-19).
+  restores old content is therefore detected. Git runs with
+  `--no-replace-objects`, so replace refs cannot hide drift. Uncommitted
+  owned changes give the warning `UNCOMMITTED_OWNED_CHANGE` (F-01,
+  F-19, V-13).
 - Rule 9, records. A heading that looks like an entry but is malformed is an
-  error, a topic is compared case- and space-insensitively, and a critical
-  defect with `Stage: project` blocks every stage (F-06).
+  error, and so is an entry field outside any recognised heading. A topic is
+  compared after NFKC normalisation, with separators and case folded. A
+  critical defect with `Stage: project` blocks every stage. An undecodable
+  memory file is `MEMORY_UNREADABLE`, not a traceback (F-06, V-06, V-10).
 
 ## Data contracts 1.0.1
 

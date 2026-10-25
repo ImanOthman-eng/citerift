@@ -41,11 +41,11 @@ copy of the code. Detection does not stop a commit.
 | Threat | Prevented by | Detected by | Not enforceable by repository code |
 |---|---|---|---|
 | R-001 agent acts as the owner on GitHub | nothing in the repository | nothing: GitHub shows one account | separating the identities; needs D-006 (owner signature) or a bot identity |
-| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification (F-17) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
-| Owner authorization skipped (agent authorizes, accepts, withdraws or reopens) | `OWNER_DECISION_REQUIRED`; owner edges require an `owner_ref`; reopening requires a correction amendment | replay of every history entry: `HISTORY_ACTOR`, `HISTORY_AMENDMENT_MISSING`, `HISTORY_DEPENDENCY`, `HISTORY_SINGLE_ACTIVE` (F-04, F-05) | `--actor owner` is a flag the agent can pass; the reference is the only control (R-002) |
-| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys; future times (F-03 to F-05, F-16 to F-18) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
-| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale or partial evidence (F-02, F-07) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED`; owned-path content compared with the verified revision (F-01) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked |
-| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection) | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed |
+| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification by a history entry or an amendment (F-17, V-07) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
+| Owner authorization skipped (agent authorizes, accepts, withdraws or reopens) | `OWNER_DECISION_REQUIRED`; owner edges require an `owner_ref`; reopening requires a correction amendment not used by an earlier reopening | replay of every history entry: `HISTORY_ACTOR`, `HISTORY_AMENDMENT_MISSING`, `HISTORY_AMENDMENT_REUSED`, `HISTORY_DEPENDENCY`, `HISTORY_SINGLE_ACTIVE` (F-04, F-05, V-08) | `--actor owner` is a flag the agent can pass; the reference is the only control (R-002) |
+| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values, artifact list, executor and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys and duplicate amendment or blocker ids; future times (F-03 to F-05, F-16 to F-18, V-03, V-09) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
+| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale or partial evidence, including a run narrowed by ini override, other ini file or conftest, and a run missing a committed test file (F-02, F-07, V-01, V-02) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED` (a URL is not pinned); owned-path content compared with the verified revision, with replace refs ignored (F-01, V-13); nested `.gitattributes` (V-12) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked; test code can write a false report |
+| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion; CI runs the owned sources with `python -P -m`, not entry points that `pyproject.toml` defines, and asserts the package comes from `src` (V-04) | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection) | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed; `pyproject.toml` and `uv.lock` are not owned, so a change of dependencies or pytest options is not detected as Stage 00 drift |
 | Uncommitted local changes | none | `UNCOMMITTED_OWNED_CHANGE` (warning, F-19); the test report records a dirty tree | changes never committed are invisible to CI |
 
 ## 3. Adversarial review
@@ -75,12 +75,36 @@ still pass. The new attacks below are the audit's bypasses and their variants.
 | 36 | Weaken the workflow, the ruleset file or `.gitattributes` after verification | `VERIFICATION_STALE` (detection only) | not detected | `test_f20_*` |
 | 37 | Byte-code cache in the evidence directory pinned at verification, so every clone reports missing evidence (found during this correction, S-01) | ignored files left out of the manifest; a non-ignored added file is still `EVIDENCE_UNLISTED` | false errors | `test_s01_*` |
 
+Attacks 38 to 50 are the bypasses found by the first final independent review
+(`review/ee46423/`, V-01 to V-16). The column "At `135e4ac`" is the revision
+before their fixes.
+
+| # | Attack | Outcome now | At `135e4ac` | Test |
+|---|---|---|---|---|
+| 38 | Narrow the run with `-o python_files=...`, `-o testpaths=...`, `-c other.ini`, a conftest that drops items, or `collect_ignore` | `TEST_EVIDENCE_PARTIAL` | recorded as complete | `test_v01_*` |
+| 39 | Cite only a URL, or one pinned file next to unpinned ones, as gate evidence | `GATE_EVIDENCE_UNPINNED` | accepted | `test_f02_*[url_only]`, `[pinned_plus_unpinned]` |
+| 40 | Override a stage's artifact list with a shorter one, drop the handoff, or set Stage 01 to `engineering-agent` | `REGISTRY_SCHEMA`; handoff always required | accepted | `test_v03_*` |
+| 41 | Point the `citerift-gov` entry point in `pyproject.toml` at a shim that prints a clean result | CI no longer uses the entry point; guard step fails if the package is not from `src` | CI passed | `test_ci_runs_the_owned_sources_not_an_entry_point` |
+| 42 | List an arbitrary file as a correction amendment's test report to exempt it from the manifest | `EVIDENCE_UNLISTED`; the report itself is hash-checked | exempt | `test_v05_*` |
+| 43 | Write a RISKS.md entry with an en dash or non-breaking hyphen in the id, a setext or HTML heading, or a topic spelled with spaces or full-width letters | `MEMORY_MALFORMED`, `DECISION_CONTRADICTION` | ignored | `test_v06_*` |
+| 44 | Accept citing the amendment's owner reference | `OWNER_REF_REUSED` | accepted | `test_v07_*` |
+| 45 | Reopen twice with one correction amendment | `HISTORY_AMENDMENT_REUSED` | accepted | `test_v08_*` |
+| 46 | Two amendments or two blockers with the same id, so replay and `propose` read different records | `AMENDMENT_DUPLICATE_ID`, `BLOCKER_DUPLICATE_ID` | accepted | `test_v09_*` |
+| 47 | Delete or truncate the schema, write `{}` as the registry, or put a non-UTF-8 byte in RISKS.md | named error, exit 1 | traceback | `test_v10_*` |
+| 48 | Add a blocker on a correct clock right after a forward-dated entry | default time follows the last entry | `HISTORY_BLOCKER` on a correct history | `test_v11_*`, `test_v15_*` |
+| 49 | Commit a nested `.gitattributes` that changes line endings of evidence | `ATTRIBUTES_NESTED` | false `EVIDENCE_STALE` in fresh clones | `test_v12_*` |
+| 50 | Hide owned-path drift with `git replace` | `VERIFICATION_STALE` | 0 errors | `test_v13_*` |
+
+V-14 (tests reading JSON last-key-wins) and V-16 (report into a missing
+directory) are test and robustness defects, not attacks. Both are fixed
+(`review/README.md`).
+
 Seeded property tests apply 19 classes of single mutation to an accepted
 registry, 60 cases for each of 2 seeds. Every mutation is detected
 (`test_properties.py`). Random byte damage never produces an exception.
 
-Mutation testing: 34 mutants each disable one rule. Results are in
-TEST_RESULTS.md §5.
+Mutation testing: 54 mutants each disable one rule (M1 to M54, including the
+new checks for S-01 and V-01 to V-16). Results are in TEST_RESULTS.md §5.
 
 ## 4. Residual exposure, stated plainly
 
@@ -90,9 +114,9 @@ TEST_RESULTS.md §5.
 | R-002 owner references not read | high | open | a reference that does not contain approval is accepted if it is present, well-formed and not reused |
 | R-003 hand edits | medium | open | detection only; a consistent forgery is not detectable; stage definitions can be edited *before* verification, visible only in the reviewed diff |
 | R-004 CI record entered by the agent | medium | open | the offline check cannot fetch the run; the run URL is public |
-| R-016 CI gate editable by the gated change | medium | open | a pull request can change `ci.yml` so that `ci-gate` passes; Stage 00 then becomes stale, but only someone running `check` from an honest copy sees it |
+| R-016 CI gate editable by the gated change | medium | open | a pull request can change `ci.yml` so that `ci-gate` passes; Stage 00 then becomes stale, but only someone running `check` from an honest copy sees it. `pyproject.toml` and `uv.lock` are not owned: later stages must be able to add dependencies |
 | Structural evidence checks | medium | disclosed | document *content* is not judged; the owner's reading of the handoff is the control |
-| R-012 clock dependence | low | accepted | a slow clock is refused (fail-closed); a clock more than 5 minutes fast is refused |
+| R-012 clock dependence | low | accepted | the 5-minute bound is relative to the writer's clock: a writer whose clock is fast can record a time that blocks correct machines until real time catches up (detected, fail closed) |
 
 Prevention of R-001, R-002 and R-016 needs a required review from an identity
 the agent does not hold: owner-signed acceptance (D-006) or a separate bot
@@ -103,10 +127,12 @@ implemented. They add no paid infrastructure, but they do add process.
 
 - No new runtime dependency. The date-time checker uses the standard library.
   `uv.lock` is unchanged.
-- No shell: new git calls (`diff --no-renames`, `check-ignore --stdin`) use
-  argument lists (`test_governance_code_runs_no_shell`).
-- The workflow is unchanged in this correction except where it gained owned
-  status. Permissions stay `contents: read` and actions stay SHA-pinned.
+- No shell: new git calls (`diff --no-renames`, `check-ignore --stdin`,
+  `ls-tree`) use argument lists and `--no-replace-objects`
+  (`test_governance_code_runs_no_shell`).
+- The workflow changed only to run the owned sources with `python -P -m`
+  from `src` and to assert where the package was imported from (V-04).
+  Permissions stay `contents: read` and actions stay SHA-pinned.
 - New failure modes fail closed. An unreadable registry or report is an error,
   a shallow clone reports `REVISION_NOT_FOUND` without a false staleness
   report, and an interrupted write leaves the old registry
@@ -114,6 +140,7 @@ implemented. They add no paid infrastructure, but they do add process.
 
 ## 6. Independent review
 
-A separate reviewer agent with no part in writing the correction reviewed the
-integrated revision. Its report and the disposition of each finding are in
-TEST_RESULTS.md §9 and `review/`.
+Separate reviewer agents with no part in writing the correction review the
+integrated revision. The first review, at `ee46423`, found V-01 to V-16; their
+dispositions are in `review/README.md`. The final review and its dispositions
+are in TEST_RESULTS.md §9 and `review/`.

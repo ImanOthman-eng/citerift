@@ -59,8 +59,10 @@ new owner statement. The next stage needs a third, separate authorization.
 
 - **Corrected claim:** hand edits are *detected*, not prevented. A consistent
   forgery is not detected (R-003). The accepted review did not say this.
+  "Complete run" is judged from a report the test process writes about
+  itself, so test code can forge it (R-004).
 - **Verification now:** 12 mandatory scenarios, 19 hand edits, and 19 seeded
-  mutation classes (120 cases) all pass. 34 rule-disabling mutants are run
+  mutation classes (120 cases) all pass. 54 rule-disabling mutants are run
   (TEST_RESULTS.md §5). On the live registry, the orchestrator refuses
   verification while CI evidence is missing. The accepted review cited
   TEST_RESULTS §8 for that, but §8 recorded other codes. The refusal is now

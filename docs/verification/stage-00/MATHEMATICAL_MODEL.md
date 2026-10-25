@@ -27,7 +27,7 @@ A move `μ = (k, t, actor, inputs)` is permitted iff all four hold:
 
 ## 2. Invariants
 
-I1 to I7 are as before. The correction strengthens two of them and adds two.
+I1 to I7 are as before. The correction strengthens two of them and adds three.
 
 - **I6 (replay consistency), strengthened.** Before the correction, `check`
   required only `fold(H, NSⁿ) = σ`, with each entry an edge of `T` taken by
@@ -36,26 +36,32 @@ I1 to I7 are as before. The correction strengthens two of them and adds two.
   `permitted` evaluates the guards that the history decides. Those guards are:
   - single active engineering stage after the entry
   - dependencies accepted at entries into AU, VA and AC
-  - a correction amendment recorded at or before a reopening
+  - a correction amendment recorded at or before a reopening, not cited by
+    an earlier reopening (V-08)
   - an open blocker at a block (IP→BL), and none at start (AU→IP), unblock
     (BL→IP) or verify (IM→VA)
-  - an `owner_ref` on owner edges, not used before the last VA entry for an
-    acceptance
+  - an `owner_ref` on owner edges; for an acceptance, one not used by a
+    history entry or an amendment at or before the last VA entry (F-17, V-07)
 - **I7 (evidence immutability), strengthened.** For a verified stage the
   record pins the following, each by sha256:
-  - `M = {(p, sha256(p)) : p ∈ files(vdir) ∖ ignored}` (the manifest)
+  - `M = {(p, sha256(p)) : p ∈ files(vdir) ∖ ignored}` (the manifest;
+    `ignored` is what `git check-ignore` reports, S-01)
   - `δ = sha256(canon(definition ∪ policy))` (the definition hash)
   - the artifact hashes
 
-  Required: the current `M` equals the pinned `M`, apart from amendment test
-  reports added later. The current `δ` equals the pinned `δ`. And
+  Required: the current `M` equals the pinned `M`, apart from test reports of
+  enhancement amendments added later. Every other amendment's test report is
+  checked against its own hash (V-05). The current `δ` equals the pinned `δ`. And
   `content(owned, ρ) = content(owned, HEAD)`, compared by `git diff` of trees,
   not by `git log`. Comparing trees is what catches a merge that restores old
   content (F-01).
 - **I8 (records match history).** Each authorization, verification and
   acceptance record equals the time and `owner_ref` of the last history entry
   that created it.
-- **I9 (bounded time).** Every recorded time `≤ now + 5 min`.
+- **I9 (bounded time).** Every recorded time `≤ now + 5 min`, where `now` is
+  the clock of the machine running `check` (V-11, R-012).
+- **I10 (unique ids).** Amendment ids are unique within a stage, and blocker
+  ids are unique within a stage (V-09).
 
 ## 3. Why the replay has to check each prefix
 
@@ -137,15 +143,28 @@ following hold:
 - the conditions of the accepted model §7 hold
 - `r.selection.complete = true`
 - no test recorded as not run (`totals.not_run = 0`)
+- `tests(ρ) ⊆ r.selection.files`, where `tests(ρ)` is the set of committed
+  files `tests/**/test_*.py` and `tests/**/*_test.py` in the tree of `ρ`
+  (V-01)
 
-The plugin sets `complete` to false when any test was deselected or did not
-run.
-
-`complete` holds iff all of the following hold (F-07):
+Let `C` be the items pytest collected, `F` the items left after every
+`collection_modifyitems` hook (the plugin's hook runs last), and `D` the
+items reported as deselected. `complete` holds iff all of the following hold
+(F-07, V-01):
 
 - every argument resolves to the repository root or a configured test path
 - no argument names a node id (`::`)
 - no `-k`, `-m`, `--ignore`, `--ignore-glob`, `--lf` or `--sw` was given
+- every `-o` override is in the allowlist `{strict_markers=true}`, which is
+  how pytest records `--strict-markers`
+- the ini file is the repository's `pyproject.toml`
+- `|D| = 0` and `|C| − |F| − |D| = 0` (no item dropped silently)
+- every item in `F` has an outcome
+
+`tests(ρ) ⊆ files` catches a file never collected at all, for example through
+`collect_ignore` in a conftest. Neither rule binds test code that writes a
+false report itself: the report is produced by the process it describes
+(R-004).
 
 A JSON document is accepted only if no object has duplicate keys (F-18).
 Without this rule, a reviewer and the checker can read different values from
@@ -153,6 +172,11 @@ the same bytes.
 
 The definition hash is `δ = sha256(canon({f: stage[f] for f in DEFINITION_FIELDS} ∪ {policy}))`,
 with `canon` = sorted keys, no whitespace, UTF-8.
+
+Gate evidence. For a gate `g` with cited references `E(g)`, let
+`files(g) = E(g) ∖ URLs`. The gate is supported iff `files(g) ≠ ∅` and every
+`p ∈ files(g)` is pinned: `p ∈ dom(M)`, or `p` lies under an owned path (its
+content is then bound by I7's drift rule). A URL is never pinned (F-02, V-02).
 
 ## 7. Date and time model (contracts and registry)
 
