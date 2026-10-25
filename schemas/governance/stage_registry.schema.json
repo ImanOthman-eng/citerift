@@ -37,12 +37,13 @@
         "handoff_required_sections",
         "test_report_file"
       ],
+      "description": "Owner-set rules (GOVERNANCE.md). They are fixed here, in a Stage 00 owned path, so that weakening them in the registry is a schema error and changing them here makes Stage 00 stale.",
       "properties": {
-        "single_active_engineering_stage": {"type": "boolean"},
-        "required_artifacts": {"$ref": "#/$defs/path_list"},
-        "handoff_file": {"type": "string", "minLength": 1},
-        "handoff_required_sections": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "test_report_file": {"type": "string", "minLength": 1}
+        "single_active_engineering_stage": {"const": true},
+        "required_artifacts": {"const": ["SPECIFICATION.md", "MATHEMATICAL_MODEL.md", "RISK_ANALYSIS.md", "SIMULATION_REPORT.md", "TEST_RESULTS.md", "CREATIVE_DIFFERENTIATION_REVIEW.md", "HANDOFF.md"]},
+        "handoff_file": {"const": "HANDOFF.md"},
+        "handoff_required_sections": {"const": ["Stage and status", "Verified completed work", "Inputs and outputs", "Test evidence", "Known limitations", "Open blockers", "Dependency versions", "Verified Git commit", "Acceptance decision", "Requirements for the next stage"]},
+        "test_report_file": {"const": "test-report.json"}
       }
     },
     "stages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stage"}},
@@ -85,6 +86,8 @@
     "stage": {
       "type": "object",
       "additionalProperties": false,
+      "if": {"properties": {"executor": {"const": "engineering-agent"}}, "required": ["executor"]},
+      "then": {"properties": {"ci_required": {"const": true}}},
       "required": [
         "id",
         "name",
@@ -160,12 +163,21 @@
             {
               "type": "object",
               "additionalProperties": false,
-              "required": ["revision", "recorded_at", "artifacts", "test_report", "gates"],
+              "required": ["revision", "recorded_at", "artifacts", "test_report", "evidence_manifest", "definition_sha256", "gates"],
               "properties": {
                 "revision": {"$ref": "#/$defs/sha"},
                 "recorded_at": {"$ref": "#/$defs/timestamp"},
                 "artifacts": {"type": "array", "items": {"$ref": "#/$defs/hashed_file"}},
                 "test_report": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hashed_file"}]},
+                "evidence_manifest": {
+                  "description": "sha256 of every file under the stage's verification directory when it was verified.",
+                  "type": "array",
+                  "items": {"$ref": "#/$defs/hashed_file"}
+                },
+                "definition_sha256": {
+                  "description": "Hash of the stage definition and the policy the verification was checked against.",
+                  "$ref": "#/$defs/sha256"
+                },
                 "ci": {
                   "type": "object",
                   "additionalProperties": false,

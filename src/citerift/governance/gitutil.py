@@ -69,6 +69,20 @@ def last_commit_touching(root: Path, paths: list[str], rev: str = "HEAD") -> str
     return sha or None
 
 
+def changed_paths(root: Path, base: str, paths: list[str], rev: str = "HEAD") -> list[str]:
+    """Files under ``paths`` whose content differs between ``base`` and ``rev``.
+
+    This compares trees, not history, so a merge that brings back old content
+    is seen as a change (``git log -- paths`` simplifies such merges away).
+    """
+    if not paths:
+        return []
+    out = _git(root, "diff", "--no-renames", "--name-only", base, rev, "--", *paths)
+    if out.returncode != 0:
+        raise GitUnavailableError(out.stderr.strip())
+    return out.stdout.splitlines()
+
+
 def dirty_paths(root: Path, exclude: tuple[str, ...] = ()) -> list[str]:
     """Paths with uncommitted changes, including untracked files."""
     out = _git(root, "status", "--porcelain", "--untracked-files=all")

@@ -52,14 +52,49 @@ def pytest_configure(config: pytest.Config) -> None:
     _suites_of.clear()
     root = Path(str(config.rootpath))
     report = config.getoption("--citerift-report")
-    exclude = (str(Path(report).resolve().relative_to(root.resolve())),) if report else ()
+    _state["deselected"] = 0
+    _state["selection"] = _selection(config, root)
     try:
+        exclude: tuple[str, ...] = ()
+        if report:
+            resolved = Path(report).resolve()
+            if resolved.is_relative_to(root.resolve()):
+                exclude = (resolved.relative_to(root.resolve()).as_posix(),)
         _state["revision"] = gitutil.head(root)
         _state["dirty_paths"] = gitutil.dirty_paths(root, exclude=exclude)
     except (gitutil.GitUnavailableError, OSError, subprocess.SubprocessError, ValueError):
         _state["revision"] = None
         _state["dirty_paths"] = None
     _state["started_at"] = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _selection(config: pytest.Config, root: Path) -> dict[str, object]:
+    """How the run selected tests; ``complete`` is true only for the whole configured test tree."""
+    testpaths = [(root / t).resolve() for t in config.getini("testpaths")] or [root.resolve()]
+    args = [str(a) for a in config.args]
+    whole = all(
+        "::" not in a
+        and (Path(a) if Path(a).is_absolute() else Path(config.invocation_params.dir) / a).resolve()
+        in (root.resolve(), *testpaths)
+        for a in args
+    )
+    narrowing = {
+        "keyword": config.option.keyword or "",
+        "markexpr": config.option.markexpr or "",
+        "ignore": list(config.getoption("ignore") or []),
+        "ignore_glob": list(config.getoption("ignore_glob") or []),
+        "last_failed": bool(config.getoption("lf", False)),
+        "stepwise": bool(config.getoption("stepwise", False)),
+    }
+    return {
+        "args": [Path(a).as_posix() for a in args],
+        **narrowing,
+        "complete": whole and not any(narrowing.values()),
+    }
+
+
+def pytest_deselected(items: list[pytest.Item]) -> None:
+    _state["deselected"] = int(str(_state.get("deselected", 0))) + len(items)
 
 
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
@@ -98,6 +133,9 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
         for suite in suite_names:
             suites[suite][outcome] += 1
     dirty_paths = _state.get("dirty_paths")
+    selection = dict(_state["selection"])  # type: ignore[call-overload]
+    selection["deselected"] = _state.get("deselected", 0)
+    selection["complete"] = bool(selection["complete"]) and not selection["deselected"] and not totals.get("not_run")
     report = {
         "format": TEST_REPORT_FORMAT,
         "revision": _state.get("revision"),
@@ -110,6 +148,7 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
         "pytest": pytest.__version__,
         "exit_status": int(exitstatus),
         "collected": len(_suites_of),
+        "selection": selection,
         "totals": dict(sorted(totals.items())),
         "suites": {name: dict(sorted(suites[name].items())) for name in SUITES if name in suites},
         "failures": sorted(n for n, o in _outcomes.items() if o in ("failed", "error")),

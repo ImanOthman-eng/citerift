@@ -21,6 +21,21 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def manifest(root: Path, directory: str) -> list[dict[str, str]]:
+    """sha256 of every file under ``directory``, sorted by repository-relative path."""
+    base = root / directory
+    if not base.is_dir():
+        return []
+    files = sorted(p for p in base.rglob("*") if p.is_file())
+    return [{"path": p.relative_to(root).as_posix(), "sha256": sha256_file(p)} for p in files]
+
+
+def canonical_sha256(data: Any) -> str:
+    """Hash of a JSON value in canonical form (sorted keys, no whitespace)."""
+    text = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 def is_url(ref: str) -> bool:
     return ref.startswith("https://")
 
@@ -119,6 +134,16 @@ def check_test_report(
                 f"{rel} records {totals.get('failed', 0)} failed and {totals.get('error', 0)} errored tests",
             )
         )
+    selection = report.get("selection")
+    if not isinstance(selection, dict) or selection.get("complete") is not True:
+        problems.append(
+            Problem(
+                "TEST_EVIDENCE_PARTIAL",
+                f"{rel} does not record a run of the complete test suite (selection: {selection})",
+            )
+        )
+    if isinstance(totals, dict) and totals.get("not_run", 0):
+        problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records {totals['not_run']} tests that did not run"))
     if report.get("exit_status") != 0:
         problems.append(Problem("TESTS_FAILED", f"{rel} records pytest exit status {report.get('exit_status')}"))
     suites = report.get("suites", {})

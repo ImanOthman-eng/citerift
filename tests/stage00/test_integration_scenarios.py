@@ -388,6 +388,7 @@ def test_12_future_enhancement_preserving_contracts(sandbox: Sandbox) -> None:
         "dirty": False,
         "exit_status": 1,
         "totals": {"passed": 79, "failed": 1},
+        "selection": {"args": ["tests"], "deselected": 0, "complete": True},
         "suites": {s: {"passed": 10} for s in sandbox.orc().stage("00")["required_test_suites"]},
     }
     sandbox.write(report_rel, json.dumps(failing))

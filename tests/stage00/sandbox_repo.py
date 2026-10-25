@@ -155,6 +155,7 @@ class Sandbox:
                 "dirty": False,
                 "exit_status": 0,
                 "totals": {"passed": 10 * len(stage["required_test_suites"])},
+                "selection": {"args": ["tests"], "deselected": 0, "complete": True},
                 "suites": {s: {"passed": 10} for s in stage["required_test_suites"]},
             }
             data.update(report_overrides or {})

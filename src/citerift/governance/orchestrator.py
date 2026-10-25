@@ -44,6 +44,19 @@ REGISTRY_SCHEMA_PATH = Path("schemas/governance/stage_registry.schema.json")
 STATUS_DOC_PATH = Path("PROJECT_STATUS.md")
 DECISIONS_PATH = Path("DECISIONS.md")
 RISKS_PATH = Path("RISKS.md")
+# Stage fields that define what verification means; recorded as a hash at verification (F-03).
+DEFINITION_FIELDS = (
+    "id",
+    "name",
+    "executor",
+    "depends_on",
+    "verification_dir",
+    "owned_paths",
+    "required_artifacts",
+    "required_test_suites",
+    "ci_required",
+    "acceptance_gates",
+)
 
 Registry = dict[str, Any]
 StageRecord = dict[str, Any]
@@ -128,6 +141,11 @@ class Orchestrator:
 
     def _ci_required(self, stage: StageRecord) -> bool:
         return bool(stage.get("ci_required", stage["executor"] == Actor.ENGINEERING_AGENT))
+
+    def _definition_sha256(self, stage: StageRecord) -> str:
+        """Hash of the rules a verification was checked against: the stage definition and the policy."""
+        definition = {k: stage.get(k) for k in DEFINITION_FIELDS}
+        return evidence.canonical_sha256({"stage": definition, "policy": self.registry["policy"]})
 
     # ------------------------------------------------------------ read-only ops
 
@@ -510,6 +528,8 @@ class Orchestrator:
             ):
                 out.append(Finding(p.code, "error", sid, p.message))
         if recorded is not None:
+            out += self._manifest_findings(stage, recorded)
+            out += self._definition_findings(stage, recorded)
             out += self._gate_findings(stage, recorded)
             ci = recorded.get("ci")
             if ci is None and self._ci_required(stage):
@@ -547,6 +567,7 @@ class Orchestrator:
                 Finding("GATES_UNDEFINED", "error", sid, "verification recorded but no acceptance gates are defined")
             )
         results = recorded["gates"]
+        manifest_paths = {e["path"] for e in recorded["evidence_manifest"]}
         for gid in defined:
             result = results.get(gid)
             if result is None:
@@ -554,26 +575,92 @@ class Orchestrator:
                 continue
             if result["result"] != "pass":
                 out.append(Finding("GATE_NOT_PASSED", "error", sid, f"gate {gid} is '{result['result']}'"))
+            pinned = False
             for ref in result["evidence"]:
-                if not evidence.is_url(ref) and not (evidence.inside(self.root, ref) and (self.root / ref).exists()):
+                if evidence.is_url(ref):
+                    pinned = True
+                elif not (evidence.inside(self.root, ref) and (self.root / ref).is_file()):
                     out.append(
-                        Finding("GATE_EVIDENCE_MISSING", "error", sid, f"gate {gid} cites {ref}, which does not exist")
+                        Finding("GATE_EVIDENCE_MISSING", "error", sid, f"gate {gid} cites {ref}, which is not a file")
                     )
+                elif ref in manifest_paths or self._owned(stage, ref):
+                    pinned = True
+            if not pinned:
+                out.append(
+                    Finding(
+                        "GATE_EVIDENCE_UNPINNED",
+                        "error",
+                        sid,
+                        f"gate {gid} cites no hash-pinned evidence (a file in the evidence manifest or an owned path, "
+                        "or an https URL)",
+                    )
+                )
         for gid in results:
             if gid not in defined:
                 out.append(Finding("GATE_UNKNOWN", "error", sid, f"result recorded for undefined gate {gid}"))
         return out
 
+    @staticmethod
+    def _owned(stage: StageRecord, rel: str) -> bool:
+        return any(rel == p or rel.startswith(p.rstrip("/") + "/") for p in stage["owned_paths"])
+
+    def _manifest_findings(self, stage: StageRecord, recorded: dict[str, Any]) -> list[Finding]:
+        """Every file under the verification directory is pinned by hash at verification (F-02)."""
+        sid = stage["id"]
+        recorded_hashes = {e["path"]: e["sha256"] for e in recorded["evidence_manifest"]}
+        current = {e["path"]: e["sha256"] for e in evidence.manifest(self.root, stage["verification_dir"])}
+        later = {a["test_report"]["path"] for a in stage["amendments"] if a["test_report"]}
+        out: list[Finding] = []
+        for rel, sha in sorted(recorded_hashes.items()):
+            if rel not in current:
+                out.append(Finding("EVIDENCE_MISSING", "error", sid, f"recorded evidence {rel} no longer exists"))
+            elif current[rel] != sha:
+                out.append(
+                    Finding("EVIDENCE_STALE", "error", sid, f"{rel} changed after verification (sha256 mismatch)")
+                )
+        for rel in sorted(set(current) - set(recorded_hashes) - later):
+            out.append(
+                Finding(
+                    "EVIDENCE_UNLISTED", "error", sid, f"{rel} was added to the evidence directory after verification"
+                )
+            )
+        return out
+
+    def _definition_findings(self, stage: StageRecord, recorded: dict[str, Any]) -> list[Finding]:
+        """The stage definition and policy must be the ones the stage was verified against (F-03)."""
+        sid = stage["id"]
+        out: list[Finding] = []
+        if recorded["definition_sha256"] != self._definition_sha256(stage):
+            out.append(
+                Finding(
+                    "DEFINITION_CHANGED",
+                    "error",
+                    sid,
+                    "the stage definition or the policy changed after verification",
+                )
+            )
+        if stage["executor"] == Actor.ENGINEERING_AGENT:
+            for field_name in ("owned_paths", "required_test_suites", "acceptance_gates"):
+                if not stage[field_name]:
+                    out.append(
+                        Finding(
+                            "DEFINITION_WEAK",
+                            "error",
+                            sid,
+                            f"an engineering stage cannot be verified with empty {field_name}",
+                        )
+                    )
+        return out
+
     def _drift_findings(self, stage: StageRecord) -> list[Finding]:
+        """Owned content at HEAD must equal the content at a covering revision.
+
+        Content is compared, not history: "which commit last touched these
+        paths" misses a merge that restores an older version (F-01).
+        """
         sid = stage["id"]
         paths = stage["owned_paths"]
         if not paths or not gitutil.is_repository(self.root):
-            return []
-        try:
-            last = gitutil.last_commit_touching(self.root, paths)
-        except gitutil.GitUnavailableError as exc:
-            return [Finding("REVISION_UNVERIFIABLE", "error", sid, f"cannot inspect history of owned paths: {exc}")]
-        if last is None:
             return []
         covering = [stage["verification"]["revision"]]
         covering += [
@@ -581,17 +668,41 @@ class Orchestrator:
             for a in stage["amendments"]
             if a["kind"] == "enhancement" and a["revision"] and a["test_report"]
         ]
-        if any(gitutil.commit_exists(self.root, c) and gitutil.is_ancestor(self.root, last, c) for c in covering):
-            return []
-        return [
-            Finding(
-                "VERIFICATION_STALE",
-                "error",
-                sid,
-                f"owned paths changed in {last[:12]} after the verified revision, "
-                "with no recorded amendment covering the change",
+        out: list[Finding] = []
+        try:
+            changes = [
+                gitutil.changed_paths(self.root, c, paths) for c in covering if gitutil.commit_exists(self.root, c)
+            ]
+            if changes and all(changes):
+                last = gitutil.last_commit_touching(self.root, paths)
+                shown = ", ".join(changes[0][:5]) + (" ..." if len(changes[0]) > 5 else "")
+                out.append(
+                    Finding(
+                        "VERIFICATION_STALE",
+                        "error",
+                        sid,
+                        f"owned content differs from the verified revision ({shown}; last change seen in history: "
+                        f"{last[:12] if last else 'unknown'}), with no recorded amendment covering the change",
+                    )
+                )
+            dirty = [
+                p
+                for p in gitutil.dirty_paths(self.root)
+                if any(p == owned or p.startswith(owned.rstrip("/") + "/") for owned in paths)
+            ]
+        except gitutil.GitUnavailableError as exc:
+            return [Finding("REVISION_UNVERIFIABLE", "error", sid, f"cannot inspect owned paths: {exc}")]
+        if dirty:
+            out.append(
+                Finding(
+                    "UNCOMMITTED_OWNED_CHANGE",
+                    "warning",
+                    sid,
+                    f"uncommitted changes to owned paths ({', '.join(dirty[:5])}); "
+                    "committing them makes the stage stale",
+                )
             )
-        ]
+        return out
 
     def _acceptance_findings(self) -> list[Finding]:
         out: list[Finding] = []
@@ -835,6 +946,8 @@ class Orchestrator:
             "recorded_at": at,
             "artifacts": artifacts,
             "test_report": report,
+            "evidence_manifest": evidence.manifest(self.root, stage["verification_dir"]),
+            "definition_sha256": self._definition_sha256(stage),
             "gates": gates,
         }
         if ci is not None:
