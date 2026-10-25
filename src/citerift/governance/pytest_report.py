@@ -32,6 +32,10 @@ SUITES = (
     "simulation",
 )
 
+# ``-o`` values that pytest itself sets for options that only make a run stricter (``--strict-markers``).
+# Any other ini override can change what is collected, so it makes the run partial.
+_STRICTER_OVERRIDES = frozenset({"strict_markers=true"})
+
 _outcomes: dict[str, str] = {}
 _suites_of: dict[str, tuple[str, ...]] = {}
 _state: dict[str, object] = {}
@@ -53,6 +57,8 @@ def pytest_configure(config: pytest.Config) -> None:
     root = Path(str(config.rootpath))
     report = config.getoption("--citerift-report")
     _state["deselected"] = 0
+    _state["itemcollected"] = 0
+    _state["files"] = []
     _state["selection"] = _selection(config, root)
     try:
         exclude: tuple[str, ...] = ()
@@ -78,7 +84,10 @@ def _selection(config: pytest.Config, root: Path) -> dict[str, object]:
         in (root.resolve(), *testpaths)
         for a in args
     )
+    inipath = config.inipath
     narrowing = {
+        "override_ini": [o for o in config.option.override_ini or [] if o not in _STRICTER_OVERRIDES],
+        "other_ini_file": "" if inipath == root / "pyproject.toml" else str(inipath),
         "keyword": config.option.keyword or "",
         "markexpr": config.option.markexpr or "",
         "ignore": list(config.getoption("ignore") or []),
@@ -97,7 +106,21 @@ def pytest_deselected(items: list[pytest.Item]) -> None:
     _state["deselected"] = int(str(_state.get("deselected", 0))) + len(items)
 
 
-def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+def pytest_itemcollected(item: pytest.Item) -> None:
+    _state["itemcollected"] = int(str(_state.get("itemcollected", 0))) + 1
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    root = Path(str(config.rootpath)).resolve()
+    _state["final_items"] = len(items)
+    _state["files"] = sorted(
+        {
+            Path(str(i.path)).resolve().relative_to(root).as_posix()
+            for i in items
+            if Path(str(i.path)).resolve().is_relative_to(root)
+        }
+    )
     unmarked = []
     for item in items:
         suites = tuple(s for s in SUITES if item.get_closest_marker(s) is not None)
@@ -135,7 +158,19 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
     dirty_paths = _state.get("dirty_paths")
     selection = dict(_state["selection"])  # type: ignore[call-overload]
     selection["deselected"] = _state.get("deselected", 0)
-    selection["complete"] = bool(selection["complete"]) and not selection["deselected"] and not totals.get("not_run")
+    # Items a conftest hook removed without reporting them as deselected.
+    selection["dropped"] = (
+        int(str(_state.get("itemcollected", 0)))
+        - int(str(_state.get("final_items", 0)))
+        - int(str(selection["deselected"]))
+    )
+    selection["files"] = _state.get("files", [])
+    selection["complete"] = (
+        bool(selection["complete"])
+        and not selection["deselected"]
+        and not selection["dropped"]
+        and not totals.get("not_run")
+    )
     report = {
         "format": TEST_REPORT_FORMAT,
         "revision": _state.get("revision"),
@@ -153,4 +188,5 @@ def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
         "suites": {name: dict(sorted(suites[name].items())) for name in SUITES if name in suites},
         "failures": sorted(n for n, o in _outcomes.items() if o in ("failed", "error")),
     }
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

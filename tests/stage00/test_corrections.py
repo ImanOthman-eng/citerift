@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from sandbox_repo import REPO, Sandbox, git
+from sandbox_repo import FILLER, REPO, Sandbox, git
 
 from citerift.governance import evidence
 from citerift.governance.model import Actor, Status
@@ -108,8 +108,18 @@ def test_f02_every_file_in_the_evidence_directory_is_pinned(sandbox: Sandbox, ed
 
 
 @pytest.mark.integration
-@pytest.mark.parametrize(("refs", "code"), [(["."], "GATE_EVIDENCE_MISSING"), (["RISKS.md"], "GATE_EVIDENCE_UNPINNED")])
+@pytest.mark.parametrize(
+    ("refs", "code"),
+    [
+        (["."], "GATE_EVIDENCE_MISSING"),
+        (["RISKS.md"], "GATE_EVIDENCE_UNPINNED"),
+        (["https://example.invalid/anything"], "GATE_EVIDENCE_UNPINNED"),
+        (["docs/verification/stage-00/HANDOFF.md", "RISKS.md"], "GATE_EVIDENCE_UNPINNED"),
+    ],
+    ids=["dot", "unpinned_file", "url_only", "pinned_plus_unpinned"],
+)
 def test_f02_gate_evidence_must_be_a_pinned_file(sandbox: Sandbox, refs: list[str], code: str) -> None:
+    """F-02; the last two cases are V-02 of the final independent review (a URL or one pinned file sufficed)."""
     for target in ("AUTHORIZED", "IN_PROGRESS"):
         assert sandbox.go("00", Status(target)).allowed
     rev = sandbox.commit("implement")
@@ -119,6 +129,23 @@ def test_f02_gate_evidence_must_be_a_pinned_file(sandbox: Sandbox, refs: list[st
     result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
     assert not result.allowed
     assert code in sandbox.codes(result.findings)
+
+
+@pytest.mark.integration
+def test_v02_owned_file_and_url_are_accepted_as_gate_evidence(sandbox: Sandbox) -> None:
+    """An owned-path file is pinned by the drift check, so it counts; a URL may be cited next to a pinned file."""
+    sandbox.write(OWNED_FILE, "version = 1\n")
+    for target in ("AUTHORIZED", "IN_PROGRESS"):
+        assert sandbox.go("00", Status(target)).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    gates = {
+        gid: {"result": "pass", "evidence": [OWNED_FILE, "https://example.invalid/run/1"]}
+        for gid in sandbox.gates("00")
+    }
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+    assert result.allowed, [str(f) for f in result.findings]
 
 
 # ------------------------------------------------------------------ F-03
@@ -201,6 +228,63 @@ def test_f03_policy_is_fixed_by_the_schema_before_any_verification(sandbox: Sand
     assert sandbox.codes(sandbox.orc().check()) == {"REGISTRY_SCHEMA"}
 
 
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "edit",
+    ["no_artifacts_override", "fewer_artifacts_override", "engineering_stage_as_external", "stage01_as_engineering"],
+)
+def test_v03_stage_overrides_cannot_weaken_the_policy_before_verification(sandbox: Sandbox, edit: str) -> None:
+    """V-03 (final independent review): a stage-level artifact list or a changed executor bypassed the fixed policy."""
+    reg = sandbox.registry()
+    s00, s01, s02 = reg["stages"][0], reg["stages"][1], reg["stages"][2]
+    if edit == "no_artifacts_override":
+        s00["required_artifacts"] = []
+    elif edit == "fewer_artifacts_override":
+        s02["required_artifacts"] = ["HANDOFF.md"]
+    elif edit == "engineering_stage_as_external":
+        s02["executor"] = "external-agent"
+        s02["ci_required"] = False
+    else:
+        s01["executor"] = "engineering-agent"
+        s01["ci_required"] = True
+    sandbox.save_registry(reg)
+    assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.integration
+def test_v03_handoff_is_required_even_if_a_stage_lists_other_artifacts(sandbox: Sandbox) -> None:
+    reg = sandbox.registry()
+    reg["stages"][1]["required_artifacts"] = ["NOTES.md"]
+    sandbox.save_registry(reg)
+    sandbox.commit("external stage lists its own artifact")
+    assert sandbox.go("01", Status.AUTHORIZED).allowed
+    assert sandbox.go("01", Status.IN_PROGRESS).allowed
+    rev = sandbox.commit("feasibility work")
+    assert sandbox.go("01", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write("docs/verification/stage-01/NOTES.md", FILLER * 3)
+    notes = "docs/verification/stage-01/NOTES.md"
+    gates = {gid: {"result": "pass", "evidence": [notes]} for gid in sandbox.gates("01")}
+    result = sandbox.go("01", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates)
+    assert not result.allowed
+    assert "docs/verification/stage-01/HANDOFF.md" in " ".join(str(f) for f in result.findings)
+
+
+@pytest.mark.integration
+def test_v03_engineering_stage_with_an_empty_definition_cannot_be_verified(sandbox: Sandbox) -> None:
+    """DEFINITION_WEAK had no test (hand mutant H12 survived)."""
+    sandbox.drive_to_accepted("00")
+    sandbox.drive_to_accepted("01")
+    assert sandbox.go("02", Status.AUTHORIZED).allowed
+    assert sandbox.go("02", Status.IN_PROGRESS).allowed
+    sandbox.write("impl/02.txt", "stage 02\n")
+    rev = sandbox.commit("stage 02 work")
+    assert sandbox.go("02", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("02", rev)
+    result = sandbox.go("02", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("02"), ci=sandbox.ci(rev))
+    assert not result.allowed
+    assert "DEFINITION_WEAK" in sandbox.codes(result.findings)
+
+
 # ------------------------------------------------------------------ F-07
 
 
@@ -215,6 +299,10 @@ def _plugin_project(tmp_path: Path) -> Path:
         "@pytest.mark.negative\ndef test_gamma():\n    pass\n",
         encoding="utf-8",
     )
+    (project / "tests" / "test_other.py").write_text(
+        "import pytest\n\n@pytest.mark.unit\ndef test_delta():\n    pass\n", encoding="utf-8"
+    )
+    (project / ".gitignore").write_text("__pycache__/\n", encoding="utf-8")
     git(project, "init", "-q")
     git(project, "add", "-A")
     git(project, "commit", "-q", "-m", "init")
@@ -282,6 +370,57 @@ def test_f07_run_stopped_early_is_partial(tmp_path: Path) -> None:
     _, data, _ = _run_plugin(project, project / "r.json", "-x")
     assert data["totals"].get("not_run") == 2
     assert data["selection"]["complete"] is False
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize(
+    ("conftest", "args"),
+    [
+        (None, ["-o", "python_files=test_sample.py"]),
+        (None, ["-o", "testpaths=tests/test_sample.py"]),
+        (None, ["-c", "other.ini"]),
+        ("def pytest_collection_modifyitems(items):\n    items[:] = items[:1]\n", []),
+        ("collect_ignore = ['test_other.py']\n", []),
+    ],
+    ids=["override_python_files", "override_testpaths", "other_ini_file", "conftest_drops_items", "collect_ignore"],
+)
+def test_v01_narrowing_by_configuration_or_conftest_is_partial(
+    tmp_path: Path, conftest: str | None, args: list[str]
+) -> None:
+    """V-01 (final independent review): ini overrides and a committed conftest still gave a "complete" partial run."""
+    project = _plugin_project(tmp_path)
+    (project / "other.ini").write_text("[pytest]\ntestpaths = tests/test_sample.py\n", encoding="utf-8")
+    if conftest is not None:
+        (project / "tests" / "conftest.py").write_text(conftest, encoding="utf-8")
+    git(project, "add", "-A")
+    git(project, "commit", "-q", "-m", "narrowing")
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json", *args)
+    assert code == 0 and data["totals"]["passed"] < 4, output
+    shutil.copy(reports / "r.json", project / "r.json")
+    head = git(project, "rev-parse", "HEAD")
+    problems = evidence.check_test_report(project, "r.json", None, head, ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, (data["selection"], problems)
+
+
+@pytest.mark.integration
+def test_v01_strict_markers_keeps_the_run_complete(tmp_path: Path) -> None:
+    project = _plugin_project(tmp_path)
+    code, data, output = _run_plugin(project, tmp_path / "r.json", "--strict-markers")
+    assert code == 0 and data["selection"]["complete"] is True, output
+    shutil.copy(tmp_path / "r.json", project / "r.json")
+    head = git(project, "rev-parse", "HEAD")
+    assert evidence.check_test_report(project, "r.json", None, head, ["unit", "negative"]) == []
+
+
+@pytest.mark.negative
+def test_v16_report_into_a_new_directory_is_written(tmp_path: Path) -> None:
+    project = _plugin_project(tmp_path)
+    target = tmp_path / "not-yet" / "there" / "report.json"
+    code, data, output = _run_plugin(project, target)
+    assert code == 0 and "Traceback" not in output, output
+    assert data["selection"]["complete"] is True
 
 
 # ------------------------------------------------------------------ F-14
@@ -452,6 +591,97 @@ def test_f11_foundation_can_be_reopened_after_a_dependent_was_accepted(sandbox: 
     assert not errors(final) and "DEPENDENCY_REOPENED" not in sandbox.codes(final, "warning")
 
 
+def _reopen_and_reverify(sandbox: Sandbox, *, amendment_ref: str, reopen_ref: str) -> tuple[str, str]:
+    """Accepted Stage 00 -> correction amendment -> reopen -> re-verify. Returns (amendment id, revision)."""
+    aid = sandbox.orc().add_amendment(
+        "00",
+        kind="correction",
+        reason="defect found by an independent review",
+        evidence_refs=["RISKS.md"],
+        owner_ref=amendment_ref,
+        at=sandbox.tick(),
+    )
+    assert sandbox.go("00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref=reopen_ref).allowed
+    sandbox.write("impl/00.txt", f"corrected {sandbox.clock}\n")
+    rev = sandbox.commit("correct 00")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    gates, ci = sandbox.gates("00"), sandbox.ci(rev)
+    assert sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=ci).allowed
+    return aid, rev
+
+
+@pytest.mark.integration
+def test_v07_acceptance_cannot_cite_the_amendment_reference(sandbox: Sandbox) -> None:
+    """V-07: the reuse rule searched history only; the amendment's reference predates the verification too."""
+    sandbox.drive_to_accepted("00")
+    _reopen_and_reverify(sandbox, amendment_ref="cmsg_TESTAMENDREF01", reopen_ref="cmsg_TESTREOPENREF02")
+    reused = sandbox.go("00", Status.ACCEPTED_CLOSED, owner_ref="cmsg_TESTAMENDREF01")
+    assert not reused.allowed and "OWNER_REF_REUSED" in sandbox.codes(reused.findings)
+    assert sandbox.go("00", Status.ACCEPTED_CLOSED, owner_ref="cmsg_TESTNEWACCEPT02").allowed
+
+
+@pytest.mark.integration
+def test_v08_a_correction_amendment_justifies_one_reopening(sandbox: Sandbox) -> None:
+    sandbox.drive_to_accepted("00")
+    aid, _ = _reopen_and_reverify(sandbox, amendment_ref="cmsg_TESTAMENDREF01", reopen_ref="cmsg_TESTAMENDREF01")
+    assert sandbox.go("00", Status.ACCEPTED_CLOSED, owner_ref="cmsg_TESTNEWACCEPT02").allowed
+    again = sandbox.go("00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref="cmsg_TESTREOPENREF03")
+    assert not again.allowed
+    assert "HISTORY_AMENDMENT_REUSED" in sandbox.codes(again.findings)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("kind", ["amendment", "blocker"])
+def test_v09_duplicate_record_ids_are_errors(sandbox: Sandbox, kind: str) -> None:
+    sandbox.drive_to_accepted("00")
+    reg = sandbox.registry()
+    s00 = reg["stages"][0]
+    if kind == "amendment":
+        record = {
+            "id": "A-00-001",
+            "kind": "correction",
+            "reason": "defect found by an independent review",
+            "evidence": ["RISKS.md"],
+            "owner_ref": "cmsg_TESTAMENDREF01",
+            "revision": None,
+            "test_report": None,
+            "recorded_at": reg["history"][-1]["at"],
+        }
+        s00["amendments"] = [record, {**record, "kind": "enhancement"}]
+        code = "AMENDMENT_DUPLICATE_ID"
+    else:
+        blocker = {
+            "id": "B-00-001",
+            "description": "d",
+            "opened_at": reg["history"][0]["at"],
+            "resolved_at": reg["history"][1]["at"],
+            "resolution": "done",
+        }
+        s00["blockers"] = [blocker, dict(blocker)]
+        code = "BLOCKER_DUPLICATE_ID"
+    sandbox.save_registry(reg)
+    assert code in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.integration
+def test_v05_a_correction_test_report_is_not_exempt_from_the_manifest(sandbox: Sandbox) -> None:
+    """V-05: naming any file as an amendment test report exempted it from the evidence manifest."""
+    sandbox.drive_to_accepted("00")
+    late = "docs/verification/stage-00/late-evidence.md"
+    sandbox.write(late, "added after verification\n")
+    sandbox.orc().add_amendment(
+        "00",
+        kind="correction",
+        reason="defect found by an independent review",
+        evidence_refs=["RISKS.md"],
+        owner_ref="cmsg_TESTAMENDREF01",
+        test_report=late,
+        at=sandbox.tick(),
+    )
+    assert "EVIDENCE_UNLISTED" in sandbox.codes(sandbox.orc().check())
+
+
 # ------------------------------------------------------------------ F-06
 
 CRITICAL = (
@@ -499,6 +729,49 @@ def test_f06_heading_level_and_topic_case(tmp_path: Path) -> None:
     assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
 
 
+FIELDS = "- Status: open\n- Severity: critical\n- Kind: defect\n- Stage: 00\n\nBody.\n"
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "heading",
+    [
+        "## R\u2013016 \u2014 Critical defect\n",
+        "## R\u2011016 \u2014 Critical defect\n",
+        "## R_016 \u2014 Critical defect\n",
+        "## \uff32-016 \u2014 Critical defect\n",
+        "## R016 \u2014 Critical defect\n",
+        "R-016 \u2014 Critical defect\n-----------------------\n",
+        "<h2>R-016 \u2014 Critical defect</h2>\n",
+    ],
+    ids=["en_dash_in_id", "non_breaking_hyphen", "underscore", "fullwidth_letter", "no_hyphen", "setext", "html"],
+)
+def test_v06_any_unparsed_entry_is_malformed(tmp_path: Path, heading: str) -> None:
+    """V-06 (final independent review): these headings were skipped, hiding an open critical defect."""
+    from citerift.governance import memory
+
+    risks = tmp_path / "RISKS.md"
+    risks.write_text("# Risks\n\n" + heading + FIELDS, encoding="utf-8")
+    assert "MEMORY_MALFORMED" in {p.code for p in memory.check_risks(risks)[1]}
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("other", ["python version", "Python\u2011version", "\uff50ython-version", "python_version"])
+def test_v06_topic_spelling_variants_are_one_topic(tmp_path: Path, other: str) -> None:
+    from citerift.governance import memory
+
+    decisions = tmp_path / "DECISIONS.md"
+    body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+    decisions.write_text(
+        "# Decisions\n\n## D-001 \u2014 One\n"
+        + body.format(topic="python-version")
+        + "\n## D-002 \u2014 Two\n"
+        + body.format(topic=other),
+        encoding="utf-8",
+    )
+    assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+
+
 # ------------------------------------------------------------- F-13, F-18
 
 
@@ -525,6 +798,41 @@ def test_f13_f18_unreadable_registry_is_reported_not_crashed(sandbox: Sandbox, d
         assert "Traceback" not in out.stderr
         assert "REGISTRY_UNREADABLE" in out.stdout
     assert "HEAD:" in out.stdout
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("damage", "command"),
+    [
+        ("schema_missing", "check"),
+        ("schema_truncated", "recover"),
+        ("registry_empty_object", "recover"),
+        ("registry_empty_object", "status"),
+        ("risks_not_utf8", "check"),
+    ],
+)
+def test_v10_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str, command: str) -> None:
+    """V-10 (final independent review): residual tracebacks of F-13."""
+    root = sandbox.root
+    if damage == "schema_missing":
+        (root / "schemas/governance/stage_registry.schema.json").unlink()
+    elif damage == "schema_truncated":
+        path = root / "schemas/governance/stage_registry.schema.json"
+        path.write_text(path.read_text(encoding="utf-8")[:100], encoding="utf-8")
+    elif damage == "registry_empty_object":
+        (root / "governance/stage_registry.json").write_text("{}\n", encoding="utf-8")
+    else:
+        with (root / "RISKS.md").open("ab") as fh:
+            fh.write(b"\xff\n")
+    out = subprocess.run(
+        [sys.executable, "-m", "citerift.governance.cli", "--root", str(root), command],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert out.returncode == 1, out.stdout + out.stderr
+    assert "Traceback" not in out.stderr, out.stderr
+    assert "ERROR" in out.stdout
 
 
 @pytest.mark.negative
@@ -574,6 +882,33 @@ def test_f16_future_timestamps_are_refused_and_detected(sandbox: Sandbox) -> Non
     assert "HISTORY_FUTURE_TIMESTAMP" in sandbox.codes(sandbox.orc().check())
 
 
+@pytest.mark.integration
+def test_v11_default_times_never_precede_the_last_entry(sandbox: Sandbox) -> None:
+    """V-11: an entry dated up to 5 minutes ahead made the next blocker or transition fail on a correct clock."""
+    from datetime import timedelta
+
+    from citerift.governance.orchestrator import utc_now
+
+    assert sandbox.go("00", Status.AUTHORIZED).allowed
+    assert sandbox.go("00", Status.IN_PROGRESS, at=utc_now(timedelta(minutes=4))).allowed
+    orc = sandbox.orc()
+    orc.add_blocker("00", "waiting for an owner decision")
+    result = Orchestrator(sandbox.root).propose("00", Status.BLOCKED, actor=Actor.ENGINEERING_AGENT, reason="blocked")
+    assert result.allowed, [str(f) for f in result.findings]
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(("minutes", "allowed"), [(4, True), (6, False)])
+def test_v15_clock_skew_bound_is_five_minutes(sandbox: Sandbox, minutes: int, allowed: bool) -> None:
+    """Hand mutant H6 (bound widened) survived: only a year-2030 time was tested."""
+    from datetime import timedelta
+
+    from citerift.governance.orchestrator import utc_now
+
+    result = sandbox.go("00", Status.AUTHORIZED, at=utc_now(timedelta(minutes=minutes)))
+    assert result.allowed is allowed
+
+
 # ------------------------------------------------------------------ F-17
 
 
@@ -592,6 +927,48 @@ def test_f17_record_times_must_match_history(sandbox: Sandbox) -> None:
     reg["stages"][0]["acceptance"]["recorded_at"] = reg["stages"][0]["verification"]["recorded_at"]
     sandbox.save_registry(reg)
     assert "RECORD_HISTORY_MISMATCH" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.integration
+def test_v12_nested_gitattributes_is_an_error(sandbox: Sandbox) -> None:
+    """V-12: a nested .gitattributes outside the owned paths changed checkout bytes, so every clone saw stale hashes."""
+    sandbox.write("docs/.gitattributes", "*.md text eol=crlf\n")
+    sandbox.commit("nested attributes")
+    assert "ATTRIBUTES_NESTED" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.integration
+def test_v13_replace_refs_do_not_hide_drift(sandbox: Sandbox) -> None:
+    """V-13: ``git replace`` made the verified commit look like HEAD's tree to ``git diff``."""
+    verified = sandbox.drive_to_verified("00")
+    sandbox.write(OWNED_FILE, "tampered = True\n")
+    sandbox.commit("tamper with owned code")
+    assert "VERIFICATION_STALE" in sandbox.codes(sandbox.orc().check())
+    tree = git(sandbox.root, "rev-parse", "HEAD^{tree}")
+    fake = git(sandbox.root, "commit-tree", tree, "-p", f"{verified}^", "-m", "fake")
+    git(sandbox.root, "replace", verified, fake)
+    assert "VERIFICATION_STALE" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.negative
+def test_v15_amendment_recorded_after_the_reopening_is_an_error(sandbox: Sandbox) -> None:
+    """Hand mutant H1 (amendment time not compared) survived."""
+    sandbox.drive_to_accepted("00")
+    aid = sandbox.orc().add_amendment(
+        "00",
+        kind="correction",
+        reason="defect found by an independent review",
+        evidence_refs=["RISKS.md"],
+        owner_ref="cmsg_TESTAMENDREF01",
+        at=sandbox.tick(),
+    )
+    assert sandbox.go(
+        "00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref="cmsg_TESTAMENDREF01"
+    ).allowed
+    reg = sandbox.registry()
+    reg["stages"][0]["amendments"][0]["recorded_at"] = sandbox.tick()
+    sandbox.save_registry(reg)
+    assert "HISTORY_AMENDMENT_MISSING" in sandbox.codes(sandbox.orc().check())
 
 
 # ------------------------------------------------------------- F-20, F-23
@@ -616,13 +993,13 @@ def test_f23_package_is_marked_typed_and_owned() -> None:
     assert "src/citerift/py.typed" in stage00["owned_paths"]
 
 
-# ------------------------------------------- new defect found during A-00-001
+# ---------------------------------------- S-01, found while writing the package
 
 
 @pytest.mark.integration
-def test_n01_files_git_ignores_are_not_evidence(sandbox: Sandbox) -> None:
-    """N-01: the manifest hashed every file on disk, so a byte-code cache next to an evidence script
-    (ignored by git, absent from any clone) was pinned at verification or reported as unlisted later."""
+def test_s01_files_git_ignores_are_not_evidence(sandbox: Sandbox) -> None:
+    """S-01 (found during A-00-001): the manifest hashed every file on disk, so a byte-code cache next to an
+    evidence script (ignored by git, absent from any clone) was pinned at verification or reported as unlisted."""
     sandbox.write(".gitignore", "__pycache__/\n")
     sandbox.commit("ignore byte code")
     sandbox.drive_to_verified("00")

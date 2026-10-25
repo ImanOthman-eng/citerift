@@ -30,7 +30,7 @@ two `test_properties.py` mutation cases, and `test_recovery.py`. They show
 that the old code cannot read the new evidence, not that it accepts a
 violation. They are listed so that the count is complete.
 
-Defect N-01 was found during this correction, after the reviewed audit. Its
-test (`test_n01_files_git_ignores_are_not_evidence`) failed on `ee46423`
+Defect S-01 was found during this correction, after the reviewed audit. Its
+test (`test_s01_files_git_ignores_are_not_evidence`) failed on `ee46423`
 before its fix in `373045d`. It is not in this file, because `ae2ce9e` has no
 evidence manifest at all.

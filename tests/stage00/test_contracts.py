@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 
 from citerift.contracts import check_backward_compatible, load_contracts
+from citerift.contracts.formats import loads_strict
 from citerift.contracts.validate import main as contracts_main
 
 pytestmark = [pytest.mark.contracts]
@@ -18,11 +19,11 @@ REPO = Path(__file__).resolve().parents[2]
 SCHEMAS = REPO / "schemas" / "contracts"
 FIXTURES = Path(__file__).parent / "fixtures" / "contracts" / "v1"
 VALID = sorted((FIXTURES / "valid").glob("*.json"))
-CASES = json.loads((FIXTURES / "invalid_cases.json").read_text(encoding="utf-8"))
+CASES = loads_strict((FIXTURES / "invalid_cases.json").read_text(encoding="utf-8"))
 
 
 def load(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
+    return loads_strict(path.read_text(encoding="utf-8"))
 
 
 def apply_mutation(doc: Any, op: str, pointer: str, value: Any = None) -> Any:

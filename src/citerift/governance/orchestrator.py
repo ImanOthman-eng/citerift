@@ -123,6 +123,22 @@ class Orchestrator:
             registry = loads_strict((root / REGISTRY_PATH).read_text(encoding="utf-8"))
         self.registry: Registry = registry
 
+    def _now(self, *, after_history: bool = False) -> str:
+        """Default time for a new record: the local clock, but never before a time already recorded (V-11).
+
+        A blocker opened at the same second as the last transition would be replayed as open before it,
+        so ``after_history`` moves such a time one second past the last history entry.
+        """
+        recorded: list[str] = [h["at"] for h in self.registry["history"][-1:]]
+        for s in self.stages:
+            recorded += [b[k] for b in s["blockers"] for k in ("opened_at", "resolved_at") if b[k]]
+            recorded += [a["recorded_at"] for a in s["amendments"]]
+        now: str = max([utc_now(), *recorded])
+        if after_history and self.registry["history"] and now <= self.registry["history"][-1]["at"]:
+            last = datetime.strptime(self.registry["history"][-1]["at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+            now = (last + timedelta(seconds=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return now
+
     # ------------------------------------------------------------------ access
 
     @cached_property
@@ -142,7 +158,10 @@ class Orchestrator:
         raise KeyError(f"unknown stage {stage_id}")
 
     def _artifacts_for(self, stage: StageRecord) -> list[str]:
-        names = stage.get("required_artifacts", self.registry["policy"]["required_artifacts"])
+        names = list(stage.get("required_artifacts", self.registry["policy"]["required_artifacts"]))
+        handoff = self.registry["policy"]["handoff_file"]
+        if handoff not in names:
+            names.append(handoff)  # every stage hands off, whatever it lists (V-03)
         return [f"{stage['verification_dir']}/{n}" for n in names]
 
     def _test_report_for(self, stage: StageRecord) -> str | None:
@@ -236,6 +255,7 @@ class Orchestrator:
         findings += self._record_history_findings()
         findings += self._dependency_findings()
         findings += self._revision_findings()
+        findings += self._attributes_findings()
         for stage in self.stages:
             if stage["status"] in NEEDS_VERIFICATION and stage["verification"]:
                 v = stage["verification"]
@@ -247,6 +267,30 @@ class Orchestrator:
         if include_status_doc:
             findings += self._status_doc_findings()
         return findings
+
+    def schema_findings(self) -> list[Finding]:
+        """Registry schema violations; raises OSError or ValueError if the schema itself cannot be read."""
+        return self._schema_findings()
+
+    def _attributes_findings(self) -> list[Finding]:
+        """Evidence is hashed as checked out. The root .gitattributes (owned by Stage 00) fixes line endings;
+        a nested one would change checkout bytes for part of the tree, outside any owned path (V-12)."""
+        if not gitutil.is_repository(self.root) or gitutil.head(self.root) is None:
+            return []
+        try:
+            nested = [p for p in gitutil.tracked_files(self.root, "HEAD", ".") if p.endswith("/.gitattributes")]
+        except gitutil.GitUnavailableError:
+            return []
+        return [
+            Finding(
+                "ATTRIBUTES_NESTED",
+                "error",
+                None,
+                f"{p} overrides the line-ending policy of the root .gitattributes, so evidence hashes would "
+                "depend on the checkout; put attributes in the root file",
+            )
+            for p in nested
+        ]
 
     def _schema_findings(self) -> list[Finding]:
         validator = Draft202012Validator(self._schema, format_checker=FORMAT_CHECKER)
@@ -423,6 +467,24 @@ class Orchestrator:
         if source == Status.ACCEPTED_CLOSED:
             ref = h.get("amendment")
             amendment = next((a for a in stage["amendments"] if a["id"] == ref), None)
+            earlier = [
+                e["seq"]
+                for e in self.registry["history"]
+                if e["seq"] < h["seq"]
+                and e["stage"] == sid
+                and e["from"] == Status.ACCEPTED_CLOSED
+                and ref is not None
+                and e.get("amendment") == ref
+            ]
+            if earlier:
+                out.append(
+                    Finding(
+                        "HISTORY_AMENDMENT_REUSED",
+                        "error",
+                        sid,
+                        f"entry {index} reopens the stage with {ref}, which already justified entry {earlier[0]}",
+                    )
+                )
             if amendment is None or amendment["kind"] != "correction" or amendment["recorded_at"] > at:
                 out.append(
                     Finding(
@@ -491,8 +553,16 @@ class Orchestrator:
                 h["seq"] for h in history if h["stage"] == sid and h["to"] == Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE
             ]
             if acc is not None and verified_at:
+                verified_entry = next(h for h in history if h["seq"] == verified_at[-1])
                 reused = [
-                    h["seq"] for h in history if h["seq"] < verified_at[-1] and h["owner_ref"] == acc["owner_ref"]
+                    str(h["seq"]) for h in history if h["seq"] < verified_at[-1] and h["owner_ref"] == acc["owner_ref"]
+                ]
+                # Amendments cite owner statements too (V-07).
+                reused += [
+                    a["id"]
+                    for st in self.stages
+                    for a in st["amendments"]
+                    if a["owner_ref"] == acc["owner_ref"] and a["recorded_at"] <= verified_entry["at"]
                 ]
                 if reused:
                     out.append(
@@ -500,7 +570,7 @@ class Orchestrator:
                             "OWNER_REF_REUSED",
                             "error",
                             sid,
-                            f"the acceptance cites {acc['owner_ref']}, already cited by history entries {reused} "
+                            f"the acceptance cites {acc['owner_ref']}, already cited by {', '.join(reused)} "
                             "from before the stage was verified",
                         )
                     )
@@ -742,24 +812,34 @@ class Orchestrator:
                 continue
             if result["result"] != "pass":
                 out.append(Finding("GATE_NOT_PASSED", "error", sid, f"gate {gid} is '{result['result']}'"))
+            # A URL may be cited for context but is not pinned; every cited file must be pinned (in the
+            # evidence manifest, or under an owned path whose content the drift check compares).
             pinned = False
             for ref in result["evidence"]:
                 if evidence.is_url(ref):
-                    pinned = True
-                elif not (evidence.inside(self.root, ref) and (self.root / ref).is_file()):
+                    continue
+                if not (evidence.inside(self.root, ref) and (self.root / ref).is_file()):
                     out.append(
                         Finding("GATE_EVIDENCE_MISSING", "error", sid, f"gate {gid} cites {ref}, which is not a file")
                     )
                 elif ref in manifest_paths or self._owned(stage, ref):
                     pinned = True
+                else:
+                    out.append(
+                        Finding(
+                            "GATE_EVIDENCE_UNPINNED",
+                            "error",
+                            sid,
+                            f"gate {gid} cites {ref}, which is neither in the evidence manifest nor an owned path",
+                        )
+                    )
             if not pinned:
                 out.append(
                     Finding(
                         "GATE_EVIDENCE_UNPINNED",
                         "error",
                         sid,
-                        f"gate {gid} cites no hash-pinned evidence (a file in the evidence manifest or an owned path, "
-                        "or an https URL)",
+                        f"gate {gid} cites no hash-pinned file (a URL alone is not pinned)",
                     )
                 )
         for gid in results:
@@ -776,7 +856,11 @@ class Orchestrator:
         sid = stage["id"]
         recorded_hashes = {e["path"]: e["sha256"] for e in recorded["evidence_manifest"]}
         current = {e["path"]: e["sha256"] for e in evidence.manifest(self.root, stage["verification_dir"])}
-        later = {a["test_report"]["path"] for a in stage["amendments"] if a["test_report"]}
+        # Only an enhancement's test report may be added after verification; its own hash and revision are
+        # checked by _amendment_findings. A correction leads to a new verification instead (V-05).
+        later = {
+            a["test_report"]["path"] for a in stage["amendments"] if a["test_report"] and a["kind"] == "enhancement"
+        }
         out: list[Finding] = []
         for rel, sha in sorted(recorded_hashes.items()):
             if rel not in current:
@@ -904,6 +988,9 @@ class Orchestrator:
         for s in self.stages:
             sid = s["id"]
             ids = [a["id"] for a in s["amendments"]]
+            for kind, values in (("AMENDMENT", ids), ("BLOCKER", [b["id"] for b in s["blockers"]])):
+                for dup in sorted({v for v in values if values.count(v) > 1}):
+                    out.append(Finding(f"{kind}_DUPLICATE_ID", "error", sid, f"{dup} is recorded more than once"))
             reopen_refs = {
                 h.get("amendment")
                 for h in self.registry["history"]
@@ -928,7 +1015,20 @@ class Orchestrator:
                             self.root, report["path"], report["sha256"], a["revision"], s["required_test_suites"]
                         ):
                             out.append(Finding(p.code, "error", sid, f"amendment {a['id']}: {p.message}"))
-                elif a["id"] not in reopen_refs and s["status"] == Status.ACCEPTED_CLOSED:
+                elif a["test_report"] is not None:
+                    rel = a["test_report"]["path"]
+                    if not (evidence.inside(self.root, rel) and (self.root / rel).is_file()):
+                        out.append(Finding("EVIDENCE_MISSING", "error", sid, f"amendment {a['id']}: {rel} is missing"))
+                    elif evidence.sha256_file(self.root / rel) != a["test_report"]["sha256"]:
+                        out.append(
+                            Finding(
+                                "EVIDENCE_STALE",
+                                "error",
+                                sid,
+                                f"amendment {a['id']}: {rel} changed after it was recorded",
+                            )
+                        )
+                if a["kind"] != "enhancement" and a["id"] not in reopen_refs and s["status"] == Status.ACCEPTED_CLOSED:
                     out.append(
                         Finding(
                             "CORRECTION_PENDING",
@@ -983,7 +1083,7 @@ class Orchestrator:
         at: str | None = None,
     ) -> TransitionResult:
         """Dry-run a transition. Never writes anything."""
-        at = at or utc_now()
+        at = at or self._now()
         if future := _future_problem(at, "transition"):
             return TransitionResult(False, future)
         try:
@@ -1156,7 +1256,7 @@ class Orchestrator:
         record = {
             "id": bid,
             "description": description,
-            "opened_at": at or utc_now(),
+            "opened_at": at or self._now(after_history=True),
             "resolved_at": None,
             "resolution": None,
         }
@@ -1179,7 +1279,7 @@ class Orchestrator:
         stage = self.stage(stage_id)
         if not any(b["id"] == blocker_id and b["resolved_at"] is None for b in stage["blockers"]):
             raise GovernanceError([Finding("BLOCKER_UNKNOWN", "error", stage_id, f"no open blocker {blocker_id}")])
-        at = at or utc_now()
+        at = at or self._now()
 
         def change(r: Registry) -> None:
             for b in next(s for s in r["stages"] if s["id"] == stage_id)["blockers"]:
@@ -1233,7 +1333,7 @@ class Orchestrator:
             "owner_ref": owner_ref,
             "revision": revision,
             "test_report": report,
-            "recorded_at": at or utc_now(),
+            "recorded_at": at or self._now(),
         }
         self._mutate(lambda r: next(s for s in r["stages"] if s["id"] == stage_id)["amendments"].append(record))
         return aid

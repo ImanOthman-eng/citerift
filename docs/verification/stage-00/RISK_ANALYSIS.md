@@ -73,7 +73,7 @@ still pass. The new attacks below are the audit's bypasses and their variants.
 | 34 | Reuse the authorization reference for the acceptance; record time not equal to its history entry | `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` | accepted | `test_f17_*` |
 | 35 | Duplicate JSON key showing a reviewer one value and the checker another | `REGISTRY_UNREADABLE` / `UNREADABLE` | last value silently won | `test_f18_*`, `test_duplicate_json_keys_rejected` |
 | 36 | Weaken the workflow, the ruleset file or `.gitattributes` after verification | `VERIFICATION_STALE` (detection only) | not detected | `test_f20_*` |
-| 37 | Byte-code cache in the evidence directory pinned at verification, so every clone reports missing evidence (found during this correction, N-01) | ignored files left out of the manifest; a non-ignored added file is still `EVIDENCE_UNLISTED` | false errors | `test_n01_*` |
+| 37 | Byte-code cache in the evidence directory pinned at verification, so every clone reports missing evidence (found during this correction, S-01) | ignored files left out of the manifest; a non-ignored added file is still `EVIDENCE_UNLISTED` | false errors | `test_s01_*` |
 
 Seeded property tests apply 19 classes of single mutation to an accepted
 registry, 60 cases for each of 2 seeds. Every mutation is detected

@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pytest
 
+from citerift.contracts.formats import loads_strict
 from citerift.governance.orchestrator import Orchestrator, errors
 
 REPO = Path(__file__).resolve().parents[2]
@@ -93,6 +94,25 @@ def test_workflow_hardening(path: Path) -> None:
 def test_required_check_name_exists() -> None:
     text = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
     assert re.search(r"^  ci-gate:\n    name: ci-gate$", text, re.M)
+
+
+@pytest.mark.security
+@pytest.mark.regression
+def test_ci_runs_the_owned_sources_not_an_entry_point() -> None:
+    """V-04 (final independent review): ``citerift-gov`` is defined by pyproject.toml, which Stage 00 does not own,
+    so a change could point it at other code. CI must run the checked-out ``src/`` modules directly."""
+    text = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    assert re.search(r"^      PYTHONPATH: src$", text, re.M)
+    for command in (
+        "python -P -m citerift.governance.cli check",
+        "python -P -m citerift.governance.cli render-status --check",
+        "python -P -m citerift.contracts.validate check-schemas",
+        "python -P -m pytest --citerift-report ci-test-report.json",
+    ):
+        assert f"uv run --no-sync {command}" in text, command
+    assert "uv run --no-sync citerift-" not in text
+    assert "uv run --no-sync pytest" not in text
+    assert "citerift.__file__" in text, "CI must check that the package is imported from the checkout"
 
 
 @pytest.mark.security
@@ -186,7 +206,7 @@ def test_documented_links_exist() -> None:
 @pytest.mark.security
 def test_branch_ruleset_definition() -> None:
     """The committed ruleset is what the owner imports; it must match DECISIONS.md D-011."""
-    ruleset = json.loads((REPO / ".github/rulesets/main-protection.json").read_text(encoding="utf-8"))
+    ruleset = loads_strict((REPO / ".github/rulesets/main-protection.json").read_text(encoding="utf-8"))
     assert ruleset["enforcement"] == "active"
     assert ruleset["bypass_actors"] == []
     assert ruleset["conditions"]["ref_name"]["include"] == ["~DEFAULT_BRANCH"]

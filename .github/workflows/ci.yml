@@ -21,6 +21,9 @@ jobs:
     timeout-minutes: 20
     env:
       UV_PYTHON: ${{ matrix.python }}
+      # The checks run the checked-out src/ modules (Stage 00 owned paths) with -P, so neither the
+      # entry points in pyproject.toml nor a package in the working directory can replace them.
+      PYTHONPATH: src
     strategy:
       fail-fast: false
       matrix:
@@ -45,6 +48,11 @@ jobs:
       - name: Install locked environment
         run: uv sync --locked
 
+      - name: Package is imported from the checkout
+        run: >-
+          uv run --no-sync python -P -c "import citerift, pathlib, sys;
+          sys.exit(not pathlib.Path(citerift.__file__).resolve().is_relative_to(pathlib.Path('src').resolve()))"
+
       - name: Static analysis (ruff lint and format, mypy strict)
         run: |
           uv run --no-sync ruff check .
@@ -52,15 +60,15 @@ jobs:
           uv run --no-sync mypy
 
       - name: Schema validation
-        run: uv run --no-sync citerift-contracts check-schemas
+        run: uv run --no-sync python -P -m citerift.contracts.validate check-schemas
 
       - name: Governance state and memory consistency
         run: |
-          uv run --no-sync citerift-gov check
-          uv run --no-sync citerift-gov render-status --check
+          uv run --no-sync python -P -m citerift.governance.cli check
+          uv run --no-sync python -P -m citerift.governance.cli render-status --check
 
       - name: Tests (orchestrator, memory, contracts, integration, recovery, simulation)
-        run: uv run --no-sync pytest --citerift-report ci-test-report.json
+        run: uv run --no-sync python -P -m pytest --citerift-report ci-test-report.json
 
       - name: Dependency vulnerability audit
         run: |

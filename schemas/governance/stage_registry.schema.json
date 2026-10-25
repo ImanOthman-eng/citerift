@@ -87,7 +87,30 @@
       "type": "object",
       "additionalProperties": false,
       "if": {"properties": {"executor": {"const": "engineering-agent"}}, "required": ["executor"]},
-      "then": {"properties": {"ci_required": {"const": true}}},
+      "then": {
+        "properties": {
+          "ci_required": {"const": true},
+          "required_artifacts": {
+            "const": [
+              "SPECIFICATION.md",
+              "MATHEMATICAL_MODEL.md",
+              "RISK_ANALYSIS.md",
+              "SIMULATION_REPORT.md",
+              "TEST_RESULTS.md",
+              "CREATIVE_DIFFERENTIATION_REVIEW.md",
+              "HANDOFF.md"
+            ]
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "Executors are fixed by the plan (D-010): only Stage 01 is external, so no stage can be reclassified to skip CI.",
+          "if": {"properties": {"id": {"const": "01"}}, "required": ["id"]},
+          "then": {"properties": {"executor": {"const": "external-agent"}}},
+          "else": {"properties": {"executor": {"const": "engineering-agent"}}}
+        }
+      ],
       "required": [
         "id",
         "name",

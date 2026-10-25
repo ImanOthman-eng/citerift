@@ -8,6 +8,7 @@ records can be checked mechanically without a second, duplicated store.
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -21,6 +22,10 @@ _HEADING = re.compile(r"^## ([DR]-\d{3}) — (.+?)\s*$")
 # another heading level, missing digits) is reported instead of being skipped (F-06).
 _HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*-?\s*\d+")
 _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
+# Fields that only an entry carries. One of them outside a parsed entry means the entry's heading
+# was not recognized (another dash, a setext or HTML heading, ...), so it is reported (V-06).
+_ENTRY_FIELDS = frozenset({"Status", "Severity", "Kind", "Topic"})
+_SEPARATORS = re.compile(r"[\s_\-\u2010-\u2015\u2212]+")
 
 
 @dataclass
@@ -63,6 +68,10 @@ def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str)
         MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: heading is not '## {prefix}NNN — Title': {line!r}")
         for n, line in malformed_headings(text, prefix)
     ]
+    problems += [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: field outside any recognized entry heading: {line!r}")
+        for n, line in orphan_fields(text, prefix)
+    ]
     for e in entries:
         for f in e.duplicate_fields:
             problems.append(MemoryProblem("MEMORY_MALFORMED", name, f"{e.id} sets field '{f}' more than once"))
@@ -70,7 +79,26 @@ def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str)
 
 
 def normalize_topic(topic: str) -> str:
-    return " ".join(topic.replace("_", "-").split()).casefold()
+    """Compatibility-normalized, case-folded, with every run of spaces, hyphens or underscores as one hyphen."""
+    return _SEPARATORS.sub("-", unicodedata.normalize("NFKC", topic)).strip("-").casefold()
+
+
+def orphan_fields(text: str, prefix: str) -> list[tuple[int, str]]:
+    """Entry field lines that do not belong to any parsed entry heading."""
+    out = []
+    attached = False
+    for number, line in enumerate(text.splitlines(), start=1):
+        heading = _HEADING.match(line)
+        if heading and heading.group(1).startswith(prefix):
+            attached = True
+            continue
+        m = _FIELD.match(line)
+        if m:
+            if not attached and m.group(1) in _ENTRY_FIELDS:
+                out.append((number, line.strip()))
+        elif line.strip():
+            attached = False
+    return out
 
 
 def parse_entries(text: str, prefix: str) -> list[Entry]:
@@ -103,7 +131,10 @@ def check_decisions(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    text = path.read_text(encoding="utf-8")
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        return [], [MemoryProblem("MEMORY_UNREADABLE", name, f"{name} cannot be read as UTF-8 text: {exc}")]
     entries = parse_entries(text, "D-")
     problems = _structure_problems(entries, text, "D-", name)
     by_id: dict[str, Entry] = {}
@@ -159,7 +190,10 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    text = path.read_text(encoding="utf-8")
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        return [], [MemoryProblem("MEMORY_UNREADABLE", name, f"{name} cannot be read as UTF-8 text: {exc}")]
     entries = parse_entries(text, "R-")
     problems = _structure_problems(entries, text, "R-", name)
     seen: set[str] = set()

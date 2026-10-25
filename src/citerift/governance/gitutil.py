@@ -19,7 +19,8 @@ def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     if git is None:
         raise GitUnavailableError("git executable not found")
     return subprocess.run(  # noqa: S603 - fixed executable, no shell, list arguments
-        [git, "-C", str(root), *args],
+        # Replace refs and grafts can make a commit look like another one; never honour them (V-13).
+        [git, "--no-replace-objects", "-C", str(root), *args],
         capture_output=True,
         text=True,
         check=False,
@@ -41,7 +42,7 @@ def ignored(root: Path, paths: list[str]) -> set[str]:
     if git is None:
         return set()
     out = subprocess.run(  # noqa: S603 - fixed executable, no shell, list arguments
-        [git, "-C", str(root), "check-ignore", "-z", "--stdin"],
+        [git, "--no-replace-objects", "-C", str(root), "check-ignore", "-z", "--stdin"],
         input="\0".join(paths) + "\0",
         capture_output=True,
         text=True,
@@ -50,6 +51,14 @@ def ignored(root: Path, paths: list[str]) -> set[str]:
     if out.returncode not in (0, 1):
         raise GitUnavailableError(out.stderr.strip())
     return {p for p in out.stdout.split("\0") if p}
+
+
+def tracked_files(root: Path, rev: str, path: str) -> list[str]:
+    """Files committed under ``path`` at ``rev``; raises when the revision cannot be read."""
+    out = _git(root, "ls-tree", "-r", "-z", "--name-only", rev, "--", path)
+    if out.returncode != 0:
+        raise GitUnavailableError(out.stderr.strip() or f"cannot read {rev}")
+    return [p for p in out.stdout.split("\0") if p]
 
 
 def is_shallow(root: Path) -> bool:

@@ -16,6 +16,7 @@ R = pathlib.Path(__file__).resolve().parents[4]
 ORC = "src/citerift/governance/orchestrator.py"
 EVI = "src/citerift/governance/evidence.py"
 MEM = "src/citerift/governance/memory.py"
+REP = "src/citerift/governance/pytest_report.py"
 M = [
     (
         "M1 single-active rule (current state) disabled",
@@ -165,7 +166,108 @@ M = [
         '"single_active_engineering_stage": {"const": true}',
         '"single_active_engineering_stage": {"type": "boolean"}',
     ),
-    ("M34 N-01 files git ignores pinned as evidence", EVI, "skip = gitutil.ignored(root, files)", "skip = set()"),
+    ("M34 S-01 files git ignores pinned as evidence", EVI, "skip = gitutil.ignored(root, files)", "skip = set()"),
+    # Fixes of the final independent review (V-01 to V-16).
+    ("M35 V-01 items dropped by a conftest ignored", REP, 'and not selection["dropped"]', "and True"),
+    (
+        "M36 V-01 committed test files not compared",
+        EVI,
+        'problems.extend(_files_not_run(root, rel, revision, selection.get("files")))',
+        "pass",
+    ),
+    (
+        "M37 V-01 ini overrides allowed",
+        REP,
+        '"override_ini": [o for o in config.option.override_ini or [] if o not in _STRICTER_OVERRIDES],',
+        '"override_ini": [],',
+    ),
+    (
+        "M38 V-02 a URL counts as pinned evidence",
+        ORC,
+        "                if evidence.is_url(ref):\n                    continue",
+        "                if evidence.is_url(ref):\n                    pinned = True\n                    continue",
+    ),
+    (
+        "M39 V-02 unpinned co-cited file accepted",
+        ORC,
+        '                else:\n                    out.append(\n                        Finding(\n                            "GATE_EVIDENCE_UNPINNED",',
+        '                elif False:\n                    out.append(\n                        Finding(\n                            "GATE_EVIDENCE_UNPINNED",',
+    ),
+    (
+        "M40 V-03 stage artifact list not fixed for engineering stages",
+        "schemas/governance/stage_registry.schema.json",
+        '          "required_artifacts": {\n            "const": [',
+        '          "required_artifacts": {\n            "examples": [',
+    ),
+    (
+        "M41 V-03 executors not fixed by stage",
+        "schemas/governance/stage_registry.schema.json",
+        '"else": {"properties": {"executor": {"const": "engineering-agent"}}}',
+        '"else": {}',
+    ),
+    ("M42 V-03 handoff not always required", ORC, "            names.append(handoff)", "            pass"),
+    ("M43 V-05 correction test reports exempt again", ORC, ' and a["kind"] == "enhancement"\n', "\n"),
+    (
+        "M44 V-06 orphan entry fields ignored",
+        MEM,
+        "            if not attached and m.group(1) in _ENTRY_FIELDS:",
+        "            if False:",
+    ),
+    (
+        "M45 V-06 topic spelling variants distinct",
+        MEM,
+        'return _SEPARATORS.sub("-", unicodedata.normalize("NFKC", topic)).strip("-").casefold()',
+        "return topic.casefold()",
+    ),
+    (
+        "M46 V-07 amendment references not searched",
+        ORC,
+        'if a["owner_ref"] == acc["owner_ref"] and a["recorded_at"] <= verified_entry["at"]',
+        "if False",
+    ),
+    ("M47 V-08 one amendment for many reopenings", ORC, "            if earlier:", "            if False:"),
+    (
+        "M48 V-09 duplicate record ids accepted",
+        ORC,
+        "for dup in sorted({v for v in values if values.count(v) > 1}):",
+        "for dup in []:",
+    ),
+    (
+        "M49 V-10 commands run on a schema-invalid registry",
+        "src/citerift/governance/cli.py",
+        '    if schema_errors and args.command != "check":',
+        "    if False:",
+    ),
+    (
+        "M50 V-11 default time ignores recorded times",
+        ORC,
+        "        now: str = max([utc_now(), *recorded])",
+        "        now: str = utc_now()",
+    ),
+    (
+        "M51 V-12 nested .gitattributes accepted",
+        ORC,
+        'nested = [p for p in gitutil.tracked_files(self.root, "HEAD", ".") if p.endswith("/.gitattributes")]',
+        "nested: list[str] = []",
+    ),
+    (
+        "M52 V-13 replace refs honoured",
+        "src/citerift/governance/gitutil.py",
+        '[git, "--no-replace-objects", "-C", str(root), *args],',
+        '[git, "-C", str(root), *args],',
+    ),
+    (
+        "M53 V-15 clock skew bound widened",
+        ORC,
+        "MAX_CLOCK_SKEW = timedelta(minutes=5)",
+        "MAX_CLOCK_SKEW = timedelta(days=3650)",
+    ),
+    (
+        "M54 V-16 report directory not created",
+        REP,
+        "    Path(path).parent.mkdir(parents=True, exist_ok=True)",
+        "    pass",
+    ),
 ]
 
 

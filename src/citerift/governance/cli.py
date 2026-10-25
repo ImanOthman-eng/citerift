@@ -318,6 +318,14 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _git_hint(root: Path, command: str) -> int:
+    if command == "recover" and gitutil.is_repository(root):
+        print(f"HEAD: {gitutil.head(root)} on {gitutil.branch(root)}")
+        print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
+        print("Restore the registry from git (git log -- governance/stage_registry.json) before any other step.")
+    return 1
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
@@ -330,11 +338,18 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError) as exc:
         # A damaged registry is reported, never a traceback (F-13); recover still prints what git knows.
         print(f"ERROR REGISTRY_UNREADABLE: governance/stage_registry.json cannot be read: {exc}")
-        if args.command == "recover" and gitutil.is_repository(root):
-            print(f"HEAD: {gitutil.head(root)} on {gitutil.branch(root)}")
-            print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
-            print("Restore the registry from git (git log -- governance/stage_registry.json) before any other step.")
-        return 1
+        return _git_hint(root, args.command)
+    try:
+        schema_errors = orc.schema_findings()
+    except (OSError, ValueError) as exc:
+        print(f"ERROR REGISTRY_SCHEMA_UNREADABLE: schemas/governance/stage_registry.schema.json cannot be read: {exc}")
+        return _git_hint(root, args.command)
+    if schema_errors and args.command != "check":
+        # Every other command relies on the registry's structure; refuse instead of failing half-way (V-10).
+        for f in schema_errors:
+            print(f)
+        print("The registry does not match its schema; run `citerift-gov check` and restore it from git.")
+        return _git_hint(root, args.command)
     if args.command == "blocker" and args.action == "resolve" and not args.id:
         print("error: blocker resolve needs --id", file=sys.stderr)
         return 2

@@ -150,6 +150,8 @@ def check_test_report(
                 f"{rel} does not record a run of the complete test suite (selection: {selection})",
             )
         )
+    if isinstance(selection, dict):
+        problems.extend(_files_not_run(root, rel, revision, selection.get("files")))
     if isinstance(totals, dict) and totals.get("not_run", 0):
         problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records {totals['not_run']} tests that did not run"))
     if report.get("exit_status") != 0:
@@ -162,3 +164,26 @@ def check_test_report(
         elif counts.get("failed", 0) or counts.get("error", 0):
             problems.append(Problem("TESTS_FAILED", f"required test suite '{suite}' has failures"))
     return problems
+
+
+TEST_ROOT = "tests"
+
+
+def is_test_file(path: str) -> bool:
+    """pytest's default test file pattern, applied independently of any configuration that a change could edit."""
+    name = path.rsplit("/", 1)[-1]
+    return name.endswith(".py") and (name.startswith("test_") or name.endswith("_test.py"))
+
+
+def _files_not_run(root: Path, rel: str, revision: str, files: object) -> list[Problem]:
+    """Every test file committed under ``tests/`` at ``revision`` must appear among the files the report ran."""
+    try:
+        committed = [p for p in gitutil.tracked_files(root, revision, TEST_ROOT) if is_test_file(p)]
+    except gitutil.GitUnavailableError as exc:
+        return [Problem("TEST_EVIDENCE_PARTIAL", f"cannot list the test files at {revision[:12]}: {exc}")]
+    ran = set(files) if isinstance(files, list) else set()
+    missing = [p for p in committed if p not in ran]
+    if not missing:
+        return []
+    shown = ", ".join(missing[:5]) + (f" and {len(missing) - 5} more" if len(missing) > 5 else "")
+    return [Problem("TEST_EVIDENCE_PARTIAL", f"{rel} did not run {len(missing)} committed test file(s): {shown}")]
