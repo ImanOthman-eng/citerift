@@ -169,3 +169,200 @@ def test_structural_violation_is_reported_as_schema_violation(contracts) -> None
     problems = contracts.validate({"schema_version": "1.0.0"})
     assert problems
     assert {p.code for p in problems} == {"SCHEMA_VIOLATION"}
+
+
+# ---------------------------------------------------------------- portability
+#
+# JSON Schema patterns are ECMA-262 regular expressions, but the Python
+# validator runs them with ``re.search``: there ``$`` also matches before a
+# trailing newline and ``\s``/``\d``/``\w`` mean something different. Every
+# CITERIFT pattern is written in the subset where both engines agree.
+
+PORTABLE_NON_SPACE = "[^\\s\\x00-\\x1f\\x7f-\\x9f\\ufeff]"
+EDGE_CHARACTERS = [
+    "\n",
+    "\r",
+    "\t",
+    " ",
+    "\x00",
+    "\x1c",
+    "\x7f",
+    "\x85",
+    "\xa0",
+    "\u2028",
+    "\u3000",
+    "\ufeff",
+    "\u0661",
+]
+PATTERN_SAMPLES = [
+    "1.0.1",
+    "0f8fad5b-d9cb-469f-a165-70867728950e",
+    "2026-10-25T12:00:00Z",
+    "2026-10-25T12:00:00.5Z",
+    "10.5555/citerift.synthetic.0001",
+    "10.5555/بحث-٢٠٢٠",
+    "12345678",
+    "en",
+    "zh-yue",
+    "https://example.org/a?b=c",
+    "0" * 64,
+    "a" * 40,
+    "cmsg_ABCDEFGHIJKL",
+    "00",
+    "2020",
+    "2020-03",
+    "2020-03-01",
+    "abc_def",
+    "A.b-1:c",
+]
+
+
+def _schema_patterns() -> list[tuple[str, str]]:
+    found: list[tuple[str, str]] = []
+
+    def walk(node: Any, where: str) -> None:
+        if isinstance(node, dict):
+            for key, value in node.items():
+                if key == "pattern" and isinstance(value, str):
+                    found.append((where, value))
+                else:
+                    walk(value, f"{where}/{key}")
+        elif isinstance(node, list):
+            for i, item in enumerate(node):
+                walk(item, f"{where}/{i}")
+
+    for path in sorted([*SCHEMAS.rglob("*.schema.json"), *(REPO / "schemas" / "governance").rglob("*.schema.json")]):
+        walk(load(path), path.name)
+    return found
+
+
+@pytest.mark.regression
+def test_schema_patterns_use_the_portable_subset() -> None:
+    patterns = _schema_patterns()
+    assert len(patterns) > 10
+    for where, pattern in patterns:
+        assert pattern.startswith("^"), where
+        assert pattern.endswith("$(?!\\n)"), f"{where}: '$' must be followed by (?!\\n): {pattern}"
+        stripped = pattern.replace(PORTABLE_NON_SPACE, "")
+        for token in ("\\d", "\\D", "\\w", "\\W", "\\b", "\\B", "\\s", "\\S"):
+            assert token not in stripped, f"{where}: {token} differs between Python and ECMA-262: {pattern}"
+
+
+def _node() -> str | None:
+    import shutil
+
+    return shutil.which("node") or next((p for p in ("/opt/node22/bin/node",) if Path(p).exists()), None)
+
+
+@pytest.mark.regression
+def test_schema_patterns_agree_with_ecma262() -> None:
+    """Differential test: Python ``re.search`` against JavaScript ``RegExp`` (u flag)."""
+    import os
+    import re
+    import subprocess
+
+    node = _node()
+    if node is None:
+        if os.environ.get("CI"):
+            pytest.fail("node is required in CI for the ECMA-262 differential test")
+        pytest.skip("node not installed")
+    cases = []
+    for _, pattern in _schema_patterns():
+        for base in PATTERN_SAMPLES:
+            variants = [base]
+            for c in EDGE_CHARACTERS:
+                variants += [base + c, c + base, base[:1] + c + base[1:], base[:-1] + c]
+            cases += [(pattern, s) for s in variants]
+    script = (
+        "const cases = JSON.parse(require('fs').readFileSync(0, 'utf8'));"
+        "process.stdout.write(JSON.stringify(cases.map(([p, s]) => new RegExp(p, 'u').test(s))));"
+    )
+    result = subprocess.run([node, "-e", script], input=json.dumps(cases), capture_output=True, text=True, check=True)
+    js = json.loads(result.stdout)
+    disagreements = [(p, s) for (p, s), j in zip(cases, js, strict=True) if (re.search(p, s) is not None) != j]
+    assert disagreements == [], disagreements[:10]
+    assert any(js), "the samples must exercise matching strings, not only rejections"
+
+
+@pytest.mark.parametrize(
+    ("pointer", "value"),
+    [
+        ("/citations/0/article/title", "حمض نووي"),
+        ("/subject_paper/identifiers/doi", "10.5555/بحث-٢٠٢٠"),
+        ("/citations/1/article/language", "zh-yue"),
+        ("/created_at", "2026-10-25T12:00:00.123456Z"),
+        ("/subject_paper/retraction_date/value", "2020-02-29"),
+    ],
+)
+def test_multilingual_and_precise_values_accepted(contracts, pointer: str, value: Any) -> None:  # type: ignore[no-untyped-def]
+    mutated = apply_mutation(load(FIXTURES / "valid" / "investigation_full.json"), "set", pointer, value)
+    assert [str(p) for p in contracts.validate(mutated)] == []
+
+
+@pytest.mark.regression
+def test_events_in_order_with_fractional_seconds_accepted(contracts) -> None:  # type: ignore[no-untyped-def]
+    doc = load(FIXTURES / "valid" / "investigation_full.json")
+    doc["events"] = [
+        {"at": "2026-10-25T12:00:00Z", "kind": "first_event", "description": "first"},
+        {"at": "2026-10-25T12:00:00.5Z", "kind": "second_event", "description": "second"},
+        {"at": "2026-10-25T12:00:01Z", "kind": "third_event", "description": "third"},
+    ]
+    assert [str(p) for p in contracts.validate(doc)] == []
+
+
+@pytest.mark.negative
+@pytest.mark.regression
+@pytest.mark.parametrize("value", ["2020-02-30", "2021-02-29", "2020-04-31"])
+def test_impossible_retraction_dates_rejected(contracts, value: str) -> None:  # type: ignore[no-untyped-def]
+    base = load(FIXTURES / "valid" / "investigation_full.json")
+    for pointer, mutated in (
+        (
+            "/subject_paper/retraction_date/value",
+            apply_mutation(base, "set", "/subject_paper/retraction_date/value", value),
+        ),
+        (
+            "/subject_paper/retraction_date/alternatives/1/value",
+            apply_mutation(
+                base,
+                "set",
+                "/subject_paper/retraction_date",
+                {
+                    "status": "conflicting",
+                    "value": None,
+                    "alternatives": [
+                        {"value": "2020-03", "provenance": base["subject_paper"]["retraction_date"]["provenance"]},
+                        {"value": value, "provenance": base["subject_paper"]["retraction_date"]["provenance"]},
+                    ],
+                },
+            ),
+        ),
+    ):
+        problems = contracts.validate(mutated)
+        assert [(p.code, p.path) for p in problems] == [("INVALID_DATE", pointer)], [str(p) for p in problems]
+
+
+@pytest.mark.negative
+@pytest.mark.regression
+def test_duplicate_json_keys_rejected(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    from citerift.contracts.formats import DuplicateKeyError, loads_strict
+
+    with pytest.raises(DuplicateKeyError):
+        loads_strict('{"status": "completed", "status": "failed"}')
+    record = tmp_path / "dup.json"
+    text = (FIXTURES / "valid" / "investigation_full.json").read_text(encoding="utf-8")
+    record.write_text(
+        text.replace('"status": "completed"', '"status": "completed", "status": "failed"', 1), encoding="utf-8"
+    )
+    assert contracts_main(["--schemas", str(SCHEMAS), "validate", str(record)]) == 1
+    assert "UNREADABLE" in capsys.readouterr().out
+
+
+@pytest.mark.negative
+def test_date_time_format_rejects_impossible_instants() -> None:
+    from citerift.contracts.formats import FORMAT_CHECKER, parse_utc_timestamp
+
+    assert parse_utc_timestamp("2024-02-29T23:59:59Z") is not None
+    for bad in ("2026-02-31T12:00:00Z", "2026-13-01T00:00:00Z", "2026-10-25T24:00:00Z", "2026-10-25T12:00:00", "x"):
+        assert parse_utc_timestamp(bad) is None
+        assert not FORMAT_CHECKER.conforms(bad, "date-time")
+    assert FORMAT_CHECKER.conforms(5, "date-time"), "non-strings are the type keyword's job"

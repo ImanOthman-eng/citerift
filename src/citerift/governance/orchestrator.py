@@ -27,6 +27,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from citerift.contracts.formats import FORMAT_CHECKER
 from citerift.governance import evidence, gitutil, memory
 from citerift.governance.model import (
     ACTIVE,
@@ -218,7 +219,7 @@ class Orchestrator:
         return findings
 
     def _schema_findings(self) -> list[Finding]:
-        validator = Draft202012Validator(self._schema)
+        validator = Draft202012Validator(self._schema, format_checker=FORMAT_CHECKER)
         return [
             Finding(
                 "REGISTRY_SCHEMA",
