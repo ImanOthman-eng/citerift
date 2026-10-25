@@ -127,179 +127,15 @@
           "requirement": "No known unresolved critical foundational defect"
         }
       ],
-      "status": "ACCEPTED_CLOSED",
+      "status": "IN_PROGRESS",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV",
         "scope": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
         "recorded_at": "2026-10-25T10:02:03Z"
       },
-      "implementation": {
-        "revision": "30e4462e9ae71016dbc6f04cdda19106babd4a34",
-        "recorded_at": "2026-10-25T11:11:54Z"
-      },
-      "verification": {
-        "revision": "741476c7da8dde4d077e97ae0302a331ef5fdef5",
-        "recorded_at": "2026-10-25T14:37:07Z",
-        "artifacts": [
-          {
-            "path": "docs/verification/stage-00/SPECIFICATION.md",
-            "sha256": "bbe0769abc1546c0cc6a7b455f373eeb5c3c4f59c6330199f8b6c556cd148dd7"
-          },
-          {
-            "path": "docs/verification/stage-00/MATHEMATICAL_MODEL.md",
-            "sha256": "96902152e58847c25280aabf401650f62502fd9ad7c203ba1a0a055afaccc0c0"
-          },
-          {
-            "path": "docs/verification/stage-00/RISK_ANALYSIS.md",
-            "sha256": "40439bbd645230be9238882a6d241ed9f7fce47721d0c24cac038479867f3c20"
-          },
-          {
-            "path": "docs/verification/stage-00/SIMULATION_REPORT.md",
-            "sha256": "52821cf0329bf95afbf38ebc2b63919ad0e519709f1162023d2a68b73f94a4a9"
-          },
-          {
-            "path": "docs/verification/stage-00/TEST_RESULTS.md",
-            "sha256": "25be4d22f37dc37bdd7c3ecf1c7ef8bcdfb4179fa86363409b0501f9d9e735e6"
-          },
-          {
-            "path": "docs/verification/stage-00/CREATIVE_DIFFERENTIATION_REVIEW.md",
-            "sha256": "71f1b8ef753b513778f945233ced2615c4822ce4a9a8d369d11a6ebb8a3259ba"
-          },
-          {
-            "path": "docs/verification/stage-00/HANDOFF.md",
-            "sha256": "af41ddfafbe5463963f168df174b02c9582d6b333a241e89db3e7aeef5c01993"
-          }
-        ],
-        "test_report": {
-          "path": "docs/verification/stage-00/test-report.json",
-          "sha256": "a371e89a02195e64babdfac0cce8946c211908f3123a0203ae728745850dea6e"
-        },
-        "gates": {
-          "00-A": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/HANDOFF.md"
-            ]
-          },
-          "00-B": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/test-report.json",
-              "docs/verification/stage-00/test-report-python3.13.json",
-              "uv.lock"
-            ]
-          },
-          "00-C": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md"
-            ]
-          },
-          "00-D": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md",
-              "governance/stage_registry.json"
-            ]
-          },
-          "00-E": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md"
-            ]
-          },
-          "00-F": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/SIMULATION_REPORT.md",
-              "docs/verification/stage-00/MATHEMATICAL_MODEL.md",
-              "docs/verification/stage-00/mutation/results-30e4462.txt"
-            ]
-          },
-          "00-G": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md",
-              "schemas/contracts/v1/investigation.schema.json"
-            ]
-          },
-          "00-H": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/SIMULATION_REPORT.md",
-              "docs/verification/stage-00/simulation/final-results.json",
-              "docs/verification/stage-00/simulation/iteration-1-results.json"
-            ]
-          },
-          "00-I": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/test-report.json"
-            ]
-          },
-          "00-J": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/test-report.json",
-              "docs/verification/stage-00/TEST_RESULTS.md"
-            ]
-          },
-          "00-K": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md",
-              "docs/verification/stage-00/test-report.json",
-              "docs/verification/stage-00/test-report-python3.13.json"
-            ]
-          },
-          "00-L": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/TEST_RESULTS.md",
-              ".github/rulesets/main-protection.json"
-            ]
-          },
-          "00-M": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/RISK_ANALYSIS.md"
-            ]
-          },
-          "00-N": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/CREATIVE_DIFFERENTIATION_REVIEW.md"
-            ]
-          },
-          "00-O": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/HANDOFF.md",
-              "docs/development.md",
-              "GOVERNANCE.md"
-            ]
-          },
-          "00-P": {
-            "result": "pass",
-            "evidence": [
-              "docs/verification/stage-00/RISK_ANALYSIS.md",
-              "RISKS.md"
-            ]
-          }
-        },
-        "ci": {
-          "run_url": "https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695",
-          "head_sha": "741476c7da8dde4d077e97ae0302a331ef5fdef5",
-          "conclusion": "success"
-        }
-      },
-      "acceptance": {
-        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP68JgEArkKAaUCqqYkVsnti",
-        "accepted_revision": "741476c7da8dde4d077e97ae0302a331ef5fdef5",
-        "recorded_at": "2026-10-25T14:52:41Z",
-        "recorded_by": "engineering-agent",
-        "method": "attested"
-      },
+      "implementation": null,
+      "verification": null,
+      "acceptance": null,
       "blockers": [
         {
           "id": "B-00-001",
@@ -316,7 +152,21 @@
           "resolution": "Owner created ruleset main-protection on GitHub (owner message cmsg_018VCB51nDHP6HXmLU4ea5yPBsct46wZA6iBixZ1ZLXboz). Read back 2026-10-25: GET /rulesets -> id 25824038, enforcement active, bypass_actors []; GET /rules/branches/main -> deletion, non_fast_forward, pull_request (0 approvals, merge only), required_status_checks ci-gate integration 15368 strict; matches .github/rulesets/main-protection.json. Gate 00-L passes (TEST_RESULTS.md section 7)."
         }
       ],
-      "amendments": [],
+      "amendments": [
+        {
+          "id": "A-00-001",
+          "kind": "correction",
+          "reason": "Independent audit of 2026-10-25 reproduced 14 Stage 00 defects and 5 security weaknesses (F-01 to F-20; none critical): drift check bypassed by merges, gate evidence unpinned, policy editable in the registry, replay and check weaker than propose, memory parser failing open, retraction-status contract loopholes, cross-engine pattern differences, reopen impossible after a dependent is accepted, plus robustness defects. The owner authorized reopening Stage 00 for a controlled corrective amendment.",
+          "evidence": [
+            "docs/audits/stage-00-2026-10-25/independent-review.md",
+            "docs/audits/stage-00-2026-10-25/README.md"
+          ],
+          "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk",
+          "revision": null,
+          "test_report": null,
+          "recorded_at": "2026-10-25T16:46:12Z"
+        }
+      ],
       "required_artifacts": [
         "SPECIFICATION.md",
         "MATHEMATICAL_MODEL.md",
@@ -728,6 +578,18 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner explicitly accepted Stage 00 (16 gates, documented scope) in message 'CITERIFT — STAGE 00 OFFICIAL OWNER ACCEPTANCE & CONTROLLED CLOSURE'. Does not accept any later stage, authorize merging PR #1, approve a license or authorize publication. Recorded by the engineering agent; no cryptographic signature.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP68JgEArkKAaUCqqYkVsnti"
+    },
+    {
+      "seq": 11,
+      "at": "2026-10-25T16:46:13Z",
+      "stage": "00",
+      "from": "ACCEPTED_CLOSED",
+      "to": "IN_PROGRESS",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner reopened Stage 00 for correction amendment A-00-001 (message 'CITERIFT — STAGE 00 FULL DEFECT REMEDIATION, SECURITY HARDENING & FINAL INDEPENDENT VERIFICATION'). Scope: the confirmed audit findings within Stage 00's original scope; no other stage. Prior verification (741476c) and acceptance stay in this history.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk",
+      "amendment": "A-00-001"
     }
   ]
 }
