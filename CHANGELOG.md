@@ -29,6 +29,13 @@ what changed in the repository.
 - Branch ruleset for `main` (`.github/rulesets/main-protection.json`), created
   on GitHub by the owner on 2026-10-25 as ruleset 25824038 (active, read back).
 
+### Stage 00 closed
+
+- 2026-10-25: Stage 00 verified at `741476c` (all 16 gates) and accepted by
+  the owner (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP68JgEArkKAaUCqqYkVsnti`,
+  method attested, no signature). The acceptance covers Stage 00 only; it does
+  not authorize any later stage, merging PR #1, a license or publication.
+
 ### Fixed (Stage 00 final review)
 
 - `registry_version` pattern used `\d`, which Python and JavaScript validators

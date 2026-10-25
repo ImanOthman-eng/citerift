@@ -11,7 +11,7 @@ Only the owner can accept a stage or authorize one.
 
 | Stage | Name | Executor | Depends on | Status | Verified revision | Accepted |
 |---|---|---|---|---|---|---|
-| 00 | Engineering Foundation | engineering-agent | - | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | 741476c7da8d | no |
+| 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 741476c7da8d | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `AUTHORIZED` | - | no |
 | 02 | Retraction Data Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
 | 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
@@ -24,7 +24,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 00 (Engineering Foundation): owner acceptance decision required; successors stay locked until then
 - Stage 01 (Independent Feasibility Investigation): assigned to an external agent; awaiting its handoff for owner review (AUTHORIZED)
 
 ## Open blockers
@@ -46,6 +45,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-10-25T11:11:53Z stage 00: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent. Rework: final review found 25 finding codes with no test naming them; tests added in 30e4462 (no production code change)
 - 2026-10-25T11:11:54Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Implementation complete at 30e4462; 161 tests pass on Python 3.12.3 and 3.13.17 from a clean tree; 9/9 mutants killed
 - 2026-10-25T14:37:07Z stage 00: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. All 16 Stage 00 gates pass: CI green at 741476c (00-K), ruleset main-protection active and read back (00-L)
+- 2026-10-25T14:52:41Z stage 00: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yP68JgEArkKAaUCqqYkVsnti`). Owner explicitly accepted Stage 00 (16 gates, documented scope) in message 'CITERIFT — STAGE 00 OFFICIAL OWNER ACCEPTANCE & CONTROLLED CLOSURE'. Does not accept any later stage, authorize merging PR #1, approve a license or authorize publication. Recorded by the engineering agent; no cryptographic signature.
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).
