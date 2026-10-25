@@ -6,6 +6,44 @@ what changed in the repository.
 
 ## [Unreleased]
 
+### Fixed (Stage 00 correction A-00-001, owner-authorized reopening)
+
+Findings of the independent review of 2026-10-25
+(docs/audits/stage-00-2026-10-25/); each has a regression test that fails on
+the reopened revision `ae2ce9e`.
+
+- Contracts 1.0.1: retraction-status alternatives restricted to the accepted
+  values and free of model fields; typed title and context alternatives;
+  patterns that Python and ECMA-262 read the same way; `date-time` format
+  enforced with a standard-library checker; events ordered by instant;
+  calendar check for retraction dates; duplicate JSON keys rejected (F-08,
+  F-09, F-10, F-18).
+- Drift is decided by owned-path content, so a merge restoring old content is
+  detected; uncommitted owned-path changes are reported (F-01, F-19).
+- Every file in a verification directory, the stage definition and the policy
+  are pinned by hash; gate evidence must be a pinned file; policy values and
+  the CI requirement are fixed in the registry schema (F-02, F-03).
+- Test reports record how tests were selected; partial runs are rejected
+  (F-07); a report path outside the repository no longer crashes the plugin
+  (F-14); `.gitattributes` keeps LF so CRLF checkouts do not change evidence
+  hashes (F-12).
+- History replay checks each entry against the transition rules (single
+  active stage, dependencies, correction amendment, blockers); a reopened
+  dependency is a warning, so a foundation stage can be corrected after a
+  dependent was accepted (F-04, F-05, F-11).
+- Malformed memory entries are errors; topic comparison ignores case; a
+  project-wide critical defect blocks every stage (F-06).
+- Unreadable registry reported without a traceback; blocker resolution
+  records the real actor; future timestamps refused; records must match their
+  history entries and an acceptance must cite a new owner statement (F-13,
+  F-15, F-16, F-17).
+- `.github/workflows`, `.github/rulesets`, `.gitattributes` and
+  `src/citerift/py.typed` (new) are Stage 00 owned paths (F-20 detection,
+  F-23).
+- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017),
+  DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
+  is only detected, and what is not enforceable (F-21, F-22).
+
 ### Added (project identity and ownership, no Stage 00 change)
 
 - OWNERSHIP.md: owner, decision authority, original contributions,

@@ -17,9 +17,13 @@ Likelihoods are qualitative judgments, not measured probabilities.
 Verified 2026-10-25: GitHub reports the agent's session user as ImanOthman-eng.
 Merges, approvals and commits made by the agent are indistinguishable on GitHub
 from the owner's own. Mitigations: owner decisions require an `owner_ref` to
-the owner's own words (D-005); the branch ruleset has no bypass actors, so the
-agent cannot skip CI either (D-011). Full mitigation needs D-006 (owner-signed
-acceptance) or a separate bot identity.
+the owner's own words (D-005); the branch ruleset has no bypass actors and
+requires the `ci-gate` check (D-011). That check does not stop the agent: the
+workflow that defines `ci-gate` can be changed by the pull request it gates,
+and the ruleset requires 0 approvals, so the same account can merge such a
+change (R-016; independent review 2026-10-25, F-20). Full mitigation needs a
+required review from an identity the agent does not hold: D-006 (owner-signed
+acceptance) or a separate bot identity, both owner decisions.
 
 ## R-002 — Owner references are not machine-verified
 - Status: open
@@ -38,10 +42,25 @@ owner should check the `owner_ref` of each acceptance in the history.
 - Kind: limitation
 - Stage: 00
 
-The orchestrator detects inconsistent hand edits (history replay, record
-coherence, evidence hashes, revisions) and CI blocks them from `main`, but it
-cannot prevent edits, and a fully consistent forgery of history plus records
-is possible for anyone with write access. Detection, not prevention.
+Detection, not prevention. `citerift-gov check` reports a hand edit that
+breaks any rule a transition is checked against. Since correction A-00-001
+(independent review 2026-10-25) that includes: each history entry checked at
+its own time (single active stage, dependencies, correction amendment before a
+reopening, blockers); records that do not match the history entry that created
+them; an acceptance citing an owner reference used before the verification;
+every file in the verification directory, the stage definition and the policy
+pinned by hash; policy values fixed in the registry schema; owned-path content
+compared with the verified revision; duplicate JSON keys rejected.
+
+What it cannot detect: a forgery that is consistent everywhere, that is,
+history, records, evidence files and their recorded hashes rewritten together
+by anyone with write access. Test reports and CI records are also
+self-reported files: the checker verifies their content and hashes, not who
+produced them (R-004). Detection happens when someone runs `check` from an
+honest copy of the code; CI runs it on every push, but CI itself can be
+changed by the gated change (R-016). Stage definitions (gates, suites, owned
+paths) can still be edited before a stage is verified; that edit shows only in
+the reviewed diff of `governance/stage_registry.json`.
 
 ## R-004 — CI evidence in the registry is entered by the agent
 - Status: open
@@ -52,7 +71,8 @@ is possible for anyone with write access. Detection, not prevention.
 The offline check verifies that the recorded CI run tested the verified
 revision and succeeded as recorded, but it cannot fetch the run. The run URL is
 public for this repository and can be checked by anyone. The required
-`ci-gate` check on `main` is the independent control.
+`ci-gate` check on `main` is a control on the honest workflow only; it is not
+independent of the change it gates (R-016).
 
 ## R-005 — Contract compatibility is checked against fixtures, not proven
 - Status: open
@@ -130,9 +150,12 @@ project state from the repository alone (tested in tests/stage00/test_recovery.p
 - Kind: limitation
 - Stage: 00
 
-History entries must be in non-decreasing time order. A machine with a wrong
-clock would have its transitions rejected (fail-closed), never silently
-reordered. Pass `--at` to record an explicit time.
+History entries must be in non-decreasing time order. A machine with a slow
+clock has its transitions rejected (fail-closed), never silently reordered.
+Since correction A-00-001 (F-16) a time more than 5 minutes ahead of the local
+clock is also refused, and `check` reports recorded times in the future, so a
+fast clock cannot block later correct transitions. Pass `--at` to record an
+explicit time.
 
 ## R-013 — Future ML libraries may drop Python 3.12
 - Status: open
@@ -174,3 +197,36 @@ enforcement active). Read back from the GitHub API, it matches the file, no
 bypass actors, and `GET /rules/branches/main` lists all four rules in effect
 (docs/verification/stage-00/TEST_RESULTS.md section 7). Blocker B-00-002
 resolved.
+
+## R-016 — The CI gate is defined by a file the gated change can edit
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 00
+
+Independent review 2026-10-25, F-20 (verified by inspection; the GitHub side
+was not exercised). The ruleset requires the `ci-gate` status from GitHub
+Actions with 0 approvals. `ci-gate` is a job in `.github/workflows/ci.yml`,
+which a same-repository pull request can change; the agent acts as the owner's
+account (R-001). Prevention is not in place. Compensating detection since
+correction A-00-001: `.github/workflows`, `.github/rulesets` and
+`.gitattributes` are Stage 00 owned paths, so a change to them makes Stage 00
+`VERIFICATION_STALE` at the next `check` run from an honest copy. Prevention
+needs a required code-owner review from an identity the agent does not hold
+(D-006 or a bot account), an owner decision.
+
+## R-017 — Stage 00 independent review findings (A-00-001)
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 00
+
+The independent review of 2026-10-25
+(docs/audits/stage-00-2026-10-25/independent-review.md) found 14 engineering
+defects and 5 security weaknesses in accepted Stage 00 (F-01 to F-19). The
+owner reopened Stage 00 for correction A-00-001. Each finding has a regression
+test in tests/stage00/test_corrections.py or tests/stage00/test_contracts.py
+that fails on the reopened revision `ae2ce9e` and passes with the correction.
+Closed when the corrections were committed; the verification of the corrected
+stage is recorded in the registry. Residual limitations stay open as R-001 to
+R-004 and R-016.

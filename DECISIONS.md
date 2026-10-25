@@ -120,6 +120,11 @@ Recommendation: not required for the hackathon timeline; adopt it only if the
 owner wants a technical guarantee rather than a procedural one. Cost: a
 one-time key setup on the owner's machine and one signed tag per stage.
 
+Limit found by the independent review of 2026-10-25: an `allowed_signers` file
+kept in the repository can be edited by the agent, which could add its own key.
+The file must be protected by a required review from an identity the agent does
+not hold, or kept outside the repository (RISKS.md R-016).
+
 ## D-007 — License for code, documentation and data
 - Status: pending-owner
 - Topic: license

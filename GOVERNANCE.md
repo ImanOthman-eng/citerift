@@ -44,18 +44,28 @@ the edge exists, the actor may take it, and the resulting registry passes the
 full consistency check (`citerift-gov check`). Main invariants:
 
 1. A stage is verified only with every required artifact, a passing test report
-   produced at the verified revision from a clean tree, every acceptance gate
-   passed with existing evidence, and (for engineering stages) a successful CI
-   run on that revision.
+   of the complete test suite produced at the verified revision from a clean
+   tree, every acceptance gate passed with hash-pinned evidence, and (for
+   engineering stages) a successful CI run on that revision.
 2. A stage is accepted only from the verified state, by the owner, for the
-   verified revision.
-3. A stage can be authorized only when all of its dependencies are accepted.
+   verified revision, citing an owner statement not already cited before the
+   verification.
+3. A stage can be authorized, verified or accepted only when all of its
+   dependencies are accepted at that moment. A dependency that is reopened for
+   a correction is reported (`DEPENDENCY_REOPENED`) until it is accepted again.
 4. At most one engineering-agent stage is active (AUTHORIZED, IN_PROGRESS,
    BLOCKED or IMPLEMENTED_NOT_VERIFIED) at a time.
-5. The recorded status equals the status obtained by replaying the history.
-6. Verified evidence is immutable: changing an evidence file, or committing a
-   change to a stage-owned path without an amendment, makes the stage stale.
-7. A verified or accepted stage has no open blocker and no open critical defect.
+5. The recorded status equals the status obtained by replaying the history,
+   each record matches the history entry that created it, and every history
+   entry satisfies, at its own time, invariants 3 and 4, the correction
+   amendment rule for a reopening, and the blocker rules.
+6. Verified evidence is immutable: every file in the stage's verification
+   directory, the stage definition and the policy are pinned by hash at
+   verification, and the content of the stage-owned paths must equal the
+   verified revision unless an amendment covers the change.
+7. A verified or accepted stage has no open blocker and no open critical defect
+   (a critical defect with `Stage: project` blocks every stage). A malformed
+   decision or risk entry is an error, never skipped.
 
 ## Per-stage deliverables
 
@@ -114,24 +124,32 @@ objective or architecture, granting new permissions.
 
 ## What is enforced technically, and what is not
 
-Enforced (by `citerift-gov check` and CI): everything in "Stage lifecycle"
-above, registry schema, decision and risk record consistency, and that
-`PROJECT_STATUS.md` matches the registry. Protection of `main` is defined in
-`.github/rulesets/main-protection.json` (pull request required, `ci-gate` must
-pass, merge commits only, no force-push, no deletion, no bypass). Whether it is
-active on GitHub is recorded in the Stage 00 verification records; read it back
-with `gh api repos/ImanOthman-eng/citerift/rulesets`.
+Prevented (the tool refuses to write it): a transition that is not in the
+table, an owner decision taken by another actor or without an `owner_ref`, and
+any transition, blocker or amendment whose resulting registry fails the full
+consistency check. These controls bind only writers who use `citerift-gov`.
+
+Detected (reported by `citerift-gov check`, run in CI on every push and pull
+request): hand edits that break invariants 1 to 7, the registry schema (which
+also fixes the policy values and the CI requirement of engineering stages),
+decision and risk record consistency, duplicate JSON keys, recorded times in
+the future, and a `PROJECT_STATUS.md` that does not match the registry.
+Detection is not prevention: a hand edit can be committed, and it is reported
+when `check` runs from an honest copy of the code.
+
+Protection of `main` is defined in `.github/rulesets/main-protection.json`
+(pull request required, `ci-gate` must pass, merge commits only, no
+force-push, no deletion, no bypass) and is active on GitHub (read it back with
+`gh api repos/ImanOthman-eng/citerift/rulesets`). It does not make CI
+independent: `ci-gate` is defined by a workflow that the gated pull request can
+change, and 0 approvals are required (RISKS.md R-016). The workflow and the
+ruleset file are Stage 00 owned paths, so changing them makes Stage 00 stale
+(detection only).
 
 Not enforceable by repository code: whether an `owner_ref` really contains the
 owner's approval (R-002), whether an agent follows instructions at all, and
-whether a hand-forged but fully consistent history is genuine (R-003). The
-agent acts under the owner's GitHub account (R-001). These remain owner
-judgment.
-
-## Session start procedure
-
-1. `uv sync --locked`
-2. `uv run citerift-gov recover` (state, open items, next authorized action)
-3. `uv run citerift-gov check` (must report 0 errors)
-4. Read DECISIONS.md and RISKS.md entries relevant to the task.
-5. Work only on what the owner authorized in the current instruction.
+whether a forgery that is consistent everywhere (history, records, evidence
+and hashes rewritten together) is genuine (R-003). The agent acts under the
+owner's GitHub account (R-001). Prevention of these needs a required review
+from an identity the agent does not hold (D-006 or a bot account). These
+remain owner judgment.
