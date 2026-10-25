@@ -11,7 +11,7 @@ Only the owner can accept a stage or authorize one.
 
 | Stage | Name | Executor | Depends on | Status | Verified revision | Accepted |
 |---|---|---|---|---|---|---|
-| 00 | Engineering Foundation | engineering-agent | - | `IMPLEMENTED_NOT_VERIFIED` | - | no |
+| 00 | Engineering Foundation | engineering-agent | - | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | 741476c7da8d | no |
 | 01 | Independent Feasibility Investigation | external-agent | - | `AUTHORIZED` | - | no |
 | 02 | Retraction Data Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
 | 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
@@ -24,12 +24,12 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 00 (Engineering Foundation): authorized work may continue (IMPLEMENTED_NOT_VERIFIED)
+- Stage 00 (Engineering Foundation): owner acceptance decision required; successors stay locked until then
 - Stage 01 (Independent Feasibility Investigation): assigned to an external agent; awaiting its handoff for owner review (AUTHORIZED)
 
 ## Open blockers
 
-- Stage 00 B-00-002: Branch protection cannot be created from this session: ruleset write refused by the session's GitHub proxy (HTTP 403) and classic protection API returns 403 'Resource not accessible by integration'. Owner must import .github/rulesets/main-protection.json; gate 00-L cannot pass until then.
+- None recorded.
 
 ## Stage notes
 
@@ -45,6 +45,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-10-25T11:04:59Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Implementation complete at 2bf7d60 after final-review fixes; 138 tests pass on Python 3.12.3 and 3.13.17 from a clean tree
 - 2026-10-25T11:11:53Z stage 00: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent. Rework: final review found 25 finding codes with no test naming them; tests added in 30e4462 (no production code change)
 - 2026-10-25T11:11:54Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Implementation complete at 30e4462; 161 tests pass on Python 3.12.3 and 3.13.17 from a clean tree; 9/9 mutants killed
+- 2026-10-25T14:37:07Z stage 00: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. All 16 Stage 00 gates pass: CI green at 741476c (00-K), ruleset main-protection active and read back (00-L)
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).

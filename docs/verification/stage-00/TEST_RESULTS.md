@@ -110,7 +110,7 @@ the uncommitted Stage 00 evidence and registry)
 | `ruff check .` | All checks passed |
 | `ruff format --check .` | 41 files (Python and Markdown) already formatted, after formatting `mutation/mutation_check.py` (section 5) |
 | `mypy` (strict, `src/`) | Success: no issues found in 11 source files |
-| `citerift-gov check` | 0 errors, 2 warnings (`BLOCKER_OPEN` B-00-001 and B-00-002) |
+| `citerift-gov check` | 0 errors, 2 warnings (`BLOCKER_OPEN` B-00-001 and B-00-002, both open at the time; both resolved since) |
 | `citerift-gov render-status --check` | PROJECT_STATUS.md is up to date |
 | `pip-audit --require-hashes` on `uv export --frozen` | No known vulnerabilities found |
 | zizmor 1.x `--offline .github/workflows/ci.yml` | No findings (3 online-only audits skipped: impostor-commit, ref-confusion, known-vulnerable-actions) |
@@ -168,31 +168,59 @@ steps, with the check-run annotation "The job was not started because your
 account is locked due to a billing issue." They said nothing about the code.
 Blocker B-00-001 is resolved.
 
-## 7. Branch protection (gate 00-L): BLOCKED
+## 7. Branch protection (gate 00-L): PASSED
 
-Read back on 2026-10-25 with the session's token:
+History: this session cannot create rulesets. `POST …/rulesets` was refused by
+the session's GitHub proxy ("Write access to this GitHub API path is not
+permitted through this proxy"), also when retried after CI passed (about 13:22
+UTC), and the classic protection API returned 403 "Resource not accessible by
+integration". Read backs until 13:29 UTC returned `[]`. Blocker B-00-002.
 
-- `GET /repos/ImanOthman-eng/citerift/rulesets` → HTTP 200, `[]` (no rulesets).
-- `GET /repos/ImanOthman-eng/citerift/rules/branches/main` → HTTP 200, `[]`
-  (no rules apply to `main`).
-- `GET /repos/ImanOthman-eng/citerift/branches/main/protection` → HTTP 403.
-- Creating the ruleset (`POST …/rulesets`) was refused earlier by the session's
-  GitHub proxy: "Write access to this GitHub API path is not permitted through
-  this proxy". The classic protection API returned 403 "Resource not
-  accessible by integration".
-- Retried after CI passed (2026-10-25, about 13:22 UTC): `POST …/rulesets`
-  with the file's JSON → HTTP 403, same proxy message. Creating the ruleset
-  needs the owner (blocker B-00-002).
+The owner then created the ruleset on GitHub (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPBsct46wZA6iBixZ1ZLXboz`). Read back directly
+from the GitHub API on 2026-10-25 with the session's token:
 
-The ruleset is defined in `.github/rulesets/main-protection.json` and its
-content is checked by `test_branch_ruleset_definition`, but **`main` is not
-protected**.
+- `GET /repos/ImanOthman-eng/citerift/rulesets` → HTTP 200: one ruleset,
+  id `25824038`, name `main-protection`, target `branch`, source
+  `ImanOthman-eng/citerift`, enforcement `active`, created
+  `2026-10-25T18:30:30.932+04:00` (14:30:30 UTC).
+- `GET /repos/ImanOthman-eng/citerift/rulesets/25824038` → HTTP 200.
+  Compared field by field with `.github/rulesets/main-protection.json`:
+  name, target, enforcement, conditions (`include: ["~DEFAULT_BRANCH"]`,
+  `exclude: []`), `bypass_actors: []` and the four rule types all match, and
+  every parameter in the file has the same value on GitHub.
+  `current_user_can_bypass` is `never` for this session's token, which acts as
+  the owner's account.
+- `GET /repos/ImanOthman-eng/citerift/rules/branches/main` → HTTP 200: the
+  rules in effect on `main` are exactly those of ruleset 25824038:
+  `deletion`; `non_fast_forward`; `pull_request` with 0 required approvals and
+  `allowed_merge_methods: ["merge"]`; `required_status_checks` with
+  `ci-gate`, integration id 15368, `strict_required_status_checks_policy:
+  true`, `do_not_enforce_on_create: false`.
+- `GET /repos/ImanOthman-eng/citerift/branches/main` → `protected: true`;
+  default branch is `main` (`GET /repos/ImanOthman-eng/citerift`).
+- PR #1 reports `mergeable_state: clean` at head `0cda54e`, where both
+  `ci-gate` check runs (runs 40197530986 and 40197535146) succeeded and
+  belong to the GitHub Actions app, id 15368, the integration the rule requires.
+
+Two parameters appear on GitHub that the file does not contain:
+`required_reviewers: []` (empty, no effect) and
+`require_extra_approval_for_unattributed_changes: true`. Both were added by
+GitHub when the ruleset was created; neither removes a rule from the file, so
+the protection is at least as strict as defined. The effect of the second one
+on merging PR #1 has not been observed yet.
+
+Not done: a test push straight to `main` to watch it be refused. If protection
+were not in force, that push would change `main`, so the gate rests on the
+read backs above, which report the rules GitHub enforces on `main`.
 
 ## 8. Governance dry run
 
 The orchestrator refuses the transition to `VERIFIED_AWAITING_OWNER_ACCEPTANCE`
-while any gate is unpassed or any blocker is open (output recorded in
-HANDOFF.md). This is the expected behavior.
+while any gate is unpassed or any blocker is open. Before the ruleset existed
+the dry run at `741476c` raised only `BLOCKER_OPEN` B-00-002 and
+`GATE_NOT_PASSED` 00-L; after B-00-002 was resolved and 00-L recorded as
+passed, the dry run raised nothing (output in HANDOFF.md).
 
 ## 9. Gaps in test coverage
 

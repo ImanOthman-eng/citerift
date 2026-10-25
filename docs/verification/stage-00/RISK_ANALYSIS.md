@@ -88,14 +88,15 @@ were all killed (TEST_RESULTS.md).
   detectable only by review** (R-003). Optional signed acceptance (D-006) would
   close the first for acceptance.
 - **CI records are entered by the agent** (R-004). The run URL is public and
-  the required `ci-gate` check is the independent control, once protection is
-  active.
+  the required `ci-gate` check is the independent control (active since
+  2026-10-25).
 - **Shared infrastructure is not drift-tracked** (D-012). A change to
   `pyproject.toml` or the workflow does not make Stage 00 stale; CI re-running
   every stage's tests on every change is the control.
-- **Branch protection is not active** (R-015, blocker B-00-002). Until the
-  owner imports the ruleset, `main` accepts direct and force pushes, so
-  attacks 14 and 20 rely on detection rather than prevention.
+- **Branch protection depends on the owner's account settings.** It became
+  active on 2026-10-25 (R-015 closed, B-00-002 resolved). The owner, as
+  repository admin, can still edit or disable it; the read back in
+  TEST_RESULTS.md section 7 shows its state on that date only.
 
 ## 3. Stage 00 risk register summary
 
@@ -111,7 +112,7 @@ were all killed (TEST_RESULTS.md).
 | R-011 ephemeral container | medium | mitigated | everything pushed; recovery tested |
 | R-012 clock-dependent ordering | low | accepted | fail-closed |
 | R-014 Actions jobs not started (billing lock) | high | closed | resolved by the owner; CI passed at `741476c` (B-00-001 resolved) |
-| R-015 protection defined but inactive | high | open | **blocks gate 00-L** (B-00-002) |
+| R-015 protection defined but inactive | high | closed | owner created ruleset 25824038; read back active (B-00-002 resolved) |
 
 No open critical defect is recorded; `citerift-gov check` reports
 `OPEN_CRITICAL_DEFECT` for none.
@@ -128,7 +129,7 @@ independent proof. Each line names what was checked in the actual artifacts.
 | Senior Engineer | `ruff`, `mypy --strict` clean; no shell in governance code; atomic registry writes. | no defect |
 | Mathematical Reviewer | Attempt count 490 × 3,584 = 1,756,160 matches the output; completeness argument for the single-active rule (MATHEMATICAL_MODEL.md section 3); simulation output reproduced byte-for-byte as JSON on re-run. | no defect |
 | QA Engineer | Listed every finding code in the governance and contract code and searched the tests for each. | 26 codes were never asserted by name: `ACCEPTANCE_STALE` and 25 others (including the section 7.4 rules on invalid dependencies and history order): **fixed** in `2bf7d60` and `30e4462` |
-| Security Reviewer | Workflow permissions `contents: read`, SHA-pinned actions, `persist-credentials: false`, zizmor offline clean, pip-audit clean, secret scan. | protection of `main` inactive: **blocker B-00-002** |
+| Security Reviewer | Workflow permissions `contents: read`, SHA-pinned actions, `persist-credentials: false`, zizmor offline clean, pip-audit clean, secret scan. | protection of `main` was inactive (blocker B-00-002); **resolved** when the owner created ruleset 25824038, read back active |
 | Stage 02 developer | DOI/PMID patterns are permissive by design (R-006); `retraction_status` has no "not retracted" value; absence must be `uncertain` with checked sources. Stage 02 can add new schema files under `v1/` as a minor version. | no defect; tighten formats with real data |
 | Stage 06 AI engineer | `ai_assessment` requires a model reference and confidence in [0, 1], allows abstention, and can never carry `verified_fact`. Confidence is documented as uncalibrated until Stage 06 calibrates it. | no defect |
 | Stage 07 backend engineer | Schemas resolve by URN through `load_contracts`, so a FastAPI service can reuse the validator without network access. | no defect |

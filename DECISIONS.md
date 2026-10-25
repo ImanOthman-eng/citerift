@@ -187,7 +187,7 @@ The engineering agent's stages may not overlap; the external Stage 01 is
 exempt because it is not executed by the engineering agent.
 
 ## D-011 — Branch protection through a repository ruleset
-- Status: proposed
+- Status: accepted
 - Topic: branch-protection
 - Date: 2026-10-25
 - Stage: 00
@@ -212,6 +212,12 @@ GitHub proxy refused ruleset writes ("Write access to this GitHub API path is
 not permitted through this proxy") and the classic branch protection API
 returned 403 "Resource not accessible by integration", so the owner has to
 import the file. See docs/verification/stage-00/TEST_RESULTS.md.
+
+Accepted 2026-10-25: the owner created the ruleset on GitHub (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPBsct46wZA6iBixZ1ZLXboz`: "The `main-protection`
+ruleset has been created and activated successfully on GitHub"). Read back:
+ruleset id 25824038, enforcement active, rules and parameters equal to the
+file (TEST_RESULTS.md section 7).
 
 ## D-012 — Stage-owned paths and drift detection
 - Status: accepted

@@ -5,15 +5,16 @@
 - Stage: 00, Engineering Foundation. Executor: engineering agent.
 - Authorized by the owner on 2026-10-25 (`owner_ref`
   `cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`), Stage 00 only.
-- Recorded status: **`IMPLEMENTED_NOT_VERIFIED`** (implementation revision
-  `30e4462e9ae71016dbc6f04cdda19106babd4a34`), with one open blocker.
-- Candidate verified revision: `741476c7da8dde4d077e97ae0302a331ef5fdef5`,
-  the commit GitHub Actions tested successfully (same code as `30e4462`).
-- Current verdict: **BLOCKED — EVIDENCE PROVIDED.** Fifteen of the sixteen
-  gates pass, 00-K now on real GitHub Actions evidence; gate 00-L (branch
-  protection) still needs the owner to import the ruleset.
-- The stage is **not** verified and **not** accepted. No later stage is
-  authorized.
+- Recorded status: **`VERIFIED_AWAITING_OWNER_ACCEPTANCE`**, set by the
+  verification transition that pins this file's hash (implementation revision
+  `30e4462e9ae71016dbc6f04cdda19106babd4a34`). No open blocker.
+- Verified revision: `741476c7da8dde4d077e97ae0302a331ef5fdef5`, the commit
+  GitHub Actions tested successfully (same code as `30e4462`).
+- Verdict: **VERIFIED — AWAITING OWNER ACCEPTANCE.** All sixteen gates pass:
+  00-K on GitHub Actions runs at `741476c`, 00-L on the `main-protection`
+  ruleset read back active from GitHub.
+- The stage is **not** accepted. Acceptance is the owner's decision. No later
+  stage is authorized.
 
 ## Verified completed work
 
@@ -33,7 +34,7 @@ does not mean the owner accepted it.
 | 00-I | Unit and integration tests | pass | `test-report.json` (from CI): unit 29, integration 59 |
 | 00-J | Regression and consistency tests | pass | regression 12; `citerift-gov check` 0 errors locally and in CI; `render-status --check` |
 | 00-K | Successful GitHub Actions verification | pass | runs [40188172695](https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695) (push) and [40188175045](https://github.com/ImanOthman-eng/citerift/actions/runs/40188175045) (pull_request), attempt 2, at `741476c`: all jobs and steps succeeded, 161 passed per verify job (TEST_RESULTS.md section 6). B-00-001 resolved |
-| 00-L | Effective branch protection verified | **not verified** | read back: no rulesets, no rules on `main`; ruleset write refused by this session's GitHub proxy (TEST_RESULTS.md section 7). Blocker B-00-002 |
+| 00-L | Effective branch protection verified | pass | ruleset `main-protection` id 25824038, enforcement active, created by the owner; read back from the GitHub API and equal to `.github/rulesets/main-protection.json`; `GET /rules/branches/main` lists deletion, non-fast-forward, pull request (merge only) and required `ci-gate` (app 15368, strict); no bypass actors (TEST_RESULTS.md section 7). B-00-002 resolved |
 | 00-M | Security and adversarial review | pass | RISK_ANALYSIS.md; security suite 8; pip-audit clean; zizmor offline clean; secret scan |
 | 00-N | Creative Differentiation Review | pass | CREATIVE_DIFFERENTIATION_REVIEW.md |
 | 00-O | Reproducible documentation and handoff | pass | this package, `docs/development.md`, `GOVERNANCE.md`, `citerift-gov recover` |
@@ -75,6 +76,7 @@ Outputs (all in the repository):
   document check, pip-audit, zizmor: all clean (TEST_RESULTS.md section 4).
 - GitHub Actions: both runs at `741476c` green; logs show 0 governance
   errors and no known vulnerabilities (00-K).
+- Branch protection: ruleset 25824038 active on `main` and read back (00-L).
 
 ## Known limitations
 
@@ -95,12 +97,12 @@ From RISKS.md and RISK_ANALYSIS.md, stated plainly:
 
 ## Open blockers
 
-B-00-001 (GitHub Actions billing lock) was resolved on 2026-10-25 after the
-owner updated billing; see 00-K.
+None. Both Stage 00 blockers were resolved on 2026-10-25 with evidence:
 
-| Id | Blocker | Evidence | Minimum owner action |
-|---|---|---|---|
-| B-00-002 | Branch protection cannot be created from this session | `POST /rulesets` refused by the session's GitHub proxy; classic protection API 403; read back shows no rules on `main` | GitHub, repository Settings, Rules, Rulesets, New ruleset, Import a ruleset, choose `.github/rulesets/main-protection.json` |
+| Id | Blocker | Resolution |
+|---|---|---|
+| B-00-001 | GitHub Actions jobs not started (account billing lock) | owner updated billing; CI runs 40188172695 and 40188175045 succeeded at `741476c` (00-K) |
+| B-00-002 | Branch protection could not be created from this session | owner created ruleset `main-protection` (id 25824038); read back active and equal to the file (00-L) |
 
 ## Dependency versions
 
@@ -124,8 +126,6 @@ CI actions are pinned to commit SHAs in `.github/workflows/ci.yml`.
 
 ## Verified Git commit
 
-No commit is verified yet. The candidate verified revision is
-
 `741476c7da8dde4d077e97ae0302a331ef5fdef5`
 
 on branch `claude/project-thread-9lab67`, in
@@ -134,29 +134,32 @@ runs tested. Its code equals the recorded implementation revision `30e4462`;
 the commits after `30e4462` change only the verification package, evidence and
 registry, none under a Stage 00 owned path, so they do not make the evidence
 stale. PR #1 must be merged with a merge commit (not squash or rebase) so the
-cited commits stay in `main`'s history.
+cited commits stay in `main`'s history; the ruleset now allows only merge
+commits.
 
 Dry run of the verification transition at `741476c` with
-`verification-record.json` (gate results and the CI record), recorded
-2026-10-25 after CI passed:
+`verification-record.json` (all sixteen gates and the CI record), after
+B-00-002 was resolved, 2026-10-25:
 
 ```
-Transition stage 00 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: REJECTED
-  ERROR BLOCKER_OPEN: [stage 00] unresolved blocker B-00-002: Branch protection cannot be created from this session: ruleset write refused by the session's GitHub proxy (HTTP 403) and classic protection API returns 403 'Resource not accessible by integration'. Owner must import .github/rulesets/main-protection.json; gate 00-L cannot pass until then.
-  ERROR GATE_NOT_PASSED: [stage 00] gate 00-L is 'not_verified'
+Transition stage 00 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: ALLOWED
+Dry run: nothing written. Re-run with --apply to record it.
 ```
 
-Only blocker B-00-002 and gate 00-L remain. The orchestrator checked the seven
-artifacts, the handoff sections, the cited revision, both test reports and the
-CI record on the same call and raised nothing about them. A dry run writes
-nothing.
+The orchestrator checked the seven artifacts, the handoff sections, the cited
+revision, both test reports, every gate and the CI record, and raised nothing.
+The same command was then run with `--apply`. The earlier dry run, before the
+ruleset existed, was refused with only `BLOCKER_OPEN` B-00-002 and
+`GATE_NOT_PASSED` 00-L.
 
 ## Acceptance decision
 
-Not requested. Stage 00 is not verified, so owner acceptance cannot be
-recorded; the orchestrator would refuse it. When 00-L passes and the
-stage reaches `VERIFIED_AWAITING_OWNER_ACCEPTANCE`, acceptance is the owner's
-decision alone, recorded with an `owner_ref` to the owner's own message.
+Requested from the owner. Stage 00 is `VERIFIED_AWAITING_OWNER_ACCEPTANCE`;
+the agent cannot accept it and the orchestrator refuses acceptance from any
+actor but the owner. To accept, the owner states it in their own words; the
+transition is then recorded with `--actor owner --owner-ref <that message>`
+and must cite the verified revision `741476c`. The owner may instead reject it
+or ask for rework.
 
 Owner decisions also pending, not blocking Stage 00 verification: license
 (D-007, recommendation Apache-2.0 for code) and optional SSH-signed acceptance
@@ -171,12 +174,8 @@ Owner decisions also pending, not blocking Stage 00 verification: license
   placed in `docs/verification/stage-01/HANDOFF.md`, satisfy gates 01-A to
   01-G, and be accepted by the owner. Stage 00 does not assume any Stage 01
   finding.
-- To finish Stage 00 after the owner imports the ruleset (B-00-002):
-  1. Read back the ruleset (`GET /repos/ImanOthman-eng/citerift/rulesets` and
-     `GET …/rules/branches/main`).
-  2. `citerift-gov blocker resolve 00 "<resolution and evidence>" --id B-00-002`.
-  3. `citerift-gov transition 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE --revision 741476c… --record <gates and CI JSON> --apply`.
-  4. PR #1 is merged only with the owner's explicit authorization, with a
-     merge commit, once `ci-gate` is green.
+- Remaining for Stage 00: the owner's acceptance decision. PR #1 is merged
+  only with the owner's explicit authorization, with a merge commit, once
+  `ci-gate` is green.
 - Session start for any later work: `uv sync --locked`, `uv run citerift-gov recover`,
   `uv run citerift-gov check`.

@@ -159,7 +159,7 @@ Closed 2026-10-25: after the owner updated billing, re-runs of CI runs
 succeeded. Blocker B-00-001 resolved.
 
 ## R-015 — Branch protection is defined but not active
-- Status: open
+- Status: closed
 - Severity: high
 - Kind: risk
 - Stage: 00
@@ -168,3 +168,9 @@ The ruleset in `.github/rulesets/main-protection.json` cannot be created from
 this session (proxy refuses ruleset writes; classic protection API returns
 403). Until the owner imports it, `main` accepts direct pushes and force
 pushes. Recorded as Stage 00 blocker B-00-002.
+
+Closed 2026-10-25: the owner created ruleset `main-protection` (id 25824038,
+enforcement active). Read back from the GitHub API, it matches the file, no
+bypass actors, and `GET /rules/branches/main` lists all four rules in effect
+(docs/verification/stage-00/TEST_RESULTS.md section 7). Blocker B-00-002
+resolved.

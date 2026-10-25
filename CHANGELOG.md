@@ -26,8 +26,8 @@ what changed in the repository.
   3.12 and 3.13, dependency audit) with a single `ci-gate` required check.
 - Documentation: README, GOVERNANCE.md, architecture, data contracts, sources
   and attribution policy, development setup, Stage 00 verification package.
-- Importable branch ruleset for `main` (`.github/rulesets/main-protection.json`);
-  not yet active (RISKS.md R-015).
+- Branch ruleset for `main` (`.github/rulesets/main-protection.json`), created
+  on GitHub by the owner on 2026-10-25 as ruleset 25824038 (active, read back).
 
 ### Fixed (Stage 00 final review)
 

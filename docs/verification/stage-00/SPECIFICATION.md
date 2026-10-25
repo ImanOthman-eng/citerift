@@ -22,7 +22,7 @@ later stages must pass through.
 | Test evidence plugin | `src/citerift/governance/pytest_report.py` | machine-readable test report bound to a git revision |
 | Simulation | `simulations/stage00/state_machine_model.py` | pre-implementation model of the governance rules |
 | CI | `.github/workflows/ci.yml` | lockfile, lint, types, schemas, governance check, tests on 3.12 and 3.13, dependency audit, `ci-gate` |
-| Branch protection definition | `.github/rulesets/main-protection.json` | protection of `main` (owner import required, see Open items) |
+| Branch protection definition | `.github/rulesets/main-protection.json` | protection of `main` (active on GitHub as ruleset 25824038) |
 | Repository foundation | `README.md`, `.gitignore`, `GOVERNANCE.md`, `CLAUDE.md`, `docs/` | onboarding, standing rules, sources and attribution policy |
 
 ## State machine
@@ -97,5 +97,6 @@ does not predict or assume any Stage 01 finding.
 
 - ~~Resolve the GitHub account billing lock (B-00-001).~~ Resolved by the owner
   on 2026-10-25; CI passed at `741476c`.
-- Import `.github/rulesets/main-protection.json` (B-00-002, D-011).
+- ~~Import `.github/rulesets/main-protection.json` (B-00-002, D-011).~~ Done by
+  the owner on 2026-10-25; ruleset 25824038 is active and read back.
 - License decision (D-007) and optional signed acceptance (D-006).
