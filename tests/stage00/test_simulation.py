@@ -9,7 +9,7 @@ from pathlib import Path
 from types import ModuleType
 
 import pytest
-from sandbox_repo import OWNER_REF, Sandbox
+from sandbox_repo import Sandbox
 
 from citerift.governance.model import EDGES, Actor, Status
 
@@ -123,7 +123,7 @@ def _attempt(
             kind="correction",
             reason="differential test correction",
             evidence_refs=["RISKS.md"],
-            owner_ref=OWNER_REF,
+            owner_ref=sandbox.new_ref(),
             at=sandbox.tick(),
         )
     result = sandbox.go(sid, target, **kwargs)  # type: ignore[arg-type]

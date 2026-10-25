@@ -81,6 +81,7 @@ class Sandbox:
     def __init__(self, root: Path):
         self.root = root
         self.clock = 0
+        self.refs = 0
         root.mkdir(parents=True, exist_ok=True)
         shutil.copytree(REPO / "schemas", root / "schemas")
         (root / "governance").mkdir()
@@ -95,6 +96,11 @@ class Sandbox:
     def tick(self) -> str:
         self.clock += 1
         return f"2026-01-01T00:{self.clock // 60:02d}:{self.clock % 60:02d}Z"
+
+    def new_ref(self) -> str:
+        """A new owner reference: an amendment records its own owner decision, so it cannot reuse one (X-13)."""
+        self.refs += 1
+        return f"cmsg_TESTAMENDMENT{self.refs:04d}"
 
     def orc(self) -> Orchestrator:
         return Orchestrator(self.root)

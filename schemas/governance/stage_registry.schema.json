@@ -109,7 +109,21 @@
           "if": {"properties": {"id": {"const": "01"}}, "required": ["id"]},
           "then": {"properties": {"executor": {"const": "external-agent"}}},
           "else": {"properties": {"executor": {"const": "engineering-agent"}}}
-        }
+        },
+        {
+          "$comment": "Dependencies are fixed by the plan (D-010), so a stage cannot be freed from a dependency before it is verified (X-07).",
+          "properties": {"id": {"enum": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]}}
+        },
+        {"if": {"properties": {"id": {"const": "00"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": []}}}},
+        {"if": {"properties": {"id": {"const": "01"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": []}}}},
+        {"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},
+        {"if": {"properties": {"id": {"const": "03"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},
+        {"if": {"properties": {"id": {"const": "04"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["02", "03"]}}}},
+        {"if": {"properties": {"id": {"const": "05"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["04"]}}}},
+        {"if": {"properties": {"id": {"const": "06"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["05"]}}}},
+        {"if": {"properties": {"id": {"const": "07"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["06"]}}}},
+        {"if": {"properties": {"id": {"const": "08"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["07"]}}}},
+        {"if": {"properties": {"id": {"const": "09"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["08"]}}}}
       ],
       "required": [
         "id",

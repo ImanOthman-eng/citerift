@@ -40,13 +40,26 @@ def test_registry_matches_the_approved_ten_stage_plan() -> None:
     assert gates == [f"00-{c}" for c in "ABCDEFGHIJKLMNOP"]
 
 
+def stages_without_owner_authorization(orc: Orchestrator) -> list[str]:
+    """Stages that are not NOT_STARTED although no owner entry authorized them (X-12: the rule, not today's state)."""
+    authorized = {
+        h["stage"]
+        for h in orc.registry["history"]
+        if h["from"] == "NOT_STARTED" and h["to"] == "AUTHORIZED" and h["actor"] == "owner" and h["owner_ref"]
+    }
+    return [s["id"] for s in orc.stages if s["status"] != "NOT_STARTED" and s["id"] not in authorized]
+
+
 @pytest.mark.regression
-def test_no_stage_beyond_00_is_authorized_for_the_engineering_agent() -> None:
+def test_no_stage_is_started_without_an_owner_authorization() -> None:
     orc = Orchestrator(REPO)
+    assert stages_without_owner_authorization(orc) == []
+    accepted_by_owner = {
+        h["stage"] for h in orc.registry["history"] if h["to"] == "ACCEPTED_CLOSED" and h["actor"] == "owner"
+    }
     for s in orc.stages:
-        if s["id"] not in ("00", "01"):
-            assert s["status"] == "NOT_STARTED", f"stage {s['id']} must not be started without owner authorization"
-    assert orc.stage("01")["acceptance"] is None, "Stage 01 findings are not accepted"
+        if s["acceptance"] is not None:
+            assert s["id"] in accepted_by_owner, f"stage {s['id']} has an acceptance the owner did not record"
 
 
 @pytest.mark.regression
@@ -113,6 +126,14 @@ def test_ci_runs_the_owned_sources_not_an_entry_point() -> None:
     assert "uv run --no-sync citerift-" not in text
     assert "uv run --no-sync pytest" not in text
     assert "citerift.__file__" in text, "CI must check that the package is imported from the checkout"
+
+
+@pytest.mark.security
+def test_ci_refuses_modules_beside_the_package_before_running_python() -> None:
+    """X-04 (second final review): ``src/sitecustomize.py`` ran inside every CI check through ``PYTHONPATH``."""
+    text = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    guard = text.index('run: test "$(ls -A src)" = "citerift"')
+    assert guard < text.index("name: Install uv"), "the guard must run before any Python or uv step"
 
 
 @pytest.mark.security

@@ -108,6 +108,13 @@ def cmd_transition(orc: Orchestrator, args: argparse.Namespace) -> int:
         except (OSError, ValueError) as exc:
             print(f"error: cannot read --record {args.record}: {exc}", file=sys.stderr)
             return 2
+        if (
+            not isinstance(record, dict)
+            or not isinstance(record.get("gates", {}), dict)
+            or not isinstance(record.get("ci"), dict | None)
+        ):
+            print(f"error: --record {args.record} must be an object with 'gates' and 'ci' objects", file=sys.stderr)
+            return 2
         gates = record.get("gates", {})
         ci = record.get("ci")
     gates.update(_parse_gates(args.gate or []))
@@ -192,7 +199,10 @@ def cmd_render_status(orc: Orchestrator, args: argparse.Namespace) -> int:
         print(f"Wrote {STATUS_DOC_PATH}")
         return 0
     if args.check:
-        current = path.read_text(encoding="utf-8") if path.is_file() else ""
+        try:
+            current = path.read_text(encoding="utf-8") if path.is_file() else ""
+        except UnicodeDecodeError:
+            current = None  # not UTF-8 text, so it is out of date (X-05)
         if current != text:
             print(f"{STATUS_DOC_PATH} is out of date")
             return 1
@@ -350,6 +360,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f)
         print("The registry does not match its schema; run `citerift-gov check` and restore it from git.")
         return _git_hint(root, args.command)
+    stage_id = getattr(args, "stage", None)
+    if stage_id is not None and stage_id not in {s["id"] for s in orc.stages}:
+        print(f"ERROR STAGE_UNKNOWN: [stage {stage_id}] no such stage in the registry")
+        return 2
     if args.command == "blocker" and args.action == "resolve" and not args.id:
         print("error: blocker resolve needs --id", file=sys.stderr)
         return 2

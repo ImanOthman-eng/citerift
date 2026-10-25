@@ -35,6 +35,11 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Nothing beside the citerift package in src
+        # With src on PYTHONPATH, a src/sitecustomize.py or a package shadowing a dependency would run
+        # before every check below (X-04). This step runs no Python, so such a file cannot affect it.
+        run: test "$(ls -A src)" = "citerift"
+
       - name: Install uv
         uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:

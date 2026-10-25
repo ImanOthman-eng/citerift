@@ -115,7 +115,8 @@ def guard(
     if name == "verify":
         return inp.evidence_ok and inp.tests_ok and inp.revision_ok and not inp.blockers_open and deps_ok
     if name == "accept":
-        return inp.owner_ref and inp.evidence_ok and deps_ok
+        # An open blocker prevents acceptance as it prevents verification (second final review, X-10).
+        return inp.owner_ref and inp.evidence_ok and deps_ok and not inp.blockers_open
     if name == "reopen":
         return inp.owner_ref and inp.amendment_ok
     raise AssertionError(name)

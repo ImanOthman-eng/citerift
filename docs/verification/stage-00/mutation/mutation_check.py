@@ -216,7 +216,7 @@ M = [
     (
         "M45 V-06 topic spelling variants distinct",
         MEM,
-        'return _SEPARATORS.sub("-", unicodedata.normalize("NFKC", topic)).strip("-").casefold()',
+        'return _SEPARATORS.sub("-", visible).strip("-").casefold()',
         "return topic.casefold()",
     ),
     (
@@ -247,7 +247,7 @@ M = [
     (
         "M51 V-12 nested .gitattributes accepted",
         ORC,
-        'nested = [p for p in gitutil.tracked_files(self.root, "HEAD", ".") if p.endswith("/.gitattributes")]',
+        'nested = [p for p in tracked if p.endswith("/.gitattributes")]',
         "nested: list[str] = []",
     ),
     (
@@ -268,10 +268,126 @@ M = [
         "    Path(path).parent.mkdir(parents=True, exist_ok=True)",
         "    pass",
     ),
+    (
+        "M55 X-01 gate evidence through '..' or a symlink accepted",
+        ORC,
+        "elif not evidence.is_plain_path(self.root, ref):",
+        "elif False:",
+    ),
+    (
+        "M56 X-02 collection settings in the ini file ignored",
+        REP,
+        "if list(config.getini(name)) != expected",
+        "if False",
+    ),
+    ("M57 X-03 repeated items ignored", REP, 'and not selection["repeated"]', "and True"),
+    (
+        "M58 X-03 extra plugins allowed",
+        REP,
+        '"plugins": [p for p in config.option.plugins or [] if p != PLUGIN and not p.startswith("no:")],',
+        '"plugins": [],',
+    ),
+    (
+        "M59 X-03 untracked conftests accepted",
+        EVI,
+        'problems.extend(_untracked_conftests(root, rel, revision, selection.get("conftests")))',
+        "pass",
+    ),
+    (
+        "M60 X-04 modules beside the package accepted",
+        ORC,
+        'foreign = sorted({p.split("/")[1] for p in tracked if p.startswith("src/")} - {"citerift"})',
+        "foreign: list[str] = []",
+    ),
+    ("M61 X-05 test report shape not checked", EVI, "if shape := _report_shape_problem(report):", "if False:"),
+    (
+        "M62 X-05 unknown stage ids not checked",
+        "src/citerift/governance/cli.py",
+        'if stage_id is not None and stage_id not in {s["id"] for s in orc.stages}:',
+        "if False:",
+    ),
+    (
+        "M63 X-06 misformatted entry fields ignored",
+        MEM,
+        "if m and m.group(1).casefold() in _ENTRY_FIELDS_FOLDED and not _FIELD.match(line):",
+        "if False:",
+    ),
+    ("M64 X-06 invisible characters kept in topics", MEM, 'if unicodedata.category(c) != "Cf"', "if True"),
+    (
+        "M65 X-07 Stage 02 dependencies not fixed",
+        "schemas/governance/stage_registry.schema.json",
+        '{"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},',
+        '{"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {}},',
+    ),
+    (
+        "M66 X-08 resolution time may equal the last entry",
+        ORC,
+        "        at = at or self._now(after_history=True)",
+        "        at = at or self._now()",
+    ),
+    (
+        "M67 X-08 own error labelled pre-existing",
+        ORC,
+        "reference = self if _baseline is None else Orchestrator(self.root, _baseline)",
+        "reference = self",
+    ),
+    (
+        "M68 X-09 grafts honoured",
+        "src/citerift/governance/gitutil.py",
+        'return {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull}',
+        'return {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"}',
+    ),
+    (
+        "M69 X-10 acceptance with an open blocker replayed",
+        ORC,
+        "                (Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, Status.ACCEPTED_CLOSED),  # X-10\n",
+        "",
+    ),
+    (
+        "M70 X-11 long language subtags rejected",
+        "schemas/contracts/v1/common.schema.json",
+        '"pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,12})*$(?!\\\\n)"',
+        '"pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,8})*$(?!\\\\n)"',
+    ),
+    (
+        "M71 X-13 amendment owner references not checked",
+        ORC,
+        "return out + self._amendment_ref_findings()",
+        "return out",
+    ),
+    (
+        "M72 X-13 contract version not compared",
+        ORC,
+        'if _version(new.get("x-citerift-version")) <= _version(old.get("x-citerift-version")):',
+        "if False:",
+    ),
+    (
+        "M73 X-13 accepted fixtures not revalidated",
+        ORC,
+        "if text is not None and (problems := contracts.validate(loads_strict(text))):",
+        "if False:",
+    ),
 ]
 
 
+def _suite() -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["uv", "run", "--no-sync", "pytest", "-q", "-x", "-p", "no:cacheprovider", "tests/stage00"],  # noqa: S607
+        cwd=R,
+        capture_output=True,
+        text=True,
+        timeout=900,
+        check=False,
+    )
+
+
 def main() -> int:
+    # Baseline: a suite that already fails would report every mutant as killed (second final review).
+    base = _suite()
+    if base.returncode != 0:
+        print("BASELINE FAILED: the unmutated suite does not pass", base.stdout[-2000:])
+        return 2
+    print("baseline: unmutated suite passes", flush=True)
     survived = 0
     for name, rel, old, new in M:
         path = R / rel
@@ -282,14 +398,7 @@ def main() -> int:
             continue
         path.write_text(orig.replace(old, new, 1), encoding="utf-8")
         try:
-            r = subprocess.run(
-                ["uv", "run", "--no-sync", "pytest", "-q", "-x", "-p", "no:cacheprovider", "tests/stage00"],  # noqa: S607
-                cwd=R,
-                capture_output=True,
-                text=True,
-                timeout=900,
-                check=False,
-            )
+            r = _suite()
             last = [line for line in r.stdout.splitlines() if "passed" in line or "failed" in line][-1:]
             killed = r.returncode != 0
             survived += not killed

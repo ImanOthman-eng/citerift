@@ -309,7 +309,9 @@ def _plugin_project(tmp_path: Path) -> Path:
     return project
 
 
-def _run_plugin(project: Path, report: Path, *args: str) -> tuple[int, dict[str, Any], str]:
+def _run_plugin(
+    project: Path, report: Path, *args: str, env: dict[str, str] | None = None
+) -> tuple[int, dict[str, Any], str]:
     out = subprocess.run(
         [
             sys.executable,
@@ -325,6 +327,7 @@ def _run_plugin(project: Path, report: Path, *args: str) -> tuple[int, dict[str,
         capture_output=True,
         text=True,
         check=False,
+        env=env,
     )
     data = json.loads(report.read_text(encoding="utf-8")) if report.exists() else {}
     return out.returncode, data, out.stdout + out.stderr
@@ -1060,3 +1063,449 @@ def test_s01_files_git_ignores_are_not_evidence(sandbox: Sandbox) -> None:
     assert all("__pycache__" not in p for p in recorded)
     sandbox.write(f"{vdir}/added-later.md", "not ignored, so it is reported\n")
     assert "EVIDENCE_UNLISTED" in sandbox.codes(sandbox.orc().check())
+
+
+# ----------------------------- second final independent review (X-01 to X-13)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("alias", ["dotdot", "symlink"])
+def test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned(sandbox: Sandbox, alias: str) -> None:
+    """X-01: an owned-path prefix made a file outside the owned paths count as pinned."""
+    sandbox.write(OWNED_FILE, "version = 1\n")
+    sandbox.write("NOTES.md", "notes that are not pinned\n")
+    if alias == "dotdot":
+        ref = "src/citerift/governance/../../../NOTES.md"
+    else:
+        ref = "src/citerift/governance/evidence-link.md"
+        (sandbox.root / ref).symlink_to("../../../NOTES.md")
+    for target in ("AUTHORIZED", "IN_PROGRESS"):
+        assert sandbox.go("00", Status(target)).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    handoff = "docs/verification/stage-00/HANDOFF.md"
+    gates = {gid: {"result": "pass", "evidence": [handoff, ref]} for gid in sandbox.gates("00")}
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+    assert not result.allowed
+    assert "GATE_EVIDENCE_UNPINNED" in sandbox.codes(result.findings)
+
+
+@pytest.mark.integration
+def test_x02_collection_settings_in_the_ini_file_make_the_run_partial(tmp_path: Path) -> None:
+    """X-02: one committed ``python_functions`` line ran 92 of 308 tests and the report was "complete"."""
+    project = _plugin_project(tmp_path)
+    pyproject = project / "pyproject.toml"
+    pyproject.write_text(
+        pyproject.read_text(encoding="utf-8") + 'python_functions = ["test_alpha", "test_delta"]\n', encoding="utf-8"
+    )
+    git(project, "commit", "-q", "-am", "narrow collection in the ini file")
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json")
+    assert code == 0 and data["totals"] == {"passed": 2}, output
+    assert data["selection"]["files"] == ["tests/test_other.py", "tests/test_sample.py"]
+    shutil.copy(reports / "r.json", project / "r.json")
+    problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+
+
+PADDER = (
+    "def pytest_collection_modifyitems(items):\n"
+    "    keep = [i for i in items if i.name in ('test_alpha', 'test_delta')]\n"
+    "    items[:] = (keep * len(items))[: len(items)]\n"
+)
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("how", ["committed_conftest", "untracked_excluded_conftest", "outside_plugin"])
+def test_x03_padding_or_untracked_collection_code_makes_the_run_partial(tmp_path: Path, how: str) -> None:
+    """X-03: repeating kept items hid the dropped ones, and the code doing it need not be committed."""
+    import os
+
+    project = _plugin_project(tmp_path)
+    args: list[str] = []
+    env = None
+    if how == "committed_conftest":
+        (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "padding conftest")
+    elif how == "untracked_excluded_conftest":
+        (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+        with (project / ".git" / "info" / "exclude").open("a", encoding="utf-8") as fh:
+            fh.write("tests/conftest.py\n")
+    else:
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        (outside / "padder.py").write_text(PADDER, encoding="utf-8")
+        env = {**os.environ, "PYTHONPATH": os.pathsep.join([str(outside), os.environ.get("PYTHONPATH", "")])}
+        args = ["-p", "padder"]
+    reports = tmp_path / "reports"
+    reports.mkdir()
+    code, data, output = _run_plugin(project, reports / "r.json", *args, env=env)
+    assert code == 0 and data["dirty"] is False, output
+    shutil.copy(reports / "r.json", project / "r.json")
+    problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+    assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+
+
+@pytest.mark.negative
+def test_x04_a_module_beside_the_package_in_src_is_an_error(sandbox: Sandbox) -> None:
+    """X-04: ``src/sitecustomize.py`` (or ``src/jsonschema/``) runs before the checks CI starts from ``src``."""
+    sandbox.write(OWNED_FILE, "version = 1\n")
+    sandbox.commit("package only")
+    assert "SRC_FOREIGN_MODULE" not in sandbox.codes(sandbox.orc().check())
+    sandbox.write("src/sitecustomize.py", "print('loaded before every check')\n")
+    sandbox.commit("module beside the package")
+    assert "SRC_FOREIGN_MODULE" in sandbox.codes(sandbox.orc().check())
+
+
+def _cli(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, "-m", "citerift.governance.cli", "--root", str(root), *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def _damage(sandbox: Sandbox, damage: str) -> list[str]:
+    """Apply one damage of X-05 and return the extra command-line arguments it needs."""
+    root = sandbox.root
+    schema = root / "schemas/governance/stage_registry.schema.json"
+    report = root / "docs/verification/stage-00/test-report.json"
+    if damage in ("report_count_string", "report_suites_list", "handoff_not_utf8", "amend_missing_report"):
+        sandbox.drive_to_accepted("00")
+    if damage == "status_not_utf8":
+        with (root / "PROJECT_STATUS.md").open("ab") as fh:
+            fh.write(b"\xff\n")
+    elif damage == "schema_type_int":
+        schema.write_text('{"type": 5}\n', encoding="utf-8")
+    elif damage == "schema_list":
+        schema.write_text("[]\n", encoding="utf-8")
+    elif damage == "schema_dangling_ref":
+        schema.write_text('{"$ref": "#/nope"}\n', encoding="utf-8")
+    elif damage == "record_list":
+        (root / "record.json").write_text("[]\n", encoding="utf-8")
+        return [str(root / "record.json")]
+    elif damage == "record_gates_list":
+        (root / "record.json").write_text('{"gates": []}\n', encoding="utf-8")
+        return [str(root / "record.json")]
+    elif damage == "report_count_string":
+        data = json.loads(report.read_text(encoding="utf-8"))
+        data["totals"]["passed"] = "many"
+        report.write_text(json.dumps(data), encoding="utf-8")
+    elif damage == "report_suites_list":
+        data = json.loads(report.read_text(encoding="utf-8"))
+        data["suites"] = {s: [] for s in data["suites"]}
+        report.write_text(json.dumps(data), encoding="utf-8")
+    elif damage == "handoff_not_utf8":
+        with (root / "docs/verification/stage-00/HANDOFF.md").open("ab") as fh:
+            fh.write(b"\xff\n")
+    return []
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("damage", "command", "code"),
+    [
+        ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+        ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+        ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+        ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+        ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+        ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+        ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+        (
+            "none",
+            [
+                "amend",
+                "99",
+                "--kind",
+                "correction",
+                "--reason",
+                "x",
+                "--evidence",
+                "RISKS.md",
+                "--owner-ref",
+                "cmsg_TESTAMENDREF01",
+            ],
+            "STAGE_UNKNOWN",
+        ),
+        ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+        ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+        ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+        (
+            "record_list",
+            ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+            "--record",
+        ),
+        (
+            "record_gates_list",
+            ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+            "--record",
+        ),
+        (
+            "amend_missing_report",
+            [
+                "amend",
+                "00",
+                "--kind",
+                "enhancement",
+                "--reason",
+                "x",
+                "--evidence",
+                "RISKS.md",
+                "--owner-ref",
+                "cmsg_TESTAMENDREF01",
+                "--test-report",
+                "missing.json",
+            ],
+            "EVIDENCE_MISSING",
+        ),
+        ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+        ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+        ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+    ],
+)
+def test_x05_more_damaged_inputs_are_reported_not_crashed(
+    sandbox: Sandbox, damage: str, command: list[str], code: str
+) -> None:
+    """X-05: residual tracebacks of V-10."""
+    extra = _damage(sandbox, damage)
+    out = _cli(sandbox.root, *command, *extra)
+    assert "Traceback" not in out.stderr, out.stderr
+    # recover reports the consistency errors it finds and still exits 0, so that it always prints the state
+    assert out.returncode in ((0,) if command[0] == "recover" else (1, 2)), out.stdout + out.stderr
+    assert code in out.stdout + out.stderr, out.stdout + out.stderr
+
+
+CRITICAL_FIELDS = "- Status: open\n- Severity: critical\n- Kind: defect\n- Stage: 00\n"
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "entry",
+    [
+        "### R–020 — Hidden\n" + CRITICAL_FIELDS.replace("- ", "- **").replace(":", "**:"),
+        "## R–020 — Hidden\n" + CRITICAL_FIELDS.lower(),
+        "Hidden defect R-020\n---\n\n" + "".join("  " + line + "\n" for line in CRITICAL_FIELDS.splitlines()),
+        "## R\u00a0020 — Hidden\n\nProse only.\n",
+    ],
+    ids=["bold_fields", "lowercase_fields", "indented_fields", "nbsp_heading"],
+)
+def test_x06_entries_written_differently_are_malformed(tmp_path: Path, entry: str) -> None:
+    """X-06: a heading that does not parse was skipped when its fields were written differently too."""
+    from citerift.governance import memory
+
+    risks = tmp_path / "RISKS.md"
+    risks.write_text("# Risks\n\n" + entry, encoding="utf-8")
+    assert "MEMORY_MALFORMED" in {p.code for p in memory.check_risks(risks)[1]}
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("invisible", ["\u200b", "\u00ad", "\u2060", "\ufeff"])
+def test_x06_invisible_characters_do_not_split_a_topic(tmp_path: Path, invisible: str) -> None:
+    from citerift.governance import memory
+
+    decisions = tmp_path / "DECISIONS.md"
+    body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+    decisions.write_text(
+        "# Decisions\n\n## D-001 — One\n"
+        + body.format(topic="sandbox")
+        + "\n## D-002 — Two\n"
+        + body.format(topic=f"sand{invisible}box"),
+        encoding="utf-8",
+    )
+    assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(("stage", "deps"), [(2, ["00"]), (4, ["02"]), (1, ["00"]), (9, [])])
+def test_x07_stage_dependencies_are_fixed_by_the_schema(sandbox: Sandbox, stage: int, deps: list[str]) -> None:
+    """X-07: dropping Stage 01 from Stage 02's dependencies let Stage 02 be accepted while 01 was not started."""
+    reg = sandbox.registry()
+    reg["stages"][stage]["depends_on"] = deps
+    sandbox.save_registry(reg)
+    assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check(include_status_doc=False))
+
+
+@pytest.mark.integration
+def test_x08_add_block_and_resolve_within_one_second(sandbox: Sandbox, monkeypatch: pytest.MonkeyPatch) -> None:
+    """X-08: with default times the resolution fell in the second of the BLOCKED entry and was refused."""
+    from datetime import UTC, datetime, timedelta
+
+    from citerift.governance import orchestrator
+
+    frozen = datetime(2026, 10, 25, 12, tzinfo=UTC)
+    monkeypatch.setattr(
+        orchestrator,
+        "utc_now",
+        lambda delta=None: (frozen + (delta or timedelta())).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    )
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target, at=None).allowed
+    bid = sandbox.orc().add_blocker("00", "waiting for the owner")
+    assert sandbox.go("00", Status.BLOCKED, at=None).allowed
+    assert sandbox.orc().resolve_blocker("00", bid, "the owner answered")
+    assert not errors(sandbox.orc().check(include_status_doc=False))
+
+
+@pytest.mark.integration
+def test_x08_a_refused_resolution_does_not_call_its_own_error_pre_existing(sandbox: Sandbox) -> None:
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    opened = sandbox.tick()
+    bid = sandbox.orc().add_blocker("00", "waiting for the owner", at=opened)
+    assert sandbox.go("00", Status.BLOCKED).allowed
+    with pytest.raises(orchestrator_error()) as refused:
+        sandbox.orc().resolve_blocker("00", bid, "resolved before it blocked", at=opened)
+    messages = [f.message for f in refused.value.findings if f.code == "HISTORY_BLOCKER"]
+    assert messages and not any("(pre-existing)" in m for m in messages), messages
+
+
+def orchestrator_error() -> type[Exception]:
+    from citerift.governance.orchestrator import GovernanceError
+
+    return GovernanceError
+
+
+@pytest.mark.negative
+def test_x09_grafts_do_not_hide_a_rewritten_history(sandbox: Sandbox) -> None:
+    """X-09: ``--no-replace-objects`` does not disable ``.git/info/grafts``."""
+    sandbox.drive_to_accepted("00")
+    old_head = sandbox.head()
+    orphan = git(sandbox.root, "commit-tree", f"{old_head}^{{tree}}", "-m", "rewritten history")
+    git(sandbox.root, "reset", "-q", "--hard", orphan)
+    assert "REVISION_NOT_IN_HISTORY" in sandbox.codes(sandbox.orc().check())
+    (sandbox.root / ".git" / "info").mkdir(exist_ok=True)
+    (sandbox.root / ".git" / "info" / "grafts").write_text(f"{orphan} {old_head}\n", encoding="utf-8")
+    assert "REVISION_NOT_IN_HISTORY" in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.negative
+def test_x10_acceptance_while_a_blocker_was_open_is_an_error_in_history(sandbox: Sandbox) -> None:
+    """X-10: the replay checked blockers at block, start, unblock and verify, but not at acceptance."""
+    sandbox.drive_to_accepted("00")
+    reg = sandbox.registry()
+    accepted_at = reg["history"][-1]["at"]
+    reg["stages"][0]["blockers"].append(
+        {
+            "id": "B-00-001",
+            "description": "hand-written blocker open at the acceptance",
+            "opened_at": accepted_at,
+            "resolved_at": sandbox.tick(),
+            "resolution": "resolved after the acceptance",
+        }
+    )
+    sandbox.save_registry(reg)
+    assert sandbox.codes(sandbox.orc().check(include_status_doc=False)) == {"HISTORY_BLOCKER"}
+
+
+@pytest.mark.contracts
+@pytest.mark.parametrize("language", ["zh-classical", "zh-min-nan", "be-tarask", "simple", "ar"])
+def test_x11_every_open_wikipedia_edition_code_is_valid(language: str) -> None:
+    """X-11: ``zh-classical`` (an open edition) was rejected by the language pattern."""
+    from citerift.contracts import load_contracts
+    from citerift.contracts.formats import loads_strict
+
+    contracts = load_contracts(REPO / "schemas/contracts")
+    path = REPO / "tests/stage00/fixtures/contracts/v1/valid/investigation_full.json"
+    record = loads_strict(path.read_text(encoding="utf-8"))
+    record_text = json.dumps(record).replace('"language": "en"', f'"language": "{language}"')
+    assert contracts.validate(json.loads(record_text)) == []
+
+
+@pytest.mark.regression
+def test_x12_the_authorization_rule_holds_after_later_owner_decisions(sandbox: Sandbox) -> None:
+    """X-12: the repository test asserted today's state (Stage 02 not started), not the rule, so the next owner
+    decisions would have failed CI. The rule: no stage is active or done without an owner authorization."""
+    from test_repository import stages_without_owner_authorization
+
+    sandbox.drive_to_accepted("00")
+    sandbox.drive_to_accepted("01")
+    assert sandbox.go("02", Status.AUTHORIZED).allowed
+    assert stages_without_owner_authorization(sandbox.orc()) == []
+    _append_history(sandbox, "03", "NOT_STARTED", "AUTHORIZED", "engineering-agent")
+    reg = sandbox.registry()
+    reg["stages"][3]["status"] = "AUTHORIZED"
+    sandbox.save_registry(reg)
+    assert stages_without_owner_authorization(sandbox.orc()) == ["03"]
+
+
+def _enhance(sandbox: Sandbox, *, bump: bool, owner_ref: str, tighten: bool = False) -> str:
+    """Accept Stage 00, change a v1 contract, and record an enhancement amendment for the change."""
+    path = sandbox.root / "schemas/contracts/v1/investigation.schema.json"
+    text = path.read_text(encoding="utf-8")
+    text = text.replace('"x-citerift-version": "1.0.1"', '"x-citerift-version": "1.1.0"') if bump else text
+    if tighten:
+        text = text.replace('"required": [', '"required": ["new_mandatory_field", ', 1)
+    else:
+        text = text.replace('"description": "', '"description": "Enhanced. ', 1)
+    path.write_text(text, encoding="utf-8")
+    rev = sandbox.commit("enhance a v1 contract")
+    report = "docs/verification/stage-00/enhancement-test-report.json"
+    stage = sandbox.orc().stage("00")
+    sandbox.write(
+        report,
+        json.dumps(
+            {
+                "format": "citerift.test-report/1",
+                "revision": rev,
+                "dirty": False,
+                "exit_status": 0,
+                "totals": {"passed": 10 * len(stage["required_test_suites"])},
+                "selection": {"args": ["tests"], "deselected": 0, "complete": True, "files": []},
+                "suites": {s: {"passed": 10} for s in stage["required_test_suites"]},
+            }
+        ),
+    )
+    return sandbox.orc().add_amendment(
+        "00",
+        kind="enhancement",
+        reason="minor contract version for a later stage",
+        evidence_refs=[report],
+        owner_ref=owner_ref,
+        revision=rev,
+        test_report=report,
+        at=sandbox.tick(),
+    )
+
+
+@pytest.fixture
+def accepted_with_fixtures(sandbox: Sandbox) -> Sandbox:
+    valid = "tests/stage00/fixtures/contracts/v1/valid"
+    for fixture in sorted((REPO / valid).glob("*.json")):
+        sandbox.write(f"{valid}/{fixture.name}", fixture.read_text(encoding="utf-8"))
+    sandbox.commit("contract fixtures")
+    sandbox.drive_to_accepted("00")
+    return sandbox
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("bump", "ref", "tighten", "code"),
+    [
+        (False, "cmsg_TESTENHANCE001", False, "CONTRACT_VERSION_NOT_INCREASED"),
+        (True, "accepted", False, "OWNER_REF_REUSED"),
+        (True, "cmsg_TESTENHANCE001", True, "CONTRACT_INCOMPATIBLE"),
+    ],
+    ids=["no_version_increase", "reused_owner_ref", "breaks_old_records"],
+)
+def test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement(
+    accepted_with_fixtures: Sandbox, bump: bool, ref: str, tighten: bool, code: str
+) -> None:
+    """X-13: an enhancement changed an accepted contract with the acceptance's own reference and no version."""
+    sandbox = accepted_with_fixtures
+    owner_ref = sandbox.registry()["stages"][0]["acceptance"]["owner_ref"] if ref == "accepted" else ref
+    with pytest.raises(orchestrator_error()) as refused:
+        _enhance(sandbox, bump=bump, owner_ref=owner_ref, tighten=tighten)
+    assert code in {f.code for f in refused.value.findings}, [str(f) for f in refused.value.findings]
+
+
+@pytest.mark.integration
+def test_x13_a_versioned_compatible_enhancement_is_accepted(accepted_with_fixtures: Sandbox) -> None:
+    sandbox = accepted_with_fixtures
+    _enhance(sandbox, bump=True, owner_ref="cmsg_TESTENHANCE001")
+    sandbox.commit("record the enhancement")
+    assert not errors(sandbox.orc().check(include_status_doc=False))

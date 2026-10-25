@@ -20,12 +20,15 @@ RISK_KINDS = frozenset({"risk", "defect", "limitation"})
 _HEADING = re.compile(r"^## ([DR]-\d{3}) — (.+?)\s*$")
 # Anything that looks like an entry heading but is not exactly the form above (another dash,
 # another heading level, missing digits) is reported instead of being skipped (F-06).
-_HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*-?\s*\d+")
+_HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*[-\u2010-\u2015\u2212_]?\s*\d+")
 _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
 # Fields that only an entry carries. One of them outside a parsed entry means the entry's heading
 # was not recognized (another dash, a setext or HTML heading, ...), so it is reported (V-06).
 _ENTRY_FIELDS = frozenset({"Status", "Severity", "Kind", "Topic"})
+_ENTRY_FIELDS_FOLDED = frozenset(f.casefold() for f in _ENTRY_FIELDS)
 _SEPARATORS = re.compile(r"[\s_\-\u2010-\u2015\u2212]+")
+# An entry field written another way: indented, another bullet, bold, or another case (X-06).
+_FIELD_LIKE = re.compile(r"^\s*[-*+]\s*[*_]*\s*([A-Za-z][A-Za-z-]*)\s*[*_]*\s*:")
 
 
 @dataclass
@@ -57,7 +60,7 @@ def malformed_headings(text: str, prefix: str) -> list[tuple[int, str]]:
     """Lines that look like an entry heading for ``prefix`` but do not parse as one."""
     out = []
     for number, line in enumerate(text.splitlines(), start=1):
-        m = _HEADING_LIKE.match(line)
+        m = _HEADING_LIKE.match(unicodedata.normalize("NFKC", line))
         if m and m.group(1) == prefix[0] and not _HEADING.match(line):
             out.append((number, line.strip()))
     return out
@@ -72,6 +75,10 @@ def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str)
         MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: field outside any recognized entry heading: {line!r}")
         for n, line in orphan_fields(text, prefix)
     ]
+    problems += [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: entry field is not written as '- Name: value': {line!r}")
+        for n, line in misformatted_fields(text)
+    ]
     for e in entries:
         for f in e.duplicate_fields:
             problems.append(MemoryProblem("MEMORY_MALFORMED", name, f"{e.id} sets field '{f}' more than once"))
@@ -79,8 +86,21 @@ def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str)
 
 
 def normalize_topic(topic: str) -> str:
-    """Compatibility-normalized, case-folded, with every run of spaces, hyphens or underscores as one hyphen."""
-    return _SEPARATORS.sub("-", unicodedata.normalize("NFKC", topic)).strip("-").casefold()
+    """Compatibility-normalized, case-folded, without invisible format characters (X-06), and with every
+    run of spaces, hyphens or underscores as one hyphen."""
+    visible = "".join(c for c in unicodedata.normalize("NFKC", topic) if unicodedata.category(c) != "Cf")
+    return _SEPARATORS.sub("-", visible).strip("-").casefold()
+
+
+def misformatted_fields(text: str) -> list[tuple[int, str]]:
+    """Lines naming an entry-only field (Status, Severity, Kind, Topic) in any form other than the exact
+    ``- Name: value``, which the parser would not read."""
+    out = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        m = _FIELD_LIKE.match(line)
+        if m and m.group(1).casefold() in _ENTRY_FIELDS_FOLDED and not _FIELD.match(line):
+            out.append((number, line.strip()))
+    return out
 
 
 def orphan_fields(text: str, prefix: str) -> list[tuple[int, str]]:

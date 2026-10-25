@@ -334,7 +334,7 @@ def test_11_accepted_stage_evidence_supported_correction(sandbox: Sandbox) -> No
         kind="correction",
         reason="Defect found in accepted stage: evidence in issue link",
         evidence_refs=["https://github.com/example/repo/issues/1"],
-        owner_ref=OWNER_REF,
+        owner_ref=sandbox.new_ref(),
         at=sandbox.tick(),
     )
     assert "CORRECTION_PENDING" in sandbox.codes(sandbox.orc().check(), "warning")
@@ -363,7 +363,11 @@ def test_11b_reopening_while_successor_active_is_refused(sandbox: Sandbox) -> No
     sandbox.drive_to_accepted("01")
     assert sandbox.go("02", Status.AUTHORIZED).allowed
     aid = sandbox.orc().add_amendment(
-        "00", kind="correction", reason="Defect report with evidence", evidence_refs=["RISKS.md"], owner_ref=OWNER_REF
+        "00",
+        kind="correction",
+        reason="Defect report with evidence",
+        evidence_refs=["RISKS.md"],
+        owner_ref=sandbox.new_ref(),
     )
     reopened = sandbox.go("00", IP, actor=Actor.OWNER, amendment=aid)
     assert not reopened.allowed
@@ -382,7 +386,7 @@ def test_12_future_enhancement_preserving_contracts(sandbox: Sandbox) -> None:
             kind="enhancement",
             reason="Additive extension",
             evidence_refs=["RISKS.md"],
-            owner_ref=OWNER_REF,
+            owner_ref=sandbox.new_ref(),
             revision=rev,
         )
     assert "AMENDMENT_UNVERIFIED" in {f.code for f in missing_tests.value.findings}
@@ -404,7 +408,7 @@ def test_12_future_enhancement_preserving_contracts(sandbox: Sandbox) -> None:
             kind="enhancement",
             reason="Additive extension",
             evidence_refs=["RISKS.md"],
-            owner_ref=OWNER_REF,
+            owner_ref=sandbox.new_ref(),
             revision=rev,
             test_report=report_rel,
         )
@@ -416,7 +420,7 @@ def test_12_future_enhancement_preserving_contracts(sandbox: Sandbox) -> None:
         kind="enhancement",
         reason="Additive extension",
         evidence_refs=["RISKS.md"],
-        owner_ref=OWNER_REF,
+        owner_ref=sandbox.new_ref(),
         revision=rev,
         test_report=report_rel,
     )

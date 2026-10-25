@@ -32,7 +32,7 @@
     "wiki_language": {
       "description": "Wikipedia language edition code (subdomain), e.g. 'en', 'ar', 'simple', 'zh-yue'. The supported set is decided in Stage 03 from feasibility evidence.",
       "type": "string",
-      "pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,8})*$(?!\\n)"
+      "pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,12})*$(?!\\n)"
     },
     "https_url": {"type": "string", "pattern": "^https://[^\\s\\x00-\\x1f\\x7f-\\x9f\\ufeff]+$(?!\\n)", "maxLength": 2048},
     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$(?!\\n)"},
