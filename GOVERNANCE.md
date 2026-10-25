@@ -107,8 +107,11 @@ objective or architecture, granting new permissions.
 
 Enforced (by `citerift-gov check` and CI): everything in "Stage lifecycle"
 above, registry schema, decision and risk record consistency, and that
-`PROJECT_STATUS.md` matches the registry. `main` is protected by a ruleset that
-requires the `ci-gate` check.
+`PROJECT_STATUS.md` matches the registry. Protection of `main` is defined in
+`.github/rulesets/main-protection.json` (pull request required, `ci-gate` must
+pass, merge commits only, no force-push, no deletion, no bypass). Whether it is
+active on GitHub is recorded in the Stage 00 verification records; read it back
+with `gh api repos/ImanOthman-eng/citerift/rulesets`.
 
 Not enforceable by repository code: whether an `owner_ref` really contains the
 owner's approval (R-002), whether an agent follows instructions at all, and

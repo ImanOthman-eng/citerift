@@ -141,3 +141,26 @@ reordered. Pass `--at` to record an explicit time.
 - Stage: 06
 
 Mitigated in advance by testing 3.13 in CI (D-001).
+
+## R-014 — GitHub Actions jobs do not start (owner account billing lock)
+- Status: open
+- Severity: high
+- Kind: risk
+- Stage: 00
+
+Verified 2026-10-25: every job of CI runs 1 and 2 on PR #1 failed before a
+runner was assigned, with the annotation "The job was not started because your
+account is locked due to a billing issue." No CI evidence can exist until the
+owner resolves it in GitHub billing settings. Recorded as Stage 00 blocker
+B-00-001.
+
+## R-015 — Branch protection is defined but not active
+- Status: open
+- Severity: high
+- Kind: risk
+- Stage: 00
+
+The ruleset in `.github/rulesets/main-protection.json` cannot be created from
+this session (proxy refuses ruleset writes; classic protection API returns
+403). Until the owner imports it, `main` accepts direct pushes and force
+pushes. Recorded as Stage 00 blocker B-00-002.

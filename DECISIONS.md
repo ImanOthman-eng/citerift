@@ -192,12 +192,26 @@ exempt because it is not executed by the engineering agent.
 - Date: 2026-10-25
 - Stage: 00
 
-Planned configuration for `main`: required status check `ci-gate`, block force
-pushes, block deletion, require pull requests with zero required approvals, no
-bypass actors. Zero approvals because a single-owner repository cannot approve
-its own pull requests. No bypass because the agent acts with the owner's
-account (D-005), so an admin bypass would also let the agent skip CI. The
-result is recorded in docs/verification/stage-00/TEST_RESULTS.md.
+Definition: `.github/rulesets/main-protection.json`. Rules for the default
+branch: required status check `ci-gate` pinned to the GitHub Actions app
+(integration id 15368, read from this repository's check runs) with
+up-to-date branches, pull requests with zero required approvals and merge
+commits only, block force pushes, block deletion, no bypass actors.
+
+Zero approvals because a single-owner repository cannot approve its own pull
+requests (GitHub returned "Review cannot be requested from pull request author"
+on PR #1). Merge commits only because squash or rebase merges would remove the
+commits that the registry cites as verified revisions. No bypass because the
+agent acts with the owner's account (D-005), so an admin bypass would also let
+the agent skip CI. Tradeoff: if CI is broken for reasons outside the code, the
+owner cannot merge until it is fixed, but can edit or disable the ruleset as
+repository admin at any time.
+
+Status `proposed` until it is active on GitHub. On 2026-10-25 this session's
+GitHub proxy refused ruleset writes ("Write access to this GitHub API path is
+not permitted through this proxy") and the classic branch protection API
+returned 403 "Resource not accessible by integration", so the owner has to
+import the file. See docs/verification/stage-00/TEST_RESULTS.md.
 
 ## D-012 — Stage-owned paths and drift detection
 - Status: accepted

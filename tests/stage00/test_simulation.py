@@ -136,14 +136,17 @@ def test_differential_model_vs_implementation(model: ModuleType, tmp_path: Path,
         edges_by_source.setdefault(source, []).append(target)
     agreements = permitted = 0
     disagreements: list[str] = []
-    for _ in range(120):
+    exercised: set[tuple[str, str]] = set()
+    for _ in range(200):
         index = rng.randrange(len(STAGES))
         current = sandbox.orc().stage(STAGES[index])["status"]
         if rng.random() < 0.75:
             target = Status(rng.choice(edges_by_source[current]))
+            owner_edge = model.EDGES[(current, target.value)][0] == model.OWNER
+            owner = rng.random() < (0.85 if owner_edge else 0.3)
         else:
             target = Status(rng.choice(model.STATES))
-        owner = rng.random() < 0.5
+            owner = rng.random() < 0.5
         expected, actual = _attempt(sandbox, model, index, target, owner)
         if expected == actual:
             agreements += 1
@@ -152,5 +155,8 @@ def test_differential_model_vs_implementation(model: ModuleType, tmp_path: Path,
                 f"stage {STAGES[index]} {current}->{target} owner={owner}: model={expected} impl={actual}"
             )
         permitted += actual
+        if actual:
+            exercised.add((current, target.value))
     assert disagreements == []
-    assert permitted >= 20, "the walk must exercise a meaningful number of permitted transitions"
+    assert permitted >= 40, "the walk must exercise a meaningful number of permitted transitions"
+    assert len(exercised) >= 8, f"only {len(exercised)} distinct edges were exercised"

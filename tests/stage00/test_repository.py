@@ -181,3 +181,18 @@ def test_documented_links_exist() -> None:
             if not (md.parent / target).exists():
                 broken.append(f"{md.relative_to(REPO)} -> {target}")
     assert broken == []
+
+
+@pytest.mark.security
+def test_branch_ruleset_definition() -> None:
+    """The committed ruleset is what the owner imports; it must match DECISIONS.md D-011."""
+    ruleset = json.loads((REPO / ".github/rulesets/main-protection.json").read_text(encoding="utf-8"))
+    assert ruleset["enforcement"] == "active"
+    assert ruleset["bypass_actors"] == []
+    assert ruleset["conditions"]["ref_name"]["include"] == ["~DEFAULT_BRANCH"]
+    rules = {r["type"]: r.get("parameters", {}) for r in ruleset["rules"]}
+    assert set(rules) == {"deletion", "non_fast_forward", "pull_request", "required_status_checks"}
+    assert rules["pull_request"]["required_approving_review_count"] == 0
+    assert rules["pull_request"]["allowed_merge_methods"] == ["merge"]
+    checks = rules["required_status_checks"]["required_status_checks"]
+    assert checks == [{"context": "ci-gate", "integration_id": 15368}]

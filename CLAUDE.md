@@ -18,8 +18,10 @@ uv run citerift-gov check
   invent its findings.
 - Change stage state only through `citerift-gov transition ... --apply`, then
   commit the registry and `PROJECT_STATUS.md` together.
-- `main` is protected: use a branch and a pull request; the `ci-gate` check
-  must pass.
+- Always use a branch and a pull request for `main`; the `ci-gate` check must
+  pass, and pull requests are merged with merge commits only (the registry cites
+  commit SHAs that squash or rebase merges would drop). The ruleset is defined in
+  `.github/rulesets/main-protection.json`.
 - Before claiming anything is done, run `uv run pytest`, `uv run ruff check .`,
   `uv run mypy` and `uv run citerift-gov check`, and report actual output.
 - Final reports end with exactly one of: VERIFIED COMPLETE (for a stage:

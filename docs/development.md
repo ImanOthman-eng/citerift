@@ -64,5 +64,12 @@ environment (HTTP 429); see RISKS.md R-008.
 
 ## Branch workflow
 
-`main` is protected (ruleset: pull request required, `ci-gate` must pass, no
-force-push, no deletion). Work on a branch, open a pull request, wait for CI.
+Protection for `main` is defined in `.github/rulesets/main-protection.json`:
+pull request required (zero approvals, because a single owner cannot approve
+their own pull requests), `ci-gate` from GitHub Actions must pass on an
+up-to-date branch, merge commits only (squash or rebase would drop the commits
+that the stage registry cites), no force-push, no deletion, no bypass. Work on a
+branch, open a pull request, wait for CI, merge with a merge commit.
+
+To activate or restore it: GitHub, Settings, Rules, Rulesets, New ruleset,
+Import a ruleset, choose the JSON file.
