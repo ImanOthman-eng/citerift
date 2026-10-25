@@ -36,8 +36,8 @@ xfail_strict = true
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-# Audit reproduction scripts are kept byte-for-byte as recorded evidence.
-extend-exclude = ["docs/audits"]
+# Audit and review reproduction scripts are kept byte-for-byte as recorded evidence.
+extend-exclude = ["docs/audits", "docs/verification/stage-00/review"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "PL"]

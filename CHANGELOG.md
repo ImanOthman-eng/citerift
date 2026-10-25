@@ -20,19 +20,26 @@ the reopened revision `ae2ce9e`.
   F-09, F-10, F-18).
 - Drift is decided by owned-path content, so a merge restoring old content is
   detected; uncommitted owned-path changes are reported (F-01, F-19).
-- Every file in a verification directory, the stage definition and the policy
-  are pinned by hash; gate evidence must be a pinned file; policy values and
-  the CI requirement are fixed in the registry schema (F-02, F-03).
-- Test reports record how tests were selected; partial runs are rejected
-  (F-07); a report path outside the repository no longer crashes the plugin
-  (F-14); `.gitattributes` keeps LF so CRLF checkouts do not change evidence
-  hashes (F-12).
+- Every file in a verification directory (except files git ignores), the
+  stage definition and the policy are pinned by hash; every file a gate cites
+  must be pinned, and a URL alone is not; policy values, the CI requirement and
+  artifact list of engineering stages, and each stage's executor are fixed in
+  the registry schema (F-02, F-03, V-02, V-03, S-01).
+- Test reports record how tests were selected and which test files ran; a
+  report is rejected when a narrowing option, an ini override, another ini
+  file or a hook narrowed the run, or when a test file committed under `tests/`
+  did not run (F-07, V-01). The report is still written by the test process
+  itself (R-004). A report path outside the repository or in a new directory
+  no longer crashes the plugin (F-14, V-16). `.gitattributes` keeps LF so CRLF
+  checkouts do not change evidence hashes, and a nested `.gitattributes` is an
+  error (F-12, V-12).
 - History replay checks each entry against the transition rules (single
   active stage, dependencies, correction amendment, blockers); a reopened
   dependency is a warning, so a foundation stage can be corrected after a
   dependent was accepted (F-04, F-05, F-11).
-- Malformed memory entries are errors; topic comparison ignores case; a
-  project-wide critical defect blocks every stage (F-06).
+- Unparsed entry headings and entry fields outside a recognized heading are
+  errors; topics are compared after Unicode and separator normalization; a
+  project-wide critical defect blocks every stage (F-06, V-06).
 - Unreadable registry reported without a traceback; blocker resolution
   records the real actor; future timestamps refused; records must match their
   history entries and an acceptance must cite a new owner statement (F-13,
@@ -40,7 +47,15 @@ the reopened revision `ae2ce9e`.
 - `.github/workflows`, `.github/rulesets`, `.gitattributes` and
   `src/citerift/py.typed` (new) are Stage 00 owned paths (F-20 detection,
   F-23).
-- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017),
+- Final independent review (V-01 to V-16): besides the items above, an
+  acceptance cannot cite an amendment's owner reference (V-07); a correction
+  amendment justifies one reopening (V-08); duplicate amendment and blocker
+  ids are errors (V-09); unreadable schemas, schema-invalid registries and
+  non-UTF-8 memory files are reported without a traceback (V-10); default
+  record times never precede recorded times (V-11); git queries ignore replace
+  refs (V-13); CI runs the checked-out `src/` modules, not the entry points
+  (V-04).
+- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).
 

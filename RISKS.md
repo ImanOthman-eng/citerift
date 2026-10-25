@@ -33,8 +33,11 @@ acceptance) or a separate bot identity, both owner decisions.
 
 The orchestrator checks that an owner decision cites a reference and that the
 acceptance record matches the history, but it cannot read the reference. A
-dishonest writer could cite a message that does not say what is claimed. The
-owner should check the `owner_ref` of each acceptance in the history.
+dishonest writer could cite a message that does not say what is claimed. An
+acceptance must cite a reference not cited by history or an amendment before
+the verification (OWNER_REF_REUSED); otherwise one reference may back several
+decisions, because one owner message can accept a stage and authorize the next.
+The owner should check the `owner_ref` of each acceptance in the history.
 
 ## R-003 — Registry files can be edited by hand
 - Status: open
@@ -45,11 +48,13 @@ owner should check the `owner_ref` of each acceptance in the history.
 Detection, not prevention. `citerift-gov check` reports a hand edit that
 breaks any rule a transition is checked against. Since correction A-00-001
 (independent review 2026-10-25) that includes: each history entry checked at
-its own time (single active stage, dependencies, correction amendment before a
-reopening, blockers); records that do not match the history entry that created
-them; an acceptance citing an owner reference used before the verification;
-every file in the verification directory, the stage definition and the policy
-pinned by hash; policy values fixed in the registry schema; owned-path content
+its own time (single active stage, dependencies, a correction amendment
+recorded before a reopening and used once, blockers); records that do not match
+the history entry that created them; duplicate amendment or blocker ids; an
+acceptance citing an owner reference used before the verification; every file
+in the verification directory (except files git ignores), the stage definition
+and the policy pinned by hash; policy values, the engineering artifact list and
+the executor of each stage fixed in the registry schema; owned-path content
 compared with the verified revision; duplicate JSON keys rejected.
 
 What it cannot detect: a forgery that is consistent everywhere, that is,
@@ -59,8 +64,8 @@ self-reported files: the checker verifies their content and hashes, not who
 produced them (R-004). Detection happens when someone runs `check` from an
 honest copy of the code; CI runs it on every push, but CI itself can be
 changed by the gated change (R-016). Stage definitions (gates, suites, owned
-paths) can still be edited before a stage is verified; that edit shows only in
-the reviewed diff of `governance/stage_registry.json`.
+paths, verification directory) can still be edited before a stage is verified;
+that edit shows only in the reviewed diff of `governance/stage_registry.json`.
 
 ## R-004 — CI evidence in the registry is entered by the agent
 - Status: open
@@ -72,7 +77,10 @@ The offline check verifies that the recorded CI run tested the verified
 revision and succeeded as recorded, but it cannot fetch the run. The run URL is
 public for this repository and can be checked by anyone. The required
 `ci-gate` check on `main` is a control on the honest workflow only; it is not
-independent of the change it gates (R-016).
+independent of the change it gates (R-016). The test report is written by the
+test process: the checker rejects narrowed or partial runs and test files that
+did not run, but code committed in a test or `conftest.py` file runs in that
+process and could write a false report.
 
 ## R-005 — Contract compatibility is checked against fixtures, not proven
 - Status: open
@@ -152,9 +160,13 @@ project state from the repository alone (tested in tests/stage00/test_recovery.p
 
 History entries must be in non-decreasing time order. A machine with a slow
 clock has its transitions rejected (fail-closed), never silently reordered.
-Since correction A-00-001 (F-16) a time more than 5 minutes ahead of the local
-clock is also refused, and `check` reports recorded times in the future, so a
-fast clock cannot block later correct transitions. Pass `--at` to record an
+Since correction A-00-001 (F-16) a time more than 5 minutes ahead of the
+writer's own clock is refused, and `check` reports recorded times more than 5
+minutes ahead of the checking machine's clock. The bound is relative to the
+writer's clock: a writer whose clock is fast can still record a future time,
+which `check` then reports and which blocks correct-clock transitions until
+real time catches up or the entry is corrected (detected, fail-closed). Default
+times never precede times already recorded (V-11). Pass `--at` to record an
 explicit time.
 
 ## R-013 — Future ML libraries may drop Python 3.12
@@ -211,7 +223,13 @@ which a same-repository pull request can change; the agent acts as the owner's
 account (R-001). Prevention is not in place. Compensating detection since
 correction A-00-001: `.github/workflows`, `.github/rulesets` and
 `.gitattributes` are Stage 00 owned paths, so a change to them makes Stage 00
-`VERIFICATION_STALE` at the next `check` run from an honest copy. Prevention
+`VERIFICATION_STALE` at the next `check` run from an honest copy. CI runs the
+checked-out `src/` modules directly, so the entry points in `pyproject.toml`
+cannot replace the checker (V-04). Not covered: `pyproject.toml` (test
+configuration) and `uv.lock` (dependencies) are not Stage 00 owned paths, and a
+dependency runs in the same process as the checks; a change to them can change
+what CI executes without making Stage 00 stale. The test report check rejects
+the narrowing that such a configuration change could cause (V-01). Prevention
 needs a required code-owner review from an identity the agent does not hold
 (D-006 or a bot account), an owner decision.
 
@@ -230,3 +248,19 @@ that fails on the reopened revision `ae2ce9e` and passes with the correction.
 Closed when the corrections were committed; the verification of the corrected
 stage is recorded in the registry. Residual limitations stay open as R-001 to
 R-004 and R-016.
+
+## R-018 — Stage 00 final independent review findings (A-00-001)
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 00
+
+The final independent review of the corrected revision `ee46423`
+(docs/verification/stage-00/review/) reproduced 16 further findings, V-01 to
+V-16 (1 medium, 3 low-medium, 12 low; none critical). The most serious was
+V-01: a partial test run could still be recorded as complete through an ini
+override or a committed `conftest.py`. Each finding has a regression test in
+tests/stage00/; the tests that reproduce a behavior fail on `135e4ac`
+(docs/verification/stage-00/fail-first/results-135e4ac.txt). Closed when the
+fixes were committed in `5749e9c`. Residual limitations stay open as R-002,
+R-003, R-004, R-012 and R-016.
