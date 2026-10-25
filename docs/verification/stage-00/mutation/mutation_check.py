@@ -2,7 +2,7 @@
 """Stage 00 mutation check (correction A-00-001): each mutant disables one rule; the test suite must fail.
 
 Run from a clean checkout: python docs/verification/stage-00/mutation/mutation_check.py
-Each pattern must occur exactly once. Every file is restored after its mutant
+Each pattern must occur exactly once; a mutant may replace several patterns of one file. Every file is restored after its mutant
 runs. M1 to M9 are the mutants of the accepted revision 741476c (archived in
 superseded/741476c/mutation/), with patterns updated where the code changed;
 M10 onwards cover the checks added by the correction.
@@ -113,7 +113,7 @@ M = [
     (
         "M23 F-08 retraction alternatives untyped",
         "schemas/contracts/v1/investigation.schema.json",
-        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources"]}',
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}',
         '"value": true',
     ),
     (
@@ -251,10 +251,10 @@ M = [
         "nested: list[str] = []",
     ),
     (
-        "M52 V-13 replace refs honoured",
+        "M52 V-13 replace refs honoured (flag and environment both removed; either alone still stops it)",
         "src/citerift/governance/gitutil.py",
-        '[git, "--no-replace-objects", "-C", str(root), *args],',
-        '[git, "-C", str(root), *args],',
+        ('[git, "--no-replace-objects", "-C", str(root), *args],', '"GIT_NO_REPLACE_OBJECTS": "1", '),
+        ('[git, "-C", str(root), *args],', ""),
     ),
     (
         "M53 V-15 clock skew bound widened",
@@ -367,6 +367,103 @@ M = [
         "if text is not None and (problems := contracts.validate(loads_strict(text))):",
         "if False:",
     ),
+    (
+        "M74 Y-01 report path left out of the dirty check even when tracked",
+        REP,
+        "if not gitutil.is_tracked(root, rel):",
+        "if True:",
+    ),
+    (
+        "M75 Y-02 skip-worktree and assume-unchanged files ignored",
+        "src/citerift/governance/gitutil.py",
+        'paths += [e[2:] for e in flags.stdout.split("\\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]',
+        "paths += []",
+    ),
+    ("M76 Y-03 skipped and xfailed tests accepted", EVI, "    if unproven:", "    if False:"),
+    (
+        "M77 Y-04 non-ASCII stage digits accepted",
+        MEM,
+        'r"[0-9]{2}(, ?[0-9]{2})*|project"',
+        'r"\\d{2}(, ?\\d{2})*|project"',
+    ),
+    (
+        "M78 Y-04 non-ASCII entry id digits accepted",
+        MEM,
+        'r"^## ([DR]-[0-9]{3}) — (.+?)\\s*$"',
+        'r"^## ([DR]-\\d{3}) — (.+?)\\s*$"',
+    ),
+    (
+        "M79 O-1 Arabic marks not folded in topics",
+        MEM,
+        '    visible = _ARABIC_MARKS.sub("", visible)',
+        "    visible = visible",
+    ),
+    (
+        "M80 Y-05 absence of record allowed as a conflicting alternative",
+        "schemas/contracts/v1/investigation.schema.json",
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}',
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources"]}',
+    ),
+    (
+        "M81 Y-05 agreeing conflicting alternatives accepted",
+        "src/citerift/contracts/validate.py",
+        "if len(values) < 2:",
+        "if False:",
+    ),
+    (
+        "M82 Y-12 retraction date allowed without a retraction record",
+        "schemas/contracts/v1/investigation.schema.json",
+        '"properties": {"retraction_date": {"properties": {"value": {"type": "null"}}, "not": {"required": ["alternatives"]}}}',
+        '"properties": {}',
+    ),
+    (
+        "M83 Y-06 amendment on a stage that is not accepted",
+        ORC,
+        'if not self._accepted_at(sid, a["recorded_at"]):',
+        "if False:",
+    ),
+    (
+        "M84 Y-06 every enhancement covers owned changes",
+        ORC,
+        "for a in self._current_enhancements(stage) if",
+        'for a in stage["amendments"] if a["kind"] == "enhancement" and',
+    ),
+    (
+        "M85 Y-07 reference cited in the same second not counted",
+        ORC,
+        "                and t <= mine",
+        "                and t < mine",
+    ),
+    (
+        "M86 Y-09 uncommitted owned file pinned",
+        ORC,
+        "(self._owned(stage, ref) and self._committed(revision, ref))",
+        "self._owned(stage, ref)",
+    ),
+    (
+        "M87 Y-10 CI run of another repository accepted",
+        ORC,
+        'if not ci["run_url"].lower().startswith(',
+        'if False and not ci["run_url"].lower().startswith(',
+    ),
+    (
+        "M88 Y-11 deep JSON not converted",
+        "src/citerift/contracts/formats.py",
+        "    except RecursionError:",
+        "    except ZeroDivisionError:",
+    ),
+    (
+        "M89 Y-11 absolute verification_dir accepted",
+        "schemas/governance/stage_registry.schema.json",
+        '"verification_dir": {"$ref": "#/$defs/relative_path"},',
+        '"verification_dir": {"type": "string", "minLength": 1},',
+    ),
+    (
+        "M90 Y-13 subdivided DOI registrant rejected",
+        "schemas/contracts/v1/common.schema.json",
+        '"pattern": "^10\\\\.[0-9]{4,9}(\\\\.[0-9]+)*/',
+        '"pattern": "^10\\\\.[0-9]{4,9}/',
+    ),
 ]
 
 
@@ -392,11 +489,17 @@ def main() -> int:
     for name, rel, old, new in M:
         path = R / rel
         orig = path.read_text(encoding="utf-8")
-        if orig.count(old) != 1:
-            print(f"{name}: PATTERN FOUND {orig.count(old)} TIMES")
+        # A mutant may replace several patterns in one file, for a rule that two controls enforce together.
+        pairs = list(zip(old, new, strict=True)) if isinstance(old, tuple) else [(old, new)]
+        counts = [orig.count(o) for o, _ in pairs]
+        if counts != [1] * len(pairs):
+            print(f"{name}: PATTERN FOUND {counts} TIMES")
             survived += 1
             continue
-        path.write_text(orig.replace(old, new, 1), encoding="utf-8")
+        mutated = orig
+        for o, n in pairs:
+            mutated = mutated.replace(o, n, 1)
+        path.write_text(mutated, encoding="utf-8")
         try:
             r = _suite()
             last = [line for line in r.stdout.splitlines() if "passed" in line or "failed" in line][-1:]
