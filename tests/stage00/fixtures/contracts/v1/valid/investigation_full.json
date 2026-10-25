@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "investigation_id": "5b0b7c1e-3f1a-4c2d-9e8f-0a1b2c3d4e5f",
+  "created_at": "2026-10-25T12:00:00Z",
+  "status": "completed",
+  "synthetic": true,
+  "subject_paper": {
+    "identifiers": {"doi": "10.5555/citerift.synthetic.0001", "pmid": "12345678"},
+    "title": {
+      "status": "verified_fact",
+      "value": "Synthetic fixture paper A (not a real publication)",
+      "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:paper-a", "retrieved_at": "2026-10-25T12:00:00Z"}]
+    },
+    "retraction_status": {
+      "status": "verified_fact",
+      "value": "retracted",
+      "provenance": [
+        {
+          "source_id": "synthetic-fixture",
+          "locator": "fixture:retraction-notice-a",
+          "retrieved_at": "2026-10-25T12:00:00Z",
+          "source_version": "fixture-v1",
+          "content_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "retraction_date": {
+      "status": "verified_fact",
+      "value": "2020-03",
+      "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:retraction-notice-a", "retrieved_at": "2026-10-25T12:00:00Z"}]
+    }
+  },
+  "citations": [
+    {
+      "citation_id": "en-1",
+      "article": {"language": "en", "title": "Synthetic article one", "page_id": 101, "revision_id": 9001, "revision_timestamp": "2021-01-02T03:04:05Z"},
+      "identifiers": {"doi": "10.5555/citerift.synthetic.0001"},
+      "context": {
+        "status": "verified_fact",
+        "value": "A synthetic sentence that cites paper A.",
+        "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:en-article-1@9001", "retrieved_at": "2026-10-25T12:00:00Z"}]
+      },
+      "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:en-article-1@9001", "retrieved_at": "2026-10-25T12:00:00Z"}]
+    },
+    {
+      "citation_id": "ar-1",
+      "article": {"language": "ar", "title": "مقالة اصطناعية", "revision_id": 77},
+      "identifiers": {"pmid": "12345678"},
+      "context": {"status": "unavailable", "value": null, "reason": "context extraction is a Stage 05 deliverable"},
+      "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:ar-article-1@77", "retrieved_at": "2026-10-25T12:00:00Z"}]
+    }
+  ],
+  "assessments": [
+    {
+      "assessment_id": "as-1",
+      "target_citation_id": "en-1",
+      "task": "citation_usage",
+      "status": "model_inference",
+      "model": {"name": "synthetic-model", "version": "0"},
+      "produced_at": "2026-10-25T12:01:00Z",
+      "abstained": false,
+      "label": "relies_on_cited_work",
+      "confidence": 0.62,
+      "rationale": "Synthetic rationale.",
+      "human_review": {"outcome": "unsure", "reviewed_at": "2026-10-25T12:05:00Z"}
+    },
+    {
+      "assessment_id": "as-2",
+      "target_citation_id": "ar-1",
+      "task": "citation_usage",
+      "status": "model_inference",
+      "model": {"name": "synthetic-model", "version": "0"},
+      "produced_at": "2026-10-25T12:01:00Z",
+      "abstained": true,
+      "label": null,
+      "confidence": null
+    }
+  ],
+  "events": [
+    {"at": "2020-03-01T00:00:00Z", "kind": "paper_retracted", "description": "Synthetic retraction event."},
+    {"at": "2026-10-25T12:00:00Z", "kind": "investigation_created", "description": "Synthetic fixture created."}
+  ],
+  "limitations": ["Synthetic fixture: no real-world finding."]
+}

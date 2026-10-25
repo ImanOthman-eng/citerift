@@ -1,0 +1,111 @@
+{
+  "exhaustive_reduced_model": {
+    "all_stages_accepted_reachable": true,
+    "attempts_permitted": 387968,
+    "attempts_rejected": 3701376,
+    "dependencies": {
+      "0": [],
+      "1": [
+        0
+      ],
+      "2": [
+        1
+      ],
+      "3": []
+    },
+    "edges_into_accepted_closed_from": [
+      "VERIFIED_AWAITING_OWNER_ACCEPTANCE"
+    ],
+    "engineering_stages": [
+      0,
+      1,
+      2
+    ],
+    "invariant_violations": 279664,
+    "reachable_nodes": 1141,
+    "reachable_status_vectors": 1141,
+    "shortest_counterexample": [
+      "stage 0: NOT_STARTED -> AUTHORIZED by owner",
+      "stage 0: AUTHORIZED -> IN_PROGRESS by owner",
+      "stage 0: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by owner",
+      "stage 0: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by owner",
+      "stage 0: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED by owner",
+      "stage 1: NOT_STARTED -> AUTHORIZED by owner",
+      "stage 1: AUTHORIZED -> IN_PROGRESS by owner",
+      "stage 1: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by owner",
+      "stage 1: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by owner",
+      "stage 0: ACCEPTED_CLOSED -> IN_PROGRESS by owner",
+      "stage 1: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> IN_PROGRESS by owner",
+      "VIOLATION I3 more than one active engineering stage: [0, 1]"
+    ],
+    "stages": 4,
+    "states_reachable_per_stage": {
+      "0": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "1": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "2": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ],
+      "3": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ]
+    },
+    "transition_attempts": 4089344,
+    "violation_examples": [
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]",
+      "I3 more than one active engineering stage: [0, 1]"
+    ]
+  },
+  "guided_full_completion": {
+    "completed": true,
+    "steps": 50
+  },
+  "model": "citerift-stage-governance-abstract/1",
+  "random_walks_full_model": {
+    "attempts": 4000000,
+    "attempts_permitted": 44607,
+    "attempts_rejected": 3955393,
+    "authorizations_without_owner": 0,
+    "invariant_violations": 0,
+    "length": 200,
+    "max_stages_accepted_in_one_walk": 1,
+    "seed": 20261025,
+    "violation_examples": [],
+    "walks": 20000
+  }
+}

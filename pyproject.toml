@@ -1,0 +1,55 @@
+[project]
+name = "citerift"
+version = "0.1.0"
+description = "Multilingual scientific citation integrity platform: Wikipedia citations to retracted research"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+authors = [{ name = "EVE TELOS" }]
+dependencies = [
+    "jsonschema>=4.23,<5",
+]
+
+[project.scripts]
+citerift-gov = "citerift.governance.cli:main"
+citerift-contracts = "citerift.contracts.validate:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<10",
+    "ruff>=0.8,<1",
+    "mypy>=1.13,<3",
+    "pip-audit>=2.7,<3",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv]
+required-version = ">=0.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["-p", "citerift.governance.pytest_report", "--strict-markers", "-ra"]
+xfail_strict = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "PL"]
+ignore = ["PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917", "PLR2004", "RUF001"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S311", "S603", "S607", "PLC0415"]
+"simulations/**" = ["S311", "SIM102"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["jsonschema", "jsonschema.*", "referencing", "referencing.*"]
+follow_untyped_imports = true

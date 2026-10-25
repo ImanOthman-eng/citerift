@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.3.0",
+  "investigation_id": "00000000-0000-4000-8000-000000000002",
+  "created_at": "2026-10-25T12:00:00.123Z",
+  "status": "partial",
+  "synthetic": true,
+  "subject_paper": {
+    "identifiers": {"pmid": "1"},
+    "title": {
+      "status": "conflicting",
+      "value": null,
+      "alternatives": [
+        {"value": "Synthetic title variant one", "provenance": [{"source_id": "synthetic-a", "locator": "fixture:a", "retrieved_at": "2026-10-25T12:00:00Z"}]},
+        {"value": "Synthetic title variant two", "provenance": [{"source_id": "synthetic-b", "locator": "fixture:b", "retrieved_at": "2026-10-25T12:00:00Z"}]}
+      ]
+    },
+    "retraction_status": {
+      "status": "uncertain",
+      "value": "not_found_in_checked_sources",
+      "reason": "No record in the checked source. Absence of a record is not evidence that the paper was not retracted.",
+      "provenance": [{"source_id": "synthetic-fixture", "locator": "fixture:empty-lookup", "retrieved_at": "2026-10-25T12:00:00Z", "source_version": "fixture-v1"}]
+    }
+  },
+  "citations": [],
+  "assessments": [],
+  "events": [],
+  "limitations": ["Only one synthetic source was checked."]
+}
