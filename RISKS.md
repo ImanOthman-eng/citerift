@@ -148,8 +148,8 @@ Mitigated in advance by testing 3.13 in CI (D-001).
 - Kind: risk
 - Stage: 00
 
-Verified 2026-10-25: every job of CI runs 1 and 2 on PR #1 failed before a
-runner was assigned, with the annotation "The job was not started because your
+Verified 2026-10-25: every job of CI runs 1 to 4 on PR #1 (commits `b13f910`
+and `ecaa845`) failed before a runner was assigned, with the annotation "The job was not started because your
 account is locked due to a billing issue." No CI evidence can exist until the
 owner resolves it in GitHub billing settings. Recorded as Stage 00 blocker
 B-00-001.

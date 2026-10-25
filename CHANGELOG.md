@@ -26,3 +26,13 @@ what changed in the repository.
   3.12 and 3.13, dependency audit) with a single `ci-gate` required check.
 - Documentation: README, GOVERNANCE.md, architecture, data contracts, sources
   and attribution policy, development setup, Stage 00 verification package.
+- Importable branch ruleset for `main` (`.github/rulesets/main-protection.json`);
+  not yet active (RISKS.md R-015).
+
+### Fixed (Stage 00 final review)
+
+- `registry_version` pattern used `\d`, which Python and JavaScript validators
+  interpret differently; now `[0-9]`.
+- Every governance and contract finding code is now asserted by at least one
+  test (26 codes had none, including `ACCEPTANCE_STALE`, `DEPENDENCY_CYCLE` and
+  the history ordering checks).

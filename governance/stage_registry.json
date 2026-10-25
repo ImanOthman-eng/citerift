@@ -127,16 +127,34 @@
           "requirement": "No known unresolved critical foundational defect"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV",
         "scope": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
         "recorded_at": "2026-10-25T10:02:03Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "30e4462e9ae71016dbc6f04cdda19106babd4a34",
+        "recorded_at": "2026-10-25T11:11:54Z"
+      },
       "verification": null,
       "acceptance": null,
-      "blockers": [],
+      "blockers": [
+        {
+          "id": "B-00-001",
+          "description": "GitHub Actions jobs are not started: GitHub reports 'The job was not started because your account is locked due to a billing issue' (CI runs 40185612324 and 40185625790). Owner must resolve billing; gate 00-K cannot pass until then.",
+          "opened_at": "2026-10-25T10:48:26Z",
+          "resolved_at": null,
+          "resolution": null
+        },
+        {
+          "id": "B-00-002",
+          "description": "Branch protection cannot be created from this session: ruleset write refused by the session's GitHub proxy (HTTP 403) and classic protection API returns 403 'Resource not accessible by integration'. Owner must import .github/rulesets/main-protection.json; gate 00-L cannot pass until then.",
+          "opened_at": "2026-10-25T10:48:27Z",
+          "resolved_at": null,
+          "resolution": null
+        }
+      ],
       "amendments": [],
       "required_artifacts": [
         "SPECIFICATION.md",
@@ -471,6 +489,61 @@
       "actor": "engineering-agent",
       "recorded_by": "engineering-agent",
       "reason": "Stage 00 implementation started.",
+      "owner_ref": null
+    },
+    {
+      "seq": 4,
+      "at": "2026-10-25T10:48:26Z",
+      "stage": "00",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 00 implementation complete at ecaa84585b4eb0ca98872cf9ba1dc5ca8cabdf36 (PR #1); 137 tests pass locally on Python 3.12 and 3.13.",
+      "owner_ref": null
+    },
+    {
+      "seq": 5,
+      "at": "2026-10-25T11:04:59Z",
+      "stage": "00",
+      "from": "IMPLEMENTED_NOT_VERIFIED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Rework: final review found two Stage 00 defects (Unicode-dependent \\d in registry_version pattern; ACCEPTANCE_STALE untested); fixed in 2bf7d60",
+      "owner_ref": null
+    },
+    {
+      "seq": 6,
+      "at": "2026-10-25T11:04:59Z",
+      "stage": "00",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Implementation complete at 2bf7d60 after final-review fixes; 138 tests pass on Python 3.12.3 and 3.13.17 from a clean tree",
+      "owner_ref": null
+    },
+    {
+      "seq": 7,
+      "at": "2026-10-25T11:11:53Z",
+      "stage": "00",
+      "from": "IMPLEMENTED_NOT_VERIFIED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Rework: final review found 25 finding codes with no test naming them; tests added in 30e4462 (no production code change)",
+      "owner_ref": null
+    },
+    {
+      "seq": 8,
+      "at": "2026-10-25T11:11:54Z",
+      "stage": "00",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Implementation complete at 30e4462; 161 tests pass on Python 3.12.3 and 3.13.17 from a clean tree; 9/9 mutants killed",
       "owner_ref": null
     }
   ]
