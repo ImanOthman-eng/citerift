@@ -16,7 +16,7 @@ entry; supersede it.
 - Date: 2026-10-25
 - Stage: 00
 - Supersedes: none
-- Evidence: PyPI JSON metadata queried 2026-10-25 (see docs/verification/stage-00/SPECIFICATION.md, section "Environment")
+- Evidence: PyPI JSON metadata queried 2026-10-25 (see docs/verification/stage-00/superseded/741476c/SPECIFICATION.md, section "Environment")
 
 `requires-python = ">=3.12,<3.14"`, `.python-version` is 3.12, and CI tests both
 3.12 and 3.13.
@@ -216,7 +216,7 @@ Status `proposed` until it is active on GitHub. On 2026-10-25 this session's
 GitHub proxy refused ruleset writes ("Write access to this GitHub API path is
 not permitted through this proxy") and the classic branch protection API
 returned 403 "Resource not accessible by integration", so the owner has to
-import the file. See docs/verification/stage-00/TEST_RESULTS.md.
+import the file. See docs/verification/stage-00/superseded/741476c/TEST_RESULTS.md.
 
 Accepted 2026-10-25: the owner created the ruleset on GitHub (owner message
 `cmsg_018VCB51nDHP6HXmLU4ea5yPBsct46wZA6iBixZ1ZLXboz`: "The `main-protection`
@@ -290,7 +290,7 @@ authorize and reopen. Exhaustive search found a 12-step counterexample in which
 VERIFIED -> IN_PROGRESS (rework) re-entered the active set while another stage
 was active. The rule now applies to every edge that enters the active set, and
 the implementation enforces it as a state invariant. See
-docs/verification/stage-00/SIMULATION_REPORT.md.
+docs/verification/stage-00/superseded/741476c/SIMULATION_REPORT.md.
 
 ## D-017 — Project identity and founder signature
 - Status: accepted

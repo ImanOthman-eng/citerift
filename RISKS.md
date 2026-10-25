@@ -195,7 +195,7 @@ pushes. Recorded as Stage 00 blocker B-00-002.
 Closed 2026-10-25: the owner created ruleset `main-protection` (id 25824038,
 enforcement active). Read back from the GitHub API, it matches the file, no
 bypass actors, and `GET /rules/branches/main` lists all four rules in effect
-(docs/verification/stage-00/TEST_RESULTS.md section 7). Blocker B-00-002
+(docs/verification/stage-00/superseded/741476c/TEST_RESULTS.md section 7). Blocker B-00-002
 resolved.
 
 ## R-016 — The CI gate is defined by a file the gated change can edit
