@@ -592,3 +592,25 @@ def test_f17_record_times_must_match_history(sandbox: Sandbox) -> None:
     reg["stages"][0]["acceptance"]["recorded_at"] = reg["stages"][0]["verification"]["recorded_at"]
     sandbox.save_registry(reg)
     assert "RECORD_HISTORY_MISMATCH" in sandbox.codes(sandbox.orc().check())
+
+
+# ------------------------------------------------------------- F-20, F-23
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize(
+    "path", [".github/workflows/ci.yml", ".github/rulesets/main-protection.json", ".gitattributes"]
+)
+def test_f20_change_to_the_ci_definition_makes_stage00_stale(sandbox: Sandbox, path: str) -> None:
+    """F-20 (detection only): the files that define CI and protection are Stage 00 owned paths."""
+    sandbox.drive_to_verified("00")
+    assert not errors(sandbox.orc().check())
+    sandbox.write(path, "weakened\n")
+    sandbox.commit(f"edit {path}")
+    assert "VERIFICATION_STALE" in sandbox.codes(sandbox.orc().check())
+
+
+def test_f23_package_is_marked_typed_and_owned() -> None:
+    stage00 = json.loads((REPO / "governance/stage_registry.json").read_text(encoding="utf-8"))["stages"][0]
+    assert (REPO / "src/citerift/py.typed").is_file()
+    assert "src/citerift/py.typed" in stage00["owned_paths"]
