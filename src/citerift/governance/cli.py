@@ -12,6 +12,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from citerift.contracts.formats import loads_strict
+from citerift.governance import gitutil
 from citerift.governance.model import EDGES, Actor, Status
 from citerift.governance.orchestrator import (
     STATUS_DOC_PATH,
@@ -101,7 +103,11 @@ def cmd_transition(orc: Orchestrator, args: argparse.Namespace) -> int:
     gates: dict[str, Any] = {}
     ci = None
     if args.record:
-        record = json.loads(Path(args.record).read_text(encoding="utf-8"))
+        try:
+            record = loads_strict(Path(args.record).read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            print(f"error: cannot read --record {args.record}: {exc}", file=sys.stderr)
+            return 2
         gates = record.get("gates", {})
         ci = record.get("ci")
     gates.update(_parse_gates(args.gate or []))
@@ -137,7 +143,14 @@ def cmd_blocker(orc: Orchestrator, args: argparse.Namespace) -> int:
             bid = orc.add_blocker(args.stage, args.text, at=args.at)
             print(f"Recorded blocker {bid}")
         else:
-            unblocked = orc.resolve_blocker(args.stage, args.id, args.text, at=args.at)
+            unblocked = orc.resolve_blocker(
+                args.stage,
+                args.id,
+                args.text,
+                at=args.at,
+                actor=Actor(args.actor),
+                recorded_by=Actor(args.recorded_by),
+            )
             print(f"Resolved blocker {args.id}" + ("; stage returned to IN_PROGRESS" if unblocked else ""))
     except GovernanceError as exc:
         print("REJECTED")
@@ -270,6 +283,13 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("stage")
     b.add_argument("text", help="description (add) or resolution (resolve)")
     b.add_argument("--id", help="blocker id to resolve")
+    b.add_argument(
+        "--actor",
+        default=Actor.ENGINEERING_AGENT.value,
+        choices=[a.value for a in Actor],
+        help="who resolved the blocker (also the actor of BLOCKED -> IN_PROGRESS)",
+    )
+    b.add_argument("--recorded-by", default=Actor.ENGINEERING_AGENT.value, choices=[a.value for a in Actor])
     b.add_argument("--at")
     b.set_defaults(func=cmd_blocker)
 
@@ -305,7 +325,16 @@ def main(argv: list[str] | None = None) -> int:
     except FileNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    orc = Orchestrator(root)
+    try:
+        orc = Orchestrator(root)
+    except (OSError, ValueError) as exc:
+        # A damaged registry is reported, never a traceback (F-13); recover still prints what git knows.
+        print(f"ERROR REGISTRY_UNREADABLE: governance/stage_registry.json cannot be read: {exc}")
+        if args.command == "recover" and gitutil.is_repository(root):
+            print(f"HEAD: {gitutil.head(root)} on {gitutil.branch(root)}")
+            print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
+            print("Restore the registry from git (git log -- governance/stage_registry.json) before any other step.")
+        return 1
     if args.command == "blocker" and args.action == "resolve" and not args.id:
         print("error: blocker resolve needs --id", file=sys.stderr)
         return 2

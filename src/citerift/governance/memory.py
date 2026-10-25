@@ -17,6 +17,9 @@ RISK_SEVERITIES = frozenset({"critical", "high", "medium", "low"})
 RISK_KINDS = frozenset({"risk", "defect", "limitation"})
 
 _HEADING = re.compile(r"^## ([DR]-\d{3}) — (.+?)\s*$")
+# Anything that looks like an entry heading but is not exactly the form above (another dash,
+# another heading level, missing digits) is reported instead of being skipped (F-06).
+_HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*-?\s*\d+")
 _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
 
 
@@ -26,6 +29,7 @@ class Entry:
     title: str
     line: int
     fields: dict[str, str] = field(default_factory=dict)
+    duplicate_fields: list[str] = field(default_factory=list)
 
     def get(self, name: str) -> str:
         return self.fields.get(name, "").strip()
@@ -42,6 +46,31 @@ class MemoryProblem:
     code: str
     file: str
     message: str
+
+
+def malformed_headings(text: str, prefix: str) -> list[tuple[int, str]]:
+    """Lines that look like an entry heading for ``prefix`` but do not parse as one."""
+    out = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        m = _HEADING_LIKE.match(line)
+        if m and m.group(1) == prefix[0] and not _HEADING.match(line):
+            out.append((number, line.strip()))
+    return out
+
+
+def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str) -> list[MemoryProblem]:
+    problems = [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: heading is not '## {prefix}NNN — Title': {line!r}")
+        for n, line in malformed_headings(text, prefix)
+    ]
+    for e in entries:
+        for f in e.duplicate_fields:
+            problems.append(MemoryProblem("MEMORY_MALFORMED", name, f"{e.id} sets field '{f}' more than once"))
+    return problems
+
+
+def normalize_topic(topic: str) -> str:
+    return " ".join(topic.replace("_", "-").split()).casefold()
 
 
 def parse_entries(text: str, prefix: str) -> list[Entry]:
@@ -62,6 +91,8 @@ def parse_entries(text: str, prefix: str) -> list[Entry]:
             continue
         m = _FIELD.match(line)
         if m:
+            if m.group(1) in current.fields:
+                current.duplicate_fields.append(m.group(1))
             current.fields[m.group(1)] = m.group(2)
         elif line.strip():
             in_fields = False
@@ -72,8 +103,9 @@ def check_decisions(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    entries = parse_entries(path.read_text(encoding="utf-8"), "D-")
-    problems: list[MemoryProblem] = []
+    text = path.read_text(encoding="utf-8")
+    entries = parse_entries(text, "D-")
+    problems = _structure_problems(entries, text, "D-", name)
     by_id: dict[str, Entry] = {}
     for e in entries:
         if e.id in by_id:
@@ -88,7 +120,7 @@ def check_decisions(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
         if not topic:
             problems.append(MemoryProblem("DECISION_NO_TOPIC", name, f"{e.id} has no Topic"))
         if status == "accepted" and topic:
-            accepted_by_topic.setdefault(topic, []).append(e.id)
+            accepted_by_topic.setdefault(normalize_topic(topic), []).append(e.id)
         for ref in e.refs("Supersedes"):
             target = by_id.get(ref)
             if target is None:
@@ -127,8 +159,9 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    entries = parse_entries(path.read_text(encoding="utf-8"), "R-")
-    problems: list[MemoryProblem] = []
+    text = path.read_text(encoding="utf-8")
+    entries = parse_entries(text, "R-")
+    problems = _structure_problems(entries, text, "R-", name)
     seen: set[str] = set()
     for e in entries:
         if e.id in seen:
@@ -149,11 +182,12 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
 
 
 def open_critical_defects(risks: list[Entry], stage_id: str) -> list[Entry]:
+    """Open critical defects that block ``stage_id``; a defect with ``Stage: project`` blocks every stage."""
     return [
         r
         for r in risks
         if r.get("Kind") == "defect"
         and r.get("Severity") == "critical"
         and r.get("Status") == "open"
-        and stage_id in r.refs("Stage")
+        and (stage_id in r.refs("Stage") or r.get("Stage") == "project")
     ]

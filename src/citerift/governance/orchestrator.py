@@ -20,14 +20,14 @@ import json
 import os
 import tempfile
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from functools import cached_property
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
 
-from citerift.contracts.formats import FORMAT_CHECKER
+from citerift.contracts.formats import FORMAT_CHECKER, loads_strict
 from citerift.governance import evidence, gitutil, memory
 from citerift.governance.model import (
     ACTIVE,
@@ -62,8 +62,8 @@ Registry = dict[str, Any]
 StageRecord = dict[str, Any]
 
 
-def utc_now() -> str:
-    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+def utc_now(offset: timedelta = timedelta(0)) -> str:
+    return (datetime.now(UTC) + offset).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @dataclass(frozen=True)
@@ -83,6 +83,17 @@ class Finding:
 
 def errors(findings: list[Finding]) -> list[Finding]:
     return [f for f in findings if f.severity == "error"]
+
+
+# A recorded time may be ahead of this machine's clock by at most this much (F-16).
+MAX_CLOCK_SKEW = timedelta(minutes=5)
+
+
+def _future_problem(at: str, what: str) -> list[Finding]:
+    limit = utc_now(MAX_CLOCK_SKEW)
+    if at > limit:
+        return [Finding("TIMESTAMP_IN_FUTURE", "error", None, f"{what} time {at} is later than now ({utc_now()})")]
+    return []
 
 
 @dataclass
@@ -109,14 +120,14 @@ class Orchestrator:
     def __init__(self, root: Path, registry: Registry | None = None):
         self.root = root
         if registry is None:
-            registry = json.loads((root / REGISTRY_PATH).read_text(encoding="utf-8"))
+            registry = loads_strict((root / REGISTRY_PATH).read_text(encoding="utf-8"))
         self.registry: Registry = registry
 
     # ------------------------------------------------------------------ access
 
     @cached_property
     def _schema(self) -> dict[str, Any]:
-        schema: dict[str, Any] = json.loads((self.root / REGISTRY_SCHEMA_PATH).read_text(encoding="utf-8"))
+        schema: dict[str, Any] = loads_strict((self.root / REGISTRY_SCHEMA_PATH).read_text(encoding="utf-8"))
         return schema
 
     @property
@@ -222,6 +233,7 @@ class Orchestrator:
         findings += self._history_findings()
         findings += self._single_active_findings()
         findings += self._record_findings()
+        findings += self._record_history_findings()
         findings += self._dependency_findings()
         findings += self._revision_findings()
         for stage in self.stages:
@@ -298,6 +310,8 @@ class Orchestrator:
             if h["at"] < previous_at:
                 out.append(Finding("HISTORY_TIME_ORDER", "error", sid, f"entry {index} is earlier than the one before"))
             previous_at = h["at"]
+            for f in _future_problem(h["at"], f"history entry {index}"):
+                out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", sid, f.message))
             if sid not in replay:
                 out.append(Finding("HISTORY_UNKNOWN_STAGE", "error", sid, f"entry {index} names an unknown stage"))
                 continue
@@ -349,7 +363,25 @@ class Orchestrator:
                             f"entry {index}: owner decision without a reference to the owner's statement",
                         )
                     )
+            if edge is not None:
+                out += self._replay_step_findings(index, h, source, target, replay)
             replay[sid] = target
+            if (
+                target in ACTIVE
+                and source not in ACTIVE
+                and executors[sid] == Actor.ENGINEERING_AGENT
+                and self.registry["policy"]["single_active_engineering_stage"]
+            ):
+                active = [i for i, st in replay.items() if executors[i] == Actor.ENGINEERING_AGENT and st in ACTIVE]
+                if len(active) > 1:
+                    out.append(
+                        Finding(
+                            "HISTORY_SINGLE_ACTIVE",
+                            "error",
+                            sid,
+                            f"entry {index} made more than one engineering stage active: {active}",
+                        )
+                    )
         for s in self.stages:
             if replay[s["id"]] != s["status"]:
                 out.append(
@@ -360,6 +392,127 @@ class Orchestrator:
                         f"recorded status {s['status']} conflicts with history, which gives {replay[s['id']]}",
                     )
                 )
+        return out
+
+    def _replay_step_findings(
+        self, index: int, h: dict[str, Any], source: Status, target: Status, replay: dict[str, Status]
+    ) -> list[Finding]:
+        """Rules that ``propose`` enforces, checked again at the time of each history entry (F-04, F-05).
+
+        They follow the guards of the verified model (simulations/stage00/state_machine_model.py):
+        dependencies at authorize, verify and accept; a correction amendment to reopen; blockers.
+        """
+        sid, at = h["stage"], h["at"]
+        stage = self.stage(sid)
+        out: list[Finding] = []
+        if (source, target) in (
+            (Status.NOT_STARTED, Status.AUTHORIZED),
+            (Status.IMPLEMENTED_NOT_VERIFIED, Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+            (Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, Status.ACCEPTED_CLOSED),
+        ):
+            pending = [d for d in stage["depends_on"] if replay.get(d) != Status.ACCEPTED_CLOSED]
+            if pending:
+                out.append(
+                    Finding(
+                        "HISTORY_DEPENDENCY",
+                        "error",
+                        sid,
+                        f"entry {index}: {source} -> {target} while dependencies {pending} were not accepted",
+                    )
+                )
+        if source == Status.ACCEPTED_CLOSED:
+            ref = h.get("amendment")
+            amendment = next((a for a in stage["amendments"] if a["id"] == ref), None)
+            if amendment is None or amendment["kind"] != "correction" or amendment["recorded_at"] > at:
+                out.append(
+                    Finding(
+                        "HISTORY_AMENDMENT_MISSING",
+                        "error",
+                        sid,
+                        f"entry {index} reopens an accepted stage without a correction amendment recorded before it",
+                    )
+                )
+        open_then = [b["id"] for b in stage["blockers"] if b["opened_at"] <= at and not (b["resolved_at"] or "~") <= at]
+        if target == Status.BLOCKED and not open_then:
+            out.append(Finding("HISTORY_BLOCKER", "error", sid, f"entry {index} blocks the stage with no open blocker"))
+        if open_then and (
+            (source, target)
+            in (
+                (Status.AUTHORIZED, Status.IN_PROGRESS),
+                (Status.BLOCKED, Status.IN_PROGRESS),
+                (Status.IMPLEMENTED_NOT_VERIFIED, Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+            )
+        ):
+            out.append(
+                Finding(
+                    "HISTORY_BLOCKER",
+                    "error",
+                    sid,
+                    f"entry {index}: {source} -> {target} while blockers {open_then} were open",
+                )
+            )
+        return out
+
+    def _record_history_findings(self) -> list[Finding]:
+        """Each record must be the one its history entry created (F-17), and an acceptance must cite
+        an owner statement that is not already cited by history from before the verification."""
+        out: list[Finding] = []
+        history = self.registry["history"]
+        for s in self.stages:
+            sid = s["id"]
+            for name, target in (
+                ("authorization", Status.AUTHORIZED),
+                ("implementation", Status.IMPLEMENTED_NOT_VERIFIED),
+                ("verification", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+                ("acceptance", Status.ACCEPTED_CLOSED),
+            ):
+                record = s[name]
+                if record is None:
+                    continue
+                entries = [h for h in history if h["stage"] == sid and h["to"] == target]
+                if target == Status.AUTHORIZED:
+                    entries = [h for h in entries if h["from"] == Status.NOT_STARTED]
+                last = entries[-1] if entries else None
+                if (
+                    last is None
+                    or last["at"] != record["recorded_at"]
+                    or ("owner_ref" in record and last["owner_ref"] != record["owner_ref"])
+                ):
+                    out.append(
+                        Finding(
+                            "RECORD_HISTORY_MISMATCH",
+                            "error",
+                            sid,
+                            f"the {name} record does not match the history entry that created it",
+                        )
+                    )
+            acc = s["acceptance"]
+            verified_at = [
+                h["seq"] for h in history if h["stage"] == sid and h["to"] == Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE
+            ]
+            if acc is not None and verified_at:
+                reused = [
+                    h["seq"] for h in history if h["seq"] < verified_at[-1] and h["owner_ref"] == acc["owner_ref"]
+                ]
+                if reused:
+                    out.append(
+                        Finding(
+                            "OWNER_REF_REUSED",
+                            "error",
+                            sid,
+                            f"the acceptance cites {acc['owner_ref']}, already cited by history entries {reused} "
+                            "from before the stage was verified",
+                        )
+                    )
+        for s in self.stages:
+            for b in s["blockers"]:
+                for key in ("opened_at", "resolved_at"):
+                    if b[key]:
+                        for f in _future_problem(b[key], f"blocker {b['id']} {key}"):
+                            out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", s["id"], f.message))
+            for a in s["amendments"]:
+                for f in _future_problem(a["recorded_at"], f"amendment {a['id']}"):
+                    out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", s["id"], f.message))
         return out
 
     def _single_active_findings(self) -> list[Finding]:
@@ -412,10 +565,24 @@ class Orchestrator:
 
     def _dependency_findings(self) -> list[Finding]:
         out: list[Finding] = []
+        reopened = {h["stage"] for h in self.registry["history"] if h["from"] == Status.ACCEPTED_CLOSED}
         for s in self.stages:
             if s["status"] == Status.NOT_STARTED:
                 continue
             for d in self.dependencies(s["id"])["unsatisfied"]:
+                if d in reopened:
+                    # The dependency was accepted and has been reopened for a correction (F-11). The
+                    # history replay checked that it was accepted when this stage needed it.
+                    out.append(
+                        Finding(
+                            "DEPENDENCY_REOPENED",
+                            "warning",
+                            s["id"],
+                            f"dependency {d} was reopened for a correction; it must be accepted again "
+                            f"before stage {s['id']} can be verified or accepted",
+                        )
+                    )
+                    continue
                 severity = "warning" if s["status"] == Status.BLOCKED else "error"
                 out.append(
                     Finding(
@@ -817,6 +984,8 @@ class Orchestrator:
     ) -> TransitionResult:
         """Dry-run a transition. Never writes anything."""
         at = at or utc_now()
+        if future := _future_problem(at, "transition"):
+            return TransitionResult(False, future)
         try:
             stage = self.stage(stage_id)
         except KeyError as exc:
@@ -994,7 +1163,16 @@ class Orchestrator:
         self._mutate(lambda r: next(s for s in r["stages"] if s["id"] == stage_id)["blockers"].append(record))
         return bid
 
-    def resolve_blocker(self, stage_id: str, blocker_id: str, resolution: str, at: str | None = None) -> bool:
+    def resolve_blocker(
+        self,
+        stage_id: str,
+        blocker_id: str,
+        resolution: str,
+        at: str | None = None,
+        *,
+        actor: Actor = Actor.ENGINEERING_AGENT,
+        recorded_by: Actor = Actor.ENGINEERING_AGENT,
+    ) -> bool:
         """Resolve a blocker. Resolving the last open blocker of a BLOCKED stage also records
         BLOCKED -> IN_PROGRESS in the same change, so no inconsistent state is ever written.
         Returns True when that transition was recorded."""
@@ -1018,8 +1196,8 @@ class Orchestrator:
         result = Orchestrator(self.root, new).propose(
             stage_id,
             Status.IN_PROGRESS,
-            actor=Actor(stage["executor"]),
-            recorded_by=Actor(stage["executor"]),
+            actor=actor,
+            recorded_by=recorded_by,
             reason=f"all blockers resolved ({blocker_id}: {resolution})",
             at=at,
         )

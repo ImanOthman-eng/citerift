@@ -238,6 +238,7 @@ def test_07_unauthorized_next_stage_request(sandbox: Sandbox) -> None:
 def test_08_conflicting_stage_state_records(sandbox: Sandbox) -> None:
     sandbox.go("00", Status.AUTHORIZED)
     reg = sandbox.registry()
+    original_authorization = reg["stages"][0]["authorization"]
     reg["stages"][0]["status"] = "IN_PROGRESS"
     sandbox.save_registry(reg)
     assert "STATUS_HISTORY_CONFLICT" in sandbox.codes(sandbox.orc().check())
@@ -254,7 +255,12 @@ def test_08_conflicting_stage_state_records(sandbox: Sandbox) -> None:
     sandbox.save_registry(reg)
     assert "RECORD_MISSING" in sandbox.codes(sandbox.orc().check())
 
+    # A re-created record that does not match the history entry that created it is rejected (F-17).
     reg["stages"][0]["authorization"] = {"owner_ref": OWNER_REF, "scope": "x", "recorded_at": "2026-11-01T00:00:00Z"}
+    sandbox.save_registry(reg)
+    assert "RECORD_HISTORY_MISMATCH" in sandbox.codes(sandbox.orc().check())
+
+    reg["stages"][0]["authorization"] = original_authorization
     sandbox.save_registry(reg)
     assert not errors(sandbox.orc().check(include_status_doc=False))
     sandbox.write("PROJECT_STATUS.md", "# Everything is accepted\n")

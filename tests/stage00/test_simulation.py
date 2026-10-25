@@ -105,7 +105,9 @@ def _attempt(
         MODEL_DEPS,
         MODEL_ENGINEERING,
     )
-    kwargs: dict[str, object] = {"actor": actor, "owner_ref": OWNER_REF if actor_is_owner else None}
+    # Each owner decision cites its own statement (an acceptance may not reuse an earlier one).
+    owner_ref = f"cmsg_TESTDIFFREF{len(orc.registry['history']):05d}"
+    kwargs: dict[str, object] = {"actor": actor, "owner_ref": owner_ref if actor_is_owner else None}
     current = Status(status[index])
     if target == Status.IMPLEMENTED_NOT_VERIFIED:
         sandbox.write(f"impl/{sid}.txt", f"step {sandbox.clock}\n")
@@ -122,6 +124,7 @@ def _attempt(
             reason="differential test correction",
             evidence_refs=["RISKS.md"],
             owner_ref=OWNER_REF,
+            at=sandbox.tick(),
         )
     result = sandbox.go(sid, target, **kwargs)  # type: ignore[arg-type]
     return expected, result.allowed

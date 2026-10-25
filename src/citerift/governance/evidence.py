@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from citerift.contracts.formats import loads_strict
+
 TEST_REPORT_FORMAT = "citerift.test-report/1"
 MIN_ARTIFACT_BYTES = 300
 
@@ -105,8 +107,8 @@ def check_test_report(
     if expected_sha is not None and sha256_file(path) != expected_sha:
         problems.append(Problem("TEST_EVIDENCE_STALE", f"test report {rel} changed after it was recorded"))
     try:
-        report: Any = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        report: Any = loads_strict(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
         return [*problems, Problem("TEST_EVIDENCE_INVALID", f"{rel} is not valid JSON: {exc}")]
     if not isinstance(report, dict) or report.get("format") != TEST_REPORT_FORMAT:
         return [*problems, Problem("TEST_EVIDENCE_INVALID", f"{rel} is not a {TEST_REPORT_FORMAT}")]

@@ -19,7 +19,7 @@ import pytest
 from sandbox_repo import REPO, Sandbox, git
 
 from citerift.governance import evidence
-from citerift.governance.model import Status
+from citerift.governance.model import Actor, Status
 from citerift.governance.orchestrator import Orchestrator, errors
 
 pytestmark = [pytest.mark.regression, pytest.mark.security]
@@ -304,3 +304,264 @@ def test_f12_crlf_checkout_does_not_change_evidence_hashes(
         assert codes == set()
     else:
         assert "EVIDENCE_STALE" in codes, "control: without .gitattributes the CRLF checkout changes hashes"
+
+
+# ------------------------------------------------------------- F-04, F-05
+
+
+def _append_history(sandbox: Sandbox, sid: str, source: str, target: str, actor: str, **extra: Any) -> dict[str, Any]:
+    reg = sandbox.registry()
+    entry = {
+        "seq": len(reg["history"]) + 1,
+        "at": sandbox.tick(),
+        "stage": sid,
+        "from": source,
+        "to": target,
+        "actor": actor,
+        "recorded_by": "engineering-agent",
+        "reason": "hand edit",
+        "owner_ref": extra.pop("owner_ref", None),
+        **extra,
+    }
+    reg["history"].append(entry)
+    sandbox.save_registry(reg)
+    return entry
+
+
+@pytest.mark.integration
+def test_f04_history_with_a_past_second_active_stage_is_an_error(sandbox: Sandbox) -> None:
+    """Two engineering stages were active at once, then one was withdrawn: the current state looks fine."""
+    sandbox.drive_to_accepted("00")
+    sandbox.drive_to_accepted("01")
+    assert sandbox.go("02", Status.AUTHORIZED).allowed
+    assert not errors(sandbox.orc().check(include_status_doc=False))
+    _append_history(sandbox, "03", "NOT_STARTED", "AUTHORIZED", "owner", owner_ref="cmsg_HANDEDITREF0001")
+    _append_history(sandbox, "03", "AUTHORIZED", "NOT_STARTED", "owner", owner_ref="cmsg_HANDEDITREF0002")
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    assert codes == {"HISTORY_SINGLE_ACTIVE"}, codes
+
+
+@pytest.mark.integration
+def test_f04_history_with_a_past_dependency_violation_is_an_error(sandbox: Sandbox) -> None:
+    sandbox.drive_to_accepted("01")
+    _append_history(sandbox, "02", "NOT_STARTED", "AUTHORIZED", "owner", owner_ref="cmsg_HANDEDITREF0001")
+    _append_history(sandbox, "02", "AUTHORIZED", "NOT_STARTED", "owner", owner_ref="cmsg_HANDEDITREF0002")
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    assert codes == {"HISTORY_DEPENDENCY"}, codes
+
+
+@pytest.mark.integration
+def test_f05_reopening_without_a_correction_amendment_is_an_error(sandbox: Sandbox) -> None:
+    sandbox.drive_to_accepted("00")
+    _append_history(sandbox, "00", "ACCEPTED_CLOSED", "IN_PROGRESS", "owner", owner_ref="cmsg_HANDEDITREF0001")
+    reg = sandbox.registry()
+    reg["stages"][0].update(status="IN_PROGRESS", implementation=None, verification=None, acceptance=None)
+    sandbox.save_registry(reg)
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    assert codes == {"HISTORY_AMENDMENT_MISSING"}, codes
+
+
+@pytest.mark.integration
+def test_f05_starting_work_with_an_open_blocker_is_an_error(sandbox: Sandbox) -> None:
+    assert sandbox.go("00", Status.AUTHORIZED).allowed
+    sandbox.orc().add_blocker("00", "waiting for the owner", at=sandbox.tick())
+    refused = sandbox.go("00", Status.IN_PROGRESS)
+    assert not refused.allowed and "BLOCKER_OPEN" in sandbox.codes(refused.findings)
+    _append_history(sandbox, "00", "AUTHORIZED", "IN_PROGRESS", "engineering-agent")
+    reg = sandbox.registry()
+    reg["stages"][0]["status"] = "IN_PROGRESS"
+    sandbox.save_registry(reg)
+    codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+    assert codes == {"HISTORY_BLOCKER"}, codes
+
+
+@pytest.mark.integration
+def test_f05_blocking_without_a_blocker_is_an_error_in_history(sandbox: Sandbox) -> None:
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    bid = sandbox.orc().add_blocker("00", "real blocker", at=sandbox.tick())
+    assert sandbox.go("00", Status.BLOCKED).allowed
+    assert sandbox.orc().resolve_blocker("00", bid, "done", at=sandbox.tick())
+    assert not errors(sandbox.orc().check(include_status_doc=False))
+    _append_history(sandbox, "00", "IN_PROGRESS", "BLOCKED", "engineering-agent")
+    _append_history(sandbox, "00", "BLOCKED", "IN_PROGRESS", "engineering-agent")
+    assert sandbox.codes(sandbox.orc().check(include_status_doc=False)) == {"HISTORY_BLOCKER"}
+
+
+# ------------------------------------------------------------------ F-11
+
+
+@pytest.mark.integration
+def test_f11_foundation_can_be_reopened_after_a_dependent_was_accepted(sandbox: Sandbox) -> None:
+    reg = sandbox.registry()
+    reg["stages"][2]["owned_paths"] = ["impl/02.txt"]  # defined when a stage is authorized
+    sandbox.save_registry(reg)
+    sandbox.commit("define stage 02 paths")
+    for sid in ("00", "01", "02"):
+        sandbox.drive_to_accepted(sid)
+    aid = sandbox.orc().add_amendment(
+        "00",
+        kind="correction",
+        reason="foundation defect found after stage 02 was accepted",
+        evidence_refs=["RISKS.md"],
+        owner_ref="cmsg_TESTREOPENREF01",
+        at=sandbox.tick(),
+    )
+    reopened = sandbox.go("00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref="cmsg_TESTREOPENREF01")
+    assert reopened.allowed, [str(f) for f in reopened.findings]
+    findings = sandbox.orc().check(include_status_doc=False)
+    assert not errors(findings)
+    assert "DEPENDENCY_REOPENED" in sandbox.codes(findings, "warning")
+    # A dependent cannot be verified or accepted on top of the reopened foundation.
+    assert sandbox.go("03", Status.AUTHORIZED).allowed is False
+    sandbox.write("impl/00.txt", "corrected\n")
+    rev = sandbox.commit("correct 00")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    gates, ci = sandbox.gates("00"), sandbox.ci(rev)
+    assert sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=ci).allowed
+    assert sandbox.go("00", Status.ACCEPTED_CLOSED).allowed
+    final = sandbox.orc().check(include_status_doc=False)
+    assert not errors(final) and "DEPENDENCY_REOPENED" not in sandbox.codes(final, "warning")
+
+
+# ------------------------------------------------------------------ F-06
+
+CRITICAL = (
+    "\n## R-{id} {dash} Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+    "- Stage: {stage}\n\nBody.\n"
+)
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize(
+    ("heading_dash", "stage", "extra", "code"),
+    [
+        ("-", "00", "", "MEMORY_MALFORMED"),
+        ("–", "00", "", "MEMORY_MALFORMED"),
+        ("—", "project", "", "OPEN_CRITICAL_DEFECT"),
+        ("—", "00", "- Status: closed\n", "MEMORY_MALFORMED"),
+    ],
+    ids=["ascii_hyphen", "en_dash", "project_scope", "duplicate_field"],
+)
+def test_f06_malformed_or_project_wide_defects_fail_closed(
+    sandbox: Sandbox, heading_dash: str, stage: str, extra: str, code: str
+) -> None:
+    sandbox.drive_to_verified("00")
+    entry = CRITICAL.format(id="016", dash=heading_dash, stage=stage).replace("\n\nBody.", f"\n{extra}\nBody.")
+    sandbox.write("RISKS.md", (sandbox.root / "RISKS.md").read_text(encoding="utf-8") + entry)
+    assert code in sandbox.codes(sandbox.orc().check())
+
+
+@pytest.mark.negative
+def test_f06_heading_level_and_topic_case(tmp_path: Path) -> None:
+    from citerift.governance import memory
+
+    risks = tmp_path / "RISKS.md"
+    risks.write_text("# Risks\n\n### R-001 — Wrong level\n- Status: open\n", encoding="utf-8")
+    assert {p.code for p in memory.check_risks(risks)[1]} == {"MEMORY_MALFORMED"}
+    decisions = tmp_path / "DECISIONS.md"
+    body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+    decisions.write_text(
+        "# Decisions\n\n## D-001 — One\n"
+        + body.format(topic="python-version")
+        + "\n## D-002 — Two\n"
+        + body.format(topic=" Python-Version "),
+        encoding="utf-8",
+    )
+    assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+
+
+# ------------------------------------------------------------- F-13, F-18
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "damage",
+    ['{"registry_version": ', '{"registry_version": "1.0.0", "registry_version": "1.0.0"}', None],
+    ids=["truncated", "duplicate_key", "missing"],
+)
+def test_f13_f18_unreadable_registry_is_reported_not_crashed(sandbox: Sandbox, damage: str | None) -> None:
+    path = sandbox.root / "governance/stage_registry.json"
+    if damage is None:
+        path.unlink()
+    else:
+        path.write_text(damage, encoding="utf-8")
+    for command in ("check", "recover"):
+        out = subprocess.run(
+            [sys.executable, "-m", "citerift.governance.cli", "--root", str(sandbox.root), command],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert out.returncode == 1, out.stdout + out.stderr
+        assert "Traceback" not in out.stderr
+        assert "REGISTRY_UNREADABLE" in out.stdout
+    assert "HEAD:" in out.stdout
+
+
+@pytest.mark.negative
+def test_f18_duplicate_key_in_test_report_is_invalid(sandbox: Sandbox) -> None:
+    sandbox.drive_to_verified("00")
+    report = sandbox.root / "docs/verification/stage-00/test-report.json"
+    text = report.read_text(encoding="utf-8")
+    report.write_text(text.replace('"exit_status": 0', '"exit_status": 1, "exit_status": 0', 1), encoding="utf-8")
+    assert "TEST_EVIDENCE_INVALID" in sandbox.codes(sandbox.orc().check())
+
+
+# ------------------------------------------------------------------ F-15
+
+
+@pytest.mark.integration
+def test_f15_blocker_resolution_records_who_resolved_it(sandbox: Sandbox, capsys: pytest.CaptureFixture[str]) -> None:
+    from citerift.governance.cli import main
+
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    bid = sandbox.orc().add_blocker("00", "needs an owner answer", at=sandbox.tick())
+    assert sandbox.go("00", Status.BLOCKED).allowed
+    root = ["--root", str(sandbox.root)]
+    who = ["--actor", "owner", "--recorded-by", "engineering-agent", "--at", sandbox.tick()]
+    code = main([*root, "blocker", "resolve", "00", "owner answered", "--id", bid, *who])
+    assert code == 0, capsys.readouterr().out
+    last = sandbox.registry()["history"][-1]
+    assert (last["from"], last["to"], last["actor"], last["recorded_by"]) == (
+        "BLOCKED",
+        "IN_PROGRESS",
+        "owner",
+        "engineering-agent",
+    )
+
+
+# ------------------------------------------------------------------ F-16
+
+
+@pytest.mark.negative
+def test_f16_future_timestamps_are_refused_and_detected(sandbox: Sandbox) -> None:
+    refused = sandbox.go("00", Status.AUTHORIZED, at="2099-01-01T00:00:00Z")
+    assert not refused.allowed and "TIMESTAMP_IN_FUTURE" in sandbox.codes(refused.findings)
+    assert sandbox.go("00", Status.AUTHORIZED).allowed
+    reg = sandbox.registry()
+    reg["history"][-1]["at"] = reg["stages"][0]["authorization"]["recorded_at"] = "2099-01-01T00:00:00Z"
+    sandbox.save_registry(reg)
+    assert "HISTORY_FUTURE_TIMESTAMP" in sandbox.codes(sandbox.orc().check())
+
+
+# ------------------------------------------------------------------ F-17
+
+
+@pytest.mark.integration
+def test_f17_acceptance_must_cite_a_new_owner_statement(sandbox: Sandbox) -> None:
+    sandbox.drive_to_verified("00")
+    reused = sandbox.go("00", Status.ACCEPTED_CLOSED, owner_ref=sandbox.registry()["history"][0]["owner_ref"])
+    assert not reused.allowed and "OWNER_REF_REUSED" in sandbox.codes(reused.findings)
+    assert sandbox.go("00", Status.ACCEPTED_CLOSED, owner_ref="cmsg_TESTNEWACCEPT01").allowed
+
+
+@pytest.mark.integration
+def test_f17_record_times_must_match_history(sandbox: Sandbox) -> None:
+    sandbox.drive_to_accepted("00")
+    reg = sandbox.registry()
+    reg["stages"][0]["acceptance"]["recorded_at"] = reg["stages"][0]["verification"]["recorded_at"]
+    sandbox.save_registry(reg)
+    assert "RECORD_HISTORY_MISMATCH" in sandbox.codes(sandbox.orc().check())

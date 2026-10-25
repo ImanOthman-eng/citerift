@@ -183,7 +183,10 @@ class Sandbox:
             executor = self.orc().stage(stage_id)["executor"]
             kwargs["actor"] = Actor.OWNER if target in owner_edges else Actor(executor)
         if kwargs["actor"] == Actor.OWNER:
-            kwargs.setdefault("owner_ref", OWNER_REF)
+            # An acceptance must cite an owner statement made after the verification, so each
+            # sandbox acceptance gets its own reference.
+            default_ref = f"cmsg_TESTACCEPTREF{self.clock:04d}" if target == Status.ACCEPTED_CLOSED else OWNER_REF
+            kwargs.setdefault("owner_ref", default_ref)
         orc = self.orc()
         result = orc.propose(stage_id, target, **kwargs)
         if apply and result.allowed:
