@@ -11,7 +11,7 @@ Scope of the correction: the confirmed findings F-01 to F-23 of the
 independent review in `docs/audits/stage-00-2026-10-25/`, the defect S-01
 found during the correction, the findings V-01 to V-16 of the first final
 independent review, X-01 to X-14 of the second and Y-01 to Y-13 of the
-third (`review/`), all inside
+third (`review/`), and Z-01 to Z-05 of the confirmation review, all inside
 Stage 00's original scope. No later stage is touched or authorized. Stage 01 belongs to
 the external agent and nothing here assumes any of its findings.
 
@@ -30,7 +30,7 @@ by a new session from a clone alone. Stage 00 reads no external data.
 | Data contracts v1, version 1.0.1 | `schemas/contracts/v1/`, `src/citerift/contracts/` (`validate.py`, new `formats.py`), CLI `citerift-contracts` | explicit accepted values for all alternatives; date-time and calendar checks; portable patterns; duplicate keys rejected |
 | Test evidence plugin | `src/citerift/governance/pytest_report.py` | records how tests were selected; partial runs are not evidence |
 | Simulations | `simulations/stage00/state_machine_model.py` (unchanged), new `replay_conformance.py` | exhaustive check of the history replay against the model |
-| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` | now Stage 00 owned paths (detection for F-20); CI runs the checks as `python -P -m` from `src`, not through entry points, and asserts that the imported package is the one in `src` (V-04) |
+| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` | now Stage 00 owned paths (detection for F-20); CI runs the checks as `python -P -m` from `src`, not through entry points, and asserts that the imported package is the one in `src` (V-04); the governance check runs before the project is built and before the tools `pyproject.toml` configures, and the job ends with its own report check and a tree check (Y-08, Z-04) |
 | Repository foundation | `.gitattributes` (new, LF), `src/citerift/py.typed` (new) | owned paths |
 
 ## State machine (unchanged edges)
@@ -91,17 +91,20 @@ All of the requirements of `741476c`, plus:
    deselected, no collected test removed or repeated by a hook (compared by
    node id), nothing not run, and every test passed: none skipped, xfailed or
    xpassed (Y-03). The tree was clean: no change shown by `git status`, no
-   tracked file flagged `--skip-worktree` or `--assume-unchanged`, and the
-   report not written over a tracked file (Y-01, Y-02). Every committed
+   tracked file flagged `--skip-worktree` or `--assume-unchanged`, no tracked
+   file whose bytes differ from its index entry (read from disk, not from the
+   stat cache), and the report not written over a tracked file, whatever its
+   name (Y-01, Y-02, Z-01, Z-05). Every committed
    `tests/**/test_*.py` file at
    the verified revision must appear among the files that ran, and every
    conftest the run loaded must be committed at that revision (F-07, V-01,
    X-02, X-03). The report is written by the test process itself, so code
    running in that process (committed test or conftest code, an imported
    module, an installed dependency) can forge it (R-004).
-6. The CI record must name a run of the project's repository
-   (`project.repository`), at the verified revision, that succeeded (Y-10).
-5. The handoff, report and record are read with duplicate-key rejection
+5. The CI record's URL must be exactly
+   `https://github.com/<project.repository>/actions/runs/<id>`, and the
+   record must name the verified revision and success (Y-10, Z-02).
+6. The handoff, report and record are read with duplicate-key rejection
    (F-18).
 
 ## Persistent memory integrity rules
@@ -135,7 +138,8 @@ Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
   grafts disabled, so neither can hide drift or a rewritten history.
   Only enhancements of the current acceptance can cover a change (Y-06).
   Uncommitted owned changes give the warning `UNCOMMITTED_OWNED_CHANGE`
-  (F-01, F-19, V-13, X-09).
+  (F-01, F-19, V-13, X-09). When git cannot list uncommitted changes,
+  `recover` says they are unknown, not zero (Z-03).
 - Rule 9, records. A heading that looks like an entry but is malformed is an
   error, and so are an entry field outside any recognised heading and an
   entry field not written as `- Name: value`. A topic is compared after NFKC

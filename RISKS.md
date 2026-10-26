@@ -78,7 +78,9 @@ Executors, artifact lists and dependencies cannot (V-03, X-07).
 - Stage: 00
 
 The offline check verifies that the recorded CI record names a run of this
-repository (Y-10), the verified revision as its tested commit, and success. It
+repository (the URL must be exactly the project's run URL pattern, so dot
+segments cannot lead elsewhere; Y-10, Z-02), the verified revision as its
+tested commit, and success. It
 cannot fetch the run, so it cannot tell whether the record is true; the run
 URL is public for this repository and can be checked by anyone. A
 `pull_request` run tests the merge commit, not the head commit it reports, so
@@ -91,8 +93,12 @@ settings, dropped or repeated tests, skipped or expected-to-fail tests, extra
 `-p` or `PYTEST_PLUGINS` plugins, conftest files not committed at the
 revision, and committed test files that did not run (V-01, X-02, X-03, Y-03).
 A tree is dirty when `git status` shows a change, when a tracked file is
-flagged `--skip-worktree` or `--assume-unchanged`, or when the report itself
-is written over a tracked file (Y-01, Y-02). It cannot bind code that runs
+flagged `--skip-worktree` or `--assume-unchanged`, when a tracked file's bytes
+differ from its index entry although git's stat cache says they do not, or
+when the report itself is written over a tracked file, whatever its name
+(Y-01, Y-02, Z-01, Z-05). Local git state outside these checks, such as
+`.git/info/exclude` hiding a new file, or an index rewritten together with
+the files, is not bound. It cannot bind code that runs
 inside the test process: committed test or conftest code, an untracked or
 ignored module the run imports (inside the tree or outside it), or an
 installed dependency can rewrite the report or the plugin's state, and a
@@ -245,14 +251,20 @@ checked-out `src/` modules directly, so the entry points in `pyproject.toml`
 cannot replace the checker (V-04), and a shell step refuses anything in `src/`
 beside the `citerift` package before any Python runs, because a
 `sitecustomize.py` or a package shadowing a dependency there would run inside
-every check (X-04). The governance check runs before ruff, mypy and pytest,
-and CI fails at the end if any tracked file was changed (Y-08: a mypy plugin
-named in `pyproject.toml` rewrote the checker on disk before the check). Not
-covered: `pyproject.toml` (every tool setting) and `uv.lock` (dependencies)
-are not Stage 00 owned paths. Code that a tool setting or a dependency runs
-executes in the steps after the governance check, so it can change what the
-test, report and tree-check steps do without making Stage 00 stale; it can
-also restore the files it changed before the last step. The test report
+every check (X-04). Before the governance check, CI installs only the locked
+dependencies as wheels, without building the project (Z-04: the build backend
+named in `pyproject.toml` rewrote the checker during `uv sync --locked`, which
+then ran first). The governance check runs before the lock check, the project
+install, ruff, mypy and pytest, and CI fails at the end if `git status` shows
+any unstaged or staged change or a new file other than the test report (Y-08:
+a mypy plugin named in `pyproject.toml` rewrote the checker on disk before the
+check; D4 of the confirmation review: `git diff` alone missed staged changes
+and new files). Not covered: `pyproject.toml` (build backend and every tool
+setting) and `uv.lock` (dependencies) are not Stage 00 owned paths. Code in a
+locked wheel (a `.pth` file, for example) already runs during the governance
+check; code that the build backend or a tool setting runs executes after it,
+so it can change what the test, report and tree-check steps do without making
+Stage 00 stale, and it can restore the files it changed before the last step. The test report
 records collection settings that differ from the fixed values (X-02), but a
 dependency or committed test code can still write a false report (R-004). Prevention
 needs a required code-owner review from an identity the agent does not hold
@@ -324,3 +336,23 @@ digits passed validation but did not block Stage 00 (Y-04). Fixed in
 check at `564030b` found four rules without a test of their own (M52, M57,
 M58, M59); tests and a corrected M52 were added in `aa06a40` and `a93c64f`.
 Residual limitations stay open as R-002, R-003, R-004 and R-016.
+
+## R-021 — Stage 00 confirmation review findings (A-00-001)
+- Status: closed
+- Severity: low
+- Kind: defect
+- Stage: 00
+
+The confirmation review of `97b2051` (docs/verification/stage-00/review/)
+found every earlier finding's original attack stopped and no regression, and
+reproduced five close variants, Z-01 to Z-05 (1 low-medium, 4 low; none
+critical), plus six overstated statements in the documents (D1 to D6). The
+low-medium one: an edit that kept the file's size and mtime, with a local
+`core.trustctime=false`, was hidden from `git status`, so a run of 44 of 393
+tests reported a clean tree (Z-01). Fixed in `6d1fa00`; their regression
+tests fail on `97b2051`
+(docs/verification/stage-00/fail-first/results-97b2051.txt), and the
+documents were corrected. These fixes have not been reviewed by an
+independent reviewer; whether another review round is wanted is an owner
+decision that is still open. Residual limitations stay open as
+R-002, R-003, R-004 and R-016.

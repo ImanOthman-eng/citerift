@@ -134,3 +134,25 @@ passed).
 No failing test here, by design: `test_x03_each_partial_run_rule_holds_on_its_own`
 (three cases) passes on both revisions, because it kills mutants M57 to M59
 rather than reproducing a defect.
+
+## Confirmation review findings Z-01 to Z-05 (`results-97b2051.txt`)
+
+The confirmation review (`../review/97b2051/`) raised Z-01 to Z-05 and the
+document finding D4. Their tests were run the same way against `97b2051`,
+with the tests of `6d1fa00`:
+
+    git -C $W checkout --detach 97b2051
+    rm -rf $W/tests && git archive 6d1fa00 tests | tar -x -C $W
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 7 failed, 393 passed. The same suite passes on `6d1fa00` (400
+passed).
+
+| Finding | Failing tests at `97b2051` |
+|---|---|
+| Z-01 | 1 |
+| Z-02 | 2 (`..` segments, percent-encoded dots) |
+| Z-03 | 1 |
+| Z-04 | 1 (CI step order) |
+| Z-05 | 1 |
+| D4 | 1 (CI tree check covers staged and new files) |

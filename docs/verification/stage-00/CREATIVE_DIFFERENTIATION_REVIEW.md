@@ -69,7 +69,7 @@ new owner statement. The next stage needs a third, separate authorization.
   itself, so code inside that process, such as committed test code or a
   dependency, can forge it (R-004).
 - **Verification now:** 12 mandatory scenarios, 19 hand edits, and 19 seeded
-  mutation classes (120 cases) all pass. 90 rule-disabling mutants are run
+  mutation classes (120 cases) all pass. 96 rule-disabling mutants are run
   (TEST_RESULTS.md §5). On the live registry, the orchestrator refuses
   verification while CI evidence is missing. The accepted review cited
   TEST_RESULTS §8 for that, but §8 recorded other codes. The refusal is now

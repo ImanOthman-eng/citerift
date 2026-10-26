@@ -171,8 +171,11 @@ following hold:
 - the counts in `r` are non-negative integers, and its file and conftest
   lists are lists of strings (X-05)
 - `r.dirty = false`, where a tree is dirty if `git status` lists a path, if a
-  tracked file is flagged skip-worktree or assume-unchanged, or if the report
-  path itself is tracked (Y-01, Y-02)
+  tracked file is flagged skip-worktree or assume-unchanged, if a tracked
+  file's bytes do not hash to its index entry (Z-01), or if the report path
+  itself is tracked, the path read literally (Y-01, Y-02, Z-05). The bytes are
+  read when the report is written, by the test process; this binds the tree,
+  not code running in that process (R-004)
 - `r.selection.complete = true`
 - no test recorded as not run (`totals.not_run = 0`), and every outcome is
   `passed`, `failed` or `error`: skipped, xfailed and xpassed tests did not
@@ -228,8 +231,9 @@ actually binds (X-01).
 
 CI record. With `repo` = `project.repository`, the record `c` supports the
 verification iff `c.head_sha = ρ`, `c.conclusion = success` and `c.run_url`
-starts with `https://github.com/repo/actions/runs/`, compared without case
-(Y-10). The checker reads the record, not the run.
+is, as a whole and compared without case, `https://github.com/repo/actions/runs/n`
+for a decimal `n` (Y-10; a prefix test let `..` segments lead to another
+repository, Z-02). The checker reads the record, not the run.
 
 ## 7. Date and time model (contracts and registry)
 

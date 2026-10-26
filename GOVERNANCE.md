@@ -46,10 +46,14 @@ full consistency check (`citerift-gov check`). Main invariants:
 1. A stage is verified only with every required artifact (always including the
    handoff), a passing test report produced at the verified revision from a
    clean tree, every acceptance gate passed, and (for engineering stages) a
-   successful CI run of the project's repository on that revision. A clean
-   tree has no change that `git status` shows and no tracked file flagged
-   `--skip-worktree` or `--assume-unchanged`; the report is left out of that
-   check only when it is written to an untracked path. The report must record
+   successful CI run of the project's repository on that revision (the run
+   URL must be exactly `https://github.com/<repository>/actions/runs/<id>`). A
+   clean tree has no change that `git status` shows, no tracked file flagged
+   `--skip-worktree` or `--assume-unchanged`, and no tracked file whose bytes
+   differ from its index entry (read from disk, not from git's stat cache);
+   the report is left out of that check only when it is written to an
+   untracked path. These are checks of the working tree by the test process;
+   code in that process can still forge the report (RISKS.md R-004). The report must record
    a complete run: every test file committed under `tests/` at the revision
    ran; every test passed (none skipped or expected to fail); no narrowing
    option, ini override or other ini file was used; the collection settings
@@ -205,17 +209,23 @@ ruleset file are Stage 00 owned paths, so changing them makes Stage 00 stale
 so changing the entry points in `pyproject.toml` does not replace the checker.
 Before any Python runs, a shell step refuses anything in `src/` beside the
 `citerift` package (such as a `sitecustomize.py` or a package that shadows a
-dependency), and `check` reports one as `SRC_FOREIGN_MODULE`. The governance
-check runs before ruff, mypy and pytest, because any of them can be configured
-in `pyproject.toml` to run code (a mypy plugin, for example), and such code
-could rewrite the checker on disk before a later step. After the tests, CI
-checks its own test report (`citerift-gov check-report`) and fails if any
-tracked file was changed. The dependencies installed from `uv.lock` and every
-tool setting in `pyproject.toml` are not Stage 00 owned paths. Code they run
-executes in the steps after the governance check, so it can still change what
-the test, report and tree-check steps do, and later stages must be able to add
-dependencies. Such code must be committed or locked, so it is visible in the
-reviewed diff.
+dependency), and `check` reports one as `SRC_FOREIGN_MODULE`. Before the
+governance check, CI installs only the locked dependencies, as wheels and
+without the project (`uv sync --frozen --no-install-project --no-build`), so
+no build backend named in `pyproject.toml` runs yet. The check then runs
+before the lock check, the project install, ruff, mypy and pytest, because a
+build backend or a tool setting in `pyproject.toml` can run code (a mypy
+plugin, for example), and such code could rewrite the checker on disk before a
+later step. After the tests, CI checks its own test report
+(`citerift-gov check-report`) and fails if `git status` shows any change: an
+unstaged or staged change to a tracked file, or a new file other than the
+test report. The dependencies installed from `uv.lock` and everything in
+`pyproject.toml` are not Stage 00 owned paths. Code in the locked wheels (a
+`.pth` file, for example) already runs during the governance check; code from
+the build backend and tool settings runs after it and can still change what
+the test, report and tree-check steps do (including restoring the files it
+changed). Later stages must be able to add dependencies. Such code must be
+committed or locked, so it is visible in the reviewed diff.
 
 Not enforceable by repository code: whether an `owner_ref` really contains the
 owner's approval (R-002), whether an agent follows instructions at all, and

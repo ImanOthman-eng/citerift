@@ -102,9 +102,9 @@ the fix is the new step order in `ci.yml`, tested by
 | Y-05 | a retraction conflict could hold an absence of record, or values that agree | fixed in 1.0.1 (unreleased): only positive records as alternatives (schema), at least two different values (semantic check, every assertion) |
 | Y-06 | a hand-written enhancement on a verified stage passed `check` and covered owned changes | fixed: an amendment must be recorded while its stage is accepted; only enhancements of the current acceptance cover changes |
 | Y-07 | the amendment reference rule could be passed with a chosen time | fixed: same-second citations count as earlier, and a back-dated amendment falls under Y-06 |
-| Y-08 | a mypy plugin named in `pyproject.toml` rewrote the checker before the CI check step | fixed as far as CI order can: the check runs before ruff, mypy and pytest, and CI fails if a tracked file changed. Residual, stated in R-016: code run by a tool setting or a dependency still runs in the later steps and can restore what it changed |
+| Y-08 | a mypy plugin named in `pyproject.toml` rewrote the checker before the CI check step | fixed as far as CI order can: the check runs before ruff, mypy and pytest, and CI fails if an unstaged tracked file changed (the confirmation review found the build backend still ran first, Z-04, and staged or new files unchecked, D4; both fixed in `6d1fa00`). Residual, stated in R-016: code run by a tool setting or the build backend still runs in the later steps and can restore what it changed |
 | Y-09 | an ignored or untracked file under an owned path counted as pinned gate evidence | fixed: it must be committed at the verified revision |
-| Y-10 | the CI record was not tied to the project's repository | fixed: `CI_WRONG_REPOSITORY` |
+| Y-10 | the CI record was not tied to the project's repository | fixed: `CI_WRONG_REPOSITORY` (a prefix test; `..` segments still escaped it, Z-02, fixed in `6d1fa00`) |
 | Y-11 | five more inputs ended in a traceback | fixed: named errors, and a last-resort handler for git failures in the CLI |
 | Y-12 | a verified retraction date was accepted next to `not_found_in_checked_sources` | fixed in 1.0.1 (unreleased): no date may stand without a retraction record |
 | Y-13 | the DOI pattern rejected a subdivided registrant code | fixed in 1.0.1 (unreleased) |
@@ -123,3 +123,49 @@ the documents in this directory were corrected after it. The 73-mutant check
 at `564030b` also found four rules without a test of their own (M52, M57, M58,
 M59); `aa06a40` adds tests for M57 to M59, and `a93c64f` makes M52 remove
 both replace-object controls, since either one alone still stops the attack.
+
+## `97b2051/`: confirmation review
+
+This review followed the option recommended to the owner on 2026-10-25 for
+ending the review rounds: after the Y fixes, one fresh reviewer re-checks
+every earlier finding and looks for regressions at the final revision, and any
+new edge case is reported as residual rather than starting another open-ended
+round. The owner has not yet answered that question.
+
+Verdict: NOT VERIFIED. 393 tests passed and every tool was clean. Of the 61
+earlier findings (F-01 to F-19, V-01 to V-16, X-01 to X-13, Y-01 to Y-13), 57
+were fixed and 4 partly fixed (Y-01, Y-02, Y-08, Y-10): their original attack
+is stopped, but a close variant was not. The reviewer found no regression,
+reran the fail-first check of the Y tests (27 failed, 366 passed, the same
+test ids), and killed 24 targeted mutants. It reproduced five new defects,
+Z-01 to Z-05 (1 low-medium, 4 low; none critical), and six overstated
+statements in the documents (D1 to D6; D7 was cosmetic).
+
+The Z fixes are in `6d1fa00`. Their tests fail on `97b2051`
+(`../fail-first/results-97b2051.txt`), and the reviewer's Z-01, Z-02, Z-03 and
+Z-05 scripts, run against `6d1fa00`, no longer reproduce. The Z-04 script runs
+the old CI step order itself, like the Y-08 script; the same attack replayed in
+the new order fails at the governance step (`5 errors`, exit 1) before the
+build backend runs. **No independent reviewer has checked these last fixes.**
+
+| Id | Finding | Disposition |
+|---|---|---|
+| Z-01 | an edit that kept the file's size and mtime, with a local `core.trustctime=false`, was hidden from `git status`; a run of 44 of 393 tests reported a clean tree | fixed: every tracked file's bytes are hashed and compared with its index entry; `git status` runs with fsmonitor and the untracked cache off |
+| Z-02 | a CI run URL with the project prefix could reach another repository through `..` segments | fixed: the whole URL must match the project's run URL pattern |
+| Z-03 | with a damaged index, `recover` printed `Uncommitted changes: 0` | fixed: it prints `unknown` |
+| Z-04 | the build backend named in `pyproject.toml` ran in `uv sync --locked`, before the governance check, and rewrote the checker | fixed: CI first installs only the locked dependencies as wheels (`--frozen --no-install-project --no-build`), runs the check, then the lock check and the project install. Residual, stated in R-016: code in a locked wheel (a `.pth` file) runs during the check |
+| Z-05 | a tracked file whose name starts with `:` was read as pathspec magic and looked untracked, so a report written over it hid its change | fixed: the path is read literally |
+
+| Id | Overstated statement | Correction |
+|---|---|---|
+| D1 | a dirty tree "includes files hidden from `git status`" | the documents now list exactly what the dirty check covers, and what local git state it does not (R-004) |
+| D2 | the CI record "names a run of this repository" | now an exact URL match (Z-02); the documents say so |
+| D3 | the governance check runs before any code `pyproject.toml` configures | true after Z-04 for the build backend and tool settings; code in locked wheels is stated as residual |
+| D4 | CI fails "if any tracked file was changed" | the last step now also fails on staged changes and new files; R-016 keeps the residual that earlier code can change or restore what this step sees |
+| D5 | RISK_ANALYSIS.md §5 listed only three workflow changes | updated |
+| D6 | a report written over a tracked file makes the tree dirty | now true for any name (Z-05) |
+| D7 | numbered list in SPECIFICATION.md ran 4, 6, 5 | renumbered |
+
+The reviewer's report and scripts are kept as written; it replaced the
+repository login with `<repository account>` in its saved outputs itself, and
+the name-term scan of this directory found nothing to redact.

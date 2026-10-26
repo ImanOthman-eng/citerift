@@ -90,13 +90,24 @@ the reopened revision `ae2ce9e`.
   current acceptance cover owned changes, and an owner reference cited in the
   same second counts as cited before (Y-06, Y-07); CI runs the governance
   check before ruff, mypy and pytest, checks its own test report with the new
-  `check-report` command and fails if a step changed a tracked file (Y-08); an
+  `check-report` command and fails if a step changed an unstaged tracked file
+  (Y-08; see the confirmation review below for the rest); an
   owned file is pinned gate evidence only if committed at the verified
   revision (Y-09); the CI run must belong to the project's repository (Y-10);
   non-UTF-8 evidence names, a damaged index, an absolute `verification_dir`
   and deeply nested JSON give named errors (Y-11). Tests were added for four
   rules the 73-mutant check found untested (M52, M57, M58, M59).
-- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020),
+- Confirmation review (Z-01 to Z-05): a tracked file whose bytes differ from
+  its index entry makes the tree dirty even when git's stat cache hides the
+  edit (Z-01); the CI run URL must match the project's run URL as a whole, so
+  `..` segments cannot lead to another repository (Z-02); `recover` says
+  uncommitted changes are unknown when git cannot list them (Z-03); CI
+  installs only the locked dependencies as wheels before the governance
+  check, and builds the project after it (Z-04); a tracked file whose name
+  starts with `:` is recognised as tracked (Z-05); the last CI step also fails
+  on staged changes and new files. Overstated statements in GOVERNANCE.md,
+  RISKS.md and the verification documents were corrected.
+- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020, R-021),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).
 
