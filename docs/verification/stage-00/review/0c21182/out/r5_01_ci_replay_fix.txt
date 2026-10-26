@@ -1,0 +1,117 @@
+$ cd scripts && W=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/sb-fix BASE=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix/.venv/bin/python -P r5_01_ci_replay.py   (uv 0.11.32 (x86_64-unknown-linux-gnu))
+revision 0c21182e5871f772c3a76c75a1217c7641a63bbb; steps replayed from its ci.yml: ['Check out full history (revision checks need it)', 'Nothing beside the citerift package in src', 'No committed environment', 'Install uv', 'Install the locked dependencies only, as wheels', 'Governance state and memory consistency']
+
+== control-no-venv: no committed environment (control)
+   committed: nothing under .venv; in checkout: exists=False islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 0: 
+   [Install uv] uses astral-sh/setup-uv: emulated
+   [Install the locked dependencies only, as wheels] $ uv sync --frozen --no-install-project --no-build --offline
+      exit 0:  + typing-extensions==4.16.0 /  + urllib3==2.8.0
+   [Governance state and memory consistency] $ uv run --no-sync python -P -m citerift.governance.cli check ; uv run --no-sync python -P -m citerift.governance.cli render-status --check
+      exit 1:   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a verification record /   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a acceptance record
+   -> job stops at [Governance state and memory consistency]
+   wrapper ran: 0 times; git status: clean
+
+== dir: .venv directory with pyvenv.cfg and a wrapper bin/python (original R5-01 exploit)
+   committed: ['100755 .venv/bin/python', '120000 .venv/bin/python3', '100644 .venv/pyvenv.cfg']; in checkout: exists=True islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== symlink-dir: .venv -> tools/env, a committed environment elsewhere in the tree
+   committed: ['120000 .venv', '100755 tools/env/bin/python', '120000 tools/env/bin/python3', '100644 tools/env/pyvenv.cfg']; in checkout: exists=True islink=True
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== dangling: .venv dangling relative symlink
+   committed: ['120000 .venv']; in checkout: exists=False islink=True
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== abs-symlink: .venv symlink to an absolute path that does not exist
+   committed: ['120000 .venv']; in checkout: exists=False islink=True
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== file: .venv as a regular file
+   committed: ['100644 .venv']; in checkout: exists=True islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== gitlink: .venv as a gitlink (submodule entry); checkout makes an empty directory
+   committed: ['160000 .venv']; in checkout: exists=True islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 1: 
+   -> job stops at [No committed environment]
+   wrapper ran: 0 times; git status: clean
+
+== nested: docs/.venv (environment in a subdirectory, not the project root)
+   committed: nothing under .venv; in checkout: exists=False islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 0: 
+   [Install uv] uses astral-sh/setup-uv: emulated
+   [Install the locked dependencies only, as wheels] $ uv sync --frozen --no-install-project --no-build --offline
+      exit 0:  + typing-extensions==4.16.0 /  + urllib3==2.8.0
+   [Governance state and memory consistency] $ uv run --no-sync python -P -m citerift.governance.cli check ; uv run --no-sync python -P -m citerift.governance.cli render-status --check
+      exit 1:   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a verification record /   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a acceptance record
+   -> job stops at [Governance state and memory consistency]
+   wrapper ran: 0 times; git status: clean
+
+== case: .VENV (other case)
+   committed: ['100755 .VENV/bin/python', '120000 .VENV/bin/python3', '100644 .VENV/pyvenv.cfg']; in checkout: exists=False islink=False
+   honest checker on this commit (run from outside): Consistency check: 4 errors, 0 warnings
+   [Check out full history (revision checks need it)] uses actions/checkout: emulated
+   [Nothing beside the citerift package in src] $ test "$(ls -A src)" = "citerift"
+      exit 0: 
+   [No committed environment] $ test ! -e .venv && test ! -L .venv
+      exit 0: 
+   [Install uv] uses astral-sh/setup-uv: emulated
+   [Install the locked dependencies only, as wheels] $ uv sync --frozen --no-install-project --no-build --offline
+      exit 0:  + typing-extensions==4.16.0 /  + urllib3==2.8.0
+   [Governance state and memory consistency] $ uv run --no-sync python -P -m citerift.governance.cli check ; uv run --no-sync python -P -m citerift.governance.cli render-status --check
+      exit 1:   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a verification record /   ERROR RECORD_MISSING: [stage 00] status ACCEPTED_CLOSED requires a acceptance record
+   -> job stops at [Governance state and memory consistency]
+   wrapper ran: 0 times; git status: clean
+exit 0

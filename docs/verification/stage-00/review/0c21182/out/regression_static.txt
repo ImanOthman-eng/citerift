@@ -1,0 +1,42 @@
+## w-fix commit: 0c21182e5871f772c3a76c75a1217c7641a63bbb
+$ uv run ruff check .
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+All checks passed!
+exit 0
+$ uv run ruff format --check .
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+57 files already formatted
+exit 0
+$ uv run mypy
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+Success: no issues found in 12 source files
+exit 0
+$ uv run citerift-gov check
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+Consistency check: 0 errors, 0 warnings
+exit 0
+$ uv run citerift-gov render-status --check
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+PROJECT_STATUS.md is up to date
+exit 0
+## w-head commit: 03631fc12ac0db167b36e8219aba374006043c49
+$ uv run ruff check .
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+All checks passed!
+exit 0
+$ uv run ruff format --check .
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+59 files already formatted
+exit 0
+$ uv run mypy
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+Success: no issues found in 12 source files
+exit 0
+$ uv run citerift-gov check
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+Consistency check: 0 errors, 0 warnings
+exit 0
+$ uv run citerift-gov render-status --check
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+PROJECT_STATUS.md is up to date
+exit 0

@@ -1,0 +1,43 @@
+## w-fix: HEAD 0c21182e5871f772c3a76c75a1217c7641a63bbb; staged changes vs HEAD: 
+## blob of tests/stage00/test_corrections.py: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb (cbb4659: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb, 0c21182: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb)
+## .github/workflows/ci.yml = ca5220d5713fdb515a82e32f3a070855cbaedac0 (b8bb5ac 082d6eedebee098df4a00167381c9ef344d2c2f6, 0c21182 ca5220d5713fdb515a82e32f3a070855cbaedac0)
+## src/citerift/governance/gitutil.py = 178f48a7f4597c85bd93e7495ff87154d9766622 (b8bb5ac 650591bbb5a4069812a665ba4d73f6791a19ecf5, 0c21182 178f48a7f4597c85bd93e7495ff87154d9766622)
+## src/citerift/governance/orchestrator.py = 9dd6ae4a186f7dd0dfd42a9902d6ea516b92bd8b (b8bb5ac 126a58d7609aef86c29ea40d3aa7585d5286b0ee, 0c21182 9dd6ae4a186f7dd0dfd42a9902d6ea516b92bd8b)
+$ uv run pytest -p no:cacheprovider -q -rA tests/stage00/test_corrections.py -k "test_r5_01_ or test_r5_02_ or test_r5_03_"
+PASSED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[submodule.sub.ignore]
+PASSED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[diff.ignoreSubmodules]
+PASSED tests/stage00/test_corrections.py::test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused
+PASSED tests/stage00/test_corrections.py::test_r5_01_ci_refuses_a_committed_environment_before_uv_runs
+4 passed, 182 deselected in 1.16s
+exit 0
+## w-pretests: HEAD cbb4659d00127ed6a14074622ba2732648749e1e; staged changes vs HEAD: .github/workflows/ci.yml src/citerift/governance/gitutil.py src/citerift/governance/orchestrator.py 
+## blob of tests/stage00/test_corrections.py: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb (cbb4659: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb, 0c21182: 7473ba861f18ebe4bef52b323fdb8ac38eef76bb)
+## .github/workflows/ci.yml = 082d6eedebee098df4a00167381c9ef344d2c2f6 (b8bb5ac 082d6eedebee098df4a00167381c9ef344d2c2f6, 0c21182 ca5220d5713fdb515a82e32f3a070855cbaedac0)
+## src/citerift/governance/gitutil.py = 650591bbb5a4069812a665ba4d73f6791a19ecf5 (b8bb5ac 650591bbb5a4069812a665ba4d73f6791a19ecf5, 0c21182 178f48a7f4597c85bd93e7495ff87154d9766622)
+## src/citerift/governance/orchestrator.py = 126a58d7609aef86c29ea40d3aa7585d5286b0ee (b8bb5ac 126a58d7609aef86c29ea40d3aa7585d5286b0ee, 0c21182 9dd6ae4a186f7dd0dfd42a9902d6ea516b92bd8b)
+$ uv run pytest -p no:cacheprovider -q -rA tests/stage00/test_corrections.py -k "test_r5_01_ or test_r5_02_ or test_r5_03_"
+        assert git(project, "status", "--porcelain") == ""
+>       assert "sub" in gitutil.dirty_paths(project)
+E       AssertionError: assert 'sub' in []
+E        +  where [] = <function dirty_paths at 0x7ff26edd9940>(PosixPath('/tmp/pytest-of-root/pytest-635/test_r5_02_an_edit_in_a_submod0/project'))
+E        +    where <function dirty_paths at 0x7ff26edd9940> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-pretests/src/citerift/governance/gitutil.py'>.dirty_paths
+tests/stage00/test_corrections.py:1922: AssertionError
+        assert git(project, "status", "--porcelain") == ""
+>       assert "sub" in gitutil.dirty_paths(project)
+E       AssertionError: assert 'sub' in []
+E        +  where [] = <function dirty_paths at 0x7ff26edd9940>(PosixPath('/tmp/pytest-of-root/pytest-635/test_r5_02_an_edit_in_a_submod1/project'))
+E        +    where <function dirty_paths at 0x7ff26edd9940> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-pretests/src/citerift/governance/gitutil.py'>.dirty_paths
+tests/stage00/test_corrections.py:1922: AssertionError
+            assert sandbox.go("00", target).allowed
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+>       assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+tests/stage00/test_corrections.py:1937: AssertionError
+E       ValueError: substring not found
+FAILED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[submodule.sub.ignore]
+FAILED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[diff.ignoreSubmodules]
+FAILED tests/stage00/test_corrections.py::test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused
+FAILED tests/stage00/test_corrections.py::test_r5_01_ci_refuses_a_committed_environment_before_uv_runs
+4 failed, 182 deselected in 5.20s
+exit 1

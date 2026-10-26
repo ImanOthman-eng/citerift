@@ -9,14 +9,17 @@
   (`cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`, history entry 11).
 - Corrected revision: `0c21182e5871f772c3a76c75a1217c7641a63bbb`, recorded as
   the implementation revision (`IMPLEMENTED_NOT_VERIFIED`).
-- This package is complete for the verification transition, and its dry run
-  is allowed (see Verified Git commit). The transition is **not applied**. The
-  owner asked that the "ready for final acceptance" verdict be claimed only
-  if everything truly passed, and the last independent check of this revision
-  returned NOT VERIFIED: its three low findings are fixed in `cbb4659`, but no
-  independent reviewer has checked those fixes. Whether to verify and accept
-  with that residual, or to review again first, is the owner's decision.
-- The stage is **not** accepted. No later stage is authorized.
+- On 2026-10-26 the owner asked for a bounded independent review of the last
+  three fixes (R5-01 to R5-03) and for the verification transition to be
+  applied only if every requirement is demonstrated
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9`). That review, at
+  `0c21182`, returned **VERIFIED** with no new confirmed defect
+  (`review/0c21182/report.md`). This package is the evidence for the
+  verification transition `IMPLEMENTED_NOT_VERIFIED` →
+  `VERIFIED_AWAITING_OWNER_ACCEPTANCE`, which the orchestrator records after
+  this package is committed (see Verified Git commit).
+- The stage is **not** accepted. Acceptance, and the risk decision in
+  RISK_DECISION_PACKAGE.md, are the owner's. No later stage is authorized.
 
 ## Verified completed work
 
@@ -38,9 +41,9 @@ is a Stage 00 owned file committed at the revision.
 | 00-J | Successful regression and consistency tests | pass | `test-report.json`: regression 214; fail-first runs (`fail-first/README.md`); `check` 0 errors |
 | 00-K | Successful GitHub Actions verification | pass | push run 40273320614 and pull_request run 40273323339 at `0c21182`, all jobs and steps green (TEST_RESULTS.md §7) |
 | 00-L | Effective branch protection verified | pass | ruleset 25824038 read back active and equal to the file (TEST_RESULTS.md §8) |
-| 00-M | Security and adversarial review completed | pass | RISK_ANALYSIS.md; five independent reviews (`review/README.md`, TEST_RESULTS.md §9). Completed, not clean: the last check returned NOT VERIFIED with three low findings, fixed but not re-reviewed |
+| 00-M | Security and adversarial review completed | pass | RISK_ANALYSIS.md; six independent reviews (`review/README.md`, TEST_RESULTS.md §9); the last, bounded to the R5 fixes, VERIFIED (`review/0c21182/report.md`); trust-boundary items put to the owner in RISK_DECISION_PACKAGE.md |
 | 00-N | Creative Differentiation Review completed | pass | CREATIVE_DIFFERENTIATION_REVIEW.md |
-| 00-O | Reproducible Stage 00 documentation and handoff | pass | this package; handoff simulation 12 of 12 |
+| 00-O | Reproducible Stage 00 documentation and handoff | pass | this package; handoff simulation 12 of 12; requirements traceability in TRACEABILITY.md |
 | 00-P | No known unresolved critical foundational defect | pass | no review found a critical defect; every reproduced finding is fixed; no open critical defect in RISKS.md |
 
 ## Inputs and outputs
@@ -48,7 +51,8 @@ is a Stage 00 owned file committed at the revision.
 Inputs: the accepted Stage 00 at `741476c`; the owner's correction
 instruction (`cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`); the
 independent audit of 2026-10-25 (`docs/audits/stage-00-2026-10-25/`); the
-five review reports in `review/`. No external data was read or written. No
+six review reports in `review/`; the owner's final verification instruction
+(`cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9`). No external data was read or written. No
 Stage 01 finding was used.
 
 Outputs, all in the repository: the corrected orchestrator, memory and
@@ -85,8 +89,13 @@ From RISKS.md and RISK_ANALYSIS.md §4, stated plainly:
 - CI is not independent of the change it gates, and code reaching uv through
   unowned inputs (locked wheels, `.python-version`, uv settings) runs during
   the governance check (R-016).
-- Every review round found new low-severity variants of earlier findings; the
-  fixes of the last round are not independently reviewed (R-021).
+- Each open-ended review round found new low-severity variants of earlier
+  findings; the bounded review of the last fixes found none (R-021). A
+  further open-ended round may find more.
+- These trust-boundary items (R-001 to R-004, R-016) cannot be closed by
+  repository code. They are not accepted by this package or by the
+  verification transition; RISK_DECISION_PACKAGE.md puts them to the owner
+  as one decision, with alternatives and a recommendation.
 - Contract compatibility is checked against fixtures (R-005); identifier
   formats stay permissive until real data (R-006). No license is chosen
   (D-007).
@@ -137,22 +146,25 @@ Dry run: nothing written. Re-run with --apply to record it.
 ```
 
 Run on 2026-10-26 after the implementation revision was recorded, and again
-after this package was committed. The orchestrator checked the seven
+after each change to this package. The orchestrator checked the seven
 artifacts, the handoff sections, the cited revision, both test reports, every
-gate and its pinned evidence, and the CI record, and raised nothing. It was
-not run with `--apply` (see Stage and status).
+gate and its pinned evidence, and the CI record, and raised nothing. After
+the bounded review returned VERIFIED and this package was committed, the same
+command was run with `--apply`; the registry and PROJECT_STATUS.md record it.
 
 ## Acceptance decision
 
-Requested from the owner, as one decision on the whole correction set. The
-agent cannot verify-and-accept on its own judgement here, and the
-orchestrator refuses acceptance from any actor but the owner. The owner can:
+Requested from the owner, as one decision on the whole correction set and on
+RISK_DECISION_PACKAGE.md. The orchestrator refuses acceptance from any actor
+but the owner. The owner can:
 
-- accept Stage 00 with the residual stated above: the agent then applies the
-  verification transition above and records the acceptance with
-  `--actor owner --owner-ref <that message>` at revision `0c21182`;
-- ask for one more independent check of the R5 fixes first; or
-- reject or ask for other rework.
+- accept Stage 00 at revision `0c21182` together with option A of the risk
+  package: the agent then records the acceptance with
+  `--actor owner --owner-ref <that message>`;
+- choose another option of the risk package; or
+- reject or ask for rework.
+
+Merging PR #2 is a separate owner approval, with a merge commit only.
 
 Also pending, not blocking: license (D-007) and owner-signed acceptance
 (D-006).

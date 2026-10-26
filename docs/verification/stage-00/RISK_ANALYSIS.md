@@ -208,6 +208,10 @@ finding and found Z-01 to Z-05 (close variants) and six overstated document
 statements; these were fixed in `6d1fa00` and the documents corrected. A
 bounded independent fix check of `b8bb5ac` confirmed those fixes, found no
 regression, and found three low variants (R5-01 to R5-03), fixed in
-`cbb4659` with no independent review of those last fixes. Their dispositions are in
-`review/README.md`. The final review and its dispositions are in
-TEST_RESULTS.md §9 and `review/`.
+`cbb4659`. A bounded independent review of those three fixes at `0c21182`,
+requested by the owner, returned VERIFIED: each original attack is refused,
+the boundary cases hold, and it found no new confirmed defect and no
+regression (`review/0c21182/`). The dispositions are in `review/README.md`
+and TEST_RESULTS.md §9. The trust-boundary items that no repository code can
+close (R-001 to R-004, R-016) are put to the owner as one decision in
+RISK_DECISION_PACKAGE.md.

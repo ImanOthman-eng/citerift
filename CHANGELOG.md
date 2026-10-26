@@ -111,6 +111,11 @@ the reopened revision `ae2ce9e`.
   (R5-01); local submodule ignore settings no longer hide an edit inside a
   submodule (R5-02); the CI run URL is case-folded for ASCII letters only
   (R5-03).
+- Final verification (owner instruction of 2026-10-26): a bounded independent
+  review of the R5 fixes at `0c21182` (VERIFIED, no new confirmed defect), a
+  requirements traceability matrix (`TRACEABILITY.md`) and one risk decision
+  package for R-001 to R-004 and R-016 (`RISK_DECISION_PACKAGE.md`), both in
+  docs/verification/stage-00/. No code changed.
 - GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020, R-021),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).

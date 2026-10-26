@@ -1,0 +1,24 @@
+$ git diff --stat cbb4659 0c21182 -- src .github tests pyproject.toml uv.lock schemas
+(end)
+$ git diff --stat 0c21182 03631fc -- src .github tests pyproject.toml uv.lock schemas docs/verification/stage-00/mutation
+ .../stage-00/mutation/mutation_check.py            |   9 +-
+ .../stage-00/mutation/results-0c21182.txt          | 113 +++++++++++++++++++++
+ 2 files changed, 119 insertions(+), 3 deletions(-)
+(end)
+$ git diff --stat b8bb5ac cbb4659
+ .github/workflows/ci.yml                |  5 ++++
+ src/citerift/governance/gitutil.py      |  2 ++
+ src/citerift/governance/orchestrator.py |  5 ++--
+ tests/stage00/test_corrections.py       | 47 +++++++++++++++++++++++++++++++++
+ 4 files changed, 57 insertions(+), 2 deletions(-)
+$ git diff --stat cbb4659 738a2df
+ docs/verification/stage-00/mutation/mutation_check.py | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+$ git log --format="%h %s" b8bb5ac..03631fc
+03631fc Stage 00 correction: verification record and dry-run result (transition not applied)
+bff5335 Stage 00: record IMPLEMENTED_NOT_VERIFIED at 0c21182 (correction A-00-001)
+e96218b Stage 00 correction: test results, handoff and evidence for revision 0c21182
+06e7ab7 Stage 00 correction: M75 removes both the flag rule and the content check
+0c21182 Stage 00 correction: record the fix check and correct the remaining statements
+738a2df Stage 00 correction: add mutants M97 to M99 for the fix-check rules
+cbb4659 Stage 00 correction: fix the three low variants of the fix check

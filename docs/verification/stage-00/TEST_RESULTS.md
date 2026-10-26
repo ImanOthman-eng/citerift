@@ -182,7 +182,7 @@ done: a test push to `main`.
 
 ## 9. Independent reviews
 
-Five separate reviewer agents, none of which wrote the code, reviewed the
+Six separate reviewer agents, none of which wrote the code, reviewed the
 correction. Reports, scripts and dispositions are in `review/`.
 
 | Review | Revision | Verdict | Findings |
@@ -192,11 +192,18 @@ correction. Reports, scripts and dispositions are in `review/`.
 | third final review | `4a396fb` | NOT VERIFIED | Y-01 to Y-13 (2 medium, 4 low-medium, 7 low) |
 | confirmation review | `97b2051` | NOT VERIFIED | 57 of 61 earlier findings fixed, 4 partly; no regression; Z-01 to Z-05 (1 low-medium, 4 low); D1 to D7 |
 | fix check of the Z fixes | `b8bb5ac` | NOT VERIFIED | Z attacks stopped; no regression; R5-01 to R5-03 (3 low); wording |
+| bounded review of the R5 fixes | `0c21182` | **VERIFIED** | R5-01, R5-02, R5-03 fixed; no new confirmed defect; no regression; M97 to M99 killed |
 
 No review found a critical defect. Every finding was reproduced and fixed
-with a regression test (section 3). **The R5 fixes in `cbb4659` have not been
-checked by an independent reviewer**, and no review has returned a clean
-verdict.
+with a regression test (section 3). The last review, of the R5 fixes in
+`cbb4659`, was requested by the owner on 2026-10-26 and bounded to those
+three fixes. It returned VERIFIED (`review/0c21182/report.md`): for each fix
+the original attack reproduces on `b8bb5ac` and is refused at `0c21182`, the
+regression test fails on the old code and passes on the new, and the
+directly related boundary cases hold. It reproduced one residual that the
+fixes did not cause (state inside a submodule's own repository, covered by
+R-004) and made one observation on `test_r5_01`; dispositions in
+`review/README.md`.
 
 ## 10. Gaps in test coverage
 
@@ -205,5 +212,7 @@ verdict.
   check reads the tree when the run starts.
 - The governance check in CI runs after the locked dependencies are
   installed; code in a locked wheel runs inside it (R-016).
-- Each review round so far has found new low-severity variants; a further
-  round may find more.
+- Each open-ended review round found new low-severity variants; the last,
+  bounded review found none in its scope. An open-ended round may find more.
+- Requirements traceability: `TRACEABILITY.md` maps each gate and each
+  specification requirement to code, tests and evidence.

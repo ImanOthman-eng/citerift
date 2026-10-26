@@ -146,7 +146,8 @@ The Z fixes are in `6d1fa00`. Their tests fail on `97b2051`
 Z-05 scripts, run against `6d1fa00`, no longer reproduce. The Z-04 script runs
 the old CI step order itself, like the Y-08 script; the same attack replayed in
 the new order fails at the governance step (`5 errors`, exit 1) before the
-build backend runs. **No independent reviewer has checked these last fixes.**
+build backend runs. The fix check below (`b8bb5ac/`) is the independent
+check of these fixes.
 
 | Id | Finding | Disposition |
 |---|---|---|
@@ -201,7 +202,35 @@ mode-only change under `core.fileMode=false` is not seen (content unchanged).
 The R5 fixes have tests that fail on `b8bb5ac`
 (`../fail-first/results-b8bb5ac.txt`), and the reviewer's scripts no longer
 reproduce R5-02 and R5-03 (`b8bb5ac/recheck-cbb4659/`, written by the agent
-that made the fixes). **No independent reviewer has checked the R5 fixes.**
+that made the fixes). The R5 fixes were checked by a separate independent
+reviewer at `0c21182` (below).
 In the reviewer's saved files, one upper-case spelling of the repository
 login was replaced by `<repository account>`, the convention the reviewer
 used elsewhere.
+
+## `0c21182/`: bounded review of the R5 fixes
+
+Requested by the owner on 2026-10-26
+(`cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9`): a narrowly scoped
+check of R5-01, R5-02 and R5-03 by a new reviewer agent that wrote none of
+the code, with no open-ended search for other defects.
+
+Verdict: **VERIFIED**. All three fixes are FIXED. For each one the reviewer
+reproduced the original attack on `b8bb5ac`, showed that `0c21182` refuses
+it, showed that its regression test fails on the `b8bb5ac` code and passes
+on `0c21182`, and checked the directly related boundary cases (R5-01: eight
+committed `.venv` variants; R5-02: 56 combinations of change kind and ignore
+setting, and honest submodule states with no false "dirty"; R5-03: a scan of
+every code point from U+0080 to U+10FFFF, of which exactly four fold to an
+ASCII letter under `re.I` and none under `re.I | re.A`). At `0c21182`: 404
+passed, ruff, ruff format, mypy, `check` and `render-status --check` clean;
+mutants M97, M98 and M99 killed. No new confirmed defect, nothing
+release-blocking, no regression. `report.md` is the reviewer's report;
+`scripts/` and `out/` are its scripts and outputs, unchanged.
+
+| Item from the report | Disposition |
+|---|---|
+| state inside a submodule's own repository (index flags, `status.showUntrackedFiles=no` in the submodule's config) hides a change, on `b8bb5ac` and `0c21182` alike | reproduced by the reviewer, not caused by the fixes, and needs a committed submodule (the repository has none). Local git state outside the checks is already stated as not bound in R-004; R-004 now names this case. Not a defect of this review, not release-blocking |
+| `test_r5_01` checks the text order of the steps, so dropping `&& test ! -L .venv` alone would not fail it | observation, not a defect: a dangling symlink still fails closed at `uv sync` (exit 2), and M99 (the whole guard removed) is killed. Not changed, because a test change is a change under a Stage 00 owned path and would need a new implementation revision |
+| a committed `.python-version` path or uv setting pointing uv at a committed interpreter | hypothesis, not reproduced; already listed as an uncovered input in R-016 |
+

@@ -99,8 +99,10 @@ differ from its index entry although git's stat cache says they do not, or
 when the report itself is written over a tracked file, whatever its name;
 local settings that tell `git status` to ignore submodule changes are
 overridden (Y-01, Y-02, Z-01, Z-05, R5-02). Local git state outside these checks, such as
-`.git/info/exclude` hiding a new file, or an index rewritten together with
-the files, is not bound. It cannot bind code that runs
+`.git/info/exclude` hiding a new file, an index rewritten together with
+the files, or index flags and settings inside a submodule's own repository
+(found by the review of the R5 fixes; the repository has no submodule), is not
+bound. It cannot bind code that runs
 inside the test process: committed test or conftest code, an untracked or
 ignored module the run imports (inside the tree or outside it), or an
 installed dependency can rewrite the report or the plugin's state, and a
@@ -364,7 +366,8 @@ regression, but reproduced three low variants, R5-01 to R5-03 (a committed
 `.venv` run by uv before the governance check, local submodule ignore
 settings, Unicode case folding in the CI URL), and a few overstated words.
 They were fixed in `cbb4659`; their regression tests fail on `b8bb5ac`
-(docs/verification/stage-00/fail-first/results-b8bb5ac.txt). The R5 fixes
-have not been reviewed by an independent reviewer; whether another review
-round is wanted is an owner decision that is still open. Residual limitations stay open as
+(docs/verification/stage-00/fail-first/results-b8bb5ac.txt). At the owner's
+request, a bounded independent review of the R5 fixes at `0c21182` returned
+VERIFIED: all three fixed, no new confirmed defect, no regression
+(docs/verification/stage-00/review/0c21182/). Residual limitations stay open as
 R-002, R-003, R-004 and R-016.
