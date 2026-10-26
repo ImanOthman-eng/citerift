@@ -1,0 +1,12 @@
+committed under .venv: ['.venv/bin/python', '.venv/bin/python3', '.venv/pyvenv.cfg']
+honest checker on this commit: Consistency check: 5 errors, 0 warnings
+[guard] exit 0: 
+[uv sync --frozen --no-install-project --no-build (offline)] exit 0:  + tomli-w==1.2.0 /  + typing-extensions==4.16.0 /  + urllib3==2.8.0
+wrapper ran during the sync: ['wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmp22YREo")] + sys.path; from python.get_interpreter_info import main; main()']
+.venv/bin/python is still the wrapper: True
+git status after the dependency install: M src/citerift/governance/cli.py
+?? wrapper-ran.log
+[governance check] exit 0: Consistency check: 0 errors, 0 warnings
+wrapper log now: ['wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmp22YREo")] + sys.path; from python.get_interpreter_info import main; main()', 'wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmpyShZm0")] + sys.path; from python.get_interpreter_info import main; main()']
+git status after the check: M src/citerift/governance/cli.py
+?? wrapper-ran.log

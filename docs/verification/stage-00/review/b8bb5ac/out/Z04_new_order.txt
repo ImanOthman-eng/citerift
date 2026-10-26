@@ -1,0 +1,7 @@
+honest checker (reviewed code) on this commit: Consistency check: 5 errors, 0 warnings
+[guard] exit 0: 
+[uv sync --frozen --no-install-project --no-build (offline)] exit 0:  + urllib3==2.8.0
+git status after the dependency install: clean
+[governance check (python -P -m citerift.governance.cli check)] exit 1:   ERROR STATUS_DOC_OUT_OF_DATE: PROJECT_STATUS.md does not match the registry; run `citerift-gov render-status --write`
+[uv sync --locked (offline), after the check] exit 0:  + citerift==0.1.0 (from file:///tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review5/sandbox-Z04)
+git status after the project install: M src/citerift/governance/cli.py

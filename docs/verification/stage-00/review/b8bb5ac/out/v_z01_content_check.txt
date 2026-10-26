@@ -1,0 +1,71 @@
+== Z-01 variants: edits hidden from git status
+1 core.trustctime=false, same size and mtime (original Z-01)
+    git status: ''
+    dirty_paths: ['a.py']
+2 core.checkStat=minimal + trustctime=false
+    git status: ''
+    dirty_paths: ['a.py']
+3 clean filter in .git/info/attributes that returns the committed blob
+    git status: 'M a.py'
+    dirty_paths: ['a.py']
+4 core.fsmonitor hook reporting no change
+    git status: ''
+    dirty_paths: ['a.py']
+5 --assume-unchanged (Y-02)
+    git status: ''
+    dirty_paths: ['a.py']
+6 --skip-worktree (Y-02)
+    git status: ''
+    dirty_paths: ['a.py']
+7 staged edit
+    git status: 'M  a.py'
+    dirty_paths: ['a.py']
+8 core.worktree pointed at a clean copy, edit in the checked directory
+    git status: ''
+    dirty_paths: ['a.py']
+9 new untracked file hidden by .git/info/exclude (not an edit)
+    git status: ''
+    dirty_paths: []
+10 core.fileMode=false + chmod +x a.py (mode only)
+    git status: ''
+    dirty_paths: []
+== regression cases on honest trees
+R1 honest tree (symlink, executable file, LF)
+    git status: ''
+    dirty_paths: []
+R2 clone with core.autocrlf=true, core.eol=crlf
+    git status: ''
+    dirty_paths: []
+R3 (outside this repository's setup) no .gitattributes, core.autocrlf=true: CRLF on disk
+    git status: ''
+    dirty_paths: ['a.py', 'b.txt', 'run.sh']
+R4 local .git/info/attributes '* text eol=crlf' (overrides the committed one), b.txt re-checked-out
+    git status: ''
+    dirty_paths: ['b.txt']
+    link is now a regular file
+R5 core.symlinks=false checkout of the tracked symlink
+    git status: ''
+    dirty_paths: ['link']
+R6 missing tracked file
+    git status: 'D b.txt'
+    dirty_paths: ['b.txt']
+R7 tracked file with a non-UTF-8 name, honest
+    git status: ''
+    dirty_paths: []
+R7b the same file edited
+    git status: 'M "caf\\351.txt"'
+    dirty_paths: ['caf\udce9.txt']
+    is_tracked(non-UTF-8 name): True
+    is_tracked for magic / glob names: {':x.txt': True, '*.txt': True, 'a?.py': True, '[ab].py': True, 'sp ace.txt': True, ':(top)y.txt': True, ':!z.txt': True, 'untracked.txt': False, '*.py': False}
+R8 sha256 object format, honest
+    git status: ''
+    dirty_paths: []
+R8b sha256, edited
+    git status: 'M b.txt'
+    dirty_paths: ['b.txt']
+R9 honest tree with a submodule
+    git status: ''
+    dirty_paths: []
+R9b edit inside the submodule, submodule.sub.ignore=all in .git/config
+    git status: ''
+    dirty_paths: []

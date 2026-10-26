@@ -105,8 +105,12 @@ the reopened revision `ae2ce9e`.
   installs only the locked dependencies as wheels before the governance
   check, and builds the project after it (Z-04); a tracked file whose name
   starts with `:` is recognised as tracked (Z-05); the last CI step also fails
-  on staged changes and new files. Overstated statements in GOVERNANCE.md,
+  on staged changes and on new files that git does not ignore. Overstated statements in GOVERNANCE.md,
   RISKS.md and the verification documents were corrected.
+- Fix check (R5-01 to R5-03): CI refuses a committed `.venv` before uv runs
+  (R5-01); local submodule ignore settings no longer hide an edit inside a
+  submodule (R5-02); the CI run URL is case-folded for ASCII letters only
+  (R5-03).
 - GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020, R-021),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).

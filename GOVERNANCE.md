@@ -47,7 +47,8 @@ full consistency check (`citerift-gov check`). Main invariants:
    handoff), a passing test report produced at the verified revision from a
    clean tree, every acceptance gate passed, and (for engineering stages) a
    successful CI run of the project's repository on that revision (the run
-   URL must be exactly `https://github.com/<repository>/actions/runs/<id>`). A
+   URL must be exactly `https://github.com/<repository>/actions/runs/<id>`,
+   with ASCII letters compared without case). A
    clean tree has no change that `git status` shows, no tracked file flagged
    `--skip-worktree` or `--assume-unchanged`, and no tracked file whose bytes
    differ from its index entry (read from disk, not from git's stat cache);
@@ -218,10 +219,13 @@ build backend or a tool setting in `pyproject.toml` can run code (a mypy
 plugin, for example), and such code could rewrite the checker on disk before a
 later step. After the tests, CI checks its own test report
 (`citerift-gov check-report`) and fails if `git status` shows any change: an
-unstaged or staged change to a tracked file, or a new file other than the
-test report. The dependencies installed from `uv.lock` and everything in
-`pyproject.toml` are not Stage 00 owned paths. Code in the locked wheels (a
-`.pth` file, for example) already runs during the governance check; code from
+unstaged or staged change to a tracked file, or a new file that git does not
+ignore, other than the test report. A committed `.venv` is refused before uv
+runs, because uv runs the interpreter it finds there. The dependencies
+installed from `uv.lock` and everything in `pyproject.toml` are not Stage 00
+owned paths, and neither are uv's other inputs (`.python-version`, uv
+settings). Code that reaches uv through them, such as code in the locked
+wheels (a `.pth` file), already runs during the governance check; code from
 the build backend and tool settings runs after it and can still change what
 the test, report and tree-check steps do (including restoring the files it
 changed). Later stages must be able to add dependencies. Such code must be

@@ -158,10 +158,10 @@ build backend runs. **No independent reviewer has checked these last fixes.**
 
 | Id | Overstated statement | Correction |
 |---|---|---|
-| D1 | a dirty tree "includes files hidden from `git status`" | the documents now list exactly what the dirty check covers, and what local git state it does not (R-004) |
+| D1 | a dirty tree "includes files hidden from `git status`" | the documents now list what the dirty check covers and name local git state it does not (R-004); the fix check found submodule ignore settings missing from that list (R5-02, now covered) |
 | D2 | the CI record "names a run of this repository" | now an exact URL match (Z-02); the documents say so |
 | D3 | the governance check runs before any code `pyproject.toml` configures | true after Z-04 for the build backend and tool settings; code in locked wheels is stated as residual |
-| D4 | CI fails "if any tracked file was changed" | the last step now also fails on staged changes and new files; R-016 keeps the residual that earlier code can change or restore what this step sees |
+| D4 | CI fails "if any tracked file was changed" | the last step now also fails on staged changes and on new files that git does not ignore; R-016 keeps the residual that earlier code can change or restore what this step sees |
 | D5 | RISK_ANALYSIS.md §5 listed only three workflow changes | updated |
 | D6 | a report written over a tracked file makes the tree dirty | now true for any name (Z-05) |
 | D7 | numbered list in SPECIFICATION.md ran 4, 6, 5 | renumbered |
@@ -169,3 +169,39 @@ build backend runs. **No independent reviewer has checked these last fixes.**
 The reviewer's report and scripts are kept as written; it replaced the
 repository login with `<repository account>` in its saved outputs itself, and
 the name-term scan of this directory found nothing to redact.
+
+## `b8bb5ac/`: fix check of Z-01 to Z-05
+
+A bounded check by a new independent reviewer of only the Z fixes and the
+corrected statements, with regressions. Anything new it found was to be
+reported to the owner as residual, not to start another open-ended round.
+
+Verdict: NOT VERIFIED. 400 tests passed and every tool was clean; mutants M87
+and M91 to M96 were killed. All five original Z attacks are stopped, with no
+regression (an honest CI replay in the new order passes; the content check
+handles CRLF settings, symbolic links, executable bits, missing files and
+non-UTF-8 names, and costs 7.3 ms for 230 files). Z-02, Z-03 and Z-05 are
+fixed; Z-01 and Z-04 are partly fixed because of R5-02 and R5-01:
+
+| Id | Finding (all low) | Disposition |
+|---|---|---|
+| R5-01 | a committed `.venv` (forced past `.gitignore`) made uv run its interpreter wrapper during the first install, before the governance check, which then printed 0 errors for 5 | fixed in `cbb4659`: a CI step refuses a `.venv` before uv runs. Residual, stated in R-016: uv's other unowned inputs (`.python-version`, uv settings, locked wheels) |
+| R5-02 | a local `submodule.<name>.ignore=all` or `diff.ignoreSubmodules=all` hid an edit inside a submodule | fixed in `cbb4659`: `git status --ignore-submodules=none` |
+| R5-03 | `re.I` folded a dotless i (U+0131) or dotted capital I (U+0130) to `i` in the CI URL | fixed in `cbb4659`: case is folded for ASCII only |
+
+Statements: D5 to D7 accurate; "exactly" for the CI URL (D2) was overstated
+until R5-03; review/README.md overstated the dirty-check list (D1) and the
+documents named locked wheels as the only code before the check (D3), both
+corrected; MATHEMATICAL_MODEL.md said the tree is read when the report is
+written, but it is read when the run starts, corrected; CHANGELOG.md now says
+that new files git ignores are not seen. Observations, not counted: outside a
+git repository `recover` refers to errors below that do not follow; a
+mode-only change under `core.fileMode=false` is not seen (content unchanged).
+
+The R5 fixes have tests that fail on `b8bb5ac`
+(`../fail-first/results-b8bb5ac.txt`), and the reviewer's scripts no longer
+reproduce R5-02 and R5-03 (`b8bb5ac/recheck-cbb4659/`, written by the agent
+that made the fixes). **No independent reviewer has checked the R5 fixes.**
+In the reviewer's saved files, one upper-case spelling of the repository
+login was replaced by `<repository account>`, the convention the reviewer
+used elsewhere.

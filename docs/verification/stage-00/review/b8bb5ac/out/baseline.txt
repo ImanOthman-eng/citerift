@@ -1,0 +1,21 @@
+=== pytest -q -p no:cacheprovider
+........................................................................ [ 90%]
+........................................                                 [100%]
+400 passed in 265.87s (0:04:25)
+exit 0
+=== ruff check .
+All checks passed!
+exit 0
+=== ruff format --check .
+57 files already formatted
+exit 0
+=== mypy
+Success: no issues found in 12 source files
+exit 0
+=== citerift-gov check
+Consistency check: 0 errors, 0 warnings
+exit 0
+=== citerift-gov render-status --check
+PROJECT_STATUS.md is up to date
+exit 0
+=== git status

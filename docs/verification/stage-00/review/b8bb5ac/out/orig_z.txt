@@ -1,0 +1,39 @@
+=== Z02_ci_url_dot_segments
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review5/scripts/orig_z/Z02_ci_url_dot_segments.py", line 5, in <module>
+    from lib import new_sandbox, codes
+ModuleNotFoundError: No module named 'lib'
+=== Z03_recover_unknown_changes_as_zero
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review5/scripts/orig_z/Z03_recover_unknown_changes_as_zero.py", line 4, in <module>
+    from lib import BASE, PY, new_sandbox
+ModuleNotFoundError: No module named 'lib'
+=== Z05_colon_name_report_path
+tracked: ['.gitignore', ':cases.json', 'pyproject.toml', 'tests/test_cases.py']
+git status before the run: M :cases.json
+1 passed in 0.01s
+{'dirty': True, 'dirty_paths': [':cases.json'], 'collected': 1, 'totals': {'passed': 1}} complete: True
+check_test_report problems: ['TEST_EVIDENCE_DIRTY']
+control: the same run with the report over a normal tracked name would be TEST_EVIDENCE_DIRTY (see confirm_pytest_tiny.py, Y-01 case)
+=== Z01_statcache_hides_edits_real
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review5/scripts/orig_z/Z01_statcache_hides_edits_real.py", line 6, in <module>
+    from lib import BASE, PY, clone_base, run
+ModuleNotFoundError: No module named 'lib'
+=== Z02_ci_url_dot_segments
+recorded run_url: https://github.com/<repository account>/citerift/actions/runs/1/../../../../../other-owner/other-repo/actions/runs/2
+after RFC 3986 dot-segment removal: https://github.com/other-owner/other-repo/actions/runs/2
+control: other repository: allowed=False ['CI_WRONG_REPOSITORY']
+dot segments: allowed=False ['CI_WRONG_REPOSITORY']
+=== Z03_recover_unknown_changes_as_zero
+intact index: ['Uncommitted changes: 1']
+damaged index, exit 0 ['Uncommitted changes: unknown (git could not list them; see the errors below)', '  ERROR REVISION_UNVERIFIABLE: cannot list uncommitted changes: fatal: .git/index: index file smaller than expected']
+damaged index, --json uncommitted_changes: None
+=== Z01_statcache_hides_edits_real
+content differs from HEAD in 11 of 11 test files
+git status --porcelain: ''
+flagged files (ls-files -v, lowercase or S): []
+44 passed in 53.82s
+{'revision': 'b8bb5acf9905f83bfe83f8a56b493cd8c632c435', 'dirty': True, 'dirty_paths': ['tests/stage00/test_cli.py', 'tests/stage00/test_contracts.py', 'tests/stage00/test_corrections.py', 'tests/stage00/test_failure_simulation.py', 'tests/stage00/test_integration_scenarios.py', 'tests/stage00/test_properties.py', 'tests/stage00/test_recovery.py', 'tests/stage00/test_registry_tampering.py', 'tests/stage00/test_repository.py', 'tests/stage00/test_simulation.py', 'tests/stage00/test_unit_model_evidence_memory.py'], 'exit_status': 0, 'collected': 44, 'totals': {'passed': 44}} complete: True
+check_test_report problems: [('TEST_EVIDENCE_DIRTY', 'report.json was produced from a working tree with uncommitted changes')]
+citerift-gov check-report: 1 Test report report.json at b8bb5acf9905: 1 problems

@@ -11,7 +11,8 @@ Scope of the correction: the confirmed findings F-01 to F-23 of the
 independent review in `docs/audits/stage-00-2026-10-25/`, the defect S-01
 found during the correction, the findings V-01 to V-16 of the first final
 independent review, X-01 to X-14 of the second and Y-01 to Y-13 of the
-third (`review/`), and Z-01 to Z-05 of the confirmation review, all inside
+third (`review/`), Z-01 to Z-05 of the confirmation review and R5-01 to R5-03 of the fix
+check, all inside
 Stage 00's original scope. No later stage is touched or authorized. Stage 01 belongs to
 the external agent and nothing here assumes any of its findings.
 
@@ -102,7 +103,8 @@ All of the requirements of `741476c`, plus:
    running in that process (committed test or conftest code, an imported
    module, an installed dependency) can forge it (R-004).
 5. The CI record's URL must be exactly
-   `https://github.com/<project.repository>/actions/runs/<id>`, and the
+   `https://github.com/<project.repository>/actions/runs/<id>` (ASCII letters
+   compared without case, R5-03), and the
    record must name the verified revision and success (Y-10, Z-02).
 6. The handoff, report and record are read with duplicate-key rejection
    (F-18).

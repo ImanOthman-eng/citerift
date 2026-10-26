@@ -78,7 +78,8 @@ Executors, artifact lists and dependencies cannot (V-03, X-07).
 - Stage: 00
 
 The offline check verifies that the recorded CI record names a run of this
-repository (the URL must be exactly the project's run URL pattern, so dot
+repository (the URL must be exactly the project's run URL pattern, ASCII
+letters compared without case, so dot
 segments cannot lead elsewhere; Y-10, Z-02), the verified revision as its
 tested commit, and success. It
 cannot fetch the run, so it cannot tell whether the record is true; the run
@@ -95,8 +96,9 @@ revision, and committed test files that did not run (V-01, X-02, X-03, Y-03).
 A tree is dirty when `git status` shows a change, when a tracked file is
 flagged `--skip-worktree` or `--assume-unchanged`, when a tracked file's bytes
 differ from its index entry although git's stat cache says they do not, or
-when the report itself is written over a tracked file, whatever its name
-(Y-01, Y-02, Z-01, Z-05). Local git state outside these checks, such as
+when the report itself is written over a tracked file, whatever its name;
+local settings that tell `git status` to ignore submodule changes are
+overridden (Y-01, Y-02, Z-01, Z-05, R5-02). Local git state outside these checks, such as
 `.git/info/exclude` hiding a new file, or an index rewritten together with
 the files, is not bound. It cannot bind code that runs
 inside the test process: committed test or conftest code, an untracked or
@@ -256,13 +258,17 @@ dependencies as wheels, without building the project (Z-04: the build backend
 named in `pyproject.toml` rewrote the checker during `uv sync --locked`, which
 then ran first). The governance check runs before the lock check, the project
 install, ruff, mypy and pytest, and CI fails at the end if `git status` shows
-any unstaged or staged change or a new file other than the test report (Y-08:
+any unstaged or staged change or a new file that git does not ignore, other
+than the test report (Y-08:
 a mypy plugin named in `pyproject.toml` rewrote the checker on disk before the
 check; D4 of the confirmation review: `git diff` alone missed staged changes
-and new files). Not covered: `pyproject.toml` (build backend and every tool
-setting) and `uv.lock` (dependencies) are not Stage 00 owned paths. Code in a
-locked wheel (a `.pth` file, for example) already runs during the governance
-check; code that the build backend or a tool setting runs executes after it,
+and new files). A committed `.venv` is refused before uv runs (R5-01 of the
+fix check: uv ran a committed interpreter wrapper, which rewrote the checker).
+Not covered: `pyproject.toml` (build backend and every tool setting),
+`uv.lock` (dependencies) and uv's other inputs (`.python-version`, uv
+settings) are not Stage 00 owned paths. Code that reaches uv through them,
+such as code in a locked wheel (a `.pth` file), already runs during the
+governance check; code that the build backend or a tool setting runs executes after it,
 so it can change what the test, report and tree-check steps do without making
 Stage 00 stale, and it can restore the files it changed before the last step. The test report
 records collection settings that differ from the fixed values (X-02), but a
@@ -352,7 +358,13 @@ low-medium one: an edit that kept the file's size and mtime, with a local
 tests reported a clean tree (Z-01). Fixed in `6d1fa00`; their regression
 tests fail on `97b2051`
 (docs/verification/stage-00/fail-first/results-97b2051.txt), and the
-documents were corrected. These fixes have not been reviewed by an
-independent reviewer; whether another review round is wanted is an owner
-decision that is still open. Residual limitations stay open as
+documents were corrected. A bounded independent fix check of `b8bb5ac`
+confirmed that all five original attacks are stopped and found no
+regression, but reproduced three low variants, R5-01 to R5-03 (a committed
+`.venv` run by uv before the governance check, local submodule ignore
+settings, Unicode case folding in the CI URL), and a few overstated words.
+They were fixed in `cbb4659`; their regression tests fail on `b8bb5ac`
+(docs/verification/stage-00/fail-first/results-b8bb5ac.txt). The R5 fixes
+have not been reviewed by an independent reviewer; whether another review
+round is wanted is an owner decision that is still open. Residual limitations stay open as
 R-002, R-003, R-004 and R-016.

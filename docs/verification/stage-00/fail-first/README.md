@@ -156,3 +156,15 @@ passed).
 | Z-04 | 1 (CI step order) |
 | Z-05 | 1 |
 | D4 | 1 (CI tree check covers staged and new files) |
+
+## Fix-check findings R5-01 to R5-03 (`results-b8bb5ac.txt`)
+
+The fix check (`../review/b8bb5ac/`) raised R5-01 to R5-03. Their tests were
+run the same way against `b8bb5ac`, with the tests of `cbb4659`. Result: 4
+failed, 400 passed. The same suite passes on `cbb4659` (404 passed).
+
+| Finding | Failing tests at `b8bb5ac` |
+|---|---|
+| R5-01 | 1 (CI refuses a committed `.venv` before uv runs) |
+| R5-02 | 2 (`submodule.<name>.ignore`, `diff.ignoreSubmodules`) |
+| R5-03 | 1 |

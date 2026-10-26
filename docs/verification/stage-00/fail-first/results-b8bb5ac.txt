@@ -1,0 +1,108 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 53%]
+.........................................................FFFF........... [ 71%]
+........................................................................ [ 89%]
+............................................                             [100%]
+=================================== FAILURES ===================================
+_ test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[submodule.sub.ignore] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-527/test_r5_02_an_edit_in_a_submod0')
+setting = 'submodule.sub.ignore'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("setting", ["submodule.sub.ignore", "diff.ignoreSubmodules"])
+    def test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty(
+        tmp_path: Path, setting: str
+    ) -> None:
+        """R5-02 of the fix check: a local ``ignore=all`` setting hid an edit inside a submodule from ``git status``."""
+        from citerift.governance import gitutil
+    
+        helper = tmp_path / "helper"
+        helper.mkdir()
+        (helper / "helper.py").write_text("CASES = 9\n", encoding="utf-8")
+        git(helper, "init", "-q")
+        git(helper, "add", "-A")
+        git(helper, "commit", "-q", "-m", "helper")
+        project = _plugin_project(tmp_path)
+        git(project, "-c", "protocol.file.allow=always", "submodule", "add", "-q", str(helper), "sub")
+        git(project, "commit", "-q", "-m", "submodule")
+        (project / "sub" / "helper.py").write_text("CASES = 1\n", encoding="utf-8")
+        git(project, "config", setting, "all")
+        assert git(project, "status", "--porcelain") == ""
+>       assert "sub" in gitutil.dirty_paths(project)
+E       AssertionError: assert 'sub' in []
+E        +  where [] = <function dirty_paths at 0x7fed818d3060>(PosixPath('/tmp/pytest-of-root/pytest-527/test_r5_02_an_edit_in_a_submod0/project'))
+E        +    where <function dirty_paths at 0x7fed818d3060> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py'>.dirty_paths
+
+tests/stage00/test_corrections.py:1922: AssertionError
+_ test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[diff.ignoreSubmodules] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-527/test_r5_02_an_edit_in_a_submod1')
+setting = 'diff.ignoreSubmodules'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("setting", ["submodule.sub.ignore", "diff.ignoreSubmodules"])
+    def test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty(
+        tmp_path: Path, setting: str
+    ) -> None:
+        """R5-02 of the fix check: a local ``ignore=all`` setting hid an edit inside a submodule from ``git status``."""
+        from citerift.governance import gitutil
+    
+        helper = tmp_path / "helper"
+        helper.mkdir()
+        (helper / "helper.py").write_text("CASES = 9\n", encoding="utf-8")
+        git(helper, "init", "-q")
+        git(helper, "add", "-A")
+        git(helper, "commit", "-q", "-m", "helper")
+        project = _plugin_project(tmp_path)
+        git(project, "-c", "protocol.file.allow=always", "submodule", "add", "-q", str(helper), "sub")
+        git(project, "commit", "-q", "-m", "submodule")
+        (project / "sub" / "helper.py").write_text("CASES = 1\n", encoding="utf-8")
+        git(project, "config", setting, "all")
+        assert git(project, "status", "--porcelain") == ""
+>       assert "sub" in gitutil.dirty_paths(project)
+E       AssertionError: assert 'sub' in []
+E        +  where [] = <function dirty_paths at 0x7fed818d3060>(PosixPath('/tmp/pytest-of-root/pytest-527/test_r5_02_an_edit_in_a_submod1/project'))
+E        +    where <function dirty_paths at 0x7fed818d3060> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py'>.dirty_paths
+
+tests/stage00/test_corrections.py:1922: AssertionError
+__________ test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused __________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fed80d97560>
+
+    @pytest.mark.negative
+    def test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused(sandbox: Sandbox) -> None:
+        """R5-03 of the fix check: Unicode case folding matched a dotless i (U+0131) to an i in the repository name."""
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        ci = sandbox.ci(rev)
+        repository, tail = ci["run_url"].removeprefix("https://github.com/").split("/actions/")
+        ci = {**ci, "run_url": f"https://github.com/{repository.replace('i', chr(0x131))}/actions/{tail}"}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+>       assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1937: AssertionError
+_________ test_r5_01_ci_refuses_a_committed_environment_before_uv_runs _________
+
+    @pytest.mark.integration
+    def test_r5_01_ci_refuses_a_committed_environment_before_uv_runs() -> None:
+        """R5-01 of the fix check: a committed ``.venv`` interpreter ran when uv first queried it, before the
+        governance check. CI refuses one in its first step, which runs no Python."""
+        steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+>       guard = steps.index("test ! -e .venv")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/stage00/test_corrections.py:1945: ValueError
+=========================== short test summary info ============================
+FAILED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[submodule.sub.ignore]
+FAILED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[diff.ignoreSubmodules]
+FAILED tests/stage00/test_corrections.py::test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused
+FAILED tests/stage00/test_corrections.py::test_r5_01_ci_refuses_a_committed_environment_before_uv_runs
+4 failed, 400 passed in 280.86s (0:04:40)

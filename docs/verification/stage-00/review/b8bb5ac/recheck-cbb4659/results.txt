@@ -1,0 +1,39 @@
+=== v_z04_committed_venv
+committed under .venv: ['.venv/bin/python', '.venv/bin/python3', '.venv/pyvenv.cfg']
+honest checker on this commit: Consistency check: 5 errors, 0 warnings
+[guard] exit 0: 
+[uv sync --frozen --no-install-project --no-build (offline)] exit 0: Checked 43 packages in 0.53ms
+wrapper ran during the sync: ['wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmpbg3ItJ")] + sys.path; from python.get_interpreter_info import main; main()']
+.venv/bin/python is still the wrapper: True
+git status after the dependency install: M src/citerift/governance/cli.py
+?? wrapper-ran.log
+[governance check] exit 0: Consistency check: 0 errors, 0 warnings
+wrapper log now: ['wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmpbg3ItJ")] + sys.path; from python.get_interpreter_info import main; main()', 'wrapper ran: -I -B -c import sys; sys.path = [__import__("os").fsdecode(b"/root/.cache/uv/.tmp0IHoB9")] + sys.path; from python.get_interpreter_info import main; main()']
+git status after the check: M src/citerift/governance/cli.py
+?? wrapper-ran.log
+=== v_z01_submodule_report
+control, no setting: git status 'M vendor'; pytest: 2 passed in 0.01s; dirty=True dirty_paths=['vendor'] complete=True; check_test_report problems: ['TEST_EVIDENCE_DIRTY']
+submodule.vendor.ignore=all: git status ''; pytest: 2 passed in 0.01s; dirty=True dirty_paths=['vendor'] complete=True; check_test_report problems: ['TEST_EVIDENCE_DIRTY']
+diff.ignoreSubmodules=all: git status ''; pytest: 2 passed in 0.01s; dirty=True dirty_paths=['vendor'] complete=True; check_test_report problems: ['TEST_EVIDENCE_DIRTY']
+=== v_z02_url_forms
+percent-encoded dot segments: 'https://github.com/ImanOthman-eng/citerift/actions/runs/1/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/o/r/actions/runs/2' -> allowed=False ['CI_WRONG_REPOSITORY']
+trailing newline: 'https://github.com/ImanOthman-eng/citerift/actions/runs/123\n' -> allowed=False ['REGISTRY_SCHEMA']
+query string: 'https://github.com/ImanOthman-eng/citerift/actions/runs/123?x=1' -> allowed=False ['REGISTRY_SCHEMA']
+fragment: 'https://github.com/ImanOthman-eng/citerift/actions/runs/123#x' -> allowed=False ['REGISTRY_SCHEMA']
+attempt suffix: 'https://github.com/ImanOthman-eng/citerift/actions/runs/123/attempts/2' -> allowed=False ['REGISTRY_SCHEMA']
+userinfo: 'https://x@github.com/ImanOthman-eng/citerift/actions/runs/123' -> allowed=False ['REGISTRY_SCHEMA']
+port: 'https://github.com:443/ImanOthman-eng/citerift/actions/runs/123' -> allowed=False ['REGISTRY_SCHEMA']
+http scheme: 'http://github.com/ImanOthman-eng/citerift/actions/runs/123' -> allowed=False ['REGISTRY_SCHEMA']
+dot segment inside the repository part: 'https://github.com/ImanOthman-eng/citerift/../ImanOthman-eng/citerift/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+fullwidth digit id: 'https://github.com/ImanOthman-eng/citerift/actions/runs/１２' -> allowed=False ['REGISTRY_SCHEMA']
+repository with a dotless i (U+0131) in place of i: 'https://github.com/ImanOthman-eng/cıterift/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+repository with a dotted capital I (U+0130) in place of i: 'https://github.com/ImanOthman-eng/cİterift/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+repository with long s (U+017F) in place of s: not applicable to this repository name
+repository with Kelvin sign (U+212A) in place of k: not applicable to this repository name
+apply dotless-i URL: allowed False
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+.venv/bin/python
+.venv/bin/python3
+.venv/pyvenv.cfg
+new guard step exit=1

@@ -174,7 +174,7 @@ following hold:
   tracked file is flagged skip-worktree or assume-unchanged, if a tracked
   file's bytes do not hash to its index entry (Z-01), or if the report path
   itself is tracked, the path read literally (Y-01, Y-02, Z-05). The bytes are
-  read when the report is written, by the test process; this binds the tree,
+  read when the run starts (`pytest_configure`), by the test process; this binds the tree,
   not code running in that process (R-004)
 - `r.selection.complete = true`
 - no test recorded as not run (`totals.not_run = 0`), and every outcome is
