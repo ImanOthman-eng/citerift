@@ -500,6 +500,19 @@ M = [
         'f":(literal){path}"',
         "path",
     ),
+    (
+        "M97 R5-02 local submodule ignore settings honoured",
+        "src/citerift/governance/gitutil.py",
+        '        "--ignore-submodules=none",\n',
+        "",
+    ),
+    ("M98 R5-03 CI run URL case folded beyond ASCII", ORC, 'ci["run_url"], re.I | re.A', 'ci["run_url"], re.I'),
+    (
+        "M99 R5-01 committed environment allowed in CI",
+        ".github/workflows/ci.yml",
+        "run: test ! -e .venv && test ! -L .venv",
+        "run: true",
+    ),
 ]
 
 
