@@ -147,6 +147,8 @@ def dirty_paths(root: Path, exclude: tuple[str, ...] = ()) -> list[str]:
         "--porcelain=v1",
         "-z",
         "--untracked-files=all",
+        # Overrides local submodule.<name>.ignore and diff.ignoreSubmodules, which hide edits in a submodule.
+        "--ignore-submodules=none",
     )
     if out.returncode != 0:
         raise GitUnavailableError(out.stderr.strip())

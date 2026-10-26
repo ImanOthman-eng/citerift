@@ -818,9 +818,10 @@ class Orchestrator:
                 )
             if ci is not None:
                 repository = self.registry["project"]["repository"]
-                # The whole URL is matched, not a prefix: dot segments could leave the repository (Z-02).
+                # The whole URL is matched, not a prefix: dot segments could leave the repository (Z-02). Case is
+                # folded for ASCII only, so a dotless i does not match an i (R5-03 of the fix check).
                 run = re.fullmatch(
-                    rf"https://github\.com/{re.escape(repository)}/actions/runs/[0-9]+", ci["run_url"], re.I
+                    rf"https://github\.com/{re.escape(repository)}/actions/runs/[0-9]+", ci["run_url"], re.I | re.A
                 )
                 if run is None:
                     out.append(

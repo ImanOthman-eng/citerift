@@ -1897,3 +1897,50 @@ def test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change
     code, data, output = _run_plugin(project, project / ":cases.txt")
     assert code == 0, output
     assert data["dirty"] is True and ":cases.txt" in data["dirty_paths"], data
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("setting", ["submodule.sub.ignore", "diff.ignoreSubmodules"])
+def test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty(
+    tmp_path: Path, setting: str
+) -> None:
+    """R5-02 of the fix check: a local ``ignore=all`` setting hid an edit inside a submodule from ``git status``."""
+    from citerift.governance import gitutil
+
+    helper = tmp_path / "helper"
+    helper.mkdir()
+    (helper / "helper.py").write_text("CASES = 9\n", encoding="utf-8")
+    git(helper, "init", "-q")
+    git(helper, "add", "-A")
+    git(helper, "commit", "-q", "-m", "helper")
+    project = _plugin_project(tmp_path)
+    git(project, "-c", "protocol.file.allow=always", "submodule", "add", "-q", str(helper), "sub")
+    git(project, "commit", "-q", "-m", "submodule")
+    (project / "sub" / "helper.py").write_text("CASES = 1\n", encoding="utf-8")
+    git(project, "config", setting, "all")
+    assert git(project, "status", "--porcelain") == ""
+    assert "sub" in gitutil.dirty_paths(project)
+
+
+@pytest.mark.negative
+def test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused(sandbox: Sandbox) -> None:
+    """R5-03 of the fix check: Unicode case folding matched a dotless i (U+0131) to an i in the repository name."""
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    ci = sandbox.ci(rev)
+    repository, tail = ci["run_url"].removeprefix("https://github.com/").split("/actions/")
+    ci = {**ci, "run_url": f"https://github.com/{repository.replace('i', chr(0x131))}/actions/{tail}"}
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+    assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+
+
+@pytest.mark.integration
+def test_r5_01_ci_refuses_a_committed_environment_before_uv_runs() -> None:
+    """R5-01 of the fix check: a committed ``.venv`` interpreter ran when uv first queried it, before the
+    governance check. CI refuses one in its first step, which runs no Python."""
+    steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    guard = steps.index("test ! -e .venv")
+    assert guard < steps.index("astral-sh/setup-uv") < steps.index("uv sync --frozen")

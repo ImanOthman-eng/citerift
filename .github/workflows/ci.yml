@@ -40,6 +40,11 @@ jobs:
         # before every check below (X-04). This step runs no Python, so such a file cannot affect it.
         run: test "$(ls -A src)" = "citerift"
 
+      - name: No committed environment
+        # A committed .venv would run its interpreter when uv first queries it, before the governance check
+        # (R5-01 of the fix check). This step runs no Python either.
+        run: test ! -e .venv && test ! -L .venv
+
       - name: Install uv
         uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
