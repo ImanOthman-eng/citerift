@@ -443,8 +443,8 @@ M = [
     (
         "M87 Y-10 CI run of another repository accepted",
         ORC,
-        'if not ci["run_url"].lower().startswith(',
-        'if False and not ci["run_url"].lower().startswith(',
+        "                if run is None:",
+        "                if False:",
     ),
     (
         "M88 Y-11 deep JSON not converted",
@@ -463,6 +463,42 @@ M = [
         "schemas/contracts/v1/common.schema.json",
         '"pattern": "^10\\\\.[0-9]{4,9}(\\\\.[0-9]+)*/',
         '"pattern": "^10\\\\.[0-9]{4,9}/',
+    ),
+    (
+        "M91 Z-01 content check skipped (stat cache trusted)",
+        "src/citerift/governance/gitutil.py",
+        "    paths += _content_changed(root)\n",
+        "    paths += []\n",
+    ),
+    (
+        "M92 Z-02 CI run URL matched as a prefix",
+        ORC,
+        "run = re.fullmatch(",
+        "run = re.match(",
+    ),
+    (
+        "M93 Z-03 unknown uncommitted changes printed as a count",
+        "src/citerift/governance/cli.py",
+        'if data["uncommitted_changes"] is None',
+        "if False",
+    ),
+    (
+        "M94 Z-04 project installed before the governance check",
+        ".github/workflows/ci.yml",
+        "run: uv sync --frozen --no-install-project --no-build",
+        "run: uv sync --locked",
+    ),
+    (
+        "M95 D4 staged changes and new files not checked by CI",
+        ".github/workflows/ci.yml",
+        "git status --porcelain=v1 --untracked-files=all",
+        "git diff --name-only",
+    ),
+    (
+        "M96 Z-05 tracked-file test reads the path as a pathspec",
+        "src/citerift/governance/gitutil.py",
+        'f":(literal){path}"',
+        "path",
     ),
 ]
 
