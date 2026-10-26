@@ -41,12 +41,12 @@ copy of the code. Detection does not stop a commit.
 | Threat | Prevented by | Detected by | Not enforceable by repository code |
 |---|---|---|---|
 | R-001 agent acts as the owner on GitHub | nothing in the repository | nothing: GitHub shows one account | separating the identities; needs D-006 (owner signature) or a bot identity |
-| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification by a history entry or an amendment, and an amendment citing a reference used before (F-17, V-07, X-13) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
+| R-002 owner reference that does not contain approval | `OWNER_REF_REQUIRED` refuses owner edges without a reference; `OWNER_REF_REUSED` refuses an acceptance citing a reference used before the verification by a history entry or an amendment, and an amendment citing a reference cited at or before its own time (F-17, V-07, X-13, Y-07) | `HISTORY_OWNER_REF_MISSING`, `OWNER_REF_REUSED`, `RECORD_HISTORY_MISMATCH` on hand edits | whether the cited message says what is claimed; the owner reads it |
 | Owner authorization skipped (agent authorizes, accepts, withdraws or reopens) | `OWNER_DECISION_REQUIRED`; owner edges require an `owner_ref`; reopening requires a correction amendment not used by an earlier reopening; acceptance requires no open blocker | replay of every history entry: `HISTORY_ACTOR`, `HISTORY_AMENDMENT_MISSING`, `HISTORY_AMENDMENT_REUSED`, `HISTORY_BLOCKER`, `HISTORY_DEPENDENCY`, `HISTORY_SINGLE_ACTIVE` (F-04, F-05, V-08, X-10) | `--actor owner` is a flag the agent can pass; the reference is the only control (R-002) |
-| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values, artifact list, executor, dependencies and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys and duplicate amendment or blocker ids; future times (F-03 to F-05, F-16 to F-18, V-03, V-09, X-07) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
-| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale, malformed or partial evidence. Partial includes a run narrowed by ini override, other ini file, changed collection settings, a conftest that drops or repeats tests, an uncommitted conftest, a `-p` or `PYTEST_PLUGINS` plugin, and a run missing a committed test file (F-02, F-07, V-01, V-02, X-02, X-03, X-05) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED` (a URL, or a path through `..` or a symbolic link, is not pinned); owned-path content compared with the verified revision, with replace refs and grafts ignored (F-01, V-13, X-01, X-09); nested `.gitattributes` (V-12) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked; code inside the test process (committed tests, conftests, dependencies) can write a false report |
-| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion; CI runs the owned sources with `python -P -m`, not entry points that `pyproject.toml` defines, and asserts the package comes from `src` (V-04); a shell step refuses anything in `src/` beside the `citerift` package before any Python runs (X-04) | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection); `SRC_FOREIGN_MODULE` for a tracked module beside the package | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed; `pyproject.toml` and `uv.lock` are not owned, so a change of dependencies or pytest options is not detected as Stage 00 drift |
-| Enhancement that changes an accepted contract | an enhancement amendment needs an owner reference not cited before (X-13) | `CONTRACT_VERSION_NOT_INCREASED`; `CONTRACT_INCOMPATIBLE` when an accepted valid fixture no longer validates (X-13) | whether the change keeps the contract's meaning; an enhancement has no CI record of its own |
+| R-003 registry hand edit | none (any writer can edit the file) | schema, including fixed policy values, artifact list, executor, dependencies and `ci_required`; per-entry replay; record/history match; definition hash; duplicate keys and duplicate amendment or blocker ids; future times; amendments dated when the stage was not accepted; non-ASCII digits in memory ids and stages (F-03 to F-05, F-16 to F-18, V-03, V-09, X-07, Y-04, Y-06) | a forgery that is consistent everywhere: history, records, evidence and hashes rewritten together |
+| Forged or stale evidence | verification refuses missing, trivial, unpinned, stale, malformed or partial evidence. Partial includes a run narrowed by ini override, other ini file, changed collection settings, a conftest that drops or repeats tests, an uncommitted conftest, a `-p` or `PYTEST_PLUGINS` plugin, skipped or expected-to-fail tests, and a run missing a committed test file. A dirty tree includes files hidden from `git status` and a report written over a tracked file. The CI record must be a run of this repository (F-02, F-07, V-01, V-02, X-02, X-03, X-05, Y-01 to Y-03, Y-10) | `EVIDENCE_STALE`, `EVIDENCE_MISSING`, `EVIDENCE_UNLISTED` over every file in the verification directory; `GATE_EVIDENCE_UNPINNED` (a URL, a path through `..` or a symbolic link, or an owned file not committed at the verified revision, is not pinned, Y-09); owned-path content compared with the verified revision, with replace refs and grafts ignored (F-01, V-13, X-01, X-09); nested `.gitattributes` (V-12) | who produced a test report or CI record (R-004): they are self-reported files whose content and hashes are checked; code inside the test process (committed tests, conftests, untracked or ignored imported modules, dependencies) can write a false report, and a writer can edit a report after the run |
+| CI trust (R-004, R-016) | ruleset 25824038 requires `ci-gate` and merge commits, and refuses force-push and deletion; CI runs the owned sources with `python -P -m`, not entry points that `pyproject.toml` defines, and asserts the package comes from `src` (V-04); a shell step refuses anything in `src/` beside the `citerift` package before any Python runs (X-04); the governance check runs before ruff, mypy and pytest, which `pyproject.toml` configures (Y-08) | a change to `.github/workflows`, `.github/rulesets` or `.gitattributes` makes Stage 00 `VERIFICATION_STALE` (F-20 detection); `SRC_FOREIGN_MODULE` for a tracked module beside the package; after the tests CI checks its own report and fails if a tracked file changed (Y-08, O-6) | CI independent of the change it gates: the gated pull request can edit the workflow, and 0 approvals are needed; `pyproject.toml` and `uv.lock` are not owned, so a tool setting or a dependency can run code in the steps after the governance check (and restore what it changed) without being detected as Stage 00 drift |
+| Enhancement that changes an accepted contract | an enhancement amendment needs an owner reference not cited before and an accepted stage (X-13, Y-06, Y-07) | `CONTRACT_VERSION_NOT_INCREASED`; `CONTRACT_INCOMPATIBLE` when an accepted valid fixture no longer validates (X-13) | whether the change keeps the contract's meaning; an enhancement has no CI record of its own |
 | Uncommitted local changes | none | `UNCOMMITTED_OWNED_CHANGE` (warning, F-19); the test report records a dirty tree | changes never committed are invisible to CI |
 
 ## 3. Adversarial review
@@ -118,6 +118,29 @@ revision before their fixes.
 | 60 | Accept a stage while a blocker is open | `HISTORY_BLOCKER` | accepted by the replay and the model | `test_x10_*`, replay conformance |
 | 61 | Change an accepted contract through an enhancement amendment with a reused owner reference and no version change | `OWNER_REF_REUSED`, `CONTRACT_VERSION_NOT_INCREASED`, `CONTRACT_INCOMPATIBLE` | accepted | `test_x13_*` |
 
+Attacks 62 to 72 are the bypasses found by the third final independent review
+(`review/4a396fb/`, Y-01 to Y-13). The column "At `4a396fb`" is the revision
+before their fixes.
+
+| # | Attack | Outcome now | At `4a396fb` | Test |
+|---|---|---|---|---|
+| 62 | Narrow a tracked test file and write the report over it, then restore the file | `TEST_EVIDENCE_DIRTY` | clean, complete (214 of 363 tests) | `test_y01_*` |
+| 63 | Hide narrowed test files with `git update-index --skip-worktree` or `--assume-unchanged` | `TEST_EVIDENCE_DIRTY` | clean, complete (44 of 363 tests) | `test_y02_*` |
+| 64 | A committed conftest that skips or xfails all but a few tests | `TEST_EVIDENCE_PARTIAL` | complete (8 passed, 355 skipped) | `test_y03_*` |
+| 65 | Write an open critical defect's `Stage` in Arabic-Indic or fullwidth digits; duplicate an id in other digits | `RISK_INVALID_FIELD`, `MEMORY_MALFORMED`; verification refused | valid; Stage 00 verified and accepted | `test_y04_*` |
+| 66 | Store an absence of record as one side of a retraction conflict, or a conflict whose values agree | `SCHEMA_VIOLATION` (`enum`), `CONFLICT_WITHOUT_DISAGREEMENT` | valid | invalid cases `retraction_conflict_*`, `title_conflict_whose_values_agree` |
+| 67 | Hand-write an enhancement amendment on a verified, not accepted, stage to cover owned changes | `AMENDMENT_NOT_APPLICABLE`, `VERIFICATION_STALE` | 0 errors; acceptance allowed | `test_y06_*` |
+| 68 | Reuse the acceptance's owner reference in an amendment dated the same second, or back-dated before the acceptance | `OWNER_REF_REUSED`, `AMENDMENT_NOT_APPLICABLE` | 0 errors | `test_y07_*` |
+| 69 | A mypy plugin named in `pyproject.toml` rewrites the checker before the CI check step | the check now runs before mypy; a changed tracked file fails CI | CI check printed 0 errors for 5 | `test_y_ci_checks_its_own_report_*` |
+| 70 | Cite a git-ignored file under an owned path as gate evidence, then rewrite it | `GATE_EVIDENCE_UNPINNED` | verification allowed | `test_y09_*` |
+| 71 | Record another repository's successful run as the CI record | `CI_WRONG_REPOSITORY` | accepted | `test_y10_*` |
+| 72 | A non-UTF-8 evidence file name, a damaged index, an absolute `verification_dir`, deeply nested JSON | named errors | traceback | `test_y11_*` |
+
+Y-12 (a verified retraction date next to `not_found_in_checked_sources`) and
+Y-13 (a subdivided DOI registrant code rejected) are contract defects; both
+are fixed and tested (`retraction_date_stated_without_a_retraction_record`,
+`test_multilingual_and_precise_values_accepted`).
+
 X-11 (`zh-classical` rejected by the language pattern) is a contract defect,
 X-12 a defect in a test and X-14 two surviving mutants. All three are fixed.
 
@@ -125,8 +148,8 @@ Seeded property tests apply 19 classes of single mutation to an accepted
 registry, 60 cases for each of 2 seeds. Every mutation is detected
 (`test_properties.py`). Random byte damage never produces an exception.
 
-Mutation testing: 73 mutants each disable one rule (M1 to M73, including the
-new checks for S-01, V-01 to V-16 and X-01 to X-13). Results are in
+Mutation testing: 90 mutants each disable one rule (M1 to M90, including the
+new checks for S-01, V-01 to V-16, X-01 to X-13 and Y-01 to Y-13). Results are in
 TEST_RESULTS.md §5.
 
 ## 4. Residual exposure, stated plainly
@@ -136,8 +159,8 @@ TEST_RESULTS.md §5.
 | R-001 shared GitHub identity | high | open | the agent can do on GitHub whatever the owner can, including merging and editing the ruleset; nothing in the repository changes that |
 | R-002 owner references not read | high | open | a reference that does not contain approval is accepted if it is present, well-formed and not reused |
 | R-003 hand edits | medium | open | detection only; a consistent forgery is not detectable; stage definitions other than the schema-fixed fields (executor, artifacts, dependencies, policy) can be edited *before* verification, visible only in the reviewed diff |
-| R-004 CI record and test report entered by the agent | medium | open | the offline check cannot fetch the run; the run URL is public. Code inside the test process, committed or from a dependency, can write a false test report; in CI it must be committed or locked, so it is visible in review |
-| R-016 CI gate editable by the gated change | medium | open | a pull request can change `ci.yml` so that `ci-gate` passes; Stage 00 then becomes stale, but only someone running `check` from an honest copy sees it. `pyproject.toml` and `uv.lock` are not owned: later stages must be able to add dependencies |
+| R-004 CI record and test report entered by the agent | medium | open | the offline check cannot fetch the run, only check that the record names a run of this repository; the run URL is public. Code inside the test process, committed, untracked or from a dependency, can write a false test report, and a report can be edited after the run; in CI such code must be committed or locked, so it is visible in review |
+| R-016 CI gate editable by the gated change | medium | open | a pull request can change `ci.yml` so that `ci-gate` passes; Stage 00 then becomes stale, but only someone running `check` from an honest copy sees it. `pyproject.toml` and `uv.lock` are not owned: later stages must be able to add dependencies. A tool setting there can run code after the governance step, in the test, report and tree-check steps |
 | Structural evidence checks | medium | disclosed | document *content* is not judged; the owner's reading of the handoff is the control |
 | R-012 clock dependence | low | accepted | the 5-minute bound is relative to the writer's clock: a writer whose clock is fast can record a time that blocks correct machines until real time catches up (detected, fail closed) |
 
@@ -167,6 +190,7 @@ implemented. They add no paid infrastructure, but they do add process.
 
 Separate reviewer agents with no part in writing the correction review the
 integrated revision. The first review, at `ee46423`, found V-01 to V-16. The
-second, at `9e025c9`, found X-01 to X-14. Their dispositions are in
+second, at `9e025c9`, found X-01 to X-14, and the third, at `4a396fb`, found
+Y-01 to Y-13. Their dispositions are in
 `review/README.md`. The final review and its dispositions are in
 TEST_RESULTS.md §9 and `review/`.

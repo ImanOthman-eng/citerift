@@ -46,19 +46,24 @@ full consistency check (`citerift-gov check`). Main invariants:
 1. A stage is verified only with every required artifact (always including the
    handoff), a passing test report produced at the verified revision from a
    clean tree, every acceptance gate passed, and (for engineering stages) a
-   successful CI run on that revision. The report must record a complete run:
-   every test file committed under `tests/` at the revision ran; no narrowing
+   successful CI run of the project's repository on that revision. A clean
+   tree has no change that `git status` shows and no tracked file flagged
+   `--skip-worktree` or `--assume-unchanged`; the report is left out of that
+   check only when it is written to an untracked path. The report must record
+   a complete run: every test file committed under `tests/` at the revision
+   ran; every test passed (none skipped or expected to fail); no narrowing
    option, ini override or other ini file was used; the collection settings
    (`python_files`, `python_classes`, `python_functions`, `testpaths`) had
    their fixed values; no collected test was dropped or repeated by a hook; no
    extra plugin was loaded with `-p` or `PYTEST_PLUGINS`; and every conftest
    the run loaded is committed at the revision. Every file a gate cites must be
-   hash-pinned (in the evidence manifest or under an owned path), named by a
-   plain path with no `..`, `.` or symbolic link; a URL may be cited but does
-   not count as pinned. These rules make an honest narrowing visible. They do
-   not bind code that runs inside the test process: committed test or
-   conftest code, an untracked file the run imports, or an installed
-   dependency can write a false report (RISKS.md R-004).
+   hash-pinned: in the evidence manifest, or under an owned path and committed
+   at the verified revision. It must be named by a plain path with no `..`,
+   `.` or symbolic link; a URL may be cited but does not count as pinned.
+   These rules make an honest narrowing visible. They do not bind code that
+   runs inside the test process: committed test or conftest code, an
+   untracked or ignored file the run imports (inside the tree or outside it),
+   or an installed dependency can write a false report (RISKS.md R-004).
 2. A stage is accepted only from the verified state, by the owner, for the
    verified revision, citing an owner statement not already cited, by a history
    entry or an amendment, before the verification. One owner statement may
@@ -86,12 +91,14 @@ full consistency check (`citerift-gov check`). Main invariants:
    `.gitattributes`; a nested `.gitattributes` is an error. Git is run with
    replace refs and grafts disabled.
 7. A verified or accepted stage has no open blocker and no open critical defect
-   (a critical defect with `Stage: project` blocks every stage). A heading that
+   (a critical defect with `Stage: project` blocks every stage). Entry ids and
+   `Stage` values use ASCII digits; other digits (Arabic-Indic, fullwidth) are
+   errors, because they would never match a stage id. A heading that
    looks like an entry heading but does not parse, an entry field (`Status`,
    `Severity`, `Kind`, `Topic`) outside a recognized heading, and an entry
    field written in any form other than `- Name: value` (bold, another case,
    indented, another bullet) are errors. Topics are compared without case,
-   separators or invisible characters. An entry written in some other form
+   separators, invisible characters, or Arabic tatweel and short-vowel marks. An entry written in some other form
    entirely (for example as a table row, or with neither a recognizable
    heading nor recognizable fields) is not recognized and not reported.
 
@@ -110,12 +117,16 @@ before implementation starts.
 
 ## Changing an accepted stage
 
+- Every amendment is recorded while its stage is accepted; `check` reports one
+  dated when the stage was not (`AMENDMENT_NOT_APPLICABLE`). Only enhancements
+  of the current acceptance can cover changes to the stage's owned paths.
 - Correction (behavior or contract change): record a `correction` amendment
   with evidence, the owner reopens the stage, and it is verified and accepted
   again.
 - Enhancement that preserves contracts: record an `enhancement` amendment with
   the new revision, a passing test report at that revision and an owner
-  statement not cited before. The stage stays accepted. If it changes a
+  statement not cited before (not even in the same second). The stage stays
+  accepted. If it changes a
   contract schema under the stage's owned paths, the schema's
   `x-citerift-version` must increase and every valid contract fixture of the
   accepted revision must stay valid. Whether the change preserves the
@@ -160,7 +171,9 @@ objective or architecture, granting new permissions.
 ## What is enforced technically, and what is not
 
 Prevented (the tool refuses to write it): a transition that is not in the
-table, an owner decision taken by another actor or without an `owner_ref`, a
+table, an owner decision recorded with another actor or without an `owner_ref`
+(the actor is a command-line flag that any writer can pass, so the reference
+is the real control, R-002), a
 transition while the resulting registry has any consistency error, and a
 blocker or amendment that would add an error. Errors that already exist do not
 block a blocker or amendment, so that the problem can be recorded; they stay
@@ -173,7 +186,8 @@ engineering stages, that only Stage 01 is external, and every stage's
 dependencies), decision and risk
 record consistency, duplicate JSON keys, recorded times more than 5 minutes
 ahead of the checking machine's clock, and a `PROJECT_STATUS.md` that does not
-match the registry. Detection is not prevention: a hand edit can be committed,
+match the registry, and amendments dated when their stage was not accepted.
+Detection is not prevention: a hand edit can be committed,
 and it is reported when `check` runs from an honest copy of the code. A stage's
 own definition (gates, suites, owned paths, verification directory) can still
 be changed before it is verified; that change shows only in the reviewed diff
@@ -191,10 +205,17 @@ ruleset file are Stage 00 owned paths, so changing them makes Stage 00 stale
 so changing the entry points in `pyproject.toml` does not replace the checker.
 Before any Python runs, a shell step refuses anything in `src/` beside the
 `citerift` package (such as a `sitecustomize.py` or a package that shadows a
-dependency), and `check` reports one as `SRC_FOREIGN_MODULE`. The
-dependencies installed from `uv.lock` and the build and pytest settings in
-`pyproject.toml` are not Stage 00 owned paths; a change to them can still
-change what CI executes, and later stages must be able to add dependencies.
+dependency), and `check` reports one as `SRC_FOREIGN_MODULE`. The governance
+check runs before ruff, mypy and pytest, because any of them can be configured
+in `pyproject.toml` to run code (a mypy plugin, for example), and such code
+could rewrite the checker on disk before a later step. After the tests, CI
+checks its own test report (`citerift-gov check-report`) and fails if any
+tracked file was changed. The dependencies installed from `uv.lock` and every
+tool setting in `pyproject.toml` are not Stage 00 owned paths. Code they run
+executes in the steps after the governance check, so it can still change what
+the test, report and tree-check steps do, and later stages must be able to add
+dependencies. Such code must be committed or locked, so it is visible in the
+reviewed diff.
 
 Not enforceable by repository code: whether an `owner_ref` really contains the
 owner's approval (R-002), whether an agent follows instructions at all, and

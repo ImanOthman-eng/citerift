@@ -103,3 +103,34 @@ No failing test here, by nature:
   The old assertion fails there, as the review showed.
 - Controls that pass on both revisions: `test_x06_...[nbsp_heading]` and
   `test_x13_a_versioned_compatible_enhancement_is_accepted`.
+
+## Third final review findings Y-01 to Y-13 (`results-4a396fb.txt`)
+
+The third final independent review (`../review/4a396fb/`) raised Y-01 to
+Y-13. Their tests were run the same way against `4a396fb`, with the tests of
+`aa06a40`:
+
+    git -C $W checkout --detach 4a396fb
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 27 failed, 366 passed. The same suite passes on `aa06a40` (393
+passed).
+
+| Finding | Failing tests at `4a396fb` |
+|---|---|
+| Y-01 | 1 |
+| Y-02 | 2 (skip-worktree, assume-unchanged) |
+| Y-03 | 2 (skip, xfail) |
+| Y-04 | 5 (three digit forms, verification blocked, and the Arabic-marks topic rule of observation O-1) |
+| Y-05 | 4 invalid contract cases (absence against a record, two absences, agreeing retraction values, agreeing titles) |
+| Y-06 | 1 |
+| Y-07 | 2 (same second, back-dated) |
+| Y-08 | 1 (CI step order, own report check, tree check) |
+| Y-09, Y-10 | 1 each |
+| Y-11 | 5 (four CLI inputs and the contracts CLI) |
+| Y-12, Y-13 | 1 each |
+
+No failing test here, by design: `test_x03_each_partial_run_rule_holds_on_its_own`
+(three cases) passes on both revisions, because it kills mutants M57 to M59
+rather than reproducing a defect.

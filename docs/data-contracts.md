@@ -22,7 +22,7 @@ Every factual value is stored as `{"status": ..., "value": ..., ...}`:
 | `model_inference` | Produced by a model; never a fact | `model` and `confidence` required |
 | `uncertain` | Evidence is insufficient | `reason` required |
 | `unavailable` | Could not be obtained | `value` is null; `reason` required |
-| `conflicting` | Sources disagree | `value` is null; at least two `alternatives`, each with provenance |
+| `conflicting` | Sources disagree | `value` is null; at least two `alternatives`, each with provenance, holding at least two different values (semantic check) |
 
 `confidence` is a model-reported score in [0, 1]. It is not a probability of
 correctness unless Stage 06 calibrates it and documents that.
@@ -32,13 +32,17 @@ correctness unless Stage 06 calibrates it and documents that.
 - **Missing records are not evidence.** There is no value meaning "not
   retracted". When checked sources hold no retraction record, the value is
   `not_found_in_checked_sources`, the status must be `uncertain`, and the
-  provenance must list what was checked.
+  provenance must list what was checked. Such a record states no retraction
+  date: `retraction_date`, if present, has a null value and no alternatives.
 - **Accepted and rejected retraction values are explicit.** `retraction_status`
   accepts `retracted`, `expression_of_concern`, `correction`, `reinstated` and
-  `not_found_in_checked_sources` (and null where the status requires it). The
-  same list applies to every `alternatives[].value` of a `conflicting` status,
-  so "not retracted" (or `false`, or any other value) cannot enter through a
-  conflicting alternative.
+  `not_found_in_checked_sources` (and null where the status requires it). A
+  `conflicting` status holds only positive records as alternatives
+  (`retracted`, `expression_of_concern`, `correction`, `reinstated`), so "not
+  retracted" (or `false`, or any other value) cannot enter through a
+  conflicting alternative, and neither can an absence of record: a source
+  without a record does not disagree with one that has it. Since 1.0.1
+  (unreleased) this is enforced in the schema.
 - **Unknown, unavailable and negative stay distinct.** `unavailable` (could not
   be obtained, null value), `uncertain` (insufficient evidence, with a reason)
   and `not_found_in_checked_sources` (a search of named sources found nothing,
@@ -59,7 +63,8 @@ correctness unless Stage 06 calibrates it and documents that.
 ## Semantic checks beyond JSON Schema
 
 `citerift.contracts.validate.semantic_problems`: unique citation and
-assessment ids, assessments must target an existing citation, events in
+assessment ids, assessments must target an existing citation, every
+`conflicting` assertion holds at least two different values, events in
 chronological order (compared as instants, so fractional seconds order
 correctly), a `retraction_date` (year, year-month or full date, including in
 alternatives) must be a real calendar date, and `partial` or `failed`
@@ -80,7 +85,8 @@ investigations must state their limitations.
   (`citerift.contracts.formats.loads_strict`): the standard library silently
   keeps the last value, so a reviewer could be shown a different one.
 - Multilingual values (Arabic titles, non-ASCII DOI suffixes, language codes
-  such as `zh-yue`) are accepted; tests cover them.
+  such as `zh-yue` and `zh-classical`) are accepted, and so are DOIs with a
+  subdivided registrant code (`10.1000.10/...`); tests cover them.
 
 ## Versioning
 
@@ -118,7 +124,7 @@ investigations must state their limitations.
 ## Fixtures
 
 `tests/stage00/fixtures/contracts/v1/valid/` holds three valid synthetic
-records. `invalid_cases.json` holds 47 single-mutation negative cases; each
+records. `invalid_cases.json` holds 52 single-mutation negative cases; each
 names the base fixture, the JSON pointer, the change and the expected failing
 keyword or semantic code, and the test asserts the record fails for exactly
 that reason.

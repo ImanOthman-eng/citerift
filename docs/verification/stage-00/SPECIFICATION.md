@@ -10,7 +10,8 @@ accepted package is kept unchanged in `superseded/741476c/`.
 Scope of the correction: the confirmed findings F-01 to F-23 of the
 independent review in `docs/audits/stage-00-2026-10-25/`, the defect S-01
 found during the correction, the findings V-01 to V-16 of the first final
-independent review and X-01 to X-14 of the second (`review/`), all inside
+independent review, X-01 to X-14 of the second and Y-01 to Y-13 of the
+third (`review/`), all inside
 Stage 00's original scope. No later stage is touched or authorized. Stage 01 belongs to
 the external agent and nothing here assumes any of its findings.
 
@@ -62,8 +63,9 @@ All of the requirements of `741476c`, plus:
 1. The verification record pins **every file** under the verification
    directory (`evidence_manifest`), not only the seven artifacts. Each gate
    evidence path must be a pinned file inside that directory, or a file under
-   the stage's owned paths (whose content the drift check compares with the
-   verified revision). An https URL may be cited as well, but it is not
+   the stage's owned paths that is committed at the verified revision (whose
+   content the drift check compares with that revision; an ignored or
+   untracked file is bound by nothing, Y-09). An https URL may be cited as well, but it is not
    pinned: every gate must cite at least one pinned file, and every file it
    cites must be pinned and named by a plain path, with no empty, `.` or `..`
    segment and no symbolic link on the way (F-02, V-02, X-01). Files git
@@ -87,12 +89,18 @@ All of the requirements of `741476c`, plus:
    `python_classes`, `python_functions` and `testpaths` at their fixed values,
    no `-p` or `PYTEST_PLUGINS` plugin other than the report plugin, nothing
    deselected, no collected test removed or repeated by a hook (compared by
-   node id), and nothing not run. Every committed `tests/**/test_*.py` file at
+   node id), nothing not run, and every test passed: none skipped, xfailed or
+   xpassed (Y-03). The tree was clean: no change shown by `git status`, no
+   tracked file flagged `--skip-worktree` or `--assume-unchanged`, and the
+   report not written over a tracked file (Y-01, Y-02). Every committed
+   `tests/**/test_*.py` file at
    the verified revision must appear among the files that ran, and every
    conftest the run loaded must be committed at that revision (F-07, V-01,
    X-02, X-03). The report is written by the test process itself, so code
    running in that process (committed test or conftest code, an imported
    module, an installed dependency) can forge it (R-004).
+6. The CI record must name a run of the project's repository
+   (`project.repository`), at the verified revision, that succeeded (Y-10).
 5. The handoff, report and record are read with duplicate-key rejection
    (F-18).
 
@@ -112,8 +120,11 @@ Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
   an owner reference not used before the verification, by a history entry or
   by an amendment (F-17, V-07). One owner message may still cover several
   decisions, such as accepting two stages (R-002). An amendment must cite an
-  owner reference that no earlier history entry or amendment cited (X-13).
-  Amendment and blocker ids are unique (V-09).
+  owner reference that no earlier history entry or amendment cited, compared
+  by instant and counting the same second as earlier (X-13, Y-07). An
+  amendment must be recorded while its stage is accepted
+  (`AMENDMENT_NOT_APPLICABLE`, Y-06). Amendment and blocker ids are unique
+  (V-09).
 - Rule 7, hashes. They cover every file in the verification directory, and
   the line-ending policy is fixed by the root `.gitattributes`. A tracked
   nested `.gitattributes` is an error (`ATTRIBUTES_NESTED`) (F-02, F-12,
@@ -122,13 +133,16 @@ Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
   verified revision and at `HEAD` (`git diff --no-renames`). A merge that
   restores old content is therefore detected. Git runs with replace refs and
   grafts disabled, so neither can hide drift or a rewritten history.
+  Only enhancements of the current acceptance can cover a change (Y-06).
   Uncommitted owned changes give the warning `UNCOMMITTED_OWNED_CHANGE`
   (F-01, F-19, V-13, X-09).
 - Rule 9, records. A heading that looks like an entry but is malformed is an
   error, and so are an entry field outside any recognised heading and an
   entry field not written as `- Name: value`. A topic is compared after NFKC
   normalisation, with separators, case and invisible format characters
-  folded. A critical defect with `Stage: project` blocks every stage. An
+  folded, and Arabic tatweel and short-vowel marks removed. Entry ids and
+  `Stage` values must use ASCII digits (Y-04). A critical defect with
+  `Stage: project` blocks every stage. An
   undecodable memory file is `MEMORY_UNREADABLE`, not a traceback (F-06,
   V-06, V-10, X-06). An entry with neither a recognisable heading nor
   recognisable fields (a table row, say) is not seen.
@@ -139,6 +153,9 @@ Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
   contract schema under the stage's owned paths must raise its
   `x-citerift-version` and keep every valid contract fixture of the accepted
   revision valid (X-13).
+- Rule 13, damaged inputs. A non-UTF-8 file name in an evidence directory, a
+  damaged git index, a registry path that is absolute or has a `.` or `..`
+  segment (schema), and JSON nested too deeply give named errors (Y-11).
 
 ## Data contracts 1.0.1
 
@@ -146,19 +163,22 @@ The full table is in `docs/data-contracts.md`.
 
 - The accepted retraction values are `retracted`, `expression_of_concern`,
   `correction`, `reinstated` and `not_found_in_checked_sources`. They are
-  explicit for the main value and for every `conflicting` alternative.
-  "Not retracted" is not representable.
+  explicit for the main value. A `conflicting` alternative is one of the
+  first four: an absence of record is not one side of a conflict, and the
+  alternatives must hold at least two different values (Y-05). "Not
+  retracted" is not representable.
 - Absence of a record is `uncertain` with checked sources. It is never
   `verified_fact`, never model output, and never carries model or confidence
-  fields.
+  fields. It states no retraction date (Y-12).
 - `unavailable` (source not reachable) keeps a null value and a reason. It
   stays distinct from a checked negative.
 - Identifiers keep their 1.0.0 patterns. They are now written so that Python
   and ECMA-262 accept the same strings: no trailing-newline match, and a
   `[^\s…]` class with explicit control and format characters.
 - Multilingual values stay valid: an Arabic title, a DOI with Arabic letters
-  and Arabic-Indic digits, and the language code `zh-yue`
-  (`test_multilingual_and_precise_values_accepted`), plus the Arabic and
+  and Arabic-Indic digits, a DOI with a subdivided registrant code (Y-13),
+  and the language codes `zh-yue` and `zh-classical`
+  (`test_multilingual_and_precise_values_accepted`, `test_x11_*`), plus the Arabic and
   English citations in the valid fixtures.
 
 Versioning: 1.0.0 → 1.0.1 is a patch. Every valid 1.0.0 fixture still

@@ -77,7 +77,26 @@ the reopened revision `ae2ce9e`.
   before, and an enhancement that changes a contract must raise its version
   and keep the accepted valid fixtures valid (X-13); the mutation check runs
   a baseline first and covers the new rules (X-14).
-- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019),
+- Third final independent review (Y-01 to Y-13): a report written over a
+  tracked file, and tracked files flagged `--skip-worktree` or
+  `--assume-unchanged`, make the tree dirty (Y-01, Y-02); skipped and
+  expected-to-fail tests make a run partial (Y-03); entry ids and `Stage`
+  values need ASCII digits, and Arabic tatweel and short-vowel marks are
+  folded in topics (Y-04); in the unreleased 1.0.1, an absence of record is
+  never a conflicting alternative, conflicting alternatives must differ, no
+  retraction date may stand next to `not_found_in_checked_sources`, and a
+  subdivided DOI registrant code is valid (Y-05, Y-12, Y-13); an amendment
+  must be recorded while its stage is accepted, only enhancements of the
+  current acceptance cover owned changes, and an owner reference cited in the
+  same second counts as cited before (Y-06, Y-07); CI runs the governance
+  check before ruff, mypy and pytest, checks its own test report with the new
+  `check-report` command and fails if a step changed a tracked file (Y-08); an
+  owned file is pinned gate evidence only if committed at the verified
+  revision (Y-09); the CI run must belong to the project's repository (Y-10);
+  non-UTF-8 evidence names, a damaged index, an absolute `verification_dir`
+  and deeply nested JSON give named errors (Y-11). Tests were added for four
+  rules the 73-mutant check found untested (M52, M57, M58, M59).
+- GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).
 

@@ -34,7 +34,7 @@ A move `μ = (k, t, actor, inputs)` is permitted iff all four hold:
 
 ## 2. Invariants
 
-I1 to I7 are as before. The correction strengthens two of them and adds four.
+I1 to I7 are as before. The correction strengthens two of them and adds five.
 
 - **I6 (replay consistency), strengthened.** Before the correction, `check`
   required only `fold(H, NSⁿ) = σ`, with each entry an edge of `T` taken by
@@ -49,8 +49,10 @@ I1 to I7 are as before. The correction strengthens two of them and adds four.
     (BL→IP), verify (IM→VA) or accept (VA→AC, X-10)
   - an `owner_ref` on owner edges; for an acceptance, one not used by a
     history entry or an amendment at or before the last VA entry (F-17, V-07)
-  - for an amendment, an `owner_ref` not cited by an earlier history entry or
-    an earlier amendment (X-13)
+  - for an amendment, an `owner_ref` not cited by a history entry or another
+    amendment at or before its own instant, the same second included (X-13,
+    Y-07); the reopening that uses a correction amendment may share its
+    reference
 - **I7 (evidence immutability), strengthened.** For a verified stage the
   record pins the following, each by sha256:
   - `M = {(p, sha256(p)) : p ∈ files(vdir) ∖ ignored}` (the manifest;
@@ -77,6 +79,11 @@ I1 to I7 are as before. The correction strengthens two of them and adds four.
   fixture must still validate against the changed contracts (X-13). Whether
   the change keeps the contract's meaning is not decided here; it is the
   owner's judgment.
+- **I12 (amendment placement).** An amendment recorded at instant `t` needs
+  `σ_k = AC` after the stage's entries before `t`, or an entry into AC at
+  `t` itself (Y-06). The covering set of the drift rule (I7) holds the
+  verified revision and only the enhancements recorded at or after the
+  stage's current acceptance, while it is accepted.
 
 ## 3. Why the replay has to check each prefix
 
@@ -163,8 +170,13 @@ following hold:
 - the conditions of the accepted model §7 hold
 - the counts in `r` are non-negative integers, and its file and conftest
   lists are lists of strings (X-05)
+- `r.dirty = false`, where a tree is dirty if `git status` lists a path, if a
+  tracked file is flagged skip-worktree or assume-unchanged, or if the report
+  path itself is tracked (Y-01, Y-02)
 - `r.selection.complete = true`
-- no test recorded as not run (`totals.not_run = 0`)
+- no test recorded as not run (`totals.not_run = 0`), and every outcome is
+  `passed`, `failed` or `error`: skipped, xfailed and xpassed tests did not
+  show their rule, so their count must be 0 (Y-03)
 - `tests(ρ) ⊆ r.selection.files`, where `tests(ρ)` is the set of committed
   files `tests/**/test_*.py` and `tests/**/*_test.py` in the tree of `ρ`
   (V-01)
@@ -206,11 +218,18 @@ with `canon` = sorted keys, no whitespace, UTF-8.
 
 Gate evidence. For a gate `g` with cited references `E(g)`, let
 `files(g) = E(g) ∖ URLs`. The gate is supported iff `files(g) ≠ ∅` and every
-`p ∈ files(g)` is pinned: `p ∈ dom(M)`, or `p` lies under an owned path (its
-content is then bound by I7's drift rule). A URL is never pinned (F-02, V-02).
+`p ∈ files(g)` is pinned: `p ∈ dom(M)`, or `p` lies under an owned path and
+`p ∈ tree(ρ)` (its content is then bound by I7's drift rule, which compares
+committed trees; an ignored or untracked file is in neither, Y-09). A URL is
+never pinned (F-02, V-02).
 Every `p` must also be a plain path: no empty, `.` or `..` segment and no
 symbolic link on the way, so `p` names the file that `M` or the drift rule
 actually binds (X-01).
+
+CI record. With `repo` = `project.repository`, the record `c` supports the
+verification iff `c.head_sha = ρ`, `c.conclusion = success` and `c.run_url`
+starts with `https://github.com/repo/actions/runs/`, compared without case
+(Y-10). The checker reads the record, not the run.
 
 ## 7. Date and time model (contracts and registry)
 

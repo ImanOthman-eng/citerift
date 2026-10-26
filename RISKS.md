@@ -56,7 +56,9 @@ in the verification directory (except files git ignores), the stage definition
 and the policy pinned by hash; policy values, the engineering artifact list and
 the executor and dependencies of each stage fixed in the registry schema;
 owned-path content compared with the verified revision; duplicate JSON keys
-rejected; an amendment citing an owner reference cited before.
+rejected; an amendment citing an owner reference cited before, or recorded
+when its stage was not accepted (Y-06, Y-07); entry ids and stage numbers in
+non-ASCII digits (Y-04).
 
 What it cannot detect: a forgery that is consistent everywhere, that is,
 history, records, evidence files and their recorded hashes rewritten together
@@ -75,19 +77,26 @@ Executors, artifact lists and dependencies cannot (V-03, X-07).
 - Kind: limitation
 - Stage: 00
 
-The offline check verifies that the recorded CI run tested the verified
-revision and succeeded as recorded, but it cannot fetch the run. The run URL is
-public for this repository and can be checked by anyone. The required
+The offline check verifies that the recorded CI record names a run of this
+repository (Y-10), the verified revision as its tested commit, and success. It
+cannot fetch the run, so it cannot tell whether the record is true; the run
+URL is public for this repository and can be checked by anyone. A
+`pull_request` run tests the merge commit, not the head commit it reports, so
+the CI record should cite the `push` run. The required
 `ci-gate` check on `main` is a control on the honest workflow only; it is not
 independent of the change it gates (R-016). The test report is written by the
 test process. The checker rejects the narrowing an honest run can show:
 narrowing options, ini overrides, another ini file, changed collection
-settings, dropped or repeated tests, extra `-p` or `PYTEST_PLUGINS` plugins,
-conftest files not committed at the revision, and committed test files that
-did not run (V-01, X-02, X-03). It cannot bind code that runs inside the test
-process: committed test or conftest code, a module the run imports from
-outside the tree, or an installed dependency can rewrite the report or the
-plugin's state. In CI the checkout is fresh, so such code must be committed
+settings, dropped or repeated tests, skipped or expected-to-fail tests, extra
+`-p` or `PYTEST_PLUGINS` plugins, conftest files not committed at the
+revision, and committed test files that did not run (V-01, X-02, X-03, Y-03).
+A tree is dirty when `git status` shows a change, when a tracked file is
+flagged `--skip-worktree` or `--assume-unchanged`, or when the report itself
+is written over a tracked file (Y-01, Y-02). It cannot bind code that runs
+inside the test process: committed test or conftest code, an untracked or
+ignored module the run imports (inside the tree or outside it), or an
+installed dependency can rewrite the report or the plugin's state, and a
+writer can edit a report after the run. In CI the checkout is fresh, so such code must be committed
 or come from `uv.lock`, and a reviewer can see it in the diff.
 
 ## R-005 — Contract compatibility is checked against fixtures, not proven
@@ -236,12 +245,16 @@ checked-out `src/` modules directly, so the entry points in `pyproject.toml`
 cannot replace the checker (V-04), and a shell step refuses anything in `src/`
 beside the `citerift` package before any Python runs, because a
 `sitecustomize.py` or a package shadowing a dependency there would run inside
-every check (X-04). Not covered: `pyproject.toml` (build and test settings) and
-`uv.lock` (dependencies) are not Stage 00 owned paths, and a dependency runs
-in the same process as the checks; a change to them can change what CI
-executes without making Stage 00 stale. The test report records collection
-settings that differ from the fixed values (X-02), but a dependency or
-committed test code can still write a false report (R-004). Prevention
+every check (X-04). The governance check runs before ruff, mypy and pytest,
+and CI fails at the end if any tracked file was changed (Y-08: a mypy plugin
+named in `pyproject.toml` rewrote the checker on disk before the check). Not
+covered: `pyproject.toml` (every tool setting) and `uv.lock` (dependencies)
+are not Stage 00 owned paths. Code that a tool setting or a dependency runs
+executes in the steps after the governance check, so it can change what the
+test, report and tree-check steps do without making Stage 00 stale; it can
+also restore the files it changed before the last step. The test report
+records collection settings that differ from the fixed values (X-02), but a
+dependency or committed test code can still write a false report (R-004). Prevention
 needs a required code-owner review from an identity the agent does not hold
 (D-006 or a bot account), an owner decision.
 
@@ -293,3 +306,21 @@ tests fail on `7138d6d`
 (docs/verification/stage-00/fail-first/results-7138d6d.txt), except X-12,
 which is a defect in a test. Residual limitations stay open as R-002, R-003,
 R-004 and R-016.
+
+## R-020 — Stage 00 third final independent review findings (A-00-001)
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 00
+
+The third final independent review, of `4a396fb`
+(docs/verification/stage-00/review/), reproduced 13 findings, Y-01 to Y-13
+(2 medium, 4 low-medium, 7 low; none critical). The two medium ones: a test
+report written over a tracked test file hid that file's change (Y-01), and an
+open critical defect whose `Stage` was written in Arabic-Indic or fullwidth
+digits passed validation but did not block Stage 00 (Y-04). Fixed in
+`aa06a40`; their regression tests fail on `4a396fb`
+(docs/verification/stage-00/fail-first/results-4a396fb.txt). The 73-mutant
+check at `564030b` found four rules without a test of their own (M52, M57,
+M58, M59); tests and a corrected M52 were added in `aa06a40` and `a93c64f`.
+Residual limitations stay open as R-002, R-003, R-004 and R-016.

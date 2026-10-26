@@ -7,7 +7,9 @@ scripts are kept as it wrote them, with one exception: in `9e025c9/`, one
 search term that is part of a personal name was replaced by
 `<name terms, redacted>` (docs/identity.md). The scripts refer to the
 reviewer's scratch paths (`$W/...`), so they show method and are not meant to
-run unchanged. Ruff skips this directory (`pyproject.toml`).
+run unchanged. Ruff skips this directory (`pyproject.toml`). The third
+reviewer created an empty, git-ignored `.venv/` in its own review copy by
+accident; no tracked file changed.
 
 ## `ee46423/`: first final review
 
@@ -76,3 +78,48 @@ are in `564030b`.
 The report's §4 lists overstated documentation. GOVERNANCE.md, RISKS.md
 (R-003, R-004, R-016, new R-019), CHANGELOG.md, docs/data-contracts.md and
 the documents in this directory were corrected after it.
+
+## `4a396fb/`: third final review
+
+Verdict: NOT VERIFIED. 363 tests passed and every tool was clean. The
+reviewer rechecked variants of X-01, X-03, X-07, X-09, X-10 and X-11 (still
+stopped), then raised 13 findings, Y-01 to Y-13 (2 medium, 4 low-medium, 7
+low; none critical), and seven observations (O-1 to O-7). All thirteen were
+reproduced. Their tests fail on `4a396fb`
+(`../fail-first/results-4a396fb.txt`: 27 failed, 366 passed), and the fixes
+are in `aa06a40`. The reviewer's own scripts, run against `aa06a40`, no
+longer reproduce Y-01 to Y-07 or Y-09 to Y-13. The Y-08 script runs the old
+CI step order itself (mypy before the check), so it still shows the rewrite;
+the fix is the new step order in `ci.yml`, tested by
+`test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools`.
+
+| Id | Finding | Disposition |
+|---|---|---|
+| Y-01 | a report written over a tracked test file hid that file's change | fixed: the report path is left out of the dirty check only when it is untracked |
+| Y-02 | changes hidden with `--skip-worktree` or `--assume-unchanged` gave a clean tree | fixed: such flagged files count as changed; `git status` is read with `-z` (which also settles O-5) |
+| Y-03 | skipped and xfailed tests counted as a complete run | fixed: every test must pass; any other outcome makes the run partial |
+| Y-04 | `Stage` or ids in Arabic-Indic or fullwidth digits passed validation but did not block | fixed: ASCII digits only; other digits are `RISK_INVALID_FIELD` or `MEMORY_MALFORMED` |
+| Y-05 | a retraction conflict could hold an absence of record, or values that agree | fixed in 1.0.1 (unreleased): only positive records as alternatives (schema), at least two different values (semantic check, every assertion) |
+| Y-06 | a hand-written enhancement on a verified stage passed `check` and covered owned changes | fixed: an amendment must be recorded while its stage is accepted; only enhancements of the current acceptance cover changes |
+| Y-07 | the amendment reference rule could be passed with a chosen time | fixed: same-second citations count as earlier, and a back-dated amendment falls under Y-06 |
+| Y-08 | a mypy plugin named in `pyproject.toml` rewrote the checker before the CI check step | fixed as far as CI order can: the check runs before ruff, mypy and pytest, and CI fails if a tracked file changed. Residual, stated in R-016: code run by a tool setting or a dependency still runs in the later steps and can restore what it changed |
+| Y-09 | an ignored or untracked file under an owned path counted as pinned gate evidence | fixed: it must be committed at the verified revision |
+| Y-10 | the CI record was not tied to the project's repository | fixed: `CI_WRONG_REPOSITORY` |
+| Y-11 | five more inputs ended in a traceback | fixed: named errors, and a last-resort handler for git failures in the CLI |
+| Y-12 | a verified retraction date was accepted next to `not_found_in_checked_sources` | fixed in 1.0.1 (unreleased): no date may stand without a retraction record |
+| Y-13 | the DOI pattern rejected a subdivided registrant code | fixed in 1.0.1 (unreleased) |
+
+Observations: O-1 (Arabic tatweel and short-vowel marks in topics) is now
+folded; O-5 is settled by Y-02; O-6 (CI did not check its own report) is
+fixed by the `check-report` step. O-2 (a `pull_request` run tests the merge
+commit) is stated in R-004: the CI record cites the `push` run. O-3 (owner
+references compared as exact strings) and O-4 (accepted decisions need no
+owner reference) stay within R-002. O-7 is the identity scan; it found no
+issue.
+
+The report's §4 lists overstated documentation. GOVERNANCE.md, RISKS.md
+(R-003, R-004, R-016, new R-020), CHANGELOG.md, docs/data-contracts.md and
+the documents in this directory were corrected after it. The 73-mutant check
+at `564030b` also found four rules without a test of their own (M52, M57, M58,
+M59); `aa06a40` adds tests for M57 to M59, and `a93c64f` makes M52 remove
+both replace-object controls, since either one alone still stops the attack.

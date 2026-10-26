@@ -37,9 +37,13 @@ retraction values are explicit: `retracted`, `expression_of_concern`,
   "not retracted", absence stated as fact, or a model's opinion stated as fact
   or as `uncertain`. That holds for the main value **and for every
   `conflicting` alternative**. In 1.0.0 the alternatives were untyped (F-08),
-  so the earlier claim was false for them.
-- **Verification now:** 47 single-mutation invalid cases are rejected, 12 more
-  than before. They include `conflicting_retraction_alternative_not_retracted`,
+  so the earlier claim was false for them. The third independent review found
+  that 1.0.1 still let an absence of record stand as one side of a conflict,
+  let a conflict hold one value twice, and let a verified retraction date
+  stand next to `not_found_in_checked_sources` (Y-05, Y-12). Those are now
+  rejected too.
+- **Verification now:** 52 single-mutation invalid cases are rejected, 17 more
+  than before (5 of them added for Y-05 and Y-12, all accepted by `4a396fb`). They include `conflicting_retraction_alternative_not_retracted`,
   `..._boolean`, `retraction_status_from_model_labelled_uncertain` and
   `retraction_status_with_model_confidence_only`. Ten of the 12 were
   accepted by `ae2ce9e` (`fail-first/results-ae2ce9e.txt`). The other two (a
@@ -47,7 +51,9 @@ retraction values are explicit: `retracted`, `expression_of_concern`,
   rejected, and are kept as guards. Mutants M3 and M23 are killed.
 - **Verification later:** in Stages 04 to 06, the share of produced records
   that state absence of retraction as anything other than `uncertain` must be
-  0, checked by validating every record.
+  0, checked by validating every record. With the Y-05 and Y-12 rules,
+  validation rejects every such form known so far; it cannot
+  rule out a form nobody has thought of yet.
 
 ### 1.2 Evidence-bound, owner-separated stage governance
 
@@ -63,7 +69,7 @@ new owner statement. The next stage needs a third, separate authorization.
   itself, so code inside that process, such as committed test code or a
   dependency, can forge it (R-004).
 - **Verification now:** 12 mandatory scenarios, 19 hand edits, and 19 seeded
-  mutation classes (120 cases) all pass. 73 rule-disabling mutants are run
+  mutation classes (120 cases) all pass. 90 rule-disabling mutants are run
   (TEST_RESULTS.md §5). On the live registry, the orchestrator refuses
   verification while CI evidence is missing. The accepted review cited
   TEST_RESULTS §8 for that, but §8 recorded other codes. The refusal is now
