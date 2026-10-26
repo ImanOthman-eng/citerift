@@ -8,7 +8,7 @@ defect, limitation) and `Stage` (two-digit ids, comma separated, or
 Likelihoods are qualitative judgments, not measured probabilities.
 
 ## R-001 — The engineering agent acts under the owner's GitHub identity
-- Status: open
+- Status: accepted
 - Severity: high
 - Kind: risk
 - Stage: project
@@ -25,8 +25,14 @@ change (R-016; independent review 2026-10-25, F-20). Full mitigation needs a
 required review from an identity the agent does not hold: D-006 (owner-signed
 acceptance) or a separate bot identity, both owner decisions.
 
+Owner-accepted on 2026-10-26 as a residual limitation, not fixed (DECISIONS.md
+D-019, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). The
+safeguards are procedural (GOVERNANCE.md, "Procedural safeguards"); sharing one
+GitHub account does not technically prevent the agent from exercising any
+permission granted to that account.
+
 ## R-002 — Owner references are not machine-verified
-- Status: open
+- Status: accepted
 - Severity: high
 - Kind: limitation
 - Stage: 00
@@ -39,8 +45,14 @@ the verification (OWNER_REF_REUSED); otherwise one reference may back several
 decisions, because one owner message can accept a stage and authorize the next.
 The owner should check the `owner_ref` of each acceptance in the history.
 
+Owner-accepted on 2026-10-26 as a residual limitation, not fixed (DECISIONS.md
+D-019, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). The
+safeguards are procedural (GOVERNANCE.md, "Procedural safeguards"); sharing one
+GitHub account does not technically prevent the agent from exercising any
+permission granted to that account.
+
 ## R-003 — Registry files can be edited by hand
-- Status: open
+- Status: accepted
 - Severity: medium
 - Kind: limitation
 - Stage: 00
@@ -71,8 +83,14 @@ paths, verification directory) can still be edited before a stage is verified;
 that edit shows only in the reviewed diff of `governance/stage_registry.json`.
 Executors, artifact lists and dependencies cannot (V-03, X-07).
 
+Owner-accepted on 2026-10-26 as a residual limitation, not fixed (DECISIONS.md
+D-019, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). The
+safeguards are procedural (GOVERNANCE.md, "Procedural safeguards"); sharing one
+GitHub account does not technically prevent the agent from exercising any
+permission granted to that account.
+
 ## R-004 — CI evidence in the registry is entered by the agent
-- Status: open
+- Status: accepted
 - Severity: medium
 - Kind: limitation
 - Stage: 00
@@ -108,6 +126,12 @@ ignored module the run imports (inside the tree or outside it), or an
 installed dependency can rewrite the report or the plugin's state, and a
 writer can edit a report after the run. In CI the checkout is fresh, so such code must be committed
 or come from `uv.lock`, and a reviewer can see it in the diff.
+
+Owner-accepted on 2026-10-26 as a residual limitation, not fixed (DECISIONS.md
+D-019, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). The
+safeguards are procedural (GOVERNANCE.md, "Procedural safeguards"); sharing one
+GitHub account does not technically prevent the agent from exercising any
+permission granted to that account.
 
 ## R-005 — Contract compatibility is checked against fixtures, not proven
 - Status: open
@@ -238,7 +262,7 @@ bypass actors, and `GET /rules/branches/main` lists all four rules in effect
 resolved.
 
 ## R-016 — The CI gate is defined by a file the gated change can edit
-- Status: open
+- Status: accepted
 - Severity: medium
 - Kind: limitation
 - Stage: 00
@@ -277,6 +301,12 @@ records collection settings that differ from the fixed values (X-02), but a
 dependency or committed test code can still write a false report (R-004). Prevention
 needs a required code-owner review from an identity the agent does not hold
 (D-006 or a bot account), an owner decision.
+
+Owner-accepted on 2026-10-26 as a residual limitation, not fixed (DECISIONS.md
+D-019, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). The
+safeguards are procedural (GOVERNANCE.md, "Procedural safeguards"); sharing one
+GitHub account does not technically prevent the agent from exercising any
+permission granted to that account.
 
 ## R-017 — Stage 00 independent review findings (A-00-001)
 - Status: closed

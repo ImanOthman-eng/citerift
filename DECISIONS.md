@@ -340,3 +340,45 @@ Rejected: rewriting commit authors or trailers (falsifies history); committing
 agent work under the owner's identity (misattributes who did the work);
 removing disclosure entirely (AI assistance must stay disclosed).
 
+
+## D-019 — Owner acceptance of the Stage 00 trust-boundary residuals
+- Status: accepted
+- Topic: stage-00-residual-risk-acceptance
+- Date: 2026-10-26
+- Stage: 00
+- Supersedes: none
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`,
+2026-10-26, section 2): option A of
+docs/verification/stage-00/RISK_DECISION_PACKAGE.md, with additional
+safeguards, for R-001, R-002, R-003, R-004 and R-016. In the owner's words,
+this is "a conscious, bounded acceptance of documented residual limitations
+during active development", and "NOT a declaration that these risks have been
+technically eliminated".
+
+Recorded as: the five entries in RISKS.md have `Status: accepted` (a status the
+memory schema defines), with their severity unchanged. None of them is fixed.
+**Sharing one GitHub account does not technically prevent the agent from
+exercising any permission granted to that account**, including merging,
+changing the ruleset or editing the workflow; the safeguards below are
+procedural.
+
+Safeguards set by the owner (GOVERNANCE.md, "Procedural safeguards"):
+
+1. The agent may develop, test, commit and prepare pull requests.
+2. The owner keeps final acceptance and merge authority.
+3. The owner personally performs merges to the protected `main` branch.
+4. Acceptance references and the actual GitHub CI evidence are reviewed
+   before merging.
+5. Security-sensitive changes, especially CI workflows and governance
+   controls, receive explicit owner review.
+6. Independent evidence is retained outside the editable project working tree
+   wherever supported.
+7. Agent access is reviewed, and revoked when no longer needed after the
+   project.
+8. Owner-signed acceptance (D-006) and a separate agent identity remain
+   documented future enhancements. They are not implemented and are not
+   protections in place.
+
+Recommendation carried forward: decide on D-006 before Stage 09. Accepting
+these residuals authorizes no stage.

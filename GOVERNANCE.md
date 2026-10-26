@@ -173,6 +173,34 @@ Starting another stage, destructive changes, deleting data, security changes,
 paid services, publishing externally, editing Wikipedia, changing the research
 objective or architecture, granting new permissions.
 
+## Procedural safeguards
+
+Set by the owner on 2026-10-26 (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`, DECISIONS.md D-019),
+when the owner accepted R-001, R-002, R-003, R-004 and R-016 as residual
+limitations. They are rules of conduct, not technical controls: the agent
+works under the owner's GitHub account, and sharing one account does not
+technically prevent the agent from exercising any permission granted to that
+account.
+
+1. The agent may develop, test, commit and prepare pull requests.
+2. The owner keeps final acceptance and merge authority.
+3. The owner personally performs merges to the protected `main` branch; the
+   agent never merges to `main`.
+4. Before merging, the owner reviews the acceptance references
+   (`citerift-gov handoff <stage>`) and the actual GitHub CI runs they cite.
+5. Security-sensitive changes, especially to `.github/workflows`,
+   `.github/rulesets`, `src/citerift/governance` and
+   `schemas/governance`, receive explicit owner review; the agent names them
+   in the pull request.
+6. Independent evidence is retained outside the editable project working tree
+   wherever supported: each stage's evidence export, with its SHA-256
+   manifest, is stored by the owner outside GitHub.
+7. The agent's access is reviewed, and revoked when no longer needed after the
+   project.
+8. Owner-signed acceptance (D-006) and a separate agent identity are
+   documented future enhancements, not protections in place.
+
 ## What is enforced technically, and what is not
 
 Prevented (the tool refuses to write it): a transition that is not in the

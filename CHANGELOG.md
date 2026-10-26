@@ -116,6 +116,10 @@ the reopened revision `ae2ce9e`.
   requirements traceability matrix (`TRACEABILITY.md`) and one risk decision
   package for R-001 to R-004 and R-016 (`RISK_DECISION_PACKAGE.md`), both in
   docs/verification/stage-00/. No code changed.
+- Owner acceptance of the Stage 00 trust-boundary residuals (D-019): R-001,
+  R-002, R-003, R-004 and R-016 are `accepted` residual limitations with their
+  severity unchanged, not fixed; GOVERNANCE.md "Procedural safeguards" and
+  CLAUDE.md record the owner's conditions (the owner merges to `main`).
 - GOVERNANCE.md, RISKS.md (R-001, R-003, R-004, R-012, new R-016, R-017, R-018, R-019, R-020, R-021),
   DECISIONS.md D-006 and docs/data-contracts.md state what is prevented, what
   is only detected, and what is not enforceable (F-21, F-22).

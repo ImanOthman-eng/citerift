@@ -22,6 +22,10 @@ uv run citerift-gov check
   pass, and pull requests are merged with merge commits only (the registry cites
   commit SHAs that squash or rebase merges would drop). The ruleset is defined in
   `.github/rulesets/main-protection.json`.
+- Never merge a pull request into `main`: the owner merges personally
+  (GOVERNANCE.md, "Procedural safeguards", D-019). Name any change to
+  `.github/`, `src/citerift/governance` or `schemas/governance` in the pull
+  request so the owner can review it.
 - Before claiming anything is done, run `uv run pytest`, `uv run ruff check .`,
   `uv run mypy` and `uv run citerift-gov check`, and report actual output.
 - Final reports end with exactly one of: VERIFIED COMPLETE (for a stage:
