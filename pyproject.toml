@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Multilingual scientific citation integrity platform: Wikipedia citations to retracted research"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
-authors = [{ name = "EVE TELOS" }]
+authors = [{ name = "EVE TELOS · IM" }]
 dependencies = [
     "jsonschema>=4.23,<5",
 ]
@@ -36,6 +36,8 @@ xfail_strict = true
 [tool.ruff]
 line-length = 120
 target-version = "py312"
+# Audit and review reproduction scripts are kept byte-for-byte as recorded evidence.
+extend-exclude = ["docs/audits", "docs/verification/stage-00/review"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "PL"]

@@ -1,181 +1,183 @@
-# Stage 00 Handoff: Engineering Foundation
+# Stage 00 Handoff: Engineering Foundation (correction A-00-001)
 
 ## Stage and status
 
 - Stage: 00, Engineering Foundation. Executor: engineering agent.
-- Authorized by the owner on 2026-10-25 (`owner_ref`
-  `cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`), Stage 00 only.
-- Recorded status: **`VERIFIED_AWAITING_OWNER_ACCEPTANCE`**, set by the
-  verification transition that pins this file's hash (implementation revision
-  `30e4462e9ae71016dbc6f04cdda19106babd4a34`). No open blocker.
-- Verified revision: `741476c7da8dde4d077e97ae0302a331ef5fdef5`, the commit
-  GitHub Actions tested successfully (same code as `30e4462`).
-- Verdict: **VERIFIED — AWAITING OWNER ACCEPTANCE.** All sixteen gates pass:
-  00-K on GitHub Actions runs at `741476c`, 00-L on the `main-protection`
-  ruleset read back active from GitHub.
-- The stage is **not** accepted. Acceptance is the owner's decision. No later
-  stage is authorized.
+- Authorized by the owner on 2026-10-25 (`cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`),
+  verified at `741476c` and accepted. Reopened by the owner for the
+  corrective amendment A-00-001
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`, history entry 11).
+- Corrected revision: `0c21182e5871f772c3a76c75a1217c7641a63bbb`, recorded as
+  the implementation revision (`IMPLEMENTED_NOT_VERIFIED`).
+- On 2026-10-26 the owner asked for a bounded independent review of the last
+  three fixes (R5-01 to R5-03) and for the verification transition to be
+  applied only if every requirement is demonstrated
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9`). That review, at
+  `0c21182`, returned **VERIFIED** with no new confirmed defect
+  (`review/0c21182/report.md`). This package is the evidence for the
+  verification transition `IMPLEMENTED_NOT_VERIFIED` →
+  `VERIFIED_AWAITING_OWNER_ACCEPTANCE`, which the orchestrator records after
+  this package is committed (see Verified Git commit).
+- The stage is **not** accepted. Acceptance, and the risk decision in
+  RISK_DECISION_PACKAGE.md, are the owner's. No later stage is authorized.
 
 ## Verified completed work
 
 Gate status. "Pass" means the evidence named was produced and inspected; it
-does not mean the owner accepted it.
+does not mean the owner accepted it. Every cited file is in this directory or
+is a Stage 00 owned file committed at the revision.
 
 | Gate | Requirement | Result | Evidence |
 |---|---|---|---|
-| 00-A | Repository initialized safely with verified Git revision | pass | bootstrap `e19b559` on `main` (no history rewritten, no force push); work on `claude/project-thread-9lab67` (`b13f910`, `ecaa845`, `2bf7d60`, `30e4462`), PR #1 |
-| 00-B | Reproducible engineering environment | pass | `uv.lock`; `uv lock --check`; 161/161 tests in a fresh local worktree (Python 3.12.3, 3.13.17) and on GitHub-hosted runners (3.12.3, 3.13.14); fresh-clone recovery test |
-| 00-C | Operational Project Orchestrator | pass | `src/citerift/governance/`, `citerift-gov`; TEST_RESULTS.md sections 1 to 3 |
-| 00-D | Persistent Project Memory | pass | `governance/stage_registry.json`, generated `PROJECT_STATUS.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md`; 19 hand-edit detections |
-| 00-E | Orchestrator-Memory integration | pass | 12 mandatory scenarios, `test_integration_scenarios.py` |
-| 00-F | Validated stage-transition rules | pass | exhaustive model check, differential test, 9/9 mutants killed |
-| 00-G | Versioned data contracts, positive and negative tests | pass | `schemas/contracts/v1/`; 3 valid fixtures, 35 invalid cases, compatibility test |
-| 00-H | Pre-implementation simulations | pass | SIMULATION_REPORT.md; found and drove the fix of D-016 |
-| 00-I | Unit and integration tests | pass | `test-report.json` (from CI): unit 29, integration 59 |
-| 00-J | Regression and consistency tests | pass | regression 12; `citerift-gov check` 0 errors locally and in CI; `render-status --check` |
-| 00-K | Successful GitHub Actions verification | pass | runs [40188172695](https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695) (push) and [40188175045](https://github.com/ImanOthman-eng/citerift/actions/runs/40188175045) (pull_request), attempt 2, at `741476c`: all jobs and steps succeeded, 161 passed per verify job (TEST_RESULTS.md section 6). B-00-001 resolved |
-| 00-L | Effective branch protection verified | pass | ruleset `main-protection` id 25824038, enforcement active, created by the owner; read back from the GitHub API and equal to `.github/rulesets/main-protection.json`; `GET /rules/branches/main` lists deletion, non-fast-forward, pull request (merge only) and required `ci-gate` (app 15368, strict); no bypass actors (TEST_RESULTS.md section 7). B-00-002 resolved |
-| 00-M | Security and adversarial review | pass | RISK_ANALYSIS.md; security suite 8; pip-audit clean; zizmor offline clean; secret scan |
-| 00-N | Creative Differentiation Review | pass | CREATIVE_DIFFERENTIATION_REVIEW.md |
-| 00-O | Reproducible documentation and handoff | pass | this package, `docs/development.md`, `GOVERNANCE.md`, `citerift-gov recover` |
-| 00-P | No known unresolved critical foundational defect | pass | `RISKS.md` has no open critical defect; the final review's defects were fixed in `2bf7d60` and `30e4462` |
+| 00-A | Repository initialized safely with verified Git revision | pass | no history rewritten, no force push; every change on `claude/project-thread-84z62e` (PR #2), merge commits only; `0c21182` in the branch history (this file) |
+| 00-B | Reproducible engineering environment | pass | `uv.lock` unchanged since `741476c`; both CI test reports (404 of 404 on 3.12.3 and 3.13.14); the handoff simulation's clean-clone install (`handoff/results-0c21182.json`) |
+| 00-C | Operational Project Orchestrator | pass | TEST_RESULTS.md §1, §3; SPECIFICATION.md |
+| 00-D | Persistent Project Memory | pass | TEST_RESULTS.md §1 to §3; handoff simulation points 3 and 10 |
+| 00-E | Orchestrator-Memory integration | pass | TEST_RESULTS.md §2 |
+| 00-F | Validated stage-transition rules | pass | SIMULATION_REPORT.md; MATHEMATICAL_MODEL.md; `simulation/replay-conformance-full.json` (0 disagreements); TEST_RESULTS.md §5 |
+| 00-G | Versioned data contracts with positive and negative tests | pass | contracts 1.0.1, `schemas/contracts/v1/`; 3 valid fixtures, 52 invalid cases; TEST_RESULTS.md §1 |
+| 00-H | Completed relevant pre-implementation simulations | pass | SIMULATION_REPORT.md; `simulation/model-results.json` |
+| 00-I | Successful unit and integration tests | pass | `test-report.json`: unit 29, integration 141 |
+| 00-J | Successful regression and consistency tests | pass | `test-report.json`: regression 214; fail-first runs (`fail-first/README.md`); `check` 0 errors |
+| 00-K | Successful GitHub Actions verification | pass | push run 40273320614 and pull_request run 40273323339 at `0c21182`, all jobs and steps green (TEST_RESULTS.md §7) |
+| 00-L | Effective branch protection verified | pass | ruleset 25824038 read back active and equal to the file (TEST_RESULTS.md §8) |
+| 00-M | Security and adversarial review completed | pass | RISK_ANALYSIS.md; six independent reviews (`review/README.md`, TEST_RESULTS.md §9); the last, bounded to the R5 fixes, VERIFIED (`review/0c21182/report.md`); trust-boundary items put to the owner in RISK_DECISION_PACKAGE.md |
+| 00-N | Creative Differentiation Review completed | pass | CREATIVE_DIFFERENTIATION_REVIEW.md |
+| 00-O | Reproducible Stage 00 documentation and handoff | pass | this package; handoff simulation 12 of 12; requirements traceability in TRACEABILITY.md |
+| 00-P | No known unresolved critical foundational defect | pass | no review found a critical defect; every reproduced finding is fixed; no open critical defect in RISKS.md |
 
 ## Inputs and outputs
 
-Inputs: Master Plan v1.0, Architecture v1.1, Engineering Governance Protocol
-v1.0 and Prompt 02 (owner messages in the project thread); the empty
-repository `ImanOthman-eng/citerift`; the CITERIFT cloud environment. No
-external data was read or written. Stage 01 findings were not used.
+Inputs: the accepted Stage 00 at `741476c`; the owner's correction
+instruction (`cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`); the
+independent audit of 2026-10-25 (`docs/audits/stage-00-2026-10-25/`); the
+six review reports in `review/`; the owner's final verification instruction
+(`cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9`). No external data was read or written. No
+Stage 01 finding was used.
 
-Outputs (all in the repository):
-
-| Output | Path |
-|---|---|
-| Project Orchestrator and CLI | `src/citerift/governance/`, `citerift-gov` |
-| Contract validator and CLI | `src/citerift/contracts/`, `citerift-contracts` |
-| Canonical state and schema | `governance/stage_registry.json`, `schemas/governance/stage_registry.schema.json` |
-| Memory records | `PROJECT_STATUS.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md`, `GOVERNANCE.md` |
-| Data contracts v1 | `schemas/contracts/v1/`, `docs/data-contracts.md` |
-| Simulation | `simulations/stage00/state_machine_model.py`, `docs/verification/stage-00/simulation/` |
-| Tests | `tests/stage00/` (161 tests) |
-| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` |
-| Policies | `docs/sources-and-attribution.md`, `docs/architecture.md`, `docs/development.md` |
-| Verification package | `docs/verification/stage-00/` |
+Outputs, all in the repository: the corrected orchestrator, memory and
+contracts (`src/citerift/`, `schemas/`), data contracts 1.0.1
+(`docs/data-contracts.md`), the replay-conformance simulation
+(`simulations/stage00/replay_conformance.py`), 404 tests (`tests/stage00/`),
+the CI workflow (`.github/workflows/ci.yml`), this package, and the updated
+GOVERNANCE.md, RISKS.md (R-016 to R-021), DECISIONS.md and CHANGELOG.md. The
+project identity work (OWNERSHIP.md, `docs/identity.md`, CODEOWNERS) is on the
+same pull request and does not touch a Stage 00 owned path.
 
 ## Test evidence
 
-- `test-report.json` (Python 3.12.3) and `test-report-python3.13.json`
-  (3.13.14): produced by GitHub Actions run 40188172695 at `741476c`, clean
-  tree, 161 collected, 161 passed, 0 failed, all 8 required suites passed;
-  copied unchanged from the run's artifacts. sha256 values in TEST_RESULTS.md.
-  The same 161 tests also pass locally at `30e4462` (`superseded/30e4462/`).
-- Mutation: 9 of 9 killed at `30e4462` (`mutation/results-30e4462.txt`).
-- Simulation: exhaustive reduced model 0 violations over 1,756,160 attempts;
-  4,000,000 random-walk attempts 0 violations; output reproduced exactly.
-- Static: ruff, mypy strict, schema meta-validation, governance check, status
-  document check, pip-audit, zizmor: all clean (TEST_RESULTS.md section 4).
-- GitHub Actions: both runs at `741476c` green; logs show 0 governance
-  errors and no known vulnerabilities (00-K).
-- Branch protection: ruleset 25824038 active on `main` and read back (00-L).
+- `test-report.json` (3.12.3) and `test-report-python3.13.json` (3.13.14):
+  from CI run 40273320614 at `0c21182`, clean tree, complete selection, 404
+  collected, 404 passed; copied unchanged (TEST_RESULTS.md §1).
+- Fail-first: each review's findings fail on the revision reported against
+  (82, 36, 46, 27, 7 and 4 failing tests; TEST_RESULTS.md §3).
+- Mutation: TEST_RESULTS.md §5.
+- Simulation: model and conformance outputs byte-identical at `0c21182`;
+  handoff simulation 12 of 12 (TEST_RESULTS.md §6).
+- Static checks and dependency audit clean in CI (TEST_RESULTS.md §4).
 
 ## Known limitations
 
-From RISKS.md and RISK_ANALYSIS.md, stated plainly:
+From RISKS.md and RISK_ANALYSIS.md §4, stated plainly:
 
-- The agent acts under the owner's GitHub account, so GitHub identity cannot
-  separate the two (R-001). Owner decisions are attested by reference to the
-  owner's words (D-005); the references are not machine-read (R-002).
-- A fully consistent hand forgery of history and records is detectable only by
-  review (R-003). CI evidence in the registry is entered by the agent (R-004).
-- Evidence checks are structural (size, headings, paths, hashes, revisions),
-  not semantic.
-- Contract compatibility is checked against fixtures, not proven (R-005);
-  identifier formats are deliberately permissive until Stages 02 and 03 (R-006).
-- Exhaustive model checking covers 4 stages; 10 stages are covered by sampling
-  and a guided path.
-- No license is chosen (D-007, R-009).
+- The agent acts under the owner's GitHub account (R-001), and owner
+  references are not machine-read (R-002). Hand edits are detected, not
+  prevented; a consistent forgery is not detected (R-003).
+- The test report and CI record are written by the agent's own processes.
+  Code inside the test process can forge the report; the CI record is
+  checked offline for form, not fetched (R-004).
+- CI is not independent of the change it gates, and code reaching uv through
+  unowned inputs (locked wheels, `.python-version`, uv settings) runs during
+  the governance check (R-016).
+- Each open-ended review round found new low-severity variants of earlier
+  findings; the bounded review of the last fixes found none (R-021). A
+  further open-ended round may find more.
+- These trust-boundary items (R-001 to R-004, R-016) cannot be closed by
+  repository code. They are not accepted by this package or by the
+  verification transition; RISK_DECISION_PACKAGE.md puts them to the owner
+  as one decision, with alternatives and a recommendation.
+- Contract compatibility is checked against fixtures (R-005); identifier
+  formats stay permissive until real data (R-006). No license is chosen
+  (D-007).
 
 ## Open blockers
 
-None. Both Stage 00 blockers were resolved on 2026-10-25 with evidence:
-
-| Id | Blocker | Resolution |
-|---|---|---|
-| B-00-001 | GitHub Actions jobs not started (account billing lock) | owner updated billing; CI runs 40188172695 and 40188175045 succeeded at `741476c` (00-K) |
-| B-00-002 | Branch protection could not be created from this session | owner created ruleset `main-protection` (id 25824038); read back active and equal to the file (00-L) |
+None. B-00-001 and B-00-002 were resolved on 2026-10-25.
 
 ## Dependency versions
 
-From `uv.lock` (sha256 `52980fe6641ddd859ea3f93750e4bf348df47eccf4695adc610cb24bd164fe50`):
+`uv.lock` sha256 `52980fe6641ddd859ea3f93750e4bf348df47eccf4695adc610cb24bd164fe50`,
+unchanged since `741476c`:
 
 | Package | Version | Role |
 |---|---|---|
-| Python | 3.12.3 (baseline), 3.13.17 (tested) | `requires-python >=3.12,<3.14` (D-001) |
+| Python | 3.12.3 and 3.13.14 (CI), 3.12.3 (local) | `requires-python >=3.12,<3.14` (D-001) |
 | jsonschema | 4.26.0 | runtime |
-| referencing | 0.37.0 | runtime (schema resolution) |
+| referencing | 0.37.0 | runtime |
 | jsonschema-specifications | 2025.9.1 | runtime |
-| rpds-py | 2026.9.1 | runtime (via referencing) |
-| attrs | 26.1.0 | runtime (via jsonschema) |
+| rpds-py | 2026.9.1 | runtime |
+| attrs | 26.1.0 | runtime |
 | pytest | 9.1.1 | development |
 | ruff | 0.17.2 | development |
 | mypy | 2.4.0 | development |
 | pip-audit | 2.10.1 | development |
 | uv | 0.11.32 | tooling (pinned in CI) |
 
-CI actions are pinned to commit SHAs in `.github/workflows/ci.yml`.
+CI actions are pinned to commit SHAs.
 
 ## Verified Git commit
 
-`741476c7da8dde4d077e97ae0302a331ef5fdef5`
+`0c21182e5871f772c3a76c75a1217c7641a63bbb` on branch
+`claude/project-thread-84z62e` in <https://github.com/ImanOthman-eng/citerift>
+(PR #2): the commit both green CI runs tested. The commits after it change
+only this directory, the registry and PROJECT_STATUS.md, none under a Stage 00
+owned path. PR #2 must be merged with a merge commit so the cited commits stay
+in `main`'s history.
 
-on branch `claude/project-thread-9lab67`, in
-<https://github.com/ImanOthman-eng/citerift> (PR #1): the commit both green CI
-runs tested. Its code equals the recorded implementation revision `30e4462`;
-the commits after `30e4462` change only the verification package, evidence and
-registry, none under a Stage 00 owned path, so they do not make the evidence
-stale. PR #1 must be merged with a merge commit (not squash or rebase) so the
-cited commits stay in `main`'s history; the ruleset now allows only merge
-commits.
-
-Dry run of the verification transition at `741476c` with
-`verification-record.json` (all sixteen gates and the CI record), after
-B-00-002 was resolved, 2026-10-25:
+Dry run of the verification transition with `verification-record.json` (all
+sixteen gates and the CI record of push run 40273320614):
 
 ```
+$ uv run citerift-gov transition 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE --actor engineering-agent \
+    --revision 0c21182e5871f772c3a76c75a1217c7641a63bbb \
+    --record docs/verification/stage-00/verification-record.json --reason "..."
 Transition stage 00 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: ALLOWED
 Dry run: nothing written. Re-run with --apply to record it.
 ```
 
-The orchestrator checked the seven artifacts, the handoff sections, the cited
-revision, both test reports, every gate and the CI record, and raised nothing.
-The same command was then run with `--apply`. The earlier dry run, before the
-ruleset existed, was refused with only `BLOCKER_OPEN` B-00-002 and
-`GATE_NOT_PASSED` 00-L.
+Run on 2026-10-26 after the implementation revision was recorded, and again
+after each change to this package. The orchestrator checked the seven
+artifacts, the handoff sections, the cited revision, both test reports, every
+gate and its pinned evidence, and the CI record, and raised nothing. After
+the bounded review returned VERIFIED and this package was committed, the same
+command was run with `--apply`; the registry and PROJECT_STATUS.md record it.
 
 ## Acceptance decision
 
-Requested from the owner. Stage 00 is `VERIFIED_AWAITING_OWNER_ACCEPTANCE`;
-the agent cannot accept it and the orchestrator refuses acceptance from any
-actor but the owner. To accept, the owner states it in their own words; the
-transition is then recorded with `--actor owner --owner-ref <that message>`
-and must cite the verified revision `741476c`. The owner may instead reject it
-or ask for rework.
+Requested from the owner, as one decision on the whole correction set and on
+RISK_DECISION_PACKAGE.md. The orchestrator refuses acceptance from any actor
+but the owner. The owner can:
 
-Owner decisions also pending, not blocking Stage 00 verification: license
-(D-007, recommendation Apache-2.0 for code) and optional SSH-signed acceptance
-(D-006, recommendation: not needed for the hackathon timeline).
+- accept Stage 00 at revision `0c21182` together with option A of the risk
+  package: the agent then records the acceptance with
+  `--actor owner --owner-ref <that message>`;
+- choose another option of the risk package; or
+- reject or ask for rework.
+
+Merging PR #2 is a separate owner approval, with a merge commit only.
+
+Also pending, not blocking: license (D-007) and owner-signed acceptance
+(D-006).
 
 ## Requirements for the next stage
 
-- **No stage after 00 is authorized.** Accepting Stage 00 will not authorize
-  anything; Stage 02 and 03 each need their own owner authorization, and the
-  orchestrator refuses it until both Stage 00 and Stage 01 are accepted.
-- Stage 01 is assigned to the external feasibility agent. Its handoff must be
-  placed in `docs/verification/stage-01/HANDOFF.md`, satisfy gates 01-A to
-  01-G, and be accepted by the owner. Stage 00 does not assume any Stage 01
-  finding.
-- Remaining for Stage 00: the owner's acceptance decision. PR #1 is merged
-  only with the owner's explicit authorization, with a merge commit, once
-  `ci-gate` is green.
-- Session start for any later work: `uv sync --locked`, `uv run citerift-gov recover`,
-  `uv run citerift-gov check`.
+- **No stage after 00 is authorized.** Accepting Stage 00 authorizes nothing;
+  Stages 02 and 03 each need their own owner authorization, refused until
+  Stages 00 and 01 are accepted.
+- Stage 01 belongs to the external feasibility agent; nothing here assumes its
+  findings.
+- A later stage that needs a contract change follows `docs/data-contracts.md`:
+  new schemas outside `v1/` that `$ref` the v1 definitions, or an
+  owner-approved enhancement amendment.
+- Session start for any later work: `uv sync --locked`,
+  `uv run citerift-gov recover`, `uv run citerift-gov check`.

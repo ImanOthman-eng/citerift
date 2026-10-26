@@ -20,6 +20,8 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 from referencing.jsonschema import DRAFT202012
 
+from citerift.contracts.formats import FORMAT_CHECKER, is_calendar_partial_date, loads_strict, parse_utc_timestamp
+
 INVESTIGATION_ID = "urn:citerift:schema:contracts:v1:investigation"
 
 
@@ -52,7 +54,7 @@ class ContractSet:
         return problems
 
     def validate(self, instance: Any, schema_id: str = INVESTIGATION_ID) -> list[ContractProblem]:
-        validator = Draft202012Validator(self.schemas[schema_id], registry=self.registry)
+        validator = Draft202012Validator(self.schemas[schema_id], registry=self.registry, format_checker=FORMAT_CHECKER)
         problems = [
             ContractProblem(
                 "SCHEMA_VIOLATION",
@@ -91,9 +93,22 @@ def semantic_problems(record: dict[str, Any]) -> list[ContractProblem]:
                     f"no citation {a['target_citation_id']}",
                 )
             )
-    times = [e["at"] for e in record["events"]]
+    # Compare instants, not strings: "...:00.5Z" sorts after "...:00Z" as text but
+    # "...:00Z" vs "...:00.5Z" vs "...:01Z" must follow time order.
+    times = [t for t in (parse_utc_timestamp(e["at"]) for e in record["events"]) if t is not None]
     if times != sorted(times):
         problems.append(ContractProblem("EVENT_ORDER", "/events", "events are not in chronological order"))
+    retraction_date = record["subject_paper"].get("retraction_date")
+    if retraction_date is not None:
+        candidates = [("/subject_paper/retraction_date/value", retraction_date.get("value"))]
+        candidates += [
+            (f"/subject_paper/retraction_date/alternatives/{i}/value", alt.get("value"))
+            for i, alt in enumerate(retraction_date.get("alternatives", []))
+        ]
+        for path, value in candidates:
+            if isinstance(value, str) and not is_calendar_partial_date(value):
+                problems.append(ContractProblem("INVALID_DATE", path, f"{value!r} is not a calendar date"))
+    problems += _conflicts_without_disagreement(record, "")
     status = record["status"]
     if status in ("partial", "failed") and not record["limitations"]:
         problems.append(
@@ -102,10 +117,29 @@ def semantic_problems(record: dict[str, Any]) -> list[ContractProblem]:
     return problems
 
 
+def _conflicts_without_disagreement(node: Any, path: str) -> list[ContractProblem]:
+    """A ``conflicting`` assertion must hold at least two different values; alternatives that all agree
+    describe no conflict (Y-05)."""
+    problems: list[ContractProblem] = []
+    if isinstance(node, dict):
+        alternatives = node.get("alternatives")
+        if node.get("status") == "conflicting" and isinstance(alternatives, list):
+            values = {json.dumps(a.get("value"), sort_keys=True) for a in alternatives if isinstance(a, dict)}
+            if len(values) < 2:
+                message = "conflicting alternatives all hold one value"
+                problems.append(ContractProblem("CONFLICT_WITHOUT_DISAGREEMENT", path, message))
+        for key, value in node.items():
+            problems += _conflicts_without_disagreement(value, f"{path}/{key}")
+    elif isinstance(node, list):
+        for i, value in enumerate(node):
+            problems += _conflicts_without_disagreement(value, f"{path}/{i}")
+    return problems
+
+
 def load_contracts(schema_dir: Path) -> ContractSet:
     schemas: dict[str, dict[str, Any]] = {}
     for path in sorted(schema_dir.rglob("*.schema.json")):
-        schema = json.loads(path.read_text(encoding="utf-8"))
+        schema = loads_strict(path.read_text(encoding="utf-8"))
         sid = schema.get("$id")
         if not isinstance(sid, str):
             raise ValueError(f"{path} has no $id")
@@ -153,7 +187,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if problems else 0
     failed = 0
     for path in args.files:
-        problems = contracts.validate(json.loads(path.read_text(encoding="utf-8")), args.schema_id)
+        try:
+            record = loads_strict(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            problems = [ContractProblem("UNREADABLE", "", str(exc))]
+        else:
+            problems = contracts.validate(record, args.schema_id)
         print(f"{path}: {'valid' if not problems else 'INVALID'}")
         for p in problems:
             print(f"  {p}")

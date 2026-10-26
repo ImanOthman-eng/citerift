@@ -1,42 +1,78 @@
 {
   "format": "citerift.test-report/1",
-  "revision": "741476c7da8dde4d077e97ae0302a331ef5fdef5",
+  "revision": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
   "dirty": false,
   "dirty_paths": [],
-  "started_at": "2026-10-25T13:19:59Z",
-  "finished_at": "2026-10-25T13:20:28Z",
+  "started_at": "2026-10-26T05:16:33Z",
+  "finished_at": "2026-10-26T05:19:13Z",
   "python": "3.13.14",
   "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
   "pytest": "9.1.1",
   "exit_status": 0,
-  "collected": 161,
+  "collected": 404,
+  "selection": {
+    "args": [
+      "tests"
+    ],
+    "override_ini": [],
+    "other_ini_file": "",
+    "keyword": "",
+    "markexpr": "",
+    "ignore": [],
+    "ignore_glob": [],
+    "last_failed": false,
+    "stepwise": false,
+    "collection_settings": {},
+    "plugins": [],
+    "env_plugins": "",
+    "complete": true,
+    "deselected": 0,
+    "dropped": 0,
+    "repeated": 0,
+    "files": [
+      "tests/stage00/test_cli.py",
+      "tests/stage00/test_contracts.py",
+      "tests/stage00/test_corrections.py",
+      "tests/stage00/test_failure_simulation.py",
+      "tests/stage00/test_integration_scenarios.py",
+      "tests/stage00/test_properties.py",
+      "tests/stage00/test_recovery.py",
+      "tests/stage00/test_registry_tampering.py",
+      "tests/stage00/test_repository.py",
+      "tests/stage00/test_simulation.py",
+      "tests/stage00/test_unit_model_evidence_memory.py"
+    ],
+    "conftests": [
+      "tests/stage00/conftest.py"
+    ]
+  },
   "totals": {
-    "passed": 161
+    "passed": 404
   },
   "suites": {
     "unit": {
       "passed": 29
     },
     "integration": {
-      "passed": 59
+      "passed": 141
     },
     "negative": {
-      "passed": 107
+      "passed": 240
     },
     "regression": {
-      "passed": 12
+      "passed": 214
     },
     "reproducibility": {
-      "passed": 3
+      "passed": 5
     },
     "security": {
-      "passed": 8
+      "passed": 202
     },
     "contracts": {
-      "passed": 49
+      "passed": 87
     },
     "simulation": {
-      "passed": 6
+      "passed": 20
     }
   },
   "failures": []

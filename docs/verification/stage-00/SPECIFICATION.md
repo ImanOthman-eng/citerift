@@ -1,102 +1,206 @@
-# Stage 00 Specification: Engineering Foundation
+# Stage 00 Specification: Engineering Foundation (correction A-00-001)
 
-Authorized by the owner on 2026-10-25 (Prompt 02, project thread message
-`cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`). Scope: Stage 00 only.
-No later stage is authorized by this document or by any Stage 00 result.
+Stage 00 was authorized by the owner on 2026-10-25 (Prompt 02,
+`cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV`), verified at `741476c`
+and accepted. The owner then reopened it for a controlled corrective amendment
+(`cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`, amendment A-00-001,
+history entry 11). This package is the result of the corrected stage. The
+accepted package is kept unchanged in `superseded/741476c/`.
 
-## Purpose
+Scope of the correction: the confirmed findings F-01 to F-23 of the
+independent review in `docs/audits/stage-00-2026-10-25/`, the defect S-01
+found during the correction, the findings V-01 to V-16 of the first final
+independent review, X-01 to X-14 of the second and Y-01 to Y-13 of the
+third (`review/`), Z-01 to Z-05 of the confirmation review and R5-01 to R5-03 of the fix
+check, all inside
+Stage 00's original scope. No later stage is touched or authorized. Stage 01 belongs to
+the external agent and nothing here assumes any of its findings.
+
+## Purpose (unchanged)
 
 Give CITERIFT a foundation in which stage state, owner decisions, evidence and
 data contracts are recorded in the repository, checked by code, and recoverable
-by a new session that has nothing but a clone. Nothing in Stage 00 touches
-Wikipedia, Retraction Watch, Crossref or any model; it builds the controls that
-later stages must pass through.
+by a new session from a clone alone. Stage 00 reads no external data.
 
 ## Components
 
-| Component | Location | Requirement it meets |
+| Component | Location | Change in A-00-001 |
 |---|---|---|
-| Project Orchestrator | `src/citerift/governance/` (`model.py`, `orchestrator.py`, `evidence.py`, `gitutil.py`), CLI `citerift-gov` | 7 states, explicit transitions, owner-only decisions, verification separate from acceptance and from next-stage authorization |
-| Persistent Project Memory | `governance/stage_registry.json` (canonical), `schemas/governance/stage_registry.schema.json`, generated `PROJECT_STATUS.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md`, `src/citerift/governance/memory.py` | one machine-readable state record, structured decision and risk logs, integrity rules, recovery |
-| Data contracts v1 | `schemas/contracts/v1/`, `src/citerift/contracts/validate.py`, CLI `citerift-contracts`, fixtures in `tests/stage00/fixtures/contracts/v1/` | versioned contracts with valid and invalid synthetic fixtures |
-| Test evidence plugin | `src/citerift/governance/pytest_report.py` | machine-readable test report bound to a git revision |
-| Simulation | `simulations/stage00/state_machine_model.py` | pre-implementation model of the governance rules |
-| CI | `.github/workflows/ci.yml` | lockfile, lint, types, schemas, governance check, tests on 3.12 and 3.13, dependency audit, `ci-gate` |
-| Branch protection definition | `.github/rulesets/main-protection.json` | protection of `main` (active on GitHub as ruleset 25824038) |
-| Repository foundation | `README.md`, `.gitignore`, `GOVERNANCE.md`, `CLAUDE.md`, `docs/` | onboarding, standing rules, sources and attribution policy |
+| Project Orchestrator | `src/citerift/governance/` (`model.py`, `orchestrator.py`, `evidence.py`, `gitutil.py`, `cli.py`), CLI `citerift-gov` | replay checks every rule per entry; content-based drift; manifest and definition hashes; future times refused; strict JSON; unreadable registry reported, not crashed |
+| Persistent Project Memory | `governance/stage_registry.json`, `schemas/governance/stage_registry.schema.json`, `PROJECT_STATUS.md`, `DECISIONS.md`, `RISKS.md`, `CHANGELOG.md`, `memory.py` | policy fixed by the schema; malformed entries are errors; project-wide defects count |
+| Data contracts v1, version 1.0.1 | `schemas/contracts/v1/`, `src/citerift/contracts/` (`validate.py`, new `formats.py`), CLI `citerift-contracts` | explicit accepted values for all alternatives; date-time and calendar checks; portable patterns; duplicate keys rejected |
+| Test evidence plugin | `src/citerift/governance/pytest_report.py` | records how tests were selected; partial runs are not evidence |
+| Simulations | `simulations/stage00/state_machine_model.py` (unchanged), new `replay_conformance.py` | exhaustive check of the history replay against the model |
+| CI and protection definition | `.github/workflows/ci.yml`, `.github/rulesets/main-protection.json` | now Stage 00 owned paths (detection for F-20); CI runs the checks as `python -P -m` from `src`, not through entry points, and asserts that the imported package is the one in `src` (V-04); the governance check runs before the project is built and before the tools `pyproject.toml` configures, and the job ends with its own report check and a tree check (Y-08, Z-04) |
+| Repository foundation | `.gitattributes` (new, LF), `src/citerift/py.typed` (new) | owned paths |
 
-## State machine
+## State machine (unchanged edges)
 
-States: `NOT_STARTED`, `AUTHORIZED`, `IN_PROGRESS`, `BLOCKED`,
+States `NOT_STARTED`, `AUTHORIZED`, `IN_PROGRESS`, `BLOCKED`,
 `IMPLEMENTED_NOT_VERIFIED`, `VERIFIED_AWAITING_OWNER_ACCEPTANCE`,
-`ACCEPTED_CLOSED`. Eleven edges (`citerift-gov transitions`). Four are
-owner-only: authorize (NS→AU), withdraw (AU→NS), accept (VA→AC), reopen
-(AC→IP, needs a `correction` amendment). Owner transitions require an
-`owner_ref` that cites the owner's own words.
+`ACCEPTED_CLOSED`; eleven edges; four owner-only (authorize, withdraw, accept,
+reopen). The edge table did not change. What changed is where the guards are
+checked: before A-00-001 the guards ran only in `propose()`. Now every history
+entry is checked against them at its own position in `check`:
 
-A transition is accepted only if (1) the edge exists, (2) the actor may take
-it, and (3) the registry that would result passes the full consistency check.
-The check is the same one CI runs, so a hand edit and a CLI transition are held
-to the same rules.
+- single active engineering stage after the entry
+- dependencies accepted at authorize, verify and accept
+- a correction amendment recorded before a reopening, and not cited by an
+  earlier reopening (V-08)
+- a blocker open for a block, and none open for start, unblock, verify or
+  accept (X-10)
 
-Verification (IN→VA) requires: every required artifact present and non-trivial
-(at least 300 bytes) with its sha256 pinned; a handoff with all required
-sections that cites the verified revision; a `citerift.test-report/1` report
-at that revision from a clean tree, with no failures and every required suite
-passing; every acceptance gate recorded as passed with existing evidence; for
-engineering stages a successful CI run on that revision; no open blocker; no
-open critical defect in `RISKS.md`.
+A hand-written history must pass the same rules as one written by the tool.
 
-Acceptance (VA→AC) is owner-only and must cite the verified revision.
-Accepting a stage does not authorize its successor: authorization is a
-separate owner transition, refused until every dependency is accepted.
+Reopening a foundation stage after a dependent was accepted is allowed again
+(F-11). The model always allowed it. The dependent is then reported with the
+warning `DEPENDENCY_REOPENED`, not an error. The single-active rule still
+prevents two engineering stages from being active together.
+
+## Verification requirements (IN→VA)
+
+All of the requirements of `741476c`, plus:
+
+1. The verification record pins **every file** under the verification
+   directory (`evidence_manifest`), not only the seven artifacts. Each gate
+   evidence path must be a pinned file inside that directory, or a file under
+   the stage's owned paths that is committed at the verified revision (whose
+   content the drift check compares with that revision; an ignored or
+   untracked file is bound by nothing, Y-09). An https URL may be cited as well, but it is not
+   pinned: every gate must cite at least one pinned file, and every file it
+   cites must be pinned and named by a plain path, with no empty, `.` or `..`
+   segment and no symbolic link on the way (F-02, V-02, X-01). Files git
+   ignores are not evidence and are left out of the manifest (S-01).
+2. The record pins `definition_sha256` over the stage definition and the
+   policy. The definition covers the owned paths, gates, suites, artifacts,
+   dependencies, executor and `ci_required`. Weakening them after
+   verification is `DEFINITION_CHANGED`. An engineering stage with no owned
+   paths, gates or suites cannot be verified (`DEFINITION_WEAK`, F-03).
+3. The registry schema fixes the policy values (`single_active`, artifacts,
+   handoff file and sections, report file) and `ci_required: true` for
+   engineering stages. A stage cannot override the artifact list with a
+   shorter one, and the executor and the dependency list are fixed per stage
+   (D-010): Stage 01 is `external-agent`, every other stage
+   `engineering-agent`. The handoff file is always a required artifact (F-03,
+   V-03, X-07).
+4. The test report must record a complete selection. That means the whole
+   `tests` tree, with no `-k`, `-m`, `--deselect`, `--ignore`, `--lf` or
+   stepwise run, no `-o` ini override other than the one `--strict-markers`
+   sets, no other ini file, the collection settings `python_files`,
+   `python_classes`, `python_functions` and `testpaths` at their fixed values,
+   no `-p` or `PYTEST_PLUGINS` plugin other than the report plugin, nothing
+   deselected, no collected test removed or repeated by a hook (compared by
+   node id), nothing not run, and every test passed: none skipped, xfailed or
+   xpassed (Y-03). The tree was clean: no change shown by `git status`, no
+   tracked file flagged `--skip-worktree` or `--assume-unchanged`, no tracked
+   file whose bytes differ from its index entry (read from disk, not from the
+   stat cache), and the report not written over a tracked file, whatever its
+   name (Y-01, Y-02, Z-01, Z-05). Every committed
+   `tests/**/test_*.py` file at
+   the verified revision must appear among the files that ran, and every
+   conftest the run loaded must be committed at that revision (F-07, V-01,
+   X-02, X-03). The report is written by the test process itself, so code
+   running in that process (committed test or conftest code, an imported
+   module, an installed dependency) can forge it (R-004).
+5. The CI record's URL must be exactly
+   `https://github.com/<project.repository>/actions/runs/<id>` (ASCII letters
+   compared without case, R5-03), and the
+   record must name the verified revision and success (Y-10, Z-02).
+6. The handoff, report and record are read with duplicate-key rejection
+   (F-18).
 
 ## Persistent memory integrity rules
 
-1. The registry validates against its JSON Schema.
-2. Replaying `history` from `NOT_STARTED` reproduces every stage's `status`.
-3. History sequence numbers are contiguous and timestamps non-decreasing.
-4. At most one engineering-agent stage is active (the external Stage 01 is
-   exempt, D-010).
-5. Stage records (authorization, implementation, verification, acceptance,
-   blockers) match the status; a record for a state not reached is an error.
-6. Cited revisions exist and are in the history of `HEAD`; a shallow clone is
-   reported, not trusted.
-7. Pinned evidence hashes match the files; evidence paths must stay inside the
-   repository.
-8. A commit touching a verified stage's owned paths without an amendment makes
-   the verification stale.
-9. `DECISIONS.md` has at most one accepted decision per topic and consistent
-   supersession links; `RISKS.md` entries have valid fields.
-10. `PROJECT_STATUS.md` equals the rendering of the registry.
+Rules 1 to 10 of `741476c` still hold. They are strengthened as follows:
 
-Recovery: `citerift-gov recover` rebuilds the full state, open items and the
-next authorized action from a fresh clone (tested in a separate process).
+- Rule 2, replay. Each entry is also checked against the transition guards at
+  its own time (F-04, F-05, X-10).
+- Rule 3, ordering. A time more than 5 minutes ahead of the local clock is
+  refused when written and reported by `check` (F-16). A default time is
+  never earlier than the last recorded time (V-11). The bound is relative to
+  the writer's clock, so a writer whose clock is fast still blocks correct
+  machines until real time catches up (R-012, detected).
+- Rule 5, records. Authorization, verification and acceptance records must
+  equal their history entry (time, owner reference). An acceptance must cite
+  an owner reference not used before the verification, by a history entry or
+  by an amendment (F-17, V-07). One owner message may still cover several
+  decisions, such as accepting two stages (R-002). An amendment must cite an
+  owner reference that no earlier history entry or amendment cited, compared
+  by instant and counting the same second as earlier (X-13, Y-07). An
+  amendment must be recorded while its stage is accepted
+  (`AMENDMENT_NOT_APPLICABLE`, Y-06). Amendment and blocker ids are unique
+  (V-09).
+- Rule 7, hashes. They cover every file in the verification directory, and
+  the line-ending policy is fixed by the root `.gitattributes`. A tracked
+  nested `.gitattributes` is an error (`ATTRIBUTES_NESTED`) (F-02, F-12,
+  V-12).
+- Rule 8, drift. It is decided by comparing owned-path *content* at the
+  verified revision and at `HEAD` (`git diff --no-renames`). A merge that
+  restores old content is therefore detected. Git runs with replace refs and
+  grafts disabled, so neither can hide drift or a rewritten history.
+  Only enhancements of the current acceptance can cover a change (Y-06).
+  Uncommitted owned changes give the warning `UNCOMMITTED_OWNED_CHANGE`
+  (F-01, F-19, V-13, X-09). When git cannot list uncommitted changes,
+  `recover` says they are unknown, not zero (Z-03).
+- Rule 9, records. A heading that looks like an entry but is malformed is an
+  error, and so are an entry field outside any recognised heading and an
+  entry field not written as `- Name: value`. A topic is compared after NFKC
+  normalisation, with separators, case and invisible format characters
+  folded, and Arabic tatweel and short-vowel marks removed. Entry ids and
+  `Stage` values must use ASCII digits (Y-04). A critical defect with
+  `Stage: project` blocks every stage. An
+  undecodable memory file is `MEMORY_UNREADABLE`, not a traceback (F-06,
+  V-06, V-10, X-06). An entry with neither a recognisable heading nor
+  recognisable fields (a table row, say) is not seen.
+- Rule 11, source tree (new). A tracked file in `src/` beside the `citerift`
+  package is `SRC_FOREIGN_MODULE`, and CI refuses one before running Python
+  (X-04).
+- Rule 12, enhancements (new). An enhancement amendment that changes a
+  contract schema under the stage's owned paths must raise its
+  `x-citerift-version` and keep every valid contract fixture of the accepted
+  revision valid (X-13).
+- Rule 13, damaged inputs. A non-UTF-8 file name in an evidence directory, a
+  damaged git index, a registry path that is absolute or has a `.` or `..`
+  segment (schema), and JSON nested too deeply give named errors (Y-11).
 
-## Environment
+## Data contracts 1.0.1
 
-Python baseline 3.12, range `>=3.12,<3.14` (D-001). PyPI JSON metadata queried
-2026-10-25: numpy 2.5.4 and scipy 1.18.1 require 3.12 or newer; torch 2.14.1
-and spacy 3.8.16 ship cp310 to cp314 wheels; mwparserfromhell 0.7.2 ships wheels
-up to cp313; transformers, sentence-transformers, fastapi and pydantic are pure
-Python requiring 3.10 or newer. uv 0.11.32 with a committed `uv.lock` (D-002);
-`uv sync --locked` refuses to re-resolve. Runtime dependency: jsonschema 4.26.0
-(with referencing 0.37.0). Development: pytest 9.1.1, ruff 0.17.2, mypy 2.4.0,
-pip-audit 2.10.1.
+The full table is in `docs/data-contracts.md`.
 
-Container verified 2026-10-25: 4 vCPU, 15 GiB RAM, no GPU, no Docker daemon,
-Python 3.12.3 and 3.13.17 available to uv.
+- The accepted retraction values are `retracted`, `expression_of_concern`,
+  `correction`, `reinstated` and `not_found_in_checked_sources`. They are
+  explicit for the main value. A `conflicting` alternative is one of the
+  first four: an absence of record is not one side of a conflict, and the
+  alternatives must hold at least two different values (Y-05). "Not
+  retracted" is not representable.
+- Absence of a record is `uncertain` with checked sources. It is never
+  `verified_fact`, never model output, and never carries model or confidence
+  fields. It states no retraction date (Y-12).
+- `unavailable` (source not reachable) keeps a null value and a reason. It
+  stays distinct from a checked negative.
+- Identifiers keep their 1.0.0 patterns. They are now written so that Python
+  and ECMA-262 accept the same strings: no trailing-newline match, and a
+  `[^\s…]` class with explicit control and format characters.
+- Multilingual values stay valid: an Arabic title, a DOI with Arabic letters
+  and Arabic-Indic digits, a DOI with a subdivided registrant code (Y-13),
+  and the language codes `zh-yue` and `zh-classical`
+  (`test_multilingual_and_precise_values_accepted`, `test_x11_*`), plus the Arabic and
+  English citations in the valid fixtures.
+
+Versioning: 1.0.0 → 1.0.1 is a patch. Every valid 1.0.0 fixture still
+validates (`check_backward_compatible` returns no problem). What 1.0.1 now
+rejects was never valid under the documented 1.0.0 semantics.
+
+## Environment (unchanged)
+
+Python `>=3.12,<3.14` (D-001). `uv.lock` is unchanged since `741476c` (sha256
+`52980fe6641ddd859ea3f93750e4bf348df47eccf4695adc610cb24bd164fe50`). No new
+dependency was added: the date-time checker uses the standard library. Node
+22 is used only by a test that compares patterns with ECMA-262. That test is
+required in CI and skipped locally if `node` is absent.
 
 ## Out of scope
 
-Data acquisition, parsing, NLP models, the web UI, any Wikipedia or Retraction
-Watch access, and everything assigned to Stage 01 (external agent). Stage 00
-does not predict or assume any Stage 01 finding.
-
-## Open items requiring the owner
-
-- ~~Resolve the GitHub account billing lock (B-00-001).~~ Resolved by the owner
-  on 2026-10-25; CI passed at `741476c`.
-- ~~Import `.github/rulesets/main-protection.json` (B-00-002, D-011).~~ Done by
-  the owner on 2026-10-25; ruleset 25824038 is active and read back.
-- License decision (D-007) and optional signed acceptance (D-006).
+Data acquisition, NLP, the UI, any external source, Stage 01 and every later
+stage. A cryptographic owner signature (D-006) and a separate bot identity
+would close R-001/R-016. Both are owner decisions and are not implemented.

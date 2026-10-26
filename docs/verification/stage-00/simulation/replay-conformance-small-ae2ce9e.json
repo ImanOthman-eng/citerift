@@ -1,0 +1,45 @@
+{
+  "agreements": 42566,
+  "cases": 45024,
+  "check": "citerift-history-replay-conformance/1",
+  "config": "small",
+  "dependencies": {
+    "00": [],
+    "01": [],
+    "02": [
+      "00",
+      "01"
+    ]
+  },
+  "disagreement_examples": [
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=False blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=False blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'AUTHORIZED', 'NOT_STARTED') + stage 1 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'AUTHORIZED', 'NOT_STARTED') + stage 1 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'AUTHORIZED', 'NOT_STARTED') + stage 1 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'AUTHORIZED', 'NOT_STARTED') + stage 1 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=True: model=False implementation=True"
+  ],
+  "disagreements": 2458,
+  "engineering_stages": [
+    "00",
+    "02"
+  ],
+  "max_history_length": 23,
+  "model_permitted": 4218,
+  "reachable_status_vectors": 134,
+  "stages": 3
+}

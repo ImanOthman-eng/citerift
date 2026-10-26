@@ -1,0 +1,9 @@
+## worktree /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-mut at 0c21182e5871f772c3a76c75a1217c7641a63bbb
+$ /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-mut/.venv/bin/python /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/scripts/run_selected_mutants.py /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-mut
+baseline (unmutated): PASS ['404 passed in 328.75s (0:05:28)']
+selected: ['M97', 'M98', 'M99']
+M97 R5-02 local submodule ignore settings honoured: KILLED ['1 failed, 273 passed in 129.17s (0:02:09)'] ['FAILED tests/stage00/test_corrections.py::test_r5_02_an_edit_in_a_submodule_hidden_by_local_settings_makes_the_tree_dirty[submodule.sub.ignore]']
+M98 R5-03 CI run URL case folded beyond ASCII: KILLED ['1 failed, 275 passed in 131.78s (0:02:11)'] ['FAILED tests/stage00/test_corrections.py::test_r5_03_a_ci_url_with_a_unicode_case_variant_is_refused']
+M99 R5-01 committed environment allowed in CI: KILLED ['1 failed, 276 passed in 131.20s (0:02:11)'] ['FAILED tests/stage00/test_corrections.py::test_r5_01_ci_refuses_a_committed_environment_before_uv_runs']
+git status --porcelain after the mutants: ''
+exit 0

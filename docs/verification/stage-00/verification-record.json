@@ -11,20 +11,21 @@
       "evidence": [
         "docs/verification/stage-00/test-report.json",
         "docs/verification/stage-00/test-report-python3.13.json",
-        "uv.lock"
+        "docs/verification/stage-00/handoff/results-0c21182.json"
       ]
     },
     "00-C": {
       "result": "pass",
       "evidence": [
-        "docs/verification/stage-00/TEST_RESULTS.md"
+        "docs/verification/stage-00/TEST_RESULTS.md",
+        "docs/verification/stage-00/SPECIFICATION.md"
       ]
     },
     "00-D": {
       "result": "pass",
       "evidence": [
         "docs/verification/stage-00/TEST_RESULTS.md",
-        "governance/stage_registry.json"
+        "docs/verification/stage-00/handoff/results-0c21182.json"
       ]
     },
     "00-E": {
@@ -38,22 +39,23 @@
       "evidence": [
         "docs/verification/stage-00/SIMULATION_REPORT.md",
         "docs/verification/stage-00/MATHEMATICAL_MODEL.md",
-        "docs/verification/stage-00/mutation/results-30e4462.txt"
+        "docs/verification/stage-00/simulation/replay-conformance-full.json",
+        "docs/verification/stage-00/mutation/results-0c21182.txt"
       ]
     },
     "00-G": {
       "result": "pass",
       "evidence": [
         "docs/verification/stage-00/TEST_RESULTS.md",
-        "schemas/contracts/v1/investigation.schema.json"
+        "schemas/contracts/v1/investigation.schema.json",
+        "schemas/contracts/v1/common.schema.json"
       ]
     },
     "00-H": {
       "result": "pass",
       "evidence": [
         "docs/verification/stage-00/SIMULATION_REPORT.md",
-        "docs/verification/stage-00/simulation/final-results.json",
-        "docs/verification/stage-00/simulation/iteration-1-results.json"
+        "docs/verification/stage-00/simulation/model-results.json"
       ]
     },
     "00-I": {
@@ -66,6 +68,7 @@
       "result": "pass",
       "evidence": [
         "docs/verification/stage-00/test-report.json",
+        "docs/verification/stage-00/fail-first/README.md",
         "docs/verification/stage-00/TEST_RESULTS.md"
       ]
     },
@@ -87,7 +90,11 @@
     "00-M": {
       "result": "pass",
       "evidence": [
-        "docs/verification/stage-00/RISK_ANALYSIS.md"
+        "docs/verification/stage-00/RISK_ANALYSIS.md",
+        "docs/verification/stage-00/review/README.md",
+        "docs/verification/stage-00/TEST_RESULTS.md",
+        "docs/verification/stage-00/review/0c21182/report.md",
+        "docs/verification/stage-00/RISK_DECISION_PACKAGE.md"
       ]
     },
     "00-N": {
@@ -100,21 +107,21 @@
       "result": "pass",
       "evidence": [
         "docs/verification/stage-00/HANDOFF.md",
-        "docs/development.md",
-        "GOVERNANCE.md"
+        "docs/verification/stage-00/handoff/results-0c21182.json",
+        "docs/verification/stage-00/TRACEABILITY.md"
       ]
     },
     "00-P": {
       "result": "pass",
       "evidence": [
-        "docs/verification/stage-00/RISK_ANALYSIS.md",
-        "RISKS.md"
+        "docs/verification/stage-00/HANDOFF.md",
+        "docs/verification/stage-00/review/README.md"
       ]
     }
   },
   "ci": {
-    "run_url": "https://github.com/ImanOthman-eng/citerift/actions/runs/40188172695",
-    "head_sha": "741476c7da8dde4d077e97ae0302a331ef5fdef5",
+    "run_url": "https://github.com/ImanOthman-eng/citerift/actions/runs/40273320614",
+    "head_sha": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
     "conclusion": "success"
   }
 }

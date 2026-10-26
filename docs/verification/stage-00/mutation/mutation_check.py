@@ -1,82 +1,568 @@
 # ruff: noqa: E501  (mutation patterns must match source lines exactly)
-"""Stage 00 mutation check: each mutant disables one safety rule; the test suite must fail.
+"""Stage 00 mutation check (correction A-00-001): each mutant disables one rule; the test suite must fail.
 
 Run from a clean checkout: python docs/verification/stage-00/mutation/mutation_check.py
-Every file is restored after its mutant runs.
+Each pattern must occur exactly once; a mutant may replace several patterns of one file. Every file is restored after its mutant
+runs. M1 to M9 are the mutants of the accepted revision 741476c (archived in
+superseded/741476c/mutation/), with patterns updated where the code changed;
+M10 onwards cover the checks added by the correction.
 """
 
 import pathlib
 import subprocess
+import sys
 
 R = pathlib.Path(__file__).resolve().parents[4]
+ORC = "src/citerift/governance/orchestrator.py"
+EVI = "src/citerift/governance/evidence.py"
+MEM = "src/citerift/governance/memory.py"
+REP = "src/citerift/governance/pytest_report.py"
 M = [
-    ("M1 single-active rule disabled", "src/citerift/governance/orchestrator.py", "if len(active) > 1:", "if False:"),
     (
-        "M2 owner-only edge check disabled",
-        "src/citerift/governance/orchestrator.py",
-        '            if actor != Actor.OWNER:\n                problems.append(\n                    (\n                        "OWNER_DECISION_REQUIRED"',
-        '            if False:\n                problems.append(\n                    (\n                        "OWNER_DECISION_REQUIRED"',
+        "M1 single-active rule (current state) disabled",
+        ORC,
+        "        if len(active) > 1:\n            return [",
+        "        if False:\n            return [",
     ),
+    ("M2 owner-only edge check disabled", ORC, "            if actor != Actor.OWNER:", "            if False:"),
     (
         "M3 absence-of-record must be uncertain (schema)",
         "schemas/contracts/v1/investigation.schema.json",
         '"then": {"properties": {"status": {"const": "uncertain"}',
         '"then": {"properties": {"status": {}',
     ),
+    ("M4 test report revision check disabled", EVI, 'if report.get("revision") != revision:', "if False:"),
+    ("M5 drift detection disabled", ORC, "if changes and all(changes):", "if False:"),
+    ("M6 history replay conflict disabled", ORC, 'if replay[s["id"]] != s["status"]:', "if False:"),
     (
-        "M4 test report revision check disabled",
-        "src/citerift/governance/evidence.py",
-        'if report.get("revision") != revision:',
-        "if False:",
-    ),
-    (
-        "M5 drift detection disabled",
-        "src/citerift/governance/orchestrator.py",
-        "if last is None:\n            return []",
-        "if True:\n            return []",
-    ),
-    (
-        "M6 history replay conflict disabled",
-        "src/citerift/governance/orchestrator.py",
-        'if replay[s["id"]] != s["status"]:',
-        "if False:",
-    ),
-    (
-        "M7 evidence hash check disabled",
-        "src/citerift/governance/evidence.py",
+        "M7 artifact hash check disabled",
+        EVI,
         'if expected_sha is not None and sha256_file(path) != expected_sha:\n        problems.append(\n            Problem(\n                "EVIDENCE_STALE"',
         'if False:\n        problems.append(\n            Problem(\n                "EVIDENCE_STALE"',
     ),
     (
-        "M8 dependency check disabled",
-        "src/citerift/governance/orchestrator.py",
-        'for d in self.dependencies(s["id"])["unsatisfied"]:\n                severity',
-        "for d in []:\n                severity",
+        "M8 dependency check (current state) disabled",
+        ORC,
+        'for d in self.dependencies(s["id"])["unsatisfied"]:\n                if d in reopened:',
+        "for d in []:\n                if d in reopened:",
     ),
     (
         "M9 acceptance-of-other-revision check disabled",
-        "src/citerift/governance/orchestrator.py",
+        ORC,
         'if acc["accepted_revision"] != ver["revision"]:',
         "if False:",
     ),
+    (
+        "M10 F-04 single-active rule over history disabled",
+        ORC,
+        "                if len(active) > 1:\n                    out.append(",
+        "                if False:\n                    out.append(",
+    ),
+    ("M11 F-04 dependencies over history disabled", ORC, "            if pending:", "            if False:"),
+    (
+        "M12 F-05 correction amendment for reopening disabled",
+        ORC,
+        'if amendment is None or amendment["kind"] != "correction" or amendment["recorded_at"] > at:',
+        "if False:",
+    ),
+    ("M13 F-05 block without blocker disabled", ORC, "if target == Status.BLOCKED and not open_then:", "if False:"),
+    (
+        "M14 F-05 start or verify with open blocker disabled",
+        ORC,
+        "        if open_then and (",
+        "        if False and (",
+    ),
+    ("M15 F-02 manifest hash comparison disabled", ORC, "elif current[rel] != sha:", "elif False:"),
+    (
+        "M16 F-02 unlisted evidence disabled",
+        ORC,
+        "for rel in sorted(set(current) - set(recorded_hashes) - later):",
+        "for rel in []:",
+    ),
+    ("M17 F-02 gate evidence pinning disabled", ORC, "            if not pinned:", "            if False:"),
+    (
+        "M18 F-03 definition hash disabled",
+        ORC,
+        'if recorded["definition_sha256"] != self._definition_sha256(stage):',
+        "if False:",
+    ),
+    (
+        "M19 F-07 complete-run requirement disabled",
+        EVI,
+        'if not isinstance(selection, dict) or selection.get("complete") is not True:',
+        "if False:",
+    ),
+    (
+        "M20 F-07 plugin reports every run as complete",
+        "src/citerift/governance/pytest_report.py",
+        '"complete": whole and not any(narrowing.values()),',
+        '"complete": True,',
+    ),
+    (
+        "M21 F-10 date-time format checker removed",
+        "src/citerift/contracts/validate.py",
+        "registry=self.registry, format_checker=FORMAT_CHECKER)",
+        "registry=self.registry)",
+    ),
+    (
+        "M22 F-09 events compared as strings",
+        "src/citerift/contracts/validate.py",
+        'times = [t for t in (parse_utc_timestamp(e["at"]) for e in record["events"]) if t is not None]',
+        'times = [e["at"] for e in record["events"]]',
+    ),
+    (
+        "M23 F-08 retraction alternatives untyped",
+        "schemas/contracts/v1/investigation.schema.json",
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}',
+        '"value": true',
+    ),
+    (
+        "M24 F-10 trailing-newline guard removed from timestamps",
+        "schemas/contracts/v1/common.schema.json",
+        '(\\\\.[0-9]{1,6})?Z$(?!\\\\n)"',
+        '(\\\\.[0-9]{1,6})?Z$"',
+    ),
+    (
+        "M25 F-18 duplicate keys accepted",
+        "src/citerift/contracts/formats.py",
+        "        if key in out:",
+        "        if False:",
+    ),
+    (
+        "M26 F-06 malformed headings ignored",
+        MEM,
+        "if m and m.group(1) == prefix[0] and not _HEADING.match(line):",
+        "if False:",
+    ),
+    (
+        "M27 F-06 project-wide critical defects ignored",
+        MEM,
+        'and (stage_id in r.refs("Stage") or r.get("Stage") == "project")',
+        'and (stage_id in r.refs("Stage"))',
+    ),
+    (
+        "M28 F-11 reopened dependency is an error again",
+        ORC,
+        "                if d in reopened:",
+        "                if False:",
+    ),
+    ("M29 F-16 future timestamps accepted", ORC, "    if at > limit:", "    if False:"),
+    ("M30 F-17 owner reference reuse accepted", ORC, "                if reused:", "                if False:"),
+    (
+        "M31 F-17 record/history mismatch accepted",
+        ORC,
+        '                    last is None\n                    or last["at"] != record["recorded_at"]',
+        '                    False\n                    and last["at"] != record["recorded_at"]',
+    ),
+    (
+        "M32 F-19 uncommitted owned changes ignored",
+        ORC,
+        "        if dirty:\n            out.append(",
+        "        if False:\n            out.append(",
+    ),
+    (
+        "M33 F-03 policy values not fixed in the schema",
+        "schemas/governance/stage_registry.schema.json",
+        '"single_active_engineering_stage": {"const": true}',
+        '"single_active_engineering_stage": {"type": "boolean"}',
+    ),
+    ("M34 S-01 files git ignores pinned as evidence", EVI, "skip = gitutil.ignored(root, files)", "skip = set()"),
+    # Fixes of the final independent review (V-01 to V-16).
+    ("M35 V-01 items dropped by a conftest ignored", REP, 'and not selection["dropped"]', "and True"),
+    (
+        "M36 V-01 committed test files not compared",
+        EVI,
+        'problems.extend(_files_not_run(root, rel, revision, selection.get("files")))',
+        "pass",
+    ),
+    (
+        "M37 V-01 ini overrides allowed",
+        REP,
+        '"override_ini": [o for o in config.option.override_ini or [] if o not in _STRICTER_OVERRIDES],',
+        '"override_ini": [],',
+    ),
+    (
+        "M38 V-02 a URL counts as pinned evidence",
+        ORC,
+        "                if evidence.is_url(ref):\n                    continue",
+        "                if evidence.is_url(ref):\n                    pinned = True\n                    continue",
+    ),
+    (
+        "M39 V-02 unpinned co-cited file accepted",
+        ORC,
+        '                else:\n                    out.append(\n                        Finding(\n                            "GATE_EVIDENCE_UNPINNED",',
+        '                elif False:\n                    out.append(\n                        Finding(\n                            "GATE_EVIDENCE_UNPINNED",',
+    ),
+    (
+        "M40 V-03 stage artifact list not fixed for engineering stages",
+        "schemas/governance/stage_registry.schema.json",
+        '          "required_artifacts": {\n            "const": [',
+        '          "required_artifacts": {\n            "examples": [',
+    ),
+    (
+        "M41 V-03 executors not fixed by stage",
+        "schemas/governance/stage_registry.schema.json",
+        '"else": {"properties": {"executor": {"const": "engineering-agent"}}}',
+        '"else": {}',
+    ),
+    ("M42 V-03 handoff not always required", ORC, "            names.append(handoff)", "            pass"),
+    ("M43 V-05 correction test reports exempt again", ORC, ' and a["kind"] == "enhancement"\n', "\n"),
+    (
+        "M44 V-06 orphan entry fields ignored",
+        MEM,
+        "            if not attached and m.group(1) in _ENTRY_FIELDS:",
+        "            if False:",
+    ),
+    (
+        "M45 V-06 topic spelling variants distinct",
+        MEM,
+        'return _SEPARATORS.sub("-", visible).strip("-").casefold()',
+        "return topic.casefold()",
+    ),
+    (
+        "M46 V-07 amendment references not searched",
+        ORC,
+        'if a["owner_ref"] == acc["owner_ref"] and a["recorded_at"] <= verified_entry["at"]',
+        "if False",
+    ),
+    ("M47 V-08 one amendment for many reopenings", ORC, "            if earlier:", "            if False:"),
+    (
+        "M48 V-09 duplicate record ids accepted",
+        ORC,
+        "for dup in sorted({v for v in values if values.count(v) > 1}):",
+        "for dup in []:",
+    ),
+    (
+        "M49 V-10 commands run on a schema-invalid registry",
+        "src/citerift/governance/cli.py",
+        '    if schema_errors and args.command != "check":',
+        "    if False:",
+    ),
+    (
+        "M50 V-11 default time ignores recorded times",
+        ORC,
+        "        now: str = max([utc_now(), *recorded])",
+        "        now: str = utc_now()",
+    ),
+    (
+        "M51 V-12 nested .gitattributes accepted",
+        ORC,
+        'nested = [p for p in tracked if p.endswith("/.gitattributes")]',
+        "nested: list[str] = []",
+    ),
+    (
+        "M52 V-13 replace refs honoured (flag and environment both removed; either alone still stops it)",
+        "src/citerift/governance/gitutil.py",
+        ('[git, "--no-replace-objects", "-C", str(root), *args],', '"GIT_NO_REPLACE_OBJECTS": "1", '),
+        ('[git, "-C", str(root), *args],', ""),
+    ),
+    (
+        "M53 V-15 clock skew bound widened",
+        ORC,
+        "MAX_CLOCK_SKEW = timedelta(minutes=5)",
+        "MAX_CLOCK_SKEW = timedelta(days=3650)",
+    ),
+    (
+        "M54 V-16 report directory not created",
+        REP,
+        "    Path(path).parent.mkdir(parents=True, exist_ok=True)",
+        "    pass",
+    ),
+    (
+        "M55 X-01 gate evidence through '..' or a symlink accepted",
+        ORC,
+        "elif not evidence.is_plain_path(self.root, ref):",
+        "elif False:",
+    ),
+    (
+        "M56 X-02 collection settings in the ini file ignored",
+        REP,
+        "if list(config.getini(name)) != expected",
+        "if False",
+    ),
+    ("M57 X-03 repeated items ignored", REP, 'and not selection["repeated"]', "and True"),
+    (
+        "M58 X-03 extra plugins allowed",
+        REP,
+        '"plugins": [p for p in config.option.plugins or [] if p != PLUGIN and not p.startswith("no:")],',
+        '"plugins": [],',
+    ),
+    (
+        "M59 X-03 untracked conftests accepted",
+        EVI,
+        'problems.extend(_untracked_conftests(root, rel, revision, selection.get("conftests")))',
+        "pass",
+    ),
+    (
+        "M60 X-04 modules beside the package accepted",
+        ORC,
+        'foreign = sorted({p.split("/")[1] for p in tracked if p.startswith("src/")} - {"citerift"})',
+        "foreign: list[str] = []",
+    ),
+    ("M61 X-05 test report shape not checked", EVI, "if shape := _report_shape_problem(report):", "if False:"),
+    (
+        "M62 X-05 unknown stage ids not checked",
+        "src/citerift/governance/cli.py",
+        'if stage_id is not None and stage_id not in {s["id"] for s in orc.stages}:',
+        "if False:",
+    ),
+    (
+        "M63 X-06 misformatted entry fields ignored",
+        MEM,
+        "if m and m.group(1).casefold() in _ENTRY_FIELDS_FOLDED and not _FIELD.match(line):",
+        "if False:",
+    ),
+    ("M64 X-06 invisible characters kept in topics", MEM, 'if unicodedata.category(c) != "Cf"', "if True"),
+    (
+        "M65 X-07 Stage 02 dependencies not fixed",
+        "schemas/governance/stage_registry.schema.json",
+        '{"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},',
+        '{"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {}},',
+    ),
+    (
+        "M66 X-08 resolution time may equal the last entry",
+        ORC,
+        "        at = at or self._now(after_history=True)",
+        "        at = at or self._now()",
+    ),
+    (
+        "M67 X-08 own error labelled pre-existing",
+        ORC,
+        "reference = self if _baseline is None else Orchestrator(self.root, _baseline)",
+        "reference = self",
+    ),
+    (
+        "M68 X-09 grafts honoured",
+        "src/citerift/governance/gitutil.py",
+        'return {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull}',
+        'return {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1"}',
+    ),
+    (
+        "M69 X-10 acceptance with an open blocker replayed",
+        ORC,
+        "                (Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, Status.ACCEPTED_CLOSED),  # X-10\n",
+        "",
+    ),
+    (
+        "M70 X-11 long language subtags rejected",
+        "schemas/contracts/v1/common.schema.json",
+        '"pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,12})*$(?!\\\\n)"',
+        '"pattern": "^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,8})*$(?!\\\\n)"',
+    ),
+    (
+        "M71 X-13 amendment owner references not checked",
+        ORC,
+        "return out + self._amendment_ref_findings()",
+        "return out",
+    ),
+    (
+        "M72 X-13 contract version not compared",
+        ORC,
+        'if _version(new.get("x-citerift-version")) <= _version(old.get("x-citerift-version")):',
+        "if False:",
+    ),
+    (
+        "M73 X-13 accepted fixtures not revalidated",
+        ORC,
+        "if text is not None and (problems := contracts.validate(loads_strict(text))):",
+        "if False:",
+    ),
+    (
+        "M74 Y-01 report path left out of the dirty check even when tracked",
+        REP,
+        "if not gitutil.is_tracked(root, rel):",
+        "if True:",
+    ),
+    (
+        "M75 Y-02 skip-worktree and assume-unchanged files ignored (flag rule and content check both removed; either alone still stops it)",
+        "src/citerift/governance/gitutil.py",
+        (
+            'paths += [e[2:] for e in flags.stdout.split("\\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]',
+            "    paths += _content_changed(root)\n",
+        ),
+        ("paths += []", "    paths += []\n"),
+    ),
+    ("M76 Y-03 skipped and xfailed tests accepted", EVI, "    if unproven:", "    if False:"),
+    (
+        "M77 Y-04 non-ASCII stage digits accepted",
+        MEM,
+        'r"[0-9]{2}(, ?[0-9]{2})*|project"',
+        'r"\\d{2}(, ?\\d{2})*|project"',
+    ),
+    (
+        "M78 Y-04 non-ASCII entry id digits accepted",
+        MEM,
+        'r"^## ([DR]-[0-9]{3}) — (.+?)\\s*$"',
+        'r"^## ([DR]-\\d{3}) — (.+?)\\s*$"',
+    ),
+    (
+        "M79 O-1 Arabic marks not folded in topics",
+        MEM,
+        '    visible = _ARABIC_MARKS.sub("", visible)',
+        "    visible = visible",
+    ),
+    (
+        "M80 Y-05 absence of record allowed as a conflicting alternative",
+        "schemas/contracts/v1/investigation.schema.json",
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}',
+        '"value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources"]}',
+    ),
+    (
+        "M81 Y-05 agreeing conflicting alternatives accepted",
+        "src/citerift/contracts/validate.py",
+        "if len(values) < 2:",
+        "if False:",
+    ),
+    (
+        "M82 Y-12 retraction date allowed without a retraction record",
+        "schemas/contracts/v1/investigation.schema.json",
+        '"properties": {"retraction_date": {"properties": {"value": {"type": "null"}}, "not": {"required": ["alternatives"]}}}',
+        '"properties": {}',
+    ),
+    (
+        "M83 Y-06 amendment on a stage that is not accepted",
+        ORC,
+        'if not self._accepted_at(sid, a["recorded_at"]):',
+        "if False:",
+    ),
+    (
+        "M84 Y-06 every enhancement covers owned changes",
+        ORC,
+        "for a in self._current_enhancements(stage) if",
+        'for a in stage["amendments"] if a["kind"] == "enhancement" and',
+    ),
+    (
+        "M85 Y-07 reference cited in the same second not counted",
+        ORC,
+        "                and t <= mine",
+        "                and t < mine",
+    ),
+    (
+        "M86 Y-09 uncommitted owned file pinned",
+        ORC,
+        "(self._owned(stage, ref) and self._committed(revision, ref))",
+        "self._owned(stage, ref)",
+    ),
+    (
+        "M87 Y-10 CI run of another repository accepted",
+        ORC,
+        "                if run is None:",
+        "                if False:",
+    ),
+    (
+        "M88 Y-11 deep JSON not converted",
+        "src/citerift/contracts/formats.py",
+        "    except RecursionError:",
+        "    except ZeroDivisionError:",
+    ),
+    (
+        "M89 Y-11 absolute verification_dir accepted",
+        "schemas/governance/stage_registry.schema.json",
+        '"verification_dir": {"$ref": "#/$defs/relative_path"},',
+        '"verification_dir": {"type": "string", "minLength": 1},',
+    ),
+    (
+        "M90 Y-13 subdivided DOI registrant rejected",
+        "schemas/contracts/v1/common.schema.json",
+        '"pattern": "^10\\\\.[0-9]{4,9}(\\\\.[0-9]+)*/',
+        '"pattern": "^10\\\\.[0-9]{4,9}/',
+    ),
+    (
+        "M91 Z-01 content check skipped (stat cache trusted)",
+        "src/citerift/governance/gitutil.py",
+        "    paths += _content_changed(root)\n",
+        "    paths += []\n",
+    ),
+    (
+        "M92 Z-02 CI run URL matched as a prefix",
+        ORC,
+        "run = re.fullmatch(",
+        "run = re.match(",
+    ),
+    (
+        "M93 Z-03 unknown uncommitted changes printed as a count",
+        "src/citerift/governance/cli.py",
+        'if data["uncommitted_changes"] is None',
+        "if False",
+    ),
+    (
+        "M94 Z-04 project installed before the governance check",
+        ".github/workflows/ci.yml",
+        "run: uv sync --frozen --no-install-project --no-build",
+        "run: uv sync --locked",
+    ),
+    (
+        "M95 D4 staged changes and new files not checked by CI",
+        ".github/workflows/ci.yml",
+        "git status --porcelain=v1 --untracked-files=all",
+        "git diff --name-only",
+    ),
+    (
+        "M96 Z-05 tracked-file test reads the path as a pathspec",
+        "src/citerift/governance/gitutil.py",
+        'f":(literal){path}"',
+        "path",
+    ),
+    (
+        "M97 R5-02 local submodule ignore settings honoured",
+        "src/citerift/governance/gitutil.py",
+        '        "--ignore-submodules=none",\n',
+        "",
+    ),
+    ("M98 R5-03 CI run URL case folded beyond ASCII", ORC, 'ci["run_url"], re.I | re.A', 'ci["run_url"], re.I'),
+    (
+        "M99 R5-01 committed environment allowed in CI",
+        ".github/workflows/ci.yml",
+        "run: test ! -e .venv && test ! -L .venv",
+        "run: true",
+    ),
 ]
-for name, rel, old, new in M:
-    path = R / rel
-    orig = path.read_text()
-    if old not in orig:
-        print(name, "PATTERN NOT FOUND")
-        continue
-    path.write_text(orig.replace(old, new, 1))
-    try:
-        r = subprocess.run(
-            ["uv", "run", "--no-sync", "pytest", "-q", "-x", "-p", "no:cacheprovider", "tests/stage00"],  # noqa: S607
-            cwd=R,
-            capture_output=True,
-            text=True,
-            timeout=600,
-            check=False,
-        )
-        last = [line for line in r.stdout.splitlines() if "passed" in line or "failed" in line][-1:]
-        print(f"{name}: {'KILLED' if r.returncode else 'SURVIVED'} {last}")
-    finally:
-        path.write_text(orig)
+
+
+def _suite() -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["uv", "run", "--no-sync", "pytest", "-q", "-x", "-p", "no:cacheprovider", "tests/stage00"],  # noqa: S607
+        cwd=R,
+        capture_output=True,
+        text=True,
+        timeout=900,
+        check=False,
+    )
+
+
+def main() -> int:
+    # Baseline: a suite that already fails would report every mutant as killed (second final review).
+    base = _suite()
+    if base.returncode != 0:
+        print("BASELINE FAILED: the unmutated suite does not pass", base.stdout[-2000:])
+        return 2
+    print("baseline: unmutated suite passes", flush=True)
+    survived = 0
+    for name, rel, old, new in M:
+        path = R / rel
+        orig = path.read_text(encoding="utf-8")
+        # A mutant may replace several patterns in one file, for a rule that two controls enforce together.
+        pairs = list(zip(old, new, strict=True)) if isinstance(old, tuple) else [(old, new)]
+        counts = [orig.count(o) for o, _ in pairs]
+        if counts != [1] * len(pairs):
+            print(f"{name}: PATTERN FOUND {counts} TIMES")
+            survived += 1
+            continue
+        mutated = orig
+        for o, n in pairs:
+            mutated = mutated.replace(o, n, 1)
+        path.write_text(mutated, encoding="utf-8")
+        try:
+            r = _suite()
+            last = [line for line in r.stdout.splitlines() if "passed" in line or "failed" in line][-1:]
+            killed = r.returncode != 0
+            survived += not killed
+            print(f"{name}: {'KILLED' if killed else 'SURVIVED'} {last}", flush=True)
+        finally:
+            path.write_text(orig, encoding="utf-8")
+    print(f"{len(M)} mutants, {len(M) - survived} killed, {survived} survived")
+    return 1 if survived else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

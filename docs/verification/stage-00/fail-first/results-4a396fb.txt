@@ -1,0 +1,855 @@
+.............................................................FFFFF...... [ 18%]
+.........F.............................................................. [ 36%]
+........................................................................ [ 54%]
+.............................FFFFFFFFFFFFFFFFFFFFF...................... [ 73%]
+........................................................................ [ 91%]
+.................................                                        [100%]
+=================================== FAILURES ===================================
+_ test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_with_absence_of_record] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+case = {'name': 'retraction_conflict_with_absence_of_record', 'base': 'investigation_full.json', 'op': 'set', 'path': '/subject_paper/retraction_status', ...}
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["name"])
+    def test_invalid_cases_rejected_for_the_intended_reason(contracts, case: dict[str, Any]) -> None:  # type: ignore[no-untyped-def]
+        base = load(FIXTURES / "valid" / case["base"])
+        assert contracts.validate(base) == [], "base fixture must be valid so only the mutation can fail it"
+        mutated = apply_mutation(base, case["op"], case["path"], case.get("value"))
+        problems = contracts.validate(mutated)
+>       assert problems, f"{case['name']} was accepted"
+E       AssertionError: retraction_conflict_with_absence_of_record was accepted
+E       assert []
+
+tests/stage00/test_contracts.py:80: AssertionError
+_ test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_of_two_absences] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+case = {'name': 'retraction_conflict_of_two_absences', 'base': 'investigation_full.json', 'op': 'set', 'path': '/subject_paper/retraction_status', ...}
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["name"])
+    def test_invalid_cases_rejected_for_the_intended_reason(contracts, case: dict[str, Any]) -> None:  # type: ignore[no-untyped-def]
+        base = load(FIXTURES / "valid" / case["base"])
+        assert contracts.validate(base) == [], "base fixture must be valid so only the mutation can fail it"
+        mutated = apply_mutation(base, case["op"], case["path"], case.get("value"))
+        problems = contracts.validate(mutated)
+>       assert problems, f"{case['name']} was accepted"
+E       AssertionError: retraction_conflict_of_two_absences was accepted
+E       assert []
+
+tests/stage00/test_contracts.py:80: AssertionError
+_ test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_whose_values_agree] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+case = {'name': 'retraction_conflict_whose_values_agree', 'base': 'investigation_full.json', 'op': 'set', 'path': '/subject_paper/retraction_status', ...}
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["name"])
+    def test_invalid_cases_rejected_for_the_intended_reason(contracts, case: dict[str, Any]) -> None:  # type: ignore[no-untyped-def]
+        base = load(FIXTURES / "valid" / case["base"])
+        assert contracts.validate(base) == [], "base fixture must be valid so only the mutation can fail it"
+        mutated = apply_mutation(base, case["op"], case["path"], case.get("value"))
+        problems = contracts.validate(mutated)
+>       assert problems, f"{case['name']} was accepted"
+E       AssertionError: retraction_conflict_whose_values_agree was accepted
+E       assert []
+
+tests/stage00/test_contracts.py:80: AssertionError
+_ test_invalid_cases_rejected_for_the_intended_reason[title_conflict_whose_values_agree] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+case = {'name': 'title_conflict_whose_values_agree', 'base': 'investigation_uncertain_conflicting.json', 'op': 'set', 'path': '/subject_paper/title/alternatives/1/value', ...}
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["name"])
+    def test_invalid_cases_rejected_for_the_intended_reason(contracts, case: dict[str, Any]) -> None:  # type: ignore[no-untyped-def]
+        base = load(FIXTURES / "valid" / case["base"])
+        assert contracts.validate(base) == [], "base fixture must be valid so only the mutation can fail it"
+        mutated = apply_mutation(base, case["op"], case["path"], case.get("value"))
+        problems = contracts.validate(mutated)
+>       assert problems, f"{case['name']} was accepted"
+E       AssertionError: title_conflict_whose_values_agree was accepted
+E       assert []
+
+tests/stage00/test_contracts.py:80: AssertionError
+_ test_invalid_cases_rejected_for_the_intended_reason[retraction_date_stated_without_a_retraction_record] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+case = {'name': 'retraction_date_stated_without_a_retraction_record', 'base': 'investigation_uncertain_conflicting.json', 'op': 'set', 'path': '/subject_paper/retraction_date', ...}
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["name"])
+    def test_invalid_cases_rejected_for_the_intended_reason(contracts, case: dict[str, Any]) -> None:  # type: ignore[no-untyped-def]
+        base = load(FIXTURES / "valid" / case["base"])
+        assert contracts.validate(base) == [], "base fixture must be valid so only the mutation can fail it"
+        mutated = apply_mutation(base, case["op"], case["path"], case.get("value"))
+        problems = contracts.validate(mutated)
+>       assert problems, f"{case['name']} was accepted"
+E       AssertionError: retraction_date_stated_without_a_retraction_record was accepted
+E       assert []
+
+tests/stage00/test_contracts.py:80: AssertionError
+_ test_multilingual_and_precise_values_accepted[/subject_paper/identifiers/doi-10.1000.10/abc] _
+
+contracts = <citerift.contracts.validate.ContractSet object at 0x7fe95875c9e0>
+pointer = '/subject_paper/identifiers/doi', value = '10.1000.10/abc'
+
+    @pytest.mark.parametrize(
+        ("pointer", "value"),
+        [
+            ("/citations/0/article/title", "حمض نووي"),
+            ("/subject_paper/identifiers/doi", "10.5555/بحث-٢٠٢٠"),
+            ("/subject_paper/identifiers/doi", "10.1000.10/abc"),  # Y-13: subdivided registrant code
+            ("/citations/1/article/language", "zh-yue"),
+            ("/created_at", "2026-10-25T12:00:00.123456Z"),
+            ("/subject_paper/retraction_date/value", "2020-02-29"),
+        ],
+    )
+    def test_multilingual_and_precise_values_accepted(contracts, pointer: str, value: Any) -> None:  # type: ignore[no-untyped-def]
+        mutated = apply_mutation(load(FIXTURES / "valid" / "investigation_full.json"), "set", pointer, value)
+>       assert [str(p) for p in contracts.validate(mutated)] == []
+E       assert ["SCHEMA_VIOL...+$(?!\\\\n)'"] == []
+E         
+E         Left contains one more item: "SCHEMA_VIOLATION at /subject_paper/identifiers/doi: '10.1000.10/abc' does not match '^10\\\\.[0-9]{4,9}/[^\\\\s\\\\x00-\\\\x1f\\\\x7f-\\\\x9f\\\\ufeff]+$(?!\\\\n)'"
+E         Use -v to get more diff
+
+tests/stage00/test_contracts.py:336: AssertionError
+____ test_y01_a_report_written_over_a_tracked_file_does_not_hide_its_change ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y01_a_report_written_over0')
+
+    @pytest.mark.integration
+    def test_y01_a_report_written_over_a_tracked_file_does_not_hide_its_change(tmp_path: Path) -> None:
+        """Y-01: the report path was left out of the dirty check, even when it was a tracked test file."""
+        project = _plugin_project(tmp_path)
+        narrowed = project / "tests" / "test_sample.py"
+        narrowed.write_text("import pytest\n\n@pytest.mark.unit\ndef test_alpha():\n    pass\n", encoding="utf-8")
+        code, data, output = _run_plugin(project, narrowed)
+        assert code == 0, output
+>       assert data["dirty"] is True and "tests/test_sample.py" in data["dirty_paths"], data
+E       AssertionError: {'format': 'citerift.test-report/1', 'revision': '252efaed8e6ee014c03a4432e9dcc50aa4b82d65', 'dirty': False, 'dirty_paths': [], ...}
+E       assert (False is True)
+
+tests/stage00/test_corrections.py:1561: AssertionError
+_ test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty[--skip-worktree] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y02_changes_hidden_from_g0')
+flag = '--skip-worktree'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("flag", ["--skip-worktree", "--assume-unchanged"])
+    def test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty(tmp_path: Path, flag: str) -> None:
+        """Y-02: ``git status`` does not show a tracked file flagged skip-worktree or assume-unchanged."""
+        project = _plugin_project(tmp_path)
+        (project / "tests" / "test_sample.py").write_text(
+            "import pytest\n\n@pytest.mark.unit\ndef test_alpha():\n    pass\n", encoding="utf-8"
+        )
+        git(project, "update-index", flag, "tests/test_sample.py")
+        assert git(project, "status", "--porcelain") == ""
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json")
+        assert code == 0, output
+>       assert data["dirty"] is True and "tests/test_sample.py" in data["dirty_paths"], data
+E       AssertionError: {'format': 'citerift.test-report/1', 'revision': '252efaed8e6ee014c03a4432e9dcc50aa4b82d65', 'dirty': False, 'dirty_paths': [], ...}
+E       assert (False is True)
+
+tests/stage00/test_corrections.py:1578: AssertionError
+_ test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty[--assume-unchanged] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y02_changes_hidden_from_g1')
+flag = '--assume-unchanged'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("flag", ["--skip-worktree", "--assume-unchanged"])
+    def test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty(tmp_path: Path, flag: str) -> None:
+        """Y-02: ``git status`` does not show a tracked file flagged skip-worktree or assume-unchanged."""
+        project = _plugin_project(tmp_path)
+        (project / "tests" / "test_sample.py").write_text(
+            "import pytest\n\n@pytest.mark.unit\ndef test_alpha():\n    pass\n", encoding="utf-8"
+        )
+        git(project, "update-index", flag, "tests/test_sample.py")
+        assert git(project, "status", "--porcelain") == ""
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json")
+        assert code == 0, output
+>       assert data["dirty"] is True and "tests/test_sample.py" in data["dirty_paths"], data
+E       AssertionError: {'format': 'citerift.test-report/1', 'revision': '25bd5dcb4f5effe809e0443d58f0c6b8a99f244e', 'dirty': False, 'dirty_paths': [], ...}
+E       assert (False is True)
+
+tests/stage00/test_corrections.py:1578: AssertionError
+_______ test_y03_skipped_or_expected_failures_make_the_run_partial[skip] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y03_skipped_or_expected_f0')
+marker = 'skip'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("marker", ["skip", "xfail"])
+    def test_y03_skipped_or_expected_failures_make_the_run_partial(tmp_path: Path, marker: str) -> None:
+        """Y-03: a committed conftest skipping most tests gave a complete run."""
+        project = _plugin_project(tmp_path)
+        (project / "tests" / "conftest.py").write_text(
+            "import pytest\n\n"
+            "def pytest_collection_modifyitems(items):\n"
+            "    for item in items:\n"
+            "        if item.name != 'test_alpha':\n"
+            f"            item.add_marker(pytest.mark.{marker}(reason='narrowed'))\n",
+            encoding="utf-8",
+        )
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "conftest that skips")
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json")
+        assert code == 0 and data["selection"]["complete"] is True, output
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["totals"]
+E       AssertionError: {'passed': 1, 'skipped': 3}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1602: AssertionError
+______ test_y03_skipped_or_expected_failures_make_the_run_partial[xfail] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y03_skipped_or_expected_f1')
+marker = 'xfail'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("marker", ["skip", "xfail"])
+    def test_y03_skipped_or_expected_failures_make_the_run_partial(tmp_path: Path, marker: str) -> None:
+        """Y-03: a committed conftest skipping most tests gave a complete run."""
+        project = _plugin_project(tmp_path)
+        (project / "tests" / "conftest.py").write_text(
+            "import pytest\n\n"
+            "def pytest_collection_modifyitems(items):\n"
+            "    for item in items:\n"
+            "        if item.name != 'test_alpha':\n"
+            f"            item.add_marker(pytest.mark.{marker}(reason='narrowed'))\n",
+            encoding="utf-8",
+        )
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "conftest that skips")
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json")
+        assert code == 0 and data["selection"]["complete"] is True, output
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["totals"]
+E       AssertionError: {'passed': 1, 'xpassed': 3}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1602: AssertionError
+___________ test_y04_stage_and_id_digits_must_be_ascii[arabic_indic] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y04_stage_and_id_digits_m0')
+digits = '٠٠'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("digits", ["٠٠", "００", "۰۰"], ids=["arabic_indic", "fullwidth", "extended_arabic_indic"])
+    def test_y04_stage_and_id_digits_must_be_ascii(tmp_path: Path, digits: str) -> None:
+        """Y-04: ``\\d`` matched non-ASCII digits, so a Stage field in Arabic-Indic digits did not block Stage 00."""
+        from citerift.governance import memory
+    
+        path = tmp_path / "RISKS.md"
+        path.write_text(
+            "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+            f"- Stage: {digits}\n\nBody.\n\n## R-{digits}1 — Same id in other digits\n- Status: open\n"
+            "- Severity: low\n- Kind: limitation\n- Stage: 00\n\nBody.\n",
+            encoding="utf-8",
+        )
+        _, problems = memory.check_risks(path)
+        codes = {p.code for p in problems}
+>       assert {"RISK_INVALID_FIELD", "MEMORY_MALFORMED"} <= codes, problems
+E       AssertionError: []
+E       assert {'MEMORY_MALF...NVALID_FIELD'} <= set()
+E         
+E         Extra items in the left set:
+E         'RISK_INVALID_FIELD'
+E         'MEMORY_MALFORMED'
+
+tests/stage00/test_corrections.py:1620: AssertionError
+____________ test_y04_stage_and_id_digits_must_be_ascii[fullwidth] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y04_stage_and_id_digits_m1')
+digits = '００'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("digits", ["٠٠", "００", "۰۰"], ids=["arabic_indic", "fullwidth", "extended_arabic_indic"])
+    def test_y04_stage_and_id_digits_must_be_ascii(tmp_path: Path, digits: str) -> None:
+        """Y-04: ``\\d`` matched non-ASCII digits, so a Stage field in Arabic-Indic digits did not block Stage 00."""
+        from citerift.governance import memory
+    
+        path = tmp_path / "RISKS.md"
+        path.write_text(
+            "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+            f"- Stage: {digits}\n\nBody.\n\n## R-{digits}1 — Same id in other digits\n- Status: open\n"
+            "- Severity: low\n- Kind: limitation\n- Stage: 00\n\nBody.\n",
+            encoding="utf-8",
+        )
+        _, problems = memory.check_risks(path)
+        codes = {p.code for p in problems}
+>       assert {"RISK_INVALID_FIELD", "MEMORY_MALFORMED"} <= codes, problems
+E       AssertionError: []
+E       assert {'MEMORY_MALF...NVALID_FIELD'} <= set()
+E         
+E         Extra items in the left set:
+E         'RISK_INVALID_FIELD'
+E         'MEMORY_MALFORMED'
+
+tests/stage00/test_corrections.py:1620: AssertionError
+______ test_y04_stage_and_id_digits_must_be_ascii[extended_arabic_indic] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y04_stage_and_id_digits_m2')
+digits = '۰۰'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("digits", ["٠٠", "００", "۰۰"], ids=["arabic_indic", "fullwidth", "extended_arabic_indic"])
+    def test_y04_stage_and_id_digits_must_be_ascii(tmp_path: Path, digits: str) -> None:
+        """Y-04: ``\\d`` matched non-ASCII digits, so a Stage field in Arabic-Indic digits did not block Stage 00."""
+        from citerift.governance import memory
+    
+        path = tmp_path / "RISKS.md"
+        path.write_text(
+            "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+            f"- Stage: {digits}\n\nBody.\n\n## R-{digits}1 — Same id in other digits\n- Status: open\n"
+            "- Severity: low\n- Kind: limitation\n- Stage: 00\n\nBody.\n",
+            encoding="utf-8",
+        )
+        _, problems = memory.check_risks(path)
+        codes = {p.code for p in problems}
+>       assert {"RISK_INVALID_FIELD", "MEMORY_MALFORMED"} <= codes, problems
+E       AssertionError: []
+E       assert {'MEMORY_MALF...NVALID_FIELD'} <= set()
+E         
+E         Extra items in the left set:
+E         'RISK_INVALID_FIELD'
+E         'MEMORY_MALFORMED'
+
+tests/stage00/test_corrections.py:1620: AssertionError
+__ test_y04_a_critical_defect_with_non_ascii_stage_digits_blocks_verification __
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe957ddf680>
+
+    @pytest.mark.negative
+    def test_y04_a_critical_defect_with_non_ascii_stage_digits_blocks_verification(sandbox: Sandbox) -> None:
+        sandbox.write(
+            "RISKS.md",
+            "# Risks\n\n## R-001 — Critical defect\n- Status: open\n- Severity: critical\n- Kind: defect\n"
+            "- Stage: ٠٠\n\nBody.\n",
+        )
+        sandbox.commit("critical defect with Arabic-Indic digits")
+>       with pytest.raises(AssertionError):
+E       Failed: DID NOT RAISE AssertionError
+
+tests/stage00/test_corrections.py:1631: Failed
+________ test_y04_arabic_tatweel_and_short_vowels_do_not_split_a_topic _________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y04_arabic_tatweel_and_sh0')
+
+    @pytest.mark.negative
+    def test_y04_arabic_tatweel_and_short_vowels_do_not_split_a_topic(tmp_path: Path) -> None:
+        """Observation O-1 of the third review: topics differing only by tatweel or harakat are one topic."""
+        from citerift.governance import memory
+    
+        path = tmp_path / "DECISIONS.md"
+        path.write_text(
+            "# Decisions\n\n## D-001 — One\n- Status: accepted\n- Topic: ترخيص\n\nBody.\n\n"
+            "## D-002 — Two\n- Status: accepted\n- Topic: تـرْخيص\n\nBody.\n",
+            encoding="utf-8",
+        )
+        _, problems = memory.check_decisions(path)
+>       assert "DECISION_CONTRADICTION" in {p.code for p in problems}, problems
+E       AssertionError: []
+E       assert 'DECISION_CONTRADICTION' in set()
+
+tests/stage00/test_corrections.py:1648: AssertionError
+______ test_y06_an_amendment_on_a_stage_that_is_not_accepted_is_an_error _______
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe95865f4d0>
+
+    @pytest.mark.negative
+    def test_y06_an_amendment_on_a_stage_that_is_not_accepted_is_an_error(sandbox: Sandbox) -> None:
+        """Y-06: a hand-written enhancement on a verified stage passed check and covered owned changes."""
+        sandbox.drive_to_verified("00")
+        sandbox.write(OWNED_FILE, "BEHAVIOUR = 'different'\n")
+        changed = sandbox.commit("owned change after verification")
+        _hand_written_enhancement(sandbox, changed, sandbox.tick(), sandbox.new_ref())
+        sandbox.commit("hand-written amendment")
+        codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+>       assert {"AMENDMENT_NOT_APPLICABLE", "VERIFICATION_STALE"} <= codes, codes
+E       AssertionError: set()
+E       assert {'AMENDMENT_N...CATION_STALE'} <= set()
+E         
+E         Extra items in the left set:
+E         'VERIFICATION_STALE'
+E         'AMENDMENT_NOT_APPLICABLE'
+
+tests/stage00/test_corrections.py:1693: AssertionError
+_ test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time[same_second] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585b21e0>, when = 'same_second'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("when", ["same_second", "between_verification_and_acceptance"])
+    def test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time(sandbox: Sandbox, when: str) -> None:
+        """Y-07: the reuse rule compared self-chosen times, so the acceptance's reference passed with ``--at``."""
+        sandbox.drive_to_verified("00")
+        between = [sandbox.tick() for _ in range(3)][1]
+        assert sandbox.go("00", Status.ACCEPTED_CLOSED).allowed
+        sandbox.commit("accept")
+        acceptance = sandbox.registry()["stages"][0]["acceptance"]
+        sandbox.write(OWNED_FILE, "y = 2\n")
+        rev = sandbox.commit("enhancement")
+        at = acceptance["recorded_at"] if when == "same_second" else between
+        _hand_written_enhancement(sandbox, rev, at, acceptance["owner_ref"])
+        sandbox.commit("amendment")
+        codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+        expected = "OWNER_REF_REUSED" if when == "same_second" else "AMENDMENT_NOT_APPLICABLE"
+>       assert expected in codes, codes
+E       AssertionError: set()
+E       assert 'OWNER_REF_REUSED' in set()
+
+tests/stage00/test_corrections.py:1713: AssertionError
+_ test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time[between_verification_and_acceptance] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585c6090>
+when = 'between_verification_and_acceptance'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("when", ["same_second", "between_verification_and_acceptance"])
+    def test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time(sandbox: Sandbox, when: str) -> None:
+        """Y-07: the reuse rule compared self-chosen times, so the acceptance's reference passed with ``--at``."""
+        sandbox.drive_to_verified("00")
+        between = [sandbox.tick() for _ in range(3)][1]
+        assert sandbox.go("00", Status.ACCEPTED_CLOSED).allowed
+        sandbox.commit("accept")
+        acceptance = sandbox.registry()["stages"][0]["acceptance"]
+        sandbox.write(OWNED_FILE, "y = 2\n")
+        rev = sandbox.commit("enhancement")
+        at = acceptance["recorded_at"] if when == "same_second" else between
+        _hand_written_enhancement(sandbox, rev, at, acceptance["owner_ref"])
+        sandbox.commit("amendment")
+        codes = sandbox.codes(sandbox.orc().check(include_status_doc=False))
+        expected = "OWNER_REF_REUSED" if when == "same_second" else "AMENDMENT_NOT_APPLICABLE"
+>       assert expected in codes, codes
+E       AssertionError: set()
+E       assert 'AMENDMENT_NOT_APPLICABLE' in set()
+
+tests/stage00/test_corrections.py:1713: AssertionError
+__________ test_y09_an_ignored_owned_file_is_not_pinned_gate_evidence __________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585b2360>
+
+    @pytest.mark.negative
+    def test_y09_an_ignored_owned_file_is_not_pinned_gate_evidence(sandbox: Sandbox) -> None:
+        """Y-09: a git-ignored file under an owned path counted as pinned, but nothing pins it."""
+        sandbox.write(".gitignore", "src/citerift/governance/notes.txt\n")
+        sandbox.write("src/citerift/governance/notes.txt", "gate evidence nobody committed\n")
+        sandbox.commit("ignore a file under an owned path")
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        gates = sandbox.gates("00")
+        gates["00-A"]["evidence"] = ["src/citerift/governance/notes.txt"]
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+>       assert not result.allowed and "GATE_EVIDENCE_UNPINNED" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1730: AssertionError
+__________ test_y10_the_ci_run_must_belong_to_the_project_repository ___________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe957de9160>
+
+    @pytest.mark.negative
+    def test_y10_the_ci_run_must_belong_to_the_project_repository(sandbox: Sandbox) -> None:
+        """Y-10: a run of any GitHub repository was accepted as the CI record."""
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        ci = {**sandbox.ci(rev), "run_url": "https://github.com/someone-else/other/actions/runs/7"}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+>       assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1743: AssertionError
+_ test_y11_more_damaged_inputs_are_reported_not_crashed[non_utf8_evidence_name] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585b0a40>
+damage = 'non_utf8_evidence_name'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "damage", ["non_utf8_evidence_name", "damaged_index", "absolute_verification_dir", "deep_registry"]
+    )
+    def test_y11_more_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str) -> None:
+        """Y-11: five more inputs ended in a traceback."""
+        import os
+    
+        root = sandbox.root
+        command = ["check"]
+        if damage == "non_utf8_evidence_name":
+            sandbox.drive_to_verified("00")
+            (root / "docs/verification/stage-00").joinpath(os.fsdecode(b"bad-\xff.txt")).write_text("x", encoding="utf-8")
+        elif damage == "damaged_index":
+            sandbox.drive_to_verified("00")
+            (root / ".git" / "index").write_bytes(b"DIRC damaged")
+            command = ["recover"]
+        elif damage == "absolute_verification_dir":
+            reg = sandbox.registry()
+            reg["stages"][0]["verification_dir"] = str(root / "docs/verification/stage-00")
+            sandbox.save_registry(reg)
+        else:
+            (root / "governance/stage_registry.json").write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        out = _cli(root, *command)
+>       assert "Traceback" not in out.stdout + out.stderr, out.stdout + out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 370, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 71, in cmd_check
+E             findings = orc.check()
+E                        ^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 279, in check
+E             findings += self._evidence_findings(stage, v["revision"], recorded=v)
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 810, in _evidence_findings
+E             out += self._manifest_findings(stage, recorded)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 911, in _manifest_findings
+E             current = {e["path"]: e["sha256"] for e in evidence.manifest(self.root, stage["verification_dir"])}
+E                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/evidence.py", line 37, in manifest
+E             skip = gitutil.ignored(root, files)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py", line 52, in ignored
+E             out = subprocess.run(  # noqa: S603 - fixed executable, no shell, list arguments
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/subprocess.py", line 550, in run
+E             stdout, stderr = process.communicate(input, timeout=timeout)
+E                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+E             stdout, stderr = self._communicate(input, endtime, timeout)
+E                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/subprocess.py", line 2092, in _communicate
+E             self._save_input(input)
+E           File "/usr/lib/python3.12/subprocess.py", line 2172, in _save_input
+E             self._input = self._input.encode(self.stdin.encoding,
+E                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         UnicodeEncodeError: 'utf-8' codec can't encode character '\udcff' in position 359: surrogates not allowed
+E         
+E       assert 'Traceback' not in 'Traceback (...ot allowed\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>...
+E         
+E         ...Full output truncated (35 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1770: AssertionError
+_____ test_y11_more_damaged_inputs_are_reported_not_crashed[damaged_index] _____
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585b0ad0>
+damage = 'damaged_index'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "damage", ["non_utf8_evidence_name", "damaged_index", "absolute_verification_dir", "deep_registry"]
+    )
+    def test_y11_more_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str) -> None:
+        """Y-11: five more inputs ended in a traceback."""
+        import os
+    
+        root = sandbox.root
+        command = ["check"]
+        if damage == "non_utf8_evidence_name":
+            sandbox.drive_to_verified("00")
+            (root / "docs/verification/stage-00").joinpath(os.fsdecode(b"bad-\xff.txt")).write_text("x", encoding="utf-8")
+        elif damage == "damaged_index":
+            sandbox.drive_to_verified("00")
+            (root / ".git" / "index").write_bytes(b"DIRC damaged")
+            command = ["recover"]
+        elif damage == "absolute_verification_dir":
+            reg = sandbox.registry()
+            reg["stages"][0]["verification_dir"] = str(root / "docs/verification/stage-00")
+            sandbox.save_registry(reg)
+        else:
+            (root / "governance/stage_registry.json").write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        out = _cli(root, *command)
+>       assert "Traceback" not in out.stdout + out.stderr, out.stdout + out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 370, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 216, in cmd_recover
+E             data = orc.recover()
+E                    ^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1585, in recover
+E             findings = self.check()
+E                        ^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 279, in check
+E             findings += self._evidence_findings(stage, v["revision"], recorded=v)
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 810, in _evidence_findings
+E             out += self._manifest_findings(stage, recorded)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 911, in _manifest_findings
+E             current = {e["path"]: e["sha256"] for e in evidence.manifest(self.root, stage["verification_dir"])}
+E                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/evidence.py", line 37, in manifest
+E             skip = gitutil.ignored(root, files)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py", line 61, in ignored
+E             raise GitUnavailableError(out.stderr.strip())
+E         citerift.governance.gitutil.GitUnavailableError: fatal: .git/index: index file smaller than expected
+E         
+E       assert 'Traceback' not in 'Traceback (...n expected\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>...
+E         
+E         ...Full output truncated (26 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1770: AssertionError
+_ test_y11_more_damaged_inputs_are_reported_not_crashed[absolute_verification_dir] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe957dea3f0>
+damage = 'absolute_verification_dir'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "damage", ["non_utf8_evidence_name", "damaged_index", "absolute_verification_dir", "deep_registry"]
+    )
+    def test_y11_more_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str) -> None:
+        """Y-11: five more inputs ended in a traceback."""
+        import os
+    
+        root = sandbox.root
+        command = ["check"]
+        if damage == "non_utf8_evidence_name":
+            sandbox.drive_to_verified("00")
+            (root / "docs/verification/stage-00").joinpath(os.fsdecode(b"bad-\xff.txt")).write_text("x", encoding="utf-8")
+        elif damage == "damaged_index":
+            sandbox.drive_to_verified("00")
+            (root / ".git" / "index").write_bytes(b"DIRC damaged")
+            command = ["recover"]
+        elif damage == "absolute_verification_dir":
+            reg = sandbox.registry()
+            reg["stages"][0]["verification_dir"] = str(root / "docs/verification/stage-00")
+            sandbox.save_registry(reg)
+        else:
+            (root / "governance/stage_registry.json").write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        out = _cli(root, *command)
+        assert "Traceback" not in out.stdout + out.stderr, out.stdout + out.stderr
+        if command == ["recover"]:
+            # recover reports and exits 0 by design; the damage must be named in what it reports.
+            assert "REVISION_UNVERIFIABLE" in out.stdout, out.stdout
+        else:
+>           assert out.returncode in (1, 2), out.stdout
+E           AssertionError: Consistency check: 0 errors, 0 warnings
+E             
+E           assert 0 in (1, 2)
+E            +  where 0 = CompletedProcess(args=['/home/user/citerift/.venv/bin/python', '-m', 'citerift.governance.cli', '--root', '/tmp/pytest...11_more_damaged_inputs_a2/repo', 'check'], returncode=0, stdout='Consistency check: 0 errors, 0 warnings\n', stderr='').returncode
+
+tests/stage00/test_corrections.py:1775: AssertionError
+_____ test_y11_more_damaged_inputs_are_reported_not_crashed[deep_registry] _____
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fe9585b1f10>
+damage = 'deep_registry'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "damage", ["non_utf8_evidence_name", "damaged_index", "absolute_verification_dir", "deep_registry"]
+    )
+    def test_y11_more_damaged_inputs_are_reported_not_crashed(sandbox: Sandbox, damage: str) -> None:
+        """Y-11: five more inputs ended in a traceback."""
+        import os
+    
+        root = sandbox.root
+        command = ["check"]
+        if damage == "non_utf8_evidence_name":
+            sandbox.drive_to_verified("00")
+            (root / "docs/verification/stage-00").joinpath(os.fsdecode(b"bad-\xff.txt")).write_text("x", encoding="utf-8")
+        elif damage == "damaged_index":
+            sandbox.drive_to_verified("00")
+            (root / ".git" / "index").write_bytes(b"DIRC damaged")
+            command = ["recover"]
+        elif damage == "absolute_verification_dir":
+            reg = sandbox.registry()
+            reg["stages"][0]["verification_dir"] = str(root / "docs/verification/stage-00")
+            sandbox.save_registry(reg)
+        else:
+            (root / "governance/stage_registry.json").write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        out = _cli(root, *command)
+>       assert "Traceback" not in out.stdout + out.stderr, out.stdout + out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 347, in main
+E             orc = Orchestrator(root)
+E                   ^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 135, in __init__
+E             registry = loads_strict((root / REGISTRY_PATH).read_text(encoding="utf-8"))
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/contracts/formats.py", line 76, in loads_strict
+E             return json.loads(text, object_pairs_hook=_reject_duplicates)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/__init__.py", line 359, in loads
+E             return cls(**kw).decode(s)
+E                    ^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+E             obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+E             obj, end = self.scan_once(s, idx)
+E                        ^^^^^^^^^^^^^^^^^^^^^^
+E         RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+E         
+E       assert 'Traceback' not in 'Traceback (...ode string\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 375, in <module>...
+E         
+E         ...Full output truncated (21 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1770: AssertionError
+_____________ test_y11_deep_json_record_is_unreadable_not_a_crash ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-432/test_y11_deep_json_record_is_u0')
+
+    @pytest.mark.negative
+    def test_y11_deep_json_record_is_unreadable_not_a_crash(tmp_path: Path) -> None:
+        record = tmp_path / "deep.json"
+        record.write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        out = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "citerift.contracts.validate",
+                "--schemas",
+                str(REPO / "schemas/contracts"),
+                "validate",
+                str(record),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+>       assert out.returncode == 1 and "Traceback" not in out.stderr and "UNREADABLE" in out.stdout, out.stderr
+E       AssertionError: <frozen runpy>:128: RuntimeWarning: 'citerift.contracts.validate' found in sys.modules after import of package 'citerift.contracts', but prior to execution of 'citerift.contracts.validate'; this may result in unpredictable behaviour
+E         Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/contracts/validate.py", line 183, in <module>
+E             sys.exit(main())
+E                      ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/contracts/validate.py", line 170, in main
+E             record = loads_strict(path.read_text(encoding="utf-8"))
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/contracts/formats.py", line 76, in loads_strict
+E             return json.loads(text, object_pairs_hook=_reject_duplicates)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/__init__.py", line 359, in loads
+E             return cls(**kw).decode(s)
+E                    ^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+E             obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+E             obj, end = self.scan_once(s, idx)
+E                        ^^^^^^^^^^^^^^^^^^^^^^
+E         RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+E         
+E       assert (1 == 1 and 'Traceback' not in '<frozen run...ode string\n'
+E        +  where 1 = CompletedProcess(args=['/home/user/citerift/.venv/bin/python', '-m', 'citerift.contracts.validate', '--schemas', '/tmp...^^^^^^^^^^^^^^^\nRecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string\n').returncode
+E         
+E         'Traceback' is contained here:
+E           behaviour
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code...
+E         
+E         ...Full output truncated (19 lines hidden), use '-vv' to show)
+
+tests/stage00/test_corrections.py:1796: AssertionError
+_ test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools _
+
+    @pytest.mark.integration
+    def test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools() -> None:
+        """Y-08 and observation O-6: CI runs check before ruff, mypy and pytest, then checks its own report and
+        that no step changed a tracked file."""
+        steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        order = [
+            steps.index("citerift.governance.cli check\n"),
+            steps.index("ruff check ."),
+            steps.index("--no-sync mypy"),
+            steps.index("-m pytest"),
+>           steps.index("check-report ci-test-report.json"),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            steps.index("git diff --exit-code"),
+        ]
+E       ValueError: substring not found
+
+tests/stage00/test_corrections.py:1809: ValueError
+=========================== short test summary info ============================
+FAILED tests/stage00/test_contracts.py::test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_with_absence_of_record]
+FAILED tests/stage00/test_contracts.py::test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_of_two_absences]
+FAILED tests/stage00/test_contracts.py::test_invalid_cases_rejected_for_the_intended_reason[retraction_conflict_whose_values_agree]
+FAILED tests/stage00/test_contracts.py::test_invalid_cases_rejected_for_the_intended_reason[title_conflict_whose_values_agree]
+FAILED tests/stage00/test_contracts.py::test_invalid_cases_rejected_for_the_intended_reason[retraction_date_stated_without_a_retraction_record]
+FAILED tests/stage00/test_contracts.py::test_multilingual_and_precise_values_accepted[/subject_paper/identifiers/doi-10.1000.10/abc]
+FAILED tests/stage00/test_corrections.py::test_y01_a_report_written_over_a_tracked_file_does_not_hide_its_change
+FAILED tests/stage00/test_corrections.py::test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty[--skip-worktree]
+FAILED tests/stage00/test_corrections.py::test_y02_changes_hidden_from_git_status_still_make_the_tree_dirty[--assume-unchanged]
+FAILED tests/stage00/test_corrections.py::test_y03_skipped_or_expected_failures_make_the_run_partial[skip]
+FAILED tests/stage00/test_corrections.py::test_y03_skipped_or_expected_failures_make_the_run_partial[xfail]
+FAILED tests/stage00/test_corrections.py::test_y04_stage_and_id_digits_must_be_ascii[arabic_indic]
+FAILED tests/stage00/test_corrections.py::test_y04_stage_and_id_digits_must_be_ascii[fullwidth]
+FAILED tests/stage00/test_corrections.py::test_y04_stage_and_id_digits_must_be_ascii[extended_arabic_indic]
+FAILED tests/stage00/test_corrections.py::test_y04_a_critical_defect_with_non_ascii_stage_digits_blocks_verification
+FAILED tests/stage00/test_corrections.py::test_y04_arabic_tatweel_and_short_vowels_do_not_split_a_topic
+FAILED tests/stage00/test_corrections.py::test_y06_an_amendment_on_a_stage_that_is_not_accepted_is_an_error
+FAILED tests/stage00/test_corrections.py::test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time[same_second]
+FAILED tests/stage00/test_corrections.py::test_y07_an_amendment_cannot_reuse_the_acceptance_reference_by_its_time[between_verification_and_acceptance]
+FAILED tests/stage00/test_corrections.py::test_y09_an_ignored_owned_file_is_not_pinned_gate_evidence
+FAILED tests/stage00/test_corrections.py::test_y10_the_ci_run_must_belong_to_the_project_repository
+FAILED tests/stage00/test_corrections.py::test_y11_more_damaged_inputs_are_reported_not_crashed[non_utf8_evidence_name]
+FAILED tests/stage00/test_corrections.py::test_y11_more_damaged_inputs_are_reported_not_crashed[damaged_index]
+FAILED tests/stage00/test_corrections.py::test_y11_more_damaged_inputs_are_reported_not_crashed[absolute_verification_dir]
+FAILED tests/stage00/test_corrections.py::test_y11_more_damaged_inputs_are_reported_not_crashed[deep_registry]
+FAILED tests/stage00/test_corrections.py::test_y11_deep_json_record_is_unreadable_not_a_crash
+FAILED tests/stage00/test_corrections.py::test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools
+27 failed, 366 passed in 255.46s (0:04:15)

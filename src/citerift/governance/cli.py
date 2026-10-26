@@ -12,6 +12,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from citerift.contracts.formats import loads_strict
+from citerift.governance import evidence, gitutil
 from citerift.governance.model import EDGES, Actor, Status
 from citerift.governance.orchestrator import (
     STATUS_DOC_PATH,
@@ -101,7 +103,18 @@ def cmd_transition(orc: Orchestrator, args: argparse.Namespace) -> int:
     gates: dict[str, Any] = {}
     ci = None
     if args.record:
-        record = json.loads(Path(args.record).read_text(encoding="utf-8"))
+        try:
+            record = loads_strict(Path(args.record).read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            print(f"error: cannot read --record {args.record}: {exc}", file=sys.stderr)
+            return 2
+        if (
+            not isinstance(record, dict)
+            or not isinstance(record.get("gates", {}), dict)
+            or not isinstance(record.get("ci"), dict | None)
+        ):
+            print(f"error: --record {args.record} must be an object with 'gates' and 'ci' objects", file=sys.stderr)
+            return 2
         gates = record.get("gates", {})
         ci = record.get("ci")
     gates.update(_parse_gates(args.gate or []))
@@ -137,7 +150,14 @@ def cmd_blocker(orc: Orchestrator, args: argparse.Namespace) -> int:
             bid = orc.add_blocker(args.stage, args.text, at=args.at)
             print(f"Recorded blocker {bid}")
         else:
-            unblocked = orc.resolve_blocker(args.stage, args.id, args.text, at=args.at)
+            unblocked = orc.resolve_blocker(
+                args.stage,
+                args.id,
+                args.text,
+                at=args.at,
+                actor=Actor(args.actor),
+                recorded_by=Actor(args.recorded_by),
+            )
             print(f"Resolved blocker {args.id}" + ("; stage returned to IN_PROGRESS" if unblocked else ""))
     except GovernanceError as exc:
         print("REJECTED")
@@ -179,7 +199,10 @@ def cmd_render_status(orc: Orchestrator, args: argparse.Namespace) -> int:
         print(f"Wrote {STATUS_DOC_PATH}")
         return 0
     if args.check:
-        current = path.read_text(encoding="utf-8") if path.is_file() else ""
+        try:
+            current = path.read_text(encoding="utf-8") if path.is_file() else ""
+        except UnicodeDecodeError:
+            current = None  # not UTF-8 text, so it is out of date (X-05)
         if current != text:
             print(f"{STATUS_DOC_PATH} is out of date")
             return 1
@@ -197,7 +220,12 @@ def cmd_recover(orc: Orchestrator, args: argparse.Namespace) -> int:
     out = [
         f"CITERIFT recovery report for {data['repository']}",
         f"HEAD: {data['head']} on {data['branch']}",
-        f"Uncommitted changes: {len(data['uncommitted_changes'] or [])}",
+        "Uncommitted changes: "
+        + (
+            "unknown (git could not list them; see the errors below)"  # not 0 (Z-03)
+            if data["uncommitted_changes"] is None
+            else str(len(data["uncommitted_changes"]))
+        ),
         "",
         "Authoritative revisions:",
         *[
@@ -230,6 +258,24 @@ def cmd_recover(orc: Orchestrator, args: argparse.Namespace) -> int:
     ]
     print("\n".join(out))
     return 0
+
+
+def cmd_check_report(orc: Orchestrator, args: argparse.Namespace) -> int:
+    """Check a test report as verification would, against HEAD: CI runs this on its own report (O-6)."""
+    try:
+        stage = orc.stage(args.stage)
+    except KeyError as exc:
+        print(f"ERROR STAGE_UNKNOWN: {exc}")
+        return 2
+    revision = gitutil.head(orc.root)
+    if revision is None:
+        print("ERROR REVISION_NOT_FOUND: HEAD cannot be read")
+        return 1
+    problems = evidence.check_test_report(orc.root, args.report, None, revision, stage["required_test_suites"])
+    for p in problems:
+        print(f"ERROR {p.code}: {p.message}")
+    print(f"Test report {args.report} at {revision[:12]}: {len(problems)} problems")
+    return 1 if problems else 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -270,6 +316,13 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("stage")
     b.add_argument("text", help="description (add) or resolution (resolve)")
     b.add_argument("--id", help="blocker id to resolve")
+    b.add_argument(
+        "--actor",
+        default=Actor.ENGINEERING_AGENT.value,
+        choices=[a.value for a in Actor],
+        help="who resolved the blocker (also the actor of BLOCKED -> IN_PROGRESS)",
+    )
+    b.add_argument("--recorded-by", default=Actor.ENGINEERING_AGENT.value, choices=[a.value for a in Actor])
     b.add_argument("--at")
     b.set_defaults(func=cmd_blocker)
 
@@ -295,7 +348,23 @@ def build_parser() -> argparse.ArgumentParser:
     rs.set_defaults(func=cmd_render_status)
 
     sub.add_parser("recover", help="reconstruct project state from the repository alone").set_defaults(func=cmd_recover)
+
+    cr = sub.add_parser("check-report", help="check a test report against HEAD as verification would")
+    cr.add_argument("report", help="repository-relative path of the report")
+    cr.add_argument("--stage", default="00", help="stage whose required suites apply")
+    cr.set_defaults(func=cmd_check_report)
     return p
+
+
+def _git_hint(root: Path, command: str) -> int:
+    if command == "recover" and gitutil.is_repository(root):
+        print(f"HEAD: {gitutil.head(root)} on {gitutil.branch(root)}")
+        try:
+            print(f"Uncommitted changes: {', '.join(gitutil.dirty_paths(root)) or 'none'}")
+        except gitutil.GitUnavailableError as exc:
+            print(f"Uncommitted changes: unknown ({exc})")
+        print("Restore the registry from git (git log -- governance/stage_registry.json) before any other step.")
+    return 1
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -305,11 +374,36 @@ def main(argv: list[str] | None = None) -> int:
     except FileNotFoundError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    orc = Orchestrator(root)
+    try:
+        orc = Orchestrator(root)
+    except (OSError, ValueError) as exc:
+        # A damaged registry is reported, never a traceback (F-13); recover still prints what git knows.
+        print(f"ERROR REGISTRY_UNREADABLE: governance/stage_registry.json cannot be read: {exc}")
+        return _git_hint(root, args.command)
+    try:
+        schema_errors = orc.schema_findings()
+    except (OSError, ValueError) as exc:
+        print(f"ERROR REGISTRY_SCHEMA_UNREADABLE: schemas/governance/stage_registry.schema.json cannot be read: {exc}")
+        return _git_hint(root, args.command)
+    if schema_errors and args.command != "check":
+        # Every other command relies on the registry's structure; refuse instead of failing half-way (V-10).
+        for f in schema_errors:
+            print(f)
+        print("The registry does not match its schema; run `citerift-gov check` and restore it from git.")
+        return _git_hint(root, args.command)
+    stage_id = getattr(args, "stage", None)
+    if stage_id is not None and stage_id not in {s["id"] for s in orc.stages}:
+        print(f"ERROR STAGE_UNKNOWN: [stage {stage_id}] no such stage in the registry")
+        return 2
     if args.command == "blocker" and args.action == "resolve" and not args.id:
         print("error: blocker resolve needs --id", file=sys.stderr)
         return 2
-    result: int = args.func(orc, args)
+    try:
+        result: int = args.func(orc, args)
+    except gitutil.GitUnavailableError as exc:
+        # Last resort for a damaged repository (for example a broken index) that a check did not catch (Y-11).
+        print(f"ERROR REVISION_UNVERIFIABLE: git cannot read the repository: {exc}")
+        return 1
     return result
 
 

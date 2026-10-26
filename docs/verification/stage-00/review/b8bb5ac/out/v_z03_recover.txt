@@ -1,0 +1,49 @@
+== recover on $W/base
+CITERIFT recovery report for <repository account>/citerift
+HEAD: b8bb5acf9905f83bfe83f8a56b493cd8c632c435 on claude/project-thread-84z62e
+Uncommitted changes: 0
+
+Authoritative revisions:
+Completed and accepted: none
+Verified, awaiting owner acceptance: none
+Open:
+  AUTHORIZED: 01
+  IN_PROGRESS: 00
+Not started: 02, 03, 04, 05, 06, 07, 08, 09
+Open blockers:
+  none
+Open risks, defects and limitations:
+  R-001 [high risk, stage project]: The engineering agent acts under the owner's GitHub identity
+  R-002 [high limitation, stage 00]: Owner references are not machine-verified
+  R-003 [medium limitation, stage 00]: Registry files can be edited by hand
+  R-004 [medium limitation, stage 00]: CI evidence in the registry is entered by the agent
+  R-005 [medium limitation, stage 00]: Contract compatibility is checked against fixtures, not proven
+  R-006 [medium limitation, stage 00, 02, 03]: Contract field formats are not yet validated against real data
+  R-007 [high risk, stage 01, 02, 03]: Stage 01 findings are not delivered or accepted
+  R-008 [medium risk, stage 03, 05, 07]: Wikimedia API rate limiting
+  R-009 [high risk, stage 09]: No license chosen
+  R-010 [high risk, stage project]: Hackathon deadline
+  R-013 [low risk, stage 06]: Future ML libraries may drop Python 3.12
+  R-016 [medium limitation, stage 00]: The CI gate is defined by a file the gated change can edit
+Pending decisions:
+  D-006: Optional cryptographic owner signatures for acceptance
+  D-007: License for code, documentation and data
+Recent changes:
+  2026-10-25T11:11:53Z stage 00 IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS (engineering-agent)
+  2026-10-25T11:11:54Z stage 00 IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED (engineering-agent)
+  2026-10-25T14:37:07Z stage 00 IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE (engineering-agent)
+  2026-10-25T14:52:41Z stage 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED (owner)
+  2026-10-25T16:46:13Z stage 00 ACCEPTED_CLOSED -> IN_PROGRESS (owner)
+Next actions:
+  - Stage 00 (Engineering Foundation): authorized work may continue (IN_PROGRESS)
+  - Stage 01 (Independent Feasibility Investigation): assigned to an external agent; awaiting its handoff for owner review (AUTHORIZED)
+Consistency: 0 errors, 0 warnings
+exit 0
+== recover in a copy without .git
+2:HEAD: None on None
+3:Uncommitted changes: unknown (git could not list them; see the errors below)
+39:Consistency: 0 errors, 0 warnings
+exit 0
+== recover in $W/base with git missing from PATH
+1:ERROR REVISION_UNVERIFIABLE: git cannot read the repository: git executable not found
+exit 0

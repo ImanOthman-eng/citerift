@@ -8,6 +8,7 @@ records can be checked mechanically without a second, duplicated store.
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -16,8 +17,22 @@ RISK_STATUSES = frozenset({"open", "mitigated", "accepted", "closed"})
 RISK_SEVERITIES = frozenset({"critical", "high", "medium", "low"})
 RISK_KINDS = frozenset({"risk", "defect", "limitation"})
 
-_HEADING = re.compile(r"^## ([DR]-\d{3}) — (.+?)\s*$")
+# Ids and stage numbers are ASCII digits. Python's \d also matches Arabic-Indic, fullwidth and other
+# digits, so an id or stage written in Arabic-Indic digits would parse but never equal "R-001" or "00" (Y-04).
+_HEADING = re.compile(r"^## ([DR]-[0-9]{3}) — (.+?)\s*$")
+# Anything that looks like an entry heading but is not exactly the form above (another dash,
+# another heading level, missing or non-ASCII digits) is reported instead of being skipped (F-06, Y-04).
+_HEADING_LIKE = re.compile(r"^\s{0,3}#+\s*\**\s*([DR])\s*[-\u2010-\u2015\u2212_]?\s*\d+")
 _FIELD = re.compile(r"^- ([A-Z][A-Za-z-]+): (.+?)\s*$")
+# Fields that only an entry carries. One of them outside a parsed entry means the entry's heading
+# was not recognized (another dash, a setext or HTML heading, ...), so it is reported (V-06).
+_ENTRY_FIELDS = frozenset({"Status", "Severity", "Kind", "Topic"})
+_ENTRY_FIELDS_FOLDED = frozenset(f.casefold() for f in _ENTRY_FIELDS)
+_SEPARATORS = re.compile(r"[\s_\-\u2010-\u2015\u2212]+")
+# Arabic tatweel and short-vowel marks change the spelling of a topic but not the word.
+_ARABIC_MARKS = re.compile(r"[\u0640\u064b-\u065f\u0670]")
+# An entry field written another way: indented, another bullet, bold, or another case (X-06).
+_FIELD_LIKE = re.compile(r"^\s*[-*+]\s*[*_]*\s*([A-Za-z][A-Za-z-]*)\s*[*_]*\s*:")
 
 
 @dataclass
@@ -26,6 +41,7 @@ class Entry:
     title: str
     line: int
     fields: dict[str, str] = field(default_factory=dict)
+    duplicate_fields: list[str] = field(default_factory=list)
 
     def get(self, name: str) -> str:
         return self.fields.get(name, "").strip()
@@ -42,6 +58,72 @@ class MemoryProblem:
     code: str
     file: str
     message: str
+
+
+def malformed_headings(text: str, prefix: str) -> list[tuple[int, str]]:
+    """Lines that look like an entry heading for ``prefix`` but do not parse as one."""
+    out = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        m = _HEADING_LIKE.match(unicodedata.normalize("NFKC", line))
+        if m and m.group(1) == prefix[0] and not _HEADING.match(line):
+            out.append((number, line.strip()))
+    return out
+
+
+def _structure_problems(entries: list[Entry], text: str, prefix: str, name: str) -> list[MemoryProblem]:
+    problems = [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: heading is not '## {prefix}NNN — Title': {line!r}")
+        for n, line in malformed_headings(text, prefix)
+    ]
+    problems += [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: field outside any recognized entry heading: {line!r}")
+        for n, line in orphan_fields(text, prefix)
+    ]
+    problems += [
+        MemoryProblem("MEMORY_MALFORMED", name, f"line {n}: entry field is not written as '- Name: value': {line!r}")
+        for n, line in misformatted_fields(text)
+    ]
+    for e in entries:
+        for f in e.duplicate_fields:
+            problems.append(MemoryProblem("MEMORY_MALFORMED", name, f"{e.id} sets field '{f}' more than once"))
+    return problems
+
+
+def normalize_topic(topic: str) -> str:
+    """Compatibility-normalized, case-folded, without invisible format characters (X-06) or Arabic tatweel
+    and short-vowel marks, and with every run of spaces, hyphens or underscores as one hyphen."""
+    visible = "".join(c for c in unicodedata.normalize("NFKC", topic) if unicodedata.category(c) != "Cf")
+    visible = _ARABIC_MARKS.sub("", visible)
+    return _SEPARATORS.sub("-", visible).strip("-").casefold()
+
+
+def misformatted_fields(text: str) -> list[tuple[int, str]]:
+    """Lines naming an entry-only field (Status, Severity, Kind, Topic) in any form other than the exact
+    ``- Name: value``, which the parser would not read."""
+    out = []
+    for number, line in enumerate(text.splitlines(), start=1):
+        m = _FIELD_LIKE.match(line)
+        if m and m.group(1).casefold() in _ENTRY_FIELDS_FOLDED and not _FIELD.match(line):
+            out.append((number, line.strip()))
+    return out
+
+
+def orphan_fields(text: str, prefix: str) -> list[tuple[int, str]]:
+    """Entry field lines that do not belong to any parsed entry heading."""
+    out = []
+    attached = False
+    for number, line in enumerate(text.splitlines(), start=1):
+        heading = _HEADING.match(line)
+        if heading and heading.group(1).startswith(prefix):
+            attached = True
+            continue
+        m = _FIELD.match(line)
+        if m:
+            if not attached and m.group(1) in _ENTRY_FIELDS:
+                out.append((number, line.strip()))
+        elif line.strip():
+            attached = False
+    return out
 
 
 def parse_entries(text: str, prefix: str) -> list[Entry]:
@@ -62,6 +144,8 @@ def parse_entries(text: str, prefix: str) -> list[Entry]:
             continue
         m = _FIELD.match(line)
         if m:
+            if m.group(1) in current.fields:
+                current.duplicate_fields.append(m.group(1))
             current.fields[m.group(1)] = m.group(2)
         elif line.strip():
             in_fields = False
@@ -72,8 +156,12 @@ def check_decisions(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    entries = parse_entries(path.read_text(encoding="utf-8"), "D-")
-    problems: list[MemoryProblem] = []
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        return [], [MemoryProblem("MEMORY_UNREADABLE", name, f"{name} cannot be read as UTF-8 text: {exc}")]
+    entries = parse_entries(text, "D-")
+    problems = _structure_problems(entries, text, "D-", name)
     by_id: dict[str, Entry] = {}
     for e in entries:
         if e.id in by_id:
@@ -88,7 +176,7 @@ def check_decisions(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
         if not topic:
             problems.append(MemoryProblem("DECISION_NO_TOPIC", name, f"{e.id} has no Topic"))
         if status == "accepted" and topic:
-            accepted_by_topic.setdefault(topic, []).append(e.id)
+            accepted_by_topic.setdefault(normalize_topic(topic), []).append(e.id)
         for ref in e.refs("Supersedes"):
             target = by_id.get(ref)
             if target is None:
@@ -127,8 +215,12 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
     name = path.name
     if not path.is_file():
         return [], [MemoryProblem("MEMORY_FILE_MISSING", name, f"{name} does not exist")]
-    entries = parse_entries(path.read_text(encoding="utf-8"), "R-")
-    problems: list[MemoryProblem] = []
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        return [], [MemoryProblem("MEMORY_UNREADABLE", name, f"{name} cannot be read as UTF-8 text: {exc}")]
+    entries = parse_entries(text, "R-")
+    problems = _structure_problems(entries, text, "R-", name)
     seen: set[str] = set()
     for e in entries:
         if e.id in seen:
@@ -143,17 +235,18 @@ def check_risks(path: Path) -> tuple[list[Entry], list[MemoryProblem]]:
                 problems.append(
                     MemoryProblem("RISK_INVALID_FIELD", name, f"{e.id} has invalid {fname} '{e.get(fname)}'")
                 )
-        if not re.fullmatch(r"\d{2}(, ?\d{2})*|project", e.get("Stage")):
+        if not re.fullmatch(r"[0-9]{2}(, ?[0-9]{2})*|project", e.get("Stage")):
             problems.append(MemoryProblem("RISK_INVALID_FIELD", name, f"{e.id} has invalid Stage '{e.get('Stage')}'"))
     return entries, problems
 
 
 def open_critical_defects(risks: list[Entry], stage_id: str) -> list[Entry]:
+    """Open critical defects that block ``stage_id``; a defect with ``Stage: project`` blocks every stage."""
     return [
         r
         for r in risks
         if r.get("Kind") == "defect"
         and r.get("Severity") == "critical"
         and r.get("Status") == "open"
-        and stage_id in r.refs("Stage")
+        and (stage_id in r.refs("Stage") or r.get("Stage") == "project")
     ]

@@ -18,15 +18,20 @@ from __future__ import annotations
 import copy
 import json
 import os
+import re
 import tempfile
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from functools import cached_property
 from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from jsonschema.exceptions import SchemaError
+from referencing.exceptions import Unresolvable
 
+from citerift.contracts.formats import FORMAT_CHECKER, loads_strict, parse_utc_timestamp
+from citerift.contracts.validate import ContractSet
 from citerift.governance import evidence, gitutil, memory
 from citerift.governance.model import (
     ACTIVE,
@@ -41,15 +46,37 @@ from citerift.governance.model import (
 REGISTRY_PATH = Path("governance/stage_registry.json")
 REGISTRY_SCHEMA_PATH = Path("schemas/governance/stage_registry.schema.json")
 STATUS_DOC_PATH = Path("PROJECT_STATUS.md")
+CONTRACTS_DIR = "schemas/contracts"
+CONTRACT_FIXTURES_DIR = "tests/stage00/fixtures/contracts/v1/valid"
 DECISIONS_PATH = Path("DECISIONS.md")
 RISKS_PATH = Path("RISKS.md")
+# Stage fields that define what verification means; recorded as a hash at verification (F-03).
+DEFINITION_FIELDS = (
+    "id",
+    "name",
+    "executor",
+    "depends_on",
+    "verification_dir",
+    "owned_paths",
+    "required_artifacts",
+    "required_test_suites",
+    "ci_required",
+    "acceptance_gates",
+)
 
 Registry = dict[str, Any]
 StageRecord = dict[str, Any]
 
 
-def utc_now() -> str:
-    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+def _version(value: object) -> tuple[int, ...]:
+    """``x-citerift-version`` as a comparable tuple; anything else sorts first."""
+    if isinstance(value, str) and all(part.isdigit() for part in value.split(".")):
+        return tuple(int(part) for part in value.split("."))
+    return ()
+
+
+def utc_now(offset: timedelta = timedelta(0)) -> str:
+    return (datetime.now(UTC) + offset).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @dataclass(frozen=True)
@@ -69,6 +96,17 @@ class Finding:
 
 def errors(findings: list[Finding]) -> list[Finding]:
     return [f for f in findings if f.severity == "error"]
+
+
+# A recorded time may be ahead of this machine's clock by at most this much (F-16).
+MAX_CLOCK_SKEW = timedelta(minutes=5)
+
+
+def _future_problem(at: str, what: str) -> list[Finding]:
+    limit = utc_now(MAX_CLOCK_SKEW)
+    if at > limit:
+        return [Finding("TIMESTAMP_IN_FUTURE", "error", None, f"{what} time {at} is later than now ({utc_now()})")]
+    return []
 
 
 @dataclass
@@ -95,14 +133,35 @@ class Orchestrator:
     def __init__(self, root: Path, registry: Registry | None = None):
         self.root = root
         if registry is None:
-            registry = json.loads((root / REGISTRY_PATH).read_text(encoding="utf-8"))
+            registry = loads_strict((root / REGISTRY_PATH).read_text(encoding="utf-8"))
         self.registry: Registry = registry
+
+    def _now(self, *, after_history: bool = False) -> str:
+        """Default time for a new record: the local clock, but never before a time already recorded (V-11).
+
+        A blocker opened at the same second as the last transition would be replayed as open before it,
+        so ``after_history`` moves such a time one second past the last history entry.
+        """
+        recorded: list[str] = [h["at"] for h in self.registry["history"][-1:]]
+        for s in self.stages:
+            recorded += [b[k] for b in s["blockers"] for k in ("opened_at", "resolved_at") if b[k]]
+            recorded += [a["recorded_at"] for a in s["amendments"]]
+        now: str = max([utc_now(), *recorded])
+        if after_history and self.registry["history"] and now <= self.registry["history"][-1]["at"]:
+            last = datetime.strptime(self.registry["history"][-1]["at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+            now = (last + timedelta(seconds=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return now
 
     # ------------------------------------------------------------------ access
 
     @cached_property
     def _schema(self) -> dict[str, Any]:
-        schema: dict[str, Any] = json.loads((self.root / REGISTRY_SCHEMA_PATH).read_text(encoding="utf-8"))
+        schema: dict[str, Any] = loads_strict((self.root / REGISTRY_SCHEMA_PATH).read_text(encoding="utf-8"))
+        try:
+            Draft202012Validator.check_schema(schema)
+        except SchemaError as exc:
+            # A schema that parses but is not a schema is reported like an unreadable one (X-05).
+            raise ValueError(f"not a valid JSON Schema: {exc.message}") from exc
         return schema
 
     @property
@@ -117,7 +176,10 @@ class Orchestrator:
         raise KeyError(f"unknown stage {stage_id}")
 
     def _artifacts_for(self, stage: StageRecord) -> list[str]:
-        names = stage.get("required_artifacts", self.registry["policy"]["required_artifacts"])
+        names = list(stage.get("required_artifacts", self.registry["policy"]["required_artifacts"]))
+        handoff = self.registry["policy"]["handoff_file"]
+        if handoff not in names:
+            names.append(handoff)  # every stage hands off, whatever it lists (V-03)
         return [f"{stage['verification_dir']}/{n}" for n in names]
 
     def _test_report_for(self, stage: StageRecord) -> str | None:
@@ -127,6 +189,11 @@ class Orchestrator:
 
     def _ci_required(self, stage: StageRecord) -> bool:
         return bool(stage.get("ci_required", stage["executor"] == Actor.ENGINEERING_AGENT))
+
+    def _definition_sha256(self, stage: StageRecord) -> str:
+        """Hash of the rules a verification was checked against: the stage definition and the policy."""
+        definition = {k: stage.get(k) for k in DEFINITION_FIELDS}
+        return evidence.canonical_sha256({"stage": definition, "policy": self.registry["policy"]})
 
     # ------------------------------------------------------------ read-only ops
 
@@ -203,8 +270,10 @@ class Orchestrator:
         findings += self._history_findings()
         findings += self._single_active_findings()
         findings += self._record_findings()
+        findings += self._record_history_findings()
         findings += self._dependency_findings()
         findings += self._revision_findings()
+        findings += self._tree_findings()
         for stage in self.stages:
             if stage["status"] in NEEDS_VERIFICATION and stage["verification"]:
                 v = stage["verification"]
@@ -217,8 +286,52 @@ class Orchestrator:
             findings += self._status_doc_findings()
         return findings
 
+    def schema_findings(self) -> list[Finding]:
+        """Registry schema violations; raises OSError or ValueError if the schema itself cannot be read."""
+        return self._schema_findings()
+
+    def _tree_findings(self) -> list[Finding]:
+        """Committed files outside the owned paths that would change what the checks see or run.
+
+        Evidence is hashed as checked out. The root .gitattributes (owned by Stage 00) fixes line endings;
+        a nested one would change checkout bytes for part of the tree, outside any owned path (V-12).
+        CI puts ``src`` on the import path, so a module there beside the ``citerift`` package (for example
+        ``sitecustomize.py``, or a package that shadows a dependency) runs before the checks (X-04).
+        """
+        if not gitutil.is_repository(self.root) or gitutil.head(self.root) is None:
+            return []
+        try:
+            tracked = gitutil.tracked_files(self.root, "HEAD", ".")
+        except gitutil.GitUnavailableError:
+            return []
+        nested = [p for p in tracked if p.endswith("/.gitattributes")]
+        foreign = sorted({p.split("/")[1] for p in tracked if p.startswith("src/")} - {"citerift"})
+        return [
+            Finding(
+                "SRC_FOREIGN_MODULE",
+                "error",
+                None,
+                f"src/{name} is importable beside the citerift package and would run or shadow code before "
+                "the checks; only src/citerift may exist",
+            )
+            for name in foreign
+        ] + [
+            Finding(
+                "ATTRIBUTES_NESTED",
+                "error",
+                None,
+                f"{p} overrides the line-ending policy of the root .gitattributes, so evidence hashes would "
+                "depend on the checkout; put attributes in the root file",
+            )
+            for p in nested
+        ]
+
     def _schema_findings(self) -> list[Finding]:
-        validator = Draft202012Validator(self._schema)
+        validator = Draft202012Validator(self._schema, format_checker=FORMAT_CHECKER)
+        try:
+            found = sorted(validator.iter_errors(self.registry), key=lambda e: list(e.absolute_path))
+        except Unresolvable as exc:
+            raise ValueError(f"the schema has an unresolvable reference: {exc}") from exc
         return [
             Finding(
                 "REGISTRY_SCHEMA",
@@ -226,7 +339,7 @@ class Orchestrator:
                 None,
                 f"{'/'.join(str(p) for p in e.absolute_path) or '<root>'}: {e.message}",
             )
-            for e in sorted(validator.iter_errors(self.registry), key=lambda e: list(e.absolute_path))
+            for e in found
         ]
 
     def _structure_findings(self) -> list[Finding]:
@@ -279,6 +392,8 @@ class Orchestrator:
             if h["at"] < previous_at:
                 out.append(Finding("HISTORY_TIME_ORDER", "error", sid, f"entry {index} is earlier than the one before"))
             previous_at = h["at"]
+            for f in _future_problem(h["at"], f"history entry {index}"):
+                out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", sid, f.message))
             if sid not in replay:
                 out.append(Finding("HISTORY_UNKNOWN_STAGE", "error", sid, f"entry {index} names an unknown stage"))
                 continue
@@ -330,7 +445,25 @@ class Orchestrator:
                             f"entry {index}: owner decision without a reference to the owner's statement",
                         )
                     )
+            if edge is not None:
+                out += self._replay_step_findings(index, h, source, target, replay)
             replay[sid] = target
+            if (
+                target in ACTIVE
+                and source not in ACTIVE
+                and executors[sid] == Actor.ENGINEERING_AGENT
+                and self.registry["policy"]["single_active_engineering_stage"]
+            ):
+                active = [i for i, st in replay.items() if executors[i] == Actor.ENGINEERING_AGENT and st in ACTIVE]
+                if len(active) > 1:
+                    out.append(
+                        Finding(
+                            "HISTORY_SINGLE_ACTIVE",
+                            "error",
+                            sid,
+                            f"entry {index} made more than one engineering stage active: {active}",
+                        )
+                    )
         for s in self.stages:
             if replay[s["id"]] != s["status"]:
                 out.append(
@@ -341,6 +474,154 @@ class Orchestrator:
                         f"recorded status {s['status']} conflicts with history, which gives {replay[s['id']]}",
                     )
                 )
+        return out
+
+    def _replay_step_findings(
+        self, index: int, h: dict[str, Any], source: Status, target: Status, replay: dict[str, Status]
+    ) -> list[Finding]:
+        """Rules that ``propose`` enforces, checked again at the time of each history entry (F-04, F-05).
+
+        They follow the guards of the verified model (simulations/stage00/state_machine_model.py):
+        dependencies at authorize, verify and accept; a correction amendment to reopen; blockers.
+        """
+        sid, at = h["stage"], h["at"]
+        stage = self.stage(sid)
+        out: list[Finding] = []
+        if (source, target) in (
+            (Status.NOT_STARTED, Status.AUTHORIZED),
+            (Status.IMPLEMENTED_NOT_VERIFIED, Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+            (Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, Status.ACCEPTED_CLOSED),
+        ):
+            pending = [d for d in stage["depends_on"] if replay.get(d) != Status.ACCEPTED_CLOSED]
+            if pending:
+                out.append(
+                    Finding(
+                        "HISTORY_DEPENDENCY",
+                        "error",
+                        sid,
+                        f"entry {index}: {source} -> {target} while dependencies {pending} were not accepted",
+                    )
+                )
+        if source == Status.ACCEPTED_CLOSED:
+            ref = h.get("amendment")
+            amendment = next((a for a in stage["amendments"] if a["id"] == ref), None)
+            earlier = [
+                e["seq"]
+                for e in self.registry["history"]
+                if e["seq"] < h["seq"]
+                and e["stage"] == sid
+                and e["from"] == Status.ACCEPTED_CLOSED
+                and ref is not None
+                and e.get("amendment") == ref
+            ]
+            if earlier:
+                out.append(
+                    Finding(
+                        "HISTORY_AMENDMENT_REUSED",
+                        "error",
+                        sid,
+                        f"entry {index} reopens the stage with {ref}, which already justified entry {earlier[0]}",
+                    )
+                )
+            if amendment is None or amendment["kind"] != "correction" or amendment["recorded_at"] > at:
+                out.append(
+                    Finding(
+                        "HISTORY_AMENDMENT_MISSING",
+                        "error",
+                        sid,
+                        f"entry {index} reopens an accepted stage without a correction amendment recorded before it",
+                    )
+                )
+        open_then = [b["id"] for b in stage["blockers"] if b["opened_at"] <= at and not (b["resolved_at"] or "~") <= at]
+        if target == Status.BLOCKED and not open_then:
+            out.append(Finding("HISTORY_BLOCKER", "error", sid, f"entry {index} blocks the stage with no open blocker"))
+        if open_then and (
+            (source, target)
+            in (
+                (Status.AUTHORIZED, Status.IN_PROGRESS),
+                (Status.BLOCKED, Status.IN_PROGRESS),
+                (Status.IMPLEMENTED_NOT_VERIFIED, Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+                (Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, Status.ACCEPTED_CLOSED),  # X-10
+            )
+        ):
+            out.append(
+                Finding(
+                    "HISTORY_BLOCKER",
+                    "error",
+                    sid,
+                    f"entry {index}: {source} -> {target} while blockers {open_then} were open",
+                )
+            )
+        return out
+
+    def _record_history_findings(self) -> list[Finding]:
+        """Each record must be the one its history entry created (F-17), and an acceptance must cite
+        an owner statement that is not already cited by history from before the verification."""
+        out: list[Finding] = []
+        history = self.registry["history"]
+        for s in self.stages:
+            sid = s["id"]
+            for name, target in (
+                ("authorization", Status.AUTHORIZED),
+                ("implementation", Status.IMPLEMENTED_NOT_VERIFIED),
+                ("verification", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE),
+                ("acceptance", Status.ACCEPTED_CLOSED),
+            ):
+                record = s[name]
+                if record is None:
+                    continue
+                entries = [h for h in history if h["stage"] == sid and h["to"] == target]
+                if target == Status.AUTHORIZED:
+                    entries = [h for h in entries if h["from"] == Status.NOT_STARTED]
+                last = entries[-1] if entries else None
+                if (
+                    last is None
+                    or last["at"] != record["recorded_at"]
+                    or ("owner_ref" in record and last["owner_ref"] != record["owner_ref"])
+                ):
+                    out.append(
+                        Finding(
+                            "RECORD_HISTORY_MISMATCH",
+                            "error",
+                            sid,
+                            f"the {name} record does not match the history entry that created it",
+                        )
+                    )
+            acc = s["acceptance"]
+            verified_at = [
+                h["seq"] for h in history if h["stage"] == sid and h["to"] == Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE
+            ]
+            if acc is not None and verified_at:
+                verified_entry = next(h for h in history if h["seq"] == verified_at[-1])
+                reused = [
+                    str(h["seq"]) for h in history if h["seq"] < verified_at[-1] and h["owner_ref"] == acc["owner_ref"]
+                ]
+                # Amendments cite owner statements too (V-07).
+                reused += [
+                    a["id"]
+                    for st in self.stages
+                    for a in st["amendments"]
+                    if a["owner_ref"] == acc["owner_ref"] and a["recorded_at"] <= verified_entry["at"]
+                ]
+                if reused:
+                    out.append(
+                        Finding(
+                            "OWNER_REF_REUSED",
+                            "error",
+                            sid,
+                            f"the acceptance cites {acc['owner_ref']}, already cited by {', '.join(reused)} "
+                            "from before the stage was verified",
+                        )
+                    )
+        for s in self.stages:
+            for b in s["blockers"]:
+                for key in ("opened_at", "resolved_at"):
+                    if b[key]:
+                        for f in _future_problem(b[key], f"blocker {b['id']} {key}"):
+                            out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", s["id"], f.message))
+            for a in s["amendments"]:
+                for f in _future_problem(a["recorded_at"], f"amendment {a['id']}"):
+                    out.append(Finding("HISTORY_FUTURE_TIMESTAMP", "error", s["id"], f.message))
         return out
 
     def _single_active_findings(self) -> list[Finding]:
@@ -393,10 +674,24 @@ class Orchestrator:
 
     def _dependency_findings(self) -> list[Finding]:
         out: list[Finding] = []
+        reopened = {h["stage"] for h in self.registry["history"] if h["from"] == Status.ACCEPTED_CLOSED}
         for s in self.stages:
             if s["status"] == Status.NOT_STARTED:
                 continue
             for d in self.dependencies(s["id"])["unsatisfied"]:
+                if d in reopened:
+                    # The dependency was accepted and has been reopened for a correction (F-11). The
+                    # history replay checked that it was accepted when this stage needed it.
+                    out.append(
+                        Finding(
+                            "DEPENDENCY_REOPENED",
+                            "warning",
+                            s["id"],
+                            f"dependency {d} was reopened for a correction; it must be accepted again "
+                            f"before stage {s['id']} can be verified or accepted",
+                        )
+                    )
+                    continue
                 severity = "warning" if s["status"] == Status.BLOCKED else "error"
                 out.append(
                     Finding(
@@ -472,8 +767,12 @@ class Orchestrator:
                 out.append(Finding(p.code, "error", sid, p.message))
         handoff_rel = f"{stage['verification_dir']}/{self.registry['policy']['handoff_file']}"
         handoff = self.root / handoff_rel
-        if handoff.is_file():
-            text = handoff.read_text(encoding="utf-8")
+        try:
+            text = handoff.read_text(encoding="utf-8") if handoff.is_file() else None
+        except UnicodeDecodeError as exc:
+            out.append(Finding("EVIDENCE_UNREADABLE", "error", sid, f"{handoff_rel} is not UTF-8 text: {exc}"))
+            text = None
+        if text is not None:
             missing = evidence.missing_sections(text, self.registry["policy"]["handoff_required_sections"])
             if missing:
                 out.append(
@@ -509,13 +808,30 @@ class Orchestrator:
             ):
                 out.append(Finding(p.code, "error", sid, p.message))
         if recorded is not None:
-            out += self._gate_findings(stage, recorded)
+            out += self._manifest_findings(stage, recorded)
+            out += self._definition_findings(stage, recorded)
+            out += self._gate_findings(stage, recorded, revision)
             ci = recorded.get("ci")
             if ci is None and self._ci_required(stage):
                 out.append(
                     Finding("CI_EVIDENCE_MISSING", "error", sid, "no CI run is recorded for the verified revision")
                 )
             if ci is not None:
+                repository = self.registry["project"]["repository"]
+                # The whole URL is matched, not a prefix: dot segments could leave the repository (Z-02). Case is
+                # folded for ASCII only, so a dotless i does not match an i (R5-03 of the fix check).
+                run = re.fullmatch(
+                    rf"https://github\.com/{re.escape(repository)}/actions/runs/[0-9]+", ci["run_url"], re.I | re.A
+                )
+                if run is None:
+                    out.append(
+                        Finding(
+                            "CI_WRONG_REPOSITORY",
+                            "error",
+                            sid,
+                            f"CI run {ci['run_url']} is not a run of {repository} (Y-10)",
+                        )
+                    )
                 if ci["head_sha"] != revision:
                     out.append(
                         Finding(
@@ -537,7 +853,7 @@ class Orchestrator:
                 )
         return out
 
-    def _gate_findings(self, stage: StageRecord, recorded: dict[str, Any]) -> list[Finding]:
+    def _gate_findings(self, stage: StageRecord, recorded: dict[str, Any], revision: str) -> list[Finding]:
         sid = stage["id"]
         out: list[Finding] = []
         defined = [g["id"] for g in stage["acceptance_gates"]]
@@ -546,6 +862,7 @@ class Orchestrator:
                 Finding("GATES_UNDEFINED", "error", sid, "verification recorded but no acceptance gates are defined")
             )
         results = recorded["gates"]
+        manifest_paths = {e["path"] for e in recorded["evidence_manifest"]}
         for gid in defined:
             result = results.get(gid)
             if result is None:
@@ -553,44 +870,204 @@ class Orchestrator:
                 continue
             if result["result"] != "pass":
                 out.append(Finding("GATE_NOT_PASSED", "error", sid, f"gate {gid} is '{result['result']}'"))
+            # A URL may be cited for context but is not pinned; every cited file must be pinned (in the
+            # evidence manifest, or under an owned path whose content the drift check compares).
+            pinned = False
             for ref in result["evidence"]:
-                if not evidence.is_url(ref) and not (evidence.inside(self.root, ref) and (self.root / ref).exists()):
+                if evidence.is_url(ref):
+                    continue
+                if not (evidence.inside(self.root, ref) and (self.root / ref).is_file()):
                     out.append(
-                        Finding("GATE_EVIDENCE_MISSING", "error", sid, f"gate {gid} cites {ref}, which does not exist")
+                        Finding("GATE_EVIDENCE_MISSING", "error", sid, f"gate {gid} cites {ref}, which is not a file")
                     )
+                elif not evidence.is_plain_path(self.root, ref):
+                    # Ownership and the manifest are decided on the path as written, so a path through
+                    # ".." or a symlink could name a file outside both (X-01).
+                    out.append(
+                        Finding(
+                            "GATE_EVIDENCE_UNPINNED",
+                            "error",
+                            sid,
+                            f"gate {gid} cites {ref}, which goes through '..', '.' or a symbolic link",
+                        )
+                    )
+                elif ref in manifest_paths or (self._owned(stage, ref) and self._committed(revision, ref)):
+                    # An owned file is bound by the drift rule only if it is committed at the verified
+                    # revision; an ignored or untracked one is bound by nothing (Y-09).
+                    pinned = True
+                else:
+                    out.append(
+                        Finding(
+                            "GATE_EVIDENCE_UNPINNED",
+                            "error",
+                            sid,
+                            f"gate {gid} cites {ref}, which is neither in the evidence manifest nor an owned file "
+                            f"committed at {revision[:12]}",
+                        )
+                    )
+            if not pinned:
+                out.append(
+                    Finding(
+                        "GATE_EVIDENCE_UNPINNED",
+                        "error",
+                        sid,
+                        f"gate {gid} cites no hash-pinned file (a URL alone is not pinned)",
+                    )
+                )
         for gid in results:
             if gid not in defined:
                 out.append(Finding("GATE_UNKNOWN", "error", sid, f"result recorded for undefined gate {gid}"))
         return out
 
+    def _committed(self, revision: str, rel: str) -> bool:
+        try:
+            return gitutil.exists_at(self.root, revision, rel)
+        except gitutil.GitUnavailableError:
+            return False
+
+    @staticmethod
+    def _owned(stage: StageRecord, rel: str) -> bool:
+        return any(rel == p or rel.startswith(p.rstrip("/") + "/") for p in stage["owned_paths"])
+
+    def _manifest_findings(self, stage: StageRecord, recorded: dict[str, Any]) -> list[Finding]:
+        """Every file under the verification directory is pinned by hash at verification (F-02)."""
+        sid = stage["id"]
+        recorded_hashes = {e["path"]: e["sha256"] for e in recorded["evidence_manifest"]}
+        try:
+            current = {e["path"]: e["sha256"] for e in evidence.manifest(self.root, stage["verification_dir"])}
+        except evidence.EvidenceNameError as exc:
+            return [Finding("EVIDENCE_UNREADABLE", "error", sid, str(exc))]
+        except gitutil.GitUnavailableError as exc:
+            return [Finding("REVISION_UNVERIFIABLE", "error", sid, f"cannot list the evidence files: {exc}")]
+        # Only an enhancement's test report may be added after verification; its own hash and revision are
+        # checked by _amendment_findings. A correction leads to a new verification instead (V-05).
+        later = {
+            a["test_report"]["path"] for a in stage["amendments"] if a["test_report"] and a["kind"] == "enhancement"
+        }
+        out: list[Finding] = []
+        for rel, sha in sorted(recorded_hashes.items()):
+            if rel not in current:
+                out.append(Finding("EVIDENCE_MISSING", "error", sid, f"recorded evidence {rel} no longer exists"))
+            elif current[rel] != sha:
+                out.append(
+                    Finding("EVIDENCE_STALE", "error", sid, f"{rel} changed after verification (sha256 mismatch)")
+                )
+        for rel in sorted(set(current) - set(recorded_hashes) - later):
+            out.append(
+                Finding(
+                    "EVIDENCE_UNLISTED", "error", sid, f"{rel} was added to the evidence directory after verification"
+                )
+            )
+        return out
+
+    def _definition_findings(self, stage: StageRecord, recorded: dict[str, Any]) -> list[Finding]:
+        """The stage definition and policy must be the ones the stage was verified against (F-03)."""
+        sid = stage["id"]
+        out: list[Finding] = []
+        if recorded["definition_sha256"] != self._definition_sha256(stage):
+            out.append(
+                Finding(
+                    "DEFINITION_CHANGED",
+                    "error",
+                    sid,
+                    "the stage definition or the policy changed after verification",
+                )
+            )
+        if stage["executor"] == Actor.ENGINEERING_AGENT:
+            for field_name in ("owned_paths", "required_test_suites", "acceptance_gates"):
+                if not stage[field_name]:
+                    out.append(
+                        Finding(
+                            "DEFINITION_WEAK",
+                            "error",
+                            sid,
+                            f"an engineering stage cannot be verified with empty {field_name}",
+                        )
+                    )
+        return out
+
     def _drift_findings(self, stage: StageRecord) -> list[Finding]:
+        """Owned content at HEAD must equal the content at a covering revision.
+
+        Content is compared, not history: "which commit last touched these
+        paths" misses a merge that restores an older version (F-01).
+        """
         sid = stage["id"]
         paths = stage["owned_paths"]
         if not paths or not gitutil.is_repository(self.root):
             return []
-        try:
-            last = gitutil.last_commit_touching(self.root, paths)
-        except gitutil.GitUnavailableError as exc:
-            return [Finding("REVISION_UNVERIFIABLE", "error", sid, f"cannot inspect history of owned paths: {exc}")]
-        if last is None:
-            return []
         covering = [stage["verification"]["revision"]]
-        covering += [
-            a["revision"]
-            for a in stage["amendments"]
-            if a["kind"] == "enhancement" and a["revision"] and a["test_report"]
-        ]
-        if any(gitutil.commit_exists(self.root, c) and gitutil.is_ancestor(self.root, last, c) for c in covering):
-            return []
-        return [
-            Finding(
-                "VERIFICATION_STALE",
-                "error",
-                sid,
-                f"owned paths changed in {last[:12]} after the verified revision, "
-                "with no recorded amendment covering the change",
+        covering += [a["revision"] for a in self._current_enhancements(stage) if a["revision"] and a["test_report"]]
+        out: list[Finding] = []
+        try:
+            changes = [
+                gitutil.changed_paths(self.root, c, paths) for c in covering if gitutil.commit_exists(self.root, c)
+            ]
+            if changes and all(changes):
+                last = gitutil.last_commit_touching(self.root, paths)
+                shown = ", ".join(changes[0][:5]) + (" ..." if len(changes[0]) > 5 else "")
+                out.append(
+                    Finding(
+                        "VERIFICATION_STALE",
+                        "error",
+                        sid,
+                        f"owned content differs from the verified revision ({shown}; last change seen in history: "
+                        f"{last[:12] if last else 'unknown'}), with no recorded amendment covering the change",
+                    )
+                )
+            dirty = [
+                p
+                for p in gitutil.dirty_paths(self.root)
+                if any(p == owned or p.startswith(owned.rstrip("/") + "/") for owned in paths)
+            ]
+        except gitutil.GitUnavailableError as exc:
+            return [Finding("REVISION_UNVERIFIABLE", "error", sid, f"cannot inspect owned paths: {exc}")]
+        if dirty:
+            out.append(
+                Finding(
+                    "UNCOMMITTED_OWNED_CHANGE",
+                    "warning",
+                    sid,
+                    f"uncommitted changes to owned paths ({', '.join(dirty[:5])}); "
+                    "committing them makes the stage stale",
+                )
             )
+        return out
+
+    def _current_enhancements(self, stage: StageRecord) -> list[dict[str, Any]]:
+        """Enhancements of the stage's current acceptance. Only these can cover owned changes: one on a stage
+        that is not accepted, or from before a later reopening, would cover code nobody accepted (Y-06)."""
+        acc = stage["acceptance"]
+        if stage["status"] != Status.ACCEPTED_CLOSED or not acc:
+            return []
+        since = parse_utc_timestamp(acc["recorded_at"])
+        return [
+            a
+            for a in stage["amendments"]
+            if a["kind"] == "enhancement"
+            and since is not None
+            and (t := parse_utc_timestamp(a["recorded_at"])) is not None
+            and t >= since
         ]
+
+    def _accepted_at(self, stage_id: str, at: str) -> bool:
+        """True when the stage was accepted at ``at``: accepted after the entries before that second, or
+        accepted by an entry in that same second. Entries later in the same second (a reopening that the
+        amendment justifies) come after the amendment."""
+        when = parse_utc_timestamp(at)
+        if when is None:
+            return False
+        status = Status.NOT_STARTED.value
+        same_second_acceptance = False
+        for h in self.registry["history"]:
+            t = parse_utc_timestamp(h["at"])
+            if h["stage"] != stage_id or t is None:
+                continue
+            if t < when:
+                status = h["to"]
+            elif t == when and h["to"] == Status.ACCEPTED_CLOSED:
+                same_second_acceptance = True
+        return status == Status.ACCEPTED_CLOSED or same_second_acceptance
 
     def _acceptance_findings(self) -> list[Finding]:
         out: list[Finding] = []
@@ -625,6 +1102,9 @@ class Orchestrator:
         for s in self.stages:
             sid = s["id"]
             ids = [a["id"] for a in s["amendments"]]
+            for kind, values in (("AMENDMENT", ids), ("BLOCKER", [b["id"] for b in s["blockers"]])):
+                for dup in sorted({v for v in values if values.count(v) > 1}):
+                    out.append(Finding(f"{kind}_DUPLICATE_ID", "error", sid, f"{dup} is recorded more than once"))
             reopen_refs = {
                 h.get("amendment")
                 for h in self.registry["history"]
@@ -633,6 +1113,17 @@ class Orchestrator:
             for a in s["amendments"]:
                 if not a["id"].startswith(f"A-{sid}-"):
                     out.append(Finding("AMENDMENT_RECORD", "error", sid, f"{a['id']} does not belong to stage {sid}"))
+                # The tool records an amendment only on an accepted stage; check holds a hand-written one to the
+                # same rule, by the stage's status at the amendment's own time (Y-06, Y-07).
+                if not self._accepted_at(sid, a["recorded_at"]):
+                    out.append(
+                        Finding(
+                            "AMENDMENT_NOT_APPLICABLE",
+                            "error",
+                            sid,
+                            f"{a['id']} is recorded at {a['recorded_at']}, when stage {sid} was not accepted",
+                        )
+                    )
                 if a["kind"] == "enhancement":
                     if a["revision"] is None or a["test_report"] is None:
                         out.append(
@@ -649,7 +1140,21 @@ class Orchestrator:
                             self.root, report["path"], report["sha256"], a["revision"], s["required_test_suites"]
                         ):
                             out.append(Finding(p.code, "error", sid, f"amendment {a['id']}: {p.message}"))
-                elif a["id"] not in reopen_refs and s["status"] == Status.ACCEPTED_CLOSED:
+                        out += self._enhancement_contract_findings(s, a)
+                elif a["test_report"] is not None:
+                    rel = a["test_report"]["path"]
+                    if not (evidence.inside(self.root, rel) and (self.root / rel).is_file()):
+                        out.append(Finding("EVIDENCE_MISSING", "error", sid, f"amendment {a['id']}: {rel} is missing"))
+                    elif evidence.sha256_file(self.root / rel) != a["test_report"]["sha256"]:
+                        out.append(
+                            Finding(
+                                "EVIDENCE_STALE",
+                                "error",
+                                sid,
+                                f"amendment {a['id']}: {rel} changed after it was recorded",
+                            )
+                        )
+                if a["kind"] != "enhancement" and a["id"] not in reopen_refs and s["status"] == Status.ACCEPTED_CLOSED:
                     out.append(
                         Finding(
                             "CORRECTION_PENDING",
@@ -662,6 +1167,104 @@ class Orchestrator:
                 ref = h.get("amendment")
                 if h["stage"] == sid and ref is not None and ref not in ids:
                     out.append(Finding("AMENDMENT_UNKNOWN", "error", sid, f"history cites unknown amendment {ref}"))
+        return out + self._amendment_ref_findings()
+
+    def _amendment_ref_findings(self) -> list[Finding]:
+        """An amendment records an owner decision of its own, so it must cite an owner statement that no
+        earlier history entry or amendment cited (X-13: an enhancement reused the acceptance's reference)."""
+        # Each citation: time, reference, where, and the amendment a reopening entry used (it may share the
+        # amendment's reference, because one owner statement records the correction and the reopening).
+        cited: list[tuple[str, str, str, str | None]] = [
+            (h["at"], h["owner_ref"], f"history entry {h['seq']}", h.get("amendment"))
+            for h in self.registry["history"]
+            if h["owner_ref"]
+        ]
+        amendments = [(s["id"], a) for s in self.stages for a in s["amendments"]]
+        cited += [(a["recorded_at"], a["owner_ref"], a["id"], None) for _, a in amendments]
+        out = []
+        for sid, a in amendments:
+            mine = parse_utc_timestamp(a["recorded_at"])
+            # At or before, not only before: a reference cited in the same second was cited first (Y-07).
+            prior = [
+                where
+                for at, ref, where, used in cited
+                if ref == a["owner_ref"]
+                and where != a["id"]
+                and used != a["id"]
+                and mine is not None
+                and (t := parse_utc_timestamp(at)) is not None
+                and t <= mine
+            ]
+            if prior:
+                out.append(
+                    Finding(
+                        "OWNER_REF_REUSED",
+                        "error",
+                        sid,
+                        f"amendment {a['id']} cites {a['owner_ref']}, already cited by {', '.join(prior)}",
+                    )
+                )
+        return out
+
+    def _enhancement_contract_findings(self, stage: StageRecord, amendment: dict[str, Any]) -> list[Finding]:
+        """A contract changed by an enhancement must raise its version and keep every valid fixture of the
+        accepted revision valid (docs/data-contracts.md, Versioning; X-13)."""
+        sid = stage["id"]
+        base = (stage["verification"] or {}).get("revision")
+        rev = amendment["revision"]
+        if base is None:
+            return []
+        try:
+            changed = [
+                p
+                for p in gitutil.changed_paths(self.root, base, [CONTRACTS_DIR], rev)
+                if p.endswith(".schema.json") and self._owned(stage, p)
+            ]
+            if not changed:
+                return []
+            out = []
+            for path in changed:
+                old_text, new_text = gitutil.show(self.root, base, path), gitutil.show(self.root, rev, path)
+                old = loads_strict(old_text) if old_text is not None else {}
+                new = loads_strict(new_text) if new_text is not None else {}
+                if _version(new.get("x-citerift-version")) <= _version(old.get("x-citerift-version")):
+                    out.append(
+                        Finding(
+                            "CONTRACT_VERSION_NOT_INCREASED",
+                            "error",
+                            sid,
+                            f"amendment {amendment['id']} changes {path} without raising its x-citerift-version "
+                            f"({old.get('x-citerift-version')} -> {new.get('x-citerift-version')})",
+                        )
+                    )
+            schemas = {}
+            for path in gitutil.tracked_files(self.root, rev, CONTRACTS_DIR):
+                text = gitutil.show(self.root, rev, path) if path.endswith(".schema.json") else None
+                if text is not None:
+                    schema = loads_strict(text)
+                    schemas[schema["$id"]] = schema
+            contracts = ContractSet(schemas)
+            for path in gitutil.tracked_files(self.root, base, CONTRACT_FIXTURES_DIR):
+                text = gitutil.show(self.root, base, path) if path.endswith(".json") else None
+                if text is not None and (problems := contracts.validate(loads_strict(text))):
+                    out.append(
+                        Finding(
+                            "CONTRACT_INCOMPATIBLE",
+                            "error",
+                            sid,
+                            f"amendment {amendment['id']}: {path}, valid at the accepted revision, is now "
+                            f"rejected: {problems[0]}",
+                        )
+                    )
+        except (gitutil.GitUnavailableError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            return [
+                Finding(
+                    "CONTRACT_INCOMPATIBLE",
+                    "error",
+                    sid,
+                    f"amendment {amendment['id']}: the contract change cannot be checked: {exc}",
+                )
+            ]
         return out
 
     def _risks(self) -> tuple[list[memory.MemoryProblem], list[memory.Entry]]:
@@ -675,7 +1278,11 @@ class Orchestrator:
 
     def _status_doc_findings(self) -> list[Finding]:
         path = self.root / STATUS_DOC_PATH
-        if not path.is_file() or path.read_text(encoding="utf-8") != self.render_status():
+        try:
+            current = path.read_text(encoding="utf-8") if path.is_file() else None
+        except UnicodeDecodeError:
+            current = None  # not UTF-8, so it cannot match (X-05)
+        if current != self.render_status():
             return [
                 Finding(
                     "STATUS_DOC_OUT_OF_DATE",
@@ -702,9 +1309,15 @@ class Orchestrator:
         ci: dict[str, Any] | None = None,
         amendment: str | None = None,
         at: str | None = None,
+        _baseline: Registry | None = None,
     ) -> TransitionResult:
-        """Dry-run a transition. Never writes anything."""
-        at = at or utc_now()
+        """Dry-run a transition. Never writes anything.
+
+        ``_baseline`` is the registry whose errors count as pre-existing, when this registry already holds
+        part of the same change (a blocker resolution, X-08)."""
+        at = at or self._now()
+        if future := _future_problem(at, "transition"):
+            return TransitionResult(False, future)
         try:
             stage = self.stage(stage_id)
         except KeyError as exc:
@@ -736,7 +1349,14 @@ class Orchestrator:
                 return TransitionResult(
                     False, [Finding("REVISION_REQUIRED", "error", stage_id, "a verified revision is required")]
                 )
-            ns["verification"] = self._build_verification(stage, rev, gates or {}, ci, at)
+            try:
+                ns["verification"] = self._build_verification(stage, rev, gates or {}, ci, at)
+            except evidence.EvidenceNameError as exc:
+                return TransitionResult(False, [Finding("EVIDENCE_UNREADABLE", "error", stage_id, str(exc))])
+            except gitutil.GitUnavailableError as exc:
+                return TransitionResult(
+                    False, [Finding("REVISION_UNVERIFIABLE", "error", stage_id, f"cannot list the evidence: {exc}")]
+                )
         elif target == Status.ACCEPTED_CLOSED:
             ns["acceptance"] = {
                 "owner_ref": owner_ref,
@@ -769,7 +1389,8 @@ class Orchestrator:
         new["history"].append(entry)
 
         candidate = Orchestrator(self.root, new)
-        before = {(f.code, f.stage, f.message) for f in errors(self.check(include_status_doc=False))}
+        reference = self if _baseline is None else Orchestrator(self.root, _baseline)
+        before = {(f.code, f.stage, f.message) for f in errors(reference.check(include_status_doc=False))}
         findings = [
             f
             if (f.code, f.stage, f.message) not in before
@@ -834,6 +1455,8 @@ class Orchestrator:
             "recorded_at": at,
             "artifacts": artifacts,
             "test_report": report,
+            "evidence_manifest": evidence.manifest(self.root, stage["verification_dir"]),
+            "definition_sha256": self._definition_sha256(stage),
             "gates": gates,
         }
         if ci is not None:
@@ -873,21 +1496,32 @@ class Orchestrator:
         record = {
             "id": bid,
             "description": description,
-            "opened_at": at or utc_now(),
+            "opened_at": at or self._now(after_history=True),
             "resolved_at": None,
             "resolution": None,
         }
         self._mutate(lambda r: next(s for s in r["stages"] if s["id"] == stage_id)["blockers"].append(record))
         return bid
 
-    def resolve_blocker(self, stage_id: str, blocker_id: str, resolution: str, at: str | None = None) -> bool:
+    def resolve_blocker(
+        self,
+        stage_id: str,
+        blocker_id: str,
+        resolution: str,
+        at: str | None = None,
+        *,
+        actor: Actor = Actor.ENGINEERING_AGENT,
+        recorded_by: Actor = Actor.ENGINEERING_AGENT,
+    ) -> bool:
         """Resolve a blocker. Resolving the last open blocker of a BLOCKED stage also records
         BLOCKED -> IN_PROGRESS in the same change, so no inconsistent state is ever written.
         Returns True when that transition was recorded."""
         stage = self.stage(stage_id)
         if not any(b["id"] == blocker_id and b["resolved_at"] is None for b in stage["blockers"]):
             raise GovernanceError([Finding("BLOCKER_UNKNOWN", "error", stage_id, f"no open blocker {blocker_id}")])
-        at = at or utc_now()
+        # Strictly after the last entry: a blocker resolved in the second of the BLOCKED entry would not
+        # count as open at that entry (X-08).
+        at = at or self._now(after_history=True)
 
         def change(r: Registry) -> None:
             for b in next(s for s in r["stages"] if s["id"] == stage_id)["blockers"]:
@@ -904,10 +1538,11 @@ class Orchestrator:
         result = Orchestrator(self.root, new).propose(
             stage_id,
             Status.IN_PROGRESS,
-            actor=Actor(stage["executor"]),
-            recorded_by=Actor(stage["executor"]),
+            actor=actor,
+            recorded_by=recorded_by,
             reason=f"all blockers resolved ({blocker_id}: {resolution})",
             at=at,
+            _baseline=self.registry,
         )
         self.apply(result)
         return True
@@ -932,6 +1567,10 @@ class Orchestrator:
         aid = f"A-{stage_id}-{len(stage['amendments']) + 1:03d}"
         report = None
         if test_report is not None:
+            if not (evidence.inside(self.root, test_report) and (self.root / test_report).is_file()):
+                raise GovernanceError(
+                    [Finding("EVIDENCE_MISSING", "error", stage_id, f"test report {test_report} is not a file")]
+                )
             report = {"path": test_report, "sha256": evidence.sha256_file(self.root / test_report)}
         record = {
             "id": aid,
@@ -941,7 +1580,7 @@ class Orchestrator:
             "owner_ref": owner_ref,
             "revision": revision,
             "test_report": report,
-            "recorded_at": at or utc_now(),
+            "recorded_at": at or self._now(),
         }
         self._mutate(lambda r: next(s for s in r["stages"] if s["id"] == stage_id)["amendments"].append(record))
         return aid
@@ -1039,11 +1678,17 @@ class Orchestrator:
         risks, _ = memory.check_risks(self.root / RISKS_PATH)
         findings = self.check()
         by = {st: [s["id"] for s in self.stages if s["status"] == st] for st in Status}
+        try:
+            uncommitted = gitutil.dirty_paths(self.root) if gitutil.is_repository(self.root) else None
+        except gitutil.GitUnavailableError as exc:
+            # A damaged index must not hide the rest of the state (Y-11).
+            findings.append(Finding("REVISION_UNVERIFIABLE", "error", None, f"cannot list uncommitted changes: {exc}"))
+            uncommitted = None
         return {
             "repository": self.registry["project"]["repository"],
             "head": gitutil.head(self.root),
             "branch": gitutil.branch(self.root),
-            "uncommitted_changes": gitutil.dirty_paths(self.root) if gitutil.is_repository(self.root) else None,
+            "uncommitted_changes": uncommitted,
             "authoritative_revisions": {
                 s["id"]: {
                     "verified": s["verification"]["revision"] if s["verification"] else None,

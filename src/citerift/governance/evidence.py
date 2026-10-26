@@ -9,6 +9,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from citerift.contracts.formats import loads_strict
+from citerift.governance import gitutil
+
 TEST_REPORT_FORMAT = "citerift.test-report/1"
 MIN_ARTIFACT_BYTES = 300
 
@@ -19,6 +22,36 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: fh.read(65536), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def manifest(root: Path, directory: str) -> list[dict[str, str]]:
+    """sha256 of every file under ``directory`` that git does not ignore, sorted by repository-relative path.
+
+    Ignored files (byte-code caches and the like) never reach a clone, so pinning them would make
+    every clone report the evidence as missing.
+    """
+    base = root / directory
+    if not base.is_dir():
+        return []
+    files = sorted(p.relative_to(root).as_posix() for p in base.rglob("*") if p.is_file())
+    for rel in files:
+        try:
+            rel.encode("utf-8")
+        except UnicodeEncodeError:
+            # Such a name cannot be recorded in the registry or passed to git as text (Y-11).
+            raise EvidenceNameError(f"{rel!r} is not a UTF-8 file name and cannot be pinned") from None
+    skip = gitutil.ignored(root, files)
+    return [{"path": rel, "sha256": sha256_file(root / rel)} for rel in files if rel not in skip]
+
+
+class EvidenceNameError(ValueError):
+    """A file in an evidence directory has a name that cannot be recorded."""
+
+
+def canonical_sha256(data: Any) -> str:
+    """Hash of a JSON value in canonical form (sorted keys, no whitespace)."""
+    text = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def is_url(ref: str) -> bool:
@@ -34,6 +67,15 @@ class Problem:
 def inside(root: Path, rel: str) -> bool:
     """True when ``rel`` resolves (following symlinks) to a location inside ``root``."""
     return (root / rel).resolve().is_relative_to(root.resolve())
+
+
+def is_plain_path(root: Path, rel: str) -> bool:
+    """True when ``rel`` has no empty, ``.`` or ``..`` segment and no component is a symbolic link,
+    so the file it names is the file at that path (X-01)."""
+    parts = rel.split("/")
+    if any(p in ("", ".", "..") for p in parts):
+        return False
+    return not any((root / "/".join(parts[: i + 1])).is_symlink() for i in range(len(parts)))
 
 
 def _outside(rel: str) -> list[Problem]:
@@ -90,11 +132,13 @@ def check_test_report(
     if expected_sha is not None and sha256_file(path) != expected_sha:
         problems.append(Problem("TEST_EVIDENCE_STALE", f"test report {rel} changed after it was recorded"))
     try:
-        report: Any = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        report: Any = loads_strict(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
         return [*problems, Problem("TEST_EVIDENCE_INVALID", f"{rel} is not valid JSON: {exc}")]
     if not isinstance(report, dict) or report.get("format") != TEST_REPORT_FORMAT:
         return [*problems, Problem("TEST_EVIDENCE_INVALID", f"{rel} is not a {TEST_REPORT_FORMAT}")]
+    if shape := _report_shape_problem(report):
+        return [*problems, Problem("TEST_EVIDENCE_INVALID", f"{rel}: {shape}")]
     if report.get("revision") != revision:
         problems.append(
             Problem(
@@ -119,6 +163,26 @@ def check_test_report(
                 f"{rel} records {totals.get('failed', 0)} failed and {totals.get('error', 0)} errored tests",
             )
         )
+    selection = report.get("selection")
+    if not isinstance(selection, dict) or selection.get("complete") is not True:
+        problems.append(
+            Problem(
+                "TEST_EVIDENCE_PARTIAL",
+                f"{rel} does not record a run of the complete test suite (selection: {selection})",
+            )
+        )
+    if isinstance(selection, dict):
+        problems.extend(_files_not_run(root, rel, revision, selection.get("files")))
+        problems.extend(_untracked_conftests(root, rel, revision, selection.get("conftests")))
+    if isinstance(totals, dict) and totals.get("not_run", 0):
+        problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records {totals['not_run']} tests that did not run"))
+    # A skipped or expected-to-fail test was selected but did not show that its rule holds, so a run is
+    # complete only when every test passed (Y-03: a conftest skipping 355 of 363 tests gave a complete run).
+    counted = ("passed", "failed", "error", "not_run")
+    unproven = {k: v for k, v in totals.items() if k not in counted and v} if isinstance(totals, dict) else {}
+    if unproven:
+        shown = ", ".join(f"{v} {k}" for k, v in sorted(unproven.items()))
+        problems.append(Problem("TEST_EVIDENCE_PARTIAL", f"{rel} records tests that did not pass or fail: {shown}"))
     if report.get("exit_status") != 0:
         problems.append(Problem("TESTS_FAILED", f"{rel} records pytest exit status {report.get('exit_status')}"))
     suites = report.get("suites", {})
@@ -129,3 +193,69 @@ def check_test_report(
         elif counts.get("failed", 0) or counts.get("error", 0):
             problems.append(Problem("TESTS_FAILED", f"required test suite '{suite}' has failures"))
     return problems
+
+
+def _is_count(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _report_shape_problem(report: dict[str, Any]) -> str | None:
+    """The fields the checks read must have the types the plugin writes (X-05: a string count crashed)."""
+    totals = report.get("totals", {})
+    if not isinstance(totals, dict) or not all(_is_count(v) for v in totals.values()):
+        return "totals must map outcomes to non-negative integers"
+    suites = report.get("suites", {})
+    if not isinstance(suites, dict) or not all(
+        isinstance(c, dict) and all(_is_count(v) for v in c.values()) for c in suites.values()
+    ):
+        return "suites must map suite names to outcome counts"
+    selection = report.get("selection")
+    if selection is not None and not isinstance(selection, dict):
+        return "selection must be an object"
+    if isinstance(selection, dict):
+        for key in ("files", "conftests"):
+            value = selection.get(key, [])
+            if not isinstance(value, list) or not all(isinstance(v, str) for v in value):
+                return f"selection.{key} must be a list of paths"
+    return None
+
+
+TEST_ROOT = "tests"
+
+
+def is_test_file(path: str) -> bool:
+    """pytest's default test file pattern, applied independently of any configuration that a change could edit."""
+    name = path.rsplit("/", 1)[-1]
+    return name.endswith(".py") and (name.startswith("test_") or name.endswith("_test.py"))
+
+
+def _files_not_run(root: Path, rel: str, revision: str, files: object) -> list[Problem]:
+    """Every test file committed under ``tests/`` at ``revision`` must appear among the files the report ran."""
+    try:
+        committed = [p for p in gitutil.tracked_files(root, revision, TEST_ROOT) if is_test_file(p)]
+    except gitutil.GitUnavailableError as exc:
+        return [Problem("TEST_EVIDENCE_PARTIAL", f"cannot list the test files at {revision[:12]}: {exc}")]
+    ran = set(files) if isinstance(files, list) else set()
+    missing = [p for p in committed if p not in ran]
+    if not missing:
+        return []
+    shown = ", ".join(missing[:5]) + (f" and {len(missing) - 5} more" if len(missing) > 5 else "")
+    return [Problem("TEST_EVIDENCE_PARTIAL", f"{rel} did not run {len(missing)} committed test file(s): {shown}")]
+
+
+def _untracked_conftests(root: Path, rel: str, revision: str, conftests: object) -> list[Problem]:
+    """Every conftest the run loaded must be committed at ``revision``; an untracked or ignored one, or one
+    outside the repository, changes the run without leaving a trace in the tree (X-03)."""
+    if not isinstance(conftests, list) or not conftests:
+        return []
+    try:
+        extra = [
+            p
+            for p in conftests
+            if p.startswith("/") or not inside(root, p) or p not in gitutil.tracked_files(root, revision, p)
+        ]
+    except gitutil.GitUnavailableError as exc:
+        return [Problem("TEST_EVIDENCE_PARTIAL", f"cannot list the files at {revision[:12]}: {exc}")]
+    if not extra:
+        return []
+    return [Problem("TEST_EVIDENCE_PARTIAL", f"{rel} ran with conftest files not committed at the revision: {extra}")]

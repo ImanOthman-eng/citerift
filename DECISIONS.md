@@ -16,7 +16,7 @@ entry; supersede it.
 - Date: 2026-10-25
 - Stage: 00
 - Supersedes: none
-- Evidence: PyPI JSON metadata queried 2026-10-25 (see docs/verification/stage-00/SPECIFICATION.md, section "Environment")
+- Evidence: PyPI JSON metadata queried 2026-10-25 (see docs/verification/stage-00/superseded/741476c/SPECIFICATION.md, section "Environment")
 
 `requires-python = ">=3.12,<3.14"`, `.python-version` is 3.12, and CI tests both
 3.12 and 3.13.
@@ -120,6 +120,11 @@ Recommendation: not required for the hackathon timeline; adopt it only if the
 owner wants a technical guarantee rather than a procedural one. Cost: a
 one-time key setup on the owner's machine and one signed tag per stage.
 
+Limit found by the independent review of 2026-10-25: an `allowed_signers` file
+kept in the repository can be edited by the agent, which could add its own key.
+The file must be protected by a required review from an identity the agent does
+not hold, or kept outside the repository (RISKS.md R-016).
+
 ## D-007 — License for code, documentation and data
 - Status: pending-owner
 - Topic: license
@@ -211,7 +216,7 @@ Status `proposed` until it is active on GitHub. On 2026-10-25 this session's
 GitHub proxy refused ruleset writes ("Write access to this GitHub API path is
 not permitted through this proxy") and the classic branch protection API
 returned 403 "Resource not accessible by integration", so the owner has to
-import the file. See docs/verification/stage-00/TEST_RESULTS.md.
+import the file. See docs/verification/stage-00/superseded/741476c/TEST_RESULTS.md.
 
 Accepted 2026-10-25: the owner created the ruleset on GitHub (owner message
 `cmsg_018VCB51nDHP6HXmLU4ea5yPBsct46wZA6iBixZ1ZLXboz`: "The `main-protection`
@@ -285,4 +290,95 @@ authorize and reopen. Exhaustive search found a 12-step counterexample in which
 VERIFIED -> IN_PROGRESS (rework) re-entered the active set while another stage
 was active. The rule now applies to every edge that enters the active set, and
 the implementation enforces it as a state invariant. See
-docs/verification/stage-00/SIMULATION_REPORT.md.
+docs/verification/stage-00/superseded/741476c/SIMULATION_REPORT.md.
+
+## D-017 — Project identity and founder signature
+- Status: accepted
+- Topic: project-identity
+- Date: 2026-10-25
+- Stage: project
+- Supersedes: none
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPGk43kowXCxBqhPw9S7z5df`):
+the public creator identity is EVE TELOS, IM is a secondary founder monogram,
+the professional signature is "EVE TELOS · IM", and the identity standard is
+"CITERIFT — Created and Directed by EVE TELOS · IM". The owner's legal name is
+not used in public materials; the association with the legitimate owner is the
+repository owner account `ImanOthman-eng` (OWNERSHIP.md). The monogram is not
+presented as proof of authorship, copyright or trademark. Usage rules:
+docs/identity.md.
+
+## D-018 — AI-assistance attribution in commits and pull requests
+- Status: accepted
+- Topic: ai-attribution
+- Date: 2026-10-25
+- Stage: project
+- Supersedes: none
+
+Owner instruction (same message as D-017): avoid unnecessary AI promotional
+signatures and session links, keep truthful authorship and AI-assistance
+disclosure, never rewrite history.
+
+Verified facts (2026-10-25, cloud project thread): the environment's git
+configuration sets author and committer to the AI agent identity and SSH-signs
+each commit (GitHub shows it as verified, account `claude`). Git adds no
+trailers by itself: a test commit in a scratch repository carried only the
+message given. The `Co-Authored-By` and `Claude-Session` lines and the PR
+"Generated with Claude Code" line come from the agent's instructions, which
+let the owner's CLAUDE.md or project-memory rules take precedence.
+
+Decision: agent commits keep the environment identity and signature and end
+with `Assisted-by: Claude Code (AI coding agent)`; pull requests keep the
+environment's requester block and end with a neutral AI-assistance line; no
+session links or promotional lines. Mechanisms: CLAUDE.md (read in sessions on
+a branch that contains it), project memory (all project threads), and
+`.claude/settings.json` `attribution` (read, per the Claude Code
+documentation, by single-repository cloud sessions and local CLI sessions, not
+by project threads; not verified in a live session of those kinds).
+
+Rejected: rewriting commit authors or trailers (falsifies history); committing
+agent work under the owner's identity (misattributes who did the work);
+removing disclosure entirely (AI assistance must stay disclosed).
+
+
+## D-019 — Owner acceptance of the Stage 00 trust-boundary residuals
+- Status: accepted
+- Topic: stage-00-residual-risk-acceptance
+- Date: 2026-10-26
+- Stage: 00
+- Supersedes: none
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`,
+2026-10-26, section 2): option A of
+docs/verification/stage-00/RISK_DECISION_PACKAGE.md, with additional
+safeguards, for R-001, R-002, R-003, R-004 and R-016. In the owner's words,
+this is "a conscious, bounded acceptance of documented residual limitations
+during active development", and "NOT a declaration that these risks have been
+technically eliminated".
+
+Recorded as: the five entries in RISKS.md have `Status: accepted` (a status the
+memory schema defines), with their severity unchanged. None of them is fixed.
+**Sharing one GitHub account does not technically prevent the agent from
+exercising any permission granted to that account**, including merging,
+changing the ruleset or editing the workflow; the safeguards below are
+procedural.
+
+Safeguards set by the owner (GOVERNANCE.md, "Procedural safeguards"):
+
+1. The agent may develop, test, commit and prepare pull requests.
+2. The owner keeps final acceptance and merge authority.
+3. The owner personally performs merges to the protected `main` branch.
+4. Acceptance references and the actual GitHub CI evidence are reviewed
+   before merging.
+5. Security-sensitive changes, especially CI workflows and governance
+   controls, receive explicit owner review.
+6. Independent evidence is retained outside the editable project working tree
+   wherever supported.
+7. Agent access is reviewed, and revoked when no longer needed after the
+   project.
+8. Owner-signed acceptance (D-006) and a separate agent identity remain
+   documented future enhancements. They are not implemented and are not
+   protections in place.
+
+Recommendation carried forward: decide on D-006 before Stage 09. Accepting
+these residuals authorizes no stage.

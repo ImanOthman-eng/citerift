@@ -1,0 +1,23 @@
+## BASE=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix commit 0c21182e5871f772c3a76c75a1217c7641a63bbb; CHECK_BASE=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix commit 0c21182e5871f772c3a76c75a1217c7641a63bbb
+$ cd scripts && W=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/sb-fix BASE=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix CHECK_BASE=/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix /tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review6/w-fix/.venv/bin/python r5_03_boundary.py
+revision w-fix: run_url fullmatch flags in source: re.I | re.A
+A: non-ASCII code points matching an ASCII letter under re.I | re.A: 0 []
+A: non-ASCII code points matching [0-9]: []
+B: sandbox repository: kis-owner/skik-repo
+B: exact (control): 'https://github.com/kis-owner/skik-repo/actions/runs/123' -> allowed=True []
+B: upper-case ASCII: 'https://github.com/KIS-OWNER/SKIK-REPO/actions/runs/123' -> allowed=True []
+B: mixed-case ASCII: 'https://github.com/KiS-Owner/SkIk-Repo/actions/runs/123' -> allowed=True []
+B: U+0131 dotless i for i: 'https://github.com/kıs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+0130 capital I with dot for i: 'https://github.com/kİs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+017F long s for s: 'https://github.com/kiſ-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+212A Kelvin sign for k: 'https://github.com/Kis-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+212A Kelvin sign in the repository name: 'https://github.com/kis-owner/sKik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: all four at once: 'https://github.com/Kıſ-owner/ſKıK-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+FF49 fullwidth i: 'https://github.com/kｉs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+FF29 fullwidth I: 'https://github.com/kＩs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+0456 Cyrillic i: 'https://github.com/kіs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+0049 U+0307 (I + combining dot): 'https://github.com/kİs-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: U+00DF sharp s for ss (none here; s+s): 'https://github.com/kiß-owner/skik-repo/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+B: other repository (control): 'https://github.com/kis-owner/other/actions/runs/123' -> allowed=False ['CI_WRONG_REPOSITORY']
+C: apply dotless-i URL on w-fix: allowed=False
+exit 0

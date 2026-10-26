@@ -1,0 +1,187 @@
+........................................................................ [ 18%]
+........................................................................ [ 36%]
+........................................................................ [ 54%]
+..................................................FFFFFFF............... [ 72%]
+........................................................................ [ 90%]
+........................................                                 [100%]
+=================================== FAILURES ===================================
+_____ test_z01_an_edit_hidden_by_the_stat_cache_still_makes_the_tree_dirty _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-501/test_z01_an_edit_hidden_by_the0')
+
+    @pytest.mark.integration
+    def test_z01_an_edit_hidden_by_the_stat_cache_still_makes_the_tree_dirty(tmp_path: Path) -> None:
+        """Z-01: ``git status`` trusts the index's stat cache, so a same-size edit with the old mtime and a local
+        ``core.trustctime=false`` was not seen, and a narrowed run reported a clean tree."""
+        import os
+    
+        from citerift.governance import gitutil
+    
+        project = _plugin_project(tmp_path)
+        target = project / "tests" / "test_sample.py"
+        old = target.stat().st_mtime_ns - 100_000_000_000
+        os.utime(target, ns=(old, old))
+        git(project, "update-index", "--refresh")  # the index now caches the older mtime; the entry is not racy
+        edited = target.read_text(encoding="utf-8").replace("def test_beta", "def xest_beta")
+        target.write_text(edited, encoding="utf-8")
+        os.utime(target, ns=(old, old))
+        git(project, "config", "core.trustctime", "false")
+        assert git(project, "status", "--porcelain") == ""
+>       assert "tests/test_sample.py" in gitutil.dirty_paths(project)
+E       AssertionError: assert 'tests/test_sample.py' in []
+E        +  where [] = <function dirty_paths at 0x7f6f618fede0>(PosixPath('/tmp/pytest-of-root/pytest-501/test_z01_an_edit_hidden_by_the0/project'))
+E        +    where <function dirty_paths at 0x7f6f618fede0> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py'>.dirty_paths
+
+tests/stage00/test_corrections.py:1833: AssertionError
+_ test_z02_a_ci_url_that_leaves_the_project_repository_is_refused[/../../../../../someone-else/other/actions/runs/7] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7f6f60d16780>
+tail = '/../../../../../someone-else/other/actions/runs/7'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "tail",
+        [
+            "/../../../../../someone-else/other/actions/runs/7",
+            "/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8",
+        ],
+    )
+    def test_z02_a_ci_url_that_leaves_the_project_repository_is_refused(sandbox: Sandbox, tail: str) -> None:
+        """Z-02: a run URL starting with the project prefix could climb to another repository with ``..``."""
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        ci = sandbox.ci(rev)
+        ci = {**ci, "run_url": ci["run_url"] + tail}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+>       assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1854: AssertionError
+_ test_z02_a_ci_url_that_leaves_the_project_repository_is_refused[/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7f6f60d32330>
+tail = '/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "tail",
+        [
+            "/../../../../../someone-else/other/actions/runs/7",
+            "/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8",
+        ],
+    )
+    def test_z02_a_ci_url_that_leaves_the_project_repository_is_refused(sandbox: Sandbox, tail: str) -> None:
+        """Z-02: a run URL starting with the project prefix could climb to another repository with ``..``."""
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        ci = sandbox.ci(rev)
+        ci = {**ci, "run_url": ci["run_url"] + tail}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+>       assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+E       AssertionError: assert (not True)
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1854: AssertionError
+___________ test_z03_recover_does_not_report_unknown_changes_as_none ___________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7f6f603887d0>
+
+    @pytest.mark.negative
+    def test_z03_recover_does_not_report_unknown_changes_as_none(sandbox: Sandbox) -> None:
+        """Z-03: with a damaged index, ``recover`` printed ``Uncommitted changes: 0``."""
+        (sandbox.root / "untracked.txt").write_text("x\n", encoding="utf-8")
+        (sandbox.root / ".git" / "index").write_bytes(b"DIRC damaged")
+        out = _cli(sandbox.root, "recover")
+>       assert "Uncommitted changes: 0" not in out.stdout, out.stdout
+E       AssertionError: CITERIFT recovery report for ImanOthman-eng/citerift
+E         HEAD: 10a7dbc29f71fdc162a3b2127ae20670de0b2b29 on main
+E         Uncommitted changes: 0
+E         
+E         Authoritative revisions:
+E         Completed and accepted: none
+E         Verified, awaiting owner acceptance: none
+E         Open:
+E         Not started: 00, 01, 02, 03, 04, 05, 06, 07, 08, 09
+E         Open blockers:
+E           none
+E         Open risks, defects and limitations:
+E           R-001 [low limitation, stage 00]: Sandbox risk
+E         Pending decisions:
+E           none
+E         Recent changes:
+E         Next actions:
+E           - Stage 00 (Engineering Foundation): dependencies accepted; NOT authorized until the owner explicitly authorizes it
+E           - Stage 01 (Independent Feasibility Investigation): dependencies accepted; NOT authorized until the owner explicitly authorizes it
+E         Consistency: 1 errors, 0 warnings
+E           ERROR REVISION_UNVERIFIABLE: cannot list uncommitted changes: fatal: .git/index: index file smaller than expected
+E         
+E       assert 'Uncommitted changes: 0' not in 'CITERIFT re...n expected\n'
+E         
+E         'Uncommitted changes: 0' is contained here:
+E           9 on main
+E           Uncommitted changes: 0
+E           
+E           Authoritative revisions:
+E           Completed and accepted: none...
+E         
+E         ...Full output truncated (15 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1863: AssertionError
+___ test_z04_ci_runs_the_governance_check_before_anything_builds_the_project ___
+
+    @pytest.mark.integration
+    def test_z04_ci_runs_the_governance_check_before_anything_builds_the_project() -> None:
+        """Z-04: ``uv sync --locked`` runs the build backend ``pyproject.toml`` names, before the governance check.
+        CI now installs only the locked dependencies as wheels, without the project, before the check."""
+        steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+>       first_install = steps.index("uv sync --frozen --no-install-project --no-build\n")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/stage00/test_corrections.py:1872: ValueError
+__________________ test_z_ci_fails_on_staged_or_new_files_too __________________
+
+    @pytest.mark.integration
+    def test_z_ci_fails_on_staged_or_new_files_too() -> None:
+        """D4 of the confirmation review: ``git diff --exit-code`` does not see staged changes or new files."""
+        steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        tail = steps[steps.index("git diff --exit-code") :]
+>       assert "git status --porcelain=v1 --untracked-files=all" in tail.split("- name:")[0]
+E       AssertionError: assert 'git status --porcelain=v1 --untracked-files=all' in 'git diff --exit-code\n\n      '
+
+tests/stage00/test_corrections.py:1883: AssertionError
+_ test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-501/test_z05_a_report_written_over0')
+
+    @pytest.mark.integration
+    def test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change(tmp_path: Path) -> None:
+        """Z-05: git read a name starting with ``:`` as pathspec magic, so the tracked file looked untracked."""
+        from citerift.governance import gitutil
+    
+        project = _plugin_project(tmp_path)
+        (project / ":cases.txt").write_text("many cases\n", encoding="utf-8")
+        git(project, "add", "-A")
+        git(project, "commit", "-q", "-m", "a tracked file whose name starts with a colon")
+>       assert gitutil.is_tracked(project, ":cases.txt")
+E       AssertionError: assert False
+E        +  where False = <function is_tracked at 0x7f6f618fee80>(PosixPath('/tmp/pytest-of-root/pytest-501/test_z05_a_report_written_over0/project'), ':cases.txt')
+E        +    where <function is_tracked at 0x7f6f618fee80> = <module 'citerift.governance.gitutil' from '/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/gitutil.py'>.is_tracked
+
+tests/stage00/test_corrections.py:1895: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage00/test_corrections.py::test_z01_an_edit_hidden_by_the_stat_cache_still_makes_the_tree_dirty
+FAILED tests/stage00/test_corrections.py::test_z02_a_ci_url_that_leaves_the_project_repository_is_refused[/../../../../../someone-else/other/actions/runs/7]
+FAILED tests/stage00/test_corrections.py::test_z02_a_ci_url_that_leaves_the_project_repository_is_refused[/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8]
+FAILED tests/stage00/test_corrections.py::test_z03_recover_does_not_report_unknown_changes_as_none
+FAILED tests/stage00/test_corrections.py::test_z04_ci_runs_the_governance_check_before_anything_builds_the_project
+FAILED tests/stage00/test_corrections.py::test_z_ci_fails_on_staged_or_new_files_too
+FAILED tests/stage00/test_corrections.py::test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change
+7 failed, 393 passed in 248.93s (0:04:08)

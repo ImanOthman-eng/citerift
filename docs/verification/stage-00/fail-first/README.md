@@ -1,0 +1,170 @@
+# Fail-first evidence for correction A-00-001
+
+`results-ae2ce9e.txt` is the result of running the corrected test suite
+against the code and schemas of `ae2ce9e`, the revision at which Stage 00 was
+reopened. A regression test counts only if it fails there and passes after
+the correction.
+
+How it was produced on 2026-10-25:
+
+    git worktree add --detach $W ae2ce9e
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00   # corrected tests, old code
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 82 failed, 178 passed. The 178 passing tests are the unchanged
+suite plus the controls, such as `test_f12_..._does_not_change_evidence_hashes[False]`.
+The same suite passes completely on the corrected revision (TEST_RESULTS.md).
+
+| File | Failing at `ae2ce9e` | Why it fails there |
+|---|---|---|
+| `test_corrections.py` | 51 (every F-01 to F-20 and F-23 test except one control) | the defect each test reproduces |
+| `test_contracts.py` | 19 | F-08, F-09, F-10, F-18: invalid records accepted, patterns differing from ECMA-262, impossible dates accepted, duplicate keys |
+| `test_failure_simulation.py` | 4 | F-13 traceback on a damaged registry (3); false `VERIFICATION_STALE` in a shallow clone (1) |
+| `test_properties.py` | 4 | the old record has no `evidence_manifest` to mutate (2); damaged registry raised `JSONDecodeError` (2, F-13) |
+| `test_simulation.py` | 2 | F-11 differential case; replay conformance (2,458 disagreements in the small configuration) |
+| `test_integration_scenarios.py` | 1 | `test_08` now requires `RECORD_HISTORY_MISMATCH` (F-17) |
+| `test_recovery.py` | 1 | the old CLI fails on a record with the new required field `evidence_manifest` |
+
+Two of the failures come from the new record format, not from a defect: the
+two `test_properties.py` mutation cases, and `test_recovery.py`. They show
+that the old code cannot read the new evidence, not that it accepts a
+violation. They are listed so that the count is complete.
+
+Defect S-01 was found during this correction, after the reviewed audit. Its
+test (`test_s01_files_git_ignores_are_not_evidence`) failed on `ee46423`
+before its fix in `373045d`. It is not in this file, because `ae2ce9e` has no
+evidence manifest at all.
+
+## Final review findings V-01 to V-16 (`results-135e4ac.txt`)
+
+The first final independent review (`../review/`) raised V-01 to V-16. Their
+tests were run the same way against `135e4ac`, the last revision before
+their fixes, with the tests of `5749e9c`:
+
+    git worktree add --detach $W 135e4ac
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 36 failed, 269 passed. The same suite passes on `5749e9c`.
+
+| Finding | Failing tests at `135e4ac` |
+|---|---|
+| V-01 | 5 (`override_python_files`, `override_testpaths`, `other_ini_file`, `conftest_drops_items`, `collect_ignore`) |
+| V-02 | 2 (`test_f02_...[url_only]`, `[pinned_plus_unpinned]`) |
+| V-03 | 5 (4 schema overrides, handoff always required) |
+| V-04 | 1 (`test_ci_runs_the_owned_sources_not_an_entry_point`) |
+| V-05, V-07, V-08, V-11, V-12, V-13, V-16 | 1 each |
+| V-06 | 9 (heading and field forms, topic spellings) |
+| V-09 | 2 (amendment, blocker) |
+| V-10 | 5 |
+
+Two findings have no failing test here, by their nature:
+
+- V-14 is a defect in the tests themselves (last-key-wins JSON reading). It
+  was reproduced by hand. A duplicate `bypass_actors` key in the ruleset file
+  passed the old test, and `loads_strict` raises `DuplicateKeyError`. The
+  file was then restored.
+- V-15 asked for tests of checks that already worked. Those tests pass on
+  the old code by design. Their purpose is to kill mutants
+  (`../mutation/mutation_check.py`).
+
+## Second final review findings X-01 to X-13 (`results-7138d6d.txt`)
+
+The second final independent review (`../review/9e025c9/`) raised X-01 to
+X-14. X-14 (mutants M35 and M37 survived) was fixed in `7138d6d` by tests
+that kill both mutants. The tests for X-01 to X-13 were run the same way
+against `7138d6d`, with the tests of `564030b`:
+
+    git -C $W checkout --detach 7138d6d
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 46 failed, 317 passed. The same suite passes on `564030b`.
+
+| Finding | Failing tests at `7138d6d` |
+|---|---|
+| X-01 | 2 (`..` path, symlink) |
+| X-02 | 1 |
+| X-03 | 3 (committed padding conftest, untracked conftest hidden by `.git/info/exclude`, `-p` plugin from outside the tree) |
+| X-04 | 2 (`SRC_FOREIGN_MODULE` in `check`, the CI guard step) |
+| X-05 | 17 (every damaged input) |
+| X-06 | 7 (bold, lowercase and indented fields; four invisible characters) |
+| X-07 | 6 (four dependency edits, and the two tampering cases now reported by the schema) |
+| X-08 | 2 |
+| X-09, X-10, X-11 | 1 each |
+| X-13 | 3 (no version increase, reused owner reference, accepted fixture rejected) |
+
+No failing test here, by nature:
+
+- X-12 is a defect in a test (`test_repository.py` asserted today's state).
+  The rewritten test asserts the rule, and
+  `test_x12_the_authorization_rule_holds_after_later_owner_decisions` shows
+  the rule on a sandbox where Stage 01 is accepted and Stage 02 authorized.
+  The old assertion fails there, as the review showed.
+- Controls that pass on both revisions: `test_x06_...[nbsp_heading]` and
+  `test_x13_a_versioned_compatible_enhancement_is_accepted`.
+
+## Third final review findings Y-01 to Y-13 (`results-4a396fb.txt`)
+
+The third final independent review (`../review/4a396fb/`) raised Y-01 to
+Y-13. Their tests were run the same way against `4a396fb`, with the tests of
+`aa06a40`:
+
+    git -C $W checkout --detach 4a396fb
+    rm -rf $W/tests/stage00 && cp -a tests/stage00 $W/tests/stage00
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 27 failed, 366 passed. The same suite passes on `aa06a40` (393
+passed).
+
+| Finding | Failing tests at `4a396fb` |
+|---|---|
+| Y-01 | 1 |
+| Y-02 | 2 (skip-worktree, assume-unchanged) |
+| Y-03 | 2 (skip, xfail) |
+| Y-04 | 5 (three digit forms, verification blocked, and the Arabic-marks topic rule of observation O-1) |
+| Y-05 | 4 invalid contract cases (absence against a record, two absences, agreeing retraction values, agreeing titles) |
+| Y-06 | 1 |
+| Y-07 | 2 (same second, back-dated) |
+| Y-08 | 1 (CI step order, own report check, tree check) |
+| Y-09, Y-10 | 1 each |
+| Y-11 | 5 (four CLI inputs and the contracts CLI) |
+| Y-12, Y-13 | 1 each |
+
+No failing test here, by design: `test_x03_each_partial_run_rule_holds_on_its_own`
+(three cases) passes on both revisions, because it kills mutants M57 to M59
+rather than reproducing a defect.
+
+## Confirmation review findings Z-01 to Z-05 (`results-97b2051.txt`)
+
+The confirmation review (`../review/97b2051/`) raised Z-01 to Z-05 and the
+document finding D4. Their tests were run the same way against `97b2051`,
+with the tests of `6d1fa00`:
+
+    git -C $W checkout --detach 97b2051
+    rm -rf $W/tests && git archive 6d1fa00 tests | tar -x -C $W
+    cd $W && PYTHONPATH=$W/src python -m pytest -p no:cacheprovider -q -rf tests/stage00
+
+Result: 7 failed, 393 passed. The same suite passes on `6d1fa00` (400
+passed).
+
+| Finding | Failing tests at `97b2051` |
+|---|---|
+| Z-01 | 1 |
+| Z-02 | 2 (`..` segments, percent-encoded dots) |
+| Z-03 | 1 |
+| Z-04 | 1 (CI step order) |
+| Z-05 | 1 |
+| D4 | 1 (CI tree check covers staged and new files) |
+
+## Fix-check findings R5-01 to R5-03 (`results-b8bb5ac.txt`)
+
+The fix check (`../review/b8bb5ac/`) raised R5-01 to R5-03. Their tests were
+run the same way against `b8bb5ac`, with the tests of `cbb4659`. Result: 4
+failed, 400 passed. The same suite passes on `cbb4659` (404 passed).
+
+| Finding | Failing tests at `b8bb5ac` |
+|---|---|
+| R5-01 | 1 (CI refuses a committed `.venv` before uv runs) |
+| R5-02 | 2 (`submodule.<name>.ignore`, `diff.ignoreSubmodules`) |
+| R5-03 | 1 |

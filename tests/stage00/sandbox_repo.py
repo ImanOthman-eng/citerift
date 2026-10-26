@@ -81,6 +81,7 @@ class Sandbox:
     def __init__(self, root: Path):
         self.root = root
         self.clock = 0
+        self.refs = 0
         root.mkdir(parents=True, exist_ok=True)
         shutil.copytree(REPO / "schemas", root / "schemas")
         (root / "governance").mkdir()
@@ -95,6 +96,11 @@ class Sandbox:
     def tick(self) -> str:
         self.clock += 1
         return f"2026-01-01T00:{self.clock // 60:02d}:{self.clock % 60:02d}Z"
+
+    def new_ref(self) -> str:
+        """A new owner reference: an amendment records its own owner decision, so it cannot reuse one (X-13)."""
+        self.refs += 1
+        return f"cmsg_TESTAMENDMENT{self.refs:04d}"
 
     def orc(self) -> Orchestrator:
         return Orchestrator(self.root)
@@ -155,6 +161,7 @@ class Sandbox:
                 "dirty": False,
                 "exit_status": 0,
                 "totals": {"passed": 10 * len(stage["required_test_suites"])},
+                "selection": {"args": ["tests"], "deselected": 0, "complete": True},
                 "suites": {s: {"passed": 10} for s in stage["required_test_suites"]},
             }
             data.update(report_overrides or {})
@@ -167,7 +174,7 @@ class Sandbox:
 
     def ci(self, revision: str, conclusion: str = "success") -> dict[str, Any]:
         return {
-            "run_url": "https://github.com/example/repo/actions/runs/1",
+            "run_url": f"https://github.com/{self.registry()['project']['repository']}/actions/runs/1",
             "head_sha": revision,
             "conclusion": conclusion,
         }
@@ -182,7 +189,10 @@ class Sandbox:
             executor = self.orc().stage(stage_id)["executor"]
             kwargs["actor"] = Actor.OWNER if target in owner_edges else Actor(executor)
         if kwargs["actor"] == Actor.OWNER:
-            kwargs.setdefault("owner_ref", OWNER_REF)
+            # An acceptance must cite an owner statement made after the verification, so each
+            # sandbox acceptance gets its own reference.
+            default_ref = f"cmsg_TESTACCEPTREF{self.clock:04d}" if target == Status.ACCEPTED_CLOSED else OWNER_REF
+            kwargs.setdefault("owner_ref", default_ref)
         orc = self.orc()
         result = orc.propose(stage_id, target, **kwargs)
         if apply and result.allowed:

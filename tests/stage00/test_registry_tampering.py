@@ -123,8 +123,9 @@ _AMENDMENT = {
 
 
 CASES: list[tuple[str, Edit, str]] = [
-    ("dependency cycle", _cycle, "DEPENDENCY_CYCLE"),
-    ("unknown dependency", _unknown_dependency, "DEPENDENCY_UNKNOWN"),
+    # Dependencies are fixed per stage by the schema (X-07), which reports these edits before the graph checks.
+    ("dependency cycle", _cycle, "REGISTRY_SCHEMA"),
+    ("unknown dependency", _unknown_dependency, "REGISTRY_SCHEMA"),
     ("duplicate stage", _duplicate_stage, "STAGE_DUPLICATE"),
     ("history sequence gap", _sequence_gap, "HISTORY_SEQUENCE"),
     ("history time reversed", _time_reversed, "HISTORY_TIME_ORDER"),
@@ -179,3 +180,12 @@ def test_unknown_stage_and_missing_revision_are_refused(tmp_path: Path) -> None:
     )
     assert not no_revision.allowed
     assert "REVISION_REQUIRED" in sb.codes(no_revision.findings)
+
+
+@pytest.mark.parametrize(("edit", "code"), [(_cycle, "DEPENDENCY_CYCLE"), (_unknown_dependency, "DEPENDENCY_UNKNOWN")])
+def test_dependency_graph_checks_still_hold_behind_the_schema(verified: Sandbox, edit: Edit, code: str) -> None:
+    """The schema now fixes every stage's dependencies (X-07) and reports these edits first. The graph checks
+    stay as a second line, for example if the schema itself were changed; this runs them directly."""
+    reg = verified.registry()
+    edit(verified, reg)
+    assert code in verified.codes(Orchestrator(verified.root, reg)._structure_findings())

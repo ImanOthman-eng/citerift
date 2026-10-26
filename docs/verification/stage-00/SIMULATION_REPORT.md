@@ -1,103 +1,125 @@
-# Stage 00 Simulation Report
+# Stage 00 Simulation Report (correction A-00-001)
 
-All results below are **simulated**, over the abstract model in
-`simulations/stage00/state_machine_model.py` with synthetic guard inputs. They
-say whether the governance rule design is sound. They are not empirical
-results about Wikipedia, citations or retractions, and Stage 00 produces none.
+All results here are **simulated**: over the abstract model, over synthetic
+sandbox repositories, or over fault injection. They show whether the
+governance design and its implementation behave as specified. They are not
+empirical results about Wikipedia, citations or retractions. Stage 00 produces
+none of those, and no scientific source data was created.
 
-The model imports nothing from `citerift`; it was written from the
-mathematical model (MATHEMATICAL_MODEL.md) before the orchestrator.
+Raw outputs are files in this directory, pinned by the evidence manifest of
+the verification record.
 
-## Raw results
+## 1. Abstract model, re-run
 
-| File | sha256 | Content |
-|---|---|---|
-| `simulation/iteration-1-results.json` | `d225f9d6b7f5a97e99f2ad34b54e1d99081d9bc972316d6c276e2f2039c706a5` | first design, before the fix |
-| `simulation/final-results.json` | `55ed9851ea007d4fb10253aad1a6cfe733c474dbc876097d6923e2985dcb2ff0` | corrected design |
+`simulations/stage00/state_machine_model.py` changed once since `741476c`.
+The second final review found that the replay let a stage be accepted while a
+blocker was open (X-10). The implementation and the model had the same gap,
+so both were corrected in `564030b`: the model's accept guard now also needs
+no open blocker. It was re-run with the default seed 20261025:
 
-Reproduce: `uv run python simulations/stage00/state_machine_model.py --output out.json`
-(defaults: 20,000 walks of length 200, seed 20261025). Re-run on 2026-10-25 at
-revisions `ecaa845`, `2bf7d60` and `30e4462`: output identical to
-`final-results.json` each time (compared as parsed JSON), runtime about 17.5 s
-on 4 vCPU. The only change to the model file after the results were recorded is
-a corrected path in its docstring (`2bf7d60`).
+```
+uv run python simulations/stage00/state_machine_model.py --output simulation/model-results.json
+```
 
-## Iteration 1: defect found
-
-Exhaustive search of the reduced model (engineering chain 0→1→2 plus an
-independent external stage 3, adversarial actor and inputs):
-
-| Measure | Value |
-|---|---|
-| Reachable nodes | 1,141 |
-| Transition attempts | 4,089,344 |
-| Permitted / rejected | 387,968 / 3,701,376 |
-| Invariant violations | **279,664**, all I3 (more than one active engineering stage) |
-| All-accepted reachable | yes |
-
-Shortest counterexample (12 moves, minimal because the search is breadth-first):
-
-1. stage 0: NS→AU→IP→IM→VA→AC (5 moves, owner where required)
-2. stage 1: NS→AU→IP→IM→VA (4 moves)
-3. stage 0: AC→IP (owner reopen; stage 1 is VA, not active, so it was allowed)
-4. stage 1: VA→IP (rework) → stages 0 and 1 both active. **VIOLATION I3.**
-
-Root cause: the single-active rule was attached to authorize and reopen only.
-VA→IP also enters the active set. Fix: apply the rule to every edge that
-enters the active set from outside it (DECISIONS.md D-016). The implementation
-enforces it as a state invariant (`MULTIPLE_ACTIVE_STAGES`) checked on every
-proposed successor state, which covers any edge added in future.
-
-The seeded random walks of iteration 1 (4,000,000 attempts, 44,607 permitted)
-reported **0 violations**: random sampling missed the defect, because reaching
-it needs one stage accepted and a second one verified, which a uniform walk
-rarely does (the maximum in iteration 1 was 1 stage accepted per walk). This is
-why the exhaustive search, not the random walks, is the primary evidence.
-
-## Final iteration: corrected design
+The output differs from the accepted `final-results.json` (sha256
+`55ed9851…2ff0`, kept under `superseded/741476c/`) only in the permitted and
+rejected counts. Fewer moves are permitted, because accepting with an open
+blocker is now refused. Every other field, including the 490 reachable nodes,
+the reachable states per stage and the guided path, is unchanged. The new
+file has sha256
+`f41c757fa892cc8adba88cecf09271b973a5ce4825a98fe582e66f13dd1e6dcd`.
 
 | Analysis | Result |
 |---|---|
-| Exhaustive reduced model | 490 nodes, 1,756,160 attempts (106,400 permitted), **0 violations**, all-accepted reachable, AC entered only from VA |
-| Random walks, full 10-stage graph | 20,000 walks × 200 = 4,000,000 attempts, 263,926 permitted, **0 violations**, 0 authorizations without owner, at most 2 stages accepted in one walk |
-| Guided completion, full graph | all 10 stages reach AC in 50 moves (no deadlock of legitimate progress) |
+| Exhaustive reduced model (4 stages) | 490 nodes, 1,756,160 attempts, 103,936 permitted (was 106,400), **0 violations** |
+| Random walks, full 10-stage graph | 4,000,000 attempts, 263,659 permitted (was 263,926), **0 violations** |
+| Guided completion | all 10 stages reach AC in 50 moves |
 
-After iteration 1 the walk was changed so that half of the attempted targets
-are drawn from the edges that exist from the current state (shaped sampling)
-and half are arbitrary. That raised the permitted moves from 44,607 to 263,926
-and the depth reached from 1 to 2 accepted stages. The walks still cover deep
-states poorly; the exhaustive search does not have this weakness, but only for
-4 stages.
+The iteration-1 defect (D-016) is still re-found when its rule is
+re-introduced (`test_simulation.py`).
 
-## Model versus implementation
+## 2. History replay conformance, exhaustive (new)
 
-`tests/stage00/test_simulation.py::test_differential_model_vs_implementation`
-drives the model and `Orchestrator.propose` with the same random moves in a
-sandbox repository and requires identical permit/reject decisions.
+`simulations/stage00/replay_conformance.py` checks that the history replay
+(`Orchestrator._history_findings`) accepts exactly the histories the model
+permits, one move beyond every reachable state. It does not run the whole of
+`check`: evidence, tests and revisions are taken as satisfied there and are
+tested separately. The method is in MATHEMATICAL_MODEL.md §5.
 
-| Seed | Attempts | Disagreements | Permitted | Distinct edges exercised |
+| Run | Revision | Cases | Disagreements | Output |
 |---|---|---|---|---|
-| 7 | 200 | 0 | 56 | 8 of 11 |
-| 20261025 | 200 | 0 | 54 | 9 of 11 |
+| full config | `0c21182` | 205,632 | **0** | `simulation/replay-conformance-full.json` |
+| full config, before the correction | `ae2ce9e` | 205,632 | **12,872** | `simulation/replay-conformance-full-ae2ce9e.json` |
+| small config (in the test suite) | every CI run | 45,024 | 0 | `test_history_replay_conforms_to_the_model_exhaustively` |
+| small config, before the correction | `ae2ce9e` | 45,024 | **2,458** | `simulation/replay-conformance-small-ae2ce9e.json` |
 
-The sandbox uses the real Stage 00 to 03 shape (02 and 03 depend on 00 and 01;
-01 is external). Per-seed counts were re-measured on 2026-10-25 by running a
-scratch copy of the test with a print added; the committed test asserts 0
-disagreements, at least 40 permitted moves and at least 8 distinct edges.
+The 12,872 disagreements at `ae2ce9e` are histories the model refuses but the
+old replay accepted. Examples: authorizing a stage with unaccepted
+dependencies, reopening without an amendment, two stages active at once.
+They are the measurable form of F-04 and F-05.
 
-The same file also re-runs the exhaustive reduced search and the guided
-completion, checks that the model's edge table equals the implementation's,
-and re-introduces iteration 1's rule for VA→IP to require that the search finds
-the I3 violation, so a regression to the old design would be caught.
+## 3. Model versus implementation, differential (extended)
 
-## What the simulation does not cover
+`test_differential_model_vs_implementation` drives the model and
+`Orchestrator.propose` with the same random moves, for seeds 7 and 20261025
+with 200 moves each. It requires identical permit and refuse decisions, at
+least 40 permitted moves and at least 8 distinct edges. A fixed case was
+added for F-11: reopen Stage 00 after Stage 02 was accepted. The model always
+allowed it. The old implementation refused it, and the corrected one allows
+it (`test_differential_fixed_case_reopen_foundation_after_dependent_accepted`).
+The differential test now uses a new owner reference for every owner move,
+because reuse is refused (F-17).
 
-- Whether real evidence files are truthful, or whether an `owner_ref` contains
+## 4. Failure simulations (new)
+
+`tests/stage00/test_failure_simulation.py`, each in a fresh sandbox:
+
+| Fault | Injected how | Result |
+|---|---|---|
+| Write interrupted mid-file | `fdopen` writes half, then raises | old registry intact, no temp file left, `check` clean |
+| Rename fails | `os.replace` raises | same |
+| Process killed before rename | real subprocess, `os._exit(9)` | old registry intact; one temp file left, ignored by `check`; next transition succeeds |
+| Crash between registry and status writes | second write raises | `check` reports only `STATUS_DOC_OUT_OF_DATE`; `render-status --write` recovers |
+| Corrupted registry: truncated, empty, bad enum, wrong type, BOM | file damaged | exit 1, no traceback; `git checkout` restores; `check` clean |
+| Transition applied but never committed | clone of the last commit | clone shows the committed state; local `recover` lists the uncommitted file |
+| Session lost during a correction cycle | fresh `Orchestrator` from disk at every step | reopen, implement, verify again; recover shows the new revision |
+| Shallow clone | `--depth 1` | `REVISION_NOT_FOUND` with a "shallow" hint; no false `VERIFICATION_STALE` |
+
+Seeded property tests (`test_properties.py`, seeds 11 and 20261025) cover two
+more cases. 19 mutation classes of an accepted registry are all detected. And
+random byte damage (25 cases per seed) always ends with exit 0 or 1, never an
+exception.
+
+## 5. Handoff simulation, 10 points (new)
+
+`handoff/handoff_simulation.py REVISION OUTPUT` clones the repository at the
+revision into a temporary directory. It installs the locked environment
+offline, then acts as a later-stage engineer with a minimal environment. No
+inherited variable is kept except `PATH` and the uv cache.
+
+| # | Point | Check |
+|---|---|---|
+| 1 | Clean checkout | `HEAD` equals the revision; tree clean |
+| 2 | Orchestrator usable | `status` and `check` run; 0 errors |
+| 3 | Persistent memory usable | `recover --json` gives state, open risks and next actions with no consistency error |
+| 4 | Contracts usable | `check-schemas`; the three valid fixtures validate |
+| 5 | Dependencies enforced | owner authorization of Stage 02 refused with `DEPENDENCY_NOT_ACCEPTED` |
+| 6 | Approval gates enforced | agent self-authorization, owner without reference, and agent self-acceptance all refused |
+| 7 | Synthetic downstream consumer | a Stage 02-style schema outside the owned paths reuses v1 definitions; a valid record passes and four invalid ones are rejected; `check` stays clean |
+| 8 | No hidden dependency | `uv sync --locked` from the lock file alone; the CLIs run with `python -I` |
+| 9 | Clear diagnostics | truncated registry gives `REGISTRY_UNREADABLE`; a forged actor gives a named error; no traceback |
+| 10 | Recovery does not change state | registry and status document byte-identical after `recover`; state intact after the simulation |
+
+Result at `0c21182`: `handoff/results-0c21182.json`, 12 of 12 checks passed (the ten points, with 7b and 10b).
+
+## 6. What the simulations do not cover
+
+- Whether real evidence is truthful, or whether an `owner_ref` contains
   approval (R-002).
-- Hand edits of the registry: those are covered by the consistency check
-  (history replay, record coherence, hashes), tested in
-  `test_integration_scenarios.py`, not by transition guards.
-- Stage counts above 4 exhaustively; 10 stages are covered only by sampling and
-  the guided path.
-- Concurrency: the orchestrator is a single-writer library; two writers at once
-  are serialized by git, and a conflicting registry merge would fail the check.
+- Histories longer than 28 entries or other dependency shapes, exhaustively.
+  Ten stages are covered only by sampling and the guided path.
+- Concurrency: the orchestrator is a single-writer library. Git serializes
+  writers, and a conflicting registry merge fails `check`.
+- The GitHub side of R-016. A pull request that edits the workflow was not
+  exercised on GitHub, because doing so would mean pushing a weakened
+  workflow.

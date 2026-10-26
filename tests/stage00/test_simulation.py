@@ -9,7 +9,7 @@ from pathlib import Path
 from types import ModuleType
 
 import pytest
-from sandbox_repo import OWNER_REF, Sandbox
+from sandbox_repo import Sandbox
 
 from citerift.governance.model import EDGES, Actor, Status
 
@@ -105,7 +105,9 @@ def _attempt(
         MODEL_DEPS,
         MODEL_ENGINEERING,
     )
-    kwargs: dict[str, object] = {"actor": actor, "owner_ref": OWNER_REF if actor_is_owner else None}
+    # Each owner decision cites its own statement (an acceptance may not reuse an earlier one).
+    owner_ref = f"cmsg_TESTDIFFREF{len(orc.registry['history']):05d}"
+    kwargs: dict[str, object] = {"actor": actor, "owner_ref": owner_ref if actor_is_owner else None}
     current = Status(status[index])
     if target == Status.IMPLEMENTED_NOT_VERIFIED:
         sandbox.write(f"impl/{sid}.txt", f"step {sandbox.clock}\n")
@@ -121,7 +123,8 @@ def _attempt(
             kind="correction",
             reason="differential test correction",
             evidence_refs=["RISKS.md"],
-            owner_ref=OWNER_REF,
+            owner_ref=sandbox.new_ref(),
+            at=sandbox.tick(),
         )
     result = sandbox.go(sid, target, **kwargs)  # type: ignore[arg-type]
     return expected, result.allowed
@@ -160,3 +163,44 @@ def test_differential_model_vs_implementation(model: ModuleType, tmp_path: Path,
     assert disagreements == []
     assert permitted >= 40, "the walk must exercise a meaningful number of permitted transitions"
     assert len(exercised) >= 8, f"only {len(exercised)} distinct edges were exercised"
+
+
+def test_differential_fixed_case_reopen_foundation_after_dependent_accepted(model: ModuleType, tmp_path: Path) -> None:
+    """Independent review F-11: the model allowed this reopening and the implementation refused it."""
+    sandbox = Sandbox(tmp_path / "repo")
+    reg = sandbox.registry()
+    reg["stages"][2]["owned_paths"] = ["impl/02.txt"]
+    sandbox.save_registry(reg)
+    sandbox.commit("define stage 02 paths")
+    for sid in ("00", "01", "02"):
+        sandbox.drive_to_accepted(sid)
+    status = tuple(sandbox.orc().stage(s)["status"] for s in STAGES)
+    good = model.Inputs(True, True, True, False, True, True)
+    expected = model.guard(0, (model.AC, model.IP), model.OWNER, good, status, MODEL_DEPS, MODEL_ENGINEERING)
+    aid = sandbox.orc().add_amendment(
+        "00",
+        kind="correction",
+        reason="differential fixed case for F-11",
+        evidence_refs=["RISKS.md"],
+        owner_ref="cmsg_TESTREOPENREF01",
+        at=sandbox.tick(),
+    )
+    result = sandbox.go("00", Status.IN_PROGRESS, actor=Actor.OWNER, amendment=aid, owner_ref="cmsg_TESTREOPENREF01")
+    assert expected is True
+    assert result.allowed is expected, [str(f) for f in result.findings]
+
+
+def test_history_replay_conforms_to_the_model_exhaustively() -> None:
+    """Every reachable status vector of a 3-stage configuration, every possible next history entry."""
+    spec = importlib.util.spec_from_file_location(
+        "citerift_replay_conformance", MODEL_PATH.with_name("replay_conformance.py")
+    )
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    deps, engineering = module.CONFIGS["small"]
+    result = module.explore(module.load_model(), module.Config(deps, engineering), Path.cwd())
+    assert result["disagreements"] == 0, result["disagreement_examples"]
+    assert result["cases"] == 45024 and result["reachable_status_vectors"] == 134
+    assert 0 < result["model_permitted"] < result["cases"]

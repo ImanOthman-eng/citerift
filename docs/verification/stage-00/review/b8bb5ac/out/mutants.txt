@@ -1,0 +1,10 @@
+selected: ['M87', 'M91', 'M92', 'M93', 'M94', 'M95', 'M96']
+M87 Y-10 CI run of another repository accepted: KILLED ['1 failed, 259 passed in 104.79s (0:01:44)'] ['FAILED tests/stage00/test_corrections.py::test_y10_the_ci_run_must_belong_to_the_project_repository']
+M91 Z-01 content check skipped (stat cache trusted): KILLED ['1 failed, 266 passed in 109.41s (0:01:49)'] ['FAILED tests/stage00/test_corrections.py::test_z01_an_edit_hidden_by_the_stat_cache_still_makes_the_tree_dirty']
+M92 Z-02 CI run URL matched as a prefix: KILLED ['1 failed, 267 passed in 128.36s (0:02:08)'] ['FAILED tests/stage00/test_corrections.py::test_z02_a_ci_url_that_leaves_the_project_repository_is_refused[/../../../../../someone-else/other/actions/runs/7]']
+M93 Z-03 unknown uncommitted changes printed as a count: KILLED ['1 failed, 261 passed in 106.32s (0:01:46)'] ['FAILED tests/stage00/test_corrections.py::test_y11_more_damaged_inputs_are_reported_not_crashed[damaged_index]']
+M94 Z-04 project installed before the governance check: KILLED ['1 failed, 270 passed in 107.60s (0:01:47)'] ['FAILED tests/stage00/test_corrections.py::test_z04_ci_runs_the_governance_check_before_anything_builds_the_project']
+M95 D4 staged changes and new files not checked by CI: KILLED ['1 failed, 271 passed in 108.59s (0:01:48)'] ['FAILED tests/stage00/test_corrections.py::test_z_ci_fails_on_staged_or_new_files_too']
+M96 Z-05 tracked-file test reads the path as a pathspec: KILLED ['1 failed, 272 passed in 110.49s (0:01:50)'] ['FAILED tests/stage00/test_corrections.py::test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change']
+git status --porcelain after the mutants: ''
+exit 0

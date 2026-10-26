@@ -1,0 +1,2658 @@
+........................................................................ [ 19%]
+........................................................................ [ 39%]
+..........................................FFFFFFFFFFFFFFFFFFFFFFFFFFF.FF [ 59%]
+FFFFFFFFFFF.....FFF...................................................FF [ 79%]
+.............................F.......................................... [ 99%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+____ test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned[dotdot] ____
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c57aa20>, alias = 'dotdot'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("alias", ["dotdot", "symlink"])
+    def test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned(sandbox: Sandbox, alias: str) -> None:
+        """X-01: an owned-path prefix made a file outside the owned paths count as pinned."""
+        sandbox.write(OWNED_FILE, "version = 1\n")
+        sandbox.write("NOTES.md", "notes that are not pinned\n")
+        if alias == "dotdot":
+            ref = "src/citerift/governance/../../../NOTES.md"
+        else:
+            ref = "src/citerift/governance/evidence-link.md"
+            (sandbox.root / ref).symlink_to("../../../NOTES.md")
+        for target in ("AUTHORIZED", "IN_PROGRESS"):
+            assert sandbox.go("00", Status(target)).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        handoff = "docs/verification/stage-00/HANDOFF.md"
+        gates = {gid: {"result": "pass", "evidence": [handoff, ref]} for gid in sandbox.gates("00")}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+>       assert not result.allowed
+E       AssertionError: assert not True
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1090: AssertionError
+___ test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned[symlink] ____
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c6b6960>, alias = 'symlink'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("alias", ["dotdot", "symlink"])
+    def test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned(sandbox: Sandbox, alias: str) -> None:
+        """X-01: an owned-path prefix made a file outside the owned paths count as pinned."""
+        sandbox.write(OWNED_FILE, "version = 1\n")
+        sandbox.write("NOTES.md", "notes that are not pinned\n")
+        if alias == "dotdot":
+            ref = "src/citerift/governance/../../../NOTES.md"
+        else:
+            ref = "src/citerift/governance/evidence-link.md"
+            (sandbox.root / ref).symlink_to("../../../NOTES.md")
+        for target in ("AUTHORIZED", "IN_PROGRESS"):
+            assert sandbox.go("00", Status(target)).allowed
+        rev = sandbox.commit("implement")
+        assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+        sandbox.write_evidence("00", rev)
+        handoff = "docs/verification/stage-00/HANDOFF.md"
+        gates = {gid: {"result": "pass", "evidence": [handoff, ref]} for gid in sandbox.gates("00")}
+        result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=gates, ci=sandbox.ci(rev))
+>       assert not result.allowed
+E       AssertionError: assert not True
+E        +  where True = TransitionResult(allowed=True, findings=[], registry={'$schema': '../schemas/governance/stage_registry.schema.json', '...ent', 'recorded_by': 'engineering-agent', 'reason': 'sandbox VERIFIED_AWAITING_OWNER_ACCEPTANCE', 'owner_ref': None}]}).allowed
+
+tests/stage00/test_corrections.py:1090: AssertionError
+______ test_x02_collection_settings_in_the_ini_file_make_the_run_partial _______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x02_collection_settings_i0')
+
+    @pytest.mark.integration
+    def test_x02_collection_settings_in_the_ini_file_make_the_run_partial(tmp_path: Path) -> None:
+        """X-02: one committed ``python_functions`` line ran 92 of 308 tests and the report was "complete"."""
+        project = _plugin_project(tmp_path)
+        pyproject = project / "pyproject.toml"
+        pyproject.write_text(
+            pyproject.read_text(encoding="utf-8") + 'python_functions = ["test_alpha", "test_delta"]\n', encoding="utf-8"
+        )
+        git(project, "commit", "-q", "-am", "narrow collection in the ini file")
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json")
+        assert code == 0 and data["totals"] == {"passed": 2}, output
+        assert data["selection"]["files"] == ["tests/test_other.py", "tests/test_sample.py"]
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+E       AssertionError: {'args': ['tests'], 'override_ini': [], 'other_ini_file': '', 'keyword': '', ...}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1110: AssertionError
+_ test_x03_padding_or_untracked_collection_code_makes_the_run_partial[committed_conftest] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x03_padding_or_untracked_0')
+how = 'committed_conftest'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("how", ["committed_conftest", "untracked_excluded_conftest", "outside_plugin"])
+    def test_x03_padding_or_untracked_collection_code_makes_the_run_partial(tmp_path: Path, how: str) -> None:
+        """X-03: repeating kept items hid the dropped ones, and the code doing it need not be committed."""
+        import os
+    
+        project = _plugin_project(tmp_path)
+        args: list[str] = []
+        env = None
+        if how == "committed_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            git(project, "add", "-A")
+            git(project, "commit", "-q", "-m", "padding conftest")
+        elif how == "untracked_excluded_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            with (project / ".git" / "info" / "exclude").open("a", encoding="utf-8") as fh:
+                fh.write("tests/conftest.py\n")
+        else:
+            outside = tmp_path / "outside"
+            outside.mkdir()
+            (outside / "padder.py").write_text(PADDER, encoding="utf-8")
+            env = {**os.environ, "PYTHONPATH": os.pathsep.join([str(outside), os.environ.get("PYTHONPATH", "")])}
+            args = ["-p", "padder"]
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json", *args, env=env)
+        assert code == 0 and data["dirty"] is False, output
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+E       AssertionError: {'args': ['tests'], 'override_ini': [], 'other_ini_file': '', 'keyword': '', ...}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1149: AssertionError
+_ test_x03_padding_or_untracked_collection_code_makes_the_run_partial[untracked_excluded_conftest] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x03_padding_or_untracked_1')
+how = 'untracked_excluded_conftest'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("how", ["committed_conftest", "untracked_excluded_conftest", "outside_plugin"])
+    def test_x03_padding_or_untracked_collection_code_makes_the_run_partial(tmp_path: Path, how: str) -> None:
+        """X-03: repeating kept items hid the dropped ones, and the code doing it need not be committed."""
+        import os
+    
+        project = _plugin_project(tmp_path)
+        args: list[str] = []
+        env = None
+        if how == "committed_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            git(project, "add", "-A")
+            git(project, "commit", "-q", "-m", "padding conftest")
+        elif how == "untracked_excluded_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            with (project / ".git" / "info" / "exclude").open("a", encoding="utf-8") as fh:
+                fh.write("tests/conftest.py\n")
+        else:
+            outside = tmp_path / "outside"
+            outside.mkdir()
+            (outside / "padder.py").write_text(PADDER, encoding="utf-8")
+            env = {**os.environ, "PYTHONPATH": os.pathsep.join([str(outside), os.environ.get("PYTHONPATH", "")])}
+            args = ["-p", "padder"]
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json", *args, env=env)
+        assert code == 0 and data["dirty"] is False, output
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+E       AssertionError: {'args': ['tests'], 'override_ini': [], 'other_ini_file': '', 'keyword': '', ...}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1149: AssertionError
+_ test_x03_padding_or_untracked_collection_code_makes_the_run_partial[outside_plugin] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x03_padding_or_untracked_2')
+how = 'outside_plugin'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("how", ["committed_conftest", "untracked_excluded_conftest", "outside_plugin"])
+    def test_x03_padding_or_untracked_collection_code_makes_the_run_partial(tmp_path: Path, how: str) -> None:
+        """X-03: repeating kept items hid the dropped ones, and the code doing it need not be committed."""
+        import os
+    
+        project = _plugin_project(tmp_path)
+        args: list[str] = []
+        env = None
+        if how == "committed_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            git(project, "add", "-A")
+            git(project, "commit", "-q", "-m", "padding conftest")
+        elif how == "untracked_excluded_conftest":
+            (project / "tests" / "conftest.py").write_text(PADDER, encoding="utf-8")
+            with (project / ".git" / "info" / "exclude").open("a", encoding="utf-8") as fh:
+                fh.write("tests/conftest.py\n")
+        else:
+            outside = tmp_path / "outside"
+            outside.mkdir()
+            (outside / "padder.py").write_text(PADDER, encoding="utf-8")
+            env = {**os.environ, "PYTHONPATH": os.pathsep.join([str(outside), os.environ.get("PYTHONPATH", "")])}
+            args = ["-p", "padder"]
+        reports = tmp_path / "reports"
+        reports.mkdir()
+        code, data, output = _run_plugin(project, reports / "r.json", *args, env=env)
+        assert code == 0 and data["dirty"] is False, output
+        shutil.copy(reports / "r.json", project / "r.json")
+        problems = evidence.check_test_report(project, "r.json", None, git(project, "rev-parse", "HEAD"), ["unit"])
+>       assert "TEST_EVIDENCE_PARTIAL" in {p.code for p in problems}, data["selection"]
+E       AssertionError: {'args': ['tests'], 'override_ini': [], 'other_ini_file': '', 'keyword': '', ...}
+E       assert 'TEST_EVIDENCE_PARTIAL' in set()
+
+tests/stage00/test_corrections.py:1149: AssertionError
+___________ test_x04_a_module_beside_the_package_in_src_is_an_error ____________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c48ee70>
+
+    @pytest.mark.negative
+    def test_x04_a_module_beside_the_package_in_src_is_an_error(sandbox: Sandbox) -> None:
+        """X-04: ``src/sitecustomize.py`` (or ``src/jsonschema/``) runs before the checks CI starts from ``src``."""
+        sandbox.write(OWNED_FILE, "version = 1\n")
+        sandbox.commit("package only")
+        assert "SRC_FOREIGN_MODULE" not in sandbox.codes(sandbox.orc().check())
+        sandbox.write("src/sitecustomize.py", "print('loaded before every check')\n")
+        sandbox.commit("module beside the package")
+>       assert "SRC_FOREIGN_MODULE" in sandbox.codes(sandbox.orc().check())
+E       AssertionError: assert 'SRC_FOREIGN_MODULE' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99c48ee70>.codes
+E        +    and   [] = check()
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c48ff80>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c48ff80> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99c48ee70>.orc
+
+tests/stage00/test_corrections.py:1160: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command0-STATUS_DOC_OUT_OF_DATE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c48dbb0>
+damage = 'status_not_utf8', command = ['check'], code = 'STATUS_DOC_OUT_OF_DATE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 71, in cmd_check
+E             findings = orc.check()
+E                        ^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 268, in check
+E             findings += self._status_doc_findings()
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1057, in _status_doc_findings
+E             if not path.is_file() or path.read_text(encoding="utf-8") != self.render_status():
+E                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/pathlib.py", line 1030, in read_text
+E             return f.read()
+E                    ^^^^^^^^
+E           File "<frozen codecs>", line 322, in decode
+E         UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 2283: invalid start byte
+E         
+E       assert 'Traceback' not in 'Traceback (...start byte\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (19 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command1-PROJECT_STATUS.md] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c572090>
+damage = 'status_not_utf8', command = ['render-status', '--check']
+code = 'PROJECT_STATUS.md'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 195, in cmd_render_status
+E             current = path.read_text(encoding="utf-8") if path.is_file() else ""
+E                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/pathlib.py", line 1030, in read_text
+E             return f.read()
+E                    ^^^^^^^^
+E           File "<frozen codecs>", line 322, in decode
+E         UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 2283: invalid start byte
+E         
+E       assert 'Traceback' not in 'Traceback (...start byte\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (13 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command2-STATUS_DOC_OUT_OF_DATE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c5738f0>
+damage = 'status_not_utf8', command = ['recover']
+code = 'STATUS_DOC_OUT_OF_DATE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 206, in cmd_recover
+E             data = orc.recover()
+E                    ^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1432, in recover
+E             findings = self.check()
+E                        ^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 268, in check
+E             findings += self._status_doc_findings()
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1057, in _status_doc_findings
+E             if not path.is_file() or path.read_text(encoding="utf-8") != self.render_status():
+E                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/pathlib.py", line 1030, in read_text
+E             return f.read()
+E                    ^^^^^^^^
+E           File "<frozen codecs>", line 322, in decode
+E         UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 2283: invalid start byte
+E         
+E       assert 'Traceback' not in 'Traceback (...start byte\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (22 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[none-command3-STAGE_UNKNOWN] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c49ac60>, damage = 'none'
+command = ['deps', '99'], code = 'STAGE_UNKNOWN'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 49, in cmd_deps
+E             info = orc.dependencies(args.stage)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 183, in dependencies
+E             stage = self.stage(stage_id)
+E                     ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 158, in stage
+E             raise KeyError(f"unknown stage {stage_id}")
+E         KeyError: 'unknown stage 99'
+E         
+E       assert 'Traceback' not in "Traceback (... stage 99'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[none-command4-STAGE_UNKNOWN] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c570e00>, damage = 'none'
+command = ['readiness', '99'], code = 'STAGE_UNKNOWN'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 82, in cmd_readiness
+E             findings = orc.readiness(args.stage)
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 223, in readiness
+E             stage = self.stage(stage_id)
+E                     ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 158, in stage
+E             raise KeyError(f"unknown stage {stage_id}")
+E         KeyError: 'unknown stage 99'
+E         
+E       assert 'Traceback' not in "Traceback (... stage 99'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[none-command5-STAGE_UNKNOWN] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c5736b0>, damage = 'none'
+command = ['handoff', '99'], code = 'STAGE_UNKNOWN'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 183, in cmd_handoff
+E             print(orc.handoff_summary(args.stage), end="")
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1398, in handoff_summary
+E             s = self.stage(stage_id)
+E                 ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 158, in stage
+E             raise KeyError(f"unknown stage {stage_id}")
+E         KeyError: 'unknown stage 99'
+E         
+E       assert 'Traceback' not in "Traceback (... stage 99'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[none-command6-STAGE_UNKNOWN] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c4ab0e0>, damage = 'none'
+command = ['blocker', 'add', '99', 'waiting'], code = 'STAGE_UNKNOWN'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 143, in cmd_blocker
+E             bid = orc.add_blocker(args.stage, args.text, at=args.at)
+E                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1254, in add_blocker
+E             stage = self.stage(stage_id)
+E                     ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 158, in stage
+E             raise KeyError(f"unknown stage {stage_id}")
+E         KeyError: 'unknown stage 99'
+E         
+E       assert 'Traceback' not in "Traceback (... stage 99'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[none-command7-STAGE_UNKNOWN] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c4ab260>, damage = 'none'
+command = ['amend', '99', '--kind', 'correction', '--reason', 'x', ...]
+code = 'STAGE_UNKNOWN'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 164, in cmd_amend
+E             aid = orc.add_amendment(
+E                   ^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1319, in add_amendment
+E             stage = self.stage(stage_id)
+E                     ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 158, in stage
+E             raise KeyError(f"unknown stage {stage_id}")
+E         KeyError: 'unknown stage 99'
+E         
+E       assert 'Traceback' not in "Traceback (... stage 99'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (14 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[schema_type_int-command8-REGISTRY_SCHEMA_UNREADABLE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c570c50>
+damage = 'schema_type_int', command = ['check']
+code = 'REGISTRY_SCHEMA_UNREADABLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 343, in main
+E             schema_errors = orc.schema_findings()
+E                             ^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 273, in schema_findings
+E             return self._schema_findings()
+E                    ^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 304, in _schema_findings
+E             for e in sorted(validator.iter_errors(self.registry), key=lambda e: list(e.absolute_path))
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/validators.py", line 383, in iter_errors
+E             for error in errors:
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/_keywords.py", line 285, in type
+E             if not any(validator.is_type(instance, type) for type in types):
+E                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         TypeError: 'int' object is not iterable
+E         
+E       assert 'Traceback' not in 'Traceback (...t iterable\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (17 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[schema_list-command9-REGISTRY_SCHEMA_UNREADABLE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c4aabd0>
+damage = 'schema_list', command = ['check'], code = 'REGISTRY_SCHEMA_UNREADABLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 343, in main
+E             schema_errors = orc.schema_findings()
+E                             ^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 273, in schema_findings
+E             return self._schema_findings()
+E                    ^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 296, in _schema_findings
+E             validator = Draft202012Validator(self._schema, format_checker=FORMAT_CHECKER)
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "<attrs generated methods jsonschema.validators.create.<locals>.Validator>", line 32, in __init__
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/validators.py", line 288, in __attrs_post_init__
+E             self._resolver = registry.resolver_with_root(resource)
+E                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 590, in resolver_with_root
+E             uri = resource.id() or ""
+E                   ^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 231, in id
+E             id = self._specification.id_of(self.contents)
+E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/jsonschema.py", line 50, in _dollar_id
+E             return contents.get("$id")
+E                    ^^^^^^^^^^^^
+E         AttributeError: 'list' object has no attribute 'get'
+E         
+E       assert 'Traceback' not in "Traceback (...bute 'get'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (25 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[schema_dangling_ref-command10-REGISTRY_SCHEMA_UNREADABLE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c4a9160>
+damage = 'schema_dangling_ref', command = ['check']
+code = 'REGISTRY_SCHEMA_UNREADABLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 276, in pointer
+E             contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+E                        ~~~~~~~~^^^^^^^^^
+E         KeyError: 'nope'
+E         
+E         The above exception was the direct cause of the following exception:
+E         
+E         Traceback (most recent call last):
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/validators.py", line 462, in _validate_reference
+E             resolved = self._resolver.lookup(ref)
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 690, in lookup
+E             return retrieved.value.pointer(pointer=fragment, resolver=resolver)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 279, in pointer
+E             raise error from lookup_error
+E         referencing.exceptions.PointerToNowhere: '/nope' does not exist within {'$ref': '#/nope'}
+E         
+E         The above exception was the direct cause of the following exception:
+E         
+E         Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 343, in main
+E             schema_errors = orc.schema_findings()
+E                             ^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 273, in schema_findings
+E             return self._schema_findings()
+E                    ^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 304, in _schema_findings
+E             for e in sorted(validator.iter_errors(self.registry), key=lambda e: list(e.absolute_path))
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/validators.py", line 383, in iter_errors
+E             for error in errors:
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/_keywords.py", line 275, in ref
+E             yield from validator._validate_reference(ref=ref, instance=instance)
+E                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/user/citerift/.venv/lib/python3.12/site-packages/jsonschema/validators.py", line 464, in _validate_reference
+E             raise exceptions._WrappedReferencingError(err) from err
+E         jsonschema.exceptions._WrappedReferencingError: PointerToNowhere: '/nope' does not exist within {'$ref': '#/nope'}
+E         
+E       assert 'Traceback' not in "Traceback (... '#/nope'}\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "/home/user/citerift/.venv/lib/python3.12/site-packages/referencing/_core.py", line 276, in pointer
+E               contents = contents[segment]  # type: ignore[reportUnknownArgumentType]
+E                          ~~~~~~~~^^^^^^^^^...
+E         
+E         ...Full output truncated (40 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[record_list-command11---record] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c498d10>
+damage = 'record_list'
+command = ['transition', '00', 'AUTHORIZED', '--actor', 'owner', '--reason', ...]
+code = '--record'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 111, in cmd_transition
+E             gates = record.get("gates", {})
+E                     ^^^^^^^^^^
+E         AttributeError: 'list' object has no attribute 'get'
+E         
+E       assert 'Traceback' not in "Traceback (...bute 'get'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (9 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[record_gates_list-command12---record] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c571b50>
+damage = 'record_gates_list'
+command = ['transition', '00', 'AUTHORIZED', '--actor', 'owner', '--reason', ...]
+code = '--record'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 113, in cmd_transition
+E             gates.update(_parse_gates(args.gate or []))
+E             ^^^^^^^^^^^^
+E         AttributeError: 'list' object has no attribute 'update'
+E         
+E       assert 'Traceback' not in "Traceback (...e 'update'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (9 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[amend_missing_report-command13-EVIDENCE_MISSING] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c572690>
+damage = 'amend_missing_report'
+command = ['amend', '00', '--kind', 'enhancement', '--reason', 'x', ...]
+code = 'EVIDENCE_MISSING'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 164, in cmd_amend
+E             aid = orc.add_amendment(
+E                   ^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 1327, in add_amendment
+E             report = {"path": test_report, "sha256": evidence.sha256_file(self.root / test_report)}
+E                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/evidence.py", line 21, in sha256_file
+E             with path.open("rb") as fh:
+E                  ^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+E             return io.open(self, mode, buffering, encoding, errors, newline)
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-root/pytest-334/test_x05_more_damaged_inputs_a13/repo/missing.json'
+E         
+E       assert 'Traceback' not in "Traceback (...sing.json'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (18 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[report_count_string-command14-TEST_EVIDENCE_INVALID] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c5791c0>
+damage = 'report_count_string', command = ['check']
+code = 'TEST_EVIDENCE_INVALID'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 71, in cmd_check
+E             findings = orc.check()
+E                        ^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 262, in check
+E             findings += self._evidence_findings(stage, v["revision"], recorded=v)
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 759, in _evidence_findings
+E             for p in evidence.check_test_report(
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/evidence.py", line 136, in check_test_report
+E             if not isinstance(totals, dict) or totals.get("passed", 0) <= 0:
+E                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         TypeError: '<=' not supported between instances of 'str' and 'int'
+E         
+E       assert 'Traceback' not in "Traceback (... and 'int'\n"
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (18 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[report_suites_list-command15-TEST_EVIDENCE_INVALID] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c5736b0>
+damage = 'report_suites_list', command = ['check']
+code = 'TEST_EVIDENCE_INVALID'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+        assert "Traceback" not in out.stderr, out.stderr
+        # recover reports the consistency errors it finds and still exits 0, so that it always prints the state
+        assert out.returncode in ((0,) if command[0] == "recover" else (1, 2)), out.stdout + out.stderr
+>       assert code in out.stdout + out.stderr, out.stdout + out.stderr
+E       AssertionError: Consistency check: 10 errors, 0 warnings
+E           ERROR TEST_EVIDENCE_STALE: [stage 00] test report docs/verification/stage-00/test-report.json changed after it was recorded
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'unit' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'integration' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'negative' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'regression' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'reproducibility' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'security' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'contracts' has no passed tests
+E           ERROR TEST_SUITE_MISSING: [stage 00] required test suite 'simulation' has no passed tests
+E           ERROR EVIDENCE_STALE: [stage 00] docs/verification/stage-00/test-report.json changed after verification (sha256 mismatch)
+E         
+E       assert 'TEST_EVIDENCE_INVALID' in ('Consistency check: 10 errors, 0 warnings\n  ERROR TEST_EVIDENCE_STALE: [stage 00] test report docs/verification/stage... EVIDENCE_STALE: [stage 00] docs/verification/stage-00/test-report.json changed after verification (sha256 mismatch)\n' + '')
+E        +  where 'Consistency check: 10 errors, 0 warnings\n  ERROR TEST_EVIDENCE_STALE: [stage 00] test report docs/verification/stage... EVIDENCE_STALE: [stage 00] docs/verification/stage-00/test-report.json changed after verification (sha256 mismatch)\n' = CompletedProcess(args=['/home/user/citerift/.venv/bin/python', '-m', 'citerift.governance.cli', '--root', '/tmp/pytest...ALE: [stage 00] docs/verification/stage-00/test-report.json changed after verification (sha256 mismatch)\n", stderr='').stdout
+E        +  and   '' = CompletedProcess(args=['/home/user/citerift/.venv/bin/python', '-m', 'citerift.governance.cli', '--root', '/tmp/pytest...ALE: [stage 00] docs/verification/stage-00/test-report.json changed after verification (sha256 mismatch)\n", stderr='').stderr
+
+tests/stage00/test_corrections.py:1280: AssertionError
+_ test_x05_more_damaged_inputs_are_reported_not_crashed[handoff_not_utf8-command16-EVIDENCE_UNREADABLE] _
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c57ae70>
+damage = 'handoff_not_utf8', command = ['check'], code = 'EVIDENCE_UNREADABLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("damage", "command", "code"),
+        [
+            ("status_not_utf8", ["check"], "STATUS_DOC_OUT_OF_DATE"),
+            ("status_not_utf8", ["render-status", "--check"], "PROJECT_STATUS.md"),
+            ("status_not_utf8", ["recover"], "STATUS_DOC_OUT_OF_DATE"),
+            ("none", ["deps", "99"], "STAGE_UNKNOWN"),
+            ("none", ["readiness", "99"], "STAGE_UNKNOWN"),
+            ("none", ["handoff", "99"], "STAGE_UNKNOWN"),
+            ("none", ["blocker", "add", "99", "waiting"], "STAGE_UNKNOWN"),
+            (
+                "none",
+                [
+                    "amend",
+                    "99",
+                    "--kind",
+                    "correction",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                ],
+                "STAGE_UNKNOWN",
+            ),
+            ("schema_type_int", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_list", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            ("schema_dangling_ref", ["check"], "REGISTRY_SCHEMA_UNREADABLE"),
+            (
+                "record_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "record_gates_list",
+                ["transition", "00", "AUTHORIZED", "--actor", "owner", "--reason", "x", "--record"],
+                "--record",
+            ),
+            (
+                "amend_missing_report",
+                [
+                    "amend",
+                    "00",
+                    "--kind",
+                    "enhancement",
+                    "--reason",
+                    "x",
+                    "--evidence",
+                    "RISKS.md",
+                    "--owner-ref",
+                    "cmsg_TESTAMENDREF01",
+                    "--test-report",
+                    "missing.json",
+                ],
+                "EVIDENCE_MISSING",
+            ),
+            ("report_count_string", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("report_suites_list", ["check"], "TEST_EVIDENCE_INVALID"),
+            ("handoff_not_utf8", ["check"], "EVIDENCE_UNREADABLE"),
+        ],
+    )
+    def test_x05_more_damaged_inputs_are_reported_not_crashed(
+        sandbox: Sandbox, damage: str, command: list[str], code: str
+    ) -> None:
+        """X-05: residual tracebacks of V-10."""
+        extra = _damage(sandbox, damage)
+        out = _cli(sandbox.root, *command, *extra)
+>       assert "Traceback" not in out.stderr, out.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>
+E             raise SystemExit(main())
+E                              ^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 356, in main
+E             result: int = args.func(orc, args)
+E                           ^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 71, in cmd_check
+E             findings = orc.check()
+E                        ^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 262, in check
+E             findings += self._evidence_findings(stage, v["revision"], recorded=v)
+E                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/orchestrator.py", line 732, in _evidence_findings
+E             text = handoff.read_text(encoding="utf-8")
+E                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/usr/lib/python3.12/pathlib.py", line 1030, in read_text
+E             return f.read()
+E                    ^^^^^^^^
+E           File "<frozen codecs>", line 322, in decode
+E         UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 3216: invalid start byte
+E         
+E       assert 'Traceback' not in 'Traceback (...start byte\n'
+E         
+E         'Traceback' is contained here:
+E           Traceback (most recent call last):
+E         ? +++++++++
+E             File "<frozen runpy>", line 198, in _run_module_as_main
+E             File "<frozen runpy>", line 88, in _run_code
+E             File "/tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/failfirst/src/citerift/governance/cli.py", line 361, in <module>...
+E         
+E         ...Full output truncated (19 lines hidden), use '-vv' to show
+
+tests/stage00/test_corrections.py:1277: AssertionError
+_______ test_x06_entries_written_differently_are_malformed[bold_fields] ________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_entries_written_diffe0')
+entry = '### R–020 — Hidden\n- **Status**: open\n- **Severity**: critical\n- **Kind**: defect\n- **Stage**: 00\n'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "entry",
+        [
+            "### R–020 — Hidden\n" + CRITICAL_FIELDS.replace("- ", "- **").replace(":", "**:"),
+            "## R–020 — Hidden\n" + CRITICAL_FIELDS.lower(),
+            "Hidden defect R-020\n---\n\n" + "".join("  " + line + "\n" for line in CRITICAL_FIELDS.splitlines()),
+            "## R\u00a0020 — Hidden\n\nProse only.\n",
+        ],
+        ids=["bold_fields", "lowercase_fields", "indented_fields", "nbsp_heading"],
+    )
+    def test_x06_entries_written_differently_are_malformed(tmp_path: Path, entry: str) -> None:
+        """X-06: a heading that does not parse was skipped when its fields were written differently too."""
+        from citerift.governance import memory
+    
+        risks = tmp_path / "RISKS.md"
+        risks.write_text("# Risks\n\n" + entry, encoding="utf-8")
+>       assert "MEMORY_MALFORMED" in {p.code for p in memory.check_risks(risks)[1]}
+E       AssertionError: assert 'MEMORY_MALFORMED' in set()
+
+tests/stage00/test_corrections.py:1303: AssertionError
+_____ test_x06_entries_written_differently_are_malformed[lowercase_fields] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_entries_written_diffe1')
+entry = '## R–020 — Hidden\n- status: open\n- severity: critical\n- kind: defect\n- stage: 00\n'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "entry",
+        [
+            "### R–020 — Hidden\n" + CRITICAL_FIELDS.replace("- ", "- **").replace(":", "**:"),
+            "## R–020 — Hidden\n" + CRITICAL_FIELDS.lower(),
+            "Hidden defect R-020\n---\n\n" + "".join("  " + line + "\n" for line in CRITICAL_FIELDS.splitlines()),
+            "## R\u00a0020 — Hidden\n\nProse only.\n",
+        ],
+        ids=["bold_fields", "lowercase_fields", "indented_fields", "nbsp_heading"],
+    )
+    def test_x06_entries_written_differently_are_malformed(tmp_path: Path, entry: str) -> None:
+        """X-06: a heading that does not parse was skipped when its fields were written differently too."""
+        from citerift.governance import memory
+    
+        risks = tmp_path / "RISKS.md"
+        risks.write_text("# Risks\n\n" + entry, encoding="utf-8")
+>       assert "MEMORY_MALFORMED" in {p.code for p in memory.check_risks(risks)[1]}
+E       AssertionError: assert 'MEMORY_MALFORMED' in set()
+
+tests/stage00/test_corrections.py:1303: AssertionError
+_____ test_x06_entries_written_differently_are_malformed[indented_fields] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_entries_written_diffe2')
+entry = 'Hidden defect R-020\n---\n\n  - Status: open\n  - Severity: critical\n  - Kind: defect\n  - Stage: 00\n'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        "entry",
+        [
+            "### R–020 — Hidden\n" + CRITICAL_FIELDS.replace("- ", "- **").replace(":", "**:"),
+            "## R–020 — Hidden\n" + CRITICAL_FIELDS.lower(),
+            "Hidden defect R-020\n---\n\n" + "".join("  " + line + "\n" for line in CRITICAL_FIELDS.splitlines()),
+            "## R\u00a0020 — Hidden\n\nProse only.\n",
+        ],
+        ids=["bold_fields", "lowercase_fields", "indented_fields", "nbsp_heading"],
+    )
+    def test_x06_entries_written_differently_are_malformed(tmp_path: Path, entry: str) -> None:
+        """X-06: a heading that does not parse was skipped when its fields were written differently too."""
+        from citerift.governance import memory
+    
+        risks = tmp_path / "RISKS.md"
+        risks.write_text("# Risks\n\n" + entry, encoding="utf-8")
+>       assert "MEMORY_MALFORMED" in {p.code for p in memory.check_risks(risks)[1]}
+E       AssertionError: assert 'MEMORY_MALFORMED' in set()
+
+tests/stage00/test_corrections.py:1303: AssertionError
+__________ test_x06_invisible_characters_do_not_split_a_topic[\u200b] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_invisible_characters_0')
+invisible = '\u200b'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("invisible", ["\u200b", "\u00ad", "\u2060", "\ufeff"])
+    def test_x06_invisible_characters_do_not_split_a_topic(tmp_path: Path, invisible: str) -> None:
+        from citerift.governance import memory
+    
+        decisions = tmp_path / "DECISIONS.md"
+        body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+        decisions.write_text(
+            "# Decisions\n\n## D-001 — One\n"
+            + body.format(topic="sandbox")
+            + "\n## D-002 — Two\n"
+            + body.format(topic=f"sand{invisible}box"),
+            encoding="utf-8",
+        )
+>       assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+E       AssertionError: assert 'DECISION_CONTRADICTION' in set()
+
+tests/stage00/test_corrections.py:1320: AssertionError
+___________ test_x06_invisible_characters_do_not_split_a_topic[\xad] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_invisible_characters_1')
+invisible = '\xad'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("invisible", ["\u200b", "\u00ad", "\u2060", "\ufeff"])
+    def test_x06_invisible_characters_do_not_split_a_topic(tmp_path: Path, invisible: str) -> None:
+        from citerift.governance import memory
+    
+        decisions = tmp_path / "DECISIONS.md"
+        body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+        decisions.write_text(
+            "# Decisions\n\n## D-001 — One\n"
+            + body.format(topic="sandbox")
+            + "\n## D-002 — Two\n"
+            + body.format(topic=f"sand{invisible}box"),
+            encoding="utf-8",
+        )
+>       assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+E       AssertionError: assert 'DECISION_CONTRADICTION' in set()
+
+tests/stage00/test_corrections.py:1320: AssertionError
+__________ test_x06_invisible_characters_do_not_split_a_topic[\u2060] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_invisible_characters_2')
+invisible = '\u2060'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("invisible", ["\u200b", "\u00ad", "\u2060", "\ufeff"])
+    def test_x06_invisible_characters_do_not_split_a_topic(tmp_path: Path, invisible: str) -> None:
+        from citerift.governance import memory
+    
+        decisions = tmp_path / "DECISIONS.md"
+        body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+        decisions.write_text(
+            "# Decisions\n\n## D-001 — One\n"
+            + body.format(topic="sandbox")
+            + "\n## D-002 — Two\n"
+            + body.format(topic=f"sand{invisible}box"),
+            encoding="utf-8",
+        )
+>       assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+E       AssertionError: assert 'DECISION_CONTRADICTION' in set()
+
+tests/stage00/test_corrections.py:1320: AssertionError
+__________ test_x06_invisible_characters_do_not_split_a_topic[\ufeff] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-334/test_x06_invisible_characters_3')
+invisible = '\ufeff'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("invisible", ["\u200b", "\u00ad", "\u2060", "\ufeff"])
+    def test_x06_invisible_characters_do_not_split_a_topic(tmp_path: Path, invisible: str) -> None:
+        from citerift.governance import memory
+    
+        decisions = tmp_path / "DECISIONS.md"
+        body = "- Status: accepted\n- Topic: {topic}\n- Date: 2026-10-25\n- Stage: 00\n- Supersedes: none\n\nBody.\n"
+        decisions.write_text(
+            "# Decisions\n\n## D-001 — One\n"
+            + body.format(topic="sandbox")
+            + "\n## D-002 — Two\n"
+            + body.format(topic=f"sand{invisible}box"),
+            encoding="utf-8",
+        )
+>       assert "DECISION_CONTRADICTION" in {p.code for p in memory.check_decisions(decisions)[1]}
+E       AssertionError: assert 'DECISION_CONTRADICTION' in set()
+
+tests/stage00/test_corrections.py:1320: AssertionError
+_________ test_x07_stage_dependencies_are_fixed_by_the_schema[2-deps0] _________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c4b4770>, stage = 2
+deps = ['00']
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(("stage", "deps"), [(2, ["00"]), (4, ["02"]), (1, ["00"]), (9, [])])
+    def test_x07_stage_dependencies_are_fixed_by_the_schema(sandbox: Sandbox, stage: int, deps: list[str]) -> None:
+        """X-07: dropping Stage 01 from Stage 02's dependencies let Stage 02 be accepted while 01 was not started."""
+        reg = sandbox.registry()
+        reg["stages"][stage]["depends_on"] = deps
+        sandbox.save_registry(reg)
+>       assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check(include_status_doc=False))
+E       AssertionError: assert 'REGISTRY_SCHEMA' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99c4b4770>.codes
+E        +    and   [] = check(include_status_doc=False)
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c4b52b0>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c4b52b0> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99c4b4770>.orc
+
+tests/stage00/test_corrections.py:1330: AssertionError
+_________ test_x07_stage_dependencies_are_fixed_by_the_schema[4-deps1] _________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99c56d310>, stage = 4
+deps = ['02']
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(("stage", "deps"), [(2, ["00"]), (4, ["02"]), (1, ["00"]), (9, [])])
+    def test_x07_stage_dependencies_are_fixed_by_the_schema(sandbox: Sandbox, stage: int, deps: list[str]) -> None:
+        """X-07: dropping Stage 01 from Stage 02's dependencies let Stage 02 be accepted while 01 was not started."""
+        reg = sandbox.registry()
+        reg["stages"][stage]["depends_on"] = deps
+        sandbox.save_registry(reg)
+>       assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check(include_status_doc=False))
+E       AssertionError: assert 'REGISTRY_SCHEMA' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99c56d310>.codes
+E        +    and   [] = check(include_status_doc=False)
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99be49430>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99be49430> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99c56d310>.orc
+
+tests/stage00/test_corrections.py:1330: AssertionError
+_________ test_x07_stage_dependencies_are_fixed_by_the_schema[1-deps2] _________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99be48d10>, stage = 1
+deps = ['00']
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(("stage", "deps"), [(2, ["00"]), (4, ["02"]), (1, ["00"]), (9, [])])
+    def test_x07_stage_dependencies_are_fixed_by_the_schema(sandbox: Sandbox, stage: int, deps: list[str]) -> None:
+        """X-07: dropping Stage 01 from Stage 02's dependencies let Stage 02 be accepted while 01 was not started."""
+        reg = sandbox.registry()
+        reg["stages"][stage]["depends_on"] = deps
+        sandbox.save_registry(reg)
+>       assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check(include_status_doc=False))
+E       AssertionError: assert 'REGISTRY_SCHEMA' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99be48d10>.codes
+E        +    and   [] = check(include_status_doc=False)
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99be09400>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99be09400> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99be48d10>.orc
+
+tests/stage00/test_corrections.py:1330: AssertionError
+_________ test_x07_stage_dependencies_are_fixed_by_the_schema[9-deps3] _________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99be09d90>, stage = 9, deps = []
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(("stage", "deps"), [(2, ["00"]), (4, ["02"]), (1, ["00"]), (9, [])])
+    def test_x07_stage_dependencies_are_fixed_by_the_schema(sandbox: Sandbox, stage: int, deps: list[str]) -> None:
+        """X-07: dropping Stage 01 from Stage 02's dependencies let Stage 02 be accepted while 01 was not started."""
+        reg = sandbox.registry()
+        reg["stages"][stage]["depends_on"] = deps
+        sandbox.save_registry(reg)
+>       assert "REGISTRY_SCHEMA" in sandbox.codes(sandbox.orc().check(include_status_doc=False))
+E       AssertionError: assert 'REGISTRY_SCHEMA' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99be09d90>.codes
+E        +    and   [] = check(include_status_doc=False)
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99bee13a0>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99bee13a0> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99be09d90>.orc
+
+tests/stage00/test_corrections.py:1330: AssertionError
+_______________ test_x08_add_block_and_resolve_within_one_second _______________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99bee01d0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fa99be09010>
+
+    @pytest.mark.integration
+    def test_x08_add_block_and_resolve_within_one_second(sandbox: Sandbox, monkeypatch: pytest.MonkeyPatch) -> None:
+        """X-08: with default times the resolution fell in the second of the BLOCKED entry and was refused."""
+        from datetime import UTC, datetime, timedelta
+    
+        from citerift.governance import orchestrator
+    
+        frozen = datetime(2026, 10, 25, 12, tzinfo=UTC)
+        monkeypatch.setattr(
+            orchestrator,
+            "utc_now",
+            lambda delta=None: (frozen + (delta or timedelta())).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        )
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target, at=None).allowed
+        bid = sandbox.orc().add_blocker("00", "waiting for the owner")
+        assert sandbox.go("00", Status.BLOCKED, at=None).allowed
+>       assert sandbox.orc().resolve_blocker("00", bid, "the owner answered")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage00/test_corrections.py:1350: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/citerift/governance/orchestrator.py:1304: in resolve_blocker
+    self.apply(result)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c4a9be0>
+result = TransitionResult(allowed=False, findings=[Finding(code='HISTORY_BLOCKER', severity='error', stage='00', message='(pre-existing) entry 3 blocks the stage with no open blocker')], registry=None)
+
+    def apply(self, result: TransitionResult) -> None:
+        if not result.allowed or result.registry is None:
+>           raise GovernanceError(errors(result.findings))
+E           citerift.governance.orchestrator.GovernanceError: ERROR HISTORY_BLOCKER: [stage 00] (pre-existing) entry 3 blocks the stage with no open blocker
+
+src/citerift/governance/orchestrator.py:1228: GovernanceError
+____ test_x08_a_refused_resolution_does_not_call_its_own_error_pre_existing ____
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99bee0e90>
+
+    @pytest.mark.integration
+    def test_x08_a_refused_resolution_does_not_call_its_own_error_pre_existing(sandbox: Sandbox) -> None:
+        for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+            assert sandbox.go("00", target).allowed
+        opened = sandbox.tick()
+        bid = sandbox.orc().add_blocker("00", "waiting for the owner", at=opened)
+        assert sandbox.go("00", Status.BLOCKED).allowed
+        with pytest.raises(orchestrator_error()) as refused:
+            sandbox.orc().resolve_blocker("00", bid, "resolved before it blocked", at=opened)
+        messages = [f.message for f in refused.value.findings if f.code == "HISTORY_BLOCKER"]
+>       assert messages and not any("(pre-existing)" in m for m in messages), messages
+E       AssertionError: ['(pre-existing) entry 3 blocks the stage with no open blocker']
+E       assert (['(pre-existing) entry 3 blocks the stage with no open blocker'] and not True)
+E        +  where True = any(<generator object test_x08_a_refused_resolution_does_not_call_its_own_error_pre_existing.<locals>.<genexpr> at 0x7fa99c400ba0>)
+
+tests/stage00/test_corrections.py:1364: AssertionError
+_______________ test_x09_grafts_do_not_hide_a_rewritten_history ________________
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99be651f0>
+
+    @pytest.mark.negative
+    def test_x09_grafts_do_not_hide_a_rewritten_history(sandbox: Sandbox) -> None:
+        """X-09: ``--no-replace-objects`` does not disable ``.git/info/grafts``."""
+        sandbox.drive_to_accepted("00")
+        old_head = sandbox.head()
+        orphan = git(sandbox.root, "commit-tree", f"{old_head}^{{tree}}", "-m", "rewritten history")
+        git(sandbox.root, "reset", "-q", "--hard", orphan)
+        assert "REVISION_NOT_IN_HISTORY" in sandbox.codes(sandbox.orc().check())
+        (sandbox.root / ".git" / "info").mkdir(exist_ok=True)
+        (sandbox.root / ".git" / "info" / "grafts").write_text(f"{orphan} {old_head}\n", encoding="utf-8")
+>       assert "REVISION_NOT_IN_HISTORY" in sandbox.codes(sandbox.orc().check())
+E       AssertionError: assert 'REVISION_NOT_IN_HISTORY' in set()
+E        +  where set() = codes([])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99be651f0>.codes
+E        +    and   [] = check()
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c5674d0>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c5674d0> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99be651f0>.orc
+
+tests/stage00/test_corrections.py:1383: AssertionError
+_____ test_x10_acceptance_while_a_blocker_was_open_is_an_error_in_history ______
+
+sandbox = <sandbox_repo.Sandbox object at 0x7fa99be0b800>
+
+    @pytest.mark.negative
+    def test_x10_acceptance_while_a_blocker_was_open_is_an_error_in_history(sandbox: Sandbox) -> None:
+        """X-10: the replay checked blockers at block, start, unblock and verify, but not at acceptance."""
+        sandbox.drive_to_accepted("00")
+        reg = sandbox.registry()
+        accepted_at = reg["history"][-1]["at"]
+        reg["stages"][0]["blockers"].append(
+            {
+                "id": "B-00-001",
+                "description": "hand-written blocker open at the acceptance",
+                "opened_at": accepted_at,
+                "resolved_at": sandbox.tick(),
+                "resolution": "resolved after the acceptance",
+            }
+        )
+        sandbox.save_registry(reg)
+>       assert sandbox.codes(sandbox.orc().check(include_status_doc=False)) == {"HISTORY_BLOCKER"}
+E       AssertionError: assert set() == {'HISTORY_BLOCKER'}
+E         
+E         Extra items in the right set:
+E         'HISTORY_BLOCKER'
+E         Use -v to get more diff
+
+tests/stage00/test_corrections.py:1402: AssertionError
+______ test_x11_every_open_wikipedia_edition_code_is_valid[zh-classical] _______
+
+language = 'zh-classical'
+
+    @pytest.mark.contracts
+    @pytest.mark.parametrize("language", ["zh-classical", "zh-min-nan", "be-tarask", "simple", "ar"])
+    def test_x11_every_open_wikipedia_edition_code_is_valid(language: str) -> None:
+        """X-11: ``zh-classical`` (an open edition) was rejected by the language pattern."""
+        from citerift.contracts import load_contracts
+        from citerift.contracts.formats import loads_strict
+    
+        contracts = load_contracts(REPO / "schemas/contracts")
+        path = REPO / "tests/stage00/fixtures/contracts/v1/valid/investigation_full.json"
+        record = loads_strict(path.read_text(encoding="utf-8"))
+        record_text = json.dumps(record).replace('"language": "en"', f'"language": "{language}"')
+>       assert contracts.validate(json.loads(record_text)) == []
+E       assert [ContractProb...rd='pattern')] == []
+E         
+E         Left contains one more item: ContractProblem(code='SCHEMA_VIOLATION', path='/citations/0/article/language', message="'zh-classical' does not match '^[a-z][a-z0-9]{1,11}(-[a-z0-9]{1,8})*$(?!\\\\n)'", keyword='pattern')
+E         Use -v to get more diff
+
+tests/stage00/test_corrections.py:1416: AssertionError
+_ test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[no_version_increase] _
+
+accepted_with_fixtures = <sandbox_repo.Sandbox object at 0x7fa99c4ab5f0>
+bump = False, ref = 'cmsg_TESTENHANCE001', tighten = False
+code = 'CONTRACT_VERSION_NOT_INCREASED'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("bump", "ref", "tighten", "code"),
+        [
+            (False, "cmsg_TESTENHANCE001", False, "CONTRACT_VERSION_NOT_INCREASED"),
+            (True, "accepted", False, "OWNER_REF_REUSED"),
+            (True, "cmsg_TESTENHANCE001", True, "CONTRACT_INCOMPATIBLE"),
+        ],
+        ids=["no_version_increase", "reused_owner_ref", "breaks_old_records"],
+    )
+    def test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement(
+        accepted_with_fixtures: Sandbox, bump: bool, ref: str, tighten: bool, code: str
+    ) -> None:
+        """X-13: an enhancement changed an accepted contract with the acceptance's own reference and no version."""
+        sandbox = accepted_with_fixtures
+        owner_ref = sandbox.registry()["stages"][0]["acceptance"]["owner_ref"] if ref == "accepted" else ref
+>       with pytest.raises(orchestrator_error()) as refused:
+E       Failed: DID NOT RAISE GovernanceError
+
+tests/stage00/test_corrections.py:1501: Failed
+_ test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[reused_owner_ref] _
+
+accepted_with_fixtures = <sandbox_repo.Sandbox object at 0x7fa99c572240>
+bump = True, ref = 'accepted', tighten = False, code = 'OWNER_REF_REUSED'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("bump", "ref", "tighten", "code"),
+        [
+            (False, "cmsg_TESTENHANCE001", False, "CONTRACT_VERSION_NOT_INCREASED"),
+            (True, "accepted", False, "OWNER_REF_REUSED"),
+            (True, "cmsg_TESTENHANCE001", True, "CONTRACT_INCOMPATIBLE"),
+        ],
+        ids=["no_version_increase", "reused_owner_ref", "breaks_old_records"],
+    )
+    def test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement(
+        accepted_with_fixtures: Sandbox, bump: bool, ref: str, tighten: bool, code: str
+    ) -> None:
+        """X-13: an enhancement changed an accepted contract with the acceptance's own reference and no version."""
+        sandbox = accepted_with_fixtures
+        owner_ref = sandbox.registry()["stages"][0]["acceptance"]["owner_ref"] if ref == "accepted" else ref
+>       with pytest.raises(orchestrator_error()) as refused:
+E       Failed: DID NOT RAISE GovernanceError
+
+tests/stage00/test_corrections.py:1501: Failed
+_ test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[breaks_old_records] _
+
+accepted_with_fixtures = <sandbox_repo.Sandbox object at 0x7fa99c56cb30>
+bump = True, ref = 'cmsg_TESTENHANCE001', tighten = True
+code = 'CONTRACT_INCOMPATIBLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize(
+        ("bump", "ref", "tighten", "code"),
+        [
+            (False, "cmsg_TESTENHANCE001", False, "CONTRACT_VERSION_NOT_INCREASED"),
+            (True, "accepted", False, "OWNER_REF_REUSED"),
+            (True, "cmsg_TESTENHANCE001", True, "CONTRACT_INCOMPATIBLE"),
+        ],
+        ids=["no_version_increase", "reused_owner_ref", "breaks_old_records"],
+    )
+    def test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement(
+        accepted_with_fixtures: Sandbox, bump: bool, ref: str, tighten: bool, code: str
+    ) -> None:
+        """X-13: an enhancement changed an accepted contract with the acceptance's own reference and no version."""
+        sandbox = accepted_with_fixtures
+        owner_ref = sandbox.registry()["stages"][0]["acceptance"]["owner_ref"] if ref == "accepted" else ref
+>       with pytest.raises(orchestrator_error()) as refused:
+E       Failed: DID NOT RAISE GovernanceError
+
+tests/stage00/test_corrections.py:1501: Failed
+_________________ test_hand_edit_is_detected[dependency cycle] _________________
+
+verified = <sandbox_repo.Sandbox object at 0x7fa99c48cf20>
+name = 'dependency cycle', edit = <function _cycle at 0x7fa99c5a0f40>
+code = 'REGISTRY_SCHEMA'
+
+    @pytest.mark.parametrize(("name", "edit", "code"), CASES, ids=[c[0] for c in CASES])
+    def test_hand_edit_is_detected(verified: Sandbox, name: str, edit: Edit, code: str) -> None:
+        reg = verified.registry()
+        edit(verified, reg)
+        verified.save_registry(reg)
+>       assert code in verified.codes(verified.orc().check()), name
+E       AssertionError: dependency cycle
+E       assert 'REGISTRY_SCHEMA' in {'DEPENDENCY_CYCLE'}
+E        +  where {'DEPENDENCY_CYCLE'} = codes([Finding(code='DEPENDENCY_CYCLE', severity='error', stage=None, message="dependency cycle among ['00', '02', '03', '04', '05', '06', '07', '08', '09']")])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99c48cf20>.codes
+E        +    and   [Finding(code='DEPENDENCY_CYCLE', severity='error', stage=None, message="dependency cycle among ['00', '02', '03', '04', '05', '06', '07', '08', '09']")] = check()
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c56f170>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c56f170> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99c48cf20>.orc
+
+tests/stage00/test_registry_tampering.py:162: AssertionError
+________________ test_hand_edit_is_detected[unknown dependency] ________________
+
+verified = <sandbox_repo.Sandbox object at 0x7fa99c4b4890>
+name = 'unknown dependency'
+edit = <function _unknown_dependency at 0x7fa99c5a23e0>
+code = 'REGISTRY_SCHEMA'
+
+    @pytest.mark.parametrize(("name", "edit", "code"), CASES, ids=[c[0] for c in CASES])
+    def test_hand_edit_is_detected(verified: Sandbox, name: str, edit: Edit, code: str) -> None:
+        reg = verified.registry()
+        edit(verified, reg)
+        verified.save_registry(reg)
+>       assert code in verified.codes(verified.orc().check()), name
+E       AssertionError: unknown dependency
+E       assert 'REGISTRY_SCHEMA' in {'DEPENDENCY_UNKNOWN'}
+E        +  where {'DEPENDENCY_UNKNOWN'} = codes([Finding(code='DEPENDENCY_UNKNOWN', severity='error', stage='02', message='unknown dependency 99')])
+E        +    where codes = <sandbox_repo.Sandbox object at 0x7fa99c4b4890>.codes
+E        +    and   [Finding(code='DEPENDENCY_UNKNOWN', severity='error', stage='02', message='unknown dependency 99')] = check()
+E        +      where check = <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c572480>.check
+E        +        where <citerift.governance.orchestrator.Orchestrator object at 0x7fa99c572480> = orc()
+E        +          where orc = <sandbox_repo.Sandbox object at 0x7fa99c4b4890>.orc
+
+tests/stage00/test_registry_tampering.py:162: AssertionError
+_______ test_ci_refuses_modules_beside_the_package_before_running_python _______
+
+    @pytest.mark.security
+    def test_ci_refuses_modules_beside_the_package_before_running_python() -> None:
+        """X-04 (second final review): ``src/sitecustomize.py`` ran inside every CI check through ``PYTHONPATH``."""
+        text = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+>       guard = text.index('run: test "$(ls -A src)" = "citerift"')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ValueError: substring not found
+
+tests/stage00/test_repository.py:135: ValueError
+=========================== short test summary info ============================
+FAILED tests/stage00/test_corrections.py::test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned[dotdot]
+FAILED tests/stage00/test_corrections.py::test_x01_gate_evidence_through_dotdot_or_symlink_is_not_pinned[symlink]
+FAILED tests/stage00/test_corrections.py::test_x02_collection_settings_in_the_ini_file_make_the_run_partial
+FAILED tests/stage00/test_corrections.py::test_x03_padding_or_untracked_collection_code_makes_the_run_partial[committed_conftest]
+FAILED tests/stage00/test_corrections.py::test_x03_padding_or_untracked_collection_code_makes_the_run_partial[untracked_excluded_conftest]
+FAILED tests/stage00/test_corrections.py::test_x03_padding_or_untracked_collection_code_makes_the_run_partial[outside_plugin]
+FAILED tests/stage00/test_corrections.py::test_x04_a_module_beside_the_package_in_src_is_an_error
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command0-STATUS_DOC_OUT_OF_DATE]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command1-PROJECT_STATUS.md]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[status_not_utf8-command2-STATUS_DOC_OUT_OF_DATE]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[none-command3-STAGE_UNKNOWN]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[none-command4-STAGE_UNKNOWN]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[none-command5-STAGE_UNKNOWN]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[none-command6-STAGE_UNKNOWN]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[none-command7-STAGE_UNKNOWN]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[schema_type_int-command8-REGISTRY_SCHEMA_UNREADABLE]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[schema_list-command9-REGISTRY_SCHEMA_UNREADABLE]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[schema_dangling_ref-command10-REGISTRY_SCHEMA_UNREADABLE]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[record_list-command11---record]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[record_gates_list-command12---record]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[amend_missing_report-command13-EVIDENCE_MISSING]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[report_count_string-command14-TEST_EVIDENCE_INVALID]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[report_suites_list-command15-TEST_EVIDENCE_INVALID]
+FAILED tests/stage00/test_corrections.py::test_x05_more_damaged_inputs_are_reported_not_crashed[handoff_not_utf8-command16-EVIDENCE_UNREADABLE]
+FAILED tests/stage00/test_corrections.py::test_x06_entries_written_differently_are_malformed[bold_fields]
+FAILED tests/stage00/test_corrections.py::test_x06_entries_written_differently_are_malformed[lowercase_fields]
+FAILED tests/stage00/test_corrections.py::test_x06_entries_written_differently_are_malformed[indented_fields]
+FAILED tests/stage00/test_corrections.py::test_x06_invisible_characters_do_not_split_a_topic[\u200b]
+FAILED tests/stage00/test_corrections.py::test_x06_invisible_characters_do_not_split_a_topic[\xad]
+FAILED tests/stage00/test_corrections.py::test_x06_invisible_characters_do_not_split_a_topic[\u2060]
+FAILED tests/stage00/test_corrections.py::test_x06_invisible_characters_do_not_split_a_topic[\ufeff]
+FAILED tests/stage00/test_corrections.py::test_x07_stage_dependencies_are_fixed_by_the_schema[2-deps0]
+FAILED tests/stage00/test_corrections.py::test_x07_stage_dependencies_are_fixed_by_the_schema[4-deps1]
+FAILED tests/stage00/test_corrections.py::test_x07_stage_dependencies_are_fixed_by_the_schema[1-deps2]
+FAILED tests/stage00/test_corrections.py::test_x07_stage_dependencies_are_fixed_by_the_schema[9-deps3]
+FAILED tests/stage00/test_corrections.py::test_x08_add_block_and_resolve_within_one_second
+FAILED tests/stage00/test_corrections.py::test_x08_a_refused_resolution_does_not_call_its_own_error_pre_existing
+FAILED tests/stage00/test_corrections.py::test_x09_grafts_do_not_hide_a_rewritten_history
+FAILED tests/stage00/test_corrections.py::test_x10_acceptance_while_a_blocker_was_open_is_an_error_in_history
+FAILED tests/stage00/test_corrections.py::test_x11_every_open_wikipedia_edition_code_is_valid[zh-classical]
+FAILED tests/stage00/test_corrections.py::test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[no_version_increase]
+FAILED tests/stage00/test_corrections.py::test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[reused_owner_ref]
+FAILED tests/stage00/test_corrections.py::test_x13_an_enhancement_must_version_contracts_and_cite_a_new_owner_statement[breaks_old_records]
+FAILED tests/stage00/test_registry_tampering.py::test_hand_edit_is_detected[dependency cycle]
+FAILED tests/stage00/test_registry_tampering.py::test_hand_edit_is_detected[unknown dependency]
+FAILED tests/stage00/test_repository.py::test_ci_refuses_modules_beside_the_package_before_running_python
+46 failed, 317 passed in 123.65s (0:02:03)

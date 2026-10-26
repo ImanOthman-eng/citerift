@@ -1,0 +1,18 @@
+[guard] exit 0: 
+[uv sync --frozen --no-install-project --no-build] exit 0:  + urllib3==2.8.0
+[check] exit 0: Consistency check: 0 errors, 0 warnings
+[render-status] exit 0: PROJECT_STATUS.md is up to date
+[uv lock --check] not run (needs the network)
+[uv sync --locked] exit 0:  + citerift==0.1.0 (from file:///tmp/claude-0/-home-user-citerift/0bbaf0e6-71eb-560d-84bf-668fa4ffb288/scratchpad/review5/sandbox-ci)
+[package-from-checkout] exit 0: 
+[ruff] exit 0: All checks passed!
+[ruff-format] exit 0: 57 files already formatted
+[mypy] exit 0: Success: no issues found in 12 source files
+[schemas] exit 0: 2 schemas checked, 0 problems
+[pytest] exit 0: ======================= 400 passed in 264.64s (0:04:24) ========================
+[check-report] exit 0: Test report ci-test-report.json at b8bb5acf9905: 0 problems
+[tree check (diff + status)] exit 0: 
+[pip-audit] not run (needs the network)
+warning: The `UV_NATIVE_TLS` environment variable is deprecated and will be removed in a future release. Use `UV_SYSTEM_CERTS` instead.
+{'revision': 'b8bb5acf9905f83bfe83f8a56b493cd8c632c435', 'dirty': False, 'collected': 400, 'totals': {'passed': 400}, 'exit_status': 0} complete True
+done

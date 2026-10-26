@@ -1,0 +1,50 @@
+{
+  "agreements": 192760,
+  "cases": 205632,
+  "check": "citerift-history-replay-conformance/1",
+  "config": "full",
+  "dependencies": {
+    "00": [],
+    "01": [],
+    "02": [
+      "00",
+      "01"
+    ],
+    "03": [
+      "00",
+      "01"
+    ]
+  },
+  "disagreement_examples": [
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 3 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 3 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=True: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 3 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 3 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=False blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=False ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=False blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=False blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 0 AUTHORIZED->IN_PROGRESS owner=True ref=True blocker=True amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=False amendment=True: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=False: model=False implementation=True",
+    "('AUTHORIZED', 'NOT_STARTED', 'NOT_STARTED', 'NOT_STARTED') + stage 2 NOT_STARTED->AUTHORIZED owner=True ref=True blocker=True amendment=True: model=False implementation=True"
+  ],
+  "disagreements": 12872,
+  "engineering_stages": [
+    "00",
+    "02",
+    "03"
+  ],
+  "max_history_length": 28,
+  "model_permitted": 15640,
+  "reachable_status_vectors": 459,
+  "stages": 4
+}
