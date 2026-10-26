@@ -131,7 +131,7 @@
           "requirement": "No known unresolved critical foundational defect"
         }
       ],
-      "status": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "status": "ACCEPTED_CLOSED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV",
         "scope": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
@@ -1243,7 +1243,13 @@
           "conclusion": "success"
         }
       },
-      "acceptance": null,
+      "acceptance": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG",
+        "accepted_revision": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
+        "recorded_at": "2026-10-26T11:28:47Z",
+        "recorded_by": "engineering-agent",
+        "method": "attested"
+      },
       "blockers": [
         {
           "id": "B-00-001",
@@ -1720,6 +1726,17 @@
       "recorded_by": "engineering-agent",
       "reason": "Correction A-00-001 verified: all gates pass with pinned evidence; CI push run 40273320614 green at 0c21182; bounded independent review of the R5 fixes VERIFIED (review/0c21182/); owner instruction cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9",
       "owner_ref": null
+    },
+    {
+      "seq": 14,
+      "at": "2026-10-26T11:28:47Z",
+      "stage": "00",
+      "from": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "to": "ACCEPTED_CLOSED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner acceptance of the verified correction set A-00-001 at 0c21182, with the trust-boundary residuals accepted under D-019 (option A with safeguards). Owner message cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG, sections 2 and 6. Authorizes no other stage.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG"
     }
   ]
 }

@@ -11,7 +11,7 @@ Only the owner can accept a stage or authorize one.
 
 | Stage | Name | Executor | Depends on | Status | Verified revision | Accepted |
 |---|---|---|---|---|---|---|
-| 00 | Engineering Foundation | engineering-agent | - | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | 0c21182e5871 | no |
+| 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 0c21182e5871 | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `AUTHORIZED` | - | no |
 | 02 | Retraction Data Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
 | 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
@@ -24,7 +24,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 00 (Engineering Foundation): owner acceptance decision required; successors stay locked until then
 - Stage 01 (Independent Feasibility Investigation): assigned to an external agent; awaiting its handoff for owner review (AUTHORIZED)
 
 ## Open blockers
@@ -37,7 +36,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Recent history
 
-- 2026-10-25T10:48:26Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Stage 00 implementation complete at ecaa84585b4eb0ca98872cf9ba1dc5ca8cabdf36 (PR #1); 137 tests pass locally on Python 3.12 and 3.13.
 - 2026-10-25T11:04:59Z stage 00: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent. Rework: final review found two Stage 00 defects (Unicode-dependent \d in registry_version pattern; ACCEPTANCE_STALE untested); fixed in 2bf7d60
 - 2026-10-25T11:04:59Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Implementation complete at 2bf7d60 after final-review fixes; 138 tests pass on Python 3.12.3 and 3.13.17 from a clean tree
 - 2026-10-25T11:11:53Z stage 00: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent. Rework: final review found 25 finding codes with no test naming them; tests added in 30e4462 (no production code change)
@@ -47,6 +45,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-10-25T16:46:13Z stage 00: ACCEPTED_CLOSED -> IN_PROGRESS by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk`). Owner reopened Stage 00 for correction amendment A-00-001 (message 'CITERIFT — STAGE 00 FULL DEFECT REMEDIATION, SECURITY HARDENING & FINAL INDEPENDENT VERIFICATION'). Scope: the confirmed audit findings within Stage 00's original scope; no other stage. Prior verification (741476c) and acceptance stay in this history.
 - 2026-10-26T06:46:17Z stage 00: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Correction A-00-001 implemented: F-01 to F-23, S-01, V-01 to V-16, X-01 to X-14, Y-01 to Y-13, Z-01 to Z-05 and R5-01 to R5-03 fixed with regression tests; 404 tests pass in CI at 0c21182 (run 40273320614).
 - 2026-10-26T10:06:45Z stage 00: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. Correction A-00-001 verified: all gates pass with pinned evidence; CI push run 40273320614 green at 0c21182; bounded independent review of the R5 fixes VERIFIED (review/0c21182/); owner instruction cmsg_018VCB51nDHP6HXmLU4ea5yP3BFvQvWtWFp37ndPPex2k9
+- 2026-10-26T11:28:47Z stage 00: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG`). Owner acceptance of the verified correction set A-00-001 at 0c21182, with the trust-boundary residuals accepted under D-019 (option A with safeguards). Owner message cmsg_018VCB51nDHP6HXmLU4ea5yP83vKdFF4b7HZtJK8ZuJDsG, sections 2 and 6. Authorizes no other stage.
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).
