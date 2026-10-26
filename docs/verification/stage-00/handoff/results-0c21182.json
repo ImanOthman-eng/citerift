@@ -1,0 +1,69 @@
+{
+  "simulation": "citerift-stage00-handoff/1",
+  "revision": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
+  "python": "3.12.3",
+  "results": [
+    {
+      "point": "1 clean checkout",
+      "pass": true,
+      "evidence": "HEAD 0c21182e5871f772c3a76c75a1217c7641a63bbb, porcelain ''"
+    },
+    {
+      "point": "8 no hidden dependency: locked install",
+      "pass": true,
+      "evidence": "pip-api==0.0.35\n + pip-audit==2.10.1\n + pip-requirements-parser==32.0.1\n + platformdirs==4.13.5\n + pluggy==1.7.0\n + py-serializable==2.1.0\n + pygments==2.21.0\n + pyparsing==3.3.3\n + pytest==9.1.1\n + referencing==0.37.0\n + requests==2.34.2\n + rich==15.0.0\n + rpds-py==2026.9.1\n + ruff==0.17.2\n + sortedcontainers==2.4.0\n + tomli==2.5.0\n + tomli-w==1.2.0\n + typing-extensions==4.16.0\n + urllib3==2.8.0\n"
+    },
+    {
+      "point": "2 orchestrator usable",
+      "pass": true,
+      "evidence": "00  IN_PROGRESS                          Engineering Foundation | Consistency check: 0 errors, 0 warnings"
+    },
+    {
+      "point": "3 persistent memory usable",
+      "pass": true,
+      "evidence": "verified awaiting acceptance [], 12 open risks, next actions ['Stage 00 (Engineering Foundation): authorized work may continue (IN_PROGRESS)', 'Stage 01 (Independent Feasibility Investigation): assigned to an external agent; awaiting its handoff for owner review (AUTHORIZED)']"
+    },
+    {
+      "point": "10 recovery does not change state",
+      "pass": true,
+      "evidence": "porcelain ''"
+    },
+    {
+      "point": "4 contracts usable",
+      "pass": true,
+      "evidence": "check-schemas and validate of the three valid fixtures"
+    },
+    {
+      "point": "7 synthetic downstream consumer",
+      "pass": true,
+      "evidence": "{\"valid_accepted\": true, \"invalid_rejected\": [true, true, true, true], \"diagnostic_example\": \"SCHEMA_VIOLATION at /retraction_status/value: 'not_retracted' is not one of ['retracted', 'expression_of_concern', 'correction', 'reinstated', 'not_found_in_checked_sources', None]\"}"
+    },
+    {
+      "point": "7b consumer files outside owned paths do not disturb Stage 00",
+      "pass": true,
+      "evidence": "Consistency check: 0 errors, 0 warnings"
+    },
+    {
+      "point": "5 dependencies enforced",
+      "pass": true,
+      "evidence": "Transition stage 02 -> AUTHORIZED: REJECTED\n  ERROR HISTORY_DEPENDENCY: [stage 02] entry 12: NOT_STARTED -> AUTHORIZED while dependencies ['00', '01'] were not accepted\n  ERROR HISTORY_SINGLE_ACTIVE: [stage 02] entry 12 made more than one engineering stage active: ['00', '02']\n  ERROR MULTIPLE_ACTIVE_STAGES: more than one engineering stage is active: ['00', '02']\n  WARNING DEPENDENCY_REOPENED: [st"
+    },
+    {
+      "point": "6 approval gates enforced",
+      "pass": true,
+      "evidence": "  ERROR OWNER_DECISION_REQUIRED: [stage 03] NOT_STARTED -> AUTHORIZED is an owner decision; actor engineering-agent may not take it |   ERROR OWNER_REF_REQUIRED: [stage 03] an owner decision needs a reference to the owner's own statement |   ERROR TRANSITION_INVALID: [stage 00] IN_PROGRESS -> ACCEPTED_CLOSED is not a permitted transition"
+    },
+    {
+      "point": "9 clear diagnostics",
+      "pass": true,
+      "evidence": "ERROR REGISTRY_UNREADABLE: governance/stage_registry.json cannot be read: Expecting value: line 283 column 2 (char 10007) | Consistency check: 2 errors, 0 warnings\n  ERROR HISTORY_ACTOR: [stage 00] entry 11: ACCEPTED_CLOSED -> IN_PROGRESS requires the owner, recorded actor is engineering-agent\n  ERROR STATUS_DOC_OUT_OF_DATE: PROJECT_STATUS.md does not match the registry; run `citerift-gov render-status --write`"
+    },
+    {
+      "point": "10b state intact after the simulation",
+      "pass": true,
+      "evidence": "Consistency check: 0 errors, 0 warnings"
+    }
+  ],
+  "passed": 12,
+  "total": 12
+}

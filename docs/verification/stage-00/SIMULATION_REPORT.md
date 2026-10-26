@@ -48,7 +48,7 @@ tested separately. The method is in MATHEMATICAL_MODEL.md §5.
 
 | Run | Revision | Cases | Disagreements | Output |
 |---|---|---|---|---|
-| full config | `{{RVER7}}` | 205,632 | **0** | `simulation/replay-conformance-full.json` |
+| full config | `0c21182` | 205,632 | **0** | `simulation/replay-conformance-full.json` |
 | full config, before the correction | `ae2ce9e` | 205,632 | **12,872** | `simulation/replay-conformance-full-ae2ce9e.json` |
 | small config (in the test suite) | every CI run | 45,024 | 0 | `test_history_replay_conforms_to_the_model_exhaustively` |
 | small config, before the correction | `ae2ce9e` | 45,024 | **2,458** | `simulation/replay-conformance-small-ae2ce9e.json` |
@@ -110,7 +110,7 @@ inherited variable is kept except `PATH` and the uv cache.
 | 9 | Clear diagnostics | truncated registry gives `REGISTRY_UNREADABLE`; a forged actor gives a named error; no traceback |
 | 10 | Recovery does not change state | registry and status document byte-identical after `recover`; state intact after the simulation |
 
-Result at `{{RVER7}}`: `handoff/results-{{RVER7}}.json`, {{HANDOFF_PASSED}}.
+Result at `0c21182`: `handoff/results-0c21182.json`, 12 of 12 checks passed (the ten points, with 7b and 10b).
 
 ## 6. What the simulations do not cover
 
