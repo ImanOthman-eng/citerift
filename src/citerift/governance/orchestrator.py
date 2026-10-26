@@ -18,6 +18,7 @@ from __future__ import annotations
 import copy
 import json
 import os
+import re
 import tempfile
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
@@ -817,7 +818,11 @@ class Orchestrator:
                 )
             if ci is not None:
                 repository = self.registry["project"]["repository"]
-                if not ci["run_url"].lower().startswith(f"https://github.com/{repository.lower()}/actions/runs/"):
+                # The whole URL is matched, not a prefix: dot segments could leave the repository (Z-02).
+                run = re.fullmatch(
+                    rf"https://github\.com/{re.escape(repository)}/actions/runs/[0-9]+", ci["run_url"], re.I
+                )
+                if run is None:
                     out.append(
                         Finding(
                             "CI_WRONG_REPOSITORY",

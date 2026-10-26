@@ -1810,3 +1810,90 @@ def test_y_ci_checks_its_own_report_and_runs_the_checker_before_configured_tools
         steps.index("git diff --exit-code"),
     ]
     assert order == sorted(order)
+
+
+@pytest.mark.integration
+def test_z01_an_edit_hidden_by_the_stat_cache_still_makes_the_tree_dirty(tmp_path: Path) -> None:
+    """Z-01: ``git status`` trusts the index's stat cache, so a same-size edit with the old mtime and a local
+    ``core.trustctime=false`` was not seen, and a narrowed run reported a clean tree."""
+    import os
+
+    from citerift.governance import gitutil
+
+    project = _plugin_project(tmp_path)
+    target = project / "tests" / "test_sample.py"
+    old = target.stat().st_mtime_ns - 100_000_000_000
+    os.utime(target, ns=(old, old))
+    git(project, "update-index", "--refresh")  # the index now caches the older mtime; the entry is not racy
+    edited = target.read_text(encoding="utf-8").replace("def test_beta", "def xest_beta")
+    target.write_text(edited, encoding="utf-8")
+    os.utime(target, ns=(old, old))
+    git(project, "config", "core.trustctime", "false")
+    assert git(project, "status", "--porcelain") == ""
+    assert "tests/test_sample.py" in gitutil.dirty_paths(project)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "tail",
+    [
+        "/../../../../../someone-else/other/actions/runs/7",
+        "/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/someone-else/other/actions/runs/8",
+    ],
+)
+def test_z02_a_ci_url_that_leaves_the_project_repository_is_refused(sandbox: Sandbox, tail: str) -> None:
+    """Z-02: a run URL starting with the project prefix could climb to another repository with ``..``."""
+    for target in (Status.AUTHORIZED, Status.IN_PROGRESS):
+        assert sandbox.go("00", target).allowed
+    rev = sandbox.commit("implement")
+    assert sandbox.go("00", Status.IMPLEMENTED_NOT_VERIFIED, revision=rev).allowed
+    sandbox.write_evidence("00", rev)
+    ci = sandbox.ci(rev)
+    ci = {**ci, "run_url": ci["run_url"] + tail}
+    result = sandbox.go("00", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("00"), ci=ci)
+    assert not result.allowed and "CI_WRONG_REPOSITORY" in sandbox.codes(result.findings)
+
+
+@pytest.mark.negative
+def test_z03_recover_does_not_report_unknown_changes_as_none(sandbox: Sandbox) -> None:
+    """Z-03: with a damaged index, ``recover`` printed ``Uncommitted changes: 0``."""
+    (sandbox.root / "untracked.txt").write_text("x\n", encoding="utf-8")
+    (sandbox.root / ".git" / "index").write_bytes(b"DIRC damaged")
+    out = _cli(sandbox.root, "recover")
+    assert "Uncommitted changes: 0" not in out.stdout, out.stdout
+    assert "Uncommitted changes: unknown" in out.stdout, out.stdout
+
+
+@pytest.mark.integration
+def test_z04_ci_runs_the_governance_check_before_anything_builds_the_project() -> None:
+    """Z-04: ``uv sync --locked`` runs the build backend ``pyproject.toml`` names, before the governance check.
+    CI now installs only the locked dependencies as wheels, without the project, before the check."""
+    steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    first_install = steps.index("uv sync --frozen --no-install-project --no-build\n")
+    check = steps.index("citerift.governance.cli check\n")
+    assert first_install < check < steps.index("uv lock --check") < steps.index("uv sync --locked\n")
+    assert steps.count("uv sync") == 2
+
+
+@pytest.mark.integration
+def test_z_ci_fails_on_staged_or_new_files_too() -> None:
+    """D4 of the confirmation review: ``git diff --exit-code`` does not see staged changes or new files."""
+    steps = (REPO / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    tail = steps[steps.index("git diff --exit-code") :]
+    assert "git status --porcelain=v1 --untracked-files=all" in tail.split("- name:")[0]
+
+
+@pytest.mark.integration
+def test_z05_a_report_written_over_a_tracked_colon_file_does_not_hide_its_change(tmp_path: Path) -> None:
+    """Z-05: git read a name starting with ``:`` as pathspec magic, so the tracked file looked untracked."""
+    from citerift.governance import gitutil
+
+    project = _plugin_project(tmp_path)
+    (project / ":cases.txt").write_text("many cases\n", encoding="utf-8")
+    git(project, "add", "-A")
+    git(project, "commit", "-q", "-m", "a tracked file whose name starts with a colon")
+    assert gitutil.is_tracked(project, ":cases.txt")
+    (project / ":cases.txt").write_text("one case\n", encoding="utf-8")
+    code, data, output = _run_plugin(project, project / ":cases.txt")
+    assert code == 0, output
+    assert data["dirty"] is True and ":cases.txt" in data["dirty_paths"], data

@@ -220,7 +220,12 @@ def cmd_recover(orc: Orchestrator, args: argparse.Namespace) -> int:
     out = [
         f"CITERIFT recovery report for {data['repository']}",
         f"HEAD: {data['head']} on {data['branch']}",
-        f"Uncommitted changes: {len(data['uncommitted_changes'] or [])}",
+        "Uncommitted changes: "
+        + (
+            "unknown (git could not list them; see the errors below)"  # not 0 (Z-03)
+            if data["uncommitted_changes"] is None
+            else str(len(data["uncommitted_changes"]))
+        ),
         "",
         "Authoritative revisions:",
         *[

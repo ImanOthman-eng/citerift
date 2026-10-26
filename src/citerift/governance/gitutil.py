@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import shutil
@@ -136,8 +137,17 @@ def changed_paths(root: Path, base: str, paths: list[str], rev: str = "HEAD") ->
 
 def dirty_paths(root: Path, exclude: tuple[str, ...] = ()) -> list[str]:
     """Paths with uncommitted changes, including untracked files, and tracked files whose changes git
-    is told to hide (``--assume-unchanged`` or ``--skip-worktree``, which ``git status`` does not show; Y-02)."""
-    out = _git(root, "status", "--porcelain=v1", "-z", "--untracked-files=all")
+    is told to hide (``--assume-unchanged`` or ``--skip-worktree``, which ``git status`` does not show; Y-02),
+    and tracked files whose content differs from the index although the stat cache says it does not (Z-01)."""
+    out = _git(
+        root,
+        # Local settings that let git skip looking at files (Z-01); the content check below covers the stat cache.
+        *("-c", "core.fsmonitor=false", "-c", "core.untrackedCache=false"),
+        "status",
+        "--porcelain=v1",
+        "-z",
+        "--untracked-files=all",
+    )
     if out.returncode != 0:
         raise GitUnavailableError(out.stderr.strip())
     paths = []
@@ -157,12 +167,41 @@ def dirty_paths(root: Path, exclude: tuple[str, ...] = ()) -> list[str]:
     if flags.returncode != 0:
         raise GitUnavailableError(flags.stderr.strip())
     paths += [e[2:] for e in flags.stdout.split("\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]
+    paths += _content_changed(root)
     return [p for p in dict.fromkeys(paths) if p not in exclude]
+
+
+def _content_changed(root: Path) -> list[str]:
+    """Tracked files whose bytes do not hash to their index entry. ``git status`` decides from cached size,
+    mtime and ctime, which an edit can keep (Z-01); this reads every file. Checkouts keep LF
+    (``.gitattributes``), so the bytes on disk are the bytes git stores."""
+    out = _git(root, "ls-files", "-s", "-z")
+    if out.returncode != 0:
+        raise GitUnavailableError(out.stderr.strip())
+    changed = []
+    for entry in out.stdout.split("\0"):
+        if not entry:
+            continue
+        meta, path = entry.split("\t", 1)
+        mode, sha, _stage = meta.split(" ")
+        file = root / path
+        if mode == "160000":
+            continue  # a submodule commit, not a file
+        try:
+            data = os.fsencode(os.readlink(file)) if mode == "120000" else file.read_bytes()
+        except OSError:
+            changed.append(path)
+            continue
+        digest = hashlib.sha1 if len(sha) == 40 else hashlib.sha256
+        if digest(b"blob %d\0" % len(data) + data).hexdigest() != sha:
+            changed.append(path)
+    return changed
 
 
 def is_tracked(root: Path, path: str) -> bool:
     """True when ``path`` is a file in the index."""
-    return _git(root, "ls-files", "--error-unmatch", "--", path).returncode == 0
+    # Literal, so that a name starting with ``:`` is not read as pathspec magic (Z-05).
+    return _git(root, "ls-files", "--error-unmatch", "--", f":(literal){path}").returncode == 0
 
 
 def exists_at(root: Path, rev: str, path: str) -> bool:
