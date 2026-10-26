@@ -129,8 +129,18 @@ Dry run of the verification transition with `verification-record.json` (all
 sixteen gates and the CI record of push run 40273320614):
 
 ```
-{{DRYRUN}}
+$ uv run citerift-gov transition 00 VERIFIED_AWAITING_OWNER_ACCEPTANCE --actor engineering-agent \
+    --revision 0c21182e5871f772c3a76c75a1217c7641a63bbb \
+    --record docs/verification/stage-00/verification-record.json --reason "..."
+Transition stage 00 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: ALLOWED
+Dry run: nothing written. Re-run with --apply to record it.
 ```
+
+Run on 2026-10-26 after the implementation revision was recorded, and again
+after this package was committed. The orchestrator checked the seven
+artifacts, the handoff sections, the cited revision, both test reports, every
+gate and its pinned evidence, and the CI record, and raised nothing. It was
+not run with `--apply` (see Stage and status).
 
 ## Acceptance decision
 
