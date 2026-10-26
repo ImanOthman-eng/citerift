@@ -131,13 +131,16 @@
           "requirement": "No known unresolved critical foundational defect"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPPJtDk4V58km8PBjZzdYKEV",
         "scope": "Prompt 02 authorizes full Stage 00 implementation (Stage 00 only; no later stage is authorized).",
         "recorded_at": "2026-10-25T10:02:03Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
+        "recorded_at": "2026-10-26T06:46:17Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [
@@ -594,6 +597,17 @@
       "reason": "Owner reopened Stage 00 for correction amendment A-00-001 (message 'CITERIFT — STAGE 00 FULL DEFECT REMEDIATION, SECURITY HARDENING & FINAL INDEPENDENT VERIFICATION'). Scope: the confirmed audit findings within Stage 00's original scope; no other stage. Prior verification (741476c) and acceptance stay in this history.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXk8eZcAUfir9fZgszrLxhk",
       "amendment": "A-00-001"
+    },
+    {
+      "seq": 12,
+      "at": "2026-10-26T06:46:17Z",
+      "stage": "00",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Correction A-00-001 implemented: F-01 to F-23, S-01, V-01 to V-16, X-01 to X-14, Y-01 to Y-13, Z-01 to Z-05 and R5-01 to R5-03 fixed with regression tests; 404 tests pass in CI at 0c21182 (run 40273320614).",
+      "owner_ref": null
     }
   ]
 }
