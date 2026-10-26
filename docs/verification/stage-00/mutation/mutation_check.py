@@ -374,10 +374,13 @@ M = [
         "if True:",
     ),
     (
-        "M75 Y-02 skip-worktree and assume-unchanged files ignored",
+        "M75 Y-02 skip-worktree and assume-unchanged files ignored (flag rule and content check both removed; either alone still stops it)",
         "src/citerift/governance/gitutil.py",
-        'paths += [e[2:] for e in flags.stdout.split("\\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]',
-        "paths += []",
+        (
+            'paths += [e[2:] for e in flags.stdout.split("\\0") if len(e) > 2 and (e[0].islower() or e[0] == "S")]',
+            "    paths += _content_changed(root)\n",
+        ),
+        ("paths += []", "    paths += []\n"),
     ),
     ("M76 Y-03 skipped and xfailed tests accepted", EVI, "    if unproven:", "    if False:"),
     (
