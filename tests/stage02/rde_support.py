@@ -100,6 +100,7 @@ def receipt_for(data: bytes, **overrides: Any) -> Receipt:
 
 
 def write_source(tmp: Path, data: bytes, name: str = "source.csv") -> tuple[Path, Receipt]:
+    tmp.mkdir(parents=True, exist_ok=True)
     path = tmp / name
     path.write_bytes(data)
     return path, receipt_for(data)
