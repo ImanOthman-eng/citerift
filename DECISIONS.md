@@ -412,3 +412,66 @@ Constraints set by the owner for later stages:
 Recorded as: Stage 01 `ACCEPTED_CLOSED` through `citerift-gov` with this owner
 reference. Merging pull request #3 and authorizing Stage 02 remain separate
 owner decisions; this decision authorizes no stage.
+
+## D-021 — Standing rule: every stage ships a measured creative contribution
+- Status: accepted
+- Topic: creative-differentiation-per-stage
+- Date: 2026-10-27
+- Stage: project
+- Supersedes: none
+- Evidence: owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ` (Stage 02 Master Execution Directive, section 12)
+
+Owner's standing requirement: every stage contains a practical,
+evidence-supported creative contribution that strengthens CITERIFT's own
+identity and usefulness. Branding, a renamed standard feature, an unsupported
+"first-ever" claim, extra dependencies or decorative documentation do not
+count. Each stage's `CREATIVE_DIFFERENTIATION_REVIEW.md` names the user or
+scientific problem, the concrete mechanism, the nearest prior art (checked in
+primary materials; absence from a reviewed page is not global uniqueness),
+the measurable difference, cost and complexity, failure modes, and the test
+result that supports or rejects the improvement. Recording this rule
+authorizes no stage and changes no governance code. Stage 02 applies it with
+Evidence Tension v0 (docs/verification/stage-02/CREATIVE_DIFFERENTIATION_REVIEW.md).
+
+## D-022 — Stage 02 engine stack: standard library csv, hashlib, sqlite3
+- Status: accepted
+- Topic: retraction-engine-stack
+- Date: 2026-10-27
+- Stage: 02
+- Supersedes: none
+- Evidence: docs/verification/stage-02/SPECIFICATION.md §2, §10; docs/verification/stage-02/TEST_RESULTS.md (benchmarks)
+
+The Retraction Data Engine uses the Python standard library (`csv` in strict
+mode, `hashlib`, `sqlite3`, `urllib.request`) and the existing `jsonschema`;
+no runtime dependency is added. The index is one SQLite file per snapshot,
+built into a temporary file and published with `os.replace` after
+validation, and opened read-only and immutable by readers.
+
+Alternatives:
+- Polars or pandas for parsing: rejected; 73,356 records parse in seconds
+  with `csv`, and their CSV readers are lenient about malformed quoting,
+  which the engine must reject.
+- Pydantic for records: rejected; JSON Schema is already the contract
+  language (D-008) and dataclasses cover the internal types.
+- RapidFuzz for title matching: rejected for now; the baseline uses an
+  inverted token index with IDF cosine, which is bounded and deterministic.
+- httpx: rejected; enrichment is at most 80 sequential GET requests.
+- DuckDB: rejected; adds a binary dependency for no measured need.
+
+## D-023 — Model access for the Evidence Ambiguity Investigator experiment
+- Status: pending-owner
+- Topic: stage-02-ai-model-access
+- Date: 2026-10-27
+- Stage: 02
+- Supersedes: none
+- Evidence: docs/verification/stage-02/ai/PROTOCOL.md; docs/verification/stage-02/HANDOFF.md ("Open blockers")
+
+The directive requires a real model experiment with verified, authorized
+access. On 2026-10-27 this environment has no model API key, and the coding
+session's own model access is not authorized for experiments (directive §1,
+§13). The owner was asked (thread message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPEafVTT7ybaD2nvqSczJ5qf`) to add a key as an
+environment secret (`ANTHROPIC_API_KEY`) and to approve spending of at most
+USD 5. Until then the boundary, the deterministic baseline and the frozen
+protocol are delivered and the experiment is a recorded blocker, not an
+evaluated negative result.

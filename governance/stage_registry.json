@@ -1729,17 +1729,58 @@
         "01"
       ],
       "verification_dir": "docs/verification/stage-02",
-      "owned_paths": [],
+      "owned_paths": [
+        "src/citerift/retraction",
+        "schemas/retraction",
+        "tests/stage02",
+        "simulations/stage02"
+      ],
       "required_test_suites": [
         "unit",
         "integration",
         "negative",
-        "regression"
+        "regression",
+        "reproducibility",
+        "security",
+        "contracts",
+        "simulation"
       ],
       "acceptance_gates": [
         {
           "id": "02-A",
           "requirement": "Successful positive, negative, malformed-data, duplicate, and conflict-resolution tests"
+        },
+        {
+          "id": "02-B",
+          "requirement": "Pinned real build: receipt verified, every record accepted or quarantined (73,356), line accounting exact, verify clean, two builds give equal semantic and artifact digests and equal query output"
+        },
+        {
+          "id": "02-C",
+          "requirement": "Independent streaming oracle agrees with the index for every valid original/notice DOI/PMID key of the real snapshot and at least 1,000 absent synthetic keys; at least 40 real reviewed cases covering all four event types and the ambiguity classes pass"
+        },
+        {
+          "id": "02-D",
+          "requirement": "Stage 02 schemas meta-valid and versioned; schema and semantic validation positive and negative tests; the v1 subject projection validates against the v1 investigation contract"
+        },
+        {
+          "id": "02-E",
+          "requirement": "Evidence Tension: on the frozen 16-case adversarial set every expected diagnostic class is detected and controls show no change, compared with an event-log baseline; at least 4 real pinned demonstrations covering redistributed support, uncertain identity or notice relation, and unsupported temporal precision"
+        },
+        {
+          "id": "02-F",
+          "requirement": "Bounded corroboration: every specified failure mode tested and none becomes a negative finding; a real bounded run within limits; replay reproduces the same assertions"
+        },
+        {
+          "id": "02-G",
+          "requirement": "Evidence Ambiguity Investigator: advisory boundary and forbidden-promotion tests, baseline frozen on tuning data, protocol frozen before predictions, and the model experiment executed under the protocol with its disposition recorded"
+        },
+        {
+          "id": "02-H",
+          "requirement": "Resource budgets of the specification met on the reference host, with five measured builds"
+        },
+        {
+          "id": "02-I",
+          "requirement": "Complete CI green on Python 3.12 and 3.13 at the cited revision; three review perspectives completed with findings dispositioned; required documents and handoff complete"
         }
       ],
       "status": "IN_PROGRESS",
