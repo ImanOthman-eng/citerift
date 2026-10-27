@@ -1329,7 +1329,7 @@
           "requirement": "Critical blockers and recommendations stated"
         }
       ],
-      "status": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "status": "ACCEPTED_CLOSED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
         "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
@@ -1705,7 +1705,13 @@
           }
         }
       },
-      "acceptance": null,
+      "acceptance": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU",
+        "accepted_revision": "85da719ac43fc46170310b225c9190b63a046df8",
+        "recorded_at": "2026-10-27T18:44:05Z",
+        "recorded_by": "external-agent",
+        "method": "attested"
+      },
       "blockers": [],
       "amendments": [],
       "required_artifacts": [
@@ -2204,6 +2210,17 @@
       "recorded_by": "external-agent",
       "reason": "Strengthening pass verified at 85da719: 505 tests passed (101 Stage 01), ruff, format, mypy and governance check clean; census re-derived identical; live re-verification 0 mismatches",
       "owner_ref": null
+    },
+    {
+      "seq": 24,
+      "at": "2026-10-27T18:44:05Z",
+      "stage": "01",
+      "from": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "to": "ACCEPTED_CLOSED",
+      "actor": "owner",
+      "recorded_by": "external-agent",
+      "reason": "Owner accepts Stage 01 at evidence revision 85da719 and approves the revised, limited RESCOPE recommendation (FEASIBILITY_REPORT.md §12, §16.8)",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU"
     }
   ]
 }
