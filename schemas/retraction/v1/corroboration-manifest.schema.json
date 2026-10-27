@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:corroboration-manifest",
+  "title": "Crossref corroboration replay manifest, major version 1",
+  "description": "Replay bundle manifest (SPECIFICATION.md 9). A failed or deferred work is a failure, never absence of a relation.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "required": [
+    "manifest_version",
+    "works"
+  ],
+  "properties": {
+    "manifest_version": {
+      "const": "1.0.0"
+    },
+    "works": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "doi",
+          "url",
+          "outcome",
+          "failure",
+          "attempts"
+        ],
+        "properties": {
+          "doi": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+          },
+          "url": {
+            "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"
+          },
+          "outcome": {
+            "enum": [
+              "ok",
+              "failed"
+            ]
+          },
+          "failure": {
+            "enum": [
+              null,
+              "TIMEOUT",
+              "RATE_LIMITED",
+              "ACCESS_DENIED",
+              "SERVER_ERROR",
+              "HTTP_ERROR",
+              "CONNECTION_ERROR",
+              "PAYLOAD_TOO_LARGE",
+              "INVALID_JSON",
+              "SCHEMA_INVALID",
+              "DOI_MISMATCH",
+              "DEFERRED_BUDGET"
+            ]
+          },
+          "http_status": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "retrieved_at": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"
+              }
+            ]
+          },
+          "payload_sha256": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+              }
+            ]
+          },
+          "bytes": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "waits": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "ok"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "retrieved_at",
+                "payload_sha256",
+                "bytes"
+              ],
+              "properties": {
+                "failure": {
+                  "type": "null"
+                },
+                "payload_sha256": {
+                  "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "failure": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "maxItems": 40
+    }
+  }
+}

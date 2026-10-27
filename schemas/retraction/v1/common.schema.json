@@ -1,0 +1,378 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:common",
+  "title": "CITERIFT retraction data engine shared definitions, major version 1",
+  "description": "Definitions shared by the Stage 02 retraction schemas. Identifier, provenance and assertion shapes reuse the v1 contracts by URN.",
+  "x-citerift-version": "1.0.0",
+  "$defs": {
+    "code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$(?!\\n)",
+      "maxLength": 80
+    },
+    "doi_key": {
+      "description": "Normalized DOI key (SPECIFICATION.md 6.1): a v1 DOI with ASCII letters lower-cased.",
+      "allOf": [
+        {
+          "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/doi"
+        },
+        {
+          "type": "string",
+          "pattern": "^[^A-Z]*$(?!\\n)"
+        }
+      ]
+    },
+    "pmid_key": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/pmid"
+    },
+    "anchor": {
+      "type": "string",
+      "pattern": "^(doi:10\\.[0-9]{4,9}(\\.[0-9]+)*/.+|pmid:[1-9][0-9]{0,8}|rec:[1-9][0-9]*)$(?!\\n)"
+    },
+    "notice_key": {
+      "type": "string",
+      "pattern": "^(doi:10\\.[0-9]{4,9}(\\.[0-9]+)*/.+|pmid:[1-9][0-9]{0,8})$(?!\\n)"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^ev-[0-9]{7}$(?!\\n)"
+    },
+    "calendar_date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$(?!\\n)"
+    },
+    "sha256": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^rw-[0-9a-f]{16}$(?!\\n)"
+    },
+    "source_ref": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/source_ref"
+    },
+    "temporal_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "convention_flags",
+        "earliest",
+        "effective_precision",
+        "issues",
+        "kind",
+        "latest",
+        "raw",
+        "reported_calendar",
+        "stated_precision"
+      ],
+      "properties": {
+        "raw": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "kind": {
+          "enum": [
+            "notice_date",
+            "original_publication_date"
+          ]
+        },
+        "reported_calendar": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/calendar_date"
+            }
+          ]
+        },
+        "stated_precision": {
+          "enum": [
+            "day",
+            "none"
+          ]
+        },
+        "effective_precision": {
+          "enum": [
+            "day",
+            "unknown"
+          ]
+        },
+        "earliest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/calendar_date"
+            }
+          ]
+        },
+        "latest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/calendar_date"
+            }
+          ]
+        },
+        "convention_flags": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "MIDNIGHT_NOT_INSTANT",
+              "TIME_PART_IGNORED",
+              "DAY_ONE_CONVENTION_POSSIBLE"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          },
+          "uniqueItems": true
+        }
+      },
+      "description": "A reported calendar value with its source convention, not an observed instant (SPECIFICATION.md 7.2). Bounds are null unless justified.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "effective_precision": {
+                "const": "day"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "earliest": {
+                "$ref": "#/$defs/calendar_date"
+              },
+              "latest": {
+                "$ref": "#/$defs/calendar_date"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "earliest": {
+                "type": "null"
+              },
+              "latest": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_form",
+        "issues",
+        "missing",
+        "normalized",
+        "raw",
+        "scheme",
+        "transformations",
+        "valid"
+      ],
+      "properties": {
+        "raw": {
+          "type": "string"
+        },
+        "scheme": {
+          "enum": [
+            "doi",
+            "pmid"
+          ]
+        },
+        "input_form": {
+          "enum": [
+            "empty",
+            "sentinel",
+            "bare",
+            "doi_prefix",
+            "doi_url",
+            "pmid_url"
+          ]
+        },
+        "normalized": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transformations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "TRIM_OUTER_WHITESPACE",
+              "STRIP_DOI_PREFIX",
+              "STRIP_RESOLVER_URL",
+              "PERCENT_DECODE_URL_PATH",
+              "ASCII_CASE_FOLD",
+              "STRIP_PUBMED_URL"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/code"
+          },
+          "uniqueItems": true
+        },
+        "missing": {
+          "type": "boolean"
+        },
+        "valid": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "valid": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "normalized": {
+                "type": "string"
+              },
+              "missing": {
+                "const": false
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "normalized": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "retraction_date",
+        "retraction_status"
+      ],
+      "properties": {
+        "retraction_status": {
+          "$ref": "urn:citerift:schema:contracts:v1:investigation#/$defs/paper/properties/retraction_status"
+        },
+        "retraction_date": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:contracts:v1:investigation#/$defs/paper/properties/retraction_date"
+            }
+          ]
+        },
+        "basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "conflict_groups",
+            "origins",
+            "policy_version",
+            "reasons",
+            "scope",
+            "supporting_assertions"
+          ],
+          "properties": {
+            "scope": {
+              "const": "checked_sources"
+            },
+            "policy_version": {
+              "type": "string",
+              "pattern": "^citerift-rde-policy/[0-9]+\\.[0-9]+\\.[0-9]+$(?!\\n)"
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/code"
+              }
+            },
+            "supporting_assertions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "origins": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{1,63}$(?!\\n)"
+              },
+              "uniqueItems": true
+            },
+            "conflict_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "assertions",
+                  "proposition",
+                  "types"
+                ],
+                "properties": {
+                  "proposition": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "types": {
+                    "type": "array",
+                    "items": {
+                      "enum": [
+                        "retracted",
+                        "expression_of_concern",
+                        "correction",
+                        "reinstated"
+                      ]
+                    },
+                    "minItems": 2,
+                    "uniqueItems": true
+                  },
+                  "assertions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "minItems": 2,
+                    "uniqueItems": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "The v1 retraction_status and retraction_date assertions produced by the projection policy, with the basis that produced them. verified_fact means established from the cited source record, not independent truth."
+    }
+  }
+}

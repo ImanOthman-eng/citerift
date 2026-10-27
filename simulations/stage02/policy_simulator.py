@@ -127,6 +127,7 @@ def build_rows(case: dict[str, Any]) -> list[dict[str, Any]]:
             nd = None
         if npm is not None and npm == row["p"]:
             npm = None
+        row["nd_key"], row["np_key"] = nd, npm
         row["n"] = f"doi:{nd}" if nd else (f"pmid:{npm}" if npm else None)
         rows.append(row)
     originals = {r["d"] for r in rows if r["accepted"] and r["d"]}
@@ -162,7 +163,7 @@ def gather(case: dict[str, Any]) -> Evidence:
         return Evidence("unavailable", "none", sources=())
     od = [r for r in acc if qd and r["d"] == qd]
     opm = [r for r in acc if qp and r["p"] == qp]
-    notice = [r for r in acc if (qd and r["n"] == f"doi:{qd}") or (qp and r["n"] == f"pmid:{qp}")]
+    notice = [r for r in acc if (qd and r["nd_key"] == qd) or (qp and r["np_key"] == qp)]
     ev = Evidence("no_record", "none")
     matched: list[tuple[dict[str, Any], bool]] = []
     if qd and qp:
@@ -171,7 +172,8 @@ def gather(case: dict[str, Any]) -> Evidence:
             ev.state, ev.identity = "ambiguous_identity", "ambiguous"
             ev.rw = [rw_assertion(r) for r in {r["ord"]: r for r in od + opm}.values()]
             return ev
-        matched = [(r, False) for r in od] + [(r, r["d"] is None) for r in opm if r not in od]
+        # PMID-only rows are linked through the query's pairing only when DOI rows exist to be paired with.
+        matched = [(r, False) for r in od] + [(r, bool(od) and r["d"] is None) for r in opm if r not in od]
         ev.anchor = f"doi:{qd}"
     elif qd:
         matched = [(r, False) for r in od]
@@ -283,7 +285,7 @@ def reduce(ev: Evidence) -> dict[str, Any]:
         [a.aid, b.aid] for a in rw_events for b in rw_events if a is not b and before(a.date, b.date)
     )
     types = {a.type for a in typed}
-    reins = [a for a in rw_events if a.type == "reinstated"]
+    reins = [a for a in typed if a.type == "reinstated"]  # any origin (SPECIFICATION.md 11.1 rule 7a)
     status = value = None
     reasons: list[str] = []
     if reins and types - {"reinstated"}:

@@ -118,6 +118,7 @@ A change to any rule in §5 to §11 increments the matching version.
 | `RECEIPT_INVALID` | receipt fails its schema |
 | `ENCODING_INVALID` | bytes are not strict UTF-8 |
 | `NUL_BYTE` | a NUL byte occurs |
+| `CR_UNSUPPORTED` | a CR byte occurs anywhere (parser 1.0.0 reads LF-terminated files only; the pinned source has none [V]) |
 | `HEADER_MISSING` | no header record |
 | `HEADER_DUPLICATE` | a column name repeats |
 | `HEADER_CRITICAL_MISSING` | a critical column is absent: `Record ID`, `RetractionNature`, `RetractionDate`, `RetractionDOI`, `RetractionPubMedID`, `OriginalPaperDate`, `OriginalPaperDOI`, `OriginalPaperPubMedID` |
@@ -132,7 +133,7 @@ code, a byte or line position where known, and the receipt.
 ### 5.2 Records
 
 The parser reads with `csv.reader(strict=True)` after strict UTF-8 decoding,
-with the BOM removed from the first header cell only. A *physical line* is a
+with a leading BOM removed (`utf-8-sig`). A *physical line* is a
 `\n`-terminated byte line; a *logical record* is one CSV record (it may span
 lines). Physical lines that contain nothing (zero bytes before `\n`) outside a
 quoted field are *blank lines*: counted, never records. Each logical record
@@ -356,7 +357,7 @@ semantic invariants, recomputed digests), `fsync`, then `os.replace` to
 removes the temporary file and leaves every existing artifact unchanged.
 Artifacts of other snapshots are never touched. Readers open
 `file:<path>?mode=ro&immutable=1`, check `application_id`, `user_version`,
-`meta.policy_version` and `meta.index_sha256` presence, never migrate and
+`meta.policy_version` and the stored digests, never migrate and
 never enable extension loading. SQL is parameterized; inserts use batches of
 5,000.
 
@@ -398,8 +399,10 @@ Algorithm (DOI `d`, PMID `p`, either or both):
 1. Invalid identifier → `invalid_query`. Index cannot be opened or fails its
    format check → `unavailable`.
 2. `O_d` = events whose original DOI key is `d`; `O_p` likewise for PMID.
-   `N_d`, `N_p` = events whose notice key is the query (records whose notice
-   equals the original are in `O`, not `N`).
+   `N_d`, `N_p` = events with a notice-role occurrence of the query key
+   (notice DOI key `d`, or notice PMID key `p`), excluding occurrences equal
+   to the same record's original key of that scheme (those records are in
+   `O`, not `N`). The notice key of §6.3 is used for grouping, not here.
 3. Single DOI: if `O_d` ≠ ∅ → `matched`. Secondary PMIDs of `O_d`: if more
    than one distinct valid PMID → issue `IDENTITY_SECONDARY_DIVERGENT`, no
    bridging. If exactly one PMID `q`, events with original PMID `q` and no
