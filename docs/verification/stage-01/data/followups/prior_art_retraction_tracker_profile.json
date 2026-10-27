@@ -1,0 +1,115 @@
+{
+ "note": "Profile of the Retraction Tracker for Wikipedia (Thinking Park) from its public about page and data file, retrieved once on 2026-10-27. Counts are derived here; no finding text is copied. The data file is not committed.",
+ "about_url": "https://retractions.thinkingpark.com/about",
+ "data_url": "https://retractions.thinkingpark.com/findings.json",
+ "data_sha256": "65f5b5680291bb33680f099bb73f240c4e320e39079be615c775c84150850bb0",
+ "generated": "2026-10-27",
+ "attribution_statement": "Text quoted from English Wikipedia articles is available under CC BY-SA 4.0; its authors are in the history of each finding's revision. Retraction data are from the Retraction Watch Database, maintained by the Center for Scientific Integrity and distributed by Crossref, and page views from Wikimedia's page view statistics, both under CC0 1.0 Universal. Everything else here is available under CC BY-SA 4.0.",
+ "findings": 881,
+ "distinct_pages": 377,
+ "distinct_dois": 345,
+ "fields": [
+  "abstract",
+  "answered",
+  "bucket",
+  "cited",
+  "confidence",
+  "context_hash",
+  "depends_on_retracted_finding",
+  "doi",
+  "effort",
+  "first_seen",
+  "group",
+  "history",
+  "id",
+  "input_hash",
+  "key",
+  "kind",
+  "last_checked",
+  "mark",
+  "marker",
+  "model",
+  "other_support",
+  "others",
+  "page_id",
+  "paper_title",
+  "pmid",
+  "prompt_version",
+  "quote",
+  "quote_found",
+  "rank",
+  "reason",
+  "reasons",
+  "record_id",
+  "ref_name",
+  "revid",
+  "second_reading",
+  "section",
+  "severity",
+  "shown_on",
+  "status",
+  "suggested_action",
+  "text",
+  "verdict",
+  "views",
+  "warnings",
+  "where",
+  "written_on"
+ ],
+ "language_field_present": false,
+ "status": {
+  "new": 818,
+  "dropped": 39,
+  "fixed": 24
+ },
+ "kind": {
+  "sentence": 631,
+  "uncited": 165,
+  "item": 85
+ },
+ "where": {
+  "paragraph": 624,
+  "": 165,
+  "list": 71,
+  "table": 14,
+  "caption": 6,
+  "note": 1
+ },
+ "mark": {
+  "intentional": 495,
+  "": 316,
+  "tagged": 70
+ },
+ "model": {
+  "gpt-6.1-sol": 881
+ },
+ "second_reading": {
+  "null": 762,
+  "agreed": 90,
+  "disagreed": 29
+ },
+ "findings_with_located_warnings": 573,
+ "warning_positions": {
+  "later": 736,
+  "same section": 1143,
+  "earlier": 138,
+  "opening": 454,
+  "note": 5
+ },
+ "history_dates": [
+  "2026-10-06",
+  "2026-10-26"
+ ],
+ "about_page_rendered_text_sha256": "04a8a4fe7fc326da1707d2061264d67e62710a77d4e1ff0d40077f2f404c5e16",
+ "about_page_quotes": [
+  "The tracker finds these passages every day and lists them for Wikipedia's volunteer editors, the worst and most-read first. It never edits Wikipedia itself.",
+  "Once a month Wikipedia publishes a list of every link on every page, which the tracker matches against the retracted papers' codes. Every day it also asks Wikipedia which pages link to the papers retracted since the day before.",
+  "an AI language model (the kind behind chatbots) reads the whole wiki article",
+  "It also lists every other paragraph that repeats the finding with no footnote to the paper, and every place the wiki article warns the reader that the paper was retracted.",
+  "“Nearby” means the wiki article's opening paragraphs or the same section as the passage.",
+  "Asked the same question twice about the same text, it changes about one verdict in twenty.",
+  "A person has checked only a few of them, at the top of the list.",
+  "that reading was done by an AI model and checked by four more, not by a person."
+ ],
+ "note_second_reading": "The 29 'disagreed' of 119 'second_reading' values do not measure the page's 'one verdict in twenty': which findings received a second reading, and how, is not stated in the reviewed evidence."
+}

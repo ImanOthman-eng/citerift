@@ -6,6 +6,16 @@ what changed in the repository.
 
 ## [Unreleased]
 
+### Stage 01 closed
+
+- 2026-10-27: Stage 01 (Independent Feasibility Investigation) verified at
+  `85da719` and accepted by the owner (owner message
+  `cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU`), with the revised,
+  limited RESCOPE recommendation approved (D-020). Evidence and handoff are in
+  docs/verification/stage-01/; the Stage 01 tests are in `tests/stage01/`.
+  The acceptance does not authorize Stage 02, merging PR #3, a license or
+  publication. R-007 is closed.
+
 ### Fixed (Stage 00 correction A-00-001, owner-authorized reopening)
 
 Findings of the independent review of 2026-10-25

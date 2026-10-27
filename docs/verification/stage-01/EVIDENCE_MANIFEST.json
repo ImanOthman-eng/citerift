@@ -1,0 +1,1745 @@
+{
+ "schema": "citerift.stage01.evidence-manifest/1",
+ "description": "Stage 01 inspected cases with provenance. Real data only; no synthetic records.",
+ "generator": "docs/verification/stage-01/scripts/build_manifest.py",
+ "synthetic": false,
+ "epistemic_vocabulary": [
+  "verified_fact",
+  "model_inference",
+  "uncertain",
+  "unavailable",
+  "conflicting"
+ ],
+ "sources": {
+  "retraction_watch": {
+   "repository": "https://gitlab.com/crossref/retraction-watch-data",
+   "commit": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4",
+   "path": "retraction_watch.csv",
+   "git_blob": "2a466638299c351ae50ae8e5736c410b96b99045",
+   "sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+   "readme_generated_on": "2026-10-23"
+  },
+  "crossref_rest_api": "https://api.crossref.org/works/{doi}",
+  "wikipedia": "MediaWiki Action API of en.wikipedia.org and ar.wikipedia.org",
+  "wikipedia_user_agent": "CITERIFT-Stage01-feasibility/0.1 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)",
+  "note": "retrieval times are recorded per observation (retrieved_at)"
+ },
+ "cases": [
+  {
+   "case_id": "POS-01",
+   "role": "positive",
+   "proposition": "original paper -> verified retraction event -> Wikipedia citation -> exact revision",
+   "original_doi": "10.1016/S0140-6736(97)11096-0",
+   "synthetic": false,
+   "retraction_events": [
+    {
+     "retraction_watch_record_id": "17269",
+     "event_type": "correction",
+     "event_type_as_recorded": "Correction",
+     "date_retraction_watch": "2004-03-06",
+     "notice_doi": "10.1016/S0140-6736(04)15715-2",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction of an interpretation",
+      "published": [
+       [
+        2004,
+        3
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "correction",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:21:42Z",
+      "url": "https://api.crossref.org/works/10.1016/S0140-6736(04)15715-2"
+     },
+     "independent_confirmation": "notice_exists_with_publisher_title",
+     "date_comparison": {
+      "retraction_watch": "2004-03-06",
+      "crossref": "2004-03",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "retraction_watch_record_id": "4036",
+     "event_type": "retracted",
+     "event_type_as_recorded": "Retraction",
+     "date_retraction_watch": "2010-02-06",
+     "notice_doi": "10.1016/S0140-6736(10)60175-4",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction—Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+      "published": [
+       [
+        2010,
+        2
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "retraction",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:21:47Z",
+      "url": "https://api.crossref.org/works/10.1016/S0140-6736(10)60175-4"
+     },
+     "independent_confirmation": "notice_exists_with_publisher_title",
+     "date_comparison": {
+      "retraction_watch": "2010-02-06",
+      "crossref": "2010-02",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "crossref_original": {
+    "status": 200,
+    "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+    "published": [
+     [
+      1998,
+      2
+     ]
+    ],
+    "updated_by": [
+     {
+      "DOI": "10.1016/s0140-6736(04)15715-2",
+      "type": "correction",
+      "label": "Correction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2004,
+         3,
+         6
+        ]
+       ],
+       "date-time": "2004-03-06T00:00:00Z",
+       "timestamp": 1078531200000
+      },
+      "record-id": "17269"
+     },
+     {
+      "DOI": "10.1016/s0140-6736(10)60175-4",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2010,
+         2,
+         6
+        ]
+       ],
+       "date-time": "2010-02-06T00:00:00Z",
+       "timestamp": 1265414400000
+      },
+      "record-id": "4036"
+     }
+    ],
+    "retrieved_at": "2026-10-26T18:21:42Z",
+    "url": "https://api.crossref.org/works/10.1016/S0140-6736(97)11096-0"
+   },
+   "original_publication_date": {
+    "value": "1998-02",
+    "epistemic_status": "verified_fact",
+    "retraction_watch": "1998-02-28",
+    "crossref": "1998-02",
+    "agree": true
+   },
+   "wikipedia": [
+    {
+     "wiki": "en",
+     "title": "MMR vaccine",
+     "pageid": 69149,
+     "revid": 1381772671,
+     "timestamp": "2026-10-24T18:35:10Z",
+     "sha1": "6d3db470fbb390ea2d80297e496a1ebf925a2d33",
+     "retrieved_at": "2026-10-26T18:29:02Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381772671",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "لقاح الحصبة والنكاف والحصبة الألمانية",
+     "pageid": 755704,
+     "revid": 72523566,
+     "timestamp": "2025-11-19T08:44:46Z",
+     "sha1": "6098eb637cc8a1415566c7add1604c0ad48ed784",
+     "retrieved_at": "2026-10-26T18:31:04Z",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=72523566",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "verification_method": "Retraction Watch record in the pinned snapshot; notice DOI resolved in Crossref (independence of each event is stated in independent_confirmation); DOI found as an identifier in the wikitext of the pinned revision",
+   "timeline": [
+    {
+     "wiki": "en",
+     "title": "MMR vaccine",
+     "method": "bisection over the full revision list",
+     "first_cited": {
+      "revid": 153717252,
+      "timestamp": "2007-08-26T10:23:30Z",
+      "sha1": "77a9d6a316b18771453d6fd90ff57e0d2c0585f0",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=153717252",
+      "previous_revision": {
+       "revid": 153716034,
+       "timestamp": "2007-08-26T10:10:49Z",
+       "sha1": "baf346a5ebce676390a050ee0b55f25ca599a32a",
+       "doi_present": false,
+       "confirmed": false,
+       "marked": false
+      },
+      "monotonicity_spot_checks": [
+       256183675,
+       446096991,
+       662297422,
+       903355718
+      ],
+      "monotonicity_violations": [],
+      "revisions_in_history": 2253
+     },
+     "first_marked": {
+      "revid": 483915164,
+      "timestamp": "2012-03-25T22:14:14Z",
+      "sha1": "897cfec9b0899cada6f5f12ec7711c3797ed166a",
+      "revision_url": "https://en.wikipedia.org/w/index.php?oldid=483915164",
+      "previous_revision": {
+       "revid": 483589591,
+       "timestamp": "2012-03-23T21:15:53Z",
+       "sha1": "047a94ad0b3379a0f3c16f005cf991464af37475",
+       "doi_present": true,
+       "confirmed": true,
+       "marked": false
+      },
+      "monotonicity_spot_checks": [
+       636317944,
+       768199890,
+       888758022,
+       1039226231
+      ],
+      "monotonicity_violations": [],
+      "revisions_in_history": 2253
+     },
+     "epistemic_status": "uncertain",
+     "reason": "first revisions are found by bisection, which assumes a citation or marker once added is never removed and re-added; only spot-checked"
+    },
+    {
+     "wiki": "ar",
+     "title": "لقاح الحصبة والنكاف والحصبة الألمانية",
+     "method": "bisection over the full revision list",
+     "first_cited": {
+      "revid": 18121799,
+      "timestamp": "2016-01-27T22:25:28Z",
+      "sha1": "a9c3ed7ec62af3b4fa71d38e51f983fb1887c77c",
+      "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=18121799",
+      "previous_revision": {
+       "revid": 18119085,
+       "timestamp": "2016-01-27T17:17:25Z",
+       "sha1": "ca4259649decb987bb59fcc412ab970ec7eb0168",
+       "doi_present": false,
+       "confirmed": false,
+       "marked": false
+      },
+      "monotonicity_spot_checks": [
+       22725638,
+       41543066,
+       49779165,
+       59871233
+      ],
+      "monotonicity_violations": [],
+      "revisions_in_history": 93
+     },
+     "first_marked": {
+      "revid": 18121799,
+      "timestamp": "2016-01-27T22:25:28Z",
+      "sha1": "a9c3ed7ec62af3b4fa71d38e51f983fb1887c77c",
+      "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=18121799",
+      "previous_revision": {
+       "revid": 18119085,
+       "timestamp": "2016-01-27T17:17:25Z",
+       "sha1": "ca4259649decb987bb59fcc412ab970ec7eb0168",
+       "doi_present": false,
+       "confirmed": false,
+       "marked": false
+      },
+      "monotonicity_spot_checks": [
+       22725638,
+       41543066,
+       49779165,
+       59871233
+      ],
+      "monotonicity_violations": [],
+      "revisions_in_history": 93
+     },
+     "epistemic_status": "uncertain",
+     "reason": "first revisions are found by bisection, which assumes a citation or marker once added is never removed and re-added; only spot-checked"
+    }
+   ]
+  },
+  {
+   "case_id": "POS-02",
+   "role": "positive",
+   "proposition": "original paper -> verified retraction event -> Wikipedia citation -> exact revision",
+   "original_doi": "10.1038/nature12968",
+   "synthetic": false,
+   "retraction_events": [
+    {
+     "retraction_watch_record_id": "2081",
+     "event_type": "retracted",
+     "event_type_as_recorded": "Retraction",
+     "date_retraction_watch": "2014-07-02",
+     "notice_doi": "10.1038/nature13598",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction Note: Stimulus-triggered fate conversion of somatic cells into pluripotency",
+      "published": [
+       [
+        2014,
+        7,
+        2
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "retraction",
+        "source": "retraction-watch"
+       },
+       {
+        "type": "retraction",
+        "source": "publisher"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:21:49Z",
+      "url": "https://api.crossref.org/works/10.1038/nature13598"
+     },
+     "independent_confirmation": "publisher_update_to_link",
+     "date_comparison": {
+      "retraction_watch": "2014-07-02",
+      "crossref": "2014-07-02",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "crossref_original": {
+    "status": 200,
+    "title": "RETRACTED ARTICLE: Stimulus-triggered fate conversion of somatic cells into pluripotency",
+    "published": [
+     [
+      2014,
+      1,
+      29
+     ]
+    ],
+    "updated_by": [
+     {
+      "DOI": "10.1038/nature13598",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2014,
+         7,
+         2
+        ]
+       ],
+       "date-time": "2014-07-02T00:00:00Z",
+       "timestamp": 1404259200000
+      },
+      "record-id": "2081"
+     },
+     {
+      "DOI": "10.1038/nature13598",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2014,
+         7,
+         2
+        ]
+       ],
+       "date-time": "2014-07-02T00:00:00Z",
+       "timestamp": 1404259200000
+      }
+     }
+    ],
+    "retrieved_at": "2026-10-26T18:21:48Z",
+    "url": "https://api.crossref.org/works/10.1038/nature12968"
+   },
+   "original_publication_date": {
+    "value": null,
+    "epistemic_status": "conflicting",
+    "alternatives": [
+     {
+      "value": "2013-03-10",
+      "source": "Retraction Watch OriginalPaperDate"
+     },
+     {
+      "value": "2014-01-29",
+      "source": "Crossref published"
+     }
+    ]
+   },
+   "wikipedia": [
+    {
+     "wiki": "en",
+     "title": "Haruko Obokata",
+     "pageid": 41787575,
+     "revid": 1372543632,
+     "timestamp": "2026-09-01T04:41:51Z",
+     "sha1": "9510652efbb374fcefc0343090b110942348fc6b",
+     "retrieved_at": "2026-10-26T18:31:11Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1372543632",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "هاروكو أوبوكاتا",
+     "pageid": 10487829,
+     "revid": 76190003,
+     "timestamp": "2026-08-12T15:13:27Z",
+     "sha1": "95dcb6116744ed41792297ea345cf51b5050a1f1",
+     "retrieved_at": "2026-10-26T18:32:04Z",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=76190003",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "verification_method": "Retraction Watch record in the pinned snapshot; notice DOI resolved in Crossref (independence of each event is stated in independent_confirmation); DOI found as an identifier in the wikitext of the pinned revision"
+  },
+  {
+   "case_id": "POS-03",
+   "role": "positive",
+   "proposition": "original paper -> verified retraction event -> Wikipedia citation -> exact revision",
+   "original_doi": "10.1126/science.1197258",
+   "synthetic": false,
+   "retraction_events": [
+    {
+     "retraction_watch_record_id": "66337",
+     "event_type": "expression_of_concern",
+     "event_type_as_recorded": "Expression of concern",
+     "date_retraction_watch": "2011-06-03",
+     "notice_doi": "10.1126/science.1208877",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Editor's Note",
+      "published": [
+       [
+        2011,
+        6,
+        3
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "expression_of_concern",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:22:08Z",
+      "url": "https://api.crossref.org/works/10.1126/science.1208877"
+     },
+     "independent_confirmation": "notice_exists_with_publisher_title",
+     "date_comparison": {
+      "retraction_watch": "2011-06-03",
+      "crossref": "2011-06-03",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "retraction_watch_record_id": "66335",
+     "event_type": "retracted",
+     "event_type_as_recorded": "Retraction",
+     "date_retraction_watch": "2025-07-24",
+     "notice_doi": "10.1126/science.adu5488",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction",
+      "published": [
+       [
+        2025,
+        7,
+        24
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "retraction",
+        "source": "retraction-watch"
+       },
+       {
+        "type": "retraction",
+        "source": "publisher"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:22:09Z",
+      "url": "https://api.crossref.org/works/10.1126/science.adu5488"
+     },
+     "independent_confirmation": "publisher_update_to_link",
+     "date_comparison": {
+      "retraction_watch": "2025-07-24",
+      "crossref": "2025-07-24",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "crossref_original": {
+    "status": 200,
+    "title": "RETRACTED: A Bacterium That Can Grow by Using Arsenic Instead of Phosphorus",
+    "published": [
+     [
+      2011,
+      6,
+      3
+     ]
+    ],
+    "updated_by": [
+     {
+      "DOI": "10.1126/science.adu5488",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2025,
+         7,
+         24
+        ]
+       ],
+       "date-time": "2025-07-24T00:00:00Z",
+       "timestamp": 1753315200000
+      },
+      "record-id": "66335"
+     },
+     {
+      "DOI": "10.1126/science.1208877",
+      "type": "expression_of_concern",
+      "label": "Expression of concern",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2011,
+         6,
+         3
+        ]
+       ],
+       "date-time": "2011-06-03T00:00:00Z",
+       "timestamp": 1307059200000
+      },
+      "record-id": "66337"
+     },
+     {
+      "DOI": "10.1126/science.adu5488",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2025,
+         7,
+         24
+        ]
+       ],
+       "date-time": "2025-07-24T00:00:00Z",
+       "timestamp": 1753315200000
+      }
+     }
+    ],
+    "retrieved_at": "2026-10-26T18:22:07Z",
+    "url": "https://api.crossref.org/works/10.1126/science.1197258"
+   },
+   "original_publication_date": {
+    "value": null,
+    "epistemic_status": "conflicting",
+    "alternatives": [
+     {
+      "value": "2010-12-02",
+      "source": "Retraction Watch OriginalPaperDate"
+     },
+     {
+      "value": "2011-06-03",
+      "source": "Crossref published"
+     }
+    ]
+   },
+   "wikipedia": [
+    {
+     "wiki": "en",
+     "title": "Felisa Wolfe-Simon",
+     "pageid": 29837208,
+     "revid": 1380977568,
+     "timestamp": "2026-10-19T05:30:35Z",
+     "sha1": "c7a9ee015c0165b00ca2a2ef81d6b9d9f777502c",
+     "retrieved_at": "2026-10-26T18:43:04Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380977568",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "فيليسا وولف سيمون",
+     "pageid": 10488885,
+     "revid": 76254212,
+     "timestamp": "2026-08-17T21:26:25Z",
+     "sha1": "017fadd95fa417cbb59f4aed7bd7dcf12a695d19",
+     "retrieved_at": "2026-10-26T18:44:06Z",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=76254212",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "en",
+     "title": "Arsenic",
+     "pageid": 897,
+     "revid": 1381624221,
+     "timestamp": "2026-10-23T19:09:52Z",
+     "sha1": "a0271a07e081d7e0e37e0fad496f0e383bdcb877",
+     "retrieved_at": "2026-10-26T18:43:02Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381624221",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "publisher_url",
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": true,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "زرنيخ",
+     "pageid": 30414,
+     "revid": 76928243,
+     "timestamp": "2026-10-09T05:27:17Z",
+     "sha1": "446b41bcda126f632acc91af75d72c44403ddf21",
+     "retrieved_at": "2026-10-26T18:44:05Z",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=76928243",
+     "doi_present": true,
+     "cited_as_identifier": true,
+     "occurrence_roles": [
+      "doi_parameter"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M1+M2 discovery, confirmed in wikitext",
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "verification_method": "Retraction Watch record in the pinned snapshot; notice DOI resolved in Crossref (independence of each event is stated in independent_confirmation); DOI found as an identifier in the wikitext of the pinned revision"
+  },
+  {
+   "case_id": "NC-01",
+   "role": "negative_control_event_type",
+   "proposition": "a correction or expression of concern must not be reported as the retraction",
+   "original_doi": "10.1016/S0140-6736(97)11096-0",
+   "synthetic": false,
+   "retraction_events": [
+    {
+     "retraction_watch_record_id": "17269",
+     "event_type": "correction",
+     "event_type_as_recorded": "Correction",
+     "date_retraction_watch": "2004-03-06",
+     "notice_doi": "10.1016/S0140-6736(04)15715-2",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction of an interpretation",
+      "published": [
+       [
+        2004,
+        3
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "correction",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:21:42Z",
+      "url": "https://api.crossref.org/works/10.1016/S0140-6736(04)15715-2"
+     },
+     "independent_confirmation": "notice_exists_with_publisher_title",
+     "date_comparison": {
+      "retraction_watch": "2004-03-06",
+      "crossref": "2004-03",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "retraction_watch_record_id": "4036",
+     "event_type": "retracted",
+     "event_type_as_recorded": "Retraction",
+     "date_retraction_watch": "2010-02-06",
+     "notice_doi": "10.1016/S0140-6736(10)60175-4",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction—Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+      "published": [
+       [
+        2010,
+        2
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "retraction",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:21:47Z",
+      "url": "https://api.crossref.org/works/10.1016/S0140-6736(10)60175-4"
+     },
+     "independent_confirmation": "notice_exists_with_publisher_title",
+     "date_comparison": {
+      "retraction_watch": "2010-02-06",
+      "crossref": "2010-02",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "control": "Record 17269 is a Correction (2004-03-06) whose Crossref notice is titled 'Retraction of an interpretation'; the retraction is record 4036 (2010-02-06). A system that keys on notice titles would date the retraction to 2004.",
+   "expected": {
+    "17269": "correction",
+    "4036": "retracted"
+   },
+   "wikipedia": [],
+   "verification_method": "event types read from the Retraction Watch record and the Crossref notice"
+  },
+  {
+   "case_id": "NC-01b",
+   "role": "negative_control_event_type",
+   "proposition": "a record whose notice DOI equals the original DOI is not a separate notice",
+   "original_doi": "10.1038/nature04533",
+   "synthetic": false,
+   "retraction_events": [
+    {
+     "retraction_watch_record_id": "54372",
+     "event_type": "expression_of_concern",
+     "event_type_as_recorded": "Expression of concern",
+     "date_retraction_watch": "2022-07-14",
+     "notice_doi": "10.1038/nature04533",
+     "notice_doi_equals_original_doi": true,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "RETRACTED ARTICLE: A specific amyloid-β protein assembly in the brain impairs memory",
+      "published": [
+       [
+        2006,
+        3,
+        16
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "expression_of_concern",
+        "source": "retraction-watch"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:22:05Z",
+      "url": "https://api.crossref.org/works/10.1038/nature04533"
+     },
+     "independent_confirmation": "none",
+     "epistemic_status": "uncertain",
+     "reason": "notice DOI equals the original DOI; no separate notice exists to check"
+    },
+    {
+     "retraction_watch_record_id": "54364",
+     "event_type": "retracted",
+     "event_type_as_recorded": "Retraction",
+     "date_retraction_watch": "2024-06-24",
+     "notice_doi": "10.1038/s41586-024-07691-8",
+     "notice_doi_equals_original_doi": false,
+     "crossref_notice": {
+      "status": 200,
+      "type": "journal-article",
+      "title_as_deposited": "Retraction Note: A specific amyloid-β protein assembly in the brain impairs memory",
+      "published": [
+       [
+        2024,
+        6,
+        24
+       ]
+      ],
+      "update_to_original": [
+       {
+        "type": "retraction",
+        "source": "retraction-watch"
+       },
+       {
+        "type": "retraction",
+        "source": "publisher"
+       }
+      ],
+      "retrieved_at": "2026-10-26T18:22:06Z",
+      "url": "https://api.crossref.org/works/10.1038/s41586-024-07691-8"
+     },
+     "independent_confirmation": "publisher_update_to_link",
+     "date_comparison": {
+      "retraction_watch": "2024-06-24",
+      "crossref": "2024-06-24",
+      "agree": true
+     },
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "control": "Record 54372 (Expression of concern, 2022) gives the original DOI as its notice DOI.",
+   "wikipedia": [],
+   "verification_method": "Retraction Watch record compared with the Crossref record of the same DOI"
+  },
+  {
+   "case_id": "NC-02",
+   "role": "negative_control_extraction",
+   "proposition": "extraction must report no citation in a pinned revision that does not contain the DOI",
+   "original_doi": "10.1016/S0140-6736(97)11096-0",
+   "synthetic": false,
+   "wikipedia": [
+    {
+     "wiki": "en",
+     "title": "MMR vaccine",
+     "revid": 153716034,
+     "timestamp": "2007-08-26T10:10:49Z",
+     "sha1": "baf346a5ebce676390a050ee0b55f25ca599a32a",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=153716034",
+     "doi_present": false,
+     "cited_as_identifier": false,
+     "discovery_method": "revision preceding the first citing revision (bisection)",
+     "independent_substring_counts": {
+      "11096": 0,
+      "S0140-6736(97)": 0,
+      "9500320": 0,
+      "PIIS0140673697110960": 0,
+      "Wakefield": 9,
+      "ويكفيلد": 0
+     },
+     "wikitext_length": 16093,
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "لقاح الحصبة والنكاف والحصبة الألمانية",
+     "revid": 18119085,
+     "timestamp": "2016-01-27T17:17:25Z",
+     "sha1": "ca4259649decb987bb59fcc412ab970ec7eb0168",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=18119085",
+     "doi_present": false,
+     "cited_as_identifier": false,
+     "discovery_method": "revision preceding the first citing revision (bisection)",
+     "independent_substring_counts": {
+      "11096": 0,
+      "S0140-6736(97)": 0,
+      "9500320": 0,
+      "PIIS0140673697110960": 0,
+      "Wakefield": 0,
+      "ويكفيلد": 0
+     },
+     "wikitext_length": 7350,
+     "epistemic_status": "verified_fact"
+    },
+    {
+     "wiki": "ar",
+     "title": "أسباب مرض التوحد",
+     "revid": 76772881,
+     "timestamp": "2026-09-26T09:39:28Z",
+     "sha1": "92d8cbe93df671cfa6df02958337c0efacf3bdba",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=76772881",
+     "doi_present": false,
+     "cited_as_identifier": false,
+     "discovery_method": "interlanguage link from en 'Causes of autism' (rev 1381321153)",
+     "independent_substring_counts": {
+      "11096": 0,
+      "S0140-6736(97)": 0,
+      "9500320": 0,
+      "PIIS0140673697110960": 0,
+      "Wakefield": 0,
+      "ويكفيلد": 0
+     },
+     "wikitext_length": 12607,
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "control": "The DOI matcher finds no occurrence of the DOI in each listed revision, and a separate plain substring count finds none of the needles listed in independent_substring_counts (DOI suffix, PMID, PII and the author's name in Latin and Arabic script). The English revision names Wakefield without any identifier, so the paper is discussed but not cited by DOI; the first Arabic revision predates any mention and is a trivial negative. Nothing is claimed about other revisions or about references to the paper that carry no DOI.",
+   "verification_method": "doi_positions on the full wikitext, plus absence-check substring counts"
+  },
+  {
+   "case_id": "NC-03",
+   "role": "negative_control_absence",
+   "proposition": "a paper with no record in the checked sources is reported as 'not_found_in_checked_sources' (uncertain), never as 'not retracted'",
+   "original_doi": "10.1038/171737a0",
+   "synthetic": false,
+   "retraction_status": {
+    "value": "not_found_in_checked_sources",
+    "epistemic_status": "uncertain",
+    "checked_sources": [
+     "Retraction Watch snapshot, OriginalPaperDOI column",
+     "Retraction Watch snapshot, RetractionDOI column",
+     "Crossref REST updated-by of this DOI"
+    ],
+    "retraction_watch_records_as_original": 0,
+    "retraction_watch_records_as_notice": [],
+    "crossref_status": 200,
+    "crossref_title": "Molecular Structure of Nucleic Acids: A Structure for Deoxyribose Nucleic Acid",
+    "crossref_updated_by": null,
+    "crossref_retrieved_at": "2026-10-26T19:18:53Z"
+   },
+   "wikipedia": [],
+   "verification_method": "lookup in both sources; chosen as a well-known paper not expected to be retracted"
+  },
+  {
+   "case_id": "NC-04",
+   "role": "negative_control_notice_citation",
+   "proposition": "a citation of a retraction notice whose title contains the original DOI is not a citation of the retracted paper",
+   "original_doi": "10.1056/NEJMoa2007621",
+   "notice_doi": "10.1056/NEJMc2021225",
+   "synthetic": false,
+   "notice": {
+    "retraction_watch_records_naming_it_as_notice": [
+     "23530"
+    ],
+    "retraction_watch_records_as_original": 0,
+    "crossref_title": "Retraction: Cardiovascular Disease, Drug Therapy, and Mortality in Covid-19. N Engl J Med. DOI: 10.1056/NEJMoa2007621.",
+    "crossref_update_to": [
+     {
+      "DOI": "10.1056/nejmoa2007621",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         6,
+         4
+        ]
+       ],
+       "date-time": "2020-06-04T00:00:00Z",
+       "timestamp": 1591228800000
+      },
+      "record-id": "23530"
+     }
+    ],
+    "crossref_retrieved_at": "2026-10-26T18:21:55Z"
+   },
+   "wikipedia": [
+    {
+     "wiki": "en",
+     "title": "List of scientific misconduct incidents",
+     "pageid": 56023027,
+     "revid": 1381939250,
+     "timestamp": "2026-10-25T18:55:00Z",
+     "sha1": "8e82eaf65ecf2be2613a687c742126d016f1e7c1",
+     "retrieved_at": "2026-10-26T18:29:01Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1381939250",
+     "doi_present": true,
+     "cited_as_identifier": false,
+     "occurrence_roles": [
+      "doi_prefix_in_parameter:title"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M1/M2 discovery for the original DOI; the DOI appears only inside a citation of the notice",
+     "epistemic_status": "verified_fact",
+     "checked_doi": "10.1056/NEJMoa2007621"
+    },
+    {
+     "wiki": "en",
+     "title": "Sapan Desai",
+     "pageid": 64186764,
+     "revid": 1379826589,
+     "timestamp": "2026-10-12T03:44:09Z",
+     "sha1": "fae0d474901db71484f0848abd996b6fc922382f",
+     "retrieved_at": "2026-10-26T18:33:08Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1379826589",
+     "doi_present": true,
+     "cited_as_identifier": false,
+     "occurrence_roles": [
+      "doi_prefix_in_parameter:title"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M1/M2 discovery for the original DOI; the DOI appears only inside a citation of the notice",
+     "epistemic_status": "verified_fact",
+     "checked_doi": "10.1056/NEJMoa2007621"
+    },
+    {
+     "wiki": "en",
+     "title": "Scientific misconduct",
+     "pageid": 29537,
+     "revid": 1380407872,
+     "timestamp": "2026-10-15T15:12:44Z",
+     "sha1": "ad02eeb0184ea79611779735b2d2b24e23d3a7f6",
+     "retrieved_at": "2026-10-26T18:33:11Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380407872",
+     "doi_present": true,
+     "cited_as_identifier": false,
+     "occurrence_roles": [
+      "doi_prefix_in_parameter:title"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M1/M2 discovery for the original DOI; the DOI appears only inside a citation of the notice",
+     "epistemic_status": "verified_fact",
+     "checked_doi": "10.1056/NEJMoa2007621"
+    },
+    {
+     "wiki": "en",
+     "title": "Surgisphere",
+     "pageid": 64161242,
+     "revid": 1380716090,
+     "timestamp": "2026-10-17T11:57:57Z",
+     "sha1": "48feb13c2c084cc59ff84f1059929222771c7081",
+     "retrieved_at": "2026-10-26T18:32:10Z",
+     "revision_url": "https://en.wikipedia.org/w/index.php?oldid=1380716090",
+     "doi_present": true,
+     "cited_as_identifier": false,
+     "occurrence_roles": [
+      "doi_prefix_in_parameter:title"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M1/M2 discovery for the original DOI; the DOI appears only inside a citation of the notice",
+     "epistemic_status": "verified_fact",
+     "checked_doi": "10.1056/NEJMoa2007621"
+    }
+   ],
+   "expected": "doi_present true, cited_as_identifier false for every listed revision",
+   "finding": "These are the articles found by M1/M2 searches for the original DOI in which it occurs only in a citation of the notice; other articles may cite the notice without the original DOI.",
+   "verification_method": "occurrence role of each DOI occurrence in the pinned wikitext"
+  },
+  {
+   "case_id": "U-01",
+   "role": "unresolved",
+   "proposition": "is the Lancet paper cited on Arabic Wikipedia?",
+   "original_doi": "10.1016/S0140-6736(20)31180-6",
+   "synthetic": false,
+   "wikipedia": [
+    {
+     "wiki": "ar",
+     "title": "كليرترب",
+     "pageid": 8607842,
+     "revid": 73556205,
+     "timestamp": "2026-02-18T12:21:28Z",
+     "sha1": "5030b5dbb0b56af9606249918f7dc47d5e2becfa",
+     "retrieved_at": "2026-10-26T18:33:04Z",
+     "revision_url": "https://ar.wikipedia.org/w/index.php?oldid=73556205",
+     "doi_present": true,
+     "cited_as_identifier": false,
+     "occurrence_roles": [
+      "doi_url_in_parameter:عنوان"
+     ],
+     "retracted_template_at_reference": false,
+     "discovery_method": "M2 search only",
+     "epistemic_status": "verified_fact"
+    }
+   ],
+   "finding": "The DOI occurs as a doi.org URL inside the title field of an unrelated, malformed citation (pasted text). Classified as a mention, not a citation; a reader may judge otherwise.",
+   "epistemic_status": "uncertain"
+  },
+  {
+   "case_id": "U-02",
+   "role": "unresolved",
+   "proposition": "the original publication date and the notice date agree between Retraction Watch and Crossref",
+   "synthetic": false,
+   "epistemic_status": "conflicting",
+   "original_publication_dates": [
+    {
+     "doi": "10.1016/S0140-6736(20)31180-6",
+     "value": "2020-05",
+     "epistemic_status": "verified_fact",
+     "retraction_watch": "2020-05-22",
+     "crossref": "2020-05",
+     "agree": true
+    },
+    {
+     "doi": "10.1016/S0140-6736(97)11096-0",
+     "value": "1998-02",
+     "epistemic_status": "verified_fact",
+     "retraction_watch": "1998-02-28",
+     "crossref": "1998-02",
+     "agree": true
+    },
+    {
+     "doi": "10.1016/j.fct.2012.08.005",
+     "value": null,
+     "epistemic_status": "conflicting",
+     "alternatives": [
+      {
+       "value": "2012-09-19",
+       "source": "Retraction Watch OriginalPaperDate"
+      },
+      {
+       "value": "2012-11",
+       "source": "Crossref published"
+      }
+     ]
+    },
+    {
+     "doi": "10.1016/j.ijantimicag.2020.105949",
+     "value": null,
+     "epistemic_status": "conflicting",
+     "alternatives": [
+      {
+       "value": "2020-03-20",
+       "source": "Retraction Watch OriginalPaperDate"
+      },
+      {
+       "value": "2020-07",
+       "source": "Crossref published"
+      }
+     ]
+    },
+    {
+     "doi": "10.1038/nature04533",
+     "value": "2006-03-16",
+     "epistemic_status": "verified_fact",
+     "retraction_watch": "2006-03-16",
+     "crossref": "2006-03-16",
+     "agree": true
+    },
+    {
+     "doi": "10.1038/nature12968",
+     "value": null,
+     "epistemic_status": "conflicting",
+     "alternatives": [
+      {
+       "value": "2013-03-10",
+       "source": "Retraction Watch OriginalPaperDate"
+      },
+      {
+       "value": "2014-01-29",
+       "source": "Crossref published"
+      }
+     ]
+    },
+    {
+     "doi": "10.1056/NEJMoa2007621",
+     "value": null,
+     "epistemic_status": "conflicting",
+     "alternatives": [
+      {
+       "value": "2020-05-01",
+       "source": "Retraction Watch OriginalPaperDate"
+      },
+      {
+       "value": "2020-06-18",
+       "source": "Crossref published"
+      }
+     ]
+    },
+    {
+     "doi": "10.1126/science.1094515",
+     "value": "2004-03-12",
+     "epistemic_status": "verified_fact",
+     "retraction_watch": "2004-03-12",
+     "crossref": "2004-03-12",
+     "agree": true
+    },
+    {
+     "doi": "10.1126/science.1112286",
+     "value": "2005-06-17",
+     "epistemic_status": "verified_fact",
+     "retraction_watch": "2005-06-17",
+     "crossref": "2005-06-17",
+     "agree": true
+    },
+    {
+     "doi": "10.1126/science.1197258",
+     "value": null,
+     "epistemic_status": "conflicting",
+     "alternatives": [
+      {
+       "value": "2010-12-02",
+       "source": "Retraction Watch OriginalPaperDate"
+      },
+      {
+       "value": "2011-06-03",
+       "source": "Crossref published"
+      }
+     ]
+    }
+   ],
+   "conflicting_original_dates": [
+    "10.1016/j.fct.2012.08.005",
+    "10.1016/j.ijantimicag.2020.105949",
+    "10.1038/nature12968",
+    "10.1056/NEJMoa2007621",
+    "10.1126/science.1197258"
+   ],
+   "event_date_disagreements": [
+    {
+     "doi": "10.1016/j.fct.2012.08.005",
+     "retraction_watch_record_id": "3604",
+     "retraction_watch": "2013-12-14",
+     "crossref": "2014-01",
+     "agree": false
+    },
+    {
+     "doi": "10.1016/j.ijantimicag.2020.105949",
+     "retraction_watch_record_id": "59596",
+     "retraction_watch": "2024-12-16",
+     "crossref": "2025-01",
+     "agree": false
+    },
+    {
+     "doi": "10.1056/NEJMoa2007621",
+     "retraction_watch_record_id": "23525",
+     "retraction_watch": "2020-06-02",
+     "crossref": "2020-06-18",
+     "agree": false
+    },
+    {
+     "doi": "10.1056/NEJMoa2007621",
+     "retraction_watch_record_id": "23530",
+     "retraction_watch": "2020-06-04",
+     "crossref": "2020-06-25",
+     "agree": false
+    }
+   ],
+   "finding": "Where the sources disagree both values are kept; neither is chosen. Crossref 'published' may be the print or the online date."
+  },
+  {
+   "case_id": "U-03",
+   "role": "unresolved",
+   "proposition": "event types and dates deposited by publishers in Crossref",
+   "original_doi": "10.1016/S0140-6736(20)31180-6",
+   "synthetic": false,
+   "epistemic_status": "conflicting",
+   "crossref_original": {
+    "status": 200,
+    "title": "RETRACTED: Hydroxychloroquine or chloroquine with or without a macrolide for treatment of COVID-19: a multinational registry analysis",
+    "published": [
+     [
+      2020,
+      5
+     ]
+    ],
+    "updated_by": [
+     {
+      "DOI": "10.1016/s0140-6736(20)31290-3",
+      "type": "expression_of_concern",
+      "label": "Expression of concern",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         6,
+         3
+        ]
+       ],
+       "date-time": "2020-06-03T00:00:00Z",
+       "timestamp": 1591142400000
+      },
+      "record-id": "23527"
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31249-6",
+      "type": "correction",
+      "label": "Correction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         5,
+         30
+        ]
+       ],
+       "date-time": "2020-05-30T00:00:00Z",
+       "timestamp": 1590796800000
+      },
+      "record-id": "23528"
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31324-6",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "retraction-watch",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         6,
+         5
+        ]
+       ],
+       "date-time": "2020-06-05T00:00:00Z",
+       "timestamp": 1591315200000
+      },
+      "record-id": "23529"
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31174-0",
+      "type": "retraction",
+      "label": "Retraction",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         5,
+         22
+        ]
+       ],
+       "date-time": "2020-05-22T00:00:00Z",
+       "timestamp": 1590105600000
+      }
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31324-6",
+      "type": "erratum",
+      "label": "Erratum",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         6,
+         13
+        ]
+       ],
+       "date-time": "2020-06-13T00:00:00Z",
+       "timestamp": 1592006400000
+      }
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31528-2",
+      "type": "erratum",
+      "label": "Erratum",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         7,
+         18
+        ]
+       ],
+       "date-time": "2020-07-18T00:00:00Z",
+       "timestamp": 1595030400000
+      }
+     },
+     {
+      "DOI": "10.1016/s0140-6736(20)31249-6",
+      "type": "erratum",
+      "label": "Erratum",
+      "source": "publisher",
+      "updated": {
+       "date-parts": [
+        [
+         2020,
+         5,
+         30
+        ]
+       ],
+       "date-time": "2020-05-30T00:00:00Z",
+       "timestamp": 1590796800000
+      }
+     }
+    ],
+    "retrieved_at": "2026-10-26T18:21:50Z",
+    "url": "https://api.crossref.org/works/10.1016/S0140-6736(20)31180-6"
+   },
+   "finding": "Publisher-sourced updated-by entries list the retraction notice as an 'erratum' and a different DOI as a 'retraction' dated at publication, while the Retraction Watch-sourced entries give correction, expression of concern and retraction with distinct notices."
+  }
+ ],
+ "aggregates": {
+  "purposive_en": {
+   "dois": 10,
+   "dois_cited": 10,
+   "citing_pairs": 52,
+   "citing_pairs_with_retracted_template": 49,
+   "mention_only_pairs": 4,
+   "found_by_m1": 51,
+   "found_by_m2": 52,
+   "m2_only": 1,
+   "m1_only": 0,
+   "all_searches_complete": true
+  },
+  "purposive_ar": {
+   "dois": 10,
+   "dois_cited": 3,
+   "citing_pairs": 11,
+   "citing_pairs_with_retracted_template": 4,
+   "mention_only_pairs": 1,
+   "found_by_m1": 9,
+   "found_by_m2": 11,
+   "m2_only": 2,
+   "m1_only": 0,
+   "all_searches_complete": true
+  },
+  "crosswiki_en_to_ar": {
+   "rows": 52,
+   "ar_article_does_not_cite": 21,
+   "ar_cites_src_marked_False_ar_marked_False": 1,
+   "ar_cites_src_marked_True_ar_marked_False": 6,
+   "ar_cites_src_marked_True_ar_marked_True": 4,
+   "no_ar_article_linked": 20
+  },
+  "crosswiki_ar_to_en": {
+   "rows": 11,
+   "en_cites_src_marked_False_en_marked_False": 1,
+   "en_cites_src_marked_False_en_marked_True": 6,
+   "en_cites_src_marked_True_en_marked_True": 4
+  },
+  "sample_crosswiki_en_to_ar": {
+   "rows": 0
+  },
+  "sample_crosswiki_ar_to_en": {
+   "rows": 0
+  },
+  "purposive_event_independence": {
+   "correction:notice_exists_with_publisher_title": 1,
+   "correction:publisher_update_to_link": 1,
+   "expression_of_concern:none": 2,
+   "expression_of_concern:notice_exists_with_publisher_title": 5,
+   "retracted:notice_exists_with_publisher_title": 4,
+   "retracted:publisher_update_to_link": 3,
+   "retracted:publisher_update_to_link_with_other_type": 3
+  },
+  "sample_en": {
+   "population": "Retraction Watch Retraction records with an original DOI, de-duplicated by DOI",
+   "estimand": "share of frame DOIs for which an M2 insource search of the main namespace finds a page whose latest revision cites the DOI as an identifier; a rate discoverable by this method, not the prevalence of citations to retracted work",
+   "frame_size": 61868,
+   "sampled": 200,
+   "searches_complete": 200,
+   "searches_unavailable": 0,
+   "search_dates": [
+    "2026-10-26"
+   ],
+   "dois_cited": 0,
+   "share": 0.0,
+   "clopper_pearson_95": [
+    0.0,
+    0.018275
+   ],
+   "first_run": {
+    "searches_complete": 200,
+    "searches_unavailable": 0,
+    "unavailable_dois": [],
+    "dois_cited": 0,
+    "clopper_pearson_95": [
+     0.0,
+     0.018275
+    ]
+   },
+   "mention_only_dois": 0,
+   "cited_dois": [],
+   "observations": []
+  },
+  "sample_ar": {
+   "population": "Retraction Watch Retraction records with an original DOI, de-duplicated by DOI",
+   "estimand": "share of frame DOIs for which an M2 insource search of the main namespace finds a page whose latest revision cites the DOI as an identifier; a rate discoverable by this method, not the prevalence of citations to retracted work",
+   "frame_size": 61868,
+   "sampled": 200,
+   "searches_complete": 200,
+   "searches_unavailable": 0,
+   "search_dates": [
+    "2026-10-26",
+    "2026-10-27"
+   ],
+   "dois_cited": 0,
+   "share": 0.0,
+   "clopper_pearson_95": [
+    0.0,
+    0.018275
+   ],
+   "first_run": {
+    "searches_complete": 193,
+    "searches_unavailable": 7,
+    "unavailable_dois": [
+     "10.1007/s11192-015-1698-z",
+     "10.1016/j.biopha.2021.111349",
+     "10.1155/2013/248476",
+     "10.1155/2018/5324320",
+     "10.1155/2022/8496766",
+     "10.3389/fcell.2021.640391",
+     "10.3892/ol.2013.1385"
+    ],
+    "dois_cited": 0,
+    "clopper_pearson_95": [
+     0.0,
+     0.018932
+    ]
+   },
+   "mention_only_dois": 0,
+   "cited_dois": [],
+   "observations": []
+  },
+  "census_2026_10_27": {
+   "method": "Wikimedia SQL dumps of 2026-10-01 (externallinks, page, langlinks), confirmed live at the current revision on 2026-10-27; link-bearing citations only, so counts are lower bounds",
+   "epistemic_status": "verified_fact",
+   "generated_from": [
+    "ar_confirm",
+    "ar_render",
+    "ar_scan",
+    "crosswiki_ar_to_en",
+    "crosswiki_en_to_ar"
+   ],
+   "denominators": {
+    "rw_records": 73356,
+    "retraction_records": 67916,
+    "retraction_records_with_original_doi_or_pmid": 65643,
+    "retraction_papers_with_original_doi_or_pmid": 62575
+   },
+   "ar_dump_scan": {
+    "pages_any_namespace": 205,
+    "pages_by_namespace": {
+     "0": 195,
+     "2": 10
+    },
+    "articles": 195,
+    "article_record_pairs_by_nature": {
+     "Retraction (original)": 199,
+     "Expression of concern (original)": 25,
+     "Correction (original)": 39,
+     "Reinstatement (original)": 1,
+     "Retraction (notice only)": 15,
+     "Correction (notice only)": 1,
+     "Expression of concern (notice only)": 1
+    },
+    "link_kinds_in_articles": {
+     "doi_resolver": 304,
+     "pubmed": 264,
+     "doi_in_url": 16
+    },
+    "distinct_records_original": 203,
+    "distinct_records_notice": 55
+   },
+   "ar_confirmed_cited": {
+    "Correction": {
+     "article_record_pairs": 38,
+     "articles": 36,
+     "records": 24,
+     "papers": 23,
+     "pairs_marked_in_wikitext": 4
+    },
+    "Expression of concern": {
+     "article_record_pairs": 25,
+     "articles": 22,
+     "records": 19,
+     "papers": 18,
+     "pairs_marked_in_wikitext": 4
+    },
+    "Reinstatement": {
+     "article_record_pairs": 1,
+     "articles": 1,
+     "records": 1,
+     "papers": 1,
+     "pairs_marked_in_wikitext": 0
+    },
+    "Retraction": {
+     "article_record_pairs": 198,
+     "articles": 157,
+     "records": 159,
+     "papers": 158,
+     "pairs_marked_in_wikitext": 23
+    }
+   },
+   "ar_confirm_failures": 0,
+   "ar_linked_in_dump_but_not_cited_in_current_wikitext": {
+    "Retraction": 1,
+    "Correction": 1
+   },
+   "ar_render_states": {
+    "Retraction": {
+     "no_warning_text_in_inspected_rendered_reference": 148,
+     "missing_template_link_only_in_rendered_reference": 22,
+     "warning_text_in_rendered_reference": 26,
+     "reference_not_found_in_render": 2
+    },
+    "Expression of concern": {
+     "no_warning_text_in_inspected_rendered_reference": 19,
+     "missing_template_link_only_in_rendered_reference": 4,
+     "reference_not_found_in_render": 2
+    }
+   },
+   "ar_articles_with_an_unwarned_rendered_citation": {
+    "Retraction": 155,
+    "Expression of concern": 21
+   },
+   "en_dump_scan": {
+    "pages_any_namespace": 1420,
+    "pages_by_namespace": {
+     "0": 745,
+     "1": 283,
+     "4": 73,
+     "10": 16,
+     "2": 226,
+     "3": 36,
+     "5": 32,
+     "11": 3,
+     "118": 6
+    },
+    "articles": 745,
+    "article_record_pairs_by_nature": {
+     "Retraction (original)": 601,
+     "Expression of concern (original)": 1066,
+     "Correction (original)": 199,
+     "Reinstatement (original)": 11,
+     "Retraction (notice only)": 335,
+     "Expression of concern (notice only)": 170,
+     "Correction (notice only)": 24,
+     "Reinstatement (notice only)": 1
+    },
+    "link_kinds_in_articles": {
+     "doi_resolver": 3033,
+     "doi_in_url": 144,
+     "pubmed": 3474
+    },
+    "distinct_records_original": 960,
+    "distinct_records_notice": 1125
+   },
+   "crosswiki": {
+    "crosswiki_en_to_ar": {
+     "source_articles_citing": 432,
+     "source_articles_with_target_link": 207,
+     "pair_categories": {
+      "carried_marked_source_only": 34,
+      "not_carried": 175,
+      "carried_marked_target_only": 1,
+      "carried_marked_neither": 27,
+      "carried_marked_both": 12,
+      "source_no_longer_cites": 12
+     },
+     "papers_by_category": {
+      "carried_marked_source_only": 28,
+      "not_carried": 143,
+      "carried_marked_target_only": 1,
+      "carried_marked_neither": 24,
+      "carried_marked_both": 11,
+      "source_no_longer_cites": 10
+     },
+     "not_carried_history": {
+      "source_added_it_after_target_was_created": 90,
+      "source_cited_when_target_was_created_target_first_revision_did_not": 75,
+      "target_cited_at_creation_then_removed": 1,
+      "source_article_not_yet_created": 9
+     },
+     "carried_pairs_by_ar_render_state": {
+      "carried_marked_both / ar render: missing_template_link_only_in_rendered_reference": 12,
+      "carried_marked_neither / ar render: no_warning_text_in_inspected_rendered_reference": 26,
+      "carried_marked_neither / ar render: not_in_ar_census": 1,
+      "carried_marked_source_only / ar render: no_warning_text_in_inspected_rendered_reference": 31,
+      "carried_marked_source_only / ar render: not_in_ar_census": 2,
+      "carried_marked_source_only / ar render: reference_not_found_in_render": 1,
+      "carried_marked_target_only / ar render: missing_template_link_only_in_rendered_reference": 1
+     },
+     "removed_from_target_after_creation": {
+      "pairs": 1,
+      "articles": 1,
+      "papers": 1
+     }
+    },
+    "crosswiki_ar_to_en": {
+     "source_articles_citing": 158,
+     "source_articles_with_target_link": 155,
+     "pair_categories": {
+      "not_carried": 96,
+      "carried_marked_neither": 26,
+      "carried_marked_target_only": 32,
+      "carried_marked_source_only": 1,
+      "carried_marked_both": 12,
+      "source_no_longer_cites": 1,
+      "unknown_target_unavailable": 28
+     },
+     "papers_by_category": {
+      "not_carried": 77,
+      "carried_marked_neither": 24,
+      "carried_marked_target_only": 27,
+      "carried_marked_source_only": 1,
+      "carried_marked_both": 11,
+      "source_no_longer_cites": 1,
+      "unknown_target_unavailable": 28
+     },
+     "not_carried_history": {
+      "source_added_it_after_target_was_created": 1,
+      "source_article_not_yet_created": 75,
+      "target_cited_at_creation_then_removed": 20
+     },
+     "carried_pairs_by_ar_render_state": {
+      "carried_marked_both / ar render: missing_template_link_only_in_rendered_reference": 12,
+      "carried_marked_neither / ar render: no_warning_text_in_inspected_rendered_reference": 26,
+      "carried_marked_source_only / ar render: missing_template_link_only_in_rendered_reference": 1,
+      "carried_marked_target_only / ar render: no_warning_text_in_inspected_rendered_reference": 31,
+      "carried_marked_target_only / ar render: reference_not_found_in_render": 1
+     },
+     "removed_from_target_after_creation": {
+      "pairs": 20,
+      "articles": 19,
+      "papers": 16
+     }
+    }
+   }
+  }
+ }
+}

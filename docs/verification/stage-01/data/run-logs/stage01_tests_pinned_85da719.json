@@ -1,0 +1,14 @@
+{
+  "purpose": "Pins the Stage 01 test files, which live under tests/stage01/ (outside the verification directory so the Stage 00 test plugin and CI collect them), by sha256 at the evidence revision, with the result of running each file.",
+  "revision": "85da719ac43fc46170310b225c9190b63a046df8",
+  "run_at": "2026-10-27",
+  "environment": "locked project environment (uv sync --locked): Python 3.12.3, pytest 9.1.1",
+  "files": [
+    {"path": "tests/stage01/test_census.py", "sha256": "fb5a67bcc903c20d92e7f06b94cd4bdeea8393457c0256481df53a2fa97f69db", "result": "40 passed"},
+    {"path": "tests/stage01/test_crosswiki.py", "sha256": "399ae1f9161619c1f95a81e3ccaa0b18ece4de86806146c55a5adc9f140ed9db", "result": "29 passed"},
+    {"path": "tests/stage01/test_discovery_errors.py", "sha256": "6035c23647513a4003e4626eb158089f832dda10d97579cc2a90aa9c2e053445", "result": "19 passed"},
+    {"path": "tests/stage01/test_render_check.py", "sha256": "b5e7f46a26870fb74d29dfd1b168336e730b6446071cce2d552f6841ac80e073", "result": "13 passed"}
+  ],
+  "totals": {"stage01": "101 passed", "full_suite": "505 passed"},
+  "check": "for f in tests/stage01/*.py; do git show 85da719:$f | sha256sum; done"
+}
