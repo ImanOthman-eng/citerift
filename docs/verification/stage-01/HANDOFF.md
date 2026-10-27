@@ -36,11 +36,11 @@ it does not mean the owner accepted it.
 | Gate | Requirement | Result | Evidence |
 |---|---|---|---|
 | 01-A | Retraction data accessibility evidenced | pass | FEASIBILITY_REPORT.md §4; `data/rw_profile.json`; `data/purposive_lookup.json`; EVIDENCE_MANIFEST.json (events with `independent_confirmation`) |
-| 01-B | Wikipedia citation discoverability evidenced | pass | FEASIBILITY_REPORT.md §5; `data/purposive_discovery.json`; `data/rate-limit/`; `tests/stage01/test_discovery_errors.py` |
+| 01-B | Wikipedia citation discoverability evidenced | pass | FEASIBILITY_REPORT.md §5; `data/purposive_discovery.json`; `data/rate-limit/`; `tests/stage01/test_discovery_errors.py`, `data/run-logs/stage01_tests_pinned_85da719.json` (pins `tests/stage01/` by sha256) |
 | 01-C | Verified positive and negative examples | pass | FEASIBILITY_REPORT.md §6; EVIDENCE_MANIFEST.json cases POS-01–03, NC-01, NC-01b, NC-02–04, U-01–03; `data/followups/nc2_absence_check_*.json`, `nc3_lookup.json` |
-| 01-D | Initial cross-language feasibility evidenced | pass | FEASIBILITY_REPORT.md §7; `data/followups/crosswiki_*.json`, `render_check_*.json`, `timeline_*.json`, `ar_*.json`; `data/census/` (§16); `tests/stage01/test_crosswiki.py`, `test_render_check.py`, `test_census.py` |
+| 01-D | Initial cross-language feasibility evidenced | pass | FEASIBILITY_REPORT.md §7; `data/followups/crosswiki_*.json`, `render_check_*.json`, `timeline_*.json`, `ar_*.json`; `data/census/` (§16); `tests/stage01/test_crosswiki.py`, `test_render_check.py`, `test_census.py`, `data/run-logs/stage01_tests_pinned_85da719.json` (pins `tests/stage01/` by sha256) |
 | 01-E | Coverage limitations documented | pass | FEASIBILITY_REPORT.md §8; `data/sample_S.json`; `data/sample_S_discovery.json`; `data/run-logs/sample_S_search_*.json`; `data/census/dump_vs_api_crosscheck.json` |
-| 01-F | Source references and reproducible findings | pass | EVIDENCE_MANIFEST.json; `scripts/`; `tests/stage01/`; `data/verify_result.json`; `data/clean_reproduction.json`; FEASIBILITY_REPORT.md §9, §14 |
+| 01-F | Source references and reproducible findings | pass | EVIDENCE_MANIFEST.json; `scripts/`; `tests/stage01/` and `data/run-logs/stage01_tests_pinned_85da719.json` (pins `tests/stage01/` by sha256); `data/verify_result.json`; `data/clean_reproduction.json`; FEASIBILITY_REPORT.md §9, §14 |
 | 01-G | Critical blockers and recommendations stated | pass | FEASIBILITY_REPORT.md §12, §15; CREATIVE_FEASIBILITY.md; MAESTRO_DESIGN_BRIEF.md; ADVERSARIAL_REVIEW.md; `data/followups/prior_art_*.json` |
 
 Main results (details and labels in FEASIBILITY_REPORT.md):
@@ -215,8 +215,11 @@ Repository quality checks ran with the locked project environment
 
 `85da719ac43fc46170310b225c9190b63a046df8` on branch `claude/project-thread-70xjkv` in
 <https://github.com/ImanOthman-eng/citerift>: the commit containing every
-evidence file above except this handoff and verification-record.json, which
-were added afterwards and are pinned by hash in the verification record.
+evidence file above except this handoff, verification-record.json and
+`data/run-logs/stage01_tests_pinned_85da719.json`, which were added afterwards
+and are pinned by hash in the verification record. The governance check accepts
+as gate evidence only files in this directory, so that file pins the four test
+files under `tests/stage01/` by their sha256 at this revision.
 The pull request must be merged with a merge commit so the cited commits stay
 in `main`'s history.
 

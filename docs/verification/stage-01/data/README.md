@@ -30,6 +30,8 @@ FEASIBILITY_REPORT.md §9.1.
 | `run-logs/sample_S_discovery_first_run_log.json` | Request log (statuses, attempts) of the first, network-bound sample run. |
 | `run-logs/sample_S_search_errors_first_run.json` | The 7 Arabic search responses of the first run that were HTTP 200 with `cirrussearch-too-busy-error` (unavailable, first recorded as "0 hits"). |
 | `run-logs/sample_S_search_retry_2026-10-27.json` | The answers to those 7 searches, sent again once on 2026-10-27, with their attempts. Both search logs were extracted from the session's response cache by one-off commands (not committed). |
+| `run-logs/census_render_first_run_failure.json` | The one rendered check of the first census render run (2026-10-27) that got no HTTP answer after the client's retries; it was re-sent once and answered (`census/ar_render.json` holds that answer). |
+| `run-logs/stage01_tests_pinned_85da719.json` | The sha256 of each Stage 01 test file under `tests/stage01/` at revision 85da719, with its result, so the gate record pins the tests. |
 | `rate-limit/` | The 40-request Wikimedia rate-limit measurement (log and the exact script, stored as text). |
 | `census/ar_scan.json` | Every Arabic Wikipedia page whose external links (dump of 2026-10-01) point to the DOI or PMID of a Retraction Watch record, original paper or notice; page ids, titles and matched identifiers only (FEASIBILITY_REPORT.md §16). |
 | `census/ar_confirm.json` | Live check (2026-10-27) of the current revision of each Arabic article in `ar_scan.json`: cited by identifier or not, marked by a {{Retracted}}-family template or not. No article text. |
