@@ -11,12 +11,12 @@ the stage are also in RISKS.md (R-022 onward).
 |---|---|---|---|---|---|
 | S1 | A notice DOI is read as the retracted paper | M | H | separate roles in storage and queries; `notice_only` state with no projection | INV-L1 tests, oracle role comparison, real case NC-04 (NEJM notice) |
 | S2 | Absence read as "not retracted" | M | H | no such value; `not_found_in_checked_sources` only as `uncertain` with provenance; relevant quarantine and invalid identifiers turn absence into a coverage gap | v1 schema rules, projection tests, absence controls |
-| S3 | Latest-row-wins or greatest-date-wins hides a retraction or invents reinstatement | M | H | order-independent reducer; reinstatement needs supersession evidence | INV-P2 to P4 metamorphic tests (row permutation, added events) |
+| S3 | Latest-row-wins or greatest-date-wins hides a retraction or invents reinstatement | M | H | order-independent reducer; reinstatement needs supersession evidence | row-permutation test (`test_rde_export_diff.py`); INV-P1 to P3 and P8 property tests (`test_rde_policy_properties.py`, added after freezing; see §6) |
 | S4 | PMID bridges two works into one | M | H | one-hop bridging only when the secondary identifier is unique; PMID with several DOIs is `ambiguous_identity`; two-ID compatibility check | INV-L2/L3 tests, 17 real divergent PMIDs |
 | S5 | Day-1 dates presented as exact | H | M | RW guide convention: day 1 has no bounds; date shown as `uncertain`; chronology from bounds only | temporal tests, `require_temporal_bounds` demonstrations |
 | S6 | Redistributed Crossref RW relations counted as independent corroboration | H | M | origin and dependency on every assertion; `collapse_shared_origin` | INV-P7 test, real Wakefield replay |
 | S7 | Publisher-deposited relation types trusted as truth | M | M | publisher relations are a separate origin with unknown dependence; type disagreements are conflicts, never silent resolutions | conflict tests, real Lancet Surgisphere replay |
-| S8 | Different events over time reported as a conflict | M | M | conflicts only within one proposition (same notice and original) | concern→retraction and correction-after-retraction tests |
+| S8 | Different events over time reported as a conflict | M | M | conflicts only within one proposition (same notice and original); RW events of different types on one notice that are definitely ordered are a sequence (§6) | concern→retraction and correction-after-retraction tests; sequence, unordered and publisher-disagreement regressions |
 | S9 | Model output promoted to a fact | L | H | advisory type without store access; forbidden keys abstain; read-only index | boundary tests, index hash before/after |
 | S10 | Synthetic or masked-task results reported as natural accuracy | M | H | tasks labeled "controlled masking"; synthetic fixtures use 10.5555 and `synthetic: true` | report wording review, fixture checks |
 | S11 | Arabic capability claimed without Arabic data | M | M | RW has 1 Arabic-script record; no Arabic stratum; no translations | protocol text, TEST_RESULTS statement |
@@ -63,3 +63,25 @@ the stage are also in RISKS.md (R-022 onward).
 - R-025 identity beyond exact identifiers (title/author matching) is advisory
   and not validated on natural cases.
 - P1 above, if the owner does not supply model access.
+
+## 6. Changes after freezing
+
+The review passes of `3a6f1eb` (TEST_RESULTS.md, review dispositions) found
+risks the frozen table did not list, or controls that did not work. The table
+above is kept as frozen except the two Check/Control cells marked §6.
+
+| ID | Risk | L | I | Control | Check |
+|---|---|---|---|---|---|
+| S12 | Support of unknown origin or dependence presented as established | M | H | `dependence` on every Crossref assertion; support only of origin `unknown` gives `uncertain` (SPECIFICATION.md 16 item 14) | `test_rde_policy_regressions.py`, INV-P8 property test |
+| S13 | A reinstatement with nothing it supersedes shown as the current effect | M | H | rule 7d gives `uncertain` (item 11); 275 real originals affected | P04 (amended), INV-P3 property test, `evidence/policy-impact-rw.json` |
+| S14 | A PMID-bridged event alone yields `verified_fact` | M | M | kept as frozen (cases P33, T05, T06): identity status `bridged` and `exclude_ambiguous_links` show it; not hidden | proposed to the owner as R-026 |
+| E11 | A rebuild with other evidence deletes an earlier artifact of the same snapshot | M | H | `ARTIFACT_EXISTS`; equal builds only are replaced (item 15) | A2 tests |
+| E12 | A derived table is altered and `verify` still passes | L | H | `verify` recomputes derived tables from the raw records and checks the manifest (item 15) | A3 tests |
+| E13 | Characters in the index path change which file SQLite opens or its mode | L | H | percent-encoded URI and `PRAGMA database_list` check (item 16) | S2 tests |
+| E14 | Controls removed as whitespace make an exact match | M | H | explicit trim set (item 18) | S6 tests |
+| E15 | Hidden or encoded identifier forms turn a coverage gap into "not found" | M | H | relevance by normalized value and skeleton (item 17) | S1 tests |
+| X5 | Redirect, slow drip or bad `Retry-After` from the API host | L | M | no redirects, total deadline, `Retry-After` parsed or recorded as failure (item 22) | loopback-server tests S3, S5, S8 |
+| P5 | The AI admission criterion "selection coverage ≥ 60%" cannot be met on this snapshot | H (observed) | M | not lowered; reported to the owner with the arithmetic (TEST_RESULTS.md) | protocol arithmetic in TEST_RESULTS.md |
+
+Residual risk proposed for the owner: R-026, a single PMID-bridged event can
+give `verified_fact` with identity `bridged` (S14).

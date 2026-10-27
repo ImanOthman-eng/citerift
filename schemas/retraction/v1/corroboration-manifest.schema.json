@@ -110,9 +110,10 @@
             },
             "then": {
               "required": [
-                "retrieved_at",
+                "bytes",
+                "http_status",
                 "payload_sha256",
-                "bytes"
+                "retrieved_at"
               ],
               "properties": {
                 "failure": {
@@ -120,6 +121,9 @@
                 },
                 "payload_sha256": {
                   "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+                },
+                "http_status": {
+                  "const": 200
                 }
               }
             },

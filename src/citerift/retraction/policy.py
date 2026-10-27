@@ -14,6 +14,7 @@ from citerift.retraction.dates import TemporalEvidence, definitely_before
 
 POLICY_VERSION = "citerift-rde-policy/1.0.0"
 RW_ORIGIN = "retraction-watch"
+UNKNOWN_ORIGIN = "unknown"
 COMPARISON_FIELDS = (
     "lookup_state",
     "retraction_status.status",
@@ -34,6 +35,9 @@ REASON_TEXT = {
     "COVERAGE_GAP_RELEVANT_ROWS": "Quarantined rows or invalid identifiers that may concern this work exist.",
     "NOT_FOUND_IN_CHECKED_SOURCES": "No record in the checked sources; this is not evidence of no retraction.",
     "REINSTATEMENT_UNLINKED": "A reinstatement is recorded without evidence of which event it supersedes.",
+    "SEQUENTIAL_EVENTS_SHARE_NOTICE": "Events of different types from one source share a notice key but are "
+    "definitely ordered in time, so they are a sequence of events, not a conflict.",
+    "SUPPORT_ORIGIN_UNKNOWN": "The only support for this value comes from relations whose origin is unknown.",
     "SOURCE_RECORDED_RETRACTION": "The checked source records a retraction of this original.",
     "CONFLICT_NOT_MATERIAL": "A type conflict on another notice does not change the recorded retraction.",
     "SOURCE_TYPE_CONFLICT": "Sources assert different types for the same notice and original.",
@@ -61,10 +65,12 @@ class TypedAssertion:
     bridged: bool = False
     notice_ambiguous: bool = False
     depends_on: tuple[str, ...] = ()
+    dependence: str = "known"  # "unknown": may rest on another origin's notice (SPECIFICATION.md 8)
 
     @property
     def proposition(self) -> str:
-        return self.notice_key or f"solo:{self.assertion_id}"
+        """(notice key, original anchor) of SPECIFICATION.md 11.1 rule 7; no notice key: its own proposition."""
+        return f"{self.notice_key}|{self.anchor}" if self.notice_key else f"solo:{self.assertion_id}"
 
 
 @dataclass(frozen=True)
@@ -168,16 +174,17 @@ def reduce(ev: EvidenceSet) -> dict[str, Any]:
         raise ValueError(f"unknown lookup state {ev.state!r}")
 
     typed = [a for a in ev.assertions if a.type is not None]
+    prop_of, sequential = propositions(typed)
     props: dict[str, set[str]] = {}
     for a in typed:
-        props.setdefault(a.proposition, set()).add(a.type or "")
+        props.setdefault(prop_of[a.assertion_id], set()).add(a.type or "")
     conflict = {k for k, types in props.items() if len(types) > 1}
-    clear = [a for a in typed if a.proposition not in conflict]
+    clear = [a for a in typed if prop_of[a.assertion_id] not in conflict]
     basis["conflict_groups"] = [
         {
             "proposition": k,
             "types": sorted(props[k]),
-            "assertions": sorted(a.assertion_id for a in typed if a.proposition == k),
+            "assertions": sorted(a.assertion_id for a in typed if prop_of[a.assertion_id] == k),
         }
         for k in sorted(conflict)
     ]
@@ -209,18 +216,26 @@ def reduce(ev: EvidenceSet) -> dict[str, Any]:
         status, reasons = "conflicting", ["SOURCE_TYPE_CONFLICT"]
     else:
         ctypes = {a.type for a in clear}
-        if len(ctypes) == 1:
+        if ctypes == {"reinstated"}:
+            # A reinstatement with no recorded event it supersedes cannot establish a current effect (C-11).
+            status, reasons = "uncertain", ["REINSTATEMENT_UNLINKED"]
+        elif len(ctypes) == 1:
             value, status, reasons = ctypes.pop(), "verified_fact", ["SOURCE_RECORDED_TYPE"]
             support = [a for a in clear if a.type == value]
         else:
             status, reasons = "uncertain", ["MIXED_CURRENT_EFFECT"]
+    if sequential:
+        reasons = [*reasons, "SEQUENTIAL_EVENTS_SHARE_NOTICE"]
+    if value is not None and support and all(a.origin == UNKNOWN_ORIGIN for a in support):
+        value, status, support = None, "uncertain", []
+        reasons = [*reasons, "SUPPORT_ORIGIN_UNKNOWN"]
     if value is not None and ev.relevant_gap:
         value, status, support = None, "uncertain", []
         reasons = [*reasons, "COVERAGE_GAP_RELEVANT_ROWS"]
     if status == "conflicting":
         by_type: dict[str, list[TypedAssertion]] = {}
         for a in typed:
-            if a.proposition in conflict:
+            if prop_of[a.assertion_id] in conflict:
                 by_type.setdefault(a.type or "", []).append(a)
         finish(status, None, reasons, [])
         out["retraction_status"]["alternatives"] = [
@@ -237,13 +252,46 @@ def reduce(ev: EvidenceSet) -> dict[str, Any]:
         # A retraction event inside a type conflict still bears on the date: whether its notice is a retraction
         # is unresolved, so a date that differs from the clear ones cannot be stated as a fact.
         conflicted = [
-            a for a in typed if a.type == "retracted" and a.event_id is not None and a.proposition in conflict
+            a for a in typed if a.type == "retracted" and a.event_id is not None and prop_of[a.assertion_id] in conflict
         ]
         dated = [a for a in support if a.event_id is not None]
         out["retraction_date"] = _retraction_date(dated, basis, conflicted)
         compare["retraction_date.status"] = out["retraction_date"]["status"]
         compare["retraction_date.value"] = out["retraction_date"]["value"]
     return out
+
+
+def propositions(typed: list[TypedAssertion]) -> tuple[dict[str, str], bool]:
+    """Proposition key per assertion id, and whether a sequence was split (SPECIFICATION.md 16, C-12).
+
+    Assertions sharing (notice key, anchor) form one proposition, except that Retraction Watch events of
+    different types on one notice key that are pairwise definitely ordered in time are a sequence (an
+    expression of concern, then a retraction): they are split by type. A redistributed Retraction Watch copy
+    (no event of its own) joins the events of its type. Assertions of other origins, or events whose order is
+    not established, stay together, so a disagreement among them is a conflict.
+    """
+    groups: dict[str, list[TypedAssertion]] = {}
+    for a in typed:
+        groups.setdefault(a.proposition, []).append(a)
+    out: dict[str, str] = {}
+    split = False
+    for key, members in groups.items():
+        events = [a for a in members if a.event_id is not None]
+        ordered = (
+            len({a.type for a in members}) > 1
+            and all(a.origin == RW_ORIGIN for a in members)
+            and {a.type for a in members} == {a.type for a in events}
+            and all(
+                definitely_before(a.notice_date, b.notice_date) or definitely_before(b.notice_date, a.notice_date)
+                for i, a in enumerate(events)
+                for b in events[i + 1 :]
+                if a.type != b.type
+            )
+        )
+        split = split or ordered
+        for a in members:
+            out[a.assertion_id] = f"{key}#{a.type}" if ordered else key
+    return out, split
 
 
 def _retraction_date(

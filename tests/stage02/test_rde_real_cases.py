@@ -92,7 +92,7 @@ def test_rde_real_case_on_fixture(index: Path, case: dict[str, Any]) -> None:
 
 @pytest.mark.regression
 def test_rde_historical_dates_are_kept(index: Path) -> None:
-    [case] = [c for c in MANIFEST["cases"] if c["class"] == "historical_original_date"]
+    [case] = [c for c in MANIFEST["cases"] if c["class"] == "historical_date_event_via_notice_query"]
     with Index(index) as ix:
         [event] = ix.gather(case["query"]["doi"]).events
     assert event["notice_date"]["reported_calendar"] == "1756-06-24"

@@ -10,6 +10,8 @@ import platform
 import secrets
 import sqlite3
 import time
+import urllib.parse
+from collections import Counter
 from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +24,7 @@ from citerift.retraction.search import title_tokens
 from citerift.retraction.source import (
     PARSER_VERSION,
     ImportFailure,
+    RawRecord,
     Receipt,
     check_bytes,
     iter_records,
@@ -138,6 +141,7 @@ CREATE TABLE cr_assertion (
   origin TEXT NOT NULL,
   channel TEXT NOT NULL,
   depends_on TEXT NOT NULL,
+  dependence TEXT NOT NULL CHECK (dependence IN ('known', 'unknown')),
   retrieved_at TEXT NOT NULL,
   locator TEXT NOT NULL,
   payload_sha256 TEXT NOT NULL,
@@ -241,6 +245,12 @@ def build(
     try:
         manifest = _build_into(tmp, source, receipt, check, snapshot, corroboration, hook)
         manifest["run_build_seconds"] = round(time.monotonic() - started, 3)
+        from citerift.retraction.schemas import BUILD_MANIFEST, validate  # noqa: PLC0415
+
+        invalid = validate(manifest, BUILD_MANIFEST)
+        if invalid:
+            raise ImportFailure("ARTIFACT_INVALID", f"build manifest: {invalid[0]}")
+        _refuse_replacing_other_build(final, manifest_final, manifest["digests"])
         hook("before_publish")
         tmp_manifest.write_text(json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=False) + "\n", "utf-8")
         _fsync(tmp_manifest)
@@ -255,6 +265,43 @@ def build(
     return BuildResult(final, manifest_final, manifest)
 
 
+DIGEST_KEYS = ("artifact_digest", "semantic_digest", "export_lines")
+
+
+def manifest_path_for(index_path: Path) -> Path:
+    return index_path.with_name(index_path.name.removesuffix(".sqlite") + ".manifest.json")
+
+
+def _refuse_replacing_other_build(final: Path, manifest_final: Path, digests: dict[str, str]) -> None:
+    """An artifact of the same snapshot is replaced only by an equal build: a rebuild with other evidence (for
+    example another corroboration bundle) never deletes earlier evidence (SPECIFICATION.md 16, C-15)."""
+    want = {k: digests[k] for k in DIGEST_KEYS}
+    if final.exists():
+        try:
+            conn = open_index(final)
+        except IndexUnavailable:
+            have: dict[str, str | None] | None = None
+        else:
+            try:
+                meta = read_meta(conn)
+            finally:
+                conn.close()
+            have = {k: meta.get(k) for k in DIGEST_KEYS}
+        if have != want:
+            raise ImportFailure(
+                "ARTIFACT_EXISTS", f"{final.name} holds another build of this snapshot; build into another directory"
+            )
+    if manifest_final.exists():
+        try:
+            recorded = json.loads(manifest_final.read_text(encoding="utf-8")).get("digests", {})
+        except (OSError, ValueError, AttributeError):
+            recorded = None
+        if not isinstance(recorded, dict) or {k: recorded.get(k) for k in DIGEST_KEYS} != want:
+            raise ImportFailure(
+                "ARTIFACT_EXISTS", f"{manifest_final.name} records another build; build into another directory"
+            )
+
+
 def _fsync(path: Path) -> None:
     fd = os.open(path, os.O_RDONLY)
     try:
@@ -266,6 +313,60 @@ def _fsync(path: Path) -> None:
 def _fsync_dir(path: Path) -> None:
     with contextlib.suppress(OSError):  # some filesystems refuse to fsync a directory; the rename stays atomic
         _fsync(path)
+
+
+def raw_row(rec: RawRecord, d: ingest.Disposition, sha: str) -> tuple[Any, ...]:
+    return (
+        rec.ordinal,
+        rec.line_start,
+        rec.line_end,
+        d.record_id,
+        _j(list(rec.fields)),
+        sha,
+        "accepted" if d.accepted else "quarantined",
+        _j(list(d.reasons)),
+    )
+
+
+def ident_rows(d: ingest.Disposition) -> list[tuple[Any, ...]]:
+    """``ident`` rows of one record, without the row id (insertion order is the source order)."""
+    return [
+        (
+            occ.ordinal,
+            occ.role,
+            occ.scheme,
+            occ.column,
+            occ.norm.raw,
+            occ.norm.input_form,
+            occ.norm.normalized,
+            int(occ.norm.missing),
+            _j(list(occ.norm.transformations)),
+            _j(list(occ.norm.issues)),
+        )
+        for occ in d.idents
+    ]
+
+
+def derive_tables(events: list[ingest.Event], compact: list[tuple[int, str, str]]) -> dict[str, list[tuple[Any, ...]]]:
+    """Rows of every table derived from the accepted events, in canonical order. The build inserts them and
+    ``verify`` recomputes them from the stored raw records, so a derived table cannot drift from its source."""
+    ingest.finalize_events(events)
+    notices: dict[str, list[str]] = {}
+    for e in events:
+        if e.notice_key:
+            notices.setdefault(e.notice_key, []).append(e.event_id)
+    tokens = sorted({(tok, e.event_id) for e in events if e.original_doi for tok in title_tokens(e.title)})
+    df = Counter(tok for tok, _ in tokens)
+    row_sha = {o: sha for o, _rid, sha in compact}
+    dups = ingest.duplicate_groups(compact, events, row_sha)
+    return {
+        "notice": [(k, k.split(":", 1)[0], k.split(":", 1)[1], len(v)) for k, v in sorted(notices.items())],
+        "event": sorted((_event_row(e) for e in events), key=lambda r: r[0]),
+        "event_notice": sorted((e.event_id, e.notice_key) for e in events if e.notice_key),
+        "title_token": tokens,
+        "token_df": sorted(df.items()),
+        "dup_group": [(m.kind, m.group_key, m.ordinal) for m in dups],
+    }
 
 
 def _build_into(
@@ -308,60 +409,23 @@ def _build_into(
                 events.append(d.event)
             else:
                 quarantined += 1
-            for occ in d.idents:
-                n = occ.norm
-                ident_buffer.append(
-                    (
-                        occ.ordinal,
-                        occ.role,
-                        occ.scheme,
-                        occ.column,
-                        n.raw,
-                        n.input_form,
-                        n.normalized,
-                        int(n.missing),
-                        _j(list(n.transformations)),
-                        _j(list(n.issues)),
-                    )
-                )
-            raw_buffer.append(
-                (
-                    rec.ordinal,
-                    rec.line_start,
-                    rec.line_end,
-                    d.record_id,
-                    _j(list(rec.fields)),
-                    sha,
-                    "accepted" if d.accepted else "quarantined",
-                    _j(list(d.reasons)),
-                )
-            )
+            ident_buffer += ident_rows(d)
+            raw_buffer.append(raw_row(rec, d, sha))
             if len(raw_buffer) >= BATCH:
                 flush()
         flush()
         hook("after_records")
-        ingest.finalize_events(events)
-        notices: dict[str, list[str]] = {}
-        for e in events:
-            if e.notice_key:
-                notices.setdefault(e.notice_key, []).append(e.event_id)
-        conn.executemany(
-            "INSERT INTO notice VALUES (?,?,?,?)",
-            [(k, k.split(":", 1)[0], k.split(":", 1)[1], len(v)) for k, v in sorted(notices.items())],
-        )
-        for batch in _batched(_event_row(e) for e in events):
+        derived = derive_tables(events, compact)
+        conn.executemany("INSERT INTO notice VALUES (?,?,?,?)", derived["notice"])
+        for batch in _batched(derived["event"]):
             conn.executemany(_EVENT_INSERT, batch)
-        conn.executemany(
-            "INSERT INTO event_notice VALUES (?,?)", [(e.event_id, e.notice_key) for e in events if e.notice_key]
-        )
+        conn.executemany("INSERT INTO event_notice VALUES (?,?)", derived["event_notice"])
         conn.execute("INSERT INTO quarantine SELECT ordinal, reasons FROM raw_record WHERE disposition='quarantined'")
-        token_rows = ((tok, e.event_id) for e in events if e.original_doi for tok in title_tokens(e.title))
-        for batch in _batched(token_rows):
-            conn.executemany("INSERT OR IGNORE INTO title_token VALUES (?,?)", batch)
-        conn.execute("INSERT INTO token_df SELECT token, COUNT(*) FROM title_token GROUP BY token")
-        row_sha = {o: sha for o, _rid, sha in compact}
-        dups = ingest.duplicate_groups(compact, events, row_sha)
-        conn.executemany("INSERT INTO dup_group VALUES (?,?,?)", [(m.kind, m.group_key, m.ordinal) for m in dups])
+        for batch in _batched(derived["title_token"]):
+            conn.executemany("INSERT INTO title_token VALUES (?,?)", batch)
+        conn.executemany("INSERT INTO token_df VALUES (?,?)", derived["token_df"])
+        conn.executemany("INSERT INTO dup_group VALUES (?,?,?)", derived["dup_group"])
+        dups = derived["dup_group"]
         corroboration_summary: dict[str, Any] = {"manifests": []}
         if corroboration is not None:
             corroboration_summary = ingest_replay(conn, corroboration)
@@ -420,6 +484,14 @@ def _build_into(
         problems = structural_problems(conn)
         if problems:
             raise ImportFailure("ACCOUNTING_MISMATCH", "; ".join(problems))
+        hook("before_event_validation")
+        from citerift.retraction.export import EVENT_COLUMNS, event_from_row  # noqa: PLC0415
+        from citerift.retraction.schemas import event_problems  # noqa: PLC0415
+
+        rows = conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal")  # noqa: S608
+        invalid = event_problems([event_from_row(r) for r in rows])
+        if invalid:
+            raise ImportFailure("ARTIFACT_INVALID", f"{len(invalid)} event problems; first: {'; '.join(invalid[:3])}")
         conn.execute("PRAGMA journal_mode=DELETE")
     finally:
         conn.close()
@@ -487,7 +559,9 @@ def open_index(path: Path) -> sqlite3.Connection:
     """Open an index read-only and immutable; raise IndexUnavailable when it is missing or not an index."""
     if not path.is_file():
         raise IndexUnavailable("INDEX_MISSING", f"{path} does not exist")
-    uri = f"file:{path.resolve().as_posix()}?mode=ro&immutable=1"
+    resolved = path.resolve()
+    # The path is percent-encoded: '#', '?' and '%' in a file name must not end or alter the URI (C-16).
+    uri = f"file:{urllib.parse.quote(resolved.as_posix(), safe='/')}?mode=ro&immutable=1"
     try:
         conn = sqlite3.connect(uri, uri=True, isolation_level=None)
         conn.execute("PRAGMA query_only=ON")
@@ -503,10 +577,19 @@ def open_index(path: Path) -> sqlite3.Connection:
     except sqlite3.DatabaseError as exc:
         conn.close()
         raise IndexUnavailable("INDEX_CORRUPT", str(exc)) from None
-    if meta.get("policy_version") != POLICY_VERSION or "semantic_digest" not in meta:
+    digests_ok = all(_is_sha256(meta.get(k)) for k in ("artifact_digest", "semantic_digest"))
+    if meta.get("policy_version") != POLICY_VERSION or not digests_ok:
         conn.close()
         raise IndexUnavailable("INDEX_FORMAT_MISMATCH", f"policy {meta.get('policy_version')!r} or digests missing")
+    opened = [row[2] for row in conn.execute("PRAGMA database_list") if row[1] == "main"]
+    if not opened or Path(opened[0]).resolve() != resolved:
+        conn.close()
+        raise IndexUnavailable("INDEX_CORRUPT", f"SQLite opened {opened!r}, not {resolved}")
     return conn
+
+
+def _is_sha256(value: str | None) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdef" for c in value)
 
 
 def read_meta(conn: sqlite3.Connection) -> dict[str, str]:

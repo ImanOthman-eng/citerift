@@ -9,10 +9,13 @@ import base64
 import binascii
 import json
 import sqlite3
+import unicodedata
+import urllib.parse
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from citerift.contracts.formats import loads_strict
 from citerift.retraction import policy
 from citerift.retraction.canonical import canonical, digest
 from citerift.retraction.dates import TemporalEvidence
@@ -27,6 +30,15 @@ CR_SOURCE_ID = "crossref"
 DEFAULT_PAGE = 20
 MAX_PAGE = 100
 MAX_RELEVANCE_LISTED = 100  # relevance hits listed in issues; the full count is always reported
+MAX_NOTICE_HITS = 100  # notice hits listed; ``notice_hit_count`` always gives the full count
+_INVISIBLE = {"Cc", "Cf", "Zs", "Zl", "Zp"}
+
+
+def skeleton(text: str) -> str:
+    """Comparison form for relevance only (never an identifier): percent escapes decoded once, control,
+    format and space characters removed, ASCII letters folded. It finds encoded or hidden forms of a key."""
+    decoded = urllib.parse.unquote(text, errors="replace")
+    return ascii_fold("".join(c for c in decoded if unicodedata.category(c) not in _INVISIBLE))
 
 
 class QueryError(ValueError):
@@ -79,8 +91,12 @@ class Index:
         self.conn: sqlite3.Connection = open_index(path)
         self.meta = read_meta(self.conn)
         self.snapshot_id: str = self.meta["snapshot_id"]
-        self.receipt: Receipt = parse_receipt(json.loads(self.meta["receipt"]))
-        self.header: list[str] = json.loads(self.meta["header"])
+        try:
+            self.receipt: Receipt = parse_receipt(loads_strict(self.meta["receipt"]))
+            self.header: list[str] = loads_strict(self.meta["header"])
+        except (KeyError, ValueError) as exc:
+            self.conn.close()
+            raise IndexUnavailable("INDEX_CORRUPT", f"stored receipt or header unreadable: {exc}") from None
 
     def close(self) -> None:
         self.conn.close()
@@ -154,22 +170,39 @@ class Index:
         return out
 
     def relevance(self, keys: list[str]) -> list[dict[str, Any]]:
-        """Quarantined records and invalid identifier occurrences that contain a query key."""
+        """Quarantined records and invalid identifier occurrences that may concern a query key: the key is a
+        substring of the raw value (SPECIFICATION.md 10.3 step 7), the value normalizes to the key, or the key
+        appears in the value once percent escapes and invisible characters are removed (C-17). A hit marks a
+        possible coverage gap; it is never a match."""
         hits: list[dict[str, Any]] = []
-        id_columns = [self.header.index(col) for _, _, col in IDENT_FIELDS if col in self.header]
+        folded = [ascii_fold(k) for k in keys]
+        shapes = [skeleton(k) for k in keys]
+
+        def concerns(value: str, scheme: str | None) -> bool:
+            if any(k in ascii_fold(value) for k in folded) or any(k and k in skeleton(value) for k in shapes):
+                return True
+            norm = {"doi": normalize_doi, "pmid": normalize_pmid}.get(scheme or "")
+            return norm is not None and norm(value).normalized in keys
+
+        columns = [(self.header.index(col), scheme) for _, scheme, col in IDENT_FIELDS if col in self.header]
         for ordinal, fields_json in self.conn.execute(
             # CROSS JOIN keeps the (small) quarantine table outermost; the planner otherwise scans every record.
             "SELECT q.ordinal, r.fields FROM quarantine q CROSS JOIN raw_record r ON r.ordinal = q.ordinal "
             "ORDER BY q.ordinal"
         ):
             fields = json.loads(fields_json)
-            candidates = [fields[i] for i in id_columns] if len(fields) == len(self.header) else fields
-            if any(k in ascii_fold(f) for k in keys for f in candidates):
+            candidates = (
+                [(fields[i], scheme) for i, scheme in columns]
+                if len(fields) == len(self.header)
+                else [(f, None) for f in fields]
+            )
+            if any(concerns(f, scheme) for f, scheme in candidates):
                 hits.append({"code": "RELEVANT_QUARANTINE", "ordinal": ordinal})
-        for ordinal, column, raw in self.conn.execute(
-            "SELECT ordinal, column_name, raw FROM ident WHERE norm IS NULL AND missing = 0 ORDER BY ordinal, id"
+        for ordinal, column, scheme, raw in self.conn.execute(
+            "SELECT ordinal, column_name, scheme, raw FROM ident WHERE norm IS NULL AND missing = 0 "
+            "ORDER BY ordinal, id"
         ):
-            if any(k in ascii_fold(raw) for k in keys):
+            if concerns(raw, scheme):
                 hits.append({"code": "RELEVANT_INVALID_IDENTIFIER", "ordinal": ordinal, "column": column, "raw": raw})
         return hits
 
@@ -322,6 +355,7 @@ class Index:
                     anchor=f"doi:{c['original_doi']}",
                     source_ref=ref,
                     depends_on=tuple(c["depends_on"]),
+                    dependence=c["dependence"],
                 )
             )
         ev.evidence_set = policy.EvidenceSet(
@@ -350,7 +384,7 @@ def _cursor_token(snapshot_id: str, keys: dict[str, str | None], offset: int) ->
 
 def _cursor_offset(token: str, snapshot_id: str, keys: dict[str, str | None]) -> int:
     try:
-        data = json.loads(base64.urlsafe_b64decode(token + "=" * (-len(token) % 4)).decode("utf-8"))
+        data = loads_strict(base64.urlsafe_b64decode(token + "=" * (-len(token) % 4)).decode("utf-8"))
     except (binascii.Error, UnicodeDecodeError, ValueError):
         raise QueryError("CURSOR_INVALID", "cursor is not readable") from None
     if not isinstance(data, dict) or data.get("s") != snapshot_id or data.get("q") != digest(keys):
@@ -432,7 +466,8 @@ def render(
             "cursor": cursor,
             "next_cursor": _cursor_token(snapshot_id or "", ev.keys, nxt) if nxt < len(ev.events) else None,
         },
-        "notice_hits": ev.notice_hits,
+        "notice_hits": ev.notice_hits[:MAX_NOTICE_HITS],
+        "notice_hit_count": len(ev.notice_hits),
         "checked_sources": ev.checked_sources,
         "issues": ev.issues,
         "projection": projection,

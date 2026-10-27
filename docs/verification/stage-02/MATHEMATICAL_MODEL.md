@@ -163,4 +163,57 @@ guarantee.
 
 ## 9. Changes after freezing
 
-None yet.
+Sections 1 to 8 are left as frozen at `36696b3`. These changes, made while
+implementing (SPECIFICATION.md 16 gives the reasons), replace the definitions
+above where they differ:
+
+1. **Notice sets (§3).** `N_x` is the set of records with a notice-role
+   occurrence of `x` (notice DOI key `x`) whose original key of that scheme is
+   not `x`; the grouping key `n(r)` is not used for it. Same for PMIDs.
+2. **Two-identifier anchor (§3).** For a query `(x, y)` the anchor is `doi:x`
+   when `O_x ≠ ∅`, else `pmid:y`; `query_pair` bridging needs `O_x ≠ ∅`
+   (SPECIFICATION.md 16 items 4 and 10).
+3. **Propositions (§4).** The proposition of an assertion is
+   `π = (n, a)` for notice key `n` and anchor `a` (the code had grouped by `n`
+   alone). A group `G` of one `π` with `|T(G)| ≥ 2` is split by type into
+   `(n, a, t)` when every member is a Retraction Watch assertion, every type
+   of `G` has an RW event, and `e ≺ f ∨ f ≺ e` for every pair of events of
+   different types (INV-T1). Otherwise `G` stays one proposition, and a
+   conflict group when `|T(G)| ≥ 2`. Splitting adds
+   `SEQUENTIAL_EVENTS_SHARE_NOTICE`.
+4. **Reinstatement (§4, rule 7d).** `S ≠ ∅` and no supersession evidence ⇒
+   `uncertain`, null, also when `E \ S = ∅` (C-11).
+5. **Unknown origin (§4).** Let `support(P)` be the clear assertions of the
+   projected type. **INV-P8** `support(P)` made only of origin `unknown` ⇒
+   `P = uncertain/null` (`SUPPORT_ORIGIN_UNKNOWN`). Every Crossref assertion
+   records `dependence ∈ {known, unknown}`.
+
+With these definitions the invariants of §4 read:
+
+- **INV-P1** `P(E) = retracted` ⇒ `R ≠ ∅` and `R` has an assertion of known
+  origin.
+- **INV-P2** holds for added expression-of-concern or correction events on
+  another proposition, and for added RW events on the same notice that are
+  definitely ordered against every event of another type there. It does
+  **not** hold for an added event on the same notice whose order is not
+  established (equal dates, day-1 values, missing dates) or that comes from
+  another origin: that is a conflict group, and with no other clear
+  retraction the result is `conflicting`. This is the frozen conservative
+  rule, kept on purpose: an unordered pair on one notice is a disagreement
+  about what the notice is.
+- **INV-P3** `S ≠ ∅` and no supersession evidence ⇒ `uncertain`, null.
+
+Tests: `test_rde_policy_properties.py` (INV-P1, P2, P3, P8 over 400 seeded
+sets each, with a non-vacuity floor; fail-first run
+`evidence/fail-first/policy-properties-at-3a6f1eb.txt`),
+`test_rde_policy_regressions.py` (each change, including the unordered and
+publisher-disagreement cases that stay conflicts).
+
+6. **Evidence Tension (§7).** A report states `base_unresolved` when
+   `R(q, E)` has no settled value; a changed field of such a report is not
+   counted as fragility of a settled answer. `exclude_origin(o)` reports the
+   assertions whose dependence is `unknown` (`dependence_unknown`): they
+   cannot be shown independent of `o` and are kept, not removed.
+7. **Trimming (§2).** The outer whitespace removed before normalization is
+   Unicode whitespace that is not a control, plus tab, LF and CR; INV-N2's
+   `strip` means this set.

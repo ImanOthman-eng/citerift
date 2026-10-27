@@ -1,0 +1,13 @@
+{
+  "description": "Expected outputs of frozen cases that were found to contradict the owner's Stage 02 directive after the freeze (SPECIFICATION.md 16). The frozen files are not edited; this overlay replaces the named fields and keeps the frozen values beside them. Each amendment is stricter than the frozen expectation.",
+  "amendments": [
+    {
+      "case": "P04",
+      "file": "policy_cases.json",
+      "change": "C-11",
+      "reason": "Directive section 9: an unlinked reinstatement is uncertain/null, and a reinstatement needs original/target/supersession evidence before it can change a current-effect projection. A sole reinstatement record names no event it supersedes. Found by the scientific review pass.",
+      "frozen_expected": {"status": "verified_fact", "value": "reinstated"},
+      "expected": {"status": "uncertain", "value": null, "reasons": ["REINSTATEMENT_UNLINKED"]}
+    }
+  ]
+}

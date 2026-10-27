@@ -60,7 +60,7 @@ MIX = {
     "invalid": 100,
 }
 HIGH_FANOUT = 100
-INVALID = ("10.", "10.1234", "doi:", "0", "-1", "12a45", "10.5555/" + "x" * 300, "pmid:", " ", "10.abc/x")
+INVALID = ("10.", "10.1234", "doi:", "0", "-1", "12a45", "https://doi.org/", "pmid:", " ", "10.abc/x")
 
 
 def pct(values: list[float], q: float) -> float:

@@ -14,6 +14,7 @@
     "identity",
     "issues",
     "lookup_state",
+    "notice_hit_count",
     "notice_hits",
     "page",
     "policy_version",
@@ -386,7 +387,8 @@
             ]
           }
         }
-      }
+      },
+      "maxItems": 100
     },
     "checked_sources": {
       "type": "array",
@@ -420,6 +422,11 @@
     },
     "evidence_digest": {
       "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+    },
+    "notice_hit_count": {
+      "description": "Number of notice hits; at most 100 are listed in notice_hits (SPECIFICATION.md 16).",
+      "type": "integer",
+      "minimum": 0
     }
   },
   "allOf": [

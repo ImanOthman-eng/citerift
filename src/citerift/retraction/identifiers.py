@@ -27,6 +27,13 @@ _PUBMED_URL = (
 DOI_MAX_LENGTH = 512
 PMID_MAX_DIGITS = 9
 DOI_SOURCE_SENTINELS = ("unavailable", "Unavailable")
+# Outer whitespace that is trimmed: Unicode whitespace except control characters, with tab, LF and CR allowed.
+# Other controls Python treats as whitespace (U+000B, U+000C, U+001C to U+001F, U+0085) stay in the value and are
+# then rejected as controls, never silently removed (SPECIFICATION.md 16, C-18).
+TRIM_WHITESPACE = (
+    "\t\n\r\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a"
+    "\u2028\u2029\u202f\u205f\u3000"
+)
 
 
 @dataclass(frozen=True)
@@ -109,7 +116,7 @@ def _split_url(value: str) -> tuple[str | None, str | None, str | None]:
 def normalize_doi(raw: str, *, source_field: bool = False) -> Normalized:
     """Normalize one DOI value (SPECIFICATION.md 6.1). ``source_field`` accepts the RW missing sentinels."""
     transformations: list[str] = []
-    value = raw.strip()
+    value = raw.strip(TRIM_WHITESPACE)
     if value != raw:
         transformations.append("TRIM_OUTER_WHITESPACE")
     if value == "":
@@ -164,7 +171,7 @@ def normalize_pmid(raw: str, *, source_field: bool = False) -> Normalized:
     """Normalize one PMID value (SPECIFICATION.md 6.2). All-zero values are the RW missing sentinel."""
     del source_field  # the rules are the same for source fields and queries
     transformations: list[str] = []
-    value = raw.strip()
+    value = raw.strip(TRIM_WHITESPACE)
     if value != raw:
         transformations.append("TRIM_OUTER_WHITESPACE")
     if value == "":

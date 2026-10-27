@@ -679,13 +679,16 @@ Gates (02-A is the Master Plan gate; 02-B to 02-I refine it):
 
 The specification was frozen at `36696b3`. The changes below were made while
 implementing it; each is recorded with its reason and the test that holds it.
-None lowers a gate or a budget. Items 2, 4, 5, 9 and 10 change a result;
-items 2, 4, 9 and 10 are stricter than the frozen text, and item 5 removes an
-intervention whose outcome is fixed in advance.
+None lowers a gate or a budget. Items 2, 4, 5, 9 to 14 and 17 change a
+result; all of them except item 5 are stricter than the frozen text, and item 5
+removes an intervention whose outcome is fixed in advance. Items 11 to 22 come
+from the three review passes of `3a6f1eb` (TEST_RESULTS.md, review
+dispositions); their fail-first run is
+`evidence/fail-first/review-findings-at-3a6f1eb.txt`.
 
 | # | Section | Change | Reason | Held by |
 |---|---|---|---|---|
-| 1 | 10.1 | Tables `title_token` and `token_df` replace `issue_index` | The ambiguity baseline (12.2) needs title-token postings and document frequencies; issue lookups use the `quarantine` and `invalid_identifier` tables | `test_rde_import.py`, `test_rde_advisory.py` |
+| 1 | 10.1 | Tables `title_token` and `token_df` replace `issue_index` | The ambiguity baseline (12.2) needs title-token postings and document frequencies; issue lookups use the `quarantine` table and the `ident` table, whose invalid occurrences have a partial index | `test_rde_import.py`, `test_rde_advisory.py` |
 | 2 | 11.1 rule 8 | `no_record` carries no `retraction_date` assertion | A date of something not found is not a fact or an uncertainty about a date | `test_rde_policy_cases.py` |
 | 3 | 9 | Fatal replay code `CORROBORATION_INVALID`; the works not attempted after a stop are listed by DOI | A tampered or malformed replay bundle must fail the build, not load partially; an unattempted work must not read as "nothing found" | `test_rde_corroboration.py` |
 | 4 | 10.3 step 5 | `query_pair` bridging only when the DOI's own set `O_d` is non-empty | Without it a PMID-only partner could stand in for a DOI that names no work | `test_rde_lookup.py`, `test_rde_policy_cases.py` |
@@ -695,10 +698,35 @@ intervention whose outcome is fixed in advance.
 | 8 | 10.3 step 7 | At most 100 relevance hits are listed, followed by `RELEVANT_LIST_CAPPED` with the total | A short common key could otherwise return thousands of quarantine hits in one response | `test_rde_lookup.py` |
 | 9 | 11.1 rule 8 (C-9) | RW retraction events inside a type conflict also count for the date: if their dates differ from the clear ones the date is `uncertain` (`MULTIPLE_RETRACTION_DATES`) | Found on the real demonstration `10.1007/s13277-014-2995-5`: a publisher deposit that typed the 2015 notice as a correction had made the 2017 date a verified fact. The prebuild simulator was changed the same way. On the RW-only index no result changes (61,844 retracted originals); with the pinned Crossref replay one does | `test_rde_policy_regressions.py` (fails without the fix) |
 | 10 | 10.3 step 5 (C-10) | With both identifiers, the anchor is `doi:d` only when `O_d` is non-empty; otherwise `pmid:p` | Found while writing the test for item 4: a query pairing an unknown DOI with a known PMID reported an exact identity anchored at the unknown DOI, which no record carries. The simulator was changed the same way | `test_rde_spec_changes.py` (fails without the fix) |
+| 11 | 11.1 rule 7d (C-11) | Reinstatements alone, with no `supersedes` link to an event of the set, give `uncertain`, null (`REINSTATEMENT_UNLINKED`) instead of `verified_fact`, `reinstated`. Frozen case P04 is amended in `simulations/stage02/cases/post_freeze_amendments.json` (the frozen file is unchanged; both loaders check the frozen value before applying the amendment) | Directive 9: "Reinstatement requires adequate original/target/supersession evidence before it can change a current-effect projection"; "unlinked reinstatement: uncertain/null". On the RW-only index 275 originals change from `reinstated` to `uncertain` | `test_rde_policy_regressions.py`, `test_rde_policy_cases.py` (P04) |
+| 12 | 11.1 rule 7 (C-12) | Retraction Watch events of different types on one notice key are a sequence, not a conflict group, when every member is from RW and every pair of different types is definitely ordered; the reducer then reads them as separate propositions and adds `SEQUENTIAL_EVENTS_SHARE_NOTICE`. Undated RW copies join a sequence only if their type is already in it. Crossref relations and unordered pairs still form conflict groups | Directive 9: "A concern followed by retraction is not a conflict". Found on `10.1038/nature16193` (an expression of concern and a later retraction share one notice). On the RW-only index 34 originals change from `conflicting` to `retracted` and 4 to `uncertain` (`MIXED_CURRENT_EFFECT`) | `test_rde_policy_regressions.py` (sequence, unordered and publisher-disagreement cases); real cases R46, R47 |
+| 13 | 11.1 rule 7 (C-13) | The proposition key is the notice key together with the original anchor, as the frozen text says; the code had grouped by notice key alone | A notice shared by two originals is two propositions | `test_rde_policy_regressions.py` |
+| 14 | 8, 11.1 (C-14) | Each Crossref assertion records `dependence` (`known` or `unknown`); support that comes only from origin `unknown` gives `uncertain`, null (`SUPPORT_ORIGIN_UNKNOWN`); `exclude_origin` reports `dependence_unknown` | Directive 11: "Unknown origin/dependence remains unknown." No pinned replay assertion has origin `unknown`, so no real result changes | `test_rde_policy_regressions.py`, `test_rde_corroboration.py` |
+| 15 | 10.1, 10.4 (C-15) | A build never replaces an artifact of the same snapshot with different digests (`ARTIFACT_EXISTS`); every event is validated against the event schema and the manifest against its schema before publishing (`ARTIFACT_INVALID`); `verify` recomputes the derived tables (`ident`, `notice`, `event_notice`, `title_token`, `token_df`, duplicate groups) from the stored raw records and compares the manifest; `cr_attempt` rows are in the export, and the canonical lines of `cr_attempt` and `cr_assertion` leave out `retrieved_at` and `attempt_id` | A rebuild with another replay bundle had deleted earlier evidence; tampering with a derived table passed `verify`; two acquisitions of the same evidence must have the same semantic digest | `test_rde_review_findings.py` (A1 to A3) |
+| 16 | 10.1 (C-16) | The read-only URI percent-encodes the path, and the open checks that SQLite opened that file (`PRAGMA database_list`), else `INDEX_CORRUPT`; stored digests must be 64 hexadecimal characters | A `#`, `?` or `%` in the path could end the URI early, open another file or add URI parameters such as `mode=rwc` | `test_rde_review_findings.py` (S2) |
+| 17 | 10.3 step 7 (C-17) | Relevance hits also match a quarantined or invalid value that normalizes to the key, or that contains the key once percent escapes and invisible characters are removed | A value with `%2F`, an embedded zero-width space or a broken percent escape was not reported as a possible coverage gap, so the lookup said "not found". A hit is never a match | `test_rde_review_findings.py` (S1); real case R43 |
+| 18 | 6.1, 6.2 (C-18) | The outer trim set is Unicode whitespace that is not a control character, plus tab, LF and CR; U+000B, U+000C, U+001C to U+001F and U+0085 stay in the value and are rejected | Directive: "Reject/flag controls ... without silent repaired exact matches"; Python's `str.strip()` had removed these controls silently | `test_rde_review_findings.py` (S6) |
+| 19 | 10.3 output | `notice_hits` lists at most 100 entries and `notice_hit_count` gives the total | Same bound as item 8, for notice-role hits | `test_rde_review_findings.py` (A7) |
+| 20 | 11.2 | The tension report states `base_unresolved` when the base result has no settled value (uncertain, conflicting or unavailable) | A change in a view of an unresolved base is not evidence of fragility of a settled answer | `test_rde_review_findings.py` (Sci-7) |
+| 21 | schemas | The 200-character limit on a temporal `raw` value is removed; a successful corroboration attempt must have HTTP status 200 | A real date cell longer than 200 characters produced an event that failed its own schema | `test_rde_review_findings.py` (A1, S4) |
+| 22 | 9 | The Crossref client follows no redirect, enforces a total read deadline, honours `Retry-After` (seconds or HTTP date) on 429 and 5xx and records an unreadable one as a failure; replay payloads must be regular files within the size cap, strict JSON (no duplicate keys, NaN or Infinity) and with a hexadecimal hash | Security review findings S3, S4, S5, S7 and S8 | `test_rde_review_findings.py` |
 
-The prebuild simulator was also updated after the engine was written, for the
-reinstatement rule and `query_pair` (before the real-case comparison) and for
-C-9 and C-10 (after it). The real-case outcomes in
-`tests/stage02/fixtures/real_cases.json` were derived with the updated
-simulator; the simulator therefore is not fully independent of the engine on
-those three points (SIMULATION_REPORT.md).
+Four sentences of the frozen text were also edited in place in `e4de42b`,
+together with the first engine code, instead of being listed here: the
+`CR_UNSUPPORTED` row of the issue table (5.1), the BOM rule (`utf-8-sig`,
+5.2), the reader check of the stored digests (10.1), and the definition of
+`N_d` and `N_p` by notice-role occurrence (10.3 step 2). `git diff 36696b3 --
+docs/verification/stage-02/SPECIFICATION.md` shows them.
+
+The prebuild simulator was changed after the freeze in four commits:
+`e4de42b`, together with the first engine code, for notice-role matching by
+the raw notice key (10.3 step 2), the reinstatement rule of any origin
+(11.1 rule 7a) and item 4; `7a7d6b6` for item 9; `3a6f1eb` for item 10; and
+the review batch for items 11 to 14 and 18. The frozen expected outputs
+(`simulations/stage02/cases/`) were not changed; the one amended expectation
+(P04, item 11) is applied from `post_freeze_amendments.json`. The real-case
+outcomes in `tests/stage02/fixtures/real_cases.json` were derived with the
+changed simulator, so on those points the simulator is not independent of the
+engine (SIMULATION_REPORT.md 5). The effect of items 11 to 14 on every
+original key of the snapshot is in `evidence/policy-impact-rw.json` and
+`evidence/policy-impact-cr.json`.

@@ -201,12 +201,19 @@ def classes(c: Corpus) -> dict[str, Callable[[], Iterator[dict[str, Any]]]]:
         return int(parts[2]) if len(parts) == 3 and parts[2].isdigit() else None
 
     def historical() -> Iterator[dict[str, Any]]:
+        # Queried by the original identifier when the record has one, so the date reaches the projection;
+        # otherwise by the notice DOI, which checks only that the event keeps the date (class name says so).
         for o in sorted(c.rows):
             r = c.rows[o]
-            nd = sim.doi_key(r["RetractionDOI"])
             years = [year(r[f]) for f in ("OriginalPaperDate", "RetractionDate")]
-            if nd and any(y is not None and y < 1900 for y in years):
-                yield {"doi": nd}
+            if any(y is not None and y < 1900 for y in years):
+                nd = sim.doi_key(r["RetractionDOI"])
+                if c.d[o]:
+                    yield {"doi": c.d[o]}
+                elif c.p[o]:
+                    yield {"pmid": c.p[o]}
+                elif nd:
+                    yield {"doi": nd}
 
     def no_original_ids() -> Iterator[dict[str, Any]]:
         for o in sorted(c.rows):
@@ -216,13 +223,34 @@ def classes(c: Corpus) -> dict[str, Callable[[], Iterator[dict[str, Any]]]]:
                 yield {"doi": nd}
 
     def invalid_identifier() -> Iterator[dict[str, Any]]:
+        # Only keys found in no role: the lookup is then no_record, and the invalid occurrence must turn it into a
+        # coverage gap (review finding: a key that is a notice elsewhere tested the notice path instead).
         for o in c.invalid:
             r = c.rows[o]
             if sim.pmid_invalid_raw(r["OriginalPaperPubMedID"]):
-                yield {"pmid": r["OriginalPaperPubMedID"].lstrip("0")}
+                key = r["OriginalPaperPubMedID"].lstrip("0")
+                if sim.pmid_key(key) and key not in c.oracle["pmid"]:
+                    yield {"pmid": key}
             for col in ("RetractionDOI", "OriginalPaperDOI"):
                 if sim.doi_invalid_raw(r[col]):
-                    yield {"doi": r[col][r[col].find("10.") :]}
+                    key = sim.doi_key(r[col][r[col].find("10.") :].strip())
+                    if key and key not in c.oracle["doi"]:
+                        yield {"doi": key}
+
+    def sequence_on_shared_notice() -> Iterator[dict[str, Any]]:
+        # Two RW records of different types under one notice DOI with different dates (SPECIFICATION.md 16, C-12).
+        for key, orig in originals_by_doi(c):
+            notices = {sim.doi_key(c.rows[o]["RetractionDOI"]) for o in orig}
+            dates = {c.rows[o]["RetractionDate"][:10] for o in orig}
+            if (
+                len(orig) == 2
+                and len(set(natures(c, orig))) == 2
+                and len(notices) == 1
+                and None not in notices
+                and len(dates) == 2
+                and all(day(o) != 1 for o in orig)
+            ):
+                yield {"doi": key}
 
     def same_signature() -> Iterator[dict[str, Any]]:
         for key, orig in originals_by_doi(c):
@@ -268,10 +296,11 @@ def classes(c: Corpus) -> dict[str, Callable[[], Iterator[dict[str, Any]]]]:
                 and len({c.rows[x]["RetractionDate"][:10] for x in o}) == 2
             )
         ),
-        "historical_original_date": historical,
+        "historical_date_event_via_notice_query": historical,
         "no_original_identifiers": no_original_ids,
         "invalid_identifier_relevance": invalid_identifier,
         "same_event_signature": same_signature,
+        "sequence_on_shared_notice": sequence_on_shared_notice,
         "absent_doi": lambda: iter([{"doi": absent["doi"][0]}, {"doi": absent["doi"][1]}]),
         "absent_pmid": lambda: iter([{"pmid": absent["pmid"][0]}]),
     }
@@ -292,7 +321,18 @@ def absent_classes(c: Corpus) -> dict[str, str]:
         sec = {c.p[o] for o in orig} - {None}
         if len(sec) == 1 and any(c.d[o] is None for o in c.oracle["pmid"][next(iter(sec))]["original"]):
             secondary_bridge += 1
+    historical_with_ids = sum(
+        1
+        for o, r in c.rows.items()
+        if (c.d[o] or c.p[o])
+        and any(
+            (y := r[f].split(" ", 1)[0].split("/")[-1]).isdigit() and int(y) < 1900
+            for f in ("OriginalPaperDate", "RetractionDate")
+        )
+    )
     return {
+        "historical_date_with_original_identifier": f"{historical_with_ids} pre-1900 records with an original DOI or "
+        "PMID; the 1756 record is reached only through its notice DOI",
         "identical_duplicate": f"{identical} identical records in the snapshot",
         "record_id_reused": f"{len(ids) - len(set(ids))} repeated Record IDs in the snapshot",
         "pmid_cooccurrence_bridge": f"{secondary_bridge} DOIs with a PMID-only partner record "

@@ -8,6 +8,7 @@
   "additionalProperties": false,
   "required": [
     "base",
+    "base_unresolved",
     "baseline",
     "diagnostic_classes",
     "interventions",
@@ -209,6 +210,14 @@
           },
           "not_applicable_reason": {
             "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+          },
+          "dependence_unknown": {
+            "description": "exclude_origin: kept assertions whose dependence on the excluded origin is unknown (SPECIFICATION.md 8); they stay in the view but are not shown to be independent.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
           }
         },
         "allOf": [
@@ -292,6 +301,10 @@
     },
     "note": {
       "type": "string"
+    },
+    "base_unresolved": {
+      "description": "The base result is not a verified fact (uncertain, conflicting or unavailable). With no changed field the report is then not a control: the base is already unresolved and no intervention can resolve it.",
+      "type": "boolean"
     }
   }
 }

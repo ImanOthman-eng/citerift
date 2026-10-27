@@ -37,12 +37,15 @@ CROSSREF_TYPES = {
     "reinstatement": "reinstated",
 }
 RW = "retraction-watch"
+TRIM = "".join(
+    c for c in map(chr, range(0x110000)) if c.isspace() and (unicodedata.category(c) != "Cc" or c in "\t\n\r")
+)
 DEFAULTS = {"op": "", "np": "", "nd": "", "od": "", "rd": "3/12/2015 0:00", "pd": "6/15/2010 0:00"}
 
 
 def doi_key(raw: str) -> str | None:
     """Bare DOI only (the cases use no URL forms). ASCII case folding, no Unicode changes."""
-    s = raw.strip()
+    s = raw.strip(TRIM)
     if s in ("", "unavailable", "Unavailable"):
         return None
     if not re.fullmatch(r"10\.[0-9]{4,9}(\.[0-9]+)*/.+", s, flags=re.ASCII | re.DOTALL):
@@ -53,19 +56,19 @@ def doi_key(raw: str) -> str | None:
 
 
 def doi_invalid_raw(raw: str) -> bool:
-    s = raw.strip()
+    s = raw.strip(TRIM)
     return s not in ("", "unavailable", "Unavailable") and doi_key(s) is None
 
 
 def pmid_key(raw: str) -> str | None:
-    s = raw.strip()
+    s = raw.strip(TRIM)
     if not re.fullmatch(r"[1-9][0-9]{0,8}", s, flags=re.ASCII):
         return None
     return s
 
 
 def pmid_invalid_raw(raw: str) -> bool:
-    s = raw.strip()
+    s = raw.strip(TRIM)
     return s != "" and set(s) != {"0"} and pmid_key(s) is None
 
 
@@ -275,11 +278,28 @@ def reduce(ev: Evidence) -> dict[str, Any]:
             )
         return out
     typed = [a for a in ev.rw + ev.crossref if a.type is not None]
+    # Post-freeze changes (SPECIFICATION.md 16): a proposition is (notice, anchor) (C-13), and RW events of
+    # different types on one notice that are pairwise definitely ordered are a sequence, not a conflict (C-12).
+    groups: dict[str, list[Assertion]] = {}
+    for a in typed:
+        groups.setdefault(f"{a.notice}|{a.anchor}" if a.notice else a.aid, []).append(a)
+    key_of: dict[str, str] = {}
+    sequential = False
+    for k, members in groups.items():
+        evs = [m for m in members if m.event_id]
+        seq = len({m.type for m in members}) > 1 and all(m.origin == RW for m in members)
+        seq = seq and {m.type for m in members} == {m.type for m in evs}
+        seq = seq and all(
+            before(x.date, y.date) or before(y.date, x.date) for x in evs for y in evs if x.type != y.type
+        )
+        sequential |= seq
+        for m in members:
+            key_of[m.aid] = f"{k}#{m.type}" if seq else k
     props: dict[str, set[str]] = {}
     for a in typed:
-        props.setdefault(a.notice or a.aid, set()).add(a.type or "")
+        props.setdefault(key_of[a.aid], set()).add(a.type or "")
     conflict = {k for k, v in props.items() if len(v) > 1}
-    clear = [a for a in typed if (a.notice or a.aid) not in conflict]
+    clear = [a for a in typed if key_of[a.aid] not in conflict]
     rw_events = ev.rw
     out["definite_orderings"] = sorted(
         [a.aid, b.aid] for a in rw_events for b in rw_events if a is not b and before(a.date, b.date)
@@ -308,10 +328,17 @@ def reduce(ev: Evidence) -> dict[str, Any]:
         out["alternatives"] = sorted({t for k in conflict for t in props[k]})
     else:
         ctypes = {a.type for a in clear}
-        if len(ctypes) == 1:
+        if ctypes == {"reinstated"}:  # post-freeze change C-11: no superseded event recorded
+            status, reasons = "uncertain", ["REINSTATEMENT_UNLINKED"]
+        elif len(ctypes) == 1:
             status, value = "verified_fact", ctypes.pop()
         else:
             status, reasons = "uncertain", ["MIXED_CURRENT_EFFECT"]
+    if sequential:
+        reasons = [*reasons, "SEQUENTIAL_EVENTS_SHARE_NOTICE"]
+    if value is not None and all(a.origin == "unknown" for a in clear if a.type == value):
+        status, value = "uncertain", None  # post-freeze change C-14
+        reasons = [*reasons, "SUPPORT_ORIGIN_UNKNOWN"]
     out.update(status=status, value=value, reasons=reasons)
     if value is not None:
         support = [a for a in clear if a.type == value]
@@ -322,9 +349,7 @@ def reduce(ev: Evidence) -> dict[str, Any]:
         # Post-freeze change (SPECIFICATION.md 16, C-9): RW retraction events inside a type conflict also bear on
         # the date, so a differing date there makes the date uncertain.
         conflicted = [
-            a.date
-            for a in typed
-            if a.type == "retracted" and a.event_id is not None and (a.notice or a.aid) in conflict
+            a.date for a in typed if a.type == "retracted" and a.event_id is not None and key_of[a.aid] in conflict
         ]
         if dates:
             dates = dates + conflicted
@@ -396,6 +421,19 @@ def result(ev: Evidence) -> dict[str, Any]:
     }
 
 
+def load_cases(name: str) -> list[dict[str, Any]]:
+    """Frozen cases, with the post-freeze amendments (``cases/post_freeze_amendments.json``) applied."""
+    cases: list[dict[str, Any]] = json.loads((HERE / "cases" / name).read_text(encoding="utf-8"))["cases"]
+    amendments = json.loads((HERE / "cases" / "post_freeze_amendments.json").read_text(encoding="utf-8"))
+    for a in amendments["amendments"]:
+        if a["file"] == name:
+            [case] = [c for c in cases if c["id"] == a["case"]]
+            if any(case["expected"][k] != v for k, v in a["frozen_expected"].items()):
+                raise ValueError(f"amendment {a['change']} does not match frozen case {a['case']}")
+            case["expected"] = {**case["expected"], **a["expected"]}
+    return cases
+
+
 def run_policy(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     out = []
     for case in cases:
@@ -437,8 +475,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
-    policy = json.loads((HERE / "cases" / "policy_cases.json").read_text(encoding="utf-8"))["cases"]
-    tension = json.loads((HERE / "cases" / "tension_cases.json").read_text(encoding="utf-8"))["cases"]
+    policy = load_cases("policy_cases.json")
+    tension = load_cases("tension_cases.json")
     report = {
         "simulator": "simulations/stage02/policy_simulator.py",
         "synthetic": True,

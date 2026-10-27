@@ -52,7 +52,15 @@ CASE_DEFAULTS = {"op": "", "np": "", "nd": "", "od": "", "rd": "3/12/2015 0:00",
 
 
 def load_cases(name: str) -> list[dict[str, Any]]:
+    """Frozen cases with the post-freeze amendments of ``cases/post_freeze_amendments.json`` applied."""
     cases: list[dict[str, Any]] = json.loads((CASES / name).read_text(encoding="utf-8"))["cases"]
+    amendments = json.loads((CASES / "post_freeze_amendments.json").read_text(encoding="utf-8"))["amendments"]
+    by_id = {c["id"]: c for c in cases}
+    for a in amendments:
+        if a["file"] == name:
+            case = by_id[a["case"]]
+            assert all(case["expected"][k] == v for k, v in a["frozen_expected"].items()), a["case"]
+            case["expected"] = {**case["expected"], **a["expected"]}
     return cases
 
 

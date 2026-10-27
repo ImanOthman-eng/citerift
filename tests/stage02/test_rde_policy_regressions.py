@@ -64,3 +64,94 @@ def test_rde_equal_dates_survive_a_type_conflict(tmp_path: Path) -> None:
     idx = S.build_rows(tmp_path, rows, PUBLISHER_CALLS_2015_A_CORRECTION)
     date = lookup(idx, "10.5555/o")["projection"]["retraction_date"]
     assert date["status"] == "verified_fact" and date["value"] == "2015-07-24"
+
+
+def _event(record_id: str, nature: str, date: str, **values: str) -> dict[str, str]:
+    return S.row(**{"Record ID": record_id, "RetractionNature": nature, "RetractionDate": date} | values)
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("first", "second"),
+    [
+        (("Expression of concern", "7/2/2019 0:00"), ("Retraction", "11/22/2019 0:00")),
+        (("Correction", "3/15/2016 0:00"), ("Retraction", "5/9/2018 0:00")),
+        (("Retraction", "5/9/2018 0:00"), ("Correction", "3/15/2020 0:00")),
+    ],
+)
+def test_rde_ordered_events_on_one_notice_are_a_sequence(
+    tmp_path: Path, first: tuple[str, str], second: tuple[str, str]
+) -> None:
+    """C-12, found by the scientific review on 10.1038/nature16193: RW records an expression of concern or a
+    correction and a later retraction under one notice DOI. A concern followed by a retraction is not a
+    conflict, and a later correction does not undo a retraction (directive section 9)."""
+    shared = {"OriginalPaperDOI": "10.5555/o", "RetractionDOI": "10.5555/n"}
+    rows = [_event("1", *first, **shared), _event("2", *second, **shared)]
+    proj = lookup(S.build_rows(tmp_path, rows), "10.5555/o")["projection"]
+    assert (proj["retraction_status"]["status"], proj["retraction_status"]["value"]) == ("verified_fact", "retracted")
+    assert "SEQUENTIAL_EVENTS_SHARE_NOTICE" in proj["basis"]["reasons"]
+    assert proj["basis"]["conflict_groups"] == []
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize("dates", [("3/12/2015 0:00", "3/12/2015 0:00"), ("7/1/2019 0:00", "11/1/2019 0:00")])
+def test_rde_unordered_events_on_one_notice_stay_a_conflict(tmp_path: Path, dates: tuple[str, str]) -> None:
+    """Equal dates, or day-1 dates whose order is not established, keep the frozen P20 conflict."""
+    shared = {"OriginalPaperDOI": "10.5555/o", "RetractionDOI": "10.5555/n"}
+    rows = [_event("1", "Expression of concern", dates[0], **shared), _event("2", "Retraction", dates[1], **shared)]
+    proj = lookup(S.build_rows(tmp_path, rows), "10.5555/o")["projection"]
+    assert proj["retraction_status"]["status"] == "conflicting"
+    assert "SEQUENTIAL_EVENTS_SHARE_NOTICE" not in proj["basis"]["reasons"]
+
+
+@pytest.mark.regression
+def test_rde_publisher_disagreement_on_an_ordered_sequence_is_still_a_conflict(tmp_path: Path) -> None:
+    shared = {"OriginalPaperDOI": "10.5555/o", "RetractionDOI": "10.5555/n"}
+    rows = [_event("1", "Expression of concern", "7/2/2019 0:00", **shared)]
+    rows.append(_event("2", "Retraction", "11/22/2019 0:00", **shared))
+    deposit = [
+        {"original": "10.5555/o", "updated_by": [{"DOI": "10.5555/n", "type": "correction", "source": "publisher"}]}
+    ]
+    proj = lookup(S.build_rows(tmp_path, rows, deposit), "10.5555/o")["projection"]
+    assert proj["retraction_status"]["status"] == "conflicting"
+
+
+@pytest.mark.regression
+def test_rde_sole_reinstatement_is_unlinked(tmp_path: Path) -> None:
+    """C-11 (frozen case P04 amended): a reinstatement that names no superseded event sets no current effect."""
+    rows = [_event("1", "Reinstatement", "3/12/2015 0:00", OriginalPaperDOI="10.5555/o", RetractionDOI="10.5555/r")]
+    status = lookup(S.build_rows(tmp_path, rows), "10.5555/o")["projection"]["retraction_status"]
+    assert (status["status"], status["value"]) == ("uncertain", None)
+    assert "supersedes" in status["reason"]
+
+
+@pytest.mark.regression
+def test_rde_proposition_includes_the_anchor(tmp_path: Path) -> None:
+    """C-13: SPECIFICATION.md 11.1 rule 7 groups by (notice key, original anchor). A bridged PMID-only
+    retraction sharing a notice key with the DOI's own correction is a different proposition."""
+    rows = [
+        _event(
+            "1",
+            "Correction",
+            "3/12/2015 0:00",
+            OriginalPaperDOI="10.5555/o",
+            OriginalPaperPubMedID="77",
+            RetractionDOI="10.5555/n",
+        ),
+        _event("2", "Retraction", "3/12/2015 0:00", OriginalPaperPubMedID="77", RetractionDOI="10.5555/n"),
+    ]
+    out = lookup(S.build_rows(tmp_path, rows), "10.5555/o")
+    assert out["identity"]["status"] == "bridged"
+    status = out["projection"]["retraction_status"]
+    assert (status["status"], status["value"]) == ("verified_fact", "retracted")
+    assert out["projection"]["basis"]["conflict_groups"] == []
+
+
+@pytest.mark.regression
+def test_rde_unknown_origin_alone_does_not_establish_a_value(tmp_path: Path) -> None:
+    """C-14: a retraction supported only by a relation of unknown origin is uncertain (INV-P1)."""
+    rows = [_event("1", "Correction", "3/12/2015 0:00", OriginalPaperDOI="10.5555/o", RetractionDOI="10.5555/c")]
+    unlabeled = [{"original": "10.5555/o", "updated_by": [{"DOI": "10.5555/r", "type": "retraction"}]}]
+    proj = lookup(S.build_rows(tmp_path, rows, unlabeled), "10.5555/o")["projection"]
+    assert (proj["retraction_status"]["status"], proj["retraction_status"]["value"]) == ("uncertain", None)
+    assert "SUPPORT_ORIGIN_UNKNOWN" in proj["basis"]["reasons"]

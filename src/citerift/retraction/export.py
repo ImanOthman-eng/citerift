@@ -11,8 +11,8 @@ from pathlib import Path
 from typing import Any
 
 from citerift.retraction.canonical import canonical, sha256_text
-from citerift.retraction.schemas import validate_event_record
-from citerift.retraction.source import ImportFailure, check_bytes, iter_records, parse_receipt
+from citerift.retraction.schemas import event_problems
+from citerift.retraction.source import ImportFailure, RawRecord, check_bytes, iter_records, parse_receipt
 
 EVENT_COLUMNS = (
     "event_id",
@@ -49,6 +49,7 @@ CR_COLUMNS = (
     "origin",
     "channel",
     "depends_on",
+    "dependence",
     "retrieved_at",
     "locator",
     "payload_sha256",
@@ -57,6 +58,21 @@ CR_COLUMNS = (
     "updated_raw",
 )
 _JSON_CR_COLUMNS = {"depends_on", "updated_raw"}
+CR_ATTEMPT_COLUMNS = (
+    "attempt_id",
+    "work_doi",
+    "url",
+    "outcome",
+    "failure",
+    "http_status",
+    "retrieved_at",
+    "payload_sha256",
+    "bytes",
+    "attempts",
+    "channel",
+)
+# Acquisition times (and the attempt id, which hashes one) are not semantic content (SPECIFICATION.md 7.2, 10.4).
+_ACQUISITION_ONLY = {"retrieved_at", "attempt_id"}
 
 
 def event_from_row(row: tuple[Any, ...]) -> dict[str, Any]:
@@ -148,10 +164,14 @@ def iter_artifact_lines(conn: sqlite3.Connection) -> Iterator[tuple[str, str | N
         yield canonical({"kind": "quarantine", "ordinal": row[0], "reasons": json.loads(row[1])}), None
     for row in conn.execute("SELECT kind, group_key, ordinal FROM dup_group ORDER BY kind, group_key, ordinal"):
         yield canonical({"kind": "dup_group", "group": row[0], "group_key": row[1], "ordinal": row[2]}), None
+    for row in conn.execute(f"SELECT {', '.join(CR_ATTEMPT_COLUMNS)} FROM cr_attempt ORDER BY attempt_id"):  # noqa: S608
+        attempt = dict(zip(CR_ATTEMPT_COLUMNS, row, strict=True))
+        kept = {k: v for k, v in attempt.items() if k not in _ACQUISITION_ONLY}
+        yield canonical({"kind": "cr_attempt", **attempt}), canonical({"kind": "cr_attempt", **kept})
     for row in conn.execute(f"SELECT {', '.join(CR_COLUMNS)} FROM cr_assertion ORDER BY assertion_id"):  # noqa: S608
         cr = cr_from_row(row)
-        line = canonical({"kind": "cr_assertion", **cr})
-        yield line, line
+        kept = {k: v for k, v in cr.items() if k not in _ACQUISITION_ONLY}
+        yield canonical({"kind": "cr_assertion", **cr}), canonical({"kind": "cr_assertion", **kept})
 
 
 def compute_digests(conn: sqlite3.Connection) -> dict[str, str]:
@@ -191,9 +211,80 @@ def export(conn: sqlite3.Connection, out: Path) -> dict[str, Any]:
     return digest
 
 
-def verify(conn: sqlite3.Connection, source: Path | None = None) -> dict[str, Any]:
-    """Integrity, accounting, digest, schema and semantic checks of an index (and, with ``source``,
-    a record-by-record comparison with the source bytes)."""
+def derivation_problems(conn: sqlite3.Connection) -> list[str]:
+    """Recompute every derived table from the stored raw records and compare (SPECIFICATION.md 16, C-15).
+
+    The artifact digest covers the raw records, events, quarantine, duplicate groups and Crossref tables; the
+    identifier, notice and title-token tables are derived, so they are checked by recomputation instead."""
+    from citerift.retraction import ingest  # noqa: PLC0415
+    from citerift.retraction.store import derive_tables, ident_rows, raw_row  # noqa: PLC0415
+
+    problems: list[str] = []
+    header = _header(conn)
+    stored_idents = conn.execute(
+        "SELECT ordinal, role, scheme, column_name, raw, input_form, norm, missing, transformations, issues "
+        "FROM ident ORDER BY ordinal, id"
+    )
+    pending = next(stored_idents, None)
+    events: list[Any] = []
+    compact: list[tuple[int, str, str]] = []
+    for stored in conn.execute("SELECT * FROM raw_record ORDER BY ordinal"):
+        rec = RawRecord(stored[0], stored[1], stored[2], tuple(json.loads(stored[4])))
+        d = ingest.dispose(rec, header)
+        sha = rec.sha256
+        if raw_row(rec, d, sha) != tuple(stored):
+            problems.append(f"RAW_RECORD_INCONSISTENT at record {rec.ordinal}")
+        have = []
+        while pending is not None and pending[0] == rec.ordinal:
+            have.append(tuple(pending))
+            pending = next(stored_idents, None)
+        if have != ident_rows(d):
+            problems.append(f"IDENT_INCONSISTENT at record {rec.ordinal}")
+        compact.append((rec.ordinal, d.record_id, sha))
+        if d.event is not None:
+            events.append(d.event)
+    if pending is not None:
+        problems.append(f"IDENT_INCONSISTENT: rows for unknown record {pending[0]}")
+    derived = derive_tables(events, compact)
+    queries = {
+        "notice": "SELECT * FROM notice ORDER BY notice_key",
+        "event": f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY event_id",  # noqa: S608
+        "event_notice": "SELECT event_id, notice_key FROM event_notice ORDER BY event_id, notice_key",
+        "title_token": "SELECT token, event_id FROM title_token ORDER BY token, event_id",
+        "token_df": "SELECT token, df FROM token_df ORDER BY token",
+        "dup_group": "SELECT kind, group_key, ordinal FROM dup_group ORDER BY kind, group_key, ordinal",
+    }
+    for table, query in queries.items():
+        if [tuple(r) for r in conn.execute(query)] != [tuple(r) for r in derived[table]]:
+            problems.append(f"DERIVED_TABLE_INCONSISTENT: {table}")
+    quarantine = conn.execute("SELECT ordinal, reasons FROM quarantine ORDER BY ordinal").fetchall()
+    expected = conn.execute(
+        "SELECT ordinal, reasons FROM raw_record WHERE disposition = 'quarantined' ORDER BY ordinal"
+    ).fetchall()
+    if quarantine != expected:
+        problems.append("DERIVED_TABLE_INCONSISTENT: quarantine")
+    return problems
+
+
+def manifest_problems(meta: dict[str, str], manifest: dict[str, Any] | None) -> list[str]:
+    """The index against the build manifest published beside it."""
+    if manifest is None:
+        return ["MANIFEST_MISSING: no build manifest beside the index"]
+    problems = []
+    if manifest.get("snapshot_id") != meta.get("snapshot_id"):
+        problems.append("MANIFEST_MISMATCH: snapshot_id")
+    found = manifest.get("digests")
+    recorded: dict[str, Any] = found if isinstance(found, dict) else {}
+    for key in ("artifact_digest", "semantic_digest", "export_lines"):
+        if recorded.get(key) != meta.get(key):
+            problems.append(f"MANIFEST_MISMATCH: {key} manifest {recorded.get(key)} index {meta.get(key)}")
+    return problems
+
+
+def verify(conn: sqlite3.Connection, source: Path | None = None, manifest_path: Path | None = None) -> dict[str, Any]:
+    """Integrity, accounting, digest, derivation, schema and semantic checks of an index; with ``manifest_path``
+    a comparison with the build manifest published beside it; with ``source`` a record-by-record comparison
+    with the source bytes."""
     from citerift.retraction.store import structural_problems  # noqa: PLC0415 - store imports this module
 
     problems = structural_problems(conn)
@@ -202,12 +293,16 @@ def verify(conn: sqlite3.Connection, source: Path | None = None) -> dict[str, An
     for key in ("artifact_digest", "semantic_digest", "export_lines"):
         if meta.get(key) != digests[key]:
             problems.append(f"DIGEST_MISMATCH: {key} stored {meta.get(key)} recomputed {digests[key]}")
-    schema_checked = 0
-    for row in conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal"):  # noqa: S608
-        ev = event_from_row(row)
-        for p in validate_event_record(ev):
-            problems.append(f"EVENT_INVALID {ev['event_id']}: {p}")
-        schema_checked += 1
+    if manifest_path is not None:
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            manifest = None
+        problems += manifest_problems(meta, manifest if isinstance(manifest, dict) else None)
+    problems += derivation_problems(conn)
+    events = [event_from_row(r) for r in conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal")]  # noqa: S608
+    problems += event_problems(events)
+    schema_checked = len(events)
     source_checked = None
     if source is not None:
         receipt = parse_receipt(json.loads(meta["receipt"]))
@@ -256,6 +351,8 @@ def diff(old: sqlite3.Connection, new: sqlite3.Connection, limit: int = 100) -> 
     unchanged = a & b
     changed_ids = sorted(rid for rid in a_ids.keys() & b_ids.keys() if a_ids[rid] != b_ids[rid])
     only_old_ids = sorted(a_ids.keys() - b_ids.keys())
+    sa, sb = _semantic_lines(old), _semantic_lines(new)
+    old_header, new_header = _header(old), _header(new)
     return {
         "old_snapshot": old_meta.get("snapshot_id"),
         "new_snapshot": new_meta.get("snapshot_id"),
@@ -272,4 +369,20 @@ def diff(old: sqlite3.Connection, new: sqlite3.Connection, limit: int = 100) -> 
             "reinstatement, a removed retraction or any assertion about a paper."
         ),
         "semantic_digest_equal": old_meta.get("semantic_digest") == new_meta.get("semantic_digest"),
+        "semantic_lines": {
+            "unchanged": sum((sa & sb).values()),
+            "added": sum((sb - sa).values()),
+            "absent_in_new": sum((sa - sb).values()),
+        },
+        "header": {
+            "equal": old_header == new_header,
+            "same_columns": sorted(old_header) == sorted(new_header),
+            "columns_added": sorted(set(new_header) - set(old_header)),
+            "columns_absent_in_new": sorted(set(old_header) - set(new_header)),
+        },
     }
+
+
+def _semantic_lines(conn: sqlite3.Connection) -> Counter[str]:
+    """Multiset of semantic line hashes (record order, ids and column order do not matter)."""
+    return Counter(sha256_text(semantic) for _line, semantic in iter_artifact_lines(conn) if semantic is not None)

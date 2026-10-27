@@ -26,6 +26,10 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+# Trimmed outer whitespace: whitespace that is not a control, plus tab, LF and CR (spec 16, C-18).
+OUTER_SPACE = "".join(
+    chr(i) for i in range(0x110000) if chr(i).isspace() and (unicodedata.category(chr(i)) != "Cc" or chr(i) in "\t\n\r")
+)
 ORACLE_VERSION = "citerift-rde-oracle-stream/1.0.0"
 
 FIELD_LIMIT = 1 << 20  # 1 MiB (spec 5.1 FIELD_TOO_LARGE)
@@ -116,7 +120,7 @@ def _validate_doi(candidate: str) -> tuple[str | None, str, str]:
 
 def normalize_doi(raw: str) -> tuple[str | None, str, str]:
     """Return (key or None, status, reason) for a source DOI field (spec 6.1)."""
-    text = raw.strip()
+    text = raw.strip(OUTER_SPACE)
     if text == "":
         return None, MISSING, "DOI_EMPTY"
     if text in DOI_SENTINELS:
@@ -167,7 +171,7 @@ def _classify_pmid_digits(text: str) -> tuple[str | None, str, str]:
 
 def normalize_pmid(raw: str) -> tuple[str | None, str, str]:
     """Return (key or None, status, reason) for a source PMID field (spec 6.2)."""
-    text = raw.strip()
+    text = raw.strip(OUTER_SPACE)
     folded_head = ascii_lower(text[:8])
     for scheme in ("https://", "http://"):
         if folded_head.startswith(scheme):

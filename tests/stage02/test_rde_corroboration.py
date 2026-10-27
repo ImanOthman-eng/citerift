@@ -229,11 +229,18 @@ def test_rde_replay_lineage_and_dependence(tmp_path: Path) -> None:
     idx = S.build_rows(tmp_path, rows, [{"original": "10.5555/o", "updated_by": entries}])
     with Index(idx) as ix:
         cr = {r[0]: r[1:] for r in ix.conn.execute("SELECT pointer, origin, depends_on, mapped_type FROM cr_assertion")}
+        dependence = dict(ix.conn.execute("SELECT pointer, dependence FROM cr_assertion"))
         ev = ix.gather("10.5555/o")
         rep = tension.report(ev, ix.snapshot_id)
     assert cr["/message/updated-by/0"] == ("retraction-watch", '["retraction-watch"]', "retracted")
     assert cr["/message/updated-by/1"] == ("publisher", "[]", "retracted")
     assert cr["/message/updated-by/2"] == ("unknown", "[]", None)  # unmapped types carry no type
+    # Only the RW-sourced relation has a known dependence; a publisher deposit may rest on the same notice.
+    assert dependence == {
+        "/message/updated-by/0": "known",
+        "/message/updated-by/1": "unknown",
+        "/message/updated-by/2": "unknown",
+    }
     out = lookup(idx, "10.5555/o")
     basis = out["projection"]["basis"]
     assert sorted(basis["origins"]) == ["publisher", "retraction-watch"]
@@ -247,9 +254,15 @@ def test_rde_replay_lineage_and_dependence(tmp_path: Path) -> None:
         if r["intervention"] == "exclude_origin" and r["origins"] == ["retraction-watch"]
     )
     assert no_rw["result"]["retraction_status.value"] == "retracted"  # the publisher relation alone remains
+    assert no_rw["dependence_unknown"] == no_rw_kept(rep, no_rw)  # the publisher and unlabeled relations
     assert sorted(no_rw["affected_assertions"]) == sorted(
         a for a in (s["assertion_id"] for s in rep["source_pointers"]) if a.endswith("/event_type") or a.endswith("-u0")
     )
+
+
+def no_rw_kept(rep: dict[str, Any], result: dict[str, Any]) -> list[str]:
+    ids = [s["assertion_id"] for s in rep["source_pointers"]]
+    return sorted(a for a in ids if a not in result["affected_assertions"])
 
 
 @pytest.mark.integration

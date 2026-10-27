@@ -54,6 +54,7 @@ def set_digest(es: policy.EvidenceSet) -> str:
                         "anchor": a.anchor,
                         "bridged": a.bridged,
                         "depends_on": list(a.depends_on),
+                        "dependence": a.dependence,
                         "notice_date": None if a.notice_date is None else a.notice_date.to_json(),
                     }
                     for a in es.assertions
@@ -140,6 +141,8 @@ def run_intervention(es: policy.EvidenceSet, name: str, origins: tuple[str, ...]
         "reason_codes": reduced["basis"]["reasons"],
         "evidence_digest": set_digest(v),
     }
+    if name == "exclude_origin":
+        out["dependence_unknown"] = sorted(a.assertion_id for a in v.assertions if a.dependence == "unknown")
     if not applicable:
         out["not_applicable_reason"] = {
             "collapse_shared_origin": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
@@ -234,6 +237,7 @@ def report(
         "diagnostic_classes": diagnostic_classes(results),
         "origins": origins_in(es),
         "single_origin": len(origins_in(es)) == 1,
+        "base_unresolved": base["compare"]["retraction_status.status"] != "verified_fact",
         "baseline": event_log_baseline(ev),
         "source_pointers": [
             {"assertion_id": a.assertion_id, "source_ref": a.source_ref}

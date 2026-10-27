@@ -9,9 +9,12 @@ with doubles.
 from __future__ import annotations
 
 import datetime as dt
+import email.utils
 import hashlib
 import json
+import os
 import sqlite3
+import stat
 import time
 import urllib.error
 import urllib.parse
@@ -87,16 +90,42 @@ class Transport(Protocol):
     def get(self, url: str, timeout: float, max_bytes: int) -> Response: ...
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    """Every redirect is refused: the 3xx response is returned as it is and recorded as HTTP_ERROR."""
+
+    def redirect_request(self, *_args: Any, **_kwargs: Any) -> None:
+        return None
+
+
+_OPENER = urllib.request.build_opener(_NoRedirect)
+_CHUNK = 64 * 1024
+
+
 class UrllibTransport:
-    """The real transport: one HTTPS GET with a read cap. Redirects are followed by urllib (Crossref sends none)."""
+    """The real transport: one HTTPS GET to the approved endpoint, no redirects, a read cap and a deadline for
+    the whole request (the socket timeout alone bounds each read, not the total)."""
+
+    def __init__(self, clock: Callable[[], float] = time.monotonic):
+        self.clock = clock
 
     def get(self, url: str, timeout: float, max_bytes: int) -> Response:
         if not url.startswith(API_BASE):
             raise ValueError(f"refusing a request outside {API_BASE}")
+        deadline = self.clock() + timeout
         request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})  # noqa: S310
         try:
-            with urllib.request.urlopen(request, timeout=timeout) as resp:  # noqa: S310
-                body = resp.read(max_bytes + 1)
+            with _OPENER.open(request, timeout=timeout) as resp:
+                chunks: list[bytes] = []
+                size = 0
+                while size <= max_bytes:
+                    if self.clock() > deadline:
+                        raise TransportTimeout("request deadline passed while reading")
+                    chunk = resp.read1(min(_CHUNK, max_bytes + 1 - size))  # returns what has arrived
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+                    size += len(chunk)
+                body = b"".join(chunks)
                 headers = {k.lower(): v for k, v in resp.headers.items()}
                 return Response(resp.status, headers, body[:max_bytes], len(body) > max_bytes)
         except urllib.error.HTTPError as exc:
@@ -129,7 +158,7 @@ class PayloadProblem(Exception):
 def check_payload(body: bytes, doi_key: str) -> dict[str, Any]:
     """Validate a work payload; raise PayloadProblem(INVALID_JSON | SCHEMA_INVALID | DOI_MISMATCH)."""
     try:
-        data = loads_strict(body.decode("utf-8"))
+        data = _strict_json(body.decode("utf-8"))
     except (UnicodeDecodeError, ValueError) as exc:
         raise PayloadProblem("INVALID_JSON", str(exc)[:200]) from None
     if not isinstance(data, dict) or data.get("status") != "ok" or data.get("message-type") != "work":
@@ -147,6 +176,8 @@ def check_payload(body: bytes, doi_key: str) -> dict[str, Any]:
         raise PayloadProblem("SCHEMA_INVALID", "updated-by entries need string DOI and type")
     if "type" in message and not isinstance(message["type"], str):
         raise PayloadProblem("SCHEMA_INVALID", "message.type is not a string")
+    if any(_has_float(u.get("updated")) for u in updated_by):
+        raise PayloadProblem("SCHEMA_INVALID", "updated-by dates must use integers (canonical JSON has no floats)")
     return data
 
 
@@ -162,6 +193,23 @@ class WorkRecord:
     payload_sha256: str | None = None
     bytes: int | None = None
     waits: list[float] = field(default_factory=list)
+
+
+def _retry_after(headers: dict[str, str], now: Callable[[], dt.datetime]) -> tuple[bool, float | None]:
+    """(header present, seconds to wait or None when unreadable). RFC 9110: delay-seconds or an HTTP-date."""
+    value = headers.get("retry-after")
+    if value is None:
+        return False, None
+    seconds = _header_float(headers, "retry-after")
+    if seconds is not None:
+        return True, seconds
+    try:
+        when = email.utils.parsedate_to_datetime(value.strip())
+    except (TypeError, ValueError, IndexError):
+        return True, None
+    if when.tzinfo is None:
+        return True, None
+    return True, max(0.0, (when - now()).total_seconds())
 
 
 def _header_float(headers: dict[str, str], name: str) -> float | None:
@@ -193,6 +241,7 @@ def enrich(
     clock: Callable[[], float] = time.monotonic,
     sleep: Callable[[float], None] = time.sleep,
     now: Callable[[], str] = _utc_now,
+    wall: Callable[[], dt.datetime] = lambda: dt.datetime.now(dt.UTC),
 ) -> dict[str, Any]:
     """Fetch up to ``limits.max_works`` works and write a replay bundle (manifest.json and payloads/)."""
     transport = transport or UrllibTransport()
@@ -258,11 +307,12 @@ def enrich(
                 if resp.status == 403:
                     rec.failure, stopped = "ACCESS_DENIED", "ACCESS_DENIED"
                     break
-                if resp.status == 429:
-                    transient = "RATE_LIMITED"
-                    retry_after = _header_float(resp.headers, "retry-after")
-                elif resp.status >= 500:
-                    transient = "SERVER_ERROR"
+                if resp.status == 429 or resp.status >= 500:
+                    transient = "RATE_LIMITED" if resp.status == 429 else "SERVER_ERROR"
+                    present, retry_after = _retry_after(resp.headers, wall)
+                    if present and retry_after is None:  # a wait was asked for but cannot be read: do not guess
+                        rec.failure = transient
+                        break
                 elif resp.status != 200:
                     rec.failure = "HTTP_ERROR"
                     break
@@ -308,28 +358,55 @@ def enrich(
 # Replay -----------------------------------------------------------------------------------------------
 
 
-def _origin(source: Any) -> tuple[str, list[str]]:
+def _origin(source: Any) -> tuple[str, list[str], str]:
+    """(origin, known dependencies, dependence). Only an RW-sourced relation has a known dependence; a
+    publisher deposit may rest on the same notice, so its dependence stays unknown (SPECIFICATION.md 8)."""
     if source == "retraction-watch":
-        return "retraction-watch", ["retraction-watch"]
+        return "retraction-watch", ["retraction-watch"], "known"
     if source == "publisher":
-        return "publisher", []
-    return "unknown", []
+        return "publisher", [], "unknown"
+    return "unknown", [], "unknown"
+
+
+def _reject_constant(name: str) -> Any:
+    raise ValueError(f"{name} is not a JSON number")
+
+
+def _strict_json(text: str) -> Any:
+    """Duplicate keys, NaN and infinities rejected."""
+    data = loads_strict(text)
+    json.loads(text, parse_constant=_reject_constant)
+    return data
+
+
+def _has_float(value: Any) -> bool:
+    if isinstance(value, float):
+        return True
+    if isinstance(value, dict):
+        return any(_has_float(v) for v in value.values())
+    if isinstance(value, list):
+        return any(_has_float(v) for v in value)
+    return False
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
+    """Read and check a replay manifest; every problem is CORROBORATION_INVALID (no partial load)."""
+    from citerift.retraction import schemas  # noqa: PLC0415 - schemas loads the contract set lazily
+
     try:
-        data = loads_strict(path.read_text(encoding="utf-8"))
+        data = _strict_json(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, ValueError) as exc:
         raise ImportFailure("CORROBORATION_INVALID", f"manifest unreadable: {exc}") from None
     if not isinstance(data, dict) or data.get("manifest_version") != MANIFEST_VERSION:
         raise ImportFailure("CORROBORATION_INVALID", "manifest_version is not 1.0.0")
-    works = data.get("works")
-    if not isinstance(works, list):
-        raise ImportFailure("CORROBORATION_INVALID", "works is not a list")
+    problems = schemas.validate(data, schemas.CORROBORATION)
+    if problems:
+        raise ImportFailure("CORROBORATION_INVALID", f"manifest schema: {problems[0]}")
+    works = data["works"]
     seen: set[str] = set()
     for w in works:
-        if not isinstance(w, dict) or not isinstance(w.get("doi"), str) or w.get("outcome") not in ("ok", "failed"):
-            raise ImportFailure("CORROBORATION_INVALID", "malformed work entry")
+        if w["url"] != work_url(w["doi"]):
+            raise ImportFailure("CORROBORATION_INVALID", f"work {w['doi'][:200]} has a URL other than its endpoint")
         if normalize_doi(w["doi"]).normalized != w["doi"]:
             raise ImportFailure("CORROBORATION_INVALID", f"work DOI is not a normalized key: {w['doi'][:200]}")
         if w["doi"] in seen:
@@ -339,7 +416,26 @@ def load_manifest(path: Path) -> dict[str, Any]:
             raise ImportFailure("CORROBORATION_INVALID", f"unknown failure reason {w.get('failure')!r}")
         if w["outcome"] == "ok" and not isinstance(w.get("retrieved_at"), str):
             raise ImportFailure("CORROBORATION_INVALID", "successful work without retrieved_at")
+        if w["outcome"] == "ok" and w.get("http_status") != 200:
+            raise ImportFailure("CORROBORATION_INVALID", f"work {w['doi'][:200]} is ok without HTTP 200")
     return data
+
+
+def _read_payload(path: Path, max_bytes: int) -> bytes:
+    """A regular file inside the bundle (no link), at most ``max_bytes``."""
+    try:
+        info = os.lstat(path)
+        if not stat.S_ISREG(info.st_mode):
+            raise ImportFailure("CORROBORATION_INVALID", f"payload {path.name} is not a regular file")
+        if info.st_size > max_bytes:
+            raise ImportFailure("CORROBORATION_INVALID", f"payload {path.name} exceeds {max_bytes} bytes")
+        with path.open("rb") as handle:
+            body = handle.read(max_bytes + 1)
+    except OSError as exc:
+        raise ImportFailure("CORROBORATION_INVALID", f"payload missing: {exc}") from None
+    if len(body) > max_bytes:
+        raise ImportFailure("CORROBORATION_INVALID", f"payload {path.name} exceeds {max_bytes} bytes")
+    return body
 
 
 def replay_assertions(manifest: dict[str, Any], base: Path) -> tuple[list[tuple[Any, ...]], list[dict[str, Any]]]:
@@ -365,13 +461,9 @@ def replay_assertions(manifest: dict[str, Any], base: Path) -> tuple[list[tuple[
         )
         if w["outcome"] != "ok":
             continue
-        if not isinstance(sha, str) or len(sha) != 64:
+        if not isinstance(sha, str) or len(sha) != 64 or any(c not in "0123456789abcdef" for c in sha):
             raise ImportFailure("CORROBORATION_INVALID", f"work {w['doi']} has no payload hash")
-        path = base / "payloads" / f"{sha}.json"
-        try:
-            body = path.read_bytes()
-        except OSError as exc:
-            raise ImportFailure("CORROBORATION_INVALID", f"payload missing: {exc}") from None
+        body = _read_payload(base / "payloads" / f"{sha}.json", Limits().max_bytes)
         if hashlib.sha256(body).hexdigest() != sha or (w.get("bytes") is not None and len(body) != w["bytes"]):
             raise ImportFailure("CORROBORATION_INVALID", f"payload hash or size mismatch for {w['doi']}")
         try:
@@ -388,7 +480,7 @@ def replay_assertions(manifest: dict[str, Any], base: Path) -> tuple[list[tuple[
         }
         for i, entry in enumerate(message.get("updated-by", [])):
             nd = normalize_doi(entry["DOI"]).normalized
-            origin, depends = _origin(entry.get("source"))
+            origin, depends, dependence = _origin(entry.get("source"))
             assertions.append(
                 {
                     **common,
@@ -403,6 +495,7 @@ def replay_assertions(manifest: dict[str, Any], base: Path) -> tuple[list[tuple[
                     "source_label": entry.get("source") if isinstance(entry.get("source"), str) else None,
                     "origin": origin,
                     "depends_on": depends,
+                    "dependence": dependence,
                     "pointer": f"/message/updated-by/{i}",
                     "record_id_raw": None if entry.get("record-id") is None else str(entry.get("record-id")),
                     "updated_raw": entry.get("updated"),
@@ -422,6 +515,7 @@ def replay_assertions(manifest: dict[str, Any], base: Path) -> tuple[list[tuple[
                 "source_label": None,
                 "origin": "crossref",
                 "depends_on": [],
+                "dependence": "unknown",
                 "pointer": "/message",
                 "record_id_raw": None,
                 "updated_raw": None,
@@ -449,7 +543,7 @@ def ingest_replay(conn: sqlite3.Connection, manifest_path: Path) -> dict[str, An
         if role_hit.fetchone() is None:
             continue
         conn.execute(
-            "INSERT INTO cr_assertion VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO cr_assertion VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
                 a["assertion_id"],
                 a["predicate"],
@@ -463,6 +557,7 @@ def ingest_replay(conn: sqlite3.Connection, manifest_path: Path) -> dict[str, An
                 a["origin"],
                 a["channel"],
                 canonical(a["depends_on"]),
+                a["dependence"],
                 a["retrieved_at"],
                 a["locator"],
                 a["payload_sha256"],

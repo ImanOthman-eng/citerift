@@ -67,8 +67,8 @@
       ],
       "properties": {
         "raw": {
-          "type": "string",
-          "maxLength": 200
+          "description": "The source value as read; no length limit beyond the import field limit (SPECIFICATION.md 5.4: a field problem never quarantines).",
+          "type": "string"
         },
         "kind": {
           "enum": [

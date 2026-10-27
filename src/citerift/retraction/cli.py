@@ -19,7 +19,7 @@ from citerift.retraction.corroboration import enrich
 from citerift.retraction.export import diff, export, verify
 from citerift.retraction.query import Index, event_detail, lookup, normalize_query
 from citerift.retraction.source import ImportFailure, load_receipt
-from citerift.retraction.store import IndexUnavailable, build
+from citerift.retraction.store import IndexUnavailable, build, manifest_path_for
 
 EXIT_OK, EXIT_INTERNAL, EXIT_USAGE, EXIT_INVALID, EXIT_UNAVAILABLE, EXIT_VERIFY, EXIT_IMPORT, EXIT_ENRICH = (
     0,
@@ -145,7 +145,7 @@ def run(argv: list[str] | None = None) -> int:
             return EXIT_OK
         if args.command == "verify":
             with _open(args.index) as ix:
-                report = verify(ix.conn, args.source)
+                report = verify(ix.conn, args.source, manifest_path_for(args.index))
             _emit(report)
             return EXIT_OK if report["ok"] else EXIT_VERIFY
         if args.command == "export":

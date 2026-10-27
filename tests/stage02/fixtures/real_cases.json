@@ -1,5 +1,5 @@
 {
-  "agree": 49,
+  "agree": 50,
   "attribution": "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 120 records; other columns left empty. Cited as the source requests; not a redistribution of the dataset.",
   "cases": [
     {
@@ -329,31 +329,33 @@
         "date_status": null,
         "date_value": null,
         "events": 1,
-        "evidence_digest": "723a9013663ed8825bda5a3094c0278868ae2f92c2ae688ba8de26a740895338",
+        "evidence_digest": "3438eb76801e2e343be852c787fa75b3bd0bdd618e4f1e44d6c2137f7c426463",
         "identity": "exact",
         "reasons": [
-          "SOURCE_RECORDED_TYPE"
+          "REINSTATEMENT_UNLINKED"
         ],
         "record_ids": [
           "43262"
         ],
         "role": "original",
         "state": "matched",
-        "status": "verified_fact",
-        "value": "reinstated"
+        "status": "uncertain",
+        "value": null
       },
       "expected_simulator": {
         "date_status": null,
         "date_value": null,
         "events": 1,
         "identity": "exact",
-        "reasons": [],
+        "reasons": [
+          "REINSTATEMENT_UNLINKED"
+        ],
         "record_ids": [
           "43262"
         ],
         "state": "matched",
-        "status": "verified_fact",
-        "value": "reinstated"
+        "status": "uncertain",
+        "value": null
       },
       "id": "R08",
       "query": {
@@ -373,31 +375,33 @@
         "date_status": null,
         "date_value": null,
         "events": 1,
-        "evidence_digest": "e80ee2d2ada7cca19e8d8932abba33fad1d3a4d406882d67f7a1f25427872028",
+        "evidence_digest": "b66e48c4d6c40ccf65a68b8d3ce8e34641950741892397b9265d01a1015df038",
         "identity": "exact",
         "reasons": [
-          "SOURCE_RECORDED_TYPE"
+          "REINSTATEMENT_UNLINKED"
         ],
         "record_ids": [
           "54010"
         ],
         "role": "original",
         "state": "matched",
-        "status": "verified_fact",
-        "value": "reinstated"
+        "status": "uncertain",
+        "value": null
       },
       "expected_simulator": {
         "date_status": null,
         "date_value": null,
         "events": 1,
         "identity": "exact",
-        "reasons": [],
+        "reasons": [
+          "REINSTATEMENT_UNLINKED"
+        ],
         "record_ids": [
           "54010"
         ],
         "state": "matched",
-        "status": "verified_fact",
-        "value": "reinstated"
+        "status": "uncertain",
+        "value": null
       },
       "id": "R09",
       "query": {
@@ -1906,7 +1910,7 @@
     },
     {
       "agree": true,
-      "class": "historical_original_date",
+      "class": "historical_date_event_via_notice_query",
       "engine_full_index": {
         "date_status": null,
         "date_value": null,
@@ -2056,56 +2060,6 @@
       "engine_full_index": {
         "date_status": null,
         "date_value": null,
-        "events": 1,
-        "evidence_digest": "6b00cb43c545ecc03565c998e3067965e0f16a71140f5757d003600094c70d12",
-        "identity": "none",
-        "reasons": [
-          "NOTICE_ONLY"
-        ],
-        "record_ids": [
-          "70687"
-        ],
-        "role": "notice",
-        "state": "notice_only",
-        "status": "uncertain",
-        "value": null
-      },
-      "expected_simulator": {
-        "date_status": null,
-        "date_value": null,
-        "events": 1,
-        "identity": "none",
-        "reasons": [
-          "NOTICE_ONLY"
-        ],
-        "record_ids": [
-          "70687"
-        ],
-        "state": "notice_only",
-        "status": "uncertain",
-        "value": null
-      },
-      "id": "R43",
-      "query": {
-        "doi": "10.1007/978-3-030-00524-5_9"
-      },
-      "record_ids": [
-        "70687",
-        "70689",
-        "70690"
-      ],
-      "source_records": [
-        "record=3176",
-        "record=3177",
-        "record=3179"
-      ]
-    },
-    {
-      "agree": true,
-      "class": "invalid_identifier_relevance",
-      "engine_full_index": {
-        "date_status": null,
-        "date_value": null,
         "events": 0,
         "evidence_digest": "f948b63f6b774a1546486c816f3cbf93aad1a9b0b9e96990c3cb4419d0a94f33",
         "identity": "none",
@@ -2131,7 +2085,7 @@
         "status": "uncertain",
         "value": null
       },
-      "id": "R44",
+      "id": "R43",
       "query": {
         "pmid": "69063"
       },
@@ -2179,7 +2133,7 @@
         "status": "verified_fact",
         "value": "retracted"
       },
-      "id": "R45",
+      "id": "R44",
       "query": {
         "doi": "10.1007/s10644-024-09687-w"
       },
@@ -2227,7 +2181,7 @@
         "status": "verified_fact",
         "value": "expression_of_concern"
       },
-      "id": "R46",
+      "id": "R45",
       "query": {
         "doi": "10.1016/j.toxrep.2021.07.020"
       },
@@ -2238,6 +2192,110 @@
       "source_records": [
         "record=36432",
         "record=36437"
+      ]
+    },
+    {
+      "agree": true,
+      "class": "sequence_on_shared_notice",
+      "engine_full_index": {
+        "date_status": "verified_fact",
+        "date_value": "2024-01-10",
+        "events": 2,
+        "evidence_digest": "24f4414c03736d219a466cb1843a812a48bf5eb95ae96f5f0a53f76e72ddbae9",
+        "identity": "exact",
+        "reasons": [
+          "SEQUENTIAL_EVENTS_SHARE_NOTICE",
+          "SOURCE_RECORDED_RETRACTION"
+        ],
+        "record_ids": [
+          "52758",
+          "52765"
+        ],
+        "role": "original",
+        "state": "matched",
+        "status": "verified_fact",
+        "value": "retracted"
+      },
+      "expected_simulator": {
+        "date_status": "verified_fact",
+        "date_value": "2024-01-10",
+        "events": 2,
+        "identity": "exact",
+        "reasons": [
+          "SEQUENTIAL_EVENTS_SHARE_NOTICE",
+          "SOURCE_RECORDED_RETRACTION"
+        ],
+        "record_ids": [
+          "52758",
+          "52765"
+        ],
+        "state": "matched",
+        "status": "verified_fact",
+        "value": "retracted"
+      },
+      "id": "R46",
+      "query": {
+        "doi": "10.1007/s13204-021-02123-9"
+      },
+      "record_ids": [
+        "52758",
+        "52765"
+      ],
+      "source_records": [
+        "record=20965",
+        "record=20972"
+      ]
+    },
+    {
+      "agree": true,
+      "class": "sequence_on_shared_notice",
+      "engine_full_index": {
+        "date_status": "verified_fact",
+        "date_value": "2014-03-15",
+        "events": 2,
+        "evidence_digest": "500ab22efda9f86dc3269b5105cb26723272a668c2479fe7c52c7b4b7611bb1b",
+        "identity": "exact",
+        "reasons": [
+          "SEQUENTIAL_EVENTS_SHARE_NOTICE",
+          "SOURCE_RECORDED_RETRACTION"
+        ],
+        "record_ids": [
+          "17738",
+          "17739"
+        ],
+        "role": "original",
+        "state": "matched",
+        "status": "verified_fact",
+        "value": "retracted"
+      },
+      "expected_simulator": {
+        "date_status": "verified_fact",
+        "date_value": "2014-03-15",
+        "events": 2,
+        "identity": "exact",
+        "reasons": [
+          "SEQUENTIAL_EVENTS_SHARE_NOTICE",
+          "SOURCE_RECORDED_RETRACTION"
+        ],
+        "record_ids": [
+          "17738",
+          "17739"
+        ],
+        "state": "matched",
+        "status": "verified_fact",
+        "value": "retracted"
+      },
+      "id": "R47",
+      "query": {
+        "doi": "10.1016/j.chemolab.2009.07.011"
+      },
+      "record_ids": [
+        "17738",
+        "17739"
+      ],
+      "source_records": [
+        "record=55834",
+        "record=55835"
       ]
     },
     {
@@ -2271,7 +2329,7 @@
         "status": "uncertain",
         "value": "not_found_in_checked_sources"
       },
-      "id": "R47",
+      "id": "R48",
       "query": {
         "doi": "10.5555/oracle-absent-000001"
       },
@@ -2309,7 +2367,7 @@
         "status": "uncertain",
         "value": "not_found_in_checked_sources"
       },
-      "id": "R48",
+      "id": "R49",
       "query": {
         "doi": "10.5555/oracle-absent-000002"
       },
@@ -2347,7 +2405,7 @@
         "status": "uncertain",
         "value": "not_found_in_checked_sources"
       },
-      "id": "R49",
+      "id": "R50",
       "query": {
         "pmid": "990000000"
       },
@@ -2356,6 +2414,7 @@
     }
   ],
   "classes_absent_in_snapshot": {
+    "historical_date_with_original_identifier": "0 pre-1900 records with an original DOI or PMID; the 1756 record is reached only through its notice DOI",
     "identical_duplicate": "0 identical records in the snapshot",
     "pmid_cooccurrence_bridge": "0 DOIs with a PMID-only partner record (0 PMIDs shared by DOI and DOI-less records)",
     "record_id_reused": "0 repeated Record IDs in the snapshot"
@@ -2371,7 +2430,7 @@
     "doi_with_divergent_pmids",
     "dual_query_compatible",
     "dual_query_incompatible",
-    "historical_original_date",
+    "historical_date_event_via_notice_query",
     "invalid_identifier_relevance",
     "mixed_non_retraction",
     "no_original_identifiers",
@@ -2385,11 +2444,12 @@
     "retraction_and_correction",
     "retraction_single",
     "same_event_signature",
+    "sequence_on_shared_notice",
     "shared_notice",
     "two_retraction_dates"
   ],
   "fixture": "rw_real_subset.csv",
-  "fixture_bytes": 19711,
+  "fixture_bytes": 19793,
   "fixture_fields": [
     "Record ID",
     "Title",
@@ -2403,8 +2463,8 @@
     "OriginalPaperPubMedID",
     "RetractionNature"
   ],
-  "fixture_records": 68,
-  "fixture_sha256": "10a43cc4f202061b488a0bdc6b86723df592840a364ec6e2da79c7a008d02baa",
+  "fixture_records": 69,
+  "fixture_sha256": "5bf5262ea983f94c1b57d42ee70caf3554707c20000896f56cca9242ef1808b0",
   "method": "Classes chosen deterministically; related records located with the independent oracle; expected outcomes from the prebuild policy simulator; engine answers from the full index; agent review of each case against SPECIFICATION.md. No human adjudication.",
-  "total": 49
+  "total": 50
 }

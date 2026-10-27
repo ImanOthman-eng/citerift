@@ -118,6 +118,28 @@ def validate_event_record(ev: dict[str, Any]) -> list[ContractProblem]:
     return problems or event_semantics(ev)
 
 
+PARALLEL_MIN_EVENTS = 20_000
+
+
+def _event_problems(events: list[dict[str, Any]]) -> list[str]:
+    return [f"EVENT_INVALID {ev['event_id']}: {p}" for ev in events for p in validate_event_record(ev)]
+
+
+def event_problems(events: list[dict[str, Any]]) -> list[str]:
+    """Schema and semantic problems of every event. A full snapshot is checked in worker processes (spawned, so
+    no open database handle is inherited); small sets in this process."""
+    workers = min(4, os.cpu_count() or 1)
+    if len(events) < PARALLEL_MIN_EVENTS or workers < 2:
+        return _event_problems(events)
+    import multiprocessing  # noqa: PLC0415 - only a full build needs it
+    from concurrent.futures import ProcessPoolExecutor  # noqa: PLC0415
+
+    size = -(-len(events) // (workers * 4))
+    chunks = [events[i : i + size] for i in range(0, len(events), size)]
+    with ProcessPoolExecutor(max_workers=workers, mp_context=multiprocessing.get_context("spawn")) as pool:
+        return [p for part in pool.map(_event_problems, chunks) for p in part]
+
+
 # Lookups ------------------------------------------------------------------------------------------------
 
 
