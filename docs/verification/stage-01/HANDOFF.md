@@ -13,7 +13,12 @@
   returned to `IN_PROGRESS` the same day for the owner-requested corrective
   pass (directive `cmsg_018VCB51nDHP6HXmLU4ea5yPBWBK4PLfVSRHeA5DdXjWLz`;
   FEASIBILITY_REPORT.md §15).
-- Current evidence revision: `32712fa3b1311a38efbf2f854a3c0dbaed076b17`, recorded as the implementation
+- Second evidence revision `32712fa`, verified on 2026-10-27 and returned to
+  `IN_PROGRESS` the same day, before acceptance, for the owner-approved
+  strengthening pass (message
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPS6zrHggGn25MJPgeq5XsHC`; FEASIBILITY_REPORT.md
+  §16).
+- Current evidence revision: `85da719ac43fc46170310b225c9190b63a046df8`, recorded as the implementation
   revision (`IMPLEMENTED_NOT_VERIFIED`). This package is the evidence for
   the transition to `VERIFIED_AWAITING_OWNER_ACCEPTANCE`.
 - The stage is **not** accepted. Acceptance is the owner's. No later stage is
@@ -31,11 +36,11 @@ it does not mean the owner accepted it.
 | Gate | Requirement | Result | Evidence |
 |---|---|---|---|
 | 01-A | Retraction data accessibility evidenced | pass | FEASIBILITY_REPORT.md §4; `data/rw_profile.json`; `data/purposive_lookup.json`; EVIDENCE_MANIFEST.json (events with `independent_confirmation`) |
-| 01-B | Wikipedia citation discoverability evidenced | pass | FEASIBILITY_REPORT.md §5; `data/purposive_discovery.json`; `data/rate-limit/`; `tests/test_discovery_errors.py` |
+| 01-B | Wikipedia citation discoverability evidenced | pass | FEASIBILITY_REPORT.md §5; `data/purposive_discovery.json`; `data/rate-limit/`; `tests/stage01/test_discovery_errors.py` |
 | 01-C | Verified positive and negative examples | pass | FEASIBILITY_REPORT.md §6; EVIDENCE_MANIFEST.json cases POS-01–03, NC-01, NC-01b, NC-02–04, U-01–03; `data/followups/nc2_absence_check_*.json`, `nc3_lookup.json` |
-| 01-D | Initial cross-language feasibility evidenced | pass | FEASIBILITY_REPORT.md §7; `data/followups/crosswiki_*.json`, `render_check_*.json`, `timeline_*.json`, `ar_*.json`; `tests/test_crosswiki.py`, `tests/test_render_check.py` |
-| 01-E | Coverage limitations documented | pass | FEASIBILITY_REPORT.md §8; `data/sample_S.json`; `data/sample_S_discovery.json`; `data/run-logs/sample_S_search_*.json` |
-| 01-F | Source references and reproducible findings | pass | EVIDENCE_MANIFEST.json; `scripts/`; `tests/`; `data/verify_result.json`; `data/clean_reproduction.json`; FEASIBILITY_REPORT.md §9, §14 |
+| 01-D | Initial cross-language feasibility evidenced | pass | FEASIBILITY_REPORT.md §7; `data/followups/crosswiki_*.json`, `render_check_*.json`, `timeline_*.json`, `ar_*.json`; `data/census/` (§16); `tests/stage01/test_crosswiki.py`, `test_render_check.py`, `test_census.py` |
+| 01-E | Coverage limitations documented | pass | FEASIBILITY_REPORT.md §8; `data/sample_S.json`; `data/sample_S_discovery.json`; `data/run-logs/sample_S_search_*.json`; `data/census/dump_vs_api_crosscheck.json` |
+| 01-F | Source references and reproducible findings | pass | EVIDENCE_MANIFEST.json; `scripts/`; `tests/stage01/`; `data/verify_result.json`; `data/clean_reproduction.json`; FEASIBILITY_REPORT.md §9, §14 |
 | 01-G | Critical blockers and recommendations stated | pass | FEASIBILITY_REPORT.md §12, §15; CREATIVE_FEASIBILITY.md; MAESTRO_DESIGN_BRIEF.md; ADVERSARIAL_REVIEW.md; `data/followups/prior_art_*.json` |
 
 Main results (details and labels in FEASIBILITY_REPORT.md):
@@ -56,7 +61,18 @@ Main results (details and labels in FEASIBILITY_REPORT.md):
 - **01-C:** 3 positive chains in both languages (Wakefield 1998, Obokata
   2014, Wolfe-Simon 2011); 5 negative controls (event type ×2, extraction,
   absence, notice citation); 3 unresolved cases kept apart.
-- **01-D:** Arabic cites 3 of 10 purposive papers. Of 11 en/ar pairs that
+- **01-D (census, §16):** Arabic Wikipedia cites at least **158 retracted
+  papers in 157 articles (198 citations)**, confirmed at the current revision
+  on 2026-10-27 from a scan of every DOI and PMID in the 2026-10-01 dumps;
+  **170 of the 198 show readers no retraction warning** (148 no wording, 22
+  only a red link to the missing `قالب:Retracted`); none of the 23 Arabic
+  wikitext markers renders as warning text. Of 249 English article–paper
+  pairs with an Arabic counterpart, 175 are not carried; of the 46 carried
+  citations English marks as retracted, none shows warning wording in
+  Arabic. In 20 pairs (16 papers) the English article once cited the paper
+  and no longer does while the Arabic article still cites it. Lower bounds:
+  link-bearing citations only.
+- **01-D (purposive):** Arabic cites 3 of 10 purposive papers. Of 11 en/ar pairs that
   both cite, marking differs in 6. Every interlanguage lookup was a complete
   answer (en→ar 32 linked, 20 without a link). On Arabic Wikipedia
   `قالب:Retracted` does not exist; in the two Arabic articles whose renders
@@ -72,15 +88,17 @@ Main results (details and labels in FEASIBILITY_REPORT.md):
   prevalence, and the editions are not compared with it. 21 limitations;
   requests limited to about 6.5 per minute from this environment.
 - **01-F:** manifest with epistemic status per value; every data file
-  re-derived by `scripts/reproduce.sh`; 61 deterministic failure-handling
-  tests (run explicitly; not part of CI); live re-verification
+  re-derived by `scripts/reproduce.sh`; 101 deterministic tests in
+  `tests/stage01/`, run in CI with the whole suite since 2026-10-27; live re-verification
   35 checks of 20 revisions and 9 Crossref works, 0 mismatches; clean-cache reproduction of POS-02 end-to-end and of the
   NC-03 lookups with 0 mismatches; a table of what reproduces from a
   clean checkout and what needs the (unpreserved) response cache.
 - **01-G:** no critical blocker. Recommendation (advisory) **RESCOPE**: GO's
-  conditions are met, but the protocol's narrower-claim trigger applies too;
-  the narrower scope is a revision-pinned English–Arabic comparison of named
-  papers and article pairs, not edition-level rates. Prior art now includes
+  conditions are met, but the protocol's narrower-claim trigger applies too.
+  After the census it applies to timing only: edition-level counts of
+  citation, marking, carrying and visible warnings are now possible for
+  English and Arabic (lower bounds); how quickly editions respond stays per
+  paper (FEASIBILITY_REPORT.md §16.8). Prior art now includes
   the Retraction Tracker for Wikipedia (English, daily, sentence-level, AI
   readings); novelty claims are bounded to the reviewed evidence.
 
@@ -94,12 +112,26 @@ median misattributed; a competitor listed from a snippet; an inferred
 rendering claim; terms and reproducibility statements too coarse. The
 User-Agent was reviewed and kept (§15.3).
 
+## Strengthening pass of 2026-10-27
+
+Owner-approved before acceptance (FEASIBILITY_REPORT.md §16): a census of
+every Retraction Watch DOI and PMID in Arabic Wikipedia from sha1-checked
+Wikimedia dumps (2026-10-01) with live confirmation; cross-wiki divergence
+over every linked English–Arabic pair, with first-revision history for
+papers not carried; the Arabic warning gap from rendered HTML; the Stage 01
+tests moved to `tests/stage01/` so CI runs them (no Stage 00 file changed);
+the disputed Shi et al. median dropped after reading the arXiv v3 full text.
+633 answered Wikipedia requests plus 298 retries after 429; one failed
+render re-sent once.
+
 ## Inputs and outputs
 
 Inputs: Retraction Watch data at GitLab commit
 `a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4` (`retraction_watch.csv`, SHA-256
 `2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655`, not
-committed); Crossref REST API; MediaWiki Action API of English and Arabic
+committed); Wikimedia SQL dumps of 2026-10-01 (`arwiki`, `enwiki`:
+externallinks, page, langlinks; sha1 as published; not committed); Crossref
+REST API; MediaWiki Action API of English and Arabic
 Wikipedia, Meta-Wiki and the Foundation wiki (read-only `action=query` and
 `action=parse`). Retrieved 2026-10-26, with the corrective-pass requests on
 2026-10-27. Public pages read for prior art: CREATIVE_FEASIBILITY.md §1.
@@ -114,48 +146,53 @@ Outputs, all in this directory:
 | CREATIVE_FEASIBILITY.md | Prior art, signature capabilities, evaluation and classification, demo narrative, AI evaluation plan, competition strategy |
 | MAESTRO_DESIGN_BRIEF.md | Future requirements for the Investigation MAESTRO (not implemented) |
 | ADVERSARIAL_REVIEW.md | Same-model reviews and their dispositions |
-| `scripts/` | `stage01_probe.py`, `build_manifest.py`, `reproduce.sh`, `clean_reproduction.sh`, `compare_clean.py` (standard library and bash only) |
-| `tests/` | Deterministic failure-handling tests (pytest, no network) |
+| `scripts/` | `stage01_probe.py`, `stage01_census.py`, `build_manifest.py`, `reproduce.sh`, `clean_reproduction.sh`, `compare_clean.py` (standard library and bash only) |
+| `../../../tests/stage01/` | Deterministic tests (pytest, no network), run in CI |
 | `data/` | Derived records; see `data/README.md` |
 | verification-record.json | Gate record for the verification transition |
 
-No file outside this directory was changed except the registry and
-PROJECT_STATUS.md through `citerift-gov`. No dependency was added.
+Outside this directory, only `tests/stage01/` (the moved and new tests) and,
+through `citerift-gov`, the registry and PROJECT_STATUS.md changed. No
+dependency was added, and no Stage 00 owned path, `pyproject.toml` or
+`uv.lock` changed.
 
 ## Test evidence
 
 Stage 01 has no required test suites (`required_test_suites: []`,
 `ci_required: false`). The evidence checks:
 
-| Check | Result (2026-10-27, at `32712fa`) |
+| Check | Result (2026-10-27, at `85da719`) |
 |---|---|
-| `uv run pytest` | 404 passed |
-| `uv run pytest docs/verification/stage-01/tests` | 61 passed |
-| `uv run ruff check .` | All checks passed |
-| `uv run ruff format --check .` | 74 files already formatted |
+| `uv run pytest` | 505 passed in 276.03s |
+| `uv run pytest tests/stage01` | 101 passed in 0.33s |
+| `uv run ruff check .` | All checks passed! |
+| `uv run ruff format --check .` | 76 files already formatted |
 | `uv run mypy` | Success: no issues found in 12 source files |
-| `uv run citerift-gov check` | 0 errors, 0 warnings |
-| `scripts/reproduce.sh` (cache) | all data files re-derived, exit 0 |
-| `stage01_probe.py --refresh verify` | 35 checks of 20 revisions and 9 Crossref works, 0 mismatches (`data/verify_result.json`) |
-| `scripts/clean_reproduction.sh` | 15 requests, 14 checks, 0 mismatches (`data/clean_reproduction.json`) |
+| `uv run citerift-gov check` | Consistency check: 0 errors, 0 warnings |
+| census re-derivation from the cache and dumps | all nine `data/census/` files re-derived identical (except run times) |
+| `scripts/reproduce.sh` render checks (cache) | the four `render_check_*.json` files re-derived identical (except run time) |
+| `stage01_probe.py --refresh verify` | 35 checks of 20 revisions and 9 Crossref works, 0 mismatches (`data/verify_result.json`, manifest sha256 `e2e9fd48…`) |
+| `scripts/clean_reproduction.sh` | 15 requests, 14 checks, 0 mismatches (`data/clean_reproduction.json`, earlier pass; not re-run) |
 
 Reviews: a same-model adversarial review (18 findings) and a same-model QA
 pass (11 issues) on 2026-10-26/27, and in the corrective pass a same-model
 review covering technical, scientific, creative and integration aspects
-(18 findings, 3 medium and 15 low), all dispositioned in ADVERSARIAL_REVIEW.md. None is
-independent.
+(18 findings, 3 medium and 15 low), all dispositioned in ADVERSARIAL_REVIEW.md. The
+strengthening pass was self-reviewed by the executor (10 checks, same
+section). None is independent.
 
 ## Known limitations
 
-The 21 limitations of FEASIBILITY_REPORT.md §8.3 and §15.4 apply. The most
-important:
+The limitations of FEASIBILITY_REPORT.md §8.3, §15.4 and §16.7 apply. The
+most important:
 
-- Neither discovery method is a census; references without a DOI are not
-  found; nothing here is a prevalence of retracted citations in Wikipedia.
-- Arabic counts are small; Arabic findings are case-level.
+- The census counts link-bearing citations only (on the purposive set it
+  missed 1 of 63 confirmed citations), from dumps of 2026-10-01, against
+  Retraction Watch only: lower bounds, not prevalence.
+- The rendered check reads the desktop parser HTML; prose warnings away
+  from the citation and intentional citations are not separated.
+- The divergence history reads two revisions per pair, not whole histories.
 - The purposive set was chosen by the AI executor and is not representative.
-- The rendered-warning check covers four revisions of the desktop parser
-  output only.
 - The full response cache is not preserved; a full rerun observes newer
   revisions (§9.1).
 - All reviews were by the same model and are not independent.
@@ -176,20 +213,20 @@ Repository quality checks ran with the locked project environment
 
 ## Verified Git commit
 
-`32712fa3b1311a38efbf2f854a3c0dbaed076b17` on branch `claude/project-thread-70xjkv` in
+`85da719ac43fc46170310b225c9190b63a046df8` on branch `claude/project-thread-70xjkv` in
 <https://github.com/ImanOthman-eng/citerift>: the commit containing every
 evidence file above except this handoff and verification-record.json, which
 were added afterwards and are pinned by hash in the verification record.
 The pull request must be merged with a merge commit so the cited commits stay
 in `main`'s history.
 
-`IMPLEMENTED_NOT_VERIFIED` was recorded at this revision on 2026-10-27.
+`IMPLEMENTED_NOT_VERIFIED` was recorded at this revision on 2026-10-27 (commit `22264be`).
 Dry run of the verification transition with `verification-record.json`
 (gates 01-A to 01-G with their evidence files; Stage 01 needs no CI record):
 
 ```
 $ uv run citerift-gov transition 01 VERIFIED_AWAITING_OWNER_ACCEPTANCE --actor external-agent \
-    --recorded-by external-agent --revision 32712fa3b1311a38efbf2f854a3c0dbaed076b17 \
+    --recorded-by external-agent --revision 85da719ac43fc46170310b225c9190b63a046df8 \
     --record docs/verification/stage-01/verification-record.json --reason "..."
 Transition stage 01 -> VERIFIED_AWAITING_OWNER_ACCEPTANCE: ALLOWED
 Dry run: nothing written. Re-run with --apply to record it.
@@ -201,7 +238,7 @@ registry and PROJECT_STATUS.md record it.
 ## Acceptance decision
 
 Requested from the owner. The orchestrator refuses acceptance from any actor
-but the owner. The owner can accept Stage 01 at revision `32712fa` (the agent
+but the owner. The owner can accept Stage 01 at revision `85da719` (the agent
 then records it with `--actor owner --owner-ref <that message>`), ask for
 rework, or reject it. Adopting the RESCOPE recommendation and its narrower
 scope (FEASIBILITY_REPORT.md §12) is a separate owner decision, as is
