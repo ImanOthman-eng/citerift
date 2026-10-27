@@ -1742,8 +1742,12 @@
           "requirement": "Successful positive, negative, malformed-data, duplicate, and conflict-resolution tests"
         }
       ],
-      "status": "NOT_STARTED",
-      "authorization": null,
+      "status": "IN_PROGRESS",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ",
+        "scope": "Owner's Stage 02 Master Execution Directive authorizes Stage 02 (Retraction Data Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+        "recorded_at": "2026-10-27T20:25:10Z"
+      },
       "implementation": null,
       "verification": null,
       "acceptance": null,
@@ -2221,6 +2225,28 @@
       "recorded_by": "external-agent",
       "reason": "Owner accepts Stage 01 at evidence revision 85da719 and approves the revised, limited RESCOPE recommendation (FEASIBILITY_REPORT.md §12, §16.8)",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU"
+    },
+    {
+      "seq": 25,
+      "at": "2026-10-27T20:25:10Z",
+      "stage": "02",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner's Stage 02 Master Execution Directive authorizes Stage 02 (Retraction Data Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ"
+    },
+    {
+      "seq": 26,
+      "at": "2026-10-27T20:25:10Z",
+      "stage": "02",
+      "from": "AUTHORIZED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 02 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ). Pinned Retraction Watch snapshot a987928 re-acquired and verified (68,076,023 bytes, sha256 2f116e9f...0a655).",
+      "owner_ref": null
     }
   ]
 }
