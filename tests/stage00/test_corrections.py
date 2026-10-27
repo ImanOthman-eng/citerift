@@ -272,6 +272,13 @@ def test_v03_handoff_is_required_even_if_a_stage_lists_other_artifacts(sandbox: 
 @pytest.mark.integration
 def test_v03_engineering_stage_with_an_empty_definition_cannot_be_verified(sandbox: Sandbox) -> None:
     """DEFINITION_WEAK had no test (hand mutant H12 survived)."""
+    # The sandbox copies the live stage definitions, so the empty definition this test rejects is set here
+    # explicitly rather than relying on the live Stage 02 definition staying empty (A-00-002).
+    reg = sandbox.registry()
+    stage02 = next(s for s in reg["stages"] if s["id"] == "02")
+    stage02["owned_paths"] = []
+    sandbox.save_registry(reg)
+    sandbox.commit("sandbox: Stage 02 definition with empty owned_paths")
     sandbox.drive_to_accepted("00")
     sandbox.drive_to_accepted("01")
     assert sandbox.go("02", Status.AUTHORIZED).allowed
