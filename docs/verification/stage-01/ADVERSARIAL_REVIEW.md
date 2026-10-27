@@ -64,3 +64,46 @@ issues, all handled before the evidence commit:
 | 9 | "Bursts of about 6 requests" overstated the log. | Now "runs of 1 to 6 successful requests; the first request was already refused". |
 | 10 | The M1 cost estimate for S was too high. | Now about 3–4 hours (about 5 with M2). |
 | 11 | Two generalizations beyond the data (publisher inconsistency, rarity of cited papers). | Limited to "3 of the 10 purposive papers" and "in this frame and by this method". |
+
+## Corrective pass of 2026-10-27
+
+The owner asked for one bounded correction cycle (FEASIBILITY_REPORT.md §15).
+The executor's own audit against the owner's list found defects D1 to D8 of
+report §15.1, including the one that changed a result (7 Arabic sample
+searches recorded as complete). Consequential counts were then re-derived
+from the raw cached responses by separate code, not by the probe's
+classifiers.
+
+A same-model subagent then reviewed the uncommitted changes read-only and
+without network access, from four angles (technical, scientific, creative,
+integration). It re-derived the sample results per wiki and date, both
+Clopper–Pearson bounds, the cross-wiki states, the render states, the
+clean-reproduction result and the Retraction Tracker counts with its own
+code, all consistent, and found the manifest byte-identical on regeneration.
+It is **not an independent review**: same model, same session. It raised 18
+findings (0 high, 3 medium, 15 low), all handled before the evidence commit:
+
+| # | Severity | Finding (paraphrased) | Disposition |
+|---|---|---|---|
+| 1 | medium | "40 of 46 tests fail against the old probe, which shows they detect the defects" overstates: most link-lookup failures are missing output fields, not caught defects. | Reworded (report §15.1): behavioural failures named for the discovery and client tests; D2 shown directly on the old code. |
+| 2 | low | An HTTP 200 body that is not JSON was cached. | Fixed; test added (D9). |
+| 3 | low | Attempts did not record API error codes, so retried error bodies looked like repeated 200s in logs. | Fixed; test added (D9). |
+| 4 | low | The render check matched DOI prefixes and could read "RETRACTED" in a cited title, or the Arabic stem سحب in an unrelated word, as a warning. | Boundary rule and `<cite>` exclusion added with tests; the stem limitation is stated. Render states unchanged. |
+| 5 | low | The Stage 01 tests are not collected by CI or by plain `uv run pytest`. | Stated in report §9 and the handoff; changing repository test configuration is outside Stage 01. |
+| 6 | low | The sample is a simple random sample, not systematic. | Corrected in the report and `data/README.md`; PROTOCOL.md left unchanged, noted in §8.1. |
+| 7 | low | "95% upper bound" is the upper end of the two-sided 95% interval (a 97.5% one-sided bound). | Reworded; one-sided 95% values given. |
+| 8 | low | "Such citations are rare" read as prevalence. | Bounded to the rate discoverable by M2 (§12). |
+| 9 | low | The committed sample file does not itself show the 7 re-sends. | Provenance stated in §8.1 and `data/README.md`. |
+| 10 | low | The Tracker's "one verdict in twenty" sits beside 29 of 119 disagreements, and the about-page claims had no committed quotation. | Tension noted; quotations and the page hash added to the profile. |
+| 11 | low | "No personal name" in the User-Agent conflicted with RV-17's point about the login. | Reworded (§15.3): no legal name; the login appears in the repository URL. |
+| 12 | low | "One positive and one negative case" overstated NC-03's reproduction, and the request count was wrong. | NC-03 described as a lookup control; 15 requests stated. |
+| 13 | medium | Revision-pinned provenance per finding was claimed as not established, but the Tracker publishes revision ids and hashes. | Narrowed to the distinct combination (snapshot hash, notice check, sha1, live re-verify). |
+| 14 | medium | The Visible Warning Integrity states were called cumulative, though the render outcomes exclude each other, and the probe's `reference_not_found_in_render` and `mixed` were missing. | States restructured; MAESTRO CP-7 aligned. |
+| 15 | low | The §2.2 acceptance categories did not match the probe's lookup states. | Aligned with the full state lists. |
+| 16 | low | Sample sizes count answered items, and the gate is a paired comparison. | Both stated in CREATIVE_FEASIBILITY.md §5. |
+| 17 | low | `data/README.md` glob and producer statements were inaccurate. | Corrected. |
+| 18 | low | The MAESTRO ownership table omitted MR-17a/b, MR-24, MR-25 and CP-7. | Assigned. |
+
+Also handled: the handoff's "86 purposive search responses" now says they
+are M1 and M2 responses; a cosmetic strict-typing issue in the probe was
+fixed.

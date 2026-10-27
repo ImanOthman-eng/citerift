@@ -7,7 +7,9 @@ Investigation MAESTRO is the owner's name for the **Investigation Workflow
 Controller** of Architecture v1.1 (Stages 04 and 07); it is not a new
 component and adds no stage. Requirements are numbered `MR-nn` so later
 specifications can trace them. Facts from Stage 01 that shaped a requirement
-are cited to FEASIBILITY_REPORT.md (FR §n).
+are cited to FEASIBILITY_REPORT.md (FR §n). Refined on 2026-10-27 only where
+the corrective pass produced evidence (FR §15): MR-17a, MR-17b, MR-25, CP-7
+and AT-12 to AT-14 are new; nothing was implemented.
 
 ## 1. Responsibilities and boundaries
 
@@ -113,6 +115,13 @@ budget lasts; `skipped` when a required input task did not succeed.
   revisions, not a statement about the language edition.
 - **CP-6 Absence:** a paper with no record yields
   `not_found_in_checked_sources` / `uncertain` with the sources checked.
+- **CP-7 Warning visibility:** a warning is reported as visible or absent
+  only from a stored render of the pinned revision, with the states of
+  CREATIVE_FEASIBILITY.md §2.1; a failed render is `render_unavailable` and
+  a reference missing from the render is `reference_not_found_in_render`,
+  neither of which is an absent warning.
+  Stage 01 found wikitext markers that render as links to a missing template
+  (FR §7.3).
 
 ## 6. Investigation Memory
 
@@ -144,6 +153,17 @@ determined (FR §8.2).
 - **MR-17** Errors are enumerable codes (`RATE_LIMITED`, `SOURCE_UNAVAILABLE`,
   `REVISION_MISSING`, `DOI_NOT_IN_REVISION`, ...), following the `Finding`
   convention of docs/architecture.md; no silent fallback.
+- **MR-17a** A response is an answer only if it is HTTP 200, a JSON object
+  without an `error` member, and has the expected section; a search is
+  complete only if it states its total. MediaWiki reports overload as HTTP
+  200 with an error body (`cirrussearch-too-busy-error`, `maxlag`): these are
+  retried like a 429 and are never cached. In Stage 01 a client without this
+  rule recorded 7 unavailable Arabic searches as "0 hits" (FR §8.1, §15 D1).
+- **MR-17b** Every lookup whose empty answer would mean "absent" (search,
+  interlanguage link, revision, render) has explicit states for request
+  failed and malformed answer, and only a complete answer can yield "not
+  found". Stage 01's link lookup implements this split and its tests are the
+  model (`tests/test_crosswiki.py`, FR §15 D2).
 
 ## 8. AI advisory boundary
 
@@ -179,15 +199,18 @@ determined (FR §8.2).
   stored response (URL, retrieval time, revision id or dataset hash).
 - **MR-24 Privacy:** no personal data about users is stored; Wikipedia editor
   names are not needed and not stored.
+- **MR-25 Source terms:** the Retraction Watch dataset is accessed and cited,
+  selected fields are reused, and the full file is never redistributed in the
+  repository or the app (FR §4.4).
 
 ## 11. Stage ownership
 
 | Stage | Owns |
 |---|---|
-| 04 | MR-01–MR-17, MR-21, MR-23 for one language: state machine, T1–T5, T10, Investigation Memory v0, budgets, error codes. |
+| 04 | MR-01–MR-17 (including MR-17a and MR-17b), MR-21, MR-23, MR-24, MR-25 and CP-1 to CP-6 for one language: state machine, T1–T5, T10, Investigation Memory v0, budgets, error codes. |
 | 05 | T6 and the context part of the Evidence Passport. |
 | 06 | T7 and MR-18–MR-20 (empirical evaluation of the AI role). |
-| 07 | Multi-language plans, T8, T9, resumption and cancellation through the API, MR-22, HR-2. |
+| 07 | Multi-language plans, T8, T9, CP-7, resumption and cancellation through the API, MR-22, HR-2. |
 | 08 | Presentation of task states, uncertainty, AI advisory status (HR-1, HR-3), timeline and Evidence Passport. |
 
 ## 12. Proposed acceptance tests
@@ -205,6 +228,9 @@ determined (FR §8.2).
 | AT-09 | AI stub returning garbage, timing out or raising yields abstention and a completed investigation (MR-19). | 06 |
 | AT-10 | Cross-language comparison of a Stage 01 case lists both pinned revisions and states differences only between them (CP-5). | 07 |
 | AT-11 | The UI never shows an AI label without its advisory marker and never shows `uncertain` as negative (HR-1, HR-3). | 08 |
+| AT-12 | Injected HTTP 200 error bodies (`cirrussearch-too-busy-error`, `maxlag`) give a retried request and, when persistent, an unavailable task; never "0 hits"; nothing is cached (MR-17a). | 04 |
+| AT-13 | Injected failed and malformed interlanguage-link answers never yield "no linked article" (MR-17b). | 07 |
+| AT-14 | A render that fails gives `render_unavailable`; a missing-template link is not counted as a warning (CP-7). | 07 |
 
 ## 13. Realism for the schedule
 

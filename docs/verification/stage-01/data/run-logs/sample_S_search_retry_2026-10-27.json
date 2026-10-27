@@ -1,0 +1,154 @@
+{
+ "note": "The 7 Arabic M2 searches of sample S that received cirrussearch-too-busy-error in the first run (sample_S_search_errors_first_run.json), re-sent once on 2026-10-27 by `discover` after the fix; every other S search was served from the first run's cache. Each answer is the final HTTP 200 response with its attempts.",
+ "responses": [
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.3389%2Ffcell.2021.640391%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:13:16Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:13:16Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.3892%2Fol.2013.1385%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:14:04Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 429,
+     "retry_after": "1",
+     "at": "2026-10-27T13:13:16Z"
+    },
+    {
+     "attempt": 2,
+     "status": 429,
+     "retry_after": "42",
+     "at": "2026-10-27T13:13:18Z"
+    },
+    {
+     "attempt": 3,
+     "status": 429,
+     "retry_after": "1",
+     "at": "2026-10-27T13:14:02Z"
+    },
+    {
+     "attempt": 4,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:14:04Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.1155%2F2022%2F8496766%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:14:05Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:14:05Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.1155%2F2013%2F248476%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:14:06Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:14:06Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.1016%2Fj.biopha.2021.111349%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:14:09Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 429,
+     "retry_after": "1",
+     "at": "2026-10-27T13:14:07Z"
+    },
+    {
+     "attempt": 2,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:14:09Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.1155%2F2018%2F5324320%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:15:02Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 429,
+     "retry_after": "50",
+     "at": "2026-10-27T13:14:10Z"
+    },
+    {
+     "attempt": 2,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:15:02Z"
+    }
+   ]
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&maxlag=5&list=search&srsearch=insource%3A%2210.1007%2Fs11192-015-1698-z%22&srnamespace=0&srlimit=50&srprop=&sroffset=0",
+   "status": 200,
+   "retrieved_at": "2026-10-27T13:15:02Z",
+   "searchinfo": {
+    "totalhits": 0
+   },
+   "search": [],
+   "attempts": [
+    {
+     "attempt": 1,
+     "status": 200,
+     "retry_after": null,
+     "at": "2026-10-27T13:15:02Z"
+    }
+   ]
+  }
+ ]
+}

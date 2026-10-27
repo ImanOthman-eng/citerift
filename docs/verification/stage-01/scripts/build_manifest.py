@@ -83,6 +83,7 @@ class Data:
         self.discovery = load(d / "purposive_discovery.json")
         self.sample = load(d / "sample_S.json")
         self.sample_discovery = load(d / "sample_S_discovery.json")
+        self.sample_errors = load(d / "run-logs/sample_S_search_errors_first_run.json")["responses"]
         self.cross = {
             "ar>en": load(d / "followups/crosswiki_ar_to_en.json")["rows"],
             "en>ar": load(d / "followups/crosswiki_en_to_ar.json")["rows"],
@@ -474,20 +475,26 @@ def cases(data: Data) -> list[dict[str, Any]]:
 
 
 def crosswiki_counts(rows: list[dict[str, Any]], dst: str) -> dict[str, Any]:
-    """Classify each (paper, citing article) row by what its interlanguage-linked article shows."""
+    """Classify each (paper, citing article) row by what its interlanguage link and linked article show.
+
+    Failed or malformed lookups are counted as such and never as "no linked article" or "does not cite".
+    """
     c: Counter[str] = Counter()
     for row in rows:
-        d = row.get("dst") or {}
-        if row["dst_title"] is None:
+        link, status = row["link_status"], row.get("dst_status")
+        if link == "no_link":
             c[f"no_{dst}_article_linked"] += 1
-        elif "fetch_status" in d:
-            c["linked_article_fetch_failed"] += 1
-        elif d["confirmed"]:
+        elif link != "linked":
+            c[f"link_lookup_{link}"] += 1
+        elif status == "doi_cited":
+            d = row["dst"]
             c[f"{dst}_cites_src_marked_{bool(row['src']['marked'])}_{dst}_marked_{bool(d['marked'])}"] += 1
-        elif d["doi_present"]:
+        elif status == "doi_mention_only":
             c[f"{dst}_mentions_doi_only"] += 1
-        else:
+        elif status == "doi_not_found":
             c[f"{dst}_article_does_not_cite"] += 1
+        else:
+            c[f"linked_article_{status}"] += 1
     return {"rows": len(rows), **dict(sorted(c.items()))}
 
 
@@ -527,14 +534,34 @@ def aggregates(data: Data) -> dict[str, Any]:
         rs = [r for r in data.sample_discovery["results"] if r["wiki"] == wiki]
         complete = [r for r in rs if r["complete"]]
         k = sum(any(o["confirmed"] for o in r["observations"]) for r in complete)
+        # First run (2026-10-26): searches that received a MediaWiki error body were unavailable, not "no hits".
+        unavailable_first = sorted({e["doi"] for e in data.sample_errors if e["wiki"] == wiki})
+        n_first = len(rs) - len(unavailable_first)
+        cited_first = [r for r in complete if r["doi"] not in unavailable_first]
+        k_first = sum(any(o["confirmed"] for o in r["observations"]) for r in cited_first)
+        dates = sorted({c["retrieved_at"][:10] for r in rs for c in r["m2"]["calls"]})
         agg[f"sample_{wiki}"] = {
             "population": "Retraction Watch Retraction records with an original DOI, de-duplicated by DOI",
+            "estimand": (
+                "share of frame DOIs for which an M2 insource search of the main namespace finds a page whose latest "
+                "revision cites the DOI as an identifier; a rate discoverable by this method, not the prevalence of "
+                "citations to retracted work"
+            ),
             "frame_size": frame,
             "sampled": len(rs),
             "searches_complete": len(complete),
+            "searches_unavailable": len(rs) - len(complete),
+            "search_dates": dates,
             "dois_cited": k,
             "share": round(k / len(complete), 4) if complete else None,
             "clopper_pearson_95": clopper_pearson(k, len(complete)) if complete else None,
+            "first_run": {
+                "searches_complete": n_first,
+                "searches_unavailable": len(unavailable_first),
+                "unavailable_dois": unavailable_first,
+                "dois_cited": k_first,
+                "clopper_pearson_95": clopper_pearson(k_first, n_first) if n_first else None,
+            },
             "mention_only_dois": sum(
                 any(o["confirmed"] is False for o in r["observations"])
                 and not any(o["confirmed"] for o in r["observations"])

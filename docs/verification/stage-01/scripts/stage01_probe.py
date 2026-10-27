@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html
 import json
 import random
 import re
@@ -47,6 +48,8 @@ MIN_INTERVAL = 1.0  # seconds between requests to one host (all Wikipedia editio
 MAX_ATTEMPTS = 6
 TIMEOUT = 30
 RETRY_STATUSES = {429, 500, 502, 503, 504}
+# MediaWiki reports some overload conditions as HTTP 200 with an error body; they are retried like a 429.
+TRANSIENT_API_ERRORS = {"maxlag", "cirrussearch-too-busy-error", "ratelimited"}
 MISSING_DOI = {"", "unavailable"}
 # Words that mark a retraction near a citation. Observed text only; their absence proves nothing.
 RETRACTION_MARKERS = re.compile(r"retract|سحب|مسحوب|سُحب", re.IGNORECASE)
@@ -83,8 +86,10 @@ class Client:
         key = self.cache / (hashlib.sha256(full.encode()).hexdigest() + ".json")
         if key.is_file() and not self.refresh:
             cached: dict[str, Any] = json.loads(key.read_text(encoding="utf-8"))
-            self.log.append({"url": full, "status": cached["status"], "cached": True, "at": cached["retrieved_at"]})
-            return cached
+            # Responses cached before 2026-10-27 may carry an API error body; they are not answers and are refetched.
+            if cacheable(cached):
+                self.log.append({"url": full, "status": cached["status"], "cached": True, "at": cached["retrieved_at"]})
+                return cached
         host = urllib.parse.urlsplit(full).netloc
         wm = host.endswith((".wikipedia.org", ".wikimedia.org"))
         host = "wikimedia" if wm else host  # one rate limit for all Wikimedia hosts
@@ -108,15 +113,15 @@ class Client:
                 attempts.append({"attempt": attempt, "error": type(e).__name__, "at": now()})
                 time.sleep(min(2**attempt, 60))
                 continue
-            attempts.append({"attempt": attempt, "status": status, "retry_after": retry_after, "at": now()})
-            maxlag = False
+            entry = {"attempt": attempt, "status": status, "retry_after": retry_after, "at": now()}
+            attempts.append(entry)
             if status == 200:
                 try:
                     data = json.loads(body)
                 except ValueError:
                     data = None
-                maxlag = isinstance(data, dict) and data.get("error", {}).get("code") == "maxlag"
-                if not maxlag:
+                entry["api_error"] = api_error(data)
+                if entry["api_error"] not in TRANSIENT_API_ERRORS:
                     result = {"url": full, "status": status, "retrieved_at": now(), "body": data}
                     break
             elif status not in RETRY_STATUSES:
@@ -128,9 +133,29 @@ class Client:
             result = {"url": full, "status": "failed", "retrieved_at": now(), "body": None}
         result["attempts"] = attempts
         self.log.append({"url": full, "status": result["status"], "cached": False, "attempts": len(attempts)})
-        if result["status"] == 200:
+        if cacheable(result):
             key.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
         return result
+
+
+def api_error(body: Any) -> str | None:
+    """The MediaWiki API error code of a response body, or None when the body carries no error."""
+    if isinstance(body, dict) and isinstance(body.get("error"), dict):
+        return str(body["error"].get("code", "unknown"))
+    return None
+
+
+def cacheable(res: dict[str, Any]) -> bool:
+    """Only an HTTP 200 JSON answer without an API error is cached or served from the cache."""
+    return res["status"] == 200 and isinstance(res["body"], (dict, list)) and not api_error(res["body"])
+
+
+def api_ok(res: dict[str, Any]) -> bool:
+    """A usable Action API answer: HTTP 200, a JSON object, no error, and a query section."""
+    body = res["body"]
+    return (
+        res["status"] == 200 and isinstance(body, dict) and not api_error(body) and isinstance(body.get("query"), dict)
+    )
 
 
 # ------------------------------------------------------------------ Retraction Watch
@@ -259,11 +284,26 @@ def m1_exturlusage(client: Client, wiki: str, doi: str) -> dict[str, Any]:
     titles: set[str] = set()
     calls = []
     for form in m1_forms(doi):
-        res = wq(client, wiki, list="exturlusage", euquery=form, eunamespace="0", eulimit="500")
-        hits = sorted({p["title"] for p in (res["body"] or {}).get("query", {}).get("exturlusage", [])})
-        calls.append({"url": res["url"], "status": res["status"], "retrieved_at": res["retrieved_at"], "hits": hits})
-        titles |= set(hits)
-    return {"titles": sorted(titles), "calls": calls, "ok": all(c["status"] == 200 for c in calls)}
+        cont: dict[str, str] = {}
+        while True:
+            res = wq(client, wiki, list="exturlusage", euquery=form, eunamespace="0", eulimit="500", **cont)
+            ok = api_ok(res)
+            hits = sorted({p["title"] for p in res["body"]["query"].get("exturlusage", [])}) if ok else []
+            calls.append(
+                {
+                    "url": res["url"],
+                    "status": res["status"],
+                    "api_error": api_error(res["body"]),
+                    "ok": ok,
+                    "retrieved_at": res["retrieved_at"],
+                    "hits": hits,
+                }
+            )
+            titles |= set(hits)
+            if not ok or "continue" not in res["body"]:
+                break
+            cont = {k: str(v) for k, v in res["body"]["continue"].items()}
+    return {"titles": sorted(titles), "calls": calls, "ok": all(c["ok"] for c in calls)}
 
 
 def m2_search(client: Client, wiki: str, doi: str) -> dict[str, Any]:
@@ -274,27 +314,41 @@ def m2_search(client: Client, wiki: str, doi: str) -> dict[str, Any]:
     offset: str | None = "0"
     while offset is not None:
         res = wq(client, wiki, list="search", srsearch=query, srnamespace="0", srlimit="50", srprop="", sroffset=offset)
-        body = res["body"] or {}
+        body = res["body"] if api_ok(res) else {}
+        total = body.get("query", {}).get("searchinfo", {}).get("totalhits")
+        # A complete answer states its total; an error body (e.g. cirrussearch-too-busy-error) is not "no hits".
+        ok = isinstance(total, int)
         calls.append(
             {
                 "url": res["url"],
                 "status": res["status"],
+                "api_error": api_error(res["body"]),
+                "ok": ok,
                 "retrieved_at": res["retrieved_at"],
-                "totalhits": body.get("query", {}).get("searchinfo", {}).get("totalhits"),
+                "totalhits": total,
             }
         )
         titles |= {p["title"] for p in body.get("query", {}).get("search", [])}
-        offset = str(body["continue"]["sroffset"]) if res["status"] == 200 and "continue" in body else None
-    return {"query": query, "titles": sorted(titles), "calls": calls, "ok": all(c["status"] == 200 for c in calls)}
+        offset = str(body["continue"]["sroffset"]) if ok and "continue" in body else None
+    return {"query": query, "titles": sorted(titles), "calls": calls, "ok": all(c["ok"] for c in calls)}
 
 
 def revision(client: Client, wiki: str, *, title: str | None = None, revid: int | None = None) -> dict[str, Any]:
     params = {"prop": "revisions", "rvprop": "ids|timestamp|sha1|content", "rvslots": "main"}
     params.update({"titles": title} if title is not None else {"revids": str(revid)})
     res = wq(client, wiki, **params)
-    pages = (res["body"] or {}).get("query", {}).get("pages", [])
+    body = res["body"] if isinstance(res["body"], dict) else {}
+    pages = body.get("query", {}).get("pages", [])
     if res["status"] != 200 or not pages or "revisions" not in pages[0]:
-        return {"ok": False, "url": res["url"], "status": res["status"], "retrieved_at": res["retrieved_at"]}
+        gone = "badrevids" in body.get("query", {}) or (pages and ("missing" in pages[0] or "invalid" in pages[0]))
+        reason = "request_failed" if res["status"] != 200 else "missing" if gone else "malformed_response"
+        return {
+            "ok": False,
+            "reason": reason,
+            "url": res["url"],
+            "status": res["status"],
+            "retrieved_at": res["retrieved_at"],
+        }
     page, rev = pages[0], pages[0]["revisions"][0]
     return {
         "ok": True,
@@ -551,34 +605,98 @@ def first_revision_where(client: Client, wiki: str, title: str, doi: str, what: 
     }
 
 
+REDIRECT = re.compile(r"\A\s*#\s*(redirect|تحويل)\b", re.IGNORECASE)
+
+
+def langlinks(client: Client, wiki: str, titles: list[str], lang: str) -> dict[str, dict[str, Any]]:
+    """Interlanguage link of each title to `lang`, with the outcome of the lookup stated, never guessed.
+
+    Each title maps to {"status": ...}: "linked" (with "target"), "no_link" (successful, complete answer without a
+    link), "source_missing" (the page does not exist on wiki), "request_failed" (with "http_status") or
+    "malformed_response". A failed or malformed answer is never read as "no link". Batches of 50 titles follow
+    `continue` until the answer is complete, and titles the API normalizes are mapped back to the requested form.
+    """
+    out: dict[str, dict[str, Any]] = {}
+    for k in range(0, len(titles), 50):
+        batch = titles[k : k + 50]
+        alias: dict[str, str] = {}
+        pages: dict[str, dict[str, Any]] = {}
+        failure: dict[str, Any] | None = None
+        cont: dict[str, str] = {}
+        while True:
+            res = wq(client, wiki, prop="langlinks", titles="|".join(batch), lllang=lang, lllimit="max", **cont)
+            body = res["body"]
+            if res["status"] != 200:
+                failure = {"status": "request_failed", "http_status": res["status"]}
+                break
+            query = body.get("query") if isinstance(body, dict) else None
+            if not isinstance(query, dict) or not isinstance(query.get("pages"), list) or "error" in body:
+                failure = {"status": "malformed_response"}
+                break
+            alias.update({n["from"]: n["to"] for n in query.get("normalized", [])})
+            for page in query["pages"]:
+                rec = pages.setdefault(page.get("title", ""), {"missing": False, "links": []})
+                rec["missing"] = rec["missing"] or "missing" in page or "invalid" in page
+                rec["links"] += [x["title"] for x in page.get("langlinks", []) if x.get("lang") == lang]
+            if "continue" not in body:
+                break
+            cont = {key: str(v) for key, v in body["continue"].items()}
+        for t in batch:
+            found = pages.get(alias.get(t, t))
+            if failure is not None:
+                out[t] = dict(failure)
+            elif found is None:
+                out[t] = {"status": "malformed_response"}
+            elif found["missing"]:
+                out[t] = {"status": "source_missing"}
+            elif found["links"]:
+                out[t] = {"status": "linked", "target": found["links"][0]}
+            else:
+                out[t] = {"status": "no_link"}
+    return out
+
+
 def crosswiki(client: Client, discovery: dict[str, Any], src: str, dst: str) -> list[dict[str, Any]]:
-    """For each DOI cited on src, follow each citing article's interlanguage link to dst and check the DOI there."""
+    """For each DOI cited on src, follow each citing article's interlanguage link to dst and check the DOI there.
+
+    Every row states `link_status` (see langlinks) and, for a linked article, `dst_status`: "fetch_failed",
+    "article_missing", "malformed_response", "redirect" (the link points to a redirect page, not followed),
+    "doi_not_found", "doi_mention_only" or "doi_cited". Only the last three are observations of the article.
+    """
     rows = []
     by_doi: dict[str, list[dict[str, Any]]] = {}
     for r in discovery["results"]:
         if r["wiki"] == src:
             by_doi.setdefault(r["doi"], []).extend(o for o in r["observations"] if o.get("confirmed"))
     for doi, obs in by_doi.items():
-        titles = [o["title"] for o in obs]
-        links: dict[str, str] = {}
-        for k in range(0, len(titles), 50):
-            res = wq(client, src, prop="langlinks", titles="|".join(titles[k : k + 50]), lllang=dst, lllimit="max")
-            for page in (res["body"] or {}).get("query", {}).get("pages", []):
-                if page.get("langlinks"):
-                    links[page["title"]] = page["langlinks"][0]["title"]
+        links = langlinks(client, src, [o["title"] for o in obs], dst)
         for o in obs:
             row: dict[str, Any] = {"doi": doi, "src": {k: o[k] for k in ("wiki", "title", "revid", "sha1", "marked")}}
-            target = links.get(o["title"])
-            row["dst_title"] = target
-            if target:
-                rev = revision(client, dst, title=target)
-                if rev["ok"]:
+            link = links[o["title"]]
+            row["link_status"] = link["status"]
+            if "http_status" in link:
+                row["link_http_status"] = link["http_status"]
+            row["dst_title"] = link.get("target")
+            if link["status"] == "linked":
+                rev = revision(client, dst, title=link["target"])
+                if not rev["ok"]:
+                    row["dst_status"] = {
+                        "request_failed": "fetch_failed",
+                        "missing": "article_missing",
+                        "malformed_response": "malformed_response",
+                    }[rev["reason"]]
+                    row["dst"] = {"fetch_status": rev["status"]}
+                elif REDIRECT.match(rev["content"]):
+                    row["dst_status"] = "redirect"
+                    row["dst"] = {k: rev[k] for k in ("wiki", "title", "revid", "sha1", "timestamp")}
+                else:
                     ob = observe(rev, doi)
                     row["dst"] = {k: ob[k] for k in ("wiki", "title", "revid", "sha1", "timestamp", "confirmed")}
                     row["dst"]["doi_present"] = ob["doi_present"]
                     row["dst"]["marked"] = ob.get("marked", False)
-                else:
-                    row["dst"] = {"fetch_status": rev["status"]}
+                    row["dst_status"] = (
+                        "doi_cited" if ob["confirmed"] else "doi_mention_only" if ob["doi_present"] else "doi_not_found"
+                    )
             rows.append(row)
     return rows
 
@@ -605,6 +723,81 @@ def absence_check(client: Client, wiki: str, revid: int, needles: list[str], con
             for n in needles
         }
     return out
+
+
+REDLINK = re.compile(r'<a [^>]*class="new"[^>]*>.*?</a>', re.DOTALL)
+CITE = re.compile(r"<cite\b.*?</cite>", re.DOTALL)
+
+
+def tag_text(fragment: str) -> str:
+    return " ".join(html.unescape(re.sub(r"<[^>]+>", " ", fragment)).split())
+
+
+def rendered_references(html_text: str, doi: str) -> list[dict[str, Any]]:
+    """Reference-list items of rendered article HTML that contain the DOI, with what each item displays.
+
+    Retraction wording is looked for outside links to missing pages (class "new"): a template that does not exist
+    renders as a red link showing its own name (e.g. "قالب:Retracted"), which is recorded separately, not as a warning.
+    Text inside the citation (<cite>) is skipped too, so a paper title such as "RETRACTED: …" is not a warning. The
+    DOI must not be the prefix of a longer DOI. Limitation: the Arabic stem سحب also matches unrelated words.
+    """
+    items = []
+    # MediaWiki writes the id as cite_note-… or, entity-encoded, cite&#95;note-…
+    for part in re.split(r'<li id="cite(?:_|&#95;)note', html_text)[1:]:
+        seg = part.split("</li>", 1)[0].split(">", 1)[-1]
+        if not doi_positions(urllib.parse.unquote(html.unescape(seg)), doi):
+            continue
+        # The citation itself (<cite>, with the paper's title, e.g. "RETRACTED: …") is not a warning.
+        text = tag_text(CITE.sub(" ", REDLINK.sub(" ", seg)))
+        terms = [
+            {"term": m.group(0), "context": text[max(0, m.start() - 60) : m.end() + 60]}
+            for m in RETRACTION_MARKERS.finditer(text)
+        ]
+        redlinks = re.findall(r'<a [^>]*class="new"[^>]*title="([^"]*)"', seg)
+        if terms:
+            state = "warning_text"
+        elif any(RETRACTION_MARKERS.search(t) for t in redlinks):
+            state = "missing_template_link_only"
+        else:
+            state = "no_warning_text"
+        items.append(
+            {
+                "state": state,
+                "warning_terms": terms,
+                "missing_page_links": redlinks,
+                "text_excerpt": tag_text(seg)[:300],
+            }
+        )
+    return items
+
+
+def render_check(client: Client, wiki: str, revid: int, doi: str) -> dict[str, Any]:
+    """Rendered (parser HTML) check of the references that cite a DOI in a pinned revision.
+
+    The state says what was inspected in the desktop parser output, not what every reader sees: skins, the mobile
+    view, gadgets and CSS were not checked. A failed render is never read as an absent warning.
+    """
+    params = {"action": "parse", "format": "json", "formatversion": "2", "oldid": str(revid), "prop": "text|revid"}
+    res = client.get(api(wiki), {**params, "maxlag": "5"})
+    out = {"wiki": wiki, "revid": revid, "doi": doi, "url": res["url"], "status": res["status"]}
+    out["retrieved_at"] = res["retrieved_at"]
+    body = res["body"]
+    parsed = body.get("parse") if res["status"] == 200 and isinstance(body, dict) and not api_error(body) else None
+    if not isinstance(parsed, dict) or not isinstance(parsed.get("text"), str):
+        return {**out, "state": "render_unavailable", "api_error": api_error(body)}
+    refs = rendered_references(parsed["text"], doi)
+    states = {r["state"] for r in refs}
+    if not refs:
+        state = "reference_not_found_in_render"
+    elif len(states) == 1:
+        state = {
+            "warning_text": "warning_text_in_rendered_reference",
+            "missing_template_link_only": "missing_template_link_only_in_rendered_reference",
+            "no_warning_text": "no_warning_text_in_inspected_rendered_reference",
+        }[states.pop()]
+    else:
+        state = "mixed"
+    return {**out, "state": state, "references": refs}
 
 
 # ------------------------------------------------------------------ verification of a manifest
@@ -727,6 +920,11 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--needles", nargs="+", required=True)
     s.add_argument("--context", type=int, default=0, help="characters of context to keep around each occurrence")
     s.add_argument("--out", type=Path, required=True)
+    s = sub.add_parser("render-check", help="rendered (parser HTML) check of the references citing a DOI")
+    s.add_argument("--wiki", required=True)
+    s.add_argument("--revids", nargs="+", type=int, required=True)
+    s.add_argument("--doi", required=True)
+    s.add_argument("--out", type=Path, required=True)
     s = sub.add_parser("api-query", help="one read-only Action API query on a Wikimedia wiki, saved as returned")
     s.add_argument("--host", required=True, help="e.g. ar.wikipedia.org or meta.wikimedia.org")
     s.add_argument("--param", action="append", default=[], help="key=value, repeatable")
@@ -786,6 +984,9 @@ def main(argv: list[str] | None = None) -> int:
     elif a.cmd == "absence-check":
         checks = [absence_check(client, a.wiki, r, a.needles, a.context) for r in a.revids]
         write(a.out, {"run_at": now(), "checks": checks})
+    elif a.cmd == "render-check":
+        checks = [render_check(client, a.wiki, r, a.doi) for r in a.revids]
+        write(a.out, {"run_at": now(), "user_agent": USER_AGENT, "checks": checks})
     elif a.cmd == "api-query":
         params = {"action": "query", "format": "json", "formatversion": "2", "maxlag": "5"}
         params.update(dict(kv.split("=", 1) for kv in a.param))

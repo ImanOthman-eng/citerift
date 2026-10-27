@@ -45,6 +45,12 @@ $P absence-check --wiki ar --revids 18119085 76772881 --needles "${NEEDLES[@]}" 
 $P absence-check --wiki en --revids 483589591 483915164 --needles "fully retracted" "{{Retracted" retracted \
     --context 150 --out $F/en_mmr_retraction_text_check.json
 
+# Rendered (parser HTML) check of the citing references, POS-02 and POS-01, both languages (FEASIBILITY_REPORT.md §7.3)
+$P render-check --wiki en --revids 1372543632 --doi 10.1038/nature12968 --out $F/render_check_en_obokata.json
+$P render-check --wiki ar --revids 76190003 --doi 10.1038/nature12968 --out $F/render_check_ar_obokata.json
+$P render-check --wiki en --revids 1381772671 --doi "$WAKEFIELD" --out $F/render_check_en_mmr.json
+$P render-check --wiki ar --revids 72523566 --doi "$WAKEFIELD" --out $F/render_check_ar_mmr.json
+
 # Prior art and Arabic template checks (CREATIVE_FEASIBILITY.md §1, FEASIBILITY_REPORT.md §7.3)
 $P api-query --host meta.wikimedia.org --param meta=globaluserinfo --param guiuser=RetractionBot \
     --param guiprop=merged --out $F/prior_art_retractionbot_global.json
