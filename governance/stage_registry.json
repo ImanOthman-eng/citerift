@@ -1329,13 +1329,16 @@
           "requirement": "Critical blockers and recommendations stated"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
         "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
         "recorded_at": "2026-10-25T08:12:56Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "32712fa3b1311a38efbf2f854a3c0dbaed076b17",
+        "recorded_at": "2026-10-27T13:54:57Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -1780,6 +1783,17 @@
       "actor": "external-agent",
       "recorded_by": "external-agent",
       "reason": "Owner requested a bounded corrective pass (cmsg_018VCB51nDHP6HXmLU4ea5yPBWBK4PLfVSRHeA5DdXjWLz): cross-wiki langlinks failure handling, sample interpretation, prior-art accuracy, reproducibility and source rights",
+      "owner_ref": null
+    },
+    {
+      "seq": 19,
+      "at": "2026-10-27T13:54:57Z",
+      "stage": "01",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "external-agent",
+      "recorded_by": "external-agent",
+      "reason": "Corrective pass requested by the owner (cmsg_018VCB51nDHP6HXmLU4ea5yPBWBK4PLfVSRHeA5DdXjWLz): failure handling fixed, sample corrected, evidence re-derived and re-verified",
       "owner_ref": null
     }
   ]
