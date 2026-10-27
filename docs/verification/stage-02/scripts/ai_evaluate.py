@@ -10,6 +10,7 @@ Run: python docs/verification/stage-02/scripts/ai_evaluate.py --protocol P [--re
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -87,7 +88,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--responses", type=Path)
     ap.add_argument("--split", default="heldout", choices=["tuning", "heldout"])
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--run-record", type=Path, help="measured run facts: index digests before/after, resource use")
     args = ap.parse_args(argv)
+    if args.responses and not args.run_record:
+        ap.error("--responses needs --run-record (fact writes and resource limits are gate criteria)")
     protocol = json.loads(args.protocol.read_text(encoding="utf-8"))
     items = protocol["splits"][args.split]
     th = protocol["frozen_thresholds"]
@@ -95,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
     pos = [i for i in items if i["label"] == "positive"]
     report: dict[str, Any] = {
         "split": args.split,
-        "protocol_sha256": __import__("hashlib").sha256(args.protocol.read_bytes()).hexdigest(),
+        "protocol_sha256": hashlib.sha256(args.protocol.read_bytes()).hexdigest(),
         "candidate_recall_at_5": sum(bool(i["candidate_recall_at_5"]) for i in pos) / len(pos),
         "baseline": base,
         "max_attainable_gain_pp": round(100 * (1 - base["primary_accuracy"]), 3),
@@ -114,21 +118,23 @@ def main(argv: list[str] | None = None) -> int:
         p = stats.mcnemar_exact_one_sided(b, c)
         report["model"] = model
         report["paired"] = {"b_baseline_right_model_wrong": b, "c_model_right_baseline_wrong": c, "p_one_sided": p}
+        run = json.loads(args.run_record.read_text(encoding="utf-8"))
+        report["run_record"] = run
         report["admission"] = {
-            "eligible_groups": len(items) >= gate["min_eligible_groups"],
+            "eligible_groups_ok": len(items) >= gate["min_eligible_groups"],
             "gain_pp": gain,
             "gain_ok": gain >= gate["min_accuracy_gain_pp"],
             "p_ok": p < gate["max_p"],
             "coverage_ok": model["coverage"] >= gate["min_selection_coverage"],
             "false_selections_ok": model["false_selections_on_negatives"] <= base["false_selections_on_negatives"],
             "confusions_ok": model["notice_original_confusions"] == 0,
+            "fact_writes_ok": run["index_artifact_digest_before"] == run["index_artifact_digest_after"]
+            and run["prohibited_fact_writes"] == 0,
+            "resource_limits_ok": run["resource_limits_met"] is True,
         }
-        report["admission"]["admitted"] = (
-            all(v for k, v in report["admission"].items() if k.endswith("_ok"))
-            and (report["admission"]["eligible_groups"])
-        )
+        report["admission"]["admitted"] = all(v for k, v in report["admission"].items() if k.endswith("_ok"))
     args.out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    summary = {k: v for k, v in base.items() if k != "correct_vector" and k != "per_stratum"}
+    summary = {k: v for k, v in base.items() if k not in {"correct_vector", "per_stratum"}}
     print(json.dumps({"baseline": summary, "max_attainable_gain_pp": report["max_attainable_gain_pp"]}))
     return 0
 

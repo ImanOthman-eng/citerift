@@ -22,7 +22,7 @@ _ASCII_FOLD = str.maketrans("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstu
 _DOI_HOSTS = ("doi.org", "dx.doi.org")
 _PUBMED_URL = (
     re.compile(r"pubmed\.ncbi\.nlm\.nih\.gov/([^/?#]*)/?", re.ASCII | re.IGNORECASE),
-    re.compile(r"www\.ncbi\.nlm\.nih\.gov/pubmed/([^/?#]*)/?", re.ASCII | re.IGNORECASE),
+    re.compile(r"www\.ncbi\.nlm\.nih\.gov/pubmed/([^/?#]*)", re.ASCII | re.IGNORECASE),
 )
 DOI_MAX_LENGTH = 512
 PMID_MAX_DIGITS = 9

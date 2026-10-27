@@ -211,6 +211,15 @@ def tension_semantics(report: dict[str, Any]) -> list[ContractProblem]:
             out.append(_p("CHANGED_FIELDS_INCONSISTENT", f"/interventions/{i}", "changed_fields do not match results"))
         if r["intervention"] == "exclude_origin" and not 1 <= len(r["origins"]) <= 2:
             out.append(_p("ORIGIN_LIMIT", f"/interventions/{i}/origins", "exclude_origin takes one or two origins"))
+    known = {sp["assertion_id"] for sp in report["source_pointers"]}
+    basis = report["base"]["basis"]
+    cited = set(basis.get("supporting_assertions", []))
+    for group in basis.get("conflict_groups", []):
+        cited |= set(group["assertions"])
+    for r in report["interventions"]:
+        cited |= set(r["affected_assertions"])
+    for missing in sorted(cited - known):
+        out.append(_p("DANGLING_REFERENCE", "/source_pointers", f"assertion {missing} has no source pointer"))
     if "control" in report["diagnostic_classes"] and len(report["diagnostic_classes"]) > 1:
         out.append(_p("CONTROL_WITH_DIAGNOSTIC", "/diagnostic_classes", "control excludes every other class"))
     text = json.dumps(report)
