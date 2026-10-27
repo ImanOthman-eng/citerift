@@ -382,3 +382,33 @@ Safeguards set by the owner (GOVERNANCE.md, "Procedural safeguards"):
 
 Recommendation carried forward: decide on D-006 before Stage 09. Accepting
 these residuals authorizes no stage.
+
+
+## D-020 — Stage 01 accepted; revised, limited RESCOPE approved
+- Status: accepted
+- Topic: stage-01-feasibility-scope
+- Date: 2026-10-27
+- Stage: 01
+- Supersedes: none
+- Evidence: docs/verification/stage-01/FEASIBILITY_REPORT.md §12 and §16.8; docs/verification/stage-01/HANDOFF.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU`,
+2026-10-27): Stage 01 is accepted at evidence revision
+`85da719ac43fc46170310b225c9190b63a046df8`, and "the revised, limited RESCOPE
+recommendation documented in FEASIBILITY_REPORT.md §12 and §16.8" is approved.
+
+In the owner's words, this decision "preserves the full planned CITERIFT
+architecture, including Investigation MAESTRO, Investigation Memory, meaningful
+evaluated AI, cross-language investigation, Evidence Passport, Citation
+Autopsy, Timeline, and Knowledge Ripple."
+
+Constraints set by the owner for later stages:
+
+1. "Edition-level findings must be restricted to the demonstrably covered
+   citation population and its documented lower bounds."
+2. "Response-timing claims must remain case-specific unless independently
+   validated broader historical evidence becomes available."
+
+Recorded as: Stage 01 `ACCEPTED_CLOSED` through `citerift-gov` with this owner
+reference. Merging pull request #3 and authorizing Stage 02 remain separate
+owner decisions; this decision authorizes no stage.

@@ -155,7 +155,7 @@ until Stages 02 and 03 verify real formats. Tightening them is expected as a
 backward-compatible minor version where possible.
 
 ## R-007 — Stage 01 findings are not delivered or accepted
-- Status: open
+- Status: closed
 - Severity: high
 - Kind: risk
 - Stage: 01, 02, 03
@@ -163,6 +163,11 @@ backward-compatible minor version where possible.
 Stages 02 and 03 depend on Stage 01 acceptance. The owner reports the external
 investigation was reported, but no handoff is in this repository and no finding
 is accepted. Nothing in Stage 00 assumes its results.
+
+Closed 2026-10-27: the Stage 01 findings are delivered in
+docs/verification/stage-01/ and the owner accepted Stage 01 at `85da719`
+(owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU`, D-020).
+Stages 02 and 03 still need their own owner authorization.
 
 ## R-008 — Wikimedia API rate limiting
 - Status: open
