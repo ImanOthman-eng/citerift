@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from citerift.retraction import tension
+from citerift.retraction import ambiguity, tension
 from citerift.retraction.ambiguity import suggest
 from citerift.retraction.corroboration import enrich
 from citerift.retraction.export import diff, export, verify
@@ -90,18 +90,16 @@ def _parser() -> argparse.ArgumentParser:
     a = sub.add_parser("ambiguity")
     a.add_argument("--index", type=Path, required=True)
     a.add_argument("--event", required=True)
-    a.add_argument("--tau-s", type=float, default=0.90)
-    a.add_argument("--tau-m", type=float, default=0.05)
+    a.add_argument("--tau-s", type=float, default=ambiguity.FROZEN_TAU_S)
+    a.add_argument("--tau-m", type=float, default=ambiguity.FROZEN_TAU_M)
     return p
 
 
 def _open(path: Path) -> Any:
-
     return Index(path)
 
 
 def run(argv: list[str] | None = None) -> int:
-
     args = _parser().parse_args(argv)
     try:
         if args.command == "build":

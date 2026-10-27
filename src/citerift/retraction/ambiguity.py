@@ -17,6 +17,9 @@ TOP_K = 5
 WEIGHTS = (0.6, 0.2, 0.2)
 TAU_S_GRID = (0.70, 0.75, 0.80, 0.85, 0.90, 0.95)
 TAU_M_GRID = (0.00, 0.05, 0.10)
+# Chosen on the 40 tuning groups only and frozen with the protocol (docs/verification/stage-02/ai/protocol.json).
+FROZEN_TAU_S = 0.85
+FROZEN_TAU_M = 0.10
 
 
 @dataclass(frozen=True)

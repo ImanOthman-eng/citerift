@@ -1,0 +1,838 @@
+{
+  "corroboration": {
+    "manifests": [
+      {
+        "assertions_kept": 48,
+        "client_version": "citerift-rde-crossref/1.0.0",
+        "manifest_sha256": "cf12055e3ce714dce58b06f2a1a5764d16cd61f086930c4dbf56cbc67b94dd7d",
+        "started_at": "2026-10-27T21:58:17Z",
+        "stopped": null,
+        "works": 29,
+        "works_failed": 2,
+        "works_ok": 27
+      }
+    ]
+  },
+  "demonstrations": [
+    {
+      "base": {
+        "definite_orderings": [
+          [
+            "ev-0056297",
+            "ev-0069409"
+          ]
+        ],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.1016/s0140-6736(04)15715-2",
+          "doi:10.1016/s0140-6736(10)60175-4"
+        ],
+        "retraction_date.status": "verified_fact",
+        "retraction_date.value": "2010-02-06",
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 2,
+        "support.origins": [
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 4,
+        "date": "2010-02-06",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0056297",
+          "ev-0069409"
+        ]
+      },
+      "baseline_errors": [
+        "baseline counts 4 confirming sources; they come from 1 origin(s)",
+        "baseline cannot show that collapse_shared_origin changes ['support.observations']"
+      ],
+      "diagnostic_classes": [
+        "redistributed_support"
+      ],
+      "evidence_digest": "a311630e7fd8a8f4ab2c3f195c4941f94cce306226d556a27916685a7cdc3c83",
+      "id": "D1",
+      "intent": "redistributed support",
+      "interventions": [
+        {
+          "affected_assertions": [
+            "cr-be105c63f0ca9414-u1",
+            "ev-0069409/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "support.observations"
+          ],
+          "changed_values": {
+            "support.observations": 1
+          },
+          "intervention": "collapse_shared_origin",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "not_applicable_reason": "NO_UNJUSTIFIED_DATE_VALUE",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.1016/s0140-6736(97)11096-0"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    },
+    {
+      "base": {
+        "definite_orderings": [
+          [
+            "ev-0043715",
+            "ev-0043716"
+          ],
+          [
+            "ev-0043715",
+            "ev-0043717"
+          ],
+          [
+            "ev-0043716",
+            "ev-0043717"
+          ]
+        ],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.2217/nnm.14.183.c1",
+          "doi:10.2217/nnm.14.183r1",
+          "doi:10.2217/nnm.15.54"
+        ],
+        "retraction_date.status": "verified_fact",
+        "retraction_date.value": "2021-06-18",
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 3,
+        "support.origins": [
+          "publisher",
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 8,
+        "date": "2021-06-18",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0043715",
+          "ev-0043716",
+          "ev-0043717"
+        ]
+      },
+      "baseline_errors": [
+        "baseline counts 8 confirming sources; they come from 2 origin(s)",
+        "baseline cannot show that collapse_shared_origin changes ['support.observations']",
+        "baseline cannot show that exclude_origin['publisher'] changes ['support.observations', 'support.origins']",
+        "baseline cannot show that exclude_origin['retraction-watch'] changes ['definite_orderings', 'notice_links', 'retraction_date.status', 'retraction_date.value', 'support.observations', 'support.origins']"
+      ],
+      "diagnostic_classes": [
+        "origin_dependence",
+        "redistributed_support"
+      ],
+      "evidence_digest": "9ca12f52170437e40bfcbb5d13e8deef667dad1411571931962215d2770dacf1",
+      "id": "D2",
+      "intent": "redistributed support and origin dependence",
+      "interventions": [
+        {
+          "affected_assertions": [
+            "cr-fb338e8d411a300c-u1",
+            "ev-0043717/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "support.observations"
+          ],
+          "changed_values": {
+            "support.observations": 2
+          },
+          "intervention": "collapse_shared_origin",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "cr-fb338e8d411a300c-u3",
+            "cr-fb338e8d411a300c-u4"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "support.observations",
+            "support.origins"
+          ],
+          "changed_values": {
+            "support.observations": 2,
+            "support.origins": [
+              "retraction-watch"
+            ]
+          },
+          "intervention": "exclude_origin",
+          "origins": [
+            "publisher"
+          ]
+        },
+        {
+          "affected_assertions": [
+            "cr-fb338e8d411a300c-u0",
+            "cr-fb338e8d411a300c-u1",
+            "cr-fb338e8d411a300c-u2",
+            "ev-0043715/event_type",
+            "ev-0043716/event_type",
+            "ev-0043717/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "definite_orderings",
+            "notice_links",
+            "retraction_date.status",
+            "retraction_date.value",
+            "support.observations",
+            "support.origins"
+          ],
+          "changed_values": {
+            "definite_orderings": [],
+            "notice_links": [],
+            "retraction_date.status": "uncertain",
+            "retraction_date.value": null,
+            "support.observations": 1,
+            "support.origins": [
+              "publisher"
+            ]
+          },
+          "intervention": "exclude_origin",
+          "origins": [
+            "retraction-watch"
+          ]
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "not_applicable_reason": "NO_UNJUSTIFIED_DATE_VALUE",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "publisher",
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.2217/nnm.14.183"
+      },
+      "schema_problems": [],
+      "single_origin": false
+    },
+    {
+      "base": {
+        "definite_orderings": [
+          [
+            "ev-0055601",
+            "ev-0066266"
+          ]
+        ],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.1007/s13277-015-3761-z",
+          "doi:10.1007/s13277-017-5487-6"
+        ],
+        "retraction_date.status": "uncertain",
+        "retraction_date.value": null,
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 3,
+        "support.origins": [
+          "publisher",
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION",
+        "CONFLICT_NOT_MATERIAL",
+        "MULTIPLE_RETRACTION_DATES"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 6,
+        "date": "2015-07-24",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0055601",
+          "ev-0066266"
+        ]
+      },
+      "baseline_errors": [
+        "baseline counts 6 confirming sources; they come from 2 origin(s)",
+        "baseline states the date 2015-07-24 as given; the policy result is uncertain",
+        "baseline cannot show that collapse_shared_origin changes ['support.observations']",
+        "baseline cannot show that exclude_origin['publisher'] changes ['support.observations', 'support.origins']",
+        "baseline cannot show that exclude_origin['retraction-watch'] changes ['definite_orderings', 'notice_links', 'support.observations', 'support.origins']"
+      ],
+      "diagnostic_classes": [
+        "redistributed_support"
+      ],
+      "evidence_digest": "1abd1627177d00d4664e1cb2afd87f952dcd446308824308d7eeef944efeef63",
+      "id": "D3",
+      "intent": "type conflict between origins",
+      "interventions": [
+        {
+          "affected_assertions": [
+            "cr-7ef527147fe6904c-u1",
+            "ev-0066266/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "support.observations"
+          ],
+          "changed_values": {
+            "support.observations": 2
+          },
+          "intervention": "collapse_shared_origin",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "cr-7ef527147fe6904c-u2",
+            "cr-7ef527147fe6904c-u3"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "support.observations",
+            "support.origins"
+          ],
+          "changed_values": {
+            "support.observations": 4,
+            "support.origins": [
+              "retraction-watch"
+            ]
+          },
+          "intervention": "exclude_origin",
+          "origins": [
+            "publisher"
+          ]
+        },
+        {
+          "affected_assertions": [
+            "cr-7ef527147fe6904c-u0",
+            "cr-7ef527147fe6904c-u1",
+            "ev-0055601/event_type",
+            "ev-0066266/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "definite_orderings",
+            "notice_links",
+            "support.observations",
+            "support.origins"
+          ],
+          "changed_values": {
+            "definite_orderings": [],
+            "notice_links": [],
+            "support.observations": 1,
+            "support.origins": [
+              "publisher"
+            ]
+          },
+          "intervention": "exclude_origin",
+          "origins": [
+            "retraction-watch"
+          ]
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "not_applicable_reason": "NO_UNJUSTIFIED_DATE_VALUE",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "publisher",
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.1007/s13277-014-2995-5"
+      },
+      "schema_problems": [],
+      "single_origin": false
+    },
+    {
+      "base": {
+        "definite_orderings": [],
+        "identity.status": "bridged",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.1242/dev.135533"
+        ],
+        "retraction_date.status": "verified_fact",
+        "retraction_date.value": "2017-03-28",
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 1,
+        "support.origins": [
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 1,
+        "date": "2017-03-28",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0067466"
+        ]
+      },
+      "baseline_errors": [
+        "baseline cannot show that exclude_ambiguous_links changes ['identity.status', 'notice_links']"
+      ],
+      "diagnostic_classes": [
+        "uncertain_identity_or_notice"
+      ],
+      "evidence_digest": "0dc043692ec794792f33b886179523fed529f0cbff5878c9d954977cf6bfd50b",
+      "id": "D4",
+      "intent": "uncertain identity link (one-hop bridge)",
+      "interventions": [
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "collapse_shared_origin",
+          "not_applicable_reason": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "ev-0067465/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "identity.status",
+            "notice_links"
+          ],
+          "changed_values": {
+            "identity.status": "exact",
+            "notice_links": []
+          },
+          "intervention": "exclude_ambiguous_links",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "ev-0067465/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "pmid": "26700683"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    },
+    {
+      "base": {
+        "definite_orderings": [],
+        "identity.status": "ambiguous",
+        "lookup_state": "ambiguous_identity",
+        "notice_links": [],
+        "retraction_date.status": null,
+        "retraction_date.value": null,
+        "retraction_status.status": "uncertain",
+        "retraction_status.value": null,
+        "support.observations": 0,
+        "support.origins": []
+      },
+      "base_reasons": [
+        "IDENTITY_AMBIGUOUS"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 3,
+        "date": "2002-09-01",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0061606",
+          "ev-0061607",
+          "ev-0069834"
+        ]
+      },
+      "baseline_errors": [
+        "baseline answers 'retracted' although the identifier names several works",
+        "baseline says retracted; the policy result is uncertain None",
+        "baseline states the date 2002-09-01 as given; the policy result is None"
+      ],
+      "diagnostic_classes": [
+        "control"
+      ],
+      "evidence_digest": "76307d4db043d5ca9002d04fcd6836966b352b6fdce8c9c1be5278f5ce09eed8",
+      "id": "D5",
+      "intent": "uncertain identity (one PMID, several DOIs)",
+      "interventions": [
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "collapse_shared_origin",
+          "not_applicable_reason": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "ev-0061606/event_type",
+            "ev-0061607/event_type",
+            "ev-0069834/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "origins": []
+        }
+      ],
+      "lookup_state": "ambiguous_identity",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "pmid": "11430323"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    },
+    {
+      "base": {
+        "definite_orderings": [],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.1001/archneur.1989.00520460020004"
+        ],
+        "retraction_date.status": "uncertain",
+        "retraction_date.value": "1989-10-01",
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 1,
+        "support.origins": [
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION",
+        "DATE_PRECISION_UNJUSTIFIED"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 1,
+        "date": "1989-10-01",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0071831"
+        ]
+      },
+      "baseline_errors": [
+        "baseline states the date 1989-10-01 as given; the policy result is uncertain",
+        "baseline cannot show that require_temporal_bounds changes ['retraction_date.value']"
+      ],
+      "diagnostic_classes": [
+        "unsupported_temporal_precision"
+      ],
+      "evidence_digest": "15628f5bf1d3ad1b586eb28a2ff7f1e6a1c64eb2a21f9b0ef2d284afdc5ca172",
+      "id": "D6",
+      "intent": "unsupported temporal precision (day 1)",
+      "interventions": [
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "collapse_shared_origin",
+          "not_applicable_reason": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "ev-0071831/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [
+            "retraction_date.value"
+          ],
+          "changed_values": {
+            "retraction_date.value": null
+          },
+          "intervention": "require_temporal_bounds",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.1001/archneur.1985.04060020080021"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    },
+    {
+      "base": {
+        "definite_orderings": [],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [
+          "doi:10.33594/000000268",
+          "doi:10.33594/000000297"
+        ],
+        "retraction_date.status": null,
+        "retraction_date.value": null,
+        "retraction_status.status": "uncertain",
+        "retraction_status.value": null,
+        "support.observations": 0,
+        "support.origins": []
+      },
+      "base_reasons": [
+        "REINSTATEMENT_UNLINKED"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 3,
+        "date": "2020-08-01",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0035473",
+          "ev-0049536"
+        ]
+      },
+      "baseline_errors": [
+        "baseline says retracted; the policy result is uncertain None",
+        "baseline states the date 2020-08-01 as given; the policy result is None"
+      ],
+      "diagnostic_classes": [
+        "control"
+      ],
+      "evidence_digest": "aaebdf31fdd5c37dfaac8007a3cfced9f893006fb48f6e112546c5b2315cb0a5",
+      "id": "D7",
+      "intent": "reinstatement without a supersession link",
+      "interventions": [
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "collapse_shared_origin",
+          "not_applicable_reason": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [
+            "ev-0035473/event_type",
+            "ev-0049536/event_type"
+          ],
+          "applicable": true,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.1159/000443123"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    },
+    {
+      "base": {
+        "definite_orderings": [],
+        "identity.status": "exact",
+        "lookup_state": "matched",
+        "notice_links": [],
+        "retraction_date.status": "verified_fact",
+        "retraction_date.value": "2000-08-10",
+        "retraction_status.status": "verified_fact",
+        "retraction_status.value": "retracted",
+        "support.observations": 1,
+        "support.origins": [
+          "retraction-watch"
+        ]
+      },
+      "base_reasons": [
+        "SOURCE_RECORDED_RETRACTION"
+      ],
+      "baseline": {
+        "answer": "retracted",
+        "confirming_sources": 1,
+        "date": "2000-08-10",
+        "design": "event_log_baseline",
+        "diagnostics": [],
+        "rows": [
+          "ev-0033638"
+        ]
+      },
+      "baseline_errors": [],
+      "diagnostic_classes": [
+        "control"
+      ],
+      "evidence_digest": "b91d1adb313ed0c0cd9533e80019f9656d23fad98ec2716689dd93430591e78d",
+      "id": "D8",
+      "intent": "control: RW only, exact date, Crossref request failed",
+      "interventions": [
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "collapse_shared_origin",
+          "not_applicable_reason": "NO_ORIGIN_WITH_REPEATED_SUPPORT",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "exclude_ambiguous_links",
+          "not_applicable_reason": "NO_AMBIGUOUS_LINK",
+          "origins": []
+        },
+        {
+          "affected_assertions": [],
+          "applicable": false,
+          "changed_fields": [],
+          "changed_values": {},
+          "intervention": "require_temporal_bounds",
+          "not_applicable_reason": "NO_UNJUSTIFIED_DATE_VALUE",
+          "origins": []
+        }
+      ],
+      "lookup_state": "matched",
+      "origins": [
+        "retraction-watch"
+      ],
+      "query": {
+        "doi": "10.1002/1096-9098(200007)74:3%3c201::aid-jso8%3e3.0.co;2-5"
+      },
+      "schema_problems": [],
+      "single_origin": true
+    }
+  ],
+  "diagnostic_classes_shown": [
+    "origin_dependence",
+    "redistributed_support",
+    "uncertain_identity_or_notice",
+    "unsupported_temporal_precision"
+  ],
+  "limits": [
+    "Only RW and Crossref evidence exist for these works; publisher text was not read.",
+    "Whether an RW-sourced Crossref relation and the RW CSV row describe the same notice is known; whether a publisher deposit depends on the same notice is not, and stays unknown.",
+    "A changed field shows what a result rests on under a fixed policy; it is not a probability."
+  ],
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "tension_version": "citerift-evidence-tension/0.1.0"
+}

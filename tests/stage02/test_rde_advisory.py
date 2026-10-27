@@ -224,3 +224,9 @@ def test_rde_candidate_ranking_is_stable(tmp_path: Path) -> None:
     assert first == again and len(first) == ambiguity.TOP_K
     assert [c.anchor for c in first] == sorted(c.anchor for c in first)  # equal scores: anchor order
     assert ambiguity.decide(first, 0.85, 0.10) == ("abstain", None)  # a tie is never a selection
+
+
+@pytest.mark.unit
+def test_rde_cli_uses_the_frozen_thresholds() -> None:
+    protocol = json.loads((S.REPO / "docs" / "verification" / "stage-02" / "ai" / "protocol.json").read_text("utf-8"))
+    assert protocol["frozen_thresholds"] == {"tau_s": ambiguity.FROZEN_TAU_S, "tau_m": ambiguity.FROZEN_TAU_M}
