@@ -1329,13 +1329,16 @@
           "requirement": "Critical blockers and recommendations stated"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
         "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
         "recorded_at": "2026-10-25T08:12:56Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "562fe1a9d0498612c61f63c820bbd1c54aa38545",
+        "recorded_at": "2026-10-27T11:44:15Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -1747,6 +1750,17 @@
       "actor": "external-agent",
       "recorded_by": "external-agent",
       "reason": "Stage 01 work started under the owner's Stage 01 Master Execution Directive (message cmsg_018VCB51nDHP6HXmLU4ea5yPHoNtmrTEksWGzn64yEgVJc). Executor role external-agent is filled by a Claude Code session in a separate project thread at the owner's direction; it is not an organizationally independent agent. Research protocol fixed first in docs/verification/stage-01/PROTOCOL.md.",
+      "owner_ref": null
+    },
+    {
+      "seq": 16,
+      "at": "2026-10-27T11:44:15Z",
+      "stage": "01",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "external-agent",
+      "recorded_by": "external-agent",
+      "reason": "Stage 01 evidence committed at 562fe1a (feasibility report, evidence manifest, data re-derived by reproduce.sh, live re-verification 0 mismatches); executor directive cmsg_018VCB51nDHP6HXmLU4ea5yPHoNtmrTEksWGzn64yEgVJc",
       "owner_ref": null
     }
   ]
