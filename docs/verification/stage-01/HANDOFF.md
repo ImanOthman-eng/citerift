@@ -216,8 +216,8 @@ Repository quality checks ran with the locked project environment
 `85da719ac43fc46170310b225c9190b63a046df8` on branch `claude/project-thread-70xjkv` in
 <https://github.com/ImanOthman-eng/citerift>: the commit containing every
 evidence file above except this handoff, verification-record.json and
-`data/run-logs/stage01_tests_pinned_85da719.json`, which were added afterwards
-and are pinned by hash in the verification record. The governance check accepts
+`data/run-logs/stage01_tests_pinned_85da719.json` (and two rows of
+`data/README.md` describing run-logs), which were added afterwards and are pinned by hash in the verification record. The governance check accepts
 as gate evidence only files in this directory, so that file pins the four test
 files under `tests/stage01/` by their sha256 at this revision.
 The pull request must be merged with a merge commit so the cited commits stay
