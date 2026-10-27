@@ -26,6 +26,7 @@ RW_CHANNEL = "rw-gitlab-csv"
 CR_SOURCE_ID = "crossref"
 DEFAULT_PAGE = 20
 MAX_PAGE = 100
+MAX_RELEVANCE_LISTED = 100  # relevance hits listed in issues; the full count is always reported
 
 
 class QueryError(ValueError):
@@ -157,7 +158,9 @@ class Index:
         hits: list[dict[str, Any]] = []
         id_columns = [self.header.index(col) for _, _, col in IDENT_FIELDS if col in self.header]
         for ordinal, fields_json in self.conn.execute(
-            "SELECT q.ordinal, r.fields FROM quarantine q JOIN raw_record r ON r.ordinal = q.ordinal ORDER BY q.ordinal"
+            # CROSS JOIN keeps the (small) quarantine table outermost; the planner otherwise scans every record.
+            "SELECT q.ordinal, r.fields FROM quarantine q CROSS JOIN raw_record r ON r.ordinal = q.ordinal "
+            "ORDER BY q.ordinal"
         ):
             fields = json.loads(fields_json)
             candidates = [fields[i] for i in id_columns] if len(fields) == len(self.header) else fields
@@ -257,7 +260,7 @@ class Index:
             ev.crossref = self.crossref_relations(dois)
             ev.checked_sources += self.crossref_sources(dois)
             gap = [h for h in self.relevance([k for k in (d, p) if k]) if h["code"] == "RELEVANT_QUARANTINE"]
-            ev.issues += gap
+            ev.issues += _capped(gap)
             ev.relevant_gap = bool(gap)
         elif notices:
             ev.state, ev.role = "notice_only", "notice"
@@ -267,7 +270,7 @@ class Index:
             ev.notice_hits = [self._notice_hit(e) for e in notices]
         else:
             hits = self.relevance([k for k in (d, p) if k])
-            ev.issues += hits
+            ev.issues += _capped(hits)
             ev.relevant_gap = bool(hits)
             ev.checked_sources += self.crossref_sources([d] if d else [])
         self._finish(ev, supersessions)
@@ -329,6 +332,14 @@ class Index:
             supersessions=supersessions,
             relevant_gap=ev.relevant_gap,
         )
+
+
+def _capped(hits: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """At most MAX_RELEVANCE_LISTED hits, plus an explicit count when more exist (never a silent cut)."""
+    if len(hits) <= MAX_RELEVANCE_LISTED:
+        return hits
+    capped = {"code": "RELEVANT_LIST_CAPPED", "total": len(hits), "listed": MAX_RELEVANCE_LISTED}
+    return [*hits[:MAX_RELEVANCE_LISTED], capped]
 
 
 def _cursor_token(snapshot_id: str, keys: dict[str, str | None], offset: int) -> str:
