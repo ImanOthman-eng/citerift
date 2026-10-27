@@ -725,6 +725,10 @@ def absence_check(client: Client, wiki: str, revid: int, needles: list[str], con
     return out
 
 
+def pubmed_link(pmid: str) -> re.Pattern[str]:
+    return re.compile(rf"pubmed\.ncbi\.nlm\.nih\.gov/{re.escape(pmid)}(?!\d)|/pubmed/{re.escape(pmid)}(?!\d)")
+
+
 REDLINK = re.compile(r'<a [^>]*class="new"[^>]*>.*?</a>', re.DOTALL)
 CITE = re.compile(r"<cite\b.*?</cite>", re.DOTALL)
 
@@ -733,8 +737,9 @@ def tag_text(fragment: str) -> str:
     return " ".join(html.unescape(re.sub(r"<[^>]+>", " ", fragment)).split())
 
 
-def rendered_references(html_text: str, doi: str) -> list[dict[str, Any]]:
-    """Reference-list items of rendered article HTML that contain the DOI, with what each item displays.
+def rendered_references(html_text: str, doi: str | None, pmid: str | None = None) -> list[dict[str, Any]]:
+    """Reference-list items of rendered article HTML that contain the DOI (or, given pmid, a PubMed link with that
+    PMID), with what each item displays.
 
     Retraction wording is looked for outside links to missing pages (class "new"): a template that does not exist
     renders as a red link showing its own name (e.g. "قالب:Retracted"), which is recorded separately, not as a warning.
@@ -745,30 +750,59 @@ def rendered_references(html_text: str, doi: str) -> list[dict[str, Any]]:
     # MediaWiki writes the id as cite_note-… or, entity-encoded, cite&#95;note-…
     for part in re.split(r'<li id="cite(?:_|&#95;)note', html_text)[1:]:
         seg = part.split("</li>", 1)[0].split(">", 1)[-1]
-        if not doi_positions(urllib.parse.unquote(html.unescape(seg)), doi):
-            continue
-        # The citation itself (<cite>, with the paper's title, e.g. "RETRACTED: …") is not a warning.
-        text = tag_text(CITE.sub(" ", REDLINK.sub(" ", seg)))
-        terms = [
-            {"term": m.group(0), "context": text[max(0, m.start() - 60) : m.end() + 60]}
-            for m in RETRACTION_MARKERS.finditer(text)
-        ]
-        redlinks = re.findall(r'<a [^>]*class="new"[^>]*title="([^"]*)"', seg)
-        if terms:
-            state = "warning_text"
-        elif any(RETRACTION_MARKERS.search(t) for t in redlinks):
-            state = "missing_template_link_only"
-        else:
-            state = "no_warning_text"
-        items.append(
-            {
-                "state": state,
-                "warning_terms": terms,
-                "missing_page_links": redlinks,
-                "text_excerpt": tag_text(seg)[:300],
-            }
-        )
+        if contains_identifier(seg, doi, pmid):
+            items.append(describe_segment(seg))
     return items
+
+
+BLOCK = re.compile(r"<(li|p|dd)\b([^>]*)>(.*?)</\1>", re.DOTALL)
+
+
+def rendered_other_items(html_text: str, doi: str | None, pmid: str | None = None) -> list[dict[str, Any]]:
+    """List items, paragraphs and definition items outside the footnote list that contain the identifier, such as a
+    "further reading" bibliography, described as rendered_references describes footnotes."""
+    return [
+        {**describe_segment(m.group(3)), "location": f"{m.group(1)}_outside_footnotes"}
+        for m in BLOCK.finditer(html_text)
+        if "cite_note" not in m.group(2)
+        and "cite&#95;note" not in m.group(2)
+        and contains_identifier(m.group(3), doi, pmid)
+    ]
+
+
+def contains_identifier(seg: str, doi: str | None, pmid: str | None) -> bool:
+    plain = urllib.parse.unquote(html.unescape(seg))
+    return bool(doi_positions(plain, doi) if doi else pmid and pubmed_link(pmid).search(plain))
+
+
+def describe_segment(seg: str) -> dict[str, Any]:
+    # The citation itself (<cite>, with the paper's title, e.g. "RETRACTED: …") is not a warning.
+    text = tag_text(CITE.sub(" ", REDLINK.sub(" ", seg)))
+    terms = [
+        {"term": m.group(0), "context": text[max(0, m.start() - 60) : m.end() + 60]}
+        for m in RETRACTION_MARKERS.finditer(text)
+    ]
+    redlinks = re.findall(r'<a [^>]*class="new"[^>]*title="([^"]*)"', seg)
+    if terms:
+        state = "warning_text"
+    elif any(RETRACTION_MARKERS.search(t) for t in redlinks):
+        state = "missing_template_link_only"
+    else:
+        state = "no_warning_text"
+    return {"state": state, "warning_terms": terms, "missing_page_links": redlinks, "text_excerpt": tag_text(seg)[:300]}
+
+
+def parse_html(client: Client, wiki: str, revid: int) -> tuple[dict[str, Any], str | None]:
+    """Parser HTML of a pinned revision, or None when the render failed (an error body counts as a failure)."""
+    params = {"action": "parse", "format": "json", "formatversion": "2", "oldid": str(revid), "prop": "text|revid"}
+    res = client.get(api(wiki), {**params, "maxlag": "5"})
+    out = {"wiki": wiki, "revid": revid, "url": res["url"], "status": res["status"]}
+    out["retrieved_at"] = res["retrieved_at"]
+    body = res["body"]
+    parsed = body.get("parse") if res["status"] == 200 and isinstance(body, dict) and not api_error(body) else None
+    if not isinstance(parsed, dict) or not isinstance(parsed.get("text"), str):
+        return {**out, "api_error": api_error(body)}, None
+    return out, parsed["text"]
 
 
 def render_check(client: Client, wiki: str, revid: int, doi: str) -> dict[str, Any]:
@@ -777,15 +811,15 @@ def render_check(client: Client, wiki: str, revid: int, doi: str) -> dict[str, A
     The state says what was inspected in the desktop parser output, not what every reader sees: skins, the mobile
     view, gadgets and CSS were not checked. A failed render is never read as an absent warning.
     """
-    params = {"action": "parse", "format": "json", "formatversion": "2", "oldid": str(revid), "prop": "text|revid"}
-    res = client.get(api(wiki), {**params, "maxlag": "5"})
-    out = {"wiki": wiki, "revid": revid, "doi": doi, "url": res["url"], "status": res["status"]}
-    out["retrieved_at"] = res["retrieved_at"]
-    body = res["body"]
-    parsed = body.get("parse") if res["status"] == 200 and isinstance(body, dict) and not api_error(body) else None
-    if not isinstance(parsed, dict) or not isinstance(parsed.get("text"), str):
-        return {**out, "state": "render_unavailable", "api_error": api_error(body)}
-    refs = rendered_references(parsed["text"], doi)
+    meta, text = parse_html(client, wiki, revid)
+    out = {"wiki": wiki, "revid": revid, "doi": doi, **meta}
+    if text is None:
+        return {**out, "state": "render_unavailable"}
+    refs = rendered_references(text, doi)
+    return {**out, "state": rendered_state(refs), "references": refs}
+
+
+def rendered_state(refs: list[dict[str, Any]]) -> str:
     states = {r["state"] for r in refs}
     if not refs:
         state = "reference_not_found_in_render"
@@ -797,7 +831,7 @@ def render_check(client: Client, wiki: str, revid: int, doi: str) -> dict[str, A
         }[states.pop()]
     else:
         state = "mixed"
-    return {**out, "state": state, "references": refs}
+    return state
 
 
 # ------------------------------------------------------------------ verification of a manifest

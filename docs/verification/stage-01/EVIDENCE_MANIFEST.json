@@ -1534,6 +1534,212 @@
    "mention_only_dois": 0,
    "cited_dois": [],
    "observations": []
+  },
+  "census_2026_10_27": {
+   "method": "Wikimedia SQL dumps of 2026-10-01 (externallinks, page, langlinks), confirmed live at the current revision on 2026-10-27; link-bearing citations only, so counts are lower bounds",
+   "epistemic_status": "verified_fact",
+   "generated_from": [
+    "ar_confirm",
+    "ar_render",
+    "ar_scan",
+    "crosswiki_ar_to_en",
+    "crosswiki_en_to_ar"
+   ],
+   "denominators": {
+    "rw_records": 73356,
+    "retraction_records": 67916,
+    "retraction_records_with_original_doi_or_pmid": 65643,
+    "retraction_papers_with_original_doi_or_pmid": 62575
+   },
+   "ar_dump_scan": {
+    "pages_any_namespace": 205,
+    "pages_by_namespace": {
+     "0": 195,
+     "2": 10
+    },
+    "articles": 195,
+    "article_record_pairs_by_nature": {
+     "Retraction (original)": 199,
+     "Expression of concern (original)": 25,
+     "Correction (original)": 39,
+     "Reinstatement (original)": 1,
+     "Retraction (notice only)": 15,
+     "Correction (notice only)": 1,
+     "Expression of concern (notice only)": 1
+    },
+    "link_kinds_in_articles": {
+     "doi_resolver": 304,
+     "pubmed": 264,
+     "doi_in_url": 16
+    },
+    "distinct_records_original": 203,
+    "distinct_records_notice": 55
+   },
+   "ar_confirmed_cited": {
+    "Correction": {
+     "article_record_pairs": 38,
+     "articles": 36,
+     "records": 24,
+     "papers": 23,
+     "pairs_marked_in_wikitext": 4
+    },
+    "Expression of concern": {
+     "article_record_pairs": 25,
+     "articles": 22,
+     "records": 19,
+     "papers": 18,
+     "pairs_marked_in_wikitext": 4
+    },
+    "Reinstatement": {
+     "article_record_pairs": 1,
+     "articles": 1,
+     "records": 1,
+     "papers": 1,
+     "pairs_marked_in_wikitext": 0
+    },
+    "Retraction": {
+     "article_record_pairs": 198,
+     "articles": 157,
+     "records": 159,
+     "papers": 158,
+     "pairs_marked_in_wikitext": 23
+    }
+   },
+   "ar_confirm_failures": 0,
+   "ar_linked_in_dump_but_not_cited_in_current_wikitext": {
+    "Retraction": 1,
+    "Correction": 1
+   },
+   "ar_render_states": {
+    "Retraction": {
+     "no_warning_text_in_inspected_rendered_reference": 148,
+     "missing_template_link_only_in_rendered_reference": 22,
+     "warning_text_in_rendered_reference": 26,
+     "reference_not_found_in_render": 2
+    },
+    "Expression of concern": {
+     "no_warning_text_in_inspected_rendered_reference": 19,
+     "missing_template_link_only_in_rendered_reference": 4,
+     "reference_not_found_in_render": 2
+    }
+   },
+   "ar_articles_with_an_unwarned_rendered_citation": {
+    "Retraction": 155,
+    "Expression of concern": 21
+   },
+   "en_dump_scan": {
+    "pages_any_namespace": 1420,
+    "pages_by_namespace": {
+     "0": 745,
+     "1": 283,
+     "4": 73,
+     "10": 16,
+     "2": 226,
+     "3": 36,
+     "5": 32,
+     "11": 3,
+     "118": 6
+    },
+    "articles": 745,
+    "article_record_pairs_by_nature": {
+     "Retraction (original)": 601,
+     "Expression of concern (original)": 1066,
+     "Correction (original)": 199,
+     "Reinstatement (original)": 11,
+     "Retraction (notice only)": 335,
+     "Expression of concern (notice only)": 170,
+     "Correction (notice only)": 24,
+     "Reinstatement (notice only)": 1
+    },
+    "link_kinds_in_articles": {
+     "doi_resolver": 3033,
+     "doi_in_url": 144,
+     "pubmed": 3474
+    },
+    "distinct_records_original": 960,
+    "distinct_records_notice": 1125
+   },
+   "crosswiki": {
+    "crosswiki_en_to_ar": {
+     "source_articles_citing": 432,
+     "source_articles_with_target_link": 207,
+     "pair_categories": {
+      "carried_marked_source_only": 34,
+      "not_carried": 175,
+      "carried_marked_target_only": 1,
+      "carried_marked_neither": 27,
+      "carried_marked_both": 12,
+      "source_no_longer_cites": 12
+     },
+     "papers_by_category": {
+      "carried_marked_source_only": 28,
+      "not_carried": 143,
+      "carried_marked_target_only": 1,
+      "carried_marked_neither": 24,
+      "carried_marked_both": 11,
+      "source_no_longer_cites": 10
+     },
+     "not_carried_history": {
+      "source_added_it_after_target_was_created": 90,
+      "source_cited_when_target_was_created_target_first_revision_did_not": 75,
+      "target_cited_at_creation_then_removed": 1,
+      "source_article_not_yet_created": 9
+     },
+     "carried_pairs_by_ar_render_state": {
+      "carried_marked_both / ar render: missing_template_link_only_in_rendered_reference": 12,
+      "carried_marked_neither / ar render: no_warning_text_in_inspected_rendered_reference": 26,
+      "carried_marked_neither / ar render: not_in_ar_census": 1,
+      "carried_marked_source_only / ar render: no_warning_text_in_inspected_rendered_reference": 31,
+      "carried_marked_source_only / ar render: not_in_ar_census": 2,
+      "carried_marked_source_only / ar render: reference_not_found_in_render": 1,
+      "carried_marked_target_only / ar render: missing_template_link_only_in_rendered_reference": 1
+     },
+     "removed_from_target_after_creation": {
+      "pairs": 1,
+      "articles": 1,
+      "papers": 1
+     }
+    },
+    "crosswiki_ar_to_en": {
+     "source_articles_citing": 158,
+     "source_articles_with_target_link": 155,
+     "pair_categories": {
+      "not_carried": 96,
+      "carried_marked_neither": 26,
+      "carried_marked_target_only": 32,
+      "carried_marked_source_only": 1,
+      "carried_marked_both": 12,
+      "source_no_longer_cites": 1,
+      "unknown_target_unavailable": 28
+     },
+     "papers_by_category": {
+      "not_carried": 77,
+      "carried_marked_neither": 24,
+      "carried_marked_target_only": 27,
+      "carried_marked_source_only": 1,
+      "carried_marked_both": 11,
+      "source_no_longer_cites": 1,
+      "unknown_target_unavailable": 28
+     },
+     "not_carried_history": {
+      "source_added_it_after_target_was_created": 1,
+      "source_article_not_yet_created": 75,
+      "target_cited_at_creation_then_removed": 20
+     },
+     "carried_pairs_by_ar_render_state": {
+      "carried_marked_both / ar render: missing_template_link_only_in_rendered_reference": 12,
+      "carried_marked_neither / ar render: no_warning_text_in_inspected_rendered_reference": 26,
+      "carried_marked_source_only / ar render: missing_template_link_only_in_rendered_reference": 1,
+      "carried_marked_target_only / ar render: no_warning_text_in_inspected_rendered_reference": 31,
+      "carried_marked_target_only / ar render: reference_not_found_in_render": 1
+     },
+     "removed_from_target_after_creation": {
+      "pairs": 20,
+      "articles": 19,
+      "papers": 16
+     }
+    }
+   }
   }
  }
 }

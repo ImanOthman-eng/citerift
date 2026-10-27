@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 # Re-derive every Stage 01 data file, the manifest and the live re-verification, in order.
-# Usage: reproduce.sh RW_CSV CACHE_DIR
+# Usage: reproduce.sh RW_CSV CACHE_DIR [DUMP_DIR]
 #   RW_CSV     retraction_watch.csv at GitLab commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4
 #              (SHA-256 2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655)
 #   CACHE_DIR  response cache outside the repository; with a warm cache no request is sent
 #              except by the final `verify`, which always re-fetches (--refresh).
+#   DUMP_DIR   optional: directory with the six 20261001 SQL dumps named in stage01_census.py (DUMP_SHA1), from
+#              https://dumps.wikimedia.org/{arwiki,enwiki}/20261001/; when given, the census (§16) is re-derived too.
 # Run from the repository root.
 set -euo pipefail
 CSV=$1
 C=$2
+DUMPS=${3:-}
 P="python3 -I docs/verification/stage-01/scripts/stage01_probe.py --cache $C"
 D=docs/verification/stage-01/data
 F=$D/followups
@@ -69,6 +72,29 @@ $P api-query --host ar.wikipedia.org --param list=embeddedin --param "eititle=ق
     --param eilimit=500 --out $F/ar_embeddedin_masdar_mashub.json
 $P api-query --host ar.wikipedia.org --param prop=revisions --param "titles=قالب:مصدر مسحوب" --param rvdir=newer \
     --param rvlimit=1 --param "rvprop=ids|timestamp" --out $F/ar_masdar_mashub_first_revision.json
+
+# Census of Retraction Watch identifiers in Arabic Wikipedia and the en/ar divergence (FEASIBILITY_REPORT.md §16)
+if [ -n "$DUMPS" ]; then
+    K="python3 -I docs/verification/stage-01/scripts/stage01_census.py --cache $C"
+    W=$D/census
+    $K dump-scan --csv "$CSV" --wiki ar --externallinks "$DUMPS/arwiki-20261001-externallinks.sql.gz" \
+        --page "$DUMPS/arwiki-20261001-page.sql.gz" --out $W/ar_scan.json
+    $K confirm --scan $W/ar_scan.json --out $W/ar_confirm.json
+    $K render --confirmed $W/ar_confirm.json --natures "Retraction,Expression of concern" --out $W/ar_render.json
+    $K dump-scan --csv "$CSV" --wiki en --externallinks "$DUMPS/enwiki-20261001-externallinks.sql.gz" \
+        --page "$DUMPS/enwiki-20261001-page.sql.gz" --out "$C/en_scan_full.json"
+    $K crosscheck --discovery $D/purposive_discovery.json --ar-scan $W/ar_scan.json --en-scan "$C/en_scan_full.json" \
+        --out $W/dump_vs_api_crosscheck.json
+    $K langmap --scan "$C/en_scan_full.json" --langlinks "$DUMPS/enwiki-20261001-langlinks.sql.gz" --lang ar \
+        --target-page "$DUMPS/arwiki-20261001-page.sql.gz" --out $W/en_ar_langmap.json
+    $K langmap --scan $W/ar_scan.json --langlinks "$DUMPS/arwiki-20261001-langlinks.sql.gz" --lang en \
+        --target-page "$DUMPS/enwiki-20261001-page.sql.gz" --out $W/ar_en_langmap.json
+    $K crosswiki --csv "$CSV" --scan "$C/en_scan_full.json" --langmap $W/en_ar_langmap.json --dst ar --history \
+        --out $W/crosswiki_en_to_ar.json
+    $K crosswiki --csv "$CSV" --scan $W/ar_scan.json --langmap $W/ar_en_langmap.json --dst en --history \
+        --out $W/crosswiki_ar_to_en.json
+    $K summarize --csv "$CSV" --dir $W --en-scan "$C/en_scan_full.json" --out $W/census_summary.json
+fi
 
 # 01-F: manifest from the data files, then live re-verification of every pinned revision and notice
 python3 -I docs/verification/stage-01/scripts/build_manifest.py --out docs/verification/stage-01/EVIDENCE_MANIFEST.json

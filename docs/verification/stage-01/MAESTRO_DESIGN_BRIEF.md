@@ -9,7 +9,9 @@ component and adds no stage. Requirements are numbered `MR-nn` so later
 specifications can trace them. Facts from Stage 01 that shaped a requirement
 are cited to FEASIBILITY_REPORT.md (FR §n). Refined on 2026-10-27 only where
 the corrective pass produced evidence (FR §15): MR-17a, MR-17b, MR-25, CP-7
-and AT-12 to AT-14 are new; nothing was implemented.
+and AT-12 to AT-14 are new; nothing was implemented. Refined again on
+2026-10-27 after the census (FR §16): MR-26 and AT-15 are new; nothing was
+implemented.
 
 ## 1. Responsibilities and boundaries
 
@@ -163,7 +165,7 @@ determined (FR §8.2).
   interlanguage link, revision, render) has explicit states for request
   failed and malformed answer, and only a complete answer can yield "not
   found". Stage 01's link lookup implements this split and its tests are the
-  model (`tests/test_crosswiki.py`, FR §15 D2).
+  model (`tests/stage01/test_crosswiki.py`, FR §15 D2).
 
 ## 8. AI advisory boundary
 
@@ -202,6 +204,14 @@ determined (FR §8.2).
 - **MR-25 Source terms:** the Retraction Watch dataset is accessed and cited,
   selected fields are reused, and the full file is never redistributed in the
   repository or the app (FR §4.4).
+- **MR-26 Precomputed edition snapshot:** edition-level views (how many
+  articles cite retracted papers, how many show a warning, how many are
+  carried to the linked language) come from a dated snapshot built offline
+  from sha1-checked Wikimedia dumps and confirmed against the live current
+  revision, never from per-DOI live queries; the snapshot states its dump
+  date, its confirmation date and that its counts are lower bounds for
+  link-bearing citations (FR §16.1, §16.7). The Stage 01 census, built this
+  way in about 2.5 hours of throttled requests, is the model.
 
 ## 11. Stage ownership
 
@@ -210,7 +220,7 @@ determined (FR §8.2).
 | 04 | MR-01–MR-17 (including MR-17a and MR-17b), MR-21, MR-23, MR-24, MR-25 and CP-1 to CP-6 for one language: state machine, T1–T5, T10, Investigation Memory v0, budgets, error codes. |
 | 05 | T6 and the context part of the Evidence Passport. |
 | 06 | T7 and MR-18–MR-20 (empirical evaluation of the AI role). |
-| 07 | Multi-language plans, T8, T9, CP-7, resumption and cancellation through the API, MR-22, HR-2. |
+| 07 | Multi-language plans, T8, T9, CP-7, resumption and cancellation through the API, MR-22, MR-26, HR-2. |
 | 08 | Presentation of task states, uncertainty, AI advisory status (HR-1, HR-3), timeline and Evidence Passport. |
 
 ## 12. Proposed acceptance tests
@@ -231,6 +241,7 @@ determined (FR §8.2).
 | AT-12 | Injected HTTP 200 error bodies (`cirrussearch-too-busy-error`, `maxlag`) give a retried request and, when persistent, an unavailable task; never "0 hits"; nothing is cached (MR-17a). | 04 |
 | AT-13 | Injected failed and malformed interlanguage-link answers never yield "no linked article" (MR-17b). | 07 |
 | AT-14 | A render that fails gives `render_unavailable`; a missing-template link is not counted as a warning (CP-7). | 07 |
+| AT-15 | An edition snapshot rebuilt from the same dumps and cached confirmations reproduces the same counts; a confirmation request that fails is reported as unknown, never as "not cited" (MR-26). | 07 |
 
 ## 13. Realism for the schedule
 

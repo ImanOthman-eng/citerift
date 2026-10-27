@@ -1,7 +1,6 @@
-# ruff: noqa: S101 - pytest assertions
 """Deterministic tests of the rendered-reference check (no network).
 
-Run: uv run pytest docs/verification/stage-01/tests
+Run: uv run pytest tests/stage01 (CI runs them with the whole suite)
 """
 
 from __future__ import annotations
@@ -14,7 +13,7 @@ import pytest
 
 pytestmark = [pytest.mark.unit, pytest.mark.negative]
 
-SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "stage01_probe.py"
+SCRIPT = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-01" / "scripts" / "stage01_probe.py"
 spec = importlib.util.spec_from_file_location("stage01_probe_render", SCRIPT)
 assert spec and spec.loader
 probe = importlib.util.module_from_spec(spec)

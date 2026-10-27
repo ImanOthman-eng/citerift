@@ -31,6 +31,13 @@ FEASIBILITY_REPORT.md §9.1.
 | `run-logs/sample_S_search_errors_first_run.json` | The 7 Arabic search responses of the first run that were HTTP 200 with `cirrussearch-too-busy-error` (unavailable, first recorded as "0 hits"). |
 | `run-logs/sample_S_search_retry_2026-10-27.json` | The answers to those 7 searches, sent again once on 2026-10-27, with their attempts. Both search logs were extracted from the session's response cache by one-off commands (not committed). |
 | `rate-limit/` | The 40-request Wikimedia rate-limit measurement (log and the exact script, stored as text). |
+| `census/ar_scan.json` | Every Arabic Wikipedia page whose external links (dump of 2026-10-01) point to the DOI or PMID of a Retraction Watch record, original paper or notice; page ids, titles and matched identifiers only (FEASIBILITY_REPORT.md §16). |
+| `census/ar_confirm.json` | Live check (2026-10-27) of the current revision of each Arabic article in `ar_scan.json`: cited by identifier or not, marked by a {{Retracted}}-family template or not. No article text. |
+| `census/ar_render.json` | Rendered (parser HTML) check of every Arabic article–paper pair whose record is a Retraction or an Expression of concern: warning text, link to a missing template, or no warning text; a 300-character excerpt per reference. |
+| `census/en_ar_langmap.json`, `ar_en_langmap.json` | Interlanguage links from the 2026-10-01 langlinks dumps for the citing articles, and the linked articles' page ids in the other wiki's page dump. |
+| `census/crosswiki_en_to_ar.json`, `crosswiki_ar_to_en.json` | For every article citing a retracted paper (Retraction records) with a linked article in the other language: whether the linked article cites the same paper now (by any of its RW identifiers), each side's marking, and, for papers not carried, the linked article's first revision and the source article at that time. |
+| `census/dump_vs_api_crosscheck.json` | The dump scan compared with the live M1/M2 results for the 10 purposive papers in both languages. |
+| `census/census_summary.json` | All counts quoted in FEASIBILITY_REPORT.md §16, computed by `stage01_census.py summarize`. The full English dump scan is not committed (its summary is). |
 
 ## Sources and attribution
 
@@ -55,6 +62,11 @@ FEASIBILITY_REPORT.md §9.1.
   and `context` values in `followups/render_check_*.json` are short excerpts
   of the rendered reference of the named revision, under the same terms. No
   article text beyond one reference per observation is committed.
+- **Wikimedia dumps** of 2026-10-01 (`arwiki` and `enwiki` externallinks, page and
+  langlinks tables), from https://dumps.wikimedia.org/, each checked against
+  the sha1 published in the run's `dumpstatus.json`. Only page ids, titles,
+  revision ids and matched identifiers derived from them are committed; the
+  dumps are not.
 - **Requests** were sent with the User-Agent
   `CITERIFT-Stage01-feasibility/0.1 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)`,
   following the Wikimedia Foundation User-Agent Policy (FEASIBILITY_REPORT.md §15.3).

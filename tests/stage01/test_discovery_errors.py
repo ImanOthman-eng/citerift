@@ -1,4 +1,3 @@
-# ruff: noqa: S101 - pytest assertions
 """Deterministic tests of discovery under MediaWiki error bodies (no network).
 
 MediaWiki reports some overload conditions (cirrussearch-too-busy-error, maxlag) as HTTP 200 with an error body.
@@ -6,7 +5,7 @@ In the first run of 2026-10-26, 7 Arabic M2 searches of sample S received such a
 searches with no hits (data/run-logs/sample_S_search_errors_first_run.json). These tests fix the intended behaviour:
 an error body is never an answer, never "no hits", and never cached.
 
-Run: uv run pytest docs/verification/stage-01/tests
+Run: uv run pytest tests/stage01 (CI runs them with the whole suite)
 """
 
 from __future__ import annotations
@@ -21,7 +20,7 @@ import pytest
 
 pytestmark = [pytest.mark.unit, pytest.mark.negative]
 
-SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "stage01_probe.py"
+SCRIPT = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-01" / "scripts" / "stage01_probe.py"
 spec = importlib.util.spec_from_file_location("stage01_probe_errors", SCRIPT)
 assert spec and spec.loader
 probe = importlib.util.module_from_spec(spec)

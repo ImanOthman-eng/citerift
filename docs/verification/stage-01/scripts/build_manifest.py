@@ -90,6 +90,7 @@ class Data:
             "S:ar>en": load(d / "followups/crosswiki_S_ar_to_en.json")["rows"],
             "S:en>ar": load(d / "followups/crosswiki_S_en_to_ar.json")["rows"],
         }
+        self.census = load(d / "census/census_summary.json")
         self.timeline = {
             (w, what): load(d / f"followups/timeline_{w}_mmr_{what}.json")
             for w in ("en", "ar")
@@ -574,6 +575,13 @@ def aggregates(data: Data) -> dict[str, Any]:
                 for o in r["observations"]
             ],
         }
+    # Census of 2026-10-27 (FEASIBILITY_REPORT.md §16): counts from data/census/census_summary.json, unchanged.
+    agg["census_2026_10_27"] = {
+        "method": "Wikimedia SQL dumps of 2026-10-01 (externallinks, page, langlinks), confirmed live at the current "
+        "revision on 2026-10-27; link-bearing citations only, so counts are lower bounds",
+        "epistemic_status": "verified_fact",
+        **data.census,
+    }
     return agg
 
 

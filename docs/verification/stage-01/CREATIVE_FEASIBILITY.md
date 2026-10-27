@@ -12,7 +12,10 @@ First written 2026-10-26; revised 2026-10-27 in the corrective pass the owner
 requested (FEASIBILITY_REPORT.md §15). The revision corrected the Shi et al.
 figure, replaced an unopened prior-art entry with a verified one (the
 Retraction Tracker for Wikipedia, a close English-language competitor), and
-added §2 to §7.
+added §2 to §7. Revised again on 2026-10-27 after the owner-approved census
+(FEASIBILITY_REPORT.md §16): the evidence for Visible Warning Integrity
+(§2.1) and the Cross-Wiki Divergence Lens (§2.2) is now edition-wide for
+Arabic, and the disputed Shi et al. median is no longer used (§1).
 
 ## 1. Prior art found
 
@@ -22,7 +25,7 @@ added §2 to §7.
 | **Retraction Tracker for Wikipedia** (Thinking Park, <https://retractions.thinkingpark.com/about>, page dated 2026-10-27) | Daily: downloads the Retraction Watch data; finds English Wikipedia articles that cite retracted papers (monthly external-links dump plus daily queries); locates each citing sentence, list item or table row, following reused footnotes; an AI language model reads the article, judges whether the passage still states the paper's finding as fact, suggests an action and gives a confidence; quotes are checked word for word; locates retraction warnings in the article text and counts only those in the lead or the same section as "nearby"; ranks passages by square-rooted page views times three weights; never edits Wikipedia. Its data file (`findings.json`, generated 2026-10-27): 881 findings on 377 pages for 345 DOIs; statuses new 818, dropped 39, fixed 24, tracked since 2026-10-06; 573 findings list located warnings; one model identifier for all findings; 119 findings carry a `second_reading` value (90 "agreed", 29 "disagreed"). | English Wikipedia only in the reviewed evidence (its attribution names English Wikipedia; the data file has no language field). Its own stated limits: verdicts are machine-generated and only a few were checked by a person; the model changes about one verdict in twenty when asked twice; page views are per article, not per passage. (The 29 "disagreed" of 119 `second_reading` values do not measure that rate: which findings got a second reading, and how, is not stated in the reviewed evidence.) Its warning check reads article text; whether it checks how reference templates render was not established in the reviewed evidence. Relation to the GitHub repository `jcpark376/wikipedia-retraction-tracker` ([S] only, not opened) not established. | [V] 2026-10-27, `data/followups/prior_art_retraction_tracker_profile.json` |
 | **`{{Retracted}}`** (enwiki) | Marks a citation as retracted; `intentional=yes` for deliberate citations. Category counts on 2026-10-26: 33 pages "citing retracted publications", 301 "intentionally citing". | Present only where someone or the bot added it. | [V] 2026-10-26 |
 | **`قالب:مصدر مسحوب`** (arwiki "retracted source") | Arabic localization of `{{Retracted}}` (first revision 2021-11-06, `data/followups/ar_masdar_mashub_first_revision.json`), with an "intentional" parameter. | **0 transclusions in Arabic articles** on 2026-10-26. | [V] 2026-10-26 |
-| **Shi, Yu, Romero, Horvát, "The Persistence of Retracted Papers on Wikipedia"**, Proc. ACM Hum.-Comput. Interact. (CSCW) 2026, doi:10.1145/3817014; preprint arXiv:2509.18403 | Revision-history study of 1,181 citations of retracted papers on **English** Wikipedia: 71.6% initially problematic (51.5% added before the retraction, 20.1% added after it without warning); survival analysis in which RetractionBot flagging is associated with faster correction. **Median persistence: the sources disagree.** The abstract in the paper's Crossref record (deposited by ACM, published 2026-09-23) says "a median of 5.8 years (2,106 days)"; arXiv v1 and v2 say "over 3.68 years (1,344 days)", arXiv v3 (2026-01-26) and the CSCW 2026 program page say "3.68 years (1,344 days)". The published full text could not be opened (ACM Digital Library: HTTP 403 to this environment), so which figure it reports is not established in the reviewed evidence. | English only. A research dataset and paper, not an interactive investigation tool. | [V] 2026-10-27, `data/followups/prior_art_shi_median_sources.json` |
+| **Shi, Yu, Romero, Horvát, "The Persistence of Retracted Papers on Wikipedia"**, Proc. ACM Hum.-Comput. Interact. (CSCW) 2026, doi:10.1145/3817014; preprint arXiv:2509.18403 | Revision-history study of 1,181 citations of retracted papers on **English** Wikipedia: 71.6% initially problematic (51.5% added before the retraction, 20.1% added after it without warning); survival analysis in which RetractionBot flagging is associated with faster correction. **Median persistence: not used by CITERIFT (disputed).** The arXiv v3 full text (2026-01-26; OpenAlex labels it the accepted version) was read in full on 2026-10-27 and says 3.68 years (1,344 days) in its abstract, results and conclusion, with no 5.8-year figure; the CSCW 2026 program page says the same. The abstract in the published version's Crossref record (deposited by ACM, 2026-09-23) says "a median of 5.8 years (2,106 days)". The published full text is open access but the publisher's site refused this environment (HTTP 403), and getting around that was not attempted, so which figure the published paper reports is not established. CITERIFT therefore states neither number as a fact. The 1,181 / 71.6% / 51.5% / 20.1% figures above are the same in the arXiv v3 text and the Crossref abstract. | English only. A research dataset and paper, not an interactive investigation tool. | [V] 2026-10-27 (arXiv v3 full text; Crossref abstract), `data/followups/prior_art_shi_median_sources.json` |
 | **Nicholson et al.**, FEBS J. 2021, doi:10.1111/febs.15608 | Citation-quality study; reported (per Shi et al.) 118 retracted articles cited across 297 Wikipedia pages. | English; general citation quality. | [V] via Shi et al. |
 | **Wikipedia Citations** (Singh, West, Colavizza, QSS 2021, doi:10.1162/qss_a_00105) and **Kokash & Colavizza**, QSS 2026, doi:10.1162/qss.a.401 | Bulk citation extraction from dumps; the 2026 pipeline maps citation templates of **15 languages** to a common structure. | Dump-based snapshots; the abstract does not list the 15 languages, so whether Arabic is among them is not established in the reviewed evidence. No retraction analysis. | [V] |
 | **Phabricator T120502** (2015 Community Wishlist) | Request for a tool that takes DOIs and lists every article citing them, highlighting the paragraphs, "hopefully … across multiple wikis and languages". | Open, needs triage, no assignee. | [V] 2026-10-26 |
@@ -114,8 +117,8 @@ follow the Master Plan; none of these stages is authorized.
   text; a check of template rendering, or of other languages, was not
   established in the reviewed evidence.
 - **New / unproven:** the per-language render check is new as a tool
-  capability [I]; how common unrendered markers are beyond Stage 01's cases
-  is unproven.
+  capability [I]; for Arabic its prevalence is now measured (above); for
+  other languages it is unproven.
 - **Required data:** pinned revision, wikitext marker check, `action=parse`
   of the same revision.
 - **Stage 01 evidence:** rendered (parser HTML) check of four pinned
@@ -125,8 +128,15 @@ follow the Master Plan; none of these stages is authorized.
   "هاروكو أوبوكاتا" and "لقاح الحصبة والنكاف والحصبة الألمانية": the
   reference shows a link to the missing page "قالب:Retracted" and no
   retraction wording, `missing_template_link_only`. All four
-  carry the marker in wikitext (state 3). Two pairs only; nothing about other
-  articles.
+  carry the marker in wikitext (state 3). **Census of 2026-10-27
+  (FEASIBILITY_REPORT.md §16.4):** every Arabic citation of a retracted
+  paper found (198 article–paper pairs, 157 articles, 158 papers) was
+  rendered. 148 show no retraction wording, 22 only the red link to the
+  missing template, 26 show wording (all in one article about the Schön
+  retractions), 2 were not found in the render. 170 of 198 (86%) show
+  readers no warning, and none of the 23 Arabic wikitext markers renders as
+  warning text. The capability's premise is therefore measured, not
+  anecdotal, for Arabic.
 - **Limitations:** parser HTML is not the mobile view, skins or gadgets; CSS
   could still hide text; one request per revision.
 - **Owner stage:** 07 (check), 08 (display).
@@ -141,8 +151,8 @@ follow the Master Plan; none of these stages is authorized.
 - **Value:** shows where linked articles in two languages differ in citing
   and marking the same retracted paper.
 - **Competition:** not established in the reviewed evidence (§1).
-- **New / unproven:** whether divergence is common beyond the purposive
-  cases is unproven; Arabic citations are sparse.
+- **New / unproven:** for English and Arabic, divergence is now measured
+  over every linked pair (below); for other language pairs it is unproven.
 - **Required data:** interlanguage links with explicit failure states
   (linked, no link, request failed, malformed answer), pinned revisions on
   both sides, identifier-level citation detection.
@@ -151,7 +161,15 @@ follow the Master Plan; none of these stages is authorized.
   citation, 11 have one with it; within those 11, the wikitext marker
   differs in 6 (FEASIBILITY_REPORT.md §7.2). The link lookup was rebuilt in
   this pass so that a failed request can no longer count as "no Arabic
-  article"; the counts did not change (§15).
+  article"; the counts did not change (§15). **Census of 2026-10-27
+  (FEASIBILITY_REPORT.md §16.5):** of 249 English article–paper pairs with
+  an Arabic counterpart, 175 (70%) are not carried; of the 46 carried
+  citations English marks as retracted, Arabic keeps the marker in 12 and
+  shows warning wording in none. In the other direction, in 20 pairs (16
+  papers) the English article once cited the retracted paper and no longer
+  does while the Arabic article still cites it without a visible warning.
+  Histories show "not carried" is mostly "never there": only 1 of 175 was
+  present in the Arabic first revision and removed later.
 - **Limitations:** interlanguage links connect articles, not claims; an
   absent citation is not a missing correction.
 - **Owner stage:** 07 (logic), 08 (presentation).
@@ -164,7 +182,7 @@ follow the Master Plan; none of these stages is authorized.
   id; a manual check of 20 random
   pairs agrees on all; injected 429 and 5xx responses never produce
   `no_link` or `doi_not_found` (the Stage 01 tests in
-  `tests/test_crosswiki.py` are the model).
+  `tests/stage01/test_crosswiki.py` and `test_census.py` are the model).
 
 ### 2.3 Retraction Timeline
 
@@ -333,8 +351,10 @@ must not contain misleading content. No score is expected or claimed here.
 How the proposals map [I]:
 
 - **Problem and Impact:** the divergence and warning-visibility findings in
-  Arabic are concrete and verifiable (§2.1, §2.2); the claim must stay at
-  named cases (FEASIBILITY_REPORT.md §12).
+  Arabic are concrete, verifiable and, since the census, edition-wide: 170 of
+  198 Arabic citations of retracted papers show readers no warning
+  (FEASIBILITY_REPORT.md §16). Stated as lower bounds for link-bearing
+  citations; timing claims stay at named cases (§12).
 - **Use of AI:** the AI label only counts if it passes §5; an honest
   evaluation that cuts it, plus the disclosed AI-assisted engineering, is the
   fallback. Avoid presenting an English AI verdict as new (Retraction
@@ -359,6 +379,14 @@ for one case only).
 | H-2 | Arabic retraction markers are less often rendered as warnings than English ones. | Rendered-reference check (§2.1) over all citing pairs of a fixed list. | 07/08 |
 | H-3 | A citation-context view helps reviewers decide reliance faster or more accurately than the reference alone. | Small user test with a baseline. | 05/08 |
 | H-4 | An AI usage label beats the deterministic baseline per language on a held-out human-labelled set. | §5. | 06 |
+
+Status after the census of 2026-10-27 (FEASIBILITY_REPORT.md §16): **H-1 is
+supported for English and Arabic** at the edition level (175 of 249 English
+article–paper pairs with an Arabic counterpart not carried; marking differs
+in 35 of 74 carried pairs). **H-2's Arabic half is measured** (none of 23
+Arabic markers renders as warning text); the English render rate was not
+measured at scale, so the comparison itself remains to be tested. H-3 and
+H-4 are untested.
 
 None of these is a finding yet.
 

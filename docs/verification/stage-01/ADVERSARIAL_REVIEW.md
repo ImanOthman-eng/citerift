@@ -107,3 +107,22 @@ findings (0 high, 3 medium, 15 low), all handled before the evidence commit:
 Also handled: the handoff's "86 purposive search responses" now says they
 are M1 and M2 responses; a cosmetic strict-typing issue in the probe was
 fixed.
+
+## Strengthening pass of 2026-10-27 (census)
+
+No reviewer agent was used in this pass. The executor checked its own work;
+**this is a self-review by the same model, not independent verification.**
+What was checked, and what it changed:
+
+| # | Check | Result | Action |
+|---|---|---|---|
+| 1 | Does the dump scan find what live discovery found? | 19 of 20 purposive paper–language pairs identical; the exception is a citation with no external link (`data/census/dump_vs_api_crosscheck.json`). | Reported as the method's blind spot (FEASIBILITY_REPORT.md §16.2, §16.7 item 1). |
+| 2 | Are the dumps the published files? | All six sha1 values equal those in the run's `dumpstatus.json`; the script refuses any other file. | None needed; a test covers the refusal. |
+| 3 | First render run: 59 of 198 Arabic pairs were "not found in render". | Inspection of the cached HTML showed the citations sit in bibliography lists outside the footnotes, visible to readers. | The render check now also reads list items, paragraphs and definition items outside the footnotes, labelled as such; re-run from the cache: 2 remain not found. Tests added. |
+| 4 | Is any failed request counted as absence? | Confirmation, divergence and history code keep `request_failed`, `missing`, `absent_from_response`, redirects and failed renders apart; one failed parse is logged and was re-sent. No attempt in this pass carried a MediaWiki error body. | Tests inject error bodies, missing pages and failed renders. |
+| 5 | Do the counts in §16 match the data? | The counts were computed twice: by ad-hoc scripts during the run and by `stage01_census.py summarize`; they agree. | `census_summary.json` is the source quoted. |
+| 6 | Wording that claims more than the data shows. | "lost in translation" (implies translation, not observed); "a reference list that was later replaced" (not checked); "never carried" for pairs where only the first revision was read. | Reworded to what was observed; the history category was renamed. |
+| 7 | One test expectation was wrong (the position of a PMID match). | The code was right; the expected value was corrected, not the code or the check. | — |
+| 8 | Could the census be read as prevalence? | Link-bearing citations only, dump of 2026-10-01, Retraction Watch only. | Stated as lower bounds wherever a count is quoted. |
+| 9 | Disputed Shi et al. median. | The arXiv v3 full text says 3.68 years throughout; the published abstract says 5.8; the published text was refused (HTTP 403) and no workaround was attempted. | The median is no longer used as a fact. |
+| 10 | Do Stage 00 files change? | `git diff ac779a7 -- <Stage 00 owned paths> pyproject.toml` is empty; the tests moved into `tests/stage01/`, inside the existing `testpaths`. | — |

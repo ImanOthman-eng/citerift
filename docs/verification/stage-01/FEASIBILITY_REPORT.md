@@ -15,6 +15,14 @@ competitor, a clean-cache reproduction and a rendered-warning check. What
 changed, with before and after values, is in §15; sections that changed say
 so.
 
+**Strengthening pass, 2026-10-27.** With the owner's approval before
+acceptance (message `cmsg_018VCB51nDHP6HXmLU4ea5yPS6zrHggGn25MJPgeq5XsHC`)
+the stage returned to `IN_PROGRESS` again for four additions: a census of
+every Retraction Watch DOI and PMID in Arabic Wikipedia, cross-wiki
+divergence counts, the Arabic warning gap, and two credibility fixes (the
+Stage 01 tests now run in CI; the disputed Shi et al. median is dropped).
+Results are in §16; sections whose statements the census changes say so.
+
 Labels used below: **verified** = read from the cited primary source in this
 run and re-checkable; **inference** = the executor's reasoning;
 **hypothesis** = not tested; **recommendation** = advice to the owner.
@@ -26,10 +34,10 @@ run and re-checkable; **inference** = the executor's reasoning;
 | 01-A Retraction data accessibility | PASS | §4: pinned snapshot (git blob + SHA-256), 73,356 records; 17 of 19 purposive events have a resolving, separate Crossref notice; 4 have publisher confirmation of link and type |
 | 01-B Wikipedia citation discoverability | PASS | §5: 63 confirmed citations in pinned revisions (52 en, 11 ar) for 10 purposive DOIs; two method pitfalls found and corrected |
 | 01-C Positive and negative examples | PASS | §6: 3 positive cases in both languages; 5 negative controls (2 event type, extraction, absence, notice citation); 3 unresolved cases kept apart |
-| 01-D Initial cross-language feasibility | PASS, narrow | §7: Arabic cites 3 of 10 purposive papers; 11 en/ar article pairs compared at pinned revisions with explicit link-lookup states; inspected Arabic renders show a link to a missing template, not warning text (§7.3) |
-| 01-E Coverage limitations | PASS | §8: random-sample result with complete and unavailable searches separated, exact intervals; 21 documented limitations |
-| 01-F Reproducibility and source references | PASS | §9: manifest, scripts, 61 deterministic failure-handling tests, live re-verification (35 checks of 20 revisions and 9 Crossref works, 0 mismatches), clean-cache reproduction of a positive case end-to-end and a negative control's lookups, 0 mismatches |
-| 01-G Blockers and recommendation | PASS | §12: **RESCOPE** under the pre-registered criteria (GO's conditions are also met; the narrower-claim trigger applies) |
+| 01-D Initial cross-language feasibility | PASS | §7, §16: census of Arabic Wikipedia: 198 citations of 158 retracted papers in 157 articles; 170 of the 198 show readers no retraction warning; of 249 English article–paper pairs with an Arabic counterpart, 175 are not carried and none of the 46 English-marked citations carried to Arabic shows warning wording there |
+| 01-E Coverage limitations | PASS | §8, §16.7: random-sample result with complete and unavailable searches separated, exact intervals; dump census validated against live discovery (19 of 20 identical); 21 + 8 documented limitations |
+| 01-F Reproducibility and source references | PASS | §9: manifest, scripts, 101 deterministic tests run in CI (`tests/stage01/`), sha1-checked dumps, live re-verification (35 checks of 20 revisions and 9 Crossref works, 0 mismatches), clean-cache reproduction of a positive case end-to-end and a negative control's lookups, 0 mismatches |
+| 01-G Blockers and recommendation | PASS | §12, §16.8: **RESCOPE** under the pre-registered criteria (GO's conditions are also met; the narrower-claim trigger still applies, now to timing only) |
 
 **Recommendation (advisory): RESCOPE**, applying the decision criteria fixed
 in PROTOCOL.md §7. Every GO condition is met: every gate passes, English
@@ -37,13 +45,16 @@ positive cases are verified, and Arabic is feasible for detection and
 comparison. The third RESCOPE trigger is met as well: a method limitation
 forces a narrower claim than the research question ("How consistently and
 how quickly do different Wikipedia language editions respond to scientific
-paper retractions?"). With the citations this method finds, consistency and
-speed can be shown per paper and per named article pair, not measured as
-rates for a language edition: a random sample of 200 retracted DOIs found no
-citation discoverable by the search method in either language (upper end of
-the exact two-sided 95% interval about 1.8% each; in Arabic 7 searches first failed and were re-sent on
-2026-10-27, §8.1), and Arabic cites 3 of the 10 purposive papers against 10
-in English. The protocol does
+paper retractions?"). The first version of this paragraph said that
+consistency and speed could be shown only per paper and per named article
+pair, because a random sample of 200 retracted DOIs found no citation in
+either language (§8.1). The census of §16 removes half of that limitation:
+**consistency is now measured for the whole Arabic edition** (lower bounds
+for link-bearing citations: 198 citations of 158 retracted papers, 86% of
+them without a visible warning, and 175 of 249 English citations not
+carried to the article's Arabic counterpart). **Speed** still cannot be measured as an edition
+rate from this evidence (it needs every citation's history), so the
+narrower-claim trigger still applies, to timing. The protocol does
 not rank the two outcomes; the executor reads RESCOPE as the more specific
 rule. The owner decides. The narrower scope is in §12. Two further findings,
 outside the criteria, support the same scope: (1) for English Wikipedia, retraction
@@ -402,9 +413,12 @@ citation. No reason for any edit is inferred.
 ### 7.5 Result
 
 PASS for feasibility of English–Arabic comparison at the level of named
-articles and revisions. Not shown: that Arabic has enough cited retracted
-papers for rates or survival statistics; the sample found no citation in
-either language and cannot settle it (§8.1).
+articles and revisions. The first version said "not shown: that Arabic has
+enough cited retracted papers for rates or survival statistics". The census
+of §16 (2026-10-27) shows enough for edition-level counts: 158 retracted
+papers cited in 157 Arabic articles (lower bounds), with marking, rendered
+warnings and carrying measured for all of them. Survival statistics are
+still not shown: they need each citation's history.
 
 ## 8. Gate 01-E — Coverage limitations
 
@@ -504,7 +518,9 @@ probe runs shared the egress.
 10. Date conflicts between sources (§4.3).
 11. Publisher-deposited Crossref event types are unreliable (§4.2).
 12. Rate limits on Wikipedia requests from this environment (§8.2).
-13. Arabic counts are small; no Arabic rate can be estimated precisely.
+13. Arabic counts are small; no Arabic rate can be estimated precisely from
+    the sample. (Superseded for link-bearing citations by the census, §16,
+    which has its own limitations, §16.7.)
 14. Purposive set P is chosen for visibility and is not representative.
 15. Interlanguage links connect articles, not claims; an absent citation in a
     linked article is not a missing correction.
@@ -538,10 +554,13 @@ probe runs shared the egress.
   sample observations), every notice DOI (including NC-04's) and the NC-03
   Crossref record, and compares sha1, DOI presence, identifier use, Crossref
   status and `updated-by`. Result of the run before handoff
-  (`data/verify_result.json`, 2026-10-27T13:49Z): 35 checks of
+  (`data/verify_result.json`, 2026-10-27T18:18Z): 35 checks of
   20 distinct revisions and 9 distinct Crossref works,
   **0 mismatches**, for the manifest with SHA-256
-  `f7ce7419bf186789846ac6a41eefa277153e00fc5a2160da62726f37e5567017`.
+  `e2e9fd48c1698df32f02772b7d687ad249768f5d949c18585352f11aaaf06305`
+  (the manifest of the strengthening pass; it adds the census counts as
+  aggregates, and the census's own revisions are pinned in
+  `data/census/`, not re-verified by this command).
 - `scripts/reproduce.sh` re-derives every data file from the response cache
   in order; all committed data files were produced by it with the committed
   scripts (§11 item 9). In the 2026-10-27 re-derivation every data file
@@ -549,12 +568,12 @@ probe runs shared the egress.
   per-call `ok`/`api_error` fields, the new link-lookup states (same counts)
   and the 7 corrected Arabic sample searches (§8.1).
 - **Failure handling is tested deterministically** (no network):
-  `tests/` holds 61 tests of link lookups, search completeness, the HTTP
-  client under 429, 5xx and error bodies, the cache, and the rendered-
-  reference check (`uv run pytest docs/verification/stage-01/tests`). They
-  are run explicitly: the repository's `testpaths` and the `ci-gate` check
-  cover `tests/` at the root only, which Stage 01 does not change, so CI does
-  not guard them. How they relate to the defects is in §15.1.
+  `tests/stage01/` holds 101 tests of link lookups, search completeness, the
+  HTTP client under 429, 5xx and error bodies, the cache, the
+  rendered-reference check and the census (§16.6). Since 2026-10-27 they
+  run in CI with the rest of the suite (`uv run pytest`); before, they lived
+  in `docs/verification/stage-01/tests/` and were run explicitly only. How
+  they relate to the defects is in §15.1.
 - Wikipedia text is limited to one reference per observation and short
   rendered excerpts (CC BY-SA 4.0, attributed in `data/README.md`). The
   Retraction Watch CSV is not committed; its commit, blob id and SHA-256
@@ -567,6 +586,7 @@ probe runs shared the egress.
 |---|---|---|
 | Clean checkout only | Re-verification of every pinned revision, notice and Crossref record in the manifest (`verify`); the deterministic tests; reading every committed figure | network for `verify`; nothing for the tests |
 | Clean checkout + the pinned Retraction Watch CSV | `rw-profile`, `sample` and the Retraction Watch side of `lookup`; any single case end-to-end with a fresh cache (§9.2) | the CSV (download, §14) and network; Wikipedia observations of the *latest* revision may differ on a later date |
+| Clean checkout + CSV + the six 2026-10-01 dumps | the dump scans, interlanguage maps and dump-versus-API cross-check of §16 exactly (offline); the live confirmation, renders and histories again, as dated observations (about 630 requests) | the dumps (sha1 checked by the script) and network |
 | Clean checkout + CSV + the original response cache | byte-for-byte re-derivation of every data file by `reproduce.sh` without network (except the final `verify`) | the cache, which lived in the session scratchpad and is **not** committed or preserved; without it a full rerun sends about 700 requests at the rates of §8.2 and observes newer revisions |
 
 Revision-pinned facts (a DOI in revision *r*, its sha1) reproduce exactly
@@ -691,6 +711,13 @@ PASS.
     NC-03 (§9.2), deterministic failure-handling tests (§9), and a prior-art
     re-check (CREATIVE_FEASIBILITY.md §1). None changes a pre-registered
     criterion.
+12. **Census (2026-10-27, owner-approved, after the results were known):**
+    PROTOCOL.md §5 planned a random sample and live queries; the census adds
+    a third method, the Wikimedia SQL dumps of 2026-10-01 scanned offline,
+    with live confirmation of every candidate (§16.1). It was added after the
+    sample's result was known, at the owner's request, and is reported beside
+    the sample, not instead of it. The decision criteria (PROTOCOL.md §7) are
+    unchanged; how the census bears on them is in §16.8.
 
 ## 12. Gate 01-G — Blockers and recommendation
 
@@ -725,8 +752,8 @@ first would reach GO; the scope below would then stand as advice.
 |---|---|---|
 | Data access | Open, pinned, citable (§4) | none |
 | Real examples | Full chain in both languages (§6) | none |
-| Language | Arabic cites 3 of 10 purposive papers (English 10); the random sample found none in either language; in the two Arabic renders inspected, the marker shows as a link to a missing template (§7, §8.1) | Arabic results are case studies |
-| Science | No prevalence claims possible from these samples; markers in wikitext ≠ reader view; several events per paper | narrower claims; event history needed |
+| Language | Census: Arabic cites 158 retracted papers in 157 articles, 170 of 198 citations without a visible warning; no Arabic wikitext marker renders as warning text (§16) | edition-level counts possible (lower bounds); timing still per paper |
+| Science | Census counts are lower bounds (link-bearing citations, §16.7); markers in wikitext ≠ reader view; several events per paper | bounded claims; event history needed |
 | APIs | ~6.5 requests/min (§8.2) | precomputed, cached demo; bounded live queries |
 | Dependencies | Standard library sufficed; Stage 03 may use dumps for bulk work | none now |
 | Prior art | English detection, persistence and sentence-level AI readings already exist (RetractionBot; Shi et al. 2026; Retraction Tracker for Wikipedia) | CITERIFT must lead with cross-language and rendered-warning evidence |
@@ -739,7 +766,9 @@ first would reach GO; the scope below would then stand as advice.
    Evidence Passports, not a global rate.
 2. English is the detection baseline; Arabic is analyzed for every paper
    found cited in English (and vice versa), and reported as named cases with
-   counts, numerator and denominator.
+   counts, numerator and denominator. Since the census (§16), this includes
+   edition-level counts for link-bearing citations (cited, marked, carried,
+   visibly warned), stated as lower bounds; timing stays per paper.
 3. Event history per paper (correction, concern, retraction, reinstatement)
    instead of a single status, and "marked in wikitext" kept distinct from
    "visible to readers".
@@ -760,8 +789,10 @@ executor's additional judgment.
   including 13,700 records where they are equal; snapshot pinning;
   publisher-deposited types not trusted.
 - **Stage 03:** identifier-versus-mention classification (§5.3); encoded-URL
-  M1; Arabic aliases (`دوي`) and mixed parameters; consider dumps for bulk
-  extraction to avoid rate limits.
+  M1; Arabic aliases (`دوي`) and mixed parameters; the dump scan of §16
+  (`scripts/stage01_census.py`) shows bulk extraction from SQL dumps works
+  (Arabic in under a minute, English in under five) and agrees with live M1;
+  pair it with M2 or wikitext for citations that have no external link.
 - **Stage 04:** v1 contract holds one `retraction_status`; store events in a
   Stage-04-owned schema that references v1 (docs/data-contracts.md), not by
   editing v1. Investigation MAESTRO requirements: MAESTRO_DESIGN_BRIEF.md.
@@ -770,7 +801,8 @@ executor's additional judgment.
   that fails its gate.
 - **Stage 07:** cross-wiki comparison and timelines (§7.2, §7.4) as specified.
 - **Stage 08:** distinguish "marked in wikitext" from "visible warning",
-  using the Visible Warning Integrity states (CREATIVE_FEASIBILITY.md §2.1).
+  using the Visible Warning Integrity states (CREATIVE_FEASIBILITY.md §2.1);
+  the census gives the Arabic baseline (§16.4).
 - **All data stages:** treat MediaWiki error bodies under HTTP 200 as
   failures, keep "request failed" apart from "not found", and test both with
   injected responses (§15; `tests/`).
@@ -779,8 +811,9 @@ executor's additional judgment.
 
 All data files, the manifest and the live re-verification are produced, in
 order, by [`scripts/reproduce.sh`](scripts/reproduce.sh)
-(`scripts/reproduce.sh <retraction_watch.csv> <cache-dir>`, run from the
-repository root). Equivalent commands:
+(`scripts/reproduce.sh <retraction_watch.csv> <cache-dir> [<dump-dir>]`, run
+from the repository root; with a dump directory it also re-derives the
+census of §16). Equivalent commands:
 
 ```bash
 # 1. Retraction Watch snapshot (not committed)
@@ -802,6 +835,10 @@ python3 -I $S --cache $C first-revision --wiki en --title "MMR vaccine" --doi "1
 #   (and --what marked; and --wiki ar --title "لقاح الحصبة والنكاف والحصبة الألمانية")
 #   absence-check and api-query follow-ups: see scripts/reproduce.sh
 
+# 2b. Census (§16): the six 20261001 dumps named in stage01_census.py (DUMP_SHA1), e.g.
+#   curl -O https://dumps.wikimedia.org/arwiki/20261001/arwiki-20261001-externallinks.sql.gz   (and page, langlinks; same for enwiki)
+#   then the census block of scripts/reproduce.sh (dump-scan, confirm, render, crosscheck, langmap, crosswiki, summarize)
+
 # 3. Manifest and re-verification
 python3 -I docs/verification/stage-01/scripts/build_manifest.py --out docs/verification/stage-01/EVIDENCE_MANIFEST.json
 python3 -I $S --cache $C/verify-refresh --refresh verify --manifest docs/verification/stage-01/EVIDENCE_MANIFEST.json --out $D/verify_result.json
@@ -810,11 +847,13 @@ python3 -I $S --cache $C/verify-refresh --refresh verify --manifest docs/verific
 A rerun on a later date sees newer revisions and a newer snapshot; the
 `verify` command checks the pinned revisions, which do not change. Without
 the original response cache (not committed, §9.1) a full rerun sends about
-700 requests.
+700 requests; the census adds about 630 more and the dump downloads (about
+9.2 GB); on 2026-10-27 its live part took about 2.5 hours at the rate of
+§8.2.
 
 ```bash
-# Deterministic failure-handling tests (no network)
-uv run pytest docs/verification/stage-01/tests
+# Deterministic tests (no network); CI runs them with the whole suite
+uv run pytest tests/stage01
 # Bounded clean-cache reproduction of POS-02 and NC-03 (15 requests on 2026-10-27; WORK_DIR must be empty)
 docs/verification/stage-01/scripts/clean_reproduction.sh rw.csv /tmp/citerift-clean
 ```
@@ -832,8 +871,8 @@ re-verified. PROTOCOL.md is unchanged.
 
 | # | Defect | Effect on committed results | Fix and evidence |
 |---|---|---|---|
-| D1 | A MediaWiki error returned as HTTP 200 (`cirrussearch-too-busy-error`) was read as a complete search with 0 hits, and the error body was cached and served again. | **Changed a result:** 7 of 200 Arabic sample searches were unavailable but recorded as complete (§8.1). | Error bodies are failures; transient codes (`cirrussearch-too-busy-error`, `maxlag`, `ratelimited`) are retried like a 429; error bodies are never cached, and cached ones are fetched again; a search is complete only when it states an integer total. 17 tests (`tests/test_discovery_errors.py`). The 7 searches were sent again once; all 7 answered 0 hits. |
-| D2 | A failed or malformed interlanguage-link request was read as "no linked article". | Latent: all 13 link responses used were complete (re-checked from the raw cached responses by separate code), so the cross-wiki counts are unchanged. | Lookups are batched (50 titles), follow continuation, map normalized titles back, and return `linked`, `no_link`, `source_missing`, `request_failed` or `malformed_response`; the linked article's fetch is `fetch_failed`, `article_missing`, `malformed_response`, `redirect`, `doi_not_found`, `doi_mention_only` or `doi_cited`. 29 tests including injected 429, 500 and 503 (`tests/test_crosswiki.py`). |
+| D1 | A MediaWiki error returned as HTTP 200 (`cirrussearch-too-busy-error`) was read as a complete search with 0 hits, and the error body was cached and served again. | **Changed a result:** 7 of 200 Arabic sample searches were unavailable but recorded as complete (§8.1). | Error bodies are failures; transient codes (`cirrussearch-too-busy-error`, `maxlag`, `ratelimited`) are retried like a 429; error bodies are never cached, and cached ones are fetched again; a search is complete only when it states an integer total. 17 tests (`tests/stage01/test_discovery_errors.py`). The 7 searches were sent again once; all 7 answered 0 hits. |
+| D2 | A failed or malformed interlanguage-link request was read as "no linked article". | Latent: all 13 link responses used were complete (re-checked from the raw cached responses by separate code), so the cross-wiki counts are unchanged. | Lookups are batched (50 titles), follow continuation, map normalized titles back, and return `linked`, `no_link`, `source_missing`, `request_failed` or `malformed_response`; the linked article's fetch is `fetch_failed`, `article_missing`, `malformed_response`, `redirect`, `doi_not_found`, `doi_mention_only` or `doi_cited`. 29 tests including injected 429, 500 and 503 (`tests/stage01/test_crosswiki.py`). |
 | D3 | M1 did not follow API continuation. | Latent: no M1 response used had a continuation. | Continuation followed; tested. |
 | D4 | Shi et al.'s median was given as 5.8 years "in the published abstract", with arXiv v3 as the outlier. | Prior-art wording. | The Crossref-deposited abstract says 5.8 years (2,106 days); arXiv v1–v3 and the CSCW 2026 program say 3.68 years (1,344 days); the published full text was not readable from here. Both are now reported with sources (`data/followups/prior_art_shi_median_sources.json`). |
 | D5 | The closest named competitor was listed from a search snippet only. | Prior-art completeness. | The Retraction Tracker for Wikipedia was opened and profiled from its about page and data file (CREATIVE_FEASIBILITY.md §1); novelty statements bounded to the reviewed evidence. |
@@ -844,7 +883,7 @@ re-verified. PROTOCOL.md is unchanged.
 
 Against the probe of the previous evidence revision `562fe1a` (run on
 2026-10-27 in a scratch copy): the discovery and client tests
-(`tests/test_discovery_errors.py`) fail on behaviour, because that code
+(`tests/stage01/test_discovery_errors.py`) fail on behaviour, because that code
 counted error bodies as answers, cached them and did not retry them. Most
 link-lookup tests cannot run there at all, because that code had no lookup
 states; the D2 defect was shown directly instead: given a failed request,
@@ -890,8 +929,268 @@ did not exist.
 - The rendered check covers four revisions; it does not cover the mobile
   view, skins or gadgets, or the other 12 Arabic articles with the marker.
   Its Arabic warning stem (سحب) can also match unrelated words.
-- The published full text of Shi et al. was not read.
+- The published full text of Shi et al. was not read. (Resolved on
+  2026-10-27 by dropping the disputed median, §16.6.)
 - The prior-art search is not exhaustive; "not established" claims are
   bounded to the works listed in CREATIVE_FEASIBILITY.md §1.
 - The reviews of this pass were done by the same model as the executor and
   are not independent verification.
+
+## 16. Strengthening pass of 2026-10-27: census, divergence and warning gap
+
+At the owner's approval (message `cmsg_018VCB51nDHP6HXmLU4ea5yPS6zrHggGn25MJPgeq5XsHC`,
+in reply to a proposal with four items) the stage returned to `IN_PROGRESS`
+once more, before acceptance, to replace the "0 of 200" sample with a full
+census of Arabic Wikipedia, to measure cross-wiki divergence with real
+counts, to count the Arabic warning gap, and to fix two credibility points.
+All counts below are in `data/census/census_summary.json`, computed by
+`scripts/stage01_census.py summarize` from the committed census files.
+
+### 16.1 Method (verified behavior)
+
+1. **Identifiers.** Every DOI and PMID of the pinned Retraction Watch
+   snapshot (73,356 records): the original paper's and the notice's, 112,483
+   distinct DOIs and 63,012 distinct PMIDs. The headline counts use records
+   whose nature is *Retraction*: 67,916 records, 65,643 of them with an
+   original DOI or PMID, describing **62,575 distinct papers** (one paper
+   can have several records). Expressions of concern, corrections and
+   reinstatements are counted separately and never called retractions.
+2. **Dump scan (offline).** The `externallinks` and `page` tables of the
+   Wikimedia SQL dumps of 2026-10-01 for Arabic and English Wikipedia, each
+   checked against the sha1 published in the run's `dumpstatus.json`. A page
+   is a candidate when one of its external links resolves to a known
+   identifier: a `doi.org` link, a DOI inside another URL (ending at the end
+   of the URL or before `/ ? # & ;`, so a figure DOI such as `…0012345.g001`
+   is not the paper), or a PubMed / Europe PMC link with the PMID. The
+   externallinks table is what M1 queries live (§5.1), so this is M1 for all
+   identifiers at once, with no request to Wikipedia.
+3. **Live confirmation.** The current revision of every candidate article
+   was read on 2026-10-27 (50 pages per request) and each record classified
+   with the rules of §5.3: cited by identifier, mentioned only, or no longer
+   present; marked by a `{{Retracted}}`-family template at the citation or
+   not. A failed request is recorded as unknown, never as "not cited".
+4. **Rendered check.** For each Arabic article–paper pair, the parser HTML
+   of the pinned revision (`action=parse`, one request per article),
+   classified as in §7.3; citations outside the footnotes (a "further
+   reading" list, prose) are found too and labelled as such.
+5. **Divergence.** Interlanguage links from the 2026-10-01 `langlinks`
+   dumps, the linked article's page id from the other wiki's `page` dump,
+   then both articles' current revisions read live. "Carried" means the
+   linked article cites the same paper by *any* of its Retraction Watch
+   identifiers (DOI or PMID). For every paper not carried, the linked
+   article's first revision and the source article's revision in force at
+   that moment were read.
+
+All requests used the throttled client of §8.2 (one request per second at
+most, retries on 429/5xx and on MediaWiki error bodies under HTTP 200):
+633 answered requests (470 `action=query`, 163 `action=parse`) plus 298
+retries after HTTP 429. One parse (Arabic "INF2") got no answer after its
+retries in the first render run and was answered when re-sent
+(`data/run-logs/census_render_first_run_failure.json`); no other request
+failed, and no answer was an error body. The dumps themselves were
+downloaded once from dumps.wikimedia.org (about 9.2 GB). Every census
+file was then re-derived from the dumps and the response cache with the
+committed script into an empty directory: all nine files are identical to
+the committed ones except run times (the committed summary is that
+re-derived one, made after a history category was renamed).
+
+### 16.2 Validation of the dump method (verified, `data/census/dump_vs_api_crosscheck.json`)
+
+For the 10 purposive papers in both languages, the dump scan and the live
+M1/M2 discovery of 2026-10-26 (§5.4) found **identical article sets in 19 of
+20 paper–language pairs**. The exception is Arabic "بول دافيس" for
+Wolfe-Simon 2011: its revision of 2026-10-13 cites the DOI in a template
+parameter, but no external link exists for it (M1 also missed it live;
+only the search M2 found it). So the census inherits M1's blind spot,
+citations whose identifier is not rendered as an external link, and on the
+purposive set that blind spot was 1 of 63 confirmed citations. Citations
+added after 2026-10-01 are also missed unless they existed in the dump.
+
+### 16.3 Arabic Wikipedia census (verified, `data/census/ar_scan.json`, `ar_confirm.json`)
+
+| | Count |
+|---|---|
+| Pages linking to any Retraction Watch identifier (dump) | 205 (195 articles, 10 user pages) |
+| Articles read live on 2026-10-27 | 195, 0 failures |
+| **Article–paper pairs citing a retracted paper (Retraction records), confirmed at the current revision** | **198** |
+| …in distinct articles | **157** |
+| …of distinct retracted papers | **158** (159 records) |
+| …cited by DOI / by PMID only | 191 / 7 |
+| Linked in the dump but no longer cited at the current revision | 1 |
+| Pairs whose citation carries a `{{Retracted}}`-family template in wikitext | 23 |
+| Expression of concern (pairs / articles / papers) | 25 / 22 / 18 |
+| Correction (pairs) | 38 |
+| Citations of a notice only (no citation of the paper) | 17 |
+
+So the answer to the census question is **not zero**: Arabic Wikipedia
+cites at least 158 retracted papers in 157 articles, about 0.25% of the
+62,575 retracted papers with an identifier. The same scan of English
+Wikipedia (dump only, not confirmed live article by article) finds 445
+retracted papers in 432 articles (601 pairs, about 0.71%). Both are
+consistent with the sample of §8.1 finding none in 200 draws (at 0.25% the
+expected number of hits is 0.5; at 0.71% the probability of 0 hits is
+about 0.24). These are lower bounds for link-bearing citations, not
+prevalence of all citations (§16.7).
+
+### 16.4 Warning gap in Arabic (verified, `data/census/ar_render.json`)
+
+What a reader of the current revision sees next to each of the 198 Arabic
+citations of a retracted paper (desktop parser HTML):
+
+| Rendered state | Pairs | Where |
+|---|---|---|
+| No retraction wording | **148** | 122 in footnotes, 26 in lists outside the footnotes |
+| Only a red link to the missing `قالب:Retracted` | **22** | 17 footnotes, 5 outside |
+| Retraction wording shown | 26 | all in one article, "فضيحة شون" (a list of Schön's retracted papers, each followed by "(Retracted)") |
+| Citation not found in the rendered HTML | 2 | one article, "2020 في العلوم" |
+| Render failed | 0 | one failed and succeeded when re-sent |
+
+**170 of the 198 pairs (86%) show no retraction warning to readers**, in
+**155 of the 157 articles** and for **131 of the 158 papers**. Every one of
+the 23 wikitext-marked Arabic citations renders as a link to the missing
+template (22) or was not found in the render (1): **wikitext marking on
+Arabic Wikipedia produced no visible warning text in any case inspected.**
+Arabic Wikipedia has no working retraction template in use
+(`قالب:Retracted` is missing; `قالب:مصدر مسحوب` exists with 0 article uses;
+§7.3) and RetractionBot does not edit it. For the 25 expression-of-concern
+pairs: 19 no wording, 4 red link only, 2 not found. The single article with
+visible wording is about the retractions themselves; whether any other
+article explains the retraction in its prose was not checked (§16.7).
+
+### 16.5 Cross-wiki divergence (verified, `data/census/crosswiki_*.json`)
+
+**English → Arabic.** 432 English articles cite a retracted paper (dump);
+207 of them have an Arabic article (2026-10-01 langlinks), giving 261
+article–paper pairs. In 12 of them the English article no longer cites the
+paper at its current revision; the other **249** pairs:
+
+| Category | Pairs |
+|---|---|
+| **Not carried**: the Arabic article does not cite the paper | **175 (70%)** |
+| Carried, marked in both | 12 |
+| Carried, **marked in English only** | **34** |
+| Carried, marked in neither | 27 |
+| Carried, marked in Arabic only | 1 |
+
+Of the 46 carried citations that English marks as retracted, the Arabic
+article carries the marker in wikitext in 12, and **in none does it show
+retraction wording**: the 12 render as a link to the missing template, 31
+show no wording, 1 was not found in the render and 2 are not in the Arabic
+census (cited without a link). In no case observed does the English
+warning reach Arabic readers.
+
+For the 175 pairs not carried (136 Arabic articles), the Arabic article's
+first revision and the English revision at that moment:
+
+| What the histories show | Pairs |
+|---|---|
+| English added the citation after the Arabic article was created | 90 |
+| English already cited the paper when the Arabic article was created; the Arabic first revision did not | 75 |
+| The English article did not exist yet | 9 |
+| The Arabic first revision cited the paper; it was **removed later** | 1 |
+
+"Not carried" therefore mostly means "never there" rather than "removed":
+only 1 of 175 was present at creation and later removed. Additions and
+removals between creation and today were not inspected, so a citation added
+and later removed in Arabic would be counted as never carried.
+
+**Arabic → English.** 158 Arabic articles cite a retracted paper in the
+dump (157 still do live); 155 have an English article, giving 196 pairs.
+One Arabic article no longer cites the paper, and the 28 pairs of
+"فضيحة شون" are unknown because its English link is a redirect (§16.7);
+of the other **167** pairs, **96 (57%)** are not cited by the English
+article, and 71 are:
+
+| Category | Pairs |
+|---|---|
+| Not cited in English | 96 |
+| Cited in both, **marked in English only** | 32 |
+| Cited in both, marked in neither | 26 |
+| Cited in both, marked in both | 12 |
+| Cited in both, marked in Arabic only | 1 |
+
+In Arabic, again, none of these 71 shows retraction wording: 13 render as a
+link to the missing template, 57 show no wording, 1 was not found in the
+render. For the 96 not cited in English, the English article's first
+revision cited the paper in **20 pairs (19 article pairs, 16 papers): the
+English article once cited the retracted paper and no longer does, while
+the Arabic article still cites it, with no visible warning** (6 of them
+render the red template link). Most are gene articles whose English first
+revisions date from 2007–2008; when and why the English citations were
+removed was not examined, and no link to the retraction is claimed. In 75 pairs the English first revision
+did not cite the paper and the Arabic article did not exist yet; in 1 the
+Arabic article existed without it.
+
+These are differences between named, pinned revisions; they describe what
+readers of each edition see, not why editors acted. No editor intent is
+inferred.
+
+### 16.6 Credibility fixes
+
+- **Stage 01 tests now run in CI.** The 61 tests moved from
+  `docs/verification/stage-01/tests/` to `tests/stage01/` (git history kept),
+  where the repository's existing `testpaths = ["tests"]` and the `ci-gate`
+  workflow collect them with every other test. No Stage 00 file changed:
+  `pyproject.toml`'s `testpaths` could not be widened, because the Stage 00
+  test-report plugin fixes the complete-run collection settings to
+  `testpaths = ["tests"]` (`src/citerift/governance/pytest_report.py`,
+  `COLLECTION_SETTINGS`), and `.github/workflows` is Stage 00 owned. 40 new
+  tests cover the census code (dump parsing, identifier matching and its near
+  misses, error bodies, missing and absent pages, failed renders, the
+  divergence categories and the history step); the Stage 01 total is 101.
+- **Shi et al.** The arXiv v3 full text was read: it reports a median of
+  3.68 years (1,344 days) in its abstract, results and conclusion and never
+  5.8 years; the published version's abstract (Crossref) says 5.8 years
+  (2,106 days). The published full text is open access but the publisher's
+  site refused this environment (HTTP 403), and getting around that was not
+  attempted. **The disputed median is dropped from CITERIFT's claims**
+  (CREATIVE_FEASIBILITY.md §1; sources in
+  `data/followups/prior_art_shi_median_sources.json`). The other figures
+  quoted (1,181 citations; 71.6%, 51.5%, 20.1%) are the same in both texts.
+
+### 16.7 Limitations of the census
+
+1. Link-based: citations whose identifier is not rendered as an external
+   link (plain text, some templates, a title only) are missed; on the
+   purposive set this was 1 of 63 (§16.2). The counts are lower bounds.
+2. The dumps are of 2026-10-01; the live confirmation is of 2026-10-27.
+   Citations added in between and absent from the dump are missed.
+3. Retraction Watch is the only list of retracted papers; a paper it does
+   not list is not counted.
+4. The rendered check reads the desktop parser HTML; mobile view, skins and
+   gadgets were not checked. Retraction wording written in the article's
+   prose, away from the citation, is not detected; intentional citations
+   (an article about the retraction) are not separated automatically.
+5. Interlanguage links connect articles, not claims; a paper not carried may
+   be irrelevant to the linked article's text. The history step reads two
+   revisions per pair, not the whole history.
+6. One linked English title is a redirect ("Jan Hendrik Schön", from
+   "فضيحة شون"); its 28 pairs are kept as unknown rather than followed.
+7. The English figures in §16.3 come from the dump scan only; English
+   articles were read live only where they have an Arabic counterpart.
+8. All checks and reviews of this pass were done by the same model as the
+   executor and are not independent verification.
+
+### 16.8 Effect on the findings and the recommendation (inference)
+
+The census changes three statements of this report. §7.5's "not shown: that
+Arabic has enough cited retracted papers for rates" no longer holds for
+link-bearing citations: there are 158 papers in 157 articles, enough to
+report edition-level counts with numerator and denominator. The warning gap
+is no longer two inspected articles (§7.3) but 170 of 198 citations. And
+cross-wiki divergence is measured over every English article that cites a
+retracted paper and has an Arabic counterpart, not over 10 purposive papers.
+
+The RESCOPE reading of §12 rested on "consistency and speed can be shown
+per paper and per named article pair, not measured as rates for a language
+edition". After the census, **consistency can be measured for the whole
+Arabic edition** (lower bounds, link-bearing citations), so that part of
+the narrower-claim trigger no longer applies. **Speed** (how quickly an
+edition responds) still cannot be measured as an edition-level rate from
+this evidence: it needs the revision history of every citation, which was
+read here only at two points per pair. The executor therefore still reads
+the third RESCOPE trigger as met, but more narrowly than before: the
+scope can now include edition-level counts of citation, marking, carrying
+and visible warnings for English and Arabic; timing remains per paper. The
+recommendation stays **RESCOPE (advisory)**; the owner decides, and the
+narrower scope in §12 is widened accordingly (§12, point 2).
