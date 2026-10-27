@@ -1329,13 +1329,16 @@
           "requirement": "Critical blockers and recommendations stated"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
         "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
         "recorded_at": "2026-10-25T08:12:56Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "85da719ac43fc46170310b225c9190b63a046df8",
+        "recorded_at": "2026-10-27T18:20:54Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -1813,6 +1816,17 @@
       "actor": "external-agent",
       "recorded_by": "external-agent",
       "reason": "Owner approved strengthening Stage 01 before acceptance (cmsg_018VCB51nDHP6HXmLU4ea5yPS6zrHggGn25MJPgeq5XsHC): Arabic Wikipedia DOI/PMID census, cross-wiki divergence measurement, warning-gap count, Stage 01 tests in CI and Shi et al. resolution",
+      "owner_ref": null
+    },
+    {
+      "seq": 22,
+      "at": "2026-10-27T18:20:54Z",
+      "stage": "01",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "external-agent",
+      "recorded_by": "external-agent",
+      "reason": "Owner-approved strengthening pass implemented at 85da719: Arabic DOI/PMID census against Retraction Watch, en-ar divergence, Arabic warning gap, Stage 01 tests in CI, Shi median resolved",
       "owner_ref": null
     }
   ]
