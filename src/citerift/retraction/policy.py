@@ -236,7 +236,9 @@ def reduce(ev: EvidenceSet) -> dict[str, Any]:
     if value == "retracted":
         # A retraction event inside a type conflict still bears on the date: whether its notice is a retraction
         # is unresolved, so a date that differs from the clear ones cannot be stated as a fact.
-        conflicted = [a for a in typed if a.type == "retracted" and a.event_id is not None and a.proposition in conflict]
+        conflicted = [
+            a for a in typed if a.type == "retracted" and a.event_id is not None and a.proposition in conflict
+        ]
         dated = [a for a in support if a.event_id is not None]
         out["retraction_date"] = _retraction_date(dated, basis, conflicted)
         compare["retraction_date.status"] = out["retraction_date"]["status"]

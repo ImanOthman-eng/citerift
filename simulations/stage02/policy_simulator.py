@@ -174,7 +174,7 @@ def gather(case: dict[str, Any]) -> Evidence:
             return ev
         # PMID-only rows are linked through the query's pairing only when DOI rows exist to be paired with.
         matched = [(r, False) for r in od] + [(r, bool(od) and r["d"] is None) for r in opm if r not in od]
-        ev.anchor = f"doi:{qd}"
+        ev.anchor = f"doi:{qd}" if od else f"pmid:{qp}"
     elif qd:
         matched = [(r, False) for r in od]
         secondary = {r["p"] for r in od} - {None}

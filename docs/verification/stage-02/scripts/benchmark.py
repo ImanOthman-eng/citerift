@@ -3,11 +3,16 @@
 Protocol, declared before measurement:
 - builds: N full builds of the pinned CSV, each in a fresh Python process that reports its own peak RSS
   (getrusage ru_maxrss); wall time measured by the parent; database size from the published file.
-- warm lookups: 2,000 queries in a declared mix, one process, the index opened once; the OS page cache is
-  whatever the earlier builds left (warm); no claim of cache eviction is made.
+- warm lookups: 2,000 queries in the mix SPECIFICATION.md 13 declares (MIX below), one process, the index opened
+  once; the OS page cache is whatever the earlier builds left (warm); no claim of cache eviction is made.
+- high fan-out lookups: 100 extra warm queries on the 50 originals with the most events, reported separately
+  (outside the budget mix).
 - fresh-process lookups: 200 queries of the same mix, each a new ``python -m citerift.retraction.cli lookup``
   process (interpreter start, imports, index open, query, JSON output).
 - every query returns one full page (at most 20 events); the hit/miss mix and fan-out are recorded.
+- tension: 200 warm Evidence Tension reports (all interventions of the default plan) on matched DOIs.
+- ambiguity: 200 warm baseline candidate retrievals for events that have an original DOI, the event's own
+  identifiers not used.
 - digests of all builds are compared; two builds must give equal artifact and semantic digests and equal
   query output.
 
@@ -30,6 +35,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+from citerift.retraction import ambiguity, tension
 from citerift.retraction.query import Index, render
 
 CHILD = """
@@ -42,15 +48,19 @@ r = build(Path(sys.argv[1]), load_receipt(), Path(sys.argv[2]))
 print(json.dumps({"seconds": time.perf_counter() - t, "maxrss_kib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
                   "index": str(r.index_path), "digests": r.manifest["digests"], "counts": r.manifest["counts"]}))
 """
+# SPECIFICATION.md 13: 40% matched DOI, 10% matched PMID, 10% notice-only, 5% ambiguous PMID, 5% two-ID,
+# 25% absent synthetic, 5% invalid.
 MIX = {
     "doi_hit": 800,
-    "pmid_hit": 300,
+    "pmid_hit": 200,
     "notice_only": 200,
     "ambiguous_pmid": 100,
     "dual": 100,
-    "miss": 400,
-    "high_fanout": 100,
+    "miss": 500,
+    "invalid": 100,
 }
+HIGH_FANOUT = 100
+INVALID = ("10.", "10.1234", "doi:", "0", "-1", "12a45", "10.5555/" + "x" * 300, "pmid:", " ", "10.abc/x")
 
 
 def pct(values: list[float], q: float) -> float:
@@ -111,10 +121,14 @@ def queries(oracle: dict[str, Any], index: Path, scale: int, seed: int) -> list[
             elif kind == "miss":
                 k = rng.choice(misses)
                 out.append((kind, k, None) if k.startswith("10.") else (kind, None, k))
+            elif kind == "invalid":
+                k = rng.choice(INVALID)
+                out.append((kind, k, None) if not k.isdigit() and not k.startswith("-") else (kind, None, k))
             else:
-                out.append((kind, rng.choice(fanout), None))
+                raise ValueError(kind)
     rng.shuffle(out)
-    return out
+    extra = [("high_fanout", rng.choice(fanout), None) for _ in range(HIGH_FANOUT // scale)]
+    return out + extra
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -168,8 +182,23 @@ def main(argv: list[str] | None = None) -> int:
             max_events = max(max_events, out["total_event_count"])
             if len(out["events"]) > 20:
                 raise RuntimeError("a page holds more than 20 events")
+        rng = random.Random(20261029)  # noqa: S311 - a reproducible workload, not a secret
+        doi_hits = [d for k, d, _p in warm_q if k == "doi_hit"]
+        tension_t: list[float] = []
+        for d in rng.sample(doi_hits, 200):
+            t0 = time.perf_counter()
+            tension.report(ix.gather(d), ix.snapshot_id)
+            tension_t.append(time.perf_counter() - t0)
+        events = [r[0] for r in ix.conn.execute("SELECT event_id FROM event WHERE original_doi IS NOT NULL")]
+        base = ambiguity.Baseline(ix)
+        ambiguity_t: list[float] = []
+        for event_id in rng.sample(sorted(events), 200):
+            probe = ambiguity.probe_for_event(ix, event_id)
+            t0 = time.perf_counter()
+            base.candidates(probe)
+            ambiguity_t.append(time.perf_counter() - t0)
     fresh: list[float] = []
-    for _kind, d, p in fresh_q:
+    for _kind, d, p in (q for q in fresh_q if q[0] != "high_fanout"):
         cmd = [sys.executable, "-m", "citerift.retraction.cli", "lookup", "--index", str(index)]
         cmd += (["--doi", d] if d else []) + (["--pmid", p] if p else [])
         t = time.perf_counter()
@@ -182,7 +211,7 @@ def main(argv: list[str] | None = None) -> int:
     for b in builds[:2]:
         with Index(Path(b["index"])) as ix:
             outputs.append([render(ix.gather(d, p), ix.snapshot_id) for _k, d, p in sample])
-    all_warm = [x for v in warm.values() for x in v]
+    all_warm = [x for k, v in warm.items() if k in MIX for x in v]
     wall = [b["wall_seconds"] for b in builds]
     report = {
         "protocol": __doc__,
@@ -218,8 +247,19 @@ def main(argv: list[str] | None = None) -> int:
         "warm_states": states,
         "warm_max_total_event_count": max_events,
         "fresh_process": summary(fresh),
+        "tension": summary(tension_t),
+        "ambiguity_candidates": summary(ambiguity_t),
         "mix": MIX,
-        "budgets": {"build_seconds": 120, "peak_rss_mib": 512, "db_mib": 512, "warm_p95_ms": 20, "fresh_p95_ms": 1000},
+        "high_fanout_queries": HIGH_FANOUT,
+        "budgets": {
+            "build_seconds": 120,
+            "peak_rss_mib": 512,
+            "db_mib": 512,
+            "warm_p95_ms": 20,
+            "fresh_p95_ms": 1000,
+            "tension_p95_ms": 50,
+            "ambiguity_p95_ms": 100,
+        },
     }
     report["budgets_met"] = {
         "build_seconds": max(wall) <= 120,
@@ -227,6 +267,8 @@ def main(argv: list[str] | None = None) -> int:
         "db_mib": report["db_mib_max"] <= 512,
         "warm_p95_ms": report["warm"]["all"]["p95_ms"] <= 20,
         "fresh_p95_ms": report["fresh_process"]["p95_ms"] <= 1000,
+        "tension_p95_ms": report["tension"]["p95_ms"] <= 50,
+        "ambiguity_p95_ms": report["ambiguity_candidates"]["p95_ms"] <= 100,
         "double_build": len(digests) == 1 and outputs[0] == outputs[1],
     }
     args.out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -236,6 +278,8 @@ def main(argv: list[str] | None = None) -> int:
                 "budgets_met": report["budgets_met"],
                 "warm_p95": report["warm"]["all"]["p95_ms"],
                 "fresh_p95": report["fresh_process"]["p95_ms"],
+                "tension_p95": report["tension"]["p95_ms"],
+                "ambiguity_p95": report["ambiguity_candidates"]["p95_ms"],
                 "build": report["build_wall_seconds"],
                 "rss": report["build_peak_rss_mib_max"],
                 "db": report["db_mib_max"],

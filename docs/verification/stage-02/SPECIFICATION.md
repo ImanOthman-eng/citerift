@@ -677,4 +677,28 @@ Gates (02-A is the Master Plan gate; 02-B to 02-I refine it):
 
 ## 16. Changes after freezing
 
-None yet.
+The specification was frozen at `36696b3`. The changes below were made while
+implementing it; each is recorded with its reason and the test that holds it.
+None lowers a gate or a budget. Items 2, 4, 5, 9 and 10 change a result;
+items 2, 4, 9 and 10 are stricter than the frozen text, and item 5 removes an
+intervention whose outcome is fixed in advance.
+
+| # | Section | Change | Reason | Held by |
+|---|---|---|---|---|
+| 1 | 10.1 | Tables `title_token` and `token_df` replace `issue_index` | The ambiguity baseline (12.2) needs title-token postings and document frequencies; issue lookups use the `quarantine` and `invalid_identifier` tables | `test_rde_import.py`, `test_rde_advisory.py` |
+| 2 | 11.1 rule 8 | `no_record` carries no `retraction_date` assertion | A date of something not found is not a fact or an uncertainty about a date | `test_rde_policy_cases.py` |
+| 3 | 9 | Fatal replay code `CORROBORATION_INVALID`; the works not attempted after a stop are listed by DOI | A tampered or malformed replay bundle must fail the build, not load partially; an unattempted work must not read as "nothing found" | `test_rde_corroboration.py` |
+| 4 | 10.3 step 5 | `query_pair` bridging only when the DOI's own set `O_d` is non-empty | Without it a PMID-only partner could stand in for a DOI that names no work | `test_rde_lookup.py`, `test_rde_policy_cases.py` |
+| 5 | 11.2 | The default plan runs `exclude_origin` only when there are at least two origins; otherwise the report says `single_origin` | Excluding the only origin always empties the evidence and would report every field as changed | `test_rde_tension_properties.py` |
+| 6 | 3 | The git blob SHA-1 of the CSV is checked against the receipt, as well as SHA-256 and size | It ties the file to the pinned commit without trusting the download URL | `test_rde_import.py` |
+| 7 | 12.3 | Draw quotas and strata for the 160 evaluation groups are fixed in `ai/protocol.json` | The snapshot holds only 16 hard positives; quotas keep each stratum in both splits | `ai/protocol.json` (frozen at `fe187b1` before any prediction) |
+| 8 | 10.3 step 7 | At most 100 relevance hits are listed, followed by `RELEVANT_LIST_CAPPED` with the total | A short common key could otherwise return thousands of quarantine hits in one response | `test_rde_lookup.py` |
+| 9 | 11.1 rule 8 (C-9) | RW retraction events inside a type conflict also count for the date: if their dates differ from the clear ones the date is `uncertain` (`MULTIPLE_RETRACTION_DATES`) | Found on the real demonstration `10.1007/s13277-014-2995-5`: a publisher deposit that typed the 2015 notice as a correction had made the 2017 date a verified fact. The prebuild simulator was changed the same way. On the RW-only index no result changes (61,844 retracted originals); with the pinned Crossref replay one does | `test_rde_policy_regressions.py` (fails without the fix) |
+| 10 | 10.3 step 5 (C-10) | With both identifiers, the anchor is `doi:d` only when `O_d` is non-empty; otherwise `pmid:p` | Found while writing the test for item 4: a query pairing an unknown DOI with a known PMID reported an exact identity anchored at the unknown DOI, which no record carries. The simulator was changed the same way | `test_rde_spec_changes.py` (fails without the fix) |
+
+The prebuild simulator was also updated after the engine was written, for the
+reinstatement rule and `query_pair` (before the real-case comparison) and for
+C-9 and C-10 (after it). The real-case outcomes in
+`tests/stage02/fixtures/real_cases.json` were derived with the updated
+simulator; the simulator therefore is not fully independent of the engine on
+those three points (SIMULATION_REPORT.md).

@@ -212,7 +212,8 @@ class Index:
             # PMID-only events are linked through the query's own pairing only when DOI events exist.
             link = "query_pair" if o_d else None
             matched += [(e, "pmid", link) for e in o_p if e["event_id"] not in in_d]
-            ev.anchor = f"doi:{d}"
+            # The query's DOI is the anchor only when some event carries it; otherwise only the PMID is evidenced.
+            ev.anchor = f"doi:{d}" if o_d else f"pmid:{p}"
         elif d:
             matched = [(e, "doi", None) for e in o_d]
             secondary = sorted({e["original_pmid"] for e in o_d} - {None})
