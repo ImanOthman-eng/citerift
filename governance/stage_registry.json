@@ -1329,7 +1329,7 @@
           "requirement": "Critical blockers and recommendations stated"
         }
       ],
-      "status": "IMPLEMENTED_NOT_VERIFIED",
+      "status": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPLWBu5tMQJsp9hhZhauFuyu",
         "scope": "Master Plan v1.0 assigns Stage 01 to a separate, independent feasibility agent. Recorded retroactively by the engineering agent on 2026-10-25; no Stage 01 findings are accepted.",
@@ -1339,7 +1339,328 @@
         "revision": "32712fa3b1311a38efbf2f854a3c0dbaed076b17",
         "recorded_at": "2026-10-27T13:54:57Z"
       },
-      "verification": null,
+      "verification": {
+        "revision": "32712fa3b1311a38efbf2f854a3c0dbaed076b17",
+        "recorded_at": "2026-10-27T13:55:25Z",
+        "artifacts": [
+          {
+            "path": "docs/verification/stage-01/HANDOFF.md",
+            "sha256": "77e5e31a07511e586210ba4ca95743f870c4ebc417f4598f9d923b48d81877a0"
+          }
+        ],
+        "test_report": null,
+        "evidence_manifest": [
+          {
+            "path": "docs/verification/stage-01/ADVERSARIAL_REVIEW.md",
+            "sha256": "6043437ae81ab194f9ae817dda75afcbe8ac9773310ce58a1e0c29226642f214"
+          },
+          {
+            "path": "docs/verification/stage-01/CREATIVE_FEASIBILITY.md",
+            "sha256": "17586d5d592b3d2e13d79e919c705732b5af8e5f38991a6133bc23b350dd54f2"
+          },
+          {
+            "path": "docs/verification/stage-01/EVIDENCE_MANIFEST.json",
+            "sha256": "f7ce7419bf186789846ac6a41eefa277153e00fc5a2160da62726f37e5567017"
+          },
+          {
+            "path": "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+            "sha256": "5f6ee0869476154ac33a2d8d5073d9558a5373ab202162a8373aa10da8f0be13"
+          },
+          {
+            "path": "docs/verification/stage-01/HANDOFF.md",
+            "sha256": "77e5e31a07511e586210ba4ca95743f870c4ebc417f4598f9d923b48d81877a0"
+          },
+          {
+            "path": "docs/verification/stage-01/MAESTRO_DESIGN_BRIEF.md",
+            "sha256": "46ad95a0a504a7b9b288a715490aca810f41168f147017b4bd250c8b394b0c38"
+          },
+          {
+            "path": "docs/verification/stage-01/PROTOCOL.md",
+            "sha256": "8b750ea11a40747b612bde52f05b059757270576d2584f1b5c86b807e1a75aa9"
+          },
+          {
+            "path": "docs/verification/stage-01/data/README.md",
+            "sha256": "1004b6922edb014e972275ba007b300398160c511b86040de345bc81e8fcd368"
+          },
+          {
+            "path": "docs/verification/stage-01/data/clean_reproduction.json",
+            "sha256": "b926151a6a9d365fd96b8cf46b62e35a2adcdc0f3b88d713b1a6fa01b8ac7f36"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/ar_embeddedin_masdar_mashub.json",
+            "sha256": "70ef7a82daeb28f87f715cb7fe9e31661b3c51a8a41587de84911834f897d720"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/ar_embeddedin_retracted.json",
+            "sha256": "3519e05746906ba85d340b8ab234299feb732425f276eb50f3f3af4f8a177dac"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/ar_masdar_mashub_first_revision.json",
+            "sha256": "d98c5b8686e3ab5358c5e464dea5e88ae00df3cb89b0bf2f64410ec551359019"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/ar_templates_info.json",
+            "sha256": "eb061246326f879644aefa95a44706c9467415450763dbcbdf11ae1a1e4a5698"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/crosswiki_S_ar_to_en.json",
+            "sha256": "1f2cfb0aebde42ddc1f5c5924217c1bdcbbb280d4b6100d85c8634922b9b4edd"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/crosswiki_S_en_to_ar.json",
+            "sha256": "d3eb7d132e812ce22b840e6da086f96d53763681c0b82a4ff28048cbf7b5b664"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/crosswiki_ar_to_en.json",
+            "sha256": "0e4152dae8731b4678a0da8480cc1877a0ce09f5faa04b840c11ee06a4665cf5"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/crosswiki_en_to_ar.json",
+            "sha256": "87eee41d25db45155bc64b72d2864b2343b340a222fc16c890ded7f677bca81a"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/en_mmr_retraction_text_check.json",
+            "sha256": "4ed0c4a18cdbcfa44e982fe126c7e529c5335fb6d406a9398c84e2dd13420803"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/nc2_absence_check_ar.json",
+            "sha256": "fb43f0ce20f4d893a367f140987e055a7ba3e81552b76e4e1371737725fabaef"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/nc2_absence_check_en.json",
+            "sha256": "d6c384400d75521925deb08eefb5a2c420b1dfb3a2b544d6341f5fc7b9ed5bf5"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/nc3_lookup.json",
+            "sha256": "25d1e8a45f0b5baccd1fafaa2405274e8fe86923e526ae2e8ed4fb3f2dd05375"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_en_categories.json",
+            "sha256": "c7f64c2cb95843f98c99a4c00a5fce0b50ad292f19bd711d867455362e38ba70"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_retraction_tracker_profile.json",
+            "sha256": "fc9ca698712261b5990b74e61f01341fad4b183cdc14fffbc0b27cde292c578c"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_retractionbot_arwiki.json",
+            "sha256": "d633c40b8b3190325b92b4346759216eb97e9534a05a5349b0ab8452622da655"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_retractionbot_enwiki.json",
+            "sha256": "dc6a22d6fa7682dc68707a5fc0ae59bad80eafd7cf68710d250e6ec227ed9f3b"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_retractionbot_global.json",
+            "sha256": "45ae4377871bf5a8a21f0d1bdda6085b59f8c618e558a14c2d476a68a9ee5a56"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/prior_art_shi_median_sources.json",
+            "sha256": "fe9dc998804c1a1ba02b7855a05ac99e52fbd55d4b69d2160faa774879d19282"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/render_check_ar_mmr.json",
+            "sha256": "d8cf62a80acd5fe5dd493573c695957d61f22ec51b313d9e6ce8bbda1b11f148"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/render_check_ar_obokata.json",
+            "sha256": "89234bcf794966efd9a7e08f0a1adf78eef39799f564ff691d419103e641deac"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/render_check_en_mmr.json",
+            "sha256": "99a91dc540df9b2297c34174c92fb1e2bb9167a2c7946781e9ee555e7b578bb1"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/render_check_en_obokata.json",
+            "sha256": "c30eed3cfc97d0319100afa16a072d98143931c5b833c032379584d9beb62387"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/timeline_ar_mmr_cited.json",
+            "sha256": "d460e240a80e00d6dac8c06b3ff37aabd0f46ff0a45b99545e0c1f4b1a268cb0"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/timeline_ar_mmr_marked.json",
+            "sha256": "e56449bb8126118f09ca15bcd39107ae9d5400d49032b9a8f90b6111d4a159da"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/timeline_en_mmr_cited.json",
+            "sha256": "995bb3954aa5fe2ec3797d2c2b2e5e226f5fef48b97d9b8d057758bd895ddbe6"
+          },
+          {
+            "path": "docs/verification/stage-01/data/followups/timeline_en_mmr_marked.json",
+            "sha256": "ad8e8a35d5baf47175e62e93790ef1419522c01d891acc843d2a02280ce20f09"
+          },
+          {
+            "path": "docs/verification/stage-01/data/purposive_discovery.json",
+            "sha256": "c15658d907a3877882849682efecbd256973c2d54a33e9d9721f4d1ddcb65167"
+          },
+          {
+            "path": "docs/verification/stage-01/data/purposive_dois.json",
+            "sha256": "a2807a4026e7ea88e3fd880b79e62dd436c095a9cc447a47db0aaed89c12809c"
+          },
+          {
+            "path": "docs/verification/stage-01/data/purposive_lookup.json",
+            "sha256": "40ea2d9cb28b76865082988f51ee0c31097fad311bb8f3f9a8cf126b4e2aadaa"
+          },
+          {
+            "path": "docs/verification/stage-01/data/rate-limit/ratetest.log",
+            "sha256": "c204883252d717f0908c670f1ea4d16dbe080fc4e0f4576c5c235c753e5491e7"
+          },
+          {
+            "path": "docs/verification/stage-01/data/rate-limit/ratetest.py.txt",
+            "sha256": "222fa7abd7c20933836178cade27457eb9b8b0d6a0e061579e3b23fbd8ba76c1"
+          },
+          {
+            "path": "docs/verification/stage-01/data/run-logs/sample_S_discovery_first_run_log.json",
+            "sha256": "5ddc10813e9259649970885bc07cdd2f8ef6b55d4978983287607513882978b2"
+          },
+          {
+            "path": "docs/verification/stage-01/data/run-logs/sample_S_search_errors_first_run.json",
+            "sha256": "e511b359635b2b38f0d7efac517129a609aa906085d19ee4085b697b7167b252"
+          },
+          {
+            "path": "docs/verification/stage-01/data/run-logs/sample_S_search_retry_2026-10-27.json",
+            "sha256": "13594cc6967adc0aae307ee126046b7b017ea160ca6580f6d690cd01e58a9bfe"
+          },
+          {
+            "path": "docs/verification/stage-01/data/rw_profile.json",
+            "sha256": "5808c4686e8bd649213d58a03172253be604296bcf0a36ef2743996445ab6d15"
+          },
+          {
+            "path": "docs/verification/stage-01/data/sample_S.json",
+            "sha256": "b130ced7b77130c063834602bc689c3938466800ced5003a34eb9264eebb1b91"
+          },
+          {
+            "path": "docs/verification/stage-01/data/sample_S_discovery.json",
+            "sha256": "1607b8dc1d609159b7ff4910d8b01fde6753830254dd2f4ff67697d04cf308ce"
+          },
+          {
+            "path": "docs/verification/stage-01/data/verify_result.json",
+            "sha256": "fb88f47dc18b2193a9673ef72e6cb1d82111ac738485a61a07c476328669898b"
+          },
+          {
+            "path": "docs/verification/stage-01/scripts/build_manifest.py",
+            "sha256": "a61145e318696986ff69bd487ede7cbc5089cc96464531ca049b389f79528dab"
+          },
+          {
+            "path": "docs/verification/stage-01/scripts/clean_reproduction.sh",
+            "sha256": "5c33d4ece1e04de8c9238dfb84077e9ec2f26821dcab14b48c96a0172c30b45b"
+          },
+          {
+            "path": "docs/verification/stage-01/scripts/compare_clean.py",
+            "sha256": "0568f1e9f4e5a0cc26839466721cb6551a2889439b1ee40122944716a08629fa"
+          },
+          {
+            "path": "docs/verification/stage-01/scripts/reproduce.sh",
+            "sha256": "79aef7db7fb72a5cd372a24abaf3af53b2abf7daf55c20c4a4c0d75e2b4aa03e"
+          },
+          {
+            "path": "docs/verification/stage-01/scripts/stage01_probe.py",
+            "sha256": "9536ee2dfb192129f92a4d0d4524fd474ad4f18a331e3c828b49af8fe514298a"
+          },
+          {
+            "path": "docs/verification/stage-01/tests/test_crosswiki.py",
+            "sha256": "0c87811bed860ee0a64f48d50eafed9fa2ec0f07060ca751361f5963dfbeb5dd"
+          },
+          {
+            "path": "docs/verification/stage-01/tests/test_discovery_errors.py",
+            "sha256": "28fa6547334ae09737fe7783ac6ee0359988b8ccd862fa057e2d8e48a86d781c"
+          },
+          {
+            "path": "docs/verification/stage-01/tests/test_render_check.py",
+            "sha256": "dd901bfad06cbad8e35031c50f9f6ee5507fb4330b7837a7d5a739f0382eec75"
+          },
+          {
+            "path": "docs/verification/stage-01/verification-record.json",
+            "sha256": "52bd462870a0bd89484d27a3c324e8eca074016eec90e670166662a10e791e17"
+          }
+        ],
+        "definition_sha256": "35d1742c453107934e4136f8a7fc63e36f9dabec35063d34c8e3b646ae1bea77",
+        "gates": {
+          "01-A": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+              "docs/verification/stage-01/data/rw_profile.json",
+              "docs/verification/stage-01/data/purposive_lookup.json",
+              "docs/verification/stage-01/EVIDENCE_MANIFEST.json"
+            ]
+          },
+          "01-B": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+              "docs/verification/stage-01/data/purposive_discovery.json",
+              "docs/verification/stage-01/data/rate-limit/ratetest.log",
+              "docs/verification/stage-01/tests/test_discovery_errors.py"
+            ]
+          },
+          "01-C": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/EVIDENCE_MANIFEST.json",
+              "docs/verification/stage-01/data/followups/nc2_absence_check_en.json",
+              "docs/verification/stage-01/data/followups/nc2_absence_check_ar.json",
+              "docs/verification/stage-01/data/followups/nc3_lookup.json"
+            ]
+          },
+          "01-D": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+              "docs/verification/stage-01/data/followups/crosswiki_en_to_ar.json",
+              "docs/verification/stage-01/data/followups/crosswiki_ar_to_en.json",
+              "docs/verification/stage-01/data/followups/timeline_en_mmr_cited.json",
+              "docs/verification/stage-01/data/followups/timeline_ar_mmr_cited.json",
+              "docs/verification/stage-01/data/followups/ar_templates_info.json",
+              "docs/verification/stage-01/data/followups/render_check_en_obokata.json",
+              "docs/verification/stage-01/data/followups/render_check_ar_obokata.json",
+              "docs/verification/stage-01/data/followups/render_check_en_mmr.json",
+              "docs/verification/stage-01/data/followups/render_check_ar_mmr.json",
+              "docs/verification/stage-01/tests/test_crosswiki.py",
+              "docs/verification/stage-01/tests/test_render_check.py"
+            ]
+          },
+          "01-E": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+              "docs/verification/stage-01/data/sample_S.json",
+              "docs/verification/stage-01/data/sample_S_discovery.json",
+              "docs/verification/stage-01/data/run-logs/sample_S_search_errors_first_run.json",
+              "docs/verification/stage-01/data/run-logs/sample_S_search_retry_2026-10-27.json"
+            ]
+          },
+          "01-F": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/EVIDENCE_MANIFEST.json",
+              "docs/verification/stage-01/data/verify_result.json",
+              "docs/verification/stage-01/scripts/reproduce.sh",
+              "docs/verification/stage-01/scripts/stage01_probe.py",
+              "docs/verification/stage-01/scripts/build_manifest.py",
+              "docs/verification/stage-01/data/clean_reproduction.json",
+              "docs/verification/stage-01/scripts/clean_reproduction.sh",
+              "docs/verification/stage-01/scripts/compare_clean.py",
+              "docs/verification/stage-01/tests/test_crosswiki.py",
+              "docs/verification/stage-01/tests/test_discovery_errors.py",
+              "docs/verification/stage-01/tests/test_render_check.py"
+            ]
+          },
+          "01-G": {
+            "result": "pass",
+            "evidence": [
+              "docs/verification/stage-01/FEASIBILITY_REPORT.md",
+              "docs/verification/stage-01/CREATIVE_FEASIBILITY.md",
+              "docs/verification/stage-01/MAESTRO_DESIGN_BRIEF.md",
+              "docs/verification/stage-01/ADVERSARIAL_REVIEW.md",
+              "docs/verification/stage-01/HANDOFF.md",
+              "docs/verification/stage-01/data/followups/prior_art_shi_median_sources.json",
+              "docs/verification/stage-01/data/followups/prior_art_retraction_tracker_profile.json"
+            ]
+          }
+        }
+      },
       "acceptance": null,
       "blockers": [],
       "amendments": [],
@@ -1794,6 +2115,17 @@
       "actor": "external-agent",
       "recorded_by": "external-agent",
       "reason": "Corrective pass requested by the owner (cmsg_018VCB51nDHP6HXmLU4ea5yPBWBK4PLfVSRHeA5DdXjWLz): failure handling fixed, sample corrected, evidence re-derived and re-verified",
+      "owner_ref": null
+    },
+    {
+      "seq": 20,
+      "at": "2026-10-27T13:55:25Z",
+      "stage": "01",
+      "from": "IMPLEMENTED_NOT_VERIFIED",
+      "to": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "actor": "external-agent",
+      "recorded_by": "external-agent",
+      "reason": "Corrective pass verified: gates 01-A to 01-G re-established on evidence at 32712fa (FEASIBILITY_REPORT.md §15)",
       "owner_ref": null
     }
   ]
