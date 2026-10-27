@@ -38,6 +38,10 @@ sha256sum data/raw/rw/retraction_watch.csv   # 2f116e9f...0a655
 6. §3: the git blob SHA-1 is checked against the receipt.
 7. §12.3: draw quotas and strata (16 hard positives exist in the snapshot).
 8. §10.3 step 7: at most 100 relevance hits listed, then `RELEVANT_LIST_CAPPED` with the total.
+9. §11.1 rule 8 (C-9, stricter): RW retraction events inside a type conflict also count for the date. Found on
+   the real tension demonstration of `10.1007/s13277-014-2995-5`, where a publisher deposit typing the 2015
+   notice as a correction had made the 2017 date a verified fact. The simulator was updated the same way. On
+   the RW-only index no result changes (61,844 retracted originals); with the Crossref replay, one does.
 
 ## Remaining work
 

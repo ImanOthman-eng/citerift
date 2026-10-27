@@ -234,20 +234,26 @@ def reduce(ev: EvidenceSet) -> dict[str, Any]:
     compare["support.origins"] = origins
     compare["support.observations"] = len(origins) if ev.collapse else len(support)
     if value == "retracted":
-        out["retraction_date"] = _retraction_date([a for a in support if a.event_id is not None], basis)
+        # A retraction event inside a type conflict still bears on the date: whether its notice is a retraction
+        # is unresolved, so a date that differs from the clear ones cannot be stated as a fact.
+        conflicted = [a for a in typed if a.type == "retracted" and a.event_id is not None and a.proposition in conflict]
+        dated = [a for a in support if a.event_id is not None]
+        out["retraction_date"] = _retraction_date(dated, basis, conflicted)
         compare["retraction_date.status"] = out["retraction_date"]["status"]
         compare["retraction_date.value"] = out["retraction_date"]["value"]
     return out
 
 
-def _retraction_date(events: list[TypedAssertion], basis: dict[str, Any]) -> dict[str, Any]:
+def _retraction_date(
+    events: list[TypedAssertion], basis: dict[str, Any], conflicted: list[TypedAssertion] | None = None
+) -> dict[str, Any]:
     def uncertain(value: str | None, reason: str) -> dict[str, Any]:
         basis["reasons"].append(reason)
         return {"status": "uncertain", "value": value, "reason": REASON_TEXT[reason]}
 
     if not events:
         return uncertain(None, "DATE_NOT_IN_CHECKED_SOURCES")
-    dates = [a.notice_date for a in events]
+    dates = [a.notice_date for a in [*events, *(conflicted or [])]]
     if any(d is None or d.reported_calendar is None for d in dates):
         return uncertain(None, "DATE_UNKNOWN")
     reported = {d.reported_calendar for d in dates if d is not None}

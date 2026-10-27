@@ -319,6 +319,15 @@ def reduce(ev: Evidence) -> dict[str, Any]:
         out["support_origins"] = sorted({a.origin for a in support})
     if value == "retracted":
         dates = [a.date for a in clear if a.type == "retracted" and a.origin == RW and a.event_id is not None]
+        # Post-freeze change (SPECIFICATION.md 16, C-9): RW retraction events inside a type conflict also bear on
+        # the date, so a differing date there makes the date uncertain.
+        conflicted = [
+            a.date
+            for a in typed
+            if a.type == "retracted" and a.event_id is not None and (a.notice or a.aid) in conflict
+        ]
+        if dates:
+            dates = dates + conflicted
         if not dates:
             out.update(date_status="uncertain", date_value=None)
             out["reasons"].append("DATE_NOT_IN_CHECKED_SOURCES")
