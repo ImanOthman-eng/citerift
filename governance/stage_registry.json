@@ -1279,6 +1279,67 @@
           "revision": null,
           "test_report": null,
           "recorded_at": "2026-10-25T16:46:12Z"
+        },
+        {
+          "id": "A-00-002",
+          "kind": "enhancement",
+          "reason": "Owner-authorized bounded maintenance of Stage 00 owned files (directive of 2026-10-28, section 3); Stage 00 is not reopened and its acceptance is not rewritten",
+          "evidence": [
+            "docs/verification/maintenance/A-00-002/MAINTENANCE_MODEL.md",
+            "docs/verification/maintenance/A-00-002/review-round-1.md",
+            "docs/verification/maintenance/A-00-002/review-round-2.md"
+          ],
+          "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT",
+          "revision": null,
+          "test_report": null,
+          "recorded_at": "2026-10-28T05:14:36Z",
+          "maintenance": {
+            "purpose": "Resolve the Stage 00 amendment/report cycle: two-phase maintenance transactions in the governance check, the V-03 sandbox fixture, and the authorization-aware application layout guard",
+            "baseline_revision": "0c21182e5871f772c3a76c75a1217c7641a63bbb",
+            "candidate_revision": "8b1db57a3c89536ed757bea053ecc7d0f485021f",
+            "scope": [
+              {
+                "path": "schemas/governance/stage_registry.schema.json",
+                "sha256": "1262649e9c9d36c6ff8d88a994c9b361de17ccf02ec967ed8aa5459bd2f84026"
+              },
+              {
+                "path": "src/citerift/governance/cli.py",
+                "sha256": "9b741d543e29e4e70fa174f886c2a4c7f4e39e3afd2baf121743891872dbf7d7"
+              },
+              {
+                "path": "src/citerift/governance/gitutil.py",
+                "sha256": "25cd39c69b8e20dfc1a2991f4d06338d12b9b17f98401ca788c5477bcf20f1ed"
+              },
+              {
+                "path": "src/citerift/governance/maintenance.py",
+                "sha256": "5ad6283806f1299c4ea632f94ce0e4813045fe35a2fa05b33fdcb8fbaeb81195"
+              },
+              {
+                "path": "src/citerift/governance/orchestrator.py",
+                "sha256": "220561eef95bac1d633b5f63c4bf74d9bbc2b05b0c25ab547f46352b613f82c2"
+              },
+              {
+                "path": "tests/stage00/test_corrections.py",
+                "sha256": "34f024bf672871f561cf7f225c7079a36688f6c92245faa87942831070119529"
+              },
+              {
+                "path": "tests/stage00/test_maintenance.py",
+                "sha256": "0260b1d4a66fe6b6bc0e123c876dbed25d9b4acc49ed9cc9090701772092b1bb"
+              },
+              {
+                "path": "tests/stage00/test_repository.py",
+                "sha256": "4e304fd6bb428a13ed3bd80242c2732c99587cf5d5c1e8648b4ed9fb500cddd6"
+              }
+            ],
+            "patch_sha256": "8e84ec84c5133208f7cb90f37bb54f7a1e9f64cd11f4a0c80e2b5eb9326acf0f",
+            "phase": "pending_validation",
+            "supersedes": null,
+            "superseded_by": null,
+            "reports": [],
+            "opened_after_seq": 26,
+            "finalized_at": null,
+            "finalized_after_seq": null
+          }
         }
       ],
       "required_artifacts": [
