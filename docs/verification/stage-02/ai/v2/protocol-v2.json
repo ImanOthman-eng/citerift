@@ -1,0 +1,122 @@
+{
+  "protocol_version": "2.0.0",
+  "owner_reference": "cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT",
+  "supersedes": {
+    "version": "1.0.0",
+    "path": "docs/verification/stage-02/ai/protocol.json",
+    "classification": "admission design infeasible; no model evaluation executed under it",
+    "kept_unchanged": [
+      "docs/verification/stage-02/ai/protocol.json",
+      "docs/verification/stage-02/ai/baseline-heldout.json",
+      "docs/verification/stage-02/ai/route-pilot-2026-10-27.json"
+    ]
+  },
+  "task": "controlled recovery of a masked source identifier: the query record's identifiers are absent from the bundle; correct = the candidate carrying the same original DOI, or abstention when no other record carries it. Not natural missing-identifier resolution; not human-adjudicated identity.",
+  "unit": "lineage group (connected component of records sharing an original or notice DOI or PMID, or a Record ID); one query per group, the smallest ordinal with a valid original DOI; one decision per group; candidates never include the query record",
+  "index": "data/index/bench/build1/rw-2f116e9ffed718e6.sqlite (pinned snapshot; same digest set as the five benchmark builds)",
+  "seed": 20261028,
+  "label_rule": {
+    "positive": "another accepted record carries the query's original DOI; target doi:<key>",
+    "negative": "no other record carries it; the correct answer is abstention",
+    "excluded_unresolved": {
+      "conflicting_original_pmid": "a target record carries a different original PMID than the query",
+      "doi_shared_by_distinct_titles": "a target record's title-token Jaccard with the query is below 0.5 (a DOI shared by distinct works, such as a supplement DOI); metadata is used only to exclude, never to include",
+      "pmid_shared_with_different_doi": "negative whose original PMID is carried by a record with another original DOI"
+    }
+  },
+  "strata": {
+    "rule": "from retrieval features of the deterministic candidate list only, never from a baseline or model decision",
+    "positive/disagreement": "no target record agrees with the query on year, author score >= 0.5 and title cosine >= 0.9 (any target record counts; this repairs v1, which used the lowest-ordinal target)",
+    "positive/competitor": "some target record agrees, and a non-target candidate has title cosine >= 0.6",
+    "positive/other": "some target record agrees and no non-target candidate has title cosine >= 0.6",
+    "negative/near_duplicate": "top candidate title cosine >= 0.85",
+    "negative/similar_title": "top candidate title cosine in [0.6, 0.85)",
+    "negative/other": "top candidate title cosine < 0.6, or no candidate"
+  },
+  "splits": {
+    "prior_use_excluded_from_holdout": "the 160 v1 groups and every group with an event id or DOI named in docs/verification/stage-02 before v2",
+    "development": "the v1 groups (relabeled) plus fresh groups whose sha256('20261028:<min ordinal>') mod 10 < 3",
+    "holdout_pool": "all other eligible fresh groups",
+    "separation": "checked programmatically at the draw: no event id or identifier key of a holdout group occurs in any development or prior group"
+  },
+  "development_quotas": {
+    "positive/competitor": 20,
+    "positive/other": 40,
+    "negative/near_duplicate": 50,
+    "negative/similar_title": 20,
+    "negative/other": 10
+  },
+  "holdout_quotas": {
+    "positive/competitor": 40,
+    "positive/other": 110,
+    "negative/near_duplicate": 100,
+    "negative/similar_title": 30,
+    "negative/other": 20
+  },
+  "holdout_quota_rationale": "Sample-size change preregistered for feasibility (dev-audit.json): the fresh pool holds no disagreement positives (all 12 are v1 groups), and baseline errors occur almost only on near-duplicate negatives (28.4%, Wilson 95% 22.9-34.7%) and similar-title negatives (2.2%). 300 groups (150/150) give about 29 expected baseline errors. Strata are oversampled by a retrieval-feature rule, never by baseline outcome; results are reported per stratum.",
+  "attainability_rule": {
+    "computed_at_draw_before_any_model_prediction": true,
+    "min_baseline_errors": 15,
+    "max_best_case_p": 0.001,
+    "if_not_attainable": "stop before any holdout prediction and report the limitation; no redraw, no quota change"
+  },
+  "screening": {
+    "candidates_max": 2,
+    "cases_per_candidate_max": 40,
+    "cases": "the same 40 development cases for both candidates, drawn from dev-set.json by seed 20261029 with 6 per stratum where available",
+    "rule": "pick the candidate with more correct decisions under a wrapper calibrated on the remaining development cases; ties: lower warm p95 latency; a candidate that breaks a resource limit is rejected",
+    "no_fine_tuning": true,
+    "no_holdout_use": true
+  },
+  "calibration": {
+    "data": "dev-set.json only",
+    "wrapper": "select the top candidate iff score >= tau_s and score - second >= tau_m",
+    "grid": "tau_s over the development score quantiles in steps of 0.25 logit, tau_m in {0, 0.5, 1, 2, 3}",
+    "objective": "most correct development decisions subject to development negative false selections <= the baseline's; ties: larger tau_s, then larger tau_m"
+  },
+  "metrics": {
+    "all_case_accuracy": "correct decisions / all holdout groups (positive: selects the target; negative: abstains)",
+    "positive_recall": "positives whose target is selected / positives",
+    "selection_coverage": "selections / all groups",
+    "selection_precision": "correct selections / selections (Wilson 95%)",
+    "negative_false_selections": "selections on negatives (count and rate)",
+    "candidate_recall_at_5": "positives whose target is among the candidates / positives",
+    "abstention": "abstentions / groups, overall and for positives and negatives",
+    "critical_confusions": "selections whose anchor equals the query's notice key",
+    "prohibited_fact_writes": "index digest after the run differs from before"
+  },
+  "analysis": {
+    "unit": "lineage group; each case scored with independent forward passes and no shared context",
+    "primary_test": "exact one-sided McNemar binomial test on discordant groups (b = baseline right and AI wrong, c = baseline wrong and AI right)",
+    "effect_sizes": "relative error reduction (errors_baseline - errors_AI) / errors_baseline and accuracy difference, each with a 95% percentile bootstrap interval over groups (10,000 resamples, seed 20261030)",
+    "strata": "every metric also per stratum, descriptive"
+  },
+  "admission": {
+    "min_eligible_groups": 120,
+    "min_relative_error_reduction": 0.25,
+    "zero_baseline_errors": "no superiority claim",
+    "max_one_sided_p": 0.05,
+    "min_positive_recall": 0.60,
+    "negative_false_selections": "not above the baseline's",
+    "critical_confusions": 0,
+    "prohibited_fact_writes": 0,
+    "resources": "within the CPU envelope; complete prediction and usage records"
+  },
+  "cpu_envelope": {
+    "device": "CPU",
+    "threads": 4,
+    "workers": 1,
+    "model_rss_gib_max": 4,
+    "combined_rss_gib_max": 8,
+    "artifact_gib_max_selected": 2,
+    "artifact_gib_max_screened_total": 4,
+    "pair_tokens_max": 512,
+    "candidates_max": 5,
+    "cold_init_s_max": 120,
+    "warm_case_p95_s_max": 15,
+    "case_deadline_s": 30,
+    "full_evaluation_min_max": 60
+  },
+  "no_holdout_revision": "One frozen model pipeline, run once on the holdout. No prompt, threshold, encoding or artifact change after any holdout prediction; no retries; failures count as abstentions.",
+  "frozen_model": "recorded in protocol-v2-frozen.json before the holdout draw"
+}

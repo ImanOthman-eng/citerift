@@ -1,0 +1,123 @@
+{
+  "census": {
+    "excluded/no_original_doi": 5800,
+    "fresh/excluded/pmid_shared_with_different_doi": 10,
+    "fresh/negative": 55760,
+    "fresh/positive": 1508,
+    "referenced/excluded/conflicting_original_pmid": 1,
+    "referenced/excluded/pmid_shared_with_different_doi": 2,
+    "referenced/negative": 789,
+    "referenced/positive": 76,
+    "v1_heldout/excluded/conflicting_original_pmid": 1,
+    "v1_heldout/excluded/doi_shared_by_distinct_titles": 1,
+    "v1_heldout/negative": 60,
+    "v1_heldout/positive": 58,
+    "v1_tuning/excluded/doi_shared_by_distinct_titles": 2,
+    "v1_tuning/negative": 20,
+    "v1_tuning/positive": 18
+  },
+  "fresh_development_pool": {
+    "negative/near_duplicate": {
+      "baseline_error_rate": 0.28444444444444444,
+      "baseline_error_rate_wilson_95": [
+        0.2294987498485252,
+        0.3466270076961199
+      ],
+      "baseline_errors": 64,
+      "n": 225,
+      "recall_at_5": null
+    },
+    "negative/other": {
+      "baseline_error_rate": 0.0,
+      "baseline_error_rate_wilson_95": [
+        1.3552527156068805e-20,
+        0.00024365707537575803
+      ],
+      "baseline_errors": 0,
+      "n": 15762,
+      "recall_at_5": null
+    },
+    "negative/similar_title": {
+      "baseline_error_rate": 0.021592442645074223,
+      "baseline_error_rate_wilson_95": [
+        0.013333910609417679,
+        0.034785670270843505
+      ],
+      "baseline_errors": 16,
+      "n": 741,
+      "recall_at_5": null
+    },
+    "positive/competitor": {
+      "baseline_error_rate": 0.0,
+      "baseline_error_rate_wilson_95": [
+        1.3877787807814457e-17,
+        0.13797620467498017
+      ],
+      "baseline_errors": 0,
+      "n": 24,
+      "recall_at_5": 1.0
+    },
+    "positive/other": {
+      "baseline_error_rate": 0.0,
+      "baseline_error_rate_wilson_95": [
+        0.0,
+        0.008813890333169308
+      ],
+      "baseline_errors": 0,
+      "n": 432,
+      "recall_at_5": 1.0
+    }
+  },
+  "holdout_pool_by_label": {
+    "negative": 39032,
+    "positive": 1052
+  },
+  "protocol_version": "2.0.0",
+  "v1_groups_relabeled": {
+    "excluded": [
+      [
+        "ev-0019074",
+        "doi_shared_by_distinct_titles"
+      ],
+      [
+        "ev-0037353",
+        "conflicting_original_pmid"
+      ],
+      [
+        "ev-0042932",
+        "doi_shared_by_distinct_titles"
+      ],
+      [
+        "ev-0065095",
+        "doi_shared_by_distinct_titles"
+      ]
+    ],
+    "strata": {
+      "negative/near_duplicate": {
+        "baseline_errors": 1,
+        "n": 5
+      },
+      "negative/other": {
+        "baseline_errors": 0,
+        "n": 55
+      },
+      "negative/similar_title": {
+        "baseline_errors": 0,
+        "n": 20
+      },
+      "positive/competitor": {
+        "baseline_errors": 0,
+        "n": 6
+      },
+      "positive/disagreement": {
+        "baseline_errors": 7,
+        "n": 12
+      },
+      "positive/other": {
+        "baseline_errors": 0,
+        "n": 58
+      }
+    }
+  },
+  "what": "development pool only; baseline decisions, no model; the holdout pool is counted by label only"
+}
