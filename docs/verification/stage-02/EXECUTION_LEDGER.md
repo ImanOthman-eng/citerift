@@ -36,17 +36,20 @@ they preceded; their times were not recorded.
 | 2026-10-27 22:01 | `7a7d6b6` | C-9 fixed (SPECIFICATION.md 16 item 9); bounded live Crossref run (29 works, 30 requests, 27 ok, 2 recorded 404s) pinned as a replay bundle |
 | 2026-10-27 22:03 | `0dd1c86` | Eight real Evidence Tension demonstrations, four diagnostic classes; CLI ambiguity defaults are the frozen thresholds |
 | 2026-10-27 22:08 | `3a6f1eb` | C-10 fixed (item 10); SPECIFICATION.md 16 written; benchmark follows the frozen query mix of SPECIFICATION.md 13 (a provisional run before this commit used a different mix and is discarded) and adds the tension and ambiguity budgets |
-| 2026-10-27 22:40 (approx., before commit) | review batch, the commit after `3a6f1eb` | Three review passes (architecture, security, science; separate passes of the same model, not human review). Fixed with fail-first evidence (`evidence/fail-first/`): items 11 to 22 of SPECIFICATION.md 16. Real policy impact on 96,803 original keys: 313 change (275 reinstated → uncertain, 34 conflicting → retracted, 4 conflicting → uncertain); `evidence/policy-impact-*.json`. Real cases regenerated: 50 cases, 27 classes, 50 agree. Stage 02 tests: 525 + 5 property tests pass |
+| 2026-10-27 22:47 | `aa7c23c` | Three review passes (architecture, security, science; separate passes of the same model, not human review). Fixed with fail-first evidence (`evidence/fail-first/`): items 11 to 22 of SPECIFICATION.md 16. Real policy impact on 96,803 original keys: 313 change (275 reinstated → uncertain, 34 conflicting → retracted, 4 conflicting → uncertain); `evidence/policy-impact-*.json`. Real cases regenerated: 50 cases, 27 classes, 50 agree. Stage 02 tests: 525 + 5 property tests pass |
+| 2026-10-28 02:25 | `66e39ed` | Benchmark at `aa7c23c` failed the build memory budget (peak RSS 740 MiB against 512; kept as `evidence/benchmark-at-aa7c23c-failed-rss.json`). Cause: every event held in memory for parallel validation. Fix: serial streaming validation, no worker processes. Re-run: every budget met, digests unchanged (`evidence/benchmark-at-66e39ed.json`) |
+| 2026-10-28 02:33 | `cb28ee2` | Policy version 1.1.0 and tension version 0.2.0 for the post-freeze rule changes (SPECIFICATION.md 16 item 23); an index of another policy version is refused. Artifact digest changes, semantic digest unchanged |
+| 2026-10-28 02:33 | `a24dd46` | Tension demonstrations report `base_unresolved` and `dependence_unknown`. Final real-data runs at this code revision: five builds (median 71.7 s, peak RSS 405 MiB), oracle 0 mismatches, `verify --source` clean on the RW and Crossref indexes, eight demonstrations regenerated, full suite 1034 passed and the two known Stage 00 failures. CI: red at the governance check (VERIFICATION_STALE, B-2) |
 
 ## Specification changes
 
-Recorded in SPECIFICATION.md 16 (items 1 to 22).
+Recorded in SPECIFICATION.md 16 (items 1 to 23).
 
 ## Remaining work
 
-Re-run the oracle, tension demonstrations, benchmark and double build at the
-final revision; SIMULATION_REPORT, TEST_RESULTS, CREATIVE_DIFFERENTIATION_REVIEW,
-HANDOFF and test report; pull request and CI on Python 3.12 and 3.13.
+None that can proceed without an owner decision. Real-data runs, documents
+and the test report are at the revision named in HANDOFF.md; Stage 02 is
+recorded as BLOCKED on B-1 and B-2 below; the pull request is unmerged.
 
 ## Blockers and open owner decisions
 

@@ -35,7 +35,7 @@ contract in `schemas/contracts/`.
 |---|---|---|---|
 | Governance | `src/citerift/governance/` | 00 | jsonschema |
 | Contracts | `schemas/contracts/`, `src/citerift/contracts/` | 00 (v1), later minor versions | jsonschema |
-| Retraction data engine | `src/citerift/retraction/` | 02 | contracts |
+| Retraction data engine | `src/citerift/retraction/`, `schemas/retraction/v1/` | 02 (built) | contracts |
 | Wikipedia extraction | `src/citerift/wiki/` | 03 | contracts |
 | Detection and workflow controller | `src/citerift/investigation/` | 04, 07 | retraction, wiki, contracts |
 | Citation context | `src/citerift/context/` | 05 | investigation |
@@ -51,6 +51,34 @@ repository holds no placeholder code. Each stage adds its own tests under
 Dependency direction is one-way, top to bottom in the table above, which
 prevents circular imports. Each stage's new runtime dependencies are added to
 `pyproject.toml` in that stage, with the reason recorded in DECISIONS.md.
+
+## Retraction Data Engine (Stage 02)
+
+One SQLite file per pinned snapshot, built into a temporary file, validated
+(accounting, integrity, every event against its schema, digests) and
+published with `os.replace`; readers open it read-only and immutable. The
+modules, in dependency order:
+
+- `source.py`: receipts and strict CSV reading with line accounting.
+- `identifiers.py`, `dates.py`: DOI and PMID normalization; temporal evidence
+  with justified bounds and a partial order.
+- `ingest.py`, `store.py`: dispositions, events, notices, duplicate groups;
+  the build.
+- `query.py`, `policy.py`: role-aware lookup and the conservative v1
+  projection.
+- `tension.py`: Evidence Tension interventions on copies of the evidence.
+- `corroboration.py`: the bounded Crossref client and the replay bundle.
+- `canonical.py`, `schemas.py`: canonical JSON and digests; local schema
+  loading and semantic validation.
+- `export.py`: canonical export, `verify`, `diff`.
+- `search.py`, `ambiguity.py`, `stats.py`, `advisory.py`: title search
+  normalization, the deterministic ambiguity baseline, the exact statistics of
+  the evaluation protocol, and the advisory boundary; nothing in the engine
+  imports `advisory.py`.
+- `cli.py`: the `citerift-rde` command.
+
+Lookup, verify, export and tension make no network connection. The
+specification is docs/verification/stage-02/SPECIFICATION.md.
 
 ## Project Orchestrator
 

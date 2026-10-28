@@ -464,14 +464,24 @@ Alternatives:
 - Date: 2026-10-27
 - Stage: 02
 - Supersedes: none
-- Evidence: docs/verification/stage-02/ai/PROTOCOL.md; docs/verification/stage-02/HANDOFF.md ("Open blockers")
+- Evidence: docs/verification/stage-02/ai/protocol.json; docs/verification/stage-02/ai/route-pilot-2026-10-27.json; docs/verification/stage-02/HANDOFF.md ("Open blockers")
 
 The directive requires a real model experiment with verified, authorized
-access. On 2026-10-27 this environment has no model API key, and the coding
-session's own model access is not authorized for experiments (directive §1,
-§13). The owner was asked (thread message
-`cmsg_018VCB51nDHP6HXmLU4ea5yPEafVTT7ybaD2nvqSczJ5qf`) to add a key as an
-environment secret (`ANTHROPIC_API_KEY`) and to approve spending of at most
-USD 5. Until then the boundary, the deterministic baseline and the frozen
-protocol are delivered and the experiment is a recorded blocker, not an
-evaluated negative result.
+access. This environment has no model API key. The owner then ruled
+(`cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni`): no API keys and no
+additional paid services; existing session-provided model or agent
+facilities may be used where technically supported and permitted. One
+synthetic pilot outside the frozen splits showed that the session's agent
+facility can run the task and that each call is auditable, but that one call
+carries about 45,000 tokens of fixed context against the frozen limit of
+4,500 input tokens per call, and that it has no temperature or seed control.
+The owner was asked to choose a route (thread message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPEBsMCiKEj6WcSf8w6VEepd`): one group per call
+with only the token limit amended, ten groups per call, or no run. No choice
+has been recorded. Independently of the route, the frozen admission gate
+cannot be met on the frozen held-out split: the baseline scores 110/120, so
+the largest possible gain is 8.3 points (gate: 10), and with 60 positives and
+at most one false selection allowed, coverage is at most 61/120 = 0.508
+(gate: 0.60). The gate is not lowered. Until the owner decides, the
+boundary, the deterministic baseline and the frozen protocol are delivered
+and the experiment is a recorded blocker, not an evaluated negative result.

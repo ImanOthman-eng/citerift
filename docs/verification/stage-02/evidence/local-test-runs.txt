@@ -1,0 +1,13 @@
+Local full test runs at code revision a24dd46c36b74d2a7ba5efd6b48f4606f1d9901e (documents uncommitted; no code change), 2026-10-28.
+
+== Python 3.12.3, project environment (uv run pytest -q -p no:cacheprovider)
+FAILED tests/stage00/test_repository.py::test_real_repository_passes_governance_check
+FAILED tests/stage00/test_repository.py::test_application_layers_not_created_prematurely
+2 failed, 1034 passed in 198.76s (0:03:18)
+
+
+== Python 3.13.17, scratch environment from uv.lock (python -P -m pytest -q -p no:cacheprovider)
+=========================== short test summary info ============================
+FAILED tests/stage00/test_repository.py::test_real_repository_passes_governance_check
+FAILED tests/stage00/test_repository.py::test_application_layers_not_created_prematurely
+2 failed, 1034 passed in 207.71s (0:03:27)

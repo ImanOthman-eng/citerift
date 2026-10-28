@@ -69,6 +69,9 @@ the stage are also in RISKS.md (R-022 onward).
 The review passes of `3a6f1eb` (TEST_RESULTS.md, review dispositions) found
 risks the frozen table did not list, or controls that did not work. The table
 above is kept as frozen except the two Check/Control cells marked §6.
+The residual risks of §5 are now RISKS.md R-023 to R-025, and P1 is R-027:
+the owner later ruled out API keys, so the experiment waits on a route
+decision instead (DECISIONS.md D-023).
 
 | ID | Risk | L | I | Control | Check |
 |---|---|---|---|---|---|

@@ -406,3 +406,80 @@ request, a bounded independent review of the R5 fixes at `0c21182` returned
 VERIFIED: all three fixed, no new confirmed defect, no regression
 (docs/verification/stage-00/review/0c21182/). Residual limitations stay open as
 R-002, R-003, R-004 and R-016.
+
+## R-022 — Stage 02 review findings
+- Status: closed
+- Severity: high
+- Kind: defect
+- Stage: 02
+
+Three review passes of the Retraction Data Engine at `3a6f1eb` (architecture
+and data integrity, adversarial QA and security, scientific semantics; separate
+passes of the same model, not human review) found 4 high, 15 medium and 12 low
+issues. All high ones are fixed: a build could publish an index its own
+`verify` rejected, a rebuild could delete a corroborated build, the relevance
+check missed encoded identifier forms, an ordered concern and retraction on one
+notice was reported as a conflict, and a reinstatement alone was a verified
+fact. Each fix has a regression test that fails on `3a6f1eb`
+(docs/verification/stage-02/evidence/fail-first/). Dispositions per finding:
+docs/verification/stage-02/TEST_RESULTS.md section 10. What stays open is
+R-026 and R-027.
+
+## R-023 — Literal percent escapes in bare DOIs
+- Status: accepted
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+A bare DOI is kept literally (no decoding, no silent repair). 24 source values
+contain `%`; a lookup by the decoded form does not match them. The engine
+reports such forms as possible coverage gaps, never as matches
+(SPECIFICATION.md 15 A3, 16 item 17). Proposed to the owner as a residual risk.
+
+## R-024 — Day-1 dates have no bounds
+- Status: accepted
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Retraction Watch writes day 1 for an unknown day, month range, season or volume
+number. Such dates get no justified bounds, so the date is `uncertain` and
+orderings that need it are withheld, including across years. Deliberately
+conservative (SPECIFICATION.md 7.2). Proposed to the owner as a residual risk.
+
+## R-025 — Identity beyond exact identifiers is not validated
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Title, author and year matching exists only as the deterministic ambiguity
+baseline, evaluated on a controlled masking task, not on natural cases. No
+model experiment ran (R-027). Later stages must not treat a baseline candidate
+as an identity.
+
+## R-026 — A single PMID-bridged event can give a verified retraction
+- Status: open
+- Severity: medium
+- Kind: risk
+- Stage: 02
+
+The frozen policy treats a one-hop PMID bridge as evidence (cases P33, T05,
+T06): when the only retraction is a bridged event, the result is
+`verified_fact`, `retracted` with identity `bridged`. The directive says
+co-occurrence is a source assertion, not proof of identity. The identity status
+and Evidence Tension's `exclude_ambiguous_links` expose it; the review found no
+real instance. Changing it means amending three frozen cases; that is the
+owner's decision.
+
+## R-027 — Stage 02 model experiment not executed; frozen gate unattainable
+- Status: open
+- Severity: medium
+- Kind: risk
+- Stage: 02
+
+No model prediction was made: the route on the session's agent facility is
+the owner's decision (DECISIONS.md D-023). Independently, the frozen admission
+gate cannot be met on the frozen held-out split: the baseline scores 110/120,
+so the largest gain is 8.3 points (gate 10), and coverage is at most
+61/120 = 0.508 (gate 0.60). The gate is not lowered. Gate 02-G stays unmet.

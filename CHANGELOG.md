@@ -6,6 +6,28 @@ what changed in the repository.
 
 ## [Unreleased]
 
+### Stage 02 Retraction Data Engine (not accepted; pull request unmerged)
+
+- 2026-10-27/28: `src/citerift/retraction/` with schemas in
+  `schemas/retraction/v1/`, the `citerift-rde` command (build, lookup, event,
+  tension, verify, export, diff, enrich, ambiguity) and tests in
+  `tests/stage02/`. No runtime dependency added (D-022).
+- Lossless import of the pinned Retraction Watch snapshot (73,356 records,
+  receipt-checked), role-aware DOI and PMID lookup, a conservative v1
+  projection, canonical export with semantic and artifact digests, and a
+  non-destructive diff.
+- Evidence Tension v0, the stage's creative contribution (D-021):
+  query-local interventions that show which conclusion rests on one origin,
+  an ambiguous link or an unbounded date.
+- Bounded Crossref corroboration with a pinned replay bundle of 29 works.
+- Evidence Ambiguity Investigator: boundary, deterministic baseline and frozen
+  protocol; the model experiment has not run (D-023, R-027).
+- Fixes for three review passes (R-022) and post-freeze specification changes,
+  listed in docs/verification/stage-02/SPECIFICATION.md section 16.
+- `tests/stage00/test_corrections.py`: the owner-authorized V-03 test-setup fix
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`); its amendment is not
+  recorded yet (blocker B-2 in docs/verification/stage-02/HANDOFF.md).
+
 ### Stage 01 closed
 
 - 2026-10-27: Stage 01 (Independent Feasibility Investigation) verified at
