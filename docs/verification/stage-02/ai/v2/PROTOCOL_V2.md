@@ -103,8 +103,9 @@ change.
 ## 5. Model screening and freezing (development data only)
 
 - At most two candidates, each screened on the same 40 development cases. No fine-tuning and no sweep.
+- Only the finalist is then run on the other 256 development cases, where its wrapper is calibrated.
 - The wrapper is "select the top candidate iff score ≥ τ_s and its margin over the second ≥ τ_m". It is
-  calibrated on development cases only, by the rule in `protocol-v2.json`.
+  calibrated on those 256 development cases only, by the rule in `protocol-v2.json`.
 - One finalist: its artifact hashes, runtime, encoding, instruction and thresholds are frozen in
   `protocol-v2-frozen.json`, committed before the holdout is drawn.
 

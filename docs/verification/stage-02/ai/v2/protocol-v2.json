@@ -63,13 +63,15 @@
   "screening": {
     "candidates_max": 2,
     "cases_per_candidate_max": 40,
-    "cases": "the same 40 development cases for both candidates, drawn from dev-set.json by seed 20261029 with 6 per stratum where available",
-    "rule": "pick the candidate with more correct decisions under a wrapper calibrated on the remaining development cases; ties: lower warm p95 latency; a candidate that breaks a resource limit is rejected",
+    "cases": "the same 40 development cases for both candidates: from dev-set.json, a seeded shuffle (seed 20261029) taking 6 per (label/stratum) class, then the next 4 cases of the shuffle",
+    "rule": "pick the candidate with more correct decisions on the 40 cases under its best wrapper on those same 40 (an optimistic calibration applied equally to both); ties: more positives with the target ranked first, then lower warm p95 latency; a candidate that breaks a resource limit is rejected",
+    "then": "only the finalist is run on the other 256 development cases, where its wrapper is calibrated (section calibration)",
+    "amended": "2026-10-28, before any model was run: the first wording would have run both candidates on all development cases, beyond the 40-case screening limit",
     "no_fine_tuning": true,
     "no_holdout_use": true
   },
   "calibration": {
-    "data": "dev-set.json only",
+    "data": "the 256 development cases not used for screening",
     "wrapper": "select the top candidate iff score >= tau_s and score - second >= tau_m",
     "grid": "tau_s over the development score quantiles in steps of 0.25 logit, tau_m in {0, 0.5, 1, 2, 3}",
     "objective": "most correct development decisions subject to development negative false selections <= the baseline's; ties: larger tau_s, then larger tau_m"
@@ -96,7 +98,7 @@
     "min_relative_error_reduction": 0.25,
     "zero_baseline_errors": "no superiority claim",
     "max_one_sided_p": 0.05,
-    "min_positive_recall": 0.60,
+    "min_positive_recall": 0.6,
     "negative_false_selections": "not above the baseline's",
     "critical_confusions": 0,
     "prohibited_fact_writes": 0,

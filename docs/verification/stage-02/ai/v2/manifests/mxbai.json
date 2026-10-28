@@ -1,0 +1,119 @@
+{
+  "format": "citerift.model-manifest/1",
+  "model_id": "mixedbread-ai/mxbai-rerank-base-v2",
+  "source": {
+    "repository": "https://huggingface.co/mixedbread-ai/mxbai-rerank-base-v2",
+    "revision": "3ea9d4dffa7d12a4f366be8e275c349de9fc9865",
+    "base_model": "Qwen2.5-0.5B (per the publisher's description)"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "evidence": "LICENSE file (Apache License 2.0) and model card metadata at the pinned revision",
+    "base_model_license": "Apache-2.0 (Qwen2.5-0.5B model card)"
+  },
+  "architecture": "Qwen2ForCausalLM",
+  "template": {
+    "prefix": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\n",
+    "body": "query: {query}\ndocument: {document}\n{instruction}",
+    "suffix": "<|im_end|>\n<|im_start|>assistant\n",
+    "instruction": "You are a search relevance expert who evaluates how well documents match search queries. For each query-document pair, carefully analyze the semantic relationship between them, then provide your binary relevance judgment (0 for not relevant, 1 for relevant).\nRelevance:",
+    "true_token": "1",
+    "true_token_id": 16,
+    "false_token": "0",
+    "false_token_id": 15,
+    "source": "chat_template.jinja and 1_LogitScore/config.json at the pinned revision (publisher prompt)"
+  },
+  "files": {
+    "1_LogitScore/config.json": {
+      "size": 50,
+      "sha256": "2554429e789efe4bb7b78977ed56bb03dd9321d63b1e304c04f94ba61c0281d3"
+    },
+    "LICENSE": {
+      "size": 10762,
+      "sha256": "4b0dfefcb74f1e50a8df72a9f2bf0088753f8568bc479387292469b4948705d4"
+    },
+    "added_tokens.json": {
+      "size": 605,
+      "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+    },
+    "chat_template.jinja": {
+      "size": 576,
+      "sha256": "6922504e8481a822f50ecdf80da9d41f09cb01601c82d1acae04bdba654deafc"
+    },
+    "config.json": {
+      "size": 766,
+      "sha256": "a0c0e4d41f64c29c861548344b62e6f4237a2f0c5664454089dc0db127f8eaed"
+    },
+    "config_sentence_transformers.json": {
+      "size": 204,
+      "sha256": "b2787b4c078bc8d55f1a4a904b2e7b52dadfd9b26424517645bb130d9aa3f9b0"
+    },
+    "generation_config.json": {
+      "size": 242,
+      "sha256": "722a06091ec871c6cbc3dda5412f294267bcd5d9310f4ffbef1d358000dd3bfc"
+    },
+    "merges.txt": {
+      "size": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "model.safetensors": {
+      "size": 988097536,
+      "sha256": "c01649fe56b3fe32e52da43c69e084dff7c2252cf231a38c56d5a291a674338f"
+    },
+    "modules.json": {
+      "size": 281,
+      "sha256": "8b0cf4a17b264e13b267907ee1026e551b1cde537691dd71af4c8aa55a889769"
+    },
+    "sentence_bert_config.json": {
+      "size": 309,
+      "sha256": "8c98fdfffa489b1b78843150aeb7b2992800e0dc8138079ddc4d72a98fd40348"
+    },
+    "special_tokens_map.json": {
+      "size": 613,
+      "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+    },
+    "tokenizer.json": {
+      "size": 11421896,
+      "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+    },
+    "tokenizer_config.json": {
+      "size": 4686,
+      "sha256": "0a04a9d7d4a62b28482bdfe726c122756de85714fb64166ace92ae75b8f57614"
+    },
+    "vocab.json": {
+      "size": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "weights_format": "safetensors (no pickle); trust_remote_code false",
+  "runtime": {
+    "torch": "2.14.1+cpu",
+    "transformers": "5.19.0",
+    "requirements": "requirements/inference-cpu.txt (hash-pinned)",
+    "device": "cpu",
+    "threads": 4,
+    "dtype": "float32",
+    "batching": "none: one forward pass per query-candidate pair"
+  },
+  "encoding": {
+    "fields": [
+      "title",
+      "authors",
+      "journal",
+      "original_year"
+    ],
+    "rendering": "Title/Authors/Journal/Year lines; NFC; control characters become spaces; missing = unknown",
+    "author_limits": [
+      20,
+      5,
+      1
+    ],
+    "on_too_long": "abstain INPUT_TOO_LONG; title, journal and year are never cut"
+  },
+  "wrapper": {
+    "tau_s": 1000000000.0,
+    "tau_m": 0.0,
+    "state": "screening: never selects"
+  },
+  "languages": "publisher reports multilingual training; this project evaluates only the snapshot's titles (Latin script except one Arabic-script record): no Arabic accuracy claim"
+}
