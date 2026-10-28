@@ -1,6 +1,6 @@
 """Real Evidence Tension demonstrations against the event-log baseline (gate 02-E).
 
-The queries are fixed below, chosen from the real reviewed cases and the bounded Crossref run before this script
+The queries are fixed below, chosen from the real cases and the bounded Crossref run before this script
 was written; they are not filtered by outcome. The index is the pinned snapshot built with the pinned Crossref
 replay bundle. Each report is validated against the tension-report schema and semantics.
 
@@ -84,6 +84,9 @@ def main(argv: list[str] | None = None) -> int:
                     "base": rep["base"]["result"],
                     "base_reasons": rep["base"]["basis"]["reasons"],
                     "diagnostic_classes": rep["diagnostic_classes"],
+                    # "control" with an unresolved base (uncertain, conflicting, unavailable) is no change on an
+                    # answer that was never settled, not a control in the sense of SPECIFICATION.md 11.2.
+                    "base_unresolved": rep["base_unresolved"],
                     "interventions": [
                         {
                             k: r[k]
@@ -94,6 +97,7 @@ def main(argv: list[str] | None = None) -> int:
                             if "not_applicable_reason" in r
                             else {}
                         )
+                        | ({"dependence_unknown": r["dependence_unknown"]} if "dependence_unknown" in r else {})
                         | {"changed_values": {k: r["result"][k] for k in r["changed_fields"]}}
                         for r in rep["interventions"]
                     ],
@@ -121,6 +125,7 @@ def main(argv: list[str] | None = None) -> int:
         print(
             d["id"],
             d["diagnostic_classes"],
+            "unresolved" if d["base_unresolved"] else "resolved",
             "|",
             "; ".join(d["baseline_errors"])[:220],
             "| schema",
