@@ -16,7 +16,16 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-FIELDS = ("lookup_state", "status", "value", "date_status", "date_value", "identity", "support_observations")
+FIELDS = (
+    "lookup_state",
+    "status",
+    "value",
+    "date_status",
+    "date_value",
+    "identity",
+    "support_observations",
+    "issue_codes",
+)
 
 
 def project(index: Path) -> dict[str, Any]:
@@ -43,6 +52,7 @@ def project(index: Path) -> dict[str, Any]:
                     date.get("value"),
                     r["identity"]["status"],
                     len((proj.get("basis") or {}).get("supporting_assertions", [])),
+                    sorted({i["code"] for i in r["issues"]}),
                 ]
         return {"snapshot_id": ix.snapshot_id, "keys": len(out), "projections": out}
 
@@ -59,9 +69,9 @@ def compare(old: dict[str, Any], new: dict[str, Any]) -> dict[str, Any]:
             return f"{old_row[1]}/{old_row[2]} -> {new_row[1]}/{new_row[2]}"
         if old_row[3:5] != new_row[3:5]:
             return f"{old_row[1]}/{old_row[2]} (date {old_row[3]} -> {new_row[3]})"
-        # Rows written before identity and support were recorded have five fields.
+        # Rows written before identity, support and issue codes were recorded have five or seven fields.
         parts = [
-            f"{FIELDS[i]} {old_row[i]} -> {new_row[i]}" for i in (5, 6) if old_row[i : i + 1] != new_row[i : i + 1]
+            f"{FIELDS[i]} {old_row[i]} -> {new_row[i]}" for i in (5, 6, 7) if old_row[i : i + 1] != new_row[i : i + 1]
         ]
         return f"{old_row[1]}/{old_row[2]} ({', '.join(parts)})"
 

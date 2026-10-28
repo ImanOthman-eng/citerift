@@ -276,9 +276,13 @@ class Index:
             matched = [(e, "pmid", None) for e in o_p]
             if dois:
                 e2 = dois[0]
-                matched += [
-                    (e, "doi", "doi_cooccurrence") for e in self.events_by("original_doi", e2) if not e["original_pmid"]
-                ]
+                # Every other record of the co-occurring DOI is a bridged candidate, also one under a different
+                # PMID (audit F1): it may be the same work with a wrong PMID, so it is listed, never dropped.
+                via_doi = self.events_by("original_doi", e2)
+                matched += [(e, "doi", "doi_cooccurrence") for e in via_doi if e["original_pmid"] != p]
+                secondary = sorted({e["original_pmid"] for e in via_doi} - {None})
+                if len(secondary) > 1:
+                    ev.issues.append({"code": "IDENTITY_SECONDARY_DIVERGENT", "pmids": secondary})
                 ev.anchor = f"doi:{e2}"
             else:
                 ev.anchor = f"pmid:{p}"
@@ -323,6 +327,21 @@ class Index:
         }
 
     def _finish(self, ev: Evidence, supersessions: tuple[tuple[str, str], ...]) -> None:
+        collided = [e for e in ev.events if "NOTICE_PMID_EQUALS_ORIGINAL" in e["flags"]]
+        if collided:
+            # The source gives one PMID for both the original and its notice, so which work it names is not
+            # established (audit F3). Reported only; no value depends on it.
+            ev.issues.append(
+                {
+                    "code": "PMID_ROLE_COLLISION",
+                    "event_ids": sorted(e["event_id"] for e in collided),
+                    "distinct_notice_doi": sorted(
+                        e["event_id"]
+                        for e in collided
+                        if e["original_doi"] and e["notice_doi"] and e["original_doi"] != e["notice_doi"]
+                    ),
+                }
+            )
         assertions: list[policy.TypedAssertion] = []
         for e in ev.events:
             assertions.append(

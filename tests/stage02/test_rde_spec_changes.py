@@ -68,11 +68,13 @@ def test_rde_single_origin_has_no_exclude_origin_step(tmp_path: Path) -> None:
 
 
 @pytest.mark.negative
-@pytest.mark.parametrize("earlier", ["citerift-rde-policy/1.0.0", "citerift-rde-policy/1.1.0"])
+@pytest.mark.parametrize(
+    "earlier", ["citerift-rde-policy/1.0.0", "citerift-rde-policy/1.1.0", "citerift-rde-policy/1.2.0"]
+)
 def test_rde_index_of_another_policy_version_is_refused(tmp_path: Path, earlier: str) -> None:
-    """Items 23 and 26: the policy rules changed after freezing (1.1.0) and again for R-026 (1.2.0), so an index
-    built under an earlier policy must not be read as the current one."""
-    assert policy.POLICY_VERSION == "citerift-rde-policy/1.2.0"
+    """Items 23, 26 and 29: the policy rules changed after freezing (1.1.0), for R-026 (1.2.0) and for the
+    audit fix F1 (1.3.0), so an index built under an earlier policy must not be read as the current one."""
+    assert policy.POLICY_VERSION == "citerift-rde-policy/1.3.0"
     assert store.POLICY_VERSION == policy.POLICY_VERSION
     idx = S.build_rows(tmp_path, [_retraction("1", OriginalPaperDOI="10.5555/one")])
     old = tmp_path / "old" / idx.name

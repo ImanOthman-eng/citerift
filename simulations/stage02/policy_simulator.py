@@ -194,7 +194,8 @@ def gather(case: dict[str, Any]) -> Evidence:
         matched = [(r, False) for r in opm]
         if dois:
             d2 = dois.pop()
-            matched += [(r, True) for r in acc if r["d"] == d2 and r["p"] is None]
+            # Post-freeze change C-27 (audit F1): records of the DOI under another PMID are bridged candidates too.
+            matched += [(r, True) for r in acc if r["d"] == d2 and r["p"] != qp]
             ev.anchor = f"doi:{d2}"
         else:
             ev.anchor = f"pmid:{qp}"
