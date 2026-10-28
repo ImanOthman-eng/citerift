@@ -293,6 +293,8 @@ class Index:
             dois = [e["original_doi"] for e in ev.events if e["original_doi"]]
             ev.crossref = self.crossref_relations(dois)
             ev.checked_sources += self.crossref_sources(dois)
+            if any(_bridged_relation(c, d) for c in ev.crossref):
+                ev.identity = "bridged"
             gap = [h for h in self.relevance([k for k in (d, p) if k]) if h["code"] == "RELEVANT_QUARANTINE"]
             ev.issues += _capped(gap)
             ev.relevant_gap = bool(gap)
@@ -354,6 +356,7 @@ class Index:
                     notice_key=c["notice_key"],
                     anchor=f"doi:{c['original_doi']}",
                     source_ref=ref,
+                    bridged=_bridged_relation(c, ev.keys["doi"]),
                     depends_on=tuple(c["depends_on"]),
                     dependence=c["dependence"],
                 )
@@ -367,6 +370,12 @@ class Index:
             supersessions=supersessions,
             relevant_gap=ev.relevant_gap,
         )
+
+
+def _bridged_relation(relation: dict[str, Any], query_doi: str | None) -> bool:
+    """A Crossref relation is direct only when it is about the query's own DOI. Otherwise it was reached through
+    the DOI that co-occurs with the queried PMID, the same one-hop link as a ``doi_cooccurrence`` event (R-026)."""
+    return bool(relation["original_doi"] != query_doi)
 
 
 def _capped(hits: list[dict[str, Any]]) -> list[dict[str, Any]]:

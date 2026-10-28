@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import rde_support as S
 
-from citerift.retraction import tension
+from citerift.retraction import policy, tension
 from citerift.retraction.query import Index, lookup
 
 
@@ -128,7 +128,9 @@ def test_rde_sole_reinstatement_is_unlinked(tmp_path: Path) -> None:
 @pytest.mark.regression
 def test_rde_proposition_includes_the_anchor(tmp_path: Path) -> None:
     """C-13: SPECIFICATION.md 11.1 rule 7 groups by (notice key, original anchor). A bridged PMID-only
-    retraction sharing a notice key with the DOI's own correction is a different proposition."""
+    retraction sharing a notice key with the DOI's own correction is a different proposition, so there is no
+    conflict group. Since C-25 (rule 7f, R-026) that bridged retraction no longer gives a verified retraction:
+    it is the only retraction, so the result is uncertain (until 1.2.0 this test expected verified_fact)."""
     rows = [
         _event(
             "1",
@@ -140,11 +142,19 @@ def test_rde_proposition_includes_the_anchor(tmp_path: Path) -> None:
         ),
         _event("2", "Retraction", "3/12/2015 0:00", OriginalPaperPubMedID="77", RetractionDOI="10.5555/n"),
     ]
-    out = lookup(S.build_rows(tmp_path, rows), "10.5555/o")
+    idx = S.build_rows(tmp_path, rows)
+    out = lookup(idx, "10.5555/o")
     assert out["identity"]["status"] == "bridged"
     status = out["projection"]["retraction_status"]
-    assert (status["status"], status["value"]) == ("verified_fact", "retracted")
-    assert out["projection"]["basis"]["conflict_groups"] == []
+    assert (status["status"], status["value"]) == ("uncertain", None)
+    assert "BRIDGE_ONLY_SUPPORT" in out["projection"]["basis"]["reasons"]
+    # The grouping itself (rules 1 to 7e, the bridged record taken as it is): two propositions, no conflict.
+    with Index(idx) as ix:
+        es = ix.gather("10.5555/o").evidence_set
+    assert es is not None
+    full = policy._reduce(es)
+    assert full["basis"]["conflict_groups"] == []
+    assert (full["retraction_status"]["status"], full["retraction_status"]["value"]) == ("verified_fact", "retracted")
 
 
 @pytest.mark.regression

@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:retraction:v1:common",
   "title": "CITERIFT retraction data engine shared definitions, major version 1",
   "description": "Definitions shared by the Stage 02 retraction schemas. Identifier, provenance and assertion shapes reuse the v1 contracts by URN.",
-  "x-citerift-version": "1.0.0",
+  "x-citerift-version": "1.1.0",
   "$defs": {
     "code": {
       "type": "string",
@@ -314,6 +314,15 @@
               }
             },
             "supporting_assertions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "bridged_assertions": {
+              "description": "Typed assertions reached only through an unverified identifier link (policy 1.2.0, rule 7f). They are listed, never counted as support.",
               "type": "array",
               "items": {
                 "type": "string",

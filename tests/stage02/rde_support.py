@@ -59,8 +59,9 @@ def load_cases(name: str) -> list[dict[str, Any]]:
     for a in amendments:
         if a["file"] == name:
             case = by_id[a["case"]]
-            assert all(case["expected"][k] == v for k, v in a["frozen_expected"].items()), a["case"]
-            case["expected"] = {**case["expected"], **a["expected"]}
+            part = a.get("field", "expected")  # tension cases amend their "interventions"
+            assert all(case[part][k] == v for k, v in a["frozen_expected"].items()), a["case"]
+            case[part] = {**case[part], **a["expected"]}
     return cases
 
 

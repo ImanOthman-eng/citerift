@@ -15,7 +15,7 @@ from citerift.retraction import policy
 from citerift.retraction.canonical import digest
 from citerift.retraction.query import Evidence
 
-TENSION_VERSION = "citerift-evidence-tension/0.2.0"
+TENSION_VERSION = "citerift-evidence-tension/0.3.0"
 INTERVENTIONS = ("collapse_shared_origin", "exclude_origin", "exclude_ambiguous_links", "require_temporal_bounds")
 MAX_ORIGINS_PER_CALL = 2
 CLASS_FIELDS = {
@@ -94,6 +94,7 @@ def view(es: policy.EvidenceSet, name: str, origins: tuple[str, ...] = ()) -> tu
             es, assertions=tuple(kept), checked_sources=sources, identity=_identity_after(es, kept)
         ), affected
     if name == "exclude_ambiguous_links":
+        # Bridged assertions include Crossref relations reached through a co-occurring DOI (C-25).
         exact_anchors = {a.anchor for a in es.assertions if a.event_id is not None and not a.bridged}
         kept = []
         affected = []

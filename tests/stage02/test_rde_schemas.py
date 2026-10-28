@@ -76,7 +76,8 @@ def test_rde_schemas_are_meta_valid_versioned_and_local() -> None:
     for path in files:
         schema = loads_strict(path.read_text(encoding="utf-8"))
         assert schema["$id"] == schemas.PREFIX + path.name.removesuffix(".schema.json")
-        assert schema["x-citerift-version"] == "1.0.0"
+        # common 1.1.0 adds the optional basis.bridged_assertions (SPECIFICATION.md 16 item 26)
+        assert schema["x-citerift-version"] == ("1.1.0" if path.name == "common.schema.json" else "1.0.0")
         for ref in _refs(schema):
             assert ref.startswith(("#", "urn:citerift:schema:")), ref  # no remote resolution
     merged = schemas.contracts()

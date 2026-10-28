@@ -12,7 +12,7 @@ from typing import Any
 
 from citerift.retraction.dates import TemporalEvidence, definitely_before
 
-POLICY_VERSION = "citerift-rde-policy/1.1.0"
+POLICY_VERSION = "citerift-rde-policy/1.2.0"
 RW_ORIGIN = "retraction-watch"
 UNKNOWN_ORIGIN = "unknown"
 COMPARISON_FIELDS = (
@@ -48,6 +48,13 @@ REASON_TEXT = {
     "MULTIPLE_RETRACTION_DATES": "Several retraction events report different dates.",
     "DATE_PRECISION_UNJUSTIFIED": "Day 1 in Retraction Watch can encode an unknown day, a month range, a season or a "
     "volume, so the reported date has no justified bounds.",
+    "BRIDGE_ONLY_SUPPORT": "The value would rest only on records reached through an unverified identifier link (an "
+    "identifier that co-occurs with the queried one elsewhere, or the pairing given in the query); such a link is a "
+    "source assertion, not proof that the records concern the same work.",
+    "BRIDGED_EVIDENCE_MATERIAL": "Records reached through an unverified identifier link would change the result of "
+    "the directly matched records, so it is not stated as a fact.",
+    "BRIDGED_EVIDENCE_NOT_COUNTED": "Records reached through an unverified identifier link are listed but not counted "
+    "as support.",
 }
 
 
@@ -108,7 +115,74 @@ def _provenance(assertions: list[TypedAssertion]) -> list[dict[str, Any]]:
 
 
 def reduce(ev: EvidenceSet) -> dict[str, Any]:
-    """Return the projection: v1 ``retraction_status`` and ``retraction_date`` plus basis and comparison data."""
+    """Return the projection: v1 ``retraction_status`` and ``retraction_date`` plus basis and comparison data.
+
+    Rule 7f (SPECIFICATION.md 11.1, R-026): bridged assertions never support a value or a date. The projection is
+    that of the direct assertions alone, and it stays a verified fact only when accepting the bridges would not
+    change it; otherwise it is ``uncertain``, null. Sufficiency is read from the supporting assertions, not from
+    ``identity``: direct support keeps its conclusion beside immaterial bridged records.
+    """
+    full = _reduce(ev)
+    bridged = sorted(a.assertion_id for a in ev.assertions if a.bridged and a.type is not None)
+    if ev.state != "matched" or not bridged:
+        return full
+    direct = [a for a in ev.assertions if not a.bridged]
+    out = _reduce(replace(ev, assertions=tuple(direct)))
+    basis, compare = out["basis"], out["compare"]
+    basis["bridged_assertions"] = bridged
+    for key in ("notice_links", "definite_orderings"):  # these describe the evidence, bridged records included
+        compare[key] = full["compare"][key]
+    status, base = out["retraction_status"], full["retraction_status"]
+    bridge_only = base["status"] == "verified_fact" and set(full["basis"]["supporting_assertions"]) <= set(bridged)
+    if status["status"] == "verified_fact" and base["status"] == "verified_fact" and base["value"] == status["value"]:
+        basis["reasons"].append("BRIDGED_EVIDENCE_NOT_COUNTED")
+        date, full_date = out["retraction_date"], full["retraction_date"] or {}
+        if (
+            date is not None
+            and date["status"] == "verified_fact"
+            and (full_date.get("status") != "verified_fact" or full_date.get("value") != date["value"])
+        ):
+            # A bridged retraction that reports another date bears on the date, as a conflicted one does (C-9).
+            basis["reasons"].append("BRIDGED_EVIDENCE_MATERIAL")
+            out["retraction_date"] = {
+                "status": "uncertain",
+                "value": None,
+                "reason": REASON_TEXT["BRIDGED_EVIDENCE_MATERIAL"],
+            }
+            compare["retraction_date.status"], compare["retraction_date.value"] = "uncertain", None
+        return out
+    if status["status"] == "verified_fact":
+        # The direct value would change if the bridges were accepted: it is not stated.
+        reasons = ["BRIDGE_ONLY_SUPPORT", "BRIDGED_EVIDENCE_MATERIAL"] if bridge_only else ["BRIDGED_EVIDENCE_MATERIAL"]
+        basis.update(reasons=reasons, supporting_assertions=[], origins=[])
+        out["retraction_status"] = _assertion("uncertain", None, reasons, [])
+        out["retraction_date"] = None
+        compare.update(
+            {
+                "retraction_status.status": "uncertain",
+                "retraction_status.value": None,
+                "retraction_date.status": None,
+                "retraction_date.value": None,
+                "support.observations": 0,
+                "support.origins": [],
+            }
+        )
+        return out
+    # The direct records settle no value (uncertain or conflicting): that result stands, and the bridged records
+    # cannot settle one either.
+    if not any(a.type is not None for a in direct):
+        basis["reasons"] = []
+    added = "BRIDGE_ONLY_SUPPORT" if bridge_only else "BRIDGED_EVIDENCE_NOT_COUNTED"
+    basis["reasons"].append(added)
+    out["retraction_status"] = {
+        **status,
+        "reason": " ".join(REASON_TEXT.get(r, r) for r in basis["reasons"]),
+    }
+    return out
+
+
+def _reduce(ev: EvidenceSet) -> dict[str, Any]:
+    """Rules 1 to 7e and 8 of SPECIFICATION.md 11.1, every assertion taken as it is (bridges included)."""
     basis: dict[str, Any] = {
         "scope": "checked_sources",
         "policy_version": POLICY_VERSION,

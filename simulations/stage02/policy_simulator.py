@@ -222,8 +222,13 @@ def gather(case: dict[str, Any]) -> Evidence:
                         type=CROSSREF_TYPES.get(u["type"]),
                         notice=f"doi:{nk}" if nk and nk != ok else None,
                         anchor=f"doi:{ok}",
+                        # Post-freeze change C-25: a relation about a DOI the query did not give was reached
+                        # through the DOI that co-occurs with the queried PMID, so it is bridged.
+                        bridged=ok != qd,
                     )
                 )
+        if any(a.bridged for a in ev.crossref):
+            ev.identity = "bridged"
         return ev
     if notice:
         ev.state, ev.role = "notice_only", "notice"
@@ -248,12 +253,54 @@ def before(a: Date | None, b: Date | None) -> bool:
 
 
 def reduce(ev: Evidence) -> dict[str, Any]:
-    """Projection policy of SPECIFICATION.md 11.1 (reference implementation)."""
+    """Projection policy of SPECIFICATION.md 11.1 (reference implementation).
+
+    Post-freeze change C-25 (rule 7f, R-026): bridged assertions never support a value or a date. The result
+    is that of the direct assertions, and it is a verified fact only if adding the bridged ones would not change
+    it.
+    """
+    full = _reduce(ev)
+    if ev.state != "matched" or not any(a.bridged and a.type is not None for a in ev.rw + ev.crossref):
+        return full
+    direct = Evidence(
+        **{
+            **ev.__dict__,
+            "rw": [a for a in ev.rw if not a.bridged],
+            "crossref": [a for a in ev.crossref if not a.bridged],
+        }
+    )
+    out = _reduce(direct)
+    out["notice_links"], out["definite_orderings"] = full["notice_links"], full["definite_orderings"]
+    full_support = [a for a in ev.rw + ev.crossref if a.aid in full["support"]]
+    bridge_only = full["status"] == "verified_fact" and all(a.bridged for a in full_support)
+    if out["status"] == full["status"] == "verified_fact" and out["value"] == full["value"]:
+        out["reasons"].append("BRIDGED_EVIDENCE_NOT_COUNTED")
+        if out["date_status"] == "verified_fact" and (full["date_status"], full["date_value"]) != (
+            "verified_fact",
+            out["date_value"],
+        ):
+            out.update(date_status="uncertain", date_value=None)
+            out["reasons"].append("BRIDGED_EVIDENCE_MATERIAL")
+        return out
+    if out["status"] == "verified_fact":
+        out.update(status="uncertain", value=None, date_status=None, date_value=None, alternatives=[])
+        out.update(support_observations=0, support_origins=[], support=[])
+        out["reasons"] = ["BRIDGE_ONLY_SUPPORT"] * bridge_only + ["BRIDGED_EVIDENCE_MATERIAL"]
+        return out
+    if not [a for a in direct.rw + direct.crossref if a.type is not None]:
+        out["reasons"] = []
+    out["reasons"].append("BRIDGE_ONLY_SUPPORT" if bridge_only else "BRIDGED_EVIDENCE_NOT_COUNTED")
+    return out
+
+
+def _reduce(ev: Evidence) -> dict[str, Any]:
+    """Rules 1 to 7e and 8, every assertion taken as it is (bridged ones included)."""
     out: dict[str, Any] = {"state": ev.state, "status": None, "value": None, "date_status": None, "date_value": None}
     out["reasons"] = []
     out["alternatives"] = []
     out["support_observations"] = 0
     out["support_origins"] = []
+    out["support"] = []
     out["identity"] = ev.identity
     out["notice_links"] = sorted({a.notice for a in ev.rw if a.notice} if ev.state == "matched" else set())
     out["definite_orderings"] = []
@@ -342,6 +389,7 @@ def reduce(ev: Evidence) -> dict[str, Any]:
     out.update(status=status, value=value, reasons=reasons)
     if value is not None:
         support = [a for a in clear if a.type == value]
+        out["support"] = [a.aid for a in support]
         out["support_observations"] = len(support)
         out["support_origins"] = sorted({a.origin for a in support})
     if value == "retracted":
@@ -386,11 +434,12 @@ def view(ev: Evidence, intervention: str) -> Evidence:
             # Every Crossref relation sourced from Retraction Watch depends on that origin and was removed above.
             new.sources = ("crossref",) if new.crossref else ()
             if ev.state == "matched" and new.crossref:
-                new.identity = "exact"
+                new.identity = "bridged" if any(a.bridged for a in new.crossref) else "exact"
     elif intervention == "exclude_ambiguous_links":
         new.rw = [
             Assertion(**{**a.__dict__, "notice": None}) if a.notice_ambiguous else a for a in ev.rw if not a.bridged
         ]
+        new.crossref = [a for a in ev.crossref if not a.bridged]
         if ev.state == "matched" and new.identity == "bridged":
             new.identity = "exact"
     elif intervention == "require_temporal_bounds":
@@ -428,9 +477,10 @@ def load_cases(name: str) -> list[dict[str, Any]]:
     for a in amendments["amendments"]:
         if a["file"] == name:
             [case] = [c for c in cases if c["id"] == a["case"]]
-            if any(case["expected"][k] != v for k, v in a["frozen_expected"].items()):
+            part = a.get("field", "expected")  # tension cases amend their "interventions"
+            if any(case[part][k] != v for k, v in a["frozen_expected"].items()):
                 raise ValueError(f"amendment {a['change']} does not match frozen case {a['case']}")
-            case["expected"] = {**case["expected"], **a["expected"]}
+            case[part] = {**case[part], **a["expected"]}
     return cases
 
 

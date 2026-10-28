@@ -31,8 +31,8 @@ from citerift.retraction.source import (
     receipt_digest,
 )
 
-POLICY_VERSION = "citerift-rde-policy/1.1.0"
-SCHEMA_VERSION = "1.0.0"
+POLICY_VERSION = "citerift-rde-policy/1.2.0"
+SCHEMA_VERSION = "1.1.0"
 INDEX_FORMAT = 2001
 APPLICATION_ID = 0x43525244  # "CRRD"
 BATCH = 5000

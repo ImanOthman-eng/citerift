@@ -16,7 +16,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-FIELDS = ("lookup_state", "status", "value", "date_status", "date_value")
+FIELDS = ("lookup_state", "status", "value", "date_status", "date_value", "identity", "support_observations")
 
 
 def project(index: Path) -> dict[str, Any]:
@@ -41,6 +41,8 @@ def project(index: Path) -> dict[str, Any]:
                     status.get("value"),
                     date.get("status"),
                     date.get("value"),
+                    r["identity"]["status"],
+                    len((proj.get("basis") or {}).get("supporting_assertions", [])),
                 ]
         return {"snapshot_id": ix.snapshot_id, "keys": len(out), "projections": out}
 
@@ -51,11 +53,19 @@ def compare(old: dict[str, Any], new: dict[str, Any]) -> dict[str, Any]:
         for k, v in new["projections"].items()
         if old["projections"].get(k) != v
     }
-    kind = {
-        k: f"{c['old'][1]}/{c['old'][2]} -> {c['new'][1]}/{c['new'][2]}"
-        + (" (date)" if c["old"][1:3] == c["new"][1:3] else "")
-        for k, c in changed.items()
-    }
+
+    def label(old_row: list[Any], new_row: list[Any]) -> str:
+        if old_row[1:3] != new_row[1:3]:
+            return f"{old_row[1]}/{old_row[2]} -> {new_row[1]}/{new_row[2]}"
+        if old_row[3:5] != new_row[3:5]:
+            return f"{old_row[1]}/{old_row[2]} (date {old_row[3]} -> {new_row[3]})"
+        # Rows written before identity and support were recorded have five fields.
+        parts = [
+            f"{FIELDS[i]} {old_row[i]} -> {new_row[i]}" for i in (5, 6) if old_row[i : i + 1] != new_row[i : i + 1]
+        ]
+        return f"{old_row[1]}/{old_row[2]} ({', '.join(parts)})"
+
+    kind = {k: label(c["old"], c["new"]) for k, c in changed.items()}
     kinds = Counter(kind.values())
     examples: dict[str, dict[str, Any]] = {}
     for k in sorted(changed):  # the first ten keys of each transition

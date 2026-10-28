@@ -1,0 +1,102 @@
+# R-026 regressions run against the unchanged engine (HEAD 720a0491b2b543d24a588ab96c74312eb48dd3d5, policy 1.1.0)
+# command: uv run pytest tests/stage02/test_rde_bridge_sufficiency.py -q -p no:cacheprovider --tb=line
+# date: 2026-10-28T09:56:45Z
+FFFFFFFFFFFFFF..F.....FF                                                 [100%]
+=================================== FAILURES ===================================
+E   AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:78: AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+E   AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:78: AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+E   AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:105: AssertionError: assert ('verified_fa... '2015-03-12') == ('uncertain',...e, None, None)
+E   AssertionError: assert 'exact' == 'bridged'
+      
+      - bridged
+      + exact
+tests/stage02/test_rde_bridge_sufficiency.py:118: AssertionError: assert 'exact' == 'bridged'
+E   AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+      
+      Left contains one more item: 'ev-0000002/event_type'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:148: AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+E   AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+      
+      Left contains one more item: 'ev-0000002/event_type'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:148: AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+E   AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+      
+      Left contains one more item: 'ev-0000002/event_type'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:148: AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+E   AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+      
+      Left contains one more item: 'ev-0000002/event_type'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:148: AssertionError: assert ['ev-0000001/...2/event_type'] == ['ev-0000001/event_type']
+E   AssertionError: assert 'BRIDGED_EVIDENCE_NOT_COUNTED' in ['SOURCE_RECORDED_RETRACTION']
+tests/stage02/test_rde_bridge_sufficiency.py:149: AssertionError: assert 'BRIDGED_EVIDENCE_NOT_COUNTED' in ['SOURCE_RECORDED_RETRACTION']
+E   AssertionError: assert 'BRIDGED_EVIDENCE_NOT_COUNTED' in ['SOURCE_RECORDED_RETRACTION']
+tests/stage02/test_rde_bridge_sufficiency.py:149: AssertionError: assert 'BRIDGED_EVIDENCE_NOT_COUNTED' in ['SOURCE_RECORDED_RETRACTION']
+E   AssertionError: assert 'BRIDGED_EVIDENCE_MATERIAL' in ['SOURCE_RECORDED_RETRACTION', 'MULTIPLE_RETRACTION_DATES']
+tests/stage02/test_rde_bridge_sufficiency.py:165: AssertionError: assert 'BRIDGED_EVIDENCE_MATERIAL' in ['SOURCE_RECORDED_RETRACTION', 'MULTIPLE_RETRACTION_DATES']
+E   AssertionError: assert 'BRIDGED_EVIDENCE_MATERIAL' in ['SOURCE_RECORDED_RETRACTION', 'MULTIPLE_RETRACTION_DATES']
+tests/stage02/test_rde_bridge_sufficiency.py:165: AssertionError: assert 'BRIDGED_EVIDENCE_MATERIAL' in ['SOURCE_RECORDED_RETRACTION', 'MULTIPLE_RETRACTION_DATES']
+E   AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:176: AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+E   AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:176: AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+E   AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+tests/stage02/test_rde_bridge_sufficiency.py:232: AssertionError: assert ('verified_fact', 'retracted') == ('uncertain', None)
+E   AssertionError: assert 'verified_fact' == 'uncertain'
+      
+      - uncertain
+      + verified_fact
+tests/stage02/test_rde_bridge_sufficiency.py:293: AssertionError: assert 'verified_fact' == 'uncertain'
+E   AssertionError: retracted
+    assert 'verified_fact' == 'uncertain'
+      
+      - uncertain
+      + verified_fact
+tests/stage02/test_rde_bridge_sufficiency.py:323: AssertionError: retracted
+=========================== short test summary info ============================
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_bridge_only_retraction_is_not_a_verified_fact[doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_bridge_only_retraction_is_not_a_verified_fact[pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_query_pair_alone_does_not_establish_a_retraction
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_crossref_relation_reached_through_a_bridge_is_bridged
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Retraction-10.5555/n-r-doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Retraction-10.5555/n-r-pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Retraction-10.5555/n-r2-doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Retraction-10.5555/n-r2-pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Correction-10.5555/n-c-doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_retraction_keeps_its_conclusion_beside_bridged_events[Correction-10.5555/n-c-pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_bridged_retraction_with_another_date_makes_the_date_uncertain[doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_bridged_retraction_with_another_date_makes_the_date_uncertain[pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_non_retraction_is_not_stated_beside_a_bridged_retraction[doi]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_direct_non_retraction_is_not_stated_beside_a_bridged_retraction[pmid]
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_bridge_through_a_contradicted_key_cannot_establish_a_retraction
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_tension_shows_what_the_direct_evidence_alone_gives
+FAILED tests/stage02/test_rde_bridge_sufficiency.py::test_rde_reducer_never_lets_bridged_support_alone_give_a_fact
+17 failed, 7 passed in 0.38s
+
+# Seeded invariant test (added after the run above) against the engine of 720a049, policy._reduce aliased to its reduce:
+# PYTHONPATH=<worktree of 720a049>/src python old_props.py
+FAILED: AssertionError(2)
