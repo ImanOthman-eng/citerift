@@ -471,4 +471,4 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | Real rebuild at the final code | `evidence/rebuild-check-2026-10-28.json` |
 | Stage 00 maintenance A-00-002 | `docs/verification/maintenance/A-00-002/` |
 | Local full-suite runs, Python 3.12 and 3.13 | `evidence/local-test-runs.txt` |
-| Complete test report | `test-report.json` |
+| Complete test report | `test-report.json` (Python 3.12, at `15925c9`); `evidence/test-report-py3.13-at-15925c9.json`; the earlier failing report: `evidence/test-report-at-f62a280.json` |

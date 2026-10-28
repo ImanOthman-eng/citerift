@@ -162,9 +162,9 @@ every review fix: `evidence/fail-first/`.
 - An installed wheel needs the schema-root environment override; a killed
   build can leave a temporary file (never a published one).
 
-## Blockers
+## Open blockers
 
-None open. Their history:
+None. History of the two blockers:
 
 - **B-02-001 (gate 02-G), resolved.** The model experiment had not run, and
   v1's gate was infeasible. Resolved by executing AI Protocol v2 with a local
@@ -197,11 +197,19 @@ torch 2.14.1+cpu, transformers 5.19.0, no CUDA), audited separately. Real-data r
   `627cc9dc73621eff3aebffba3ed340ba94fa61eb`, finalized `4bf0255`.
 - Local model code and frozen model: `21369431d3274c9b94e2db1b416232a75f10f4d9`;
   holdout drawn at `9e23c76`; holdout run and evaluation at `4a0fc19`.
-- Verified revision: the documents commit that follows `4a0fc19`, named in
-  the registry's verification record together with its CI run and the
-  complete test report (`test-report.json`, clean tree). It adds two tests to
-  `tests/stage02/test_rde_local_model.py` and changes documents and evidence;
-  no engine code.
+- Verified revision: `15925c9aa3d5aa4f51209e5953e02a7c6b15c226` (documents,
+  evidence, the B-02-001 resolution and two added tests in
+  `tests/stage02/test_rde_local_model.py`; no engine code). Complete test
+  report on a clean checkout of it: `test-report.json` (Python 3.12.3, 1,123
+  collected, 1,123 passed, exit 0) and
+  `evidence/test-report-py3.13-at-15925c9.json` (Python 3.13.17, the same).
+  CI at this revision: push run
+  https://github.com/ImanOthman-eng/citerift/actions/runs/40653182012 and pull
+  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40653188197,
+  both successful on Python 3.12 and 3.13.
+- The next commit records the verification in the registry, with this
+  handoff and the reports; it changes no code. The earlier failing report of
+  `f62a280` is kept as `evidence/test-report-at-f62a280.json`.
 - Branch `claude/project-thread-ddufmg`; the pull request to `main` is
   unmerged.
 
