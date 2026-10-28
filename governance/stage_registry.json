@@ -1858,7 +1858,7 @@
           "requirement": "Complete CI green on Python 3.12 and 3.13 at the cited revision; three review perspectives completed with findings dispositioned; required documents and handoff complete"
         }
       ],
-      "status": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "status": "ACCEPTED_CLOSED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ",
         "scope": "Owner's Stage 02 Master Execution Directive authorizes Stage 02 (Retraction Data Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
@@ -2584,7 +2584,13 @@
           "conclusion": "success"
         }
       },
-      "acceptance": null,
+      "acceptance": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6",
+        "accepted_revision": "cf060834afedfa4a82712ca247ad2fc2b2fa9665",
+        "recorded_at": "2026-10-28T15:15:05Z",
+        "recorded_by": "engineering-agent",
+        "method": "attested"
+      },
       "blockers": [
         {
           "id": "B-02-001",
@@ -3184,6 +3190,17 @@
       "recorded_by": "engineering-agent",
       "reason": "All nine gates pass at cf06083 after the audit fixes: clean-tree complete test reports (Python 3.12.3 and 3.13.17, 1,159 passed each) and green CI on Python 3.12 and 3.13 (push run 40695812191, pull request run 40695821728). Fail-first regressions recorded against ac959c6; real-data impact: on the RW-only index 2 PMID keys stated as verified corrections become uncertain, 2 become bridged, 2,097 keys report PMID_ROLE_COLLISION; no date changes. D-026 stays pending the owner. Owner acceptance and the merge are the owner's.",
       "owner_ref": null
+    },
+    {
+      "seq": 35,
+      "at": "2026-10-28T15:15:05Z",
+      "stage": "02",
+      "from": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "to": "ACCEPTED_CLOSED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner accepts Stage 02 (Retraction Data Engine) verified at cf06083, covering the reviewed implementation at PR #4 head f9592b1: the engine, Evidence Tension and the R-026, F1 and F3 corrections. D-026 approved; the evaluated local model is excluded from the default product with its negative evaluation preserved; R-029 and R-031 acknowledged as unresolved limitations (DECISIONS.md D-026, D-028). Stage 03 not authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6"
     }
   ]
 }
