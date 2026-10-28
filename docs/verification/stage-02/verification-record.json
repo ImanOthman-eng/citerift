@@ -1,0 +1,99 @@
+{
+  "gates": {
+    "02-A": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/TEST_RESULTS.md",
+        "tests/stage02/test_rde_policy_cases.py",
+        "tests/stage02/test_rde_import.py",
+        "tests/stage02/test_rde_lookup.py",
+        "docs/verification/stage-02/evidence/local-test-runs.txt",
+        "tests/stage02/test_rde_bridge_sufficiency.py",
+        "docs/verification/stage-02/evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt",
+        "docs/verification/stage-02/evidence/policy-impact-r026-rw.json",
+        "docs/verification/stage-02/evidence/policy-impact-r026-cr.json"
+      ]
+    },
+    "02-B": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/TEST_RESULTS.md",
+        "docs/verification/stage-02/evidence/benchmark.json",
+        "docs/verification/stage-02/evidence/verify-rw.json",
+        "docs/verification/stage-02/evidence/verify-cr.json"
+      ]
+    },
+    "02-C": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/evidence/oracle-comparison.json",
+        "tests/stage02/fixtures/real_cases.json",
+        "docs/verification/stage-02/TEST_RESULTS.md",
+        "docs/verification/stage-02/evidence/policy-impact-r026-rw.json",
+        "docs/verification/stage-02/evidence/policy-impact-r026-cr.json"
+      ]
+    },
+    "02-D": {
+      "result": "pass",
+      "evidence": [
+        "tests/stage02/test_rde_schemas.py",
+        "docs/verification/stage-02/TEST_RESULTS.md"
+      ]
+    },
+    "02-E": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/evidence/tension-demonstrations.json",
+        "docs/verification/stage-02/CREATIVE_DIFFERENTIATION_REVIEW.md",
+        "docs/verification/stage-02/TEST_RESULTS.md",
+        "docs/verification/stage-02/evidence/simulator.json",
+        "simulations/stage02/cases/post_freeze_amendments.json"
+      ]
+    },
+    "02-F": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/evidence/crossref/manifest.json",
+        "tests/stage02/test_rde_corroboration.py",
+        "docs/verification/stage-02/TEST_RESULTS.md"
+      ]
+    },
+    "02-G": {
+      "result": "pass",
+      "evidence": [
+        "tests/stage02/test_rde_advisory.py",
+        "tests/stage02/test_rde_local_model.py",
+        "docs/verification/stage-02/ai/v2/protocol-v2.json",
+        "docs/verification/stage-02/ai/v2/protocol-v2-frozen.json",
+        "docs/verification/stage-02/ai/v2/holdout-attainability.json",
+        "docs/verification/stage-02/ai/v2/holdout-result.json",
+        "docs/verification/stage-02/ai/v2/holdout-disposition.json",
+        "docs/verification/stage-02/ai/v2/runs/holdout-mxbai.jsonl",
+        "docs/verification/stage-02/ai/v2/inference/separate-process-demo/demo.log",
+        "docs/verification/stage-02/TEST_RESULTS.md"
+      ]
+    },
+    "02-H": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/evidence/benchmark.json",
+        "docs/verification/stage-02/TEST_RESULTS.md"
+      ]
+    },
+    "02-I": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-02/TEST_RESULTS.md",
+        "docs/verification/stage-02/HANDOFF.md",
+        "docs/verification/stage-02/test-report.json",
+        "docs/verification/stage-02/evidence/test-report-py3.13.json",
+        "docs/verification/stage-02/evidence/local-test-runs.txt"
+      ]
+    }
+  },
+  "ci": {
+    "run_url": "https://github.com/ImanOthman-eng/citerift/actions/runs/40672514661",
+    "head_sha": "21d9f378b19cc01b948767472618a85ae47b1093",
+    "conclusion": "success"
+  }
+}

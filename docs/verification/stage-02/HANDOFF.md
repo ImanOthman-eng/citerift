@@ -204,25 +204,37 @@ torch 2.14.1+cpu, transformers 5.19.0, no CUDA), audited separately. Real-data r
 
 ## Verified Git commit
 
-- Engine code and real-data evidence: `a24dd46c36b74d2a7ba5efd6b48f4606f1d9901e`
-  (unchanged engine since; rebuild check above).
-- Stage 00 maintenance: candidate `8b1db57`, validated
-  `627cc9dc73621eff3aebffba3ed340ba94fa61eb`, finalized `4bf0255`.
-- Local model code and frozen model: `21369431d3274c9b94e2db1b416232a75f10f4d9`;
-  holdout drawn at `9e23c76`; holdout run and evaluation at `4a0fc19`.
-- Verified revision: `15925c9aa3d5aa4f51209e5953e02a7c6b15c226` (documents,
-  evidence, the B-02-001 resolution and two added tests in
-  `tests/stage02/test_rde_local_model.py`; no engine code). Complete test
-  report on a clean checkout of it: `test-report.json` (Python 3.12.3, 1,123
-  collected, 1,123 passed, exit 0) and
-  `evidence/test-report-py3.13-at-15925c9.json` (Python 3.13.17, the same).
-  CI at this revision: push run
-  https://github.com/ImanOthman-eng/citerift/actions/runs/40653182012 and pull
-  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40653188197,
+- R-026 correction (owner instruction
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`, D-026): return to
+  IN_PROGRESS at `d1a6ce1`; engine code (rule 7f, policy 1.2.0, tension 0.3.0,
+  schema 1.1.0) and tests at `a0666b3`; documents, decision and regenerated
+  real-data evidence at the verified revision below. The fail-first run of the
+  new regressions against the code of `720a049` is
+  `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt` (17 failed, 7
+  passed, the seeded invariant failing at seed 2).
+- Verified revision: `21d9f378b19cc01b948767472618a85ae47b1093`. Complete
+  test report on a clean checkout of it: `test-report.json` (Python 3.12.3,
+  1,149 collected, 1,149 passed, exit 0) and `evidence/test-report-py3.13.json` (Python 3.13.17, the same);
+  run logs `evidence/test-run-py3.12-at-21d9f37.log` and
+  `evidence/test-run-py3.13-at-21d9f37.log`. CI at this revision: push run
+  https://github.com/ImanOthman-eng/citerift/actions/runs/40672514661 and pull
+  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40672521827,
   both successful on Python 3.12 and 3.13.
 - The next commit records the verification in the registry, with this
-  handoff and the reports; it changes no code. The earlier failing report of
-  `f62a280` is kept as `evidence/test-report-at-f62a280.json`.
+  handoff and the reports; it changes no code.
+- Earlier verification, kept in the registry history (entries 27 and 28) and
+  in `evidence/registry-verification-at-15925c9.json`: verified revision
+  `15925c9aa3d5aa4f51209e5953e02a7c6b15c226` (registry commit `720a049`),
+  reports `evidence/test-report-py3.12-at-15925c9.json` and
+  `evidence/test-report-py3.13-at-15925c9.json` (1,123 passed each), CI push
+  run https://github.com/ImanOthman-eng/citerift/actions/runs/40653182012 and
+  pull request run https://github.com/ImanOthman-eng/citerift/actions/runs/40653188197.
+  Its record is `evidence/verification-record-at-15925c9.json`. Engine code
+  and real-data evidence of that verification: `a24dd46`; Stage 00
+  maintenance: candidate `8b1db57`, validated `627cc9d`, finalized `4bf0255`;
+  local model code and frozen model `2136943`, holdout drawn at `9e23c76`, run
+  and evaluated at `4a0fc19`. The earlier failing report of `f62a280` is kept
+  as `evidence/test-report-at-f62a280.json`.
 - Branch `claude/project-thread-ddufmg`; the pull request to `main` is
   unmerged.
 

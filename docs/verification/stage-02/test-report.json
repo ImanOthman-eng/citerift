@@ -1,0 +1,102 @@
+{
+  "format": "citerift.test-report/1",
+  "revision": "21d9f378b19cc01b948767472618a85ae47b1093",
+  "dirty": false,
+  "dirty_paths": [],
+  "started_at": "2026-10-28T10:33:03Z",
+  "finished_at": "2026-10-28T10:37:33Z",
+  "python": "3.12.3",
+  "platform": "Linux-6.18.44-fc-v180-x86_64-with-glibc2.39",
+  "pytest": "9.1.1",
+  "exit_status": 0,
+  "collected": 1149,
+  "selection": {
+    "args": [
+      "tests"
+    ],
+    "override_ini": [],
+    "other_ini_file": "",
+    "keyword": "",
+    "markexpr": "",
+    "ignore": [],
+    "ignore_glob": [],
+    "last_failed": false,
+    "stepwise": false,
+    "collection_settings": {},
+    "plugins": [],
+    "env_plugins": "",
+    "complete": true,
+    "deselected": 0,
+    "dropped": 0,
+    "repeated": 0,
+    "files": [
+      "tests/stage00/test_cli.py",
+      "tests/stage00/test_contracts.py",
+      "tests/stage00/test_corrections.py",
+      "tests/stage00/test_failure_simulation.py",
+      "tests/stage00/test_integration_scenarios.py",
+      "tests/stage00/test_maintenance.py",
+      "tests/stage00/test_properties.py",
+      "tests/stage00/test_recovery.py",
+      "tests/stage00/test_registry_tampering.py",
+      "tests/stage00/test_repository.py",
+      "tests/stage00/test_simulation.py",
+      "tests/stage00/test_unit_model_evidence_memory.py",
+      "tests/stage01/test_census.py",
+      "tests/stage01/test_crosswiki.py",
+      "tests/stage01/test_discovery_errors.py",
+      "tests/stage01/test_render_check.py",
+      "tests/stage02/test_rde_advisory.py",
+      "tests/stage02/test_rde_bridge_sufficiency.py",
+      "tests/stage02/test_rde_corroboration.py",
+      "tests/stage02/test_rde_dates.py",
+      "tests/stage02/test_rde_export_diff.py",
+      "tests/stage02/test_rde_identifiers.py",
+      "tests/stage02/test_rde_import.py",
+      "tests/stage02/test_rde_local_model.py",
+      "tests/stage02/test_rde_lookup.py",
+      "tests/stage02/test_rde_oracle_selftest.py",
+      "tests/stage02/test_rde_policy_cases.py",
+      "tests/stage02/test_rde_policy_properties.py",
+      "tests/stage02/test_rde_policy_regressions.py",
+      "tests/stage02/test_rde_real_cases.py",
+      "tests/stage02/test_rde_review_findings.py",
+      "tests/stage02/test_rde_schemas.py",
+      "tests/stage02/test_rde_spec_changes.py",
+      "tests/stage02/test_rde_tension_properties.py"
+    ],
+    "conftests": [
+      "tests/stage00/conftest.py"
+    ]
+  },
+  "totals": {
+    "passed": 1149
+  },
+  "suites": {
+    "unit": {
+      "passed": 343
+    },
+    "integration": {
+      "passed": 305
+    },
+    "negative": {
+      "passed": 611
+    },
+    "regression": {
+      "passed": 285
+    },
+    "reproducibility": {
+      "passed": 10
+    },
+    "security": {
+      "passed": 320
+    },
+    "contracts": {
+      "passed": 94
+    },
+    "simulation": {
+      "passed": 79
+    }
+  },
+  "failures": []
+}
