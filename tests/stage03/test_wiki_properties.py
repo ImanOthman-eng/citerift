@@ -308,3 +308,19 @@ def test_fetch_policy_simulation_holds_every_invariant() -> None:
     summary = json.loads(proc.stdout)
     assert summary["failure_count"] == 0 and summary["sequences"] == 400
     assert {"DEFERRED_RETRY_AFTER", "ATTEMPTS_EXHAUSTED", "None"} <= set(summary["outcomes"])
+
+
+@pytest.mark.simulation
+def test_reconciliation_perturbation_simulation_has_no_wrong_attachment() -> None:
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "simulations" / "stage03" / "reconcile_perturbation_sim.py"), "40", str(SEED)],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=600,
+    )
+    summary = json.loads(proc.stdout)
+    assert summary["failure_count"] == 0
+    per = summary["per_perturbation"]
+    assert per["none"]["linked"] == per["none"]["uses"] > 0
+    assert all(p["wrong"] == 0 and p["wrong_notes"] == 0 for p in per.values())

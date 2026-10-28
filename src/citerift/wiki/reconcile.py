@@ -130,6 +130,14 @@ class Reconciler:
             ):
                 key = f"id:{o.cand.scheme}:{o.decoded.normalized.normalized}"
                 self._container_ids.setdefault(o.container_id, set()).add(key)
+        # Cite numbers the notes of one list in the order of first use; the render order of first uses must agree.
+        self._note_rank = {n.note_id: (n.list_index, n.index) for n in render.notes}
+        self._duplicate_notes = set(render.duplicate_ids)
+        self._last_rank: dict[int, int] = {}
+        self._first_use: dict[str, int] = {}
+        for u in model.uses:
+            if u.container_id is not None:
+                self._first_use[u.container_id] = min(u.start, self._first_use.get(u.container_id, u.start))
         self.omitted = {t.about for t in render.transclusions if t.omitted}
         self.omitted_notes = {
             t.in_note or t.in_list_item for t in render.transclusions if t.omitted and (t.in_note or t.in_list_item)
@@ -185,8 +193,29 @@ class Reconciler:
                 left.append(u)
         return left
 
+    def _numbering_agrees(self, src: Sequence[Use], ren: Sequence[RenderUse]) -> bool:
+        """Position pairs are consistent with the reference lists: for the uses that are their container's first use,
+        the paired notes appear in each list in the same order as the uses appear in the source, also relative to the
+        pairs already accepted earlier in this alignment (``self._last_rank``, updated only when the segment agrees)."""
+        last = dict(self._last_rank)
+        for u, r in zip(src, ren, strict=True):
+            if u.container_id is None or self._first_use.get(u.container_id) != u.start:
+                continue
+            rank = self._note_rank.get(r.target_note or "")
+            if rank is None or r.target_note in self._duplicate_notes:
+                continue
+            if rank[1] <= last.get(rank[0], -1):
+                return False
+            last[rank[0]] = rank[1]
+        self._last_rank = last
+        return True
+
     def _align_segment(self, src: Sequence[Use], ren: Sequence[RenderUse], where: str) -> None:
-        if len(src) == len(ren) and all(_compatible(a, b) for a, b in zip(src, ren, strict=True)):
+        if (
+            len(src) == len(ren)
+            and all(_compatible(a, b) for a, b in zip(src, ren, strict=True))
+            and self._numbering_agrees(src, ren)
+        ):
             for a, b in zip(src, ren, strict=True):
                 self._pair(a, b, "name_anchor" if len(src) == 1 and src[0].name else "position_between_anchors")
             if src:
@@ -210,6 +239,7 @@ class Reconciler:
 
     def _align(self, src: list[Use], ren: list[RenderUse], where: str) -> None:
         """Anchored alignment: anchors are the k-th use of a name that occurs equally often on both sides."""
+        self._last_rank = {}
         s_count = Counter(_key(u) for u in src if _key(u) is not None)
         r_count: Counter[tuple[str, str]] = Counter()
         for r in ren:

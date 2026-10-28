@@ -280,3 +280,54 @@ def test_wiki_render_not_requested_marker_unavailable(tmp_path: Path) -> None:
     doc = extract(outcome.bundle)
     assert doc["markers"][0]["state"] == "unavailable"
     assert doc["markers"][0]["source_marker_templates"][0]["template"] == "Retracted"
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("wiki", ["en", "ar"])
+def test_wiki_marker_order_against_the_list_numbering_abstains(tmp_path: Path, wiki: str) -> None:
+    # RF-07: the render shows the marker of note 2 first; position pairing would attach "one" to note "two".
+    text = "A.<ref>one</ref> B.<ref>two</ref>\n"
+    body = (
+        "<p>A."
+        + ref_sup(2, "cite_note-2", "cite_ref-2")
+        + " B."
+        + ref_sup(1, "cite_note-1", "cite_ref-1")
+        + "</p>"
+        + references([note_li("cite_note-1", ["cite_ref-1"], "one"), note_li("cite_note-2", ["cite_ref-2"], "two")])
+    )
+    doc = extract(bundle(tmp_path, text, body, wiki=wiki))
+    assert [u["render"]["state"] for u in doc["uses"]] == ["abstained", "abstained"]
+    assert {c["render"]["state"] for c in doc["containers"]} != {"matched"}
+    assert "RECONCILIATION_ABSTAINED" in codes(doc)
+    assert {m["state"] for m in doc["markers"]} == {"not_inspected"}
+
+
+@pytest.mark.negative
+def test_wiki_anchor_does_not_license_a_misordered_neighbour(tmp_path: Path) -> None:
+    # The named anchor is consistent, the anonymous use between anchors would take an earlier note: abstain.
+    text = 'S0.<ref>zero</ref> S1.<ref name="n">body</ref> S2.<ref>two</ref> S3.<ref name="n" />\n'
+    body = (
+        "<p>S0."
+        + ref_sup(2, "cite_note-n-2", "cite_ref-n_2-1", name="n")
+        + " S1."
+        + ref_sup(1, "cite_note-1", "cite_ref-1")
+        + " S2."
+        + ref_sup(2, "cite_note-n-2", "cite_ref-n_2-0", name="n")
+        + " S3."
+        + ref_sup(3, "cite_note-3", "cite_ref-3")
+        + "</p>"
+        + references(
+            [
+                note_li("cite_note-1", ["cite_ref-1"], "zero"),
+                note_li("cite_note-n-2", ["cite_ref-n_2-0", "cite_ref-n_2-1"], "body"),
+                note_li("cite_note-3", ["cite_ref-3"], "two"),
+            ]
+        )
+    )
+    doc = extract(bundle(tmp_path, text, body))
+    linked = {
+        text[u["source"]["cp_start"] : u["source"]["cp_end"]]: (u["render"].get("locator") or {}).get("element_id")
+        for u in doc["uses"]
+    }
+    assert linked["<ref>two</ref>"] in (None, "cite_ref-3")
+    assert linked["<ref>zero</ref>"] in (None, "cite_ref-1")

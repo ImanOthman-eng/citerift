@@ -48,7 +48,10 @@ the rendered reference markers of the same group, both in document order. A name
 with name `x`. Anchors split `S` and `R` into segments `(S_t, R_t)`. A segment is matched position by position iff
 `|S_t| = |R_t|` and every pair is compatible (the marker's `data-mw` is readable; for `<ref>` tags group and name
 are equal after trimming and entity decoding, anonymous on both sides counting as equal; for template-generated
-uses a name stated on both sides must agree); otherwise every use in it is `unmatched`. Uses produced in template
+uses a name stated on both sides must agree), and the pairing respects the list numbering: for the pairs whose
+source use is its container's first use, the paired notes' positions `(list, index)` are strictly increasing within
+each list in source order, continuing from the pairs already accepted in that alignment (Cite numbers notes in
+order of first use). Otherwise every use in it is `unmatched` (unless paired by unique shared content). Uses produced in template
 output are paired with markers of the same transclusion; a pair that is not fixed by name or position is accepted
 only when it is unique in both directions and shares a URL or identifier with the note (bases
 `unique_url_in_reference_text`, `unique_identifier_in_reference_text`). The rule never pairs across a length mismatch, so an inserted or missing marker leaves the segment

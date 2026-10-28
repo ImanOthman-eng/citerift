@@ -223,8 +223,10 @@ serialization (derived from the DOM, not a byte range). Duplicate DOM ids are re
 
 Uses are matched within three groups the render keeps apart (article text, template output, nested in another
 reference). In article text the sequences are aligned at anchors (named uses whose name occurs equally often on both
-sides); between anchors a segment is matched position by position only when both sides have the same length and every
-pair is compatible; otherwise the segment is unmatched and reported (`RENDER_USE_UNMATCHED`), never guessed. Template
+sides); between anchors a segment is matched position by position only when both sides have the same length, every pair is
+compatible, and the notes of the first uses it pairs appear in each reference list in source order, also relative to
+the pairs accepted before it (Cite numbers notes by first use); otherwise the segment is paired by unique shared
+content or abstained and reported (`RECONCILIATION_ABSTAINED`, `RENDER_USE_UNMATCHED`), never guessed. Template
 output is joined to the source template whose canonical name and parameter values equal those in `data-mw`. A
 container is matched to the reference-list item its matched uses all point to; a note claimed by two containers, or
 a note id that occurs twice in the DOM, is `note_ambiguous` (`RENDER_NOTE_AMBIGUOUS`) and no region is attached. A
