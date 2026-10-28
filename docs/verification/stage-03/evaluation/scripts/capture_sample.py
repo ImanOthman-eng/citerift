@@ -38,10 +38,10 @@ def _render_deferred(result: dict[str, Any]) -> tuple[bool, str | None]:
     return render.get("code") == "DEFERRED_RETRY_AFTER", render.get("not_before")
 
 
-def capture(wiki: str, page_id: int, out: Path, log: Any) -> dict[str, Any]:
+def capture(wiki: str, page_id: int, out: Path, log: Any, first: int = 1) -> dict[str, Any]:
     attempts: list[dict[str, Any]] = []
     waited = 0.0
-    for n in range(1, MAX_ATTEMPTS + 1):
+    for n in range(first, first + MAX_ATTEMPTS):
         target = out / f"{wiki}-{page_id}-a{n}"
         cmd = ["citerift-wiki", "capture", "--wiki", wiki, "--page-id", str(page_id), "--out", str(target)]
         started = datetime.now(UTC).isoformat(timespec="seconds")
@@ -76,7 +76,7 @@ def capture(wiki: str, page_id: int, out: Path, log: Any) -> dict[str, Any]:
             delay = _seconds_until(render_nb)
         else:
             break
-        if n == MAX_ATTEMPTS or waited + delay > MAX_WAIT_S:
+        if n == first + MAX_ATTEMPTS - 1 or waited + delay > MAX_WAIT_S:
             break
         print(f"{wiki}-{page_id}: {status}, retrying in {delay:.0f} s", file=sys.stderr, flush=True)
         time.sleep(delay)
