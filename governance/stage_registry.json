@@ -2618,7 +2618,12 @@
         "01"
       ],
       "verification_dir": "docs/verification/stage-03",
-      "owned_paths": [],
+      "owned_paths": [
+        "src/citerift/wiki",
+        "schemas/wiki",
+        "tests/stage03",
+        "simulations/stage03"
+      ],
       "required_test_suites": [
         "unit",
         "integration",
@@ -2631,8 +2636,12 @@
           "requirement": "Extraction results match an independently inspected sample, with failures and unsupported cases documented"
         }
       ],
-      "status": "NOT_STARTED",
-      "authorization": null,
+      "status": "IN_PROGRESS",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
+        "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+        "recorded_at": "2026-10-28T18:10:32Z"
+      },
       "implementation": null,
       "verification": null,
       "acceptance": null,
@@ -3201,6 +3210,28 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner accepts Stage 02 (Retraction Data Engine) verified at cf06083, covering the reviewed implementation at PR #4 head f9592b1: the engine, Evidence Tension and the R-026, F1 and F3 corrections. D-026 approved; the evaluated local model is excluded from the default product with its negative evaluation preserved; R-029 and R-031 acknowledged as unresolved limitations (DECISIONS.md D-026, D-028). Stage 03 not authorized.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6"
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-28T18:10:32Z",
+      "stage": "03",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS"
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-28T18:10:34Z",
+      "stage": "03",
+      "from": "AUTHORIZED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 03 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS), retained at docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-28.md. Implementation base: main 94ac4f8df27383a03a810a4501ed1439bf8bcaea (equal to the confirmed baseline).",
+      "owner_ref": null
     }
   ]
 }
