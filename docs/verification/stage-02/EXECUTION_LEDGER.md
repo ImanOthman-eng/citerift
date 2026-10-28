@@ -54,10 +54,15 @@ they preceded; their times were not recorded.
 | 2026-10-28 07:39 | `4a0fc19` | One offline holdout run (network namespace without interfaces, index SHA-256 unchanged): 233/300 against 274/300, relative error reduction -1.58, p 1.0; not admitted; every resource limit met (cold init 63.4 s, warm p95 2.67 s, peak RSS 3,266 MiB, 11.5 min) |
 | 2026-10-28 07:40 | — | Fresh clone at `4a0fc19`: INFERENCE_GUIDE.md followed (hash-pinned installs, anonymous pinned download, 15 files verified); separate-process CLI runs with an empty environment and no network: three real unresolved events, baseline output unchanged, missing weights give `MODEL_UNAVAILABLE`, index and lookup unchanged. Real index rebuilt at current code: artifact and semantic digests equal to those of `a24dd46` |
 | 2026-10-28 | the documents commit | B-02-001 resolved with the v2 disposition; D-024, D-025 (D-023 superseded), R-027 closed, R-028; Stage 02 documents updated |
+| 2026-10-28 08:06 | `720a049` | Verified at `15925c9` (registry record and CI runs 40653182012, 40653188197); awaiting owner acceptance |
+| 2026-10-28 10:04 | `d1a6ce1` | Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy` (R-026 correction): stage returned to IN_PROGRESS; the earlier verification stays in the registry history |
+| 2026-10-28 10:05 | `a0666b3` | Rule 7f (policy 1.2.0): bridged assertions never support a value or date; Crossref relations reached through a co-occurring DOI are bridged; P33, T05, T06 amended; simulator changed; 17 of 24 new regressions fail on `720a049` (`evidence/fail-first/`) |
+| 2026-10-28 10:05 to 10:30 | `a0666b3` | Real data: indexes rebuilt under 1.2.0 (semantic digests unchanged), verify clean, oracle 0 mismatches, 50/50 real cases, tension demonstrations; impact on 96,803 keys: 0 changed on RW only, 22 on the Crossref index (2 verified retractions become uncertain); benchmark of five builds |
+| 2026-10-28 | the documents commit | D-026, R-026 closed, R-029; SPECIFICATION.md 16 items 25 and 26; MATHEMATICAL_MODEL.md 9.8; TEST_RESULTS.md 12; earlier verified evidence kept as `evidence/*-at-15925c9.json` |
 
 ## Specification changes
 
-Recorded in SPECIFICATION.md 16 (items 1 to 24).
+Recorded in SPECIFICATION.md 16 (items 1 to 26).
 
 ## Remaining work
 

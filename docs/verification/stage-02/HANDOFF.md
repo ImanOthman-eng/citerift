@@ -9,14 +9,18 @@
   (model access) and `cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`
   (Stage 00 test-setup fix and CI), and the owner's directive
   `cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT` of 2026-10-28
-  (Stage 00 maintenance, AI Protocol v2 with a local open model).
+  (Stage 00 maintenance, AI Protocol v2 with a local open model), and the
+  owner's instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`
+  of 2026-10-28 (scientific correction of R-026; D-026).
 - Registry state: see `governance/stage_registry.json` and
   `PROJECT_STATUS.md`. Both blockers (B-02-001, B-02-002) are resolved with
-  recorded resolutions. The stage is offered for verification at the revision
-  in "Verified Git commit"; it is **not accepted**. No later stage is
-  authorized or started.
+  recorded resolutions. The stage was verified at `15925c9`, returned to
+  IN_PROGRESS for the R-026 correction (that verification stays in the
+  registry history and in `evidence/*-at-15925c9.json`), and is offered for
+  verification again at the revision in "Verified Git commit"; it is **not
+  accepted**. No later stage is authorized or started.
 - Specification, model and risk analysis frozen at `36696b3`; the changes
-  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 24).
+  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 26).
 - Pull request: unmerged, to `main`; the owner merges (D-019).
 
 ## Verified completed work
@@ -38,7 +42,9 @@ pinned snapshot (TEST_RESULTS.md gives the numbers).
   bounds; chronology is a partial order; the v1 projection follows
   SPECIFICATION.md 11.1 as amended (an ordered concern then retraction is a
   sequence; a reinstatement needs a supersession link; unknown origin alone
-  settles nothing).
+  settles nothing; since policy 1.2.0, rule 7f, a record reached only through
+  an unresolved identifier link supports no value and no date, and a stated
+  value must hold whether such links are accepted or rejected).
 - **Index and operations.** One SQLite file per snapshot, validated before an
   atomic publish, never replacing a different build; read-only immutable
   readers; `build`, `lookup`, `event`, `tension`, `verify`, `export`, `diff`,
@@ -114,12 +120,14 @@ builds; TEST_RESULTS.md 3):
 
 | Index | Artifact digest | Semantic digest | Export lines |
 |---|---|---|---|
-| Retraction Watch only | `1ee679b5e5c2e89f06139f43ffd27818b9259dc15693c743ef7bd2ea45e809dc` | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` | 147,152 |
-| With the pinned Crossref replay | `ea4c1678e1f4fd0a65e56e9202f129f53dd2e3fa2607a9c5002e16782430147d` | `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a` | 147,229 |
+| Retraction Watch only | `22bf1f30482b71ef45c61940d835649bb449892319d21a7e0adc7b53d1ded339` | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` | 147,152 |
+| With the pinned Crossref replay | `ebb1f873269dbff949673d77f9096e8fcbafb35b9a9ef2ae9c03bc965c136b31` | `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a` | 147,229 |
 
-Snapshot `rw-2f116e9ffed718e6`, policy `citerift-rde-policy/1.1.0`, Evidence
-Tension `citerift-evidence-tension/0.2.0`. A build with another policy version
-is refused by readers (`INDEX_FORMAT_MISMATCH`).
+Snapshot `rw-2f116e9ffed718e6`, policy `citerift-rde-policy/1.2.0`, Evidence
+Tension `citerift-evidence-tension/0.3.0`, schemas `1.1.0`. The semantic
+digests equal those of policy 1.1.0; the artifact digests differ because they
+include the versions. A build with another policy version is refused by
+readers (`INDEX_FORMAT_MISMATCH`), so a 1.1.0 index must be rebuilt.
 
 ## Test evidence
 
@@ -128,23 +136,25 @@ is refused by readers (`INDEX_FORMAT_MISMATCH`).
 | Full test suite, Python 3.12 and 3.13 | local and CI | TEST_RESULTS.md 2 and 9 |
 | `ruff check`, `ruff format --check`, `mypy`, `uv lock --check` | local and CI | clean |
 | `citerift-gov check` | local and CI | 0 errors |
-| Real build, double build, verify, oracle, demonstrations, benchmarks | real-data run at `a24dd46` | TEST_RESULTS.md 3 to 8; still applicable: the engine code they exercise is unchanged, and a rebuild at the final code gives the same artifact and semantic digests (`evidence/rebuild-check-2026-10-28.json`) |
+| Real build, double build, verify, oracle, real cases, demonstrations, benchmarks | real-data run at `a0666b3` (engine code of the R-026 correction) | TEST_RESULTS.md 3 to 8 and 12; the earlier runs (`a24dd46`) are kept as `evidence/*-at-15925c9.json` |
+| R-026 before/after and real-data impact | `720a049` against `a0666b3`, all 96,803 original keys on both indexes | TEST_RESULTS.md 12 |
 | AI Protocol v2 screening, calibration, holdout | local, offline, at `2136943` to `4a0fc19` | TEST_RESULTS.md 7.2 |
 | Clean-checkout inference and separate-process CLI | fresh clone at `4a0fc19`, no network, empty environment | `ai/v2/inference/` |
 | Complete test report | local, clean tree, `test-report.json` | at the verified revision |
 
-Stage 02 suites: unit 212, integration 115, negative 262, regression 36,
-reproducibility 5, security 69, contracts 7, simulation 59 (561 tests). Full
-suite: 1,123 passed on Python 3.12.3 and on 3.13.17. Fail-first evidence for
-every review fix: `evidence/fail-first/`.
+Stage 02 suites: unit 213, integration 115, negative 263, regression 60,
+reproducibility 5, security 69, contracts 7, simulation 59 (587 tests). Full
+suite: 1,149 passed on Python 3.12.3 and on 3.13.17. Fail-first evidence for
+every review fix and for the R-026 correction: `evidence/fail-first/`.
 
 ## Known limitations
 
 - Retraction Watch and a 29-work Crossref replay are the only sources;
   publisher text was not read. `verified_fact` means "established from the
   cited source record", not independent truth.
-- A single PMID-bridged event can give `verified_fact` (R-026, owner
-  decision).
+- A record reached only through an unresolved identifier link is withheld,
+  not resolved (R-029): a true retraction reachable only that way reads as
+  `uncertain` (`BRIDGE_ONLY_SUPPORT`). R-026 itself is closed (D-026).
 - Day-1 dates and literal `%` in bare DOIs are handled conservatively (R-023,
   R-024).
 - Identity beyond exact identifiers is advisory and not validated on natural
@@ -177,8 +187,11 @@ None. History of the two blockers:
 Protected changes, for the owner's review: `src/citerift/governance/`
 (maintenance transaction), `schemas/governance/stage_registry.schema.json`
 (`$defs.maintenance`), `tests/stage00/` (the two corrected tests and the
-maintenance tests), and GOVERNANCE.md. Nothing in `src/citerift/contracts`,
-`schemas/contracts/v1`, `.github/` or Stage 01 evidence changed.
+maintenance tests), and GOVERNANCE.md, all from A-00-002. The R-026
+correction changed none of them: it touches only Stage 02's owned paths,
+its documents, DECISIONS.md, RISKS.md, CHANGELOG.md and the registry
+transitions. Nothing in `src/citerift/contracts`, `schemas/contracts/v1`,
+`.github/` or Stage 01 evidence changed.
 
 ## Dependency versions
 
@@ -216,8 +229,10 @@ torch 2.14.1+cpu, transformers 5.19.0, no CUDA), audited separately. Real-data r
 ## Acceptance decision
 
 Requested from the owner: accept Stage 02 (or not), merge the pull request
-(or not), and decide whether the local model stays out of the default
-product (recommended: yes, R-028). The agent has done none of these.
+(or not), decide whether the local model stays out of the default product
+(recommended: yes, R-028), and confirm or change the reading of "adequate
+direct evidence" in D-026 (a bridged record may withhold a conclusion that
+it would change, never support one). The agent has done none of these.
 
 ## Requirements for the next stage
 
@@ -231,7 +246,10 @@ Interface requirements only; no later stage is authorized.
 - Never turn `no_record` or `notice_only` into "not retracted"; carry
   `uncertain` and its reasons through.
 - Treat identity `bridged` and `ambiguous_identity` as unresolved for any
-  claim about a Wikipedia citation.
+  claim about a Wikipedia citation. A result with `BRIDGE_ONLY_SUPPORT` or
+  `BRIDGED_EVIDENCE_MATERIAL` is unresolved, never "not retracted"; the
+  candidate records are in `events` (`linked_via`) and
+  `basis.bridged_assertions`.
 - Advisory suggestions have no path into facts; keep it that way.
 - Do not enable the local model by default and do not show its ranking as a
   suggestion unless a new protocol with a new fresh holdout admits it (R-028).

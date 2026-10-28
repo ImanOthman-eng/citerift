@@ -29,22 +29,24 @@ is not a claim that the model helps. It did not.
 
 ## 2. Test suites
 
-`uv run pytest` at the final code (local, 2026-10-28): **1,123 passed** on
-Python 3.12.3 (282.2 s) and **1,123 passed** on Python 3.13.17 (a scratch
-environment from `uv.lock`, 289.0 s); no failure, skip or deselection. `ruff
-check`, `ruff format --check` and `mypy` clean; `citerift-gov check` 0 errors.
-(At `a24dd46` the result was 2 failed, 1034 passed: the two Stage 00 tests of
-section 9.2.)
+`uv run pytest` at the final code of the R-026 correction (local,
+2026-10-28): **1,149 passed** on Python 3.12.3 (269.1 s) and **1,149 passed**
+on Python 3.13.17 (a scratch environment from `uv.lock`, 275.1 s); no
+failure, skip or deselection (`evidence/local-test-runs.txt`). `ruff check`,
+`ruff format --check` and `mypy` clean; `citerift-gov check` 0 errors. The
+complete reports at the verified revision are named in HANDOFF.md. (At
+`15925c9`: 1,123 passed on both. At `a24dd46`: 2 failed, 1034 passed, the two
+Stage 00 tests of section 9.2.)
 
-Stage 02 tests, `tests/stage02/` (561 collected; a test can carry more than
-one suite marker; at `a24dd46`: 531):
+Stage 02 tests, `tests/stage02/` (587 collected; a test can carry more than
+one suite marker; at `15925c9`: 561, at `a24dd46`: 531):
 
 | Suite | Tests |
 |---|---|
-| unit | 212 |
+| unit | 213 |
 | integration | 115 |
-| negative | 262 |
-| regression | 36 |
+| negative | 263 |
+| regression | 60 |
 | reproducibility | 5 |
 | security | 69 |
 | contracts | 7 |
@@ -58,7 +60,7 @@ Coverage of directive section 14:
 | 2 concern then retraction; correction after retraction | P-cases, `test_rde_policy_regressions.py`, `test_rde_policy_properties.py` (INV-P2), real R10 to R13, R46, R47 |
 | 3 reinstatement with and without supersession | P-cases, `test_rde_sole_reinstatement_is_unlinked`, INV-P3, real R07 to R09 |
 | 4 equal original/notice DOI; shared notice; notice-only | P-cases, `test_rde_lookup.py`, real R16 to R23 |
-| 5 missing IDs, malformed ID, contradictory bridge, incompatible dual query | `test_rde_lookup.py`, real R24 to R35, R41 to R43 |
+| 5 missing IDs, malformed ID, contradictory bridge, incompatible dual query | `test_rde_lookup.py`, `test_rde_bridge_sufficiency.py` (bridge-only support, direct plus bridged, contradictory identifiers, DOI/PMID symmetry), real R24 to R35, R41 to R43 |
 | 6 identical duplicate, reused ID, duplicate accounting | `test_rde_import.py`, real R44, R45 |
 | 7 RW plus Crossref-RW; publisher dependence unknown; resolving notice | `test_rde_corroboration.py` |
 | 8 day-1, volume/season, historical, impossible dates, date kinds | `test_rde_dates.py`, real R36, R37, R40 |
@@ -90,20 +92,21 @@ process (`scripts/benchmark.py`, `evidence/benchmark.json`):
 | Physical lines (header, record lines, blank) | 173,491 (1, 173,490, 0) |
 | Events by type | 67,916 retracted, 3,733 expression of concern, 1,544 correction, 163 reinstated |
 | Records in duplicate groups (all kept) | 439 |
-| Artifact digest, every build | `1ee679b5e5c2e89f06139f43ffd27818b9259dc15693c743ef7bd2ea45e809dc` |
+| Artifact digest, every build | `22bf1f30482b71ef45c61940d835649bb449892319d21a7e0adc7b53d1ded339` (policy 1.2.0; at `15925c9`, policy 1.1.0: `1ee679b5…`) |
 | Semantic digest, every build | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` |
 | Export lines | 147,152 |
 | Double build | one digest set over five builds; query outputs equal |
 
 The counts equal the accepted Stage 01 profile. The semantic digest is the
 same as at `e4de42b`; the artifact digest changed with the policy version
-(SPECIFICATION.md 16 item 23), which is what it is meant to record.
+(SPECIFICATION.md 16 items 23 and 26), which is what it is meant to record.
 
 `verify --source` on the first build re-reads the CSV and compares it with the
 index: ok, 0 problems, 73,356 events schema-checked, 73,356 source records
 checked (`evidence/verify-rw.json`). The index built with the pinned Crossref
 replay (48 Crossref assertions) is also clean: artifact digest
-`ea4c1678e1f4fd0a65e56e9202f129f53dd2e3fa2607a9c5002e16782430147d`, semantic
+`ebb1f873269dbff949673d77f9096e8fcbafb35b9a9ef2ae9c03bc965c136b31` (1.1.0:
+`ea4c1678…`), semantic
 digest `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a`,
 147,229 export lines (`evidence/verify-cr.json`).
 
@@ -146,7 +149,7 @@ validates against its schema):
 | D1 | DOI `10.1016/s0140-6736(97)11096-0` | redistributed support | yes | counts 4 confirming sources from 1 origin |
 | D2 | DOI `10.2217/nnm.14.183` | redistributed support, origin dependence | yes | counts 8 sources from 2 origins; cannot show the date and notice rest on one origin |
 | D3 | DOI `10.1007/s13277-014-2995-5` | redistributed support | yes | counts 6 sources from 2 origins; states 2015-07-24 as given while the dates conflict |
-| D4 | PMID `26700683` | uncertain identity or notice | yes | cannot show the answer rests on a one-hop bridge |
+| D4 | PMID `26700683` | uncertain identity or notice | yes | cannot show that a one-hop bridged record sits beside the direct one (since policy 1.2.0 the direct record alone supports the answer: `BRIDGED_EVIDENCE_NOT_COUNTED`) |
 | D6 | DOI `10.1001/archneur.1985.04060020080021` | unsupported temporal precision | yes | states 1989-10-01, a day-1 value, as a date |
 | D5 | PMID `11430323` | none (control label) | **no** (`ambiguous_identity`) | answers "retracted" for a PMID that names several works |
 | D7 | DOI `10.1159/000443123` | none (control label) | **no** (`REINSTATEMENT_UNLINKED`) | answers "retracted" and a date |
@@ -314,22 +317,25 @@ in `evidence/benchmark.json` (SPECIFICATION.md 13 query mix):
 
 | Budget | Limit | Measured | Met |
 |---|---|---|---|
-| Build wall time | 120 s | median 71.7 s, max 73.7 s (5 builds) | yes |
-| Build peak RSS | 512 MiB | 405.3 MiB | yes |
+| Build wall time | 120 s | median 70.9 s, max 71.2 s (5 builds) | yes |
+| Build peak RSS | 512 MiB | 406.0 MiB | yes |
 | Index size | 512 MiB | 265.9 MiB | yes |
-| Warm lookup p95 (2,000 queries) | 20 ms | 0.239 ms (max 41.6 ms) | yes |
-| Fresh-process lookup p95 (200) | 1,000 ms | 141.3 ms | yes |
-| Evidence Tension p95 (200) | 50 ms | 0.398 ms | yes |
-| Ambiguity candidates p95 (200) | 100 ms | 16.4 ms | yes |
-| Double build | equal | equal | yes |
+| Warm lookup p95 (2,000 queries) | 20 ms | 0.225 ms (max 34.5 ms) | yes |
+| Fresh-process lookup p95 (200) | 1,000 ms | 146.4 ms | yes |
+| Evidence Tension p95 (200) | 50 ms | 0.372 ms | yes |
+| Ambiguity candidates p95 (200) | 100 ms | 16.2 ms | yes |
+| Double build | equal | equal (one digest set over five builds, equal query output) | yes |
 
 An earlier run at `aa7c23c` failed the memory budget (740 MiB) because every
 event was held in memory for parallel validation; it is kept as
 `evidence/benchmark-at-aa7c23c-failed-rss.json`. Validation was made serial
 and streaming at `66e39ed` and the budget was not changed. The run at `66e39ed`
 (`evidence/benchmark-at-66e39ed.json`) met every budget before the version
-increment; the run above is the one at the cited revision. Host: 4 vCPU,
-15 GiB, Python 3.12.3, SQLite 3.45.1.
+increment. The run above is the one of the R-026 correction (engine code of
+`a0666b3`, policy 1.2.0, 2026-10-28); the run pinned at `15925c9` (policy
+1.1.0, median 71.7 s, peak 405.3 MiB, warm p95 0.239 ms, fresh p95 141.3 ms)
+is kept as `evidence/benchmark-at-15925c9.json`. Host: 4 vCPU, 15 GiB,
+Python 3.12.3, SQLite 3.45.1.
 
 ## 9. CI and the Stage 00 tests (gate 02-I)
 
@@ -444,7 +450,7 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | S10 | low | identifier hygiene | U+3164 and U+2800 kept in keys; short PMIDs match many relevance rows | accepted as specified: both characters are allowed by SPECIFICATION.md 6.1; extra relevance hits make an answer uncertain, never a match | none |
 | Sci-1 | high | directive 9, INV-P2 | ordered concern then retraction on one notice was `conflicting`; 25 real groups | fixed (item 12); 34 real keys now `retracted`, 4 `uncertain` | regressions, INV-P2 property, R46, R47 |
 | Sci-2 | high | directive 9, unlinked reinstatement | a reinstatement alone was `verified_fact` | fixed (item 11; P04 amended); 275 real keys now `uncertain` | regression, INV-P3, R08, R09 |
-| Sci-3 | medium | directive 8, co-occurrence is not proof of identity | a PMID-bridged event alone gives `verified_fact`, `retracted` with identity `bridged` | **kept as frozen** (cases P33, T05, T06 expect it; 0 real instances found by the reviewer); identity `bridged` and `exclude_ambiguous_links` expose it; proposed to the owner as R-026 | P33, T05, T06 |
+| Sci-3 | medium | directive 8, co-occurrence is not proof of identity | a PMID-bridged event alone gives `verified_fact`, `retracted` with identity `bridged` | kept as frozen at the time (cases P33, T05, T06 expected it; 0 real instances found by the reviewer) and proposed to the owner as R-026. **Fixed on 2026-10-28 by the owner's correction** (D-026, rule 7f; P33, T05, T06 amended). The reviewer's "0 real instances" missed Crossref relations reached through a co-occurring DOI: 2 real PMID keys (section 12) | `test_rde_bridge_sufficiency.py`, P33, T05, T06 |
 | Sci-4 | medium | directive 11, unknown dependence | publisher dependence stored as none | fixed: `dependence` field (item 14) | `test_rde_replay_lineage_and_dependence` |
 | Sci-5 | medium | INV-P1 | unknown-origin support alone verified | fixed (item 14) | regression, INV-P8 |
 | Sci-6 | medium | gate 02-G coverage | coverage ≤ 0.508 for any model | recorded, gate not lowered; owner decision (section 7) | arithmetic in section 7 |
@@ -460,15 +466,105 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | Simulator run | `evidence/simulator.json` |
 | Oracle comparison | `evidence/oracle-comparison.json` |
 | Benchmarks, double build | `evidence/benchmark.json`; failed run kept as `evidence/benchmark-at-aa7c23c-failed-rss.json` |
-| Policy impact | `evidence/policy-impact-rw.json`, `evidence/policy-impact-cr.json` |
+| Policy impact | `evidence/policy-impact-rw.json`, `evidence/policy-impact-cr.json` (items 11 to 14); `evidence/policy-impact-r026-rw.json`, `evidence/policy-impact-r026-cr.json` (R-026, section 12) |
+| Evidence pinned at the earlier verification (`15925c9`) | `evidence/*-at-15925c9.json` (benchmark, oracle comparison, tension demonstrations, simulator, verify); `evidence/verification-record-at-15925c9.json` |
 | Tension demonstrations | `evidence/tension-demonstrations.json` |
 | Crossref replay bundle | `evidence/crossref/` |
-| Fail-first runs | `evidence/fail-first/` |
+| Fail-first runs | `evidence/fail-first/` (R-026: `r026-bridge-sufficiency-at-720a049.txt`) |
 | AI Protocol v1, baseline, route pilot (historical) | `ai/` |
 | AI Protocol v2, development set, screening, calibration, holdout, predictions, evaluation | `ai/v2/` |
 | Model selection, licences, inference guide | `ai/v2/MODEL_SELECTION.md`, `ai/v2/THIRD_PARTY_AND_MODEL_LICENSES.md`, `ai/v2/INFERENCE_GUIDE.md` |
 | Inference audit, clean-checkout run, separate-process demonstration | `ai/v2/inference/` |
-| Real rebuild at the final code | `evidence/rebuild-check-2026-10-28.json` |
+| Real rebuild check of `4a0fc19` (policy 1.1.0; historical) | `evidence/rebuild-check-2026-10-28.json`; the rebuilds under 1.2.0 are in `evidence/benchmark.json`, `verify-rw.json`, `verify-cr.json` |
 | Stage 00 maintenance A-00-002 | `docs/verification/maintenance/A-00-002/` |
 | Local full-suite runs, Python 3.12 and 3.13 | `evidence/local-test-runs.txt` |
-| Complete test report | `test-report.json` (Python 3.12, at `15925c9`); `evidence/test-report-py3.13-at-15925c9.json`; the earlier failing report: `evidence/test-report-at-f62a280.json` |
+| Complete test report | `test-report.json` (Python 3.12) and `evidence/test-report-py3.13.json` at the verified revision; at `15925c9`: `evidence/test-report-py3.12-at-15925c9.json`, `evidence/test-report-py3.13-at-15925c9.json`; the earlier failing report: `evidence/test-report-at-f62a280.json` |
+
+## 12. R-026 correction: bridged identifiers (2026-10-28)
+
+Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`
+(DECISIONS.md D-026). Rule 7f of SPECIFICATION.md 11.1, policy 1.2.0. The
+stage returned from VERIFIED_AWAITING_OWNER_ACCEPTANCE to IN_PROGRESS for it;
+the verification at `15925c9` stays in the registry history and its pinned
+evidence is kept as `evidence/*-at-15925c9.json`. The AI Protocol v2
+experiment, its holdout and its result are unchanged, and the local model
+stays opt-in.
+
+### 12.1 Before and after (synthetic regressions)
+
+`tests/stage02/test_rde_bridge_sufficiency.py`, 25 tests. Run against the
+unchanged engine at `720a049`: 17 failed and 7 passed
+(`evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`); the seeded
+invariant test, added afterwards, also fails there (seed 2). The 7 that passed
+there pin behavior that was already right: the contradictory-identifier rules
+and the DOI/PMID symmetry of the record bridges. "DOI" and "PMID" below are
+the two query directions; each row was run in both.
+
+| Evidence for the queried work | 1.1.0 (`720a049`) | 1.2.0 |
+|---|---|---|
+| Direct expression of concern, bridged retraction (P33, T05, T06) | `verified_fact` retracted, date `verified_fact` 2015-03-12 | `uncertain`, null, no date; `BRIDGE_ONLY_SUPPORT`, `BRIDGED_EVIDENCE_MATERIAL`; the bridged event, its `linked_via` and its source assertions are kept and listed in `basis.bridged_assertions` |
+| Two-identifier query: DOI-only concern, PMID-only retraction (`query_pair`) | `verified_fact` retracted | `uncertain`, null (`BRIDGE_ONLY_SUPPORT`) |
+| PMID query: direct concern, publisher Crossref retraction about the co-occurring DOI | `verified_fact` retracted, identity `exact` | `uncertain`, null, identity `bridged`; the DOI query on the same index still gives `verified_fact` retracted (the relation is direct for it) |
+| Direct retraction, bridged retraction (same or another notice) or bridged correction | `verified_fact` retracted, date verified; the bridged retraction counted as support (2 supporting assertions) | the same status and date; support is the direct record only (1), `BRIDGED_EVIDENCE_NOT_COUNTED` |
+| Direct retraction 2015-03-12, bridged retraction 2016-05-10 | `verified_fact` retracted, date `uncertain` (`MULTIPLE_RETRACTION_DATES`) | the same status and date status; reason `BRIDGED_EVIDENCE_MATERIAL` |
+| Direct correction, bridged retraction | `verified_fact` retracted | `uncertain`, null |
+| Direct correction, bridged correction | `verified_fact` correction (2 supporting) | `verified_fact` correction (1 supporting) |
+| The bridge PMID also co-occurs with another DOI; PMID-only retraction | `verified_fact` retracted | `uncertain`, null |
+| Contradictory identifiers (incompatible pair; PMID with two DOIs; DOI with two PMIDs) | `ambiguous_identity` / `ambiguous_identity` / matched with `IDENTITY_SECONDARY_DIVERGENT`, no bridge | unchanged |
+
+The frozen expectations of P33, T05 and T06 are amended in
+`simulations/stage02/cases/post_freeze_amendments.json`; the frozen files are
+unchanged and both loaders check the frozen values before applying an
+amendment. T05 and T06 now expect `exclude_ambiguous_links` to change
+`retraction_status.status`, `retraction_status.value`, `support.observations`,
+`support.origins`, `identity.status` and `notice_links` (frozen:
+`retraction_status.value`, both date fields, `identity.status`,
+`notice_links`): the base is now unsettled and the view, which is the direct
+projection, settles the expression of concern. The simulator implements rule
+7f separately and passes 37/37 policy and 16/16 tension cases
+(`evidence/simulator.json`). The existing C-13 regression expected a
+verified retraction from a bridged record; it now checks the grouping on the
+full set and the new status.
+
+### 12.2 Real-data impact (pinned snapshot)
+
+Every original DOI and PMID key (96,803) projected at `720a049` on the 1.1.0
+indexes and at `a0666b3` on indexes rebuilt under 1.2.0, compared on lookup
+state, status, value, date status, date value, identity status and number of
+supporting assertions (`scripts/policy_impact.py`):
+
+| Index | Keys changed | Detail |
+|---|---|---|
+| Retraction Watch only | **0** of 96,803 (`evidence/policy-impact-r026-rw.json`) | The two real PMID keys with a bridged record already had direct support and no material bridge; 4 real cases gain the reason `BRIDGED_EVIDENCE_NOT_COUNTED` only |
+| With the pinned Crossref replay | **22** of 96,803 (`evidence/policy-impact-r026-cr.json`), all PMID queries that reach Crossref relations through the co-occurring DOI | 2 `verified_fact` retracted → `uncertain`, null: PMIDs `23649173` and `25996123`, each recorded in Retraction Watch only as a correction, while the DOI's retraction is recorded under another PMID (`22732752`, `25816875`). 17 keep their verified value and date, with identity `bridged` and fewer supporting assertions (the Crossref relations are no longer counted). 3 stay `uncertain` with identity `bridged`. No date changed |
+
+The two status changes are the case R-026 describes, found on real data: the
+earlier review's "0 real instances" did not look at Crossref relations
+reached through a co-occurring DOI. A DOI query for either work is unchanged
+(`verified_fact` retracted).
+
+Rebuilt indexes (`evidence/verify-rw.json`, `evidence/verify-cr.json`):
+`verify --source` ok, 0 problems, 73,356 events schema-checked. The semantic
+digests are unchanged (`7b2a2344…`, `d3daab8f…`): the indexed content is the
+same. The artifact digests changed (`22bf1f30…`, `ebb1f873…`) because they
+include the policy and schema versions. Oracle: 0 mismatches on 112,481 DOI
+and 63,010 PMID keys and 1,600 absent keys (`evidence/oracle-comparison.json`).
+Real cases: 50 of 50 agree after regeneration; the only outcome change is the
+added reason above. Tension demonstrations: the same classes on the same eight
+queries; D4's base reasons add `BRIDGED_EVIDENCE_NOT_COUNTED`.
+
+### 12.3 Limitations of the correction
+
+- A bridged record is withheld, not resolved (R-029). A retraction that does
+  concern the work but is reachable only through a co-occurring identifier is
+  now `uncertain`, not retracted; downstream stages must show it as
+  unresolved, never as "not retracted".
+- A bridged record can withhold a conclusion (when accepting it would change
+  the value or the verified date), never support one. This reading of "adequate
+  direct evidence" is the agent's and is stated for the owner's review
+  (D-026).
+- Kept as specified and pinned by tests: a PMID with two DOIs is
+  `ambiguous_identity` while a DOI with two PMIDs stays matched with
+  `IDENTITY_SECONDARY_DIVERGENT` (the anchor is DOI-first); a two-identifier
+  query whose DOI names no record answers for the PMID alone (`pmid:p`).
+- The Crossref side rests on the 29-work replay only.

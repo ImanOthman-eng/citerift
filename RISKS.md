@@ -460,7 +460,7 @@ Later stages must not treat a baseline candidate or a model ranking as an
 identity.
 
 ## R-026 — A single PMID-bridged event can give a verified retraction
-- Status: open
+- Status: closed
 - Severity: medium
 - Kind: risk
 - Stage: 02
@@ -472,6 +472,17 @@ co-occurrence is a source assertion, not proof of identity. The identity status
 and Evidence Tension's `exclude_ambiguous_links` expose it; the review found no
 real instance. Changing it means amending three frozen cases; that is the
 owner's decision.
+
+Closed on 2026-10-28 by the owner's correction (D-026; policy 1.2.0, rule 7f):
+bridged assertions no longer support a value or a date, and P33, T05 and T06
+are amended. The audit found that the review's "no real instance" was
+incomplete: a PMID query also counted Crossref relations about the
+co-occurring DOI as direct. On the pinned snapshot with the Crossref replay,
+2 PMID queries had a verified retraction resting only on such relations
+(PMIDs 23649173 and 25996123, each recorded in Retraction Watch only as a
+correction while the DOI's retraction is recorded under another PMID); both
+are now `uncertain` (`evidence/policy-impact-r026-cr.json`). The RW-only
+index has no changed key. What remains is R-029.
 
 ## R-027 — Stage 02 model experiment not executed; frozen gate unattainable
 - Status: closed
@@ -500,3 +511,25 @@ output must not be shown as a suggestion by default or used for any decision.
 A later stage that wants it needs a new model or task design, a new
 development phase and a new fresh holdout; reusing this holdout for tuning is
 not allowed. Reranker scores are ranking logits, not probabilities.
+
+## R-029 — Bridged evidence is withheld, not resolved
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Since policy 1.2.0 (D-026) a record reached only through an unresolved
+identifier link (a co-occurring PMID or DOI, the pairing of a two-identifier
+query, or a Crossref relation about a DOI the query did not give) neither
+supports nor, when it would change nothing, affects a result. Identity is not
+resolved: a retraction that truly concerns the work but is reachable only
+through such a link is reported as `uncertain` with `BRIDGE_ONLY_SUPPORT`,
+not as retracted, and a bridged retraction with another date makes a
+verified date `uncertain`. Later stages must show these as unresolved, not as
+"not retracted". Two related behaviors are kept as specified and are pinned
+by tests: a PMID whose records carry two DOIs is `ambiguous_identity`, while
+a DOI whose records carry two PMIDs stays matched with
+`IDENTITY_SECONDARY_DIVERGENT` and bridges nothing (the anchor is DOI-first);
+and a two-identifier query whose DOI names no record answers for the PMID
+alone, anchored at `pmid:p`.
+

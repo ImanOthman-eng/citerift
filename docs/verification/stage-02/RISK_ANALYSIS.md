@@ -77,7 +77,8 @@ decision instead (DECISIONS.md D-023).
 |---|---|---|---|---|---|
 | S12 | Support of unknown origin or dependence presented as established | M | H | `dependence` on every Crossref assertion; support only of origin `unknown` gives `uncertain` (SPECIFICATION.md 16 item 14) | `test_rde_policy_regressions.py`, INV-P8 property test |
 | S13 | A reinstatement with nothing it supersedes shown as the current effect | M | H | rule 7d gives `uncertain` (item 11); 275 real originals affected | P04 (amended), INV-P3 property test, `evidence/policy-impact-rw.json` |
-| S14 | A PMID-bridged event alone yields `verified_fact` | M | M | kept as frozen (cases P33, T05, T06): identity status `bridged` and `exclude_ambiguous_links` show it; not hidden | proposed to the owner as R-026 |
+| S14 | A PMID-bridged event alone yields `verified_fact` | M | M | kept as frozen at first (cases P33, T05, T06) and proposed as R-026; **controlled since 2026-10-28** by rule 7f (D-026): bridged assertions, Crossref relations reached through a co-occurring DOI included, never support a value or a date | `test_rde_bridge_sufficiency.py`, P33/T05/T06 amended, `evidence/policy-impact-r026-*.json` |
+| S15 | Bridged records withheld make a true retraction read as unresolved | M | M | reported as `uncertain` with `BRIDGE_ONLY_SUPPORT`, never as not retracted; the bridged events stay listed with `linked_via` | RISKS.md R-029 |
 | E11 | A rebuild with other evidence deletes an earlier artifact of the same snapshot | M | H | `ARTIFACT_EXISTS`; equal builds only are replaced (item 15) | A2 tests |
 | E12 | A derived table is altered and `verify` still passes | L | H | `verify` recomputes derived tables from the raw records and checks the manifest (item 15) | A3 tests |
 | E13 | Characters in the index path change which file SQLite opens or its mode | L | H | percent-encoded URI and `PRAGMA database_list` check (item 16) | S2 tests |
@@ -87,7 +88,8 @@ decision instead (DECISIONS.md D-023).
 | P5 | The AI admission criterion "selection coverage ≥ 60%" cannot be met on this snapshot | H (observed) | M | not lowered; reported to the owner with the arithmetic (TEST_RESULTS.md) | protocol arithmetic in TEST_RESULTS.md |
 
 Residual risk proposed for the owner: R-026, a single PMID-bridged event can
-give `verified_fact` with identity `bridged` (S14).
+give `verified_fact` with identity `bridged` (S14). Closed on 2026-10-28 by
+the owner's correction (D-026); the remaining limitation is R-029 (S15).
 
 ## 7. AI Protocol v2 and the local open model (2026-10-28)
 

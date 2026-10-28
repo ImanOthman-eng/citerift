@@ -217,6 +217,43 @@ publisher-disagreement cases that stay conflicts).
 7. **Trimming (§2).** The outer whitespace removed before normalization is
    Unicode whitespace that is not a control, plus tab, LF and CR; INV-N2's
    `strip` means this set.
+8. **Bridge sufficiency (§4, rule 7f; 2026-10-28, R-026, SPECIFICATION.md 16
+   item 25).** Partition the typed assertions of a matched set into direct
+   `E_d` and bridged `E_b` (an assertion is bridged when it is reached from
+   the query only through an unresolved link: a co-occurring identifier, the
+   query's own pairing, or a Crossref relation about a DOI the query did not
+   give). Let `P₀` be the reducer of §4 with changes 1 to 5, and write
+   `v(R)` for the value of a verified result. Then
+
+   `P(E) = P₀(E)` if `E_b = ∅`; otherwise
+   `P(E) = P₀(E_d)` when `P₀(E_d)` and `P₀(E)` are verified with
+   `v(P₀(E_d)) = v(P₀(E))`; `uncertain`, null when `P₀(E_d)` is verified and
+   that equality fails; and `P₀(E_d)` when `P₀(E_d)` settles no value.
+
+   `support(P(E)) = support(P₀(E_d)) ⊆ E_d`. The date of a verified
+   retraction is that of `P₀(E_d)` when `P₀(E)` gives the same verified date,
+   else `uncertain`, null.
+
+   - **INV-P9 (no bridge-only fact)** `P(E)` verified ⇒
+     `support(P(E)) ∩ E_d ≠ ∅` and `support(P(E)) ∩ E_b = ∅`. In particular
+     a set whose only supporting assertions are bridged never gives a fact.
+   - **INV-P10 (robustness)** `P(E)` verified with value `v` ⇒ `P₀(E_d)` and
+     `P₀(E)` are both verified with value `v`: the stated value is the same
+     whether the bridges are rejected or accepted. A verified date likewise
+     holds under both.
+   - **INV-P11 (direct sufficiency kept)** if `P₀(E_d)` is verified and adding
+     `E_b` changes neither the value nor the verified date, `P(E) = P₀(E_d)`
+     whatever `identity.status` is.
+   - **INV-L4 (symmetry)** the link from a DOI query through a co-occurring
+     PMID and the link from a PMID query through a co-occurring DOI are the
+     same relation read in two directions; every assertion reached through
+     either is in `E_b`, Crossref relations included.
+
+   `exclude_ambiguous_links` removes `E_b`, so its view is `P₀(E_d)`; a
+   change between that view and `P(E)` shows exactly what the bridges
+   withhold. Tests: `test_rde_bridge_sufficiency.py` (fail-first:
+   `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`),
+   `test_rde_tension_properties.py` (INV-P9 over seeded sets).
 
 ## 10. AI Protocol v2 (2026-10-28; SPECIFICATION.md 12.4)
 

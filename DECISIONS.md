@@ -542,3 +542,29 @@ the deterministic baseline stays the ambiguity decision. The owner approved
 the route and the protocol; the admission recommendation and Stage 02
 acceptance are still the owner's decisions.
 
+## D-026 — Bridged identifiers do not by themselves establish a status or a date
+- Status: accepted
+- Topic: stage-02-bridge-sufficiency
+- Date: 2026-10-28
+- Stage: 02
+- Supersedes: none
+- Evidence: docs/verification/stage-02/SPECIFICATION.md (11.1 rule 7f; 16 items 25 and 26); docs/verification/stage-02/MATHEMATICAL_MODEL.md (9.8); simulations/stage02/cases/post_freeze_amendments.json (P33, T05, T06); docs/verification/stage-02/evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt; docs/verification/stage-02/evidence/policy-impact-r026-rw.json; docs/verification/stage-02/evidence/policy-impact-r026-cr.json
+
+Owner instruction (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`,
+2026-10-28): perform a narrowly scoped Stage 02 scientific correction for
+R-026. Unresolved identifier bridges must not, by themselves, establish a
+verified retraction status or date for the queried subject; sufficiency is
+determined from the supporting evidence, not from the aggregate identity
+flag, and adequate direct evidence keeps its conclusion beside bridged
+events. Source assertions, provenance, candidate relationships and
+uncertainty reasons are preserved. The AI Protocol v2 experiment and its
+negative result are kept; the rejected model stays disabled by default.
+
+Implemented as policy 1.2.0, rule 7f. The projection is that of the direct
+assertions, stated as a verified fact only when accepting the bridges would
+not change it (the stated value holds whether the bridges are rejected or
+accepted). Frozen cases P33, T05 and T06 are amended with their frozen values
+kept. Interpretation chosen by the engineering agent, open to the owner's
+review: a bridged record may withhold a conclusion (when it would change the
+value or the verified date) but never supports one. Stage 02 acceptance stays
+the owner's decision.

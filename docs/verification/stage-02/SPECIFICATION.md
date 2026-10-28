@@ -411,7 +411,10 @@ Algorithm (DOI `d`, PMID `p`, either or both):
 4. Single PMID: if the valid original DOIs of `O_p` are more than one →
    `ambiguous_identity` with candidate groups by DOI (no union). If exactly
    one DOI `e`, events with DOI `e` and no valid PMID are bridged
-   (`linked_via = doi_cooccurrence`). Otherwise `matched`.
+   (`linked_via = doi_cooccurrence`). Otherwise `matched`. Crossref
+   relations about `e` are reached through the same link, so they are bridged
+   too (16 item 25): a Crossref relation is direct only when its subject is
+   the query's own DOI.
 5. Both: compatible iff every event of `O_d` has PMID ∈ {p, null} and every
    event of `O_p` has DOI ∈ {d, null}. Compatible with `O_d ∪ O_p` ≠ ∅ →
    `matched` (events matched only by `p` are marked `matched_by = pmid`).
@@ -496,6 +499,30 @@ supporting assertion ids. Rules in order:
       `uncertain`, null (`MIXED_CURRENT_EFFECT`).
    Relevant quarantine with a matched state downgrades a b/d result to
    `uncertain`, null (`COVERAGE_GAP_RELEVANT_ROWS`).
+   f. **Bridge sufficiency** (policy 1.2.0, 16 item 25, R-026). A *bridged*
+      assertion is one reached from the query only through a link that no
+      source resolves: a `pmid_cooccurrence`, `doi_cooccurrence` or
+      `query_pair` event, or a Crossref relation about a DOI the query did not
+      give. Bridged assertions never support a value or a date. Let `R_d` be
+      rules a to e on the direct assertions alone and `R_f` the same rules on
+      all assertions (bridges taken as resolved). If no assertion is bridged,
+      the result is `R_f`. Otherwise:
+      - `R_d` and `R_f` are both `verified_fact` with the same value: that
+        value, supported by the direct assertions only
+        (`BRIDGED_EVIDENCE_NOT_COUNTED`);
+      - `R_d` is `verified_fact` and `R_f` is not, or has another value:
+        `uncertain`, null (`BRIDGED_EVIDENCE_MATERIAL`, plus
+        `BRIDGE_ONLY_SUPPORT` when every supporting assertion of `R_f` is
+        bridged);
+      - `R_d` settles no value: `R_d` stands (`uncertain` or `conflicting`),
+        with `BRIDGE_ONLY_SUPPORT` when `R_f` would rest only on bridged
+        assertions, else `BRIDGED_EVIDENCE_NOT_COUNTED`; when no direct typed
+        assertion exists the direct reason codes are dropped.
+      The bridged assertion ids are listed in `basis.bridged_assertions`; the
+      events keep `linked_via`, and the source assertions and candidate groups
+      are unchanged. Sufficiency is read from the supporting assertions, never
+      from `identity.status`: a direct retraction keeps its conclusion beside
+      bridged records that agree or cannot change it.
 8. `retraction_date` only when the value is `retracted`, from the RW notice
    dates of the clear retraction events: if they all report the same
    calendar value, that value with `verified_fact` when its bounds are
@@ -504,7 +531,10 @@ supporting assertion ids. Rules in order:
    date gives `uncertain`, null (`DATE_UNKNOWN`); different reported values
    give `uncertain`, null (`MULTIPLE_RETRACTION_DATES`). Crossref dates are
    not used. Otherwise absent; for `not_found_in_checked_sources` it is null
-   with no alternatives (v1 rule).
+   with no alternatives (v1 rule). Under rule 7f the date is computed from the
+   direct retraction events; when `R_f` would not give the same verified date
+   (a bridged retraction reports another date, as a conflicted one does under
+   item 9), it is `uncertain`, null (`BRIDGED_EVIDENCE_MATERIAL`).
 9. `verified_fact` here means "established from the cited source record"
    (`basis.scope = checked_sources`), not independent truth.
 
@@ -526,7 +556,7 @@ Interventions operate on a copy of `E` (no mutation, no database write):
 |---|---|
 | `collapse_shared_origin` | supporting observations of one origin count once (channels kept for display) |
 | `exclude_origin(o)` | assertions with origin `o` and assertions that depend on `o` are removed; at most two origins per call |
-| `exclude_ambiguous_links` | bridged events, notice links flagged `NOTICE_ALSO_ORIGINAL_ELSEWHERE`, and Crossref relations whose subject does not resolve to the query anchor are withheld; exact original-role events stay |
+| `exclude_ambiguous_links` | bridged events, bridged Crossref relations (rule 7f), notice links flagged `NOTICE_ALSO_ORIGINAL_ELSEWHERE`, and Crossref relations whose subject does not resolve to the query anchor are withheld; exact original-role events stay. Under rule 7f this view gives the direct projection `R_d` |
 | `require_temporal_bounds` | every date value and ordering without justified bounds is withheld; events stay |
 
 Output per intervention: `applicable` (false with a reason when the view
@@ -741,7 +771,9 @@ The specification was frozen at `36696b3`. The changes below were made while
 implementing it; each is recorded with its reason and the test that holds it.
 None lowers a gate or a budget. Items 2, 4, 5, 9 to 14 and 17 change a
 result; all of them except item 5 are stricter than the frozen text, and item 5
-removes an intervention whose outcome is fixed in advance. Items 11 to 22 come
+removes an intervention whose outcome is fixed in advance. Item 25 (owner
+instruction of 2026-10-28 on R-026) changes results and is stricter than the
+frozen text; item 26 versions it. Items 11 to 22 come
 from the three review passes of `3a6f1eb` (TEST_RESULTS.md, review
 dispositions); their fail-first run is
 `evidence/fail-first/review-findings-at-3a6f1eb.txt`.
@@ -772,6 +804,8 @@ dispositions); their fail-first run is
 | 22 | 9 | The Crossref client follows no redirect, enforces a total read deadline, honours `Retry-After` (seconds or HTTP date) on 429 and 5xx and records an unreadable one as a failure; replay payloads must be regular files within the size cap, strict JSON (no duplicate keys, NaN or Infinity) and with a hexadecimal hash | Security review findings S3, S4, S5, S7 and S8 | `test_rde_review_findings.py` |
 | 23 | 4 | `POLICY_VERSION` is `citerift-rde-policy/1.1.0` and `TENSION_VERSION` is `citerift-evidence-tension/0.2.0`. `PARSER_VERSION`, `INDEX_FORMAT` and `BASELINE_VERSION` are unchanged. `SCHEMA_VERSION` stays `1.0.0`: the schemas were first written with the engine (`e4de42b`) and are first delivered with this stage, so no other 1.0.0 exists | Section 4: "A change to any rule in §5 to §11 increments the matching version"; items 2, 4, 9 to 14 change §10 and §11 rules, and item 20 the tension report. Readers refuse an index built under another policy version (`INDEX_FORMAT_MISMATCH`) | `test_rde_spec_changes.py` |
 | 24 | 12.3, 12.4 | AI Protocol v1 superseded by v2; the local open-model adapter, its manifest directory and the CLI option `--model-dir` are added; the session-agent route is dropped | Owner directive of 2026-10-28 (D-025): v1's gate was infeasible, and the product AI must be an open, self-hosted model | `test_rde_local_model.py`; `ai/v2/` |
+| 25 | 10.3 step 4, 11.1 rules 7f and 8, 11.2 (C-25) | Bridge sufficiency: bridged assertions (co-occurrence and query-pair events, and Crossref relations about a DOI the query did not give) never support a value or a date; the result is the direct projection, stated as a fact only when accepting the bridges would not change it (`BRIDGE_ONLY_SUPPORT`, `BRIDGED_EVIDENCE_MATERIAL`, `BRIDGED_EVIDENCE_NOT_COUNTED`; `basis.bridged_assertions`). Frozen cases P33, T05 and T06 are amended in `post_freeze_amendments.json` (frozen values kept; both loaders check them first). Frozen T05/T06 interventions changed because the base result changed | Owner instruction of 2026-10-28 (`cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`), R-026: an unresolved identifier bridge must not by itself establish a verified status or date; sufficiency must come from the supporting evidence, and adequate direct evidence keeps its conclusion. The audit also found that a PMID query counted Crossref relations about the co-occurring DOI as direct, while the same link made a DOI-only event bridged. Real impact: TEST_RESULTS.md 12.2 | `test_rde_bridge_sufficiency.py` (fail-first: `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`), `test_rde_policy_cases.py` (P33, T05, T06), simulator |
+| 26 | 4 | `POLICY_VERSION` `citerift-rde-policy/1.2.0`, `TENSION_VERSION` `citerift-evidence-tension/0.3.0`, `SCHEMA_VERSION` and `common.schema.json` `1.1.0` (optional `basis.bridged_assertions`) | Section 4: item 25 changes §10 and §11 rules and the basis shape; a verified 1.0.0/1.1.0 delivery exists in the history (`15925c9`), so the versions move. Indexes built under 1.1.0 are refused | `test_rde_spec_changes.py`, `test_rde_schemas.py` |
 
 Four sentences of the frozen text were also edited in place in `e4de42b`,
 together with the first engine code, instead of being listed here: the

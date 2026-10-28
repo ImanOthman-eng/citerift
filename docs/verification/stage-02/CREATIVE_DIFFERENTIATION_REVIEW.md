@@ -124,9 +124,15 @@ database writes. Measured warm p95 per query with every intervention:
   (11.2 compares those fields), and it can look alarming on a stable answer.
 - Only Retraction Watch and a 29-work Crossref replay were available.
   Publisher text was not read.
-- The review found that a single PMID-bridged event can still give
-  `verified_fact` (TEST_RESULTS.md 10, Sci-3); Evidence Tension exposes it
-  through `exclude_ambiguous_links`, but the base answer is the frozen one.
+- The review found that a single PMID-bridged event could give
+  `verified_fact` (TEST_RESULTS.md 10, Sci-3); Evidence Tension exposed it
+  through `exclude_ambiguous_links` while the base answer stayed the frozen
+  one. Since the owner's R-026 correction (policy 1.2.0, rule 7f) the base
+  answer itself no longer rests on a bridge, and the `exclude_ambiguous_links`
+  view is exactly the projection of the direct evidence: on T05 and T06 the
+  report now shows an unsettled base whose direct evidence alone settles an
+  expression of concern (TEST_RESULTS.md 12). The classes detected on the
+  frozen set and on the eight real demonstrations are unchanged.
 
 ## 7. Result
 

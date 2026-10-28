@@ -29,6 +29,13 @@ what changed in the repository.
   holdout: not admitted (R-028).
 - Fixes for three review passes (R-022) and post-freeze specification changes,
   listed in docs/verification/stage-02/SPECIFICATION.md section 16.
+- 2026-10-28: R-026 correction (owner instruction, D-026): policy 1.2.0 rule
+  7f, bridged identifiers no longer establish a status or a date by
+  themselves; a PMID query treats Crossref relations about the co-occurring
+  DOI as bridged. Frozen cases P33, T05 and T06 amended (frozen values kept).
+  Tension 0.3.0; `common.schema.json` 1.1.0 adds `basis.bridged_assertions`.
+  Stage 02 returned to IN_PROGRESS for the correction and was offered for
+  verification again.
 - `tests/stage00/test_corrections.py`: the owner-authorized V-03 test-setup fix
   (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`), recorded with the
   layout-guard correction by Stage 00 maintenance A-00-002.

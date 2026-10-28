@@ -23,6 +23,20 @@ null, `REINSTATEMENT_UNLINKED`), in `cases/post_freeze_amendments.json`. Both
 loaders check that the frozen value is still the one in the frozen file
 before they apply the amendment, so an edit to the frozen file is detected.
 
+On 2026-10-28 three more were amended for the owner's R-026 correction (C-25,
+SPECIFICATION.md 16 item 25): P33 (a PMID query whose only retraction is a
+bridged DOI-only record was `verified_fact`, `retracted` with a verified date;
+it is now `uncertain`, null, no date) and the `exclude_ambiguous_links`
+changed-field sets of T05 and T06 (their base is now unsettled, so the view
+changes status, value and support instead of value and date). An amendment
+now names the part it replaces (`field`: `expected`, or `interventions` for a
+tension case). The simulator was changed for rule 7f in the same commit as
+the engine (`a0666b3`), as code of its own: it reduces the direct
+assertions and the full set separately and compares them, and it marks a
+Crossref relation as bridged when its DOI is not the query's. Like C-9 to
+C-14 before it, the change was written by the same agent as the engine, so on
+these points the two implementations are not independent (section 5).
+
 ## 2. Independent streaming oracle (gate 02-C)
 
 `simulations/stage02/oracle_stream.py` reads the pinned CSV in one streaming
@@ -49,6 +63,7 @@ query fidelity against the source bytes, not the truth of any record.
 | Test | Draw | Properties |
 |---|---|---|
 | `test_rde_tension_properties.py` | 300 seeded evidence sets | views never mutate or invent evidence; removal cannot create a positive observation (INV-P6); a redistributed copy is not an independent witness (INV-P7); controls give no change (INV-X1); deterministic, bounded reports |
+| `test_rde_bridge_sufficiency.py` | 600 seeded sets with bridged assertions of both origins | INV-P9 (no verified value from bridged support), INV-P10 (a verified value holds with the bridges rejected and accepted), INV-P11 (direct sufficiency kept); non-vacuity floor of 20 per branch; fails on the code of `720a049` (`evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`) |
 | `test_rde_policy_properties.py` | 400 seeded sets per property | INV-P1 and INV-P8 (a retraction needs clear, known-origin support), INV-P2 as amended (a later concern or correction on another proposition, or an ordered one on the same notice, does not undo a retraction), INV-P3 (no reinstatement without supersession); each property has a non-vacuity floor of 50 applicable draws |
 
 The reducer property file was added after the review passes. Against the code
@@ -70,6 +85,13 @@ with the pinned Crossref replay). Between `3a6f1eb` and the review batch:
 
 No other key changes. Two keys stay `conflicting` (`10.1007/s11581-008-0309-x`,
 `10.1016/j.ijrefrig.2015.10.002`). The same 313 keys change on both indexes.
+
+Between `720a049` (policy 1.1.0) and `a0666b3` (policy 1.2.0, rule 7f), with
+identity status and the number of supporting assertions also compared
+(`evidence/policy-impact-r026-rw.json`, `policy-impact-r026-cr.json`): no key
+changes on the RW-only index; 22 PMID keys change on the Crossref index, of
+which 2 go from `verified_fact`/`retracted` to `uncertain`/null (TEST_RESULTS.md
+12.2).
 
 ## 5. Independence limits
 
