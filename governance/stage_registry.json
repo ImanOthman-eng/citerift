@@ -1290,8 +1290,11 @@
             "docs/verification/maintenance/A-00-002/review-round-2.md"
           ],
           "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT",
-          "revision": null,
-          "test_report": null,
+          "revision": "627cc9dc73621eff3aebffba3ed340ba94fa61eb",
+          "test_report": {
+            "path": "docs/verification/maintenance/A-00-002/test-report-py3.12.json",
+            "sha256": "e1986412c03fc79bd5f9bd015acd336d641c9ccdfe7fa5f586ee795d37069249"
+          },
           "recorded_at": "2026-10-28T05:14:36Z",
           "maintenance": {
             "purpose": "Resolve the Stage 00 amendment/report cycle: two-phase maintenance transactions in the governance check, the V-03 sandbox fixture, and the authorization-aware application layout guard",
@@ -1332,13 +1335,24 @@
               }
             ],
             "patch_sha256": "8e84ec84c5133208f7cb90f37bb54f7a1e9f64cd11f4a0c80e2b5eb9326acf0f",
-            "phase": "pending_validation",
+            "phase": "finalized",
             "supersedes": null,
             "superseded_by": null,
-            "reports": [],
+            "reports": [
+              {
+                "path": "docs/verification/maintenance/A-00-002/test-report-py3.12.json",
+                "sha256": "e1986412c03fc79bd5f9bd015acd336d641c9ccdfe7fa5f586ee795d37069249",
+                "python": "3.12"
+              },
+              {
+                "path": "docs/verification/maintenance/A-00-002/test-report-py3.13.json",
+                "sha256": "8db747ba2fb862f8c7192e188981cbf1cda16908d2d67182d36a68ca81075fb9",
+                "python": "3.13"
+              }
+            ],
             "opened_after_seq": 26,
-            "finalized_at": null,
-            "finalized_after_seq": null
+            "finalized_at": "2026-10-28T05:20:43Z",
+            "finalized_after_seq": 26
           }
         }
       ],

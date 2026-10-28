@@ -128,4 +128,16 @@ enhancement (GOVERNANCE.md, D-006; RISKS.md R-002, R-016).
 
 ## 8. Live execution record
 
-Filled in after the live transaction: P, V, F, the report paths and hashes, and the CI runs.
+| Step | Record |
+|---|---|
+| Baseline | `0c21182e5871f772c3a76c75a1217c7641a63bbb` (Stage 00 accepted revision; unchanged) |
+| P (candidate) | `8b1db57a3c89536ed757bea053ecc7d0f485021f`: the protected patch, 8 owned files |
+| prepare | `citerift-gov maintenance prepare 00 --candidate 8b1db57… --path <8 files> --owner-ref cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT` gave A-00-002, `pending_validation`, patch digest `8e84ec84c513…`; check: 0 errors, `MAINTENANCE_PENDING` warning |
+| V (validated) | `627cc9dc73621eff3aebffba3ed340ba94fa61eb`: registry with the pending record (owned content identical to P) |
+| Python 3.12.3 | clean detached worktree at V, `PYTHONPATH=src python -P -m pytest -q --citerift-report …`: 1,093 collected, 1,093 passed, exit 0, `dirty: false`, selection complete. `test-report-py3.12.json`, SHA-256 `e1986412c03fc79bd5f9bd015acd336d641c9ccdfe7fa5f586ee795d37069249`; log `validation-py3.12.log` |
+| Python 3.13.17 | the same at V from a scratch environment built from `uv.lock`: 1,093 passed, exit 0, clean. `test-report-py3.13.json`, SHA-256 `8db747ba2fb862f8c7192e188981cbf1cda16908d2d67182d36a68ca81075fb9`; log `validation-py3.13.log` |
+| finalize | `citerift-gov maintenance finalize 00 A-00-002 --revision 627cc9d… --report … --report …`; check afterwards: 0 errors, no `MAINTENANCE_PENDING` |
+| F (bookkeeping) | the commit that records the finalization, these reports and this table; no owned file changes after V |
+
+The CI runs for the pull request head are recorded in `docs/verification/stage-02/TEST_RESULTS.md` and in
+the pull request.
