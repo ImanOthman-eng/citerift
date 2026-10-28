@@ -1,14 +1,17 @@
-"""Changes made to the frozen specification while implementing it (SPECIFICATION.md 16, items 2, 4 and 5)."""
+"""Changes made to the frozen specification while implementing it (SPECIFICATION.md 16, items 2, 4, 5 and 23)."""
 
 from __future__ import annotations
 
+import shutil
+import sqlite3
 from pathlib import Path
 
 import pytest
 import rde_support as S
 
-from citerift.retraction import tension
+from citerift.retraction import policy, tension
 from citerift.retraction.query import Index, lookup
+from citerift.retraction.store import IndexUnavailable, open_index
 
 
 def _retraction(record_id: str, **values: str) -> dict[str, str]:
@@ -62,3 +65,22 @@ def test_rde_single_origin_has_no_exclude_origin_step(tmp_path: Path) -> None:
     assert rep2["single_origin"] is False
     excluded = sorted(tuple(r["origins"]) for r in rep2["interventions"] if r["intervention"] == "exclude_origin")
     assert excluded == [("publisher",), ("retraction-watch",)]
+
+
+@pytest.mark.negative
+def test_rde_index_of_another_policy_version_is_refused(tmp_path: Path) -> None:
+    """Item 23: the policy rules changed after freezing, so an index built under 1.0.0 must not be read as 1.1.0."""
+    assert policy.POLICY_VERSION == "citerift-rde-policy/1.1.0"
+    idx = S.build_rows(tmp_path, [_retraction("1", OriginalPaperDOI="10.5555/one")])
+    old = tmp_path / "old" / idx.name
+    old.parent.mkdir()
+    shutil.copy(idx, old)
+    conn = sqlite3.connect(old)
+    conn.execute("UPDATE meta SET value = 'citerift-rde-policy/1.0.0' WHERE key = 'policy_version'")
+    conn.commit()
+    conn.close()
+    with pytest.raises(IndexUnavailable) as exc:
+        open_index(old)
+    assert exc.value.code == "INDEX_FORMAT_MISMATCH"
+    status = lookup(old, "10.5555/one")["projection"]["retraction_status"]
+    assert (status["status"], status["value"]) == ("unavailable", None)

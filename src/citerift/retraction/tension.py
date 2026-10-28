@@ -15,7 +15,7 @@ from citerift.retraction import policy
 from citerift.retraction.canonical import digest
 from citerift.retraction.query import Evidence
 
-TENSION_VERSION = "citerift-evidence-tension/0.1.0"
+TENSION_VERSION = "citerift-evidence-tension/0.2.0"
 INTERVENTIONS = ("collapse_shared_origin", "exclude_origin", "exclude_ambiguous_links", "require_temporal_bounds")
 MAX_ORIGINS_PER_CALL = 2
 CLASS_FIELDS = {

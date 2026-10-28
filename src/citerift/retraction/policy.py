@@ -12,7 +12,7 @@ from typing import Any
 
 from citerift.retraction.dates import TemporalEvidence, definitely_before
 
-POLICY_VERSION = "citerift-rde-policy/1.0.0"
+POLICY_VERSION = "citerift-rde-policy/1.1.0"
 RW_ORIGIN = "retraction-watch"
 UNKNOWN_ORIGIN = "unknown"
 COMPARISON_FIELDS = (
