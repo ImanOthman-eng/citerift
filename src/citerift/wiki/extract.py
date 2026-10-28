@@ -43,7 +43,7 @@ class ExtractConfig:
     max_templates: int = 50_000
     max_candidates: int = 50_000
     max_render_elements: int = 2_000_000
-    worker_memory_mib: int = 512
+    worker_memory_mib: int = 1024
     worker_wall_s: float = 30.0
 
     def limits(self) -> Limits:
@@ -287,6 +287,8 @@ def _assemble(
             if u.id in rec.use_match:
                 ru = render.uses[rec.use_match[u.id]]
                 render_part.update({"locator": ru.locator.to_json(), "target_note": ru.target_note})
+            elif state == "source_only":
+                doc.ledger(u.id, "use", "SOURCE_ONLY", "no unpaired render use could be its counterpart")
             else:
                 doc.ledger(u.id, "use", "RECONCILIATION_ABSTAINED", "no render use paired")
         if u.binding in ("definition_missing", "unbindable_name"):
@@ -318,7 +320,8 @@ def _assemble(
             about = rec.unit_transclusion.get(un.id)
             omitted = None
             if about is not None:
-                omitted = next((t.omitted for t in render.transclusions if t.about == about), None)
+                tr = render.transclusion(about)
+                omitted = tr.omitted if tr is not None else None
             render_part = {
                 "state": rec.unit_state.get(un.id, "unmatched"),
                 "transclusion": about,
@@ -356,6 +359,8 @@ def _assemble(
             doc.ledger(o.id, "identifier", "IDENTIFIER_INVALID", ",".join(o.decoded.normalized.issues))
         if cand.boundary == "ambiguous_trailing_punctuation":
             doc.ledger(o.id, "identifier", "IDENTIFIER_BOUNDARY_AMBIGUOUS", cand.raw[-1:])
+        if o.decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in o.decoded.steps:
+            doc.ledger(o.id, "identifier", "IDENTIFIER_BOUNDARY_AMBIGUOUS", "page-view segment after the DOI path")
         identifiers.append(
             {
                 "id": o.id,
@@ -392,7 +397,7 @@ def _assemble(
     if has_render:
         for idx in rec.unmatched_render_uses:
             ru = render.uses[idx]
-            tr = next((t for t in render.transclusions if t.about == ru.in_transclusion), None)
+            tr = render.transclusion(ru.in_transclusion)
             render_only["uses"].append(
                 {
                     "locator": ru.locator.to_json(),
@@ -466,7 +471,9 @@ def _accounting(
         "excluded_identifiers": dict(Counter(e["reason"] for e in excluded)),
         "markers": dict(Counter(o.state for o in observations)),
     }
+    spans = Counter((i["scheme"], i["source"]["byte_start"], i["source"]["byte_end"]) for i in identifiers)
     checks = [
+        ("no source span reported twice for one scheme", len(spans), len(identifiers)),
         (
             "candidates = identifiers + excluded",
             len(scan.candidates) + len(scan.excluded_candidates),
@@ -486,7 +493,7 @@ def _accounting(
         acc["identifiers_render"] = dict(Counter(i["render"]["state"] for i in identifiers))
         acc["render_only_identifiers"] = len(rec.render_only_links)
         checks += [
-            ("source uses = matched + abstained", len(model.uses), sum(acc["uses_render"].values())),
+            ("source uses = matched + abstained + source_only", len(model.uses), sum(acc["uses_render"].values())),
             (
                 "render uses = matched + unmatched",
                 len(render.uses),

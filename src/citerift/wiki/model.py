@@ -232,6 +232,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         c.id = renumber[c.id]
     ref_container = {k: renumber[v] for k, v in ref_container.items()}
     key_container = {(c.group, c.name): c for c in containers if c.name is not None}
+    by_id = {c.id: c for c in containers}
 
     # Uses ------------------------------------------------------------------------------------------------
     def add_use(r: RefRecord, group: str, name: str | None, position: int = 0) -> None:
@@ -269,7 +270,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             )
         )
         if container is not None:
-            next(c for c in containers if c.id == container).use_ids.append(uid)
+            by_id[container].use_ids.append(uid)
         if r.unsupported_context:
             issues.append(Issue("REF_IN_UNSUPPORTED_CONTEXT", (uid,), r.unsupported_context))
         if r.extra_attributes and {"details", "extends"} & set(r.extra_attributes):
@@ -380,17 +381,18 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
                 break
             parent = templates[parent].parent_template if parent in templates else None
     # Unstructured units: a definition or bibliography entry without any citation template.
+    with_template = {un.container_id for un in units}
+    defined = {un.definition_id for un in units}
     for c in containers:
         if c.kind == "bibliography_entry":
-            has_template = any(units_c.container_id == c.id for units_c in units)
-            if not has_template:
+            if c.id not in with_template:
                 units.append(Unit(f"un-{len(units) + 1:05d}", c.id, None, "unstructured_text", None, c.start, c.end))
             continue
         if c.layout == "short_footnote":
             continue  # the note text is generated; the cited work is in the bibliography
         for i, dfn in enumerate(c.definitions):
             def_id = f"{c.id}/d{i + 1}"
-            if not any(un.definition_id == def_id for un in units):
+            if def_id not in defined:
                 units.append(
                     Unit(
                         f"un-{len(units) + 1:05d}",
@@ -412,6 +414,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
     for c in containers:
         c.unit_ids = [un.id for un in units if un.container_id == c.id]
 
+    unit_by_id = {un.id: un for un in units}
     # Identifier occurrences -------------------------------------------------------------------------------
     occurrences: list[Occurrence] = []
     for cand in sorted(scan.candidates, key=lambda c: (c.start, c.end)):
@@ -431,7 +434,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         oid = f"id-{len(occurrences) + 1:05d}"
         decoded = None
         if not cand.has_markup:
-            decoded = decode(cand.scheme, cand.origin, cand.decoded, cand.steps, profile.publisher_doi_hosts)
+            decoded = decode(cand.scheme, cand.origin, cand.decoded, cand.steps)
         else:
             issues.append(Issue("IDENTIFIER_VALUE_HAS_MARKUP", (oid,)))
         if role == "unresolved":
@@ -444,12 +447,14 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             )
         if cand.boundary == "ambiguous_trailing_punctuation":
             issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,)))
+        if decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in decoded.steps:
+            issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,), "the DOI path ends in a page-view segment"))
         if decoded is not None and not decoded.normalized.valid and not decoded.normalized.missing:
             issues.append(Issue("IDENTIFIER_INVALID", (oid,), ",".join(decoded.normalized.issues)))
         occ = Occurrence(oid, cand, role, reason, holder, unit_id, decoded)
         occurrences.append(occ)
         if unit_id is not None:
-            next(un for un in units if un.id == unit_id).identifier_ids.append(oid)
+            unit_by_id[unit_id].identifier_ids.append(oid)
     # A DOI and a PMID in one unit are the normal case. Two distinct values of the same scheme are not: in a template
     # they are co-reported (both kept, neither chosen); in unstructured text the unit may hold more than one work.
     for un in units:

@@ -103,11 +103,33 @@ class Reconciler:
         self.out = Reconciliation()
         self.text = ""
         self._url_cache: dict[str, frozenset[str]] = {}
+        self._container_by_id = {c.id: c for c in model.containers}
+        self._links_by: dict[tuple[str, str], list[RenderLink]] = {}
+        for x in render.links:
+            for kind, value in (("note", x.in_note), ("item", x.in_list_item), ("about", x.in_transclusion)):
+                if value is not None:
+                    self._links_by.setdefault((kind, value), []).append(x)
+        # Content keys of a rendered note: its link targets, plus "id:<scheme>:<key>" for every identifier link the
+        # note shows (decoded and normalized as source identifiers are).
         hrefs: dict[str, set[str]] = {}
         for link in render.links:
             if link.in_note is not None:
-                hrefs.setdefault(link.in_note, set()).add(link.href)
+                keys = hrefs.setdefault(link.in_note, set())
+                keys.add(link.href)
+                got = decode_render_href(link.href)
+                if got is not None and got[1].normalized.valid:
+                    keys.add(f"id:{got[0]}:{got[1].normalized.normalized}")
         self.note_hrefs = {k: frozenset(v) for k, v in hrefs.items()}
+        self._container_ids: dict[str, set[str]] = {}
+        for o in model.occurrences:
+            if (
+                o.container_id is not None
+                and o.role in ("primary_citation_field", "identifier_link")
+                and o.decoded is not None
+                and o.decoded.normalized.valid
+            ):
+                key = f"id:{o.cand.scheme}:{o.decoded.normalized.normalized}"
+                self._container_ids.setdefault(o.container_id, set()).add(key)
         self.omitted = {t.about for t in render.transclusions if t.omitted}
         self.omitted_notes = {
             t.in_note or t.in_list_item for t in render.transclusions if t.omitted and (t.in_note or t.in_list_item)
@@ -125,15 +147,16 @@ class Reconciler:
         if u.container_id is None:
             return frozenset()
         if u.container_id not in self._url_cache:
-            c = next(c for c in self.m.containers if c.id == u.container_id)
+            c = self._container_by_id[u.container_id]
             urls = {html.unescape(x) for d in c.definitions for x in _URL_IN_TEXT.findall(d["body_text"])}
+            urls |= self._container_ids.get(u.container_id, set())
             self._url_cache[u.container_id] = frozenset(urls)
         return self._url_cache[u.container_id]
 
     def _content_pair(self, src: Sequence[Use], ren: Sequence[RenderUse]) -> list[Use]:
         """Second chance for uses that structure could not pair: a source use and a render use pair when the
-        reference text of each contains an external URL of the other and no other candidate on either side does.
-        Returns the source uses that stay unpaired."""
+        reference text of each contains an external URL or a normalized DOI or PMID of the other and no other
+        candidate on either side does. Returns the source uses that stay unpaired."""
         free = [r for r in ren if r.index not in self.out.render_use_matched]
         cand: dict[str, list[RenderUse]] = {}
         back: dict[int, list[str]] = {}
@@ -153,7 +176,11 @@ class Reconciler:
         for u in src:
             rs = cand.get(u.id, [])
             if len(rs) == 1 and back[rs[0].index] == [u.id]:
-                self._pair(u, rs[0], "unique_url_in_reference_text")
+                shared = self._source_urls(u) & self.note_hrefs.get(rs[0].target_note or "", frozenset())
+                by_url = any(not k.startswith("id:") for k in shared)
+                self._pair(
+                    u, rs[0], "unique_url_in_reference_text" if by_url else "unique_identifier_in_reference_text"
+                )
             else:
                 left.append(u)
         return left
@@ -336,7 +363,7 @@ class Reconciler:
                 ren_by_note.setdefault(x.in_note, []).append(x)
         for parent, uses in nested_by_parent.items():
             note = self.out.container_note.get(parent)
-            container = next(c for c in m.containers if c.id == parent)
+            container = self._container_by_id[parent]
             if note is None or len(container.definitions) > 1:
                 for u in uses:
                     self.out.use_state[u.id] = "abstained"
@@ -350,6 +377,12 @@ class Reconciler:
         for u in m.uses:
             self.out.use_state.setdefault(u.id, "abstained")
         self.out.unmatched_render_uses = [x.index for x in r.uses if x.index not in self.out.render_use_matched]
+        # An unpaired source use is source_only when no unpaired render use could be its counterpart (none left, or
+        # none whose name and group agree); otherwise the pairing was ambiguous and it stays abstained.
+        left = [r.uses[i] for i in self.out.unmatched_render_uses]
+        for u in m.uses:
+            if self.out.use_state[u.id] == "abstained" and not any(not x.data_mw_ok or _compatible(u, x) for x in left):
+                self.out.use_state[u.id] = "source_only"
         for idx in self.out.unmatched_render_uses:
             self.out.issues.append(Issue("RENDER_USE_UNMATCHED", (f"render-use-{idx}",)))
         self._bibliography()
@@ -476,15 +509,16 @@ class Reconciler:
                     self.out.unit_state[u.id] = "conflicting_definitions"
                 continue
             first_def = f"{c.id}/d1"
-            top_units = [
-                u
+            # A unit's template is matched through its outermost enclosing template inside the ref: the render
+            # groups template output by the outermost template only (a cite template wrapped in another template
+            # has no transclusion of its own).
+            outer = {
+                u.id: self._outermost(u.template)
                 for u in units
-                if u.template is not None
-                and u.definition_id == first_def
-                and self.m.templates[u.template].parent_template is None
-            ]
+                if u.template is not None and u.definition_id == first_def
+            }
             in_note = trans_by_note.get(note, [])
-            found = self._match_in_note(top_units, in_note)
+            found = self._match_in_note(sorted(set(outer.values()), key=lambda i: self.m.templates[i].start), in_note)
             for u in units:
                 if u.definition_id != first_def:
                     self.out.unit_state[u.id] = "duplicate_definition"
@@ -492,21 +526,33 @@ class Reconciler:
                     # Unstructured text, or a note whose text came out of another template's expansion (a ref in an
                     # infobox parameter): the render marks no template output inside it; the note is the region.
                     self.out.unit_state[u.id] = "region_only"
-                elif u.id in found:
-                    self.out.unit_transclusion[u.id] = found[u.id]
-                    self.out.unit_state[u.id] = "matched"
+                elif outer[u.id] in found:
+                    self.out.unit_transclusion[u.id] = found[outer[u.id]]
+                    self.out.unit_state[u.id] = "matched" if outer[u.id] == u.template else "within_matched_template"
                 else:
                     self.out.unit_state[u.id] = "unmatched"
 
-    def _match_in_note(self, units: list[Any], trans: list[RenderTransclusion]) -> dict[str, str]:
+    def _outermost(self, index: int) -> int:
+        """The outermost template enclosing ``index`` within the same ref (``index`` itself when it is outermost)."""
+        t = self.m.templates[index]
+        while t.parent_template is not None and t.parent_template in self.m.templates:
+            parent = self.m.templates[t.parent_template]
+            if parent.ref != t.ref:
+                break
+            t = parent
+        return t.index
+
+    def _match_in_note(self, templates: list[int], trans: list[RenderTransclusion]) -> dict[int, str]:
+        """Template index -> about of the render transclusion with the same canonical target and parameters, in
+        document order (each render item is used once)."""
         r_items = [(t.about, render_template_key(tg, p, self.wiki)) for t in trans for tg, p in t.templates]
-        found: dict[str, str] = {}
+        found: dict[int, str] = {}
         j = 0
-        for u in sorted(units, key=lambda u: u.start):
-            k = source_template_key(self.m.templates[u.template], self.text, self.wiki)
+        for index in templates:
+            k = source_template_key(self.m.templates[index], self.text, self.wiki)
             for jj in range(j, len(r_items)):
                 if r_items[jj][1] == k:
-                    found[u.id] = r_items[jj][0]
+                    found[index] = r_items[jj][0]
                     j = jj + 1
                     break
         return found
@@ -517,13 +563,12 @@ class Reconciler:
         note = self.out.container_note.get(container_id)
         if note is None:
             return None
-        c = next(c for c in self.m.containers if c.id == container_id)
+        c = self._container_by_id[container_id]
         if c.kind == "bibliography_entry":
             if note.startswith("about:"):
-                about = note[6:]
-                return [x for x in self.r.links if x.in_transclusion == about]
-            return [x for x in self.r.links if x.in_list_item == note]
-        links = [x for x in self.r.links if x.in_note == note]
+                return list(self._links_by.get(("about", note[6:]), []))
+            return list(self._links_by.get(("item", note), []))
+        links = list(self._links_by.get(("note", note), []))
         if unit_id is not None and unit_id in self.out.unit_transclusion:
             about = self.out.unit_transclusion[unit_id]
             return [x for x in links if x.in_transclusion == about]
@@ -541,7 +586,7 @@ class Reconciler:
 
         def link_value(link: RenderLink) -> tuple[str, str | None] | None:
             if link.index not in decoded_cache:
-                got = decode_render_href(link.href, self.profile.publisher_doi_hosts)
+                got = decode_render_href(link.href)
                 decoded_cache[link.index] = None if got is None else (got[0], got[1].normalized.normalized)
             return decoded_cache[link.index]
 

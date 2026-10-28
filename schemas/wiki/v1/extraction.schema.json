@@ -163,8 +163,8 @@
         "render": {
           "type": "object", "additionalProperties": false, "required": ["state"],
           "properties": {
-            "state": {"enum": ["not_reconciled", "matched", "abstained"]},
-            "basis": {"enum": [null, "name_anchor", "position_between_anchors", "name_in_template_output", "single_anonymous_in_template_output", "single_use_in_template_output", "unique_url_in_reference_text"]},
+            "state": {"enum": ["not_reconciled", "matched", "abstained", "source_only"]},
+            "basis": {"enum": [null, "name_anchor", "position_between_anchors", "name_in_template_output", "single_anonymous_in_template_output", "single_use_in_template_output", "unique_url_in_reference_text", "unique_identifier_in_reference_text"]},
             "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
             "target_note": {"type": ["string", "null"]}
           }
@@ -188,7 +188,7 @@
         "render": {
           "type": "object", "additionalProperties": false, "required": ["state"],
           "properties": {
-            "state": {"enum": ["not_reconciled", "matched", "unmatched", "region_only", "container_unmatched", "conflicting_definitions", "duplicate_definition"]},
+            "state": {"enum": ["not_reconciled", "matched", "within_matched_template", "unmatched", "region_only", "container_unmatched", "conflicting_definitions", "duplicate_definition"]},
             "transclusion": {"type": ["string", "null"]},
             "template_omitted": {"type": ["string", "null"]}
           }

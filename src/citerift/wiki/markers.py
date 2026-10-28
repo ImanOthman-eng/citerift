@@ -113,12 +113,11 @@ def observe(
     omitted_regions = set()
     if render is not None:
         omitted_regions = {t.in_note or t.in_list_item for t in render.transclusions if t.omitted}
+    marker_templates = [t for t in model.templates.values() if t.kind == "marker"]
     for c in model.containers:
         source_markers = []
         def_refs = set(c.def_refs)
-        for t in model.templates.values():
-            if t.kind != "marker":
-                continue
+        for t in marker_templates:
             inside = (
                 t.ref in def_refs if c.kind != "bibliography_entry" else (t.ref is None and c.start <= t.start < c.end)
             )
@@ -148,7 +147,7 @@ def observe(
         elif region_id.startswith("about:"):
             el = None
             about = region_id[6:]
-            tr = next((t for t in render.transclusions if t.about == about), None)
+            tr = render.transclusion(about)
             if tr is not None:
                 el = reader.element_by_path(tr.locator.path)
         else:

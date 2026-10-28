@@ -118,6 +118,14 @@ class RenderDoc:
     limit_warnings: list[dict[str, Any]] = field(default_factory=list)
     data_mw_errors: int = 0
     elements: int = 0
+    _by_about: dict[str, RenderTransclusion] = field(default_factory=dict, repr=False, compare=False)
+
+    def transclusion(self, about: str | None) -> RenderTransclusion | None:
+        """The first transclusion with this ``about`` (index built on first use)."""
+        if not self._by_about and self.transclusions:
+            for t in self.transclusions:
+                self._by_about.setdefault(t.about, t)
+        return self._by_about.get(about) if about is not None else None
 
 
 class RenderLimitExceeded(Exception):
@@ -136,6 +144,7 @@ class RenderReader:
         self.ids: Counter[str] = Counter()
         self.about_types: dict[str, set[str]] = {}
         self.parent: dict[Any, Any] = {}
+        self._by_path: dict[str, Any] = {}  # elements this reader has located (paths it produced itself)
         count = 0
         self.omitted: dict[str, str] = {}  # about -> parser limit warning
         self.limit_warnings: list[dict[str, Any]] = []
@@ -169,9 +178,9 @@ class RenderReader:
         eid = el.get("id")
         quote = _norm_text(el.text_content())[:160]
         sub = lxml.html.tostring(el, encoding="utf-8", with_tail=False)
-        return Locator(
-            eid, bool(eid) and self.ids[eid] == 1, self.tree.getpath(el), quote, hashlib.sha256(sub).hexdigest()
-        )
+        path = self.tree.getpath(el)
+        self._by_path[path] = el
+        return Locator(eid, bool(eid) and self.ids[eid] == 1, path, quote, hashlib.sha256(sub).hexdigest())
 
     def _ancestors(self, el: Any) -> list[Any]:
         out = []
@@ -354,6 +363,8 @@ class RenderReader:
     def element_by_path(self, path: str) -> Any:
         """The element at an lxml element path (``/html/body/section[2]/p``), or None. The path is walked step by
         step; it is never evaluated as XPath, so a path read from a record cannot run an expression."""
+        if path in self._by_path:
+            return self._by_path[path]
         if not _PATH.match(path):
             return None
         steps = path[1:].split("/")

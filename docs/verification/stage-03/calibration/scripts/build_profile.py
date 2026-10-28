@@ -33,12 +33,18 @@ DECISIONS = [
     "math, chem, ce, score, timeline, graph, mapframe, maplink, templatedata, includeonly, inputbox, categorytree, "
     "charinsert, hiero). Identifier-shaped text inside them is recorded as excluded, never used.",
     "Unsupported containers: gallery, poem, imagemap, noinclude, onlyinclude. A ref inside them is kept and reported.",
-    "Publisher DOI URL hosts: five hosts whose /doi/<DOI> paths were seen in Stage 01/02 evidence; any other URL is "
-    "not decoded as a DOI (no outbound request is ever made to decide).",
+    "DOI-bearing URLs: a URL names a DOI when its host is a DOI resolver (doi.org, dx.doi.org) or its path has a "
+    "/doi/ segment (optionally /doi/abs/, /full/, /pdf/, /epdf/, /book/, /reader/) followed by 10.<registrant>/; the "
+    "development corpus showed this publisher-platform convention on hosts beyond the first five seen in Stage 01/02 "
+    "evidence, so it is not limited to a host list. Other URL shapes are not decoded (no request is made to decide). "
+    "A DOI path ending in a page-view segment (/abstract, /full, /pdf and similar) is kept with an ambiguous boundary.",
     "Warning terms: the literal words the marker templates write ('Retracted', 'expression of concern', "
     "'مصدر مسحوب'), plus the adjective 'مسحوب/مسحوبة' and English 'retracted' on arwiki, where dev renders show "
     "the English word written by hand ('(Retracted)' in فضيحة شون). Ambiguous terms are wording that may or may "
     "not be a warning (a cited title, 'Retraction Watch', withdrawal of a drug, an erratum).",
+    "Preprint DOI fields: the CS1 bioRxiv and medRxiv identifier parameters (handlers BIORXIV and MEDRXIV) hold the "
+    "full DOI of the preprint version of the cited work, so they are DOI fields of the citation template. When a "
+    "template also has doi=, the two DOIs are co-reported (CO_REPORTED_IDENTIFIERS); neither is chosen.",
     "Missing templates: Retracted, Expression of concern and Erratum do not exist on arwiki (evidence: missing pages); "
     "they stay in the arwiki marker list because articles copy them from enwiki and the render then shows a red "
     "link (missing_template_link_only).",
@@ -108,9 +114,11 @@ def cs1_params(pages: dict[str, dict[str, Any]], wiki: str) -> dict[str, Any]:
         raise SystemExit(f"no CS1 configuration for {wiki}")
     c = page["content"]
 
-    def handler(key: str) -> list[str]:
+    def handler(key: str, required: bool = True) -> list[str]:
         m = re.search(r"\['" + key + r"'\]\s*=\s*\{[^}]*?parameters\s*=\s*\{([^}]*)\}", c)
         if not m:
+            if not required:
+                return []
             raise SystemExit(f"{wiki}: no {key} handler")
         return re.findall(r"'([^']+)'", m.group(1))
 
@@ -122,6 +130,7 @@ def cs1_params(pages: dict[str, dict[str, Any]], wiki: str) -> dict[str, Any]:
 
     return {
         "doi": handler("DOI"),
+        "preprint_doi": handler("BIORXIV", required=False) + handler("MEDRXIV", required=False),
         "pmid": handler("PMID"),
         "url": alias("URL"),
         "chapter_url": alias("ChapterURL"),
@@ -192,15 +201,6 @@ def build(evd: Path) -> tuple[dict[str, Any], dict[str, Any]]:
             ]
         ),
         "unsupported_tags": sorted(["gallery", "poem", "imagemap", "noinclude", "onlyinclude"]),
-        "publisher_doi_hosts": sorted(
-            [
-                "www.science.org",
-                "onlinelibrary.wiley.com",
-                "journals.sagepub.com",
-                "www.tandfonline.com",
-                "pubs.acs.org",
-            ]
-        ),
         "wikis": {},
     }
     provenance: dict[str, Any] = {"evidence_run_at": data["run_at"], "decisions": DECISIONS, "wikis": {}}
@@ -289,7 +289,7 @@ def build(evd: Path) -> tuple[dict[str, Any], dict[str, Any]]:
             "redirect_words": ["#REDIRECT"] if wiki == "en" else ["#تحويل", "#REDIRECT"],
             "citation_templates": {k: sorted(set(v)) for k, v in sorted(citation.items())},
             "external_data_templates": sorted(set(external)),
-            "identifier_params": {"doi": params["doi"], "pmid": params["pmid"]},
+            "identifier_params": {"doi": params["doi"] + params["preprint_doi"], "pmid": params["pmid"]},
             "url_params": sorted(set(params["url"]) | set(params["chapter_url"])),
             "wrappers": {k: sorted(set(v)) for k, v in wrappers.items()},
             "markers": sorted(set(markers)),

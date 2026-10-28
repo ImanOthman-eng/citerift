@@ -175,7 +175,14 @@ def _decode_attr(value: str) -> str:
 
 
 def _has_markup(code: Wikicode) -> bool:
-    return any(not isinstance(n, (Text, HTMLEntity, Comment)) for n in code.nodes)
+    """True when the value holds markup other than text, entities, comments and bare URLs. A bare URL (a free external
+    link without brackets and without markup inside) is text in a parameter value: counting it as markup would
+    traverse it a second time and report the same bytes twice."""
+    return any(not isinstance(n, (Text, HTMLEntity, Comment)) and not _bare_url(n) for n in code.nodes)
+
+
+def _bare_url(node: object) -> bool:
+    return isinstance(node, ExternalLink) and not node.brackets and not _has_markup(node.url)
 
 
 def _plain(code: Wikicode) -> tuple[str, list[str]]:
@@ -621,7 +628,7 @@ class Scanner:
     # External links ---------------------------------------------------------------------------------------
 
     def _url_scheme(self, url: str) -> str | None:
-        return url_scheme(url, self.profile.publisher_doi_hosts)
+        return url_scheme(url)
 
     def _external_link(self, node: ExternalLink, start: int, end: int, ctx: Ctx, depth: int) -> None:
         url_start = start + 1 if node.brackets else start

@@ -83,7 +83,6 @@ class Profile:
     wikis: dict[str, WikiProfile]
     excluded_tags: frozenset[str]
     unsupported_tags: frozenset[str]
-    publisher_doi_hosts: frozenset[str]
     raw: dict[str, Any]
 
 
@@ -132,6 +131,5 @@ def load_profile() -> Profile:
         wikis={w: _wiki(w, raw["wikis"][w]) for w in SUPPORTED_WIKIS},
         excluded_tags=frozenset(raw["excluded_tags"]),
         unsupported_tags=frozenset(raw["unsupported_tags"]),
-        publisher_doi_hosts=frozenset(raw["publisher_doi_hosts"]),
         raw=raw,
     )
