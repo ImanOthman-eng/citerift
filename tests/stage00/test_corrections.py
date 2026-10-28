@@ -270,8 +270,17 @@ def test_v03_handoff_is_required_even_if_a_stage_lists_other_artifacts(sandbox: 
 
 
 @pytest.mark.integration
-def test_v03_engineering_stage_with_an_empty_definition_cannot_be_verified(sandbox: Sandbox) -> None:
+@pytest.mark.parametrize("emptied", ["owned_paths", "acceptance_gates"])
+def test_v03_engineering_stage_with_an_empty_definition_cannot_be_verified(sandbox: Sandbox, emptied: str) -> None:
     """DEFINITION_WEAK had no test (hand mutant H12 survived)."""
+    # The sandbox copies the live stage definitions, so the empty definition this test rejects is set here
+    # explicitly, one field at a time, rather than relying on the live Stage 02 definition staying empty
+    # (A-00-002).
+    reg = sandbox.registry()
+    stage02 = next(s for s in reg["stages"] if s["id"] == "02")
+    stage02[emptied] = []
+    sandbox.save_registry(reg)
+    sandbox.commit(f"sandbox: Stage 02 definition with empty {emptied}")
     sandbox.drive_to_accepted("00")
     sandbox.drive_to_accepted("01")
     assert sandbox.go("02", Status.AUTHORIZED).allowed
@@ -282,7 +291,28 @@ def test_v03_engineering_stage_with_an_empty_definition_cannot_be_verified(sandb
     sandbox.write_evidence("02", rev)
     result = sandbox.go("02", Status.VERIFIED_AWAITING_OWNER_ACCEPTANCE, gates=sandbox.gates("02"), ci=sandbox.ci(rev))
     assert not result.allowed
-    assert "DEFINITION_WEAK" in sandbox.codes(result.findings)
+    weak = [f for f in result.findings if f.code == "DEFINITION_WEAK"]
+    assert [f.message for f in weak] == [f"an engineering stage cannot be verified with empty {emptied}"]
+
+
+@pytest.mark.integration
+def test_v03_an_engineering_stage_without_test_suites_is_refused_at_once(sandbox: Sandbox) -> None:
+    """The third DEFINITION_WEAK field is refused earlier, by the structure check, in any state."""
+    reg = sandbox.registry()
+    next(s for s in reg["stages"] if s["id"] == "02")["required_test_suites"] = []
+    sandbox.save_registry(reg)
+    sandbox.commit("sandbox: Stage 02 definition without test suites")
+    assert "TEST_SUITES_UNDEFINED" in sandbox.codes(sandbox.orc().check())
+    assert not sandbox.go("00", Status.AUTHORIZED).allowed
+
+
+@pytest.mark.integration
+def test_v03_a_complete_engineering_definition_is_not_weak(sandbox: Sandbox) -> None:
+    """The control for the test above: the same steps with the live, complete Stage 02 definition."""
+    sandbox.drive_to_accepted("00")
+    sandbox.drive_to_accepted("01")
+    rev = sandbox.drive_to_verified("02")
+    assert sandbox.orc().stage("02")["verification"]["revision"] == rev
 
 
 # ------------------------------------------------------------------ F-07

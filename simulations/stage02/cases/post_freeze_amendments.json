@@ -1,0 +1,39 @@
+{
+  "description": "Expected outputs of frozen cases that were found to contradict the owner's Stage 02 directives after the freeze (SPECIFICATION.md 16). The frozen files are not edited; this overlay replaces the named fields and keeps the frozen values beside them. 'field' names the part of the case an amendment replaces ('expected' when absent; 'interventions' for Evidence Tension cases, where each named intervention's changed-field set is replaced). Each amendment is stricter than the frozen expectation.",
+  "amendments": [
+    {
+      "case": "P04",
+      "file": "policy_cases.json",
+      "change": "C-11",
+      "reason": "Directive section 9: an unlinked reinstatement is uncertain/null, and a reinstatement needs original/target/supersession evidence before it can change a current-effect projection. A sole reinstatement record names no event it supersedes. Found by the scientific review pass.",
+      "frozen_expected": {"status": "verified_fact", "value": "reinstated"},
+      "expected": {"status": "uncertain", "value": null, "reasons": ["REINSTATEMENT_UNLINKED"]}
+    },
+    {
+      "case": "P33",
+      "file": "policy_cases.json",
+      "change": "C-25",
+      "reason": "Owner instruction of 2026-10-28 (cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy), R-026: an unresolved identifier bridge must not by itself establish a verified retraction status or date for the queried subject. Policy 1.2.0, rule 7f (SPECIFICATION.md 11.1, 16 item 25): the projection is that of the direct assertions, and it is a verified fact only when accepting the bridges would not change it. Here the only retraction is reached through the bridge and the direct record is an expression of concern, so neither value is stated.",
+      "frozen_expected": {"status": "verified_fact", "value": "retracted", "date_status": "verified_fact", "date_value": "2015-03-12"},
+      "expected": {"status": "uncertain", "value": null, "date_status": null, "date_value": null, "reasons": ["BRIDGE_ONLY_SUPPORT", "BRIDGED_EVIDENCE_MATERIAL"]}
+    },
+    {
+      "case": "T05",
+      "file": "tension_cases.json",
+      "field": "interventions",
+      "change": "C-25",
+      "reason": "Owner instruction of 2026-10-28 (cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy), R-026: an unresolved identifier bridge must not by itself establish a verified retraction status or date for the queried subject. Policy 1.2.0, rule 7f (SPECIFICATION.md 11.1, 16 item 25): the projection is that of the direct assertions, and it is a verified fact only when accepting the bridges would not change it. Here the only retraction is reached through the bridge and the direct record is an expression of concern, so neither value is stated. The base is now uncertain; withholding the bridged record leaves the direct expression of concern, so the view settles a value the base does not: status, value and support change, and the date fields no longer change because neither result states a date.",
+      "frozen_expected": {"exclude_ambiguous_links": ["retraction_status.value", "retraction_date.status", "retraction_date.value", "identity.status", "notice_links"]},
+      "expected": {"exclude_ambiguous_links": ["retraction_status.status", "retraction_status.value", "support.observations", "support.origins", "identity.status", "notice_links"]}
+    },
+    {
+      "case": "T06",
+      "file": "tension_cases.json",
+      "field": "interventions",
+      "change": "C-25",
+      "reason": "Owner instruction of 2026-10-28 (cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy), R-026: an unresolved identifier bridge must not by itself establish a verified retraction status or date for the queried subject. Policy 1.2.0, rule 7f (SPECIFICATION.md 11.1, 16 item 25): the projection is that of the direct assertions, and it is a verified fact only when accepting the bridges would not change it. Here the only retraction is reached through the bridge and the direct record is an expression of concern, so neither value is stated. Mirror of T05 for a DOI query bridged through the PMID; the same fields change for the same reason.",
+      "frozen_expected": {"exclude_ambiguous_links": ["retraction_status.value", "retraction_date.status", "retraction_date.value", "identity.status", "notice_links"]},
+      "expected": {"exclude_ambiguous_links": ["retraction_status.status", "retraction_status.value", "support.observations", "support.origins", "identity.status", "notice_links"]}
+    }
+  ]
+}

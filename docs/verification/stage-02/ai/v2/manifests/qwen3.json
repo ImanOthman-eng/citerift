@@ -1,0 +1,107 @@
+{
+  "format": "citerift.model-manifest/1",
+  "model_id": "Qwen/Qwen3-Reranker-0.6B",
+  "source": {
+    "repository": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B",
+    "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+    "base_model": "Qwen/Qwen3-0.6B-Base"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "evidence": "model card metadata 'license: apache-2.0' at the pinned revision; the repository has no LICENSE file",
+    "base_model_license": "Apache-2.0 (Qwen3-0.6B-Base model card)"
+  },
+  "architecture": "Qwen3ForCausalLM",
+  "template": {
+    "prefix": "<|im_start|>system\nJudge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\".<|im_end|>\n<|im_start|>user\n",
+    "body": "<Instruct>: {instruction}\n<Query>: {query}\n<Document>: {document}",
+    "suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+    "instruction": "Given a bibliographic record whose identifiers are hidden, judge whether the Document is the same published work as the Query: the same paper in the same venue and year, not a related paper, a duplicate publication elsewhere, or another version",
+    "true_token": "yes",
+    "true_token_id": 9693,
+    "false_token": "no",
+    "false_token_id": 2152,
+    "source": "model card 'transformers usage' at the pinned revision; instruction written for this task"
+  },
+  "files": {
+    "1_LogitScore/config.json": {
+      "size": 57,
+      "sha256": "73e3156450564d8a98b7e47bcf5aace0f29600828b51937da545571e84db3ff3"
+    },
+    "chat_template.jinja": {
+      "size": 741,
+      "sha256": "6f682162495ec5b39fd9005c01b6aa2a74669379fe967039f1e2cbbe8752369d"
+    },
+    "config.json": {
+      "size": 727,
+      "sha256": "d479c427a9ca5295218063d4f9aca4f297ab4ac27487cca7af42c84643d51ef0"
+    },
+    "config_sentence_transformers.json": {
+      "size": 325,
+      "sha256": "6a153d6696f78fd588c1c728967f0b773ea869d3c6028f151ce71ebe49140762"
+    },
+    "generation_config.json": {
+      "size": 214,
+      "sha256": "81051cd3f6e77013827148d0b8a6ead93f8ac390d5ab805f849199f0af6a08db"
+    },
+    "merges.txt": {
+      "size": 1671853,
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+    },
+    "model.safetensors": {
+      "size": 1191588280,
+      "sha256": "27cd75a405b9c1b46b59abfd88aaa209e6fed2a1972cde9b70e7659537c5e65b"
+    },
+    "modules.json": {
+      "size": 280,
+      "sha256": "6f13b6b4a89e577b591b2077bca40c67c26541a6740a8809267cb474f90806a9"
+    },
+    "sentence_bert_config.json": {
+      "size": 362,
+      "sha256": "3234ebd224d492cbe8d55d5ec80a3f408451c4db3005bafb64fe1c51c763e01e"
+    },
+    "tokenizer.json": {
+      "size": 11422654,
+      "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+    },
+    "tokenizer_config.json": {
+      "size": 9706,
+      "sha256": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0"
+    },
+    "vocab.json": {
+      "size": 2776833,
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    }
+  },
+  "weights_format": "safetensors (no pickle); trust_remote_code false",
+  "runtime": {
+    "torch": "2.14.1+cpu",
+    "transformers": "5.19.0",
+    "requirements": "requirements/inference-cpu.txt (hash-pinned)",
+    "device": "cpu",
+    "threads": 4,
+    "dtype": "float32",
+    "batching": "none: one forward pass per query-candidate pair"
+  },
+  "encoding": {
+    "fields": [
+      "title",
+      "authors",
+      "journal",
+      "original_year"
+    ],
+    "rendering": "Title/Authors/Journal/Year lines; NFC; control characters become spaces; missing = unknown",
+    "author_limits": [
+      20,
+      5,
+      1
+    ],
+    "on_too_long": "abstain INPUT_TOO_LONG; title, journal and year are never cut"
+  },
+  "wrapper": {
+    "tau_s": 1000000000.0,
+    "tau_m": 0.0,
+    "state": "screening: never selects"
+  },
+  "languages": "publisher reports multilingual training; this project evaluates only the snapshot's titles (Latin script except one Arabic-script record): no Arabic accuracy claim"
+}

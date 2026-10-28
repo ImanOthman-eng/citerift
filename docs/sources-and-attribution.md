@@ -3,14 +3,20 @@
 Applies to every stage. A stage that adds a source or a dependency records it
 here and in DECISIONS.md before using it.
 
+## Data sources in use
+
+| Source | Use | Terms status |
+|---|---|---|
+| Crossref Retraction Watch data, pinned commit `a987928a`, `retraction_watch.csv` (68,076,023 bytes, SHA-256 `2f116e9f…0a655`) | Retraction records (Stage 02) | Checked 2026-10-27: Crossref states it made the database publicly available and that REST API metadata may be used for any purpose; neither Crossref nor the data repository names a dataset licence (a third-party page calls it CC0; not relied on). Crossref asks for a citation. The full CSV and bulk extracts are not committed or redistributed; `tests/stage02/fixtures/rw_real_subset.csv` keeps selected fields of 69 records, with the attribution recorded in `tests/stage02/fixtures/real_cases.json` |
+| Crossref REST API `/works/{doi}` | Bounded corroboration of 29 works (Stage 02), pinned as a replay bundle in `docs/verification/stage-02/evidence/crossref/` | REST API metadata reusable for any purpose (Crossref); GET only, 1 request per second, concurrency 1 |
+
 ## Planned data sources (not yet used)
 
 | Source | Use | Terms status |
 |---|---|---|
-| Crossref Retraction Watch data | Retraction records (Stage 02) | Redistribution terms to be verified in Stage 02 before any data is committed or published |
 | Wikimedia APIs (Action API, REST API, dumps) | Articles, revisions, references (Stage 03) | Wikipedia text is CC BY-SA 4.0 (and GFDL for older text); API use must follow the Wikimedia User-Agent policy and rate limits |
 | Wikidata | Cross-language article links (Stage 07, if used) | CC0 |
-| PubMed / NCBI E-utilities | PMID resolution (Stage 02 or 03, if used) | NCBI usage policy; API key optional |
+| PubMed / NCBI E-utilities | PMID resolution (Stage 03 or later, if used; Stage 02 did not use it) | NCBI usage policy; API key optional |
 
 ## Rules
 
@@ -35,7 +41,7 @@ here and in DECISIONS.md before using it.
 8. **Synthetic versus real.** Synthetic fixtures are labeled and never presented
    as findings.
 
-## Current dependencies (Stage 00)
+## Current dependencies (Stage 00; Stage 02 added none)
 
 Runtime: `jsonschema` (MIT) and its dependencies `attrs` (MIT),
 `jsonschema-specifications` (MIT), `referencing` (MIT), `rpds-py` (MIT).

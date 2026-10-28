@@ -406,3 +406,221 @@ request, a bounded independent review of the R5 fixes at `0c21182` returned
 VERIFIED: all three fixed, no new confirmed defect, no regression
 (docs/verification/stage-00/review/0c21182/). Residual limitations stay open as
 R-002, R-003, R-004 and R-016.
+
+## R-022 — Stage 02 review findings
+- Status: closed
+- Severity: high
+- Kind: defect
+- Stage: 02
+
+Three review passes of the Retraction Data Engine at `3a6f1eb` (architecture
+and data integrity, adversarial QA and security, scientific semantics; separate
+passes of the same model, not human review) found 4 high, 15 medium and 12 low
+issues. All high ones are fixed: a build could publish an index its own
+`verify` rejected, a rebuild could delete a corroborated build, the relevance
+check missed encoded identifier forms, an ordered concern and retraction on one
+notice was reported as a conflict, and a reinstatement alone was a verified
+fact. Each fix has a regression test that fails on `3a6f1eb`
+(docs/verification/stage-02/evidence/fail-first/). Dispositions per finding:
+docs/verification/stage-02/TEST_RESULTS.md section 10. What stays open is
+R-026 and R-027.
+
+## R-023 — Literal percent escapes in bare DOIs
+- Status: accepted
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+A bare DOI is kept literally (no decoding, no silent repair). 24 source values
+contain `%`; a lookup by the decoded form does not match them. The engine
+reports such forms as possible coverage gaps, never as matches
+(SPECIFICATION.md 15 A3, 16 item 17). Proposed to the owner as a residual risk.
+
+## R-024 — Day-1 dates have no bounds
+- Status: accepted
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Retraction Watch writes day 1 for an unknown day, month range, season or volume
+number. Such dates get no justified bounds, so the date is `uncertain` and
+orderings that need it are withheld, including across years. Deliberately
+conservative (SPECIFICATION.md 7.2). Proposed to the owner as a residual risk.
+
+## R-025 — Identity beyond exact identifiers is not validated
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Title, author and year matching exists only as the deterministic ambiguity
+baseline, evaluated on a controlled masking task, not on natural cases. The
+local open model was evaluated under AI Protocol v2 and not admitted (R-028).
+Later stages must not treat a baseline candidate or a model ranking as an
+identity.
+
+## R-026 — A single PMID-bridged event can give a verified retraction
+- Status: closed
+- Severity: medium
+- Kind: risk
+- Stage: 02
+
+The frozen policy treats a one-hop PMID bridge as evidence (cases P33, T05,
+T06): when the only retraction is a bridged event, the result is
+`verified_fact`, `retracted` with identity `bridged`. The directive says
+co-occurrence is a source assertion, not proof of identity. The identity status
+and Evidence Tension's `exclude_ambiguous_links` expose it; the review found no
+real instance. Changing it means amending three frozen cases; that is the
+owner's decision.
+
+Closed on 2026-10-28 by the owner's correction (D-026; policy 1.2.0, rule 7f):
+bridged assertions no longer support a value or a date, and P33, T05 and T06
+are amended. The audit found that the review's "no real instance" was
+incomplete: a PMID query also counted Crossref relations about the
+co-occurring DOI as direct. On the pinned snapshot with the Crossref replay,
+2 PMID queries had a verified retraction resting only on such relations
+(PMIDs 23649173 and 25996123, each recorded in Retraction Watch only as a
+correction while the DOI's retraction is recorded under another PMID); both
+are now `uncertain` (`evidence/policy-impact-r026-cr.json`). The RW-only
+index has no changed key. What remains is R-029.
+
+## R-027 — Stage 02 model experiment not executed; frozen gate unattainable
+- Status: closed
+- Severity: medium
+- Kind: risk
+- Stage: 02
+
+Historical (2026-10-27): no model prediction was made, and the frozen v1
+admission gate could not be met on the v1 held-out split (largest gain 8.3
+points against 10; coverage at most 61/120 = 0.508 against 0.60). Closed on
+2026-10-28: v1 is kept unchanged and classified "admission design
+infeasible; no model evaluation executed under it", and the experiment was
+executed under AI Protocol v2 (DECISIONS.md D-025; R-028).
+
+## R-028 — The local open model is not admitted
+- Status: accepted
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Under AI Protocol v2 the frozen mxbai-rerank-base-v2 pipeline was worse than
+the deterministic baseline on the fresh holdout (67 errors against 26;
+negative false selections 36 against 26). The adapter and the opt-in
+`citerift-rde ambiguity --model-dir` option exist and run offline, but their
+output must not be shown as a suggestion by default or used for any decision.
+A later stage that wants it needs a new model or task design, a new
+development phase and a new fresh holdout; reusing this holdout for tuning is
+not allowed. Reranker scores are ranking logits, not probabilities.
+
+Owner-accepted on 2026-10-28 (DECISIONS.md D-028, owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): the evaluated model is excluded from the default product, and its
+negative evaluation and experimental evidence are preserved.
+
+## R-029 — Bridged evidence is withheld, not resolved
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Since policy 1.2.0 (D-026) a record reached only through an unresolved
+identifier link (a co-occurring PMID or DOI, the pairing of a two-identifier
+query, or a Crossref relation about a DOI the query did not give) neither
+supports nor, when it would change nothing, affects a result. Identity is not
+resolved: a retraction that truly concerns the work but is reachable only
+through such a link is reported as `uncertain` with `BRIDGE_ONLY_SUPPORT`,
+not as retracted, and a bridged retraction with another date makes a
+verified date `uncertain`. Later stages must show these as unresolved, not as
+"not retracted". Two related behaviors are kept as specified and are pinned
+by tests: a PMID whose records carry two DOIs is `ambiguous_identity`, while
+a DOI whose records carry two PMIDs stays matched with
+`IDENTITY_SECONDARY_DIVERGENT` and bridges nothing (the anchor is DOI-first);
+and a two-identifier query whose DOI names no record answers for the PMID
+alone, anchored at `pmid:p`.
+
+Owner-acknowledged on 2026-10-28 as a residual limitation, not resolved
+(DECISIONS.md D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "These remain unresolved
+limitations, not completed identity resolution. Downstream stages must
+preserve uncertainty and PMID_ROLE_COLLISION restrictions."
+The status stays open because the limitation is not resolved, so that
+`citerift-gov recover` keeps listing it for later stages.
+
+
+## R-030 — A PMID lookup ignores records of its DOI under another PMID
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 02
+
+Found by the independent Stage 02 audit of 2026-10-28 (finding F1). A
+single-PMID query reached the records of its co-occurring DOI only when they
+carried no PMID; a record of that DOI under a different PMID was dropped
+without an issue, although the DOI query reported the divergence
+(`IDENTITY_SECONDARY_DIVERGENT`). On the pinned RW snapshot two PMID queries
+were stated as `verified_fact` correction while their DOI is recorded as
+retracted under another PMID: 23649173 (PubMed lists it as a retracted
+publication with that DOI, so the work is in fact retracted) and 25996123
+(PubMed lists it as a corrigendum, `10.2217/nnm.15.54`: Retraction Watch
+gives it as that corrigendum's notice PMID on one record and as the original's
+PMID on another) (`evidence/pubmed-esummary-audit-2026-10-28.json`).
+
+Closed on 2026-10-28 under the owner's authorization (D-027; policy 1.3.0,
+SPECIFICATION.md 16 item 27): such records are bridged candidates under rule
+7f and the divergence is reported. Both keys are now `uncertain`, null with
+`BRIDGED_EVIDENCE_MATERIAL`; no key changed toward a stated value
+(`evidence/policy-impact-audit-rw.json`). For 23649173 this withholds a true
+retraction, as R-029 describes; it no longer states a wrong one.
+
+## R-031 — The role of a PMID given for both an original and its notice is not resolved
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Retraction Watch gives the same PMID as the original's and the notice's on
+1,341 events (finding F3 of the independent audit); on 455 of them the notice
+has its own DOI, different from the original's, a strong sign that the PMID
+names the notice. Since policy 1.3.0 a lookup listing such an event reports
+`PMID_ROLE_COLLISION` (`event_ids`, `distinct_notice_doi`); 2,097 keys of the
+snapshot carry it (1,043 DOI and 1,054 PMID keys). Values are unchanged: the PMID is still read as the
+original's. Resolving the role needs an identity source such as PubMed, which
+is a new source and needs the owner's approval; later stages must show the
+issue and must not treat such a PMID as proof of identity.
+
+Owner-acknowledged on 2026-10-28 as a residual limitation, not resolved
+(DECISIONS.md D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`); the downstream restrictions above
+stay in force. The status stays open because the limitation is not
+resolved, so that `citerift-gov recover` keeps listing it for later stages.
+
+## R-032 — Follow-up: computational complexity of the Stage 02 engine is not documented
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Follow-up item recorded at the owner's request on 2026-10-28 (DECISIONS.md
+D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "the review's complexity-documentation ...
+observation". Recorded without implementation during closure. The
+engineering agent's reading, not the review's text: MATHEMATICAL_MODEL.md
+(§7) and SPECIFICATION.md state a cost bound only for Evidence Tension
+(linear in `|E|` per intervention); the
+build, lookup and reducer have measured budgets (TEST_RESULTS.md, benchmark)
+but no stated time or space complexity. Any change needs the owner's
+authorization.
+
+## R-033 — Follow-up: the experimental model's inference deadline is checked between candidates
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Follow-up item recorded at the owner's request on 2026-10-28 (DECISIONS.md
+D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "the review's ... experimental inference-timeout
+observation". Recorded without implementation during closure. The
+engineering agent's reading of the code, not the review's text:
+`LocalAmbiguityModel.rank` (`src/citerift/retraction/local_model.py`) checks
+the case deadline before each candidate and after scoring, so one slow
+`score` call is not interrupted and a case can run past the deadline before
+it abstains with `TIMEOUT`; one-time model initialization is outside the
+deadline. The model is excluded from the default product (R-028), so this
+affects only the opt-in experimental path. Any change needs the owner's
+authorization.

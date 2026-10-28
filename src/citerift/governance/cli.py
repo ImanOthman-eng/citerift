@@ -186,6 +186,31 @@ def cmd_amend(orc: Orchestrator, args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_maintenance(orc: Orchestrator, args: argparse.Namespace) -> int:
+    try:
+        if args.action == "prepare":
+            aid = orc.prepare_maintenance(
+                args.stage,
+                candidate=args.candidate,
+                paths=args.path,
+                purpose=args.purpose,
+                reason=args.reason,
+                evidence_refs=args.evidence,
+                owner_ref=args.owner_ref,
+                supersedes=args.supersedes,
+                at=args.at,
+            )
+            print(f"Recorded pending maintenance {aid}; commit it, then validate that clean revision")
+        else:
+            orc.finalize_maintenance(args.stage, args.id, revision=args.revision, reports=args.report, at=args.at)
+            print(f"Finalized maintenance {args.id} at {args.revision[:12]}")
+    except GovernanceError as exc:
+        print("REJECTED")
+        _print_findings(exc.findings)
+        return 1
+    return 0
+
+
 def cmd_handoff(orc: Orchestrator, args: argparse.Namespace) -> int:
     print(orc.handoff_summary(args.stage), end="")
     return 0
@@ -336,6 +361,26 @@ def build_parser() -> argparse.ArgumentParser:
     a.add_argument("--test-report")
     a.add_argument("--at")
     a.set_defaults(func=cmd_amend)
+
+    mt = sub.add_parser("maintenance", help="prepare or finalize an owner-authorized maintenance of an accepted stage")
+    mt_sub = mt.add_subparsers(dest="action", required=True)
+    mp = mt_sub.add_parser("prepare", help="record the exact patch as pending validation")
+    mp.add_argument("stage")
+    mp.add_argument("--candidate", required=True, help="full SHA of the commit that holds the patch")
+    mp.add_argument("--path", action="append", required=True, help="an owned file the patch changes")
+    mp.add_argument("--purpose", required=True)
+    mp.add_argument("--reason", required=True)
+    mp.add_argument("--evidence", action="append", required=True)
+    mp.add_argument("--owner-ref", required=True)
+    mp.add_argument("--supersedes", help="pending maintenance id this candidate replaces")
+    mp.add_argument("--at")
+    mf = mt_sub.add_parser("finalize", help="record the validated revision and its complete reports")
+    mf.add_argument("stage")
+    mf.add_argument("id")
+    mf.add_argument("--revision", required=True, help="the clean revision the reports were produced at")
+    mf.add_argument("--report", action="append", required=True, help="a complete report, one per Python version")
+    mf.add_argument("--at")
+    mt.set_defaults(func=cmd_maintenance)
 
     h = sub.add_parser("handoff", help="print an auditable handoff summary")
     h.add_argument("stage")

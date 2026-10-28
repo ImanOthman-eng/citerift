@@ -1,0 +1,60 @@
+{
+  "protocol_version": "2.0.0",
+  "owner_reference": "cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT",
+  "model": "mixedbread-ai/mxbai-rerank-base-v2 @ 3ea9d4dffa7d12a4f366be8e275c349de9fc9865 (manifest_sha256 99e08feac7ff1f2bd36b9b78814e2da57ed233e8fec253a1da6ee4d07880e1d1)",
+  "run": "one run on the 300 holdout groups, 2026-10-28T07:27:32Z to 07:39:03Z, code revision 9e23c76 (frozen code 2136943), network namespace without interfaces plus socket guard; log runs/holdout-run.log",
+  "result_file": "holdout-result.json (sha256 5b2542cf38b2bae0728bedc332b46801aed4e30df2ad9e32d406024bf757bc69)",
+  "quality_admission_checks": {
+    "complete_predictions": true,
+    "critical_confusions_zero": true,
+    "min_eligible_groups": true,
+    "negative_false_selections_not_above_baseline": false,
+    "one_sided_p": false,
+    "positive_recall": true,
+    "prohibited_fact_writes_zero": true,
+    "relative_error_reduction": false
+  },
+  "resources": {
+    "cold_init_s": {
+      "measured": 63.4,
+      "limit": 120,
+      "met": true
+    },
+    "warm_case_p95_s": {
+      "measured": 2.673,
+      "limit": 15,
+      "met": true
+    },
+    "max_case_s": {
+      "measured": 3.512,
+      "limit": 30,
+      "met": true
+    },
+    "peak_rss_mib": {
+      "measured": 3266,
+      "limit_mib": 4096,
+      "met": true,
+      "note": "whole scoring process (model, tokenizer and harness); the only process of the run, so it is also the combined figure against the 8 GiB plan"
+    },
+    "artifact_bytes": {
+      "measured": 988097536,
+      "limit_gib": 2,
+      "met": true
+    },
+    "full_evaluation_min": {
+      "measured": 11.5,
+      "limit": 60,
+      "met": true
+    },
+    "threads_workers": "4 threads, 1 worker (manifest runtime; one process)",
+    "pairs": 1490,
+    "tokens": 330829,
+    "mean_tokens_per_pair_max_case": 365.0,
+    "failures": {},
+    "network_denied": true
+  },
+  "resources_met": true,
+  "admitted": false,
+  "disposition": "evaluated; not admitted. The frozen model makes 67 errors on the holdout against the baseline's 26 (relative error reduction -1.58, bootstrap 95% -2.95 to -0.79; b = 54, c = 13, one-sided p = 1.0). Negative false selections rise from 26 to 36. Resources were met and no critical confusion or fact write occurred.",
+  "recommendation": "Exclude the local model from the default product. Keep the adapter, the CLI option (--model-dir, off by default) and the evidence; the deterministic baseline stays the only ambiguity decision. This is the owner's decision."
+}

@@ -1,0 +1,5 @@
+# Optional CPU inference stack for the Evidence Ambiguity Investigator's local reranker (Stage 02, AI Protocol v2).
+# Kept outside pyproject.toml and uv.lock: the deterministic engine, governance and CI never install it.
+# Compile: see docs/verification/stage-02/ai/v2/INFERENCE_GUIDE.md. Install only with --require-hashes.
+torch==2.14.1+cpu
+transformers==5.19.0

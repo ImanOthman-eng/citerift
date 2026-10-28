@@ -138,6 +138,30 @@ before implementation starts.
   contracts' meaning (for example, that no value means "not retracted") is
   decided by the owner's approval and by the tests at the new revision; an
   enhancement has no CI record of its own.
+- Maintenance transaction (an enhancement whose change repairs the tests or
+  the checker that would have to pass to record it; D-024, first used for
+  A-00-002). It is an enhancement amendment with a `maintenance` record,
+  written only by `citerift-gov maintenance prepare` and `finalize`:
+  1. *prepare* records the owner reference, the accepted baseline, the
+     candidate revision and the exact patch (each changed owned file with the
+     SHA-256 of its content; regular files only) and its digest. It needs no
+     report.
+  2. *validate*: commit that pending record and run the complete test suite on
+     the clean revision, once per Python version of the CI matrix (3.12 and
+     3.13). While it is pending, owned content equal to the declared patch is
+     reported as `MAINTENANCE_PENDING` (a warning); anything else stays an
+     error, an ordinary enhancement is refused, and no stage can be verified
+     or accepted (`MAINTENANCE_BARRIER`, anchored to history positions).
+  3. *finalize* records the validated revision and the reports. It is refused
+     unless the reports pass every test-report check at that revision, the
+     owned content there equals the candidate, and the registry there holds
+     the same record pending. Afterwards the amendment covers the change like
+     any enhancement and ordinary drift detection applies again.
+
+  A changed candidate is recorded as a new transaction that supersedes the old
+  one; the old record stays. Acceptance and history are never rewritten. The
+  model and the review evidence are in
+  `docs/verification/maintenance/A-00-002/`.
 
 ## Engineering method
 

@@ -1,0 +1,109 @@
+Fail-first run of tests/stage02/test_rde_audit_fixes.py (final version) against the unchanged engine at ac959c6 (git worktree, PYTHONPATH=<worktree>/src), Python 3.12.3, 2026-10-28T13:01:11Z.
+Expected: the F1 and F3 tests fail; the three that pass pin behavior that was already right (no divergence, the two-identifier query, distinct PMIDs).
+
+FFF..FFF.                                                                [100%]
+=================================== FAILURES ===================================
+_____ test_rde_pmid_query_does_not_state_a_correction_for_a_retracted_doi ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_pmid_query_does_not_s0')
+
+    @pytest.mark.regression
+    def test_rde_pmid_query_does_not_state_a_correction_for_a_retracted_doi(tmp_path: Path) -> None:
+        out = _look(_divergent(tmp_path), None, P)
+        assert out["lookup_state"] == "matched"
+>       assert _status(out)[:2] == ("uncertain", None)
+E       AssertionError: assert ('verified_fa... 'correction') == ('uncertain', None)
+E         
+E         At index 0 diff: 'verified_fact' != 'uncertain'
+E         Use -v to get more diff
+
+tests/stage02/test_rde_audit_fixes.py:67: AssertionError
+__________ test_rde_divergence_is_reported_from_both_query_directions __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_divergence_is_reporte0')
+
+    @pytest.mark.regression
+    def test_rde_divergence_is_reported_from_both_query_directions(tmp_path: Path) -> None:
+        """The DOI query keeps its DOI-first answer (both records are the DOI's own), and both directions now report
+        the same divergence."""
+        idx = _divergent(tmp_path)
+        by_doi = _look(idx, D, None)
+        assert _status(by_doi)[:2] == ("verified_fact", "retracted")
+        for out in (by_doi, _look(idx, None, P), _look(idx, None, P2)):
+>           [issue] = _issues(out, "IDENTITY_SECONDARY_DIVERGENT")
+            ^^^^^^^
+E           ValueError: not enough values to unpack (expected 1, got 0)
+
+tests/stage02/test_rde_audit_fixes.py:85: ValueError
+______ test_rde_divergent_record_that_agrees_does_not_withhold_the_answer ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_divergent_record_that0')
+
+    @pytest.mark.regression
+    def test_rde_divergent_record_that_agrees_does_not_withhold_the_answer(tmp_path: Path) -> None:
+        """Adequate direct support keeps its conclusion: a record of the DOI under another PMID that says the same
+        thing is listed, not counted."""
+        rows = [
+            _event("1", "Retraction", "10.5555/n-r", "9/19/2018 0:00", OriginalPaperDOI=D, OriginalPaperPubMedID=P),
+            _event("2", "Retraction", "10.5555/n-r", "9/19/2018 0:00", OriginalPaperDOI=D, OriginalPaperPubMedID=P2),
+        ]
+        out = _look(S.build_rows(tmp_path, rows), None, P)
+        assert _status(out) == ("verified_fact", "retracted", "verified_fact")
+        basis = out["projection"]["basis"]
+>       assert "BRIDGED_EVIDENCE_NOT_COUNTED" in basis["reasons"]
+E       AssertionError: assert 'BRIDGED_EVIDENCE_NOT_COUNTED' in ['SOURCE_RECORDED_RETRACTION']
+
+tests/stage02/test_rde_audit_fixes.py:100: AssertionError
+__ test_rde_pmid_role_collision_is_reported_without_changing_the_value[key0] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_pmid_role_collision_i0')
+key = ('10.5555/w', None)
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("key", [(D, None), (None, P)])
+    def test_rde_pmid_role_collision_is_reported_without_changing_the_value(tmp_path: Path, key: tuple[Any, Any]) -> None:
+        out = _look(S.build_rows(tmp_path / "c", _collision_rows("10.5555/n-r")), *key)
+>       [issue] = _issues(out, "PMID_ROLE_COLLISION")
+        ^^^^^^^
+E       ValueError: not enough values to unpack (expected 1, got 0)
+
+tests/stage02/test_rde_audit_fixes.py:146: ValueError
+__ test_rde_pmid_role_collision_is_reported_without_changing_the_value[key1] ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_pmid_role_collision_i1')
+key = (None, '4242')
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("key", [(D, None), (None, P)])
+    def test_rde_pmid_role_collision_is_reported_without_changing_the_value(tmp_path: Path, key: tuple[Any, Any]) -> None:
+        out = _look(S.build_rows(tmp_path / "c", _collision_rows("10.5555/n-r")), *key)
+>       [issue] = _issues(out, "PMID_ROLE_COLLISION")
+        ^^^^^^^
+E       ValueError: not enough values to unpack (expected 1, got 0)
+
+tests/stage02/test_rde_audit_fixes.py:146: ValueError
+______________ test_rde_pmid_role_collision_without_a_notice_doi _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-127/test_rde_pmid_role_collision_w0')
+
+    @pytest.mark.regression
+    def test_rde_pmid_role_collision_without_a_notice_doi(tmp_path: Path) -> None:
+        out = _look(S.build_rows(tmp_path, _collision_rows("")), None, P)
+>       [issue] = _issues(out, "PMID_ROLE_COLLISION")
+        ^^^^^^^
+E       ValueError: not enough values to unpack (expected 1, got 0)
+
+tests/stage02/test_rde_audit_fixes.py:162: ValueError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/stage02/test_rde_audit_fixes.py::test_rde_pmid_query_without_divergence_is_unchanged
+PASSED tests/stage02/test_rde_audit_fixes.py::test_rde_two_identifier_query_with_divergent_pmid_stays_ambiguous
+PASSED tests/stage02/test_rde_audit_fixes.py::test_rde_no_role_collision_issue_for_distinct_pmids
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_pmid_query_does_not_state_a_correction_for_a_retracted_doi
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_divergence_is_reported_from_both_query_directions
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_divergent_record_that_agrees_does_not_withhold_the_answer
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_pmid_role_collision_is_reported_without_changing_the_value[key0]
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_pmid_role_collision_is_reported_without_changing_the_value[key1]
+FAILED tests/stage02/test_rde_audit_fixes.py::test_rde_pmid_role_collision_without_a_notice_doi
+6 failed, 3 passed in 0.27s
+

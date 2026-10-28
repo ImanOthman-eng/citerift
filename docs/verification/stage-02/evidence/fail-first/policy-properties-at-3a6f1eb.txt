@@ -1,0 +1,24 @@
+# tests/stage02/test_rde_policy_properties.py run against the code of 3a6f1eb (PYTHONPATH=<worktree of 3a6f1eb>/src)
+..FFF                                                                    [100%]
+=================================== FAILURES ===================================
+E   AssertionError: assert ('conflicting', None) == ('verified_fact', 'retracted')
+      
+      At index 0 diff: 'conflicting' != 'verified_fact'
+      Use -v to get more diff
+<worktree>/tests/stage02/test_rde_policy_properties.py:101: AssertionError: assert ('conflicting', None) == ('verified_fact', 'retracted')
+E   AssertionError: assert ('conflicting', None) == ('verified_fact', 'retracted')
+      
+      At index 0 diff: 'conflicting' != 'verified_fact'
+      Use -v to get more diff
+<worktree>/tests/stage02/test_rde_policy_properties.py:101: AssertionError: assert ('conflicting', None) == ('verified_fact', 'retracted')
+E   AssertionError: 31
+    assert ('verified_fa... 'reinstated') == ('uncertain', None)
+      
+      At index 0 diff: 'verified_fact' != 'uncertain'
+      Use -v to get more diff
+<worktree>/tests/stage02/test_rde_policy_properties.py:112: AssertionError: 31
+=========================== short test summary info ============================
+FAILED tests/stage02/test_rde_policy_properties.py::test_rde_inv_p2_concern_then_retraction_on_one_notice_is_not_a_conflict[1]
+FAILED tests/stage02/test_rde_policy_properties.py::test_rde_inv_p2_concern_then_retraction_on_one_notice_is_not_a_conflict[400]
+FAILED tests/stage02/test_rde_policy_properties.py::test_rde_inv_p3_no_reinstatement_without_supersession
+3 failed, 2 passed in 0.07s

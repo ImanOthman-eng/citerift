@@ -1,0 +1,30 @@
+{
+  "candidate_id": "c1",
+  "date": "2026-10-27",
+  "decision": "select",
+  "duration_ms_reported": 7919,
+  "findings": [
+    "A call can be issued and its output, served model id and token usage recorded from the session transcript.",
+    "The only tool call was SubagentHandback, the harness's delivery mechanism; no file, shell or web tool was used. Tool access is not removed in advance, so separation is checked afterwards from each transcript.",
+    "Per-call cost is dominated by the agent's fixed context (~45k cache-creation tokens), far above the frozen 4,500-token per-call envelope.",
+    "No sampling controls (temperature, seed) are exposed; outputs are recorded, not reproducible by rerun."
+  ],
+  "kind": "route_feasibility_pilot",
+  "owner_authorization": "cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni",
+  "part_of_evaluation": false,
+  "provider_usage_last_turn": {
+    "cache_creation_input_tokens": 45269,
+    "cache_read_input_tokens": 0,
+    "input_tokens": 2,
+    "output_tokens": 696
+  },
+  "response_schema_valid": true,
+  "route": "Claude Code session Agent tool (subagent_type general-purpose, model parameter 'sonnet')",
+  "served_model_from_transcript": "claude-sonnet-5-5",
+  "synthetic": true,
+  "tool_uses_in_transcript": [
+    "SubagentHandback"
+  ],
+  "transcript_bytes": 244585,
+  "transcript_sha256": "655f28931fe6cffa6bf5641fc2ce325c4377fa73ca33b1c52ea1df7ccdd807ff"
+}

@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-10-28T02:30:00Z",
+  "purpose": "Capability and permission inventory for the Stage 02 real-data runs (directive sections 3 and 17). No secret values are recorded.",
+  "host": {
+    "kind": "managed cloud container (ephemeral)",
+    "cpus": 4,
+    "memory_gib": 15,
+    "gpu": false,
+    "platform": "Linux-6.18.44-fc-v180-x86_64-with-glibc2.39"
+  },
+  "toolchain": {
+    "uv": "0.11.32",
+    "project_venv_python": "3.12.3",
+    "other_interpreters_installed": ["3.13.17", "3.11.17"],
+    "sqlite": "3.45.1",
+    "jsonschema": "4.26.0",
+    "pytest": "9.1.1",
+    "ruff": "0.17.2",
+    "mypy": "2.4.0"
+  },
+  "runtime_dependencies_added_by_stage_02": [],
+  "network": {
+    "gitlab_raw_pinned_csv": "reachable; bytes, SHA-256 and git blob SHA-1 match the receipt",
+    "api_crossref_org": "reachable; one bounded run of 29 works and 30 requests (evidence/crossref/manifest.json)",
+    "other_hosts": "not used"
+  },
+  "github": {
+    "push_to_branch": "works (claude/project-thread-ddufmg)",
+    "merge": "not used; the owner merges (D-019)"
+  },
+  "model_access": {
+    "api_keys_in_environment": "none (no ANTHROPIC_API_KEY or OPENAI_API_KEY variable is set)",
+    "owner_ruling": "cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni: no API keys or additional paid services; existing session facilities may be used where technically supported and permitted",
+    "session_agent_facility": "works; one synthetic pilot outside the frozen splits (ai/route-pilot-2026-10-27.json); route choice pending with the owner (D-023)"
+  },
+  "ci": "GitHub Actions workflow of the repository, Python 3.12 and 3.13 (unchanged by Stage 02)"
+}

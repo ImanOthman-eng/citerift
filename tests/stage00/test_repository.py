@@ -7,6 +7,7 @@ import re
 import subprocess
 import tomllib
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -201,14 +202,132 @@ def test_status_document_is_generated_from_registry() -> None:
     assert (REPO / "PROJECT_STATUS.md").read_text(encoding="utf-8") == orc.render_status()
 
 
+# The approved component-to-stage mapping (docs/architecture.md, "Component boundaries and planned locations").
+LAYER_STAGES = {
+    "governance": ("00",),
+    "contracts": ("00",),
+    "retraction": ("02",),
+    "wiki": ("03",),
+    "investigation": ("04", "07"),
+    "context": ("05",),
+    "ai": ("06",),
+    "api": ("07",),
+}
+FRONTEND_STAGES = ("08",)
+
+
+def layout_problems(root: Path, registry: dict[str, Any]) -> list[str]:
+    """Application layers that exist without an owner-authorized stage that owns them.
+
+    A layer is allowed only when the approved mapping names it, one of its stages has an owner
+    authorization recorded (status other than NOT_STARTED), and that stage lists the layer in its
+    owned paths. Unknown packages and a frontend before Stage 08 is authorized are refused (A-00-002).
+    """
+    stages = {s["id"]: s for s in registry["stages"]}
+
+    def allowed(path: str, owners: tuple[str, ...]) -> bool:
+        return any(
+            stages[sid]["authorization"]
+            and stages[sid]["status"] != "NOT_STARTED"
+            and any(path == p.rstrip("/") or path.startswith(p.rstrip("/") + "/") for p in stages[sid]["owned_paths"])
+            for sid in owners
+        )
+
+    problems = []
+    package = root / "src" / "citerift"
+    for child in sorted(package.iterdir()) if package.is_dir() else []:
+        if not child.is_dir() or child.name == "__pycache__":
+            continue
+        rel = f"src/citerift/{child.name}"
+        owners = LAYER_STAGES.get(child.name)
+        if owners is None:
+            problems.append(f"{rel} is not an approved component")
+        elif not allowed(rel, owners):
+            problems.append(f"{rel} belongs to stage {'/'.join(owners)}, which is not authorized to own it")
+    if (root / "frontend").exists() and not allowed("frontend", FRONTEND_STAGES):
+        problems.append("frontend belongs to stage 08, which is not authorized to own it")
+    return problems
+
+
 @pytest.mark.regression
 def test_application_layers_not_created_prematurely() -> None:
-    package = REPO / "src" / "citerift"
-    assert sorted(p.name for p in package.iterdir() if p.is_dir() and p.name != "__pycache__") == [
-        "contracts",
-        "governance",
+    registry = loads_strict((REPO / "governance/stage_registry.json").read_text(encoding="utf-8"))
+    assert layout_problems(REPO, registry) == []
+    present = sorted(p.name for p in (REPO / "src" / "citerift").iterdir() if p.is_dir() and p.name != "__pycache__")
+    assert {"contracts", "governance"} <= set(present)
+
+
+@pytest.mark.regression
+def test_layer_mapping_matches_the_architecture_document() -> None:
+    text = (REPO / "docs/architecture.md").read_text(encoding="utf-8")
+    documented = {}
+    for location, owners in re.findall(r"^\|[^|]+\|([^|]+)\|([^|]+)\|[^|]*\|$", text, re.MULTILINE):
+        stages = tuple(re.findall(r"\b(0\d)\b", owners))
+        for name in re.findall(r"`src/citerift/([a-z_]+)/`", location):
+            documented[name] = stages
+        if "`frontend/`" in location:
+            documented["frontend"] = stages
+    assert documented == {**LAYER_STAGES, "frontend": FRONTEND_STAGES}
+
+
+def _layout_fixture(tmp_path: Path, layers: list[str], authorized: dict[str, list[str]]) -> tuple[Path, dict[str, Any]]:
+    """A tree with the given layers and a registry in which only ``authorized`` stages (id -> extra owned
+    paths) carry an owner authorization."""
+    for name in layers:
+        (tmp_path / name).mkdir(parents=True)
+    registry = loads_strict((REPO / "governance/stage_registry.json").read_text(encoding="utf-8"))
+    for s in registry["stages"]:
+        if s["id"] in authorized:
+            s["authorization"] = {
+                "owner_ref": "cmsg_TESTLAYOUT",
+                "scope": "test",
+                "recorded_at": "2026-01-01T00:00:00Z",
+            }
+            s["status"] = "IN_PROGRESS"
+            s["owned_paths"] = sorted({*s["owned_paths"], *authorized[s["id"]]})
+        else:
+            s.update(authorization=None, status="NOT_STARTED")
+    return tmp_path, registry
+
+
+@pytest.mark.regression
+@pytest.mark.negative
+def test_layout_guard_foundation_state(tmp_path: Path) -> None:
+    root, reg = _layout_fixture(tmp_path, ["src/citerift/contracts", "src/citerift/governance"], {"00": []})
+    assert layout_problems(root, reg) == []
+
+
+@pytest.mark.regression
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("layers", "authorized", "expected"),
+    [
+        (["src/citerift/retraction"], {"00": []}, "src/citerift/retraction belongs to stage 02"),
+        (["src/citerift/wiki"], {"00": [], "02": []}, "src/citerift/wiki belongs to stage 03"),
+        (["src/citerift/ai"], {"00": [], "02": ["src/citerift/ai"]}, "src/citerift/ai belongs to stage 06"),
+        (["src/citerift/plugins"], {"00": [], "02": []}, "src/citerift/plugins is not an approved component"),
+        (["frontend"], {"00": [], "02": []}, "frontend belongs to stage 08"),
+    ],
+)
+def test_layout_guard_refuses_unauthorized_layers(
+    tmp_path: Path, layers: list[str], authorized: dict[str, list[str]], expected: str
+) -> None:
+    root, reg = _layout_fixture(tmp_path, ["src/citerift/governance", *layers], authorized)
+    problems = layout_problems(root, reg)
+    assert len(problems) == 1 and problems[0].startswith(expected), problems
+
+
+@pytest.mark.regression
+@pytest.mark.negative
+def test_layout_guard_needs_the_stage_to_own_the_layer(tmp_path: Path) -> None:
+    root, reg = _layout_fixture(tmp_path, ["src/citerift/retraction"], {"00": [], "02": []})
+    assert layout_problems(root, reg) == []
+    for s in reg["stages"]:
+        if s["id"] == "02":
+            s["owned_paths"] = [p for p in s["owned_paths"] if p != "src/citerift/retraction"]
+    assert layout_problems(root, reg) == [
+        "src/citerift/retraction belongs to stage 02, which is not authorized to own it"
     ]
-    assert not (REPO / "frontend").exists()
 
 
 @pytest.mark.regression

@@ -6,6 +6,67 @@ what changed in the repository.
 
 ## [Unreleased]
 
+### Stage 02 closed (pull request #4 unmerged; the owner merges it)
+
+- 2026-10-28: Stage 02 (Retraction Data Engine) verified at `cf06083` and
+  accepted by the owner (owner message
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`, D-028), covering the
+  reviewed implementation at pull request #4 head `f9592b1`. D-026 approved.
+  The evaluated local model is excluded from the default product; its
+  negative evaluation and evidence are kept (R-028 accepted). R-029 and R-031
+  acknowledged as unresolved limitations. The review's complexity-documentation
+  and experimental inference-timeout observations are follow-up items R-032
+  and R-033; no implementation changed. The acceptance does not authorize
+  Stage 03.
+
+### Stage 02 Retraction Data Engine (history before acceptance)
+
+- 2026-10-27/28: `src/citerift/retraction/` with schemas in
+  `schemas/retraction/v1/`, the `citerift-rde` command (build, lookup, event,
+  tension, verify, export, diff, enrich, ambiguity) and tests in
+  `tests/stage02/`. No runtime dependency added (D-022).
+- Lossless import of the pinned Retraction Watch snapshot (73,356 records,
+  receipt-checked), role-aware DOI and PMID lookup, a conservative v1
+  projection, canonical export with semantic and artifact digests, and a
+  non-destructive diff.
+- Evidence Tension v0, the stage's creative contribution (D-021):
+  query-local interventions that show which conclusion rests on one origin,
+  an ambiguous link or an unbounded date.
+- Bounded Crossref corroboration with a pinned replay bundle of 29 works.
+- Evidence Ambiguity Investigator: boundary, deterministic baseline, AI
+  Protocol v1 (kept; design infeasible, never run) and AI Protocol v2 (D-025):
+  a local open model (mixedbread-ai/mxbai-rerank-base-v2, Apache-2.0) behind
+  `LocalAmbiguityModel.rank` and the opt-in `citerift-rde ambiguity
+  --model-dir`, with an optional hash-pinned CPU inference environment
+  (`requirements/inference-cpu.txt`). Evaluated once on a fresh 300-group
+  holdout: not admitted (R-028).
+- Fixes for three review passes (R-022) and post-freeze specification changes,
+  listed in docs/verification/stage-02/SPECIFICATION.md section 16.
+- 2026-10-28: R-026 correction (owner instruction, D-026): policy 1.2.0 rule
+  7f, bridged identifiers no longer establish a status or a date by
+  themselves; a PMID query treats Crossref relations about the co-occurring
+  DOI as bridged. Frozen cases P33, T05 and T06 amended (frozen values kept).
+  Tension 0.3.0; `common.schema.json` 1.1.0 adds `basis.bridged_assertions`.
+  Stage 02 returned to IN_PROGRESS for the correction and was offered for
+  verification again.
+- 2026-10-28: fixes of the independent audit (owner authorization, D-027):
+  policy 1.3.0. A PMID lookup no longer drops records of its DOI under another
+  PMID; they are bridged candidates under rule 7f and the divergence is
+  reported (R-030 closed). A PMID given for both an original and its notice
+  is reported as `PMID_ROLE_COLLISION` (R-031). D-026 is marked pending the
+  owner. Stage 02 returned to IN_PROGRESS for the fixes and was offered for
+  verification again.
+- `tests/stage00/test_corrections.py`: the owner-authorized V-03 test-setup fix
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`), recorded with the
+  layout-guard correction by Stage 00 maintenance A-00-002.
+
+### Stage 00 maintenance A-00-002 (owner-authorized, D-024)
+
+- 2026-10-28: a prepare, validate, finalize maintenance transaction for an
+  accepted stage (`citerift-gov maintenance`), with its schema
+  (`$defs.maintenance`), tests and GOVERNANCE.md text. Stage 00 stays
+  accepted; no lifecycle state was added.
+
 ### Stage 01 closed
 
 - 2026-10-27: Stage 01 (Independent Feasibility Investigation) verified at

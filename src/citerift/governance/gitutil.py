@@ -85,6 +85,38 @@ def show(root: Path, rev: str, path: str) -> str | None:
     return out.stdout
 
 
+def blob_sha256(root: Path, rev: str, path: str) -> str | None:
+    """SHA-256 of the committed bytes of ``path`` at ``rev``, or None when the file does not exist there."""
+    if _git(root, "cat-file", "-e", f"{rev}:{path}").returncode != 0:
+        return None
+    git = shutil.which("git")
+    if git is None:
+        raise GitUnavailableError("git executable not found")
+    out = subprocess.run(  # noqa: S603 - fixed executable, no shell, list arguments
+        [git, "--no-replace-objects", "-C", str(root), "cat-file", "blob", f"{rev}:{path}"],
+        capture_output=True,
+        check=False,
+        env=_env(),
+    )
+    if out.returncode != 0:
+        raise GitUnavailableError(out.stderr.decode("utf-8", "replace").strip())
+    return hashlib.sha256(out.stdout).hexdigest()
+
+
+def tree_entry(root: Path, rev: str, path: str) -> tuple[str, str] | None:
+    """The mode and object type of ``path`` at ``rev`` (``("100644", "blob")``), or None when it is absent."""
+    out = _git(root, "ls-tree", "-z", rev, "--", path)
+    if out.returncode != 0:
+        raise GitUnavailableError(out.stderr.strip() or f"cannot read {rev}")
+    for entry in out.stdout.split("\0"):
+        if entry:
+            meta, name = entry.split("\t", 1)
+            if name == path:
+                mode, kind, _oid = meta.split(" ")
+                return mode, kind
+    return None
+
+
 def is_shallow(root: Path) -> bool:
     out = _git(root, "rev-parse", "--is-shallow-repository")
     return out.returncode == 0 and out.stdout.strip() == "true"
