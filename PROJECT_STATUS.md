@@ -13,7 +13,7 @@ Only the owner can accept a stage or authorize one.
 |---|---|---|---|---|---|---|
 | 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 0c21182e5871 | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `ACCEPTED_CLOSED` | 85da719ac43f | yes |
-| 02 | Retraction Data Engine | engineering-agent | 00, 01 | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | 21d9f378b19c | no |
+| 02 | Retraction Data Engine | engineering-agent | 00, 01 | `IN_PROGRESS` | - | no |
 | 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
 | 04 | Detection Engine and Vertical Slice | engineering-agent | 02, 03 | `NOT_STARTED` | - | no |
 | 05 | Citation Context and Evidence Preparation | engineering-agent | 04 | `NOT_STARTED` | - | no |
@@ -24,7 +24,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 02 (Retraction Data Engine): owner acceptance decision required; successors stay locked until then
+- Stage 02 (Retraction Data Engine): authorized work may continue (IN_PROGRESS)
 - Stage 03 (Wikipedia Extraction Engine): dependencies accepted; NOT authorized until the owner explicitly authorizes it
 
 ## Open blockers
@@ -37,7 +37,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Recent history
 
-- 2026-10-27T18:20:54Z stage 01: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by external-agent. Owner-approved strengthening pass implemented at 85da719: Arabic DOI/PMID census against Retraction Watch, en-ar divergence, Arabic warning gap, Stage 01 tests in CI, Shi median resolved
 - 2026-10-27T18:26:45Z stage 01: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by external-agent. Strengthening pass verified at 85da719: 505 tests passed (101 Stage 01), ruff, format, mypy and governance check clean; census re-derived identical; live re-verification 0 mismatches
 - 2026-10-27T18:44:05Z stage 01: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yP4bEH9RimJDhvHy8S2ABHcU`). Owner accepts Stage 01 at evidence revision 85da719 and approves the revised, limited RESCOPE recommendation (FEASIBILITY_REPORT.md §12, §16.8)
 - 2026-10-27T20:25:10Z stage 02: NOT_STARTED -> AUTHORIZED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ`). Owner's Stage 02 Master Execution Directive authorizes Stage 02 (Retraction Data Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.
@@ -47,6 +46,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-10-28T10:04:07Z stage 02: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`). Owner requested a narrowly scoped scientific correction of R-026 before acceptance (bridged identifiers must not by themselves establish a verified status or date); the verified revision 15925c9 and its history are kept.
 - 2026-10-28T10:38:14Z stage 02: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. R-026 correction implemented at 21d9f37 under the owner's instruction (cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy; D-026): policy 1.2.0 rule 7f (bridged identifiers alone establish no verified status or date; sufficiency judged from direct support), P33, T05 and T06 amended with frozen versions kept, real-data impact measured and evidence regenerated. Earlier verification at 15925c9 kept in history.
 - 2026-10-28T10:38:20Z stage 02: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. All nine gates pass at 21d9f37 after the R-026 correction: clean-tree complete test reports (Python 3.12.3 and 3.13.17, 1,149 passed each) and green CI on Python 3.12 and 3.13 (push run 40672514661, pull request run 40672521827). Fail-first regressions recorded against 720a049; real-data impact: 0 of 96,803 keys change on the RW-only index, 22 on the Crossref index (2 verified retractions become uncertain). Gate 02-G unchanged (local model not admitted, disabled by default). Owner acceptance and the merge are the owner's.
+- 2026-10-28T12:58:15Z stage 02: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX`). Owner authorized the improvements of the independent Stage 02 audit before acceptance: F1 (a PMID-only lookup ignores records of the same DOI that carry a different PMID) and F3 (PMID role collision, issue code only); the verified revision 21d9f37 and its history are kept.
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).
