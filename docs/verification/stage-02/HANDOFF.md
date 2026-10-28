@@ -216,24 +216,37 @@ torch 2.14.1+cpu, transformers 5.19.0, no CUDA), audited separately. Real-data r
 
 ## Verified Git commit
 
-- R-026 correction (owner instruction
-  `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`, D-026): return to
-  IN_PROGRESS at `d1a6ce1`; engine code (rule 7f, policy 1.2.0, tension 0.3.0,
-  schema 1.1.0) and tests at `a0666b3`; documents, decision and regenerated
-  real-data evidence at the verified revision below. The fail-first run of the
-  new regressions against the code of `720a049` is
-  `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt` (17 failed, 7
-  passed, the seeded invariant failing at seed 2).
-- Verified revision: `21d9f378b19cc01b948767472618a85ae47b1093`. Complete
+- Audit fixes F1 and F3 (owner authorization
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX`, D-027): return to
+  IN_PROGRESS at `ac959c6`; engine code (policy 1.3.0), simulator and tests at
+  `1465e85` (CI green: push run
+  https://github.com/ImanOthman-eng/citerift/actions/runs/40693860776, pull
+  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40693867514);
+  documents, decision and regenerated real-data evidence at the verified
+  revision below. The fail-first run of the new regressions against the code
+  of `ac959c6` is `evidence/fail-first/audit-f1-f3-at-ac959c6.txt` (6 failed,
+  3 passed).
+- Verified revision: `cf060834afedfa4a82712ca247ad2fc2b2fa9665`. Complete
   test report on a clean checkout of it: `test-report.json` (Python 3.12.3,
-  1,149 collected, 1,149 passed, exit 0) and `evidence/test-report-py3.13.json` (Python 3.13.17, the same);
-  run logs `evidence/test-run-py3.12-at-21d9f37.log` and
-  `evidence/test-run-py3.13-at-21d9f37.log`. CI at this revision: push run
-  https://github.com/ImanOthman-eng/citerift/actions/runs/40672514661 and pull
-  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40672521827,
-  both successful on Python 3.12 and 3.13.
+  1,159 collected, 1,159 passed, exit 0) and `evidence/test-report-py3.13.json` (Python 3.13.17, the same);
+  run logs `evidence/test-run-py3.12-at-cf06083.log` and
+  `evidence/test-run-py3.13-at-cf06083.log`. CI at this revision: push run
+  https://github.com/ImanOthman-eng/citerift/actions/runs/40695812191 and pull request run https://github.com/ImanOthman-eng/citerift/actions/runs/40695821728, both successful on Python 3.12 and 3.13.
 - The next commit records the verification in the registry, with this
   handoff and the reports; it changes no code.
+- Earlier verification after the R-026 correction (owner instruction
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`, D-026), kept in the
+  registry history (entries 30 and 31) and in
+  `evidence/registry-verification-at-21d9f37.json`: return to IN_PROGRESS at
+  `d1a6ce1`, engine code at `a0666b3`, verified revision
+  `21d9f378b19cc01b948767472618a85ae47b1093` (registry commit `8557ec2`),
+  reports `evidence/test-report-py3.12-at-21d9f37.json` and
+  `evidence/test-report-py3.13-at-21d9f37.json` (1,149 passed each), logs
+  `evidence/test-run-py3.1[23]-at-21d9f37.log`, CI push run
+  https://github.com/ImanOthman-eng/citerift/actions/runs/40672514661 and pull
+  request run https://github.com/ImanOthman-eng/citerift/actions/runs/40672521827.
+  Its record is `evidence/verification-record-at-21d9f37.json`; its fail-first
+  run is `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`.
 - Earlier verification, kept in the registry history (entries 27 and 28) and
   in `evidence/registry-verification-at-15925c9.json`: verified revision
   `15925c9aa3d5aa4f51209e5953e02a7c6b15c226` (registry commit `720a049`),
