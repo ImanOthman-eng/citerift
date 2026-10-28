@@ -16,6 +16,8 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     "WIKI_UNSUPPORTED": ("error", False, "only arwiki and enwiki are supported"),
     "HTTP_TIMEOUT": ("error", True, "connection or read timed out"),
     "HTTP_CONNECTION_FAILED": ("error", True, "the connection could not be made"),
+    "NETWORK_GATE_BUSY": ("error", True, "another process held the project network gate past the capture deadline"),
+    "NETWORK_GATE_UNAVAILABLE": ("error", False, "the project network gate could not be opened or locked"),
     "HTTP_RATE_LIMITED": ("error", True, "HTTP 429"),
     "HTTP_UNAVAILABLE": ("error", True, "HTTP 502, 503 or 504"),
     "HTTP_SERVER_ERROR": ("error", True, "other HTTP 5xx"),

@@ -2628,12 +2628,56 @@
         "unit",
         "integration",
         "negative",
-        "regression"
+        "regression",
+        "reproducibility",
+        "security",
+        "contracts",
+        "simulation"
       ],
       "acceptance_gates": [
         {
           "id": "03-A",
           "requirement": "Extraction results match an independently inspected sample, with failures and unsupported cases documented"
+        },
+        {
+          "id": "03-B",
+          "requirement": "Receipts and integrity: every evaluated and demonstrated bundle verifies (citerift-wiki verify exit 0); no source/render join across differing revisions; every published hash, exact source anchor and DOM locator re-checks"
+        },
+        {
+          "id": "03-C",
+          "requirement": "Core bilingual extraction: every construct of the frozen arwiki/enwiki support matrix is tested in each language where it exists, and every discovered candidate has a disposition in the accounting of every evaluated extraction"
+        },
+        {
+          "id": "03-D",
+          "requirement": "Identifier semantics: Stage 02 DOI/PMID normalization reused through the adapter; no notice, marker or title identifier promoted to a cited-work role (holdout gate G3a and tests); co-reported identifiers never merged"
+        },
+        {
+          "id": "03-E",
+          "requirement": "Source/render/use ledger: reuse and multi-source accounting, explicit unresolved links and an exception ledger; the five required demonstrations with actual CLI commands and output"
+        },
+        {
+          "id": "03-F",
+          "requirement": "Scoped marker observations: source marker, rendered text, missing-template link and not-inspected states kept apart; no failure-to-absence path; zero fabricated negative markers on holdout and observed challenge (G7)"
+        },
+        {
+          "id": "03-G",
+          "requirement": "Independent evaluation under FROZEN_PROTOCOL.md: fresh article-grouped splits, annotations by a separate non-implementing evaluator locked before predictions, raw predictions and annotations published, gates G1-G6 and G8-G11 met per language with the minimum denominators"
+        },
+        {
+          "id": "03-H",
+          "requirement": "Resource and failure containment: worker wall and memory limits, size limits and the network policy enforced and tested; holdout costs within the frozen budgets"
+        },
+        {
+          "id": "03-I",
+          "requirement": "Reproducibility and packaging: offline replay reproduces every evaluated extraction digest; clean-clone and installed-wheel behavior for schema resources tested"
+        },
+        {
+          "id": "03-J",
+          "requirement": "Reviews: four review perspectives completed, findings dispositioned with fail-first evidence where feasible; no change to protected Stage 00/01/02 paths"
+        },
+        {
+          "id": "03-K",
+          "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
       "status": "IN_PROGRESS",

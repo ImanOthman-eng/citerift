@@ -652,3 +652,41 @@ without expanding the implementation during closure: R-032 and R-033.
 Recorded as: Stage 02 `ACCEPTED_CLOSED` through `citerift-gov` with this
 owner reference. Merging pull request #4 is the owner's ("I will merge it").
 This decision authorizes no stage; Stage 03 is not authorized or started.
+
+## D-029 — Stage 03 extraction stack and render source
+- Status: accepted
+- Topic: stage-03-extraction-stack
+- Date: 2026-10-28
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/calibration/CALIBRATION_REPORT.md; docs/verification/stage-03/calibration/parser_qualification.json; docs/verification/stage-03/calibration/profile-v1.provenance.json
+
+Delegated engineering decision under the owner's Stage 03 directive
+(`cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS`, sections 6 and 7), taken
+from development measurements; it is not an owner approval of any outcome.
+Source wikitext is parsed with mwparserfromhell 0.7.2 and rendered HTML with
+lxml 6.1.3 (selectolax 1.0.2 was qualified as a challenger and not adopted;
+wikitextparser and Playwright are not used). The render is the Core REST
+Parsoid HTML of the pinned revision (HTML 2.8.0, with `data-mw`, revision and
+page identity checked), not the Action API parse output, which lacks most of
+the structure the reconciliation needs. Extraction runs in a child process
+with a 30 s wall limit and a 1024 MiB address-space limit (raised from the
+initial 512 MiB after a synthetic page at the declared size limits peaked at
+455 MiB). Live requests pass a host-wide lock so that one request is in
+flight across processes, with at least 10 s between requests.
+
+## D-030 — Stage 03 frozen evaluation protocol and refined gates
+- Status: accepted
+- Topic: stage-03-evaluation-protocol
+- Date: 2026-10-28
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/protocol/FROZEN_PROTOCOL.md; docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md; docs/verification/stage-03/protocol/scripts/evaluate.py; governance/stage_registry.json (Stage 03 gates 03-A to 03-K)
+
+Delegated engineering decision under the owner's Stage 03 directive (section
+6, step D): the support matrix, splits, annotation protocol, matching rules,
+metrics, per-language gates, minimum denominators, baselines and budgets are
+frozen before any holdout article is selected or any holdout prediction
+exists. Gate 03-A keeps the Master Plan wording; 03-B to 03-K refine it
+(directive section 20). The protocol is the executor's; its outcomes remain
+for the owner to accept or reject.

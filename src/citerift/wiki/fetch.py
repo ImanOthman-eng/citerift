@@ -8,12 +8,14 @@ decompressed and retained limits. A failure is a recorded attempt, never an answ
 
 The retry decision is the pure function ``plan_next`` so that the schedule can be simulated
 (simulations/stage03) and tested without sockets. The transport is injectable; the default uses urllib with
-redirects refused and only the fixed hosts allowed.
+redirects refused and only the fixed hosts allowed. With the default transport every attempt also passes the
+``NetworkGate``, which keeps one request in flight and the minimum interval across processes on this host.
 """
 
 from __future__ import annotations
 
 import email.utils
+import os
 import time
 import urllib.error
 import urllib.parse
@@ -22,6 +24,7 @@ import zlib
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
+from pathlib import Path
 from typing import Any, Protocol
 
 from citerift.wiki.canonical import StrictJSONError, loads_strict, sha256_hex
@@ -280,11 +283,89 @@ class _Outcome:
     json: Any = None
 
 
+class NetworkGate:
+    """Project-wide gate for live requests on this host.
+
+    An exclusive lock on one fixed file (``CITERIFT_WIKI_NETWORK_LOCK``, default
+    ``~/.cache/citerift/wiki-network.lock``) is held for the whole attempt, so at most one request is in flight
+    across processes; the file holds the wall-clock end of the last attempt of any process, so the minimum interval
+    also holds between consecutive captures. POSIX only: without ``fcntl`` live capture fails closed.
+    """
+
+    POLL_S = 0.2
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+        self._fd: int | None = None
+
+    @classmethod
+    def default(cls) -> NetworkGate:
+        env = os.environ.get("CITERIFT_WIKI_NETWORK_LOCK")
+        return cls(Path(env) if env else Path.home() / ".cache" / "citerift" / "wiki-network.lock")
+
+    def acquire(self, min_interval_s: float, max_wait_s: float) -> str | None:
+        """Wait for the gate; return an issue code instead when it cannot be had within ``max_wait_s``."""
+        try:
+            import fcntl  # noqa: PLC0415 - POSIX only; the gate fails closed elsewhere
+        except ImportError:
+            return "NETWORK_GATE_UNAVAILABLE"
+        try:
+            self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+            fd = os.open(self.path, os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600)
+        except OSError:
+            return "NETWORK_GATE_UNAVAILABLE"
+        start = time.monotonic()
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() - start + self.POLL_S > max_wait_s:
+                    os.close(fd)
+                    return "NETWORK_GATE_BUSY"
+                time.sleep(self.POLL_S)
+            except OSError:
+                os.close(fd)
+                return "NETWORK_GATE_UNAVAILABLE"
+        try:
+            last_end = float(os.pread(fd, 64, 0).decode("ascii").strip() or 0.0)
+        except (OSError, UnicodeDecodeError, ValueError):
+            last_end = time.time()  # unreadable record: wait the full interval
+        wait = min(max(0.0, last_end + min_interval_s - time.time()), min_interval_s)
+        if time.monotonic() - start + wait > max_wait_s:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+            os.close(fd)
+            return "NETWORK_GATE_BUSY"
+        time.sleep(wait)
+        self._fd = fd
+        return None
+
+    def release(self) -> None:
+        if self._fd is None:
+            return
+        import fcntl  # noqa: PLC0415 - acquire succeeded, so fcntl exists
+
+        fd, self._fd = self._fd, None
+        try:
+            os.ftruncate(fd, 0)
+            os.pwrite(fd, f"{time.time():.3f}\n".encode("ascii"), 0)
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+            os.close(fd)
+
+
 class Fetcher:
     """Executes operations under one FetchPolicy and one global deadline (one capture)."""
 
-    def __init__(self, policy: FetchPolicy, transport: Transport | None = None, clock: Clock | None = None) -> None:
+    def __init__(
+        self,
+        policy: FetchPolicy,
+        transport: Transport | None = None,
+        clock: Clock | None = None,
+        gate: NetworkGate | None = None,
+    ) -> None:
         self.policy = policy
+        self.gate = gate if gate is not None or transport is not None else NetworkGate.default()
         self.transport = transport or urllib_transport
         self.clock = clock or SystemClock()
         self.start_mono = self.clock.monotonic()
@@ -336,7 +417,13 @@ class Fetcher:
             if at >= deadline:
                 return Answer(url, "DEADLINE_EXCEEDED", attempts, failure_bodies=failure_bodies)
             self.clock.sleep(at - self.clock.monotonic())
-            outcome = self._attempt(url, len(attempts) + 1, expect, deadline)
+            if self.gate is not None and (code := self.gate.acquire(self.policy.min_interval_s, deadline - at)):
+                return Answer(url, code, attempts, failure_bodies=failure_bodies)
+            try:
+                outcome = self._attempt(url, len(attempts) + 1, expect, deadline)
+            finally:
+                if self.gate is not None:
+                    self.gate.release()
             attempts.append(outcome.attempt)
             self.last_end_mono = outcome.attempt.ended_mono
             failed = outcome.attempt
