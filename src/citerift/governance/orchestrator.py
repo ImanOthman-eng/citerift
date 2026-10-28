@@ -32,7 +32,7 @@ from referencing.exceptions import Unresolvable
 
 from citerift.contracts.formats import FORMAT_CHECKER, loads_strict, parse_utc_timestamp
 from citerift.contracts.validate import ContractSet
-from citerift.governance import evidence, gitutil, memory
+from citerift.governance import evidence, gitutil, maintenance, memory
 from citerift.governance.model import (
     ACTIVE,
     NEEDS_AUTHORIZATION,
@@ -146,6 +146,11 @@ class Orchestrator:
         for s in self.stages:
             recorded += [b[k] for b in s["blockers"] for k in ("opened_at", "resolved_at") if b[k]]
             recorded += [a["recorded_at"] for a in s["amendments"]]
+            recorded += [
+                a["maintenance"]["finalized_at"]
+                for a in s["amendments"]
+                if (a.get("maintenance") or {}).get("finalized_at")
+            ]
         now: str = max([utc_now(), *recorded])
         if after_history and self.registry["history"] and now <= self.registry["history"][-1]["at"]:
             last = datetime.strptime(self.registry["history"][-1]["at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
@@ -281,6 +286,7 @@ class Orchestrator:
                 findings += self._drift_findings(stage)
         findings += self._acceptance_findings()
         findings += self._amendment_findings()
+        findings += self._maintenance_findings()
         findings += self._memory_findings()
         if include_status_doc:
             findings += self._status_doc_findings()
@@ -1003,7 +1009,21 @@ class Orchestrator:
             changes = [
                 gitutil.changed_paths(self.root, c, paths) for c in covering if gitutil.commit_exists(self.root, c)
             ]
-            if changes and all(changes):
+            pending = self._pending_maintenance(stage)
+            if changes and all(changes) and pending is not None and self._matches_patch(stage, pending, "HEAD"):
+                m = pending["maintenance"]
+                out.append(
+                    Finding(
+                        "MAINTENANCE_PENDING",
+                        "warning",
+                        sid,
+                        f"owned content differs from the verified revision by exactly the patch of maintenance "
+                        f"{pending['id']} ({len(m['scope'])} files, patch {m['patch_sha256'][:12]}), which is "
+                        "pending validation and not verified; no stage can be verified or accepted until it is "
+                        "finalized",
+                    )
+                )
+            elif changes and all(changes):
                 last = gitutil.last_commit_touching(self.root, paths)
                 shown = ", ".join(changes[0][:5]) + (" ..." if len(changes[0]) > 5 else "")
                 out.append(
@@ -1124,7 +1144,13 @@ class Orchestrator:
                             f"{a['id']} is recorded at {a['recorded_at']}, when stage {sid} was not accepted",
                         )
                     )
-                if a["kind"] == "enhancement":
+                if a.get("maintenance") is not None:
+                    # The record itself is checked by _maintenance_findings; a contract change in its patch
+                    # needs a version increase like any enhancement, pending (at the candidate) or not.
+                    tested = a["revision"] or a["maintenance"]["candidate_revision"]
+                    out += self._enhancement_contract_findings(s, {**a, "revision": tested})
+                elif a["kind"] == "enhancement":
+                    out += self._maintenance_bypass_findings(s, a)
                     if a["revision"] is None or a["test_report"] is None:
                         out.append(
                             Finding(
@@ -1191,6 +1217,7 @@ class Orchestrator:
                 if ref == a["owner_ref"]
                 and where != a["id"]
                 and used != a["id"]
+                and where not in self._superseded_chain(sid, a)
                 and mine is not None
                 and (t := parse_utc_timestamp(at)) is not None
                 and t <= mine
@@ -1266,6 +1293,433 @@ class Orchestrator:
                 )
             ]
         return out
+
+    # ------------------------------------------------------------ maintenance
+
+    def _maintenance_records(self) -> list[tuple[StageRecord, dict[str, Any]]]:
+        return [(s, a) for s in self.stages for a in s["amendments"] if a.get("maintenance") is not None]
+
+    def _pending_maintenance(self, stage: StageRecord) -> dict[str, Any] | None:
+        return next(
+            (a for a in stage["amendments"] if (a.get("maintenance") or {}).get("phase") == maintenance.PENDING),
+            None,
+        )
+
+    def _superseded_chain(self, stage_id: str, amendment: dict[str, Any]) -> set[str]:
+        """The maintenance records this one supersedes, directly or through others. A superseding candidate
+        records the same owner decision again, so it may cite the same owner reference."""
+        try:
+            by_id = {a["id"]: a for a in self.stage(stage_id)["amendments"]}
+        except KeyError:
+            return set()
+        out: set[str] = set()
+        # Backwards through "supersedes", then forwards through "superseded_by"; each link must be mutual.
+        for forward, back in (("supersedes", "superseded_by"), ("superseded_by", "supersedes")):
+            current = amendment
+            while (m := current.get("maintenance")) and m.get(forward) in by_id and m[forward] not in out:
+                other = by_id[m[forward]]
+                if (other.get("maintenance") or {}).get(back) != current["id"]:
+                    break
+                out.add(other["id"])
+                current = other
+        out.discard(amendment["id"])
+        return out
+
+    def _patch_problems(self, stage: StageRecord, amendment: dict[str, Any], rev: str) -> list[str]:
+        """How the owned content at ``rev`` differs from "baseline plus exactly the declared patch"."""
+        m = amendment["maintenance"]
+        declared = {e["path"]: e["sha256"] for e in m["scope"]}
+        changed = set(gitutil.changed_paths(self.root, m["baseline_revision"], stage["owned_paths"], rev))
+        problems = [f"{p} changed but is not in the declared patch" for p in sorted(changed - set(declared))]
+        problems += [f"{p} is declared but unchanged from the baseline" for p in sorted(set(declared) - changed)]
+        for path, sha in sorted(declared.items()):
+            if path not in changed:
+                continue
+            entry = gitutil.tree_entry(self.root, rev, path)
+            if sha is None and entry is not None:
+                problems.append(f"{path} is declared deleted but is present")
+            elif sha is not None and entry != maintenance.REGULAR_FILE:
+                problems.append(f"{path} is not a regular non-executable file ({entry})")
+            elif sha is not None and gitutil.blob_sha256(self.root, rev, path) != sha:
+                problems.append(f"{path} differs from its declared content")
+        return problems
+
+    def _matches_patch(self, stage: StageRecord, amendment: dict[str, Any], rev: str) -> bool:
+        try:
+            return not self._patch_problems(stage, amendment, rev)
+        except gitutil.GitUnavailableError:
+            return False
+
+    def _maintenance_findings(self) -> list[Finding]:
+        records = self._maintenance_records()
+        out: list[Finding] = []
+        pending = [a["id"] for _, a in records if a["maintenance"]["phase"] == maintenance.PENDING]
+        if len(pending) > 1:
+            out.append(
+                Finding("MAINTENANCE_CONCURRENT", "error", None, f"more than one maintenance is pending: {pending}")
+            )
+        for s, a in records:
+            out += self._maintenance_record_findings(s, a)
+        return out + self._maintenance_barrier_findings(records)
+
+    def _maintenance_record_findings(self, stage: StageRecord, a: dict[str, Any]) -> list[Finding]:
+        sid, aid, m = stage["id"], a["id"], a["maintenance"]
+        out: list[Finding] = []
+
+        def bad(code: str, message: str) -> None:
+            out.append(Finding(code, "error", sid, f"maintenance {aid}: {message}"))
+
+        if a["kind"] != "enhancement":
+            bad("MAINTENANCE_RECORD", "a maintenance transaction is recorded as an enhancement")
+        if m["patch_sha256"] != maintenance.patch_sha256(m["scope"]):
+            bad("MAINTENANCE_RECORD", "patch_sha256 does not match the declared scope")
+        paths = [e["path"] for e in m["scope"]]
+        if len(set(paths)) != len(paths):
+            bad("MAINTENANCE_RECORD", "a path is declared more than once")
+        for p in sorted(set(paths)):
+            if not self._owned(stage, p):
+                bad("MAINTENANCE_SCOPE", f"{p} is not an owned path of stage {sid}")
+        acc = stage["acceptance"]
+        if acc and acc["recorded_at"] <= a["recorded_at"] and m["baseline_revision"] != acc["accepted_revision"]:
+            bad("MAINTENANCE_BASELINE", f"baseline {m['baseline_revision'][:12]} is not the accepted revision")
+        if m["phase"] == maintenance.PENDING and stage["status"] != Status.ACCEPTED_CLOSED:
+            bad("MAINTENANCE_BASELINE", f"stage {sid} is not accepted, so there is no protected baseline")
+        out += self._maintenance_state_findings(stage, a, bad)
+        try:
+            if not gitutil.commit_exists(self.root, m["candidate_revision"]):
+                bad("MAINTENANCE_PATCH_MISMATCH", f"candidate {m['candidate_revision'][:12]} is not a commit here")
+                return out
+            if not gitutil.is_ancestor(self.root, m["baseline_revision"], m["candidate_revision"]):
+                bad("MAINTENANCE_PATCH_MISMATCH", "the candidate does not descend from the baseline")
+            for problem in self._patch_problems(stage, a, m["candidate_revision"]):
+                bad("MAINTENANCE_PATCH_MISMATCH", f"at the candidate revision, {problem}")
+            # From the candidate commit until the prepare, the patch makes the stage stale, so no transition
+            # can be recorded: the window opens exactly at the history the candidate revision holds
+            # (second review, finding 2: a raised opening would hide an entry inside the window).
+            text = gitutil.show(self.root, m["candidate_revision"], REGISTRY_PATH.as_posix())
+            try:
+                then = len(loads_strict(text)["history"]) if text is not None else None
+            except (ValueError, KeyError, TypeError):
+                then = None
+            if then != m["opened_after_seq"]:
+                bad(
+                    "MAINTENANCE_STATE",
+                    f"opened_after_seq {m['opened_after_seq']} is not the history length at the candidate ({then})",
+                )
+            if m["phase"] == maintenance.PENDING:
+                for problem in self._patch_problems(stage, a, "HEAD"):
+                    bad("MAINTENANCE_PATCH_MISMATCH", f"at HEAD, {problem}")
+            elif m["phase"] == maintenance.FINALIZED and a["revision"]:
+                out += self._maintenance_validation_findings(stage, a, bad)
+        except gitutil.GitUnavailableError as exc:
+            bad("REVISION_UNVERIFIABLE", f"cannot inspect the patch: {exc}")
+        return out
+
+    def _maintenance_state_findings(self, stage: StageRecord, a: dict[str, Any], bad: Any) -> list[Finding]:
+        """The fields each phase must and must not have, and the supersession links in both directions."""
+        m = a["maintenance"]
+        by_id = {x["id"]: x for x in stage["amendments"]}
+        phase = m["phase"]
+        filled = a["revision"] is not None or a["test_report"] is not None or m["reports"] or m["finalized_at"]
+        if phase in (maintenance.PENDING, maintenance.SUPERSEDED) and filled:
+            bad("MAINTENANCE_STATE", f"a {phase} transaction has no validated revision, report or finalization")
+        if phase != maintenance.SUPERSEDED and m["superseded_by"] is not None:
+            bad("MAINTENANCE_STATE", f"a {phase} transaction is not superseded")
+        if phase == maintenance.SUPERSEDED:
+            successor = by_id.get(m["superseded_by"] or "")
+            if (
+                successor is None
+                or (successor.get("maintenance") or {}).get("supersedes") != a["id"]
+                or successor["recorded_at"] < a["recorded_at"]
+            ):
+                bad("MAINTENANCE_STATE", f"superseded_by {m['superseded_by']} does not name a later successor")
+        if m["supersedes"] is not None:
+            previous = by_id.get(m["supersedes"])
+            pm = (previous or {}).get("maintenance") or {}
+            if previous is None or pm.get("phase") != maintenance.SUPERSEDED or pm.get("superseded_by") != a["id"]:
+                bad("MAINTENANCE_STATE", f"supersedes {m['supersedes']}, which is not superseded by this record")
+        if phase == maintenance.FINALIZED:
+            if a["revision"] is None or a["test_report"] is None or not m["reports"] or not m["finalized_at"]:
+                bad("MAINTENANCE_STATE", "a finalized transaction needs its validated revision, reports and time")
+            elif {"path": a["test_report"]["path"], "sha256": a["test_report"]["sha256"]} not in [
+                {"path": r["path"], "sha256": r["sha256"]} for r in m["reports"]
+            ]:
+                bad("MAINTENANCE_STATE", "the amendment's test report is not one of the validation reports")
+            elif m["finalized_at"] < a["recorded_at"]:
+                bad("MAINTENANCE_STATE", "finalized before it was prepared")
+            else:
+                for f in _future_problem(m["finalized_at"], f"maintenance {a['id']} finalization"):
+                    bad(f.code, f.message)
+        return []
+
+    def _maintenance_validation_findings(self, stage: StageRecord, a: dict[str, Any], bad: Any) -> list[Finding]:
+        """A finalization is valid only for complete passing reports, on every required Python version, of a
+        revision whose owned content equals the candidate and whose registry holds this transaction pending."""
+        sid, m, rev = stage["id"], a["maintenance"], a["revision"]
+        if not gitutil.commit_exists(self.root, rev):
+            bad("MAINTENANCE_NOT_VALIDATED", f"validated revision {rev[:12]} is not a commit here")
+            return []
+        if moved := gitutil.changed_paths(self.root, m["candidate_revision"], stage["owned_paths"], rev):
+            bad(
+                "MAINTENANCE_CODE_CHANGED",
+                f"owned content at the validated revision differs from the candidate: {moved[:5]}",
+            )
+        tested = gitutil.show(self.root, rev, REGISTRY_PATH.as_posix())
+        try:
+            reg = loads_strict(tested) if tested is not None else {}
+            then = next(x for st in reg["stages"] if st["id"] == sid for x in st["amendments"] if x["id"] == a["id"])
+            ok = then["maintenance"]["phase"] == maintenance.PENDING and maintenance.as_prepared(
+                then
+            ) == maintenance.as_prepared(a)
+        except (ValueError, KeyError, TypeError, StopIteration):
+            ok = False
+        if not ok:
+            bad("MAINTENANCE_NOT_VALIDATED", f"the registry at {rev[:12]} does not hold this transaction pending")
+        else:
+            # The finalization comes after the validated revision, so it cannot end the window before any
+            # history that revision already holds (second review, finding 1).
+            then_history = reg["history"]
+            if m["finalized_after_seq"] is None or m["finalized_after_seq"] < len(then_history):
+                bad("MAINTENANCE_STATE", f"the finalization ends the window before the history held at {rev[:12]}")
+            if then_history and m["finalized_at"] and m["finalized_at"] < then_history[-1]["at"]:
+                bad("MAINTENANCE_STATE", f"the finalization is dated before the history held at {rev[:12]}")
+        pythons = set()
+        for r in m["reports"]:
+            for p in evidence.check_test_report(self.root, r["path"], r["sha256"], rev, stage["required_test_suites"]):
+                bad(p.code, f"{r['path']}: {p.message}")
+            try:
+                data = loads_strict((self.root / r["path"]).read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue  # reported by check_test_report
+            if maintenance.python_minor(data) != r["python"]:
+                bad("MAINTENANCE_REPORT", f"{r['path']} was written by Python {data.get('python')}, not {r['python']}")
+            else:
+                pythons.add(r["python"])
+            if not isinstance(data.get("finished_at"), str) or data["finished_at"] > m["finalized_at"]:
+                bad("MAINTENANCE_REPORT", f"{r['path']} does not finish before the finalization")
+            elif data["finished_at"] < a["recorded_at"]:
+                bad("MAINTENANCE_REPORT", f"{r['path']} finished before the transaction was prepared")
+        for missing in sorted(set(maintenance.REQUIRED_PYTHONS) - pythons):
+            bad("MAINTENANCE_PYTHON_MISSING", f"no valid complete report for Python {missing}")
+        return []
+
+    def _maintenance_barrier_findings(self, records: list[tuple[StageRecord, dict[str, Any]]]) -> list[Finding]:
+        """No stage is verified or accepted while a maintenance transaction is open, in history or now. The
+        window is anchored to history positions, not only to times, so an entry dated back before the
+        record still falls inside it (review finding 1)."""
+        out = []
+        history = self.registry["history"]
+        for s, a in records:
+            m = a["maintenance"]
+            start, (end, end_seq) = a["recorded_at"], maintenance.interval_end(s, a)
+            if m["opened_after_seq"] > len(history) or (end_seq is not None and end_seq < m["opened_after_seq"]):
+                out.append(
+                    Finding(
+                        "MAINTENANCE_STATE",
+                        "error",
+                        s["id"],
+                        f"maintenance {a['id']}: its history positions ({m['opened_after_seq']}, {end_seq}) "
+                        f"do not fit a history of {len(history)} entries",
+                    )
+                )
+            for h in history:
+                # Inside by position; while the window is open, also by time (an entry appended by hand
+                # with an earlier position is dated inside it). Positions and times must then agree.
+                inside = h["seq"] > m["opened_after_seq"] and (end_seq is None or h["seq"] <= end_seq)
+                inside = inside or (end_seq is None and h["at"] >= start)
+                if h["to"] in NEEDS_VERIFICATION and inside:
+                    out.append(
+                        Finding(
+                            "MAINTENANCE_BARRIER",
+                            "error",
+                            h["stage"],
+                            f"history entry {h['seq']} ({h['from']} -> {h['to']} at {h['at']}) falls inside "
+                            f"maintenance {a['id']}, which was open from {start} to {end or 'now'}",
+                        )
+                    )
+                misdated = (h["seq"] > m["opened_after_seq"] and h["at"] < start) or (
+                    end_seq is not None
+                    and end is not None
+                    and ((h["seq"] <= end_seq and h["at"] > end) or (h["seq"] > end_seq and h["at"] < end))
+                )
+                if misdated:
+                    out.append(
+                        Finding(
+                            "MAINTENANCE_BARRIER",
+                            "error",
+                            h["stage"],
+                            f"history entry {h['seq']} at {h['at']} is dated on the wrong side of maintenance "
+                            f"{a['id']} ({start} to {end or 'now'}) for its position",
+                        )
+                    )
+        return out
+
+    def _maintenance_bypass_findings(self, stage: StageRecord, a: dict[str, Any]) -> list[Finding]:
+        """An ordinary enhancement whose revision's registry holds a pending maintenance would cover the
+        pending patch with a report that passed only because of the pending exemption (review finding 4)."""
+        if a["revision"] is None:
+            return []
+        try:
+            text = gitutil.show(self.root, a["revision"], REGISTRY_PATH.as_posix())
+            reg = loads_strict(text) if text is not None else {}
+            pending = [
+                x["id"]
+                for st in reg.get("stages", [])
+                for x in st.get("amendments", [])
+                if (x.get("maintenance") or {}).get("phase") == maintenance.PENDING
+            ]
+        except (gitutil.GitUnavailableError, ValueError, TypeError, AttributeError):
+            return []  # an unreadable revision is reported by the revision checks
+        if not pending:
+            return []
+        return [
+            Finding(
+                "MAINTENANCE_BARRIER",
+                "error",
+                stage["id"],
+                f"enhancement {a['id']} is tested at {a['revision'][:12]}, where maintenance {pending[0]} is "
+                "pending; only that transaction's finalization can cover it",
+            )
+        ]
+
+    def prepare_maintenance(
+        self,
+        stage_id: str,
+        *,
+        candidate: str,
+        paths: list[str],
+        purpose: str,
+        reason: str,
+        evidence_refs: list[str],
+        owner_ref: str,
+        supersedes: str | None = None,
+        at: str | None = None,
+    ) -> str:
+        """Record a pending maintenance transaction for the patch ``paths`` at ``candidate`` (phase 1)."""
+        stage = self.stage(stage_id)
+        if stage["status"] != Status.ACCEPTED_CLOSED or not stage["verification"]:
+            raise GovernanceError(
+                [Finding("AMENDMENT_NOT_APPLICABLE", "error", stage_id, "maintenance applies to accepted stages only")]
+            )
+        if not gitutil.commit_exists(self.root, candidate):
+            raise GovernanceError(
+                [Finding("MAINTENANCE_PATCH_MISMATCH", "error", stage_id, f"candidate {candidate} is not a commit")]
+            )
+        if supersedes is not None:
+            previous = next((a for a in stage["amendments"] if a["id"] == supersedes), None)
+            if previous is None or (previous.get("maintenance") or {}).get("phase") != maintenance.PENDING:
+                raise GovernanceError(
+                    [Finding("MAINTENANCE_STATE", "error", stage_id, f"{supersedes} is not a pending maintenance")]
+                )
+        elif pending := [a for _, a in self._maintenance_records() if a["maintenance"]["phase"] == maintenance.PENDING]:
+            raise GovernanceError(
+                [Finding("MAINTENANCE_CONCURRENT", "error", stage_id, f"{pending[0]['id']} is still pending")]
+            )
+        aid = f"A-{stage_id}-{len(stage['amendments']) + 1:03d}"
+        scope = []
+        for p in sorted(set(paths)):
+            try:
+                entry = gitutil.tree_entry(self.root, candidate, p)
+                sha = gitutil.blob_sha256(self.root, candidate, p) if entry == maintenance.REGULAR_FILE else None
+            except gitutil.GitUnavailableError as exc:
+                raise GovernanceError([Finding("MAINTENANCE_SCOPE", "error", stage_id, f"{p}: {exc}")]) from exc
+            if entry is not None and entry != maintenance.REGULAR_FILE:
+                raise GovernanceError(
+                    [Finding("MAINTENANCE_SCOPE", "error", stage_id, f"{p} is not a regular non-executable file")]
+                )
+            scope.append({"path": p, "sha256": sha})
+        record = {
+            "id": aid,
+            "kind": "enhancement",
+            "reason": reason,
+            "evidence": evidence_refs,
+            "owner_ref": owner_ref,
+            "revision": None,
+            "test_report": None,
+            "recorded_at": at or self._now(),
+            "maintenance": {
+                "purpose": purpose,
+                "baseline_revision": stage["verification"]["revision"],
+                "candidate_revision": candidate,
+                "scope": scope,
+                "patch_sha256": maintenance.patch_sha256(scope),
+                "phase": maintenance.PENDING,
+                "supersedes": supersedes,
+                "superseded_by": None,
+                "reports": [],
+                "opened_after_seq": len(self.registry["history"]),
+                "finalized_at": None,
+                "finalized_after_seq": None,
+            },
+        }
+
+        def change(r: Registry) -> None:
+            amendments = next(s for s in r["stages"] if s["id"] == stage_id)["amendments"]
+            for a in amendments:
+                if a["id"] == supersedes:
+                    a["maintenance"]["phase"] = maintenance.SUPERSEDED
+                    a["maintenance"]["superseded_by"] = aid
+            amendments.append(record)
+
+        self._mutate_maintenance(change)
+        return aid
+
+    def finalize_maintenance(
+        self, stage_id: str, amendment_id: str, *, revision: str, reports: list[str], at: str | None = None
+    ) -> None:
+        """Record the validated revision and its complete reports (phase 3). Refused unless every rule holds."""
+        stage = self.stage(stage_id)
+        a = next((x for x in stage["amendments"] if x["id"] == amendment_id), None)
+        if a is None or (a.get("maintenance") or {}).get("phase") != maintenance.PENDING:
+            raise GovernanceError(
+                [Finding("MAINTENANCE_STATE", "error", stage_id, f"{amendment_id} is not a pending maintenance")]
+            )
+        entries = []
+        for rel in reports:
+            if not (evidence.inside(self.root, rel) and (self.root / rel).is_file()):
+                raise GovernanceError([Finding("EVIDENCE_MISSING", "error", stage_id, f"report {rel} is not a file")])
+            try:
+                python = maintenance.python_minor(loads_strict((self.root / rel).read_text(encoding="utf-8")))
+            except (OSError, ValueError) as exc:
+                raise GovernanceError([Finding("TEST_EVIDENCE_INVALID", "error", stage_id, f"{rel}: {exc}")]) from exc
+            if python is None:
+                raise GovernanceError(
+                    [Finding("MAINTENANCE_REPORT", "error", stage_id, f"{rel} does not record its Python version")]
+                )
+            entries.append({"path": rel, "sha256": evidence.sha256_file(self.root / rel), "python": python})
+        primary = next(
+            (e for e in entries if e["python"] == maintenance.REQUIRED_PYTHONS[0]), entries[0] if entries else None
+        )
+        if primary is None:
+            raise GovernanceError([Finding("MAINTENANCE_REPORT", "error", stage_id, "no validation report given")])
+        finalized_at = at or self._now()
+
+        def change(r: Registry) -> None:
+            for x in next(s for s in r["stages"] if s["id"] == stage_id)["amendments"]:
+                if x["id"] == amendment_id:
+                    x["revision"] = revision
+                    x["test_report"] = {"path": primary["path"], "sha256": primary["sha256"]}
+                    x["maintenance"].update(
+                        phase=maintenance.FINALIZED,
+                        reports=entries,
+                        finalized_at=finalized_at,
+                        finalized_after_seq=len(r["history"]),
+                    )
+
+        self._mutate_maintenance(change)
+
+    def _mutate_maintenance(self, change: Any) -> None:
+        """Write a maintenance change only when the whole consistency check is clean afterwards. A pending
+        record replaces exactly the stale finding its patch causes, and a finalization leaves no exemption,
+        so any other error (an unrelated one included) refuses the change."""
+        new = copy.deepcopy(self.registry)
+        change(new)
+        candidate = Orchestrator(self.root, new)
+        found = errors(candidate.check(include_status_doc=False))
+        if found:
+            raise GovernanceError(found)
+        self.registry = new
+        self.write()
 
     def _risks(self) -> tuple[list[memory.MemoryProblem], list[memory.Entry]]:
         entries, problems = memory.check_risks(self.root / RISKS_PATH)
@@ -1563,6 +2017,19 @@ class Orchestrator:
         if stage["status"] != Status.ACCEPTED_CLOSED:
             raise GovernanceError(
                 [Finding("AMENDMENT_NOT_APPLICABLE", "error", stage_id, "amendments apply to accepted stages only")]
+            )
+        if kind == "enhancement" and (
+            pending := [a for _, a in self._maintenance_records() if a["maintenance"]["phase"] == maintenance.PENDING]
+        ):
+            raise GovernanceError(
+                [
+                    Finding(
+                        "MAINTENANCE_BARRIER",
+                        "error",
+                        stage_id,
+                        f"maintenance {pending[0]['id']} is pending; finalize it before recording an enhancement",
+                    )
+                ]
             )
         aid = f"A-{stage_id}-{len(stage['amendments']) + 1:03d}"
         report = None

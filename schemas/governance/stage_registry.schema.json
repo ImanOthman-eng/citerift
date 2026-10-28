@@ -88,6 +88,62 @@
       "required": ["path", "sha256"],
       "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
     },
+    "maintenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "baseline_revision",
+        "candidate_revision",
+        "scope",
+        "patch_sha256",
+        "phase",
+        "supersedes",
+        "superseded_by",
+        "reports",
+        "opened_after_seq",
+        "finalized_at",
+        "finalized_after_seq"
+      ],
+      "properties": {
+        "purpose": {"type": "string", "minLength": 10},
+        "baseline_revision": {"$ref": "#/$defs/sha"},
+        "candidate_revision": {"$ref": "#/$defs/sha"},
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": {
+              "path": {"$ref": "#/$defs/relative_path"},
+              "sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]}
+            }
+          }
+        },
+        "patch_sha256": {"$ref": "#/$defs/sha256"},
+        "phase": {"enum": ["pending_validation", "finalized", "superseded"]},
+        "supersedes": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"}]},
+        "superseded_by": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"}]},
+        "reports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "python"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"$ref": "#/$defs/sha256"},
+              "python": {"type": "string", "pattern": "^3\\.[0-9]+$(?!\\n)"}
+            }
+          }
+        },
+        "opened_after_seq": {"type": "integer", "minimum": 0},
+        "finalized_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+        "finalized_after_seq": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0}]}
+      }
+    },
     "stage": {
       "type": "object",
       "additionalProperties": false,
@@ -295,7 +351,8 @@
               "owner_ref": {"$ref": "#/$defs/owner_ref"},
               "revision": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha"}]},
               "test_report": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hashed_file"}]},
-              "recorded_at": {"$ref": "#/$defs/timestamp"}
+              "recorded_at": {"$ref": "#/$defs/timestamp"},
+              "maintenance": {"$ref": "#/$defs/maintenance"}
             }
           }
         },
