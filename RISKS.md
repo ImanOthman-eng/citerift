@@ -498,7 +498,7 @@ infeasible; no model evaluation executed under it", and the experiment was
 executed under AI Protocol v2 (DECISIONS.md D-025; R-028).
 
 ## R-028 — The local open model is not admitted
-- Status: open
+- Status: accepted
 - Severity: medium
 - Kind: limitation
 - Stage: 02
@@ -511,6 +511,10 @@ output must not be shown as a suggestion by default or used for any decision.
 A later stage that wants it needs a new model or task design, a new
 development phase and a new fresh holdout; reusing this holdout for tuning is
 not allowed. Reranker scores are ranking logits, not probabilities.
+
+Owner-accepted on 2026-10-28 (DECISIONS.md D-028, owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): the evaluated model is excluded from the default product, and its
+negative evaluation and experimental evidence are preserved.
 
 ## R-029 — Bridged evidence is withheld, not resolved
 - Status: open
@@ -532,6 +536,13 @@ a DOI whose records carry two PMIDs stays matched with
 `IDENTITY_SECONDARY_DIVERGENT` and bridges nothing (the anchor is DOI-first);
 and a two-identifier query whose DOI names no record answers for the PMID
 alone, anchored at `pmid:p`.
+
+Owner-acknowledged on 2026-10-28 as a residual limitation, not resolved
+(DECISIONS.md D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "These remain unresolved
+limitations, not completed identity resolution. Downstream stages must
+preserve uncertainty and PMID_ROLE_COLLISION restrictions."
+The status stays open because the limitation is not resolved, so that
+`citerift-gov recover` keeps listing it for later stages.
 
 
 ## R-030 — A PMID lookup ignores records of its DOI under another PMID
@@ -574,3 +585,42 @@ snapshot carry it (1,043 DOI and 1,054 PMID keys). Values are unchanged: the PMI
 original's. Resolving the role needs an identity source such as PubMed, which
 is a new source and needs the owner's approval; later stages must show the
 issue and must not treat such a PMID as proof of identity.
+
+Owner-acknowledged on 2026-10-28 as a residual limitation, not resolved
+(DECISIONS.md D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`); the downstream restrictions above
+stay in force. The status stays open because the limitation is not
+resolved, so that `citerift-gov recover` keeps listing it for later stages.
+
+## R-032 — Follow-up: computational complexity of the Stage 02 engine is not documented
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Follow-up item recorded at the owner's request on 2026-10-28 (DECISIONS.md
+D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "the review's complexity-documentation ...
+observation". Recorded without implementation during closure. The
+engineering agent's reading, not the review's text: MATHEMATICAL_MODEL.md
+(§7) and SPECIFICATION.md state a cost bound only for Evidence Tension
+(linear in `|E|` per intervention); the
+build, lookup and reducer have measured budgets (TEST_RESULTS.md, benchmark)
+but no stated time or space complexity. Any change needs the owner's
+authorization.
+
+## R-033 — Follow-up: the experimental model's inference deadline is checked between candidates
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 02
+
+Follow-up item recorded at the owner's request on 2026-10-28 (DECISIONS.md
+D-028, owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`): "the review's ... experimental inference-timeout
+observation". Recorded without implementation during closure. The
+engineering agent's reading of the code, not the review's text:
+`LocalAmbiguityModel.rank` (`src/citerift/retraction/local_model.py`) checks
+the case deadline before each candidate and after scoring, so one slow
+`score` call is not interrupted and a case can run past the deadline before
+it abstains with `TIMEOUT`; one-time model initialization is outside the
+deadline. The model is excluded from the default product (R-028), so this
+affects only the opt-in experimental path. Any change needs the owner's
+authorization.

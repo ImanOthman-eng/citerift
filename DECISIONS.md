@@ -542,8 +542,11 @@ the deterministic baseline stays the ambiguity decision. The owner approved
 the route and the protocol; the admission recommendation and Stage 02
 acceptance are still the owner's decisions.
 
+Owner decision of 2026-10-28 on the admission recommendation: the evaluated
+model is excluded from the default product (D-028).
+
 ## D-026 — Bridged identifiers do not by themselves establish a status or a date
-- Status: pending-owner
+- Status: accepted
 - Topic: stage-02-bridge-sufficiency
 - Date: 2026-10-28
 - Stage: 02
@@ -574,6 +577,14 @@ gave the instruction, but has not yet confirmed the decision as implemented
 and the interpretation above; the owner will decide after seeing the result
 of D-027. No owner approval is recorded here.
 
+Approved by the owner on 2026-10-28 (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`, item 2, recorded in
+D-028): "unresolved bridged assertions cannot support a verified
+subject-level status or date. Material bridged evidence may withhold the
+affected conclusion. Source records and provenance remain preserved." The
+interpretation above is confirmed as implemented (policy 1.3.0, which keeps
+rule 7f). The status history of this entry is kept above.
+
 ## D-027 — Fix the independent audit's Stage 02 findings F1 and F3 before acceptance
 - Status: accepted
 - Topic: stage-02-audit-fixes
@@ -599,3 +610,45 @@ of its co-occurring DOI and reports `IDENTITY_SECONDARY_DIVERGENT`, and rule
 `PMID_ROLE_COLLISION`. D-026 stays pending the owner, and Stage 02 acceptance
 stays the owner's decision.
 
+## D-028 — Stage 02 accepted; local model excluded from the default product
+- Status: accepted
+- Topic: stage-02-acceptance
+- Date: 2026-10-28
+- Stage: 02
+- Supersedes: none
+- Evidence: docs/verification/stage-02/HANDOFF.md; docs/verification/stage-02/verification-record.json; docs/verification/stage-02/ai/v2/holdout-result.json; docs/verification/stage-02/ai/v2/holdout-disposition.json
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`,
+2026-10-28): Stage 02 (Retraction Data Engine) is accepted, verified at
+`cf060834afedfa4a82712ca247ad2fc2b2fa9665`. The acceptance covers the
+reviewed implementation recorded at pull request #4 head
+`f9592b171e6faf6c6eef4e015ef20ee9e9762a6c`, and "does not cover subsequent
+unreviewed implementation changes". The owner confirms:
+
+1. "Acceptance of the completed engine, Evidence Tension, and the R-026, F1
+   and F3 corrections."
+2. "Approval of D-026: unresolved bridged assertions cannot support a
+   verified subject-level status or date. Material bridged evidence may
+   withhold the affected conclusion. Source records and provenance remain
+   preserved." (D-026 is now accepted.)
+3. "Exclusion of the evaluated local model from the default product. Preserve
+   its negative evaluation and experimental evidence." The model is
+   mixedbread-ai/mxbai-rerank-base-v2 under AI Protocol v2 (D-025; 233/300
+   against the baseline's 274/300). The adapter and the opt-in
+   `citerift-rde ambiguity --model-dir` option stay as they are, off by
+   default; the deterministic baseline stays the ambiguity decision. The
+   protocol, holdout, run outputs and disposition under
+   `docs/verification/stage-02/ai/` are kept unchanged (R-028 accepted).
+4. "Acknowledgement of the documented residual limitations, including R-029
+   and R-031. These remain unresolved limitations, not completed identity
+   resolution. Downstream stages must preserve uncertainty and
+   PMID_ROLE_COLLISION restrictions." (R-029 and R-031 record the
+   acknowledgment and stay open, since they are not resolved.)
+
+The owner also asked that the review's complexity-documentation and
+experimental inference-timeout observations be recorded as follow-up items
+without expanding the implementation during closure: R-032 and R-033.
+
+Recorded as: Stage 02 `ACCEPTED_CLOSED` through `citerift-gov` with this
+owner reference. Merging pull request #4 is the owner's ("I will merge it").
+This decision authorizes no stage; Stage 03 is not authorized or started.

@@ -6,7 +6,20 @@ what changed in the repository.
 
 ## [Unreleased]
 
-### Stage 02 Retraction Data Engine (not accepted; pull request unmerged)
+### Stage 02 closed (pull request #4 unmerged; the owner merges it)
+
+- 2026-10-28: Stage 02 (Retraction Data Engine) verified at `cf06083` and
+  accepted by the owner (owner message
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`, D-028), covering the
+  reviewed implementation at pull request #4 head `f9592b1`. D-026 approved.
+  The evaluated local model is excluded from the default product; its
+  negative evaluation and evidence are kept (R-028 accepted). R-029 and R-031
+  acknowledged as unresolved limitations. The review's complexity-documentation
+  and experimental inference-timeout observations are follow-up items R-032
+  and R-033; no implementation changed. The acceptance does not authorize
+  Stage 03.
+
+### Stage 02 Retraction Data Engine (history before acceptance)
 
 - 2026-10-27/28: `src/citerift/retraction/` with schemas in
   `schemas/retraction/v1/`, the `citerift-rde` command (build, lookup, event,
