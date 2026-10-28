@@ -543,7 +543,7 @@ the route and the protocol; the admission recommendation and Stage 02
 acceptance are still the owner's decisions.
 
 ## D-026 — Bridged identifiers do not by themselves establish a status or a date
-- Status: accepted
+- Status: pending-owner
 - Topic: stage-02-bridge-sufficiency
 - Date: 2026-10-28
 - Stage: 02
@@ -568,3 +568,34 @@ kept. Interpretation chosen by the engineering agent, open to the owner's
 review: a bridged record may withhold a conclusion (when it would change the
 value or the verified date) but never supports one. Stage 02 acceptance stays
 the owner's decision.
+
+Status corrected on 2026-10-28 from "accepted" to "pending-owner": the owner
+gave the instruction, but has not yet confirmed the decision as implemented
+and the interpretation above; the owner will decide after seeing the result
+of D-027. No owner approval is recorded here.
+
+## D-027 — Fix the independent audit's Stage 02 findings F1 and F3 before acceptance
+- Status: accepted
+- Topic: stage-02-audit-fixes
+- Date: 2026-10-28
+- Stage: 02
+- Supersedes: none
+- Evidence: docs/verification/stage-02/SPECIFICATION.md (10.3 steps 4 and 9; 16 items 27 to 29); docs/verification/stage-02/MATHEMATICAL_MODEL.md (9.9); docs/verification/stage-02/evidence/fail-first/audit-f1-f3-at-ac959c6.txt; docs/verification/stage-02/evidence/policy-impact-audit-rw.json; docs/verification/stage-02/evidence/policy-impact-audit-cr.json; docs/verification/stage-02/evidence/pubmed-esummary-audit-2026-10-28.json
+
+Owner authorization (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX`, 2026-10-28, in
+Arabic: "اوك نفذ التحسينات فقط ورد عليا عشان اعطي الموافقه", "OK, carry out
+the improvements only and reply to me so that I give my approval"). The
+improvements are those the independent Stage 02 audit of 2026-10-28 assigns to
+Stage 02: F1, a PMID-only lookup that ignored records of its DOI under a
+different PMID (R-030), and F3, the PMID role collision, reported as an issue
+only (R-031). The audit's other recommendations (a PubMed identity source,
+Stage 03 scope, the license decision, the documentation format) are not in
+this scope and were not started.
+
+Implemented as policy 1.3.0: a single-PMID query bridges every other record
+of its co-occurring DOI and reports `IDENTITY_SECONDARY_DIVERGENT`, and rule
+7f decides; listed events whose original PMID equals their notice PMID give
+`PMID_ROLE_COLLISION`. D-026 stays pending the owner, and Stage 02 acceptance
+stays the owner's decision.
+

@@ -93,6 +93,15 @@ changes on the RW-only index; 22 PMID keys change on the Crossref index, of
 which 2 go from `verified_fact`/`retracted` to `uncertain`/null (TEST_RESULTS.md
 12.2).
 
+Between `ac959c6` (policy 1.2.0) and `1465e85` (policy 1.3.0, audit fixes F1
+and F3), with issue codes also compared (`evidence/policy-impact-audit-rw.json`,
+`policy-impact-audit-cr.json`): on the RW-only index 2 PMID keys go from
+`verified_fact`/`correction` to `uncertain`/null (23649173, 25996123), 2 keep
+their value with identity `bridged` (3507357, 25816875), and 2,095 more keys only
+gain the issue `PMID_ROLE_COLLISION` (2,097 carry it) (TEST_RESULTS.md 13.2). The simulator
+follows F1 (16 item 27) and still passes 37/37 policy and 16/16 tension
+cases; no frozen case has a DOI with two PMIDs, so no expectation changed.
+
 ## 5. Independence limits
 
 - One author. The simulator, the frozen cases and their expectations, the

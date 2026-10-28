@@ -36,6 +36,13 @@ what changed in the repository.
   Tension 0.3.0; `common.schema.json` 1.1.0 adds `basis.bridged_assertions`.
   Stage 02 returned to IN_PROGRESS for the correction and was offered for
   verification again.
+- 2026-10-28: fixes of the independent audit (owner authorization, D-027):
+  policy 1.3.0. A PMID lookup no longer drops records of its DOI under another
+  PMID; they are bridged candidates under rule 7f and the divergence is
+  reported (R-030 closed). A PMID given for both an original and its notice
+  is reported as `PMID_ROLE_COLLISION` (R-031). D-026 is marked pending the
+  owner. Stage 02 returned to IN_PROGRESS for the fixes and was offered for
+  verification again.
 - `tests/stage00/test_corrections.py`: the owner-authorized V-03 test-setup fix
   (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`), recorded with the
   layout-guard correction by Stage 00 maintenance A-00-002.

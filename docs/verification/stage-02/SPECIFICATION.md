@@ -410,8 +410,11 @@ Algorithm (DOI `d`, PMID `p`, either or both):
    one hop only).
 4. Single PMID: if the valid original DOIs of `O_p` are more than one →
    `ambiguous_identity` with candidate groups by DOI (no union). If exactly
-   one DOI `e`, events with DOI `e` and no valid PMID are bridged
-   (`linked_via = doi_cooccurrence`). Otherwise `matched`. Crossref
+   one DOI `e`, every other event with DOI `e` is bridged
+   (`linked_via = doi_cooccurrence`): those with no valid PMID and those
+   under a different PMID (16 item 27). If the events of `e` carry more than
+   one distinct valid PMID, the issue `IDENTITY_SECONDARY_DIVERGENT` lists
+   them, as in step 3. Otherwise `matched`. Crossref
    relations about `e` are reached through the same link, so they are bridged
    too (16 item 25): a Crossref relation is direct only when its subject is
    the query's own DOI.
@@ -430,6 +433,11 @@ Algorithm (DOI `d`, PMID `p`, either or both):
    to the snapshot and query. Page size never changes counts, projection or
    `evidence_digest` (SHA-256 of the canonical JSON of query keys, state,
    sorted event ids with row hashes, identity and projection).
+9. Listed events flagged `NOTICE_PMID_EQUALS_ORIGINAL` (6.3) give the issue
+   `PMID_ROLE_COLLISION`: `event_ids`, and `distinct_notice_doi`, the subset
+   whose notice DOI is present and differs from the original DOI (a strong
+   sign that the PMID names the notice). It is reported only; no value
+   depends on it (16 item 28).
 
 ### 10.4 Canonical export and digests
 
@@ -773,7 +781,10 @@ None lowers a gate or a budget. Items 2, 4, 5, 9 to 14 and 17 change a
 result; all of them except item 5 are stricter than the frozen text, and item 5
 removes an intervention whose outcome is fixed in advance. Item 25 (owner
 instruction of 2026-10-28 on R-026) changes results and is stricter than the
-frozen text; item 26 versions it. Items 11 to 22 come
+frozen text; item 26 versions it. Item 27 (finding F1 of the independent
+audit, fixed under the owner's authorization of 2026-10-28) changes results
+and is stricter than the frozen text; item 28 adds an issue only; item 29
+versions them. Items 11 to 22 come
 from the three review passes of `3a6f1eb` (TEST_RESULTS.md, review
 dispositions); their fail-first run is
 `evidence/fail-first/review-findings-at-3a6f1eb.txt`.
@@ -806,6 +817,9 @@ dispositions); their fail-first run is
 | 24 | 12.3, 12.4 | AI Protocol v1 superseded by v2; the local open-model adapter, its manifest directory and the CLI option `--model-dir` are added; the session-agent route is dropped | Owner directive of 2026-10-28 (D-025): v1's gate was infeasible, and the product AI must be an open, self-hosted model | `test_rde_local_model.py`; `ai/v2/` |
 | 25 | 10.3 step 4, 11.1 rules 7f and 8, 11.2 (C-25) | Bridge sufficiency: bridged assertions (co-occurrence and query-pair events, and Crossref relations about a DOI the query did not give) never support a value or a date; the result is the direct projection, stated as a fact only when accepting the bridges would not change it (`BRIDGE_ONLY_SUPPORT`, `BRIDGED_EVIDENCE_MATERIAL`, `BRIDGED_EVIDENCE_NOT_COUNTED`; `basis.bridged_assertions`). Frozen cases P33, T05 and T06 are amended in `post_freeze_amendments.json` (frozen values kept; both loaders check them first). Frozen T05/T06 interventions changed because the base result changed | Owner instruction of 2026-10-28 (`cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`), R-026: an unresolved identifier bridge must not by itself establish a verified status or date; sufficiency must come from the supporting evidence, and adequate direct evidence keeps its conclusion. The audit also found that a PMID query counted Crossref relations about the co-occurring DOI as direct, while the same link made a DOI-only event bridged. Real impact: TEST_RESULTS.md 12.2 | `test_rde_bridge_sufficiency.py` (fail-first: `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`), `test_rde_policy_cases.py` (P33, T05, T06), simulator |
 | 26 | 4 | `POLICY_VERSION` `citerift-rde-policy/1.2.0`, `TENSION_VERSION` `citerift-evidence-tension/0.3.0`, `SCHEMA_VERSION` and `common.schema.json` `1.1.0` (optional `basis.bridged_assertions`) | Section 4: item 25 changes §10 and §11 rules and the basis shape; a verified 1.0.0/1.1.0 delivery exists in the history (`15925c9`), so the versions move. Indexes built under 1.1.0 are refused | `test_rde_spec_changes.py`, `test_rde_schemas.py` |
+| 27 | 10.3 step 4 (C-27) | A single-PMID query bridges every other record of its co-occurring DOI, also one under a different PMID (before: only records with no PMID; the others were dropped without a trace), and reports `IDENTITY_SECONDARY_DIVERGENT` when the DOI's records carry more than one PMID. Rule 7f then decides: such a record withholds a conclusion it would change and never supports one | Finding F1 of the independent Stage 02 audit (`/mnt/project-files/stage-02/INDEPENDENT_AUDIT_AR_2026-10-28.md`, outside the repository), fixed under the owner's authorization of 2026-10-28 (`cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX`, D-027): the PMID query for 23649173 stated `verified_fact` correction while its DOI is recorded as retracted under another PMID. The DOI query already reported the divergence; the PMID query now does too. Real impact: TEST_RESULTS.md 13.2 | `test_rde_audit_fixes.py` (fail-first: `evidence/fail-first/audit-f1-f3-at-ac959c6.txt`), simulator |
+| 28 | 10.3 step 9 | Issue `PMID_ROLE_COLLISION` for listed events whose original PMID equals their notice PMID, with the subset whose notice DOI differs from the original DOI. No value changes | Finding F3 of the same audit: 1,341 events carry one PMID for both roles; the import flag `NOTICE_PMID_EQUALS_ORIGINAL` (6.3) was not surfaced by a lookup | `test_rde_audit_fixes.py` |
+| 29 | 4 | `POLICY_VERSION` `citerift-rde-policy/1.3.0`. `TENSION_VERSION`, `SCHEMA_VERSION` and the schemas are unchanged (no new field; issue codes are open strings) | Section 4: item 27 changes a §10 rule and the results; a verified 1.2.0 delivery exists in the history (`21d9f37`). Indexes built under 1.2.0 are refused | `test_rde_spec_changes.py` |
 
 Four sentences of the frozen text were also edited in place in `e4de42b`,
 together with the first engine code, instead of being listed here: the
@@ -818,9 +832,11 @@ The prebuild simulator was changed after the freeze in four commits:
 `e4de42b`, together with the first engine code, for notice-role matching by
 the raw notice key (10.3 step 2), the reinstatement rule of any origin
 (11.1 rule 7a) and item 4; `7a7d6b6` for item 9; `3a6f1eb` for item 10; and
-the review batch for items 11 to 14 and 18. The frozen expected outputs
-(`simulations/stage02/cases/`) were not changed; the one amended expectation
-(P04, item 11) is applied from `post_freeze_amendments.json`. The real-case
+the review batch for items 11 to 14 and 18. It was changed again for item 25
+(rule 7f, implemented separately from the engine) and item 27. The frozen
+expected outputs (`simulations/stage02/cases/`) were not changed; the amended
+expectations (P04, item 11; P33, T05 and T06, item 25) are applied from
+`post_freeze_amendments.json`, which keeps each frozen value. The real-case
 outcomes in `tests/stage02/fixtures/real_cases.json` were derived with the
 changed simulator, so on those points the simulator is not independent of the
 engine (SIMULATION_REPORT.md 5). The effect of items 11 to 14 on every

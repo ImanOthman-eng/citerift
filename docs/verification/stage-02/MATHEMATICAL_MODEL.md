@@ -244,7 +244,8 @@ publisher-disagreement cases that stay conflicts).
    - **INV-P11 (direct sufficiency kept)** if `P₀(E_d)` is verified and adding
      `E_b` changes neither the value nor the verified date, `P(E) = P₀(E_d)`
      whatever `identity.status` is.
-   - **INV-L4 (symmetry)** the link from a DOI query through a co-occurring
+   - **INV-L5 (symmetry; named INV-L4 until 1.3.0, which clashed with the
+     pagination invariant of §2)** the link from a DOI query through a co-occurring
      PMID and the link from a PMID query through a co-occurring DOI are the
      same relation read in two directions; every assertion reached through
      either is in `E_b`, Crossref relations included.
@@ -254,6 +255,25 @@ publisher-disagreement cases that stay conflicts).
    withhold. Tests: `test_rde_bridge_sufficiency.py` (fail-first:
    `evidence/fail-first/r026-bridge-sufficiency-at-720a049.txt`),
    `test_rde_tension_properties.py` (INV-P9 over seeded sets).
+9. **No silent drop of a DOI's records (§3 lookup, step 4; 2026-10-28, audit
+   F1, SPECIFICATION.md 16 item 27).** For a single-PMID query `p` whose
+   records name one DOI `e`, let `O_e` be the events with original DOI `e`.
+   Until 1.3.0 the matched set was `O_p ∪ {x ∈ O_e : pmid(x) = ∅}`, so an
+   event of `e` under another PMID `q ≠ p` was in neither `E_d` nor `E_b`
+   and no issue named it. Since 1.3.0 the matched set is `O_p ∪ O_e`, with
+   `O_e ∖ O_p ⊆ E_b`, and rule 7f (item 8) applies unchanged.
+
+   - **INV-L6 (completeness of the PMID view)** for a single-PMID query with
+     exactly one DOI `e`, every event of `O_e` is listed, and
+     `|{pmid(x) : x ∈ O_e} ∖ {∅}| > 1` ⇒ the issue
+     `IDENTITY_SECONDARY_DIVERGENT`, exactly as for the DOI query `e`.
+   - By INV-P10, a value stated for `p` is also the value of `P₀` over
+     `O_p ∪ O_e`, which contains every event the DOI query for `e` lists:
+     that query bridges only when `O_e` carries one PMID, which is then `p`,
+     and the events it bridges are in `O_p`.
+
+   Test: `test_rde_audit_fixes.py` (fail-first:
+   `evidence/fail-first/audit-f1-f3-at-ac959c6.txt`).
 
 ## 10. AI Protocol v2 (2026-10-28; SPECIFICATION.md 12.4)
 

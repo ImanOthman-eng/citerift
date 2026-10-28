@@ -59,15 +59,21 @@ they preceded; their times were not recorded.
 | 2026-10-28 10:05 | `a0666b3` | Rule 7f (policy 1.2.0): bridged assertions never support a value or date; Crossref relations reached through a co-occurring DOI are bridged; P33, T05, T06 amended; simulator changed; 17 of 24 new regressions fail on `720a049` (`evidence/fail-first/`) |
 | 2026-10-28 10:05 to 10:30 | `a0666b3` | Real data: indexes rebuilt under 1.2.0 (semantic digests unchanged), verify clean, oracle 0 mismatches, 50/50 real cases, tension demonstrations; impact on 96,803 keys: 0 changed on RW only, 22 on the Crossref index (2 verified retractions become uncertain); benchmark of five builds |
 | 2026-10-28 | the documents commit | D-026, R-026 closed, R-029; SPECIFICATION.md 16 items 25 and 26; MATHEMATICAL_MODEL.md 9.8; TEST_RESULTS.md 12; earlier verified evidence kept as `evidence/*-at-15925c9.json` |
+| 2026-10-28 10:38 | `8557ec2` | Verified at `21d9f37` (registry entries 30 and 31; CI runs 40672514661, 40672521827); awaiting owner acceptance |
+| 2026-10-28 12:58 | `ac959c6` | Owner authorization `cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX` of the independent audit's improvements (F1, F3; D-027): stage returned to IN_PROGRESS; the verification at `21d9f37` stays in the registry history |
+| 2026-10-28 13:09 | `1465e85` | F1: a PMID query bridges every other record of its DOI, also under another PMID, and reports `IDENTITY_SECONDARY_DIVERGENT`; F3: issue `PMID_ROLE_COLLISION`; policy 1.3.0; simulator changed; 6 of 9 new regressions fail on `ac959c6` (`evidence/fail-first/audit-f1-f3-at-ac959c6.txt`) |
+| 2026-10-28 13:00 to 13:25 | `1465e85` (indexes built from the working tree of that commit, then the benchmark at it) | Real data: indexes rebuilt under 1.3.0 (semantic digests unchanged), verify clean, oracle 0 mismatches, 50/50 real cases, tension demonstrations unchanged; impact on 96,803 keys: 2 wrong verified corrections become uncertain, 2 keys become bridged, 2,097 keys gain `PMID_ROLE_COLLISION`; PubMed esummary of the five affected PMIDs (documentation only); benchmark of five builds |
+| 2026-10-28 | the documents commit | D-027, D-026 marked pending-owner, R-030 closed, R-031; SPECIFICATION.md 16 items 27 to 29; MATHEMATICAL_MODEL.md 9.9; TEST_RESULTS.md 13; verified evidence of `21d9f37` kept as `evidence/*-at-21d9f37.json` |
 
 ## Specification changes
 
-Recorded in SPECIFICATION.md 16 (items 1 to 26).
+Recorded in SPECIFICATION.md 16 (items 1 to 29).
 
 ## Remaining work
 
 Owner decisions only: Stage 02 acceptance, the merge of the pull request,
-and whether to keep the local model out of the default product (R-028).
+whether to keep the local model out of the default product (R-028), and
+D-026 (pending the owner).
 
 ## Blockers and open owner decisions
 

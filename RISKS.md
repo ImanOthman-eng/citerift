@@ -533,3 +533,44 @@ a DOI whose records carry two PMIDs stays matched with
 and a two-identifier query whose DOI names no record answers for the PMID
 alone, anchored at `pmid:p`.
 
+
+## R-030 — A PMID lookup ignores records of its DOI under another PMID
+- Status: closed
+- Severity: medium
+- Kind: defect
+- Stage: 02
+
+Found by the independent Stage 02 audit of 2026-10-28 (finding F1). A
+single-PMID query reached the records of its co-occurring DOI only when they
+carried no PMID; a record of that DOI under a different PMID was dropped
+without an issue, although the DOI query reported the divergence
+(`IDENTITY_SECONDARY_DIVERGENT`). On the pinned RW snapshot two PMID queries
+were stated as `verified_fact` correction while their DOI is recorded as
+retracted under another PMID: 23649173 (PubMed lists it as a retracted
+publication with that DOI, so the work is in fact retracted) and 25996123
+(PubMed lists it as a corrigendum, `10.2217/nnm.15.54`: Retraction Watch
+gives it as that corrigendum's notice PMID on one record and as the original's
+PMID on another) (`evidence/pubmed-esummary-audit-2026-10-28.json`).
+
+Closed on 2026-10-28 under the owner's authorization (D-027; policy 1.3.0,
+SPECIFICATION.md 16 item 27): such records are bridged candidates under rule
+7f and the divergence is reported. Both keys are now `uncertain`, null with
+`BRIDGED_EVIDENCE_MATERIAL`; no key changed toward a stated value
+(`evidence/policy-impact-audit-rw.json`). For 23649173 this withholds a true
+retraction, as R-029 describes; it no longer states a wrong one.
+
+## R-031 — The role of a PMID given for both an original and its notice is not resolved
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Retraction Watch gives the same PMID as the original's and the notice's on
+1,341 events (finding F3 of the independent audit); on 455 of them the notice
+has its own DOI, different from the original's, a strong sign that the PMID
+names the notice. Since policy 1.3.0 a lookup listing such an event reports
+`PMID_ROLE_COLLISION` (`event_ids`, `distinct_notice_doi`); 2,097 keys of the
+snapshot carry it (1,043 DOI and 1,054 PMID keys). Values are unchanged: the PMID is still read as the
+original's. Resolving the role needs an identity source such as PubMed, which
+is a new source and needs the owner's approval; later stages must show the
+issue and must not treat such a PMID as proof of identity.

@@ -133,6 +133,11 @@ database writes. Measured warm p95 per query with every intervention:
   report now shows an unsettled base whose direct evidence alone settles an
   expression of concern (TEST_RESULTS.md 12). The classes detected on the
   frozen set and on the eight real demonstrations are unchanged.
+- Evidence Tension did not find audit finding F1: the dropped records were
+  never in the evidence set, and an intervention can only remove evidence.
+  Since policy 1.3.0 they are bridged candidates, so `exclude_ambiguous_links`
+  now shows what they withhold (TEST_RESULTS.md 13). The eight real
+  demonstrations are byte-identical under 1.3.0.
 
 ## 7. Result
 

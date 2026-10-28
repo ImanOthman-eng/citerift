@@ -11,16 +11,19 @@
   `cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT` of 2026-10-28
   (Stage 00 maintenance, AI Protocol v2 with a local open model), and the
   owner's instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`
-  of 2026-10-28 (scientific correction of R-026; D-026).
+  of 2026-10-28 (scientific correction of R-026; D-026), and the owner's
+  authorization `cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX` of
+  2026-10-28 (fixes F1 and F3 of the independent audit; D-027).
 - Registry state: see `governance/stage_registry.json` and
   `PROJECT_STATUS.md`. Both blockers (B-02-001, B-02-002) are resolved with
   recorded resolutions. The stage was verified at `15925c9`, returned to
-  IN_PROGRESS for the R-026 correction (that verification stays in the
-  registry history and in `evidence/*-at-15925c9.json`), and is offered for
-  verification again at the revision in "Verified Git commit"; it is **not
-  accepted**. No later stage is authorized or started.
+  IN_PROGRESS for the R-026 correction, verified at `21d9f37`, returned to
+  IN_PROGRESS for the audit fixes (both verifications stay in the registry
+  history and in `evidence/*-at-15925c9.json` and `evidence/*-at-21d9f37.json`),
+  and is offered for verification again at the revision in "Verified Git
+  commit"; it is **not accepted**. D-026 is pending the owner. No later stage is authorized or started.
 - Specification, model and risk analysis frozen at `36696b3`; the changes
-  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 26).
+  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 29).
 - Pull request: unmerged, to `main`; the owner merges (D-019).
 
 ## Verified completed work
@@ -44,7 +47,9 @@ pinned snapshot (TEST_RESULTS.md gives the numbers).
   sequence; a reinstatement needs a supersession link; unknown origin alone
   settles nothing; since policy 1.2.0, rule 7f, a record reached only through
   an unresolved identifier link supports no value and no date, and a stated
-  value must hold whether such links are accepted or rejected).
+  value must hold whether such links are accepted or rejected; since 1.3.0 a
+  PMID query lists every record of its DOI, also under another PMID, and a
+  PMID given in both roles is reported as `PMID_ROLE_COLLISION`).
 - **Index and operations.** One SQLite file per snapshot, validated before an
   atomic publish, never replacing a different build; read-only immutable
   readers; `build`, `lookup`, `event`, `tension`, `verify`, `export`, `diff`,
@@ -120,14 +125,15 @@ builds; TEST_RESULTS.md 3):
 
 | Index | Artifact digest | Semantic digest | Export lines |
 |---|---|---|---|
-| Retraction Watch only | `22bf1f30482b71ef45c61940d835649bb449892319d21a7e0adc7b53d1ded339` | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` | 147,152 |
-| With the pinned Crossref replay | `ebb1f873269dbff949673d77f9096e8fcbafb35b9a9ef2ae9c03bc965c136b31` | `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a` | 147,229 |
+| Retraction Watch only | `adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9` | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` | 147,152 |
+| With the pinned Crossref replay | `d3c44e3567a35aa7b2e4789811ce8092f5508988426bb400d53fc26310a4d11e` | `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a` | 147,229 |
 
-Snapshot `rw-2f116e9ffed718e6`, policy `citerift-rde-policy/1.2.0`, Evidence
+Snapshot `rw-2f116e9ffed718e6`, policy `citerift-rde-policy/1.3.0`, Evidence
 Tension `citerift-evidence-tension/0.3.0`, schemas `1.1.0`. The semantic
-digests equal those of policy 1.1.0; the artifact digests differ because they
-include the versions. A build with another policy version is refused by
-readers (`INDEX_FORMAT_MISMATCH`), so a 1.1.0 index must be rebuilt.
+digests equal those of policies 1.1.0 and 1.2.0; the artifact digests differ
+because they include the versions. A build with another policy version is
+refused by readers (`INDEX_FORMAT_MISMATCH`), so a 1.2.0 index must be
+rebuilt.
 
 ## Test evidence
 
@@ -136,16 +142,17 @@ readers (`INDEX_FORMAT_MISMATCH`), so a 1.1.0 index must be rebuilt.
 | Full test suite, Python 3.12 and 3.13 | local and CI | TEST_RESULTS.md 2 and 9 |
 | `ruff check`, `ruff format --check`, `mypy`, `uv lock --check` | local and CI | clean |
 | `citerift-gov check` | local and CI | 0 errors |
-| Real build, double build, verify, oracle, real cases, demonstrations, benchmarks | real-data run at `a0666b3` (engine code of the R-026 correction) | TEST_RESULTS.md 3 to 8 and 12; the earlier runs (`a24dd46`) are kept as `evidence/*-at-15925c9.json` |
+| Real build, double build, verify, oracle, real cases, demonstrations, benchmarks | real-data run at `1465e85` (engine code of the audit fixes) | TEST_RESULTS.md 3 to 8 and 13; the earlier runs are kept as `evidence/*-at-21d9f37.json` (`a0666b3`) and `evidence/*-at-15925c9.json` (`a24dd46`) |
 | R-026 before/after and real-data impact | `720a049` against `a0666b3`, all 96,803 original keys on both indexes | TEST_RESULTS.md 12 |
+| Audit F1 and F3 before/after and real-data impact | `ac959c6` against `1465e85`, all 96,803 original keys on both indexes | TEST_RESULTS.md 13 |
 | AI Protocol v2 screening, calibration, holdout | local, offline, at `2136943` to `4a0fc19` | TEST_RESULTS.md 7.2 |
 | Clean-checkout inference and separate-process CLI | fresh clone at `4a0fc19`, no network, empty environment | `ai/v2/inference/` |
 | Complete test report | local, clean tree, `test-report.json` | at the verified revision |
 
-Stage 02 suites: unit 213, integration 115, negative 263, regression 60,
-reproducibility 5, security 69, contracts 7, simulation 59 (587 tests). Full
-suite: 1,149 passed on Python 3.12.3 and on 3.13.17. Fail-first evidence for
-every review fix and for the R-026 correction: `evidence/fail-first/`.
+Stage 02 suites: unit 213, integration 115, negative 264, regression 69,
+reproducibility 5, security 69, contracts 7, simulation 59 (597 tests). Full
+suite: 1,159 tests (TEST_RESULTS.md 2). Fail-first evidence for every review
+fix, the R-026 correction and the audit fixes: `evidence/fail-first/`.
 
 ## Known limitations
 
@@ -154,7 +161,12 @@ every review fix and for the R-026 correction: `evidence/fail-first/`.
   cited source record", not independent truth.
 - A record reached only through an unresolved identifier link is withheld,
   not resolved (R-029): a true retraction reachable only that way reads as
-  `uncertain` (`BRIDGE_ONLY_SUPPORT`). R-026 itself is closed (D-026).
+  `uncertain` (`BRIDGE_ONLY_SUPPORT`). R-026 itself is closed (D-026). Since
+  1.3.0 this includes a PMID whose DOI is retracted under another PMID
+  (23649173: in fact retracted, now `uncertain`; R-030 closed).
+- A PMID that Retraction Watch gives for both an original and its notice is
+  reported (`PMID_ROLE_COLLISION`, 2,097 keys), not resolved (R-031); its
+  role needs an identity source, which needs the owner's approval.
 - Day-1 dates and literal `%` in bare DOIs are handled conservatively (R-023,
   R-024).
 - Identity beyond exact identifiers is advisory and not validated on natural
@@ -188,9 +200,9 @@ Protected changes, for the owner's review: `src/citerift/governance/`
 (maintenance transaction), `schemas/governance/stage_registry.schema.json`
 (`$defs.maintenance`), `tests/stage00/` (the two corrected tests and the
 maintenance tests), and GOVERNANCE.md, all from A-00-002. The R-026
-correction changed none of them: it touches only Stage 02's owned paths,
-its documents, DECISIONS.md, RISKS.md, CHANGELOG.md and the registry
-transitions. Nothing in `src/citerift/contracts`, `schemas/contracts/v1`,
+correction and the audit fixes changed none of them: they touch only Stage
+02's owned paths, its documents, DECISIONS.md, RISKS.md, CHANGELOG.md and the
+registry transitions. Nothing in `src/citerift/contracts`, `schemas/contracts/v1`,
 `.github/` or Stage 01 evidence changed.
 
 ## Dependency versions
@@ -244,7 +256,9 @@ Requested from the owner: accept Stage 02 (or not), merge the pull request
 (or not), decide whether the local model stays out of the default product
 (recommended: yes, R-028), and confirm or change the reading of "adequate
 direct evidence" in D-026 (a bridged record may withhold a conclusion that
-it would change, never support one). The agent has done none of these.
+it would change, never support one; D-026 is recorded as pending the owner),
+and decide whether to add an identity source such as PubMed in a later stage
+(R-029, R-031). The agent has done none of these.
 
 ## Requirements for the next stage
 
@@ -262,6 +276,9 @@ Interface requirements only; no later stage is authorized.
   `BRIDGED_EVIDENCE_MATERIAL` is unresolved, never "not retracted"; the
   candidate records are in `events` (`linked_via`) and
   `basis.bridged_assertions`.
+- Show `IDENTITY_SECONDARY_DIVERGENT` and `PMID_ROLE_COLLISION` with any
+  result for a PMID taken from a citation; a PMID with either issue is not
+  proof of which work is cited.
 - Advisory suggestions have no path into facts; keep it that way.
 - Do not enable the local model by default and do not show its ranking as a
   suggestion unless a new protocol with a new fresh holdout admits it (R-028).

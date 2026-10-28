@@ -29,24 +29,24 @@ is not a claim that the model helps. It did not.
 
 ## 2. Test suites
 
-`uv run pytest` at the final code of the R-026 correction (local,
-2026-10-28): **1,149 passed** on Python 3.12.3 (269.1 s) and **1,149 passed**
-on Python 3.13.17 (a scratch environment from `uv.lock`, 275.1 s); no
-failure, skip or deselection (`evidence/local-test-runs.txt`). `ruff check`,
-`ruff format --check` and `mypy` clean; `citerift-gov check` 0 errors. The
-complete reports at the verified revision are named in HANDOFF.md. (At
-`15925c9`: 1,123 passed on both. At `a24dd46`: 2 failed, 1034 passed, the two
-Stage 00 tests of section 9.2.)
+`uv run pytest` at the final code of the audit fixes (local, 2026-10-28):
+**1,159 passed** on Python 3.12.3 (291.6 s) and **1,159 passed** on Python
+3.13.17 (a scratch environment from `uv.lock`, 298.2 s); no failure, skip or
+deselection (`evidence/local-test-runs.txt`). `ruff check`, `ruff format
+--check` and `mypy` clean; `citerift-gov check` 0 errors. The complete reports
+at the verified revision are named in HANDOFF.md. (At `21d9f37`: 1,149 passed
+on both. At `15925c9`: 1,123 passed on both. At `a24dd46`: 2 failed, 1034
+passed, the two Stage 00 tests of section 9.2.)
 
-Stage 02 tests, `tests/stage02/` (587 collected; a test can carry more than
-one suite marker; at `15925c9`: 561, at `a24dd46`: 531):
+Stage 02 tests, `tests/stage02/` (597 collected; a test can carry more than
+one suite marker; at `21d9f37`: 587, at `15925c9`: 561, at `a24dd46`: 531):
 
 | Suite | Tests |
 |---|---|
 | unit | 213 |
 | integration | 115 |
-| negative | 263 |
-| regression | 60 |
+| negative | 264 |
+| regression | 69 |
 | reproducibility | 5 |
 | security | 69 |
 | contracts | 7 |
@@ -83,7 +83,7 @@ real double build of section 3).
 
 ## 3. Real build and reproducibility (real-data run)
 
-Five full builds of the pinned CSV at the cited code revision, each in a fresh
+Five full builds of the pinned CSV at the cited code revision (`1465e85`), each in a fresh
 process (`scripts/benchmark.py`, `evidence/benchmark.json`):
 
 | Measure | Result |
@@ -92,21 +92,21 @@ process (`scripts/benchmark.py`, `evidence/benchmark.json`):
 | Physical lines (header, record lines, blank) | 173,491 (1, 173,490, 0) |
 | Events by type | 67,916 retracted, 3,733 expression of concern, 1,544 correction, 163 reinstated |
 | Records in duplicate groups (all kept) | 439 |
-| Artifact digest, every build | `22bf1f30482b71ef45c61940d835649bb449892319d21a7e0adc7b53d1ded339` (policy 1.2.0; at `15925c9`, policy 1.1.0: `1ee679b5…`) |
+| Artifact digest, every build | `adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9` (policy 1.3.0; at `21d9f37`, policy 1.2.0: `22bf1f30…`; at `15925c9`, policy 1.1.0: `1ee679b5…`) |
 | Semantic digest, every build | `7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88` |
 | Export lines | 147,152 |
 | Double build | one digest set over five builds; query outputs equal |
 
 The counts equal the accepted Stage 01 profile. The semantic digest is the
 same as at `e4de42b`; the artifact digest changed with the policy version
-(SPECIFICATION.md 16 items 23 and 26), which is what it is meant to record.
+(SPECIFICATION.md 16 items 23, 26 and 29), which is what it is meant to record.
 
 `verify --source` on the first build re-reads the CSV and compares it with the
 index: ok, 0 problems, 73,356 events schema-checked, 73,356 source records
 checked (`evidence/verify-rw.json`). The index built with the pinned Crossref
 replay (48 Crossref assertions) is also clean: artifact digest
-`ebb1f873269dbff949673d77f9096e8fcbafb35b9a9ef2ae9c03bc965c136b31` (1.1.0:
-`ea4c1678…`), semantic
+`d3c44e3567a35aa7b2e4789811ce8092f5508988426bb400d53fc26310a4d11e` (1.2.0:
+`ebb1f873…`; 1.1.0: `ea4c1678…`), semantic
 digest `d3daab8ff9697c0a0072a15a4f640728f3fc10dd09acba0d54d8f8987f687e5a`,
 147,229 export lines (`evidence/verify-cr.json`).
 
@@ -317,13 +317,13 @@ in `evidence/benchmark.json` (SPECIFICATION.md 13 query mix):
 
 | Budget | Limit | Measured | Met |
 |---|---|---|---|
-| Build wall time | 120 s | median 70.9 s, max 71.2 s (5 builds) | yes |
-| Build peak RSS | 512 MiB | 406.0 MiB | yes |
+| Build wall time | 120 s | median 74.1 s, max 74.6 s (5 builds) | yes |
+| Build peak RSS | 512 MiB | 406.2 MiB | yes |
 | Index size | 512 MiB | 265.9 MiB | yes |
-| Warm lookup p95 (2,000 queries) | 20 ms | 0.225 ms (max 34.5 ms) | yes |
-| Fresh-process lookup p95 (200) | 1,000 ms | 146.4 ms | yes |
-| Evidence Tension p95 (200) | 50 ms | 0.372 ms | yes |
-| Ambiguity candidates p95 (200) | 100 ms | 16.2 ms | yes |
+| Warm lookup p95 (2,000 queries) | 20 ms | 0.245 ms (max 38.9 ms) | yes |
+| Fresh-process lookup p95 (200) | 1,000 ms | 166.2 ms | yes |
+| Evidence Tension p95 (200) | 50 ms | 0.431 ms | yes |
+| Ambiguity candidates p95 (200) | 100 ms | 16.6 ms | yes |
 | Double build | equal | equal (one digest set over five builds, equal query output) | yes |
 
 An earlier run at `aa7c23c` failed the memory budget (740 MiB) because every
@@ -331,8 +331,12 @@ event was held in memory for parallel validation; it is kept as
 `evidence/benchmark-at-aa7c23c-failed-rss.json`. Validation was made serial
 and streaming at `66e39ed` and the budget was not changed. The run at `66e39ed`
 (`evidence/benchmark-at-66e39ed.json`) met every budget before the version
-increment. The run above is the one of the R-026 correction (engine code of
-`a0666b3`, policy 1.2.0, 2026-10-28); the run pinned at `15925c9` (policy
+increment. The run above is the one of the audit fixes (clean checkout of
+`1465e85`, policy 1.3.0, 2026-10-28; its five builds give the artifact digest
+of the indexes used in section 13.2); the run of the R-026 correction
+(`a0666b3`, policy 1.2.0: median 70.9 s, peak 406.0 MiB, warm p95 0.225 ms,
+fresh p95 146.4 ms) is kept as `evidence/benchmark-at-21d9f37.json`, and the
+run pinned at `15925c9` (policy
 1.1.0, median 71.7 s, peak 405.3 MiB, warm p95 0.239 ms, fresh p95 141.3 ms)
 is kept as `evidence/benchmark-at-15925c9.json`. Host: 4 vCPU, 15 GiB,
 Python 3.12.3, SQLite 3.45.1.
@@ -458,6 +462,18 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | Sci-8 | medium | disclosure | four in-place spec edits and a simulator change not listed | fixed: SPECIFICATION.md 16 lists them | review of §16 |
 | Sci-9 | low | various | proposition without anchor; substring relevance noise; baseline counting; two misnamed real-case classes; AI label and stratum notes; day-1 nulls the year | proposition fixed (item 13); real-case classes fixed (R40 renamed, R43 now a true relevance case); the others documented here and in section 7 | regression, real cases |
 
+Independent audit of 2026-10-28 (an AI agent separate from this session; read
+only, at `8557ec2`; outside the repository at
+`/mnt/project-files/stage-02/INDEPENDENT_AUDIT_AR_2026-10-28.md`). It
+reproduced the tests, CI, digests, the R-026 impact and the model result, and
+found:
+
+| ID | Severity (audit) | Finding | Disposition | Test |
+|---|---|---|---|---|
+| F1 | medium to high | a PMID-only query drops records of its DOI under another PMID and can state a correction for a retracted DOI (23649173) | fixed under the owner's authorization (D-027; item 27); R-030 closed | `test_rde_audit_fixes.py` |
+| F2 | informational | of the two R-026 changes, 23649173 is in fact retracted (a true retraction withheld) and 25996123 is a corrigendum's PMID (`uncertain` is better) | recorded (section 13.2, R-029, R-030); confirmed by this session's own PubMed check | none (data) |
+| F3 | low to medium | 1,341 events carry one PMID as both original and notice PMID | reported as `PMID_ROLE_COLLISION` (item 28), values unchanged; R-031 open | `test_rde_audit_fixes.py` |
+
 ## 11. Evidence locations
 
 | Evidence | Path |
@@ -466,19 +482,20 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | Simulator run | `evidence/simulator.json` |
 | Oracle comparison | `evidence/oracle-comparison.json` |
 | Benchmarks, double build | `evidence/benchmark.json`; failed run kept as `evidence/benchmark-at-aa7c23c-failed-rss.json` |
-| Policy impact | `evidence/policy-impact-rw.json`, `evidence/policy-impact-cr.json` (items 11 to 14); `evidence/policy-impact-r026-rw.json`, `evidence/policy-impact-r026-cr.json` (R-026, section 12) |
-| Evidence pinned at the earlier verification (`15925c9`) | `evidence/*-at-15925c9.json` (benchmark, oracle comparison, tension demonstrations, simulator, verify); `evidence/verification-record-at-15925c9.json` |
+| Policy impact | `evidence/policy-impact-rw.json`, `evidence/policy-impact-cr.json` (items 11 to 14); `evidence/policy-impact-r026-rw.json`, `evidence/policy-impact-r026-cr.json` (R-026, section 12); `evidence/policy-impact-audit-rw.json`, `evidence/policy-impact-audit-cr.json` (audit fixes, section 13) |
+| Evidence pinned at the earlier verifications | `15925c9`: `evidence/*-at-15925c9.json` (benchmark, oracle comparison, tension demonstrations, simulator, verify), `evidence/verification-record-at-15925c9.json`, `evidence/registry-verification-at-15925c9.json`; `21d9f37`: the same set as `evidence/*-at-21d9f37.json`, with both test reports |
+| External identity check (documentation only) | `evidence/pubmed-esummary-audit-2026-10-28.json` |
 | Tension demonstrations | `evidence/tension-demonstrations.json` |
 | Crossref replay bundle | `evidence/crossref/` |
-| Fail-first runs | `evidence/fail-first/` (R-026: `r026-bridge-sufficiency-at-720a049.txt`) |
+| Fail-first runs | `evidence/fail-first/` (R-026: `r026-bridge-sufficiency-at-720a049.txt`; audit F1 and F3: `audit-f1-f3-at-ac959c6.txt`) |
 | AI Protocol v1, baseline, route pilot (historical) | `ai/` |
 | AI Protocol v2, development set, screening, calibration, holdout, predictions, evaluation | `ai/v2/` |
 | Model selection, licences, inference guide | `ai/v2/MODEL_SELECTION.md`, `ai/v2/THIRD_PARTY_AND_MODEL_LICENSES.md`, `ai/v2/INFERENCE_GUIDE.md` |
 | Inference audit, clean-checkout run, separate-process demonstration | `ai/v2/inference/` |
-| Real rebuild check of `4a0fc19` (policy 1.1.0; historical) | `evidence/rebuild-check-2026-10-28.json`; the rebuilds under 1.2.0 are in `evidence/benchmark.json`, `verify-rw.json`, `verify-cr.json` |
+| Real rebuild check of `4a0fc19` (policy 1.1.0; historical) | `evidence/rebuild-check-2026-10-28.json`; the rebuilds under 1.3.0 are in `evidence/benchmark.json`, `verify-rw.json`, `verify-cr.json` (under 1.2.0: `*-at-21d9f37.json`) |
 | Stage 00 maintenance A-00-002 | `docs/verification/maintenance/A-00-002/` |
 | Local full-suite runs, Python 3.12 and 3.13 | `evidence/local-test-runs.txt` |
-| Complete test report | `test-report.json` (Python 3.12) and `evidence/test-report-py3.13.json` at the verified revision; at `15925c9`: `evidence/test-report-py3.12-at-15925c9.json`, `evidence/test-report-py3.13-at-15925c9.json`; the earlier failing report: `evidence/test-report-at-f62a280.json` |
+| Complete test report | `test-report.json` (Python 3.12) and `evidence/test-report-py3.13.json` at the verified revision; at `21d9f37`: `evidence/test-report-py3.12-at-21d9f37.json`, `evidence/test-report-py3.13-at-21d9f37.json`; at `15925c9`: `evidence/test-report-py3.12-at-15925c9.json`, `evidence/test-report-py3.13-at-15925c9.json`; the earlier failing report: `evidence/test-report-at-f62a280.json` |
 
 ## 12. R-026 correction: bridged identifiers (2026-10-28)
 
@@ -568,3 +585,76 @@ queries; D4's base reasons add `BRIDGED_EVIDENCE_NOT_COUNTED`.
   `IDENTITY_SECONDARY_DIVERGENT` (the anchor is DOI-first); a two-identifier
   query whose DOI names no record answers for the PMID alone (`pmid:p`).
 - The Crossref side rests on the 29-work replay only.
+
+## 13. Fixes of the independent audit: F1 and F3 (2026-10-28)
+
+Owner authorization `cmsg_018VCB51nDHP6HXmLU4ea5yPTuLwB5wxxfxy8sGptetSkX`
+(DECISIONS.md D-027). SPECIFICATION.md 10.3 steps 4 and 9 and 16 items 27 to
+29; policy 1.3.0. The stage returned from VERIFIED_AWAITING_OWNER_ACCEPTANCE to
+IN_PROGRESS for it; the verification at `21d9f37` stays in the registry
+history and its evidence is kept as `evidence/*-at-21d9f37.json`. Rule 7f, the
+AI Protocol v2 result and the opt-in local model are unchanged. D-026 is
+pending the owner.
+
+### 13.1 Before and after (synthetic regressions)
+
+`tests/stage02/test_rde_audit_fixes.py`, 9 tests. Against the unchanged engine
+at `ac959c6`: 6 failed and 3 passed
+(`evidence/fail-first/audit-f1-f3-at-ac959c6.txt`); the 3 that passed pin
+behavior that was already right.
+
+| Evidence | 1.2.0 (`ac959c6`) | 1.3.0 |
+|---|---|---|
+| PMID `p` query; correction under (DOI `d`, `p`); retraction of `d` under PMID `q` | `verified_fact` correction, identity `exact`, the retraction not listed, no issue | `uncertain`, null; `BRIDGED_EVIDENCE_MATERIAL`; the retraction listed with `linked_via` `doi_cooccurrence` and in `basis.bridged_assertions`; `IDENTITY_SECONDARY_DIVERGENT` with `[p, q]` |
+| The same index, DOI `d` query | `verified_fact` retracted, `IDENTITY_SECONDARY_DIVERGENT` | unchanged |
+| PMID `p`; retraction under (`d`, `p`) and an equal retraction under (`d`, `q`) | `verified_fact` retracted, no issue | the same value and date, 1 supporting assertion, `BRIDGED_EVIDENCE_NOT_COUNTED`, `IDENTITY_SECONDARY_DIVERGENT` |
+| PMID query without divergence; two-identifier query (`d`, `p`) against a record (`d`, `q`) | `verified_fact` correction; `ambiguous_identity` | unchanged |
+| A listed event whose original PMID equals its notice PMID | no lookup issue (only the event flag `NOTICE_PMID_EQUALS_ORIGINAL`) | `PMID_ROLE_COLLISION` with `event_ids` and `distinct_notice_doi`; value, date and reasons unchanged |
+
+### 13.2 Real-data impact (pinned snapshot)
+
+Every original DOI and PMID key (96,803), projected at `ac959c6` on the 1.2.0
+indexes and at `1465e85` on indexes rebuilt under 1.3.0, with issue codes also
+compared (`scripts/policy_impact.py`):
+
+| Change | RW only (`evidence/policy-impact-audit-rw.json`) | With the Crossref replay (`policy-impact-audit-cr.json`) |
+|---|---|---|
+| `verified_fact` correction → `uncertain`, null | 2: PMIDs `23649173`, `25996123` | 0 (both were already `uncertain` under 1.2.0, through the Crossref relations of R-026) |
+| Value kept, identity `exact` → `bridged`, `IDENTITY_SECONDARY_DIVERGENT` added | 2: PMIDs `3507357` (expression of concern), `25816875` (retracted, 2021-06-18) | 1 (`3507357`; `25816875` was already bridged) |
+| `IDENTITY_SECONDARY_DIVERGENT` added, value and identity unchanged | 0 | 3 (`23649173`, `25996123`, `25816875`) |
+| `PMID_ROLE_COLLISION` added | 2,097 keys (1,043 DOI, 1,054 PMID), of which 2,095 change in nothing else | the same 2,097 |
+| Any date | none | none |
+
+1,341 events carry one PMID in both roles; on 455 of them the notice DOI is
+present and differs from the original DOI (`distinct_notice_doi`). The audit
+counted 457 by its own reading of the raw fields; this count uses the
+normalized keys.
+
+External check, for documentation only (PubMed esummary, 2026-10-28;
+`evidence/pubmed-esummary-audit-2026-10-28.json`): 23649173 is the article of
+DOI `10.1001/jamainternmed.2013.650` and is a "Retracted Publication", so the
+1.2.0 answer (a verified correction) was wrong and the 1.3.0 answer withholds
+a true retraction (R-029); 25996123 is a corrigendum (`10.2217/nnm.15.54`), so
+Retraction Watch gives a notice's PMID as an original's and `uncertain` is the
+better answer; 25816875 is the retracted article of `10.2217/nnm.14.183`
+(unchanged, verified retracted). The engine does not use PubMed.
+
+Rebuilt indexes (`evidence/verify-rw.json`, `evidence/verify-cr.json`):
+`verify --source` ok, 0 problems. The semantic digests are unchanged; the
+artifact digests changed with the policy version (section 3). Oracle: 0
+mismatches (`evidence/oracle-comparison.json`). Real cases: 50 of 50 agree;
+only their evidence digests changed. Tension demonstrations: byte-identical.
+Simulator: 37/37 policy and 16/16 tension cases (`evidence/simulator.json`).
+
+### 13.3 Limitations of the fixes
+
+- F1 withholds; it does not resolve identity. A PMID whose DOI is retracted
+  under another PMID is `uncertain`, not retracted (R-029), even when the
+  work is in fact retracted (23649173).
+- F3 is an issue only (R-031). The PMID is still read as the original's; no
+  value changes. Resolving the role needs an identity source such as PubMed,
+  which needs the owner's approval.
+- The DOI-first anchor asymmetry is kept as specified (R-029): a DOI query
+  states the DOI's own records as direct even when they carry several PMIDs.
+- No human review; the audit and these fixes are by AI agents.
+
