@@ -12,7 +12,8 @@ Text rules (all in the profile, nothing guessed):
 * text inside ``<cite>`` (the citation's own title and fields) is kept apart: a warning term there is ambiguous,
   since a cited work's title may itself contain it;
 * text the HTML itself hides (``display:none``, the ``hidden`` attribute, CS1 maintenance classes) is kept apart and
-  never counts as shown;
+  never counts as shown; a term found only there makes the region ambiguous, never "no warning", since what a
+  reader saw is not evaluated;
 * matching folds case and, for Arabic, ignores harakat and tatweel; English terms must stand as words, Arabic terms
   may carry attached letters (the article and prepositions are written joined).
 """
@@ -182,8 +183,11 @@ def observe(
         region_json = {"region_id": region_id, "locator": locator, "hidden_elements": region["hidden_elements"]}
         if evidence:
             state, reason = "recognized_warning_text", "a warning term in the region's visible text"
-        elif cite_warn or ambiguous:
-            state, reason = "ambiguous_text", "only ambiguous wording, or a warning term inside the citation itself"
+        elif cite_warn or ambiguous or hidden:
+            state, reason = (
+                "ambiguous_text",
+                "only ambiguous wording, a warning term inside the citation itself, or a term in text the HTML hides",
+            )
         elif region_id in omitted_regions:
             state, reason = "not_inspected", "MediaWiki omitted a template in this region (parser limit)"
         elif redlinks:

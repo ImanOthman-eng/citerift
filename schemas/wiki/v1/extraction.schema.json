@@ -137,7 +137,7 @@
         "render": {
           "type": "object", "additionalProperties": false, "required": ["state"],
           "properties": {
-            "state": {"enum": ["not_reconciled", "matched", "unmatched", "note_missing", "conflicting_notes"]},
+            "state": {"enum": ["not_reconciled", "matched", "unmatched", "note_missing", "conflicting_notes", "note_ambiguous"]},
             "region_id": {"type": ["string", "null"]}
           }
         }

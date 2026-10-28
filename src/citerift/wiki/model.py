@@ -94,6 +94,15 @@ class SourceModel:
     refs: dict[int, RefRecord]
 
 
+OVERRIDDEN = "is given again later; MediaWiki uses the last value"
+
+
+def _overridden(t: TemplateRecord, cand: Candidate) -> bool:
+    """The candidate is the value of a parameter that the same template repeats later (the later one wins)."""
+    own = [p for p in t.params if p.value_start <= cand.start < max(p.value_end, p.value_start + 1)]
+    return bool(own) and any(q.name == own[-1].name and q.value_start > own[-1].value_start for q in t.params)
+
+
 def _role(
     cand: Candidate, templates: dict[int, TemplateRecord], wiki: WikiProfile, in_container: bool
 ) -> tuple[str, str]:
@@ -109,6 +118,8 @@ def _role(
         if p is None:
             return "textual_mention", "inside a citation template name"
         if cand.origin == "template_field" and cand.template == t.index:
+            if _overridden(t, cand):
+                return "unresolved", f"citation parameter {p} {OVERRIDDEN}"
             return "primary_citation_field", f"citation parameter {p}"
         if p in wiki.identifier_params or p in wiki.url_params or p in ID_FIELD_PARAMS:
             if cand.origin in ("url", "wrapper", "template_field"):
@@ -438,13 +449,13 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         else:
             issues.append(Issue("IDENTIFIER_VALUE_HAS_MARKUP", (oid,)))
         if role == "unresolved":
-            issues.append(
-                Issue(
-                    "TEMPLATE_UNSUPPORTED",
-                    (oid,),
-                    templates[cand.template].canonical or "?" if cand.template is not None else "?",
+            owner_tpl = templates.get(cand.template) if cand.template is not None else None
+            if owner_tpl is not None and _overridden(owner_tpl, cand):
+                issues.append(Issue("IDENTIFIER_PARAMETER_OVERRIDDEN", (oid,), cand.param or "?"))
+            else:
+                issues.append(
+                    Issue("TEMPLATE_UNSUPPORTED", (oid,), owner_tpl.canonical or "?" if owner_tpl is not None else "?")
                 )
-            )
         if cand.boundary == "ambiguous_trailing_punctuation":
             issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,)))
         if decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in decoded.steps:

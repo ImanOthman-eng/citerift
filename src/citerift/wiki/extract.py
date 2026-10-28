@@ -23,7 +23,7 @@ from citerift.wiki.bundle import Bundle, BundleError, open_bundle
 from citerift.wiki.canonical import StrictJSONError, canonical_bytes, digest, loads_strict, sha256_hex
 from citerift.wiki.issues import Issue, sort_issues
 from citerift.wiki.markers import observe
-from citerift.wiki.model import SourceModel, build
+from citerift.wiki.model import OVERRIDDEN, SourceModel, build
 from citerift.wiki.profile import Profile, load_profile
 from citerift.wiki.reconcile import reconcile
 from citerift.wiki.render import HTML_PARSER, HTML_PARSER_VERSION, LIBXML_VERSION, RenderLimitExceeded, read_render
@@ -259,7 +259,9 @@ def _assemble(
                 "region_id": rec.container_note.get(c.id),
             }
             if render_part["state"] != "matched" and c.kind != "bibliography_entry":
-                doc.ledger(c.id, "container", "SOURCE_ONLY", f"render state {render_part['state']}")
+                ambiguous = render_part["state"] in ("note_ambiguous", "conflicting_notes")
+                code = "RECONCILIATION_AMBIGUOUS" if ambiguous else "SOURCE_ONLY"
+                doc.ledger(c.id, "container", code, f"render state {render_part['state']}")
         containers.append(
             {
                 "id": c.id,
@@ -352,7 +354,8 @@ def _assemble(
             }
         normalization = o.decoded.normalized.to_json() if o.decoded is not None else None
         if o.role == "unresolved":
-            doc.ledger(o.id, "identifier", "TEMPLATE_UNSUPPORTED", o.role_reason)
+            code = "IDENTIFIER_PARAMETER_OVERRIDDEN" if o.role_reason.endswith(OVERRIDDEN) else "TEMPLATE_UNSUPPORTED"
+            doc.ledger(o.id, "identifier", code, o.role_reason)
         if o.decoded is None:
             doc.ledger(o.id, "identifier", "IDENTIFIER_VALUE_HAS_MARKUP", "not normalized")
         elif not o.decoded.normalized.valid and not o.decoded.normalized.missing:

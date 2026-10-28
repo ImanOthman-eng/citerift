@@ -415,6 +415,7 @@ class Reconciler:
 
     def _containers(self) -> None:
         notes = {n.note_id: n for n in self.r.notes}
+        duplicated = set(self.r.duplicate_ids)
         for c in self.m.containers:
             if c.kind == "bibliography_entry" or c.id in self.out.container_note:
                 continue
@@ -426,7 +427,11 @@ class Reconciler:
                         targets.add(target)
             if len(targets) == 1:
                 note = targets.pop()
-                if note in notes:
+                if note in duplicated:
+                    # Several elements carry this id: which one is the note cannot be settled by the id.
+                    self.out.container_state[c.id] = "note_ambiguous"
+                    self.out.issues.append(Issue("RENDER_NOTE_AMBIGUOUS", (c.id,), f"{note} is not a unique id"))
+                elif note in notes:
                     self.out.container_note[c.id] = note
                     self.out.container_state[c.id] = "matched"
                     matched = {
@@ -445,6 +450,13 @@ class Reconciler:
                 self.out.issues.append(Issue("RENDER_CONTAINER_CONFLICT", (c.id,), ",".join(sorted(targets))))
             else:
                 self.out.container_state[c.id] = "unmatched"
+        # One rendered note can show only one reference: a note claimed by two containers is withdrawn from both.
+        claims = Counter(self.out.container_note.values())
+        for cid, note in list(self.out.container_note.items()):
+            if claims[note] > 1:
+                del self.out.container_note[cid]
+                self.out.container_state[cid] = "note_ambiguous"
+                self.out.issues.append(Issue("RENDER_NOTE_AMBIGUOUS", (cid,), f"{note} is claimed by {claims[note]}"))
 
     def _bibliography(self) -> None:
         """A bibliography entry is matched to the render list item that holds the output of its templates."""

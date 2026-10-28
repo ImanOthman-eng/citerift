@@ -98,6 +98,11 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     "GENERATED_REFERENCE_UNSUPPORTED": ("warning", False, "a template that generates references or uses"),
     "SUBREFERENCE_UNSUPPORTED": ("warning", False, "a subreference (details attribute) is not supported"),
     "TEMPLATE_UNSUPPORTED": ("info", False, "a template with identifier parameters that is not in the map"),
+    "IDENTIFIER_PARAMETER_OVERRIDDEN": (
+        "warning",
+        False,
+        "an identifier parameter repeated later in the same template; only the last value is used",
+    ),
     "UNIT_BOUNDARY_UNRESOLVED": ("warning", False, "several identifiers in unstructured text; works not separated"),
     "DUPLICATE_TEMPLATE_PARAMETER": ("warning", False, "a template repeats a parameter; all values are kept"),
     "IDENTIFIER_VALUE_HAS_MARKUP": ("warning", False, "an identifier value contains markup; not normalized"),
@@ -111,6 +116,7 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     # Render extraction and reconciliation
     "RENDER_PARSE_FAILED": ("error", False, "the HTML could not be parsed under the declared profile"),
     "DOM_ID_DUPLICATE": ("warning", False, "an element id occurs more than once; anchors to it are ambiguous"),
+    "RENDER_NOTE_AMBIGUOUS": ("warning", False, "the rendered note of a reference cannot be identified uniquely"),
     "RENDER_TARGET_MISSING": ("warning", False, "a rendered use points to a note that is not in the HTML"),
     "RENDER_DATA_MW_INVALID": ("warning", False, "a data-mw attribute is not valid JSON"),
     "RECONCILIATION_UNAVAILABLE": ("warning", False, "no usable render for this revision; links unavailable"),
