@@ -56,11 +56,15 @@ def fetch(url: str, log: list[dict[str, Any]], store: Path) -> tuple[int, dict[s
         except urllib.error.HTTPError as e:
             status, headers, raw = e.code, dict(e.headers.items()), e.read(MAX_BODY + 1)
         except (urllib.error.URLError, TimeoutError) as e:
-            entry.update({"error": type(e).__name__, "detail": str(e)[:200], "seconds": round(time.monotonic() - t0, 3)})
+            entry.update(
+                {"error": type(e).__name__, "detail": str(e)[:200], "seconds": round(time.monotonic() - t0, 3)}
+            )
             log.append(entry)
             continue
         wire = len(raw)
-        body = gzip.decompress(raw) if headers.get("Content-Encoding", headers.get("content-encoding")) == "gzip" else raw
+        body = (
+            gzip.decompress(raw) if headers.get("Content-Encoding", headers.get("content-encoding")) == "gzip" else raw
+        )
         sha = hashlib.sha256(body).hexdigest()
         (store / sha).write_bytes(body)
         entry.update(
@@ -150,7 +154,13 @@ def main() -> int:
         rec["rest_headers"] = h3
         results.append(rec)
         print(json.dumps(rec, ensure_ascii=False)[:300], flush=True)
-    manifest = {"run_at": now(), "user_agent": USER_AGENT, "min_interval_s": MIN_INTERVAL, "results": results, "log": log}
+    manifest = {
+        "run_at": now(),
+        "user_agent": USER_AGENT,
+        "min_interval_s": MIN_INTERVAL,
+        "results": results,
+        "log": log,
+    }
     (out / "acquisition.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     return 0
 

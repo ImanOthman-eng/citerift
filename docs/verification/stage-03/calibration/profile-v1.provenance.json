@@ -1,0 +1,2109 @@
+{
+ "decisions": [
+  "Excluded tags: tags whose content MediaWiki does not render as wikitext (nowiki, pre, syntaxhighlight, source, math, chem, ce, score, timeline, graph, mapframe, maplink, templatedata, includeonly, inputbox, categorytree, charinsert, hiero). Identifier-shaped text inside them is recorded as excluded, never used.",
+  "Unsupported containers: gallery, poem, imagemap, noinclude, onlyinclude. A ref inside them is kept and reported.",
+  "Publisher DOI URL hosts: five hosts whose /doi/<DOI> paths were seen in Stage 01/02 evidence; any other URL is not decoded as a DOI (no outbound request is ever made to decide).",
+  "Warning terms: the literal words the marker templates write ('Retracted', 'expression of concern', 'مصدر مسحوب'), plus the adjective 'مسحوب/مسحوبة' and English 'retracted' on arwiki, where dev renders show the English word written by hand ('(Retracted)' in فضيحة شون). Ambiguous terms are wording that may or may not be a warning (a cited title, 'Retraction Watch', withdrawal of a drug, an erratum).",
+  "Missing templates: Retracted, Expression of concern and Erratum do not exist on arwiki (evidence: missing pages); they stay in the arwiki marker list because articles copy them from enwiki and the render then shows a red link (missing_template_link_only)."
+ ],
+ "evidence_run_at": "2026-10-28T18:56:48Z",
+ "profile_sha256": "11c5199b23bc697423d546a06e775398b119ace405f5cc0c37b729361fbda13f",
+ "wikis": {
+  "ar": {
+   "cs1_configuration": {
+    "artifact": "865f90e8cbb61cbcb312957fdca4c35f5694466c9440f4abb1585683c264694b",
+    "content_sha256": "32ffe2c261413bc443aa27ece9a1a7a92c6d752e7f5d9a2b669ba77dec985f07",
+    "revid": 76424085,
+    "title": "وحدة:Citation/CS1/Configuration"
+   },
+   "generated_refs": [
+    {
+     "evidence": {
+      "revid": 69281433,
+      "title": "قالب:Efn-lr"
+     },
+     "names": [
+      "Efn-lr",
+      "Elr"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 69281435,
+      "title": "قالب:Efn-ua"
+     },
+     "names": [
+      "Efn-ua"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 75833558,
+      "title": "قالب:Refn"
+     },
+     "names": [
+      "Refn",
+      "Ren",
+      "הערה"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 68112558,
+      "title": "قالب:Sfn"
+     },
+     "names": [
+      "HarvRef",
+      "Harvnp",
+      "Sf",
+      "Sfn"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 72075140,
+      "title": "قالب:Sfnp"
+     },
+     "names": [
+      "Sfnp"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 46208498,
+      "title": "قالب:استشهاد متعدد"
+     },
+     "names": [
+      "R",
+      "استشهاد متعدد"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 73323223,
+      "title": "قالب:ملا"
+     },
+     "names": [
+      "Efn",
+      "ملا"
+     ]
+    }
+   ],
+   "missing_on_wiki": [
+    "قالب:Citation-attribution",
+    "قالب:Cite SSRN",
+    "قالب:Cite document",
+    "قالب:Cite serial",
+    "قالب:Cite tech report",
+    "قالب:Erratum",
+    "قالب:Expression of concern",
+    "قالب:Lay source",
+    "قالب:Retracted"
+   ],
+   "templates": {
+    "Cite CiteSeerX": {
+     "citation_classes": [
+      "citeseerx"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite CiteSeerX",
+      "Cite citeseerx"
+     ],
+     "revid": 75567779,
+     "role": "citation:citeseerx"
+    },
+    "Cite medRxiv": {
+     "citation_classes": [
+      "medrxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite medRxiv",
+      "Cite medrxiv"
+     ],
+     "revid": 64544419,
+     "role": "citation:medrxiv"
+    },
+    "Cite ssrn": {
+     "citation_classes": [
+      "ssrn"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite ssrn"
+     ],
+     "revid": 57361741,
+     "role": "citation:ssrn"
+    },
+    "Dictionary.com": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Cite Dictionary.com",
+      "Dictionary.com"
+     ],
+     "revid": 69281340,
+     "role": null
+    },
+    "Efn-lr": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Efn-lr",
+      "Elr"
+     ],
+     "revid": 69281433,
+     "role": "generated:efn"
+    },
+    "Efn-ua": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Efn-ua"
+     ],
+     "revid": 69281435,
+     "role": "generated:efn"
+    },
+    "PMID": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "CS1 identifiers",
+       "main"
+      ]
+     ],
+     "names": [
+      "PMID"
+     ],
+     "revid": 76139452,
+     "role": "wrapper:pmid"
+    },
+    "Refn": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Refn",
+      "Ren",
+      "הערה"
+     ],
+     "revid": 75833558,
+     "role": "generated:refn"
+    },
+    "Sfn": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Footnotes",
+       "sfn"
+      ]
+     ],
+     "names": [
+      "HarvRef",
+      "Harvnp",
+      "Sf",
+      "Sfn"
+     ],
+     "revid": 68112558,
+     "role": "generated:sfn"
+    },
+    "Sfnp": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ],
+      [
+       "Footnotes",
+       "sfn\n"
+      ]
+     ],
+     "names": [
+      "Sfnp"
+     ],
+     "revid": 72075140,
+     "role": "generated:sfn"
+    },
+    "Webarchive": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "webarchive",
+       "webarchive"
+      ]
+     ],
+     "names": [
+      "Webarchiv",
+      "Webarchive",
+      "أرشفة ويب",
+      "أرشيف الويب",
+      "أرشيف ويب"
+     ],
+     "revid": 75936502,
+     "role": null
+    },
+    "استشهاد": {
+     "citation_classes": [
+      "citation"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Citation",
+      "Cite",
+      "Harvard reference",
+      "استشهاد",
+      "مرجع هارفرد"
+     ],
+     "revid": 70513334,
+     "role": "citation:citation"
+    },
+    "استشهاد بأرخايف": {
+     "citation_classes": [
+      "arxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation"
+      ]
+     ],
+     "names": [
+      "Cite arXiv",
+      "Cite arxiv",
+      "استشهاد بأرخايف"
+     ],
+     "revid": 68115271,
+     "role": "citation:arxiv"
+    },
+    "استشهاد بأطروحة": {
+     "citation_classes": [
+      "thesis"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite thesis",
+      "استشهاد بأطروحة"
+     ],
+     "revid": 76069195,
+     "role": "citation:thesis"
+    },
+    "استشهاد بإشارة توضيحية": {
+     "citation_classes": [
+      "sign"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite sign",
+      "استشهاد بإشارة توضيحية",
+      "استشهاد بعلامة"
+     ],
+     "revid": 45253893,
+     "role": "citation:sign"
+    },
+    "استشهاد ببيان صحفي": {
+     "citation_classes": [
+      "pressrelease"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite press release",
+      "Cite pressrelease",
+      "استشهاد ببيان صحفي"
+     ],
+     "revid": 45215784,
+     "role": "citation:pressrelease"
+    },
+    "استشهاد ببيوركسيف": {
+     "citation_classes": [
+      "biorxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite bioRxiv",
+      "استشهاد ببيوركسيف"
+     ],
+     "revid": 46416705,
+     "role": "citation:biorxiv"
+    },
+    "استشهاد بتدوين صوتي": {
+     "citation_classes": [
+      "podcast"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite podcast",
+      "استشهاد ببودكاست",
+      "استشهاد بتدوين صوتي"
+     ],
+     "revid": 45216031,
+     "role": "citation:podcast"
+    },
+    "استشهاد بتقرير": {
+     "citation_classes": [
+      "report"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite report",
+      "استشهاد بتقرير",
+      "استشهاد بتقرير/نواة"
+     ],
+     "revid": 45006007,
+     "role": "citation:report"
+    },
+    "استشهاد بتقرير فني": {
+     "citation_classes": [
+      "techreport"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite techreport",
+      "استشهاد بتقرير فني"
+     ],
+     "revid": 45216114,
+     "role": "citation:techreport"
+    },
+    "استشهاد بحلقة": {
+     "citation_classes": [
+      "episode"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite episode",
+      "استشهاد بحلقة"
+     ],
+     "revid": 61198932,
+     "role": "citation:episode"
+    },
+    "استشهاد بخبر": {
+     "citation_classes": [
+      "news"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cita noticia",
+      "Cite news",
+      "Cite newspaper",
+      "Tidningsref",
+      "استشهاد بخبر",
+      "اقتباس أخبار",
+      "يستشهد خبر"
+     ],
+     "revid": 70513200,
+     "role": "citation:news"
+    },
+    "استشهاد بخريطة": {
+     "citation_classes": [
+      "map"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite map",
+      "استشهاد بخريطة"
+     ],
+     "revid": 69439155,
+     "role": "citation:map"
+    },
+    "استشهاد بخطاب": {
+     "citation_classes": [
+      "speech"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite speech",
+      "استشهاد بخطاب"
+     ],
+     "revid": 45216136,
+     "role": "citation:speech"
+    },
+    "استشهاد بدورية محكمة": {
+     "citation_classes": [
+      "journal"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cita publicación",
+      "Cite journal",
+      "استشهاد بدورية",
+      "استشهاد بدورية أكاديمية",
+      "استشهاد بدورية محكمة",
+      "استشهاد صحيفة",
+      "مرجع مجلة",
+      "يستشهد مجلة"
+     ],
+     "revid": 70513238,
+     "role": "citation:journal"
+    },
+    "استشهاد بقائمة بريدية": {
+     "citation_classes": [
+      "mailinglist"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite mailing list",
+      "استشهاد بقائمة بريدية"
+     ],
+     "revid": 45215953,
+     "role": "citation:mailinglist"
+    },
+    "استشهاد بكتاب": {
+     "citation_classes": [
+      "book"
+     ],
+     "invokes": [],
+     "names": [
+      "Cita libro",
+      "Cite book",
+      "Cite manual",
+      "استشهاد بكتاب",
+      "مرجع كتاب",
+      "يستشهد كتاب"
+     ],
+     "revid": 70513223,
+     "role": "citation:book"
+    },
+    "استشهاد بمجلة": {
+     "citation_classes": [
+      "magazine"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite mag",
+      "Cite magazine",
+      "Cite magazine article",
+      "استشهاد بمجلة"
+     ],
+     "revid": 45215936,
+     "role": "citation:magazine"
+    },
+    "استشهاد بمجموعة أخبار": {
+     "citation_classes": [
+      "newsgroup"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite newsgroup",
+      "استشهاد بمجموعة أخبار"
+     ],
+     "revid": 45253948,
+     "role": "citation:newsgroup"
+    },
+    "استشهاد بمحاكمة": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Cite court",
+      "استشهاد بمحاكمة"
+     ],
+     "revid": 46189863,
+     "role": null
+    },
+    "استشهاد بمسلسل": {
+     "citation_classes": [
+      "serial"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "استشهاد بمسلسل"
+     ],
+     "revid": 45216060,
+     "role": "citation:serial"
+    },
+    "استشهاد بمقابلة": {
+     "citation_classes": [
+      "interview"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite interview",
+      "استشهاد بمقابلة"
+     ],
+     "revid": 45215771,
+     "role": "citation:interview"
+    },
+    "استشهاد بمنشورات مؤتمر": {
+     "citation_classes": [
+      "conference"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite conference",
+      "استشهاد بمؤتمر",
+      "استشهاد بمنشورات مؤتمر"
+     ],
+     "revid": 45216423,
+     "role": "citation:conference"
+    },
+    "استشهاد بموسوعة": {
+     "citation_classes": [
+      "encyclopaedia"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite contribution",
+      "Cite dictionary",
+      "Cite encyclopaedia",
+      "Cite encyclopedia",
+      "استشهاد بموسوعة",
+      "يستشهد موسوعة"
+     ],
+     "revid": 68114009,
+     "role": "citation:encyclopedia"
+    },
+    "استشهاد بوثيقة": {
+     "citation_classes": [
+      "document"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "استشهاد بوثيقة"
+     ],
+     "revid": 68112608,
+     "role": "citation:document"
+    },
+    "استشهاد بوسائط مرئية ومسموعة": {
+     "citation_classes": [
+      "audio-visual"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite AV media",
+      "Cite video",
+      "استشهاد بفيديو",
+      "استشهاد بوسائط مرئية ومسموعة"
+     ],
+     "revid": 45215838,
+     "role": "citation:audio-visual"
+    },
+    "استشهاد بويب": {
+     "citation_classes": [
+      "web"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cita web",
+      "Cite web",
+      "Citeweb",
+      "Cw",
+      "Web cite",
+      "Web kaynağı",
+      "استشهاد بموقع",
+      "استشهاد بويب",
+      "استشهاد بويب/إنجليزي",
+      "استشهاد ويب",
+      "استشهاد ويب/إنجليزي",
+      "اقتباس ويب",
+      "مرجع موقع",
+      "مرجع وب",
+      "مرجع وب/إنجليزي",
+      "مرجع ويب",
+      "مرجع ويب/إنجليزي",
+      "يستشهد ويب",
+      "یادکرد وب"
+     ],
+     "revid": 70331151,
+     "role": "citation:web"
+    },
+    "استشهاد بويكي بيانات": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Cite Q",
+       "cite_q"
+      ]
+     ],
+     "names": [
+      "Cite Q",
+      "استشهاد بويكي بيانات"
+     ],
+     "revid": 67303039,
+     "role": "external_data"
+    },
+    "استشهاد متعدد": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "R",
+      "استشهاد متعدد"
+     ],
+     "revid": 46208498,
+     "role": "generated:r"
+    },
+    "دوي": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "CS1 identifiers",
+       "main"
+      ]
+     ],
+     "names": [
+      "DOI",
+      "Doi",
+      "دوي"
+     ],
+     "revid": 76139394,
+     "role": "wrapper:doi"
+    },
+    "مراجع": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Footnotes",
+      "Reflist",
+      "Références",
+      "المراجع",
+      "ثبت المراجع",
+      "ثبت المصادر",
+      "قائمة مصادر",
+      "مراجع",
+      "مصادر"
+     ],
+     "revid": 70336474,
+     "role": "reflist"
+    },
+    "مصدر طبي غير موثوق به": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "MEDRS",
+      "Unreliable medical source",
+      "مصدر طبي غير موثوق",
+      "مصدر طبي غير موثوق به"
+     ],
+     "revid": 64964953,
+     "role": null
+    },
+    "مصدر مسحوب": {
+     "names": [
+      "مصدر مسحوب"
+     ],
+     "revid": 55810232,
+     "role": "marker"
+    },
+    "ملا": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Efn",
+      "ملا"
+     ],
+     "revid": 73323223,
+     "role": "generated:efn"
+    },
+    "ملاحظات": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Note list",
+      "Notelist",
+      "Notes",
+      "Noteslist",
+      "ثبت الملاحظة",
+      "ثبت ملاحظة",
+      "ملاحظات"
+     ],
+     "revid": 69295334,
+     "role": "reflist"
+    }
+   }
+  },
+  "en": {
+   "cs1_configuration": {
+    "artifact": "fe6a190512864295e3403e0f417e8ac3780889a1564d3e996ed5fdcccc137ddf",
+    "content_sha256": "addcdb0134f0edd21fe758abb40991ca9113252c426c39519c5bbf034e36de69",
+    "revid": 1368902650,
+    "title": "Module:Citation/CS1/Configuration"
+   },
+   "generated_refs": [
+    {
+     "evidence": {
+      "revid": 1197504050,
+      "title": "Template:Efn"
+     },
+     "names": [
+      "EFN",
+      "Efn",
+      "Efn-la",
+      "Elm",
+      "Eln",
+      "Explanatory footnote",
+      "Explanatory footnotes",
+      "Lower-alpha explanatory footnote"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1327355149,
+      "title": "Template:Efn-lr"
+     },
+     "names": [
+      "Efn-lr",
+      "Elr"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1305596763,
+      "title": "Template:Efn-ua"
+     },
+     "names": [
+      "Efn-ua"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1380062808,
+      "title": "Template:R"
+     },
+     "names": [
+      "R",
+      "RR",
+      "Referencing",
+      "Rr"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1099257445,
+      "title": "Template:Refn"
+     },
+     "names": [
+      "Refn",
+      "Ren"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1278382364,
+      "title": "Template:Sfn"
+     },
+     "names": [
+      "Hf",
+      "Sf",
+      "Sfn",
+      "Sfnnb",
+      "Shortened footnote",
+      "Shortened footnote template",
+      "Snf"
+     ]
+    },
+    {
+     "evidence": {
+      "revid": 1278382429,
+      "title": "Template:Sfnp"
+     },
+     "names": [
+      "Sfb",
+      "Sfnb",
+      "Sfnp"
+     ]
+    }
+   ],
+   "templates": {
+    "Citation": {
+     "citation_classes": [
+      "citation"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Ciation",
+      "Citation",
+      "Citation/lua",
+      "Cite",
+      "Cite ASIN",
+      "Cite Asin",
+      "Cite Citation",
+      "Cite Study",
+      "Cite Technical Standard",
+      "Cite Technical standard",
+      "Cite asin",
+      "Cite citation",
+      "Cite citation/lua",
+      "Cite gazette",
+      "Cite hearing",
+      "Cite obituary",
+      "Cite primary source",
+      "Cite study",
+      "Cite technical Standard",
+      "Cite technical standard",
+      "Cite transcript",
+      "Cite treaty",
+      "Cite white paper",
+      "Work cited"
+     ],
+     "revid": 895815361,
+     "role": "citation:citation"
+    },
+    "Citation-attribution": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Citation-attribution"
+     ],
+     "revid": null,
+     "role": null
+    },
+    "Cite AV media": {
+     "citation_classes": [
+      "audio-visual"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cita vídeo",
+      "Cite AV",
+      "Cite AV Media",
+      "Cite AV media",
+      "Cite AVMedia",
+      "Cite Audio",
+      "Cite Audiovisual Media",
+      "Cite Audiovisual media",
+      "Cite Av",
+      "Cite Av Media",
+      "Cite Av media",
+      "Cite CD",
+      "Cite DVD",
+      "Cite Documentary",
+      "Cite EP",
+      "Cite Ep",
+      "Cite Film",
+      "Cite Image",
+      "Cite Media",
+      "Cite Movie",
+      "Cite Music Video",
+      "Cite Music video",
+      "Cite Radio",
+      "Cite Single",
+      "Cite Song",
+      "Cite TikTok",
+      "Cite Video",
+      "Cite Visual",
+      "Cite YT Video",
+      "Cite YT video",
+      "Cite YouTube",
+      "Cite YouTube Video",
+      "Cite YouTube video",
+      "Cite Youtube",
+      "Cite Youtube Video",
+      "Cite Youtube video",
+      "Cite Yt Video",
+      "Cite Yt video",
+      "Cite audio",
+      "Cite audiovisual Media",
+      "Cite audiovisual media",
+      "Cite av",
+      "Cite av Media",
+      "Cite av media",
+      "Cite cd",
+      "Cite documentary",
+      "Cite dvd",
+      "Cite eP",
+      "Cite ep",
+      "Cite film",
+      "Cite image",
+      "Cite media",
+      "Cite movie",
+      "Cite music Video",
+      "Cite music video",
+      "Cite radio",
+      "Cite single",
+      "Cite song",
+      "Cite video",
+      "Cite visual",
+      "Cite yT Video",
+      "Cite yT video",
+      "Cite youTube",
+      "Cite youTube Video",
+      "Cite youTube video",
+      "Cite youtube",
+      "Cite youtube Video",
+      "Cite youtube video",
+      "Cite yt Video",
+      "Cite yt video",
+      "Citevideo",
+      "Vcite video",
+      "YouTube citation"
+     ],
+     "revid": 1268878161,
+     "role": "citation:audio-visual"
+    },
+    "Cite CiteSeerX": {
+     "citation_classes": [
+      "citeseerx"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite CiteSeer",
+      "Cite CiteSeerX",
+      "Cite citeseer",
+      "Cite citeseerX",
+      "Cite citeseerx"
+     ],
+     "revid": 1380078441,
+     "role": "citation:citeseerx"
+    },
+    "Cite Dictionary.com": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "String",
+       "replace"
+      ]
+     ],
+     "names": [
+      "Cite Dictionary.com",
+      "Cite dictionary.com",
+      "Dict.com",
+      "Dictionary.com"
+     ],
+     "revid": 1279335711,
+     "role": null
+    },
+    "Cite Q": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Cite Q",
+       "cite_q"
+      ]
+     ],
+     "names": [
+      "Cite Q",
+      "Cite QID",
+      "Cite Wikidata",
+      "Cite q",
+      "Cite wd",
+      "Cite wikidata",
+      "CiteQ",
+      "Citeq",
+      "Wikidata citation"
+     ],
+     "revid": 1039878250,
+     "role": "external_data"
+    },
+    "Cite SSRN": {
+     "citation_classes": [
+      "ssrn"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite SSRN",
+      "Cite Ssrn",
+      "Cite ssrn"
+     ],
+     "revid": 1275709347,
+     "role": "citation:ssrn"
+    },
+    "Cite arXiv": {
+     "citation_classes": [
+      "arxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation"
+      ]
+     ],
+     "names": [
+      "Cite ArXiv",
+      "Cite Arxiv",
+      "Cite arXiv",
+      "Cite arxiv"
+     ],
+     "revid": 1376082611,
+     "role": "citation:arxiv"
+    },
+    "Cite bioRxiv": {
+     "citation_classes": [
+      "biorxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite BioRxiv",
+      "Cite Biorxiv",
+      "Cite bioRxiv",
+      "Cite biorxiv"
+     ],
+     "revid": 1327533916,
+     "role": "citation:biorxiv"
+    },
+    "Cite book": {
+     "citation_classes": [
+      "book"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "BibISBN",
+      "Book Citation",
+      "Book Reference",
+      "Book Reference URL",
+      "Book Reference url",
+      "Book citation",
+      "Book reference",
+      "Book reference 2",
+      "Book reference URL",
+      "Book reference url",
+      "Citation of publication",
+      "Citation publication",
+      "Cite Book",
+      "Cite Chapter",
+      "Cite E-book",
+      "Cite Ebook",
+      "Cite Manual",
+      "Cite Page",
+      "Cite Publication",
+      "Cite Score",
+      "Cite Work",
+      "Cite book",
+      "Cite book chapter",
+      "Cite book/Archive 1",
+      "Cite book/Archive 2",
+      "Cite book/Archive 3",
+      "Cite book/Archive 4",
+      "Cite book/Archive 6",
+      "Cite book/Archive 7",
+      "Cite book/Archive 8",
+      "Cite book/Archive index",
+      "Cite books",
+      "Cite chapter",
+      "Cite e-book",
+      "Cite ebook",
+      "Cite manual",
+      "Cite page",
+      "Cite publication",
+      "Cite score",
+      "Cite work",
+      "Cite-book",
+      "Citebook",
+      "Publication citation"
+     ],
+     "revid": 810449908,
+     "role": "citation:book"
+    },
+    "Cite conference": {
+     "citation_classes": [
+      "conference"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cita conferenza",
+      "Cite Conference",
+      "Cite Presentation",
+      "Cite Proceedings",
+      "Cite Symposium",
+      "Cite conference",
+      "Cite presentation",
+      "Cite proceedings",
+      "Cite symposium",
+      "Conference reference"
+     ],
+     "revid": 1305418290,
+     "role": "citation:conference"
+    },
+    "Cite court": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ],
+      [
+       "Redirect",
+       "main"
+      ],
+      [
+       "auto date formatter",
+       "access_archive_format"
+      ],
+      [
+       "auto date formatter",
+       "pub_date_format"
+      ]
+     ],
+     "names": [
+      "Bluebook opinion",
+      "Cite case law",
+      "Cite court",
+      "Cite court case",
+      "Cite lawsuit"
+     ],
+     "revid": 1357103406,
+     "role": null
+    },
+    "Cite dictionary": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Cite dictionary"
+     ],
+     "revid": null,
+     "role": null
+    },
+    "Cite document": {
+     "citation_classes": [
+      "document"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Document",
+      "Cite archival document",
+      "Cite document",
+      "Cite manuscript"
+     ],
+     "revid": 1170021118,
+     "role": "citation:document"
+    },
+    "Cite encyclopedia": {
+     "citation_classes": [
+      "encyclopaedia"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Contribution",
+      "Cite Dic",
+      "Cite Dictionary",
+      "Cite Edited Volume",
+      "Cite Edited volume",
+      "Cite Encyclopaedia",
+      "Cite Encyclopedia",
+      "Cite Encyclopædia",
+      "Cite contribution",
+      "Cite dic",
+      "Cite dictionary",
+      "Cite edited Volume",
+      "Cite edited volume",
+      "Cite encyclopaedia",
+      "Cite encyclopaedia/lua",
+      "Cite encyclopedia",
+      "Cite encyclopedia/lua",
+      "Cite encyclopædia",
+      "Citeencyclopedia",
+      "Encyclopaedia",
+      "Encyclopedia"
+     ],
+     "revid": 690395481,
+     "role": "citation:encyclopedia"
+    },
+    "Cite episode": {
+     "citation_classes": [
+      "episode"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Episode",
+      "Cite Show",
+      "Cite episode",
+      "Cite show",
+      "Cite television episode",
+      "Cytuj odcinek",
+      "Vancite episode",
+      "Vcite episode"
+     ],
+     "revid": 1349610709,
+     "role": "citation:episode"
+    },
+    "Cite interview": {
+     "citation_classes": [
+      "interview"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Interview",
+      "Cite interview"
+     ],
+     "revid": 601954106,
+     "role": "citation:interview"
+    },
+    "Cite journal": {
+     "citation_classes": [
+      "journal"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Citation journal",
+      "Cite Abstract",
+      "Cite Journal",
+      "Cite Paper",
+      "Cite abstract",
+      "Cite journal",
+      "Cite journal/lua",
+      "Cite paper",
+      "Citeabstract",
+      "Citejournal",
+      "Citepaper",
+      "Journal citation",
+      "Vcite2 journal"
+     ],
+     "revid": 690395473,
+     "role": "citation:journal"
+    },
+    "Cite magazine": {
+     "citation_classes": [
+      "magazine"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích tạp chí",
+      "Cite Mag",
+      "Cite Magazine",
+      "Cite Magazine Article",
+      "Cite Magazine article",
+      "Cite Newsletter",
+      "Cite Periodical",
+      "Cite Yearbook",
+      "Cite Zine",
+      "Cite mag",
+      "Cite magazine",
+      "Cite magazine Article",
+      "Cite magazine article",
+      "Cite newsletter",
+      "Cite periodical",
+      "Cite yearbook",
+      "Cite zine"
+     ],
+     "revid": 886312468,
+     "role": "citation:magazine"
+    },
+    "Cite mailing list": {
+     "citation_classes": [
+      "mailinglist"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite List",
+      "Cite Mailing List",
+      "Cite Mailing list",
+      "Cite list",
+      "Cite mailing List",
+      "Cite mailing list",
+      "Cite mailinglist"
+     ],
+     "revid": 1305418343,
+     "role": "citation:mailinglist"
+    },
+    "Cite map": {
+     "citation_classes": [
+      "map"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Map",
+      "Cite map",
+      "Cite maps"
+     ],
+     "revid": 1305418414,
+     "role": "citation:map"
+    },
+    "Cite medRxiv": {
+     "citation_classes": [
+      "medrxiv"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite MedRxiv",
+      "Cite Medrxiv",
+      "Cite medRxiv",
+      "Cite medrxiv"
+     ],
+     "revid": 1170017847,
+     "role": "citation:medrxiv"
+    },
+    "Cite news": {
+     "citation_classes": [
+      "news"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích tin tức",
+      "Citation news",
+      "Cite New",
+      "Cite News",
+      "Cite Newspaper",
+      "Cite agency",
+      "Cite new",
+      "Cite news",
+      "Cite news-q",
+      "Cite news/lua",
+      "Cite news2",
+      "Cite newspaper",
+      "Cite-news",
+      "Citenews",
+      "Citenewsauthor",
+      "Cnews",
+      "News citation",
+      "News cite",
+      "News source",
+      "Ref news"
+     ],
+     "revid": 828626614,
+     "role": "citation:news"
+    },
+    "Cite newsgroup": {
+     "citation_classes": [
+      "newsgroup"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite News Group",
+      "Cite News group",
+      "Cite Newsgroup",
+      "Cite Usenet",
+      "Cite news Group",
+      "Cite news group",
+      "Cite newsgroup",
+      "Cite usenet"
+     ],
+     "revid": 1208342730,
+     "role": "citation:newsgroup"
+    },
+    "Cite podcast": {
+     "citation_classes": [
+      "podcast"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Podcast",
+      "Cite podcast"
+     ],
+     "revid": 1305596983,
+     "role": "citation:podcast"
+    },
+    "Cite press release": {
+     "citation_classes": [
+      "pressrelease"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích thông cáo báo chí",
+      "Cite PR",
+      "Cite Pr",
+      "Cite Press Release",
+      "Cite Press release",
+      "Cite media release",
+      "Cite news release",
+      "Cite pr",
+      "Cite press",
+      "Cite press Release",
+      "Cite press release",
+      "Cite press release.",
+      "Cite press release/lua",
+      "Cite press-release",
+      "Cite pressrelease",
+      "Vcite press release"
+     ],
+     "revid": 1305418466,
+     "role": "citation:pressrelease"
+    },
+    "Cite report": {
+     "citation_classes": [
+      "report"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích báo cáo",
+      "Cite Report",
+      "Cite intelligence report",
+      "Cite report"
+     ],
+     "revid": 827245175,
+     "role": "citation:report"
+    },
+    "Cite serial": {
+     "citation_classes": [
+      "serial"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Serial",
+      "Cite serial"
+     ],
+     "revid": 821200676,
+     "role": "citation:serial"
+    },
+    "Cite sign": {
+     "citation_classes": [
+      "sign"
+     ],
+     "invokes": [
+      [
+       "Citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Cornerstone",
+      "Cite Plaque",
+      "Cite Sign",
+      "Cite cornerstone",
+      "Cite plaque",
+      "Cite sign"
+     ],
+     "revid": 570932650,
+     "role": "citation:sign"
+    },
+    "Cite speech": {
+     "citation_classes": [
+      "speech"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích diễn văn",
+      "Cite Speech",
+      "Cite speech"
+     ],
+     "revid": 595573989,
+     "role": "citation:speech"
+    },
+    "Cite tech report": {
+     "citation_classes": [
+      "techreport"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Cite Standard",
+      "Cite Tech Report",
+      "Cite Tech report",
+      "Cite Technical Report",
+      "Cite Technical report",
+      "Cite Techreport",
+      "Cite tech Report",
+      "Cite tech paper",
+      "Cite tech report",
+      "Cite technical Report",
+      "Cite technical report",
+      "Cite techreport",
+      "Techrep reference"
+     ],
+     "revid": 1308475258,
+     "role": "citation:techreport"
+    },
+    "Cite thesis": {
+     "citation_classes": [
+      "thesis"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "Chú thích luận văn",
+      "Citar tese",
+      "Cite Dissertation",
+      "Cite Thesis",
+      "Cite dissertation",
+      "Cite thesis",
+      "논문 인용"
+     ],
+     "revid": 827245141,
+     "role": "citation:thesis"
+    },
+    "Cite web": {
+     "citation_classes": [
+      "web"
+     ],
+     "invokes": [
+      [
+       "citation/CS1",
+       "citation\n"
+      ]
+     ],
+     "names": [
+      "CITE WEB",
+      "CITE web",
+      "CITEWEB",
+      "Citation electronic document",
+      "Cite PDF",
+      "Cite URL",
+      "Cite Web",
+      "Cite Website",
+      "Cite blog",
+      "Cite dataset",
+      "Cite pdf",
+      "Cite reddit",
+      "Cite site",
+      "Cite url",
+      "Cite we",
+      "Cite web",
+      "Cite web site",
+      "Cite web/lua",
+      "Cite webpage",
+      "Cite website",
+      "Cite website article",
+      "Cite-web",
+      "Cited web",
+      "Citeweb",
+      "Web Citation",
+      "Web citation",
+      "Web cite",
+      "Web link",
+      "Web reference",
+      "Web resource",
+      "Web source",
+      "Web-reference",
+      "Weblink",
+      "Цитат уеб"
+     ],
+     "revid": 753103437,
+     "role": "citation:web"
+    },
+    "Doi": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "CS1 identifiers",
+       "main"
+      ]
+     ],
+     "names": [
+      "DOI",
+      "Doi"
+     ],
+     "revid": 1303249249,
+     "role": "wrapper:doi"
+    },
+    "Efn": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "EFN",
+      "Efn",
+      "Efn-la",
+      "Elm",
+      "Eln",
+      "Explanatory footnote",
+      "Explanatory footnotes",
+      "Lower-alpha explanatory footnote"
+     ],
+     "revid": 1197504050,
+     "role": "generated:efn"
+    },
+    "Efn-lr": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Efn-lr",
+      "Elr"
+     ],
+     "revid": 1327355149,
+     "role": "generated:efn"
+    },
+    "Efn-ua": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Efn-ua"
+     ],
+     "revid": 1305596763,
+     "role": "generated:efn"
+    },
+    "Erratum": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Errata",
+      "Erratum"
+     ],
+     "revid": 1372939735,
+     "role": "marker"
+    },
+    "Expression of concern": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Expression of Concern",
+      "Expression of concern"
+     ],
+     "revid": 1376136447,
+     "role": "marker"
+    },
+    "Harvnb": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Harvnb"
+     ],
+     "revid": null,
+     "role": null
+    },
+    "Lay source": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "template wrapper",
+       "{{#if:{{{_debug"
+      ]
+     ],
+     "names": [
+      "Lay source"
+     ],
+     "revid": 1166969208,
+     "role": null
+    },
+    "Notelist": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ]
+     ],
+     "names": [
+      "Efnlist",
+      "NOTELIST",
+      "Nlist",
+      "Nls",
+      "Note list",
+      "Notelist",
+      "Notes",
+      "Notes list",
+      "Noteslist"
+     ],
+     "revid": 1323680032,
+     "role": "reflist"
+    },
+    "PMID": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "CS1 identifiers",
+       "main"
+      ]
+     ],
+     "names": [
+      "PMID",
+      "PMID2",
+      "PMID3",
+      "Pmid",
+      "PubMed",
+      "Pubmed"
+     ],
+     "revid": 1304207981,
+     "role": "wrapper:pmid"
+    },
+    "R": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "R",
+       "r"
+      ]
+     ],
+     "names": [
+      "R",
+      "RR",
+      "Referencing",
+      "Rr"
+     ],
+     "revid": 1380062808,
+     "role": "generated:r"
+    },
+    "Reflist": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ]
+     ],
+     "names": [
+      "Footnote",
+      "Footnotes",
+      "FootnotesSmall",
+      "List of references",
+      "REFLIST",
+      "REflist",
+      "Ref List",
+      "Ref list",
+      "Ref-list",
+      "RefList",
+      "Reference",
+      "Reference List",
+      "Reference list",
+      "References list",
+      "Reflist",
+      "Refs",
+      "Rflist"
+     ],
+     "revid": 1328019882,
+     "role": "reflist"
+    },
+    "Refn": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Refn",
+      "Ren"
+     ],
+     "revid": 1099257445,
+     "role": "generated:refn"
+    },
+    "Retracted": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Retracted",
+      "Retracted paper",
+      "Retraction"
+     ],
+     "revid": 1371932939,
+     "role": "marker"
+    },
+    "Rp": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "Rp"
+     ],
+     "revid": null,
+     "role": null
+    },
+    "Sfn": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ],
+      [
+       "Footnotes",
+       "sfn"
+      ]
+     ],
+     "names": [
+      "Hf",
+      "Sf",
+      "Sfn",
+      "Sfnnb",
+      "Shortened footnote",
+      "Shortened footnote template",
+      "Snf"
+     ],
+     "revid": 1278382364,
+     "role": "generated:sfn"
+    },
+    "Sfnp": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "Check for unknown parameters",
+       "check"
+      ],
+      [
+       "Footnotes",
+       "sfn\n"
+      ]
+     ],
+     "names": [
+      "Sfb",
+      "Sfnb",
+      "Sfnp"
+     ],
+     "revid": 1278382429,
+     "role": "generated:sfn"
+    },
+    "Unreliable medical source": {
+     "citation_classes": [],
+     "invokes": [],
+     "names": [
+      "MEDRS",
+      "Medical source",
+      "Medrs",
+      "UMED",
+      "UNMED",
+      "UNRMED",
+      "Umed",
+      "Ums",
+      "UnMED",
+      "Unreliable medical source",
+      "Unreliable medical source?"
+     ],
+     "revid": 1157828870,
+     "role": null
+    },
+    "Webarchive": {
+     "citation_classes": [],
+     "invokes": [
+      [
+       "webarchive",
+       "webarchive"
+      ]
+     ],
+     "names": [
+      "Archive URL",
+      "Archive url",
+      "Archive.is",
+      "Archive.today",
+      "IAWM",
+      "Iawm",
+      "Link with archives",
+      "Url archive",
+      "WayBack",
+      "Waybackdate",
+      "Web Archive",
+      "Web archive",
+      "Web.archive",
+      "Webarchiv",
+      "Webarchive",
+      "Webcitation",
+      "웨이백"
+     ],
+     "revid": 769654926,
+     "role": null
+    }
+   }
+  }
+ }
+}

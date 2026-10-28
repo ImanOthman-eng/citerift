@@ -7,12 +7,15 @@ requires-python = ">=3.12,<3.14"
 authors = [{ name = "EVE TELOS · IM" }]
 dependencies = [
     "jsonschema>=4.23,<5",
+    "mwparserfromhell==0.7.2",
+    "lxml==6.1.3",
 ]
 
 [project.scripts]
 citerift-gov = "citerift.governance.cli:main"
 citerift-contracts = "citerift.contracts.validate:main"
 citerift-rde = "citerift.retraction.cli:main"
+citerift-wiki = "citerift.wiki.cli:main"
 
 [dependency-groups]
 dev = [
