@@ -489,7 +489,7 @@ def _build_into(
         from citerift.retraction.schemas import event_problems  # noqa: PLC0415
 
         rows = conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal")  # noqa: S608
-        invalid = event_problems([event_from_row(r) for r in rows])
+        invalid = event_problems(event_from_row(r) for r in rows)
         if invalid:
             raise ImportFailure("ARTIFACT_INVALID", f"{len(invalid)} event problems; first: {'; '.join(invalid[:3])}")
         conn.execute("PRAGMA journal_mode=DELETE")

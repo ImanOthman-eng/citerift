@@ -300,9 +300,9 @@ def verify(conn: sqlite3.Connection, source: Path | None = None, manifest_path: 
             manifest = None
         problems += manifest_problems(meta, manifest if isinstance(manifest, dict) else None)
     problems += derivation_problems(conn)
-    events = [event_from_row(r) for r in conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal")]  # noqa: S608
-    problems += event_problems(events)
-    schema_checked = len(events)
+    schema_checked = conn.execute("SELECT COUNT(*) FROM event").fetchone()[0]
+    rows = conn.execute(f"SELECT {', '.join(EVENT_COLUMNS)} FROM event ORDER BY ordinal")  # noqa: S608
+    problems += event_problems(event_from_row(r) for r in rows)
     source_checked = None
     if source is not None:
         receipt = parse_receipt(json.loads(meta["receipt"]))

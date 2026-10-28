@@ -58,7 +58,7 @@ def test_rde_a1_build_refuses_to_publish_an_invalid_event(tmp_path: Path, monkey
     rows = [_retraction("1", OriginalPaperDOI="10.5555/o")]
     first = S.build_rows(tmp_path, rows)
     before = first.read_bytes()
-    monkeypatch.setattr(schemas, "event_problems", lambda events: [f"EVENT_INVALID {events[0]['event_id']}: x"])
+    monkeypatch.setattr(schemas, "validate_event_record", lambda event: ["SCHEMA_VIOLATION at /x"])
     source, receipt = S.write_source(tmp_path, S.csv_bytes(rows))
     with pytest.raises(ImportFailure) as exc:
         build(source, receipt, tmp_path / "index")
