@@ -28,7 +28,21 @@
         "normalizer": {"type": "string"}
       }
     },
-    "config": {"type": "object", "additionalProperties": {"type": "number"}},
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_nodes", "max_depth", "max_refs", "max_templates", "max_candidates", "max_render_elements", "worker_memory_mib", "worker_wall_s"],
+      "properties": {
+        "max_nodes": {"type": "integer", "minimum": 1},
+        "max_depth": {"type": "integer", "minimum": 1},
+        "max_refs": {"type": "integer", "minimum": 1},
+        "max_templates": {"type": "integer", "minimum": 1},
+        "max_candidates": {"type": "integer", "minimum": 1},
+        "max_render_elements": {"type": "integer", "minimum": 1},
+        "worker_memory_mib": {"type": "integer", "minimum": 64, "maximum": 65536},
+        "worker_wall_s": {"type": "number", "exclusiveMinimum": 0, "maximum": 3600}
+      }
+    },
     "config_digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
     "capture": {
       "type": "object",

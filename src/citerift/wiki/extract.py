@@ -46,6 +46,17 @@ class ExtractConfig:
     worker_memory_mib: int = 1024
     worker_wall_s: float = 30.0
 
+    def __post_init__(self) -> None:
+        for name in self.__dataclass_fields__:
+            value = getattr(self, name)
+            if name == "worker_wall_s":
+                ok = isinstance(value, int | float) and not isinstance(value, bool) and 0 < value <= 3600
+            else:
+                ok = isinstance(value, int) and not isinstance(value, bool) and value >= 1
+                ok = ok and (name != "worker_memory_mib" or 64 <= value <= 65536)
+            if not ok:
+                raise ValueError(f"configuration value {name}={value!r} is not allowed")
+
     def limits(self) -> Limits:
         return Limits(self.max_nodes, self.max_depth, self.max_refs, self.max_templates, self.max_candidates)
 

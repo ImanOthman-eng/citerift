@@ -479,7 +479,14 @@ def replay_bundle(
             return _result("replay", b, report, {"replay": {"state": "failed"}, "extraction_digest": None})
     config = pinned_config
     if doc is not None:
-        recorded_config = ExtractConfig.from_json(doc["config"])
+        if doc["extraction_digest"] != digest({k: v for k, v in doc.items() if k != "extraction_digest"}):
+            report.fail(Issue("BUNDLE_DIGEST_MISMATCH", (), "the recorded extraction does not match its own digest"))
+            return _result("replay", b, report, {"replay": {"state": "not_compared"}, "extraction_digest": None})
+        try:
+            recorded_config = ExtractConfig.from_json(doc["config"])
+        except (ValueError, TypeError) as exc:
+            report.fail(Issue("BUNDLE_SCHEMA_INVALID", (), f"recorded configuration: {exc}"[:300]))
+            return _result("replay", b, report, {"replay": {"state": "failed"}, "extraction_digest": None})
         if config is not None and config != recorded_config:
             report.fail(Issue("REPLAY_CONFIG_MISMATCH", (), "the pinned configuration is not the recorded one"))
             return _result("replay", b, report, {"replay": {"state": "not_compared"}, "extraction_digest": None})
@@ -502,7 +509,7 @@ def replay_bundle(
     if doc is not None:
         replay["recorded_digest"] = doc["extraction_digest"]
         if state != "failed":
-            same = new_digest == doc["extraction_digest"]
+            same = new_digest == doc["extraction_digest"] and new == doc
             state = "reproduced" if same else "differs"
             if not same:
                 keys = sorted(k for k in set(new) | set(doc) if new.get(k) != doc.get(k) and k != "extraction_digest")
