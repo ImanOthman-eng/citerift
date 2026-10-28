@@ -33,6 +33,8 @@ from citerift.retraction import local_model, stats
 
 SCREEN_SEED = 20261029
 BOOT_SEED = 20261030
+# Reason codes that are not failures: the wrapper abstained on valid scores, or long author lists were shortened.
+INFORMATIONAL = {"BELOW_THRESHOLD_OR_MARGIN", "AUTHORS_SHORTENED"}
 
 
 def _items(path: Path) -> list[dict[str, Any]]:
@@ -78,8 +80,9 @@ def cmd_score(args: argparse.Namespace) -> int:
             t0 = time.perf_counter()
             a = model.rank(it["bundle"], manifest, local_model.Budget())
             wall = time.perf_counter() - t0
-            if a.reason_codes[:1] not in (("BELOW_THRESHOLD_OR_MARGIN",), ()) and a.decision == "abstain":
-                reasons[a.reason_codes[0]] += 1
+            for code in a.reason_codes:
+                if code not in INFORMATIONAL:
+                    reasons[code] += 1
             pairs += a.usage["pairs"]
             tokens += a.usage["tokens"]
             times.append(a.timing["case_s"])
@@ -102,7 +105,7 @@ def cmd_score(args: argparse.Namespace) -> int:
         "total_wall_s": round(time.perf_counter() - started, 3),
         "pairs": pairs,
         "tokens": tokens,
-        "failures_by_reason": dict(reasons),
+        "reason_codes": dict(reasons),
         "peak_rss_mib": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss // 1024,
         "network_denied": bool(args.deny_network),
         "predictions_sha256": hashlib.sha256(args.out.read_bytes()).hexdigest(),

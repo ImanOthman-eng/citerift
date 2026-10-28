@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from citerift.retraction import ambiguity, tension
+from citerift.retraction import ambiguity, local_model, tension
 from citerift.retraction.ambiguity import suggest
 from citerift.retraction.corroboration import enrich
 from citerift.retraction.export import diff, export, verify
@@ -31,6 +31,9 @@ EXIT_OK, EXIT_INTERNAL, EXIT_USAGE, EXIT_INVALID, EXIT_UNAVAILABLE, EXIT_VERIFY,
     6,
     7,
 )
+
+
+DEFAULT_MODEL_MANIFEST = Path(__file__).parent / "model_manifests" / "mxbai-rerank-base-v2.json"
 
 
 def _emit(data: Any) -> None:
@@ -92,11 +95,26 @@ def _parser() -> argparse.ArgumentParser:
     a.add_argument("--event", required=True)
     a.add_argument("--tau-s", type=float, default=ambiguity.FROZEN_TAU_S)
     a.add_argument("--tau-m", type=float, default=ambiguity.FROZEN_TAU_M)
+    a.add_argument("--model-dir", type=Path, help="local weights directory: also rank with the pinned open model")
+    a.add_argument("--model-manifest", type=Path, default=DEFAULT_MODEL_MANIFEST)
     return p
 
 
 def _open(path: Path) -> Any:
     return Index(path)
+
+
+def _model_assessment(ix: Index, args: argparse.Namespace) -> dict[str, Any]:
+    """Advisory ranking by the local open model (AI Protocol v2). It never changes the baseline output."""
+    probe = ambiguity.probe_for_event(ix, args.event)
+    bundle = ambiguity.model_bundle(ix, args.event, ambiguity.Baseline(ix).candidates(probe))
+    try:
+        manifest = local_model.load_manifest(args.model_manifest)
+    except (OSError, ValueError) as exc:
+        return {"decision": "abstain", "reason_codes": ["MANIFEST_INVALID"], "problems": [str(exc)], "advisory": True}
+    except local_model.ModelUnavailable as exc:
+        return {"decision": "abstain", "reason_codes": [exc.code], "problems": [exc.detail], "advisory": True}
+    return local_model.LocalAmbiguityModel(args.model_dir).rank(bundle, manifest).to_json()
 
 
 def run(argv: list[str] | None = None) -> int:
@@ -166,10 +184,13 @@ def run(argv: list[str] | None = None) -> int:
         if args.command == "ambiguity":
             with _open(args.index) as ix:
                 try:
-                    _emit(suggest(ix, args.event, args.tau_s, args.tau_m))
+                    out = suggest(ix, args.event, args.tau_s, args.tau_m)
+                    if args.model_dir is not None and out["decision"] != "exact":
+                        out["model_assessment"] = _model_assessment(ix, args)
                 except KeyError:
                     _err(f"no event {args.event}")
                     return EXIT_INVALID
+            _emit(out)
             return EXIT_OK
     except IndexUnavailable as exc:
         _emit({"lookup_state": "unavailable", "code": exc.code, "detail": str(exc)})

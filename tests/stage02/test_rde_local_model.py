@@ -15,7 +15,7 @@ from typing import Any
 import pytest
 import rde_support as S
 
-from citerift.retraction import advisory, ambiguity, local_model
+from citerift.retraction import advisory, ambiguity, cli, local_model
 from citerift.retraction.local_model import Budget, LocalAmbiguityModel, ModelUnavailable
 from citerift.retraction.query import Index, lookup
 
@@ -252,7 +252,7 @@ def test_rde_local_model_manifest_loading(tmp_path: Path) -> None:
     p.write_text(json.dumps({**MANIFEST, "format": "other"}), encoding="utf-8")
     with pytest.raises(ModelUnavailable, match="MANIFEST_INVALID"):
         local_model.load_manifest(p)
-    shipped = S.REPO / "src" / "citerift" / "retraction" / "models"
+    shipped = S.REPO / "src" / "citerift" / "retraction" / "model_manifests"
     for path in sorted(shipped.glob("*.json")):
         m = local_model.load_manifest(path)
         assert m["source"]["revision"] and all(len(f["sha256"]) == 64 for f in m["files"].values())
@@ -307,3 +307,37 @@ def test_rde_ai_on_ai_off_factual_invariance(tmp_path: Path) -> None:
     assert json.dumps(lookup(idx, "10.5555/t"), sort_keys=True) == facts_off
     with Index(idx) as ix:
         assert ix.event_by_id("ev-0000002")["original_doi"] is None  # the suggestion links nothing
+
+
+@pytest.mark.security
+def test_rde_local_model_bundle_shape_matches_the_advisory_boundary() -> None:
+    """local_model.py repeats the bundle constants instead of importing the advisory boundary module."""
+    assert local_model.BUNDLE_FIELDS == advisory.BUNDLE_FIELDS
+    assert local_model.MAX_CANDIDATES == advisory.MAX_CANDIDATES
+
+
+@pytest.mark.integration
+def test_rde_cli_ambiguity_with_missing_weights_abstains_and_keeps_the_baseline(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """``ambiguity --model-dir`` adds an advisory model result; missing weights abstain, never a finding."""
+    common = {"RetractionNature": "Retraction", "Title": "Quantum widget stability in cold rats", "Author": "Ann Smith"}
+    idx = S.build_rows(
+        tmp_path,
+        [S.row(**{"Record ID": "1", "OriginalPaperDOI": "10.5555/t", **common}), S.row(**{"Record ID": "2", **common})],
+    )
+    assert cli.main(["ambiguity", "--index", str(idx), "--event", "ev-0000002"]) == 0
+    plain = json.loads(capsys.readouterr().out)
+    empty = tmp_path / "no-weights"
+    empty.mkdir()
+    assert cli.main(["ambiguity", "--index", str(idx), "--event", "ev-0000002", "--model-dir", str(empty)]) == 0
+    out = json.loads(capsys.readouterr().out)
+    model = out.pop("model_assessment")
+    assert out == plain
+    assert model["decision"] == "abstain" and model["reason_codes"] == ["MODEL_UNAVAILABLE"] and model["advisory"]
+    assert model["model"]["model_id"] == "mixedbread-ai/mxbai-rerank-base-v2"
+    with Index(idx) as ix:
+        cands = ambiguity.Baseline(ix).candidates(ambiguity.probe_for_event(ix, "ev-0000002"))
+        assert ambiguity.model_bundle(ix, "ev-0000002", cands)["query"]["title"] == common["Title"]
+    assert cli.main(["ambiguity", "--index", str(idx), "--event", "ev-0000001", "--model-dir", str(empty)]) == 0
+    assert "model_assessment" not in json.loads(capsys.readouterr().out)  # an exact identifier needs no model

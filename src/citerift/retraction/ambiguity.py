@@ -169,3 +169,18 @@ def suggest(index: Index, event_id: str, tau_s: float, tau_m: float) -> dict[str
         "advisory": True,
         "note": "A suggestion for review. It is not a link and changes no record.",
     }
+
+
+def model_bundle(index: Index, event_id: str, cands: list[Candidate]) -> dict[str, Any]:
+    """The bundle the local model ranks (local_model.py): the event's fields, no identifier, and the
+    baseline's candidates (ids c1..c5). The same construction as the AI Protocol v2 development set."""
+    fields = ("title", "authors", "journal", "original_year")
+    sql = "SELECT title, authors, journal, original_year FROM event WHERE event_id = ?"
+    query = index.conn.execute(sql, (event_id,)).fetchone()
+    if query is None:
+        raise KeyError(event_id)
+    rows = [index.conn.execute(sql, (c.event_id,)).fetchone() for c in cands]
+    return {
+        "query": dict(zip(fields, query, strict=True)),
+        "candidates": [{"candidate_id": f"c{i}", **dict(zip(fields, r, strict=True))} for i, r in enumerate(rows, 1)],
+    }

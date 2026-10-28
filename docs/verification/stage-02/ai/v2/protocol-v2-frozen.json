@@ -1,0 +1,63 @@
+{
+  "protocol_version": "2.0.0",
+  "part": 2,
+  "owner_reference": "cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT",
+  "frozen_before": "the holdout draw (ai_protocol_v2.py draw) and any holdout prediction",
+  "part_1": "protocol-v2.json (commit 6d3de07)",
+  "adapter": "src/citerift/retraction/local_model.py (LocalAmbiguityModel.rank)",
+  "screening": {
+    "cases": "screening-ids.json (40 development cases; sha256 a4702eac6775ae2df06b9215dd0283c2bd4c23cf31b9c22b51a04ab5c1b20162)",
+    "baseline_correct": 34,
+    "candidates": [
+      {
+        "model_id": "mixedbread-ai/mxbai-rerank-base-v2",
+        "revision": "3ea9d4dffa7d12a4f366be8e275c349de9fc9865",
+        "license": "Apache-2.0",
+        "artifact_bytes": 988097536,
+        "manifest": "manifests/mxbai.json",
+        "predictions": "runs/screening-mxbai.jsonl (sha256 bfd37685a10c2b05156b559ebf7cb107d26a95f110be18ddcc6731d9b5321025)",
+        "best_wrapper_on_the_40": {"tau_s": 9.75, "tau_m": 2.0, "correct": 33, "negative_false_selections": 1},
+        "positives_target_first": "19/19",
+        "cold_init_s": 4.0,
+        "warm_case_p95_s": 2.70,
+        "peak_rss_mib": 3304
+      },
+      {
+        "model_id": "Qwen/Qwen3-Reranker-0.6B",
+        "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+        "license": "Apache-2.0",
+        "artifact_bytes": 1191588280,
+        "manifest": "manifests/qwen3.json",
+        "predictions": "runs/screening-qwen3.jsonl (sha256 ed460e9beaa8ba39f30b0a0d24a50e45eea6ea4fd778244f961aa3cf81297421)",
+        "best_wrapper_on_the_40": {"tau_s": 5.25, "tau_m": 2.0, "correct": 29, "negative_false_selections": 1},
+        "positives_target_first": "14/19",
+        "cold_init_s": 4.7,
+        "warm_case_p95_s": 3.60,
+        "peak_rss_mib": 3887
+      }
+    ],
+    "screened_artifacts_total_bytes": 2179685816,
+    "finalist": "mixedbread-ai/mxbai-rerank-base-v2 (more correct decisions on the 40 under the screening rule)"
+  },
+  "calibration": {
+    "cases": "calibration-ids.json (the other 256 development cases; sha256 e09ba512b518ba1f304ead05b520cda0e57e67043a41fe51ba1dbf125a2637d2)",
+    "predictions": "runs/calibration-mxbai.jsonl (sha256 cdd91e10784f865a27c19cde3512647449d15743ea84689ffece001cf624fc74)",
+    "grid_size": 420,
+    "chosen": {"tau_s": 9.75, "tau_m": 2.0},
+    "development_correct": 222,
+    "development_negative_false_selections": 13,
+    "development_baseline_correct": 241,
+    "development_baseline_negative_false_selections": 13,
+    "observation_recorded_before_the_draw": "On these 256 development cases the frozen model makes 34 errors against the baseline's 15: it fixes 10 baseline errors (8 near-duplicate negatives, 2 disagreement positives) and adds 29 (20 positives abstained or mis-selected, 8 negatives selected, 1 disagreement positive). A holdout admission is therefore unlikely. The protocol has no development futility stop and forbids any change after freezing, so the frozen pipeline runs once on the holdout as preregistered."
+  },
+  "frozen_model": {
+    "manifest": "src/citerift/retraction/model_manifests/mxbai-rerank-base-v2.json (identical bytes to manifests/mxbai-frozen.json)",
+    "manifest_file_sha256": "1698191d411fecc6a0877101cc100901d22306b54317ca3ec2e919780fca291e",
+    "manifest_sha256": "99e08feac7ff1f2bd36b9b78814e2da57ed233e8fec253a1da6ee4d07880e1d1",
+    "model_safetensors_sha256": "c01649fe56b3fe32e52da43c69e084dff7c2252cf231a38c56d5a291a674338f",
+    "runtime": "torch 2.14.1+cpu, transformers 5.19.0, float32, 4 threads, one worker, no batching",
+    "requirements": "requirements/inference-cpu.txt (sha256 53f72400253551dd2cf789d2c6ce6ddff062715b31bee1836dad56cc9ae21363)",
+    "budget": "local_model.Budget() defaults: 5 candidates, 512 tokens per pair, 30 s per case",
+    "isolation": "unshare -n with proxy variables unset, and the run script's --deny-network socket guard"
+  }
+}

@@ -32,9 +32,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
 
-from citerift.retraction.advisory import BUNDLE_FIELDS, MAX_CANDIDATES
 from citerift.retraction.canonical import canonical
 
+# The bundle shape of advisory.py, repeated so that no package module imports the advisory boundary
+# (tests/stage02/test_rde_advisory.py); test_rde_local_model.py checks the two stay equal.
+BUNDLE_FIELDS = ("title", "authors", "journal", "original_year")
+MAX_CANDIDATES = 5
 MANIFEST_FORMAT = "citerift.model-manifest/1"
 SCORE_TYPE = "reranker yes/no logit difference (ranking score; not a calibrated probability)"
 CANDIDATE_ID = re.compile(r"^c[1-5]$")
@@ -254,7 +257,7 @@ class TransformersYesNoScorer:
         )
         self.model = transformers.AutoModelForCausalLM.from_pretrained(
             str(model_dir), local_files_only=True, trust_remote_code=False, use_safetensors=True, dtype=dtype
-        ).eval()
+        ).train(False)  # inference mode (the same call nn.Module.eval makes)
         t = manifest["template"]
         for token, pinned in ((t["true_token"], t["true_token_id"]), (t["false_token"], t["false_token_id"])):
             if self.tokenizer.convert_tokens_to_ids(token) != pinned:
