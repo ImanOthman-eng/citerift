@@ -217,3 +217,45 @@ publisher-disagreement cases that stay conflicts).
 7. **Trimming (§2).** The outer whitespace removed before normalization is
    Unicode whitespace that is not a control, plus tab, LF and CR; INV-N2's
    `strip` means this set.
+
+## 10. AI Protocol v2 (2026-10-28; SPECIFICATION.md 12.4)
+
+§8 is the v1 analysis and is kept. v2 replaces its admission arithmetic.
+
+- **Unit.** A lineage group: a connected component, under union-find, of
+  records that share an original or notice DOI or PMID, or a Record ID. One
+  query per group and one decision per group. Each candidate pair is scored
+  by its own forward pass with no shared context, so the groups are the
+  independent units of the paired test.
+- **Score.** For a pair text `x`, `s(x) = z_true(x) − z_false(x)`, the
+  difference of the model's next-token logits for the "1" and "0" tokens at
+  the last position. It is a ranking score, not a probability.
+- **Wrapper.** With ranked scores `s_1 ≥ s_2 ≥ …` (ties by candidate id), the
+  decision is `select c_1` iff `s_1 ≥ τ_s` and `s_1 − s_2 ≥ τ_m`
+  (`s_2 = 0` when there is one candidate); otherwise `abstain`. `τ_s` runs over
+  the development score range in steps of 0.25, `τ_m ∈ {0, 0.5, 1, 2, 3}`;
+  the chosen pair maximizes development correct decisions subject to
+  development negative false selections not above the baseline's (ties:
+  larger `τ_s`, then larger `τ_m`).
+- **Errors.** `E_B = Σ (1 − B_g)` and `E_M = Σ (1 − M_g)`. Relative error
+  reduction `RER = (E_B − E_M)/E_B`, undefined when `E_B = 0` (no superiority
+  claim). Admission needs `RER ≥ 0.25` and the one-sided exact McNemar
+  `p = P(X ≥ c)`, `X ~ Binomial(b + c, 1/2)`, below 0.05.
+- **Intervals.** Percentile bootstrap over groups, 10,000 resamples, seed
+  20261030, for `RER` and for `(E_B − E_M)/m`.
+- **Attainability at the draw.** With `E_B` baseline errors and `o` oracle
+  errors (positives whose target is not among the five candidates), the best
+  case is `b = 0`, `c = E_B − o`, so `p_best = 2^−(E_B − o)`. Rule:
+  `E_B ≥ 15` and `p_best < 0.001`. At the draw `E_B = 26`, `o = 0`,
+  `p_best = 1.5 × 10^−8`.
+- **Power (preregistered, PROTOCOL_V2.md 4).** If the model fixes a share `f`
+  of the `E_B` baseline errors and breaks a share `g` of the `m − E_B`
+  baseline-correct groups, then `c ~ Bin(E_B, f)` and `b ~ Bin(m − E_B, g)`.
+  The power of the whole rule is computed exactly over both distributions.
+  For `E_B = 29`, `m = 300`: 0.94 at `f = 0.4, g = 0`, 0.67 at
+  `f = 0.4, g = 0.01`.
+- **Observed.** `b = 54`, `c = 13`, `E_B = 26`, `E_M = 67`; `RER = −1.58`
+  (95% −2.95 to −0.79), `p = 1.0`. In the terms above, the model fixed half of
+  the baseline errors (`f = 0.5`) and broke `g = 54/274 = 0.20` of the
+  baseline-correct groups. That is far outside the region where the rule can
+  admit.

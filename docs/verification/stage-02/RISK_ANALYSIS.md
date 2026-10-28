@@ -88,3 +88,22 @@ decision instead (DECISIONS.md D-023).
 
 Residual risk proposed for the owner: R-026, a single PMID-bridged event can
 give `verified_fact` with identity `bridged` (S14).
+
+## 7. AI Protocol v2 and the local open model (2026-10-28)
+
+v1's P5 is confirmed and closed by superseding the protocol, not by lowering
+it (DECISIONS.md D-025; RISKS.md R-027 closed, R-028 open).
+
+| ID | Risk | L | I | Control | Check |
+|---|---|---|---|---|---|
+| AI1 | A model suggestion is read as a fact or an identity | M | H | `AdvisoryAssessment` has no path into the store; `local_model.py` imports neither the build, the store nor the advisory boundary; CLI output keeps the baseline unchanged and labels the model result advisory | `test_rde_local_model.py` (invariance, import and CLI tests); real-index demonstration (`ai/v2/inference/separate-process-demo/`): index SHA-256 and lookup output unchanged |
+| AI2 | Missing or tampered weights produce a confident wrong answer | M | H | size and SHA-256 of every manifest file checked before loading; safetensors only; `trust_remote_code=False`; failure is `abstain` with a reason code | artifact-mismatch and missing-weights tests; CLI no-weights demonstration |
+| AI3 | The model or the evaluation reaches the network | L | H | offline environment variables and `local_files_only`; runs in a network namespace with no interfaces plus a socket guard | run logs (`curl` fails in the namespace; summaries record `network_denied`) |
+| AI4 | Tuning on the holdout, or a second try after seeing it | M | H | part 1 and part 2 committed before the draw; one run; no change after any prediction | commit order `6d3de07`, `2136943`, `9e23c76`, `4a0fc19` |
+| AI5 | The holdout is too easy for the baseline to test any gain (v1's failure) | H (v1) | H | stratum oversampling by a retrieval-feature rule; attainability rule at the draw | `holdout-attainability.json` (26 baseline errors, `p_best = 1.5e-8`) |
+| AI6 | The model is enabled in the product despite not being admitted | M | H | opt-in only (`--model-dir`); exclusion recommended; R-028 records the constraint for later stages | owner decision; HANDOFF.md |
+| AI7 | A heavy inference stack enters the core engine or CI | L | M | separate hash-pinned `requirements/inference-cpu.txt`, `.venv-infer/` ignored; lazy import | `test_rde_local_model_import_does_not_load_an_inference_stack`; core `uv.lock` unchanged |
+
+Residual risk proposed for the owner: R-028 (the model is not admitted; keep
+it out of the default product).
+

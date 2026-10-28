@@ -1,0 +1,37 @@
+{
+  "purpose": "check that the code added after a24dd46 (local model adapter, CLI option, model_bundle) leaves the real build unchanged",
+  "code_revision": "4a0fc19a1678a8730dc83d415a9f6956fe5e21e8 (engine files identical to 2136943)",
+  "command": "uv run citerift-rde build --source data/raw/rw/retraction_watch.csv --out-dir <scratch>",
+  "started": "2026-10-28T07:41:51Z",
+  "finished": "2026-10-28T07:43:02Z",
+  "counts": {
+    "accepted": 73356,
+    "blank_lines": 0,
+    "by_event_type": {
+      "correction": 1544,
+      "expression_of_concern": 3733,
+      "reinstated": 163,
+      "retracted": 67916
+    },
+    "cr_assertions": 0,
+    "duplicate_group_members": 439,
+    "events": 73356,
+    "header_lines": 1,
+    "physical_lines": 173491,
+    "quarantined": 0,
+    "record_lines": 173490,
+    "records": 73356
+  },
+  "digests": {
+    "artifact_digest": "1ee679b5e5c2e89f06139f43ffd27818b9259dc15693c743ef7bd2ea45e809dc",
+    "export_lines": "147152",
+    "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88"
+  },
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "policy_version": "citerift-rde-policy/1.1.0",
+  "expected_from_a24dd46": {
+    "artifact_digest": "1ee679b5e5c2e89f06139f43ffd27818b9259dc15693c743ef7bd2ea45e809dc",
+    "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88"
+  },
+  "equal": true
+}

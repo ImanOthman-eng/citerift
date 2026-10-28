@@ -1,0 +1,108 @@
+{
+  "advisory": true,
+  "anchor": "doi:10.3366/jbctv.2012.0098",
+  "baseline_version": "citerift-ambiguity-baseline/1.0.0",
+  "candidates": [
+    {
+      "anchor": "doi:10.3366/jbctv.2012.0098",
+      "author": 1.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0036608",
+      "score": 1.0,
+      "year": 1.0
+    },
+    {
+      "anchor": "doi:10.1109/icbmei.2011.5921044",
+      "author": 0.0,
+      "cos_title": 0.40303590231,
+      "event_id": "ev-0057409",
+      "score": 0.341821541386,
+      "year": 0.5
+    },
+    {
+      "anchor": "doi:10.1016/j.jafrearsci.2012.09.007",
+      "author": 0.0,
+      "cos_title": 0.107164964355,
+      "event_id": "ev-0068016",
+      "score": 0.264298978613,
+      "year": 1.0
+    },
+    {
+      "anchor": "doi:10.1016/j.jpcs.2011.09.018",
+      "author": 0.0,
+      "cos_title": 0.093029824867,
+      "event_id": "ev-0068140",
+      "score": 0.25581789492,
+      "year": 1.0
+    },
+    {
+      "anchor": "doi:10.4028/www.scientific.net/amm.217-219.1077",
+      "author": 0.0,
+      "cos_title": 0.092042417929,
+      "event_id": "ev-0029222",
+      "score": 0.255225450758,
+      "year": 1.0
+    }
+  ],
+  "decision": "select",
+  "event_id": "ev-0036607",
+  "model_assessment": {
+    "advisory": true,
+    "candidate_id": "c1",
+    "decision": "select",
+    "evidence_pointers": [
+      "/query/title",
+      "/query/authors",
+      "/query/journal",
+      "/query/original_year",
+      "/candidates/0/title",
+      "/candidates/0/authors",
+      "/candidates/0/journal",
+      "/candidates/0/original_year"
+    ],
+    "input_sha256": "4cb67b7416a432a50acf3773e5ea5a8a11ed5c68f8cf87aeaac82308f6853c45",
+    "model": {
+      "manifest_sha256": "99e08feac7ff1f2bd36b9b78814e2da57ed233e8fec253a1da6ee4d07880e1d1",
+      "model_id": "mixedbread-ai/mxbai-rerank-base-v2",
+      "revision": "3ea9d4dffa7d12a4f366be8e275c349de9fc9865"
+    },
+    "problems": [],
+    "ranked": [
+      {
+        "candidate_id": "c1",
+        "score": 11.162933
+      },
+      {
+        "candidate_id": "c3",
+        "score": 1.629225
+      },
+      {
+        "candidate_id": "c2",
+        "score": 1.49926
+      },
+      {
+        "candidate_id": "c5",
+        "score": 0.389694
+      },
+      {
+        "candidate_id": "c4",
+        "score": 0.044785
+      }
+    ],
+    "reason_codes": [],
+    "score_type": "reranker yes/no logit difference (ranking score; not a calibrated probability)",
+    "timing": {
+      "case_s": 2.119025,
+      "init_s": 4.132279
+    },
+    "usage": {
+      "pairs": 5,
+      "tokens": 903
+    }
+  },
+  "note": "A suggestion for review. It is not a link and changes no record.",
+  "thresholds": {
+    "tau_m": 0.1,
+    "tau_s": 0.85
+  }
+}

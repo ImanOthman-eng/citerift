@@ -454,9 +454,10 @@ conservative (SPECIFICATION.md 7.2). Proposed to the owner as a residual risk.
 - Stage: 02
 
 Title, author and year matching exists only as the deterministic ambiguity
-baseline, evaluated on a controlled masking task, not on natural cases. No
-model experiment ran (R-027). Later stages must not treat a baseline candidate
-as an identity.
+baseline, evaluated on a controlled masking task, not on natural cases. The
+local open model was evaluated under AI Protocol v2 and not admitted (R-028).
+Later stages must not treat a baseline candidate or a model ranking as an
+identity.
 
 ## R-026 — A single PMID-bridged event can give a verified retraction
 - Status: open
@@ -473,13 +474,29 @@ real instance. Changing it means amending three frozen cases; that is the
 owner's decision.
 
 ## R-027 — Stage 02 model experiment not executed; frozen gate unattainable
-- Status: open
+- Status: closed
 - Severity: medium
 - Kind: risk
 - Stage: 02
 
-No model prediction was made: the route on the session's agent facility is
-the owner's decision (DECISIONS.md D-023). Independently, the frozen admission
-gate cannot be met on the frozen held-out split: the baseline scores 110/120,
-so the largest gain is 8.3 points (gate 10), and coverage is at most
-61/120 = 0.508 (gate 0.60). The gate is not lowered. Gate 02-G stays unmet.
+Historical (2026-10-27): no model prediction was made, and the frozen v1
+admission gate could not be met on the v1 held-out split (largest gain 8.3
+points against 10; coverage at most 61/120 = 0.508 against 0.60). Closed on
+2026-10-28: v1 is kept unchanged and classified "admission design
+infeasible; no model evaluation executed under it", and the experiment was
+executed under AI Protocol v2 (DECISIONS.md D-025; R-028).
+
+## R-028 — The local open model is not admitted
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 02
+
+Under AI Protocol v2 the frozen mxbai-rerank-base-v2 pipeline was worse than
+the deterministic baseline on the fresh holdout (67 errors against 26;
+negative false selections 36 against 26). The adapter and the opt-in
+`citerift-rde ambiguity --model-dir` option exist and run offline, but their
+output must not be shown as a suggestion by default or used for any decision.
+A later stage that wants it needs a new model or task design, a new
+development phase and a new fresh holdout; reusing this holdout for tuning is
+not allowed. Reranker scores are ranking logits, not probabilities.

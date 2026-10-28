@@ -142,3 +142,23 @@ records, not how often each class occurs. Nothing here measures whether a
 reader makes better decisions with the report; that would need a user study,
 which was not done. The prior-art comparison rests on the four tools' own
 materials named above.
+
+## 8. Addendum, 2026-10-28: AI Protocol v2
+
+Evidence Tension remains Stage 02's creative contribution. Its code, frozen
+cases and demonstrations are unchanged since the review above (the real index
+rebuilt at `4a0fc19` has the same artifact and semantic digests,
+`evidence/rebuild-check-2026-10-28.json`).
+
+The v2 work adds one small, measured property that supports it: AI-on/AI-off
+factual invariance. The same pinned index gives the same lookup facts and the
+same baseline output whether the local model selects, abstains or is
+missing (`test_rde_ai_on_ai_off_factual_invariance`, the CLI test, and the
+real-index demonstration in `ai/v2/inference/separate-process-demo/`, where
+the index SHA-256 and the lookup output are equal before and after three
+model runs). Model output is kept in a separately labeled `model_assessment`.
+This is a safeguard, not a novelty claim.
+
+The local model itself is not a creative contribution: it was not admitted
+(TEST_RESULTS.md 7.2). No claim is made that AI improves this task.
+

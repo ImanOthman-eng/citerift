@@ -17,29 +17,36 @@ container on the same code revision with the ignored local data
 | 02-D schemas | pass | `test_rde_schemas.py`; section 2 |
 | 02-E Evidence Tension | pass | section 5; `evidence/tension-demonstrations.json` |
 | 02-F bounded corroboration | pass | section 6; `evidence/crossref/` |
-| 02-G Evidence Ambiguity Investigator | **not met: the model experiment was not executed** | section 7; blocker B-1 in HANDOFF.md |
+| 02-G Evidence Ambiguity Investigator | pass: experiment executed under AI Protocol v2, disposition recorded (not admitted) | section 7.2; `ai/v2/holdout-result.json`, `ai/v2/holdout-disposition.json` |
 | 02-H budgets | pass | section 8; `evidence/benchmark.json` |
-| 02-I CI, reviews, documents | **not met: CI is red on two Stage 00 tests** | section 9; blocker B-2 in HANDOFF.md |
+| 02-I CI, reviews, documents | pass: CI green on Python 3.12 and 3.13 (section 9), reviews dispositioned (section 10), documents complete | section 9; the CI run of the verified revision is in the registry's verification record |
 
-Stage 02 is therefore not verified. Every other gate is met with the
-evidence below.
+Gates 02-G and 02-I were not met at `a24dd46` (blockers B-02-001 and
+B-02-002). Both blockers are resolved: B-02-002 by the Stage 00 maintenance
+A-00-002 (section 9) and B-02-001 by the executed AI Protocol v2 (section
+7.2). A met gate 02-G records that the experiment ran with a disposition; it
+is not a claim that the model helps. It did not.
 
 ## 2. Test suites
 
-`uv run pytest` at the cited revision (local, Python 3.12.3):
-**2 failed, 1034 passed** (1,036 tests, 198.8 s); Python 3.13.17 gives the same result (section 9). The two failures are the Stage 00 tests of section 9.
+`uv run pytest` at the final code (local, 2026-10-28): **1,123 passed** on
+Python 3.12.3 (282.2 s) and **1,123 passed** on Python 3.13.17 (a scratch
+environment from `uv.lock`, 289.0 s); no failure, skip or deselection. `ruff
+check`, `ruff format --check` and `mypy` clean; `citerift-gov check` 0 errors.
+(At `a24dd46` the result was 2 failed, 1034 passed: the two Stage 00 tests of
+section 9.2.)
 
-Stage 02 tests, `tests/stage02/` (531 collected; a test can carry more than
-one suite marker):
+Stage 02 tests, `tests/stage02/` (561 collected; a test can carry more than
+one suite marker; at `a24dd46`: 531):
 
 | Suite | Tests |
 |---|---|
-| unit | 206 |
-| integration | 114 |
-| negative | 250 |
+| unit | 212 |
+| integration | 115 |
+| negative | 262 |
 | regression | 36 |
 | reproducibility | 5 |
-| security | 58 |
+| security | 69 |
 | contracts | 7 |
 | simulation | 59 |
 
@@ -63,7 +70,7 @@ Coverage of directive section 14:
 | 14 Unicode, ASCII folding, lookalikes, bidi, `%`, encoded separators, `+` | `test_rde_identifiers.py`, S6 |
 | 15 SQL-looking IDs, malicious text, exhaustion, cycles, duplicate keys | `test_rde_schemas.py`, `test_rde_import.py`, S4, S7, S9 |
 | 16 timeout, 429, 403, 5xx, invalid JSON, mismatched 200 | `test_rde_corroboration.py`, S3, S5, S8 |
-| 17 AI abstention and forbidden promotion | `test_rde_advisory.py` |
+| 17 AI abstention and forbidden promotion | `test_rde_advisory.py`, `test_rde_local_model.py` (local model: invalid bundles, missing, corrupt or resized weights, missing or unpinned runtime, wrong architecture, non-finite scores, deadline, memory exhaustion, over-long input, Arabic and Unicode text, lazy loading, AI-on/AI-off invariance, CLI) |
 
 Metamorphic properties (directive 14): idempotence (`test_rde_identifiers.py`),
 no event loss when adding events and row-permutation invariance
@@ -163,7 +170,12 @@ pinned replay reproduces the same assertions and keeps the original retrieval
 time (`test_rde_replay_reproduces_assertions_and_keeps_retrieval_time`); the
 Crossref index is verified clean (section 3).
 
-## 7. Evidence Ambiguity Investigator (gate 02-G): blocked
+## 7. Evidence Ambiguity Investigator (gate 02-G)
+
+### 7.1 Protocol v1 (historical; superseded by v2)
+
+Kept as written on 2026-10-27. v1 is classified "admission design
+infeasible; no model evaluation executed under it".
 
 Delivered and tested:
 
@@ -194,7 +206,7 @@ used to lower the gate:
 
 So no model can pass the frozen gate on this frozen split. The route for
 running the experiment on the session's agent facility, and whether to run
-it at all, is the owner's decision (D-023; HANDOFF.md blocker B-1). The
+it at all, was the owner's decision (D-023; blocker B-02-001, since resolved). The
 pilot that established the route used a synthetic bundle outside the splits
 (`ai/route-pilot-2026-10-27.json`).
 
@@ -204,6 +216,96 @@ some positives are supplement-DOI collisions, valid for the controlled
 stratum is assigned from the target's lowest-ordinal record while scoring
 uses the best-matching record. The snapshot has one Arabic-script record, so
 there is no Arabic stratum and no Arabic claim.
+
+### 7.2 AI Protocol v2 and the local open model (2026-10-28)
+
+Owner directive `cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT`;
+DECISIONS.md D-025; files under `ai/v2/`. Order of commits (each before the
+next step): part 1 `6d3de07`, adapter `27e3249`, part 2 and frozen model
+`2136943`, draw `9e23c76`, holdout run and evaluation `4a0fc19`.
+
+**Label repair and splits** (`dev-audit.json`). 4 of the 160 v1 groups are
+now excluded as unresolved. Fresh eligible groups: 1,508 positives and 55,760
+negatives. 868 groups named in earlier Stage 02 documents are kept out of the
+holdout. Development set: 296 cases (156 v1, 140 fresh).
+
+**Screening** (`MODEL_SELECTION.md`; the same 40 development cases, offline):
+
+| Model | Licence | Correct /40 (best wrapper on the 40) | Positives with target first | Cold init | Warm p95 | Peak RSS |
+|---|---|---|---|---|---|---|
+| mixedbread-ai/mxbai-rerank-base-v2 | Apache-2.0 | 33 | 19/19 | 4.0 s | 2.70 s | 3,304 MiB |
+| Qwen/Qwen3-Reranker-0.6B | Apache-2.0 | 29 | 14/19 | 4.7 s | 3.60 s | 3,887 MiB |
+| baseline | — | 34 | — | — | — | — |
+
+**Calibration** (the other 256 development cases): τ_s = 9.75, τ_m = 2;
+model 222 correct, baseline 241, 13 negative false selections each. Recorded
+in `protocol-v2-frozen.json` before the draw.
+
+**Holdout draw** (`holdout-attainability.json`): 300 groups (150 positive,
+150 negative). Separation: 0 shared events, 0 shared identifier keys, 0
+groups named in prior documents. Attainable: 26 baseline errors (all
+near-duplicate negatives), oracle errors 0, best-case one-sided p 1.5e-8.
+
+**The one holdout run** (`runs/holdout-mxbai.jsonl`, `runs/holdout-run.log`):
+in a network namespace with no interfaces (a `curl` in it failed) and with
+the socket guard; index SHA-256 `fca830ec…d04d19f` before and after.
+
+| Metric | Baseline | Model |
+|---|---|---|
+| All-case accuracy | 274/300 = 0.913 | 233/300 = 0.777 |
+| Positive recall | 1.000 | 0.793 |
+| Selection coverage | 0.587 | 0.517 |
+| Selection precision (Wilson 95%) | 0.852 (0.792 to 0.897) | 0.768 (0.695 to 0.827) |
+| Negative false selections | 26 (0.173) | 36 (0.240) |
+| Candidate recall@5 | 1.000 | 1.000 |
+| Abstention: all / positives / negatives | 0.413 / 0.000 / 0.827 | 0.483 / 0.207 / 0.760 |
+| Critical confusions | 0 | 0 |
+
+Per stratum (correct / n), baseline then model: positive/other 110/110 and
+96/110; positive/competitor 40/40 and 23/40; negative/near_duplicate 74/100
+and 65/100; negative/similar_title 30/30 and 29/30; negative/other 20/20 and
+20/20.
+
+Paired analysis: b = 54 (baseline right, model wrong), c = 13; exact
+one-sided McNemar p = 1.0. Relative error reduction -1.58 (bootstrap 95%
+-2.95 to -0.79); accuracy difference -0.137 (-0.187 to -0.087).
+
+Admission checks (`holdout-result.json`): at least 120 groups yes;
+relative error reduction at least 0.25 **no**; p < 0.05 **no**; positive
+recall at least 0.60 yes; negative false selections not above the baseline
+**no**; critical confusions 0 yes; fact writes 0 yes; complete predictions
+yes. Resources (`holdout-disposition.json`): cold initialization 63.4 s
+(limit 120; the weights were read from a cold disk cache), warm p95 2.67 s
+(15), slowest case 3.51 s (30), peak RSS 3,266 MiB (4,096), artifact 0.92 GiB
+(2), full run 11.5 min (60), 1,490 pairs and 330,829 tokens, no failure. All
+met.
+
+**Disposition: evaluated, not admitted.** Recommendation for the owner:
+exclude the model from the default product; keep the adapter and the opt-in
+CLI option. The protocol allows no change after a holdout prediction, so no
+retuning was tried. A later attempt needs a new design and a new fresh
+holdout (RISKS.md R-028).
+
+**Offline use outside the session** (`ai/v2/inference/`). A fresh clone at
+`4a0fc19` followed `INFERENCE_GUIDE.md`: hash-pinned installs, an anonymous
+pinned download of the 15 model files (all size and SHA-256 checked), and no
+CUDA package (`clean-checkout-guide-run.log`). Then `citerift-rde ambiguity
+--model-dir` ran as separate processes, with only `HOME`, `LANG` and `PATH`
+set and no network (`separate-process-demo/`): on three real events without
+identifiers the baseline output was identical with and without the model
+(model wall 6.8 to 14.0 s per process, including loading); with an empty
+weights directory the result was `abstain`, `MODEL_UNAVAILABLE`; the index
+SHA-256 and a lookup's output were the same before and after.
+
+**Inference environment audit.** `pip-audit --strict --require-hashes` on
+`requirements/inference-cpu.txt`: no known vulnerability (33 packages);
+torch 2.14.1 audited by version: none (`inference/pip-audit-*.json`).
+Licences: `THIRD_PARTY_AND_MODEL_LICENSES.md`.
+
+Limits. Labels are source-established under controlled masking, not human
+adjudication. Scores are ranking logits. The snapshot has one Arabic-script
+record: no Arabic claim. Linux x86_64 CPU only was tested; no Windows, macOS
+or GPU route was tested.
 
 ## 8. Resource budgets (real-data run, gate 02-H)
 
@@ -230,6 +332,40 @@ increment; the run above is the one at the cited revision. Host: 4 vCPU,
 15 GiB, Python 3.12.3, SQLite 3.45.1.
 
 ## 9. CI and the Stage 00 tests (gate 02-I)
+
+### 9.1 Current (2026-10-28)
+
+**Cause removed.** The two Stage 00 tests that failed at `a24dd46` were
+corrected inside the owner-authorized maintenance A-00-002 (DECISIONS.md
+D-024; `docs/verification/maintenance/A-00-002/MAINTENANCE_MODEL.md`):
+candidate `8b1db57`, validated `627cc9d` (complete suite on a clean checkout,
+Python 3.12.3 and 3.13.17, 1,093 passed each), finalized `4bf0255`. Neither
+test was skipped or weakened: V-03 now builds its empty definition inside the
+sandbox for each missing field, and the layout guard allows a layer only when
+its stage is owner-authorized and owns the path, with negative fixtures.
+
+**CI.** First green CI with Stage 02 tests: `4bf0255`, push run
+https://github.com/ImanOthman-eng/citerift/actions/runs/40637490981 and pull
+request run https://github.com/ImanOthman-eng/citerift/actions/runs/40637496253
+(both `verify` jobs and `ci-gate` succeeded, including pytest, the report
+check and the dependency audit). At `e591af1` CI failed on two Stage 02
+checks introduced with the adapter at `27e3249`
+(https://github.com/ImanOthman-eng/citerift/actions/runs/40638552912):
+`test_governance_code_runs_no_shell` found an `eval(` call (`model.eval()`),
+and `test_rde_advisory_has_no_path_to_facts` found that `local_model.py`
+imported the advisory boundary module. Both were fixed at `2136943`
+(`train(False)`, the same call `eval()` makes; the two bundle constants
+repeated with a test that they stay equal). The tests were not changed. The
+CI runs at `2136943` were cancelled by the next push; CI is green at
+`9e23c76` (runs 40650175412 and 40650181858) and at `4a0fc19` (runs
+40651520439 and 40651525712), each with both Python versions and `ci-gate`.
+The CI run of the verified revision is recorded in the registry and in the
+pull request.
+
+**Local evidence** at the final code (Python 3.12.3 and 3.13.17): see
+section 2.
+
+### 9.2 Historical (`a24dd46`, 2026-10-28 03:00)
 
 **CI evidence.** GitHub Actions, workflow `CI`, run 83 on the cited code
 revision `a24dd46` (https://github.com/ImanOthman-eng/citerift/actions/runs/40621662275):
@@ -264,7 +400,7 @@ The two failing Stage 00 tests:
   governance unchanged. It fixes the V-03 failure of run 77 in local runs;
   CI has not reached that test since. The authorization
   says the fix is to be "recorded through the required existing governance
-  amendment process"; that process cannot complete here (HANDOFF.md B-2).
+  amendment process"; that process could not complete then (blocker B-02-002, since resolved by A-00-002).
 - `test_application_layers_not_created_prematurely` allows only `contracts/`
   and `governance/` under `src/citerift/`; Stage 02 adds `retraction/`, which
   the directive requires. Changing the test is a Stage 00 change the owner has
@@ -328,6 +464,11 @@ passed) and `policy-properties-at-3a6f1eb.txt`.
 | Tension demonstrations | `evidence/tension-demonstrations.json` |
 | Crossref replay bundle | `evidence/crossref/` |
 | Fail-first runs | `evidence/fail-first/` |
-| AI protocol, baseline, route pilot | `ai/` |
+| AI Protocol v1, baseline, route pilot (historical) | `ai/` |
+| AI Protocol v2, development set, screening, calibration, holdout, predictions, evaluation | `ai/v2/` |
+| Model selection, licences, inference guide | `ai/v2/MODEL_SELECTION.md`, `ai/v2/THIRD_PARTY_AND_MODEL_LICENSES.md`, `ai/v2/INFERENCE_GUIDE.md` |
+| Inference audit, clean-checkout run, separate-process demonstration | `ai/v2/inference/` |
+| Real rebuild at the final code | `evidence/rebuild-check-2026-10-28.json` |
+| Stage 00 maintenance A-00-002 | `docs/verification/maintenance/A-00-002/` |
 | Local full-suite runs, Python 3.12 and 3.13 | `evidence/local-test-runs.txt` |
 | Complete test report | `test-report.json` |

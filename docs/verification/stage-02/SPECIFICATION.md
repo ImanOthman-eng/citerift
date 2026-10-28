@@ -585,6 +585,11 @@ test checks the index bytes are unchanged after a run.
 
 ### 12.3 Evaluation protocol (frozen before any prediction)
 
+> Superseded on 2026-10-28 by AI Protocol v2 (12.4; DECISIONS.md D-025). This
+> section is kept as frozen. v1 is classified "admission design infeasible;
+> no model evaluation executed under it": its gate could not be met on its
+> split (largest gain 8.3 points; coverage at most 0.508), and no model ran.
+
 - Task (controlled, source-established masking, labeled as such): an
   accepted record with a valid original DOI has its original DOI and PMID
   masked (and its notice identifiers when equal to the original). Label
@@ -625,6 +630,61 @@ test checks the index bytes are unchanged after a run.
 - Natural unresolved links (records with neither original DOI nor PMID):
   candidates are produced by the baseline and written to a blinded review
   sheet for human adjudication; no labels are invented.
+
+### 12.4 AI Protocol v2 and the local open model (owner directive of 2026-10-28)
+
+Owner authorization: `cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT`,
+sections 4 and 5. Binding values: `ai/v2/protocol-v2.json` (part 1, frozen at
+`6d3de07` before any model ran) and `ai/v2/protocol-v2-frozen.json` (part 2,
+frozen at `2136943` before the holdout draw). Narrative:
+`ai/v2/PROTOCOL_V2.md`.
+
+- **Model route.** A freely obtainable, permissively licensed model with
+  public weights, run on the local CPU by open-source software. No paid
+  provider, API key, subscription, hosted endpoint or session agent. Weights
+  in safetensors only, `trust_remote_code=False`, offline after a pinned
+  download, every file checked by size and SHA-256 against the manifest.
+- **Task and labels.** As 12.3 (controlled masked-identifier recovery over
+  lineage groups), with two repairs decided from record fields before any
+  model ran: DOIs carried by distinct works and conflicting identifiers are
+  excluded as unresolved, and a positive's stratum is taken from all of its
+  target records.
+- **Splits.** v1 groups and groups named in earlier Stage 02 documents are
+  development only. Fresh groups split by
+  `sha256("20261028:<min ordinal>") mod 10 < 3` into development, the rest
+  into the holdout pool. The draw checks separation programmatically.
+- **Holdout.** 300 groups (150 positives, 150 negatives), oversampled by a
+  retrieval-feature stratum rule preregistered for feasibility. The
+  attainability rule (at least 15 baseline errors, best-case one-sided
+  p < 0.001) is checked at the draw, before any prediction.
+- **Model contract.** `LocalAmbiguityModel.rank(bundle, model_manifest,
+  budget) -> AdvisoryAssessment` (`src/citerift/retraction/local_model.py`).
+  The bundle is the 12.1 bundle without identifiers and with at most five
+  candidates. Each candidate is scored by an independent forward pass (the
+  reranker's yes/no logit difference, not a probability). A frozen wrapper
+  selects the top candidate iff score >= τ_s and its margin over the second
+  >= τ_m; otherwise it abstains. Every failure (missing or mismatched
+  artifact, missing runtime, invalid bundle, input over 512 tokens after the
+  frozen author shortening, non-finite score, deadline) is `abstain` with a
+  reason code and never a negative finding. The result has no path into the
+  store.
+- **CLI.** `citerift-rde ambiguity --model-dir DIR [--model-manifest PATH]`
+  adds a `model_assessment` beside the unchanged baseline output. The default
+  manifest is `src/citerift/retraction/model_manifests/mxbai-rerank-base-v2.json`.
+  Without `--model-dir` nothing is loaded; torch and transformers are never
+  imported by the engine.
+- **Metrics and admission.** As listed in `protocol-v2.json`: at least 120
+  groups; relative error reduction >= 0.25; exact one-sided McNemar p < 0.05,
+  with bootstrap intervals; positive recall >= 0.60; negative false
+  selections not above the baseline's; zero critical confusions; zero fact
+  writes; the CPU envelope met (4 threads, one worker, model RSS <= 4 GiB,
+  artifact <= 2 GiB, cold initialization <= 120 s, warm p95 <= 15 s, 30 s per
+  case, full evaluation <= 60 min).
+- **Result (2026-10-28).** Finalist mixedbread-ai/mxbai-rerank-base-v2,
+  revision `3ea9d4dffa7d12a4f366be8e275c349de9fc9865`, τ_s = 9.75, τ_m = 2.
+  Holdout: 233/300 correct against the baseline's 274/300; not admitted
+  (`ai/v2/holdout-result.json`, `ai/v2/holdout-disposition.json`). The model
+  stays opt-in and is recommended for exclusion from the default product.
 
 ## 13. Resource budgets (reference host: 4 vCPU, 15 GiB, CPU-only)
 
@@ -711,6 +771,7 @@ dispositions); their fail-first run is
 | 21 | schemas | The 200-character limit on a temporal `raw` value is removed; a successful corroboration attempt must have HTTP status 200 | A real date cell longer than 200 characters produced an event that failed its own schema | `test_rde_review_findings.py` (A1, S4) |
 | 22 | 9 | The Crossref client follows no redirect, enforces a total read deadline, honours `Retry-After` (seconds or HTTP date) on 429 and 5xx and records an unreadable one as a failure; replay payloads must be regular files within the size cap, strict JSON (no duplicate keys, NaN or Infinity) and with a hexadecimal hash | Security review findings S3, S4, S5, S7 and S8 | `test_rde_review_findings.py` |
 | 23 | 4 | `POLICY_VERSION` is `citerift-rde-policy/1.1.0` and `TENSION_VERSION` is `citerift-evidence-tension/0.2.0`. `PARSER_VERSION`, `INDEX_FORMAT` and `BASELINE_VERSION` are unchanged. `SCHEMA_VERSION` stays `1.0.0`: the schemas were first written with the engine (`e4de42b`) and are first delivered with this stage, so no other 1.0.0 exists | Section 4: "A change to any rule in §5 to §11 increments the matching version"; items 2, 4, 9 to 14 change §10 and §11 rules, and item 20 the tension report. Readers refuse an index built under another policy version (`INDEX_FORMAT_MISMATCH`) | `test_rde_spec_changes.py` |
+| 24 | 12.3, 12.4 | AI Protocol v1 superseded by v2; the local open-model adapter, its manifest directory and the CLI option `--model-dir` are added; the session-agent route is dropped | Owner directive of 2026-10-28 (D-025): v1's gate was infeasible, and the product AI must be an open, self-hosted model | `test_rde_local_model.py`; `ai/v2/` |
 
 Four sentences of the frozen text were also edited in place in `e4de42b`,
 together with the first engine code, instead of being listed here: the

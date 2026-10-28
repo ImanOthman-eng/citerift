@@ -7,23 +7,23 @@
   Directive (`cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ`), with the
   owner's clarifications `cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni`
   (model access) and `cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`
-  (Stage 00 test-setup fix and CI).
-- Registry state: `IN_PROGRESS`, with open blockers B-1 and B-2 below
-  recorded in the registry. The transition to `BLOCKED` was attempted and
-  refused by `citerift-gov`: a transition is rejected while `check` reports
-  any error, and the Stage 00 VERIFICATION_STALE error of B-2 is one. The
-  governance rule was not bypassed. The stage is
-  **not verified and not accepted**. No later stage is authorized or started.
+  (Stage 00 test-setup fix and CI), and the owner's directive
+  `cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT` of 2026-10-28
+  (Stage 00 maintenance, AI Protocol v2 with a local open model).
+- Registry state: see `governance/stage_registry.json` and
+  `PROJECT_STATUS.md`. Both blockers (B-02-001, B-02-002) are resolved with
+  recorded resolutions. The stage is offered for verification at the revision
+  in "Verified Git commit"; it is **not accepted**. No later stage is
+  authorized or started.
 - Specification, model and risk analysis frozen at `36696b3`; the changes
-  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 23).
+  made after freezing are listed in SPECIFICATION.md 16 (items 1 to 24).
 - Pull request: unmerged, to `main`; the owner merges (D-019).
 
 ## Verified completed work
 
 Each item is covered by the Stage 02 tests, run locally on Python 3.12 and
-3.13, and, where it says so, checked on the real pinned snapshot
-(TEST_RESULTS.md gives the numbers). The tests have **not** run in CI: CI
-stops at the governance check before the test step (B-2).
+3.13 and in CI on both versions, and, where it says so, checked on the real
+pinned snapshot (TEST_RESULTS.md gives the numbers).
 
 - **Import and accounting.** Receipt check (size, SHA-256, git blob SHA-1),
   strict CSV, exact line accounting; 73,356 records, all accepted, 0
@@ -52,8 +52,16 @@ stops at the governance check before the test step (B-2).
   pinned replay bundle of 29 works, lineage with origin, channel and known or
   unknown dependence.
 - **Evidence Ambiguity Investigator.** Advisory boundary, deterministic
-  baseline, frozen protocol and held-out baseline score. The model
-  experiment has **not** run (B-1).
+  baseline, AI Protocol v1 (kept; design infeasible, never run) and AI
+  Protocol v2, executed: a local open model
+  (mixedbread-ai/mxbai-rerank-base-v2, Apache-2.0, revision
+  `3ea9d4dffa7d12a4f366be8e275c349de9fc9865`, float32, 4 CPU threads) behind
+  `LocalAmbiguityModel.rank`, the opt-in `citerift-rde ambiguity
+  --model-dir`, a fresh 300-group holdout, and one offline run. Result: 233/300
+  against the baseline's 274/300; **not admitted**; exclusion from the default
+  product recommended (TEST_RESULTS.md 7.2).
+- **Stage 00 maintenance A-00-002** (owner-authorized; D-024): the two Stage
+  00 tests corrected, no test skipped or weakened, CI green.
 - **Reviews.** Three review passes with dispositions (TEST_RESULTS.md 10).
 - **Real-data checks** at the cited code revision: independent oracle (0
   mismatches), 50 real cases, eight tension demonstrations, five measured
@@ -82,7 +90,10 @@ Outputs (paths under `docs/verification/stage-02/` unless absolute):
 | Tests and fixtures | `tests/stage02/` |
 | Prebuild simulator, oracle, frozen cases | `simulations/stage02/` |
 | The seven documents | this directory |
-| Evidence | `evidence/`, `ai/`, `test-report.json` |
+| Evidence | `evidence/`, `ai/`, `ai/v2/`, `test-report.json` |
+| Local model adapter and its manifest | `src/citerift/retraction/local_model.py`, `src/citerift/retraction/model_manifests/` |
+| Optional CPU inference requirements | `requirements/inference-cpu.txt` (hash-pinned) |
+| Inference guide | `ai/v2/INFERENCE_GUIDE.md` |
 | Recovery ledger | `EXECUTION_LEDGER.md` |
 
 Rebuild from a clean checkout:
@@ -112,21 +123,20 @@ is refused by readers (`INDEX_FORMAT_MISMATCH`).
 
 ## Test evidence
 
-Which evidence came from where:
-
 | Evidence | Source | Result |
 |---|---|---|
-| Full test suite, Python 3.12.3 | local, cloud container | 2 failed (the Stage 00 tests of B-2), 1034 passed |
-| Full test suite, Python 3.13.17 | local, scratch environment from `uv.lock` | 2 failed (the same two), 1034 passed |
-| `ruff check`, `ruff format --check`, `mypy`, `uv lock --check` | local | clean |
-| `citerift-gov check` | local and CI | 1 error, VERIFICATION_STALE for Stage 00 (B-2) |
-| CI workflow, Python 3.12 and 3.13 | GitHub Actions run 83 at `a24dd46` | failed at the governance check; later steps did not run |
-| Build, double build, verify, oracle, demonstrations, benchmarks | real-data run, local | as in TEST_RESULTS.md 3 to 8 |
-| Complete test report | local, `test-report.json` | written at the documents commit below |
+| Full test suite, Python 3.12 and 3.13 | local and CI | TEST_RESULTS.md 2 and 9 |
+| `ruff check`, `ruff format --check`, `mypy`, `uv lock --check` | local and CI | clean |
+| `citerift-gov check` | local and CI | 0 errors |
+| Real build, double build, verify, oracle, demonstrations, benchmarks | real-data run at `a24dd46` | TEST_RESULTS.md 3 to 8; still applicable: the engine code they exercise is unchanged, and a rebuild at the final code gives the same artifact and semantic digests (`evidence/rebuild-check-2026-10-28.json`) |
+| AI Protocol v2 screening, calibration, holdout | local, offline, at `2136943` to `4a0fc19` | TEST_RESULTS.md 7.2 |
+| Clean-checkout inference and separate-process CLI | fresh clone at `4a0fc19`, no network, empty environment | `ai/v2/inference/` |
+| Complete test report | local, clean tree, `test-report.json` | at the verified revision |
 
-Stage 02 suites: unit 206, integration 114, negative 250, regression 36,
-reproducibility 5, security 58, contracts 7, simulation 59 (531 tests).
-Fail-first evidence for every review fix: `evidence/fail-first/`.
+Stage 02 suites: unit 212, integration 115, negative 262, regression 36,
+reproducibility 5, security 69, contracts 7, simulation 59 (561 tests). Full
+suite: 1,123 passed on Python 3.12.3 and on 3.13.17. Fail-first evidence for
+every review fix: `evidence/fail-first/`.
 
 ## Known limitations
 
@@ -138,7 +148,11 @@ Fail-first evidence for every review fix: `evidence/fail-first/`.
 - Day-1 dates and literal `%` in bare DOIs are handled conservatively (R-023,
   R-024).
 - Identity beyond exact identifiers is advisory and not validated on natural
-  cases (R-025).
+  cases (R-025). The local open model was not admitted (R-028): its output must
+  not be shown or used by default.
+- The local model was tested on Linux x86_64 CPU only. Its scores are ranking
+  logits, not probabilities. The model's training code and data are not
+  published in full ("open-weight", not a fully open model).
 - The simulator, oracle, frozen cases and engine have one author (an AI
   agent); the real cases had no human review (SIMULATION_REPORT.md 5).
 - The three reviews are separate passes of the same model, not human or
@@ -148,58 +162,54 @@ Fail-first evidence for every review fix: `evidence/fail-first/`.
 - An installed wheel needs the schema-root environment override; a killed
   build can leave a temporary file (never a published one).
 
-## Open blockers
+## Blockers
 
-**B-1 (registry `B-02-001`): model experiment (gate 02-G).** No model prediction was made. The
-route on the session's agent facility (one group per call with the per-call
-token limit amended, ten groups per call, or no run) is the owner's choice
-(decision card `cmsg_018VCB51nDHP6HXmLU4ea5yPEBsMCiKEj6WcSf8w6VEepd`; D-023).
-Whatever the route, the frozen gate cannot be met on the frozen split (gain at
-most 8.3 points, coverage at most 0.508); the gate is not lowered. Smallest
-owner action: pick a route, or rule that the experiment is not run, in which
-case gate 02-G stays unmet and the result is recorded as a blocker, not as a
-negative finding.
+None open. Their history:
 
-**B-2 (registry `B-02-002`): Stage 00 tests and CI (gate 02-I).** CI fails on two Stage 00 tests.
-`test_real_repository_passes_governance_check` fails because the
-owner-authorized V-03 test-setup fix (`ed8e442`) changes a Stage 00 owned file
-with no recorded amendment, and an enhancement amendment needs a passing
-complete report at its own revision, which this test prevents; a correction
-reopening is refused while Stage 02 is active. `test_application_layers_not_
-created_prematurely` fails because it allows only `contracts/` and
-`governance/` under `src/citerift/`, and Stage 02 adds `retraction/`. Both
-need a Stage 00 route the owner has not chosen (decision card
-`cmsg_018VCB51nDHP6HXmLU4ea5yPHaUBWgBzT9es75PZZMJv73`). Nothing in Stage 00 or
-in governance code was changed beyond the authorized V-03 fix. Smallest owner
-action: pick the route.
+- **B-02-001 (gate 02-G), resolved.** The model experiment had not run, and
+  v1's gate was infeasible. Resolved by executing AI Protocol v2 with a local
+  open model and recording the disposition (evaluated, not admitted).
+- **B-02-002 (gate 02-I), resolved.** CI was red on two Stage 00 tests that
+  could not be fixed without a governance route. Resolved by the
+  owner-authorized maintenance A-00-002 (`8b1db57`, `627cc9d`, `4bf0255`) and
+  green CI (TEST_RESULTS.md 9.1).
+
+Protected changes, for the owner's review: `src/citerift/governance/`
+(maintenance transaction), `schemas/governance/stage_registry.schema.json`
+(`$defs.maintenance`), `tests/stage00/` (the two corrected tests and the
+maintenance tests), and GOVERNANCE.md. Nothing in `src/citerift/contracts`,
+`schemas/contracts/v1`, `.github/` or Stage 01 evidence changed.
 
 ## Dependency versions
 
-No runtime dependency was added (D-022). Real-data runs: Python 3.12.3, SQLite
+No runtime dependency was added to the engine (D-022). The local model uses
+a separate, optional, hash-pinned environment (`requirements/inference-cpu.txt`:
+torch 2.14.1+cpu, transformers 5.19.0, no CUDA), audited separately. Real-data runs: Python 3.12.3, SQLite
 3.45.1, jsonschema 4.26.0, uv 0.11.32, on 4 vCPU and 15 GiB without GPU
 (`evidence/environment.json`). Locked versions: `uv.lock`. CI: Python 3.12 and
 3.13.
 
 ## Verified Git commit
 
-- Code and real-data evidence: `a24dd46c36b74d2a7ba5efd6b48f4606f1d9901e`.
-  Every real-data number in these documents was measured with this code.
-- Documents and remaining evidence: `f62a2807780dafb47b52749d96fea95be66a549f`.
-  It changes documents and evidence only, no code. `test-report.json` was
-  produced on this commit with a clean tree (1,036 collected, 1034 passed,
-  2 failed, exit status 1: the two Stage 00 tests of B-2).
-- The next commit adds the test report, this commit list and the registry
-  record of the two blockers; it changes no code.
+- Engine code and real-data evidence: `a24dd46c36b74d2a7ba5efd6b48f4606f1d9901e`
+  (unchanged engine since; rebuild check above).
+- Stage 00 maintenance: candidate `8b1db57`, validated
+  `627cc9dc73621eff3aebffba3ed340ba94fa61eb`, finalized `4bf0255`.
+- Local model code and frozen model: `21369431d3274c9b94e2db1b416232a75f10f4d9`;
+  holdout drawn at `9e23c76`; holdout run and evaluation at `4a0fc19`.
+- Verified revision: the documents commit that follows `4a0fc19`, named in
+  the registry's verification record together with its CI run and the
+  complete test report (`test-report.json`, clean tree). It adds two tests to
+  `tests/stage02/test_rde_local_model.py` and changes documents and evidence;
+  no engine code.
 - Branch `claude/project-thread-ddufmg`; the pull request to `main` is
   unmerged.
 
 ## Acceptance decision
 
-Not requested. The stage has open blockers, so it cannot be offered for
-acceptance. After B-1 and B-2 are resolved and CI is green on Python 3.12 and
-3.13 at a cited revision, the stage can move to `IMPLEMENTED_NOT_VERIFIED`
-and then `VERIFIED_AWAITING_OWNER_ACCEPTANCE`. Acceptance and the merge are
-the owner's.
+Requested from the owner: accept Stage 02 (or not), merge the pull request
+(or not), and decide whether the local model stays out of the default
+product (recommended: yes, R-028). The agent has done none of these.
 
 ## Requirements for the next stage
 
@@ -215,3 +225,6 @@ Interface requirements only; no later stage is authorized.
 - Treat identity `bridged` and `ambiguous_identity` as unresolved for any
   claim about a Wikipedia citation.
 - Advisory suggestions have no path into facts; keep it that way.
+- Do not enable the local model by default and do not show its ranking as a
+  suggestion unless a new protocol with a new fresh holdout admits it (R-028).
+  Missing weights must stay an abstention, never a negative finding.

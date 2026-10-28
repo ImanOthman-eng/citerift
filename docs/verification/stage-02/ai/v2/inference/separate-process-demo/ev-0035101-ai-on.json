@@ -1,0 +1,101 @@
+{
+  "advisory": true,
+  "anchor": null,
+  "baseline_version": "citerift-ambiguity-baseline/1.0.0",
+  "candidates": [
+    {
+      "anchor": "doi:10.1016/b978-0-08-011869-7.50005-9",
+      "author": 0.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0033127",
+      "score": 0.6,
+      "year": 0.0
+    },
+    {
+      "anchor": "doi:10.1016/b978-0-12-803365-4.00052-x",
+      "author": 0.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0057144",
+      "score": 0.6,
+      "year": 0.0
+    },
+    {
+      "anchor": "doi:10.1016/b978-0-12-815587-5.09992-3",
+      "author": 0.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0034905",
+      "score": 0.6,
+      "year": 0.0
+    },
+    {
+      "anchor": "doi:10.1016/b978-0-12-821279-0.00011-x",
+      "author": 0.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0044750",
+      "score": 0.6,
+      "year": 0.0
+    },
+    {
+      "anchor": "doi:10.1016/b978-0-444-64175-5.50006-3",
+      "author": 0.0,
+      "cos_title": 1.0,
+      "event_id": "ev-0034868",
+      "score": 0.6,
+      "year": 0.0
+    }
+  ],
+  "decision": "abstain",
+  "event_id": "ev-0035101",
+  "model_assessment": {
+    "advisory": true,
+    "candidate_id": null,
+    "decision": "abstain",
+    "evidence_pointers": [],
+    "input_sha256": "d52a85a315f49e2a5573f62d2411c97442887d3f72799fb354c4c4e05adb5dfb",
+    "model": {
+      "manifest_sha256": "99e08feac7ff1f2bd36b9b78814e2da57ed233e8fec253a1da6ee4d07880e1d1",
+      "model_id": "mixedbread-ai/mxbai-rerank-base-v2",
+      "revision": "3ea9d4dffa7d12a4f366be8e275c349de9fc9865"
+    },
+    "problems": [],
+    "ranked": [
+      {
+        "candidate_id": "c1",
+        "score": 8.385625
+      },
+      {
+        "candidate_id": "c4",
+        "score": 8.194574
+      },
+      {
+        "candidate_id": "c2",
+        "score": 7.815298
+      },
+      {
+        "candidate_id": "c3",
+        "score": 7.533539
+      },
+      {
+        "candidate_id": "c5",
+        "score": 7.369272
+      }
+    ],
+    "reason_codes": [
+      "BELOW_THRESHOLD_OR_MARGIN"
+    ],
+    "score_type": "reranker yes/no logit difference (ranking score; not a calibrated probability)",
+    "timing": {
+      "case_s": 1.930186,
+      "init_s": 4.173205
+    },
+    "usage": {
+      "pairs": 5,
+      "tokens": 747
+    }
+  },
+  "note": "A suggestion for review. It is not a link and changes no record.",
+  "thresholds": {
+    "tau_m": 0.1,
+    "tau_s": 0.85
+  }
+}

@@ -100,7 +100,10 @@ No other key changes. Two keys stay `conflicting` (`10.1007/s11581-008-0309-x`,
   the cited source record".
 - Behaviour on sources other than the pinned Retraction Watch snapshot and the
   29-work Crossref replay.
-- Any model capability: no model prediction was made (TEST_RESULTS.md 7).
+- Any model capability. The simulations contain no model. The local open
+  model was evaluated separately under AI Protocol v2 on real holdout groups
+  and not admitted (TEST_RESULTS.md 7.2). The v2 power table
+  (`ai/v2/PROTOCOL_V2.md` 4) is an exact calculation, not a simulation.
 
 ## 7. Commands
 
@@ -112,3 +115,17 @@ uv run python docs/verification/stage-02/scripts/oracle_compare.py --oracle ORAC
 uv run python docs/verification/stage-02/scripts/policy_impact.py --index INDEX --out NEW.json
 uv run python docs/verification/stage-02/scripts/policy_impact.py --compare OLD.json NEW.json --out DIFF.json
 ```
+
+AI Protocol v2 (development audit, draw, model runs and evaluation):
+
+```bash
+uv run python -I docs/verification/stage-02/scripts/ai_protocol_v2.py audit|devset|draw \
+  --index data/index/bench/build1/rw-2f116e9ffed718e6.sqlite --out docs/verification/stage-02/ai/v2
+unshare -n env -u HTTPS_PROXY -u HTTP_PROXY -u https_proxy -u http_proxy \
+  .venv-infer/bin/python -I docs/verification/stage-02/scripts/ai_model_run.py score --deny-network \
+  --manifest src/citerift/retraction/model_manifests/mxbai-rerank-base-v2.json \
+  --model-dir models/mxbai-rerank-base-v2 --cases docs/verification/stage-02/ai/v2/holdout-manifest.json \
+  --out docs/verification/stage-02/ai/v2/runs/holdout-mxbai.jsonl
+.venv-infer/bin/python -I docs/verification/stage-02/scripts/ai_model_run.py evaluate ...  # see ai/v2/holdout-result.json
+```
+

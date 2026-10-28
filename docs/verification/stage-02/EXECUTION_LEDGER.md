@@ -42,28 +42,32 @@ they preceded; their times were not recorded.
 | 2026-10-28 02:33 | `a24dd46` | Tension demonstrations report `base_unresolved` and `dependence_unknown`. Final real-data runs at this code revision: five builds (median 71.7 s, peak RSS 405 MiB), oracle 0 mismatches, `verify --source` clean on the RW and Crossref indexes, eight demonstrations regenerated, full suite 1034 passed and the two known Stage 00 failures. CI: red at the governance check (VERIFICATION_STALE, B-2) |
 | 2026-10-28 02:58 | `f62a280` | Documents and remaining evidence; local full suite on Python 3.12 and 3.13 (1034 passed, 2 Stage 00 failures). `test-report.json` produced on this commit, clean tree |
 | 2026-10-28 03:05 | the commit after `f62a280` | Test report committed; blockers B-02-001 (gate 02-G) and B-02-002 (gate 02-I) recorded with `citerift-gov blocker add`. `transition 02 BLOCKED` refused (pre-existing VERIFICATION_STALE error), so the status stays IN_PROGRESS |
+| 2026-10-28 04:25 | — | Owner directive "Corrected open-source AI, blocker recovery and Stage 02 completion" (`cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT`): approves a bounded Stage 00 maintenance mechanism and AI Protocol v2 with a local open model |
+| 2026-10-28 05:14 | `8b1db57` | Maintenance mechanism and test corrections (protected patch, 8 Stage 00 owned files); two adversarial review rounds, 10 findings fixed with regressions (`docs/verification/maintenance/A-00-002/`) |
+| 2026-10-28 05:14 | `627cc9d` | A-00-002 prepared (`pending_validation`); complete suite on a clean checkout of this revision: Python 3.12.3 and 3.13.17, 1,093 passed each |
+| 2026-10-28 05:20 | `4bf0255` | A-00-002 finalized; `check` 0 errors. CI green for the first time with Stage 02 tests: runs 40637490981 (push) and 40637496253 (pull request) |
+| 2026-10-28 05:21 | `6d3de07` | AI Protocol v2 part 1 frozen before any model ran: label repair, development audit, holdout quotas, attainability rule, admission rule (`ai/v2/protocol-v2.json`) |
+| 2026-10-28 05:25 | `27e3249` | `LocalAmbiguityModel` adapter, hash-pinned CPU inference requirements, development set (296), screening ids (40), manifests for the two candidates |
+| 2026-10-28 05:32 | `e591af1` | B-02-002 resolved. CI at this commit red on two Stage 02 checks introduced at `27e3249` (an `eval(` call in `local_model.py` and its import of the advisory boundary module) |
+| 2026-10-28 07:25 | `2136943` | Both CI defects fixed. Screening (offline, 40 cases each): mxbai-rerank-base-v2 33/40, Qwen3-Reranker-0.6B 29/40, baseline 34/40; finalist mxbai. Calibration on the other 256: τ_s 9.75, τ_m 2; model 222/256 against baseline 241/256 (recorded before the draw). CLI `--model-dir`. Part 2 frozen (`ai/v2/protocol-v2-frozen.json`) |
+| 2026-10-28 07:27 | `9e23c76` | Holdout drawn: 300 groups, separation proven (0 shared events or keys), attainable (26 baseline errors, best-case p 1.5e-8) |
+| 2026-10-28 07:39 | `4a0fc19` | One offline holdout run (network namespace without interfaces, index SHA-256 unchanged): 233/300 against 274/300, relative error reduction -1.58, p 1.0; not admitted; every resource limit met (cold init 63.4 s, warm p95 2.67 s, peak RSS 3,266 MiB, 11.5 min) |
+| 2026-10-28 07:40 | — | Fresh clone at `4a0fc19`: INFERENCE_GUIDE.md followed (hash-pinned installs, anonymous pinned download, 15 files verified); separate-process CLI runs with an empty environment and no network: three real unresolved events, baseline output unchanged, missing weights give `MODEL_UNAVAILABLE`, index and lookup unchanged. Real index rebuilt at current code: artifact and semantic digests equal to those of `a24dd46` |
+| 2026-10-28 | the documents commit | B-02-001 resolved with the v2 disposition; D-024, D-025 (D-023 superseded), R-027 closed, R-028; Stage 02 documents updated |
 
 ## Specification changes
 
-Recorded in SPECIFICATION.md 16 (items 1 to 23).
+Recorded in SPECIFICATION.md 16 (items 1 to 24).
 
 ## Remaining work
 
-None that can proceed without an owner decision. Real-data runs, documents
-and the test report are at the revision named in HANDOFF.md; Stage 02 is
-recorded with open blockers B-02-001 and B-02-002 (B-1 and B-2 below); the
-transition to BLOCKED is refused while the Stage 00 VERIFICATION_STALE error
-stands, so the status stays IN_PROGRESS. The pull request is unmerged.
+Owner decisions only: Stage 02 acceptance, the merge of the pull request,
+and whether to keep the local model out of the default product (R-028).
 
 ## Blockers and open owner decisions
 
-- Model experiment (gate 02-G): the owner authorized existing session
-  facilities (`cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni`). The
-  session Agent route works and is auditable (`ai/route-pilot-2026-10-27.json`),
-  but one call costs about 45k tokens against a 4,500-token envelope. The
-  owner's choice of route is pending. The frozen baseline leaves at most
-  8.3 points of gain, so the 10-point gate cannot be met by any model.
-- Stage 00 amendment for the V-03 fix: an enhancement amendment needs a
-  passing complete test report at its revision, and the real-repository
-  governance test fails until the amendment exists. A reopen is rejected
-  while Stage 02 is active. The owner's choice is pending.
+None open. B-02-001 and B-02-002 are resolved in the registry, with their
+resolutions. The earlier route questions (decision cards
+`cmsg_018VCB51nDHP6HXmLU4ea5yPEBsMCiKEj6WcSf8w6VEepd` and
+`cmsg_018VCB51nDHP6HXmLU4ea5yPHaUBWgBzT9es75PZZMJv73`) were answered by the
+owner's directive of 2026-10-28.

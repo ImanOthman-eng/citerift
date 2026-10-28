@@ -7,8 +7,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import subprocess
 import sys
+import types
 from pathlib import Path
 from typing import Any
 
@@ -341,3 +343,39 @@ def test_rde_cli_ambiguity_with_missing_weights_abstains_and_keeps_the_baseline(
         assert ambiguity.model_bundle(ix, "ev-0000002", cands)["query"]["title"] == common["Title"]
     assert cli.main(["ambiguity", "--index", str(idx), "--event", "ev-0000001", "--model-dir", str(empty)]) == 0
     assert "model_assessment" not in json.loads(capsys.readouterr().out)  # an exact identifier needs no model
+
+
+@pytest.mark.security
+def test_rde_local_model_real_scorer_checks_runtime_and_architecture(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The real backend refuses a missing or unpinned runtime and a model of another architecture."""
+    monkeypatch.setenv("HF_HUB_OFFLINE", "0")
+    monkeypatch.setenv("TRANSFORMERS_OFFLINE", "0")
+    (tmp_path / "config.json").write_text(json.dumps({"architectures": ["OtherForCausalLM"]}), encoding="utf-8")
+    monkeypatch.setitem(sys.modules, "torch", None)  # import fails as if not installed
+    with pytest.raises(ModelUnavailable) as no_stack:
+        local_model.TransformersYesNoScorer(tmp_path, MANIFEST)
+    assert no_stack.value.code == "RUNTIME_UNAVAILABLE"
+    fake_torch, fake_tf = types.ModuleType("torch"), types.ModuleType("transformers")
+    fake_torch.__version__, fake_tf.__version__ = "9.9", "0"  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "torch", fake_torch)
+    monkeypatch.setitem(sys.modules, "transformers", fake_tf)
+    with pytest.raises(ModelUnavailable) as wrong_runtime:
+        local_model.TransformersYesNoScorer(tmp_path, MANIFEST)
+    assert wrong_runtime.value.code == "RUNTIME_MISMATCH"
+    fake_torch.__version__ = "0"  # type: ignore[attr-defined]
+    with pytest.raises(ModelUnavailable) as wrong_arch:
+        local_model.TransformersYesNoScorer(tmp_path, MANIFEST)
+    assert wrong_arch.value.code == "MODEL_ARTIFACT_MISMATCH"
+    assert os.environ["HF_HUB_OFFLINE"] == "1" and os.environ["TRANSFORMERS_OFFLINE"] == "1"
+
+
+@pytest.mark.security
+def test_rde_local_model_memory_exhaustion_abstains() -> None:
+    class Exhausted(Double):
+        def score(self, text: str) -> float:
+            raise MemoryError
+
+    a = LocalAmbiguityModel(Path("x"), loader=lambda _d, _m: Exhausted({})).rank(bundle("same"), MANIFEST)
+    assert (a.decision, a.reason_codes, a.ranked) == ("abstain", ("RUNTIME_ERROR",), ())

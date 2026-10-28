@@ -1,0 +1,157 @@
+{
+  "checked_sources": [
+    {
+      "content_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+      "locator": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv",
+      "retrieved_at": "2026-10-27T20:20:13Z",
+      "source_id": "retraction-watch",
+      "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+    }
+  ],
+  "events": [
+    {
+      "anchor": "doi:10.1038/nature16193",
+      "event_id": "ev-0054966",
+      "event_type": "correction",
+      "flags": [
+        "NOTICE_SHARED"
+      ],
+      "issues": [],
+      "journal": "Nature",
+      "linked_via": null,
+      "matched_by": "doi",
+      "notice_date": {
+        "convention_flags": [
+          "MIDNIGHT_NOT_INSTANT"
+        ],
+        "earliest": "2016-05-05",
+        "effective_precision": "day",
+        "issues": [],
+        "kind": "notice_date",
+        "latest": "2016-05-05",
+        "raw": "5/5/2016 0:00",
+        "reported_calendar": "2016-05-05",
+        "stated_precision": "day"
+      },
+      "notice_doi": "10.1038/s41586-018-0311-z",
+      "notice_key": "doi:10.1038/s41586-018-0311-z",
+      "notice_pmid": "29973715",
+      "original_doi": "10.1038/nature16193",
+      "original_pmid": "26675721",
+      "record_id": "18614",
+      "row_sha256": "1b3eb49547e6cb47e55f2be104ea7f3f251ea97a3d413bd01e283e8b325fec29",
+      "source_label": "Correction",
+      "title": "DDX5 and its associated lncRNA Rmrp modulate TH17 cell effector functions"
+    },
+    {
+      "anchor": "doi:10.1038/nature16193",
+      "event_id": "ev-0054967",
+      "event_type": "retracted",
+      "flags": [
+        "NOTICE_SHARED"
+      ],
+      "issues": [],
+      "journal": "Nature",
+      "linked_via": null,
+      "matched_by": "doi",
+      "notice_date": {
+        "convention_flags": [
+          "MIDNIGHT_NOT_INSTANT"
+        ],
+        "earliest": "2018-07-04",
+        "effective_precision": "day",
+        "issues": [],
+        "kind": "notice_date",
+        "latest": "2018-07-04",
+        "raw": "7/4/2018 0:00",
+        "reported_calendar": "2018-07-04",
+        "stated_precision": "day"
+      },
+      "notice_doi": "10.1038/s41586-018-0311-z",
+      "notice_key": "doi:10.1038/s41586-018-0311-z",
+      "notice_pmid": "29973715",
+      "original_doi": "10.1038/nature16193",
+      "original_pmid": "26675721",
+      "record_id": "18613",
+      "row_sha256": "f20fad63db7b3dd176bd588a4c6810786f77dbd6f0b274455b3633f8f6de6a87",
+      "source_label": "Retraction",
+      "title": "DDX5 and its associated lncRNA Rmrp modulate TH17 cell effector functions"
+    }
+  ],
+  "evidence_digest": "b48c7055085da7d4571c7b3586acb65ef8fd96e4ff2ec1587f6dcd60cbe2aee1",
+  "identifier_role": "original",
+  "identity": {
+    "anchor": "doi:10.1038/nature16193",
+    "candidate_groups": [],
+    "status": "exact"
+  },
+  "issues": [],
+  "lookup_state": "matched",
+  "notice_hit_count": 0,
+  "notice_hits": [],
+  "page": {
+    "cursor": null,
+    "next_cursor": null,
+    "size": 20
+  },
+  "policy_version": "citerift-rde-policy/1.1.0",
+  "projection": {
+    "basis": {
+      "conflict_groups": [],
+      "origins": [
+        "retraction-watch"
+      ],
+      "policy_version": "citerift-rde-policy/1.1.0",
+      "reasons": [
+        "SOURCE_RECORDED_RETRACTION",
+        "SEQUENTIAL_EVENTS_SHARE_NOTICE"
+      ],
+      "scope": "checked_sources",
+      "supporting_assertions": [
+        "ev-0054967/event_type"
+      ]
+    },
+    "retraction_date": {
+      "provenance": [
+        {
+          "content_sha256": "f20fad63db7b3dd176bd588a4c6810786f77dbd6f0b274455b3633f8f6de6a87",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=54967",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "2018-07-04"
+    },
+    "retraction_status": {
+      "provenance": [
+        {
+          "content_sha256": "f20fad63db7b3dd176bd588a4c6810786f77dbd6f0b274455b3633f8f6de6a87",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=54967",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "retracted"
+    }
+  },
+  "query": {
+    "doi": {
+      "input_form": "bare",
+      "issues": [],
+      "missing": false,
+      "normalized": "10.1038/nature16193",
+      "raw": "10.1038/nature16193",
+      "scheme": "doi",
+      "transformations": [],
+      "valid": true
+    },
+    "pmid": null
+  },
+  "schema_version": "1.0.0",
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "total_event_count": 2
+}

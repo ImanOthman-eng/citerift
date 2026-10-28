@@ -20,13 +20,25 @@ what changed in the repository.
   query-local interventions that show which conclusion rests on one origin,
   an ambiguous link or an unbounded date.
 - Bounded Crossref corroboration with a pinned replay bundle of 29 works.
-- Evidence Ambiguity Investigator: boundary, deterministic baseline and frozen
-  protocol; the model experiment has not run (D-023, R-027).
+- Evidence Ambiguity Investigator: boundary, deterministic baseline, AI
+  Protocol v1 (kept; design infeasible, never run) and AI Protocol v2 (D-025):
+  a local open model (mixedbread-ai/mxbai-rerank-base-v2, Apache-2.0) behind
+  `LocalAmbiguityModel.rank` and the opt-in `citerift-rde ambiguity
+  --model-dir`, with an optional hash-pinned CPU inference environment
+  (`requirements/inference-cpu.txt`). Evaluated once on a fresh 300-group
+  holdout: not admitted (R-028).
 - Fixes for three review passes (R-022) and post-freeze specification changes,
   listed in docs/verification/stage-02/SPECIFICATION.md section 16.
 - `tests/stage00/test_corrections.py`: the owner-authorized V-03 test-setup fix
-  (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`); its amendment is not
-  recorded yet (blocker B-2 in docs/verification/stage-02/HANDOFF.md).
+  (`cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`), recorded with the
+  layout-guard correction by Stage 00 maintenance A-00-002.
+
+### Stage 00 maintenance A-00-002 (owner-authorized, D-024)
+
+- 2026-10-28: a prepare, validate, finalize maintenance transaction for an
+  accepted stage (`citerift-gov maintenance`), with its schema
+  (`$defs.maintenance`), tests and GOVERNANCE.md text. Stage 00 stays
+  accepted; no lifecycle state was added.
 
 ### Stage 01 closed
 
