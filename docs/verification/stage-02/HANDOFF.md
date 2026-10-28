@@ -8,7 +8,11 @@
   owner's clarifications `cmsg_018VCB51nDHP6HXmLU4ea5yPSxAcT2gMtmN883uPhy43Ni`
   (model access) and `cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu`
   (Stage 00 test-setup fix and CI).
-- Registry state: `BLOCKED`, with blockers B-1 and B-2 below. The stage is
+- Registry state: `IN_PROGRESS`, with open blockers B-1 and B-2 below
+  recorded in the registry. The transition to `BLOCKED` was attempted and
+  refused by `citerift-gov`: a transition is rejected while `check` reports
+  any error, and the Stage 00 VERIFICATION_STALE error of B-2 is one. The
+  governance rule was not bypassed. The stage is
   **not verified and not accepted**. No later stage is authorized or started.
 - Specification, model and risk analysis frozen at `36696b3`; the changes
   made after freezing are listed in SPECIFICATION.md 16 (items 1 to 23).
@@ -180,14 +184,18 @@ No runtime dependency was added (D-022). Real-data runs: Python 3.12.3, SQLite
 
 - Code and real-data evidence: `a24dd46c36b74d2a7ba5efd6b48f4606f1d9901e`.
   Every real-data number in these documents was measured with this code.
-- Documents, remaining evidence and test report: {{DOCS_COMMIT}}. It changes
-  documents and evidence only, no code.
+- Documents and remaining evidence: `f62a2807780dafb47b52749d96fea95be66a549f`.
+  It changes documents and evidence only, no code. `test-report.json` was
+  produced on this commit with a clean tree (1,036 collected, 1034 passed,
+  2 failed, exit status 1: the two Stage 00 tests of B-2).
+- The next commit adds the test report, this commit list and the registry
+  record of the two blockers; it changes no code.
 - Branch `claude/project-thread-ddufmg`; the pull request to `main` is
   unmerged.
 
 ## Acceptance decision
 
-Not requested. The stage is `BLOCKED`, so it cannot be offered for
+Not requested. The stage has open blockers, so it cannot be offered for
 acceptance. After B-1 and B-2 are resolved and CI is green on Python 3.12 and
 3.13 at a cited revision, the stage can move to `IMPLEMENTED_NOT_VERIFIED`
 and then `VERIFIED_AWAITING_OWNER_ACCEPTANCE`. Acceptance and the merge are
