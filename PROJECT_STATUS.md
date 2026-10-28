@@ -30,7 +30,6 @@ Only the owner can accept a stage or authorize one.
 ## Open blockers
 
 - Stage 02 B-02-001: B-1, gate 02-G: the Evidence Ambiguity Investigator model experiment has not been executed. No API key is available and none is authorized; the route on the session agent facility needs the owner's choice (decision card cmsg_018VCB51nDHP6HXmLU4ea5yPEBsMCiKEj6WcSf8w6VEepd, D-023). The frozen gate is unattainable on the frozen split (gain at most 8.3 points, coverage at most 0.508); it is not lowered.
-- Stage 02 B-02-002: B-2, gate 02-I: CI is red. VERIFICATION_STALE for Stage 00 from the owner-authorized V-03 test-setup fix ed8e442 (cmsg_018VCB51nDHP6HXmLU4ea5yPJN5cHhUJ8f8AM5hyKq3tCu), whose amendment cannot be recorded (an enhancement needs a passing complete report at its revision; a reopening is refused while Stage 02 is active), and test_application_layers_not_created_prematurely rejects src/citerift/retraction. Needs the owner's Stage 00 route (decision card cmsg_018VCB51nDHP6HXmLU4ea5yPHaUBWgBzT9es75PZZMJv73).
 
 ## Stage notes
 
