@@ -13,7 +13,7 @@ Only the owner can accept a stage or authorize one.
 |---|---|---|---|---|---|---|
 | 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 0c21182e5871 | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `ACCEPTED_CLOSED` | 85da719ac43f | yes |
-| 02 | Retraction Data Engine | engineering-agent | 00, 01 | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | 15925c9aa3d5 | no |
+| 02 | Retraction Data Engine | engineering-agent | 00, 01 | `IN_PROGRESS` | - | no |
 | 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `NOT_STARTED` | - | no |
 | 04 | Detection Engine and Vertical Slice | engineering-agent | 02, 03 | `NOT_STARTED` | - | no |
 | 05 | Citation Context and Evidence Preparation | engineering-agent | 04 | `NOT_STARTED` | - | no |
@@ -24,7 +24,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 02 (Retraction Data Engine): owner acceptance decision required; successors stay locked until then
+- Stage 02 (Retraction Data Engine): authorized work may continue (IN_PROGRESS)
 - Stage 03 (Wikipedia Extraction Engine): dependencies accepted; NOT authorized until the owner explicitly authorizes it
 
 ## Open blockers
@@ -37,7 +37,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Recent history
 
-- 2026-10-27T13:54:57Z stage 01: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by external-agent. Corrective pass requested by the owner (cmsg_018VCB51nDHP6HXmLU4ea5yPBWBK4PLfVSRHeA5DdXjWLz): failure handling fixed, sample corrected, evidence re-derived and re-verified
 - 2026-10-27T13:55:25Z stage 01: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by external-agent. Corrective pass verified: gates 01-A to 01-G re-established on evidence at 32712fa (FEASIBILITY_REPORT.md §15)
 - 2026-10-27T15:22:28Z stage 01: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> IN_PROGRESS by external-agent. Owner approved strengthening Stage 01 before acceptance (cmsg_018VCB51nDHP6HXmLU4ea5yPS6zrHggGn25MJPgeq5XsHC): Arabic Wikipedia DOI/PMID census, cross-wiki divergence measurement, warning-gap count, Stage 01 tests in CI and Shi et al. resolution
 - 2026-10-27T18:20:54Z stage 01: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by external-agent. Owner-approved strengthening pass implemented at 85da719: Arabic DOI/PMID census against Retraction Watch, en-ar divergence, Arabic warning gap, Stage 01 tests in CI, Shi median resolved
@@ -47,6 +46,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-10-27T20:25:10Z stage 02: AUTHORIZED -> IN_PROGRESS by engineering-agent. Stage 02 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPWSJKXxdz5fLqXyjZEAfWDJ). Pinned Retraction Watch snapshot a987928 re-acquired and verified (68,076,023 bytes, sha256 2f116e9f...0a655).
 - 2026-10-28T08:06:02Z stage 02: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Implementation complete at 15925c9: both blockers resolved (B-02-002 by Stage 00 maintenance A-00-002; B-02-001 by the executed AI Protocol v2 with its disposition, owner directive cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT); complete suite 1,123 passed on Python 3.12 and 3.13
 - 2026-10-28T08:06:11Z stage 02: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. All nine gates pass at 15925c9 with a clean-tree complete test report (1,123 passed) and green CI on Python 3.12 and 3.13 (run 40653182012). Gate 02-G records the executed AI Protocol v2 experiment and its disposition: the local model was evaluated and not admitted. Acceptance and merge are the owner's.
+- 2026-10-28T10:04:07Z stage 02: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPR1ZTbdzz21fL4gMeJzfxyy`). Owner requested a narrowly scoped scientific correction of R-026 before acceptance (bridged identifiers must not by themselves establish a verified status or date); the verified revision 15925c9 and its history are kept.
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).
