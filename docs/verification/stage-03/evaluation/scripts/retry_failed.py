@@ -27,6 +27,7 @@ RETRYABLE = {
     "HTTP_TIMEOUT",
     "DEADLINE_EXCEEDED",
     "NETWORK_GATE_BUSY",
+    "CLIENT_INTERNAL_ERROR",
 }
 RANK = {"complete": 0, "partial": 1, "deferred": 2, "failed": 3}
 
@@ -38,6 +39,10 @@ def main() -> int:
     with (out / "captures.jsonl").open("a", encoding="utf-8") as log:
         for key, st in sorted(states["articles"].items()):
             final = st["final"]
+            if final["status"] is None and final["exit"] == 1:
+                # The client ended with an internal error (RF-38, a defect in the client's own read loop, fixed
+                # before this pass): the attempt says nothing about the article and is retried like a transient one.
+                final = {**final, "status": "failed", "codes": ["CLIENT_INTERNAL_ERROR"]}
             # A failed capture, or a partial one whose render failed (the source was captured), is retried only
             # when every recorded error is a rate limit or another transient condition (added 2026-10-29, before
             # any annotation: the recapture had three partial captures whose render met only HTTP 429).

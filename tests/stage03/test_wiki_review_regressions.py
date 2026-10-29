@@ -556,3 +556,30 @@ def test_wiki_unlisted_cite_templates_are_citation_templates(tmp_path: Path, wik
     # are not citation templates.
     tag = extract(bundle(tmp_path, "A claim.{{Citation needed|date=May 2020}}\n", wiki=wiki, name="cn"))
     assert tag["units"] == []
+
+
+@pytest.mark.regression
+def test_wiki_a_complete_body_with_content_length_reads_to_the_end() -> None:
+    """RF-38: after read1 took the last byte, http.client closed the socket and the next per-read timeout raised
+    EBADF, so a capture ended in an internal error (found in the confirmation capture)."""
+    body = json.dumps({"batchcomplete": True, "pad": "x" * 200_000}).encode()
+
+    class Whole(http.server.BaseHTTPRequestHandler):
+        def do_GET(self) -> None:
+            self.send_response(200)
+            self.send_header("content-type", "application/json")
+            self.send_header("content-length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args: Any) -> None:
+            return None
+
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Whole)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        raw = urllib_transport(f"http://127.0.0.1:{server.server_address[1]}/", {}, 10.0)
+        assert b"".join(raw.chunks) == body
+        raw.close()
+    finally:
+        server.shutdown()

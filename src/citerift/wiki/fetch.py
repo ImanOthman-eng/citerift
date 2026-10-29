@@ -569,7 +569,9 @@ def urllib_transport(url: str, headers: dict[str, str], timeout: float) -> RawRe
             left = ends_at - time.monotonic()
             if left <= 0:
                 raise TransportError("HTTP_TIMEOUT", "the operation deadline passed while reading the body")
-            if sock is not None:
+            if getattr(resp, "fp", True) is None:
+                return  # http.client closes the connection once the announced length has been read (RF-38)
+            if sock is not None and sock.fileno() >= 0:
                 sock.settimeout(left)
             try:
                 block = resp.read1(65536) if hasattr(resp, "read1") else resp.read(65536)

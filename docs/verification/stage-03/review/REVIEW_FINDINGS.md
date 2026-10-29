@@ -130,3 +130,7 @@ Not repaired from run 1, and documented:
   prose with template output. This is a coverage loss with no wrong attachment.
 - **An empty `pmid=` field** is reported as an identifier occurrence with `normalization.missing = true`. The
   guide does not count it. It is kept so that a missing value stays visible.
+
+| Id | Found by | Severity | Defect | Disposition | Evidence |
+|---|---|---|---|---|---|
+| RF-38 | the confirmation capture (`confirmation/ar-4823675` exited 1, internal error) | high (capture) | The RF-28 read loop lowered the socket timeout before every read. After `read1` had taken the last byte of a body with a Content-Length, `http.client` closed the connection, and the next `settimeout` raised `EBADF`. The capture failed with an internal error instead of finishing, so it was introduced by the RF-28 fix itself. Extraction is not affected (no extraction digest changes). | Fixed: the loop ends when the response has closed its connection and never sets a timeout on a closed socket. The confirmation capture was stopped at the first occurrence and resumed after the fix. The bounded retry pass treats an attempt that ended in a client internal error as transient. | `test_wiki_a_complete_body_with_content_length_reads_to_the_end` (fails before: `OSError: [Errno 9] Bad file descriptor` at `fetch.py:573`); `../evaluation/confirmation/capture/capture_notes.txt` |
