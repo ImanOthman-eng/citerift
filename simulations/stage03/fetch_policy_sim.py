@@ -12,7 +12,9 @@ and a scripted transport, and both its outcome and a set of invariants are check
   I5  an answer is returned only when the last attempt was accepted, and then it carries the body;
   I6  a failure never carries a body or a parsed JSON answer as its result;
   I7  a deferred result's not_before is at least the last response time plus its Retry-After, and is past
-      the deadline; a non-retryable code stops at once.
+      the deadline; a non-retryable code stops at once;
+  I8  an operation that ends ATTEMPTS_EXHAUSTED after a Retry-After records a not_before no earlier than asked
+      (added with RF-25).
 
 Usage: python simulations/stage03/fetch_policy_sim.py [N_SEQUENCES] [SEED]  (prints a JSON summary)
 """
@@ -249,6 +251,16 @@ def run(n: int, seed: int) -> dict[str, Any]:
                 problems.append("I7 not_before too early")
             if nb < EPOCH + timedelta(seconds=1000.0 + policy.deadline_s):
                 problems.append("I7 deferred before the deadline")
+        if ans.code == "ATTEMPTS_EXHAUSTED" and ans.attempts[-1].retry_after_s is not None:
+            last = ans.attempts[-1]
+            if ans.not_before is None:
+                problems.append("I8 exhausted after Retry-After without not_before")
+            else:
+                nb = datetime.strptime(ans.not_before, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=UTC)
+                if nb < EPOCH + timedelta(seconds=trace.ends[-1] + (last.retry_after_s or 0)) - timedelta(
+                    milliseconds=1
+                ):
+                    problems.append("I8 not_before too early")
         outcomes[str(ans.code)] = outcomes.get(str(ans.code), 0) + 1
         if problems:
             failures.append({"case": case, "problems": problems, "steps": [s.__dict__ for s in fixed]})
