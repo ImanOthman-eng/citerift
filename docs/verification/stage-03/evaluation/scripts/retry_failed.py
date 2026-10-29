@@ -1,4 +1,4 @@
-"""One later retry pass for selected articles whose capture failed with only retryable errors.
+"""One later retry pass for selected articles whose capture failed, or whose render failed, with only retryable errors.
 
 Usage: python retry_failed.py OUT_DIR
 
@@ -29,7 +29,14 @@ def main() -> int:
     with (out / "captures.jsonl").open("a", encoding="utf-8") as log:
         for key, st in sorted(states["articles"].items()):
             final = st["final"]
-            if final["status"] != "failed" or not final["codes"] or not set(final["codes"]) <= RETRYABLE:
+            # A failed capture, or a partial one whose render failed (the source was captured), is retried only
+            # when every recorded error is a rate limit or another transient condition (added 2026-10-29, before
+            # any annotation: the recapture had three partial captures whose render met only HTTP 429).
+            if (
+                final["status"] not in ("failed", "partial")
+                or not final["codes"]
+                or not set(final["codes"]) <= RETRYABLE
+            ):
                 continue
             wiki, page = key.split("/", 1)[1].split("-", 1)
             first = max(a["attempt"] for a in st["attempts"]) + 1
