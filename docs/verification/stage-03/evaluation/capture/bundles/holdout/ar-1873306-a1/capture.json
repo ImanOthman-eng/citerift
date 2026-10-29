@@ -1,0 +1,166 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "1da88e8f4e8350fb701bb0a6e77ae6e5ba060d33235a1fc22c8270ebaa03c317",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.454,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:14:10.670237Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1873306",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 12751,
+   "body_sha256": "531231a48ff8aecda83be2e4983d821dced25ca7f0c28a3f1b954fb6e36c9703",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.491,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:15:00.124522Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1873306",
+   "wire_bytes": 4400
+  },
+  {
+   "body_bytes": 1965,
+   "body_sha256": "079b6539c4401b2ef19437a2b9eeb5b4241816326f5d6f96b66b62865d6a0a09",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.419,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:15:10.619338Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76372332/html",
+   "wire_bytes": 1965
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "dbfdb1dd7bcdffb83080fb8399c61a977c1d64fcf0b6fed1b2e67256458dfe06",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.395,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:15:21.039177Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76372332/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 1965,
+   "body_sha256": "58eff132b90881bb4e5492dd75b0d2eb62cd4c6dc2be9159bd0b8e0dcd3c524d",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.356,
+   "number": 3,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:16:00.434442Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76372332/html",
+   "wire_bytes": 1965
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "1da88e8f4e8350fb701bb0a6e77ae6e5ba060d33235a1fc22c8270ebaa03c317",
+  "079b6539c4401b2ef19437a2b9eeb5b4241816326f5d6f96b66b62865d6a0a09",
+  "dbfdb1dd7bcdffb83080fb8399c61a977c1d64fcf0b6fed1b2e67256458dfe06",
+  "58eff132b90881bb4e5492dd75b0d2eb62cd4c6dc2be9159bd0b8e0dcd3c524d"
+ ],
+ "finished_at": "2026-10-29T08:16:00.790874Z",
+ "issues": [
+  {
+   "code": "ATTEMPTS_EXHAUSTED",
+   "detail": "render",
+   "entities": [],
+   "evidence": [],
+   "retryable": true,
+   "severity": "error"
+  }
+ ],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1873306,
+  "parent_revision_id": 76320818,
+  "redirect_followed": null,
+  "revision_id": 76372332,
+  "revision_timestamp": "2026-08-29T06:03:17Z",
+  "sha1": "4009162862cdb971584434c2d0d3b59c02f88481",
+  "size": 12192,
+  "title": "الهربس البشري 7",
+  "wiki": "ar"
+ },
+ "render": {
+  "code": "ATTEMPTS_EXHAUSTED",
+  "not_before": null,
+  "state": "failed",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76372332/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1873306,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3ecce4637eed8b2aff6ff0b6208a1f35c3e0bcd3e44268d395ee61a7ce84e672",
+  "bytes": 12192,
+  "response_artifact": "531231a48ff8aecda83be2e4983d821dced25ca7f0c28a3f1b954fb6e36c9703",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1873306"
+ },
+ "started_at": "2026-10-29T08:14:01.015637Z",
+ "status": "partial"
+}
