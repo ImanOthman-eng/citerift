@@ -34,9 +34,9 @@ from citerift.wiki.capture import (
 from citerift.wiki.extract import ExtractConfig, extract_bundle, extractor_identity
 from citerift.wiki.fetch import HOSTS
 from citerift.wiki.issues import CATALOG, Issue, sort_issues
-from citerift.wiki.markers import marker_target
+from citerift.wiki.markers import fold, marker_target, term_pattern
 from citerift.wiki.profile import load_profile
-from citerift.wiki.render import RenderLimitExceeded, RenderReader
+from citerift.wiki.render import RenderLimitExceeded, RenderReader, link_target
 from citerift.wiki.textmap import ByteMap
 
 VERIFICATION_SCHEMA = "urn:citerift:schema:wiki:v1:verification"
@@ -468,24 +468,97 @@ def verify_extraction(bundle: Bundle, doc: Any, artifacts: dict[str, bytes], rep
     _marker_evidence(doc, reader, report)
 
 
+_LINK_PARTS = {"redlink": True, "hidden_redlink": True, "template_link": False, "hidden_template_link": False}
+_TERM_PARTS = {"text": "shown", "cite_text": "shown", "hidden_text": "hidden"}
+
+
+def _quotes(text: str, labels: list[str], matched: str, shown_only: bool) -> bool:
+    """Whether ``matched`` occurs in ``text`` (for a shown-text item: at characters all labelled ``text``)."""
+    i = text.find(matched) if matched else -1
+    while i >= 0:
+        if not shown_only or set(labels[i : i + len(matched)]) == {"text"}:
+            return True
+        i = text.find(matched, i + 1)
+    return False
+
+
 def _marker_evidence(doc: dict[str, Any], reader: RenderReader, report: _Report) -> None:
-    """Each marker evidence item quotes what its element shows: a term match is in the element's rebuilt text
-    (its shown, citation or hidden channel), and a link's label is the link's text. Replay re-derives the states."""
+    """Necessary conditions on marker evidence, checked against the retained HTML (SPECIFICATION.md 14):
+
+    - a term item quotes text its element shows in the channel its ``part`` names (rebuilt as the extractor
+      rebuilds region text, hiding inherited), labelled ``text`` throughout for a ``text`` item, and the term
+      matches the quoted text;
+    - a link item's element is a link with that label and target, the target is a marker-template page, and the
+      link is red exactly when the part says so; a hidden item's element is hidden;
+    - kinds and parts agree, and the marker state follows from its evidence.
+
+    Evidence that was left out cannot be seen from the document: ``replay`` re-derives every observation."""
     wiki = load_profile().wikis.get(doc["capture"]["wiki"] or "")
     if wiki is None:
         return
+    cache: dict[Any, Any] = {}
+    quoted: dict[tuple[Any, str, str], bool] = {}
+
+    def rebuilt(el: Any) -> Any:
+        if el not in cache:
+            cache[el] = reader.region_text([el], lambda title: marker_target(title, wiki))
+        return cache[el]
+
+    terms = set(wiki.warning_terms) | set(wiki.ambiguous_terms)
     for m in doc["markers"]:
+        kinds = set()
         for n, ev in enumerate(m["evidence"]):
-            loc = ev.get("locator")
-            el = reader.element_by_path(loc["path"]) if loc else None
+            where = f"{m['container_id']} evidence {n}"
+            kinds.add(ev["kind"])
+            el = reader.element_by_path(ev["locator"]["path"])
             if el is None:
-                continue
-            if ev["part"] in ("redlink", "hidden_redlink", "template_link", "hidden_template_link"):
-                ok = el.tag == "a" and " ".join(el.text_content().split()) == ev["matched"]
+                continue  # reported by the locator check
+            part = ev["part"]
+            if part in _LINK_PARTS:
+                target, basis = link_target(el) if el.tag == "a" else (None, "none")
+                ok = (
+                    el.tag == "a"
+                    and " ".join(el.text_content().split()) == ev["matched"]
+                    and (target, basis) == (ev.get("target"), ev.get("target_basis"))
+                    and target is not None
+                    and marker_target(target, wiki)
+                    and ("new" in (el.get("class") or "").split()) == _LINK_PARTS[part]
+                    and (reader.inherited_hiding(el) is not None) == part.startswith("hidden")
+                )
+                kind_ok = ev["kind"] == (
+                    "hidden"
+                    if part.startswith("hidden")
+                    else "missing_template_link"
+                    if _LINK_PARTS[part]
+                    else "ambiguous"
+                )
             else:
-                region = reader.region_text([el], lambda title: marker_target(title, wiki))
-                ok = any(ev["matched"] in ch.text for ch in region.channels.values())
-            report.check("marker evidence quotes its element", ok, "LOCATOR_MISMATCH", f"{m['container_id']} {n}")
+                key = (el, ev["matched"], part)
+                if key not in quoted:
+                    ch = rebuilt(el).channels[_TERM_PARTS[part]]
+                    quoted[key] = _quotes(ch.text, ch.label, ev["matched"], part == "text")
+                at = quoted[key]
+                matched = ev["matched"]
+                ok = at and ev.get("term") in terms and bool(term_pattern(ev["term"]).search(fold(matched)))
+                kind_ok = (
+                    ev["kind"] == "hidden"
+                    if part == "hidden_text"
+                    else ev["kind"] == "ambiguous"
+                    if part == "cite_text"
+                    else (ev["kind"] == "warning") == ("exclusion" not in ev and ev["term"] in wiki.warning_terms)
+                )
+            report.check("marker evidence quotes its element", ok, "LOCATOR_MISMATCH", where)
+            report.check("marker evidence kind follows its part", kind_ok, detail=where)
+        state = m["state"]
+        if "warning" in kinds:
+            want = {"recognized_warning_text"}
+        elif kinds & {"ambiguous", "hidden"}:
+            want = {"ambiguous_text"}
+        elif "missing_template_link" in kinds:
+            want = {"missing_template_link_only", "not_inspected"}
+        else:
+            want = {"no_recognized_warning_in_inspected_region", "not_inspected", "unavailable"}
+        report.check("marker state follows its evidence", state in want, detail=m["container_id"])
 
 
 def _read_extraction(path: Path, report: _Report) -> Any:

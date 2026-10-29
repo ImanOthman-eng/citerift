@@ -1,0 +1,22 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+for wiki, text in [
+ ("en", 'A.<ref name="a">P</ref> <ref name="b">See {{r|a}}</ref>'),
+ ("en", 'A.<ref name="a">P</ref> {{cite journal|title=T {{r|a}}}}'),
+ ("en", 'A.<ref name="a">P</ref> <references>{{r|a}}</references>'),
+ ("en", 'A.<ref name="a">P</ref> <!-- {{r|a|1=b}} --> <nowiki>{{r|a}}</nowiki>'),
+ ("en", 'A.<ref name="a">P</ref> {{r|a|1=a|1=a}}'),
+ ("en", 'A.<ref name="a">P</ref> {{r|a|name=}}'),
+ ("en", 'A.<ref name="a">P</ref> {{r|{{{1}}}}}'),
+ ("en", 'A.<ref name="a">P</ref> {{r|a|group={{x}}}}'),
+ ("ar", 'أ.<ref name="a">P</ref> {{استشهاد متعدد|group=g}}'),
+ ("ar", 'أ.<ref name="a">P</ref> {{استشهاد متعدد|a|||b}}'),
+ ("ar", 'أ.<ref name="a">P</ref> {{R|a|b|c|d|e|f|g|h|i|j}}'),
+]:
+    try:
+        doc, b = src(text, wiki)
+        r = verify_bundle(b, doc)
+        print(wiki, repr(text), [(u["origin"], u["name"], u["binding"], u["zone"]) for u in doc["uses"] if u["origin"]=="r"],
+              sorted(c for c in codes(doc) if c.startswith(("REUSE", "REF_", "LIST"))), r["verified"])
+    except Exception as e:
+        print(wiki, repr(text), "EXC", type(e).__name__, e)

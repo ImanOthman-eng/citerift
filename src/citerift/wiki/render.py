@@ -243,17 +243,23 @@ class TextChannel:
     chars: list[str] = field(default_factory=list)
     origin: list[Any] = field(default_factory=list)
     basis: list[str | None] = field(default_factory=list)
+    label: list[str] = field(default_factory=list)  # the channel each character came from ("text", "cite", ...)
     soft: set[int] = field(default_factory=set)
+    # Positions where content a reader sees but that is not this channel's text (a marker link's label, a backlink,
+    # an unknown element) touches a character with no space between: a match that starts or ends there is unsure.
+    edges: set[int] = field(default_factory=set)
 
-    def add(self, c: str, el: Any, basis: str | None) -> None:
+    def add(self, c: str, el: Any, basis: str | None, label: str) -> None:
         self.chars.append(c)
         self.origin.append(el)
         self.basis.append(basis)
+        self.label.append(label)
 
     def pop(self) -> None:
         self.chars.pop()
         self.origin.pop()
         self.basis.pop()
+        self.label.pop()
 
     @property
     def text(self) -> str:
@@ -295,6 +301,7 @@ class RenderReader:
         self.parent: dict[Any, Any] = {}
         self._by_path: dict[str, Any] = {}  # elements this reader has located (paths it produced itself)
         self._about_index: dict[str, list[Any]] | None = None
+        self._locators: dict[Any, Locator] = {}  # the tree never changes after parsing
         count = 0
         self.omitted: dict[str, str] = {}  # about -> parser limit warning
         self.limit_warnings: list[dict[str, Any]] = []
@@ -325,6 +332,14 @@ class RenderReader:
         self.elements = count
 
     def locator(self, el: Any) -> Locator:
+        cached = self._locators.get(el)
+        if cached is not None:
+            return cached
+        loc = self._locator(el)
+        self._locators[el] = loc
+        return loc
+
+    def _locator(self, el: Any) -> Locator:
         eid = el.get("id")
         quote = _norm_text(el.text_content())[:160]
         sub = lxml.html.tostring(el, encoding="utf-8", with_tail=False)
@@ -570,7 +585,7 @@ class RenderReader:
         whether it is a red link (a page that does not exist)."""
         for node in [el, *self._ancestors(el)]:
             if node.tag == "a":
-                target, basis = _link_target(node)
+                target, basis = link_target(node)
                 return {
                     "target": target,
                     "target_basis": basis,
@@ -605,12 +620,13 @@ class RenderReader:
         return None
 
     def region_text(self, els: list[Any], marker_link: Callable[[str], bool]) -> RegionText:
-        """The text of a rendered region in its channels (SPECIFICATION.md 13): shown text, the citation's own text
-        (inside ``<cite>``), text the HTML hides, and links to marker-template pages. The text is rebuilt as a reader
-        reads it: inline elements and comments do not break a word (``<span>Re</span>tracted`` is "Retracted"),
-        block elements and ``<br>`` do, and content of another channel inside a channel's text is a soft boundary,
-        across which a match is only ambiguous. Hiding is inherited from every ancestor, also outside the region.
-        ``marker_link`` tells whether a link target names a marker template."""
+        """The text of a rendered region in two channels (SPECIFICATION.md 13): the text a reader is shown (each
+        character labelled ``text``, or ``cite`` inside ``<cite>``) and the text the HTML hides; links to
+        marker-template pages are kept apart. The text is rebuilt as a reader reads it: inline elements and comments
+        do not break a word (``<span>Re</span>tracted`` is "Retracted"), ``<q>`` adds its quotation marks, block
+        elements and ``<br>`` break it, and hidden content inside shown text is a soft boundary, across which a match
+        is only ambiguous. Hiding is inherited from every ancestor, also outside the region. ``marker_link`` tells
+        whether a link target names a marker template."""
         tokens: list[tuple[Any, ...]] = []
         links: list[RegionLink] = []
         hiding: set[str] = set()
@@ -624,7 +640,7 @@ class RenderReader:
             cls = set((node.get("class") or "").split())
             if tag in _TRANSPARENT_TAGS:
                 return
-            if "mw-cite-backlink" in cls:
+            if "mw-cite-backlink" in cls and _structural_backlink(node):
                 tokens.append(("soft",))
                 return
             own = self.hide_reason(node) if basis is None else None
@@ -632,7 +648,7 @@ class RenderReader:
                 hiding.add(own)
             basis = basis or own
             if tag == "a":
-                target, how = _link_target(node)
+                target, how = link_target(node)
                 if target is not None and marker_link(target):
                     links.append(
                         RegionLink(
@@ -646,12 +662,16 @@ class RenderReader:
             elif tag not in _INLINE_TAGS:
                 tokens.append(("soft",))
             inner = "hidden" if basis is not None else "cite" if (channel == "cite" or tag == "cite") else channel
+            if tag == "q":
+                emit("\u201c", inner, node, basis)
             emit(node.text or "", inner, node, basis)
             for child in node:
                 if isinstance(child.tag, str):
                     element(child, inner, basis)
                 # Comments and processing instructions render nothing: the text around them joins.
                 emit(child.tail or "", inner, node, basis)
+            if tag == "q":
+                emit("\u201d", inner, node, basis)
             if tag in _BLOCK_TAGS:
                 tokens.append(("hard",))
             elif tag not in _INLINE_TAGS:
@@ -660,15 +680,35 @@ class RenderReader:
         for i, el in enumerate(els):
             if i:
                 tokens.append(("hard",))
-            basis = self.inherited_hiding(el.getparent()) if el.getparent() is not None else None
+            parent = el.getparent()
+            basis = self.inherited_hiding(parent) if parent is not None else None
             if basis is not None:
                 hiding.add(basis)
+            start = "cite" if any(a.tag == "cite" for a in self._ancestors(el)) else "text"
             # The region element's own tail is outside the region.
-            element(el, "text", basis)
-        return RegionText({name: _channel(tokens, name) for name in ("text", "cite", "hidden")}, links, len(hiding))
+            element(el, start, basis)
+        return RegionText(
+            {
+                "shown": _channel(tokens, frozenset(("text", "cite"))),
+                "hidden": _channel(tokens, frozenset(("hidden",))),
+            },
+            links,
+            len(hiding),
+        )
 
 
-def _link_target(a: Any) -> tuple[str | None, str]:
+def _structural_backlink(node: Any) -> bool:
+    """Parsoid's backlink span: a direct child of the note's list item holding the ``mw:referencedBy`` links. Any
+    other element with that class (an editor can set classes) is ordinary content."""
+    parent = node.getparent()
+    return (
+        parent is not None
+        and parent.tag == "li"
+        and any("mw:referencedBy" in (a.get("rel") or "").split() for a in node.iter("a"))
+    )
+
+
+def link_target(a: Any) -> tuple[str | None, str]:
     """The page a link points to and where that was read: Parsoid writes wiki links as ``./Title`` (red links add
     ``?action=edit&redlink=1``); the title attribute is the fallback."""
     href = a.get("href") or ""
@@ -681,38 +721,48 @@ def _link_target(a: Any) -> tuple[str | None, str]:
     return None, "none"
 
 
-def _channel(tokens: list[tuple[Any, ...]], name: str) -> TextChannel:
-    """One channel's characters: whitespace runs as one space, a hard boundary as U+2029, and the positions where
-    a soft boundary (a backlink, a marker link, an unknown element, text of another channel) falls between two
-    characters."""
+def _channel(tokens: list[tuple[Any, ...]], include: frozenset[str]) -> TextChannel:
+    """The characters of the channels in ``include``: whitespace runs (any Unicode space, U+2029 included) as one
+    space, a hard boundary as U+2029, and the soft boundaries and edges between characters.
+
+    A soft boundary is content outside ``include`` (hidden text for the shown channel) or an excluded element lying
+    between two characters with no space between them. An edge is where an excluded element a reader sees (a
+    ``("soft",)`` token: a marker link, a backlink, an unknown element) touches a character with no space."""
     ch = TextChannel()
-    pending: str | None = None
+    hard = soft = edge = ws = False
     for tok in tokens:
         if tok[0] == "hard":
-            pending = "hard"
+            hard = True
             continue
-        if tok[0] == "soft" or tok[1] != name:
-            if pending != "hard":
-                pending = "soft"
+        if tok[0] == "soft" or tok[1] not in include:
+            visible = tok[0] == "soft"
+            if visible and not ws and ch.chars and ch.chars[-1] not in (" ", HARD):
+                ch.edges.add(len(ch.chars))
+            soft, edge, ws = True, edge or visible, False
             continue
         for c in tok[2]:
-            if c.isspace() and c != HARD:
+            if c.isspace():
+                ws = True
                 if ch.chars and ch.chars[-1] not in (" ", HARD):
-                    ch.add(" ", tok[3], tok[4])
+                    ch.add(" ", tok[3], tok[4], tok[1])
                 continue
-            if pending is not None and ch.chars:
-                if pending == "hard":
-                    if ch.chars[-1] == " ":
-                        ch.pop()
-                    if ch.chars[-1] != HARD:
-                        ch.add(HARD, None, None)
-                elif ch.chars[-1] not in (" ", HARD):
+            if hard and ch.chars:
+                if ch.chars[-1] == " ":
+                    ch.pop()
+                if ch.chars[-1] != HARD:
+                    ch.add(HARD, None, None, "")
+            elif not hard and not ws:
+                if soft and ch.chars and ch.chars[-1] not in (" ", HARD):
                     ch.soft.add(len(ch.chars))
-            pending = None
-            ch.add(c, tok[3], tok[4])
+                if edge:
+                    ch.edges.add(len(ch.chars))
+            hard = soft = edge = ws = False
+            ch.add(c, tok[3], tok[4], tok[1])
     while ch.chars and ch.chars[-1] in (" ", HARD):
         ch.pop()
-    ch.soft = {p for p in ch.soft if p < len(ch.chars)}
+    n = len(ch.chars)
+    ch.soft = {p for p in ch.soft if 0 < p < n}
+    ch.edges = {p for p in ch.edges if p <= n}
     return ch
 
 

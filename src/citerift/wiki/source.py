@@ -185,10 +185,17 @@ _ATTR_WS = re.compile(r"[\t\r\n ]+")
 _POSITIVE_INT = re.compile(r"[1-9][0-9]*\Z")
 # Module:R (enwiki): the argument keys that name references, and those that put text into a note.
 _R_NAME_KEY = re.compile(r"(?:(?:name|n)?[0-9]+|name|n)\Z")
+# Note text: the reference and annotation aliases, the postscript (written into the note) and the content id (which
+# wraps the note text in a span), with the numbered forms Module:R reads for every name.
 _R_CONTENT_KEY = re.compile(
-    r"(?:reference|refn|r|annotation|annot|a)[1-9][0-9]*\Z"
-    r"|(?:references|reference|notes|note|content|text|refn|refs|r|annotation|annot|a)\Z"
+    r"(?:reference|refn|r|annotation|annot|a|postscript|ps|ref|id)[1-9][0-9]*\Z"
+    r"|[1-9][0-9]*(?:ps|ref)\Z"
+    r"|(?:references|reference|notes|note|content|text|refn|refs|r|annotation|annot|a|postscript|ps|ref|id)\Z"
 )
+# MediaWiki trims argument names and values with PHP trim() and Module:Arguments with mw.text.trim: ASCII
+# whitespace (and NUL) only. A no-break space is part of a name.
+_ARG_TRIM = " \t\n\r\f\v\0"
+_TAG_QUOTED = re.compile(r"[\"'](.+)[\"']\Z|\"\"\Z|''\Z", re.DOTALL)
 
 
 def effective_arguments(params: list[ParamRecord]) -> tuple[dict[str, ParamRecord], list[ParamRecord]]:
@@ -231,6 +238,10 @@ def _has_markup(code: Wikicode) -> bool:
 
 def _bare_url(node: object) -> bool:
     return isinstance(node, ExternalLink) and not node.brackets and not _has_markup(node.url)
+
+
+def _without_comments(code: Wikicode) -> str:
+    return "".join(str(n) for n in code.nodes if not isinstance(n, Comment))
 
 
 def _plain(code: Wikicode) -> tuple[str, list[str]]:
@@ -395,7 +406,7 @@ class Scanner:
                 rec.exact = False
                 pos = v_end
                 continue
-            pname = _plain(param.name)[0].strip() if param.showkey else name_raw.strip()
+            pname = _plain(param.name)[0].strip(_ARG_TRIM) if param.showkey else name_raw.strip()
             rec.params.append(ParamRecord(name_raw, pname, bool(param.showkey), p_start, v_end, v_start, v_end, param))
             pos = v_end
         if pos + 2 != end:
@@ -480,8 +491,9 @@ class Scanner:
             # and {{sfn|1=Smith|2=2001}} are the same call to Module:Footnotes, and a repeated argument counts once,
             # with its last value.
             effective, _ = effective_arguments(rec.params)
+            # Comments are removed before the module sees a value, as the preprocessor does.
             args = [
-                [k, _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip()]
+                [k, _ATTR_WS.sub(" ", _without_comments(p.node.value) if p.node is not None else "").strip(_ARG_TRIM)]
                 for k, p in sorted(effective.items(), key=lambda kv: _numeric_order(kv[0]))
             ]
             sfn_key = json.dumps([rec.canonical or rec.raw_name.strip(), args], ensure_ascii=False)
@@ -549,7 +561,12 @@ class Scanner:
         effective, replaced = effective_arguments(rec.params)
 
         def text(p: ParamRecord) -> str:
-            return _plain(p.node.value)[0].strip() if p.node is not None else ""
+            # The names reach Cite as attributes of #tag (arwiki) or frame:extensionTag (Module:R), which are not
+            # entity-decoded (unlike <ref name="...">); #tag also removes one pair of enclosing quotes.
+            value = _without_comments(p.node.value).strip(_ARG_TRIM) if p.node is not None else ""
+            if self.wiki.wiki == "ar" and (q := _TAG_QUOTED.match(value)) is not None:
+                value = q.group(1) or ""
+            return value
 
         def markup(p: ParamRecord) -> bool:
             return p.node is not None and _has_markup(p.node.value)

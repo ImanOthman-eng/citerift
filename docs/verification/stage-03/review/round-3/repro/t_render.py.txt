@@ -1,0 +1,57 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+cases = [
+ ("en", 'Paper. <span class="mw-cite-backlink">Retracted</span>.'),
+ ("en", 'Paper. <a href="/wiki/Template:Retracted">Retracted</a>.'),
+ ("en", 'Paper. <a rel="mw:WikiLink" href="./Template:Retracted" title="Template:Retracted">Retracted</a>.'),
+ ("en", 'Paper. <a rel="mw:WikiLink" href="./Template:Retracted?action=edit&amp;redlink=1" class="new" title="Template:Retracted (page does not exist)">Retracted</a>.'),
+ ("en", 'Paper. <a rel="mw:WikiLink" href="./Retracted_paper">Retracted</a> paper.'),
+ ("en", 'Paper. <noscript>Retracted</noscript>.'),
+ ("en", 'Paper. <label>Retracted</label>.'),
+ ("en", 'Paper. Retrac<span style="display:none"></span>ted.'),
+ ("en", 'Paper. <span style="display: none ;">Retracted</span>.'),
+ ("en", 'Paper. <span style="DISPLAY:NONE">Retracted</span>.'),
+ ("en", 'Paper. <span style="display:/**/none">Retracted</span>.'),
+ ("en", 'Paper. <span style="display:none\\9">Retracted</span>.'),
+ ("en", 'Paper. <span style="font-size:0">Retracted</span>.'),
+ ("en", 'Paper. <span style="display:no&#110;e">Retracted</span>.'),
+ ("en", 'Paper. <span style="visibility:collapse">Retracted</span>.'),
+ ("en", 'Paper. <span style="display:block;display:none">Retracted</span>.'),
+ ("en", 'Paper. <span style="display:none;display:inline">Retracted</span>.'),
+ ("en", 'Paper. <span class="cs1-hidden-error">Retracted</span>.'),
+ ("en", 'Paper. <span class="error">Retracted</span>.'),
+ ("en", 'Paper. Re<sup>tracted</sup>.'),
+ ("en", 'Paper. Retracted<sup>[1]</sup>.'),
+ ("en", 'Paper. <s>Retracted</s>.'),
+ ("en", 'Paper. Expression of<br/>concern.'),
+ ("en", 'Paper. Expression<span> </span>of concern.'),
+ ("en", 'Paper. Expression of concern.'),
+ ("en", 'Paper. Expression of concern.'),
+ ("en", 'Paper. Re tracted.'),
+ ("en", 'Paper. <cite>Foo</cite>Retracted.'),
+ ("en", 'Paper. <cite>Foo. Retrac</cite>ted.'),
+ ("en", 'Paper. <span hidden="">x</span>Retracted.'),
+ ("en", 'Paper. <math>x</math>Retracted.'),
+ ("en", 'Paper. <img alt="x"/>Retracted.'),
+ ("en", 'Paper. <img alt="x"/> Retracted.'),
+ ("en", 'Paper. Retracted<img alt="x"/>: foo.'),
+ ("en", 'Paper. <i>not</i>retracted.'),
+ ("en", 'Paper. Retracted<!-- -->: foo.'),
+ ("ar", 'ورقة. <span class="mw-cite-backlink">مسحوب</span>.'),
+ ("ar", 'ورقة. مصدر<br/>مسحوب.'),
+ ("ar", 'ورقة. <a rel="mw:WikiLink" href="./قالب:مصدر_مسحوب" title="قالب:مصدر مسحوب">مصدر مسحوب</a>.'),
+ ("ar", 'ورقة. <a rel="mw:WikiLink" href="./%D9%82%D8%A7%D9%84%D8%A8:%D9%85%D8%B5%D8%AF%D8%B1_%D9%85%D8%B3%D8%AD%D9%88%D8%A8">مصدر مسحوب</a>.'),
+ ("ar", 'ورقة. مسحو<span style="display:none">x</span>ب.'),
+ ("ar", 'ورقة. مسحوبـــة.'),
+ ("ar", 'ورقة. مسحوب<img/>.'),
+ ("ar", 'ورقة. <img/>مسحوب.'),
+]
+for wiki, inner in cases:
+    try:
+        doc, rep, b = observe(inner, wiki)
+        m = doc["markers"][0]
+        print(f"{wiki} {inner!r}\n    -> {short(m)} verified={rep['verified']}")
+        if not rep["verified"]:
+            print("      ", [i for i in rep["issues"]][:3])
+    except Exception as e:
+        print(f"{wiki} {inner!r}\n    -> EXC {type(e).__name__}: {e}")

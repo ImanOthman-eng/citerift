@@ -1,0 +1,25 @@
+import sys, time; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+N = int(sys.argv[2]) if len(sys.argv) > 2 else 20000
+kind = sys.argv[1]
+if kind == "spans":      # 20k inline spans, no term
+    inner = "Paper. " + "".join(f"<span>w{i}</span> " for i in range(N))
+elif kind == "words":    # N plain warning words in one text node
+    inner = "Paper. " + "Retracted " * N
+elif kind == "softwords":  # N warning words each followed by a soft boundary (image)
+    inner = "Paper. " + "Retracted<img/>x " * N
+elif kind == "spanwords":  # N warning words each in its own span
+    inner = "Paper. " + "".join("<span>Retracted</span> " for i in range(N))
+elif kind == "ar":
+    inner = "ورقة. " + "مسحوب " * N
+t = time.time()
+b = bundle(tmpdir(), EN_TEXT if kind != "ar" else AR_TEXT, note_body(inner), wiki="en" if kind != "ar" else "ar")
+t1 = time.time()
+doc = extract(b)
+t2 = time.time()
+m = doc["markers"][0]
+print(kind, N, "html bytes", len(note_body(inner)), "status", doc["status"], "state", m["state"], "evidence", len(m["evidence"]),
+      f"extract {t2-t1:.1f}s")
+if len(sys.argv) > 3:
+    r = verify_bundle(b, doc); t3 = time.time()
+    print("  verify", r["verified"], f"{t3-t2:.1f}s")

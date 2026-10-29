@@ -1,18 +1,22 @@
 """Regressions for the external review findings F1-F4 (owner directive 2026-10-29, section 4).
 
-Mapping: F1 = RF-39, F2 = RF-40, F3 = RF-41, F4 = RF-42; RF-43 is the short-footnote key check that F4 asked for.
+Mapping: F1 = RF-39, F2 = RF-40, F3 = RF-41, F4 = RF-42; RF-43 is the short-footnote key check that F4 asked for;
+RF-44 to RF-53 are the integration review (R3-01 to R3-10) of these repairs.
 All inputs are SYNTHETIC. The before outputs are in docs/verification/stage-03/review/failfirst/f1-f4/.
 """
 
 from __future__ import annotations
 
 import json
+import time
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 import pytest
 from wiki_support import bundle, codes, doi_link, extract, note_li, ref_sup, references
 
+from citerift.wiki.canonical import digest
 from citerift.wiki.source import ParamRecord, effective_arguments
 from citerift.wiki.verify import verify_bundle
 
@@ -492,3 +496,202 @@ def test_wiki_hidden_bibliography_output_is_hidden(tmp_path: Path) -> None:
     (bib,) = [c for c in doc["containers"] if c["kind"] == "bibliography_entry"]
     (obs,) = [m for m in doc["markers"] if m["container_id"] == bib["id"]]
     assert facts(obs) == (AMBIG, [("hidden", "hidden_text", "Retracted")])
+
+
+# --------------------------------------------- RF-44-RF-53: integration review R3 of the F1-F4 repairs
+
+MARKER_LINK = '<a rel="mw:WikiLink" href="./Template:Retracted" title="Template:Retracted">{label}</a>'
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("wiki", "inner", "state", "exclusion"),
+    [
+        # R3-01: a term split across the citation's boundary is ambiguous, never a negative.
+        ("en", "Paper. Re<cite>tracted</cite>.", AMBIG, "spans_citation"),
+        ("en", "Paper. <cite>Smith. Expression</cite> of concern.", AMBIG, "spans_citation"),
+        ("ar", "ورقة. <cite>سميث. مس</cite>حوب.", AMBIG, "spans_citation"),
+        # R3-02: word boundaries and exclusions read the text a reader sees across the boundary.
+        ("en", "Paper. <cite>Smith. Un</cite>retracted.", NONE, None),
+        ("en", "Paper. <cite>Smith. It was not</cite> retracted.", AMBIG, "negated"),
+        ("en", "Paper. Retracted<cite>: a title. J Foo.</cite>", AMBIG, "title_prefix"),
+        ("ar", "ورقة. <cite>سميث. غير</cite>مسحوب.", AMBIG, "attached_letters"),
+        ("en", "Paper. " + MARKER_LINK.format(label="Un") + "retracted.", AMBIG, "interrupted"),
+        ("en", "Paper. retracted" + MARKER_LINK.format(label="ly") + ".", AMBIG, "interrupted"),
+        # A marker link separated by spaces leaves the words around it whole.
+        ("en", "Paper. " + MARKER_LINK.format(label="Template:Retracted") + " Retracted.", R_WARN, None),
+        # R3-03: an editor-set backlink class is ordinary text; only Parsoid's backlink span is left out.
+        ("en", 'Paper. <span class="mw-cite-backlink">Retracted</span>.', R_WARN, None),
+        ("ar", 'ورقة. <span class="mw-cite-backlink">مسحوب</span>.', R_WARN, None),
+        # R3-04: <q> renders quotation marks.
+        ("en", "Paper. <q>Retracted</q> article.", AMBIG, "quoted"),
+        ("ar", "ورقة. <q>مسحوب</q> مقالة.", AMBIG, "quoted"),
+        # R3-10: a U+2029 in the text is whitespace, not a block boundary.
+        ("en", "Paper. Expression of concern.", R_WARN, None),
+    ],
+)
+def test_wiki_region_text_review_r3(tmp_path: Path, wiki: str, inner: str, state: str, exclusion: str | None) -> None:
+    m = observe_note(tmp_path, inner, wiki)
+    assert m["state"] == state, m["evidence"]
+    if exclusion is not None:
+        assert exclusion in [e.get("exclusion") for e in m["evidence"]], m["evidence"]
+
+
+def _forge(b: Path, doc: dict[str, Any], change: Any) -> dict[str, Any]:
+    forged = json.loads(json.dumps(doc))
+    change(forged)
+    forged["accounting"]["markers"] = dict(Counter(m["state"] for m in forged["markers"]))
+    forged["extraction_digest"] = digest({k: v for k, v in forged.items() if k != "extraction_digest"})
+    return verify_bundle(b, forged)
+
+
+@pytest.mark.negative
+def test_wiki_verify_rejects_forged_marker_evidence(tmp_path: Path) -> None:
+    """R3-05: forged evidence passed verify (hidden turned shown, evidence without a locator, an ordinary link
+    presented as a missing marker template, a state that does not follow from its evidence)."""
+    body = (
+        "<p>A."
+        + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a")
+        + "</p>"
+        + references(
+            [note_li("cite_note-a-1", ["cite_ref-a_1-0"], 'Paper. <span style="display:none">Retracted</span>')]
+        )
+    )
+    b = bundle(tmp_path, EN_TEXT, body, name="h")
+    doc = extract(b)
+    assert verify_bundle(b, doc)["verified"]
+
+    def shown(d: dict[str, Any]) -> None:
+        m = d["markers"][0]
+        m["state"] = R_WARN
+        m["evidence"][0].update(kind="warning", part="text")
+        m["evidence"][0].pop("hidden_basis")
+
+    def no_locator(d: dict[str, Any]) -> None:
+        d["markers"][0]["evidence"][0].pop("locator")
+
+    def state_only(d: dict[str, Any]) -> None:
+        d["markers"][0]["state"] = NONE
+
+    for change in (shown, no_locator, state_only):
+        assert not _forge(b, doc, change)["verified"], change.__name__
+
+    plain = "Paper. " + BLUE.format(href="Smith", title="Smith", label="Smith")
+    body2 = (
+        "<p>A."
+        + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a")
+        + "</p>"
+        + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], plain)])
+    )
+    b2 = bundle(tmp_path, EN_TEXT, body2, name="l")
+    doc2 = extract(b2)
+    assert verify_bundle(b2, doc2)["verified"]
+    link_path = doc2["markers"][0]["region"]["locator"]["path"] + "/span[2]/a"
+
+    def as_marker_link(d: dict[str, Any]) -> None:
+        m = d["markers"][0]
+        m["state"] = "missing_template_link_only"
+        m["evidence"] = [
+            {
+                "kind": "missing_template_link",
+                "part": "redlink",
+                "matched": "Smith",
+                "target": "Smith",
+                "target_basis": "href",
+                "locator": {**m["region"]["locator"], "path": link_path},
+            }
+        ]
+
+    report = _forge(b2, doc2, as_marker_link)
+    assert not report["verified"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "call", ["{{r|a|ps=.}}", "{{r|a|postscript=.}}", "{{r|a|id=x}}", "{{r|a|ref=x}}", "{{r|a|b|2ps=.}}"]
+)
+def test_wiki_reuse_postscript_and_content_id_are_note_text(tmp_path: Path, call: str) -> None:
+    """R3-06: Module:R writes the postscript into the note and wraps it in a span for a content id."""
+    doc = extract(bundle(tmp_path, DEFS + call))
+    assert "REUSE_CONTENT_UNSUPPORTED" in codes(doc)
+    assert all(b == "bound" for _, b in r_uses(doc))
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("wiki", ["en", "ar"])
+def test_wiki_short_footnote_key_ignores_comments(tmp_path: Path, wiki: str) -> None:
+    """R3-07: a comment inside an argument split one short footnote into two notes."""
+    doc = extract(bundle(tmp_path, "A.{{sfn|Smith|2001}} B.{{sfn|Smith|2001<!-- c -->}}", wiki=wiki))
+    assert [len(c["definitions"]) for c in doc["containers"]] == [2]
+
+
+@pytest.mark.unit
+def test_wiki_reuse_names_keep_a_no_break_space(tmp_path: Path) -> None:
+    """R3-08: names are trimmed of ASCII whitespace only, as MediaWiki and Module:Arguments trim them."""
+    doc = extract(bundle(tmp_path, 'A.<ref name="a">A</ref> <ref name="a&nbsp;">B</ref> C.{{r|a }}'))
+    (use,) = [u for u in doc["uses"] if u["origin"] == "r"]
+    names = {c["id"]: c["name"] for c in doc["containers"]}
+    assert names[use["container_id"]] == "a "
+
+
+@pytest.mark.unit
+def test_wiki_region_text_cost_is_linear(tmp_path: Path) -> None:
+    """R3-09: a note with thousands of matches, each beside hidden text, took minutes (quadratic)."""
+    inner = " ".join('Re<span style="display:none">x</span>tracted' for _ in range(4000))
+    started = time.monotonic()
+    m = observe_note(tmp_path, inner)
+    assert m["state"] == AMBIG
+    assert time.monotonic() - started < 20
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(("after", "state"), [(" Retracted.", "not_inspected"), ("", NONE), ("\nNext line.", NONE)])
+def test_wiki_standalone_citation_in_running_text(tmp_path: Path, after: str, state: str) -> None:
+    """Review R3 (S-3): the region of a standalone citation template is its output; text after it on the same
+    rendered line was never inspected, so a negative there would be unfounded."""
+    text = "Intro.\n\n{{cite journal |title=Paper |doi=10.1000/p}}" + after + "\n"
+    dm = json.dumps(
+        {
+            "parts": [
+                {
+                    "template": {
+                        "target": {"wt": "cite journal "},
+                        "params": {"title": {"wt": "Paper "}, "doi": {"wt": "10.1000/p"}},
+                        "i": 0,
+                    }
+                }
+            ]
+        }
+    )
+    body = (
+        '<p><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1" about="#mwt5" '
+        f"typeof=\"mw:Extension/templatestyles mw:Transclusion\" data-mw='{dm}'/>"
+        '<cite about="#mwt5" class="citation journal cs1">"Paper". '
+        + doi_link("10.1000/p")
+        + "</cite>"
+        + after
+        + "</p>"
+    )
+    b = bundle(tmp_path, text, body)
+    doc = extract(b)
+    assert verify_bundle(b, doc)["verified"]
+    (bib,) = [c for c in doc["containers"] if c["kind"] == "bibliography_entry"]
+    (obs,) = [m for m in doc["markers"] if m["container_id"] == bib["id"]]
+    assert obs["state"] == state, obs
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("wiki", "call", "binding"),
+    [
+        ("en", "{{r|a&amp;b}}", "definition_missing"),
+        ("ar", "{{استشهاد متعدد|a&amp;b}}", "definition_missing"),
+        ("en", "{{r|a&b}}", "bound"),
+        ("ar", '{{استشهاد متعدد|"a&b"}}', "bound"),
+    ],
+)
+def test_wiki_reuse_names_are_not_entity_decoded(tmp_path: Path, wiki: str, call: str, binding: str) -> None:
+    """Review R3 (S-5): <ref name="a&amp;b"> is decoded to a&b, but a reuse template's name reaches Cite as an
+    attribute of #tag or frame:extensionTag, which is not decoded; #tag drops one pair of enclosing quotes."""
+    doc = extract(bundle(tmp_path, '<ref name="a&amp;b">Paper</ref> ' + call, wiki=wiki))
+    assert [b for _, b in r_uses(doc)] == [binding]

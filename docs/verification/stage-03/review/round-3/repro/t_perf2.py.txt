@@ -1,0 +1,16 @@
+"""Isolate the cost of the NEW per-evidence code (locator, common_ancestor, enclosing_link, soft-crossing scan)
+by replacing the pre-existing quadratic _exclusion with a constant-time stub."""
+import sys, time; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+import citerift.wiki.markers as M
+M._exclusion = lambda *a, **k: None
+N = int(sys.argv[2]); kind = sys.argv[1]
+filler = "lorem ipsum " * 40000   # ~480 kB of plain text in the same note
+if kind == "big":
+    inner = "<span>" + filler + "</span>" + "Retracted " * N
+elif kind == "soft":
+    inner = "Paper. " + "Retracted<img/>x " * N
+b = bundle(tmpdir(), EN_TEXT, note_body(inner))
+t = time.time(); doc = extract(b); t2 = time.time()
+m = doc["markers"][0]
+print(kind, N, "state", m["state"], "evidence", len(m["evidence"]), f"extract {t2-t:.1f}s")

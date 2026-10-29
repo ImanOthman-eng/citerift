@@ -177,11 +177,16 @@ The names of a reuse template follow its retained source (`review/failfirst/f1-f
 - **arwiki `{{استشهاد متعدد}}`.** The names are `1`, then `2`…`9` while each is non-blank; an absent `1` is the text
   `{{{1}}}`. The group is `group`.
 
-Implicit and explicit numbering therefore give the same uses. Every replaced, unread or missing name argument is
+Names and argument keys are trimmed of ASCII whitespace only, as PHP `trim` and Module:Arguments do. Names keep
+character references literally: they reach Cite as attributes of `#tag` or `frame:extensionTag`, which are not
+entity-decoded, unlike `<ref name="…">`. The `#tag` path also drops one pair of enclosing quotes. Implicit and
+explicit numbering therefore give the same uses. Every replaced, unread or missing name argument is
 reported: `REUSE_ARGUMENT_REPLACED`, `REUSE_NAME_NOT_USED`, `REUSE_NAME_MISSING`. Note text added through Module:R's
-content parameters, or `style=sub`, is reported as `REUSE_CONTENT_UNSUPPORTED`. A short-footnote call is keyed by its
-effective arguments, so `{{sfn|Smith|2001}}` and `{{sfn|1=Smith|2=2001}}` form one note. Refs in `<gallery>`, `<poem>`, `<imagemap>` and subreferences
-are reported, not extracted.
+content parameters (reference, annotation, postscript and content id), or `style=sub`, is reported as
+`REUSE_CONTENT_UNSUPPORTED`. A short-footnote call is keyed by its effective arguments, with comments removed, so
+`{{sfn|Smith|2001}}` and `{{sfn|1=Smith|2=2001}}` form one note.
+
+Refs in `<gallery>`, `<poem>`, `<imagemap>` and subreferences are reported, not extracted.
 
 ### 11.3 Citation units
 
@@ -265,43 +270,75 @@ only in text the HTML hides: `display:none`, the `hidden` attribute, CS1 mainten
 words; Arabic matching ignores harakat and tatweel and allows attached letters. `browser_visibility` is always
 `not_evaluated`. No path turns a failure, an unavailable render or a hidden term into "no warning".
 
-**Region text** (`RenderReader.region_text`) is rebuilt in channels:
+**Region text** (`RenderReader.region_text`) is rebuilt in two channels:
 
-- shown text;
-- the citation's own text, inside `<cite>`;
-- text the HTML hides;
-- links whose target is a marker-template page.
+- the text a reader is shown, each character labelled `text`, or `cite` inside `<cite>`;
+- the text the HTML hides.
 
-How the pieces join:
+Links to marker-template pages are kept apart. How the pieces join:
 
-- Inline elements, comments, `<style>`, `<script>`, `<link>` and `<meta>` do not break a word: `<span>Re</span>tracted`
-  is "Retracted".
-- Whitespace runs are one space.
+- Inline elements, comments, `<style>`, `<script>`, `<link>` and `<meta>` do not break a word:
+  `<span>Re</span>tracted` is "Retracted".
+- `<q>` adds its quotation marks.
+- Every run of Unicode whitespace is one space.
 - Block elements and `<br>` are a hard boundary (U+2029). No term, including a multi-word one, matches across it.
-- A backlink, a marker-template link, an unknown or replaced element (an image) and text of another channel are a
-  soft boundary. A match that crosses a soft boundary, or that is found only with the soft boundaries joined or only
-  with them separated, is `ambiguous` (`exclusion: interrupted`), never shown-warning evidence and never a negative.
-- Hiding (inline `display:none` or `visibility:hidden`, the `hidden` attribute, the CS1 maintenance classes and
-  `mw-empty-elt`) is inherited from every ancestor, including ancestors outside the region. A descendant declaring
-  itself visible is still treated as hidden, because CSS is not evaluated.
+- Hidden content inside shown text is a soft boundary. A match that crosses a soft boundary, or that is found only
+  with the soft boundaries joined or only with them separated, is ambiguous (`exclusion: interrupted`).
+- Content a reader sees that is not region text, touching a word with no space between, is an edge, and a match
+  that starts or ends at an edge is likewise ambiguous. Such content is a marker link's label, Parsoid's backlink
+  span (only the direct child of the note's list item holding the `mw:referencedBy` links), or an unknown element.
 
-Links are classified by target. A link (red or blue) whose target, read from Parsoid's `./Title` href or else from
-the title attribute, is a template-namespace page of a profile marker template keeps its label out of the text. As a
-red link it is `missing_template_link` evidence; as a blue link it is ambiguous (`template_page_link`). Any other link
-is ordinary: its label is text in the channel it sits in, whatever the target.
+How shown matches are classified:
 
-Each evidence item carries its channel (`part`), the matched original text and a snippet. It also carries the DOM
-locator of the nearest element containing every matched character, the exclusion basis or `hidden_basis` when there
-is one, and, for text inside a link, the link's target, how the target was read, and whether it is red.
+- A shown match is `text` evidence only when all its characters are labelled `text`.
+- Inside the citation it is ambiguous `cite_text`; across the citation's boundary, ambiguous (`spans_citation`).
+- Word boundaries and the exclusions (title prefix, negation, quotation, Arabic attached letters) read the whole
+  shown channel, so they see the text on both sides of the citation's boundary.
+
+Hiding:
+
+- The rules are inline `display:none` or `visibility:hidden`, the `hidden` attribute, the CS1 maintenance classes
+  and `mw-empty-elt`.
+- Hiding is inherited from every ancestor, including ancestors outside the region.
+- A descendant that declares itself visible is still treated as hidden, because CSS is not evaluated.
+
+**Links.** A link (red or blue) is classified by its target, read from Parsoid's `./Title` href or else from the
+title attribute. If the target is a template-namespace page of a profile marker template, the label is kept out of
+the text. A red one is then `missing_template_link` evidence, and a blue one is ambiguous (`template_page_link`).
+Any other link is ordinary: its label is text in the channel it sits in, whatever the target.
+
+**Evidence.** Each evidence item carries:
+
+- its channel (`part`), the matched original text and a snippet;
+- the DOM locator of the nearest element containing every matched character (required);
+- the exclusion basis or `hidden_basis`, when there is one;
+- for text inside a link: the link's target, how the target was read, and whether it is red.
+
+**Running text.** A citation template standing in running text is a `standalone_template` bibliography entry.
+Its region is the template's output. When letters or digits follow that output on its rendered line, that text
+was not inspected, and the observation is `not_inspected` rather than a negative.
+
+The matching cost is linear in the region's text and in its matches.
 
 ## 14. Verification and replay
 
 `verify_bundle` re-checks from retained bytes only: schemas, artifact hashes and listing, source SHA-1 and size, the
 source answer against the recorded identity, the render checks of 8.4, and for an extraction: its own digest, the
 configuration digest, the capture it names, every span and exact anchor against the source bytes, every DOM locator
-against the retained HTML (marker evidence locators included), that each marker evidence item quotes its element
-(the matched text is in the element's rebuilt text; a link's label is the link's text), references between entities
-and the accounting checks. `replay_bundle` checks the recorded
+against the retained HTML (marker evidence locators included), the marker evidence (below), references between
+entities and the accounting checks.
+
+**Marker evidence checks:**
+
+- a term item quotes text its element shows, in the channel its part names, with `text` labels throughout for a
+  `text` item;
+- the term matches the quoted text;
+- a link item's label, target, marker-template target and red/blue status agree with its part;
+- a hidden item's element is hidden;
+- kinds agree with parts;
+- the marker state follows from its evidence.
+
+Evidence that was left out cannot be seen from the document; `replay` re-derives every observation. `replay_bundle` checks the recorded
 document's schema and own digest, refuses a pinned configuration or extractor identity (version, profile, parsers)
 that differs from the recorded one, re-extracts in the isolated worker and reports `reproduced` only when the new
 document equals the recorded one.

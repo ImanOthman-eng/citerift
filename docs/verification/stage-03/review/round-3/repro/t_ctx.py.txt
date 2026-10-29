@@ -1,0 +1,12 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+for wiki, inner in [
+ ("en", 'Paper. It was not retracted.'),
+ ("en", 'Paper. <cite>Smith. It was not</cite> retracted.'),
+ ("en", 'Paper. Retracted: a title.'),
+ ("en", 'Paper. Retracted<cite>: a title. J Foo.</cite>'),
+ ("ar", 'ورقة. غير مسحوب.'),
+ ("ar", 'ورقة. <cite>سميث. غير</cite> مسحوب.'),
+]:
+    doc, rep, b = observe(inner, wiki)
+    print(f"{wiki} {inner!r}\n    -> {short(doc['markers'][0])} verified={rep['verified']}")
