@@ -34,6 +34,7 @@ from citerift.wiki.capture import (
 from citerift.wiki.extract import ExtractConfig, extract_bundle, extractor_identity
 from citerift.wiki.fetch import HOSTS
 from citerift.wiki.issues import CATALOG, Issue, sort_issues
+from citerift.wiki.markers import marker_target
 from citerift.wiki.profile import load_profile
 from citerift.wiki.render import RenderLimitExceeded, RenderReader
 from citerift.wiki.textmap import ByteMap
@@ -255,6 +256,9 @@ def _locators(doc: dict[str, Any]) -> Iterator[tuple[str, dict[str, Any]]]:
     for m in doc["markers"]:
         if m["region"] is not None:
             yield f"marker {m['container_id']}", m["region"]["locator"]
+        for n, ev in enumerate(m["evidence"]):
+            if "locator" in ev:
+                yield f"marker {m['container_id']} evidence {n}", ev["locator"]
     for ru in doc["render_only"]["uses"]:
         yield "render-only use", ru["locator"]
     for ri in doc["render_only"]["identifiers"]:
@@ -461,6 +465,27 @@ def verify_extraction(bundle: Bundle, doc: Any, artifacts: dict[str, bytes], rep
         el = reader.element_by_path(loc["path"])
         ok = el is not None and reader.locator(el).to_json() == loc
         report.check("render locators", ok, "LOCATOR_MISMATCH", f"{where} {loc['path'][:120]}")
+    _marker_evidence(doc, reader, report)
+
+
+def _marker_evidence(doc: dict[str, Any], reader: RenderReader, report: _Report) -> None:
+    """Each marker evidence item quotes what its element shows: a term match is in the element's rebuilt text
+    (its shown, citation or hidden channel), and a link's label is the link's text. Replay re-derives the states."""
+    wiki = load_profile().wikis.get(doc["capture"]["wiki"] or "")
+    if wiki is None:
+        return
+    for m in doc["markers"]:
+        for n, ev in enumerate(m["evidence"]):
+            loc = ev.get("locator")
+            el = reader.element_by_path(loc["path"]) if loc else None
+            if el is None:
+                continue
+            if ev["part"] in ("redlink", "hidden_redlink", "template_link", "hidden_template_link"):
+                ok = el.tag == "a" and " ".join(el.text_content().split()) == ev["matched"]
+            else:
+                region = reader.region_text([el], lambda title: marker_target(title, wiki))
+                ok = any(ev["matched"] in ch.text for ch in region.channels.values())
+            report.check("marker evidence quotes its element", ok, "LOCATOR_MISMATCH", f"{m['container_id']} {n}")
 
 
 def _read_extraction(path: Path, report: _Report) -> Any:

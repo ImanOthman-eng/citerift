@@ -299,13 +299,21 @@
         "evidence": {
           "type": "array",
           "items": {
-            "type": "object", "required": ["kind", "part", "matched"],
+            "type": "object", "additionalProperties": false, "required": ["kind", "part", "matched"],
             "properties": {
               "kind": {"enum": ["warning", "ambiguous", "hidden", "missing_template_link"]},
-              "part": {"enum": ["text", "cite_text", "hidden_text", "redlink"]},
+              "part": {"enum": ["text", "cite_text", "hidden_text", "redlink", "hidden_redlink", "template_link", "hidden_template_link"]},
               "matched": {"type": "string"},
               "term": {"type": "string"},
-              "snippet": {"type": "string"}
+              "snippet": {"type": "string"},
+              "exclusion": {"enum": ["title_prefix", "quoted", "attached_letters", "negated", "interrupted", "template_page_link"]},
+              "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
+              "hidden_basis": {"type": "string"},
+              "target": {"type": "string"},
+              "target_basis": {"enum": ["href", "title_attribute", "none"]},
+              "link": {"type": "object", "additionalProperties": false, "required": ["target", "target_basis", "red", "href"],
+                       "properties": {"target": {"type": ["string", "null"]}, "target_basis": {"enum": ["href", "title_attribute", "none"]},
+                                      "red": {"type": "boolean"}, "href": {"type": ["string", "null"]}}}
             }
           }
         },

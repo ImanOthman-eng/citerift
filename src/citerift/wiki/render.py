@@ -18,6 +18,7 @@ import json
 import re
 import urllib.parse
 from collections import Counter
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -31,6 +32,95 @@ LIBXML_VERSION = ".".join(str(x) for x in lxml.etree.LIBXML_VERSION)
 SUPPORTED_HTML_MAJOR_MINOR = ("2.8",)
 _SKIP_TEXT_TAGS = {"style", "script", "link", "meta", "noscript", "template"}
 _HIDDEN_CLASSES = {"cs1-maint", "cs1-hidden-error", "mw-empty-elt"}
+# Region text (region_text): elements whose content renders nothing and takes no room, so the text around them
+# joins; block elements, whose content never runs into the text around them; and inline elements, whose text runs
+# on. Any other element (an image, an unknown tag) is a soft boundary: a match across it is only ambiguous.
+_TRANSPARENT_TAGS = frozenset(_SKIP_TEXT_TAGS | {"wbr"})
+_BLOCK_TAGS = frozenset(
+    [
+        "address",
+        "article",
+        "aside",
+        "blockquote",
+        "br",
+        "caption",
+        "center",
+        "dd",
+        "details",
+        "dialog",
+        "div",
+        "dl",
+        "dt",
+        "fieldset",
+        "figcaption",
+        "figure",
+        "footer",
+        "form",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "header",
+        "hr",
+        "legend",
+        "li",
+        "main",
+        "menu",
+        "nav",
+        "ol",
+        "p",
+        "pre",
+        "section",
+        "summary",
+        "table",
+        "tbody",
+        "td",
+        "tfoot",
+        "th",
+        "thead",
+        "tr",
+        "ul",
+    ]
+)
+_INLINE_TAGS = frozenset(
+    [
+        "a",
+        "abbr",
+        "b",
+        "bdi",
+        "bdo",
+        "big",
+        "cite",
+        "code",
+        "data",
+        "del",
+        "dfn",
+        "em",
+        "font",
+        "i",
+        "ins",
+        "kbd",
+        "mark",
+        "q",
+        "rp",
+        "rt",
+        "ruby",
+        "s",
+        "samp",
+        "small",
+        "span",
+        "strong",
+        "sub",
+        "sup",
+        "time",
+        "tt",
+        "u",
+        "var",
+    ]
+)
+HARD = "\u2029"  # a block boundary in region text (PARAGRAPH SEPARATOR): never inside a term, never a space
 _WS = re.compile(r"\s+")
 _PATH = re.compile(r"^(?:/[a-z][a-z0-9]{0,15}(?:\[[1-9][0-9]{0,6}\])?){1,400}$(?!\n)")
 _STEP = re.compile(r"^([a-z][a-z0-9]{0,15})(?:\[([1-9][0-9]{0,6})\])?$")
@@ -143,6 +233,51 @@ def _style_hides(style: str | None) -> bool:
 
 def _norm_text(text: str) -> str:
     return _WS.sub(" ", text).strip()
+
+
+@dataclass
+class TextChannel:
+    """One channel of a region's text: its characters, the element and the hiding basis of each (None for a hard
+    boundary), and the positions p where a soft boundary falls between characters p-1 and p."""
+
+    chars: list[str] = field(default_factory=list)
+    origin: list[Any] = field(default_factory=list)
+    basis: list[str | None] = field(default_factory=list)
+    soft: set[int] = field(default_factory=set)
+
+    def add(self, c: str, el: Any, basis: str | None) -> None:
+        self.chars.append(c)
+        self.origin.append(el)
+        self.basis.append(basis)
+
+    def pop(self) -> None:
+        self.chars.pop()
+        self.origin.pop()
+        self.basis.pop()
+
+    @property
+    def text(self) -> str:
+        return "".join(self.chars)
+
+
+@dataclass
+class RegionLink:
+    """A link in a region whose target names a marker template: its label is not region text."""
+
+    element: Any
+    label: str
+    target: str
+    basis: str  # where the target was read: "href" or "title_attribute"
+    red: bool
+    href: str | None
+    hidden: str | None  # the hiding basis, or None
+
+
+@dataclass
+class RegionText:
+    channels: dict[str, TextChannel]
+    marker_links: list[RegionLink]
+    hidden_elements: int
 
 
 class RenderReader:
@@ -422,64 +557,163 @@ class RenderReader:
                 el = same[n - 1]
         return el
 
-    def region_text(self, el: Any) -> dict[str, Any]:
-        """Visible-candidate text of a region with the excluded parts kept apart (markers.py applies the rules)."""
-        parts: list[str] = []
-        cite_parts: list[str] = []
-        hidden_parts: list[str] = []
-        redlinks: list[str] = []
-        hidden_redlinks: list[str] = []
-        hidden_flags = 0
+    def common_ancestor(self, els: list[Any]) -> Any:
+        """The nearest element that contains every element of ``els`` (non-empty)."""
+        chain = [els[0], *self._ancestors(els[0])]
+        for el in els[1:]:
+            mine = {id(n) for n in [el, *self._ancestors(el)]}
+            chain = [n for n in chain if id(n) in mine]
+        return chain[0]
 
-        def walk(node: Any, in_cite: bool, hidden: bool) -> None:
-            nonlocal hidden_flags
-            # The text after a node belongs to the enclosing context, also when the node itself is skipped
-            # (a comment, a category <link>, a <style>, a backlink): dropping it would hide shown text.
-            tail_target = hidden_parts if hidden else cite_parts if in_cite else parts
-            if not isinstance(node.tag, str):
-                if node.tail:
-                    tail_target.append(node.tail)
-                return
+    def enclosing_link(self, el: Any, region: list[Any]) -> dict[str, Any] | None:
+        """The link an evidence element lies in, within the region: its target, how the target was read, and
+        whether it is a red link (a page that does not exist)."""
+        for node in [el, *self._ancestors(el)]:
+            if node.tag == "a":
+                target, basis = _link_target(node)
+                return {
+                    "target": target,
+                    "target_basis": basis,
+                    "red": "new" in (node.get("class") or "").split(),
+                    "href": node.get("href"),
+                }
+            if any(node is r for r in region):
+                return None
+        return None
+
+    def hide_reason(self, node: Any) -> str | None:
+        """Why the HTML itself hides this element (the supported rules only), or None."""
+        cls = set((node.get("class") or "").split())
+        if _style_hides(node.get("style")):
+            flat = re.sub(r"\s+", "", (node.get("style") or "").lower())
+            rule = "display:none" if "display:none" in flat else "visibility:hidden"
+        elif node.get("hidden") is not None:
+            rule = "hidden attribute"
+        elif cls & _HIDDEN_CLASSES:
+            rule = "class " + ",".join(sorted(cls & _HIDDEN_CLASSES))
+        else:
+            return None
+        return f"{rule} on <{node.tag}> {self.tree.getpath(node)}"
+
+    def inherited_hiding(self, el: Any) -> str | None:
+        """The nearest hiding element among ``el`` and its ancestors (outside the region too), or None."""
+        for node in [el, *self._ancestors(el)]:
+            if isinstance(node.tag, str):
+                reason = self.hide_reason(node)
+                if reason is not None:
+                    return reason
+        return None
+
+    def region_text(self, els: list[Any], marker_link: Callable[[str], bool]) -> RegionText:
+        """The text of a rendered region in its channels (SPECIFICATION.md 13): shown text, the citation's own text
+        (inside ``<cite>``), text the HTML hides, and links to marker-template pages. The text is rebuilt as a reader
+        reads it: inline elements and comments do not break a word (``<span>Re</span>tracted`` is "Retracted"),
+        block elements and ``<br>`` do, and content of another channel inside a channel's text is a soft boundary,
+        across which a match is only ambiguous. Hiding is inherited from every ancestor, also outside the region.
+        ``marker_link`` tells whether a link target names a marker template."""
+        tokens: list[tuple[Any, ...]] = []
+        links: list[RegionLink] = []
+        hiding: set[str] = set()
+
+        def emit(text: str, channel: str, el: Any, basis: str | None) -> None:
+            if text:
+                tokens.append(("t", channel, text, el, basis))
+
+        def element(node: Any, channel: str, basis: str | None) -> None:
             tag = node.tag
             cls = set((node.get("class") or "").split())
-            if tag in _SKIP_TEXT_TAGS or "mw-cite-backlink" in cls:
-                if node.tail:
-                    tail_target.append(node.tail)
+            if tag in _TRANSPARENT_TAGS:
                 return
-            node_hidden = (
-                hidden
-                or bool(cls & _HIDDEN_CLASSES)
-                or _style_hides(node.get("style"))
-                or node.get("hidden") is not None
-            )
-            if node_hidden and not hidden:
-                hidden_flags += 1
-            if tag == "a" and "new" in cls:
-                label = node.get("title") or _norm_text(node.text_content())
-                (hidden_redlinks if node_hidden else redlinks).append(label)
-                if node.tail:
-                    tail_target.append(node.tail)
+            if "mw-cite-backlink" in cls:
+                tokens.append(("soft",))
                 return
-            target = hidden_parts if node_hidden else cite_parts if (in_cite or tag == "cite") else parts
-            if node.text:
-                target.append(node.text)
+            own = self.hide_reason(node) if basis is None else None
+            if own is not None:
+                hiding.add(own)
+            basis = basis or own
+            if tag == "a":
+                target, how = _link_target(node)
+                if target is not None and marker_link(target):
+                    links.append(
+                        RegionLink(
+                            node, _norm_text(node.text_content()), target, how, "new" in cls, node.get("href"), basis
+                        )
+                    )
+                    tokens.append(("soft",))
+                    return
+            if tag in _BLOCK_TAGS:
+                tokens.append(("hard",))
+            elif tag not in _INLINE_TAGS:
+                tokens.append(("soft",))
+            inner = "hidden" if basis is not None else "cite" if (channel == "cite" or tag == "cite") else channel
+            emit(node.text or "", inner, node, basis)
             for child in node:
-                walk(child, in_cite or tag == "cite", node_hidden)
-            if node.tail:
-                tail_target.append(node.tail)
+                if isinstance(child.tag, str):
+                    element(child, inner, basis)
+                # Comments and processing instructions render nothing: the text around them joins.
+                emit(child.tail or "", inner, node, basis)
+            if tag in _BLOCK_TAGS:
+                tokens.append(("hard",))
+            elif tag not in _INLINE_TAGS:
+                tokens.append(("soft",))
 
-        walk(el, False, False)
-        # The region element's own tail is outside the region.
-        if el.tail and parts and parts[-1] == el.tail:
-            parts.pop()
-        return {
-            "text": _norm_text(" ".join(parts)),
-            "cite_text": _norm_text(" ".join(cite_parts)),
-            "hidden_text": _norm_text(" ".join(hidden_parts)),
-            "redlinks": redlinks,
-            "hidden_redlinks": hidden_redlinks,
-            "hidden_elements": hidden_flags,
-        }
+        for i, el in enumerate(els):
+            if i:
+                tokens.append(("hard",))
+            basis = self.inherited_hiding(el.getparent()) if el.getparent() is not None else None
+            if basis is not None:
+                hiding.add(basis)
+            # The region element's own tail is outside the region.
+            element(el, "text", basis)
+        return RegionText({name: _channel(tokens, name) for name in ("text", "cite", "hidden")}, links, len(hiding))
+
+
+def _link_target(a: Any) -> tuple[str | None, str]:
+    """The page a link points to and where that was read: Parsoid writes wiki links as ``./Title`` (red links add
+    ``?action=edit&redlink=1``); the title attribute is the fallback."""
+    href = a.get("href") or ""
+    if href.startswith("./"):
+        path = href[2:].split("#", 1)[0].split("?", 1)[0]
+        return urllib.parse.unquote(path).replace("_", " "), "href"
+    title = a.get("title")
+    if title:
+        return title, "title_attribute"
+    return None, "none"
+
+
+def _channel(tokens: list[tuple[Any, ...]], name: str) -> TextChannel:
+    """One channel's characters: whitespace runs as one space, a hard boundary as U+2029, and the positions where
+    a soft boundary (a backlink, a marker link, an unknown element, text of another channel) falls between two
+    characters."""
+    ch = TextChannel()
+    pending: str | None = None
+    for tok in tokens:
+        if tok[0] == "hard":
+            pending = "hard"
+            continue
+        if tok[0] == "soft" or tok[1] != name:
+            if pending != "hard":
+                pending = "soft"
+            continue
+        for c in tok[2]:
+            if c.isspace() and c != HARD:
+                if ch.chars and ch.chars[-1] not in (" ", HARD):
+                    ch.add(" ", tok[3], tok[4])
+                continue
+            if pending is not None and ch.chars:
+                if pending == "hard":
+                    if ch.chars[-1] == " ":
+                        ch.pop()
+                    if ch.chars[-1] != HARD:
+                        ch.add(HARD, None, None)
+                elif ch.chars[-1] not in (" ", HARD):
+                    ch.soft.add(len(ch.chars))
+            pending = None
+            ch.add(c, tok[3], tok[4])
+    while ch.chars and ch.chars[-1] in (" ", HARD):
+        ch.pop()
+    ch.soft = {p for p in ch.soft if p < len(ch.chars)}
+    return ch
 
 
 def read_render(data: bytes, max_elements: int = 2_000_000) -> tuple[RenderDoc, RenderReader]:

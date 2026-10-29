@@ -28,7 +28,7 @@ from typing import Any
 from citerift.wiki.model import SourceModel
 from citerift.wiki.profile import WikiProfile
 from citerift.wiki.reconcile import Reconciliation
-from citerift.wiki.render import RenderDoc, RenderReader
+from citerift.wiki.render import HARD, RenderDoc, RenderReader, TextChannel
 
 STATES = (
     "recognized_warning_text",
@@ -141,29 +141,77 @@ class MarkerObservation:
         }
 
 
-def _find(terms: tuple[str, ...], text: str, part: str, kind: str) -> list[dict[str, Any]]:
-    out = []
-    folded, origin = fold_map(text)
-    for term in terms:
-        for m in term_pattern(term).finditer(folded):
-            if m.end() <= m.start():
-                continue
-            s = origin[m.start()]
-            e = origin[m.end() - 1] + 1
-            item = {
-                "term": term,
-                "kind": kind,
-                "part": part,
-                "matched": text[s:e],
-                "snippet": text[max(0, s - _SNIPPET) : e + _SNIPPET],
-            }
-            if kind == "warning":
-                reason = _exclusion(term, folded, m.start(), m.end(), text, s, e)
-                if reason is not None:
-                    item["kind"] = "ambiguous"
-                    item["exclusion"] = reason
-            out.append(item)
-    return out
+def _variants(ch: TextChannel) -> list[tuple[str, list[int]]]:
+    """The channel's text with its soft boundaries joined, and with them separated by a space; each with the index
+    of the channel character behind every text character (-1 for an inserted space)."""
+    joined = (ch.text, list(range(len(ch.chars))))
+    if not ch.soft:
+        return [joined]
+    chars: list[str] = []
+    index: list[int] = []
+    for i, c in enumerate(ch.chars):
+        if i in ch.soft:
+            chars.append(" ")
+            index.append(-1)
+        chars.append(c)
+        index.append(i)
+    return [joined, ("".join(chars), index)]
+
+
+def _find(terms: tuple[str, ...], ch: TextChannel, part: str, kind: str) -> list[dict[str, Any]]:
+    """Every term match in a channel. A match must be found, at the same characters, both with the soft boundaries
+    joined and with them separated, and must not cross one; otherwise it is ambiguous (``interrupted``): another
+    element's content lies inside it or beside it, and how a reader saw the text is not evaluated."""
+    variants = _variants(ch)
+    found: dict[tuple[str, int, int], dict[str, Any]] = {}
+    seen_in: dict[tuple[str, int, int], int] = {}
+    for text, index in variants:  # the separated variant comes last: its item (and exclusion context) is kept
+        folded, origin = fold_map(text)
+        for term in terms:
+            for m in term_pattern(term).finditer(folded):
+                if m.end() <= m.start():
+                    continue
+                s = origin[m.start()]
+                e = origin[m.end() - 1] + 1
+                cs, ce = index[s], index[e - 1] + 1
+                if cs < 0 or ce <= 0:
+                    continue
+                key = (term, cs, ce)
+                seen_in[key] = seen_in.get(key, 0) + 1
+                item: dict[str, Any] = {
+                    "term": term,
+                    "kind": kind,
+                    "part": part,
+                    "matched": ch.text[cs:ce],
+                    "snippet": ch.text[max(0, cs - _SNIPPET) : ce + _SNIPPET].replace(HARD, "\n"),
+                    "_span": (cs, ce),
+                }
+                if kind == "warning":
+                    reason = _exclusion(term, folded, m.start(), m.end(), text, s, e)
+                    if reason is not None:
+                        item["kind"] = "ambiguous"
+                        item["exclusion"] = reason
+                found[key] = item
+    for key, item in found.items():
+        crosses = any(key[1] < p < key[2] for p in ch.soft)
+        if item["kind"] == "warning" and (crosses or seen_in[key] < len(variants)):
+            item["kind"] = "ambiguous"
+            item["exclusion"] = "interrupted"
+    return [found[k] for k in sorted(found, key=lambda k: (k[1], k[2], k[0]))]
+
+
+def marker_target(title: str, wiki: WikiProfile) -> bool:
+    """Whether a link target is the page of a marker template: a title in the template namespace (the canonical
+    "Template:" or the wiki's own name for it) whose template name is one of the profile's marker templates. A link
+    to any other page, red or not, is ordinary text."""
+    name = re.sub(r"[_\s]+", " ", title).strip()
+    ns, sep, rest = name.partition(":")
+    if not sep:
+        return False
+    local = {t.split(":", 1)[0].casefold() for t in wiki.marker_render_titles if ":" in t}
+    if ns.strip().casefold() not in local | {"template"}:
+        return False
+    return wiki.canonical_template(rest) in wiki.markers
 
 
 def observe(
@@ -231,51 +279,60 @@ def observe(
                 )
             )
             continue
-        texts = [reader.region_text(e) for e in els]
-        region = {
-            "text": " ".join(t["text"] for t in texts if t["text"]),
-            "cite_text": " ".join(t["cite_text"] for t in texts if t["cite_text"]),
-            "hidden_text": " ".join(t["hidden_text"] for t in texts if t["hidden_text"]),
-            "redlinks": [r for t in texts for r in t["redlinks"]],
-            "hidden_redlinks": [r for t in texts for r in t["hidden_redlinks"]],
-            "hidden_elements": sum(t["hidden_elements"] for t in texts),
-        }
+        region = reader.region_text(els, lambda title: marker_target(title, wiki))
+        text, cite, hidden_ch = region.channels["text"], region.channels["cite"], region.channels["hidden"]
         locator = reader.locator(els[0]).to_json()
-        found = _find(wiki.warning_terms, region["text"], "text", "warning")
+        found = _find(wiki.warning_terms, text, "text", "warning")
         evidence = [x for x in found if x["kind"] == "warning"]
-        cite_warn = _find(wiki.warning_terms, region["cite_text"], "cite_text", "warning")
+        cite_warn = _find(wiki.warning_terms, cite, "cite_text", "warning")
         for x in cite_warn:
             x["kind"] = "ambiguous"
         ambiguous = (
             [x for x in found if x["kind"] == "ambiguous"]
-            + _find(wiki.ambiguous_terms, region["text"], "text", "ambiguous")
-            + _find(wiki.ambiguous_terms, region["cite_text"], "cite_text", "ambiguous")
+            + _find(wiki.ambiguous_terms, text, "text", "ambiguous")
+            + _find(wiki.ambiguous_terms, cite, "cite_text", "ambiguous")
         )
-        hidden = _find(wiki.warning_terms + wiki.ambiguous_terms, region["hidden_text"], "hidden_text", "hidden")
+        hidden = _find(wiki.warning_terms + wiki.ambiguous_terms, hidden_ch, "hidden_text", "hidden")
         for x in hidden:
             x["kind"] = "hidden"
-
-        def is_marker(title: str) -> bool:
-            return wiki.canonical_template(title) in wiki.markers or title in wiki.marker_render_titles
-
-        redlinks = [t for t in region["redlinks"] if is_marker(t)]
-        hidden += [
-            {"kind": "hidden", "part": "hidden_redlink", "matched": t}
-            for t in region["hidden_redlinks"]
-            if is_marker(t)
-        ]
-        all_evidence = (
-            evidence
-            + cite_warn
-            + ambiguous
-            + hidden
-            + [{"kind": "missing_template_link", "part": "redlink", "matched": t} for t in redlinks]
-        )
-        region_json = {"region_id": region_id, "locator": locator, "hidden_elements": region["hidden_elements"]}
+        for items, ch in ((evidence, text), (cite_warn, cite), (ambiguous, None), (hidden, hidden_ch)):
+            for x in items:
+                channel = ch or (cite if x["part"] == "cite_text" else text)
+                cs, ce = x.pop("_span")
+                owners = [o for o in channel.origin[cs:ce] if o is not None]
+                owner = reader.common_ancestor(owners) if owners else els[0]
+                x["locator"] = reader.locator(owner).to_json()
+                link = reader.enclosing_link(owner, els)
+                if link is not None:
+                    x["link"] = link
+                if channel is hidden_ch and channel.basis[cs] is not None:
+                    x["hidden_basis"] = channel.basis[cs]
+        redlinks = []
+        for ln in region.marker_links:
+            item = {
+                "kind": "missing_template_link" if ln.red else "ambiguous",
+                "part": "redlink" if ln.red else "template_link",
+                "matched": ln.label,
+                "target": ln.target,
+                "target_basis": ln.basis,
+                "locator": reader.locator(ln.element).to_json(),
+            }
+            if not ln.red:
+                item["exclusion"] = "template_page_link"
+            if ln.hidden is not None:
+                item.update(kind="hidden", part="hidden_redlink" if ln.red else "hidden_template_link")
+                item["hidden_basis"] = ln.hidden
+                hidden.append(item)
+            elif ln.red:
+                redlinks.append(item)
+            else:
+                ambiguous.append(item)
+        all_evidence = evidence + cite_warn + ambiguous + hidden + redlinks
+        region_json = {"region_id": region_id, "locator": locator, "hidden_elements": region.hidden_elements}
         limited = region_id in omitted_regions or any(
             reader.contains(e, w) or reader.contains(w, e) for e in els for w in warning_owners
         )
-        empty = not (region["text"] or region["cite_text"] or region["hidden_text"] or region["redlinks"])
+        empty = not (text.chars or cite.chars or hidden_ch.chars or region.marker_links)
         if evidence:
             state, reason = "recognized_warning_text", "a warning term in the region's visible text"
         elif cite_warn or ambiguous or hidden:
