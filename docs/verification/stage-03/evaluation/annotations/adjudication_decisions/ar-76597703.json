@@ -1,0 +1,15 @@
+{
+ "article": "ar-76597703",
+ "adjudicator": "stage03-adjudicator-ar",
+ "started_at": "2026-10-29T09:20:30Z",
+ "finished_at": "2026-10-29T09:24:20Z",
+ "decisions": [
+  {
+   "item": 1,
+   "kind": "identifier_missed",
+   "decision": "confirm",
+   "reason": "مسار= (url) of the citation template in d3 is 'https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68'. The DOI occurs in a URL, so it is an identifier occurrence (3.5: 'wherever it is ... URLs'). Raw text: the URL row of the 3.5 table covers resolver/PubMed URLs and 'a publisher URL whose path contains /doi/10.…'; this IOP path is /article/10.…, with no /doi/ segment, so it falls under 'anything else | the identifier text' and the quote is the DOI text at cp 3073, as locked. Role: it sits in url= of a citation template, inside a publisher URL that points at the identifier, which is identifier_link ('a resolver/PubMed/publisher URL ... inside a reference or citation template (for example in url=)'). Key 10.1088/0004-637x/741/2/68 (valid 10.+4 digits/suffix, X lower-cased; the DOI runs to the end of the URL, which ends before ' |'). The locked label is right; the engine missed it.",
+   "corrected_label": null
+  }
+ ]
+}

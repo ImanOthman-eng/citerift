@@ -1,0 +1,523 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1372414197,
+    "source_sha256": "41a1afc4171e55a80a34d5fff2742ee4c8211664600d1dbbef960b4912555462",
+    "html_sha256": "b384c2b8cf945af868c026a87cd56a563eece226734f417d8e7d1ec0d61b047c",
+    "window": [
+      6226,
+      14226
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en",
+    "started_at": "2026-10-29T09:05:16Z",
+    "finished_at": "2026-10-29T09:08:44Z",
+    "files_opened": [
+      {
+        "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "packets/en-r1/en-1372414197/packet.json",
+        "sha256": "ab321beba0a08d49d8e2386d6747fbb4966bea19b26ce6ee757e5889f659b999 (computed; packet.json does not list its own hash)"
+      },
+      {
+        "path": "packets/en-r1/en-1372414197/source.wikitext",
+        "sha256": "41a1afc4171e55a80a34d5fff2742ee4c8211664600d1dbbef960b4912555462"
+      },
+      {
+        "path": "packets/en-r1/en-1372414197/render.html",
+        "sha256": "b384c2b8cf945af868c026a87cd56a563eece226734f417d8e7d1ec0d61b047c"
+      }
+    ],
+    "tools": "Read tool and cat/grep for viewing; python3 -I snippets (stdlib re/str.find + lxml) to list <ref/{{cite/10./doi/pmid positions in source.wikitext and to list <sup typeof=mw:Extension/ref> (id, data-mw attrs) and <li id=cite_note-...> text/red links in render.html; a small writer that builds quotes from hand-chosen positions and asserts text[cp:cp+len(quote)]==quote. Every label decided by reading the text.",
+    "unresolved": "Two judgement calls: (1) in-window <ref name=\"WhosWho\"> tags that repeat identical content are bound to the first WhosWho definition (cp 4051) because the guide asks for the definition MediaWiki uses; (2) cp 12905 explanatory note marked unstructured=false. {{Who's Who}} counted as a citation template."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 4051,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "in_window": false,
+      "kind": "note",
+      "name": "WhosWho",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 4071,
+            "quote": "{{Who's Who | author = [Anon.] | year = 2024 | tit"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-WhosWho-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Before the window; listed only as binding target (first of six identical WhosWho definitions, the one MediaWiki uses). Who's Who template ({{Who's Who}}) treated as a citation template: it formats a citation to the Who's Who entry (renders as a full citation with doi)."
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 6308,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "WhosWho",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 6328,
+            "quote": "{{Who's Who | author = [Anon.] | year = 2024 | tit"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-WhosWho-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Duplicate definition: <ref name=\"WhosWho\"> with content, byte-identical to the first definition at cp 4051 (six identical WhosWho bodies in the article). Two definitions with the same name and group are one reference; MediaWiki shows the first. Who's Who template ({{Who's Who}}) treated as a citation template: it formats a citation to the Who's Who entry (renders as a full citation with doi)."
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 6845,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "WhosWho",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 6865,
+            "quote": "{{Who's Who | author = [Anon.] | year = 2024 | tit"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-WhosWho-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Duplicate definition: <ref name=\"WhosWho\"> with content, byte-identical to the first definition at cp 4051 (six identical WhosWho bodies in the article). Two definitions with the same name and group are one reference; MediaWiki shows the first. Who's Who template ({{Who's Who}}) treated as a citation template: it formats a citation to the Who's Who entry (renders as a full citation with doi)."
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 8182,
+        "quote": "<ref>European Commission for Democracy Through law"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Venice Commission report cited in plain text."
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 10212,
+        "quote": "<ref name=\":0\">{{Cite journal|last=Jowell|first=J."
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": ":0",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 10227,
+            "quote": "{{Cite journal|last=Jowell|first=J.|date=1965|titl"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-:0-8",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Defined after its first use (self-closing <ref name=\":0\" /> at cp 8591)."
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 10582,
+        "quote": "<ref>Lester, A. and Bindman, G. Race and Law (1972"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-9",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template."
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 11094,
+        "quote": "<ref>Jowell, J. The Legal Control of Administrativ"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-10",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template. Cites two works in one note."
+    },
+    {
+      "id": "d8",
+      "at": {
+        "cp": 11472,
+        "quote": "<ref>Jowell, J. and Lester A, Beyond ''Wednesbury:"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-11",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template."
+    },
+    {
+      "id": "d9",
+      "at": {
+        "cp": 11681,
+        "quote": "<ref>Such as, Jowell, J. What Decisions Should Jud"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-12",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template."
+    },
+    {
+      "id": "d10",
+      "at": {
+        "cp": 11969,
+        "quote": "<ref>See D. Cowan and D. Visser, The University of"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-13",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template. Includes a quotation."
+    },
+    {
+      "id": "d11",
+      "at": {
+        "cp": 12404,
+        "quote": "<ref>Jowell, J.  Is Equality a Constitutional Prin"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-14",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template."
+    },
+    {
+      "id": "d12",
+      "at": {
+        "cp": 12521,
+        "quote": "<ref>Jowell, J.  The Rule of Law, in J. Jowell and"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-15",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unstructured: hand-written citation, no template."
+    },
+    {
+      "id": "d13",
+      "at": {
+        "cp": 12905,
+        "quote": "<ref>Originally: ‘Judicial Review of Administrativ"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": false,
+      "render_note_id": "cite_note-16",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Explanatory note (\"Originally: ‘Judicial Review of Administrative Action’.\") giving the original title of de Smith's book; I read it as a gloss rather than a citation of a source, so unstructured=false. Borderline: it does name a work in plain text."
+    },
+    {
+      "id": "d14",
+      "at": {
+        "cp": 13018,
+        "quote": "<ref>2018, Thomson Reuters.</ref>"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-17",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "\"2018, Thomson Reuters.\" - minimal hand-written publication details (year, publisher) for the current edition; read as a plain-text citation."
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 6308,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "binds_to": {
+        "cp": 4051,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "render_ref_id": "cite_ref-WhosWho_5-5",
+      "notes": "<ref name=\"WhosWho\"> with (identical) content; MediaWiki uses the first definition of that name (cp 4051, before the window). Marker is the 6th WhosWho marker in source order (5-0 at 4051, 5-1 at 4506, 5-2 at 4889, 5-3 at 5450, 5-4 at 5910)."
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 6845,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "binds_to": {
+        "cp": 4051,
+        "quote": "<ref name=\"WhosWho\">{{Who's Who | author = [Anon.]"
+      },
+      "render_ref_id": "cite_ref-WhosWho_5-6",
+      "notes": "As above; 7th WhosWho marker."
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 8182,
+        "quote": "<ref>European Commission for Democracy Through law"
+      },
+      "binds_to": {
+        "cp": 8182,
+        "quote": "<ref>European Commission for Democracy Through law"
+      },
+      "render_ref_id": "cite_ref-7",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 8591,
+        "quote": "<ref name=\":0\" /> The article also addressed how s"
+      },
+      "binds_to": {
+        "cp": 10212,
+        "quote": "<ref name=\":0\">{{Cite journal|last=Jowell|first=J."
+      },
+      "render_ref_id": "cite_ref-:0_8-0",
+      "notes": "Self-closing reuse placed before the named definition; binds forward to cp 10212."
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 10212,
+        "quote": "<ref name=\":0\">{{Cite journal|last=Jowell|first=J."
+      },
+      "binds_to": {
+        "cp": 10212,
+        "quote": "<ref name=\":0\">{{Cite journal|last=Jowell|first=J."
+      },
+      "render_ref_id": "cite_ref-:0_8-1",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 10582,
+        "quote": "<ref>Lester, A. and Bindman, G. Race and Law (1972"
+      },
+      "binds_to": {
+        "cp": 10582,
+        "quote": "<ref>Lester, A. and Bindman, G. Race and Law (1972"
+      },
+      "render_ref_id": "cite_ref-9",
+      "notes": ""
+    },
+    {
+      "id": "u7",
+      "at": {
+        "cp": 11094,
+        "quote": "<ref>Jowell, J. The Legal Control of Administrativ"
+      },
+      "binds_to": {
+        "cp": 11094,
+        "quote": "<ref>Jowell, J. The Legal Control of Administrativ"
+      },
+      "render_ref_id": "cite_ref-10",
+      "notes": ""
+    },
+    {
+      "id": "u8",
+      "at": {
+        "cp": 11472,
+        "quote": "<ref>Jowell, J. and Lester A, Beyond ''Wednesbury:"
+      },
+      "binds_to": {
+        "cp": 11472,
+        "quote": "<ref>Jowell, J. and Lester A, Beyond ''Wednesbury:"
+      },
+      "render_ref_id": "cite_ref-11",
+      "notes": ""
+    },
+    {
+      "id": "u9",
+      "at": {
+        "cp": 11681,
+        "quote": "<ref>Such as, Jowell, J. What Decisions Should Jud"
+      },
+      "binds_to": {
+        "cp": 11681,
+        "quote": "<ref>Such as, Jowell, J. What Decisions Should Jud"
+      },
+      "render_ref_id": "cite_ref-12",
+      "notes": ""
+    },
+    {
+      "id": "u10",
+      "at": {
+        "cp": 11969,
+        "quote": "<ref>See D. Cowan and D. Visser, The University of"
+      },
+      "binds_to": {
+        "cp": 11969,
+        "quote": "<ref>See D. Cowan and D. Visser, The University of"
+      },
+      "render_ref_id": "cite_ref-13",
+      "notes": ""
+    },
+    {
+      "id": "u11",
+      "at": {
+        "cp": 12404,
+        "quote": "<ref>Jowell, J.  Is Equality a Constitutional Prin"
+      },
+      "binds_to": {
+        "cp": 12404,
+        "quote": "<ref>Jowell, J.  Is Equality a Constitutional Prin"
+      },
+      "render_ref_id": "cite_ref-14",
+      "notes": ""
+    },
+    {
+      "id": "u12",
+      "at": {
+        "cp": 12521,
+        "quote": "<ref>Jowell, J.  The Rule of Law, in J. Jowell and"
+      },
+      "binds_to": {
+        "cp": 12521,
+        "quote": "<ref>Jowell, J.  The Rule of Law, in J. Jowell and"
+      },
+      "render_ref_id": "cite_ref-15",
+      "notes": ""
+    },
+    {
+      "id": "u13",
+      "at": {
+        "cp": 12905,
+        "quote": "<ref>Originally: ‘Judicial Review of Administrativ"
+      },
+      "binds_to": {
+        "cp": 12905,
+        "quote": "<ref>Originally: ‘Judicial Review of Administrativ"
+      },
+      "render_ref_id": "cite_ref-16",
+      "notes": ""
+    },
+    {
+      "id": "u14",
+      "at": {
+        "cp": 13018,
+        "quote": "<ref>2018, Thomson Reuters.</ref>"
+      },
+      "binds_to": {
+        "cp": 13018,
+        "quote": "<ref>2018, Thomson Reuters.</ref>"
+      },
+      "render_ref_id": "cite_ref-17",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 6434,
+        "quote": "10.1093/ww/9780199540884.013.U22537"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1093/ww/9780199540884.013.u22537",
+      "notes": "doi= field of {{Who's Who}} in the WhosWho definition at cp 6308."
+    },
+    {
+      "at": {
+        "cp": 6971,
+        "quote": "10.1093/ww/9780199540884.013.U22537"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1093/ww/9780199540884.013.u22537",
+      "notes": "doi= field of {{Who's Who}} in the WhosWho definition at cp 6845."
+    }
+  ],
+  "unresolved_notes": [
+    "The first \"Scholarship\" section (cp 8309-10108) contains literal bracketed numbers \"[3]\", \"[4][5]\", \"[6][7][8]\", \"[9][10]\" in prose. They are plain text (apparently pasted from a rendered page), not <ref> tags or footnote templates, and produce no footnote markers in render.html; not labelled as uses.",
+    "\"10.\" at cp 6664 is the end of the year \"2010.\" in prose, not a DOI.",
+    "\"Selected publications\" list items contain no citation template, DOI or PMID; not bibliography entries. External links item is a plain link.",
+    "Rendered note cite_note-6 (ODNB, doi 10.1093/ref:odnb/104586) comes from {{cite ODNB|id=104586}} at cp 4986, before the window; not labelled."
+  ],
+  "adjudication": {
+    "adjudicator": "stage03-adjudicator-en",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-en/decisions/en-1372414197.json",
+    "changed_items": []
+  }
+}

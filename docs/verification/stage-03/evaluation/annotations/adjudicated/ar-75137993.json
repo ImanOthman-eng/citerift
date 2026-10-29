@@ -1,0 +1,323 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75137993,
+  "source_sha256": "3bfd415204301002c22a9a1bf998531333c5e02e03f97252a1934845b484da90",
+  "html_sha256": "466a40ea2541b7f6cbb81a576fe4d3fe7257a9c8ced82691c7a252fb71fdabdc",
+  "window": [
+   0,
+   4573
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:11:50Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-75137993/packet.json",
+    "sha256": "a60433e61f18bc78420b0f94a5de98c6f02a2dc2ab298857a3231a884be8cb92"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-75137993/source.wikitext",
+    "sha256": "3bfd415204301002c22a9a1bf998531333c5e02e03f97252a1934845b484da90"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-75137993/render.html",
+    "sha256": "466a40ea2541b7f6cbb81a576fe4d3fe7257a9c8ced82691c7a252fb71fdabdc"
+   }
+  ],
+  "tools": "sha256sum; cat; python3 -I one-off stdin snippets using str/re to print the source with code-point offsets and find '<ref', '{{', '10.', 'doi', comments and retraction vocabulary; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw and <li id=cite_note-*> texts and red links; every location asserted with text[cp:cp+len(quote)]==quote. Labels decided by reading.",
+  "unresolved": "Whether {{IUCN2008}} counts as a citation template (I counted it: it formats a Red List citation). Process notes: started_at is the start of the whole labelling session (09:10:12Z); per-article start times were not recorded separately. Early in the session I briefly wrote two throwaway lxml/re listing scripts to scratchpad/eval/tools/ (outside the permitted output directory), then deleted that directory and used stdin-only snippets afterwards. At the very end I ran a read-only 'git status --short' in /home/user/citerift (which produced no output), contrary to the no-git rule; no repository file was modified."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1106,
+    "quote": "<ref name=Strahan>{{استشهاد بكتاب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Strahan",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1124,
+      "quote": "{{استشهاد بكتاب|الأخير1=Godsell"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Strahan-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "postscript field holds only an HTML comment <!--None-->; no identifier."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1765,
+    "quote": "<ref name=iucn>{{IUCN2008"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1780,
+      "quote": "{{IUCN2008|assessors=McKnight, M."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{IUCN2008}} is a template that formats a citation to the IUCN Red List entry (rendered as a citation 'McKnight, M. (2008). Dasyurus viverrinus. في: ...القائمة الحمراء...'), so I count it as a citation template. It is followed by hand-written plain text ('Database entry includes justification ...'), which is commentary, not a separate citation; unstructured=false."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2223,
+    "quote": "<ref name=Jones2000>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Jones2000",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2243,
+      "quote": "{{استشهاد بدورية محكمة | مؤلف = Jones, m.E."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Jones2000-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2790,
+    "quote": "<ref name=Fletcher1985>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Fletcher1985",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2813,
+      "quote": "{{استشهاد بدورية محكمة | مؤلف = Fletcher"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Fletcher1985-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 3279,
+    "quote": "<ref name=Mammals>\"Mammals\" Dorling Kindersley"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Mammals",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Mammals-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation '\"Mammals\" Dorling Kindersley Limited, London' followed by {{استشهاد ناقص|date=December 2014}}, which is a maintenance tag (citation incomplete, rendered '[استشهاد منقوص البيانات]'), not a citation template; so templates=[] and unstructured=true."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 3802,
+    "quote": "<ref name=Jones2001>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Jones2001",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3822,
+      "quote": "{{استشهاد بدورية محكمة | مؤلف = Jones, M.E. & Rose"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Jones2001-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined after its first reuse <ref name=Jones2001/> at cp 3418."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1106,
+    "quote": "<ref name=Strahan>{{استشهاد بكتاب"
+   },
+   "binds_to": {
+    "cp": 1106,
+    "quote": "<ref name=Strahan>{{استشهاد بكتاب"
+   },
+   "render_ref_id": "cite_ref-Strahan_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1765,
+    "quote": "<ref name=iucn>{{IUCN2008"
+   },
+   "binds_to": {
+    "cp": 1765,
+    "quote": "<ref name=iucn>{{IUCN2008"
+   },
+   "render_ref_id": "cite_ref-iucn_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2223,
+    "quote": "<ref name=Jones2000>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 2223,
+    "quote": "<ref name=Jones2000>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-Jones2000_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2790,
+    "quote": "<ref name=Fletcher1985>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 2790,
+    "quote": "<ref name=Fletcher1985>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-Fletcher1985_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 3279,
+    "quote": "<ref name=Mammals>\"Mammals\" Dorling Kindersley"
+   },
+   "binds_to": {
+    "cp": 3279,
+    "quote": "<ref name=Mammals>\"Mammals\" Dorling Kindersley"
+   },
+   "render_ref_id": "cite_ref-Mammals_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 3418,
+    "quote": "<ref name=Jones2001/>"
+   },
+   "binds_to": {
+    "cp": 3802,
+    "quote": "<ref name=Jones2001>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-Jones2001_7-0",
+   "notes": "Reuse by name before the definition; binds forward to the definition at cp 3802."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3530,
+    "quote": "<ref name=Mammals/>"
+   },
+   "binds_to": {
+    "cp": 3279,
+    "quote": "<ref name=Mammals>\"Mammals\" Dorling Kindersley"
+   },
+   "render_ref_id": "cite_ref-Mammals_6-1",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 3802,
+    "quote": "<ref name=Jones2001>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 3802,
+    "quote": "<ref name=Jones2001>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-Jones2001_7-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 2562,
+    "quote": "10.1644/1545-1542(2000)081<0434:NDASAD>2.0.CO;2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1644/1545-1542(2000)081<0434:ndasad>2.0.co;2",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in ref Jones2000. SICI-style DOI containing literal < and >; value taken up to the closing }}."
+  },
+  {
+   "at": {
+    "cp": 3212,
+    "quote": "10.1071/ZO9850101"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1071/zo9850101",
+   "notes": "doi= field in ref Fletcher1985."
+  },
+  {
+   "at": {
+    "cp": 3992,
+    "quote": "10.1644/1545-1410(2001)677<0001:DV>2.0.CO;2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1644/1545-1410(2001)677<0001:dv>2.0.co;2",
+   "notes": "doi= field in ref Jones2001. SICI-style DOI containing literal < and >."
+  }
+ ],
+ "unresolved_notes": [
+  "Rendered note cite_note-wikidata-cf239f11a384e51fd7056fab24d0239766d99b94-1 (Mammal Species of the World, markers cite_ref-wikidata-..._1-0 and _1-1) is generated by the infobox {{صندوق معلومات كائن}} from Wikidata; it has no source location and is not listed."
+ ],
+ "adjudication": {
+  "adjudicator": "stage03-adjudicator-ar",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-ar/decisions/ar-75137993.json",
+  "changed_items": []
+ }
+}

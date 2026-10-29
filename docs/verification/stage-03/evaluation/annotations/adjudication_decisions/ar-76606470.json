@@ -1,0 +1,24 @@
+{
+ "article": "ar-76606470",
+ "adjudicator": "stage03-adjudicator-ar",
+ "started_at": "2026-10-29T09:20:30Z",
+ "finished_at": "2026-10-29T09:24:20Z",
+ "decisions": [
+  {
+   "item": 1,
+   "kind": "identifier_missed",
+   "decision": "correct",
+   "reason": "The occurrence, role identifier_link and key are right, but the location quotes the whole URL. Guide 3.5 table: 'URL (https://doi.org/…, dx.doi.org, pubmed.ncbi.nlm.nih.gov/…, ncbi.nlm.nih.gov/pubmed/…, a publisher URL whose path contains /doi/10.…) | the whole URL'; otherwise 'anything else | the identifier text'. The IOP URL's path is /article/10.1088/…, with no /doi/ segment, so the URL row's publisher clause does not apply and the raw text is the DOI text itself, which starts at cp 3074 (3039 + len('https://iopscience.iop.org/article/') = 35). The locked note already named this as the alternative reading. Ambiguity: the parenthetical could be read as examples, but the explicit '/doi/' condition on publisher URLs (repeated in the key rule 'for a publisher URL, the DOI from the /doi/ path segment') would be redundant under that reading, so the narrower reading follows the wording more closely. The same URL in the parallel revision ar-76597703 is labelled the same way.",
+   "corrected_label": {
+    "at": {
+     "cp": 3074,
+     "quote": "10.1088/0004-637X/741/2/68"
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1088/0004-637x/741/2/68",
+    "notes": "Inside مسار= (url) of d3: publisher (IOP) URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 whose path is /article/<DOI>, not /doi/<DOI>. Adjudicated: the 3.5 table quotes the whole URL only for resolver/PubMed URLs and publisher URLs whose path contains /doi/10.…; this one falls under 'anything else', so the raw text is the identifier text (cp 3074 = URL start 3039 + 35). Role identifier_link (publisher URL in url= pointing at the identifier); the DOI runs to the end of the URL."
+   }
+  }
+ ]
+}
