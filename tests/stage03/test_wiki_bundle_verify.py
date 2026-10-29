@@ -71,6 +71,61 @@ def test_publication_never_replaces_an_existing_path(tmp_path: Path) -> None:
     assert sorted(p.name for p in tmp_path.iterdir()) == ["dangling", "out.json", "taken"]  # no temporary left
 
 
+@pytest.mark.negative
+@pytest.mark.parametrize("fail_on", ["artifact", "capture", "rename"])
+def test_an_interrupted_publication_leaves_nothing_and_keeps_valid_bundles(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, fail_on: str
+) -> None:
+    """Fault injection: an interruption at any write step publishes nothing and leaves no temporary behind."""
+    import citerift.wiki.bundle as bundle_module
+
+    (tmp_path / "keep").mkdir()
+    good = made(tmp_path / "keep")
+    before = {p.name: p.read_bytes() for p in good.rglob("*") if p.is_file()}
+    data = b"artifact bytes"
+    real_write, real_rename = bundle_module._write_new, os.rename
+
+    def write(path: Path, payload: bytes) -> None:
+        if (fail_on == "artifact" and path.parent.name == "artifacts") or (
+            fail_on == "capture" and path.name == "capture.json"
+        ):
+            real_write(path, payload[: len(payload) // 2])  # a partial file, then the interruption
+            raise KeyboardInterrupt
+        real_write(path, payload)
+
+    def rename(src: Any, dst: Any) -> None:
+        if fail_on == "rename":
+            raise OSError(5, "simulated I/O error")
+        real_rename(src, dst)
+
+    monkeypatch.setattr(bundle_module, "_write_new", write)
+    monkeypatch.setattr(bundle_module.os, "rename", rename)
+    out = tmp_path / "out"
+    out.mkdir()
+    with pytest.raises((KeyboardInterrupt, OSError)):
+        publish_bundle(out / "b", {"x": 1}, {sha256_hex(data): data})
+    assert list(out.iterdir()) == []
+    assert {p.name: p.read_bytes() for p in good.rglob("*") if p.is_file()} == before
+
+
+@pytest.mark.negative
+def test_an_interrupted_output_write_never_leaves_a_partial_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import citerift.wiki.bundle as bundle_module
+
+    real_write = bundle_module._write_new
+
+    def write(path: Path, payload: bytes) -> None:
+        real_write(path, payload[:3])
+        raise KeyboardInterrupt
+
+    monkeypatch.setattr(bundle_module, "_write_new", write)
+    with pytest.raises(KeyboardInterrupt):
+        publish_file(tmp_path / "extraction.json", b'{"complete": true}')
+    assert list(tmp_path.iterdir()) == []
+
+
 @pytest.mark.security
 def test_publication_refuses_a_symlinked_parent_and_mislabelled_artifacts(tmp_path: Path) -> None:
     real = tmp_path / "real"
