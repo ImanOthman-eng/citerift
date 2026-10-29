@@ -1,0 +1,1771 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1380771007,
+  "source_sha256": "d148c3f008284dc81e63022186e4acbb76eca0f0c60b48972bdfc42e713b448a",
+  "html_sha256": "26869fb9b9198b51a0c15997a90485baa29644c3ad0e29f04cb2992895f4aeaf",
+  "window": [
+   11188,
+   19188
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:05:16Z",
+  "finished_at": "2026-10-29T09:10:07Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1380771007/packet.json",
+    "sha256": "f5c5582d2c16ab4267beba8a04cbd937f994d08504f7732c9200fad7d4db0d1d"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1380771007/source.wikitext",
+    "sha256": "d148c3f008284dc81e63022186e4acbb76eca0f0c60b48972bdfc42e713b448a"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1380771007/render.html",
+    "sha256": "26869fb9b9198b51a0c15997a90485baa29644c3ad0e29f04cb2992895f4aeaf"
+   }
+  ],
+  "tools": "python3 -I (standard library re/json/str.find and lxml.html) used only to list the positions of <ref, {{sfn/{{cite, 10./doi/PMID strings and HTML comments in the wikitext, to list <sup typeof~=mw:Extension/ref> ids with their data-mw attrs and <li id=cite_note-...> ids in render.html in document order, and to verify every quote with text[cp:cp+len(quote)]==quote; every label decided by reading the text. sha256sum for file hashes. The throwaway snippets (token lister, marker lister, per-article label tables) were kept as files in a temporary scratchpad folder outside the output directory while working and deleted at the end.",
+  "unresolved": "Nothing undecided. Decision applied: repeated identical {{Sfn}} calls are recorded only as uses binding to the first identical call, not as separate definitions."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 2736,
+    "quote": "<ref name=\":0\">{{Cite web|title=South Dakota and the 19th Am"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2751,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined before the window; reused by name inside the window."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4109,
+    "quote": "<ref name=\":2\">{{Cite web|date=2018-07-26|title=Timeline of "
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4124,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:2-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined before the window; reused by name inside the window."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 7500,
+    "quote": "{{Sfn|Robinson|1904|p=600}}"
+   },
+   "in_window": false,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTERobinson1904600-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTERobinson1904600); default group. First of four identical calls; listed because identical calls inside the window bind to it."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 11192,
+    "quote": "{{Sfn|Harper|1922|p=589}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEHarper1922589-24",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEHarper1922589); default group."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 11260,
+    "quote": "<ref>{{Cite web|date=2019-10-09|title=Timeline of South Dako"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11265,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-25",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 11585,
+    "quote": "{{Sfn|Anthony|1902|p=543}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEAnthony1902543-26",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEAnthony1902543); default group."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 11632,
+    "quote": "<ref>{{Cite web|last=Handy-Marchello|first=Barbara|date=5 Au"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11637,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-27",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 11999,
+    "quote": "{{Sfn|Harper|1922|p=586-587}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEHarper1922586-587-28",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEHarper1922586-587); default group."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":3",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12110,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:3-29",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 12400,
+    "quote": "{{Sfn|Robinson|1904|p=599}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTERobinson1904599-30",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTERobinson1904599); default group."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEAnthony1902555-31",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEAnthony1902555); default group. First of five identical calls (the later four are uses binding here, not separate definitions)."
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 13128,
+    "quote": "{{Sfn|Wittmayer|1981|p=203}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEWittmayer1981203-32",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEWittmayer1981203); default group."
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 13623,
+    "quote": "{{Sfn|Robinson|1904|p=598}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTERobinson1904598-33",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTERobinson1904598); default group."
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 13748,
+    "quote": "{{Sfn|Wittmayer|1981|p=211}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEWittmayer1981211-34",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEWittmayer1981211); default group."
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 13850,
+    "quote": "{{Sfn|Robinson|1904|p=601}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTERobinson1904601-35",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTERobinson1904601); default group."
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 15030,
+    "quote": "<ref>{{Cite web |last=Pollitzer |first=Pattey |title=Anita P"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 15035,
+      "quote": "{{Cite web "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-36",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d17",
+   "at": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":5",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 16252,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:5-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref :5 is defined here but already reused by name earlier in the article (cp 4602, 10258); MediaWiki numbers it at the first use (note 14)."
+  },
+  {
+   "id": "d18",
+   "at": {
+    "cp": 16500,
+    "quote": "{{Sfn|Easton|1983|p=207}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEEaston1983207-37",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{Sfn}}; no name written in source (rendered as FOOTNOTEEaston1983207); default group. First of two identical calls."
+  },
+  {
+   "id": "d19",
+   "at": {
+    "cp": 17208,
+    "quote": "* {{Cite book|last=Anthony|first=Susan B.|url=https://books."
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 17210,
+      "quote": "{{Cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section; target of the {{Sfn}} short footnotes."
+  },
+  {
+   "id": "d20",
+   "at": {
+    "cp": 17557,
+    "quote": "*{{Cite journal|last=Easton|first=Patricia O'Keefe|date=Fall"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 17558,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section; target of the {{Sfn}} short footnotes."
+  },
+  {
+   "id": "d21",
+   "at": {
+    "cp": 17906,
+    "quote": "*{{Cite book|last=Harper|first=Ida Husted|url=https://books."
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 17907,
+      "quote": "{{Cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section; target of the {{Sfn}} short footnotes."
+  },
+  {
+   "id": "d22",
+   "at": {
+    "cp": 18142,
+    "quote": "*{{Cite book|last=Robinson|first=Doane|url=https://books.goo"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 18143,
+      "quote": "{{Cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section; target of the {{Sfn}} short footnotes."
+  },
+  {
+   "id": "d23",
+   "at": {
+    "cp": 18442,
+    "quote": "*{{Cite journal|last=Wittmayer|first=Cecelia M.|date=Summer "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 18443,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section; target of the {{Sfn}} short footnotes."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 11192,
+    "quote": "{{Sfn|Harper|1922|p=589}}"
+   },
+   "binds_to": {
+    "cp": 11192,
+    "quote": "{{Sfn|Harper|1922|p=589}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEHarper1922589_24-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 11260,
+    "quote": "<ref>{{Cite web|date=2019-10-09|title=Timeline of South Dako"
+   },
+   "binds_to": {
+    "cp": 11260,
+    "quote": "<ref>{{Cite web|date=2019-10-09|title=Timeline of South Dako"
+   },
+   "render_ref_id": "cite_ref-25",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 11585,
+    "quote": "{{Sfn|Anthony|1902|p=543}}"
+   },
+   "binds_to": {
+    "cp": 11585,
+    "quote": "{{Sfn|Anthony|1902|p=543}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902543_26-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 11632,
+    "quote": "<ref>{{Cite web|last=Handy-Marchello|first=Barbara|date=5 Au"
+   },
+   "binds_to": {
+    "cp": 11632,
+    "quote": "<ref>{{Cite web|last=Handy-Marchello|first=Barbara|date=5 Au"
+   },
+   "render_ref_id": "cite_ref-27",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 11999,
+    "quote": "{{Sfn|Harper|1922|p=586-587}}"
+   },
+   "binds_to": {
+    "cp": 11999,
+    "quote": "{{Sfn|Harper|1922|p=586-587}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEHarper1922586-587_28-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 12360,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-1",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 12400,
+    "quote": "{{Sfn|Robinson|1904|p=599}}"
+   },
+   "binds_to": {
+    "cp": 12400,
+    "quote": "{{Sfn|Robinson|1904|p=599}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTERobinson1904599_30-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 12446,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-2",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 12489,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-3",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 12533,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-4",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 12576,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-5",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 12617,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-6",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 12653,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-7",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 12689,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-8",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 12735,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-9",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 12780,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-10",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 12826,
+    "quote": "{{Sfn|Robinson|1904|p=600}}"
+   },
+   "binds_to": {
+    "cp": 7500,
+    "quote": "{{Sfn|Robinson|1904|p=600}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTERobinson1904600_19-2",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 12879,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-11",
+   "notes": ""
+  },
+  {
+   "id": "u20",
+   "at": {
+    "cp": 12916,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-12",
+   "notes": ""
+  },
+  {
+   "id": "u21",
+   "at": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "binds_to": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902555_31-0",
+   "notes": ""
+  },
+  {
+   "id": "u22",
+   "at": {
+    "cp": 13002,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-13",
+   "notes": ""
+  },
+  {
+   "id": "u23",
+   "at": {
+    "cp": 13042,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-14",
+   "notes": ""
+  },
+  {
+   "id": "u24",
+   "at": {
+    "cp": 13085,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-15",
+   "notes": ""
+  },
+  {
+   "id": "u25",
+   "at": {
+    "cp": 13128,
+    "quote": "{{Sfn|Wittmayer|1981|p=203}}"
+   },
+   "binds_to": {
+    "cp": 13128,
+    "quote": "{{Sfn|Wittmayer|1981|p=203}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEWittmayer1981203_32-0",
+   "notes": ""
+  },
+  {
+   "id": "u26",
+   "at": {
+    "cp": 13181,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 4109,
+    "quote": "<ref name=\":2\">{{Cite web|date=2018-07-26|title=Timeline of "
+   },
+   "render_ref_id": "cite_ref-:2_11-1",
+   "notes": ""
+  },
+  {
+   "id": "u27",
+   "at": {
+    "cp": 13220,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-16",
+   "notes": ""
+  },
+  {
+   "id": "u28",
+   "at": {
+    "cp": 13259,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-17",
+   "notes": ""
+  },
+  {
+   "id": "u29",
+   "at": {
+    "cp": 13301,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-18",
+   "notes": ""
+  },
+  {
+   "id": "u30",
+   "at": {
+    "cp": 13377,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 2736,
+    "quote": "<ref name=\":0\">{{Cite web|title=South Dakota and the 19th Am"
+   },
+   "render_ref_id": "cite_ref-:0_7-5",
+   "notes": ""
+  },
+  {
+   "id": "u31",
+   "at": {
+    "cp": 13416,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-19",
+   "notes": ""
+  },
+  {
+   "id": "u32",
+   "at": {
+    "cp": 13456,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-20",
+   "notes": ""
+  },
+  {
+   "id": "u33",
+   "at": {
+    "cp": 13499,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-21",
+   "notes": ""
+  },
+  {
+   "id": "u34",
+   "at": {
+    "cp": 13541,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-22",
+   "notes": ""
+  },
+  {
+   "id": "u35",
+   "at": {
+    "cp": 13580,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-23",
+   "notes": ""
+  },
+  {
+   "id": "u36",
+   "at": {
+    "cp": 13623,
+    "quote": "{{Sfn|Robinson|1904|p=598}}"
+   },
+   "binds_to": {
+    "cp": 13623,
+    "quote": "{{Sfn|Robinson|1904|p=598}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTERobinson1904598_33-0",
+   "notes": ""
+  },
+  {
+   "id": "u37",
+   "at": {
+    "cp": 13672,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-24",
+   "notes": ""
+  },
+  {
+   "id": "u38",
+   "at": {
+    "cp": 13709,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-25",
+   "notes": ""
+  },
+  {
+   "id": "u39",
+   "at": {
+    "cp": 13748,
+    "quote": "{{Sfn|Wittmayer|1981|p=211}}"
+   },
+   "binds_to": {
+    "cp": 13748,
+    "quote": "{{Sfn|Wittmayer|1981|p=211}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEWittmayer1981211_34-0",
+   "notes": ""
+  },
+  {
+   "id": "u40",
+   "at": {
+    "cp": 13793,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-26",
+   "notes": ""
+  },
+  {
+   "id": "u41",
+   "at": {
+    "cp": 13850,
+    "quote": "{{Sfn|Robinson|1904|p=601}}"
+   },
+   "binds_to": {
+    "cp": 13850,
+    "quote": "{{Sfn|Robinson|1904|p=601}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTERobinson1904601_35-0",
+   "notes": ""
+  },
+  {
+   "id": "u42",
+   "at": {
+    "cp": 13896,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-27",
+   "notes": ""
+  },
+  {
+   "id": "u43",
+   "at": {
+    "cp": 13936,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-28",
+   "notes": ""
+  },
+  {
+   "id": "u44",
+   "at": {
+    "cp": 13975,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "binds_to": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902555_31-1",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u45",
+   "at": {
+    "cp": 14030,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-29",
+   "notes": ""
+  },
+  {
+   "id": "u46",
+   "at": {
+    "cp": 14073,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "binds_to": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902555_31-2",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u47",
+   "at": {
+    "cp": 14120,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-30",
+   "notes": ""
+  },
+  {
+   "id": "u48",
+   "at": {
+    "cp": 14164,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-31",
+   "notes": ""
+  },
+  {
+   "id": "u49",
+   "at": {
+    "cp": 14210,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-32",
+   "notes": ""
+  },
+  {
+   "id": "u50",
+   "at": {
+    "cp": 14250,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-33",
+   "notes": ""
+  },
+  {
+   "id": "u51",
+   "at": {
+    "cp": 14287,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-34",
+   "notes": ""
+  },
+  {
+   "id": "u52",
+   "at": {
+    "cp": 14324,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-35",
+   "notes": ""
+  },
+  {
+   "id": "u53",
+   "at": {
+    "cp": 14365,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-36",
+   "notes": ""
+  },
+  {
+   "id": "u54",
+   "at": {
+    "cp": 14403,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-37",
+   "notes": ""
+  },
+  {
+   "id": "u55",
+   "at": {
+    "cp": 14440,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-38",
+   "notes": ""
+  },
+  {
+   "id": "u56",
+   "at": {
+    "cp": 14485,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-39",
+   "notes": ""
+  },
+  {
+   "id": "u57",
+   "at": {
+    "cp": 14525,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-40",
+   "notes": ""
+  },
+  {
+   "id": "u58",
+   "at": {
+    "cp": 14574,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-41",
+   "notes": ""
+  },
+  {
+   "id": "u59",
+   "at": {
+    "cp": 14614,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-42",
+   "notes": ""
+  },
+  {
+   "id": "u60",
+   "at": {
+    "cp": 14658,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-43",
+   "notes": ""
+  },
+  {
+   "id": "u61",
+   "at": {
+    "cp": 14698,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-44",
+   "notes": ""
+  },
+  {
+   "id": "u62",
+   "at": {
+    "cp": 14742,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "binds_to": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902555_31-3",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u63",
+   "at": {
+    "cp": 14793,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-45",
+   "notes": ""
+  },
+  {
+   "id": "u64",
+   "at": {
+    "cp": 14834,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-46",
+   "notes": ""
+  },
+  {
+   "id": "u65",
+   "at": {
+    "cp": 14872,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-47",
+   "notes": ""
+  },
+  {
+   "id": "u66",
+   "at": {
+    "cp": 14910,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-48",
+   "notes": ""
+  },
+  {
+   "id": "u67",
+   "at": {
+    "cp": 14956,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-49",
+   "notes": ""
+  },
+  {
+   "id": "u68",
+   "at": {
+    "cp": 14991,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-50",
+   "notes": ""
+  },
+  {
+   "id": "u69",
+   "at": {
+    "cp": 15030,
+    "quote": "<ref>{{Cite web |last=Pollitzer |first=Pattey |title=Anita P"
+   },
+   "binds_to": {
+    "cp": 15030,
+    "quote": "<ref>{{Cite web |last=Pollitzer |first=Pattey |title=Anita P"
+   },
+   "render_ref_id": "cite_ref-36",
+   "notes": ""
+  },
+  {
+   "id": "u70",
+   "at": {
+    "cp": 15253,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "binds_to": {
+    "cp": 12953,
+    "quote": "{{Sfn|Anthony|1902|p=555}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEAnthony1902555_31-4",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u71",
+   "at": {
+    "cp": 15301,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-51",
+   "notes": ""
+  },
+  {
+   "id": "u72",
+   "at": {
+    "cp": 15341,
+    "quote": "{{Sfn|Robinson|1904|p=600}}"
+   },
+   "binds_to": {
+    "cp": 7500,
+    "quote": "{{Sfn|Robinson|1904|p=600}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTERobinson1904600_19-3",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u73",
+   "at": {
+    "cp": 15390,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-52",
+   "notes": ""
+  },
+  {
+   "id": "u74",
+   "at": {
+    "cp": 15434,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-53",
+   "notes": ""
+  },
+  {
+   "id": "u75",
+   "at": {
+    "cp": 15471,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-54",
+   "notes": ""
+  },
+  {
+   "id": "u76",
+   "at": {
+    "cp": 15517,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-55",
+   "notes": ""
+  },
+  {
+   "id": "u77",
+   "at": {
+    "cp": 15558,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-56",
+   "notes": ""
+  },
+  {
+   "id": "u78",
+   "at": {
+    "cp": 15597,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-57",
+   "notes": ""
+  },
+  {
+   "id": "u79",
+   "at": {
+    "cp": 15642,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-58",
+   "notes": ""
+  },
+  {
+   "id": "u80",
+   "at": {
+    "cp": 15676,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-59",
+   "notes": ""
+  },
+  {
+   "id": "u81",
+   "at": {
+    "cp": 15714,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-60",
+   "notes": ""
+  },
+  {
+   "id": "u82",
+   "at": {
+    "cp": 15748,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-61",
+   "notes": ""
+  },
+  {
+   "id": "u83",
+   "at": {
+    "cp": 15784,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-62",
+   "notes": ""
+  },
+  {
+   "id": "u84",
+   "at": {
+    "cp": 15828,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-63",
+   "notes": ""
+  },
+  {
+   "id": "u85",
+   "at": {
+    "cp": 15873,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-64",
+   "notes": ""
+  },
+  {
+   "id": "u86",
+   "at": {
+    "cp": 15913,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-65",
+   "notes": ""
+  },
+  {
+   "id": "u87",
+   "at": {
+    "cp": 15960,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-66",
+   "notes": ""
+  },
+  {
+   "id": "u88",
+   "at": {
+    "cp": 16003,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 12095,
+    "quote": "<ref name=\":3\">{{Cite web|date=2019-04-04|title=Invaluable O"
+   },
+   "render_ref_id": "cite_ref-:3_29-67",
+   "notes": ""
+  },
+  {
+   "id": "u89",
+   "at": {
+    "cp": 16077,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 2736,
+    "quote": "<ref name=\":0\">{{Cite web|title=South Dakota and the 19th Am"
+   },
+   "render_ref_id": "cite_ref-:0_7-6",
+   "notes": ""
+  },
+  {
+   "id": "u90",
+   "at": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">"
+   },
+   "binds_to": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "render_ref_id": "cite_ref-:5_14-2",
+   "notes": ""
+  },
+  {
+   "id": "u91",
+   "at": {
+    "cp": 16500,
+    "quote": "{{Sfn|Easton|1983|p=207}}"
+   },
+   "binds_to": {
+    "cp": 16500,
+    "quote": "{{Sfn|Easton|1983|p=207}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEEaston1983207_37-0",
+   "notes": ""
+  },
+  {
+   "id": "u92",
+   "at": {
+    "cp": 16551,
+    "quote": "<ref name=\":5\" />"
+   },
+   "binds_to": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "render_ref_id": "cite_ref-:5_14-3",
+   "notes": ""
+  },
+  {
+   "id": "u93",
+   "at": {
+    "cp": 16600,
+    "quote": "{{Sfn|Easton|1983|p=207}}"
+   },
+   "binds_to": {
+    "cp": 16500,
+    "quote": "{{Sfn|Easton|1983|p=207}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEEaston1983207_37-1",
+   "notes": "Identical {{Sfn}} call; binds to the first identical call."
+  },
+  {
+   "id": "u94",
+   "at": {
+    "cp": 16699,
+    "quote": "<ref name=\":5\" />"
+   },
+   "binds_to": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "render_ref_id": "cite_ref-:5_14-4",
+   "notes": ""
+  },
+  {
+   "id": "u95",
+   "at": {
+    "cp": 16734,
+    "quote": "<ref name=\":5\" />"
+   },
+   "binds_to": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "render_ref_id": "cite_ref-:5_14-5",
+   "notes": ""
+  },
+  {
+   "id": "u96",
+   "at": {
+    "cp": 16769,
+    "quote": "<ref name=\":5\" />"
+   },
+   "binds_to": {
+    "cp": 16237,
+    "quote": "<ref name=\":5\">{{Cite web|date=20 April 2020|title=The 1916 "
+   },
+   "render_ref_id": "cite_ref-:5_14-6",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "cp 17010-17174: an HTML comment contains the literal text \"<ref></ref>\"; it is inside a comment and empty, so it is neither a definition nor a use.",
+  "No DOI or PMID occurrence starts inside the window (the only DOI in the article, in a doi.org URL at cp 10790, is before the window).",
+  "Bibliography entries listed under \"Sources\" have no rendered footnote; render_note_id is null."
+ ]
+}

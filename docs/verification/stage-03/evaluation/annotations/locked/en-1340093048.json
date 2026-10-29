@@ -1,0 +1,360 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1340093048,
+  "source_sha256": "45e359f8ec78637702c68c299be5b3481ca6f989ebd9dd125d03efc1f65e6a3b",
+  "html_sha256": "01018ff9a30644e3a525666e52e9c8483835cbce49b61e36650af7f119156891",
+  "window": [
+   9128,
+   17128
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:05:16Z",
+  "finished_at": "2026-10-29T09:10:07Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1340093048/packet.json",
+    "sha256": "9de5c1a3f700a98db953e7670e6c6f9112730db7fd9e062ecb16f2dc39cbdb20"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1340093048/source.wikitext",
+    "sha256": "45e359f8ec78637702c68c299be5b3481ca6f989ebd9dd125d03efc1f65e6a3b"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1340093048/render.html",
+    "sha256": "01018ff9a30644e3a525666e52e9c8483835cbce49b61e36650af7f119156891"
+   }
+  ],
+  "tools": "python3 -I (standard library re/json/str.find and lxml.html) used only to list the positions of <ref, {{sfn/{{cite, 10./doi/PMID strings and HTML comments in the wikitext, to list <sup typeof~=mw:Extension/ref> ids with their data-mw attrs and <li id=cite_note-...> ids in render.html in document order, and to verify every quote with text[cp:cp+len(quote)]==quote; every label decided by reading the text. sha256sum for file hashes. The throwaway snippets (token lister, marker lister, per-article label tables) were kept as files in a temporary scratchpad folder outside the output directory while working and deleted at the end.",
+  "unresolved": "Raw-text choice for the Springer /article/10.1007/... URL (identifier text vs whole URL) is a judgement call; recorded in the identifier notes."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1541,
+    "quote": "<ref name=\"Paaby 66–73\">{{Cite journal|last1=Paaby|first1=An"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "Paaby 66–73",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1565,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Paaby_66–73-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined before the window; reused by name at cp 9497 inside the window."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 10277,
+    "quote": "<ref>{{cite journal | last1 = Williams | first1 = G. C. | ye"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10282,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11721,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:1-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref :1; reused in the window (cp 12439, 12757, 13401) and once more after the window (cp 45635)."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13681,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:2-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref :2; reused five times in the window."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 9497,
+    "quote": "<ref name=\"Paaby 66–73\" />"
+   },
+   "binds_to": {
+    "cp": 1541,
+    "quote": "<ref name=\"Paaby 66–73\">{{Cite journal|last1=Paaby|first1=An"
+   },
+   "render_ref_id": "cite_ref-Paaby_66–73_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 10277,
+    "quote": "<ref>{{cite journal | last1 = Williams | first1 = G. C. | ye"
+   },
+   "binds_to": {
+    "cp": 10277,
+    "quote": "<ref>{{cite journal | last1 = Williams | first1 = G. C. | ye"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "binds_to": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "render_ref_id": "cite_ref-:1_10-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 12439,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "render_ref_id": "cite_ref-:1_10-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 12757,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "render_ref_id": "cite_ref-:1_10-2",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 13401,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 11706,
+    "quote": "<ref name=\":1\">{{Cite journal |last1=Lee |first1=Phil H |las"
+   },
+   "render_ref_id": "cite_ref-:1_10-3",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 14437,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-1",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 15111,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-2",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 15497,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-3",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 15883,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-4",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 16853,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 13666,
+    "quote": "<ref name=\":2\">{{Cite journal |last=Fisch |first=Gene S. |da"
+   },
+   "render_ref_id": "cite_ref-:2_11-5",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 10491,
+    "quote": "10.2307/2406060"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2307/2406060",
+   "notes": "doi= value written without surrounding spaces, directly followed by \"|\"."
+  },
+  {
+   "at": {
+    "cp": 12066,
+    "quote": "10.1016/j.biopsych.2020.09.026"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.biopsych.2020.09.026",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 12103,
+    "quote": "33131714"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "33131714",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 13889,
+    "quote": "10.1007/s10709-021-00138-2"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1007/s10709-021-00138-2",
+   "notes": "Inside url=https://link.springer.com/article/10.1007/s10709-021-00138-2 (URL starts at cp 13855) of {{Cite journal}}. A publisher URL that carries the DOI in an /article/ path, not a doi.org/PubMed URL and not a /doi/10. path, so per the raw-text table (\"anything else\") the identifier text is quoted; role identifier_link because it is a publisher URL in url= pointing at the identifier. Alternative reading: whole URL at cp 13855."
+  },
+  {
+   "at": {
+    "cp": 13988,
+    "quote": "10.1007/s10709-021-00138-2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/s10709-021-00138-2",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 14021,
+    "quote": "34677750"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "34677750",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "The :1 definition URL (https://www.biologicalpsychiatryjournal.com/article/S0006-3223(20)31987-9/abstract) contains a PII, not a DOI; not listed as an identifier.",
+  "The Edwards definition (cp 8890, cite_note-8) and its doi/pmid (cp 9062, 9109) lie entirely before the window (which starts at cp 9128) and nothing inside the window uses it, so it is not listed."
+ ]
+}

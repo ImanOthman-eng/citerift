@@ -1,0 +1,501 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76978193,
+  "source_sha256": "da30f9ef78d094f63d9a71e58c1d0b27c4065114492cf8e10abd9033708b44e2",
+  "html_sha256": "003395ca3e65ad7b0bae8d57adb1bb8c6356c3d195fc207b00775b913a418f00",
+  "window": [
+   0,
+   7425
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:14:32Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76978193/packet.json",
+    "sha256": "2b799ceeb6d2229099a44ccc555303f01b109d6fc1300e826f08fab3ec2f2a12"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76978193/source.wikitext",
+    "sha256": "da30f9ef78d094f63d9a71e58c1d0b27c4065114492cf8e10abd9033708b44e2"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76978193/render.html",
+    "sha256": "003395ca3e65ad7b0bae8d57adb1bb8c6356c3d195fc207b00775b913a418f00"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str/re to print the source with code-point offsets and to find '<ref', '{{استشهاد', doi=/pmid=, '10.', resolver URLs, comments/nowiki and retraction vocabulary; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-*> texts, red links and the further-reading list item; every location asserted with text[cp:cp+len(quote)]==quote. Labels decided by reading.",
+  "unresolved": "Nothing undecided. Marker for the bibliography entry set to 'none' after inspecting its rendered body list item (it has no footnote). Process notes: started_at is the start of the whole labelling session (09:10:12Z); per-article start times were not recorded separately. Early in the session I briefly wrote two throwaway lxml/re listing scripts to scratchpad/eval/tools/ (outside the permitted output directory), then deleted that directory and used stdin-only snippets afterwards. At the very end I ran a read-only 'git status --short' in /home/user/citerift (which produced no output), contrary to the no-git rule; no repository file was modified."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "asc",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1822,
+      "quote": "{{استشهاد|مسار=http://www.agnesscott"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-asc-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{استشهاد}} is the Arabic {{Citation}} template. Trailing '.' after the template is punctuation. Named ref reused 5 times (cp 1666 before the definition, 2803, 3244, 4158, 4822)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3261,
+    "quote": "<ref name=\"hds\">{{استشهاد|مسار الفصل=http://www.hls"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "hds",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3277,
+      "quote": "{{استشهاد|مسار الفصل=http://www.hls"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-hds-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined after its reuses at cp 1683 and 2820."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 3522,
+    "quote": "<ref name=\"bdws\">{{استشهاد|عنوان=The Biographical"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "bdws",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3539,
+      "quote": "{{استشهاد|عنوان=The Biographical"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-bdws-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined after its reuse at cp 2837. Has isbn= (not a DOI/PMID)."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4288,
+    "quote": "<ref>{{استشهاد|مسار=http://www.mathunion.org"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4293,
+      "quote": "{{استشهاد|مسار=http://www.mathunion.org"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4839,
+    "quote": "<ref>{{استشهاد|الأخير=Ficken|الأول=F. A."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4844,
+      "quote": "{{استشهاد|الأخير=Ficken|الأول=F. A."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Title 'Review: Sophie Piccard, ...' is a book review; no retraction/correction vocabulary."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 5782,
+    "quote": "<ref>{{استشهاد\n | الأخير = Bloom"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5787,
+      "quote": "{{استشهاد\n | الأخير = Bloom"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Title 'A counterexample to a theorem of S. Piccard' - 'counterexample' is not retraction/correction vocabulary; marker none. Has mr= (MathSciNet), not a DOI/PMID."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 6089,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Yovanof"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6094,
+      "quote": "{{استشهاد\n | الأخير1 = Yovanof"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "No DOI/PMID; mr= only."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 6398,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Bekir"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6403,
+      "quote": "{{استشهاد\n | الأخير1 = Bekir"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Has bibcode and mr= besides doi=."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 6849,
+    "quote": "* {{استشهاد|الأخير=Schumacher"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6851,
+      "quote": "{{استشهاد|الأخير=Schumacher|الأول=Mireille"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the 'قراءات إضافية' (Further reading) section containing a citation template. Rendered as a body list item (Schumacher, Mireille, \"Des mathématiciennes en Suisse\", Tangente, vol. 157, pp. 38–39), inspected: no marker vocabulary. No DOI/PMID."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1666,
+    "quote": "<ref name=\"asc\"/>"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-0",
+   "notes": "Reuse before the definition (cp 1806)."
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1683,
+    "quote": "<ref name=\"hds\"/>"
+   },
+   "binds_to": {
+    "cp": 3261,
+    "quote": "<ref name=\"hds\">{{استشهاد|مسار الفصل=http://www.hls"
+   },
+   "render_ref_id": "cite_ref-hds_2-0",
+   "notes": "Reuse before the definition (cp 3261)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2803,
+    "quote": "<ref name=\"asc\"/>"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-2",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2820,
+    "quote": "<ref name=\"hds\"/>"
+   },
+   "binds_to": {
+    "cp": 3261,
+    "quote": "<ref name=\"hds\">{{استشهاد|مسار الفصل=http://www.hls"
+   },
+   "render_ref_id": "cite_ref-hds_2-1",
+   "notes": "Reuse before the definition."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2837,
+    "quote": "<ref name=\"bdws\"/>"
+   },
+   "binds_to": {
+    "cp": 3522,
+    "quote": "<ref name=\"bdws\">{{استشهاد|عنوان=The Biographical"
+   },
+   "render_ref_id": "cite_ref-bdws_3-0",
+   "notes": "Reuse before the definition (cp 3522)."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3244,
+    "quote": "<ref name=\"asc\"/>"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-3",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 3261,
+    "quote": "<ref name=\"hds\">{{استشهاد|مسار الفصل=http://www.hls"
+   },
+   "binds_to": {
+    "cp": 3261,
+    "quote": "<ref name=\"hds\">{{استشهاد|مسار الفصل=http://www.hls"
+   },
+   "render_ref_id": "cite_ref-hds_2-2",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 3522,
+    "quote": "<ref name=\"bdws\">{{استشهاد|عنوان=The Biographical"
+   },
+   "binds_to": {
+    "cp": 3522,
+    "quote": "<ref name=\"bdws\">{{استشهاد|عنوان=The Biographical"
+   },
+   "render_ref_id": "cite_ref-bdws_3-1",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 4158,
+    "quote": "<ref name=\"asc\"/>"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-4",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 4288,
+    "quote": "<ref>{{استشهاد|مسار=http://www.mathunion.org"
+   },
+   "binds_to": {
+    "cp": 4288,
+    "quote": "<ref>{{استشهاد|مسار=http://www.mathunion.org"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 4822,
+    "quote": "<ref name=\"asc\"/>"
+   },
+   "binds_to": {
+    "cp": 1806,
+    "quote": "<ref name=\"asc\">{{استشهاد|مسار=http://www.agnesscott"
+   },
+   "render_ref_id": "cite_ref-asc_1-5",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 4839,
+    "quote": "<ref>{{استشهاد|الأخير=Ficken|الأول=F. A."
+   },
+   "binds_to": {
+    "cp": 4839,
+    "quote": "<ref>{{استشهاد|الأخير=Ficken|الأول=F. A."
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 5782,
+    "quote": "<ref>{{استشهاد\n | الأخير = Bloom"
+   },
+   "binds_to": {
+    "cp": 5782,
+    "quote": "<ref>{{استشهاد\n | الأخير = Bloom"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 6089,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Yovanof"
+   },
+   "binds_to": {
+    "cp": 6089,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Yovanof"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 6398,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Bekir"
+   },
+   "binds_to": {
+    "cp": 6398,
+    "quote": "<ref>{{استشهاد\n | الأخير1 = Bekir"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 5135,
+    "quote": "10.1090/s0002-9904-1943-07825-1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1090/s0002-9904-1943-07825-1",
+   "notes": "doi= field of {{استشهاد}} in footnote 5 (Ficken review)."
+  },
+  {
+   "at": {
+    "cp": 6035,
+    "quote": "10.1016/0097-3165(77)90013-9"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0097-3165(77)90013-9",
+   "notes": "doi= field in footnote 6 (Bloom 1977); value ends at '|'."
+  },
+  {
+   "at": {
+    "cp": 6533,
+    "quote": "10.1109/TIT.2007.899468"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1109/tit.2007.899468",
+   "notes": "doi = field in footnote 8 (Bekir & Golomb 2007); value ends at the line break."
+  }
+ ],
+ "unresolved_notes": [
+  "Infobox {{Infobox academic}} emits no reference markers in the rendered HTML (all 16 markers align with source refs)."
+ ]
+}

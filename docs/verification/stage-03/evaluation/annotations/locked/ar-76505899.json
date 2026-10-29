@@ -1,0 +1,371 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76505899,
+  "source_sha256": "bbb4c17b54d8b596a51e09943941022e42643d076d44e40d776374155e1a49d3",
+  "html_sha256": "cfb207713f500fb9307dda55e6104fbabdb0de69c66614e4ce7a6367f9cb78a1",
+  "window": [
+   865,
+   8865
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:49:56Z",
+  "finished_at": "2026-10-29T08:52:19Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76505899/packet.json",
+    "sha256": "feb276bb01d2c3c5174f863a620d4bec219224b14ed291d6de3d35b4106d2c53"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76505899/source.wikitext",
+    "sha256": "bbb4c17b54d8b596a51e09943941022e42643d076d44e40d776374155e1a49d3"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76505899/render.html",
+    "sha256": "cfb207713f500fb9307dda55e6104fbabdb0de69c66614e4ce7a6367f9cb78a1"
+   }
+  ],
+  "tools": "bash cat/sha256sum to view files; python3 -I with the standard library (str.find, re.finditer for '<ref', '{{', '10.', 'pmid', 'doi', 'دوي', retraction vocabulary) and lxml.html (listing elements whose typeof contains mw:Extension/ref with id and data-mw, and <li id='cite_note-...'> with text content and <a> class/title/href); every location checked with text[cp:cp+len(quote)] == quote. Labels decided by reading the text.",
+  "unresolved": "Role of pmid=10450276 inside the ajp publisher URL query string (chose not_a_target); raw-text start for the DOI embedded in an archive.org URL (chose the embedded publisher URL start)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1068,
+    "quote": "<ref name=PI>{{استشهاد ويب|عنوان=Xenazin"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "PI",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1081,
+      "quote": "{{استشهاد ويب|عنوان=Xenazine ("
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-PI-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Inside the drug infobox (excretion parameter). Reused at cp 5735 and 7071."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3397,
+    "quote": "<ref>[http://ap.google.com/article/ALeqM"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3590,
+      "quote": "{{استشهاد ويب |مسار=http://ap."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body is a hand-written external link [http://ap.google.com/... title] plus {{وصلة مكسورة}} and {{cbignore}} (maintenance templates, not citation templates) followed by {{استشهاد ويب}} for the archived copy. Since a citation template is present, unstructured=false, although the first part is hand-written. 'وصلة مكسورة' = broken link, not a retraction."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4067,
+    "quote": "<ref name=\"JankovicHyperkinectic\">{{استشهاد ب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "JankovicHyperkinectic",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4101,
+      "quote": "{{استشهاد بدورية محكمة|عدة مؤل"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-JankovicHyperkinectic-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4403,
+    "quote": "<ref name=\"pmid17133512\">{{استشهاد بدوري"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid17133512",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4428,
+      "quote": "{{استشهاد بدورية محكمة|عدة مؤل"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid17133512-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4778,
+    "quote": "<ref name=\"pmid10450276\">{{استشهاد بدوري"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid10450276",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4803,
+      "quote": "{{استشهاد بدورية محكمة|عدة مؤل"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid10450276-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "doi= field is empty; the DOI appears only in the publisher URL in مسار= and in the archive URL."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1068,
+    "quote": "<ref name=PI>{{استشهاد ويب|عنوان=Xenazin"
+   },
+   "binds_to": {
+    "cp": 1068,
+    "quote": "<ref name=PI>{{استشهاد ويب|عنوان=Xenazin"
+   },
+   "render_ref_id": "cite_ref-PI_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3397,
+    "quote": "<ref>[http://ap.google.com/article/ALeqM"
+   },
+   "binds_to": {
+    "cp": 3397,
+    "quote": "<ref>[http://ap.google.com/article/ALeqM"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 4067,
+    "quote": "<ref name=\"JankovicHyperkinectic\">{{استشهاد ب"
+   },
+   "binds_to": {
+    "cp": 4067,
+    "quote": "<ref name=\"JankovicHyperkinectic\">{{استشهاد ب"
+   },
+   "render_ref_id": "cite_ref-JankovicHyperkinectic_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 4403,
+    "quote": "<ref name=\"pmid17133512\">{{استشهاد بدوري"
+   },
+   "binds_to": {
+    "cp": 4403,
+    "quote": "<ref name=\"pmid17133512\">{{استشهاد بدوري"
+   },
+   "render_ref_id": "cite_ref-pmid17133512_8-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4778,
+    "quote": "<ref name=\"pmid10450276\">{{استشهاد بدوري"
+   },
+   "binds_to": {
+    "cp": 4778,
+    "quote": "<ref name=\"pmid10450276\">{{استشهاد بدوري"
+   },
+   "render_ref_id": "cite_ref-pmid10450276_9-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 5735,
+    "quote": "<ref name=PI/>"
+   },
+   "binds_to": {
+    "cp": 1068,
+    "quote": "<ref name=PI>{{استشهاد ويب|عنوان=Xenazin"
+   },
+   "render_ref_id": "cite_ref-PI_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 7071,
+    "quote": "<ref name=PI/>"
+   },
+   "binds_to": {
+    "cp": 1068,
+    "quote": "<ref name=PI>{{استشهاد ويب|عنوان=Xenazin"
+   },
+   "render_ref_id": "cite_ref-PI_4-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4363,
+    "quote": "9040721"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9040721",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4375,
+    "quote": "10.1212/wnl.48.2.358"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1212/wnl.48.2.358",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4418,
+    "quote": "17133512"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "17133512",
+   "notes": "Inside the ref name value name=\"pmid17133512\"."
+  },
+  {
+   "at": {
+    "cp": 4671,
+    "quote": "17133512"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17133512",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4684,
+    "quote": "10.1002/mds.21222"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/mds.21222",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4793,
+    "quote": "10450276"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "10450276",
+   "notes": "Inside the ref name value name=\"pmid10450276\"."
+  },
+  {
+   "at": {
+    "cp": 5059,
+    "quote": "10450276"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "10450276",
+   "notes": "pmid= field; the following doi= field is empty (no occurrence)."
+  },
+  {
+   "at": {
+    "cp": 5079,
+    "quote": "https://ajp.psychiatryonline.org/doi/full/10.1176/ajp.156.8.1279?view=long&pmid=10450276"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1176/ajp.156.8.1279",
+   "notes": "Publisher URL in the مسار= (url) field; path is /doi/full/10.1176/...; DOI taken from the path and ends before the '?' query string."
+  },
+  {
+   "at": {
+    "cp": 5159,
+    "quote": "10450276"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "10450276",
+   "notes": "Query parameter pmid=10450276 inside the publisher (ajp.psychiatryonline.org) URL, which is another site's URL and is already labelled as the DOI link; uncertain between not_a_target and identifier_link/textual_mention."
+  },
+  {
+   "at": {
+    "cp": 5223,
+    "quote": "https://ajp.psychiatryonline.org/doi/full/10.1176/ajp.156.8.1279?view=long&pmid=10450276"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1176/ajp.156.8.1279",
+   "notes": "Publisher DOI URL embedded inside the web.archive.org snapshot URL in مسار أرشيف=. Quoted from the embedded URL's start (cp 5223), not from the archive URL start (cp 5201)."
+  },
+  {
+   "at": {
+    "cp": 5303,
+    "quote": "10450276"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "10450276",
+   "notes": "pmid query parameter inside the archive.org snapshot URL."
+  }
+ ],
+ "unresolved_notes": [
+  "The drug infobox (via Wikidata) emits rendered references that are not in the source: cite_note-wikidata-cb9bc191e6f4a06fa266ce67bf627f8cf49ff619-1 (17 markers; Maskell & Pirmohamed 2022, Scientific Data, DOI 10.1038/S41597-022-01159-Y, PMID 35246559), cite_note-wikidata-936217a17a6e162cb825e3fc4f39ca5b017d5872-2 (4 markers; DOI 10.5281/ZENODO.1435999), cite_note-wikidata-88ba2d829e3d719f5083e22602d0db21cfb8c991-3 (Inxight Drugs), cite_note-wikidata-9314cb8f607b3fb12e16175357c169b49e4c2f3a-5 (PubChem). Not listed as definitions/uses/identifiers (no source location).",
+  "Infobox {{cascite}}, {{chemspidercite}}, {{fdacite}}, {{keggcite}}, {{ebicite}}, {{stdinchicite}} are verification-marker templates, not citation templates and not footnotes; not labelled. {{drugs.com|...}} at cp 540 is before the window.",
+  "External links section (cp 7154 onward): plain list items with URLs and {{webarchive}}; no citation template and no DOI/PMID, so not bibliography entries.",
+  "The navbox text 'مسحوب من الأسواق' (withdrawn from market) in the rendered page is outside any footnote and not related to a cited work."
+ ]
+}

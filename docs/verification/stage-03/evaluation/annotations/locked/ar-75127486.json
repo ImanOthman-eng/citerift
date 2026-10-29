@@ -1,0 +1,305 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75127486,
+  "source_sha256": "5ed207cb0521ad5531f61f8165b57496a906ff40de44d20b9604f776da43cbe1",
+  "html_sha256": "6ca0c8330bea3216316534d2afe56eaafdd8dc6c01511e91d781778d75a2bc24",
+  "window": [
+   0,
+   1905
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:46:39Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75127486/packet.json",
+    "sha256": "648fe7b9acc74ac3dcece168a7afd3e463421d06c2503f437db7c63247fe2d06"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75127486/source.wikitext",
+    "sha256": "5ed207cb0521ad5531f61f8165b57496a906ff40de44d20b9604f776da43cbe1"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75127486/render.html",
+    "sha256": "6ca0c8330bea3216316534d2afe56eaafdd8dc6c01511e91d781778d75a2bc24"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str.find/re.finditer to locate '<ref', '{{', '10.', 'pmid', 'doi' etc.; lxml.html to list <sup typeof=mw:Extension/ref> (id, data-mw attrs/body) and <li id=cite_note-*> text; every location checked with text[cp:cp+len(quote)]==quote",
+  "unresolved": "none; no DOI or PMID occurs in the source"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 507,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q125946799"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 512,
+      "quote": "{{استشهاد بويكي بيانات|Q125946799"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 563,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 568,
+      "quote": "{{استشهاد بويكي بيانات|Q121071043"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; the same Wikidata item Q121071043 (p. 198) is cited by two separate unnamed refs (cp 563 and 909), which render as two separate notes."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 648,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q118929929"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 653,
+      "quote": "{{استشهاد بويكي بيانات|Q118929929"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 701,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q114972534"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 706,
+      "quote": "{{استشهاد بويكي بيانات|Q114972534"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 753,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q126198450"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 758,
+      "quote": "{{استشهاد بويكي بيانات|Q126198450"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 834,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q113297966"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 839,
+      "quote": "{{استشهاد بويكي بيانات|Q113297966"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 909,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 914,
+      "quote": "{{استشهاد بويكي بيانات|Q121071043"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; the same Wikidata item Q121071043 (p. 198) is cited by two separate unnamed refs (cp 563 and 909), which render as two separate notes."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 507,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q125946799"
+   },
+   "binds_to": {
+    "cp": 507,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q125946799"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 563,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "binds_to": {
+    "cp": 563,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 648,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q118929929"
+   },
+   "binds_to": {
+    "cp": 648,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q118929929"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 701,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q114972534"
+   },
+   "binds_to": {
+    "cp": 701,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q114972534"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 753,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q126198450"
+   },
+   "binds_to": {
+    "cp": 753,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q126198450"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 834,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q113297966"
+   },
+   "binds_to": {
+    "cp": 834,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q113297966"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 909,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "binds_to": {
+    "cp": 909,
+    "quote": "<ref>{{استشهاد بويكي بيانات|Q121071043"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "The infobox {{صندوق معلومات كائن}} (cp 0) emits three Wikidata-generated references rendered as cite_note-wikidata-86e10c95…-1 (used twice: cite_ref-…_1-0 and _1-1), cite_note-wikidata-c616ead2…-2 and cite_note-wikidata-999d43b9…-3; they have no source location and are not listed (guide 3.3)."
+ ]
+}

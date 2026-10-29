@@ -1,0 +1,545 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76927716,
+  "source_sha256": "201e3f55542ad87571eb3756ee7411be27ea345e59dc0273db767937e4ede9f7",
+  "html_sha256": "b73f6dc9dd3251c8645e5f4a3cec1e3f50f137ecfdcd36e5fdafaf55bf623133",
+  "window": [
+   0,
+   7539
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:49:56Z",
+  "finished_at": "2026-10-29T08:52:19Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76927716/packet.json",
+    "sha256": "3682decc3d9a08182fffa0e245efa3bad7021d74162cdbcdd908b16da9e4c723"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76927716/source.wikitext",
+    "sha256": "201e3f55542ad87571eb3756ee7411be27ea345e59dc0273db767937e4ede9f7"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-76927716/render.html",
+    "sha256": "b73f6dc9dd3251c8645e5f4a3cec1e3f50f137ecfdcd36e5fdafaf55bf623133"
+   }
+  ],
+  "tools": "bash cat/sha256sum to view files; python3 -I with the standard library (str.find, re.finditer for '<ref', '{{', '10.', 'pmid', 'doi', 'دوي', retraction vocabulary) and lxml.html (listing elements whose typeof contains mw:Extension/ref with id and data-mw, and <li id='cite_note-...'> with text content and <a> class/title/href); every location checked with text[cp:cp+len(quote)] == quote. Labels decided by reading the text.",
+  "unresolved": "Nothing undecided beyond treating hand-written short citations (Dauphin, Hütteroth, etc.) as ordinary notes with unstructured=true, since they are plain <ref> bodies, not sfn templates."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 466,
+    "quote": "<ref>{{استشهاد بويب|عنوان=زَبْدَة {{!}} "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 471,
+      "quote": "{{استشهاد بويب|عنوان=زَبْدَة {"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{!}} inside the title is a pipe escape, not a citation template."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1403,
+    "quote": "<ref name=\":1\">{{استشهاد بويب|عنوان=زَبْ"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1418,
+      "quote": "{{استشهاد بويب|عنوان=زَبْدَة {"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:1-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2192,
+    "quote": "<ref>Dauphin, 1998, p. 751</ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation, not a sfn template."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2284,
+    "quote": "<ref name=\"Zertal288\">Zertal, 2016, pp. [http"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Zertal288",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Zertal288-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with Google Books links and {{Webarchive}} (archive link template, not a citation template)."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 3119,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Daftar mufaṣṣa"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3124,
+      "quote": "{{استشهاد بويب|عنوان=Daftar mu"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 3656,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Lajjun"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3661,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=L"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 4478,
+    "quote": "<ref>Hütteroth and Abdulfattah, 1977, p. 159</ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 4773,
+    "quote": "<ref name=\":0\">Grossman, D. (1986).</ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-:0-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written, minimal citation."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 4926,
+    "quote": "<ref>Robinson and Smith, 1841, vol 3, Appendi"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with archive.org link."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 5229,
+    "quote": "<ref>Conder and Kitchener, 1882, SWP II, p. ["
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with archive.org link."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 5549,
+    "quote": "<ref>Barron, 1923, Table V, Sub-district of J"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with archive.org link."
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 5805,
+    "quote": "<ref name=\"Census1931\">Mills, 1932, p. [[iarc"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Census1931",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Census1931-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with an [[iarchive:...]] interwiki link."
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 6019,
+    "quote": "<ref name=\"DoS1945\">Government of Palestine, "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "DoS1945",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-DoS1945-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written short citation with link and {{Webarchive}}."
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 6405,
+    "quote": "<ref name=\"مولد تلقائيا1\">Government of Pales"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا1",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-مولد_تلقائيا1-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation; reused at cp 6578 and 6667."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 466,
+    "quote": "<ref>{{استشهاد بويب|عنوان=زَبْدَة {{!}} "
+   },
+   "binds_to": {
+    "cp": 466,
+    "quote": "<ref>{{استشهاد بويب|عنوان=زَبْدَة {{!}} "
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1403,
+    "quote": "<ref name=\":1\">{{استشهاد بويب|عنوان=زَبْ"
+   },
+   "binds_to": {
+    "cp": 1403,
+    "quote": "<ref name=\":1\">{{استشهاد بويب|عنوان=زَبْ"
+   },
+   "render_ref_id": "cite_ref-:1_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2007,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 1403,
+    "quote": "<ref name=\":1\">{{استشهاد بويب|عنوان=زَبْ"
+   },
+   "render_ref_id": "cite_ref-:1_3-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2192,
+    "quote": "<ref>Dauphin, 1998, p. 751</ref> والعصر "
+   },
+   "binds_to": {
+    "cp": 2192,
+    "quote": "<ref>Dauphin, 1998, p. 751</ref> والعصر "
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2284,
+    "quote": "<ref name=\"Zertal288\">Zertal, 2016, pp. "
+   },
+   "binds_to": {
+    "cp": 2284,
+    "quote": "<ref name=\"Zertal288\">Zertal, 2016, pp. "
+   },
+   "render_ref_id": "cite_ref-Zertal288_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 3119,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Daftar mufaṣṣa"
+   },
+   "binds_to": {
+    "cp": 3119,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Daftar mufaṣṣa"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3656,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Lajjun"
+   },
+   "binds_to": {
+    "cp": 3656,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Lajjun"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 4478,
+    "quote": "<ref>Hütteroth and Abdulfattah, 1977, p."
+   },
+   "binds_to": {
+    "cp": 4478,
+    "quote": "<ref>Hütteroth and Abdulfattah, 1977, p."
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 4773,
+    "quote": "<ref name=\":0\">Grossman, D. (1986).</ref"
+   },
+   "binds_to": {
+    "cp": 4773,
+    "quote": "<ref name=\":0\">Grossman, D. (1986).</ref"
+   },
+   "render_ref_id": "cite_ref-:0_9-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 4926,
+    "quote": "<ref>Robinson and Smith, 1841, vol 3, Ap"
+   },
+   "binds_to": {
+    "cp": 4926,
+    "quote": "<ref>Robinson and Smith, 1841, vol 3, Ap"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 5229,
+    "quote": "<ref>Conder and Kitchener, 1882, SWP II,"
+   },
+   "binds_to": {
+    "cp": 5229,
+    "quote": "<ref>Conder and Kitchener, 1882, SWP II,"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 5549,
+    "quote": "<ref>Barron, 1923, Table V, Sub-district"
+   },
+   "binds_to": {
+    "cp": 5549,
+    "quote": "<ref>Barron, 1923, Table V, Sub-district"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 5805,
+    "quote": "<ref name=\"Census1931\">Mills, 1932, p. ["
+   },
+   "binds_to": {
+    "cp": 5805,
+    "quote": "<ref name=\"Census1931\">Mills, 1932, p. ["
+   },
+   "render_ref_id": "cite_ref-Census1931_13-0",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 6019,
+    "quote": "<ref name=\"DoS1945\">Government of Palest"
+   },
+   "binds_to": {
+    "cp": 6019,
+    "quote": "<ref name=\"DoS1945\">Government of Palest"
+   },
+   "render_ref_id": "cite_ref-DoS1945_14-0",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 6405,
+    "quote": "<ref name=\"مولد تلقائيا1\">Government of "
+   },
+   "binds_to": {
+    "cp": 6405,
+    "quote": "<ref name=\"مولد تلقائيا1\">Government of "
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_15-0",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 6578,
+    "quote": "<ref name=\"مولد تلقائيا1\" />"
+   },
+   "binds_to": {
+    "cp": 6405,
+    "quote": "<ref name=\"مولد تلقائيا1\">Government of "
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_15-1",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 6667,
+    "quote": "<ref name=\"مولد تلقائيا1\" />"
+   },
+   "binds_to": {
+    "cp": 6405,
+    "quote": "<ref name=\"مولد تلقائيا1\">Government of "
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_15-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3941,
+    "quote": "10.1080/00758914.2023.2202484"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/00758914.2023.2202484",
+   "notes": "Arabic دوي= field of {{استشهاد بدورية محكمة}}."
+  }
+ ],
+ "unresolved_notes": [
+  "The settlement infobox (via Wikidata) emits a rendered reference not in the source: cite_note-wikidata-dddf40b4aa7cc92cccbaff73aaad63b36644ed88-1 (محمد حسن شراب 1987, معجم بلدان فلسطين, OCLC 1090683572). Not listed.",
+  "External links item at cp ~7154 (palestineremembered.com via web.archive.org) has no citation template or DOI/PMID; not a bibliography entry. s2cid=258602184 is not a DOI/PMID."
+ ]
+}
