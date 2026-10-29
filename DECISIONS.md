@@ -690,3 +690,29 @@ frozen before any holdout article is selected or any holdout prediction
 exists. Gate 03-A keeps the Master Plan wording; 03-B to 03-K refine it
 (directive section 20). The protocol is the executor's; its outcomes remain
 for the owner to accept or reject.
+
+## D-031 — Stage 03 supplemental correction batch and one fresh final confirmation campaign
+- Status: accepted
+- Topic: stage-03-supplemental-correction-and-final-confirmation
+- Date: 2026-10-29
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-29_SUPPLEMENT.md; docs/verification/stage-03/protocol/AMENDMENT_2026-10-29.md
+
+Owner instruction (owner directive delivered in the Stage 03 cloud session on
+2026-10-29; no platform message id is exposed to that session, so the
+reference is the retained text at
+docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-29_SUPPLEMENT.md):
+Stage 03 only. The executor repairs the independently reproduced defects F1-F4
+(warning words broken by inline markup or comments, discarded ordinary
+red-link labels, hidden ancestors ignored, explicitly numbered reuse arguments
+dropped) and other material in-scope defects, then runs one additional
+correction batch followed by one fresh final confirmation campaign. This
+satisfies FROZEN_PROTOCOL.md section 9's requirement to bring further rounds
+to the owner, for this cycle only. Metric definitions, per-language
+thresholds, minimum denominators and failure accounting stay as frozen; old
+selections, locks, annotations, predictions, scores and adjudications stay
+published; the additive amendment is dated and recorded before use. Network
+ceilings for the added campaign: 500 HTTP attempts and 300 MiB accepted
+bodies; export at most 1 GiB. The directive does not accept the stage,
+authorize Stage 04 or merging, or permit unlimited tuning cycles.

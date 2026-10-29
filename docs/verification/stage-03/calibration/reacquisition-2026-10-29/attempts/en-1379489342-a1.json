@@ -1,0 +1,111 @@
+{
+  "bundle": null,
+  "capture": {
+    "attempts": [
+      {
+        "body_bytes": 274,
+        "body_sha256": "f4113cb2e735b1472130431bf3c0f9ee5c25c2b782acb9dd62dffa122f2f924e",
+        "code": "HTTP_RATE_LIMITED",
+        "content_type": "text/plain",
+        "detail": "",
+        "duration_s": 0.437,
+        "number": 1,
+        "operation": "source",
+        "retry_after_problem": null,
+        "retry_after_raw": "39",
+        "retry_after_s": 39.0,
+        "retryable": true,
+        "started_at": "2026-10-29T09:28:21.154709Z",
+        "status": 429,
+        "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1379489342",
+        "wire_bytes": 274
+      },
+      {
+        "body_bytes": 274,
+        "body_sha256": "18d0af20108780ed71d8f6e258f8a2b02cab52d5e592f5c794a7c15a8d9e9070",
+        "code": "HTTP_RATE_LIMITED",
+        "content_type": "text/plain",
+        "detail": "",
+        "duration_s": 0.292,
+        "number": 2,
+        "operation": "source",
+        "retry_after_problem": null,
+        "retry_after_raw": "49",
+        "retry_after_s": 49.0,
+        "retryable": true,
+        "started_at": "2026-10-29T09:29:11.132279Z",
+        "status": 429,
+        "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1379489342",
+        "wire_bytes": 274
+      },
+      {
+        "body_bytes": 274,
+        "body_sha256": "8339dd12cd6d593d57fd00cb995110f1b3a9e4d66f319b7e37b17f9de3fb490c",
+        "code": "HTTP_RATE_LIMITED",
+        "content_type": "text/plain",
+        "detail": "",
+        "duration_s": 0.444,
+        "number": 3,
+        "operation": "source",
+        "retry_after_problem": null,
+        "retry_after_raw": "49",
+        "retry_after_s": 49.0,
+        "retryable": true,
+        "started_at": "2026-10-29T09:30:11.348272Z",
+        "status": 429,
+        "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1379489342",
+        "wire_bytes": 274
+      }
+    ],
+    "client": {
+      "name": "citerift-wiki",
+      "policy": {
+        "backoff_s": 10.0,
+        "deadline_s": 180.0,
+        "max_attempts": 3,
+        "max_body_bytes": 33554432,
+        "max_wire_bytes": 33554432,
+        "maxlag_s": 5,
+        "min_interval_s": 10.0,
+        "op_timeout_s": 30.0,
+        "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+      },
+      "version": "1.0.0"
+    },
+    "failure_artifacts": [
+      "f4113cb2e735b1472130431bf3c0f9ee5c25c2b782acb9dd62dffa122f2f924e",
+      "18d0af20108780ed71d8f6e258f8a2b02cab52d5e592f5c794a7c15a8d9e9070",
+      "8339dd12cd6d593d57fd00cb995110f1b3a9e4d66f319b7e37b17f9de3fb490c"
+    ],
+    "finished_at": "2026-10-29T09:30:11.793340Z",
+    "issues": [
+      {
+        "code": "ATTEMPTS_EXHAUSTED",
+        "detail": "source query",
+        "entities": [],
+        "evidence": [],
+        "retryable": true,
+        "severity": "error"
+      }
+    ],
+    "not_before": "2026-10-29T09:31:00.792408Z",
+    "page": null,
+    "render": {
+      "state": "not_requested"
+    },
+    "request": {
+      "follow_redirect": false,
+      "page_id": null,
+      "render": true,
+      "revision_id": 1379489342,
+      "title": null,
+      "wiki": "en"
+    },
+    "schema": "urn:citerift:schema:wiki:v1:capture",
+    "schema_version": "1.0.0",
+    "source": null,
+    "started_at": "2026-10-29T09:28:01.298302Z",
+    "status": "failed"
+  },
+  "status": "failed"
+}

@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 1966,
+   "body_sha256": "225fe43501bb9c032c8230a0c1de1bd1ba044f8b818ef54a691fc09346f958a0",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.417,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:42:10.879175Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=376898",
+   "wire_bytes": 1966
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "a850d6e0373c28f111c0fff9985cc37848ef6d464402ce62853b9a51c8a29d6d",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.404,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:42:21.296226Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=376898",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 99719,
+   "body_sha256": "2a0848722af2f050ddd6219b24e9eeca54c2a5621461b012a0da872d6b7c55f6",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.516,
+   "number": 3,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:43:00.700647Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=376898",
+   "wire_bytes": 33919
+  },
+  {
+   "body_bytes": 578173,
+   "body_sha256": "00a2b3563f251015db65f193e8e0ed02551bddc80cd4933bd0abb7c8f4011e79",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.6,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:43:11.218132Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381726974/html",
+   "wire_bytes": 93733
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "225fe43501bb9c032c8230a0c1de1bd1ba044f8b818ef54a691fc09346f958a0",
+  "a850d6e0373c28f111c0fff9985cc37848ef6d464402ce62853b9a51c8a29d6d"
+ ],
+ "finished_at": "2026-10-29T09:43:11.827687Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 376898,
+  "parent_revision_id": 1380551924,
+  "redirect_followed": null,
+  "revision_id": 1381726974,
+  "revision_timestamp": "2026-10-24T11:21:19Z",
+  "sha1": "c724403562bb14fde77b62cc393f7df6fd83dcc6",
+  "size": 98662,
+  "title": "Westboro Baptist Church",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "00a2b3563f251015db65f193e8e0ed02551bddc80cd4933bd0abb7c8f4011e79",
+  "bytes": 578173,
+  "checks": {
+   "document_revision_id": "1381726974",
+   "header_revision_id": "1381726974",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "376898",
+   "render_id": "4e4780e9-d33c-11f1-be6b-296e5d493f75",
+   "revision_sha1": "c724403562bb14fde77b62cc393f7df6fd83dcc6",
+   "revision_sha1_base36": "n9fi1mlphf1gc7c9ksyynv6th444vk6"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1381726974",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 09:43:11 GMT",
+   "etag": "W/\"1381726974/4e4780e9-d33c-11f1-be6b-296e5d493f75/view\"",
+   "last-modified": "Thu, 29 Oct 2026 01:57:53 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381726974/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 376898,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "ba5c54cfbdec3a6cc7b598c3ec3e6f583d6560b6dd850d88f9db13f55d23b241",
+  "bytes": 98662,
+  "response_artifact": "2a0848722af2f050ddd6219b24e9eeca54c2a5621461b012a0da872d6b7c55f6",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=376898"
+ },
+ "started_at": "2026-10-29T09:42:01.328688Z",
+ "status": "complete"
+}

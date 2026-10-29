@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 3236,
+   "body_sha256": "d10e6891995ec10cb608888bfc3974fd198354a248fc1f295eb2cb5b176cd949",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.618,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:41:11.266213Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12862847",
+   "wire_bytes": 1654
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "cb2e5668275640fcd781aa7499ecccf4ba1a726470b0de844a9e8b738352f4ae",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.413,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:41:21.884476Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1371756757/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 48184,
+   "body_sha256": "0c1ba12a388821e8391a260e0f9e443e2d9765c154745ae2912860c7fd5a967f",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.581,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:42:00.297537Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1371756757/html",
+   "wire_bytes": 9844
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "cb2e5668275640fcd781aa7499ecccf4ba1a726470b0de844a9e8b738352f4ae"
+ ],
+ "finished_at": "2026-10-29T09:42:00.879520Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 12862847,
+  "parent_revision_id": 1359946598,
+  "redirect_followed": null,
+  "revision_id": 1371756757,
+  "revision_timestamp": "2026-08-28T07:18:54Z",
+  "sha1": "d881bac70843c51133b88e870dadb2300fd52019",
+  "size": 2667,
+  "title": "Neostenanthera neurosericea",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "0c1ba12a388821e8391a260e0f9e443e2d9765c154745ae2912860c7fd5a967f",
+  "bytes": 48184,
+  "checks": {
+   "document_revision_id": "1371756757",
+   "header_revision_id": "1371756757",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "12862847",
+   "render_id": "038f067b-d19c-11f1-9820-c53ad625403d",
+   "revision_sha1": "d881bac70843c51133b88e870dadb2300fd52019",
+   "revision_sha1_base36": "pagd3mecv40akn27cnfwtt6yl2072ft"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1371756757",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 09:42:00 GMT",
+   "etag": "W/\"1371756757/038f067b-d19c-11f1-9820-c53ad625403d/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:32:56 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1371756757/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 12862847,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "dc9637608a9bc494211e131c14b2fef7ae08762371b3cd834736e60c9bd28906",
+  "bytes": 2667,
+  "response_artifact": "d10e6891995ec10cb608888bfc3974fd198354a248fc1f295eb2cb5b176cd949",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12862847"
+ },
+ "started_at": "2026-10-29T09:41:01.661136Z",
+ "status": "complete"
+}
