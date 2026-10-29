@@ -18,7 +18,16 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from capture_sample import capture
 
-RETRYABLE = {"ATTEMPTS_EXHAUSTED", "HTTP_RATE_LIMITED", "HTTP_UNAVAILABLE", "HTTP_TIMEOUT", "DEADLINE_EXCEEDED"}
+# NETWORK_GATE_BUSY (added 2026-10-29 before the confirmation retry pass): another local process held the network
+# gate past the capture deadline; like a rate limit, it says nothing about the article.
+RETRYABLE = {
+    "ATTEMPTS_EXHAUSTED",
+    "HTTP_RATE_LIMITED",
+    "HTTP_UNAVAILABLE",
+    "HTTP_TIMEOUT",
+    "DEADLINE_EXCEEDED",
+    "NETWORK_GATE_BUSY",
+}
 RANK = {"complete": 0, "partial": 1, "deferred": 2, "failed": 3}
 
 
