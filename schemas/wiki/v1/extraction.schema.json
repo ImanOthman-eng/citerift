@@ -221,7 +221,7 @@
         "origin": {"enum": ["template_field", "wrapper", "url", "label_text", "plain_text"]},
         "container_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
         "unit_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
-        "boundary": {"enum": ["field", "delimited", "ambiguous_trailing_punctuation", "url"]},
+        "boundary": {"enum": ["field", "delimited", "ambiguous_trailing_punctuation", "ambiguous_markup_or_entity", "url"]},
         "context": {
           "type": "object", "additionalProperties": false, "required": ["template", "param", "in_link_text"],
           "properties": {
@@ -238,7 +238,7 @@
               "type": "object", "additionalProperties": false, "required": ["input_steps", "structural_steps", "normalizer_input"],
               "properties": {
                 "input_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED"]}},
-                "structural_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED", "PROTOCOL_RELATIVE_URL_COMPLETED", "URL_QUERY_FRAGMENT_REMOVED", "PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE"]}},
+                "structural_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED", "URL_OUTER_WHITESPACE_TRIMMED", "PROTOCOL_RELATIVE_URL_COMPLETED", "URL_QUERY_FRAGMENT_REMOVED", "PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE", "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS"]}},
                 "normalizer_input": {"type": "string"}
               }
             }

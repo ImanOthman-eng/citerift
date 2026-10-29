@@ -8,6 +8,7 @@ document carries the SHA-256 of its own canonical form (``extraction_digest``).
 
 from __future__ import annotations
 
+import contextlib
 import json
 import os
 import signal
@@ -27,7 +28,15 @@ from citerift.wiki.model import OVERRIDDEN, SourceModel, build
 from citerift.wiki.profile import Profile, load_profile
 from citerift.wiki.reconcile import reconcile
 from citerift.wiki.render import HTML_PARSER, HTML_PARSER_VERSION, LIBXML_VERSION, RenderLimitExceeded, read_render
-from citerift.wiki.source import PARSER_NAME, PARSER_VERSION, LimitExceeded, Limits, SourceScan, scan_source
+from citerift.wiki.source import (
+    AMBIGUOUS_BOUNDARIES,
+    PARSER_NAME,
+    PARSER_VERSION,
+    LimitExceeded,
+    Limits,
+    SourceScan,
+    scan_source,
+)
 from citerift.wiki.textmap import ByteMap
 
 EXTRACTION_SCHEMA = "urn:citerift:schema:wiki:v1:extraction"
@@ -367,11 +376,13 @@ def _assemble(
         if o.role == "unresolved":
             code = "IDENTIFIER_PARAMETER_OVERRIDDEN" if o.role_reason.endswith(OVERRIDDEN) else "TEMPLATE_UNSUPPORTED"
             doc.ledger(o.id, "identifier", code, o.role_reason)
-        if o.decoded is None:
+        if o.decoded is None and cand.has_markup:
             doc.ledger(o.id, "identifier", "IDENTIFIER_VALUE_HAS_MARKUP", "not normalized")
+        elif o.decoded is None:
+            doc.ledger(o.id, "identifier", "IDENTIFIER_DECODING_FAILED", "not normalized")
         elif not o.decoded.normalized.valid and not o.decoded.normalized.missing:
             doc.ledger(o.id, "identifier", "IDENTIFIER_INVALID", ",".join(o.decoded.normalized.issues))
-        if cand.boundary == "ambiguous_trailing_punctuation":
+        if cand.boundary in AMBIGUOUS_BOUNDARIES:
             doc.ledger(o.id, "identifier", "IDENTIFIER_BOUNDARY_AMBIGUOUS", cand.raw[-1:])
         if o.decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in o.decoded.steps:
             doc.ledger(o.id, "identifier", "IDENTIFIER_BOUNDARY_AMBIGUOUS", "page-view segment after the DOI path")
@@ -618,7 +629,8 @@ def extract_bundle(
     try:
         stdout, stderr = proc.communicate(timeout=config.worker_wall_s)
     except subprocess.TimeoutExpired:
-        os.killpg(proc.pid, signal.SIGKILL)
+        with contextlib.suppress(ProcessLookupError):  # the worker ended at the deadline: still too late
+            os.killpg(proc.pid, signal.SIGKILL)
         proc.communicate()
         return failure_document(
             bundle.capture_sha256, config, "EXTRACTION_DEADLINE_EXCEEDED", f"killed after {config.worker_wall_s} s"

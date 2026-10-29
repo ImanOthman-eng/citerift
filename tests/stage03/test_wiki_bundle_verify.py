@@ -83,7 +83,7 @@ def test_an_interrupted_publication_leaves_nothing_and_keeps_valid_bundles(
     good = made(tmp_path / "keep")
     before = {p.name: p.read_bytes() for p in good.rglob("*") if p.is_file()}
     data = b"artifact bytes"
-    real_write, real_rename = bundle_module._write_new, os.rename
+    real_write, real_rename = bundle_module._write_new, bundle_module._rename_noreplace
 
     def write(path: Path, payload: bytes) -> None:
         if (fail_on == "artifact" and path.parent.name == "artifacts") or (
@@ -93,19 +93,45 @@ def test_an_interrupted_publication_leaves_nothing_and_keeps_valid_bundles(
             raise KeyboardInterrupt
         real_write(path, payload)
 
-    def rename(src: Any, dst: Any) -> None:
+    def rename(src: Path, dst: Path) -> None:
         if fail_on == "rename":
             raise OSError(5, "simulated I/O error")
         real_rename(src, dst)
 
     monkeypatch.setattr(bundle_module, "_write_new", write)
-    monkeypatch.setattr(bundle_module.os, "rename", rename)
+    monkeypatch.setattr(bundle_module, "_rename_noreplace", rename)
     out = tmp_path / "out"
     out.mkdir()
     with pytest.raises((KeyboardInterrupt, OSError)):
         publish_bundle(out / "b", {"x": 1}, {sha256_hex(data): data})
     assert list(out.iterdir()) == []
     assert {p.name: p.read_bytes() for p in good.rglob("*") if p.is_file()} == before
+
+
+@pytest.mark.security
+def test_publication_never_replaces_a_directory_that_appears_during_the_write(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """P3-09: rename(2) silently replaces an empty directory; publication must not (renameat2 RENAME_NOREPLACE)."""
+    import citerift.wiki.bundle as bundle_module
+
+    real_write = bundle_module._write_new
+    target = tmp_path / "b"
+
+    def write(path: Path, payload: bytes) -> None:
+        real_write(path, payload)
+        if path.name == "capture.json":
+            target.mkdir()  # appears after the existence checks, before the rename
+            (target / "keep").write_bytes(b"someone else's")
+            os.unlink(target / "keep")
+
+    monkeypatch.setattr(bundle_module, "_write_new", write)
+    monkeypatch.setattr(bundle_module.os.path, "lexists", lambda p: False)  # the race: the check saw nothing
+    with pytest.raises(BundleError) as err:
+        publish_bundle(target, {"x": 1}, {})
+    assert err.value.issue.code == "BUNDLE_PATH_UNSAFE"
+    assert target.is_dir() and list(target.iterdir()) == []
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["b"]
 
 
 @pytest.mark.negative

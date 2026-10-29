@@ -52,6 +52,9 @@ class Reconciliation:
     witnesses: dict[str, list[int]] = field(default_factory=dict)  # occurrence id -> render link indexes
     witness_state: dict[str, str] = field(default_factory=dict)
     render_only_links: list[dict[str, Any]] = field(default_factory=list)
+    # containers whose matched region is in doubt (a matched use is not among the note's backlinks): a marker
+    # observation of such a region is never a negative
+    doubtful_regions: set[str] = field(default_factory=set)
     unmatched_render_uses: list[int] = field(default_factory=list)
     issues: list[Issue] = field(default_factory=list)
     segments: Counter[str] = field(default_factory=Counter)
@@ -161,6 +164,14 @@ class Reconciler:
             self._url_cache[u.container_id] = frozenset(urls)
         return self._url_cache[u.container_id]
 
+    def _not_contradicted(self, u: Use, r: RenderUse) -> bool:
+        """A pairing made by count alone (one use on each side of a template's output) must not contradict the
+        content: when both the source reference and the rendered note carry external URLs or identifiers, they must
+        share one. A template can drop a parameter's reference and emit one of its own (for example from Wikidata)."""
+        urls = self._source_urls(u)
+        hrefs = self.note_hrefs.get(r.target_note or "", frozenset())
+        return not urls or not hrefs or bool(urls & hrefs)
+
     def _content_pair(self, src: Sequence[Use], ren: Sequence[RenderUse]) -> list[Use]:
         """Second chance for uses that structure could not pair: a source use and a render use pair when the
         reference text of each contains an external URL or a normalized DOI or PMID of the other and no other
@@ -173,17 +184,16 @@ class Reconciler:
             if not urls:
                 continue
             for r in free:
-                if (
-                    r.target_note is not None
-                    and urls & self.note_hrefs.get(r.target_note, frozenset())
-                    and _compatible(u, r)
-                ):
+                # Uniqueness is decided over every free render use that shares content, compatible or not: an
+                # incompatible true partner (for example one with unreadable data-mw) must still block a pairing
+                # with another use that merely shares the same URL or identifier.
+                if r.target_note is not None and urls & self.note_hrefs.get(r.target_note, frozenset()):
                     cand.setdefault(u.id, []).append(r)
                     back.setdefault(r.index, []).append(u.id)
         left = []
         for u in src:
             rs = cand.get(u.id, [])
-            if len(rs) == 1 and back[rs[0].index] == [u.id]:
+            if len(rs) == 1 and back[rs[0].index] == [u.id] and _compatible(u, rs[0]):
                 shared = self._source_urls(u) & self.note_hrefs.get(rs[0].target_note or "", frozenset())
                 by_url = any(not k.startswith("id:") for k in shared)
                 self._pair(
@@ -289,7 +299,7 @@ class Reconciler:
                 s_anon.append(u)
             else:
                 s_by_key.setdefault(k, []).append(u)
-        if len(src) == 1 and len(ren) == 1 and _compatible(src[0], ren[0]):
+        if len(src) == 1 and len(ren) == 1 and _compatible(src[0], ren[0]) and self._not_contradicted(src[0], ren[0]):
             self._pair(src[0], ren[0], "single_use_in_template_output")
             self.out.segments["template:matched"] += 1
             return
@@ -301,7 +311,12 @@ class Reconciler:
                     self._pair(a, b, "name_in_template_output")
             else:
                 left.extend(uses)
-        if len(s_anon) == 1 and len(r_anon) == 1 and _compatible(s_anon[0], r_anon[0]):
+        if (
+            len(s_anon) == 1
+            and len(r_anon) == 1
+            and _compatible(s_anon[0], r_anon[0])
+            and self._not_contradicted(s_anon[0], r_anon[0])
+        ):
             self._pair(s_anon[0], r_anon[0], "single_anonymous_in_template_output")
         else:
             left.extend(s_anon)
@@ -471,6 +486,7 @@ class Reconciler:
                     }
                     back = set(notes[note].backlinks)
                     if back and not matched <= back:
+                        self.out.doubtful_regions.add(c.id)
                         self.out.issues.append(Issue("RENDER_BACKLINK_MISMATCH", (c.id,), note))
                 else:
                     self.out.container_state[c.id] = "note_missing"

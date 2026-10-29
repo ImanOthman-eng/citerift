@@ -1,0 +1,22 @@
+gzip+trailing-garbage: code=RESPONSE_DECOMPRESSION_FAILED requests=1 body=None json=None not_before=None sleeps=[0.0]
+gzip two members: code=RESPONSE_DECOMPRESSION_FAILED requests=1 body=None json=None not_before=None sleeps=[0.0]
+loads_strict {"query": {"x": 1e400}} refused number 1e400 is not finite
+loads_strict {"a": -1E999} refused number -1E999 is not finite
+api answer with 1e400: EXCEPTION IndexError: pop from empty list
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 GMT' -> (90.0, None)
+parse_retry_after 'Wednesday, 28-Oct-26 12:01:30 GMT' -> (90.0, None)
+parse_retry_after 'Wed Oct 28 12:01:30 2026' -> (90.0, None)
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 -0000' -> (90.0, None)
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 UTC' -> (90.0, None)
+parse_retry_after '120 ' -> (120.0, None)
+parse_retry_after '1111111111111111111111111111111111111111' -> (None, 'RETRY_AFTER_OUT_OF_RANGE')
+parse_retry_after '1111111111111111111111111111111111111111' -> (None, 'RETRY_AFTER_OUT_OF_RANGE')
+parse_retry_after '100000000000000' -> (None, 'RETRY_AFTER_OUT_OF_RANGE')
+parse_retry_after 'Fri, 31 Dec 9999 23:59:59 GMT' -> (None, 'RETRY_AFTER_OUT_OF_RANGE')
+429 retry-after 'Wednesday, 28-Oct-26 12:05:00 GMT': code=DEFERRED_RETRY_AFTER requests=1 body=None json=None not_before=2026-10-28T12:05:00.000000Z sleeps=[0.0]
+429 retry-after 'Wed Oct 28 12:05:00 2026': code=DEFERRED_RETRY_AFTER requests=1 body=None json=None not_before=2026-10-28T12:05:00.000000Z sleeps=[0.0]
+429 retry-after '100000000000000'...: code=HTTP_RATE_LIMITED requests=1 body=None json=None not_before=None sleeps=[0.0]
+429 retry-after '11111111111111111111'...: code=HTTP_RATE_LIMITED requests=1 body=None json=None not_before=None sleeps=[0.0]
+429 retry-after '11111111111111111111'...: code=HTTP_RATE_LIMITED requests=1 body=None json=None not_before=None sleeps=[0.0]
+429 retry-after 'Fri, 31 Dec 9999 23:'...: code=HTTP_RATE_LIMITED requests=1 body=None json=None not_before=None sleeps=[0.0]
+3x429 with Retry-After 100 on last: code=ATTEMPTS_EXHAUSTED requests=3 body=None json=None not_before=2026-10-28T12:02:10.000000Z sleeps=[0.0, 15.0, 15.0]

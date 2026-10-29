@@ -1,0 +1,20 @@
+"""Two captures sharing the project network gate (lock file in the scratch dir, fake transports, no sockets):
+capture A receives 429 Retry-After: 120 on its last attempt; capture B then starts its request after only the
+minimum interval, because the gate records only the end time of the last attempt, not the Retry-After."""
+import sys, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import response, scripted, JSON_TYPE
+from citerift.wiki.fetch import Fetcher, FetchPolicy, NetworkGate
+lock = Path(__file__).resolve().parent / "gate.lock"
+API = "https://en.wikipedia.org/w/api.php?action=query&format=json"
+pol = FetchPolicy(min_interval_s=1.0, max_attempts=1)
+ta, _ = scripted([response(429, {"content-type": "text/html", "retry-after": "120"}, b"slow down")])
+a = Fetcher(pol, ta, gate=NetworkGate(lock)).get(API, expect="json")
+t_a = time.time()
+print("A:", a.code, "retry_after_s", a.attempts[-1].retry_after_s, "not_before", a.not_before)
+starts = []
+def tb(url, headers, timeout):
+    starts.append(time.time()); return response(200, {"content-type": JSON_TYPE}, b'{"query": {}}')
+b = Fetcher(pol, tb, gate=NetworkGate(lock)).get(API, expect="json")
+print("B:", b.code, f"started {starts[0] - t_a:.2f} s after A's 429 that asked for 120 s")

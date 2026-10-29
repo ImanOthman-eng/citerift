@@ -1,0 +1,29 @@
+"""Schema-passing mutations of capture.json that make verify_bundle raise (a crash = CLI exit 1)."""
+import copy, json, shutil
+from pathlib import Path
+from citerift.wiki.verify import verify_bundle
+from citerift.wiki.canonical import pretty_bytes
+FIX = Path("/home/user/citerift/tests/stage03/fixtures/observed/en-1372543632")
+W = Path(__file__).resolve().parent / "work_fuzz"; shutil.rmtree(W, ignore_errors=True); W.mkdir()
+base = json.loads((FIX / "capture.json").read_text())
+muts = {}
+for k in list(base["render"]):
+    muts[f"render drop {k}"] = lambda c, k=k: c["render"].pop(k)
+muts["render.headers = []"] = lambda c: c["render"].__setitem__("headers", [])
+muts["render.checks = []"] = lambda c: c["render"].__setitem__("checks", [])
+muts["render.state failed, no url"] = lambda c: c["render"].clear() or c["render"].update({"state": "failed"})
+muts["render.state not_requested + request.render false"] = lambda c: (c["render"].clear(), c["render"].update({"state": "not_requested"}), c["request"].__setitem__("render", False))
+muts["page.title = null"] = lambda c: c["page"].__setitem__("title", None)
+muts["attempt.body_sha256 null"] = lambda c: c["attempts"][0].__setitem__("body_sha256", None)
+muts["source.artifact = render artifact"] = lambda c: c["source"].__setitem__("artifact", c["render"]["artifact"])
+muts["render.artifact = source artifact"] = lambda c: c["render"].__setitem__("artifact", c["source"]["artifact"])
+muts["request.title str + revision_id"] = lambda c: c["request"].__setitem__("title", "X")
+muts["failure_artifacts dup"] = lambda c: c["failure_artifacts"].extend([c["source"]["artifact"]] * 2)
+for i, (name, m) in enumerate(muts.items()):
+    c = copy.deepcopy(base); m(c)
+    d = W / f"m{i}"; shutil.copytree(FIX, d); (d / "capture.json").write_bytes(pretty_bytes(c))
+    try:
+        r = verify_bundle(d)
+        print(f"{name}: verified={r['verified']} errors={sorted({x['code'] for x in r['issues'] if x['severity']=='error'})[:3]}")
+    except Exception as e:
+        print(f"{name}: CRASH {type(e).__name__}: {str(e)[:100]}")

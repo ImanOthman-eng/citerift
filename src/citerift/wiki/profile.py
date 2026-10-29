@@ -16,7 +16,10 @@ from typing import Any
 from citerift.wiki.canonical import digest, loads_strict
 
 SUPPORTED_WIKIS = ("ar", "en")
-_SPACES = re.compile(r"[ _\t\n\r ]+")
+# MediaWiki title whitespace (spaces, underscore, no-break and typographic spaces) and the bidi marks it strips
+# from titles (LRM, RLM, embeddings and overrides).
+_SPACES = re.compile("[ _\t\n\r\u00a0\u1680\u180e\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]+")
+_TITLE_BIDI = re.compile("[\u200e\u200f\u202a-\u202e]")
 
 
 @dataclass(frozen=True)
@@ -64,7 +67,7 @@ class WikiProfile:
         """MediaWiki title rules for a template name: trimmed, underscores and runs of spaces as one space,
         an optional Template namespace prefix removed, first letter upper case (no case in Arabic).
         Returns None for parser functions and magic words (names with '#' or ':' after the prefix)."""
-        name = _SPACES.sub(" ", raw_name).strip()
+        name = _SPACES.sub(" ", _TITLE_BIDI.sub("", raw_name)).strip()
         if not name or name.startswith("#"):
             return None
         for prefix in self.namespace_prefixes:

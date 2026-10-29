@@ -113,20 +113,30 @@ def utc_text(moment: datetime) -> str:
     return moment.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
+MAX_RETRY_AFTER_S = 366 * 86400.0
+
+
 def parse_retry_after(value: str | None, at: datetime) -> tuple[float | None, str | None]:
-    """Seconds to wait from ``at``, from delta-seconds or an HTTP date. Returns (seconds, problem)."""
+    """Seconds to wait from ``at``, from delta-seconds or an HTTP date (IMF-fixdate, RFC 850 or asctime; RFC 9110
+    10.2.3: a date without a zone is UTC). Returns (seconds, problem). A value that cannot be read or lies beyond
+    MAX_RETRY_AFTER_S gives no seconds and a problem; the planner then stops instead of guessing a shorter wait."""
     if value is None:
         return None, None
     text = value.strip()
     if text.isascii() and text.isdigit():
+        if len(text) > 12 or int(text) > MAX_RETRY_AFTER_S:
+            return None, "RETRY_AFTER_OUT_OF_RANGE"
         return float(int(text)), None
     try:
         moment = email.utils.parsedate_to_datetime(text)
-    except (TypeError, ValueError, IndexError):
+    except (TypeError, ValueError, IndexError, OverflowError):
         return None, "RETRY_AFTER_UNREADABLE"
     if moment.tzinfo is None:
-        return None, "RETRY_AFTER_UNREADABLE"
-    return max(0.0, (moment - at).total_seconds()), None
+        moment = moment.replace(tzinfo=UTC)
+    seconds = (moment - at).total_seconds()
+    if seconds > MAX_RETRY_AFTER_S:
+        return None, "RETRY_AFTER_OUT_OF_RANGE"
+    return max(0.0, seconds), None
 
 
 @dataclass
@@ -189,8 +199,12 @@ def plan_next(policy: FetchPolicy, attempts: list[Attempt], start_mono: float) -
         return Plan("stop", code=None)
     if not last.retryable:
         return Plan("stop", code=last.code)
+    if last.retry_after_problem is not None:
+        # The server asked for a wait that cannot be read or honored: never retry earlier on a guessed backoff.
+        return Plan("stop", code=last.code)
     if len(attempts) >= policy.max_attempts:
-        return Plan("stop", code="ATTEMPTS_EXHAUSTED")
+        not_before = last.ended_mono + last.retry_after_s if last.retry_after_s is not None else None
+        return Plan("stop", code="ATTEMPTS_EXHAUSTED", not_before_mono=not_before)
     wait = policy.min_interval_s
     if last.retry_after_s is not None:
         wait = max(wait, last.retry_after_s)
@@ -263,6 +277,8 @@ def _read_body(raw: RawResponse, policy: FetchPolicy, deadline_mono: float, cloc
     if decomp is not None:
         if not decomp.eof:
             raise TransportError("RESPONSE_INCOMPLETE", "gzip stream ended early")
+        if decomp.unused_data:
+            raise TransportError("RESPONSE_DECOMPRESSION_FAILED", "data after the end of the gzip stream")
         try:
             out += decomp.flush()
         except zlib.error as exc:
@@ -297,6 +313,8 @@ class NetworkGate:
     def __init__(self, path: Path) -> None:
         self.path = path
         self._fd: int | None = None
+        self._not_before = 0.0
+        self.deferred_until: float | None = None
 
     @classmethod
     def default(cls) -> NetworkGate:
@@ -327,28 +345,47 @@ class NetworkGate:
             except OSError:
                 os.close(fd)
                 return "NETWORK_GATE_UNAVAILABLE"
-        try:
-            last_end = float(os.pread(fd, 64, 0).decode("ascii").strip() or 0.0)
-        except (OSError, UnicodeDecodeError, ValueError):
-            last_end = time.time()  # unreadable record: wait the full interval
-        wait = min(max(0.0, last_end + min_interval_s - time.time()), min_interval_s)
+        last_end, not_before = self._read(fd)
+        now = time.time()
+        wait = max(min(max(0.0, last_end + min_interval_s - now), min_interval_s), not_before - now)
         if time.monotonic() - start + wait > max_wait_s:
             fcntl.flock(fd, fcntl.LOCK_UN)
             os.close(fd)
+            if not_before > now and not_before - now >= min_interval_s:
+                # A server asked another process to wait past this capture's deadline: defer, never go earlier.
+                self.deferred_until = not_before
+                return "DEFERRED_RETRY_AFTER"
             return "NETWORK_GATE_BUSY"
         time.sleep(wait)
         self._fd = fd
+        self._not_before = not_before
         return None
 
-    def release(self) -> None:
+    @staticmethod
+    def _read(fd: int) -> tuple[float, float]:
+        """(wall-clock end of the last attempt, earliest wall-clock time a server allowed the next request)."""
+        try:
+            fields = os.pread(fd, 128, 0).decode("ascii").split()
+            last_end = float(fields[0]) if fields else 0.0
+            not_before = float(fields[1]) if len(fields) > 1 else 0.0
+        except (OSError, UnicodeDecodeError, ValueError):
+            now = time.time()  # unreadable record: wait the full interval
+            return now, now
+        return last_end, not_before
+
+    def release(self, retry_after_s: float | None = None) -> None:
+        """Record the end of this attempt and, when the server sent Retry-After, the time before which no process
+        may send the next request (the later of the recorded and the new one)."""
         if self._fd is None:
             return
         import fcntl  # noqa: PLC0415 - acquire succeeded, so fcntl exists
 
         fd, self._fd = self._fd, None
+        now = time.time()
+        not_before = max(self._not_before, now + retry_after_s if retry_after_s is not None else 0.0)
         try:
             os.ftruncate(fd, 0)
-            os.pwrite(fd, f"{time.time():.3f}\n".encode("ascii"), 0)
+            os.pwrite(fd, f"{now:.3f} {not_before:.3f}\n".encode("ascii"), 0)
         finally:
             fcntl.flock(fd, fcntl.LOCK_UN)
             os.close(fd)
@@ -418,12 +455,16 @@ class Fetcher:
                 return Answer(url, "DEADLINE_EXCEEDED", attempts, failure_bodies=failure_bodies)
             self.clock.sleep(at - self.clock.monotonic())
             if self.gate is not None and (code := self.gate.acquire(self.policy.min_interval_s, deadline - at)):
-                return Answer(url, code, attempts, failure_bodies=failure_bodies)
+                not_before = None
+                if self.gate.deferred_until is not None:
+                    not_before = utc_text(datetime.fromtimestamp(self.gate.deferred_until, UTC))
+                return Answer(url, code, attempts, not_before=not_before, failure_bodies=failure_bodies)
+            outcome = None
             try:
                 outcome = self._attempt(url, len(attempts) + 1, expect, deadline)
             finally:
                 if self.gate is not None:
-                    self.gate.release()
+                    self.gate.release(outcome.attempt.retry_after_s if outcome is not None else None)
             attempts.append(outcome.attempt)
             self.last_end_mono = outcome.attempt.ended_mono
             failed = outcome.attempt
@@ -517,11 +558,21 @@ def urllib_transport(url: str, headers: dict[str, str], timeout: float) -> RawRe
     except OSError as exc:
         raise TransportError("HTTP_CONNECTION_FAILED", str(exc)[:200]) from exc
     hdrs = {k.lower(): v for k, v in resp.headers.items()}
+    # Every read is bounded by the time left in the operation: read1 returns what has arrived (never waits to fill
+    # 64 KiB), and the socket timeout is lowered before each read, so a body sent one byte at a time cannot hold the
+    # connection (and the network gate) past the operation's deadline.
+    ends_at = time.monotonic() + max(0.001, timeout)
+    sock = getattr(getattr(getattr(resp, "fp", None), "raw", None), "_sock", None)
 
     def chunks() -> Iterator[bytes]:
         while True:
+            left = ends_at - time.monotonic()
+            if left <= 0:
+                raise TransportError("HTTP_TIMEOUT", "the operation deadline passed while reading the body")
+            if sock is not None:
+                sock.settimeout(left)
             try:
-                block = resp.read(65536)
+                block = resp.read1(65536) if hasattr(resp, "read1") else resp.read(65536)
             except TimeoutError as exc:
                 raise TransportError("HTTP_TIMEOUT", "read timed out") from exc
             except OSError as exc:

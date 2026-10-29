@@ -7,6 +7,7 @@ connection attempt is an error, not a silent fallback.
 
 from __future__ import annotations
 
+import _socket
 import json
 import socket
 import sys
@@ -17,11 +18,34 @@ def _no_network(*args: Any, **kwargs: Any) -> NoReturn:
     raise PermissionError("the extraction worker makes no network connection")
 
 
+class _NoNetworkSocket(_socket.socket):
+    """The C-level socket type with every way to reach a peer refused."""
+
+    def connect(self, *args: Any, **kwargs: Any) -> Any:
+        return _no_network()
+
+    def connect_ex(self, *args: Any, **kwargs: Any) -> Any:
+        return _no_network()
+
+    def sendto(self, *args: Any, **kwargs: Any) -> Any:
+        return _no_network()
+
+    def sendmsg(self, *args: Any, **kwargs: Any) -> Any:
+        return _no_network()
+
+
 def forbid_network() -> None:
+    """Refuse connections in this process: the socket module's functions and the C-level socket type the module
+    builds on. This is an in-process guard for the project's own extractor, not a sandbox (RISK_ANALYSIS.md)."""
     socket.socket.connect = _no_network  # type: ignore[method-assign]
     socket.socket.connect_ex = _no_network  # type: ignore[method-assign]
+    socket.socket.sendto = _no_network  # type: ignore[method-assign]
+    socket.socket.sendmsg = _no_network  # type: ignore[method-assign]
     socket.create_connection = _no_network
     socket.getaddrinfo = _no_network
+    _socket.socket = _NoNetworkSocket  # type: ignore[misc]
+    _socket.SocketType = _NoNetworkSocket
+    _socket.getaddrinfo = _no_network
 
 
 def main(argv: list[str]) -> int:

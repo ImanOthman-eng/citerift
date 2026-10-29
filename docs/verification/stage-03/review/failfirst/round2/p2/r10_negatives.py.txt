@@ -1,0 +1,22 @@
+"""SYNTHETIC: conditions under which a verified negative should not be issued."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import run, one_note, show, doi_link, ref_sup, note_li, references
+T = 'A.<ref name="a">Smith 2001. Some paper.</ref>\n'
+# (a) backlink of the note names another element than the matched use
+body = ("<p>A." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>"
+        + references([note_li("cite_note-a-1", ["cite_ref-OTHER-0"], "Smith 2001. Some paper.")]))
+d = run(T, body)
+print("(a) backlink mismatch:", d["markers"][0]["state"], "| issues:", sorted({i["code"] for i in d["issues"]}))
+# (b) parser-limit comment directly inside the note (owner element has no about)
+inner = 'Smith 2001. <!-- WARNING: template omitted, post-expand include size too large -->'
+d = one_note(T, inner)
+print("(b) limit comment in note text:", d["markers"][0]["state"], "| issues:", sorted({i["code"] for i in d["issues"]}))
+# (c) RETRACTED title prefix in an unstructured reference (no <cite> element)
+T2 = 'A.<ref name="a">Smith J. "RETRACTED: Paper title". J Foo. 2010.</ref>\n'
+show("(c) unstructured title prefix", one_note(T2, 'Smith J. "RETRACTED: Paper title". J Foo. 2010.'))
+# (d) hidden style written in upper case / with a tab
+show("(d) style DISPLAY:NONE", one_note(T, 'Smith 2001.<span style="DISPLAY:NONE">Retracted</span>'))
+show("(d') style display:\\tnone", one_note(T, 'Smith 2001.<span style="display:\tnone">Retracted</span>'))
+# (e) red link to a marker template inside hidden text
+red = '<a rel="mw:WikiLink" href="./Template:Retracted?action=edit&amp;redlink=1" title="Template:Retracted" class="new">Template:Retracted</a>'
+show("(e) hidden red link", one_note(T, 'Smith 2001.<span style="display:none">' + red + '</span>'))

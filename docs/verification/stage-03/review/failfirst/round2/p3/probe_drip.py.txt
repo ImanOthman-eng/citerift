@@ -1,0 +1,24 @@
+"""Does a slow drip defeat the per-operation timeout? http.client over an AF_UNIX socketpair (no network).
+Reproduces what urllib_transport's chunks() does: resp.read(65536) on a response with a socket timeout of 1 s,
+while the peer sends one byte every 0.5 s (each recv returns within the socket timeout)."""
+import http.client, socket, threading, time
+a, b = socket.socketpair()
+a.settimeout(1.0)  # what urlopen(timeout=...) sets on the socket
+BODY = 8
+def server():
+    b.sendall(b"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n" % BODY)
+    for _ in range(BODY):
+        time.sleep(0.5); b.sendall(b"x")
+    time.sleep(0.2)
+threading.Thread(target=server, daemon=True).start()
+resp = http.client.HTTPResponse(a)
+resp.begin()
+t0 = time.monotonic()
+calls = []
+while True:
+    blk = resp.read(65536)
+    calls.append((round(time.monotonic() - t0, 2), len(blk)))
+    if not blk:
+        break
+print("socket timeout 1.0 s; read(65536) calls (elapsed_s, bytes):", calls)
+print("first read returned after", calls[0][0], "s although the socket timeout is 1.0 s")

@@ -150,7 +150,8 @@ def test_extract_verify_replay_round_trip(tmp_path: Path, capsys: Any) -> None:
     code, report, _ = run(["replay", "--bundle", str(b), "--extraction", str(out)], capsys)
     assert code == 0 and report["replay"]["state"] == "reproduced"
     code, report, _ = run(["replay", "--bundle", str(b)], capsys)
-    assert code == 0 and report["replay"]["state"] == "not_compared"
+    # P3-12: nothing compared, so the exit code is the new extraction's (partial: 6), never 0 by default
+    assert code == 6 and report["replay"]["state"] == "not_compared"
 
 
 @pytest.mark.negative

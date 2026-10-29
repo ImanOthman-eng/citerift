@@ -192,7 +192,13 @@ def test_wiki_comment_nowiki_archive_and_ref_name_are_not_targets(tmp_path: Path
     )
     _, doc = run(tmp_path, text)
     assert doc["identifiers"] == []
-    assert sorted(e["reason"] for e in doc["excluded_identifiers"]) == ["comment", "tag:nowiki"]
+    # P1-11: every identifier-shaped string has a disposition, also inside another site's URL and a ref name.
+    assert sorted(e["reason"] for e in doc["excluded_identifiers"]) == [
+        "comment",
+        "other_site_url",
+        "ref_attribute",
+        "tag:nowiki",
+    ]
 
 
 @pytest.mark.unit

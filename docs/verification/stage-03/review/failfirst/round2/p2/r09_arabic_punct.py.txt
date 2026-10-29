@@ -1,0 +1,14 @@
+"""SYNTHETIC: trailing punctuation after a labelled / free-text DOI, ASCII vs Arabic punctuation."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import _tmp
+from wiki_support import bundle, extract
+cases = [(",", "ASCII comma"), ("،", "ARABIC COMMA"), (";", "ASCII semicolon"), ("؛", "ARABIC SEMICOLON"),
+         (".", "full stop"), ("۔", "ARABIC FULL STOP"), ("؟", "ARABIC QUESTION MARK")]
+for k, (p, label) in enumerate(cases):
+    for form, wiki in (("دوي: 10.2000/xyz{p} نص", "ar"), ("انظر 10.2000/xyz{p} نص", "ar")):
+        T = '<ref name="a">' + form.format(p=p) + "</ref>\n"
+        d = extract(bundle(_tmp, T, None, wiki=wiki, name=f"p{k}{wiki}{form[0]==chr(1583)}"))
+        for i in d["identifiers"]:
+            n = i["normalization"]
+            flagged = [x["code"] for x in d["issues"] if x["code"] == "IDENTIFIER_BOUNDARY_AMBIGUOUS"]
+            print(f"{label:22} {form[:5]!r:9} raw={i['source']['raw']!r:16} normalized={n['normalized']!r:16} valid={n['valid']} flagged={bool(flagged)} role={i['role']}")

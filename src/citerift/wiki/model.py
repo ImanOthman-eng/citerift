@@ -14,7 +14,7 @@ from typing import Any
 from citerift.wiki.identifiers import Decoded, decode
 from citerift.wiki.issues import Issue
 from citerift.wiki.profile import Profile, WikiProfile
-from citerift.wiki.source import Candidate, RefRecord, SourceScan, TemplateRecord
+from citerift.wiki.source import AMBIGUOUS_BOUNDARIES, Candidate, RefRecord, SourceScan, TemplateRecord
 from citerift.wiki.textmap import ByteMap
 
 ID_FIELD_PARAMS = frozenset({"id", "ID"})
@@ -122,6 +122,8 @@ def _role(
                 return "unresolved", f"citation parameter {p} {OVERRIDDEN}"
             return "primary_citation_field", f"citation parameter {p}"
         if p in wiki.identifier_params or p in wiki.url_params or p in ID_FIELD_PARAMS:
+            if _overridden(t, cand):
+                return "unresolved", f"citation parameter {p} {OVERRIDDEN}"
             if cand.origin in ("url", "wrapper", "template_field"):
                 return "identifier_link", f"{cand.origin} in citation parameter {p}"
             if cand.origin == "label_text":
@@ -156,7 +158,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         if r.origin == "r":
             continue
         if r.origin == "sfn":
-            by_sfn.setdefault(_WS.sub("", text[r.start : r.end]), []).append(r)
+            by_sfn.setdefault(r.sfn_key or _WS.sub("", text[r.start : r.end]), []).append(r)
             continue
         if not r.has_body:
             continue
@@ -288,7 +290,13 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             issues.append(Issue("SUBREFERENCE_UNSUPPORTED", (uid,), ",".join(r.extra_attributes)))
 
     for r in scan.refs:
-        if r.zone == "list_defined" and r.origin == "tag":
+        if r.zone == "list_defined":
+            # A ref inside a reference list defines a reference (whatever wrote it: a tag, {{efn}}, {{#tag:ref}});
+            # it is never a use in the article. One without content defines nothing and is reported.
+            if not r.has_body:
+                issues.append(
+                    Issue("LIST_DEFINED_WITHOUT_CONTENT", (), f"code points {r.start}-{r.end}, name {r.name!r}")
+                )
             continue
         if r.origin == "r":
             for i, n in enumerate(r.uses_names):
@@ -446,17 +454,19 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         decoded = None
         if not cand.has_markup:
             decoded = decode(cand.scheme, cand.origin, cand.decoded, cand.steps)
+            if decoded is None:
+                issues.append(Issue("IDENTIFIER_DECODING_FAILED", (oid,), "invalid percent encoding in a DOI path"))
         else:
             issues.append(Issue("IDENTIFIER_VALUE_HAS_MARKUP", (oid,)))
         if role == "unresolved":
             owner_tpl = templates.get(cand.template) if cand.template is not None else None
-            if owner_tpl is not None and _overridden(owner_tpl, cand):
+            if reason.endswith(OVERRIDDEN):
                 issues.append(Issue("IDENTIFIER_PARAMETER_OVERRIDDEN", (oid,), cand.param or "?"))
             else:
                 issues.append(
                     Issue("TEMPLATE_UNSUPPORTED", (oid,), owner_tpl.canonical or "?" if owner_tpl is not None else "?")
                 )
-        if cand.boundary == "ambiguous_trailing_punctuation":
+        if cand.boundary in AMBIGUOUS_BOUNDARIES:
             issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,)))
         if decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in decoded.steps:
             issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,), "the DOI path ends in a page-view segment"))

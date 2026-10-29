@@ -1,0 +1,20 @@
+-- _find evidence offsets after casefold expansion (pure function) --
+'Straße. Retracted' -> [('retracted', 'etracted')]
+'İİİ İstanbul retracted here' -> [('retracted', 'acted her')]
+'ﬁﬂ Retracted' -> [('retracted', 'tracted')]
+-- through the public API --
+unstructured ref with ß/İ: state='recognized_warning_text' evidence=[('warning', 'racted.')]
+-- Arabic broad stem (unstructured reference, no <cite>) --
+المسحوبات النقدية (cash withdrawals): state='recognized_warning_text' evidence=[('warning', 'مسحوب')]
+بطاقة مسحوبة من التداول (card withdrawn from circulation): state='recognized_warning_text' evidence=[('warning', 'مسحوب')]
+-- Arabic normalization variants of the warning term (shown text) --
+plain: state='recognized_warning_text' evidence=[('warning', 'مسحوب')]
+harakat: state='recognized_warning_text' evidence=[('warning', 'مَسْحُوب')]
+tatweel: state='recognized_warning_text' evidence=[('warning', 'مسحـــوب')]
+ZWNJ inside: state='no_recognized_warning_in_inspected_region' evidence=[]
+ZWJ inside: state='no_recognized_warning_in_inspected_region' evidence=[]
+RLM inside: state='no_recognized_warning_in_inspected_region' evidence=[]
+presentation forms (NFKC): state='no_recognized_warning_in_inspected_region' evidence=[]
+soft hyphen (en): state='no_recognized_warning_in_inspected_region' evidence=[]
+-- English negation / compounds --
+'was not retracted': state='recognized_warning_text' evidence=[('warning', 'retracted')]

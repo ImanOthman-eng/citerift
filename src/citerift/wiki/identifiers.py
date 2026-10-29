@@ -60,13 +60,22 @@ def _decode_percent_once(path: str) -> str | None:
         return None
 
 
-def decode(scheme: str, origin: str, decoded: str, steps: tuple[str, ...]) -> Decoded:
+_URL_OUTER_SPACE = " \t\r\n"
+
+
+def decode(scheme: str, origin: str, decoded: str, steps: tuple[str, ...]) -> Decoded | None:
     """Structural decoding for one candidate. ``decoded`` already has comments removed and entities decoded
-    (``steps`` names what was done)."""
+    (``steps`` names what was done). None when the structure cannot be decoded (a publisher DOI path whose percent
+    encoding is invalid): such a candidate has no normalizer input and therefore no key."""
     out_steps = list(steps)
     value = decoded
     if origin == "url":
-        value = value.strip()
+        # Only the spaces, tabs and line breaks around a URL are dropped (wikitext layout); other characters,
+        # including control characters, stay for the Stage 02 normalizer to judge.
+        trimmed = value.strip(_URL_OUTER_SPACE)
+        if trimmed != value:
+            out_steps.append("URL_OUTER_WHITESPACE_TRIMMED")
+        value = trimmed
         if value.startswith("//"):
             value = "https:" + value
             out_steps.append("PROTOCOL_RELATIVE_URL_COMPLETED")
@@ -81,9 +90,11 @@ def decode(scheme: str, origin: str, decoded: str, steps: tuple[str, ...]) -> De
             if m:
                 path = m.group(1)
                 once = _decode_percent_once(path)
-                value = once if once is not None else path
+                if once is None:
+                    return None
+                value = once
                 out_steps.append("PUBLISHER_URL_DOI_PATH")
-                if once is not None and once != path:
+                if once != path:
                     out_steps.append("PERCENT_DECODED_ONCE")
                 if _VIEW_SEGMENT.search(value):
                     out_steps.append("DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS")
@@ -115,4 +126,5 @@ def decode_render_href(href: str) -> tuple[str, Decoded] | None:
     scheme = url_scheme(href)
     if scheme is None:
         return None
-    return scheme, decode(scheme, "url", href, ())
+    got = decode(scheme, "url", href, ())
+    return None if got is None else (scheme, got)

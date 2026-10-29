@@ -246,7 +246,7 @@ CASES: list[tuple[str, str, str, dict[str, Any], set[str]]] = [
         "comment_nowiki_and_ref_name_are_not_targets",
         '<!-- doi=10.1000/comment --> <nowiki>10.1000/nowiki</nowiki><ref name="10.1000/inname">x</ref>',
         '<!-- دوي=10.1000/comment --> <nowiki>10.1000/nowiki</nowiki><ref name="10.1000/inname">س</ref>',
-        {"identifiers": [], "excluded": ["comment", "tag:nowiki"]},
+        {"identifiers": [], "excluded": ["comment", "ref_attribute", "tag:nowiki"]},
         set(),
     ),
     (

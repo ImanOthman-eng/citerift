@@ -218,8 +218,14 @@ def _replay(args: argparse.Namespace) -> int:
     report = replay_bundle(args.bundle, config, args.extraction)
     _emit(report)
     state = report["replay"]["state"]
-    if report["verified"] and state in ("reproduced", "not_compared"):
+    if report["verified"] and state == "reproduced":
         return EXIT_OK
+    if report["verified"] and state == "not_compared":
+        # Nothing was compared: the exit code is that of the new extraction, as for ``extract``.
+        new_status = report["replay"].get("new_status")
+        return {"complete": EXIT_OK, "partial": EXIT_PARTIAL, "unsupported": EXIT_UNSUPPORTED}.get(
+            str(new_status), EXIT_FAILED
+        )
     codes = [i["code"] for i in report["issues"] if i["severity"] == "error"]
     _err(f"replay {state}: {', '.join(sorted(set(codes)))}")
     if state == "failed" and not any(c in _INVALID for c in codes):

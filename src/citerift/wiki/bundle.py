@@ -13,10 +13,13 @@ links), artifact names must be 64 lowercase hex digits, and every artifact must 
 
 from __future__ import annotations
 
+import ctypes
+import errno
 import os
 import re
 import shutil
 import stat
+import sys
 import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -69,6 +72,39 @@ def _write_new(path: Path, data: bytes) -> None:
         os.close(fd)
 
 
+def _rename_noreplace(src: Path, dst: Path) -> None:
+    """Rename that never replaces ``dst``: renameat2(RENAME_NOREPLACE) on Linux; elsewhere (or on a file system
+    without it) a plain rename after an existence check, which leaves a short race documented in RISK_ANALYSIS.md."""
+    if sys.platform.startswith("linux"):
+        try:
+            libc = ctypes.CDLL(None, use_errno=True)
+            fn = libc.renameat2
+        except (OSError, AttributeError):
+            fn = None
+        if fn is not None:
+            if fn(-100, os.fsencode(src), -100, os.fsencode(dst), 1) == 0:  # AT_FDCWD, RENAME_NOREPLACE
+                return
+            err = ctypes.get_errno()
+            if err not in (errno.ENOSYS, errno.EINVAL):
+                raise OSError(err, os.strerror(err), str(dst))
+    if os.path.lexists(dst):
+        raise _unsafe(f"{dst} appeared while the bundle was written")
+    os.rename(src, dst)
+
+
+def _fsync_dir(path: Path) -> None:
+    try:
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    except OSError:
+        return
+    try:
+        os.fsync(fd)
+    except OSError:
+        pass
+    finally:
+        os.close(fd)
+
+
 def publish_bundle(target: Path, capture: dict[str, Any], artifacts: dict[str, bytes]) -> Path:
     """Write a bundle at ``target`` atomically. ``artifacts`` maps SHA-256 to bytes (each is checked)."""
     target = Path(target)
@@ -84,7 +120,11 @@ def publish_bundle(target: Path, capture: dict[str, Any], artifacts: dict[str, b
         _write_new(tmp / CAPTURE_FILE, pretty_bytes(capture))
         if os.path.lexists(target):
             raise _unsafe(f"{target} appeared while the bundle was written")
-        os.rename(tmp, target)
+        try:
+            _rename_noreplace(tmp, target)
+        except FileExistsError as exc:
+            raise _unsafe(f"{target} appeared while the bundle was written") from exc
+        _fsync_dir(parent)
     except BaseException:
         shutil.rmtree(tmp, ignore_errors=True)
         raise

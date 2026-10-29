@@ -94,6 +94,11 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     "REF_DEFINITIONS_CONFLICT": ("warning", False, "two definitions with one name and group differ"),
     "REF_DEFINITIONS_DUPLICATE": ("info", False, "two identical definitions share one name and group"),
     "LIST_DEFINED_UNUSED": ("info", False, "a list-defined ref is never used in the saved source"),
+    "LIST_DEFINED_WITHOUT_CONTENT": (
+        "warning",
+        False,
+        "a ref inside a reference list has no content; it defines nothing and is not a use",
+    ),
     "REF_IN_UNSUPPORTED_CONTEXT": ("warning", False, "a ref inside a construct the extractor does not support"),
     "GENERATED_REFERENCE_UNSUPPORTED": ("warning", False, "a template that generates references or uses"),
     "SUBREFERENCE_UNSUPPORTED": ("warning", False, "a subreference (details attribute) is not supported"),
@@ -106,6 +111,11 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     "UNIT_BOUNDARY_UNRESOLVED": ("warning", False, "several identifiers in unstructured text; works not separated"),
     "DUPLICATE_TEMPLATE_PARAMETER": ("warning", False, "a template repeats a parameter; all values are kept"),
     "IDENTIFIER_VALUE_HAS_MARKUP": ("warning", False, "an identifier value contains markup; not normalized"),
+    "IDENTIFIER_DECODING_FAILED": (
+        "warning",
+        False,
+        "the structure around an identifier cannot be decoded (invalid percent encoding); not normalized",
+    ),
     "IDENTIFIER_BOUNDARY_AMBIGUOUS": (
         "warning",
         False,

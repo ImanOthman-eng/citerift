@@ -1,0 +1,8 @@
+from h import run
+run('A{{sfn|Smith J|2001|p=5}} B{{sfn|SmithJ|2001|p=5}} C{{sfn|Smith|2001|p=15}} D{{sfn|Smith|20|01|p=15}}', label="sfn keys")
+run('A{{efn|group=foo|name=a|note doi:10.1000/a}} B<ref name=a group=lower-alpha/>\n{{notelist}}', label="efn unknown group")
+run("A<ref>Smith. ''Title''. ''Journal'' doi:10.1000/xyz''.</ref> B<ref>'''10.1000/bold'''</ref>", label="italic/bold after DOI")
+run("A<ref>Smith 1997. doi:10.1002/(SICI)1097-4636(199706)35:4&lt;401::AID-JBM1&gt;3.0.CO;2-P</ref> B<ref>{{cite journal|doi=10.1002/(SICI)1097-4636(199706)35:4<401::AID-JBM1>3.0.CO;2-P}}</ref>", label="SICI DOI")
+run('A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/old|url=https://example.org/paper}}</ref>', label="overridden url")
+run('A<ref>{{cite journal|title=T|id={{doi|10.1000/old}}|id=none}}</ref>', label="overridden id wrapper")
+run('A<ref>See [[doi:10.1000/182]] and [[pmid:12345]].</ref>', label="interwiki doi link")

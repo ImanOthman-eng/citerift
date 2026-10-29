@@ -1,0 +1,21 @@
+"""Lone surrogate (\\ud800 escape) in a free-text field of an extraction document and of capture.json."""
+import json, shutil, subprocess
+from pathlib import Path
+W = Path(__file__).resolve().parent / "work_bundle"
+FIX = Path("/home/user/citerift/tests/stage03/fixtures/observed/en-1372543632")
+def cli(*args):
+    p = subprocess.run(["uv", "run", "--frozen", "citerift-wiki", *map(str, args)], capture_output=True, text=True, cwd="/home/user/citerift")
+    return p.returncode, [l for l in p.stderr.splitlines() if "UV_NATIVE" not in l][-1:], p.stdout[:80]
+doc = (W / "C.json").read_text(encoding="utf-8")
+# the capture title is a free string in the extraction document
+forged = doc.replace('"title":"Haruko Obokata"', '"title":"Haruko Obokata\\ud800"', 1); assert forged != doc
+(W / "E.json").write_text(forged, encoding="utf-8")
+print("E verify (title with lone surrogate):", cli("verify", "--bundle", FIX, "--extraction", W / "E.json"))
+print("E replay (title with lone surrogate):", cli("replay", "--bundle", FIX, "--extraction", W / "E.json"))
+# capture.json: the page title (validated against the response JSON) and the request title
+d = W / "F_cap"; shutil.rmtree(d, ignore_errors=True); shutil.copytree(FIX, d)
+raw = (d / "capture.json").read_text(encoding="utf-8")
+raw2 = raw.replace('"title": "Haruko Obokata"', '"title": "Haruko Obokata\\ud800"', 1); assert raw2 != raw
+(d / "capture.json").write_text(raw2, encoding="utf-8")
+print("F verify (capture page title with lone surrogate):", cli("verify", "--bundle", d))
+print("F extract:", cli("extract", "--bundle", d, "--out", W / "F.json"))

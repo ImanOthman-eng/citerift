@@ -23,7 +23,7 @@ from pathlib import Path
 from typing import Any
 
 from citerift.wiki import __version__
-from citerift.wiki.bundle import BundleError, publish_bundle
+from citerift.wiki.bundle import BundleError, _check_new_target, publish_bundle
 from citerift.wiki.canonical import sha256_hex
 from citerift.wiki.fetch import HOSTS, Answer, Clock, Fetcher, FetchPolicy, SystemClock, Transport, utc_text
 from citerift.wiki.issues import Issue, sort_issues
@@ -258,6 +258,12 @@ def capture_revision(
         "not_before": None,
     }
     artifacts: dict[str, bytes] = {}
+    if not issues and out is not None:
+        # An unusable output path is refused before any request is made.
+        try:
+            _check_new_target(Path(out))
+        except BundleError as exc:
+            issues.append(exc.issue)
     if issues:
         return _finish(record, "failed", issues, artifacts, None, clock)
     fetcher = Fetcher(policy, transport, clock)

@@ -18,6 +18,7 @@ from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
+from citerift.retraction.identifiers import normalize_doi, normalize_pmid
 from citerift.wiki import schemas
 from citerift.wiki.bundle import ARTIFACTS, CAPTURE_FILE, Bundle, BundleError, open_bundle
 from citerift.wiki.canonical import StrictJSONError, digest, loads_strict, sha256_hex
@@ -209,6 +210,11 @@ def verify_capture(bundle: Bundle) -> tuple[_Report, dict[str, bytes]]:
     state = render["state"]
     if not req_json["render"]:
         report.check("render not requested", state == "not_requested")
+    if state == "not_requested":
+        report.check(
+            "no render attempt without a render request",
+            not any(a.get("operation") == "render" for a in cap.get("attempts", [])),
+        )
     else:
         report.check("render requested", state != "not_requested")
     expected_status = {"not_requested": "complete", "captured": "complete"}.get(state, "partial")
@@ -313,6 +319,55 @@ def _references(doc: dict[str, Any], report: _Report) -> None:
         report.check("marker browser visibility not evaluated", m["browser_visibility"] == "not_evaluated")
 
 
+def _semantics(doc: dict[str, Any], report: _Report) -> None:
+    """Role and normalization consistency that holds for every honest extraction (SPECIFICATION.md 14). These are
+    necessary conditions read from the recorded fields; a full re-derivation is ``replay``."""
+    marker_spans: dict[str, list[tuple[int, int]]] = {}
+    for m in doc["markers"]:
+        marker_spans[m["container_id"]] = [(t["cp_start"], t["cp_end"]) for t in m["source_marker_templates"]]
+    for i in doc["identifiers"]:
+        role, origin, ctx = i["role"], i["origin"], i["context"]
+        kind = (ctx["template"] or {}).get("kind")
+        span = (i["source"]["cp_start"], i["source"]["cp_end"])
+        inside_marker = any(a <= span[0] and span[1] <= b for a, b in marker_spans.get(i["container_id"] or "", []))
+        if role == "primary_citation_field":
+            report.check(
+                "a cited-work field comes from a citation template field",
+                origin == "template_field" and kind in ("citation", "external_data") and not ctx["in_link_text"],
+                detail=i["id"],
+            )
+        if inside_marker:
+            report.check(
+                "an identifier inside a marker template is a marker target", role == "marker_target", detail=i["id"]
+            )
+        if role == "marker_target" and i["container_id"] is not None:
+            report.check("a marker target lies inside a marker template", inside_marker, detail=i["id"])
+        if ctx["in_link_text"]:
+            report.check(
+                "an identifier in link text is mentioned",
+                role in ("textual_mention", "marker_target"),
+                detail=i["id"],
+            )
+        if role == "identifier_link":
+            report.check(
+                "an identifier link is a URL, wrapper or field",
+                origin in ("url", "wrapper", "template_field"),
+                detail=i["id"],
+            )
+        if role == "labeled_reference_text":
+            report.check("labeled text comes from a label", origin == "label_text", detail=i["id"])
+        dec, norm = i["decoding"], i["normalization"]
+        if dec is None:
+            report.check("no normalization without decoding", norm is None, detail=i["id"])
+        else:
+            fn = normalize_doi if i["scheme"] == "doi" else normalize_pmid
+            report.check(
+                "normalization is the Stage 02 normalizer's result",
+                norm == fn(dec["normalizer_input"]).to_json(),
+                detail=i["id"],
+            )
+
+
 def _accounting(doc: dict[str, Any], report: _Report) -> None:
     acc = doc["accounting"]
     for c in acc.get("checks", []):
@@ -384,6 +439,7 @@ def verify_extraction(bundle: Bundle, doc: Any, artifacts: dict[str, bytes], rep
         report.check("exact source anchors", ok, "ANCHOR_MISMATCH", where)
     _references(doc, report)
     _accounting(doc, report)
+    _semantics(doc, report)
     locators = list(_locators(doc))
     html = artifacts.get(expected["render_artifact"] or "")
     if not locators:

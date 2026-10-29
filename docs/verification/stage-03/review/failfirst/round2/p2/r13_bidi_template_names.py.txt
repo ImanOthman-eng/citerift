@@ -1,0 +1,16 @@
+"""SYNTHETIC: Arabic citation template / parameter names carrying bidi marks, which MediaWiki strips from titles
+(MediaWikiTitleCodec::splitTitleString removes U+200E, U+200F, U+202A-U+202E)."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import _tmp
+from wiki_support import bundle, extract
+from citerift.wiki.profile import load_profile
+w = load_profile().wikis["ar"]
+print("_SPACES chars:", [hex(ord(c)) for c in __import__("citerift.wiki.profile", fromlist=["x"])._SPACES.pattern])
+for label, nm in (("plain", "استشهاد بدورية محكمة"), ("trailing RLM", "استشهاد بدورية محكمة‏"),
+                  ("leading LRM", "‎استشهاد بدورية محكمة"), ("NBSP inside", "استشهاد بدورية محكمة"),
+                  ("NNBSP inside", "استشهاد بدورية محكمة")):
+    print(f"{label:14} canonical={w.canonical_template(nm)!r} family={w.citation_templates.get(w.canonical_template(nm) or '')}")
+for k, nm in enumerate(("استشهاد بدورية محكمة", "استشهاد بدورية محكمة‏")):
+    T = "أ.<ref>{{" + nm + "|عنوان=ورقة|دوي=10.1000/x}}</ref>\n"
+    d = extract(bundle(_tmp, T, None, wiki="ar", name=f"bidi{k}"))
+    print(repr(nm[-1]), [(i["role"], i["role_reason"]) for i in d["identifiers"]], sorted({x["code"] for x in d["issues"]}))

@@ -272,7 +272,7 @@ def test_gate_enforces_the_interval_recorded_by_another_process(tmp_path: Path) 
     assert gate.acquire(0.6, 5.0) is None
     gate.release()
     assert time.monotonic() - started >= 0.5
-    assert float(lock.read_text(encoding="ascii")) >= time.time() - 5
+    assert float(lock.read_text(encoding="ascii").split()[0]) >= time.time() - 5
     assert NetworkGate(lock).acquire(30.0, 0.5) == "NETWORK_GATE_BUSY"  # cannot wait 30 s within 0.5 s
 
 

@@ -13,6 +13,7 @@ containers, units, uses and identifier occurrences.
 from __future__ import annotations
 
 import html
+import json
 import re
 from collections.abc import Iterator
 from dataclasses import dataclass, field
@@ -43,7 +44,11 @@ PARSER_VERSION = mwparserfromhell.__version__
 # text is the first whitespace or wikitext delimiter; nothing else is trimmed (SPECIFICATION.md 11.4).
 _DOI_START = re.compile(r"(?<![0-9A-Za-z])10\.[0-9]{4,9}(?:\.[0-9]+)*/")
 _LEXEME_STOP = re.compile(r"[\s|\[\]{}<>\"]")
-_TRAILING_AMBIGUOUS = ".,;:"
+# Sentence punctuation that may close a sentence rather than the DOI (a DOI may legitimately end in it): Latin and
+# Arabic (comma, semicolon, question mark, full stop).
+_TRAILING_AMBIGUOUS = ".,;:!?،؛؟۔"
+_WIKI_QUOTES = "''"
+AMBIGUOUS_BOUNDARIES = frozenset({"ambiguous_trailing_punctuation", "ambiguous_markup_or_entity"})
 _DIGITS = "0-9٠-٩۰-۹"
 _PMID_LABEL = re.compile(rf"(?i)(?<![A-Za-z])pmid\s*:?\s*([{_DIGITS}]+)(?![{_DIGITS}A-Za-z])")
 
@@ -104,6 +109,7 @@ class RefRecord:
     extra_attributes: tuple[str, ...]
     exact: bool = True
     uses_names: tuple[str, ...] = ()  # for {{r}}: the names it uses
+    sfn_key: str | None = None  # for a short footnote: the identity of the note its parameters generate
 
 
 @dataclass
@@ -170,8 +176,14 @@ class SourceScan:
     nodes: int = 0
 
 
+_ATTR_WS = re.compile(r"[\t\r\n ]+")
+
+
 def _decode_attr(value: str) -> str:
-    return html.unescape(value).strip()
+    """A tag attribute value as MediaWiki reads it (Sanitizer::decodeTagAttributes): runs of spaces, tabs and line
+    breaks become one space, the value is trimmed, and only then are character references decoded, so a decoded
+    ``&nbsp;`` at the end is part of the name."""
+    return html.unescape(_ATTR_WS.sub(" ", value).strip(" \t\r\n\0\x0b"))
 
 
 def _has_markup(code: Wikicode) -> bool:
@@ -258,11 +270,14 @@ class Scanner:
         elif isinstance(node, Tag):
             self._tag(node, start, end, ctx, depth)
         elif isinstance(node, Wikilink):
+            # A wiki link's target and its display text are both link text (SPECIFICATION.md 11.5 rule 2): an
+            # identifier there is mentioned, not given as the reference's identifier.
             t0 = start + 2
             t1 = t0 + len(str(node.title))
-            self._code(node.title, t0, Ctx(**{**ctx.__dict__, "link_display": True}), depth + 1)
+            shown = Ctx(**{**ctx.__dict__, "link_display": True})
+            self._code(node.title, t0, shown, depth + 1)
             if node.text is not None:
-                self._code(node.text, t1 + 1, ctx, depth + 1)
+                self._code(node.text, t1 + 1, shown, depth + 1)
         elif isinstance(node, ExternalLink):
             self._external_link(node, start, end, ctx, depth)
         elif isinstance(node, Heading):
@@ -427,7 +442,21 @@ class Scanner:
         if kind == "sfn":
             # {{sfn}} and relatives generate a short footnote from their parameters; the note text is not in the
             # source. Identical calls share one note (the template derives the ref name from the parameters).
-            self._add_ref(rec.start, rec.end, None, None, "sfn", None, None, None, ctx, (), body_has_text=True)
+            # The key is the template and its parameters as written (named ones in name order, values with spaces
+            # collapsed and trimmed), not the raw text: {{sfn}} and {{Sfn}} are one template, and "Smith J" and
+            # "SmithJ" are different authors.
+            positional = [
+                _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip() for p in rec.params if not p.showkey
+            ]
+            named = sorted(
+                (p.name, _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip())
+                for p in rec.params
+                if p.showkey
+            )
+            sfn_key = json.dumps([rec.canonical or rec.raw_name.strip(), positional, named], ensure_ascii=False)
+            self._add_ref(
+                rec.start, rec.end, None, None, "sfn", None, None, None, ctx, (), body_has_text=True, sfn_key=sfn_key
+            )
             for p, prm in zip(rec.params, node.params, strict=False):
                 sub = Ctx(**{**ctx.__dict__, "frames": (*ctx.frames, Frame(rec.index, p.name))})
                 self._code(prm.value, p.value_start, sub, depth + 1)
@@ -444,7 +473,8 @@ class Scanner:
         # The footnote templates map an empty or unknown group to their default (their #switch); a group the
         # template accepts is passed on unchanged.
         group_value: str | None = given_group or spec.default_group or None
-        name_value = _plain(name[1].value)[0].strip() if name else None
+        # An empty name (Template:Efn always passes name={{{name|}}}) is no name: the footnote is anonymous.
+        name_value = (_plain(name[1].value)[0].strip() or None) if name else None
         name_markup = bool(name and _has_markup(name[1].value)) or bool(group and _has_markup(group[1].value))
         ref_index = self._add_ref(
             rec.start,
@@ -523,6 +553,14 @@ class Scanner:
         return offset
 
     def _ref_tag(self, node: Tag, start: int, end: int, ctx: Ctx, depth: int) -> None:
+        # Identifier-shaped text in the tag's attributes (a ref name such as "10.1000/x") is never a target.
+        open_end = end
+        if not node.self_closing and node.contents is not None:
+            body_at = self._contents_offset(node, start, end)
+            if body_at is not None:
+                open_end = body_at
+        if not ctx.excluded:
+            self._scan_excluded(start, open_end, ctx, "ref_attribute")
         name_raw = group_raw = None
         name = None
         group = ""
@@ -585,6 +623,7 @@ class Scanner:
         body_has_text: bool = False,
         group_raw: str | None = None,
         uses_names: tuple[str, ...] = (),
+        sfn_key: str | None = None,
     ) -> int:
         if ctx.excluded:
             return -1
@@ -621,6 +660,7 @@ class Scanner:
                 ctx.unsupported,
                 extra,
                 uses_names=uses_names,
+                sfn_key=sfn_key,
             )
         )
         return index
@@ -654,9 +694,13 @@ class Scanner:
                     ctx.excluded,
                 )
             )
+        elif not ctx.excluded and not _has_markup(node.url) and _DOI_START.search(decoded):
+            # A DOI inside another site's URL (an archive snapshot, a search page) is not an identifier occurrence
+            # of its own; it is kept as excluded with its reason.
+            self._scan_excluded(url_start, url_end, ctx, "other_site_url")
         if node.brackets and node.title is not None:
             t_start = url_end + (0 if node.suppress_space else 1)
-            sub = Ctx(**{**ctx.__dict__, "link_display": scheme is not None or ctx.link_display})
+            sub = Ctx(**{**ctx.__dict__, "link_display": True})
             self._code(node.title, t_start, sub, depth + 1)
 
     # Text -------------------------------------------------------------------------------------------------
@@ -693,11 +737,24 @@ class Scanner:
             self.scan.unparsed.append((raw_start, raw_end, "template_braces_in_text"))
         for m in _DOI_START.finditer(decoded):
             i = m.start()
-            stop = _LEXEME_STOP.search(decoded, m.end())
-            j = stop.start() if stop else len(decoded)
-            lexeme = decoded[i:j]
+            # The DOI ends at the first whitespace or wikitext delimiter written literally in the source. A character
+            # that came from a character reference (&lt; and &gt; in a SICI DOI) is text, not markup, so only
+            # whitespace stops there. Bold or italic quotes (two or three apostrophes) end it and are flagged.
+            j = len(decoded)
+            for stop in _LEXEME_STOP.finditer(decoded, m.end()):
+                k = stop.start()
+                if ends[k] - starts[k] == 1 or decoded[k].isspace():
+                    j = k
+                    break
             boundary = "delimited"
-            if lexeme[-1] in _TRAILING_AMBIGUOUS or (lexeme.endswith(")") and lexeme.count("(") < lexeme.count(")")):
+            quotes = decoded.find(_WIKI_QUOTES, m.end(), j)
+            if quotes >= 0:
+                j = quotes
+                boundary = "ambiguous_markup_or_entity"
+            lexeme = decoded[i:j]
+            if boundary == "delimited" and (
+                lexeme[-1] in _TRAILING_AMBIGUOUS or (lexeme.endswith(")") and lexeme.count("(") < lexeme.count(")"))
+            ):
                 boundary = "ambiguous_trailing_punctuation"
             before = decoded[max(0, i - 12) : i]
             labels = "|".join(re.escape(x) for x in ("doi", *self._doi_labels()))

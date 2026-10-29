@@ -1,0 +1,19 @@
+import subprocess, sys, json
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import capture, scripted, ScriptedClock, response, api_answer, parsoid, JSON_TYPE, HTML_TYPE, REVISION
+from citerift.wiki.capture import CaptureRequest, capture_revision
+from citerift.wiki.fetch import FetchPolicy
+P = Path(__file__).resolve().parent
+# 1. replay without --extraction of a bundle whose extraction is partial
+b = P / "work_island" / "b300"
+p = subprocess.run(["uv", "run", "--frozen", "citerift-wiki", "replay", "--bundle", str(b)], capture_output=True, text=True, cwd="/home/user/citerift")
+r = json.loads(p.stdout); print("replay (no --extraction) of a partial extraction: exit", p.returncode, r["replay"])
+# 2. capture into an existing --out: requests are made before the path is refused
+existing = P / "work_island" / "b100"
+text = "T"
+t, seen = scripted([response(200, {"content-type": JSON_TYPE}, json.dumps(api_answer(text)).encode()),
+                    response(200, {"content-type": HTML_TYPE, "content-revision-id": str(REVISION)}, parsoid("<p>T</p>", text))])
+clock = ScriptedClock()
+o = capture_revision(CaptureRequest("en", revision_id=REVISION), FetchPolicy(), out=existing, transport=t, clock=clock)
+print("capture into existing out:", o.status, [i.code for i in o.issues], "requests made:", len(seen), "simulated wait s:", clock.t)

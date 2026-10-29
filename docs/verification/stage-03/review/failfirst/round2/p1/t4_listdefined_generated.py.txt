@@ -1,0 +1,5 @@
+"""List-defined footnotes written with a generating template (Help:Explanatory notes, list-defined efn) are definitions, not uses."""
+from h import run
+run('Text.{{efn|name=n1}}\n{{notelist|refs=\n{{efn|name=n1|A note citing doi:10.1000/a}}\n{{efn|name=unused|Never cited doi:10.1000/b}}\n}}', label="notelist refs efn")
+run('Text.<ref name=r1/>\n<references>\n{{#tag:ref|{{cite journal|doi=10.1000/c}}|name=r1}}\n{{#tag:ref|{{cite journal|doi=10.1000/d}}|name=r2}}\n</references>', label="references #tag:ref")
+run('Text.<ref name=r1/>\n<references>\n<ref name=r1>{{cite journal|doi=10.1000/c}}</ref>\n<ref name=r2>{{cite journal|doi=10.1000/d}}</ref>\n</references>', label="control <ref> tags")

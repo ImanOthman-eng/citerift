@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from typing import Any
 
 
@@ -28,15 +29,44 @@ def _no_constant(name: str) -> Any:
     raise StrictJSONError(f"non-finite number {name} is not allowed")
 
 
+def _finite_float(text: str) -> float:
+    value = float(text)
+    if not math.isfinite(value):
+        raise StrictJSONError(f"number {text[:40]} is not finite")
+    return value
+
+
+def _encodable(value: Any) -> None:
+    """Strings must be encodable as UTF-8: a JSON escape can write a lone surrogate (\\ud800)."""
+    stack = [value]
+    while stack:
+        item = stack.pop()
+        if isinstance(item, str):
+            try:
+                item.encode("utf-8", "strict")
+            except UnicodeEncodeError as exc:
+                raise StrictJSONError("a string holds a lone surrogate") from exc
+        elif isinstance(item, dict):
+            stack.extend(item.keys())
+            stack.extend(item.values())
+        elif isinstance(item, list):
+            stack.extend(item)
+
+
 def loads_strict(data: bytes | str) -> Any:
-    """Parse JSON, rejecting duplicate keys, NaN/Infinity and invalid UTF-8."""
+    """Parse JSON, rejecting duplicate keys, NaN/Infinity (also as overflowing numbers such as 1e400), lone
+    surrogates and invalid UTF-8."""
     try:
         text = data.decode("utf-8", "strict") if isinstance(data, bytes) else data
-        return json.loads(text, object_pairs_hook=_no_duplicates, parse_constant=_no_constant)
+        value = json.loads(
+            text, object_pairs_hook=_no_duplicates, parse_constant=_no_constant, parse_float=_finite_float
+        )
     except StrictJSONError:
         raise
     except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise StrictJSONError(f"unreadable JSON: {type(exc).__name__}") from exc
+    _encodable(value)
+    return value
 
 
 def canonical_bytes(obj: Any) -> bytes:

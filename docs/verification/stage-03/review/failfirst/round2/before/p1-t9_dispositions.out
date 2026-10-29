@@ -1,0 +1,20 @@
+===== ref name / other-site URLs 'A<ref name="10.1000/inname">{{cite web |url=https://web.archive.org/web/2020/https://doi.org/10.1000/arch |title=T}} [https://example.org/10.1000/other x]</ref>'
+status partial
+ C ct-00001 note '10.1000/inname' '' single_definition uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose '10.1000/inname' '' bound ct-00001
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== invalid percent in publisher path vs resolver 'A<ref>https://pubs.acs.org/doi/10.1021/ab%zz and https://pubs.acs.org/doi/10.1021/cd%C3%28 vs https://doi.org/10.1021/ab%zz</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi url identifier_link '10.1021/ab%zz' -> 10.1021/ab%zz url ct-00001 un-00001
+ I id-00002 doi url identifier_link '10.1021/cd%C3%28' -> 10.1021/cd%c3%28 url ct-00001 un-00001
+ I id-00003 doi url identifier_link 'https://doi.org/10.1021/ab%zz' -> None url ct-00001 un-00001
+ issues ['IDENTIFIER_INVALID', 'RECONCILIATION_UNAVAILABLE', 'UNIT_BOUNDARY_UNRESOLVED']
+===== url outer whitespace 'A<ref>{{cite journal|title=T|url= https://doi.org/10.1000/ws }}{{cite journal|title=U|doi= 10.1000/ws }}</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001', 'un-00002']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi url identifier_link 'https://doi.org/10.1000/ws' -> 10.1000/ws url ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field ' 10.1000/ws ' -> 10.1000/ws field ct-00001 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']

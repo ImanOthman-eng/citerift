@@ -132,6 +132,15 @@ class RenderLimitExceeded(Exception):
     pass
 
 
+def _style_hides(style: str | None) -> bool:
+    """Whether an inline style hides the element (``display:none`` or ``visibility:hidden``), compared without case
+    and whitespace as CSS does. Only inline styles are read; stylesheets are never applied."""
+    if not style:
+        return False
+    flat = re.sub(r"\s+", "", style.lower())
+    return "display:none" in flat or "visibility:hidden" in flat
+
+
 def _norm_text(text: str) -> str:
     return _WS.sub(" ", text).strip()
 
@@ -140,11 +149,17 @@ class RenderReader:
     def __init__(self, data: bytes, max_elements: int = 2_000_000) -> None:
         parser = lxml.html.HTMLParser(encoding="utf-8", remove_comments=False, no_network=True, huge_tree=False)
         self.doc = lxml.html.document_fromstring(data, parser=parser)
+        # libxml2 stops building the tree at its nesting limit (about 256 levels without huge_tree) and drops the
+        # rest of the document with a fatal error. Such a tree is incomplete: it is never read as the render.
+        for entry in parser.error_log:
+            if entry.level_name == "FATAL" or "excessive depth" in entry.message.lower():
+                raise RenderLimitExceeded(f"HTML parser stopped: {entry.message.strip()[:200]}")
         self.tree = self.doc.getroottree()
         self.ids: Counter[str] = Counter()
         self.about_types: dict[str, set[str]] = {}
         self.parent: dict[Any, Any] = {}
         self._by_path: dict[str, Any] = {}  # elements this reader has located (paths it produced itself)
+        self._about_index: dict[str, list[Any]] | None = None
         count = 0
         self.omitted: dict[str, str] = {}  # about -> parser limit warning
         self.limit_warnings: list[dict[str, Any]] = []
@@ -340,7 +355,7 @@ class RenderReader:
     def _hidden(self, el: Any) -> bool:
         for node in [el, *self._ancestors(el)]:
             cls = set((node.get("class") or "").split())
-            if cls & _HIDDEN_CLASSES or "display:none" in (node.get("style") or "").replace(" ", ""):
+            if cls & _HIDDEN_CLASSES or _style_hides(node.get("style")):
                 return True
             if node.get("hidden") is not None:
                 return True
@@ -359,6 +374,25 @@ class RenderReader:
                 self._hidden(el),
             )
         )
+
+    def about_group(self, about: str) -> list[Any]:
+        """Every element of one template's output (the elements that share its ``about``), in document order."""
+        if self._about_index is None:
+            index: dict[str, list[Any]] = {}
+            for el in self.doc.iter():
+                if isinstance(el.tag, str) and el.get("about"):
+                    index.setdefault(str(el.get("about")), []).append(el)
+            self._about_index = index
+        return list(self._about_index.get(about, []))
+
+    def contains(self, outer: Any, inner: Any) -> bool:
+        """Whether ``inner`` is ``outer`` or one of its descendants."""
+        node = inner
+        while node is not None:
+            if node is outer:
+                return True
+            node = node.getparent()
+        return False
 
     def element_by_path(self, path: str) -> Any:
         """The element at an lxml element path (``/html/body/section[2]/p``), or None. The path is walked step by
@@ -394,28 +428,37 @@ class RenderReader:
         cite_parts: list[str] = []
         hidden_parts: list[str] = []
         redlinks: list[str] = []
+        hidden_redlinks: list[str] = []
         hidden_flags = 0
 
         def walk(node: Any, in_cite: bool, hidden: bool) -> None:
             nonlocal hidden_flags
+            # The text after a node belongs to the enclosing context, also when the node itself is skipped
+            # (a comment, a category <link>, a <style>, a backlink): dropping it would hide shown text.
+            tail_target = hidden_parts if hidden else cite_parts if in_cite else parts
             if not isinstance(node.tag, str):
+                if node.tail:
+                    tail_target.append(node.tail)
                 return
             tag = node.tag
             cls = set((node.get("class") or "").split())
             if tag in _SKIP_TEXT_TAGS or "mw-cite-backlink" in cls:
+                if node.tail:
+                    tail_target.append(node.tail)
                 return
             node_hidden = (
                 hidden
                 or bool(cls & _HIDDEN_CLASSES)
-                or "display:none" in (node.get("style") or "").replace(" ", "")
+                or _style_hides(node.get("style"))
                 or node.get("hidden") is not None
             )
             if node_hidden and not hidden:
                 hidden_flags += 1
             if tag == "a" and "new" in cls:
-                redlinks.append(node.get("title") or _norm_text(node.text_content()))
+                label = node.get("title") or _norm_text(node.text_content())
+                (hidden_redlinks if node_hidden else redlinks).append(label)
                 if node.tail:
-                    (hidden_parts if hidden else cite_parts if in_cite else parts).append(node.tail)
+                    tail_target.append(node.tail)
                 return
             target = hidden_parts if node_hidden else cite_parts if (in_cite or tag == "cite") else parts
             if node.text:
@@ -423,7 +466,7 @@ class RenderReader:
             for child in node:
                 walk(child, in_cite or tag == "cite", node_hidden)
             if node.tail:
-                (hidden_parts if hidden else cite_parts if in_cite else parts).append(node.tail)
+                tail_target.append(node.tail)
 
         walk(el, False, False)
         # The region element's own tail is outside the region.
@@ -434,6 +477,7 @@ class RenderReader:
             "cite_text": _norm_text(" ".join(cite_parts)),
             "hidden_text": _norm_text(" ".join(hidden_parts)),
             "redlinks": redlinks,
+            "hidden_redlinks": hidden_redlinks,
             "hidden_elements": hidden_flags,
         }
 

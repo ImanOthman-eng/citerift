@@ -1,0 +1,7 @@
+import time
+from pathlib import Path
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+B = Path("/home/user/citerift/tests/stage03/fixtures/observed/en-1372543632")
+for cfg in (ExtractConfig(worker_wall_s=0.05), ExtractConfig(worker_memory_mib=64), ExtractConfig(worker_memory_mib=96), ExtractConfig()):
+    t = time.monotonic(); d = extract_bundle(B, cfg)
+    print(cfg.worker_wall_s, cfg.worker_memory_mib, d["status"], [i["code"] for i in d["issues"] if i["severity"] == "error"], f"{time.monotonic()-t:.2f}s", [i["detail"][:60] for i in d["issues"] if i["severity"]=="error"])
