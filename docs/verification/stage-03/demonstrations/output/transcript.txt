@@ -1,0 +1,72 @@
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/ar-76190003
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle tests/stage03/fixtures/observed/ar-76190003 --out docs/verification/stage-03/demonstrations/output/ar-76190003.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "ca04c51fa7c1ee85e0271a946ae815f04e71c48506166b04ffe609f80e96ea5b"}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/ar-76190003 --extraction docs/verification/stage-03/demonstrations/output/ar-76190003.extraction.json
+exit 0
+  stdout: {"extraction_digest": "ca04c51fa7c1ee85e0271a946ae815f04e71c48506166b04ffe609f80e96ea5b", "verified": true}
+$ uv run citerift-wiki replay --bundle tests/stage03/fixtures/observed/ar-76190003 --extraction docs/verification/stage-03/demonstrations/output/ar-76190003.extraction.json
+exit 0
+  stdout: {"extraction_digest": "ca04c51fa7c1ee85e0271a946ae815f04e71c48506166b04ffe609f80e96ea5b", "verified": true, "replay": {"new_digest": "ca04c51fa7c1ee85e0271a946ae815f04e71c48506166b04ffe609f80e96ea5b", "new_status": "partial", "recorded_digest": "ca04c51fa7c1ee85e0271a946ae815f04e71c48506166b04ffe609f80e96ea5b", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/en-1372543632
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle tests/stage03/fixtures/observed/en-1372543632 --out docs/verification/stage-03/demonstrations/output/en-1372543632.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "7382d44aebd90334d75d3226a70bc56988a9aee5d6b12c71d87995370775c6ee"}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/en-1372543632 --extraction docs/verification/stage-03/demonstrations/output/en-1372543632.extraction.json
+exit 0
+  stdout: {"extraction_digest": "7382d44aebd90334d75d3226a70bc56988a9aee5d6b12c71d87995370775c6ee", "verified": true}
+$ uv run citerift-wiki replay --bundle tests/stage03/fixtures/observed/en-1372543632 --extraction docs/verification/stage-03/demonstrations/output/en-1372543632.extraction.json
+exit 0
+  stdout: {"extraction_digest": "7382d44aebd90334d75d3226a70bc56988a9aee5d6b12c71d87995370775c6ee", "verified": true, "replay": {"new_digest": "7382d44aebd90334d75d3226a70bc56988a9aee5d6b12c71d87995370775c6ee", "new_status": "complete", "recorded_digest": "7382d44aebd90334d75d3226a70bc56988a9aee5d6b12c71d87995370775c6ee", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --out docs/verification/stage-03/demonstrations/output/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "bc00881a19e86d1a67831a662f7c6ee00809da49820fe2ad98f53f26825c8b1c"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --extraction docs/verification/stage-03/demonstrations/output/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"extraction_digest": "bc00881a19e86d1a67831a662f7c6ee00809da49820fe2ad98f53f26825c8b1c", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --extraction docs/verification/stage-03/demonstrations/output/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"extraction_digest": "bc00881a19e86d1a67831a662f7c6ee00809da49820fe2ad98f53f26825c8b1c", "verified": true, "replay": {"new_digest": "bc00881a19e86d1a67831a662f7c6ee00809da49820fe2ad98f53f26825c8b1c", "new_status": "complete", "recorded_digest": "bc00881a19e86d1a67831a662f7c6ee00809da49820fe2ad98f53f26825c8b1c", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --out docs/verification/stage-03/demonstrations/output/en-1381772671.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "8e5f74b3de3e9fab7a898f2fde4c4f2e60766b29e8af364189512948e99baeb0"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --extraction docs/verification/stage-03/demonstrations/output/en-1381772671.extraction.json
+exit 0
+  stdout: {"extraction_digest": "8e5f74b3de3e9fab7a898f2fde4c4f2e60766b29e8af364189512948e99baeb0", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --extraction docs/verification/stage-03/demonstrations/output/en-1381772671.extraction.json
+exit 0
+  stdout: {"extraction_digest": "8e5f74b3de3e9fab7a898f2fde4c4f2e60766b29e8af364189512948e99baeb0", "verified": true, "replay": {"new_digest": "8e5f74b3de3e9fab7a898f2fde4c4f2e60766b29e8af364189512948e99baeb0", "new_status": "complete", "recorded_digest": "8e5f74b3de3e9fab7a898f2fde4c4f2e60766b29e8af364189512948e99baeb0", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --out docs/verification/stage-03/demonstrations/output/en-1374726997.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "054fcadca5f426d6b2dfe6b90044e0adfeb5ef2d56c1ba7f9bd2be071d40d8e8"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --extraction docs/verification/stage-03/demonstrations/output/en-1374726997.extraction.json
+exit 0
+  stdout: {"extraction_digest": "054fcadca5f426d6b2dfe6b90044e0adfeb5ef2d56c1ba7f9bd2be071d40d8e8", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --extraction docs/verification/stage-03/demonstrations/output/en-1374726997.extraction.json
+exit 0
+  stdout: {"extraction_digest": "054fcadca5f426d6b2dfe6b90044e0adfeb5ef2d56c1ba7f9bd2be071d40d8e8", "verified": true, "replay": {"new_digest": "054fcadca5f426d6b2dfe6b90044e0adfeb5ef2d56c1ba7f9bd2be071d40d8e8", "new_status": "complete", "recorded_digest": "054fcadca5f426d6b2dfe6b90044e0adfeb5ef2d56c1ba7f9bd2be071d40d8e8", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --out docs/verification/stage-03/demonstrations/output/en-81119391-a1.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --extraction docs/verification/stage-03/demonstrations/output/en-81119391-a1.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --extraction docs/verification/stage-03/demonstrations/output/en-81119391-a1.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "verified": true, "replay": {"new_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "new_status": "partial", "recorded_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "state": "reproduced"}}
