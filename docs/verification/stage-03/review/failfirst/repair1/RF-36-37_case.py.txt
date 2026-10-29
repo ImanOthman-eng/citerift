@@ -1,0 +1,23 @@
+"""Repair-round fail-first case (RF-36, RF-37): SYNTHETIC wikitext through the public API."""
+import json, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract
+
+t = Path(tempfile.mkdtemp())
+cases = {
+    "RF-36 PubMed URL on an External links line": "Text.\n==External links==\nhttp://www.ncbi.nlm.nih.gov/pubmed/9380475\n",
+    "RF-36 PubMed URL in a maintenance template outside refs": "Text.{{Update inline|reason=see https://www.ncbi.nlm.nih.gov/pubmed/34699062}}\n",
+    "RF-36 wrapper in prose": "See {{doi|10.1000/prose}} for details.\n",
+    "RF-36 control: URL inside a reference": "A<ref>https://doi.org/10.1000/inref</ref>\n",
+    "RF-37 cite iucn": "A<ref>{{cite iucn |author=Ellis |year=2017 |title=X |doi=10.2305/IUCN.UK.2017-3.RLTS.T1A2.en}}</ref>\n",
+    "RF-37 cite simbad": "A<ref>{{cite simbad | title=Alpha Trianguli | accessdate=2011-12-12 }}</ref>\n",
+}
+out = {}
+for n, (label, text) in enumerate(cases.items()):
+    doc = extract(bundle(t, text, name=f"b{n}"))
+    out[label] = {
+        "units": [u["kind"] for u in doc["units"]],
+        "identifiers": [(i["scheme"], i["role"], i["normalization"]["normalized"] if i["normalization"] else None) for i in doc["identifiers"]],
+    }
+print(json.dumps(out, ensure_ascii=False, indent=1))

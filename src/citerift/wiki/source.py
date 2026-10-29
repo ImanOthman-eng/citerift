@@ -48,6 +48,7 @@ _LEXEME_STOP = re.compile(r"[\s|\[\]{}<>\"]")
 # Arabic (comma, semicolon, question mark, full stop).
 _TRAILING_AMBIGUOUS = ".,;:!?،؛؟۔"
 _WIKI_QUOTES = "''"
+_UNLISTED_CITATION = re.compile("^(?:Cite |\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628)", re.IGNORECASE)
 AMBIGUOUS_BOUNDARIES = frozenset({"ambiguous_trailing_punctuation", "ambiguous_markup_or_entity"})
 _DIGITS = "0-9٠-٩۰-۹"
 _PMID_LABEL = re.compile(rf"(?i)(?<![A-Za-z])pmid\s*:?\s*([{_DIGITS}]+)(?![{_DIGITS}A-Za-z])")
@@ -311,6 +312,10 @@ class Scanner:
             return canonical, "generated_ref", w.generated_refs[canonical].kind
         if canonical in w.reflists:
             return canonical, "reflist", None
+        if _UNLISTED_CITATION.match(canonical):
+            # The annotation guide's definition of a citation template ("Cite …", "استشهاد …"): a template of that
+            # name the profile does not list is a citation template of an unlisted family (RF-37).
+            return canonical, "citation", "unlisted"
         return canonical, "other", None
 
     def _template(self, node: Template, start: int, end: int, ctx: Ctx, depth: int) -> None:

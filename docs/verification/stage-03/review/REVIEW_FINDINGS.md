@@ -105,3 +105,28 @@ Not fixed, with reasons:
 - P1, design note: the extraction digest covers the capture record's own SHA-256, so two captures with identical
   artifacts have different extraction digests. This is intended: an extraction is bound to one capture record.
   SPECIFICATION.md section 9 states it.
+
+## Repair round after holdout run 1 (FROZEN_PROTOCOL.md section 9)
+
+Holdout run 1 (`../evaluation/run-1/`, engine of `d626c06`) failed two gates on adjudicated labels. Both failures
+trace to one defect each, where the engine differed from the frozen annotation guide. This is the protocol's one
+permitted repair round. The repaired engine is evaluated once on the confirmation articles (positions 17-22),
+annotated and locked before its predictions. Run 1 stays published as the holdout result and is not called fresh.
+
+| Id | Found by | Severity | Defect | Disposition | Evidence |
+|---|---|---|---|---|---|
+| RF-36 | holdout run 1, gate G3a (arwiki, 2 promotions); also the observed enwiki challenge (1) | high | A resolver or PubMed URL (or `{{doi}}`/`{{PMID}}` wrapper) outside any reference was given `identifier_link`, a cited-work role. Cases: a bare PubMed URL on an External links line, and a URL in `{{Update inline|reason=…}}`. SPECIFICATION.md 11.5 rule 5 said "a URL or wrapper elsewhere", while the frozen guide limits `identifier_link` to a reference or citation template. | Fixed: outside a reference container (note, list-defined note, generated note, bibliography entry) such a link is `textual_mention`. `verify` checks that an `identifier_link` lies in a reference or a citation template. | `failfirst/repair1/RF-36-37_*`; `test_wiki_identifier_links_outside_references_are_mentions` |
+| RF-37 | holdout run 1, gates G5c/G5d (enwiki unit precision 0.941, recall 0.949) | medium | `{{cite iucn}}` and `{{cite simbad}}` are citation templates by the guide's definition ("Cite …") but are not in profile v1. They were counted as unstructured text, and their `doi=` was `unresolved`. | Fixed: a template whose canonical name starts with "Cite " or "استشهاد ب" and that the profile does not list is a citation template of family `unlisted`. The name prefix includes the space, so `{{Citation needed}}` is not one. Templates of other names that format citations (`{{Who's Who}}`, `{{NRDB species}}`, `{{IUCN2008}}`) stay unsupported (partial support, HANDOFF.md). | `failfirst/repair1/RF-36-37_*`; `test_wiki_unlisted_cite_templates_are_citation_templates` |
+
+Not repaired from run 1, and documented:
+
+- **DOIs in publisher URLs whose path is not `/doi/`** (`/article/10.…`, `/content/journals/10.…`). These are 4
+  missed identifiers. The engine has no reliable boundary rule for them. Identifier recall was 0.97 in both
+  languages.
+- **A note whose body is not a citation** ("Originally: …") is reported as an unstructured unit. Telling a
+  citation from an explanatory note needs a semantic judgement, which is out of scope.
+- **Observed challenge article ar-74891699.** An unbalanced `{{FixBunching}}` begin/end pair makes Parsoid wrap
+  the whole body as one template's output. The engine abstains on all 12 render links rather than pair source
+  prose with template output. This is a coverage loss with no wrong attachment.
+- **An empty `pmid=` field** is reported as an identifier occurrence with `normalization.missing = true`. The
+  guide does not count it. It is kept so that a missing value stays visible.

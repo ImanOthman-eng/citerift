@@ -354,6 +354,11 @@ def _semantics(doc: dict[str, Any], report: _Report) -> None:
                 origin in ("url", "wrapper", "template_field"),
                 detail=i["id"],
             )
+            report.check(
+                "an identifier link lies in a reference or a citation template",
+                i["container_id"] is not None or kind in ("citation", "external_data"),
+                detail=i["id"],
+            )
         if role == "labeled_reference_text":
             report.check("labeled text comes from a label", origin == "label_text", detail=i["id"])
         dec, norm = i["decoding"], i["normalization"]

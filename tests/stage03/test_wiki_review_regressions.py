@@ -512,3 +512,47 @@ def test_wiki_verify_refuses_render_attempts_without_a_render_request(tmp_path: 
     cap["status"] = "complete"
     (path / "capture.json").write_text(json.dumps(cap, ensure_ascii=False, indent=1), encoding="utf-8")
     assert not verify_bundle(path)["verified"]
+
+
+# ------------------------------------------------------------------- repair round after holdout run 1
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("wiki", "text"),
+    [
+        ("en", "Text.\n==External links==\nhttp://www.ncbi.nlm.nih.gov/pubmed/9380475\n"),
+        ("en", "Text.{{Update inline|reason=see https://www.ncbi.nlm.nih.gov/pubmed/34699062}}\n"),
+        ("en", "See {{doi|10.1000/prose}} for details.\n"),
+        ("ar", "نص.\n== وصلات خارجية ==\nhttp://www.ncbi.nlm.nih.gov/pubmed/9380475\n"),
+    ],
+)
+def test_wiki_identifier_links_outside_references_are_mentions(tmp_path: Path, wiki: str, text: str) -> None:
+    """RF-36: a resolver or PubMed link outside any reference was given identifier_link, a cited-work role."""
+    doc = extract(bundle(tmp_path, text, wiki=wiki))
+    assert [i["role"] for i in doc["identifiers"]] == ["textual_mention"]
+    inside = extract(bundle(tmp_path, "A<ref>https://doi.org/10.1000/inref</ref>\n", wiki=wiki, name="in"))
+    assert [i["role"] for i in inside["identifiers"]] == ["identifier_link"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("wiki", "text"),
+    [
+        (
+            "en",
+            "A<ref>{{cite iucn |author=Ellis |year=2017 |title=X |doi=10.2305/IUCN.UK.2017-3.RLTS.T1A2.en}}</ref>\n",
+        ),
+        ("ar", "أ<ref>{{استشهاد بقاعدة بيانات غير مدرجة |عنوان=س |دوي=10.2305/IUCN.UK.2017-3.RLTS.T1A2.en}}</ref>\n"),
+    ],
+)
+def test_wiki_unlisted_cite_templates_are_citation_templates(tmp_path: Path, wiki: str, text: str) -> None:
+    """RF-37: "Cite …" / "استشهاد ب…" templates missing from profile v1 were unstructured, their DOI unresolved."""
+    doc = extract(bundle(tmp_path, text, wiki=wiki))
+    assert [u["kind"] for u in doc["units"]] == ["citation_template"]
+    assert [i["role"] for i in doc["identifiers"]] == ["primary_citation_field"]
+    assert doc["units"][0]["template"]["family"] == "unlisted"
+    # The rule is the name prefix "Cite " (with the space), so maintenance templates such as {{Citation needed}}
+    # are not citation templates.
+    tag = extract(bundle(tmp_path, "A claim.{{Citation needed|date=May 2020}}\n", wiki=wiki, name="cn"))
+    assert tag["units"] == []

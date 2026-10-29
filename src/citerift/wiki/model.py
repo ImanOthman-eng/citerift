@@ -132,7 +132,11 @@ def _role(
     if cand.origin == "template_field":
         return "unresolved", "identifier parameter of a template the profile does not support"
     if cand.origin in ("url", "wrapper"):
-        return "identifier_link", cand.origin
+        # A resolver, PubMed or publisher link is the reference's identifier only inside a reference (a note or a
+        # bibliography entry); a link on its own line, in prose or in a maintenance template is a mention (RF-36).
+        if in_container:
+            return "identifier_link", cand.origin
+        return "textual_mention", f"{cand.origin} outside any reference"
     if cand.origin == "label_text" and in_container:
         return "labeled_reference_text", "labeled identifier in reference text"
     return "textual_mention", "free text"

@@ -168,7 +168,8 @@ are reported, not extracted.
 
 ### 11.3 Citation units
 
-A template whose canonical name is a profile citation family is a `citation_template` unit; `Cite Q` and
+A template whose canonical name is a profile citation family, or (RF-37) a name the profile does not list that
+starts with "Cite " or "استشهاد ب" (family `unlisted`), is a `citation_template` unit; `Cite Q` and
 `استشهاد بويكي بيانات` are `external_data_template` units; a definition with no template unit is
 `unstructured_text`. Parameter names are compared after trimming; a repeated parameter is recorded in
 `duplicate_params`.
@@ -198,7 +199,8 @@ identifiers in one unit are never merged into one work (`CO_REPORTED_IDENTIFIERS
    identifier or URL parameter → `identifier_link`; labelled text there → `labeled_reference_text`; anything else in
    the template (titles, other parameters) → `textual_mention`;
 4. an identifier field of a template the profile does not support → `unresolved` (`TEMPLATE_UNSUPPORTED`);
-5. a URL or wrapper elsewhere → `identifier_link`;
+5. a URL or wrapper inside a reference container (note, list-defined note, generated note, bibliography entry) →
+   `identifier_link`; outside every reference container → `textual_mention` (RF-36);
 6. labelled text inside a reference container → `labeled_reference_text`;
 7. otherwise → `textual_mention`.
 
