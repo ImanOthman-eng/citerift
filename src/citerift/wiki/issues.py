@@ -102,6 +102,22 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
     "REF_IN_UNSUPPORTED_CONTEXT": ("warning", False, "a ref inside a construct the extractor does not support"),
     "GENERATED_REFERENCE_UNSUPPORTED": ("warning", False, "a template that generates references or uses"),
     "SUBREFERENCE_UNSUPPORTED": ("warning", False, "a subreference (details attribute) is not supported"),
+    "REUSE_ARGUMENT_REPLACED": (
+        "info",
+        False,
+        "a reuse template repeats an argument key; the earlier argument is not used and creates no use",
+    ),
+    "REUSE_NAME_NOT_USED": (
+        "warning",
+        False,
+        "a reuse-template argument that looks like a name is not read as one by the template; it creates no use",
+    ),
+    "REUSE_NAME_MISSING": ("warning", False, "a reuse template has no first name; the use it writes is recorded"),
+    "REUSE_CONTENT_UNSUPPORTED": (
+        "warning",
+        False,
+        "a reuse template adds note text or a subreference, which is not modelled; its uses are recorded",
+    ),
     "TEMPLATE_UNSUPPORTED": ("info", False, "a template with identifier parameters that is not in the map"),
     "IDENTIFIER_PARAMETER_OVERRIDDEN": (
         "warning",

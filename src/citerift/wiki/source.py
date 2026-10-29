@@ -109,8 +109,11 @@ class RefRecord:
     unsupported_context: str | None
     extra_attributes: tuple[str, ...]
     exact: bool = True
-    uses_names: tuple[str, ...] = ()  # for {{r}}: the names it uses
+    uses_names: tuple[str, ...] = ()  # for {{r}}: the names it uses, in order
+    uses_markup: tuple[bool, ...] = ()  # for {{r}}: whether each of those names holds markup (not bindable)
     sfn_key: str | None = None  # for a short footnote: the identity of the note its parameters generate
+    # Arguments the template call gives that do not become what they look like (issue code, detail).
+    dispositions: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass
@@ -122,6 +125,7 @@ class ParamRecord:
     end: int
     value_start: int
     value_end: int
+    node: Parameter | None = field(default=None, repr=False, compare=False)
 
 
 @dataclass
@@ -178,6 +182,37 @@ class SourceScan:
 
 
 _ATTR_WS = re.compile(r"[\t\r\n ]+")
+_POSITIVE_INT = re.compile(r"[1-9][0-9]*\Z")
+# Module:R (enwiki): the argument keys that name references, and those that put text into a note.
+_R_NAME_KEY = re.compile(r"(?:(?:name|n)?[0-9]+|name|n)\Z")
+_R_CONTENT_KEY = re.compile(
+    r"(?:reference|refn|r|annotation|annot|a)[1-9][0-9]*\Z"
+    r"|(?:references|reference|notes|note|content|text|refn|refs|r|annotation|annot|a)\Z"
+)
+
+
+def effective_arguments(params: list[ParamRecord]) -> tuple[dict[str, ParamRecord], list[ParamRecord]]:
+    """The arguments a template receives, as MediaWiki's preprocessor builds them (PPFrame): unnamed arguments are
+    numbered 1, 2, ... in order of appearance, counting unnamed ones only; a named argument's key is its trimmed
+    name, so ``1=`` and `` 1 =`` set position 1 (``01=`` does not: it is the named key "01"); when a key repeats,
+    the later argument replaces the earlier one. Returns the effective arguments by key, and the replaced ones."""
+    effective: dict[str, ParamRecord] = {}
+    replaced: list[ParamRecord] = []
+    position = 0
+    for p in params:
+        if p.showkey:
+            key = p.name
+        else:
+            position += 1
+            key = str(position)
+        if key in effective:
+            replaced.append(effective[key])
+        effective[key] = p
+    return effective, replaced
+
+
+def _numeric_order(key: str) -> tuple[int, int, str]:
+    return (0, int(key), "") if _POSITIVE_INT.match(key) else (1, 0, key)
 
 
 def _decode_attr(value: str) -> str:
@@ -361,7 +396,7 @@ class Scanner:
                 pos = v_end
                 continue
             pname = _plain(param.name)[0].strip() if param.showkey else name_raw.strip()
-            rec.params.append(ParamRecord(name_raw, pname, bool(param.showkey), p_start, v_end, v_start, v_end))
+            rec.params.append(ParamRecord(name_raw, pname, bool(param.showkey), p_start, v_end, v_start, v_end, param))
             pos = v_end
         if pos + 2 != end:
             self.scan.inexact.append((start, end, "Template"))
@@ -433,16 +468,7 @@ class Scanner:
         kind = rec.family or ""
         params = {p.name: (p, prm) for p, prm in zip(rec.params, node.params, strict=False)}
         if kind == "r":
-            # {{r|a|b}} uses the refs named a and b; named parameters (page numbers and the like) are not names.
-            names = tuple(
-                _plain(prm.value)[0].strip() for p, prm in zip(rec.params, node.params, strict=False) if not p.showkey
-            )
-            spec_r = self.wiki.generated_refs.get(rec.canonical or "")
-            group_r = next(
-                (_plain(params[g][1].value)[0].strip() for g in (spec_r.group_params if spec_r else ()) if g in params),
-                "",
-            )
-            self._add_ref(rec.start, rec.end, None, None, "r", None, None, group_r, ctx, (), uses_names=names)
+            self._reuse(rec, ctx)
             return
         if kind == "sfn":
             # {{sfn}} and relatives generate a short footnote from their parameters; the note text is not in the
@@ -450,15 +476,15 @@ class Scanner:
             # The key is the template and its parameters as written (named ones in name order, values with spaces
             # collapsed and trimmed), not the raw text: {{sfn}} and {{Sfn}} are one template, and "Smith J" and
             # "SmithJ" are different authors.
-            positional = [
-                _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip() for p in rec.params if not p.showkey
+            # The key is built from the arguments the template receives (effective_arguments): {{sfn|Smith|2001}}
+            # and {{sfn|1=Smith|2=2001}} are the same call to Module:Footnotes, and a repeated argument counts once,
+            # with its last value.
+            effective, _ = effective_arguments(rec.params)
+            args = [
+                [k, _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip()]
+                for k, p in sorted(effective.items(), key=lambda kv: _numeric_order(kv[0]))
             ]
-            named = sorted(
-                (p.name, _ATTR_WS.sub(" ", self.text[p.value_start : p.value_end]).strip())
-                for p in rec.params
-                if p.showkey
-            )
-            sfn_key = json.dumps([rec.canonical or rec.raw_name.strip(), positional, named], ensure_ascii=False)
+            sfn_key = json.dumps([rec.canonical or rec.raw_name.strip(), args], ensure_ascii=False)
             self._add_ref(
                 rec.start, rec.end, None, None, "sfn", None, None, None, ctx, (), body_has_text=True, sfn_key=sfn_key
             )
@@ -501,6 +527,111 @@ class Scanner:
                 sub.ref = ref_index
                 sub.list_zone = False
             self._code(prm.value, p.value_start, sub, depth + 1)
+
+    def _reuse(self, rec: TemplateRecord, ctx: Ctx) -> None:
+        """{{r}} (enwiki) and {{استشهاد متعدد}} (arwiki, also reached as قالب:R): uses of named references.
+
+        The names are read as each wiki's template reads its arguments (the revisions retained in
+        docs/verification/stage-03/review/failfirst/f1-f4/template-sources/):
+
+        - enwiki Template:R calls Module:R through Module:Arguments, which trims every value and drops blank ones.
+          The first name is the first non-blank of name1, name, n1, n, 1; name k (k >= 2) is the first non-blank of
+          namek, nk, k, and the names stop at the first k that has none. The group is the first of group, grp, g.
+          Content parameters (reference, annotation and their aliases) and style=sub add note text or a
+          subreference, which this extractor does not model.
+        - arwiki قالب:استشهاد متعدد passes {{{1}}} and then {{{2}}} ... {{{9}}} to قالب:استشهاد متعدد/ref, which
+          writes {{#tag:ref||name=...|group=...}}. Name k (k >= 2) is used only while names 2 ... k are all
+          non-blank (nested #if), and a non-blank 10th shows an error instead. An absent 1 is passed on as the text
+          "{{{1}}}". The group is group.
+
+        Every argument that looks like a name but is not used, and every replaced argument, is reported.
+        """
+        effective, replaced = effective_arguments(rec.params)
+
+        def text(p: ParamRecord) -> str:
+            return _plain(p.node.value)[0].strip() if p.node is not None else ""
+
+        def markup(p: ParamRecord) -> bool:
+            return p.node is not None and _has_markup(p.node.value)
+
+        def nonblank(*keys: str) -> ParamRecord | None:
+            return next((effective[k] for k in keys if k in effective and text(effective[k])), None)
+
+        names: list[str] = []
+        names_markup: list[bool] = []
+        used: list[ParamRecord] = []
+        dispositions: list[tuple[str, str]] = []
+
+        def where(p: ParamRecord) -> str:
+            return f"argument {p.name!r} at code points {p.start}-{p.end}"
+
+        for p in replaced:
+            dispositions.append(("REUSE_ARGUMENT_REPLACED", where(p) + "; a later argument with the same key is used"))
+        if self.wiki.wiki == "ar":
+            first = effective.get("1")
+            if first is None:
+                names.append("{{{1}}}")
+                names_markup.append(False)
+                dispositions.append(("REUSE_NAME_MISSING", "no argument 1; the template passes the text {{{1}}}"))
+            else:
+                names.append(text(first))
+                names_markup.append(markup(first))
+                used.append(first)
+            k = 2
+            while k <= 9 and (q := nonblank(str(k))) is not None:
+                names.append(text(q))
+                names_markup.append(markup(q))
+                used.append(q)
+                k += 1
+            name_keys = [key for key in effective if key.isascii() and key.isdigit()]
+            group_p = effective.get("group")
+        else:
+            first = nonblank("name1", "name", "n1", "n", "1")
+            if first is None:
+                names.append("")
+                names_markup.append(False)
+                dispositions.append(("REUSE_NAME_MISSING", 'no non-blank first name; the template writes name=""'))
+            else:
+                names.append(text(first))
+                names_markup.append(markup(first))
+                used.append(first)
+            k = 2
+            while (q := nonblank(f"name{k}", f"n{k}", str(k))) is not None:
+                names.append(text(q))
+                names_markup.append(markup(q))
+                used.append(q)
+                k += 1
+            name_keys = [key for key in effective if _R_NAME_KEY.match(key)]
+            group_p = nonblank("group", "grp", "g")
+            content = sorted(key for key in effective if _R_CONTENT_KEY.match(key) and text(effective[key]))
+            style = text(effective["style"]).casefold() if "style" in effective else ""
+            if style in ("sub", "subreference", "sub-reference"):
+                content.append("style=" + style)
+            if content:
+                dispositions.append(
+                    ("REUSE_CONTENT_UNSUPPORTED", "note text or subreference parameters: " + ",".join(content))
+                )
+        for key in name_keys:
+            p = effective[key]
+            if p not in used and text(p):
+                dispositions.append(("REUSE_NAME_NOT_USED", where(p) + "; the template does not read it as a name"))
+        group = text(group_p) if group_p is not None else ""
+        self._add_ref(
+            rec.start,
+            rec.end,
+            None,
+            None,
+            "r",
+            None,
+            None,
+            group,
+            ctx,
+            (),
+            name_problem="REF_NAME_HAS_MARKUP" if group_p is not None and markup(group_p) else None,
+            uses_names=tuple(names),
+            uses_markup=tuple(names_markup),
+            dispositions=tuple(dispositions),
+        )
 
     # Tags -------------------------------------------------------------------------------------------------
 
@@ -628,7 +759,9 @@ class Scanner:
         body_has_text: bool = False,
         group_raw: str | None = None,
         uses_names: tuple[str, ...] = (),
+        uses_markup: tuple[bool, ...] = (),
         sfn_key: str | None = None,
+        dispositions: tuple[tuple[str, str], ...] = (),
     ) -> int:
         if ctx.excluded:
             return -1
@@ -665,7 +798,9 @@ class Scanner:
                 ctx.unsupported,
                 extra,
                 uses_names=uses_names,
+                uses_markup=uses_markup,
                 sfn_key=sfn_key,
+                dispositions=dispositions,
             )
         )
         return index

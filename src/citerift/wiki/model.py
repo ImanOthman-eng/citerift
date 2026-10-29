@@ -252,9 +252,9 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
     by_id = {c.id: c for c in containers}
 
     # Uses ------------------------------------------------------------------------------------------------
-    def add_use(r: RefRecord, group: str, name: str | None, position: int = 0) -> None:
+    def add_use(r: RefRecord, group: str, name: str | None, position: int = 0, markup: bool = False) -> str:
         uid = f"us-{len(uses) + 1:05d}"
-        if r.name_problem is not None:
+        if r.name_problem is not None or markup:
             binding, container = "unbindable_name", None
             issues.append(Issue("REF_NAME_HAS_MARKUP", (uid,)))
         elif name is None:
@@ -292,6 +292,7 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             issues.append(Issue("REF_IN_UNSUPPORTED_CONTEXT", (uid,), r.unsupported_context))
         if r.extra_attributes and {"details", "extends"} & set(r.extra_attributes):
             issues.append(Issue("SUBREFERENCE_UNSUPPORTED", (uid,), ",".join(r.extra_attributes)))
+        return uid
 
     for r in scan.refs:
         if r.zone == "list_defined":
@@ -303,8 +304,11 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
                 )
             continue
         if r.origin == "r":
-            for i, n in enumerate(r.uses_names):
-                add_use(r, r.group, n or None, i)
+            markups = r.uses_markup or (False,) * len(r.uses_names)
+            ids = tuple(
+                add_use(r, r.group, n or None, i, m) for i, (n, m) in enumerate(zip(r.uses_names, markups, strict=True))
+            )
+            issues.extend(Issue(code, ids, detail) for code, detail in r.dispositions)
             continue
         add_use(r, r.group, r.name)
     for c in containers:
