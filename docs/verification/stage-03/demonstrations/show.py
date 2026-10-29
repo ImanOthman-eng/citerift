@@ -142,6 +142,42 @@ def captures(a: Path, b: Path) -> dict[str, Any]:
     return out
 
 
+BEFORE_KEYS = {
+    "F1-en-span": "F1 en span",
+    "F1-ar-comment": "F1 ar comment",
+    "F2-en-red-link-label": "F2 en red link label",
+    "F3-en-hidden-ancestor": "F3 en hidden ancestor",
+    "F3-ar-hidden-ancestor": "F3 ar hidden ancestor",
+    "F4-en-numbered-reuse": "F4 {{r|1=a}}",
+    "F4-ar-numbered-reuse": "F4 ar {{استشهاد متعدد|1=a}}",
+}
+
+
+def synthetic(directory: Path, before_path: Path) -> dict[str, Any]:
+    """SYNTHETIC F1-F4 cases: the reviewed head's output (F1-F4_before.json, 049c48c) beside this run's."""
+    before = json.loads(before_path.read_text(encoding="utf-8"))
+    out: dict[str, Any] = {"label": "SYNTHETIC inputs, not observed Wikipedia revisions"}
+    for ext in sorted(directory.glob("F*.extraction.json")):
+        name = ext.name.removesuffix(".extraction.json")
+        doc = load(str(ext))
+        after: dict[str, Any] = {"status": doc["status"]}
+        if doc["markers"] and doc["markers"][0]["region"] is not None:
+            m = doc["markers"][0]
+            after["state"] = m["state"]
+            after["evidence"] = [
+                {k: e.get(k) for k in ("kind", "part", "matched", "exclusion", "hidden_basis", "target") if e.get(k)}
+                for e in m["evidence"]
+            ]
+            after["hidden_elements"] = m["region"]["hidden_elements"]
+        else:
+            after["uses"] = [[u["origin"], u["name"], u["binding"]] for u in doc["uses"]]
+        out[name] = {
+            "before_at_049c48c": before.get(BEFORE_KEYS.get(name, ""), "control (no before case)"),
+            "after": after,
+        }
+    return out
+
+
 def main() -> int:
     cmd = sys.argv[1]
     if cmd == "marker":
@@ -154,6 +190,8 @@ def main() -> int:
         result = multiwork(load(sys.argv[2]))
     elif cmd == "captures":
         result = captures(Path(sys.argv[2]), Path(sys.argv[3]))
+    elif cmd == "synthetic":
+        result = synthetic(Path(sys.argv[2]), Path(sys.argv[3]))
     else:
         raise SystemExit(f"unknown command {cmd!r}")
     sys.stdout.write(json.dumps(result, ensure_ascii=False, indent=1) + "\n")

@@ -44,5 +44,16 @@ python3 "$here/show.py" multiwork "$out/en-1381772671.extraction.json" > "$out/d
 python3 "$here/show.py" captures "$obs/en-1372543632" "$here/bundles/en-1372543632-recapture-2026-10-29" > "$out/demo5_captures.json"
 python3 -c "import json,sys; a,b=(json.load(open(p)) for p in sys.argv[1:3]); print(json.dumps({'digest_2026_10_28': a['extraction_digest'], 'digest_2026_10_29': b['extraction_digest'], 'same_reference_facts': [a[k] == b[k] for k in ('containers','uses','units')], 'same_identifiers_except_render_hashes': [ {k: v for k, v in x.items() if k != 'render'} for x in a['identifiers']] == [ {k: v for k, v in x.items() if k != 'render'} for x in b['identifiers']]}, indent=1))" "$out/en-1372543632.extraction.json" "$out/en-1372543632-recapture-2026-10-29.extraction.json" > "$out/demo5_extractions.json"
 python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(json.dumps({'status': d['status'], 'components': d['components'], 'markers': sorted({m['state'] for m in d['markers']}), 'render_failure': [ {k: a.get(k) for k in ('operation','status','code','retry_after_s')} for a in json.load(open(sys.argv[2]))['attempts'] if a['operation']=='render']}, indent=1))" "$out/en-81119391-a1.extraction.json" "$cap/holdout/en-81119391-a1/capture.json" > "$out/demo5_source_only.json"
+# 6. SYNTHETIC: the F1-F4 repairs (review/failfirst/f1-f4), built offline and run through the same CLI
+run uv run python "$here/synthetic_f1_f4.py" "$out/synthetic"
+for b in "$out"/synthetic/F*; do
+  test -d "$b" || continue
+  n=$(basename "$b")
+  run uv run citerift-wiki verify --bundle "$b"; summary
+  run uv run citerift-wiki extract --bundle "$b" --out "$out/synthetic/$n.extraction.json"; summary
+  run uv run citerift-wiki verify --bundle "$b" --extraction "$out/synthetic/$n.extraction.json"; summary
+  run uv run citerift-wiki replay --bundle "$b" --extraction "$out/synthetic/$n.extraction.json"; summary
+done
+python3 "$here/show.py" synthetic "$out/synthetic" docs/verification/stage-03/review/failfirst/f1-f4/F1-F4_before.json > "$out/demo6_synthetic_f1_f4.json"
 rm -f "$out/last.stdout" "$out/last.stderr"
 echo done
