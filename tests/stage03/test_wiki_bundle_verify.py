@@ -393,8 +393,11 @@ def test_the_wall_deadline_kills_the_worker(tmp_path: Path) -> None:
 
 @pytest.mark.security
 def test_the_memory_limit_ends_in_a_stable_failure(tmp_path: Path) -> None:
+    # Use stronger allocation pressure: the former 3000-reference input sometimes
+    # reached the independent wall deadline on Python 3.12 instead of reporting
+    # memory exhaustion. Keep the exact memory-failure assertion and both limits.
     text = "".join(
-        f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(3000)
+        f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(20000)
     )
     b = bundle(tmp_path, text)
     doc = extract_bundle(b, ExtractConfig(worker_memory_mib=64))
