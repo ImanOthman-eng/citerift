@@ -611,6 +611,11 @@ def extract_bundle(
             return extract_document(bundle, config)
         except BundleError as exc:
             return failure_document(bundle.capture_sha256, config, exc.issue.code, exc.issue.detail)
+    return _run_worker(bundle, config)
+
+
+def _run_worker(bundle: Bundle, config: ExtractConfig, operation: str = "extract") -> dict[str, Any]:
+    """Run extraction or marker-witness reconstruction with the same offline process limits."""
     if not hasattr(os, "setsid"):
         return failure_document(bundle.capture_sha256, config, "PLATFORM_UNSUPPORTED", "POSIX process limits")
     src_root = str(Path(__file__).resolve().parents[2])
@@ -618,7 +623,7 @@ def extract_bundle(
         "import sys; sys.path.insert(0, sys.argv[1]); "
         "from citerift.wiki.worker import main; sys.exit(main(sys.argv[2:]))"
     )
-    cmd = [sys.executable, "-I", "-c", code, src_root, str(path), json.dumps(config.to_json())]
+    cmd = [sys.executable, "-I", "-c", code, src_root, str(bundle.path), json.dumps(config.to_json()), operation]
     proc = subprocess.Popen(  # noqa: S603 - fixed interpreter and arguments, no shell
         cmd,
         stdout=subprocess.PIPE,

@@ -31,7 +31,7 @@ from citerift.wiki.capture import (
     render_url,
     source_url,
 )
-from citerift.wiki.extract import ExtractConfig, extract_bundle, extractor_identity
+from citerift.wiki.extract import ExtractConfig, _run_worker, extract_bundle, extractor_identity
 from citerift.wiki.fetch import HOSTS
 from citerift.wiki.issues import CATALOG, Issue, sort_issues
 from citerift.wiki.markers import fold, marker_target, term_pattern
@@ -449,6 +449,8 @@ def verify_extraction(bundle: Bundle, doc: Any, artifacts: dict[str, bytes], rep
     _references(doc, report)
     _accounting(doc, report)
     _semantics(doc, report)
+    if doc["markers"]:
+        _bound_markers(bundle, doc, report)
     locators = list(_locators(doc))
     html = artifacts.get(expected["render_artifact"] or "")
     if not locators:
@@ -466,6 +468,80 @@ def verify_extraction(bundle: Bundle, doc: Any, artifacts: dict[str, bytes], rep
         ok = el is not None and reader.locator(el).to_json() == loc
         report.check("render locators", ok, "LOCATOR_MISMATCH", f"{where} {loc['path'][:120]}")
     _marker_evidence(doc, reader, report)
+
+
+def _reconstruct_markers(bundle: Bundle, config: ExtractConfig) -> dict[str, Any]:
+    """Worker-only marker witnesses from retained source and DOM, never document-supplied bindings.
+
+    This reconstructs source structure and reconciliation needed to authorize regions, then scans those regions
+    once using the deterministic marker rules. It does not assemble an extraction document or compare unrelated
+    identifier/unit/exception claims: replay remains the full re-derivation check.
+    """
+    from citerift.wiki.markers import observe  # noqa: PLC0415
+    from citerift.wiki.model import build  # noqa: PLC0415
+    from citerift.wiki.reconcile import reconcile  # noqa: PLC0415
+    from citerift.wiki.render import read_render  # noqa: PLC0415
+    from citerift.wiki.source import LimitExceeded, scan_source  # noqa: PLC0415
+
+    cap = bundle.capture
+    profile = load_profile()
+    wiki = profile.wikis[cap["page"]["wiki"]]
+    text = bundle.artifact(cap["source"]["artifact"], limit=MAX_SOURCE_BYTES).decode("utf-8")
+    try:
+        model = build(scan_source(text, wiki, profile, config.limits()), wiki, profile, ByteMap(text))
+    except (LimitExceeded, RecursionError) as exc:
+        return {"capture": {"capture_sha256": bundle.capture_sha256}, "status": "failed", "detail": str(exc)[:200]}
+    render = reader = rec = None
+    state = cap["render"]["state"]
+    if state == "captured":
+        try:
+            render, reader = read_render(
+                bundle.artifact(cap["render"]["artifact"], limit=MAX_RENDER_BYTES), config.max_render_elements
+            )
+        except (RenderLimitExceeded, ValueError, SyntaxError):
+            state = "failed"
+        else:
+            if render.revision_about not in (None, cap["page"]["revision_id"]):
+                render = reader = None
+                state = "rejected"
+            else:
+                rec = reconcile(model, render, wiki, profile, text)
+    return {
+        "capture": {"capture_sha256": bundle.capture_sha256},
+        "status": "complete",
+        "markers": [m.to_json() for m in observe(model, rec, render, reader, wiki, state)],
+    }
+
+
+def _bound_markers(bundle: Bundle, doc: dict[str, Any], report: _Report) -> None:
+    """Compare all marker occurrences, not existential substring membership in a supplied locator.
+
+    Exact lists retain multiplicity: a real warning cannot authenticate a second, excluded occurrence in the same
+    region. Region identity, common-ancestor locators (including multi-element output), context exclusions,
+    channels, hiding/link metadata, snippets and declared abstentions all come from retained bytes.
+    """
+    try:
+        config = ExtractConfig.from_json(doc["config"])
+    except (ValueError, TypeError) as exc:
+        report.check("marker configuration", False, "BUNDLE_SCHEMA_INVALID", str(exc)[:300])
+        return
+    reconstructed = _run_worker(bundle, config, "markers")
+    if not report.check(
+        "marker reconstruction completed",
+        reconstructed["status"] == "complete",
+        detail=str(reconstructed.get("issues") or reconstructed.get("detail") or "")[:300],
+    ):
+        return
+    expected = {m["container_id"]: m for m in reconstructed["markers"]}
+    report.check("marker containers from retained source", set(expected) == {m["container_id"] for m in doc["markers"]})
+    for marker in doc["markers"]:
+        witness = expected.get(marker["container_id"])
+        report.check(
+            "marker region follows retained binding",
+            witness is not None and marker["region"] == witness["region"],
+            detail=marker["container_id"],
+        )
+        report.check("marker context reproduces", marker == witness, detail=marker["container_id"])
 
 
 _LINK_PARTS = {"redlink": True, "hidden_redlink": True, "template_link": False, "hidden_template_link": False}

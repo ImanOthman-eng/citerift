@@ -59,7 +59,12 @@ def main(argv: list[str]) -> int:
     config = ExtractConfig.from_json(json.loads(config_json))
     try:
         bundle = open_bundle(bundle_path)  # type: ignore[arg-type]
-        doc = extract_document(bundle, config)
+        if len(argv) > 2 and argv[2] == "markers":
+            from citerift.wiki.verify import _reconstruct_markers  # noqa: PLC0415
+
+            doc = _reconstruct_markers(bundle, config)
+        else:
+            doc = extract_document(bundle, config)
     except BundleError as exc:
         doc = failure_document(None, config, exc.issue.code, exc.issue.detail)
     except MemoryError:

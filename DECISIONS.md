@@ -716,3 +716,18 @@ published; the additive amendment is dated and recorded before use. Network
 ceilings for the added campaign: 500 HTTP attempts and 300 MiB accepted
 bodies; export at most 1 GiB. The directive does not accept the stage,
 authorize Stage 04 or merging, or permit unlimited tuning cycles.
+
+## D-032 — Stage 03 executor handoff and verifier corrections
+- Status: accepted
+- Topic: stage-03-executor-handoff-verifier-corrections
+- Date: 2026-10-30
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-30_HANDOFF.md
+
+Owner-delivered authorization in the current ChatGPT/Codex conversation, retained by document reference because
+no platform message ID is exposed. Continue the existing branch and PR #5; correct V1/RF-56 and V2/RF-57 before
+freezing the final candidate, preserve D-031 and the one-campaign amendment, and complete verification/delivery.
+This is execution authority, not acceptance. The actual new assistant is ChatGPT/Codex; new attribution uses
+`Assisted-by: ChatGPT/Codex (AI coding agent)` rather than falsely naming Claude. Historical attribution stays.
+The owner retains acceptance and personal merge authority; no later stage or additional campaign is authorized.

@@ -1,0 +1,128 @@
+{
+  "manifest": {
+    "baseline": "d1b64499ab7b53d5e486f3cc6db6d86f51bf3399",
+    "head": "d1b64499ab7b53d5e486f3cc6db6d86f51bf3399",
+    "product_diff_sha256": "af936ed3467cdc3d0c7b53f791c564a9be1b711b330306f9fb39e37d52a325a7",
+    "files": {
+      "src/citerift/wiki/verify.py": "8241f032b0b2f3935ef9f95cde86c505f0b8e3219493eb5674c35a8eac8a106c",
+      "src/citerift/wiki/extract.py": "b1ce483a3954c21a0fd798c121676418356ffdb12ef17bd747b78c909608353e",
+      "src/citerift/wiki/worker.py": "dc981b77ed3dc2d87aa3ee674dfa597c70a8754dfd796550d7cc0081181a75db",
+      "tests/stage03/test_wiki_v1_v2.py": "b5af0871bfc9f2fe2157d4747333a2239d244572c6b0abbd9f86a8b39d343374"
+    }
+  },
+  "results": [
+    {
+      "case": "genuine-integer-control",
+      "verified": true
+    },
+    {
+      "case": "max_candidates-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_candidates=50000.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "max_depth-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_depth=60.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "max_nodes-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_nodes=400000.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "max_refs-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_refs=20000.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "max_render_elements-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_render_elements=2000000.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "max_templates-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value max_templates=50000.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "worker_memory_mib-integer-valued-float",
+      "schema_errors": [],
+      "verified": false,
+      "issues": [
+        {
+          "code": "BUNDLE_SCHEMA_INVALID",
+          "severity": "error",
+          "retryable": false,
+          "entities": [],
+          "detail": "marker configuration: configuration value worker_memory_mib=1024.0 is not allowed",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "case": "implementer-RF58-regression",
+      "passed": true
+    }
+  ]
+}

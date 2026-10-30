@@ -338,7 +338,21 @@ entities and the accounting checks.
 - kinds agree with parts;
 - the marker state follows from its evidence.
 
-Evidence that was left out cannot be seen from the document; `replay` re-derives every observation. `replay_bundle` checks the recorded
+**Additional verifier rules, 2026-10-30 (RF-56/V1, RF-57/V2):** for a document carrying markers, verification
+reconstructs the source model, structural source/render reconciliation, authorized regions and marker witnesses
+from retained bytes in an offline worker. It compares the complete marker records, including occurrence
+multiplicity, claimed region, context exclusions, channels, inherited hiding, link metadata, snippets and
+abstention reasons. A valid unrelated locator or an edited region field is not authorization. A word occurring
+in one context cannot authenticate a second, excluded occurrence. This checks marker completeness as well as
+positive witnesses; it uses the same deterministic marker rules as extraction, not an independent linguistic
+implementation. The existing local locator/text checks and their caches remain. The worker uses the recorded
+configuration's existing wall/CPU/address-space limits (defaults 30 seconds / 1024 MiB); reconstruction failure
+is verification failure, never success. Invalid recorded configuration produces a structured failure (RF-58).
+
+This changes verification behavior only. Extraction facts, schema and extractor/profile identity are unchanged;
+historical extraction digests are not rewritten. The checked code revision identifies these verifier rules.
+Verification does not fully re-derive every identifier, unit or exception claim. `replay` remains the complete
+extraction re-derivation and equality check. `replay_bundle` checks the recorded
 document's schema and own digest, refuses a pinned configuration or extractor identity (version, profile, parsers)
 that differs from the recorded one, re-extracts in the isolated worker and reports `reproduced` only when the new
 document equals the recorded one.
