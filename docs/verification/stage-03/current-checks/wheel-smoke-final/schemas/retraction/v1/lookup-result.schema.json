@@ -1,0 +1,515 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:lookup-result",
+  "title": "CITERIFT retraction lookup result, major version 1",
+  "description": "Output of lookup (SPECIFICATION.md 10.3). Lookup states are not epistemic statuses; the projection carries the v1 assertions.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "checked_sources",
+    "events",
+    "evidence_digest",
+    "identifier_role",
+    "identity",
+    "issues",
+    "lookup_state",
+    "notice_hit_count",
+    "notice_hits",
+    "page",
+    "policy_version",
+    "projection",
+    "query",
+    "schema_version",
+    "snapshot_id",
+    "total_event_count"
+  ],
+  "properties": {
+    "schema_version": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/schema_version"
+    },
+    "policy_version": {
+      "type": "string",
+      "pattern": "^citerift-rde-policy/[0-9]+\\.[0-9]+\\.[0-9]+$(?!\\n)"
+    },
+    "snapshot_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
+        }
+      ]
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "doi",
+        "pmid"
+      ],
+      "properties": {
+        "doi": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/normalization"
+            }
+          ]
+        },
+        "pmid": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/normalization"
+            }
+          ]
+        }
+      }
+    },
+    "lookup_state": {
+      "enum": [
+        "matched",
+        "notice_only",
+        "ambiguous_identity",
+        "no_record",
+        "unavailable",
+        "invalid_query"
+      ]
+    },
+    "identifier_role": {
+      "enum": [
+        "none",
+        "original",
+        "notice",
+        "original_and_notice"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anchor",
+        "candidate_groups",
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "none",
+            "exact",
+            "bridged",
+            "ambiguous"
+          ]
+        },
+        "anchor": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/anchor"
+            }
+          ]
+        },
+        "candidate_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "anchor",
+              "event_ids"
+            ],
+            "properties": {
+              "anchor": {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/anchor"
+              },
+              "event_ids": {
+                "type": "array",
+                "items": {
+                  "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/event_id"
+                },
+                "uniqueItems": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "total_event_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "anchor",
+          "event_id",
+          "event_type",
+          "flags",
+          "issues",
+          "journal",
+          "linked_via",
+          "matched_by",
+          "notice_date",
+          "notice_doi",
+          "notice_key",
+          "notice_pmid",
+          "original_doi",
+          "original_pmid",
+          "record_id",
+          "row_sha256",
+          "source_label",
+          "title"
+        ],
+        "properties": {
+          "event_id": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/event_id"
+          },
+          "event_type": {
+            "enum": [
+              "retracted",
+              "expression_of_concern",
+              "correction",
+              "reinstated"
+            ]
+          },
+          "source_label": {
+            "enum": [
+              "Retraction",
+              "Expression of concern",
+              "Correction",
+              "Reinstatement"
+            ]
+          },
+          "record_id": {
+            "type": "string"
+          },
+          "original_doi": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+              }
+            ]
+          },
+          "original_pmid": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+              }
+            ]
+          },
+          "notice_doi": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+              }
+            ]
+          },
+          "notice_pmid": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+              }
+            ]
+          },
+          "anchor": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/anchor"
+          },
+          "notice_key": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/notice_key"
+              }
+            ]
+          },
+          "notice_date": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/temporal_evidence"
+          },
+          "title": {
+            "type": "string"
+          },
+          "journal": {
+            "type": "string"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "NOTICE_DOI_EQUALS_ORIGINAL",
+                "NOTICE_PMID_EQUALS_ORIGINAL",
+                "ORIGINAL_ANCHOR_PMID_ONLY",
+                "ORIGINAL_ANCHOR_SOURCE_RECORD_ONLY",
+                "NO_NOTICE_IDENTIFIER",
+                "NOTICE_SHARED",
+                "NOTICE_ALSO_ORIGINAL_ELSEWHERE"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+            },
+            "uniqueItems": true
+          },
+          "row_sha256": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+          },
+          "matched_by": {
+            "enum": [
+              "doi",
+              "pmid",
+              "notice"
+            ]
+          },
+          "linked_via": {
+            "enum": [
+              null,
+              "pmid_cooccurrence",
+              "doi_cooccurrence",
+              "query_pair"
+            ]
+          }
+        }
+      },
+      "maxItems": 100
+    },
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cursor",
+        "next_cursor",
+        "size"
+      ],
+      "properties": {
+        "size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "next_cursor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "notice_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "event_type",
+          "notice_key",
+          "original_anchor",
+          "original_doi",
+          "original_pmid"
+        ],
+        "properties": {
+          "event_id": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/event_id"
+          },
+          "event_type": {
+            "enum": [
+              "retracted",
+              "expression_of_concern",
+              "correction",
+              "reinstated"
+            ]
+          },
+          "notice_key": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/notice_key"
+              }
+            ]
+          },
+          "original_anchor": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/anchor"
+          },
+          "original_doi": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+              }
+            ]
+          },
+          "original_pmid": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+              }
+            ]
+          }
+        }
+      },
+      "maxItems": 100
+    },
+    "checked_sources": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/source_ref"
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+          }
+        }
+      }
+    },
+    "projection": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/projection"
+        }
+      ]
+    },
+    "evidence_digest": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+    },
+    "notice_hit_count": {
+      "description": "Number of notice hits; at most 100 are listed in notice_hits (SPECIFICATION.md 16).",
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "lookup_state": {
+            "const": "invalid_query"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "projection": {
+            "type": "null"
+          },
+          "total_event_count": {
+            "const": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "projection": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/projection"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lookup_state": {
+            "enum": [
+              "ambiguous_identity",
+              "notice_only",
+              "unavailable"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "projection": {
+            "properties": {
+              "retraction_status": {
+                "properties": {
+                  "value": {
+                    "type": "null"
+                  }
+                }
+              },
+              "retraction_date": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "lookup_state": {
+            "const": "unavailable"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "projection": {
+            "properties": {
+              "retraction_status": {
+                "properties": {
+                  "status": {
+                    "const": "unavailable"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

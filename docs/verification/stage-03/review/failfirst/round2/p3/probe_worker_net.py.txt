@@ -1,0 +1,15 @@
+"""Is the worker's network ban complete? Uses an AF_UNIX socket in the scratch dir only (no network)."""
+import os, socket, _socket, tempfile
+from citerift.wiki.worker import forbid_network
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "u.sock")
+if os.path.exists(path): os.unlink(path)
+srv = socket.socket(socket.AF_UNIX); srv.bind(path); srv.listen(1)
+forbid_network()
+try:
+    socket.socket(socket.AF_UNIX).connect(path); print("socket.socket.connect: allowed")
+except PermissionError as e:
+    print("socket.socket.connect: blocked:", e)
+s = _socket.socket(socket.AF_UNIX)
+s.connect(path); print("_socket.socket.connect after forbid_network(): CONNECTED")
+print("socket.socket.sendto patched:", socket.socket.sendto is not _socket.socket.sendto, "| _socket.getaddrinfo patched:", _socket.getaddrinfo is socket.getaddrinfo)
+srv.close(); os.unlink(path)

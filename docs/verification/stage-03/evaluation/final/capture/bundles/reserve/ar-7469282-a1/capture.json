@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 18118,
+   "body_sha256": "8567b3545a82ac1d9cf86280150c23ffdf6942f6a68014b88e1ac62f48e5dae1",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.329,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:44:58.662177Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7469282",
+   "wire_bytes": 5838
+  },
+  {
+   "body_bytes": 74255,
+   "body_sha256": "7173777fcd39f2c4fbc8c862d0c2a90b30358e2f340ae215b831789e170d3b7d",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.93,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:45:08.992092Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/60806622/html",
+   "wire_bytes": 14785
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-31T12:45:09.923028Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7469282,
+  "parent_revision_id": 58716196,
+  "redirect_followed": null,
+  "revision_id": 60806622,
+  "revision_timestamp": "2023-01-28T23:22:03Z",
+  "sha1": "1c28f640103ab9967c39c8a57711fdcc91396ace",
+  "size": 17488,
+  "title": "رؤية قائمة على الموارد",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "7173777fcd39f2c4fbc8c862d0c2a90b30358e2f340ae215b831789e170d3b7d",
+  "bytes": 74255,
+  "checks": {
+   "document_revision_id": "60806622",
+   "header_revision_id": "60806622",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7469282",
+   "render_id": "e7d37a71-d528-11f1-bacd-150bcb3b955b",
+   "revision_sha1": "1c28f640103ab9967c39c8a57711fdcc91396ace",
+   "revision_sha1_base36": "3af2dwjczfhqbci42oa6sjaahjt4u6m"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "60806622",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Sat, 31 Oct 2026 12:45:09 GMT",
+   "etag": "W/\"60806622/e7d37a71-d528-11f1-bacd-150bcb3b955b/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:30:29 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/60806622/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7469282,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "115a78b96b380ffd24edb88b421a7d1fdc829e3fb00c7a1721ca35678fa7fc29",
+  "bytes": 17488,
+  "response_artifact": "8567b3545a82ac1d9cf86280150c23ffdf6942f6a68014b88e1ac62f48e5dae1",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7469282"
+ },
+ "started_at": "2026-10-31T12:44:48.982721Z",
+ "status": "complete"
+}

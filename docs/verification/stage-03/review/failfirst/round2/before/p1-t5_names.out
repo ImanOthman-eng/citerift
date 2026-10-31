@@ -1,0 +1,31 @@
+===== internal double space 'A<ref name="Smith  2001">{{cite journal|doi=10.1000/a}}</ref> B<ref name="Smith 2001"/>'
+status partial
+ C ct-00001 note 'Smith  2001' '' single_definition uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose 'Smith  2001' '' bound ct-00001
+ U us-00002 tag prose 'Smith 2001' '' definition_missing None
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE', 'REF_DEFINITION_MISSING']
+===== internal newline 'A<ref name="Smith\n2001">{{cite journal|doi=10.1000/a}}</ref> B<ref name="Smith 2001"/>'
+status partial
+ C ct-00001 note 'Smith\n2001' '' single_definition uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose 'Smith\n2001' '' bound ct-00001
+ U us-00002 tag prose 'Smith 2001' '' definition_missing None
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE', 'REF_DEFINITION_MISSING']
+===== trailing &nbsp; (MW: distinct names) 'A<ref name="x&nbsp;">{{cite journal|doi=10.1000/a}}</ref> B<ref name="x">{{cite journal|doi=10.1000/b}}</ref>'
+status partial
+ C ct-00001 note 'x' '' conflicting_definitions uses ['us-00001', 'us-00002'] units ['un-00001', 'un-00002']
+ U us-00001 tag prose 'x' '' bound_conflicting ct-00001
+ U us-00002 tag prose 'x' '' bound_conflicting ct-00001
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/b' -> 10.1000/b field ct-00001 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE', 'REF_DEFINITIONS_CONFLICT']
+===== unquoted self-close, single quotes, upper-case attr 'A<ref name=x/>B<ref name=x>{{cite journal|doi=10.1000/a}}</ref> C<ref name=\'x\' /> D<ref NAME="x"/>'
+status partial
+ C ct-00001 note 'x' '' single_definition uses ['us-00001', 'us-00002', 'us-00003', 'us-00004'] units ['un-00001']
+ U us-00001 tag prose 'x' '' bound ct-00001
+ U us-00002 tag prose 'x' '' bound ct-00001
+ U us-00003 tag prose 'x' '' bound ct-00001
+ U us-00004 tag prose 'x' '' bound ct-00001
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE']

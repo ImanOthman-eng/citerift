@@ -2618,22 +2618,78 @@
         "01"
       ],
       "verification_dir": "docs/verification/stage-03",
-      "owned_paths": [],
+      "owned_paths": [
+        "src/citerift/wiki",
+        "schemas/wiki",
+        "tests/stage03",
+        "simulations/stage03"
+      ],
       "required_test_suites": [
         "unit",
         "integration",
         "negative",
-        "regression"
+        "regression",
+        "reproducibility",
+        "security",
+        "contracts",
+        "simulation"
       ],
       "acceptance_gates": [
         {
           "id": "03-A",
           "requirement": "Extraction results match an independently inspected sample, with failures and unsupported cases documented"
+        },
+        {
+          "id": "03-B",
+          "requirement": "Receipts and integrity: every evaluated and demonstrated bundle verifies (citerift-wiki verify exit 0); no source/render join across differing revisions; every published hash, exact source anchor and DOM locator re-checks"
+        },
+        {
+          "id": "03-C",
+          "requirement": "Core bilingual extraction: every construct of the frozen arwiki/enwiki support matrix is tested in each language where it exists, and every discovered candidate has a disposition in the accounting of every evaluated extraction"
+        },
+        {
+          "id": "03-D",
+          "requirement": "Identifier semantics: Stage 02 DOI/PMID normalization reused through the adapter; no notice, marker or title identifier promoted to a cited-work role (holdout gate G3a and tests); co-reported identifiers never merged"
+        },
+        {
+          "id": "03-E",
+          "requirement": "Source/render/use ledger: reuse and multi-source accounting, explicit unresolved links and an exception ledger; the five required demonstrations with actual CLI commands and output"
+        },
+        {
+          "id": "03-F",
+          "requirement": "Scoped marker observations: source marker, rendered text, missing-template link and not-inspected states kept apart; no failure-to-absence path; zero fabricated negative markers on holdout and observed challenge (G7)"
+        },
+        {
+          "id": "03-G",
+          "requirement": "Independent evaluation under FROZEN_PROTOCOL.md: fresh article-grouped splits, annotations by a separate non-implementing evaluator locked before predictions, raw predictions and annotations published, gates G1-G6 and G8-G11 met per language with the minimum denominators"
+        },
+        {
+          "id": "03-H",
+          "requirement": "Resource and failure containment: worker wall and memory limits, size limits and the network policy enforced and tested; holdout costs within the frozen budgets"
+        },
+        {
+          "id": "03-I",
+          "requirement": "Reproducibility and packaging: offline replay reproduces every evaluated extraction digest; clean-clone and installed-wheel behavior for schema resources tested"
+        },
+        {
+          "id": "03-J",
+          "requirement": "Reviews: four review perspectives completed, findings dispositioned with fail-first evidence where feasible; no change to protected Stage 00/01/02 paths"
+        },
+        {
+          "id": "03-K",
+          "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "NOT_STARTED",
-      "authorization": null,
-      "implementation": null,
+      "status": "IMPLEMENTED_NOT_VERIFIED",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
+        "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+        "recorded_at": "2026-10-28T18:10:32Z"
+      },
+      "implementation": {
+        "revision": "48cfeab2c093ea0e853fe2ccb2cd1d5ff87a528b",
+        "recorded_at": "2026-10-31T12:51:07Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -3201,6 +3257,39 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner accepts Stage 02 (Retraction Data Engine) verified at cf06083, covering the reviewed implementation at PR #4 head f9592b1: the engine, Evidence Tension and the R-026, F1 and F3 corrections. D-026 approved; the evaluated local model is excluded from the default product with its negative evaluation preserved; R-029 and R-031 acknowledged as unresolved limitations (DECISIONS.md D-026, D-028). Stage 03 not authorized.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6"
+    },
+    {
+      "seq": 36,
+      "at": "2026-10-28T18:10:32Z",
+      "stage": "03",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS"
+    },
+    {
+      "seq": 37,
+      "at": "2026-10-28T18:10:34Z",
+      "stage": "03",
+      "from": "AUTHORIZED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 03 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS), retained at docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-28.md. Implementation base: main 94ac4f8df27383a03a810a4501ed1439bf8bcaea (equal to the confirmed baseline).",
+      "owner_ref": null
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-31T12:51:07Z",
+      "stage": "03",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage03 implemented at frozen48cfeab; complete clean regression reports and current PR checkpoint retained. Final campaign reveals unmet Arabic denominator; adjudication and remaining delivery are in progress. No verification or acceptance claimed.",
+      "owner_ref": null
     }
   ]
 }

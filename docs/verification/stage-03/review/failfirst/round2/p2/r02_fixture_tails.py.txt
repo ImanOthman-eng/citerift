@@ -1,0 +1,29 @@
+"""Count, in the REAL observed fixtures, cite_note items where non-whitespace text is the tail of a node that
+region_text skips (comment, link, style, meta, script, backlink, red link)."""
+import lxml.html, lxml.etree, re
+from pathlib import Path
+base = Path("/home/user/citerift/tests/stage03/fixtures/observed")
+html = {"ar": base/"ar-76190003/artifacts/d4338f34ccda938322132136c91c8992ad4631fb069897a36d46990d8a86119c",
+        "en": base/"en-1372543632/artifacts/4a12e078ec88d97a4b4673596fb139b12e4a79499a726c2a789f3e4c91597763"}
+SKIP = {"style","script","link","meta","noscript","template"}
+for w, p in html.items():
+    doc = lxml.html.document_fromstring(p.read_bytes(), parser=lxml.html.HTMLParser(encoding="utf-8", remove_comments=False))
+    lis = [li for li in doc.iter("li") if (li.get("id") or "").startswith("cite_note")]
+    kinds = {}
+    examples = []
+    for li in lis:
+        for n in li.iter():
+            t = (n.tail or "").strip()
+            if not t: continue
+            if not isinstance(n.tag, str): k = "comment"
+            elif n.tag in SKIP: k = n.tag + ":" + (n.get("rel") or n.get("typeof") or "")
+            elif "mw-cite-backlink" in (n.get("class") or ""): k = "backlink"
+            elif n.tag == "a" and "new" in (n.get("class") or "").split(): k = None  # handled
+            else: k = None
+            if k:
+                kinds[k] = kinds.get(k, 0) + 1
+                if len(examples) < 4: examples.append((li.get("id"), k, t[:60]))
+    links = sum(1 for li in lis for n in li.iter("link"))
+    comments = sum(1 for li in lis for n in li.iter() if n.tag is lxml.etree.Comment)
+    print(w, "notes", len(lis), "link-elements-in-notes", links, "comments-in-notes", comments, "dropped tails", kinds)
+    for e in examples: print("   ", e)

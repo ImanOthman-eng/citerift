@@ -1,0 +1,282 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1316994319,
+  "source_sha256": "ab9f435a5314fd1c4275bc9aff02f8e3fdb1b0da95441d0c66fc2cc7e28f9429",
+  "html_sha256": null,
+  "window": [
+   0,
+   5174
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:12:05Z",
+  "files_opened": [
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1316994319/source.wikitext",
+    "sha256": "ab9f435a5314fd1c4275bc9aff02f8e3fdb1b0da95441d0c66fc2cc7e28f9429"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1316994319/packet.json",
+    "sha256": "67514570cccbf4fd745b4afff1d2c491b4a1ee60b5e34e1083187f04156615ec"
+   },
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   }
+  ],
+  "tools": "bash (cat, sha256sum, grep), python3 -I with standard library (re, json, hashlib, str.find) to locate and verify quotes, lxml to list <sup typeof=mw:Extension/ref> markers with id/data-mw, <li id=cite_note-...> items, red links and retraction vocabulary in render.html; every label decided by hand.",
+  "unresolved": "render.html absent, so render_note_id/render_ref_id are null and markers are cannot_tell for all definitions."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 3924,
+    "quote": "<ref name=\"wsc\">{{cite web"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "wsc",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3940,
+      "quote": "{{cite web | url=https://wsc.nmbe.ch"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "cannot_tell",
+   "marker_text": null,
+   "notes": "No render.html in the packet (html_sha256 is null), so the rendered footnote cannot be inspected: render_note_id null, marker cannot_tell. The source of this definition contains no retraction/concern/correction vocabulary."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4107,
+    "quote": "<ref name=\"lessert1915\">{{cite journal"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "lessert1915",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4131,
+      "quote": "{{cite journal | last=Lessert"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "cannot_tell",
+   "marker_text": null,
+   "notes": "No render.html in the packet (html_sha256 is null), so the rendered footnote cannot be inspected: render_note_id null, marker cannot_tell. The source of this definition contains no retraction/concern/correction vocabulary."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4334,
+    "quote": "<ref name=\"lehtinen1967\">{{cite journal"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "lehtinen1967",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4359,
+      "quote": "{{cite journal | last=Lehtinen"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "cannot_tell",
+   "marker_text": null,
+   "notes": "No render.html in the packet (html_sha256 is null), so the rendered footnote cannot be inspected: render_note_id null, marker cannot_tell. The source of this definition contains no retraction/concern/correction vocabulary."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4620,
+    "quote": "<ref name=\"dippenaar2020\">{{cite book"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "dippenaar2020",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4646,
+      "quote": "{{cite book | last1=Dippenaar-Schoeman"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "cannot_tell",
+   "marker_text": null,
+   "notes": "No render.html in the packet (html_sha256 is null), so the rendered footnote cannot be inspected: render_note_id null, marker cannot_tell. The source of this definition contains no retraction/concern/correction vocabulary. Also contains {{Creative Commons text attribution notice|cc=by4}}, which is a licence notice, not a citation template, so it is not listed in templates."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 695,
+    "quote": "<ref name=\"wsc\" />"
+   },
+   "binds_to": {
+    "cp": 3924,
+    "quote": "<ref name=\"wsc\">{{cite web"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1055,
+    "quote": "<ref name=\"lehtinen1967\" />"
+   },
+   "binds_to": {
+    "cp": 4334,
+    "quote": "<ref name=\"lehtinen1967\">{{cite journal"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1182,
+    "quote": "<ref name=\"wsc\" />"
+   },
+   "binds_to": {
+    "cp": 3924,
+    "quote": "<ref name=\"wsc\">{{cite web"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1613,
+    "quote": "<ref name=\"dippenaar2020\" />"
+   },
+   "binds_to": {
+    "cp": 4620,
+    "quote": "<ref name=\"dippenaar2020\">{{cite book"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1941,
+    "quote": "<ref name=\"dippenaar2020\" />"
+   },
+   "binds_to": {
+    "cp": 4620,
+    "quote": "<ref name=\"dippenaar2020\">{{cite book"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2436,
+    "quote": "<ref name=\"lessert1915\" />"
+   },
+   "binds_to": {
+    "cp": 4107,
+    "quote": "<ref name=\"lessert1915\">{{cite journal"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2782,
+    "quote": "<ref name=\"lessert1915\" />"
+   },
+   "binds_to": {
+    "cp": 4107,
+    "quote": "<ref name=\"lessert1915\">{{cite journal"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 3040,
+    "quote": "<ref name=\"lessert1915\" />"
+   },
+   "binds_to": {
+    "cp": 4107,
+    "quote": "<ref name=\"lessert1915\">{{cite journal"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 3435,
+    "quote": "<ref name=\"lessert1915\" />"
+   },
+   "binds_to": {
+    "cp": 4107,
+    "quote": "<ref name=\"lessert1915\">{{cite journal"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 3861,
+    "quote": "<ref name=\"dippenaar2020\" />"
+   },
+   "binds_to": {
+    "cp": 4620,
+    "quote": "<ref name=\"dippenaar2020\">{{cite book"
+   },
+   "render_ref_id": null,
+   "notes": "No render.html in the packet; no marker id can be identified."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4923,
+    "quote": "10.5281/zenodo.5981186"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.5281/zenodo.5981186",
+   "notes": "doi= of {{cite book}} in list-defined ref dippenaar2020"
+  }
+ ],
+ "unresolved_notes": [
+  "Packet has no render.html (html_sha256 null); all render ids are null and all markers cannot_tell.",
+  "The four list-defined <ref> definitions inside {{Reflist|refs=...}} are listed as definitions only, not as uses (they produce no in-text marker).",
+  "'* {{inaturalist taxon}}' under External links is an external-link template, not a citation template and has no DOI/PMID; not labelled as a bibliography entry.",
+  "'Least Concern' in the Conservation status prose is a conservation category, not retraction/concern vocabulary about a cited work."
+ ]
+}

@@ -1,0 +1,618 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 74891699,
+  "source_sha256": "4874c6776e91156a657e3c39135f03818e825aaa366678fa2b3d987c6ec86ed5",
+  "html_sha256": "f68ddcbc435fc670f29396c1ccd784df171b1454a567f6179726ed5f7ca48fde",
+  "window": [
+   2802,
+   10802
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:46:14Z",
+  "files_opened": [
+   {
+    "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "ar-74891699/packet.json",
+    "sha256": "30ba2a2e83f1373be9ba3eb784b99091182693a1bb8defa7fdf01053528ba023"
+   },
+   {
+    "path": "ar-74891699/source.wikitext",
+    "sha256": "4874c6776e91156a657e3c39135f03818e825aaa366678fa2b3d987c6ec86ed5"
+   },
+   {
+    "path": "ar-74891699/render.html",
+    "sha256": "f68ddcbc435fc670f29396c1ccd784df171b1454a567f6179726ed5f7ca48fde"
+   }
+  ],
+  "tools": "cat/sha256sum; python3 -I with re (str/regex search for <ref, {{, 10., pmid, doi, list markers, comments) and lxml.html (listing sup[typeof~=mw:Extension/ref] ids and data-mw, li[id^=cite_note] text and red links); each label decided by reading the text; every location checked with text[cp:cp+len(quote)]==quote.",
+  "unresolved": "Nothing undecided for in-window items. The infobox (before the window) emits six Wikidata references (cite_note-wikidata-...-1..6) that have no source location; they are not listed. Ref antibioticssinusitis2 carries {{Retracted}} which is a red link on arwiki; labelled missing_template_link_only."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 3003,
+    "quote": "<ref name=AHFS>{{استشهاد بويب|عنوان=Amoxicill"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "AHFS",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3018,
+      "quote": "{{استشهاد بويب|عنوان=Amoxicillin|مسار=https:/"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-AHFS-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3667,
+    "quote": "<ref>{{استشهاد بويب|عنوان=CG64 Prophylaxis ag"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3672,
+      "quote": "{{استشهاد بويب|عنوان=CG64 Prophylaxis against"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4028,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير=Thornhill|"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4033,
+      "quote": "{{استشهاد بدورية محكمة|الأخير=Thornhill|الأول"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Rendered with a CS1 maintenance/error message (duplicate author parameters), not retraction wording."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4836,
+    "quote": "<ref name=\"AAAAIfive\">{{استشهاد بدورية محكمة|"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "AAAAIfive",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4858,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف1 = American Acade"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-AAAAIfive-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Red links in the rendered note are to an article (American Academy of Allergy, Asthma, and Immunology), not to a template; not a marker."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 5516,
+    "quote": "<ref name=\"antibioticssinusitis\">{{استشهاد بد"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "antibioticssinusitis",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5549,
+      "quote": "{{استشهاد بدورية محكمة "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-antibioticssinusitis-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Older (pub2) version of the Cochrane review cited again as antibioticssinusitis2 (pub3, which carries {{Retracted}}). This note itself shows no retraction wording; pmid= is empty."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 6052,
+    "quote": "<ref>{{استشهاد بويب | عنوان = Adolescent Acne"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6057,
+      "quote": "{{استشهاد بويب | عنوان = Adolescent Acne: Man"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 6308,
+    "quote": "<ref>{{استشهاد بويب|مسار=http://www.scienceof"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6313,
+      "quote": "{{استشهاد بويب|مسار=http://www.scienceofacne."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 7092,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير1=Venekamp|"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7097,
+      "quote": "{{استشهاد بدورية محكمة|الأخير1=Venekamp|عنوان"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 7742,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Thanav"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7747,
+      "quote": "{{استشهاد بدورية محكمة|عدة مؤلفين=Thanavirata"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 8530,
+    "quote": "<ref name=\"antibioticssinusitis2\">{{استشهاد ب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "antibioticssinusitis2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8564,
+      "quote": "{{استشهاد بدورية محكمة|الأخير1=Ahovuo-Saloran"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-antibioticssinusitis2-16",
+   "marker": "missing_template_link_only",
+   "marker_text": "قالب:Retracted",
+   "notes": "The ref also contains {{Retracted|doi=10.1002/14651858.cd000243.pub4}} (not a citation template, so not in templates). On arwiki the template does not exist: the rendered footnote shows only a red link a.new titled 'قالب:Retracted' (text 'قالب:Retracted'); the other extra text is a CS1 maintenance message."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 9473,
+    "quote": "<ref name=\"Davisamox\">{{استشهاد بويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Davisamox",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9495,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Davisamox-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 10150,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Chey W"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10155,
+      "quote": "{{استشهاد بدورية محكمة|عدة مؤلفين=Chey WD, Le"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 3003,
+    "quote": "<ref name=AHFS>{{استشهاد بويب|عنوان=Amoxicill"
+   },
+   "binds_to": {
+    "cp": 3003,
+    "quote": "<ref name=AHFS>{{استشهاد بويب|عنوان=Amoxicill"
+   },
+   "render_ref_id": "cite_ref-AHFS_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3667,
+    "quote": "<ref>{{استشهاد بويب|عنوان=CG64 Prophylaxis ag"
+   },
+   "binds_to": {
+    "cp": 3667,
+    "quote": "<ref>{{استشهاد بويب|عنوان=CG64 Prophylaxis ag"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 4028,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير=Thornhill|"
+   },
+   "binds_to": {
+    "cp": 4028,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير=Thornhill|"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 4836,
+    "quote": "<ref name=\"AAAAIfive\">{{استشهاد بدورية محكمة|"
+   },
+   "binds_to": {
+    "cp": 4836,
+    "quote": "<ref name=\"AAAAIfive\">{{استشهاد بدورية محكمة|"
+   },
+   "render_ref_id": "cite_ref-AAAAIfive_10-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 5516,
+    "quote": "<ref name=\"antibioticssinusitis\">{{استشهاد بد"
+   },
+   "binds_to": {
+    "cp": 5516,
+    "quote": "<ref name=\"antibioticssinusitis\">{{استشهاد بد"
+   },
+   "render_ref_id": "cite_ref-antibioticssinusitis_11-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 6052,
+    "quote": "<ref>{{استشهاد بويب | عنوان = Adolescent Acne"
+   },
+   "binds_to": {
+    "cp": 6052,
+    "quote": "<ref>{{استشهاد بويب | عنوان = Adolescent Acne"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 6308,
+    "quote": "<ref>{{استشهاد بويب|مسار=http://www.scienceof"
+   },
+   "binds_to": {
+    "cp": 6308,
+    "quote": "<ref>{{استشهاد بويب|مسار=http://www.scienceof"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 7092,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير1=Venekamp|"
+   },
+   "binds_to": {
+    "cp": 7092,
+    "quote": "<ref>{{استشهاد بدورية محكمة|الأخير1=Venekamp|"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 7742,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Thanav"
+   },
+   "binds_to": {
+    "cp": 7742,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Thanav"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 8530,
+    "quote": "<ref name=\"antibioticssinusitis2\">{{استشهاد ب"
+   },
+   "binds_to": {
+    "cp": 8530,
+    "quote": "<ref name=\"antibioticssinusitis2\">{{استشهاد ب"
+   },
+   "render_ref_id": "cite_ref-antibioticssinusitis2_16-0",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 9473,
+    "quote": "<ref name=\"Davisamox\">{{استشهاد بويب"
+   },
+   "binds_to": {
+    "cp": 9473,
+    "quote": "<ref name=\"Davisamox\">{{استشهاد بويب"
+   },
+   "render_ref_id": "cite_ref-Davisamox_17-0",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 10150,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Chey W"
+   },
+   "binds_to": {
+    "cp": 10150,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Chey W"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4386,
+    "quote": "21540258"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "21540258",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4399,
+    "quote": "10.1136/bmj.d2392"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1136/bmj.d2392",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5927,
+    "quote": "10.1002/14651858.CD000243.pub2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/14651858.cd000243.pub2",
+   "notes": "Value followed by a space and newline in the multi-line template; quote excludes the trailing space. The same template has an empty pmid= field (no identifier)."
+  },
+  {
+   "at": {
+    "cp": 7195,
+    "quote": "26099233"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "26099233",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 7208,
+    "quote": "10.1002/14651858.CD000219.pub4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/14651858.cd000219.pub4",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8042,
+    "quote": "24338106"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "24338106",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8055,
+    "quote": "10.1002/14651858.CD004975.pub3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/14651858.cd004975.pub3",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8708,
+    "quote": "10.1002/14651858.CD000243.pub3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/14651858.cd000243.pub3",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8986,
+    "quote": "24515610"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "24515610",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 9013,
+    "quote": "10.1002/14651858.cd000243.pub4"
+   },
+   "scheme": "doi",
+   "role": "marker_target",
+   "key": "10.1002/14651858.cd000243.pub4",
+   "notes": "doi= of {{Retracted|doi=...}} following the citation in ref antibioticssinusitis2; template is a red link on arwiki."
+  },
+  {
+   "at": {
+    "cp": 10391,
+    "quote": "28071659"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "28071659",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 10404,
+    "quote": "10.1038/ajg.2016.563"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/ajg.2016.563",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "{{صندوق معلومات دواء}} (before the window) renders six Wikidata-generated footnotes (cite_note-wikidata-8a4f0388...-1, -e1e04f16...-2, -3b681bf9...-3, -ce0c74cc...-4 used twice, -d87a9cd4...-5, -de73aa6f...-6); not in source, not listed.",
+  "Ref antibioticssinusitis (cp 5516) has an empty pmid= field; no identifier occurrence recorded for it.",
+  "The '*' lines under 'التاثر وتفاعل الأدوية' lie after the window and are plain drug names, not bibliography entries."
+ ],
+ "adjudication": {
+  "adjudicator": "stage03-adjudicator-ar",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-ar/decisions/ar-74891699.json",
+  "changed_items": []
+ }
+}

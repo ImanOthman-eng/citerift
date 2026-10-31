@@ -1,0 +1,10 @@
+import sys, time; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+import citerift.wiki.markers as M
+M._exclusion = lambda *a, **k: None   # only to produce the document quickly; verify does not call it
+N = int(sys.argv[1])
+inner = "<span>" + "lorem ipsum " * 40000 + "</span>" + "Retracted " * N
+b = bundle(tmpdir(), EN_TEXT, note_body(inner))
+doc = extract(b)
+t = time.time(); r = verify_bundle(b, doc); t2 = time.time()
+print(N, "evidence", len(doc["markers"][0]["evidence"]), "verified", r["verified"], f"verify {t2-t:.1f}s")

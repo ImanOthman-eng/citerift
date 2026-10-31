@@ -1,0 +1,27 @@
+[
+ {
+  "config": "{\"worker_wall_s\": -1}",
+  "exit": 3,
+  "stderr": "configuration <tmp>/c0.json: configuration value worker_wall_s=-1 is not allowed"
+ },
+ {
+  "config": "{\"worker_memory_mib\": true}",
+  "exit": 3,
+  "stderr": "configuration <tmp>/c1.json: configuration value worker_memory_mib=True is not allowed"
+ },
+ {
+  "config": "{\"max_nodes\": \"400000\"}",
+  "exit": 3,
+  "stderr": "configuration <tmp>/c2.json: configuration value max_nodes='400000' is not allowed"
+ },
+ {
+  "config": "{\"max_depth\": 0}",
+  "exit": 3,
+  "stderr": "configuration <tmp>/c3.json: configuration value max_depth=0 is not allowed"
+ },
+ {
+  "config": "{\"worker_wall_s\": NaN}",
+  "exit": 3,
+  "stderr": "configuration <tmp>/c4.json: non-finite number NaN is not allowed"
+ }
+]

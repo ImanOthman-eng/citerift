@@ -1,0 +1,215 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76597703,
+  "source_sha256": "9cf0960ad8277734bd4d6d4e78a6ec2cabe766eeffc16454abea2fe9a2ce5f05",
+  "html_sha256": "04f097cf0c6dfa5cec9d154e5bad4b3bc17e0830838976f38f0a72a9b5be5302",
+  "window": [
+   0,
+   3716
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:47:32Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-76597703/packet.json",
+    "sha256": "6b34073f37fb29761e24f79d2faca099a8af548e92a2b61e2967eab441d9de17"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-76597703/source.wikitext",
+    "sha256": "9cf0960ad8277734bd4d6d4e78a6ec2cabe766eeffc16454abea2fe9a2ce5f05"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-76597703/render.html",
+    "sha256": "04f097cf0c6dfa5cec9d154e5bad4b3bc17e0830838976f38f0a72a9b5be5302"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str.find/re.finditer to locate '<ref', '{{', '10.', 'pmid', 'doi' etc.; lxml.html to list <sup typeof=mw:Extension/ref> (id, data-mw attrs/body) and <li id=cite_note-*> text; every location checked with text[cp:cp+len(quote)]==quote",
+  "unresolved": "Role of the DOI inside the iopscience.iop.org /article/ URL (cp 3073): labelled identifier_link with the DOI text as raw text, because the guide's URL raw-text rule names only publisher URLs with a '/doi/' path segment. '10.2' at cp 1797 is prose (an angle), not a DOI."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 333,
+    "quote": "<ref>{{استشهاد ويب| مسار"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 338,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 701,
+    "quote": "<ref name=\"jpl\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "jpl",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 717,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-jpl-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2578,
+    "quote": "<ref name=\"AAS-MB-2011\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "AAS-MB-2011",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2602,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-AAS-MB-2011-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 333,
+    "quote": "<ref>{{استشهاد ويب| مسار"
+   },
+   "binds_to": {
+    "cp": 333,
+    "quote": "<ref>{{استشهاد ويب| مسار"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 701,
+    "quote": "<ref name=\"jpl\">"
+   },
+   "binds_to": {
+    "cp": 701,
+    "quote": "<ref name=\"jpl\">"
+   },
+   "render_ref_id": "cite_ref-jpl_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1557,
+    "quote": "<ref name=\"jpl\"/>"
+   },
+   "binds_to": {
+    "cp": 701,
+    "quote": "<ref name=\"jpl\">"
+   },
+   "render_ref_id": "cite_ref-jpl_3-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2127,
+    "quote": "<ref name=\"jpl\"/>"
+   },
+   "binds_to": {
+    "cp": 701,
+    "quote": "<ref name=\"jpl\">"
+   },
+   "render_ref_id": "cite_ref-jpl_3-2",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2578,
+    "quote": "<ref name=\"AAS-MB-2011\">"
+   },
+   "binds_to": {
+    "cp": 2578,
+    "quote": "<ref name=\"AAS-MB-2011\">"
+   },
+   "render_ref_id": "cite_ref-AAS-MB-2011_4-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3073,
+    "quote": "10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Inside مسار= (url) of d3: publisher URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 whose path contains the DOI but not a '/doi/' segment, so the identifier text is quoted rather than the whole URL; read as a publisher link pointing at the cited work's DOI."
+  },
+  {
+   "at": {
+    "cp": 3221,
+    "quote": "10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Inside an archive.org snapshot URL (مسار أرشيف=) of d3, i.e. another site's URL."
+  },
+  {
+   "at": {
+    "cp": 3281,
+    "quote": "10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "DOI= field of d3."
+  }
+ ],
+ "unresolved_notes": [
+  "The infobox {{معلومات كوكب}} (cp 0) emits one Wikidata-generated reference cite_note-wikidata-c24f428d…-1 with ten markers (cite_ref-wikidata-c24f428d…_1-0 … _1-9); it has no source location and is not listed (guide 3.3).",
+  "'* {{JPL small body}}' (cp 3407) in the external-links section is an external-link template, not a citation template, and has no DOI/PMID; not listed as a bibliography entry."
+ ]
+}

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 48436,
+   "body_sha256": "3ddcf397654ea0e5cb672cafd25997df97b3368d7019cbfc3302e57e29a39d70",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.747,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T06:09:33.145385Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=20294",
+   "wire_bytes": 15408
+  },
+  {
+   "body_bytes": 515444,
+   "body_sha256": "8129d369c75e87d87f0269286363c8476dae85ef419fed9d4464bc2602d1fd63",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.751,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T06:09:43.892289Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76081711/html",
+   "wire_bytes": 70819
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-31T06:09:44.646547Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 20294,
+  "parent_revision_id": 74120787,
+  "redirect_followed": null,
+  "revision_id": 76081711,
+  "revision_timestamp": "2026-08-03T18:43:32Z",
+  "sha1": "c20a22947b6d414ef026b8ee84ced6653c810f1a",
+  "size": 47670,
+  "title": "ماري أنطوانيت",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "8129d369c75e87d87f0269286363c8476dae85ef419fed9d4464bc2602d1fd63",
+  "bytes": 515444,
+  "checks": {
+   "document_revision_id": "76081711",
+   "header_revision_id": "76081711",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "20294",
+   "render_id": "2fcc9fbb-d444-11f1-9a1b-a775ed05c3bc",
+   "revision_sha1": "c20a22947b6d414ef026b8ee84ced6653c810f1a",
+   "revision_sha1_base36": "mnz4d5m5708xgz4kkrnya7fgbszoh0a"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76081711",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Sat, 31 Oct 2026 06:09:44 GMT",
+   "etag": "W/\"76081711/2fcc9fbb-d444-11f1-9a1b-a775ed05c3bc/view\"",
+   "last-modified": "Thu, 29 Oct 2026 22:20:56 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76081711/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 20294,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "47f07d8dcc928c2118ca7387c7f740bd868c963f3e4346e1d108e4e71c272dd2",
+  "bytes": 47670,
+  "response_artifact": "3ddcf397654ea0e5cb672cafd25997df97b3368d7019cbfc3302e57e29a39d70",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=20294"
+ },
+ "started_at": "2026-10-31T06:09:33.142356Z",
+ "status": "complete"
+}

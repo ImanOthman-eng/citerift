@@ -1,0 +1,655 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1366809278,
+  "source_sha256": "4e0b1d1ccf96a4149ac6ed5bf6cdbe0f0f6ed0d962428deec7c125d144da5666",
+  "html_sha256": "f8668d7b7429d631d96998edbf42d654261572ac13597ec3bba701e6f44ce75f",
+  "window": [
+   3970,
+   11970
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:46:10Z",
+  "files_opened": [
+   {
+    "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "packets/en-c/en-1366809278/packet.json",
+    "sha256": "289c6d49c27353e58c7f1a32990c0b4853341c69e3f028722b59fb63ceb9384c"
+   },
+   {
+    "path": "packets/en-c/en-1366809278/source.wikitext",
+    "sha256": "4e0b1d1ccf96a4149ac6ed5bf6cdbe0f0f6ed0d962428deec7c125d144da5666"
+   },
+   {
+    "path": "packets/en-c/en-1366809278/render.html",
+    "sha256": "f8668d7b7429d631d96998edbf42d654261572ac13597ec3bba701e6f44ce75f"
+   }
+  ],
+  "tools": "bash (cat, grep, sha256sum); python3 -I with standard library (re, json, hashlib) for regex search of <ref, '{{', '10.', pmid/doi/pubmed/pmc and for verifying text[cp:cp+len(quote)]==quote; a small regex locates the value after each doi=/pmid= field whose result I checked by eye; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw and <li id=cite_note-...> text and links. All labels decided by reading the text. Process deviation: early on I saved one helper listing script (html.py) under the scratchpad folder 'evaltools/' outside the annotation directory; it vanished from disk shortly after and I then ran all snippets inline via stdin. No repository file was written or read beyond the guide.",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 4328,
+    "quote": "<ref>{{Cite journal | last1 = Wakefield | first1 = A. J"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4333,
+      "quote": "{{Cite journal | last1 = Wakef"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "warning",
+   "marker_text": "(Retracted, see doi:10.1016/S0140-6736(10)60175-4, PMID 20137807, Retraction Watch)",
+   "notes": "Contains {{Retracted|doi=...|pmid=...|intentional=yes}} after the Cite journal (retraction-marker template, not a citation template). Rendered footnote ends with the retraction notice line; the cited work's title also begins 'RETRACTED:'."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 5572,
+    "quote": "<ref>{{Cite journal | last1 = Knivsberg | first1 = A. M"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5577,
+      "quote": "{{Cite journal | last1 = Knivs"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 6095,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1159/000119167 \n| last1"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6100,
+      "quote": "{{Cite journal \n| doi = 10.115"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 6780,
+    "quote": "<ref>{{Cite journal | last1 = Sahley | first1 = T. L. |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6785,
+      "quote": "{{Cite journal | last1 = Sahle"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 7131,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1016/0165-1781(95)02601"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7136,
+      "quote": "{{Cite journal \n| doi = 10.101"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 8205,
+    "quote": "<ref>{{cite web |url=http://www.macalester.edu/psycholo"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8210,
+      "quote": "{{cite web |url=http://www.mac"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 8695,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1111/j.1469-8749.1995.t"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8700,
+      "quote": "{{Cite journal \n| doi = 10.111"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 9262,
+    "quote": "<ref>{{Cite journal | last1 = Hunter | first1 = L. C. |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9267,
+      "quote": "{{Cite journal | last1 = Hunte"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 9722,
+    "quote": "<ref>{{Cite journal \n| last1 = Cass | first1 = H. \n| la"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9727,
+      "quote": "{{Cite journal \n| last1 = Cass"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 10340,
+    "quote": "<ref>{{cite journal|last1=Mulloy|first1=Austin|last2=La"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10345,
+      "quote": "{{cite journal|last1=Mulloy|fi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 11273,
+    "quote": "<ref>{{Cite journal\n | pmid = 24589346\n| year = 2014\n| "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11278,
+      "quote": "{{Cite journal\n | pmid = 24589"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 4328,
+    "quote": "<ref>{{Cite journal | last1 = Wakefield | first1 = A. J"
+   },
+   "binds_to": {
+    "cp": 4328,
+    "quote": "<ref>{{Cite journal | last1 = Wakefield | first1 = A. J"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 6th ref marker)."
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 5572,
+    "quote": "<ref>{{Cite journal | last1 = Knivsberg | first1 = A. M"
+   },
+   "binds_to": {
+    "cp": 5572,
+    "quote": "<ref>{{Cite journal | last1 = Knivsberg | first1 = A. M"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 7th ref marker)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 6095,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1159/000119167 \n| last1"
+   },
+   "binds_to": {
+    "cp": 6095,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1159/000119167 \n| last1"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 8th ref marker)."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 6780,
+    "quote": "<ref>{{Cite journal | last1 = Sahley | first1 = T. L. |"
+   },
+   "binds_to": {
+    "cp": 6780,
+    "quote": "<ref>{{Cite journal | last1 = Sahley | first1 = T. L. |"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 9th ref marker)."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 7131,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1016/0165-1781(95)02601"
+   },
+   "binds_to": {
+    "cp": 7131,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1016/0165-1781(95)02601"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 10th ref marker)."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 8205,
+    "quote": "<ref>{{cite web |url=http://www.macalester.edu/psycholo"
+   },
+   "binds_to": {
+    "cp": 8205,
+    "quote": "<ref>{{cite web |url=http://www.macalester.edu/psycholo"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 11th ref marker)."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 8695,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1111/j.1469-8749.1995.t"
+   },
+   "binds_to": {
+    "cp": 8695,
+    "quote": "<ref>{{Cite journal \n| doi = 10.1111/j.1469-8749.1995.t"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 12th ref marker)."
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 9262,
+    "quote": "<ref>{{Cite journal | last1 = Hunter | first1 = L. C. |"
+   },
+   "binds_to": {
+    "cp": 9262,
+    "quote": "<ref>{{Cite journal | last1 = Hunter | first1 = L. C. |"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 13th ref marker)."
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 9722,
+    "quote": "<ref>{{Cite journal \n| last1 = Cass | first1 = H. \n| la"
+   },
+   "binds_to": {
+    "cp": 9722,
+    "quote": "<ref>{{Cite journal \n| last1 = Cass | first1 = H. \n| la"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 14th ref marker)."
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 10340,
+    "quote": "<ref>{{cite journal|last1=Mulloy|first1=Austin|last2=La"
+   },
+   "binds_to": {
+    "cp": 10340,
+    "quote": "<ref>{{cite journal|last1=Mulloy|first1=Austin|last2=La"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 15th ref marker)."
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 11273,
+    "quote": "<ref>{{Cite journal\n | pmid = 24589346\n| year = 2014\n| "
+   },
+   "binds_to": {
+    "cp": 11273,
+    "quote": "<ref>{{Cite journal\n | pmid = 24589346\n| year = 2014\n| "
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": "Unnamed ref; aligned by source order (5 unnamed refs precede the window, so this is the 16th ref marker)."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4659,
+    "quote": "10.1016/S0140-6736(97)11096-0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0140-6736(97)11096-0",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 5059,
+    "quote": "9500320"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9500320",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 5101,
+    "quote": "10.1016/S0140-6736(10)60175-4"
+   },
+   "scheme": "doi",
+   "role": "marker_target",
+   "key": "10.1016/s0140-6736(10)60175-4",
+   "notes": "doi= of {{Retracted}} (retraction notice identifier)"
+  },
+  {
+   "at": {
+    "cp": 5136,
+    "quote": "20137807"
+   },
+   "scheme": "pmid",
+   "role": "marker_target",
+   "key": "20137807",
+   "notes": "pmid= of {{Retracted}} (retraction notice identifier)"
+  },
+  {
+   "at": {
+    "cp": 5792,
+    "quote": "10.1080/0031383950390304"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/0031383950390304",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 6124,
+    "quote": "10.1159/000119167"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1159/000119167",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 6579,
+    "quote": "7708177"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "7708177",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 6875,
+    "quote": "10.1007/BF01495056"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/bf01495056",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 7097,
+    "quote": "3038836"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "3038836",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 7160,
+    "quote": "10.1016/0165-1781(95)02601-R"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0165-1781(95)02601-r",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 7811,
+    "quote": "8570775"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "8570775",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 8724,
+    "quote": "10.1111/j.1469-8749.1995.tb11998.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1469-8749.1995.tb11998.x",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 9050,
+    "quote": "7890130"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "7890130",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 9517,
+    "quote": "10.1111/j.1469-8749.2003.tb00915.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1469-8749.2003.tb00915.x",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 9671,
+    "quote": "12578238"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12578238",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 9979,
+    "quote": "10.1136/adc.2006.114389"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1136/adc.2006.114389",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 10191,
+    "quote": "18337276"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "18337276",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 10726,
+    "quote": "10.1016/j.rasd.2009.10.008"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.rasd.2009.10.008",
+   "notes": "doi= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 11303,
+    "quote": "24589346"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "24589346",
+   "notes": "pmid= field of the citation template"
+  },
+  {
+   "at": {
+    "cp": 11684,
+    "quote": "10.1111/jir.12122"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/jir.12122",
+   "notes": "doi= field of the citation template"
+  }
+ ],
+ "unresolved_notes": [
+  "Window starts at cp 3970 mid-sentence; the five unnamed refs before the window (cite_note-1..5) are not listed because none of them has a use, template or identifier inside the window.",
+  "{{Retracted}} in d1 also has two unnamed parameters with retractionwatch.com URLs; they contain no DOI/PMID."
+ ]
+}

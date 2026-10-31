@@ -1,0 +1,40 @@
+{
+ "status": "partial",
+ "components": {
+  "markers": {
+   "state": "not_run"
+  },
+  "reconciliation": {
+   "state": "not_run"
+  },
+  "render": {
+   "state": "failed"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "markers": [
+  "unavailable"
+ ],
+ "render_failure": [
+  {
+   "operation": "render",
+   "status": 429,
+   "code": "HTTP_RATE_LIMITED",
+   "retry_after_s": 1.0
+  },
+  {
+   "operation": "render",
+   "status": 429,
+   "code": "HTTP_RATE_LIMITED",
+   "retry_after_s": 39.0
+  },
+  {
+   "operation": "render",
+   "status": 429,
+   "code": "HTTP_RATE_LIMITED",
+   "retry_after_s": 1.0
+  }
+ ]
+}

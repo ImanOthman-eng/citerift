@@ -1,0 +1,57 @@
+{
+  "article": "en-1372414197",
+  "adjudicator": "stage03-adjudicator-en",
+  "started_at": "2026-10-29T09:20:00Z",
+  "finished_at": "2026-10-29T09:25:20Z",
+  "decisions": [
+    {
+      "item": 1,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "{{Who's Who}} at cp 6328 (d2) formats a citation to the Who's Who entry; Parsoid renders it as <cite class=\"citation encyclopaedia cs1\"> ('[Anon.] (2024). \"Jowell, Sir Jeffrey (Lionel)\". Who's Who (December 2024 online ed.). A & C Black. doi:...'). Its purpose is to format a citation, so it is a citation template under 3.1.",
+      "corrected_label": null
+    },
+    {
+      "item": 2,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "Same as item 1 for the identical {{Who's Who}} call at cp 6865 in d3: a template whose purpose and rendered output is a CS1 citation, so it belongs in templates.",
+      "corrected_label": null
+    },
+    {
+      "item": 3,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "d2's content is only the {{Who's Who}} citation template (item 1); there is no plain-text citation, so unstructured=false is right.",
+      "corrected_label": null
+    },
+    {
+      "item": 4,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "d3's content is only the {{Who's Who}} citation template (item 2); there is no plain-text citation, so unstructured=false is right.",
+      "corrected_label": null
+    },
+    {
+      "item": 5,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "d13 at cp 12905 is '<ref>Originally: ‘Judicial Review of Administrative Action’.</ref>', attached to the book title ''de Smith’s Judicial Review'' in prose. unstructured is for a definition that 'cites something in plain text ... (bare URL, hand-written reference)'. This note does not cite a source: there is no author, publisher, year or locator, and it states a fact (the book's former title) as an explanatory gloss; the following note (d14, '2018, Thomson Reuters.') is the one that gives publication details. Ambiguity: it names a work, so it could be read as a minimal reference. The guide's wording ('cites', 'reference') fits a gloss less well than a citation, so the locked false stands.",
+      "corrected_label": null
+    },
+    {
+      "item": 6,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "reason": "10.1093/ww/9780199540884.013.U22537 at cp 6434 is the value of doi= of {{Who's Who}}, a citation template (item 1), so primary_citation_field applies; 'unresolved' is only for templates that are not citation templates. Raw text is the value 'without surrounding spaces', so cp 6434 (not 6433 with the leading space) and the unpadded quote are correct.",
+      "corrected_label": null
+    },
+    {
+      "item": 7,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "reason": "Same as item 6 for the doi= of {{Who's Who}} in d3 at cp 6971: primary_citation_field, raw text without the surrounding spaces.",
+      "corrected_label": null
+    }
+  ]
+}

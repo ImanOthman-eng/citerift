@@ -1,0 +1,6 @@
+import lxml.html
+for n in (255, 256, 257, 300):
+    p = lxml.html.HTMLParser(encoding="utf-8", remove_comments=False, no_network=True, huge_tree=False)
+    data = ("<html><body>" + "<div>" * n + '<p id="deep">X</p>' + "</div>" * n + '<p id="after">Y</p></body></html>').encode()
+    doc = lxml.html.document_fromstring(data, parser=p)
+    print(n, "deep found:", bool(doc.xpath('//*[@id="deep"]')), "| after found:", bool(doc.xpath('//*[@id="after"]')), "| parser errors:", [str(e)[:70] for e in p.error_log][:1])

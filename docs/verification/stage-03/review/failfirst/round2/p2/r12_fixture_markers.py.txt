@@ -1,0 +1,11 @@
+"""REAL fixtures: marker states and evidence, and what text each region drops after skipped nodes."""
+import sys, json
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from pathlib import Path
+from wiki_support import extract
+base = Path("/home/user/citerift/tests/stage03/fixtures/observed")
+for name in ("ar-76190003", "en-1372543632"):
+    d = extract(base / name)
+    for m in d["markers"]:
+        if m["state"] != "no_recognized_warning_in_inspected_region":
+            print(name, m["container_id"], m["state"], [(e["kind"], e.get("part"), e["matched"]) for e in m["evidence"]][:4])

@@ -1,0 +1,676 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1380422581,
+    "source_sha256": "c53fe9a70f8b0ff835ac699b5f054a59dc04a7cf21672f3677fb8a0416e4594a",
+    "html_sha256": "08a76271eb74efc2ffd789f4deadb70dc92d47256782e7727c0047f0bc95b97f",
+    "window": [
+      17536,
+      25536
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en",
+    "started_at": "2026-10-29T08:43:00Z",
+    "finished_at": "2026-10-29T08:46:10Z",
+    "files_opened": [
+      {
+        "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "packets/en-c/en-1380422581/packet.json",
+        "sha256": "842d9af62237b50b5cdfb355fd44ba04bbae8827775d2d670040b4f5b9b3faa2"
+      },
+      {
+        "path": "packets/en-c/en-1380422581/source.wikitext",
+        "sha256": "c53fe9a70f8b0ff835ac699b5f054a59dc04a7cf21672f3677fb8a0416e4594a"
+      },
+      {
+        "path": "packets/en-c/en-1380422581/render.html",
+        "sha256": "08a76271eb74efc2ffd789f4deadb70dc92d47256782e7727c0047f0bc95b97f"
+      }
+    ],
+    "tools": "bash (cat, grep, sha256sum); python3 -I with standard library (re, json, hashlib) for regex search of <ref, <references>, cite templates, '10.', pmid/doi and for verifying text[cp:cp+len(quote)]==quote; small regexes locate <ref name=\"...\"> starts and doi=/pmid= values, results checked by eye; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw and <li id=cite_note-...> text. All labels decided by reading the text. Process deviation: early on I saved one helper listing script (html.py) under the scratchpad folder 'evaltools/' outside the annotation directory; it vanished from disk shortly after and I then ran all snippets inline via stdin. No repository file was written or read beyond the guide.",
+    "unresolved": "Whether list-defined <ref>s inside <references> should also be counted as uses: I read the guide's 'places that call a footnote' as excluding them (they render no marker), so none are listed as uses."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 17536,
+        "quote": "<ref name=\"FranklinInstitute\">{{cite web | url=https://"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "FranklinInstitute",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 17566,
+            "quote": "{{cite web | url=https://www.n"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-FranklinInstitute-6",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 17782,
+        "quote": "<ref name=\"NHMLA\">{{cite news |last1=Hernandez |first1="
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "NHMLA",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 17800,
+            "quote": "{{cite news |last1=Hernandez |"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-NHMLA-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 18048,
+        "quote": "<ref name=\"PowellBio\">{{cite web |title=James Powell Bi"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "PowellBio",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 18070,
+            "quote": "{{cite web |title=James Powell"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-PowellBio-8",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 18208,
+        "quote": "<ref name=\"NSF\">{{cite web |title=Former Board Members "
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "NSF",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 18224,
+            "quote": "{{cite web |title=Former Board"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-NSF-9",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 18386,
+        "quote": "<ref name=\"CSI\">{{Cite journal |date=2015 |title=Ten Di"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "CSI",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 18402,
+            "quote": "{{Cite journal |date=2015 |tit"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-CSI-10",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 18891,
+        "quote": "<ref name=\"Pillar of Salt\">{{Cite Q |Q110293090 |last1="
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Pillar of Salt",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 18918,
+            "quote": "{{Cite Q |Q110293090 |last1=Bo"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Pillar_of_Salt-11",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window). {{Cite Q|Q110293090|...}}: rendered details come from Wikidata."
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 19005,
+        "quote": "<ref name=\"Bunch et al.\">{{Cite Q |Q108641540 |author-l"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Bunch et al.",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 19030,
+            "quote": "{{Cite Q |Q108641540 |author-l"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Bunch_et_al.-12",
+      "marker": "warning",
+      "marker_text": "(Retracted, see doi:10.1038/s41598-025-99265-5)",
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window). Citation is {{Cite Q|Q108641540|...}} (Wikidata-backed) followed by {{Retracted|doi=10.1038/s41598-025-99265-5|doi-access=free|intentional=yes}} (retraction-marker template, not a citation template, so not in templates). Rendered footnote ends with '(Retracted, see doi:10.1038/s41598-025-99265-5)'. The rendered title 'RETRACTED ARTICLE: ...', the DOI 10.1038/s41598-021-97778-3, PMID 34545151 and an '(Erratum: doi:10.1038/s41598-022-06266-9, ... PMID 35194042 ...)' line come from Wikidata via Cite Q and are not in the source."
+    },
+    {
+      "id": "d8",
+      "at": {
+        "cp": 19916,
+        "quote": "<ref name=\"Plait\">{{cite web | url=http://www.slate.com"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Plait",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 19934,
+            "quote": "{{cite web | url=http://www.sl"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Plait-19",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d9",
+      "at": {
+        "cp": 20262,
+        "quote": "<ref name=\"Sheppard\">{{cite web | url=https://www.mothe"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Sheppard",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 20283,
+            "quote": "{{cite web | url=https://www.m"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Sheppard-20",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d10",
+      "at": {
+        "cp": 20631,
+        "quote": "<ref name=\"BSTS1\">{{cite journal |last1=Powell |first1="
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "BSTS1",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 20649,
+            "quote": "{{cite journal |last1=Powell |"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-BSTS1-21",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d11",
+      "at": {
+        "cp": 20924,
+        "quote": "<ref name=\"BSTS2\">{{Cite journal|last=Powell|first=Jame"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "BSTS2",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 20942,
+            "quote": "{{Cite journal|last=Powell|fir"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-BSTS2-25",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d12",
+      "at": {
+        "cp": 21214,
+        "quote": "<ref name=\"BigThink\">{{cite web |last1=Powell |first1=J"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "BigThink",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 21235,
+            "quote": "{{cite web |last1=Powell |firs"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-BigThink-27",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d13",
+      "at": {
+        "cp": 21520,
+        "quote": "<ref name=\"Harvard\">{{cite news |last1=Powell |first1=J"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Harvard",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 21540,
+            "quote": "{{cite news |last1=Powell |fir"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Harvard-29",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d14",
+      "at": {
+        "cp": 21791,
+        "quote": "<ref name=\"Mercer\">{{cite news |last1=Powell |first1=Ja"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Mercer",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 21810,
+            "quote": "{{cite news |last1=Powell |fir"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Mercer-30",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d15",
+      "at": {
+        "cp": 22122,
+        "quote": "<ref name=\"BereaDegree\">{{cite web |last1=Bradley |firs"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "BereaDegree",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 22146,
+            "quote": "{{cite web |last1=Bradley |fir"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-BereaDegree-34",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d16",
+      "at": {
+        "cp": 22341,
+        "quote": "<ref name=\"planet\">{{cite web | url=https://minorplanet"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "planet",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 22360,
+            "quote": "{{cite web | url=https://minor"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-planet-35",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d17",
+      "at": {
+        "cp": 22578,
+        "quote": "<ref name=\"Skuce\">{{cite journal |last1=Skuce |first1=A"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Skuce",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 22596,
+            "quote": "{{cite journal |last1=Skuce |f"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Skuce-24",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d18",
+      "at": {
+        "cp": 23086,
+        "quote": "<ref name=\"Cook\">{{cite journal |last1=Cook |first1=Joh"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Cook",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 23103,
+            "quote": "{{cite journal |last1=Cook |fi"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Cook-22",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d19",
+      "at": {
+        "cp": 23656,
+        "quote": "<ref name=\"Salon\">{{cite news |last1=Abrams |first1=Lin"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Salon",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 23674,
+            "quote": "{{cite news |last1=Abrams |fir"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Salon-28",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d20",
+      "at": {
+        "cp": 24008,
+        "quote": "<ref name=\"PNAS\">{{cite journal |last1=Anderegg |first1"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "PNAS",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 24025,
+            "quote": "{{cite journal |last1=Anderegg"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-PNAS-23",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d21",
+      "at": {
+        "cp": 24388,
+        "quote": "<ref name=\"PowellResignation\">{{Cite web |last=Lawrence"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "PowellResignation",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 24418,
+            "quote": "{{Cite web |last=Lawrence Powe"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-PowellResignation-13",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d22",
+      "at": {
+        "cp": 25057,
+        "quote": "<ref name=\"DeadlyVoyager\">{{cite book |last=Powell |fir"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "DeadlyVoyager",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 25083,
+            "quote": "{{cite book |last=Powell |firs"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-DeadlyVoyager-31",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window)."
+    },
+    {
+      "id": "d23",
+      "at": {
+        "cp": 25293,
+        "quote": "<ref name=\"Rejection\">{{cite journal |last1=Powell |fir"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Rejection",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 25315,
+            "quote": "{{cite journal |last1=Powell |"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Rejection-32",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Inside <references>...</references> (opened at cp 16283, before the window). Definition starts in the window but runs past cp_end; its doi=10.1177/00368504211064272 (cp 25577) and pmid=34986034 (cp 25608) start after the window and are therefore not listed as identifiers."
+    }
+  ],
+  "uses": [],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 19848,
+        "quote": "10.1038/s41598-025-99265-5"
+      },
+      "scheme": "doi",
+      "role": "marker_target",
+      "key": "10.1038/s41598-025-99265-5",
+      "notes": "doi= of {{Retracted}} in the 'Bunch et al.' list-defined ref; it is the DOI of the retraction note"
+    },
+    {
+      "at": {
+        "cp": 20889,
+        "quote": "10.1177/0270467616634958"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1177/0270467616634958",
+      "notes": "doi= field of the citation template"
+    },
+    {
+      "at": {
+        "cp": 21164,
+        "quote": "10.1177/0270467617707079"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1177/0270467617707079",
+      "notes": "doi= field of the citation template"
+    },
+    {
+      "at": {
+        "cp": 23018,
+        "quote": "10.1177/0270467617702781"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1177/0270467617702781",
+      "notes": "doi= field of the citation template"
+    },
+    {
+      "at": {
+        "cp": 23571,
+        "quote": "10.1088/1748-9326/8/2/024024"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1088/1748-9326/8/2/024024",
+      "notes": "doi= field of the citation template"
+    },
+    {
+      "at": {
+        "cp": 24280,
+        "quote": "10.1073/pnas.1003187107"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1073/pnas.1003187107",
+      "notes": "doi= field of the citation template"
+    },
+    {
+      "at": {
+        "cp": 24310,
+        "quote": "20566872"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "20566872",
+      "notes": "pmid= field of the citation template"
+    }
+  ],
+  "unresolved_notes": [
+    "All 23 definitions in the window are list-defined refs inside <references>...</references>. They are not listed as uses: they do not call a footnote and produce no marker. Every one of them is called from the article body before the window via {{R|...}} or {{R|\"...\"}} (e.g. cite_ref-FranklinInstitute_6-0, cite_ref-Bunch_et_al._12-0); those uses start before cp_start and are out of scope.",
+    "No uses start inside the window.",
+    "Cite Q templates (Pillar of Salt, Bunch et al.) render bibliographic data, DOIs and PMIDs pulled from Wikidata that do not appear in the source; per guide 3.3 these are not labelled.",
+    "The 'Books' bibliography list (cite book list items) lies before the window (cp < 17536) and is out of scope."
+  ],
+  "adjudication": {
+    "adjudicator": "stage03-adjudicator-en",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-en/decisions/en-1380422581.json",
+    "changed_items": []
+  }
+}

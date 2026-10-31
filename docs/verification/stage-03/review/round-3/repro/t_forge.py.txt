@@ -1,0 +1,51 @@
+import sys, copy; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+from citerift.wiki.canonical import digest
+
+def redigest(d):
+    d["extraction_digest"] = digest({k: v for k, v in d.items() if k != "extraction_digest"})
+    return d
+
+def set_state(d, state):
+    m = d["markers"][0]
+    old = m["state"]; m["state"] = state
+    acc = d["accounting"]["markers"]; acc[old] -= 1
+    if not acc[old]: del acc[old]
+    acc[state] = acc.get(state, 0) + 1
+
+# 1: hidden-only note; forge a shown warning by relabelling the hidden item (keeps the locator).
+doc, rep, b = observe('Paper. <span style="display:none">Retracted</span>.')
+print("original:", short(doc["markers"][0]), rep["verified"])
+f = copy.deepcopy(doc)
+ev = f["markers"][0]["evidence"][0]
+ev.update(kind="warning", part="text"); ev.pop("hidden_basis", None)
+set_state(f, "recognized_warning_text")
+r = verify_bundle(b, redigest(f))
+print("forge 1 (hidden -> shown, locator kept):", short(f["markers"][0]), "verified =", r["verified"])
+
+# 2: clean note; forge a warning item with no locator.
+doc, rep, b = observe('Paper. Smith 2001.')
+print("original:", short(doc["markers"][0]), rep["verified"])
+f = copy.deepcopy(doc)
+f["markers"][0]["evidence"].append({"kind": "warning", "part": "text", "matched": "Retracted", "term": "retracted", "snippet": "Retracted"})
+set_state(f, "recognized_warning_text")
+r = verify_bundle(b, redigest(f))
+print("forge 2 (no locator):", short(f["markers"][0]), "verified =", r["verified"])
+
+# 3: an ordinary blue link presented as a missing marker-template red link.
+doc, rep, b = observe('Paper. <a rel="mw:WikiLink" href="./Smith">Smith</a> 2001.')
+f = copy.deepcopy(doc)
+loc = None
+for e in []: pass
+# locate the <a> in the render by its path: reuse the region locator's path prefix
+from citerift.wiki.render import read_render
+from citerift.wiki.bundle import open_bundle
+bb = open_bundle(b)
+html = bb.artifact(bb.capture["render"]["artifact"], limit=16*1024*1024)
+_, reader = read_render(html)
+a = [el for el in reader.doc.iter("a") if el.get("href") == "./Smith"][0]
+f["markers"][0]["evidence"].append({"kind": "missing_template_link", "part": "redlink", "matched": "Smith",
+    "target": "Template:Retracted", "target_basis": "href", "locator": reader.locator(a).to_json()})
+set_state(f, "missing_template_link_only")
+r = verify_bundle(b, redigest(f))
+print("forge 3 (blue ordinary link as marker redlink):", short(f["markers"][0]), "verified =", r["verified"])

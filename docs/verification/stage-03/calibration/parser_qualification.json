@@ -1,0 +1,482 @@
+{
+ "run_at": "2026-10-28",
+ "script": "docs/verification/stage-03/calibration/scripts/parser_qualification.py",
+ "environment": {
+  "python": "3.13.17",
+  "platform": "Linux-6.18.44-fc-v180-x86_64-with-glibc2.39",
+  "lxml": "6.1.3",
+  "libxml2": "2.14.6",
+  "selectolax": "1.0.2",
+  "cpu": "4 vCPU container, no GPU"
+ },
+ "inputs": "the 15 retained Parsoid HTML captures of the development corpus (dev_selection.json and dev_selection_supplement.json), named by SHA-256, plus three malformed variants of the largest one",
+ "measurement": "median of 5 runs after a warm-up; peak RSS is VmHWM of a fresh process after clear_refs",
+ "rows": [
+  {
+   "artifact": "0e868361ff876f452e299dbf23930fee49e0f005ddb4d3f32d1a8f1a4bf8de54",
+   "bytes": 1796,
+   "uses": 0,
+   "notes": 0,
+   "transclusions": 0,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 7.216599988169037e-05,
+     "cpu_s": 7.240099999999972e-05,
+     "peak_rss_kib": 19608
+    },
+    "lexbor": {
+     "wall_s": 6.521499972222955e-05,
+     "cpu_s": 6.552700000000272e-05,
+     "peak_rss_kib": 15940
+    }
+   }
+  },
+  {
+   "artifact": "21ff413cc486a8db2db27c08cbc594d8068a643f7b6cb8897f1ea7e6f485bc0a",
+   "bytes": 606913,
+   "uses": 146,
+   "notes": 95,
+   "transclusions": 132,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.05395782000005056,
+     "cpu_s": 0.05396648200000004,
+     "peak_rss_kib": 26728
+    },
+    "lexbor": {
+     "wall_s": 0.023839630000111356,
+     "cpu_s": 0.023826980999999997,
+     "peak_rss_kib": 24460
+    }
+   }
+  },
+  {
+   "artifact": "3cd648a3b4e1516d8b1332000720105c23281f5badb00da0d64eef8646b643c4",
+   "bytes": 292011,
+   "uses": 84,
+   "notes": 62,
+   "transclusions": 74,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.01463655799989283,
+     "cpu_s": 0.014306202000000004,
+     "peak_rss_kib": 22920
+    },
+    "lexbor": {
+     "wall_s": 0.0080948019999596,
+     "cpu_s": 0.008098909000000001,
+     "peak_rss_kib": 20236
+    }
+   }
+  },
+  {
+   "artifact": "4a12e078ec88d97a4b4673596fb139b12e4a79499a726c2a789f3e4c91597763",
+   "bytes": 116074,
+   "uses": 39,
+   "notes": 33,
+   "transclusions": 34,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.0045691159998568764,
+     "cpu_s": 0.004574221000000003,
+     "peak_rss_kib": 20964
+    },
+    "lexbor": {
+     "wall_s": 0.003369229000327323,
+     "cpu_s": 0.0033732139999999994,
+     "peak_rss_kib": 17468
+    }
+   }
+  },
+  {
+   "artifact": "6d8b741d38974b12089492ce033eeaa3c9f5ce8ff26ca1f06e21608b1b70c2c0",
+   "bytes": 330222,
+   "uses": 58,
+   "notes": 55,
+   "transclusions": 64,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.016741641999942658,
+     "cpu_s": 0.01670568,
+     "peak_rss_kib": 22580
+    },
+    "lexbor": {
+     "wall_s": 0.007136622999951214,
+     "cpu_s": 0.006828491000000006,
+     "peak_rss_kib": 19844
+    }
+   }
+  },
+  {
+   "artifact": "9337486b3268f1bb024012e41c16be1795018cf2964c3b41d7a5a293c1685e98",
+   "bytes": 425174,
+   "uses": 84,
+   "notes": 69,
+   "transclusions": 82,
+   "dup_ids_lxml": [
+    "bar"
+   ],
+   "dup_ids_lexbor": [
+    "bar"
+   ],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.019498085000122956,
+     "cpu_s": 0.01910682800000002,
+     "peak_rss_kib": 23948
+    },
+    "lexbor": {
+     "wall_s": 0.009985462000258849,
+     "cpu_s": 0.009947316000000012,
+     "peak_rss_kib": 21252
+    }
+   }
+  },
+  {
+   "artifact": "b2af494431c6d9c3e16c3f1b7250e062d7f6b0dab38665cceae6c78cf299f5b7",
+   "bytes": 509313,
+   "uses": 131,
+   "notes": 109,
+   "transclusions": 127,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.027283947999876546,
+     "cpu_s": 0.027276799000000018,
+     "peak_rss_kib": 25432
+    },
+    "lexbor": {
+     "wall_s": 0.011508513000080711,
+     "cpu_s": 0.011515400000000009,
+     "peak_rss_kib": 23168
+    }
+   }
+  },
+  {
+   "artifact": "b62de7200e0f182285d616ee1d9b581102a54815cd4bb7069f24502f8db2046a",
+   "bytes": 4006778,
+   "uses": 1168,
+   "notes": 1092,
+   "transclusions": 1105,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.20026963300006173,
+     "cpu_s": 0.19453209000000016,
+     "peak_rss_kib": 59480
+    },
+    "lexbor": {
+     "wall_s": 0.11198989000013171,
+     "cpu_s": 0.11195042900000002,
+     "peak_rss_kib": 63408
+    }
+   }
+  },
+  {
+   "artifact": "b6efd2a4103253ebaeb93ec96786ae1c727e9aa833659fe59f25d6a5c124271c",
+   "bytes": 5141,
+   "uses": 0,
+   "notes": 0,
+   "transclusions": 1,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.0002081899997392611,
+     "cpu_s": 0.00020896800000000382,
+     "peak_rss_kib": 19624
+    },
+    "lexbor": {
+     "wall_s": 0.0001561740000397549,
+     "cpu_s": 0.00015707599999999905,
+     "peak_rss_kib": 16020
+    }
+   }
+  },
+  {
+   "artifact": "bef00003f69b6cb28ca0eb88da9397a211ef1ebea37b421b9957de1e7398c3eb",
+   "bytes": 1347700,
+   "uses": 372,
+   "notes": 278,
+   "transclusions": 340,
+   "dup_ids_lxml": [
+    "CITEREFJeffreys2004",
+    "CITEREFMcTavish1987"
+   ],
+   "dup_ids_lexbor": [
+    "CITEREFJeffreys2004",
+    "CITEREFMcTavish1987"
+   ],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.07101065200004086,
+     "cpu_s": 0.07095970600000001,
+     "peak_rss_kib": 35472
+    },
+    "lexbor": {
+     "wall_s": 0.031002878999970562,
+     "cpu_s": 0.030971844999999998,
+     "peak_rss_kib": 34380
+    }
+   }
+  },
+  {
+   "artifact": "c4441a79f423cea3558017b862b78821ea5d10b5d84f9a00692913bc77fcd850",
+   "bytes": 311159,
+   "uses": 43,
+   "notes": 27,
+   "transclusions": 77,
+   "dup_ids_lxml": [
+    "CITEREFJ._H._SchönC._Kloc2001",
+    "CITEREFJ._H._SchönC._KlocB._Batlogg2000",
+    "CITEREFJ._H._SchönCh._KlocB._Batlogg2000",
+    "CITEREFJ._H._SchönCh._KlocB._Batlogg2001",
+    "CITEREFJ._H._SchönZ._Bao2002",
+    "CITEREFReich2009"
+   ],
+   "dup_ids_lexbor": [
+    "CITEREFJ._H._SchönC._Kloc2001",
+    "CITEREFJ._H._SchönC._KlocB._Batlogg2000",
+    "CITEREFJ._H._SchönCh._KlocB._Batlogg2000",
+    "CITEREFJ._H._SchönCh._KlocB._Batlogg2001",
+    "CITEREFJ._H._SchönZ._Bao2002",
+    "CITEREFReich2009"
+   ],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.00913014599973394,
+     "cpu_s": 0.009132132000000001,
+     "peak_rss_kib": 22328
+    },
+    "lexbor": {
+     "wall_s": 0.006365783000092051,
+     "cpu_s": 0.006171614999999991,
+     "peak_rss_kib": 19588
+    }
+   }
+  },
+  {
+   "artifact": "c81f110191472eb46c43a3073ece40a3a4fcf4e79fe408957d3317aa35ee6fab",
+   "bytes": 775258,
+   "uses": 209,
+   "notes": 113,
+   "transclusions": 127,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.03380431100003989,
+     "cpu_s": 0.03381206600000003,
+     "peak_rss_kib": 27860
+    },
+    "lexbor": {
+     "wall_s": 0.016663859999880515,
+     "cpu_s": 0.016424246000000003,
+     "peak_rss_kib": 25696
+    }
+   }
+  },
+  {
+   "artifact": "d21dbeb2b86f1fed2cebce82a50210d3bdec1fd20e48f1e537e155930859dbd8",
+   "bytes": 1966,
+   "uses": 0,
+   "notes": 0,
+   "transclusions": 0,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 6.888799998705508e-05,
+     "cpu_s": 6.905100000000053e-05,
+     "peak_rss_kib": 19580
+    },
+    "lexbor": {
+     "wall_s": 6.887599965921254e-05,
+     "cpu_s": 6.917000000000034e-05,
+     "peak_rss_kib": 15884
+    }
+   }
+  },
+  {
+   "artifact": "d4338f34ccda938322132136c91c8992ad4631fb069897a36d46990d8a86119c",
+   "bytes": 171603,
+   "uses": 38,
+   "notes": 31,
+   "transclusions": 36,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.005280840000068565,
+     "cpu_s": 0.005282045999999999,
+     "peak_rss_kib": 21096
+    },
+    "lexbor": {
+     "wall_s": 0.003448838999702275,
+     "cpu_s": 0.00345119,
+     "peak_rss_kib": 18064
+    }
+   }
+  },
+  {
+   "artifact": "eea0cf0e2e59282d599a4956f227e48dd3d603e21de616c6ce840f9efa6cbd65",
+   "bytes": 422679,
+   "uses": 119,
+   "notes": 81,
+   "transclusions": 97,
+   "dup_ids_lxml": [
+    "CITEREFCDC2023",
+    "CITEREFCDC2024",
+    "CITEREFHamborskyKrogerWolfe2015",
+    "CITEREFUK_Health_Security_Agency2013"
+   ],
+   "dup_ids_lexbor": [
+    "CITEREFCDC2023",
+    "CITEREFCDC2024",
+    "CITEREFHamborskyKrogerWolfe2015",
+    "CITEREFUK_Health_Security_Agency2013"
+   ],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.023445986000297125,
+     "cpu_s": 0.023279785999999997,
+     "peak_rss_kib": 24496
+    },
+    "lexbor": {
+     "wall_s": 0.010496718000013061,
+     "cpu_s": 0.010491193000000003,
+     "peak_rss_kib": 23140
+    }
+   }
+  },
+  {
+   "artifact": "synthetic-truncated",
+   "bytes": 2003389,
+   "uses": 1168,
+   "notes": 305,
+   "transclusions": 316,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.10401849199979551,
+     "cpu_s": 0.10327459500000002,
+     "peak_rss_kib": 41556
+    },
+    "lexbor": {
+     "wall_s": 0.04804185900002267,
+     "cpu_s": 0.048049250000000016,
+     "peak_rss_kib": 41156
+    }
+   }
+  },
+  {
+   "artifact": "synthetic-unclosed",
+   "bytes": 4006528,
+   "uses": 1168,
+   "notes": 1092,
+   "transclusions": 1105,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.18699933300013072,
+     "cpu_s": 0.18377638699999999,
+     "peak_rss_kib": 59436
+    },
+    "lexbor": {
+     "wall_s": 0.10115710599984595,
+     "cpu_s": 0.10019345099999999,
+     "peak_rss_kib": 63404
+    }
+   }
+  },
+  {
+   "artifact": "synthetic-bad-data-mw",
+   "bytes": 4006798,
+   "uses": 1168,
+   "notes": 1092,
+   "transclusions": 1105,
+   "dup_ids_lxml": [],
+   "dup_ids_lexbor": [],
+   "structural_differences": {},
+   "note_text_differences": [],
+   "note_text_difference_count": 0,
+   "performance": {
+    "lxml": {
+     "wall_s": 0.19450244399968142,
+     "cpu_s": 0.192534724,
+     "peak_rss_kib": 59484
+    },
+    "lexbor": {
+     "wall_s": 0.09985998299998755,
+     "cpu_s": 0.09969153200000003,
+     "peak_rss_kib": 63496
+    }
+   }
+  }
+ ]
+}

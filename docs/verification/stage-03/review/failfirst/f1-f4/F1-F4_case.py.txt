@@ -1,0 +1,47 @@
+"""SYNTHETIC reproduction of the external review's F1-F4 (OWNER_DIRECTIVE_2026-10-29_SUPPLEMENT.md section 4).
+
+Run from the repository root: uv run python docs/verification/stage-03/review/failfirst/f1-f4/F1-F4_case.py.txt
+Builds capture bundles through the production capture code with a scripted transport (tests/stage03/wiki_support)
+and extracts them through the public isolated API. Prints one JSON object per case.
+"""
+import json, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "tests/stage03")
+from wiki_support import bundle, note_li, ref_sup, references
+from citerift.wiki.extract import extract_bundle
+
+tmp = Path(tempfile.mkdtemp())
+n = [0]
+
+def marker(inner, wiki="en", wrap=None):
+    n[0] += 1
+    text = 'A.<ref name="a">Smith 2001.</ref>\n' if wiki == "en" else 'أ.<ref name="a">سميث 2001.</ref>\n'
+    refs = references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], inner)])
+    if wrap:
+        refs = wrap.format(refs)
+    body = "<p>A." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + refs
+    doc = extract_bundle(bundle(tmp, text, body, wiki=wiki, name=f"m{n[0]}"), None, isolated=True)
+    m = doc["markers"][0]
+    return {"status": doc["status"], "state": m["state"], "evidence": [(e.get("kind"), e.get("matched")) for e in m["evidence"]], "hidden_elements": (m["region"] or {}).get("hidden_elements")}
+
+def uses(text, wiki="en"):
+    n[0] += 1
+    doc = extract_bundle(bundle(tmp, text, wiki=wiki, name=f"u{n[0]}"), None, isolated=True)
+    return {"uses": [(u["origin"], u["name"], u["binding"]) for u in doc["uses"]], "issues": sorted({i["code"] for i in doc["issues"]})}
+
+cases = {
+  "F1 control en": marker("Smith 2001. Retracted."),
+  "F1 control ar": marker("سميث 2001. مسحوب.", "ar"),
+  "F1 en span": marker("Smith 2001. <span>Re</span>tracted."),
+  "F1 en comment": marker("Smith 2001. Re<!--x-->tracted."),
+  "F1 ar span": marker("سميث 2001. <span>مس</span>حوب.", "ar"),
+  "F1 ar comment": marker("سميث 2001. مس<!--x-->حوب.", "ar"),
+  "F2 en red link label": marker('Smith 2001. <a class="new" title="Missing page" href="./Missing_page?action=edit&amp;redlink=1">Retracted</a>.'),
+  "F2 ar red link label": marker('سميث 2001. <a class="new" title="صفحة مفقودة" href="./x?action=edit&amp;redlink=1">مسحوب</a>.', "ar"),
+  "F3 en hidden ancestor": marker("Smith 2001. Retracted.", wrap='<div style="display:none">{}</div>'),
+  "F3 ar hidden ancestor": marker("سميث 2001. مسحوب.", "ar", wrap='<div style="display:none">{}</div>'),
+  "F4 control {{r|a}}": uses('A.<ref name="a">Paper</ref> B.{{r|a}}'),
+  "F4 {{r|1=a}}": uses('A.<ref name="a">Paper</ref> B.{{r|1=a}}'),
+  "F4 ar {{استشهاد متعدد|1=a}}": uses('أ.<ref name="a">ورقة</ref> ب.{{استشهاد متعدد|1=a}}', "ar"),
+}
+print(json.dumps(cases, ensure_ascii=False, indent=1))

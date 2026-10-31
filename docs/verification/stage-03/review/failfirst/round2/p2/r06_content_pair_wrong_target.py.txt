@@ -1,0 +1,21 @@
+"""SYNTHETIC: the same DOI cited twice, once as plain text and once through Cite Q (identifiers only in the render).
+The first render use cannot be paired by structure (its data-mw is unreadable). Content pairing then attaches the
+plain-text reference to the Cite Q note, because the only render use whose note shows that DOI is the Cite Q one."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import run, doi_link, ref_sup, note_li, references
+T = "A.<ref>Smith 2001. https://doi.org/10.1000/x</ref> B.<ref>{{Cite Q|Q42}}</ref>\n"
+bad = ('<sup about="#mwt1" class="mw-ref reference" id="cite_ref-1" typeof="mw:Extension/ref" data-mw="{bad json">'
+       '<a href="./SYNTHETIC#cite_note-1">[1]</a></sup>')
+body = ("<p>A." + bad + " B." + ref_sup(2, "cite_note-2", "cite_ref-2") + "</p>"
+        + references([note_li("cite_note-1", ["cite_ref-1"], "Smith 2001. " + doi_link("10.1000/x", "https://doi.org/10.1000/x")),
+                      note_li("cite_note-2", ["cite_ref-2"], '<cite class="citation">Jones. Retracted article. ' + doi_link("10.1000/x") + "</cite>")]))
+d = run(T, body)
+for u in d["uses"]:
+    r = u["render"]
+    print("use", u["id"], "container", u["container_id"], "state", r["state"], "basis", r.get("basis"),
+          "render element", (r.get("locator") or {}).get("element_id"))
+for c in d["containers"]:
+    print("container", c["id"], "render", {k: v for k, v in c["render"].items() if k in ("state", "note_id", "region_id")})
+for m in d["markers"]:
+    print("marker", m["container_id"], m["state"], (m["region"] or {}).get("region_id"))
+print("issues", sorted({i["code"] for i in d["issues"]}))

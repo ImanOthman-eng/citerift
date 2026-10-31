@@ -1,0 +1,21 @@
+"""Cost of verify_bundle (in-process, no worker limits) vs isolated extraction on a large SYNTHETIC render."""
+import resource, shutil, sys, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import capture, parsoid, ref_sup, note_li, references, doi_link
+from citerift.wiki.extract import extract_bundle
+from citerift.wiki.verify import verify_bundle
+W = Path(__file__).resolve().parent / "work_cost"; shutil.rmtree(W, ignore_errors=True); W.mkdir()
+text = "Claim.<ref name=\"a\">{{cite journal |title=T |doi=10.1000/x}}</ref>\n\n== References ==\n<references />\n"
+filler = "<p>" + "<span>a</span>" * int(sys.argv[1]) + "</p>"
+body = "<p>Claim." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + filler + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], "T " + doi_link("10.1000/x"))])
+html = parsoid(body, text)
+print("html bytes", len(html))
+out = capture(W / "b", text, html)
+print("capture", out.status, [i.code for i in out.issues])
+t = time.monotonic(); doc = extract_bundle(W / "b"); te = time.monotonic() - t
+print("isolated extract", doc["status"], [i["code"] for i in doc["issues"] if i["severity"] == "error"], f"{te:.1f}s")
+r0 = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+t = time.monotonic(); rep = verify_bundle(W / "b", doc); tv = time.monotonic() - t
+r1 = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+print("in-process verify", rep["verified"], f"{tv:.1f}s", "parent maxrss MiB before/after", r0 // 1024, r1 // 1024, "render locator checks", [c["checked"] for c in rep["checks"] if c["name"] == "render locators"])

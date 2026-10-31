@@ -1,0 +1,3 @@
+from h import run
+_, d = run('A<ref name=a group=n/>\n<references group="n">\n<ref name=b/>\n<ref name=a group="m">{{cite journal|doi=10.1000/a}}</ref>\n</references>', label="empty list-defined ref; group mismatch inside <references>")
+print(" exceptions:", [(e["entity"], e["code"]) for e in d["exceptions"]])

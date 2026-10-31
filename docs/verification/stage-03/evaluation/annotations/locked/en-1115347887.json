@@ -1,0 +1,442 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1115347887,
+  "source_sha256": "60648db1e7bb5ceeef493610e812c0e4a8f6bcfd5d4fddd24baea3e7cff603b9",
+  "html_sha256": "5ea28d261f6937bbac53605c08737fae193c0dac242e71d94efc369e8e5228fe",
+  "window": [
+   0,
+   7914
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:45:09Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1115347887/packet.json",
+    "sha256": "483bca0201bbef10b05711ad3e4316cb297eb26ac7f297cceb329d2b3a17934b"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1115347887/source.wikitext",
+    "sha256": "60648db1e7bb5ceeef493610e812c0e4a8f6bcfd5d4fddd24baea3e7cff603b9"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1115347887/render.html",
+    "sha256": "5ea28d261f6937bbac53605c08737fae193c0dac242e71d94efc369e8e5228fe"
+   }
+  ],
+  "tools": "bash (cat, ls, sha256sum, date); python3 -I with standard library (re, json, hashlib) for str/regex search of source.wikitext and position verification (text[cp:cp+len(quote)]==quote); lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-...> ids/back-links/text, class=\"new\" links. Every label decided by reading the text by hand.",
+  "unresolved": "Nothing left undecided. The PMID digits inside ref names are listed as not_a_target occurrences with the digits as key."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 2638,
+    "quote": "<ref>Bard, A.J.; Faulkner, L.R. '''Electrochemic"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written book citation (Bard & Faulkner, Electrochemical Methods); no template."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 2791,
+    "quote": "<ref>Skoog, D.A.; West, D.M.; Holler, F.J. '''Fu"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written book citation (Skoog et al., Fundamentals of Analytical Chemistry); no template."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 3825,
+    "quote": "<ref name=\"pmid6353577\">{{cite journal |author=W"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid6353577",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3849,
+      "quote": "{{cite journal |author=W"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid6353577-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4099,
+    "quote": "<ref name=\"pmid9008869\">{{cite journal |vauthors"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid9008869",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4123,
+      "quote": "{{cite journal |vauthors"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid9008869-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4526,
+    "quote": "<ref name=\"pmid9253184\">{{cite journal |vauthors"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid9253184",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4550,
+      "quote": "{{cite journal |vauthors"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid9253184-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 4838,
+    "quote": "<ref name=\"pmid12462614\">{{cite journal |vauthor"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid12462614",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4863,
+      "quote": "{{cite journal |vauthors"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid12462614-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 5247,
+    "quote": "<ref name=\"pmid12462615\">{{cite journal |vauthor"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid12462615",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5272,
+      "quote": "{{cite journal |vauthors"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid12462615-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 2638,
+    "quote": "<ref>Bard, A.J.; Faulkner, L.R. '''Elect"
+   },
+   "binds_to": {
+    "cp": 2638,
+    "quote": "<ref>Bard, A.J.; Faulkner, L.R. '''Electrochemic"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 2791,
+    "quote": "<ref>Skoog, D.A.; West, D.M.; Holler, F."
+   },
+   "binds_to": {
+    "cp": 2791,
+    "quote": "<ref>Skoog, D.A.; West, D.M.; Holler, F.J. '''Fu"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 3825,
+    "quote": "<ref name=\"pmid6353577\">{{cite journal |"
+   },
+   "binds_to": {
+    "cp": 3825,
+    "quote": "<ref name=\"pmid6353577\">{{cite journal |author=W"
+   },
+   "render_ref_id": "cite_ref-pmid6353577_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 4099,
+    "quote": "<ref name=\"pmid9008869\">{{cite journal |"
+   },
+   "binds_to": {
+    "cp": 4099,
+    "quote": "<ref name=\"pmid9008869\">{{cite journal |vauthors"
+   },
+   "render_ref_id": "cite_ref-pmid9008869_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4526,
+    "quote": "<ref name=\"pmid9253184\">{{cite journal |"
+   },
+   "binds_to": {
+    "cp": 4526,
+    "quote": "<ref name=\"pmid9253184\">{{cite journal |vauthors"
+   },
+   "render_ref_id": "cite_ref-pmid9253184_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 4838,
+    "quote": "<ref name=\"pmid12462614\">{{cite journal "
+   },
+   "binds_to": {
+    "cp": 4838,
+    "quote": "<ref name=\"pmid12462614\">{{cite journal |vauthor"
+   },
+   "render_ref_id": "cite_ref-pmid12462614_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 5247,
+    "quote": "<ref name=\"pmid12462615\">{{cite journal "
+   },
+   "binds_to": {
+    "cp": 5247,
+    "quote": "<ref name=\"pmid12462615\">{{cite journal |vauthor"
+   },
+   "render_ref_id": "cite_ref-pmid12462615_7-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3840,
+    "quote": "6353577"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "6353577",
+   "notes": "PMID digits inside the ref name= value \"pmid6353577\"."
+  },
+  {
+   "at": {
+    "cp": 4024,
+    "quote": "6353577"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "6353577",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4037,
+    "quote": "10.1126/science.6353577"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1126/science.6353577",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4114,
+    "quote": "9008869"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "9008869",
+   "notes": "PMID digits inside the ref name= value \"pmid9008869\"."
+  },
+  {
+   "at": {
+    "cp": 4415,
+    "quote": "9008869"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9008869",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4428,
+    "quote": "10.1002/(SICI)1096-9888(199701)32:1<64::AID-JMS450>3.0.CO;2-7"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/(sici)1096-9888(199701)32:1<64::aid-jms450>3.0.co;2-7",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4541,
+    "quote": "9253184"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "9253184",
+   "notes": "PMID digits inside the ref name= value \"pmid9253184\"."
+  },
+  {
+   "at": {
+    "cp": 4788,
+    "quote": "9253184"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9253184",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4801,
+    "quote": "10.1016/S0021-9673(97)00325-7"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0021-9673(97)00325-7",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4853,
+    "quote": "12462614"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "12462614",
+   "notes": "PMID digits inside the ref name= value \"pmid12462614\"."
+  },
+  {
+   "at": {
+    "cp": 5196,
+    "quote": "12462614"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12462614",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5210,
+    "quote": "10.1016/S0021-9673(02)01228-1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0021-9673(02)01228-1",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5262,
+    "quote": "12462615"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "12462615",
+   "notes": "PMID digits inside the ref name= value \"pmid12462615\"."
+  },
+  {
+   "at": {
+    "cp": 5642,
+    "quote": "12462615"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12462615",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5656,
+    "quote": "10.1016/S0021-9673(02)01227-X"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0021-9673(02)01227-x",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "The \"Examples of hyphenated techniques\" and \"See also\" lists contain only wikilinks, no citations."
+ ]
+}

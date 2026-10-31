@@ -1,0 +1,37 @@
+"""Current candidate, EXPOSED retained data and SYNTHETIC altered-document checks only."""
+import hashlib,json,subprocess,sys,time
+from pathlib import Path
+root=Path(sys.argv[1]).resolve(); out=Path(sys.argv[2]).resolve(); out.mkdir(exist_ok=False)
+sys.path.insert(0,str(root/'src'))
+from citerift.wiki.extract import extract_bundle
+from citerift.wiki.verify import verify_bundle,replay_bundle
+rev=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+base=root/'docs/verification/stage-03/review/failfirst/v1-v2'
+cli=root/'.venv/bin/citerift-wiki'; rows=[]
+for name in ['en-outside','ar-outside','en-negated','en-quoted','en-substring']:
+ for variant in ['genuine','modified']:
+  for operation in ['verify','replay']:
+   cmd=[str(cli),operation,'--bundle',str(base/name),'--extraction',str(base/(name+'-'+variant+'.json'))]
+   proc=subprocess.run(cmd,capture_output=True,text=True)
+   doc=json.loads(proc.stdout)
+   filename=f'{name}-{variant}-{operation}.json'
+   (out/filename).write_text(proc.stdout)
+   rows.append({'case':name,'variant':variant,'operation':operation,'argv':cmd,'exit':proc.returncode,'verified':doc['verified'],'replay':doc.get('replay',{}).get('state'),'stderr':proc.stderr,'output':filename})
+(out/'V1_V2_AFTER.json').write_text(json.dumps({'revision':rev,'rows':rows},indent=2)+'\n')
+roots=['tests/stage03/fixtures/observed','docs/verification/stage-03/demonstrations/bundles','docs/verification/stage-03/evaluation/capture/bundles','docs/verification/stage-03/evaluation/confirmation-superseded/bundles']
+unique={}
+for loc in roots:
+ for cap in sorted((root/loc).rglob('capture.json')):
+  unique.setdefault(hashlib.sha256(cap.read_bytes()).hexdigest(),cap.parent)
+real=out/'real';real.mkdir();rows=[]
+for sha,b in unique.items():
+ cap=json.loads((b/'capture.json').read_bytes())
+ if not (cap.get('source') or {}).get('artifact'):continue
+ started=time.monotonic();d=extract_bundle(b);dt=time.monotonic()-started
+ v=verify_bundle(b,d);r=replay_bundle(b,recorded=d)
+ for kind,value in [('extraction',d),('verify',v),('replay',r)]:
+  (real/(sha+'.'+kind+'.json')).write_text(json.dumps(value,ensure_ascii=False,indent=1)+'\n')
+ rows.append({'capture_sha256':sha,'bundle':str(b.relative_to(root)),'wiki':d['capture']['wiki'],'revision_id':d['capture']['revision_id'],'status':d['status'],'seconds':dt,'verified':v['verified'],'replay':r['replay']['state']})
+ print(len(rows),rows[-1]['wiki'],d['status'],v['verified'],r['replay']['state'],flush=True)
+(out/'REAL_RESULTS.json').write_text(json.dumps({'code_revision':rev,'fresh':False,'rows':rows},indent=2)+'\n')
+assert all(r['verified'] and r['replay']=='reproduced' for r in rows)

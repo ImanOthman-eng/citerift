@@ -1,0 +1,4 @@
+from h import run
+run('A<ref name="10.1000/inname">{{cite web |url=https://web.archive.org/web/2020/https://doi.org/10.1000/arch |title=T}} [https://example.org/10.1000/other x]</ref>', label="ref name / other-site URLs")
+run('A<ref>https://pubs.acs.org/doi/10.1021/ab%zz and https://pubs.acs.org/doi/10.1021/cd%C3%28 vs https://doi.org/10.1021/ab%zz</ref>', label="invalid percent in publisher path vs resolver")
+run('A<ref>{{cite journal|title=T|url= https://doi.org/10.1000/ws }}{{cite journal|title=U|doi= 10.1000/ws }}</ref>', label="url outer whitespace")

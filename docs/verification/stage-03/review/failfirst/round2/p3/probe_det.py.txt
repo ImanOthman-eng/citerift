@@ -1,0 +1,12 @@
+"""Extraction digests across repeated isolated runs (random hash seeds) vs tests/stage03/fixtures/observed/expected.json."""
+import json, sys
+from pathlib import Path
+from citerift.wiki.extract import extract_bundle
+FIX = Path("/home/user/citerift/tests/stage03/fixtures/observed")
+exp = json.loads((FIX / "expected.json").read_text())
+print(sys.version.split()[0], "expected keys:", list(exp)[:4] if isinstance(exp, dict) else type(exp))
+for name in ("ar-76190003", "en-1372543632"):
+    digests = {extract_bundle(FIX / name)["extraction_digest"] for _ in range(4)}
+    e = exp.get(name, {}) if isinstance(exp, dict) else {}
+    want = e.get("extraction_digest") if isinstance(e, dict) else None
+    print(name, "distinct digests over 4 runs:", len(digests), "matches expected:", want in digests if want else "n/a", sorted(digests)[0][:16])

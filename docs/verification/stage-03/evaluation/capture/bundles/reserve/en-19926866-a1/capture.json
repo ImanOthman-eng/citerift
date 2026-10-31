@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "6b0f5034afac624e4d991329571ab358e803c45b3ddbf808bec602d2a5e8c311",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.433,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:50:31.995274Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=19926866",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 4984,
+   "body_sha256": "4529a4c557c8d6c4fc33100268be9c5d9b3a76daafed49c0d8c095153e0dd81c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.551,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:51:00.428978Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=19926866",
+   "wire_bytes": 2449
+  },
+  {
+   "body_bytes": 50592,
+   "body_sha256": "a772763d9167c82a97d758408cd25b54251c2440f160cabbea50044a94f583ac",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.504,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:51:10.981106Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380731901/html",
+   "wire_bytes": 11234
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "6b0f5034afac624e4d991329571ab358e803c45b3ddbf808bec602d2a5e8c311"
+ ],
+ "finished_at": "2026-10-29T08:51:11.487026Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 19926866,
+  "parent_revision_id": 1375614911,
+  "redirect_followed": null,
+  "revision_id": 1380731901,
+  "revision_timestamp": "2026-10-17T14:22:01Z",
+  "sha1": "00144e86bbc19c99c9a2a248e3d7e400481261cc",
+  "size": 4390,
+  "title": "Rapala (butterfly)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "a772763d9167c82a97d758408cd25b54251c2440f160cabbea50044a94f583ac",
+  "bytes": 50592,
+  "checks": {
+   "document_revision_id": "1380731901",
+   "header_revision_id": "1380731901",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "19926866",
+   "render_id": "5ae3b652-d23a-11f1-ac6b-c5f0dc593e58",
+   "revision_sha1": "00144e86bbc19c99c9a2a248e3d7e400481261cc",
+   "revision_sha1_base36": "00c0b1p8jpxq1yt7iqy0cjcwc26kh58"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1380731901",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:51:11 GMT",
+   "etag": "W/\"1380731901/5ae3b652-d23a-11f1-ac6b-c5f0dc593e58/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:38:42 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380731901/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 19926866,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "14591916e159f2168e1628ea2dab66e0ac450f5c64e84e2ccc3906723f0a18b1",
+  "bytes": 4390,
+  "response_artifact": "4529a4c557c8d6c4fc33100268be9c5d9b3a76daafed49c0d8c095153e0dd81c",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=19926866"
+ },
+ "started_at": "2026-10-29T08:50:22.340288Z",
+ "status": "complete"
+}

@@ -1,0 +1,17 @@
+import sys, json; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+from wiki_support import doi_link
+dm = json.dumps({"parts": [{"template": {"target": {"wt": "cite journal "}, "params": {"title": {"wt": "Paper "}, "doi": {"wt": "10.1000/p"}}, "i": 0}}]})
+def body(after, li=False):
+    open_, close = ("<ul><li>", "</li></ul>") if li else ("<p>", "</p>")
+    return (open_ + '<link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1" '
+        f'about="#mwt5" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw=\'{dm}\'/>'
+        '<cite about="#mwt5" class="citation journal cs1">"Paper". ' + doi_link("10.1000/p") + '</cite>' + after + close)
+for li in (False, True):
+    text = "Intro.\n\n==Further reading==\n" + ("* " if li else "") + "{{cite journal |title=Paper |doi=10.1000/p}} Retracted.\n"
+    b = bundle(tmpdir(), text, body(" Retracted.", li))
+    doc = extract(b)
+    bib = [c for c in doc["containers"] if c["kind"] == "bibliography_entry"]
+    for c in bib:
+        m = [m for m in doc["markers"] if m["container_id"] == c["id"]][0]
+        print("li" if li else "p", m["region"] and m["region"]["region_id"], short(m), verify_bundle(b, doc)["verified"])

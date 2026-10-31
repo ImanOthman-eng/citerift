@@ -1,0 +1,216 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76270947,
+  "source_sha256": "56dfd53460676aa05a14efa6b15b56b53aa7fc45d837c08571ee8fb36b31a16f",
+  "html_sha256": "3d46ddbec2e980a2cdbe52b659929b23a2c1930d9bbde0a35520c59603dc03a2",
+  "window": [
+   0,
+   3608
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:12:13Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76270947/packet.json",
+    "sha256": "8de56434de6a198c8452397d56af31f8e8d40d18fad7e3721f376275a7e265fa"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76270947/source.wikitext",
+    "sha256": "56dfd53460676aa05a14efa6b15b56b53aa7fc45d837c08571ee8fb36b31a16f"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76270947/render.html",
+    "sha256": "3d46ddbec2e980a2cdbe52b659929b23a2c1930d9bbde0a35520c59603dc03a2"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str/re to find '<ref', '{{', '10.', 'doi'/'دوي', comments, nowiki and retraction vocabulary; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw and <li id=cite_note-*> texts and red links; every location asserted with text[cp:cp+len(quote)]==quote. Labels decided by reading.",
+  "unresolved": "Nothing undecided. Process notes: started_at is the start of the whole labelling session (09:10:12Z); per-article start times were not recorded separately. Early in the session I briefly wrote two throwaway lxml/re listing scripts to scratchpad/eval/tools/ (outside the permitted output directory), then deleted that directory and used stdin-only snippets afterwards. At the very end I ran a read-only 'git status --short' in /home/user/citerift (which produced no output), contrary to the no-git rule; no repository file was modified."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 350,
+    "quote": "<ref>{{استشهاد بكتاب|مسار=https://books.google.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 355,
+      "quote": "{{استشهاد بكتاب|مسار=https://books.google.com"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1587,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Energy Autonomy"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1592,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=Energy Autonomy"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2006,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Book Review: Energy Autonomy"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2011,
+      "quote": "{{استشهاد بويب|عنوان=Book Review: Energy Autonomy"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Has a web.archive.org archive URL; no DOI/PMID."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2861,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Book review Energy"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2866,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=Book review Energy"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "The title contains '1844073556', which is the book's ISBN (also in the infobox ردمك=), not a DOI or PMID; not listed as an identifier."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 350,
+    "quote": "<ref>{{استشهاد بكتاب|مسار=https://books.google.com"
+   },
+   "binds_to": {
+    "cp": 350,
+    "quote": "<ref>{{استشهاد بكتاب|مسار=https://books.google.com"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1587,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Energy Autonomy"
+   },
+   "binds_to": {
+    "cp": 1587,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Energy Autonomy"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2006,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Book Review: Energy Autonomy"
+   },
+   "binds_to": {
+    "cp": 2006,
+    "quote": "<ref>{{استشهاد بويب|عنوان=Book Review: Energy Autonomy"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2861,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Book review Energy"
+   },
+   "binds_to": {
+    "cp": 2861,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Book review Energy"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1820,
+    "quote": "10.1016/j.futures.2009.04.002"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.futures.2009.04.002",
+   "notes": "دوي= field of {{استشهاد بدورية محكمة}} in the 2nd ref."
+  },
+  {
+   "at": {
+    "cp": 3086,
+    "quote": "10.1016/j.ecolecon.2007.09.023"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.ecolecon.2007.09.023",
+   "notes": "دوي= field in the 4th ref."
+  }
+ ],
+ "unresolved_notes": [
+  "{{بحاجة لمصدر|تاريخ=March 2021}} and the raw <sup class=\"noprint Inline-Template Template-Fact\"> 'مطلوب مصدر' at cp 1243-1497 are citation-needed tags, not footnotes; not listed.",
+  "Red links in notes 1 and 2 ('The Ecologist', 'Futures (journal)') are article-namespace red links, not template pages; marker 'none'."
+ ]
+}

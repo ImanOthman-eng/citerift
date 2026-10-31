@@ -1,0 +1,189 @@
+{
+ "label": "SYNTHETIC inputs, not observed Wikipedia revisions",
+ "F1-ar-comment": {
+  "before_at_049c48c": {
+   "status": "complete",
+   "state": "no_recognized_warning_in_inspected_region",
+   "evidence": [],
+   "hidden_elements": 0
+  },
+  "after": {
+   "status": "complete",
+   "state": "recognized_warning_text",
+   "evidence": [
+    {
+     "kind": "warning",
+     "part": "text",
+     "matched": "مسحوب"
+    }
+   ],
+   "hidden_elements": 0
+  }
+ },
+ "F1-en-span": {
+  "before_at_049c48c": {
+   "status": "complete",
+   "state": "no_recognized_warning_in_inspected_region",
+   "evidence": [],
+   "hidden_elements": 0
+  },
+  "after": {
+   "status": "complete",
+   "state": "recognized_warning_text",
+   "evidence": [
+    {
+     "kind": "warning",
+     "part": "text",
+     "matched": "Retracted"
+    }
+   ],
+   "hidden_elements": 0
+  }
+ },
+ "F2-ar-missing-marker-template": {
+  "before_at_049c48c": "control (no before case)",
+  "after": {
+   "status": "complete",
+   "state": "missing_template_link_only",
+   "evidence": [
+    {
+     "kind": "missing_template_link",
+     "part": "redlink",
+     "matched": "قالب:Retracted",
+     "target": "قالب:Retracted"
+    }
+   ],
+   "hidden_elements": 0
+  }
+ },
+ "F2-en-red-link-label": {
+  "before_at_049c48c": {
+   "status": "complete",
+   "state": "no_recognized_warning_in_inspected_region",
+   "evidence": [],
+   "hidden_elements": 0
+  },
+  "after": {
+   "status": "complete",
+   "state": "recognized_warning_text",
+   "evidence": [
+    {
+     "kind": "warning",
+     "part": "text",
+     "matched": "Retracted"
+    }
+   ],
+   "hidden_elements": 0
+  }
+ },
+ "F3-ar-hidden-ancestor": {
+  "before_at_049c48c": {
+   "status": "complete",
+   "state": "recognized_warning_text",
+   "evidence": [
+    [
+     "warning",
+     "مسحوب"
+    ]
+   ],
+   "hidden_elements": 0
+  },
+  "after": {
+   "status": "complete",
+   "state": "ambiguous_text",
+   "evidence": [
+    {
+     "kind": "hidden",
+     "part": "hidden_text",
+     "matched": "مسحوب",
+     "hidden_basis": "display:none on <div> /html/body/div"
+    }
+   ],
+   "hidden_elements": 1
+  }
+ },
+ "F3-en-hidden-ancestor": {
+  "before_at_049c48c": {
+   "status": "complete",
+   "state": "recognized_warning_text",
+   "evidence": [
+    [
+     "warning",
+     "Retracted"
+    ]
+   ],
+   "hidden_elements": 0
+  },
+  "after": {
+   "status": "complete",
+   "state": "ambiguous_text",
+   "evidence": [
+    {
+     "kind": "hidden",
+     "part": "hidden_text",
+     "matched": "Retracted",
+     "hidden_basis": "display:none on <div> /html/body/div"
+    }
+   ],
+   "hidden_elements": 1
+  }
+ },
+ "F4-ar-numbered-reuse": {
+  "before_at_049c48c": {
+   "uses": [
+    [
+     "tag",
+     "a",
+     "bound"
+    ]
+   ],
+   "issues": [
+    "RECONCILIATION_UNAVAILABLE"
+   ]
+  },
+  "after": {
+   "status": "partial",
+   "uses": [
+    [
+     "tag",
+     "a",
+     "bound"
+    ],
+    [
+     "r",
+     "a",
+     "bound"
+    ]
+   ]
+  }
+ },
+ "F4-en-numbered-reuse": {
+  "before_at_049c48c": {
+   "uses": [
+    [
+     "tag",
+     "a",
+     "bound"
+    ]
+   ],
+   "issues": [
+    "RECONCILIATION_UNAVAILABLE"
+   ]
+  },
+  "after": {
+   "status": "partial",
+   "uses": [
+    [
+     "tag",
+     "a",
+     "bound"
+    ],
+    [
+     "r",
+     "a",
+     "bound"
+    ]
+   ]
+  }
+ }
+}

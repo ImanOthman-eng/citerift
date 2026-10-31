@@ -1,0 +1,17 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+cases = [
+ ("en", 'Paper. <cite>Smith. Un</cite>retracted.'),
+ ("en", 'Paper.<cite>Foo</cite>Retracted.'),
+ ("en", 'Paper. <span class="cs1-maint">Un</span>retracted.'),
+ ("en", 'Paper. <q>Retracted</q> article.'),
+ ("en", 'Paper. "Retracted" article.'),
+ ("en", 'Paper. Re<q>tracted</q>.'),
+ ("en", 'Paper. <a rel="mw:WikiLink" href="./Template:Retracted">Un</a>retracted.'),
+ ("en", 'Paper. Un<a rel="mw:WikiLink" href="./Template:Retracted">x</a>retracted.'),
+ ("ar", 'ورقة. <cite>سميث. غير</cite>مسحوب.'),
+ ("ar", 'ورقة. <cite>سميث. </cite>غيرمسحوب.'),
+]
+for wiki, inner in cases:
+    doc, rep, b = observe(inner, wiki)
+    print(f"{wiki} {inner!r}\n    -> {short(doc['markers'][0])} verified={rep['verified']}")

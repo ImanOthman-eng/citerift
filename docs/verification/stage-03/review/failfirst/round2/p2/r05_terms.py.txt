@@ -1,0 +1,24 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import one_note, show, doi_link
+from citerift.wiki.markers import _find
+print("-- _find evidence offsets after casefold expansion (pure function) --")
+for t in ("Straße. Retracted", "İİİ İstanbul retracted here", "ﬁﬂ Retracted"):
+    print(repr(t), "->", [(e["term"], e["matched"]) for e in _find(("retracted",), t, "text", "warning")])
+print("-- through the public API --")
+T = 'A.<ref name="a">Bericht über die Größe der Straße, İstanbul. Retracted.</ref>\n'
+show("unstructured ref with ß/İ", one_note(T, "Bericht über die Größe der Straße, İstanbul. Retracted."))
+AR = 'أ.<ref name="a">تقرير البنك المركزي عن المسحوبات النقدية 2020</ref>\n'
+print("-- Arabic broad stem (unstructured reference, no <cite>) --")
+show("المسحوبات النقدية (cash withdrawals)", one_note(AR, "تقرير البنك المركزي عن المسحوبات النقدية 2020", wiki="ar"))
+show("بطاقة مسحوبة من التداول (card withdrawn from circulation)", one_note(AR, "بطاقة مسحوبة من التداول", wiki="ar"))
+print("-- Arabic normalization variants of the warning term (shown text) --")
+for label, s in (("plain", "مصدر مسحوب"), ("harakat", "مصدر مَسْحُوب"), ("tatweel", "مصدر مسحـــوب"),
+                 ("ZWNJ inside", "مصدر مس‌حوب"), ("ZWJ inside", "مصدر مس‍حوب"),
+                 ("RLM inside", "مصدر مس‏حوب"), ("presentation forms (NFKC)", "مصدر ﻣﺴﺤﻮﺏ"),
+                 ("soft hyphen (en)", None)):
+    if s is None:
+        show(label, one_note('A.<ref name="a">x</ref>\n', "Paper. Retrac­ted."))
+    else:
+        show(label, one_note(AR, s, wiki="ar"))
+print("-- English negation / compounds --")
+show("'was not retracted'", one_note('A.<ref name="a">x</ref>\n', "Smith 2010. The paper was not retracted."))

@@ -1,0 +1,11 @@
+socket.socket.connect: blocked: the extraction worker makes no network connection
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p3/probe_worker_net.py", line 13, in <module>
+    s.connect(path); print("_socket.socket.connect after forbid_network(): CONNECTED")
+    ^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/wt/src/citerift/wiki/worker.py", line 25, in connect
+    return _no_network()
+           ^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/wt/src/citerift/wiki/worker.py", line 18, in _no_network
+    raise PermissionError("the extraction worker makes no network connection")
+PermissionError: the extraction worker makes no network connection

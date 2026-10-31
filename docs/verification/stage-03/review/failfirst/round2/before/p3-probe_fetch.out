@@ -1,0 +1,22 @@
+gzip+trailing-garbage: code=None requests=1 body=b'{"query": {"x": 1}}' json={'query': {'x': 1}} not_before=None sleeps=[0.0]
+gzip two members: EXCEPTION IndexError: pop from empty list
+loads_strict {"query": {"x": 1e400}} -> {'query': {'x': inf}}
+loads_strict {"a": -1E999} -> {'a': -inf}
+api answer with 1e400: code=None requests=1 body=b'{"query": {"pages": [], "n": 1e400}}' json={'query': {'pages': [], 'n': inf}} not_before=None sleeps=[0.0]
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 GMT' -> (90.0, None)
+parse_retry_after 'Wednesday, 28-Oct-26 12:01:30 GMT' -> (90.0, None)
+parse_retry_after 'Wed Oct 28 12:01:30 2026' -> (None, 'RETRY_AFTER_UNREADABLE')
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 -0000' -> (None, 'RETRY_AFTER_UNREADABLE')
+parse_retry_after 'Wed, 28 Oct 2026 12:01:30 UTC' -> (90.0, None)
+parse_retry_after '120 ' -> (120.0, None)
+parse_retry_after '1111111111111111111111111111111111111111' EXCEPTION OverflowError int too large to convert to float
+parse_retry_after '1111111111111111111111111111111111111111' EXCEPTION ValueError Exceeds the limit (4300 digits) for integer string conversion: value has 5000 di
+parse_retry_after '100000000000000' -> (100000000000000.0, None)
+parse_retry_after 'Fri, 31 Dec 9999 23:59:59 GMT' -> (251609111999.0, None)
+429 retry-after 'Wednesday, 28-Oct-26 12:05:00 GMT': code=DEFERRED_RETRY_AFTER requests=1 body=None json=None not_before=2026-10-28T12:05:00.000000Z sleeps=[0.0]
+429 retry-after 'Wed Oct 28 12:05:00 2026': code=None requests=2 body=b'{"query": {"x": 1}}' json={'query': {'x': 1}} not_before=None sleeps=[0.0, 10.0]
+429 retry-after '100000000000000'...: EXCEPTION OverflowError: days=1157407407; must have magnitude <= 999999999
+429 retry-after '11111111111111111111'...: EXCEPTION OverflowError: int too large to convert to float
+429 retry-after '11111111111111111111'...: EXCEPTION ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 5000 digits; use sys.set_int_max_str_digits() t
+429 retry-after 'Fri, 31 Dec 9999 23:'...: code=DEFERRED_RETRY_AFTER requests=1 body=None json=None not_before=9999-12-31T23:59:59.000000Z sleeps=[0.0]
+3x429 with Retry-After 100 on last: code=ATTEMPTS_EXHAUSTED requests=3 body=None json=None not_before=None sleeps=[0.0, 15.0, 15.0]

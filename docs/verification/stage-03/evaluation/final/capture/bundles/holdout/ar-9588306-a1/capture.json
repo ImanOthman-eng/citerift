@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 7155,
+   "body_sha256": "5248ff058f52b1fcb915bb2fc97933b3c9b8c68593e4ed569568f9480cac7323",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.307,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:51:34.803272Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9588306",
+   "wire_bytes": 2428
+  },
+  {
+   "body_bytes": 97335,
+   "body_sha256": "829405d500da6683a0282196e694fd87d95ead8460314692eebef34d0ab0ce00",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 2.309,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:51:45.767581Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75264382/html",
+   "wire_bytes": 15970
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:51:48.080335Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9588306,
+  "parent_revision_id": 73286494,
+  "redirect_followed": null,
+  "revision_id": 75264382,
+  "revision_timestamp": "2026-06-10T00:10:48Z",
+  "sha1": "b80214461d310ed6fb57262db645d0b7d2de673f",
+  "size": 6553,
+  "title": "غلوبيولين مضاد للخلايا التيموسية",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "829405d500da6683a0282196e694fd87d95ead8460314692eebef34d0ab0ce00",
+  "bytes": 97335,
+  "checks": {
+   "document_revision_id": "75264382",
+   "header_revision_id": "75264382",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9588306",
+   "render_id": "b8c6f429-d4a3-11f1-bde0-79c2997b04d3",
+   "revision_sha1": "b80214461d310ed6fb57262db645d0b7d2de673f",
+   "revision_sha1_base36": "lhshgamiy7w7vkgebvpwb4kbasq3uin"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "75264382",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:51:45 GMT",
+   "etag": "W/\"75264382/b8c6f429-d4a3-11f1-bde0-79c2997b04d3/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:34:41 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75264382/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9588306,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "092d2ce25c4752c0d88dae797bdab1fa9d5735de6fe26dc2603d4bef8039d554",
+  "bytes": 6553,
+  "response_artifact": "5248ff058f52b1fcb915bb2fc97933b3c9b8c68593e4ed569568f9480cac7323",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9588306"
+ },
+ "started_at": "2026-10-30T20:51:25.501266Z",
+ "status": "complete"
+}

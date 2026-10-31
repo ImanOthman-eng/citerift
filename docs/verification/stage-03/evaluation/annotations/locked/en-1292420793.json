@@ -1,0 +1,191 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1292420793,
+  "source_sha256": "a476dd73ea6ace0da8e076db569b72630e09eeabdb4d0a77e9ca3cbf97e33460",
+  "html_sha256": "fe66552753fbf9338fb02a972700d49e5c75f52edb9a74d802ebc1bd37d48187",
+  "window": [
+   0,
+   1943
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:12:05Z",
+  "files_opened": [
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1292420793/source.wikitext",
+    "sha256": "a476dd73ea6ace0da8e076db569b72630e09eeabdb4d0a77e9ca3cbf97e33460"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1292420793/render.html",
+    "sha256": "fe66552753fbf9338fb02a972700d49e5c75f52edb9a74d802ebc1bd37d48187"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1292420793/packet.json",
+    "sha256": "8e7127abcde7ec127fc8ca5a7310e146687be3736112fd155761c0973276fd9a"
+   },
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   }
+  ],
+  "tools": "bash (cat, sha256sum, grep), python3 -I with standard library (re, json, hashlib, str.find) to locate and verify quotes, lxml to list <sup typeof=mw:Extension/ref> markers with id/data-mw, <li id=cite_note-...> items, red links and retraction vocabulary in render.html; every label decided by hand.",
+  "unresolved": "Nothing undecided. {{rp}} treated as not a use. jstor= identifiers not in scope (only DOI/PMID)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Steiner, 2002.",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 328,
+      "quote": "{{cite journal |last1=Steiner"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Steiner,_2002.-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Name contains a comma, space and trailing period; used 4 times in total."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1346,
+    "quote": "<ref>{{cite journal |last1=Kuhlmann"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1351,
+      "quote": "{{cite journal |last1=Kuhlmann"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "binds_to": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-Steiner,_2002._1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 756,
+    "quote": "<ref name=\"Steiner, 2002.\"/>{{rp|p=59}}"
+   },
+   "binds_to": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-Steiner,_2002._1-1",
+   "notes": "Followed by {{rp|...}} (page-number in-source location template); {{rp}} is not a footnote call and is not listed as a use."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 946,
+    "quote": "<ref name=\"Steiner, 2002.\"/>{{rp|p=61}}"
+   },
+   "binds_to": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-Steiner,_2002._1-2",
+   "notes": "Followed by {{rp|...}} (page-number in-source location template); {{rp}} is not a footnote call and is not listed as a use."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1159,
+    "quote": "<ref name=\"Steiner, 2002.\"/>{{rp|p=59}}"
+   },
+   "binds_to": {
+    "cp": 301,
+    "quote": "<ref name=\"Steiner, 2002.\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-Steiner,_2002._1-3",
+   "notes": "Followed by {{rp|...}} (page-number in-source location template); {{rp}} is not a footnote call and is not listed as a use."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1346,
+    "quote": "<ref>{{cite journal |last1=Kuhlmann"
+   },
+   "binds_to": {
+    "cp": 1346,
+    "quote": "<ref>{{cite journal |last1=Kuhlmann"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 587,
+    "quote": "10.1007/s00606-002-0216-y"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/s00606-002-0216-y",
+   "notes": "doi= of {{cite journal}} in ref 'Steiner, 2002.'"
+  },
+  {
+   "at": {
+    "cp": 1654,
+    "quote": "10.1080/00222933.2014.939732"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/00222933.2014.939732",
+   "notes": "doi= of {{cite journal}} (Kuhlmann & Hollens)"
+  },
+  {
+   "at": {
+    "cp": 1688,
+    "quote": "https://doi.org/10.1080/00222933.2014.939732"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1080/00222933.2014.939732",
+   "notes": "doi.org resolver URL in url= of the same {{cite journal}}"
+  }
+ ],
+ "unresolved_notes": [
+  "{{Speciesbox}} and {{Taxonbar}} emit no rendered footnotes in render.html (only cite_note-Steiner,_2002.-1 and cite_note-2 exist).",
+  "Four {{rp|p=...}} calls follow the reuses of 'Steiner, 2002.'; they add page numbers after the marker and are not footnote uses."
+ ]
+}

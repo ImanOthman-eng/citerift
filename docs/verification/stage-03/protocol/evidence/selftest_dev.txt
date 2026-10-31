@@ -1,0 +1,158 @@
+# selftest_evaluate.py on the 12 development bundles (labels derived from the engine; scorer check, not an evaluation)
+# python 3.12.3, 2026-10-28T23:05:18Z
+== ar-72523566 (extraction sha256 69cd68f2ef28ba198ada78c9fbe10d9d39da7fbf9daefbe3a54eb60d38547a93)
+identity {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [8, 1, 0], "binding": [8, 8], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [8, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [8, 1, 0], "units": [10, 1, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 1, "promotions": 0, "role": [13, 13], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 1, "role": [12, 13], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [12, 1, 0], "key_errors": 0, "promotions": 0, "role": [12, 12], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [8, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [9, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [12, 1, 0], "key_errors": 0, "promotions": 0, "role": [12, 12], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [9, 0, 0], "units": [11, 0, 0], "uses": [9, 0, 0], "binding": [9, 9], "identifiers": [13, 0, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [9, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== ar-75286968 (extraction sha256 fa9fcd49c0c680e08cf609d9400483c3d6ff6caa5bf17356e8a91ad497be61ab)
+identity {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 0, "role": [17, 17], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [6, 1, 0], "binding": [6, 6], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 0, "role": [17, 17], "render": [6, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [20, 1, 0], "units": [20, 1, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 0, "role": [17, 17], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 1, "promotions": 0, "role": [17, 17], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 1, "role": [16, 17], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [16, 1, 0], "key_errors": 0, "promotions": 0, "role": [16, 16], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 0, "role": [17, 17], "render": [6, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [17, 0, 0], "key_errors": 0, "promotions": 0, "role": [17, 17], "render": [7, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [21, 0, 0], "units": [21, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [16, 1, 0], "key_errors": 0, "promotions": 0, "role": [16, 16], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [2, 0, 19], "units": [2, 0, 19], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [3, 0, 14], "key_errors": 0, "promotions": 0, "role": [3, 3], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== ar-76077251 (extraction sha256 37907bf27dc6a253ff48aba1f36f4815ee8befe290ebc9165051f9a2f79b6587)
+identity {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [11, 1, 0], "binding": [11, 11], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [11, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [10, 1, 0], "units": [10, 1, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 1, "promotions": 0, "role": [4, 4], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 1, "role": [3, 4], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [3, 1, 0], "key_errors": 0, "promotions": 0, "role": [3, 3], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [11, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [12, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [3, 1, 0], "key_errors": 0, "promotions": 0, "role": [3, 3], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 0, 0], "binding": [12, 12], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== ar-76190003 (extraction sha256 54796458e603325cd8a80983a1a1dddd7f4c3bea20c452479a27b62f388b2b8a)
+identity {"definitions": [12, 0, 0], "units": [12, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [12, 0, 0], "units": [12, 0, 0], "uses": [17, 1, 0], "binding": [17, 17], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [11, 1, 0], "units": [11, 1, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change not applicable: no such item in the window
+promotion not applicable: no such item in the window
+non_target not applicable: no such item in the window
+render_id ok {"definitions": [12, 0, 0], "units": [12, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [17, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [12, 0, 0], "units": [12, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote not applicable: no such item in the window
+b1_vs_engine_labels {"definitions": [12, 0, 0], "units": [12, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [0, 17, 1], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== ar-76203761 (extraction sha256 7a0af22fbc639376d71185dd385f8155c55cba72fffae15e8b85da46afd0348a)
+identity {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [6, 1, 0], "binding": [6, 6], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [6, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [5, 1, 0], "units": [5, 1, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 1, "promotions": 0, "role": [4, 4], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 1, "role": [3, 4], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [3, 1, 0], "key_errors": 0, "promotions": 0, "role": [3, 3], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [6, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [7, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [3, 1, 0], "key_errors": 0, "promotions": 0, "role": [3, 3], "render": [7, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [6, 0, 0], "units": [6, 0, 0], "uses": [7, 0, 0], "binding": [7, 7], "identifiers": [4, 0, 0], "key_errors": 0, "promotions": 0, "role": [4, 4], "render": [0, 7, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== ar-76386528 (extraction sha256 b51401961431eef39f9a0dce61dbe4d51da0642fd5e250704d58d5cd1d2b23b7)
+identity {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [12, 1, 0], "binding": [12, 12], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [12, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [10, 1, 0], "units": [10, 1, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 1, "promotions": 0, "role": [10, 10], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 1, "role": [9, 10], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [9, 1, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [12, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [13, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [9, 1, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [13, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [11, 0, 0], "units": [11, 0, 0], "uses": [13, 0, 0], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [0, 13, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1372543632 (extraction sha256 7c88fffda3eed2b5b7b0607470d0798e96744af6bea2c1628a93528d6c024aec)
+identity {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [17, 1, 0], "binding": [17, 17], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [12, 1, 0], "units": [12, 1, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change not applicable: no such item in the window
+promotion not applicable: no such item in the window
+non_target not applicable: no such item in the window
+render_id ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [17, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote not applicable: no such item in the window
+b1_vs_engine_labels {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [18, 0, 0], "binding": [18, 18], "identifiers": [0, 0, 0], "key_errors": 0, "promotions": 0, "role": [0, 0], "render": [18, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1374726997 (extraction sha256 c2568236dc1e3a710e5c930baa533e4599f91b1f4a985621297c97eec1e55cc9)
+identity {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 0, "role": [11, 11], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [16, 1, 0], "binding": [16, 16], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 0, "role": [11, 11], "render": [16, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [7, 1, 0], "units": [7, 1, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 0, "role": [11, 11], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 1, "promotions": 0, "role": [11, 11], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 1, "role": [10, 11], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [10, 1, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 0, "role": [11, 11], "render": [16, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 0, "role": [11, 11], "render": [17, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [10, 1, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [8, 0, 0], "units": [8, 0, 0], "uses": [17, 0, 0], "binding": [17, 17], "identifiers": [11, 0, 0], "key_errors": 0, "promotions": 2, "role": [9, 11], "render": [17, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1379489342 (extraction sha256 6bf144127e7b79bfb0984b4578eecebdd531450d2bf393a9da4ada781fbd8693)
+identity {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [14, 1, 0], "binding": [14, 14], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [14, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [10, 1, 0], "units": [11, 1, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 1, "promotions": 0, "role": [10, 10], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 1, "role": [9, 10], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [9, 1, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [14, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [15, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [11, 0, 0], "units": [12, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [9, 1, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [10, 0, 1], "units": [12, 0, 0], "uses": [13, 0, 2], "binding": [13, 13], "identifiers": [10, 0, 0], "key_errors": 0, "promotions": 0, "role": [10, 10], "render": [0, 13, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1380653302 (extraction sha256 5256ec9602ed4fb9567a5f41b0bcf4c656384ffd9fdde054ee1726b462c7c1bc)
+identity {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [14, 1, 0], "binding": [14, 14], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [14, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [12, 1, 0], "units": [12, 1, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 1, "promotions": 0, "role": [23, 23], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 1, "role": [22, 23], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [22, 1, 0], "key_errors": 0, "promotions": 0, "role": [22, 22], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [14, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [15, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [22, 1, 0], "key_errors": 0, "promotions": 0, "role": [22, 22], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [13, 0, 0], "units": [13, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [23, 0, 0], "key_errors": 0, "promotions": 0, "role": [23, 23], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1381772671 (extraction sha256 2313886698567783c356d1b34bae20d6f22e00ae1dde46600dc0f4480f19e7dd)
+identity {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [14, 1, 0], "binding": [14, 14], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [14, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [11, 1, 0], "units": [13, 1, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 1, "promotions": 0, "role": [14, 14], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 1, "role": [13, 14], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [13, 1, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [14, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [15, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [13, 1, 0], "key_errors": 0, "promotions": 0, "role": [13, 13], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [12, 0, 0], "units": [14, 0, 0], "uses": [15, 0, 0], "binding": [15, 15], "identifiers": [14, 0, 0], "key_errors": 0, "promotions": 0, "role": [14, 14], "render": [15, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0
+== en-1382117018 (extraction sha256 4e74c0118a78116ab13c79a91d7a1b1990d27d71ba922c3ded88c36769e67bf9)
+identity {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_use ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [21, 1, 0], "binding": [21, 21], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [21, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+drop_definition ok {"definitions": [14, 1, 0], "units": [14, 1, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+key_change ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 1, "promotions": 0, "role": [9, 9], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+promotion ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 1, "role": [8, 9], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+non_target ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [8, 1, 0], "key_errors": 0, "promotions": 0, "role": [8, 8], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 0}
+render_id ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [21, 1, 0], "fabricated_negatives": 0, "invalid": 0}
+marker_warning ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [22, 0, 0], "fabricated_negatives": 1, "invalid": 0}
+bad_quote ok {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [8, 1, 0], "key_errors": 0, "promotions": 0, "role": [8, 8], "render": [22, 0, 0], "fabricated_negatives": 0, "invalid": 1}
+b1_vs_engine_labels {"definitions": [15, 0, 0], "units": [15, 0, 0], "uses": [22, 0, 0], "binding": [22, 22], "identifiers": [9, 0, 0], "key_errors": 0, "promotions": 0, "role": [9, 9], "render": [0, 22, 0], "fabricated_negatives": 0, "invalid": 0}
+selftest PASSED
+exit=0

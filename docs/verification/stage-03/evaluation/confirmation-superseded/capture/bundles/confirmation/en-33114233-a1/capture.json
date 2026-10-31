@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "70d2e2b1aa075c3a314d92e01e9138eb01fd633961b315b2d6813132f29aac03",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.393,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "48",
+   "retry_after_s": 48.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:35:11.888264Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33114233",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 4141,
+   "body_sha256": "a6a0d140381ec1edc79db51f2b8c1e9da7a3b889e35e9a21845118f79c20bcb9",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.43,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:36:00.281387Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33114233",
+   "wire_bytes": 1998
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "00640c9cf3ed783ad0ed7e44b3e69f906e3754d3d3fc128374f9837a3027d381",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.472,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:36:10.711542Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1359500503/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 49015,
+   "body_sha256": "103972eeaae2a6efe145ef0a5d18f3bf785346f347dd376d9085f8bc139343fc",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.513,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:37:00.183829Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1359500503/html",
+   "wire_bytes": 11192
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "70d2e2b1aa075c3a314d92e01e9138eb01fd633961b315b2d6813132f29aac03",
+  "00640c9cf3ed783ad0ed7e44b3e69f906e3754d3d3fc128374f9837a3027d381"
+ ],
+ "finished_at": "2026-10-29T09:37:00.697816Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 33114233,
+  "parent_revision_id": 1347816424,
+  "redirect_followed": null,
+  "revision_id": 1359500503,
+  "revision_timestamp": "2026-06-15T16:59:08Z",
+  "sha1": "d266cf840ecad8cc0e9c8647bdda8619b21d027f",
+  "size": 3571,
+  "title": "Orientalis Ecclesiae",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "103972eeaae2a6efe145ef0a5d18f3bf785346f347dd376d9085f8bc139343fc",
+  "bytes": 49015,
+  "checks": {
+   "document_revision_id": "1359500503",
+   "header_revision_id": "1359500503",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "33114233",
+   "render_id": "8785ba10-d17d-11f1-b559-93185953fbb3",
+   "revision_sha1": "d266cf840ecad8cc0e9c8647bdda8619b21d027f",
+   "revision_sha1_base36": "oks4dnicrm5hlmyw5r6edzd77u1jmnz"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1359500503",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 09:37:00 GMT",
+   "etag": "W/\"1359500503/8785ba10-d17d-11f1-b559-93185953fbb3/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:49:24 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1359500503/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 33114233,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "44aee44ae86808a11be0d0b0d8cfbdff20852cda971a298dd469ecefb91bbf93",
+  "bytes": 3571,
+  "response_artifact": "a6a0d140381ec1edc79db51f2b8c1e9da7a3b889e35e9a21845118f79c20bcb9",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33114233"
+ },
+ "started_at": "2026-10-29T09:35:02.205881Z",
+ "status": "complete"
+}

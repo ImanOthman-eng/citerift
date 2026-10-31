@@ -1,0 +1,22 @@
+{
+ "article": "ar-75137993",
+ "adjudicator": "stage03-adjudicator-ar",
+ "started_at": "2026-10-29T09:20:30Z",
+ "finished_at": "2026-10-29T09:24:20Z",
+ "decisions": [
+  {
+   "item": 1,
+   "kind": "template_unit_missed",
+   "decision": "confirm",
+   "reason": "Guide 3.1 defines citation templates by purpose ('templates whose purpose is to format a citation: Cite ..., Citation, استشهاد ..., Cite Q, and similar'). {{IUCN2008|assessors=|year=|id=|title=|downloaded=}} takes bibliographic parameters and renders in li#cite_note-iucn-3 as a full citation: 'McKnight, M. (2008). Dasyurus viverrinus [linked to iucnredlist.org]. في: الاتحاد العالمي للحفاظ على الطبيعة 2008. القائمة الحمراء ... وُصل بتاريخ 28 December 2008.' Its purpose is to format a citation of the IUCN Red List entry, so it is a citation template under 'and similar', and the locked templates entry at cp 1780 is right. Ambiguity noted: IUCN2008 is not one of the named families, but the guide's test is purpose, and the wording 'and similar' covers it.",
+   "corrected_label": null
+  },
+  {
+   "item": 2,
+   "kind": "unstructured_unit_extra",
+   "decision": "confirm",
+   "reason": "Guide 3.1: unstructured=true 'when the definition cites something in plain text with no citation template (bare URL, hand-written reference)'. d2 contains a citation template ({{IUCN2008}}, see item 1), and the trailing plain text 'Database entry includes justification for why this species is listed as near threatened' is a comment on the same cited database entry, not a second, hand-written citation of another work. So unstructured=false is right and there is no unstructured unit.",
+   "corrected_label": null
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+  "candidate_revision": "48cfeab2c093ea0e853fe2ccb2cd1d5ff87a528b",
+  "original_protocol_revision": "afa0115679c503c7a76e6e06d04c3165aed43762",
+  "amendment_revision": "049c48cfcf12ec03d0619cd86f7732ead3ef7ccd",
+  "files_sha256": {
+    "docs/verification/stage-03/protocol/FROZEN_PROTOCOL.md": "398b9cbcbcb03f42cbdcfdff5a78cea77dc2fd4806b14ee0097f35f507b5f886",
+    "docs/verification/stage-03/protocol/AMENDMENT_2026-10-29.md": "ee3b508744efbf5948a45e940f824fa5dcbd56ce5e075b55835e0ec69fc836b4",
+    "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8",
+    "docs/verification/stage-03/protocol/scripts/evaluate.py": "095248da890ce8bfcf7b0dd4f56faaf82d3188eec4a9bcff1f956f81018c9adf",
+    "docs/verification/stage-03/evaluation/EVALUATOR_BRIEF.md": "4434ec37703b20ff6ef9c47ecaa85cd72e522d07b8f7d78a84d6925c8fd5f662",
+    "docs/verification/stage-03/evaluation/ADJUDICATION_BRIEF.md": "3c5541fce4c056af99380c52733f31423ebc210b33f7bc2e548217bb80e2edd7",
+    "docs/verification/stage-03/evaluation/scripts/final_capture.py": "29ffa44e0703c2c458eb6827b357426274b1c630517dae658e90feff643ee976",
+    "docs/verification/stage-03/evaluation/scripts/final_selection.py": "a67fbf0da8ec4a72f2b2217dd6d588b9114c472d7b655377e8670ad8c6399757",
+    "docs/verification/stage-03/evaluation/selection/selection.json": "531be095f7728b116cb9f02579efcb4a5777d013f675923cf68030e61bf58854",
+    "docs/verification/stage-03/evaluation/final/EXPOSURE_BEFORE_CAPTURE.json": "e0c008fcf101cf85be1d48320d9bbec18d1fbc0beca28ee52ef5a7b85f7c52fa",
+    "docs/verification/stage-03/evaluation/final/NETWORK_BASELINE.json": "244200ea9cf8e68633b6d702f4ff68837b458375cff242e8d2530c37643d1d51",
+    "docs/verification/stage-03/evaluation/final/capture_initial.json": "08f9d5c1650594f5912c92cc1571352e0c392d5e54c8f6a2d2632fafee8ed0c3",
+    "docs/verification/stage-03/evaluation/final/selection_final.json": "2d291f94614cd3f2c6e6f04abbd86da2ee559700dd1b38dd816f5acbb4b4b9af",
+    "docs/verification/stage-03/evaluation/final/tools/prepare_packets.py": "3992ca951108181ed9becdd9c3f4ea86d316a484a4ee64af43980f1f667cb6d4",
+    "docs/verification/stage-03/evaluation/final/tools/reserve_step.py": "1f8f251e708dfbbfbbba68ab4b47d43277aac12812f1777349bf011bf2076ebc"
+  },
+  "fresh_capture_started": false,
+  "executor": "ChatGPT/Codex",
+  "tool_cost": "Token/billing totals not exposed; no spend figure inferred. No paid service added.",
+  "frozen_at": "2026-10-30T20:32:29.340775+00:00",
+  "production_equivalent_to": "3d91429cbad7108c169c6a45544710faf1abb14d",
+  "test_correction": "RF-59; production unchanged; full suites being refreshed on the freeze checkpoint.",
+  "campaign": {
+    "initial_articles_per_language": 10,
+    "maximum_per_language": 16,
+    "reserve": "ordered pairs only after committed locked annotation counts require them",
+    "http_attempts_ceiling": 500,
+    "accepted_body_bytes_ceiling": 314572800,
+    "export_bytes_ceiling": 1073741824,
+    "network_gate": "/workspace/stage03-work/wiki-network.lock",
+    "capture_directory_during_runs": "/workspace/stage03-work/final-capture",
+    "preflight_http_attempts_debited": 4,
+    "preflight_accepted_body_bytes_debited": 680851,
+    "predictions_before_annotation_commit": false
+  },
+  "independence": "Separate ChatGPT/Codex evaluator contexts; raw packets and unchanged guide only; isolated output directories. No human gold claim."
+}

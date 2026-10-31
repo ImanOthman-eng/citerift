@@ -1,0 +1,42 @@
+"""Forged bundles / extraction documents through the installed CLI entry point (offline)."""
+import json, os, re, shutil, subprocess, sys
+from pathlib import Path
+SCR = Path(__file__).resolve().parent / "work_bundle"
+shutil.rmtree(SCR, ignore_errors=True); SCR.mkdir()
+FIX = Path("/home/user/citerift/tests/stage03/fixtures/observed/en-1372543632")
+def cli(*args):
+    p = subprocess.run(["uv", "run", "--frozen", "citerift-wiki", *map(str, args)], capture_output=True, text=True, cwd="/home/user/citerift")
+    out = p.stdout
+    try:
+        j = json.loads(out); summary = {k: j.get(k) for k in ("verified", "status", "replay") if k in j}
+        summary["error_codes"] = sorted({i["code"] for i in j.get("issues", []) if isinstance(i, dict) and i.get("severity") == "error"}) if isinstance(j.get("issues"), list) else j.get("issues")
+    except Exception:
+        summary = out[:200]
+    err = "\n".join(l for l in p.stderr.splitlines() if "UV_NATIVE" not in l)
+    return p.returncode, summary, err[-300:]
+def copy(name, edit):
+    d = SCR / name; shutil.copytree(FIX, d)
+    raw = (d / "capture.json").read_text(encoding="utf-8")
+    (d / "capture.json").write_text(edit(raw), encoding="utf-8")
+    return d
+# A. non-finite number in capture.json (an attempt duration of 1e400)
+a = copy("A_inf", lambda s: s.replace('"duration_s": 0.0', '"duration_s": 1e400', 1))
+print("A verify capture with duration_s=1e400:", cli("verify", "--bundle", a))
+print("A extract:", cli("extract", "--bundle", a, "--out", SCR / "A.json"))
+# B. lone surrogate in an attempt detail (escape \ud800) -- capture.json is still valid UTF-8 bytes
+b = copy("B_surrogate", lambda s: s.replace('"detail": ""', '"detail": "\\ud800"', 1))
+print("B verify capture with lone surrogate in detail:", cli("verify", "--bundle", b))
+# C. baseline extraction, then a forged extraction doc with a lone surrogate inside it
+print("C extract baseline:", cli("extract", "--bundle", FIX, "--out", SCR / "C.json"))
+doc = (SCR / "C.json").read_text(encoding="utf-8")
+forged = doc.replace('"name":"citerift-wiki"', '"name":"citerift-wiki\\ud800"', 1)
+assert forged != doc
+(SCR / "C_forged.json").write_text(forged, encoding="utf-8")
+print("C verify with forged doc (lone surrogate):", cli("verify", "--bundle", FIX, "--extraction", SCR / "C_forged.json"))
+print("C replay with forged doc (lone surrogate):", cli("replay", "--bundle", FIX, "--extraction", SCR / "C_forged.json"))
+# D. extraction doc with a non-finite number in an integer-free slot: a config value
+forged2 = doc.replace('"worker_wall_s":30.0', '"worker_wall_s":1e400', 1)
+assert forged2 != doc
+(SCR / "D.json").write_text(forged2, encoding="utf-8")
+print("D verify with worker_wall_s=1e400:", cli("verify", "--bundle", FIX, "--extraction", SCR / "D.json"))
+print("D replay with worker_wall_s=1e400:", cli("replay", "--bundle", FIX, "--extraction", SCR / "D.json"))

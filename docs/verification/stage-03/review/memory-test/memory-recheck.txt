@@ -1,0 +1,28 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________ test_the_memory_limit_ends_in_a_stable_failure ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-6/test_the_memory_limit_ends_in_0')
+
+    @pytest.mark.security
+    def test_the_memory_limit_ends_in_a_stable_failure(tmp_path: Path) -> None:
+        text = "".join(
+            f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(3000)
+        )
+        b = bundle(tmp_path, text)
+        doc = extract_bundle(b, ExtractConfig(worker_memory_mib=64))
+>       assert doc["status"] == "failed" and {i["code"] for i in doc["issues"]} == {"EXTRACTION_MEMORY_EXCEEDED"}
+E       AssertionError: assert ('failed' == 'failed'
+E         
+E           failed and {'EXTRACTION_...INE_EXCEEDED'} == {'EXTRACTION_MEMORY_EXCEEDED'}
+E         
+E         Extra items in the left set:
+E         'EXTRACTION_DEADLINE_EXCEEDED'
+E         Extra items in the right set:
+E         'EXTRACTION_MEMORY_EXCEEDED'
+E         Use -v to get more diff)
+
+tests/stage03/test_wiki_bundle_verify.py:401: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage03/test_wiki_bundle_verify.py::test_the_memory_limit_ends_in_a_stable_failure
+1 failed in 30.73s

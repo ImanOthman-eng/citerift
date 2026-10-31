@@ -1,0 +1,30 @@
+"""verify_bundle on an extraction document whose semantics were edited and whose digest was recomputed:
+(a) a marker_target DOI relabelled primary_citation_field; (b) a normalized DOI replaced by another value."""
+import copy
+from collections import Counter
+from h import run
+from citerift.wiki import verify_bundle, replay_bundle
+from citerift.wiki.canonical import digest
+
+p, doc = run("A<ref>{{Retracted|doi=10.1000/notice}} {{cite journal|title=T|doi=10.1000/orig}}</ref>", label="marker + cite")
+print("baseline verified:", verify_bundle(p, doc)["verified"])
+
+def reseal(d):
+    d["accounting"]["identifiers_by_role"] = dict(Counter(i["role"] for i in d["identifiers"]))
+    d["accounting"]["checks"] = [c for c in d["accounting"]["checks"]]
+    d["extraction_digest"] = digest({k: v for k, v in d.items() if k != "extraction_digest"})
+    return d
+
+a = copy.deepcopy(doc)
+m = next(i for i in a["identifiers"] if i["role"] == "marker_target")
+m["role"] = "primary_citation_field"; m["role_reason"] = "citation parameter doi"
+reseal(a)
+print("(a) role forged -> verified:", verify_bundle(p, a)["verified"])
+
+b = copy.deepcopy(doc)
+o = next(i for i in b["identifiers"] if i["role"] == "primary_citation_field")
+o["normalization"]["normalized"] = "10.9999/forged"
+reseal(b)
+print("(b) normalized forged -> verified:", verify_bundle(p, b)["verified"])
+r = replay_bundle(p, recorded=b)
+print("(b) replay state:", r.get("replay", {}).get("state"), "verified:", r["verified"])

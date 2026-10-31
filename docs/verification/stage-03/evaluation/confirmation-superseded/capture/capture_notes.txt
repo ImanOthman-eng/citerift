@@ -1,0 +1,5 @@
+2026-10-29T09:28:40Z note: commit 948bf64 (repair RF-36/37: model.py, source.py, verify.py; not on the capture path) landed in the working tree while this capture ran; capture started at d0cddc4-era code 936fd8d951c84400106ffcae16305e58f93bdc98
+2026-10-29T09:28:51Z note: the development re-acquisition (scratchpad/dev/run.sh) ran concurrently from about 09:22 and shared the network gate; confirmation/ar-3225289 ended partial with NETWORK_GATE_BUSY and confirmation/ar-6468321 failed with ATTEMPTS_EXHAUSTED during that time. The dev job was stopped at this time.
+2026-10-29T09:32:14Z driver stopped after confirmation/ar-4823675 ended with an internal client error (OSError EBADF from the RF-28 read loop); see RF-38
+2026-10-29T09:33:27Z driver resumed at 2ecbdbf (RF-38 fixed)
+2026-10-29T09:36:52Z orphan attempt recorded in orphan_attempts.json (ar-3972291-a1, complete, verified)
