@@ -1,0 +1,87 @@
+# Manual article-specific labels authored by ChatGPT/Codex. No reference parser.
+from pathlib import Path
+import hashlib, json
+from datetime import datetime, timezone
+from lxml import html
+base=Path('/workspace/stage03-work/final-evaluators-initial')
+inputs=base/'en-1'
+out=base/'output-en-1'
+# cp, name, citation template cp, rendered note id
+D={
+1331825180:[(590,'Gardner_2024',615,'cite_note-Gardner_2024-1'),(1771,None,1776,'cite_note-2'),(3031,None,3036,'cite_note-3')],
+1374002817:[(1594,None,None,'cite_note-1'),(3235,None,3240,'cite_note-2'),(7146,None,7151,'cite_note-3'),(7444,None,7449,'cite_note-4')],
+1351525729:[(1927,None,1932,'cite_note-1'),(2795,None,2800,'cite_note-2'),(3494,None,3499,'cite_note-3'),(3869,None,3874,'cite_note-4'),(4074,':0',4089,'cite_note-:0-5'),(4284,None,4289,'cite_note-6'),(4821,None,4826,'cite_note-7')],
+1248170019:[(648,'Makarkin2003',673,'cite_note-Makarkin2003-1'),(1109,'Dagmara2015',1134,'cite_note-Dagmara2015-2'),(2145,'Archibald2015',2171,'cite_note-Archibald2015-3'),(3526,None,3531,'cite_note-4')],
+1347534834:[(365,None,370,'cite_note-1'),(902,None,907,'cite_note-2'),(1590,None,1595,'cite_note-3')]
+}
+# cp, binding target cp, rendered marker id
+U={
+1331825180:[(590,590,'cite_ref-Gardner_2024_1-0'),(1234,590,'cite_ref-Gardner_2024_1-1'),(1771,1771,'cite_ref-2'),(3031,3031,'cite_ref-3')],
+1374002817:[(1594,1594,'cite_ref-1'),(3235,3235,'cite_ref-2'),(7146,7146,'cite_ref-3'),(7444,7444,'cite_ref-4')],
+1351525729:[(1927,1927,'cite_ref-1'),(2795,2795,'cite_ref-2'),(3494,3494,'cite_ref-3'),(3869,3869,'cite_ref-4'),(4074,4074,'cite_ref-:0_5-0'),(4284,4284,'cite_ref-6'),(4821,4821,'cite_ref-7'),(5383,4074,'cite_ref-:0_5-1')],
+1248170019:[(648,648,'cite_ref-Makarkin2003_1-0'),(1109,1109,'cite_ref-Dagmara2015_2-0'),(1836,648,'cite_ref-Makarkin2003_1-1'),(2145,2145,'cite_ref-Archibald2015_3-0'),(2612,648,'cite_ref-Makarkin2003_1-2'),(3387,648,'cite_ref-Makarkin2003_1-3'),(3526,3526,'cite_ref-4'),(4600,648,'cite_ref-Makarkin2003_1-4'),(5002,648,'cite_ref-Makarkin2003_1-5'),(5746,648,'cite_ref-Makarkin2003_1-6')],
+1347534834:[(365,365,'cite_ref-1'),(902,902,'cite_ref-2'),(1590,1590,'cite_ref-3')]
+}
+# Manual identifier occurrence decisions: cp, exact raw, scheme, role, key, note.
+field='primary_citation_field'
+I={
+1331825180:[(1055,'10.30466/grfs.2024.55117.1046','doi',field,'10.30466/grfs.2024.55117.1046','')],
+1374002817:[(3649,'10.1215/00182168-58.1.109','doi',field,'10.1215/00182168-58.1.109','')],
+1351525729:[
+(2928,'https://www.tandfonline.com/doi/full/10.1080/10611983.2001.11060989','doi','identifier_link','10.1080/10611983.2001.11060989','Publisher DOI URL in url=. Interpreted the guide publisher-URL category as including /doi/full/10. rather than only a literal /doi/10. path; suffix ends at the URL end.'),
+(3082,'10.1080/10611983.2001.11060989','doi',field,'10.1080/10611983.2001.11060989',''),
+(4306,'http://link.springer.com/10.1007/978-3-642-48590-9','doi','identifier_link','10.1007/978-3-642-48590-9','Publisher DOI URL in url= has a direct /10. path, not the guide example /doi/10. path. Best reading: identifier_link and whole URL raw text because the publisher URL directly identifies the same DOI as the explicit doi= field. Raw-boundary interpretation is uncertain.'),
+(4555,'10.1007/978-3-642-48590-9','doi',field,'10.1007/978-3-642-48590-9','')],
+1248170019:[(951,'10.4039/n02-122','doi',field,'10.4039/n02-122',''),(1455,'10.3897/zookeys.483.8902','doi',field,'10.3897/zookeys.483.8902',''),(1497,'25755622','pmid',field,'25755622',''),(2461,'10.4039/tce.2015.2','doi',field,'10.4039/tce.2015.2',''),(3886,'10.11646/zootaxa.4179.3.2','doi',field,'10.11646/zootaxa.4179.3.2',''),(3918,'27811679','pmid',field,'27811679','')],
+1347534834:[(1253,'10.1093/jee/toaa025','doi',field,'10.1093/jee/toaa025',''),(1279,'32112092','pmid',field,'32112092',''),(1901,'10.1111/j.1744-7917.2009.01249.x','doi',field,'10.1111/j.1744-7917.2009.01249.x','')]
+}
+opened=[]
+for p in [base/'en-1-BRIEF.md',base/'ANNOTATION_GUIDE.md']:
+ opened.append({'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+for rev in D:
+ root=inputs/f'en-{rev}'
+ packet=json.loads((root/'packet.json').read_text())
+ for name,key in [('source.wikitext','source_sha256'),('render.html','html_sha256'),('packet.json',None)]:
+  p=root/name; h=hashlib.sha256(p.read_bytes()).hexdigest()
+  if key: assert h==packet[key]
+  opened.append({'path':str(p),'sha256':h})
+opened.append({'path':str(Path(__file__)),'sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
+for rev in D:
+ root=inputs/f'en-{rev}'; text=(root/'source.wikitext').read_text(encoding='utf-8'); packet=json.loads((root/'packet.json').read_text())
+ doc=html.fromstring((root/'render.html').read_bytes())
+ lo=packet['window']['cp_start'];hi=packet['window']['cp_end']
+ def loc(cp, quote=None):
+  if quote is None: quote=text[cp:cp+55]
+  assert text[cp:cp+len(quote)]==quote,(rev,cp,quote)
+  return {'cp':cp,'quote':quote}
+ defs=[]
+ for k,(cp,name,template,note) in enumerate(D[rev],1):
+  assert text[cp:cp+4]=='<ref'
+  assert doc.xpath('//li[@id=$id]',id=note)
+  if template is not None: assert text[template:template+6].lower()=='{{cite'
+  defs.append({'id':f'd{k}','at':loc(cp),'in_window':lo<=cp<hi,'kind':'note','name':name,'group':'','templates':[] if template is None else [{'at':loc(template)}],'unstructured':template is None,'render_note_id':note,'marker':'none','marker_text':None,'notes':''})
+ uses=[]
+ for k,(cp,target,marker) in enumerate(U[rev],1):
+  assert lo<=cp<hi
+  assert any(x['at']['cp']==target for x in defs)
+  assert doc.xpath('//sup[@id=$id]',id=marker)
+  uses.append({'id':f'u{k}','at':loc(cp),'binds_to':loc(target),'render_ref_id':marker,'notes':''})
+ identifiers=[]
+ for cp,raw,scheme,role,key,note in I[rev]:
+  assert lo<=cp<hi
+  identifiers.append({'at':loc(cp,raw),'scheme':scheme,'role':role,'key':key,'notes':note})
+ unresolved=[]
+ if rev==1331825180:
+  unresolved.append('Rendered references 4 through 10 (IMDnormals, IMD, IMDextremes, anonymous 7, IMDcityextremes2, NOAA, Weather Atlas) come from {{Agra weatherbox}}, whose raw source has no corresponding reference definitions or uses. Excluded under guide 3.3.')
+ if rev==1351525729:
+  unresolved.append('Guide 3.5 gives /doi/10. as the publisher-URL example. This article uses /doi/full/10. and a Springer direct /10. path. Both are annotated as whole-URL identifier_link occurrences because they directly identify the cited work; the exact raw-boundary reading is the only material uncertainty.')
+ result={'format':'citerift-stage03-annotation-v1','article':{'wiki':packet['wiki'],'revision_id':packet['revision_id'],'source_sha256':packet['source_sha256'],'html_sha256':packet['html_sha256'],'window':[lo,hi]},'provenance':{'agent':'stage03-evaluator-en-1','started_at':'2026-10-31T06:01:11.541059+00:00','finished_at':datetime.now(timezone.utc).isoformat(),'files_opened':opened,'tools':'ChatGPT/Codex manual annotation; functions.exec with exec_command; cat; Python -I standard library pathlib/re/hashlib/json/datetime and lxml for raw source searches, HTML element/attribute/text inspection, serialization and exact-location validation. No network, git, repository implementation, predictions, tests, other evaluator outputs, or general reference parser. started_at is the first recorded UTC timestamp, taken just after reading the brief and guide. Files_opened lists all inspected raw packets across this five-article evaluator session plus instructions and this article-specific serialization helper.','unresolved':'Publisher URL boundary interpretation in en-1351525729 is documented in identifier notes; no undecided source bindings or rendered marker identities.'},'definitions':defs,'uses':uses,'identifiers':identifiers,'unresolved_notes':unresolved}
+ def validate(value):
+  if isinstance(value,dict):
+   if 'cp' in value and 'quote' in value: assert text[value['cp']:value['cp']+len(value['quote'])]==value['quote']
+   for v in value.values():validate(v)
+  elif isinstance(value,list):
+   for v in value:validate(v)
+ validate(result)
+ path=out/f'en-{rev}.json';path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ print(path.name,len(defs),len(uses),len(identifiers),'validated')
