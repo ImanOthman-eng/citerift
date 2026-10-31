@@ -1,0 +1,376 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1372000829,
+    "source_sha256": "576c561feb4fa3f2d9eeae1a182468fd4a18057612b0a5a9fd2457c2a635aa75",
+    "html_sha256": "0f9e6c545e4f3d0f206184c0c294c615b06b6f6a274ee142476780e8141aca56",
+    "window": [
+      0,
+      5119
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en-1",
+    "started_at": "2026-10-31T06:11:44.017061+00:00",
+    "finished_at": "2026-10-31T12:09:13.496600+00:00",
+    "files_opened": [
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1-BRIEF.md",
+        "sha256": "37743f02bfc4dff54442377be3790a5525ed9f4be19e8ab6483c5a9ed8032031"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1310102239/packet.json",
+        "sha256": "90c29e1482ba83ec0b84935f187123ef52c56e7c6b697775b031eea6b1bb7dfb"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1310102239/source.wikitext",
+        "sha256": "76aeb387ae467ab731e26986faa01332283a792514b5e951a93c2d5b1c80eca8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1310102239/render.html",
+        "sha256": "d75e105f8f67d251e045f82004020027df3b3b773af4d885ebfe1d9f053ddcb2"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1372000829/packet.json",
+        "sha256": "6ace53cdb7494d0ed2d0e8a03540df736e26712d22f4dc56a702be37cb0c9ee3"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1372000829/source.wikitext",
+        "sha256": "576c561feb4fa3f2d9eeae1a182468fd4a18057612b0a5a9fd2457c2a635aa75"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/en-1/en-1372000829/render.html",
+        "sha256": "0f9e6c545e4f3d0f206184c0c294c615b06b6f6a274ee142476780e8141aca56"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve1/output-en-1/tools/write_annotations.py",
+        "sha256": "119f3ad946ac79d6044e7290a56034e49e002df2a29846058bab020bb9cb8146"
+      }
+    ],
+    "tools": "ChatGPT/Codex manual annotation; functions.exec/exec_command; cat; isolated Python standard library pathlib, re, json, hashlib, datetime and lxml for searching raw text and listing rendered HTML elements/attributes/text. Article-specific serialization and exact-location/hash validation only; no general reference parser. started_at is the first recorded UTC timestamp, just after the brief was read. The reserve annotation session resumed after a usage-limit interruption. files_opened lists the instructions and both reserve raw packets inspected during this session, plus this helper. No network, git, engine code, predictions, tests, findings, or other evaluator outputs were inspected.",
+    "unresolved": "The Springer publisher URL uses a direct /10. path rather than the guide example /doi/10. path. Best reading is a whole-URL identifier_link occurrence because the URL directly identifies the same DOI as the explicit doi= field. The raw-boundary interpretation is uncertain; the uppercase BFb in the URL is normalized using ASCII lowercase."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 1312,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |title=S"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1317,
+            "quote": "{{Cite book |last=Parthasarathy |first=T. |title=Some t"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-1",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 1673,
+        "quote": "<ref>{{Cite journal |last=Rosenthal |first=Robert W. |d"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1678,
+            "quote": "{{Cite journal |last=Rosenthal |first=Robert W. |date=1"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 2083,
+        "quote": "<ref>{{Citation |last=Parthasarathy |first=T. |chapter="
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2088,
+            "quote": "{{Citation |last=Parthasarathy |first=T. |chapter=Suppl"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-3",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 2440,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |url=htt"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2445,
+            "quote": "{{Cite book |last=Parthasarathy |first=T. |url=http://l"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 3350,
+        "quote": "<ref>{{Cite web |title=Thiruvankatachari Parthasarathy "
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3355,
+            "quote": "{{Cite web |title=Thiruvankatachari Parthasarathy - Aut"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 3551,
+        "quote": "<ref name=\"MathSciNet\">{{cite web |access-date=2021-02-"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "MathSciNet",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3574,
+            "quote": "{{cite web |access-date=2021-02-19 |date=1965 |first=Th"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-MathSciNet-6",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 3889,
+        "quote": "<ref>{{Cite web |title=Thiruvenkatachari Parthasarathy "
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3894,
+            "quote": "{{Cite web |title=Thiruvenkatachari Parthasarathy - The"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 1312,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |title=S"
+      },
+      "binds_to": {
+        "cp": 1312,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |title=S"
+      },
+      "render_ref_id": "cite_ref-1",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 1673,
+        "quote": "<ref>{{Cite journal |last=Rosenthal |first=Robert W. |d"
+      },
+      "binds_to": {
+        "cp": 1673,
+        "quote": "<ref>{{Cite journal |last=Rosenthal |first=Robert W. |d"
+      },
+      "render_ref_id": "cite_ref-2",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 2083,
+        "quote": "<ref>{{Citation |last=Parthasarathy |first=T. |chapter="
+      },
+      "binds_to": {
+        "cp": 2083,
+        "quote": "<ref>{{Citation |last=Parthasarathy |first=T. |chapter="
+      },
+      "render_ref_id": "cite_ref-3",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 2440,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |url=htt"
+      },
+      "binds_to": {
+        "cp": 2440,
+        "quote": "<ref>{{Cite book |last=Parthasarathy |first=T. |url=htt"
+      },
+      "render_ref_id": "cite_ref-4",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 3350,
+        "quote": "<ref>{{Cite web |title=Thiruvankatachari Parthasarathy "
+      },
+      "binds_to": {
+        "cp": 3350,
+        "quote": "<ref>{{Cite web |title=Thiruvankatachari Parthasarathy "
+      },
+      "render_ref_id": "cite_ref-5",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 3551,
+        "quote": "<ref name=\"MathSciNet\">{{cite web |access-date=2021-02-"
+      },
+      "binds_to": {
+        "cp": 3551,
+        "quote": "<ref name=\"MathSciNet\">{{cite web |access-date=2021-02-"
+      },
+      "render_ref_id": "cite_ref-MathSciNet_6-0",
+      "notes": ""
+    },
+    {
+      "id": "u7",
+      "at": {
+        "cp": 3889,
+        "quote": "<ref>{{Cite web |title=Thiruvenkatachari Parthasarathy "
+      },
+      "binds_to": {
+        "cp": 3889,
+        "quote": "<ref>{{Cite web |title=Thiruvenkatachari Parthasarathy "
+      },
+      "render_ref_id": "cite_ref-7",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 1822,
+        "quote": "https://epubs.siam.org/doi/10.1137/1014044"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1137/1014044",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 1939,
+        "quote": "10.1137/1014044"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1137/1014044",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 2256,
+        "quote": "https://doi.org/10.1007/bfb0058356"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1007/bfb0058356",
+      "notes": "Resolver URL in the Citation template chapter-url field."
+    },
+    {
+      "at": {
+        "cp": 2492,
+        "quote": "http://link.springer.com/10.1007/BFb0065566"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1007/bfb0065566",
+      "notes": "The Springer publisher URL uses a direct /10. path rather than the guide example /doi/10. path. Best reading is a whole-URL identifier_link occurrence because the URL directly identifies the same DOI as the explicit doi= field. The raw-boundary interpretation is uncertain; the uppercase BFb in the URL is normalized using ASCII lowercase."
+    },
+    {
+      "at": {
+        "cp": 2729,
+        "quote": "10.1007/bfb0065566"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1007/bfb0065566",
+      "notes": ""
+    }
+  ],
+  "unresolved_notes": [
+    "The Springer publisher URL uses a direct /10. path rather than the guide example /doi/10. path. Best reading is a whole-URL identifier_link occurrence because the URL directly identifies the same DOI as the explicit doi= field. The raw-boundary interpretation is uncertain; the uppercase BFb in the URL is normalized using ASCII lowercase."
+  ]
+}
