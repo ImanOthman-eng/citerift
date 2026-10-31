@@ -1,0 +1,53 @@
+# Manually selected article-specific annotation rows. ChatGPT/Codex author.
+from pathlib import Path
+from datetime import datetime,timezone
+import json,hashlib
+from lxml import html
+base=Path('/workspace/stage03-work/final-evaluators-reserve3')
+out=base/'output-en-1'
+# cp, name, citation-template cp, note id, marker id
+D={1378046764:[(1454,None,None,'cite_note-1','cite_ref-1'),(1654,None,1659,'cite_note-2','cite_ref-2'),(2296,None,None,'cite_note-3','cite_ref-3'),(2787,'quarterly',2807,'cite_note-quarterly-4','cite_ref-quarterly_4-0'),(4010,None,4015,'cite_note-5','cite_ref-5'),(4389,None,4394,'cite_note-6','cite_ref-6'),(4648,None,4653,'cite_note-7','cite_ref-7'),(5313,None,5318,'cite_note-8','cite_ref-8'),(6177,None,6182,'cite_note-9','cite_ref-9'),(6603,None,6608,'cite_note-10','cite_ref-10'),(7555,None,None,'cite_note-11','cite_ref-11')],1170124012:[(1428,None,1433,'cite_note-1','cite_ref-1'),(2020,None,None,'cite_note-2','cite_ref-2'),(2346,None,2351,'cite_note-3','cite_ref-3'),(2960,None,2965,'cite_note-4','cite_ref-4')]}
+field='primary_citation_field'
+# cp, exact raw occurrence, scheme, role, normalized key, note
+I={1378046764:[(3183,'10.2307/1891114','doi',field,'10.2307/1891114',''),(4203,'10.3386/w16091','doi',field,'10.3386/w16091',''),(4843,'10.3386/w16377','doi',field,'10.3386/w16377',''),(7712,'https://doi.org/10.1093/restud/rdx010','doi','not_a_target','10.1093/restud/rdx010','The complete resolver URL is inside an explicit nowiki element. Guide 3.5 therefore assigns not_a_target even though it appears within a hand-written reference.')],1170124012:[(1453,'10.1002/jcp.10728','doi',field,'10.1002/jcp.10728',''),(1477,'14603533','pmid',field,'14603533',''),(2726,'10.1099/vir.0.82634-0','doi',field,'10.1099/vir.0.82634-0',''),(2985,'10.1021/ja00818a048','doi',field,'10.1021/ja00818a048','')]}
+opened=[]
+for p in [base/'en-1-BRIEF.md',base/'ANNOTATION_GUIDE.md']:
+ opened.append({'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+for rev in D:
+ root=base/'en-1'/f'en-{rev}';p=json.loads((root/'packet.json').read_text())
+ for name,key in [('packet.json',None),('source.wikitext','source_sha256'),('render.html','html_sha256')]:
+  path=root/name;digest=hashlib.sha256(path.read_bytes()).hexdigest()
+  if key:assert digest==p[key]
+  opened.append({'path':str(path),'sha256':digest})
+opened.append({'path':str(Path(__file__)),'sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
+for rev,rows in D.items():
+ root=base/'en-1'/f'en-{rev}';p=json.loads((root/'packet.json').read_text());t=(root/'source.wikitext').read_text(encoding='utf-8');doc=html.fromstring((root/'render.html').read_bytes());window=[p['window']['cp_start'],p['window']['cp_end']]
+ assert len(t)==p['source_code_points']
+ def loc(cp,quote=None):
+  if quote is None:quote=t[cp:cp+55]
+  assert t[cp:cp+len(quote)]==quote
+  assert window[0]<=cp<window[1]
+  return {'cp':cp,'quote':quote}
+ definitions=[];uses=[];identifiers=[]
+ for n,(cp,name,template,note,marker) in enumerate(rows,1):
+  assert t[cp:cp+4]=='<ref'
+  if template is not None:assert t[template:template+6].lower()=='{{cite'
+  assert doc.xpath('//li[@id=$id]',id=note)
+  assert doc.xpath('//sup[@id=$id]',id=marker)
+  definitions.append({'id':f'd{n}','at':loc(cp),'in_window':True,'kind':'note','name':name,'group':'','templates':[] if template is None else [{'at':loc(template)}],'unstructured':template is None,'render_note_id':note,'marker':'none','marker_text':None,'notes':''})
+  uses.append({'id':f'u{n}','at':loc(cp),'binds_to':loc(cp),'render_ref_id':marker,'notes':''})
+ for cp,raw,scheme,role,key,note in I[rev]:
+  identifiers.append({'at':loc(cp,raw),'scheme':scheme,'role':role,'key':key,'notes':note})
+ notes=[]
+ if rev==1378046764:notes.append('The DOI resolver URL inside nowiki is retained as an identifier occurrence with role not_a_target, as explicitly required by guide 3.5. No reference definition, use, template or identifier starts before the window and needs an out-of-window binding target.')
+ else:notes.append('Chembox templates cascite, fdacite, ebicite, chemspidercite and stdinchicite render identifier-validation Y/N marks rather than source footnotes or citation records. They are not counted as reference definitions, uses or bibliography citation templates; the four rendered numbered footnotes align with the four raw ref tags.')
+ result={'format':'citerift-stage03-annotation-v1','article':{'wiki':p['wiki'],'revision_id':p['revision_id'],'source_sha256':p['source_sha256'],'html_sha256':p['html_sha256'],'window':window},'provenance':{'agent':'stage03-evaluator-en-1','started_at':'2026-10-31T12:46:31.714342+00:00','finished_at':datetime.now(timezone.utc).isoformat(),'files_opened':opened,'tools':'ChatGPT/Codex manual raw-only annotation; functions.exec/exec_command; cat; Python -I standard library pathlib, re, json, hashlib, datetime; lxml for listing rendered HTML elements, attributes and text. Article-specific manual rows are serialized and validated here without a general reference parser. started_at is the first recorded UTC timestamp immediately after reading the brief. files_opened covers the instructions, both assigned raw packets and this helper. No network, git, engine code, predictions, tests, findings, prior locked labels or other evaluator outputs were inspected.','unresolved':'None; all source bindings and rendered markers were clear. The nowiki and Chembox scope decisions are documented.'},'definitions':definitions,'uses':uses,'identifiers':identifiers,'unresolved_notes':notes}
+ def validate(x):
+  if isinstance(x,dict):
+   if 'cp' in x and 'quote' in x:assert t[x['cp']:x['cp']+len(x['quote'])]==x['quote']
+   for y in x.values():validate(y)
+  elif isinstance(x,list):
+   for y in x:validate(y)
+ validate(result)
+ path=out/f'en-{rev}.json';path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ print(path.name,'definitions',len(definitions),'uses',len(uses),'identifiers',len(identifiers),'validated')
