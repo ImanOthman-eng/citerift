@@ -103,3 +103,21 @@ zero-tolerance count with `x` errors in `n` items, the one-sided 95 % Clopper-Pe
 the `p` solving `P(X ≤ x | n, p) = 0.05`: `1 − 0.05^{1/n}` for `x = 0` (5.8 % at `n = 50`, 3.0 % at 100, 2.0 % at
 150). These bounds describe the sample, not the population of articles, and ignore within-article correlation;
 the bootstrap intervals are reported next to them for that reason.
+
+## Mathematical model: retained marker witness invariant
+
+For retained source bytes S, retained HTML H, and validated limits C, let B(S,H,C) be the
+source-container to rendered-region binding reconstructed in the bounded offline worker.
+Let M(S,H,C) be the ordered marker records produced by deterministic region reconstruction
+and contextual matching over B. Verification requires the supplied marker container set to
+equal the reconstructed set and, for every container c, D.markers[c] = M(S,H,C)[c].
+This equality covers the authorized region, evidence multiplicity and order, matched text,
+locator, snippet, kind, part, exclusion, hiding basis, source markers, abstention and state.
+A second genuine occurrence of the same word cannot authenticate an edited occurrence.
+The verifier still checks local locator/anchor/hash consistency and retains its caches.
+The worker preserves the established wall/CPU/address-space bounds and offline guard.
+Replay remains complete document re-derivation; this marker check does not prove that every
+non-marker semantic field equals a fresh extraction. Shared reconstruction rules can share
+implementation mistakes. The verifier establishes consistency with retained bytes, not
+publisher authenticity, scientific truth, or actual browser visibility.
+

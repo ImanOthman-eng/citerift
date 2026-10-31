@@ -4,11 +4,11 @@
 - [x] Locked Python 3.12 environment; governance recover/check: 0 errors, 0 warnings.
 - [x] Retain current owner directive; preserve prior directives and D-031.
 - [x] Reproduce all five original V1/V2 modified-document failures before production edits.
-- [ ] Complete focused repair, bilingual regressions and read-only integration review.
+- [x] Complete focused repair, bilingual regressions and read-only integration review.
 - [ ] Freeze candidate/protocol; validate exposure and run one final campaign with separate evaluators.
 - [ ] Commit annotation lock/reserve decisions before predictions; score/adjudicate without tuning.
 - [ ] Complete regression, static/audit/schema/protected-path checks and clean reports on both Pythons.
-- [ ] Current CLI/real-bundle/replay/resource/wheel/relocation evidence.
+- [x] Current CLI/real-bundle/replay/resource/wheel/relocation evidence.
 - [ ] Durable export, download verification, final docs, green CI and updated unmerged PR #5.
 - [ ] Advance to verified only if every scientific and delivery condition passes; owner alone accepts/merges.
 
@@ -20,3 +20,12 @@
   genuine/modified documents, verifier outputs and replay comparisons in that directory.
 - Runnable variants: `tests/stage03/test_wiki_v1_v2.py`; copy that test into a detached pre-fix checkout to rerun.
 - Historical results quoted in the owner's review remain historical, not executions by this executor.
+
+## 31 October checkpoint
+
+GitHub access enabled by the owner; ec9453a pushed to the existing Stage 03 branch and PR #5 updated.
+Clean complete repository reports at cd085dd: 1663 passed on Python 3.12.14 and1663 on3.13.5.
+Both reports pass the governance report checker. CI for the pushed checkpoint is running.
+Fresh initial20 and two ordered reserve pairs per language are captured; labels through14 per
+language are committed before predictions. Counts require the last pair and the amendment
+permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance or later stage.

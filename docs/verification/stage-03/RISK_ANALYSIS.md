@@ -36,3 +36,22 @@ is the effect on Stage 04 and on the claims of this stage if the risk materializ
 | E3 | Sample too small to support population claims | minimum denominators, reserve articles, bootstrap intervals and Clopper-Pearson bounds reported; claims limited to the sample | gates are sample checks |
 | E4 | Annotation errors | adjudication by a new evaluator instance on disputed items only, with reasons; locked and adjudicated results published side by side | an error shared by evaluator and engine is not detected |
 | E5 | Live-data drift (articles edited after selection) | revisions pinned at capture; bundles retained and exported with checksums | the sample describes revisions of 2026-10-28 |
+
+## Risk addendum, 2026-10-30
+
+RF-56/V1 and RF-57/V2 affected supplied result documents with recomputed accounting and
+self-digests. Honest extraction was correct in the reported probes. A valid DOM locator
+outside the bound reference and a supplied warning substring without its true context
+formerly passed verify; full replay detected both. The bounded marker reconstruction
+above closes those trust gaps for the tested constructs, including both languages,
+repeated words, citation/hidden channels and forged regions. RF-58 prevents malformed
+integer-valued float configuration from escaping verification as an uncaught exception.
+
+The original frozen protocol and historical results remain unchanged. The 29 October
+amendment authorizes one further fresh final campaign; it does not authorize unlimited
+post-exposure tuning. A new session cannot prove what an earlier lost private workspace
+read. At recovery the GitHub App omitted citerift and denied writes. On 31 October the owner
+enabled access; checkpoint ec9453a was pushed to the existing branch and PR #5, with CI
+started. This removes the access blocker but does not establish scientific gate success. Only Linux was exercised here.
+Browser visibility remains not_evaluated; DOI/PMID co-reporting does not establish identity.
+

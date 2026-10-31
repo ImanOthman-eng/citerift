@@ -20,3 +20,15 @@ annotation commits without changing the tested tree. One implementer writes
 these additive evidence commits; they descend from the existing Stage 03 branch
 and will be fast-forwarded back to it. No second PR, remote branch, merge into
 main, acceptance record or later stage is created.
+
+Final acquisition: 32/32 selected articles complete,16 per language. Bounded
+Arabic sixteenth draw used11 metadata requests. Total additional campaign79
+HTTP attempts, all status200,5844955 accepted body bytes, zero retries.
+All32 annotations and final scope were committed before the one prediction run
+from frozen candidate48cfeab via PYTHONPATH to the detached frozen worktree.
+All32 current extraction documents verify and reproduce offline. Locked scores
+are retained before independent adjudication. Arabic identifier denominator33
+is below50 at the authorized sample ceiling; no extra articles are acquired.
+Locked discrepancies are provisionally scored and adjudicated by new isolated
+ChatGPT/Codex instances given only raw packets, locked labels and disputed values.
+No production code changes or post-exposure tuning occurred.

@@ -2680,13 +2680,16 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
         "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
         "recorded_at": "2026-10-28T18:10:32Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "48cfeab2c093ea0e853fe2ccb2cd1d5ff87a528b",
+        "recorded_at": "2026-10-31T12:51:07Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -3275,6 +3278,17 @@
       "actor": "engineering-agent",
       "recorded_by": "engineering-agent",
       "reason": "Stage 03 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS), retained at docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-28.md. Implementation base: main 94ac4f8df27383a03a810a4501ed1439bf8bcaea (equal to the confirmed baseline).",
+      "owner_ref": null
+    },
+    {
+      "seq": 38,
+      "at": "2026-10-31T12:51:07Z",
+      "stage": "03",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage03 implemented at frozen48cfeab; complete clean regression reports and current PR checkpoint retained. Final campaign reveals unmet Arabic denominator; adjudication and remaining delivery are in progress. No verification or acceptance claimed.",
       "owner_ref": null
     }
   ]

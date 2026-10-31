@@ -144,4 +144,28 @@ service is used.
 
 ## 7. Test result
 
-[Filled in after the confirmation run; see TEST_RESULTS.md section 4.]
+On the 30 October repaired production code (3d91429, runtime-identical to frozen
+candidate 48cfeab), 46 distinct retained real bundles verified and replayed. The
+unchanged scorer and historical adjudicated labels give Arabic identifier precision /
+recall 59/59 and 59/61, English 56/56 and 56/58; rendered attachments remain 104/104
+and 189/189 correct, zero observed false attachments. The structural B1 baseline on
+these same exposed holdouts has 25 Arabic and 84 English false attachments. English
+unit precision/recall is 114/118 and 114/117. These are exposed-data regression
+results, not fresh final acceptance evidence. Locked English definition precision
+128/135 is below the gate; the historical adjudicated labels count 135/135. Both
+label sets and scores remain published.
+
+The current frozen A/B/C source relocation counts are A:28/39 Arabic,38/50 English;
+B and C:37/39 Arabic,48/50 English. Full-ledger rendered-note relocation is 37/39 and
+39/50. The declared supplemental in-window C use count is 45/47 and43/50, with zero
+and four extra links respectively; the four relate to duplicate-definition homes.
+Frozen counts are preserved beside the supplement. Review effort was not measured.
+
+Current resource observations on the 46 retained bundles: extraction p50 0.279 s,
+p95 0.499 s; verification p50 0.379 s,p95 0.818 s; maximum worker peak RSS39128KiB.
+OS caches were not flushed and the full suite could be running concurrently. The
+historical warm/cold figures in section5 are not relabelled as these observations.
+
+Fresh final-campaign annotation is in progress under the unchanged protocol and dated
+amendment. Its final measured benefit and gate outcome will be reported from locked
+and independently adjudicated results; no fresh prediction has yet been produced.

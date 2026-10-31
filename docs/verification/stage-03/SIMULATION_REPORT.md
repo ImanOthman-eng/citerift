@@ -105,3 +105,14 @@ How to read the table:
   deadline (RF-28, tested with a local HTTP server).
 - Simulation agreement with the reference model shows consistency with the specification as written, not that
   the specification matches Wikimedia's behavior.
+
+## Simulation addendum, 2026-10-30
+
+At code 3d91429cbad7108c169c6a45544710faf1abb14d, rerunning the established fetch simulation
+(5000 sequences, seed 20261028) produced zero invariant/reference-model failures and the
+same outcome counts as the historical post-RF-25 row. The reconciliation simulation
+(200 articles, seed 20261028) also produced zero invariant failures and the same five
+perturbation counts as the historical table. The move-marker simulation still includes
+107 same-reference swaps; these are not silently classified as correct use-level links.
+Raw outputs: current-checks/sim-fetch.json and current-checks/sim-reconcile.json.
+These are synthetic observations, not fresh empirical acceptance evidence.
