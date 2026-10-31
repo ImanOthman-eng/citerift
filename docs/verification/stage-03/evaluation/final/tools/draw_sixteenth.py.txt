@@ -1,0 +1,56 @@
+"""Authorized bounded Arabic sixteenth draw; raw metadata only, shared campaign budget/gate."""
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+root=Path(sys.argv[1]).resolve();capture=Path(sys.argv[2]).resolve();out=Path(sys.argv[3]).resolve()
+sys.path.insert(0,str(root/'docs/verification/stage-03/protocol/scripts'))
+sys.path.insert(0,str(root/'docs/verification/stage-03/evaluation/scripts'))
+from select_sample import api
+from final_capture import used
+from citerift.wiki.fetch import Fetcher,FetchPolicy
+
+out.mkdir(exist_ok=False);(out/'artifacts').mkdir()
+exposure=json.loads((root/'docs/verification/stage-03/evaluation/final/EXPOSURE_BEFORE_CAPTURE.json').read_text())
+original=json.loads((root/'docs/verification/stage-03/evaluation/selection/selection.json').read_text())
+excluded_ids={g['page_id'] for g in exposure['groups'] if g['wiki']=='ar' and g['page_id']}
+excluded_titles={t for g in exposure['groups'] if g['wiki']=='ar' for t in g['titles']}
+for a in original['splits']['ar']['unused']:
+ excluded_ids.add(a['page_id']);excluded_titles.add(a['title'])
+requests=[];eligible={};batches=[]
+def get(params):
+ attempts,accepted=used(capture)
+ if attempts+3>500 or accepted+32*1024**2>300*1024**2:raise SystemExit('Campaign ceiling: draw stopped before request')
+ url=api('ar',params);answer=Fetcher(FetchPolicy()).get(url,expect='json')
+ entry={'url':url,'code':answer.code,'not_before':answer.not_before,'attempts':[a.to_json() for a in answer.attempts]}
+ if answer.body is not None and answer.code is None:
+  sha=hashlib.sha256(answer.body).hexdigest();(out/'artifacts'/sha).write_bytes(answer.body);entry['body_sha256']=sha
+ requests.append(entry)
+ with (capture/'captures.jsonl').open('a') as f:f.write(json.dumps({'purpose':'authorized Arabic sixteenth selection draw','stdout':{'capture':{'attempts':entry['attempts']}}},ensure_ascii=False)+'\n')
+ (out/'requests.json').write_text(json.dumps(requests,ensure_ascii=False,indent=2)+'\n')
+ return answer.json if answer.code is None else None
+for batch in range(2):
+ data=get({'list':'random','rnnamespace':'0','rnfilterredir':'nonredirects','rnlimit':'500'})
+ if data is None:
+  batches.append({'batch':batch+1,'random_failed':True});continue
+ pages=[(int(p['id']),p['title']) for p in data['query']['random']];links_found=set()
+ for start in range(0,len(pages),50):
+  params={'prop':'extlinks','pageids':'|'.join(str(i) for i,_ in pages[start:start+50]),'elquery':'doi.org','elprotocol':'https','ellimit':'max'}
+  for continuation in range(20):
+   links=get(params)
+   if links is None:break
+   links_found.update(int(p['pageid']) for p in links['query']['pages'] if p.get('extlinks'))
+   if 'continue' not in links:break
+   params={**params,**{k:str(v) for k,v in links['continue'].items()}}
+  else:raise SystemExit('Bounded extlinks continuation exhausted; no selected article')
+ titles=dict(pages)
+ for pid in links_found:
+  if pid not in excluded_ids and titles[pid] not in excluded_titles:eligible[pid]=titles[pid]
+ batches.append({'batch':batch+1,'page_ids':[p for p,_ in pages],'with_doi':sorted(links_found)})
+ # Match the original bounded draw's stopping rule once enough eligible items exist.
+ if len(eligible)>=22:break
+ordered=sorted(eligible,key=lambda pid:hashlib.sha256(f'citerift-stage03-final-v1|ar|{pid}'.encode()).hexdigest())
+result={'salt':'citerift-stage03-final-v1','wiki':'ar','maximum_batches':2,'batches':batches,'requests':requests,'eligible_order':[{'page_id':p,'title':eligible[p]} for p in ordered],'selected':{'page_id':ordered[0],'title':eligible[ordered[0]],'pool_position':16} if ordered else None,'excluded_page_ids':sorted(excluded_ids),'excluded_titles':sorted(excluded_titles)}
+(out/'SELECTION.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+print(json.dumps({'eligible':len(eligible),'selected':result['selected']}))
