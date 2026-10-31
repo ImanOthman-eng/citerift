@@ -1,0 +1,968 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 1,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 1
+   },
+   {
+    "left": 3,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 1,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 1
+   },
+   {
+    "left": 3,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 3,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 5,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 15,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 15
+   },
+   {
+    "left": 5,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 5
+   }
+  ],
+  "containers": {
+   "note": 3
+  },
+  "excluded_identifiers": {
+   "other_site_url": 2
+  },
+  "identifiers_by_role": {
+   "primary_citation_field": 1
+  },
+  "identifiers_by_scheme": {
+   "doi": 1
+  },
+  "identifiers_render": {
+   "render_link_found": 1
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 3
+  },
+  "parse_nodes": 252,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 5,
+   "total": 15,
+   "unmatched": 10
+  },
+  "source_bytes": 5368,
+  "units": {
+   "citation_template": 3
+  },
+  "uses": {
+   "anonymous": 1,
+   "bound": 4
+  },
+  "uses_render": {
+   "matched": 5
+  }
+ },
+ "capture": {
+  "capture_sha256": "5a98942e8ff97c57ebf661ee30a30c6a44e57f619bf700f97357a0042f32aab3",
+  "page_id": 6440382,
+  "render_artifact": "6d4ec608f61f04de7222d66b4f1575871953985b3a4a2900c826855b3eb24a3e",
+  "render_state": "captured",
+  "revision_id": 76583092,
+  "sha1": "66b951318eeedc65d50dbc8351190d3d67b59ac1",
+  "source_artifact": "0350cda39351c778175a141c340d44503175b3ff268e338946ba228391a01523",
+  "title": "(28328) 1999 CN125",
+  "wiki": "ar"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 906,
+      "byte_start": 544,
+      "cp_end": 650,
+      "cp_start": 352
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 912,
+      "byte_start": 528,
+      "cp_end": 656,
+      "cp_start": 336
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "jpl",
+   "name_raw": "jpl",
+   "render": {
+    "region_id": "cite_note-jpl-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 912,
+    "byte_start": 528,
+    "cp_end": 656,
+    "cp_start": 336
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001",
+    "us-00003",
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1322,
+      "byte_start": 917,
+      "cp_end": 1008,
+      "cp_start": 661
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1328,
+      "byte_start": 912,
+      "cp_end": 1014,
+      "cp_start": 656
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1328,
+    "byte_start": 912,
+    "cp_end": 1014,
+    "cp_start": 656
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 4715,
+      "byte_start": 3906,
+      "cp_end": 3317,
+      "cp_start": 2610
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 4721,
+      "byte_start": 3882,
+      "cp_end": 3323,
+      "cp_start": 2586
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "AAS-MB-2011",
+   "name_raw": "AAS-MB-2011",
+   "render": {
+    "region_id": "cite_note-AAS-MB-2011-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 4721,
+    "byte_start": 3882,
+    "cp_end": 3323,
+    "cp_start": 2586
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  }
+ ],
+ "exceptions": [
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[10]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[12]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[13]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[14]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[15]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[18]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[6]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[7]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[8]/td/sup",
+   "entity_type": "render_use"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "in template output معلومات كوكب",
+   "entity": "render-use:/html/body/section[1]/table/tbody/tr[9]/td/sup",
+   "entity_type": "render_use"
+  }
+ ],
+ "excluded_identifiers": [
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4464,
+    "byte_start": 4438,
+    "cp_end": 3107,
+    "cp_start": 3081,
+    "exact": true,
+    "raw": "10.1088/0004-637X/741/2/68",
+    "raw_sha256": "4e005dfc2904cc0f2f7f2124ca12e2b7d0cc8633d8221583225d9ed222899bd5"
+   }
+  },
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4638,
+    "byte_start": 4612,
+    "cp_end": 3255,
+    "cp_start": 3229,
+    "exact": true,
+    "raw": "10.1088/0004-637X/741/2/68",
+    "raw_sha256": "4e005dfc2904cc0f2f7f2124ca12e2b7d0cc8633d8221583225d9ed222899bd5"
+   }
+  }
+ ],
+ "extraction_digest": "2b50c0f31c65f1c0998a4a4735ab2a8019d3a7487559c49bf1c43004554f0c5b",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.0.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "DOI",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1088/0004-637X/741/2/68",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1088/0004-637x/741/2/68",
+    "raw": "10.1088/0004-637X/741/2/68",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwug",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/div/ol/li[4]/span[2]/cite/a[3]",
+      "quote": "10.1088/0004-637X/741/2/68",
+      "subtree_sha256": "123f1641eabace2a41de2d7b315fb6fabdea295538deed82ea85d4601b644c1f"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter DOI",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4713,
+    "byte_start": 4687,
+    "cp_end": 3315,
+    "cp_start": 3289,
+    "exact": true,
+    "raw": "10.1088/0004-637X/741/2/68",
+    "raw_sha256": "4e005dfc2904cc0f2f7f2124ca12e2b7d0cc8633d8221583225d9ed222899bd5"
+   },
+   "unit_id": "un-00003"
+  }
+ ],
+ "issues": [
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-0"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-1"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-2"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-3"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-4"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-5"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-6"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-7"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-8"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  },
+  {
+   "code": "RENDER_USE_UNMATCHED",
+   "detail": "",
+   "entities": [
+    "render-use-9"
+   ],
+   "evidence": [],
+   "retryable": false,
+   "severity": "info"
+  }
+ ],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-jpl-2",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/div/ol/li[2]",
+     "quote": "1 2 3 \"معلومات عن (28328) 1999 CN125 على موقع ssd.jpl.nasa.gov\". ssd.jpl.nasa.gov. مؤرشف من الأصل في 2019-12-16.",
+     "subtree_sha256": "8d65c8a71cb019a89a719bbc8f21aebbc45dae623d242c573c3b12a09a304cfc"
+    },
+    "region_id": "cite_note-jpl-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-3",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/div/ol/li[3]",
+     "quote": "↑ \"معلومات عن (28328) 1999 CN125 على موقع minorplanetcenter.net\". minorplanetcenter.net. مؤرشف من الأصل في 2020-01-25.",
+     "subtree_sha256": "667306c604bd306cb17a4b56bb1473a7cb1daa6c6d9ab24bae97ca7a8436d908"
+    },
+    "region_id": "cite_note-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 1,
+    "locator": {
+     "element_id": "cite_note-AAS-MB-2011-4",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/div/ol/li[4]",
+     "quote": "↑ Joseph R Masiero, A. K Mainzer, T. Grav, J.M. Bauer, R.M. Cutri, J. Dailey,P.R.M. Eisenhardt, R.S. McMillan, T.B. Spahr, M.F. Skrutskie, D. Tholen, R.G. Walke",
+     "subtree_sha256": "7c717a48bceeb5a218b244f04f18bd56ced4f8959f649fffbce76b673ee26733"
+    },
+    "region_id": "cite_note-AAS-MB-2011-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": [
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[6]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "0e91fb2e00caccc5fdeb8e7926e89e0374ccba4c8191f0763bfdcaf4b14ba0f1"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[7]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "5ad32fbda37023aee2e43783dfd0a0a5207e8fb3c3aa8ea0244a297b0ed2be1b"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[8]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "db6b4ac5e35a5f54eee3ee6f07ca1f495d1e971af743645fcf230942e3c4a431"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-3",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[9]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "c0ac16f53d061afa4adfec7f6af30d77118242ed89b33091db87054dd1c4f5e1"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-4",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[10]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "68f3e40780c7d95a5ed61e4c827b7f6dbfc8ad0b05f68b202bdb4457cba3b94d"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-5",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[12]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "52de5bfa6107d8fd3000ef5c6285aa569fa8134133a38fb133f8cb23e599a76f"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-6",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[13]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "8870552965f08190f01cc31387b00f3eb8a2d6924317b1f6834be2fda9b1837c"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-7",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[14]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "f8f9477248d1d8cd3fddd014d5950ef2a45dc7324df6aff2d462e776f30ae46c"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-8",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[15]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "cfc1cb1f0feb21190dff07846c9b055ccbd2925ab7a217ce95bdb15a2197c3d2"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   },
+   {
+    "group": "",
+    "in_note": null,
+    "in_template": "معلومات كوكب",
+    "locator": {
+     "element_id": "cite_ref-wikidata-3676df4d859728978245b64bdf531fafaa3e608e_1-9",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[18]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "4e450f7e0d6df766f9ce6a3569656f8f02fa7dfb635c317a9934b716b9c18258"
+    },
+    "name": "wikidata-3676df4d859728978245b64bdf531fafaa3e608e",
+    "target_note": "cite_note-wikidata-3676df4d859728978245b64bdf531fafaa3e608e-1"
+   }
+  ]
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.0.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt55"
+   },
+   "source": {
+    "byte_end": 906,
+    "byte_start": 544,
+    "cp_end": 650,
+    "cp_start": 352
+   },
+   "template": {
+    "canonical": "استشهاد ويب",
+    "family": "web",
+    "kind": "citation",
+    "name": "استشهاد ويب"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt58"
+   },
+   "source": {
+    "byte_end": 1322,
+    "byte_start": 917,
+    "cp_end": 1008,
+    "cp_start": 661
+   },
+   "template": {
+    "canonical": "استشهاد ويب",
+    "family": "web",
+    "kind": "citation",
+    "name": "استشهاد ويب"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [
+    "id-00001"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt67"
+   },
+   "source": {
+    "byte_end": 4715,
+    "byte_start": 3906,
+    "cp_end": 3317,
+    "cp_start": 2610
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "jpl",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-jpl_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[1]",
+     "quote": "[2]",
+     "subtree_sha256": "875a57a6624cbc73b98a05557f0a3e3f3d03344affaf77f14170973d6d84054a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-jpl-2"
+   },
+   "source": {
+    "byte_end": 912,
+    "byte_start": 528,
+    "cp_end": 656,
+    "cp_start": 336
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-3",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "e99fcc4f46b5dd6b77334c1cf2fe689b919df34cb16103b9e828fd010f5006e3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-3"
+   },
+   "source": {
+    "byte_end": 1328,
+    "byte_start": 912,
+    "cp_end": 1014,
+    "cp_start": 656
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00003",
+   "name": "jpl",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-jpl_2-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup",
+     "quote": "[2]",
+     "subtree_sha256": "3b45ae4cc5325a4340d9e68978d7637a514b0ecb23c6eb7ea72511fde632f2ef"
+    },
+    "state": "matched",
+    "target_note": "cite_note-jpl-2"
+   },
+   "source": {
+    "byte_end": 2209,
+    "byte_start": 2192,
+    "cp_end": 1582,
+    "cp_start": 1565
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00004",
+   "name": "jpl",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-jpl_2-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/p/sup",
+     "quote": "[2]",
+     "subtree_sha256": "5d9d9ff03fbc641ddd1eddea6da4df8dfc0460e6a9983e51eb98109b484daf8e"
+    },
+    "state": "matched",
+    "target_note": "cite_note-jpl-2"
+   },
+   "source": {
+    "byte_end": 3160,
+    "byte_start": 3143,
+    "cp_end": 2151,
+    "cp_start": 2134
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00005",
+   "name": "AAS-MB-2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-AAS-MB-2011_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p/sup",
+     "quote": "[4]",
+     "subtree_sha256": "8c6d62facb6c5edf98e4b24b1c9403afaec9a274b7b3987b8bf815e1b0655dd4"
+    },
+    "state": "matched",
+    "target_note": "cite_note-AAS-MB-2011-4"
+   },
+   "source": {
+    "byte_end": 4721,
+    "byte_start": 3882,
+    "cp_end": 3323,
+    "cp_start": 2586
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

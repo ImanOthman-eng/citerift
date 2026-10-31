@@ -1,0 +1,120 @@
+{
+  "bundle": "/workspace/stage03-work/network-preflight/ar-76190003",
+  "capture": {
+    "attempts": [
+      {
+        "body_bytes": 28776,
+        "body_sha256": "1ec9d2b611116c7c8297d530b2aedfe6987c26461eecf9c14263a355a3ea6221",
+        "code": null,
+        "content_type": "application/json; charset=utf-8",
+        "detail": "",
+        "duration_s": 1.03,
+        "number": 1,
+        "operation": "source",
+        "retry_after_problem": null,
+        "retry_after_raw": null,
+        "retry_after_s": null,
+        "retryable": false,
+        "started_at": "2026-10-30T20:18:12.775328Z",
+        "status": 200,
+        "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=76190003",
+        "wire_bytes": 9544
+      },
+      {
+        "body_bytes": 171603,
+        "body_sha256": "0607ca70186b7d8773f3567d827a8384b8d5316b2402ee7cb80481d91c317127",
+        "code": null,
+        "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+        "detail": "",
+        "duration_s": 0.566,
+        "number": 1,
+        "operation": "render",
+        "retry_after_problem": null,
+        "retry_after_raw": null,
+        "retry_after_s": null,
+        "retryable": false,
+        "started_at": "2026-10-30T20:18:23.806829Z",
+        "status": 200,
+        "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76190003/html",
+        "wire_bytes": 29511
+      }
+    ],
+    "client": {
+      "name": "citerift-wiki",
+      "policy": {
+        "backoff_s": 10.0,
+        "deadline_s": 180.0,
+        "max_attempts": 3,
+        "max_body_bytes": 33554432,
+        "max_wire_bytes": 33554432,
+        "maxlag_s": 5,
+        "min_interval_s": 10.0,
+        "op_timeout_s": 30.0,
+        "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+      },
+      "version": "1.0.0"
+    },
+    "failure_artifacts": [],
+    "finished_at": "2026-10-30T20:18:24.374431Z",
+    "issues": [],
+    "not_before": null,
+    "page": {
+      "content_model": "wikitext",
+      "host": "ar.wikipedia.org",
+      "is_latest": true,
+      "namespace": 0,
+      "page_id": 10487829,
+      "parent_revision_id": 76189776,
+      "redirect_followed": null,
+      "revision_id": 76190003,
+      "revision_timestamp": "2026-08-12T15:13:27Z",
+      "sha1": "95dcb6116744ed41792297ea345cf51b5050a1f1",
+      "size": 28115,
+      "title": "هاروكو أوبوكاتا",
+      "wiki": "ar"
+    },
+    "render": {
+      "artifact": "0607ca70186b7d8773f3567d827a8384b8d5316b2402ee7cb80481d91c317127",
+      "bytes": 171603,
+      "checks": {
+        "document_revision_id": "76190003",
+        "header_revision_id": "76190003",
+        "html_version": "2.8.0",
+        "namespace": "0",
+        "page_id": "10487829",
+        "render_id": "ab8f2144-d46d-11f1-8f3f-dd667b487dbd",
+        "revision_sha1": "95dcb6116744ed41792297ea345cf51b5050a1f1",
+        "revision_sha1_base36": "hi77xghli1bzyg03pgur0uku8r9ezu9"
+      },
+      "headers": {
+        "content-language": "ar",
+        "content-revision-id": "76190003",
+        "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+        "date": "Fri, 30 Oct 2026 20:18:24 GMT",
+        "etag": "W/\"76190003/ab8f2144-d46d-11f1-8f3f-dd667b487dbd/view\"",
+        "last-modified": "Sun, 25 Oct 2026 08:36:22 GMT"
+      },
+      "state": "captured",
+      "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76190003/html"
+    },
+    "request": {
+      "follow_redirect": false,
+      "page_id": null,
+      "render": true,
+      "revision_id": 76190003,
+      "title": null,
+      "wiki": "ar"
+    },
+    "schema": "urn:citerift:schema:wiki:v1:capture",
+    "schema_version": "1.0.0",
+    "source": {
+      "artifact": "e63135984e2e82de7c8f10afff8ea40afb402d66ebacc2227d9b83e4f26258c8",
+      "bytes": 28115,
+      "response_artifact": "1ec9d2b611116c7c8297d530b2aedfe6987c26461eecf9c14263a355a3ea6221",
+      "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=76190003"
+    },
+    "started_at": "2026-10-30T20:18:12.772561Z",
+    "status": "complete"
+  },
+  "status": "complete"
+}

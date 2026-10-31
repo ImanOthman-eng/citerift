@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:receipt",
+  "title": "Pinned source receipt, major version 1",
+  "description": "Identity of a pinned source snapshot (SPECIFICATION.md 3).",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "acquired_at",
+    "attribution",
+    "commit",
+    "expected_bytes",
+    "expected_sha256",
+    "git_blob_sha1",
+    "path",
+    "readme_generated_on",
+    "receipt_version",
+    "repository",
+    "source_id",
+    "url"
+  ],
+  "properties": {
+    "receipt_version": {
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{1,63}$(?!\\n)"
+    },
+    "repository": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$(?!\\n)"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "url": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"
+    },
+    "expected_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "expected_sha256": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+    },
+    "git_blob_sha1": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$(?!\\n)"
+    },
+    "readme_generated_on": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$(?!\\n)"
+    },
+    "acquired_at": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"
+    },
+    "attribution": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

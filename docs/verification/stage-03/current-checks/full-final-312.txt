@@ -1,0 +1,98 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0
+rootdir: /workspace/citerift
+configfile: pyproject.toml
+plugins: platformdirs-4.13.5
+collected 1663 items
+
+tests/stage00/test_cli.py .........                                      [  0%]
+tests/stage00/test_contracts.py ........................................ [  2%]
+..........................................                               [  5%]
+tests/stage00/test_corrections.py ...................................... [  7%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+.......                                                                  [ 16%]
+tests/stage00/test_failure_simulation.py ............                    [ 17%]
+tests/stage00/test_integration_scenarios.py ............................ [ 19%]
+.                                                                        [ 19%]
+tests/stage00/test_maintenance.py ...................................... [ 21%]
+........                                                                 [ 22%]
+tests/stage00/test_properties.py ......                                  [ 22%]
+tests/stage00/test_recovery.py ...                                       [ 22%]
+tests/stage00/test_registry_tampering.py .......................         [ 23%]
+tests/stage00/test_repository.py .......................F.               [ 25%]
+tests/stage00/test_simulation.py ........                                [ 25%]
+tests/stage00/test_unit_model_evidence_memory.py ....................... [ 27%]
+......                                                                   [ 27%]
+tests/stage01/test_census.py ........................................    [ 30%]
+tests/stage01/test_crosswiki.py .............................            [ 31%]
+tests/stage01/test_discovery_errors.py ...................               [ 33%]
+tests/stage01/test_render_check.py .............                         [ 33%]
+tests/stage02/test_rde_advisory.py ..........................            [ 35%]
+tests/stage02/test_rde_audit_fixes.py .........                          [ 35%]
+tests/stage02/test_rde_bridge_sufficiency.py .........................   [ 37%]
+tests/stage02/test_rde_corroboration.py .....................            [ 38%]
+tests/stage02/test_rde_dates.py ...........................              [ 40%]
+tests/stage02/test_rde_export_diff.py ......                             [ 40%]
+tests/stage02/test_rde_identifiers.py .................................. [ 42%]
+.........................................                                [ 45%]
+tests/stage02/test_rde_import.py ...............................         [ 47%]
+tests/stage02/test_rde_local_model.py ..............................     [ 48%]
+tests/stage02/test_rde_lookup.py .............                           [ 49%]
+tests/stage02/test_rde_oracle_selftest.py .............................. [ 51%]
+........................................................................ [ 55%]
+.................................................                        [ 58%]
+tests/stage02/test_rde_policy_cases.py ................................. [ 60%]
+.....................                                                    [ 61%]
+tests/stage02/test_rde_policy_properties.py .....                        [ 62%]
+tests/stage02/test_rde_policy_regressions.py ...........                 [ 62%]
+tests/stage02/test_rde_real_cases.py ................................... [ 65%]
+..................                                                       [ 66%]
+tests/stage02/test_rde_review_findings.py .............................. [ 67%]
+...........                                                              [ 68%]
+tests/stage02/test_rde_schemas.py ........                               [ 69%]
+tests/stage02/test_rde_spec_changes.py ......                            [ 69%]
+tests/stage02/test_rde_tension_properties.py .....                       [ 69%]
+tests/stage03/test_wiki_bilingual_matrix.py ............................ [ 71%]
+....................                                                     [ 72%]
+tests/stage03/test_wiki_bundle_verify.py ............................... [ 74%]
+.............                                                            [ 75%]
+tests/stage03/test_wiki_cli.py .......................                   [ 76%]
+tests/stage03/test_wiki_f1_f4.py ....................................... [ 78%]
+........................................................................ [ 83%]
+............                                                             [ 84%]
+tests/stage03/test_wiki_fetch_capture.py ............................... [ 85%]
+.....................................                                    [ 88%]
+tests/stage03/test_wiki_observed_regression.py .....                     [ 88%]
+tests/stage03/test_wiki_properties.py .................................. [ 90%]
+.........................                                                [ 91%]
+tests/stage03/test_wiki_render_ledger.py .....................           [ 93%]
+tests/stage03/test_wiki_review_regressions.py .......................... [ 94%]
+....................................                                     [ 96%]
+tests/stage03/test_wiki_source_extraction.py ........................... [ 98%]
+.                                                                        [ 98%]
+tests/stage03/test_wiki_v1_v2.py .......................                 [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_documented_links_exist __________________________
+
+    @pytest.mark.regression
+    def test_documented_links_exist() -> None:
+        """Every relative Markdown link in top-level and docs files points to an existing path."""
+        broken = []
+        for md in [*REPO.glob("*.md"), *(REPO / "docs").rglob("*.md")]:
+            for target in re.findall(r"\]\(([^)#\s]+)(?:#[^)]*)?\)", md.read_text(encoding="utf-8")):
+                if target.startswith(("http://", "https://", "mailto:")):
+                    continue
+                if not (md.parent / target).exists():
+                    broken.append(f"{md.relative_to(REPO)} -> {target}")
+>       assert broken == []
+E       AssertionError: assert ['docs/verifi...eviewed.diff'] == []
+E         
+E         Left contains 2 more items, first extra item: 'docs/verification/stage-03/review/memory-test/REVIEW.md -> SHA256SUMS'
+E         Use -v to get more diff
+
+tests/stage00/test_repository.py:343: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage00/test_repository.py::test_documented_links_exist - Assert...
+================== 1 failed, 1662 passed in 698.71s (0:11:38) ==================
