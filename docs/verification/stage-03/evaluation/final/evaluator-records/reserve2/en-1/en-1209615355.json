@@ -1,0 +1,238 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1209615355,
+    "source_sha256": "c01e58b421bfd5a0ac0b5a673af23f471422860482849bc15bc2481dd7d109d2",
+    "html_sha256": "337639f48abbb0a6be93a1040e51515821e34e21891cc960be1f1fb589523486",
+    "window": [
+      0,
+      2179
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en-1",
+    "started_at": "2026-10-31T12:12:48.804262+00:00",
+    "finished_at": "2026-10-31T12:13:33.253023+00:00",
+    "files_opened": [
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1-BRIEF.md",
+        "sha256": "d47fbc28cc64286068963370a9e6915d038e55b1fb7094e1fe550727069bc197"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1374356167/packet.json",
+        "sha256": "3da1c49179fb56c1679cc52a36232d5a0b948c51af94d56c24eca6bdefc13a91"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1374356167/source.wikitext",
+        "sha256": "02b30efa9a8d3abc2622440d33dd243ddfd8fa78ce2105148ff74483d5cb189d"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1374356167/render.html",
+        "sha256": "d96916bfbc8230d125c94dd13bab7d5b4aef96fdc2552a72a563049536337012"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1209615355/packet.json",
+        "sha256": "0c9d40f542864a062fdfa1a502ddf90a41280570e631c4232c237fc7815ccb64"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1209615355/source.wikitext",
+        "sha256": "c01e58b421bfd5a0ac0b5a673af23f471422860482849bc15bc2481dd7d109d2"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/en-1/en-1209615355/render.html",
+        "sha256": "337639f48abbb0a6be93a1040e51515821e34e21891cc960be1f1fb589523486"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-reserve2/output-en-1/tools/write_annotations.py",
+        "sha256": "63d2ffd59e0fa66d2f8cb88c42340a97f1fa485a3c937288f7e41ec396605e01"
+      }
+    ],
+    "tools": "ChatGPT/Codex manual raw-only annotation; functions.exec/exec_command; cat; Python -I standard library pathlib, re, json, hashlib, datetime; lxml for listing HTML footnote elements, attributes and text. This helper serializes manually selected article-specific rows and validates anchors/metadata; it is not a reference parser. started_at is the first recorded UTC timestamp, immediately after reading the brief. files_opened covers the instructions, both assigned raw packets and this helper. No network, git, predictions, engine code, tests, findings, prior locked annotations or other evaluators outputs were inspected.",
+    "unresolved": "None. Bibliography scope and the ISBN wrapper treatment are explicitly documented; all source bindings and rendered marker identities were clear."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 355,
+        "quote": "<ref>{{Cite web | url=http://www.passc.net/EarthImpactD"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 360,
+            "quote": "{{Cite web | url=http://www.passc.net/EarthImpactDataba"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-1",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 860,
+        "quote": "<ref name=\"Korochantseva\">{{cite journal|last1=Korochan"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Korochantseva",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 886,
+            "quote": "{{cite journal|last1=Korochantseva|first1=Ekaterina|las"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Korochantseva-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 1415,
+        "quote": "<ref name=Nature1>{{cite journal|last=Heck|first=Philip"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Nature1",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1433,
+            "quote": "{{cite journal|last=Heck|first=Philipp |author2=Birger "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Nature1-3",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 1825,
+        "quote": "<ref>H. Haack et al. ''Meteorite, asteroidal, and theor"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 355,
+        "quote": "<ref>{{Cite web | url=http://www.passc.net/EarthImpactD"
+      },
+      "binds_to": {
+        "cp": 355,
+        "quote": "<ref>{{Cite web | url=http://www.passc.net/EarthImpactD"
+      },
+      "render_ref_id": "cite_ref-1",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 860,
+        "quote": "<ref name=\"Korochantseva\">{{cite journal|last1=Korochan"
+      },
+      "binds_to": {
+        "cp": 860,
+        "quote": "<ref name=\"Korochantseva\">{{cite journal|last1=Korochan"
+      },
+      "render_ref_id": "cite_ref-Korochantseva_2-0",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 1415,
+        "quote": "<ref name=Nature1>{{cite journal|last=Heck|first=Philip"
+      },
+      "binds_to": {
+        "cp": 1415,
+        "quote": "<ref name=Nature1>{{cite journal|last=Heck|first=Philip"
+      },
+      "render_ref_id": "cite_ref-Nature1_3-0",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 1825,
+        "quote": "<ref>H. Haack et al. ''Meteorite, asteroidal, and theor"
+      },
+      "binds_to": {
+        "cp": 1825,
+        "quote": "<ref>H. Haack et al. ''Meteorite, asteroidal, and theor"
+      },
+      "render_ref_id": "cite_ref-4",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 1329,
+        "quote": "10.1111/j.1945-5100.2007.tb00221.x"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1111/j.1945-5100.2007.tb00221.x",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 1773,
+        "quote": "10.1038/nature02736"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1038/nature02736",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 1798,
+        "quote": "15254530"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "15254530",
+      "notes": ""
+    }
+  ],
+  "unresolved_notes": [
+    "The See also bullet at cp 831 contains three references; citation templates and DOI/PMID occurrences lie inside those refs, so the bullet is not also a bibliography_entry outside footnotes."
+  ]
+}
