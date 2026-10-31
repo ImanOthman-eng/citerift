@@ -1,0 +1,197 @@
+{
+  "procedure": "The final-campaign selection (../../protocol/AMENDMENT_2026-10-29.md section 2), derived mechanically.\n\nUsage: python final_selection.py > ../final/selection_final.json   (run from the repository root)\n\nThe pool is ``splits.<wiki>.unused`` of the committed original draw (selection/selection.json), in its stored order:\nthe frozen order of select_sample.py, continuing after position 22. Pool positions 1-10 are the final holdout and\n11-16 the final reserve; arwiki has 15 pool candidates, so its reserve has 5 until a 16th is drawn under section 4\nof the amendment. The output has the shape capture_sample.py reads (``splits`` and an empty ``challenge``). No\nrequest is made.\n",
+  "source": {
+    "path": "docs/verification/stage-03/evaluation/selection/selection.json",
+    "sha256": "531be095f7728b116cb9f02579efcb4a5777d013f675923cf68030e61bf58854",
+    "field": "splits.<wiki>.unused"
+  },
+  "splits": {
+    "ar": {
+      "pool_size": 15,
+      "holdout": [
+        {
+          "page_id": 1812799,
+          "title": "بازية",
+          "pool_position": 1
+        },
+        {
+          "page_id": 10411425,
+          "title": "بارلاس",
+          "pool_position": 2
+        },
+        {
+          "page_id": 9588306,
+          "title": "غلوبيولين مضاد للخلايا التيموسية",
+          "pool_position": 3
+        },
+        {
+          "page_id": 6220007,
+          "title": "إيزابيل دانيال",
+          "pool_position": 4
+        },
+        {
+          "page_id": 6400796,
+          "title": "(9559) 1987 DH6",
+          "pool_position": 5
+        },
+        {
+          "page_id": 8362097,
+          "title": "تصلب شرايين لمونكبرغ",
+          "pool_position": 6
+        },
+        {
+          "page_id": 9707826,
+          "title": "طباعة المباني ثلاثية الأبعاد",
+          "pool_position": 7
+        },
+        {
+          "page_id": 9742459,
+          "title": "جامعة ستندن قطر",
+          "pool_position": 8
+        },
+        {
+          "page_id": 1958573,
+          "title": "قلعة لقمان",
+          "pool_position": 9
+        },
+        {
+          "page_id": 9534799,
+          "title": "مؤشر الابتكار العالمي",
+          "pool_position": 10
+        }
+      ],
+      "reserve": [
+        {
+          "page_id": 20294,
+          "title": "ماري أنطوانيت",
+          "pool_position": 11
+        },
+        {
+          "page_id": 5789923,
+          "title": "ميخائيل كورتني",
+          "pool_position": 12
+        },
+        {
+          "page_id": 10181616,
+          "title": "سوزان سترايكر",
+          "pool_position": 13
+        },
+        {
+          "page_id": 7836459,
+          "title": "الأقليات الإثنية في الصين",
+          "pool_position": 14
+        },
+        {
+          "page_id": 9372170,
+          "title": "التكامل المدرسي في الولايات المتحدة",
+          "pool_position": 15
+        },
+        {
+          "page_id": 7469282,
+          "title": "رؤية قائمة على الموارد",
+          "pool_position": 16
+        }
+      ]
+    },
+    "en": {
+      "pool_size": 36,
+      "holdout": [
+        {
+          "page_id": 2275,
+          "title": "Apple II (original)",
+          "pool_position": 1
+        },
+        {
+          "page_id": 65884733,
+          "title": "Saint Agustín College (Honduras)",
+          "pool_position": 2
+        },
+        {
+          "page_id": 66266685,
+          "title": "Muhammad ibn Khalid ibn Barmak",
+          "pool_position": 3
+        },
+        {
+          "page_id": 37174434,
+          "title": "Cynthia Brewer",
+          "pool_position": 4
+        },
+        {
+          "page_id": 140444,
+          "title": "A. J. P. Taylor",
+          "pool_position": 5
+        },
+        {
+          "page_id": 46210280,
+          "title": "Cretomerobius",
+          "pool_position": 6
+        },
+        {
+          "page_id": 79547749,
+          "title": "Martin Wilhelm von Mandt",
+          "pool_position": 7
+        },
+        {
+          "page_id": 1521688,
+          "title": "TDK",
+          "pool_position": 8
+        },
+        {
+          "page_id": 31885663,
+          "title": "Aphelinus asychis",
+          "pool_position": 9
+        },
+        {
+          "page_id": 30073815,
+          "title": "Climate of Agra",
+          "pool_position": 10
+        }
+      ],
+      "reserve": [
+        {
+          "page_id": 18795039,
+          "title": "Thiruvenkatachari Parthasarathy",
+          "pool_position": 11
+        },
+        {
+          "page_id": 63659391,
+          "title": "Sinularia polydactyla",
+          "pool_position": 12
+        },
+        {
+          "page_id": 57075465,
+          "title": "Impact structures of Sweden",
+          "pool_position": 13
+        },
+        {
+          "page_id": 6663803,
+          "title": "Scientific priority",
+          "pool_position": 14
+        },
+        {
+          "page_id": 24287766,
+          "title": "Pyrrolidine dithiocarbamate",
+          "pool_position": 15
+        },
+        {
+          "page_id": 1435701,
+          "title": "Pecuniary externality",
+          "pool_position": 16
+        }
+      ]
+    }
+  },
+  "challenge": {
+    "ar": {
+      "selected": []
+    },
+    "en": {
+      "selected": []
+    }
+  },
+  "additional_selection": {
+    "procedure": "AMENDMENT_2026-10-29 section4, bounded Arabic sixteenth draw",
+    "record": "sixteenth-draw/SELECTION.json",
+    "sha256": "7bc3c053596bfc29358ea3269a4cf1f932173ad400904c4d5334f74a7e8436b8"
+  }
+}
