@@ -83,3 +83,48 @@ def test_resolver_urls_and_fields_are_unchanged(tmp_path: Path) -> None:
     rows = doi_rows(tmp_path, "A<ref>https://doi.org/10.1000/x/abstract {{cite journal|doi=10.1000/y/full}}</ref>")
     assert [r["normalization"]["normalized"] for r in rows] == ["10.1000/x/abstract", "10.1000/y/full"]
     assert all("PAGE_VIEW_SEGMENT_REMOVED" not in r["decoding"]["structural_steps"] for r in rows)
+
+
+# Review round 5 (RV-1, RV-2, RV-7, RV-8, RV-10): the rule is ASCII-only, literal and anchored at the very end.
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    "tail",
+    [
+        "/abſtract",  # long s: not an ASCII route word (RV-1)
+        "/suppınfo",  # dotless i (RV-1)
+        "/suppİnfo",  # capital I with dot (RV-1)
+        "/abstract%0A",  # a final line feed is not removed with the route (RV-2)
+        "%2Fabstract",  # an encoded slash is not a route separator (RV-7)
+        "/%61bstract",  # an encoded route word is not removed (RV-7)
+        "//abstract",  # empty last segment would remain (RV-7)
+    ],
+)
+def test_route_removal_needs_a_literal_ascii_route(tail: str) -> None:
+    got = decode("doi", "url", "https://onlinelibrary.wiley.com/doi/10.1002/abc.123" + tail, ())
+    assert got is not None
+    assert "PAGE_VIEW_SEGMENT_REMOVED" not in got.steps
+
+
+@pytest.mark.regression
+def test_degenerate_remainders_keep_the_route() -> None:
+    got = decode("doi", "url", "https://onlinelibrary.wiley.com/doi/10.1002/./abstract", ())
+    assert got is not None
+    assert got.normalizer_input == "10.1002/./abstract"
+    assert "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in got.steps
+
+
+@pytest.mark.regression
+def test_route_with_a_final_slash_is_removed() -> None:
+    got = decode("doi", "url", "https://onlinelibrary.wiley.com/doi/10.1002/abc.123/abstract/", ())
+    assert got is not None
+    assert got.normalizer_input == "10.1002/abc.123"
+    assert "PAGE_VIEW_SEGMENT_REMOVED" in got.steps
+
+
+@pytest.mark.regression
+def test_lookalike_doi_path_is_not_a_doi_url(tmp_path: Path) -> None:
+    """RV-10: a '/do?/' path with a dotless i (U+0131) is not the ASCII '/doi/' path of a publisher DOI URL."""
+    rows = doi_rows(tmp_path, "A<ref>https://example.org/doı/10.1002/abc.123</ref>")
+    assert all(r["origin"] != "url" for r in rows)

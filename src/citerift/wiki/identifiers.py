@@ -7,7 +7,9 @@ This module only performs the documented structural decoding that comes before t
 
 Structural steps never repair an identifier: no punctuation trimming, no Unicode normalization, no digit
 conversion, no bidi removal. Percent-decoding is applied at most once, and only by the Stage 02 normalizer for
-resolver URLs, or once here for the DOI path of a publisher URL (recorded as a step).
+resolver URLs, or once here for the DOI path of a publisher URL (recorded as a step). One page-view route written
+literally at the end of a publisher DOI path (``/abstract``, ``/full``, ...) is not part of the DOI and is removed
+from the normalizer input (RF-60, step ``PAGE_VIEW_SEGMENT_REMOVED``); the boundary stays reported as ambiguous.
 """
 
 from __future__ import annotations
@@ -20,11 +22,12 @@ from citerift.retraction.identifiers import Normalized, normalize_doi, normalize
 
 NORMALIZER = "citerift.retraction.identifiers"
 _DOI_PATH = r"/doi/(?:(?:abs|full|pdf|epdf|book|reader)/)?(10\.[0-9]{4,9}/.+)"
-_PUBLISHER_DOI_PATH = re.compile(r"(?i)^https?://[^/]+" + _DOI_PATH + "$")
-# A last path segment that names a page view of the article rather than part of the DOI. DOIs may contain "/", so
-# the boundary stays reported as ambiguous. The route is removed from the normalizer input (RF-60) only when what
-# remains is still a DOI; the removal is recorded as a structural step, and only one segment is ever removed.
-_VIEW_SEGMENT = re.compile(r"(?i)/(?:abstract|full|pdf|epdf|references|suppinfo|citedby|figures|summary|meta)$")
+_PUBLISHER_DOI_PATH = re.compile(r"(?ai)^https?://[^/]+" + _DOI_PATH + "$")
+# A last path segment (ASCII letters, optional final "/") that names a page view of the article rather than part of
+# the DOI. DOIs may contain "/", so the boundary stays reported as ambiguous. RF-60: the route is removed from the
+# normalizer input only when it is written literally (not percent-encoded) and what remains is still a DOI whose last
+# segment is not empty, "." or ".."; the removal is recorded as a structural step, and only one segment is removed.
+_VIEW_SEGMENT = re.compile(r"(?ai)/(?:abstract|full|pdf|epdf|references|suppinfo|citedby|figures|summary|meta)/?\Z")
 _DOI_SHAPE = re.compile(r"10\.[0-9]{4,9}/.+", re.DOTALL)
 DOI_RESOLVER_HOSTS = frozenset({"doi.org", "dx.doi.org", "www.doi.org"})
 _HEX2 = re.compile(r"%[0-9A-Fa-f]{2}")
@@ -98,11 +101,17 @@ def decode(scheme: str, origin: str, decoded: str, steps: tuple[str, ...]) -> De
                 out_steps.append("PUBLISHER_URL_DOI_PATH")
                 if once != path:
                     out_steps.append("PERCENT_DECODED_ONCE")
-                view = _VIEW_SEGMENT.search(value)
-                if view:
+                view = _VIEW_SEGMENT.search(path)
+                if view or _VIEW_SEGMENT.search(value):
                     out_steps.append("DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS")
-                    if _DOI_SHAPE.fullmatch(value[: view.start()]):
-                        value = value[: view.start()]
+                if view:
+                    rest = _decode_percent_once(path[: view.start()])
+                    if (
+                        rest is not None
+                        and _DOI_SHAPE.fullmatch(rest)
+                        and rest.rsplit("/", 1)[1] not in ("", ".", "..")
+                    ):
+                        value = rest
                         out_steps.append("PAGE_VIEW_SEGMENT_REMOVED")
     normalized = normalize_doi(value) if scheme == "doi" else normalize_pmid(value)
     return Decoded(value, tuple(out_steps), normalized)
@@ -122,7 +131,7 @@ def url_scheme(url: str) -> str | None:
         return "doi"
     if host == "pubmed.ncbi.nlm.nih.gov" or (host == "www.ncbi.nlm.nih.gov" and re.match(r"/pubmed(?:/|$)", path)):
         return "pmid"
-    if re.match("(?i)" + _DOI_PATH, path):
+    if re.match("(?ai)" + _DOI_PATH, path):
         return "doi"
     return None
 

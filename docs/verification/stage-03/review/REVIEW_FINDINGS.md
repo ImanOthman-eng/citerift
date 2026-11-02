@@ -230,3 +230,28 @@ ambiguous.
 same bundles): only en-1377523963 changes. Its Wiley occurrence now has key `10.1111/0004-5608.00043`. Both
 occurrences of that key link to both rendered links. The warning `UNIT_BOUNDARY_UNRESOLVED` ("more than one
 distinct value for doi") disappears.
+
+## Integration review R5 of RF-60 (2026-11-02)
+
+A separate reviewer agent (a fresh Claude Code context; it did not write RF-60) reviewed `c3e54ae..949cdc4` on its
+integration paths. Its report and repro scripts are in `round-5/` (`REVIEW.md`, `repro/*.py.txt`). It found nothing
+material. Its own focused runs passed; it did not run the full suite.
+
+| Id | Severity | Finding | Introduced by | Disposition |
+|---|---|---|---|---|
+| RV-1 | minor | Route words were matched case-insensitively across Unicode (`abſtract`, `suppınfo`). | RF-60 | **Fixed:** ASCII-only matching (`(?ai)`). |
+| RV-2 | minor | `$` matched before a final line feed, so `…/abstract%0A` lost the line feed silently. | RF-60 | **Fixed:** anchored with `\Z`. |
+| RV-3 | minor | A route is removed even when the same unit's `doi=` field states the longer DOI. The two keys then differ and `CO_REPORTED_IDENTIFIERS` is reported (status partial). | RF-60 | **Not changed.** The disagreement is reported, not hidden. A DOI whose real suffix ends in a route word was not observed in the 70 retained real bundles. Recorded as residual risk R-03-RF60 in RISK_ANALYSIS.md. |
+| RV-4 | minor (recall) | A route URL and a `doi=` field of the same work in another reference now share a key. Content pairing that used them as unique keys abstains (`RECONCILIATION_ABSTAINED`). | RF-60 | **Not changed.** This is a conservative abstention: the reviewer could not build a wrong attachment, and no such case occurs in the retained real bundles. Recorded with RV-3. |
+| RV-5 | minor | The schema enum gained a value without a version change. Documents made after RF-60 fail against the pre-RF-60 external schema copy. | RF-60 | **Not changed.** Stage 03 has no released or accepted contract version, and earlier Stage 03 schema repairs (for example `d11112c`) kept 1.0.0. Pre-RF-60 documents validate under the new schema. The installed-wheel smoke test is rerun with the current schemas (TEST_RESULTS.md). |
+| RV-6 | minor | The specification and the docstring did not describe the rule. | RF-60 | **Fixed:** SPECIFICATION.md 11.4 and the `identifiers.py` docstring. |
+| RV-7 | informational | The removal was tested after percent-decoding, so `%2Fabstract` and `/%61bstract` were removed. Degenerate remainders (`…//abstract`, `/./abstract`) were accepted. | RF-60 | **Fixed:** the route must be written literally in the raw path. The remainder must be a DOI whose last segment is not empty, `.` or `..`. Encoded forms stay flagged ambiguous. |
+| RV-8 | informational | `/abstract/`, `/abstract%20` and `;jsessionid` kept the route in the key with no ambiguity flag. | pre-existing | **Partly fixed:** a final `/` after the route is accepted. `%20` and `;jsessionid` forms are recorded as a limitation. |
+| RV-9 | minor | `verify` accepts a forged, re-digested `normalizer_input`, including step combinations the decoder cannot produce. `replay` detects every case. | pre-existing | **Not changed.** SPECIFICATION 14 states that verify does not re-derive identifiers; `replay` is the complete check. Recorded as a known limitation. |
+| RV-10 | minor | A lookalike path such as `/doı/10.…` was accepted as a publisher DOI URL. | pre-existing | **Fixed** with RV-1: ASCII-only `/doi/` matching for source and render URLs. |
+
+**Regressions** (`tests/stage03/test_wiki_rf60_page_view_segment.py`):
+- At `949cdc4`, before these fixes, the 10 new cases fail and 17 pass (`round-5/pytest-before-949cdc4.txt`).
+- After the fixes, all 27 pass.
+
+**Real bundles:** on the same 70 retained real bundles, the R5 fixes change no extraction compared with `949cdc4`.

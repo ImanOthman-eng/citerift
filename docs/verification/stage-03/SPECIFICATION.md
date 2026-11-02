@@ -207,7 +207,13 @@ anchor covers the value as written, including surrounding whitespace (the normal
 `TRIM_OUTER_WHITESPACE`). Structural decoding (comments removed, HTML entities decoded, protocol-relative URLs
 completed, URL query and fragment removed, a publisher URL's DOI path taken and percent-decoded once) is recorded step
 by step; then the accepted Stage 02 `normalize_doi`/`normalize_pmid` are applied unchanged through `identifiers.py`.
-Occurrences in comments, `<nowiki>`, `<pre>`, `<math>`, `<syntaxhighlight>`/`<source>`, ref names and other sites'
+A publisher DOI path that ends in a page-view route (`abstract`, `full`, `pdf`, `epdf`, `references`, `suppinfo`,
+`citedby`, `figures`, `summary`, `meta`, ASCII letters in any case, optionally followed by `/`) is flagged
+`IDENTIFIER_BOUNDARY_AMBIGUOUS` (step `DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS`). When that route is written literally,
+not percent-encoded, and what precedes it is still a DOI whose last segment is not empty, `.` or `..`, exactly one
+route segment is removed from the normalizer input (step `PAGE_VIEW_SEGMENT_REMOVED`; RF-60, a post-exposure repair).
+The `/doi/` path and the route words are matched in ASCII only. Resolver URLs, fields and wrapper arguments are never
+shortened. Occurrences in comments, `<nowiki>`, `<pre>`, `<math>`, `<syntaxhighlight>`/`<source>`, ref names and other sites'
 URLs are `excluded_identifiers` with a reason; they are never targets. Every occurrence is kept; co-reported
 identifiers in one unit are never merged into one work (`CO_REPORTED_IDENTIFIERS`).
 
