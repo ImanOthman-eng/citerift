@@ -180,8 +180,11 @@ state it has.
 
 **Models.**
 
-- Evaluators use a different Claude model from the implementing agent, and adjudicators use a third.
-- All are Anthropic Claude models. No model of another vendor is available in this environment without a paid API.
+- Evaluators use a different Claude model from the implementing agent: Claude Sonnet. Adjudicators use a different
+  model from the evaluators: Claude Opus, in new contexts that did not take part in the implementation.
+- All are Anthropic Claude models. No model of another vendor, and no further Claude model, is available in this
+  environment without paid usage credits. A third model was planned, but its use was refused for lack of credits on
+  2026-11-02, before any draw, so this line was corrected then.
 - These are AI labels, never human gold.
 
 **Packets.** Holdout packets are made by `evaluate.py packets` with the frozen window. Challenge packets are made by
