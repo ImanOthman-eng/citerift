@@ -7,6 +7,10 @@ occurrence is a reference definition; in a conflicting container, the first occu
 source text is. Units of the other occurrences are not counted. Binding targets, uses, identifiers, render links,
 markers, metrics, gates, thresholds, denominators, bootstrap and baselines are those of ``evaluate.py``.
 
+Declared limitation (conservative): in a *conflicting* short-footnote reference, two calls with the same generated
+content but different spellings (``p=`` and ``page=``) have different source texts, so the second one stays a
+predicted definition. That can only add an engine false positive, never hide an error.
+
 Usage: ``python evaluate_v2.py score <score_spec.json>`` (``packets`` and ``lock`` are the frozen commands).
 """
 
@@ -22,6 +26,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import evaluate as v1  # the frozen scorer, imported unchanged
 
 PROTOCOL = "AMENDMENT_2026-11-02_CONFIRMATION.md (scorer v2: definition rule D2/D6)"
+# The frozen reader, kept before ``score`` substitutes v1's module attribute for the duration of a run.
+_V1_ENGINE_PREDICTIONS = v1.engine_predictions
 
 
 def repeat_definitions(doc: dict[str, Any], text: str) -> set[str]:
@@ -43,7 +49,7 @@ def repeat_definitions(doc: dict[str, Any], text: str) -> set[str]:
 
 
 def engine_predictions_v2(doc: dict[str, Any], text: str) -> v1.Predictions:
-    pred = v1.engine_predictions(doc)
+    pred = _V1_ENGINE_PREDICTIONS(doc)
     repeats = repeat_definitions(doc, text)
     if not repeats:
         return pred
@@ -61,7 +67,7 @@ def engine_predictions_v2(doc: dict[str, Any], text: str) -> v1.Predictions:
 
 def score(spec_path: Path) -> dict[str, Any]:
     """``evaluate.score`` with the engine's predictions read by ``engine_predictions_v2``."""
-    original = v1.engine_predictions
+    original = _V1_ENGINE_PREDICTIONS
     current: dict[str, str] = {}
 
     def patched(doc: dict[str, Any]) -> v1.Predictions:

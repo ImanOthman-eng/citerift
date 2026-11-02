@@ -4,6 +4,7 @@ of ``design/sfn-semantics/SEMANTIC_DECISION.md`` (D2/D6), and changes nothing el
 from __future__ import annotations
 
 import importlib
+import json
 import sys
 from pathlib import Path
 from typing import Any
@@ -89,3 +90,20 @@ def test_v2_is_v1_without_repeats(tmp_path: Path) -> None:
     art = v1.load_bundle(path)
     assert v2.repeat_definitions(doc, art.text) == set()
     assert v2.engine_predictions_v2(doc, art.text) == v1.engine_predictions(doc)
+
+
+@pytest.mark.regression
+def test_v2_score_runs_end_to_end_and_restores_the_frozen_reader(tmp_path: Path) -> None:
+    """The full ``score`` path substitutes v1's reader while it runs; it must not call itself."""
+    path = bundle(tmp_path, TEXT)
+    (tmp_path / "x.json").write_text(json.dumps(extract(path)))
+    art = v1.load_bundle(path)
+    (tmp_path / "a.json").write_text(json.dumps(labels(art.text, art)))
+    spec = {"splits": {"holdout": [{"bundle": str(path), "extraction": "x.json", "locked": "a.json"}]}}
+    (tmp_path / "spec.json").write_text(json.dumps(spec))
+    before = v1.engine_predictions
+    result = v2.score(tmp_path / "spec.json")
+    assert v1.engine_predictions is before
+    eng = result["splits"]["holdout"]["en"]["locked"]["engine"]
+    assert (eng["definitions"]["tp"], eng["definitions"]["fp"], eng["definitions"]["fn"]) == (5, 0, 0)
+    assert result["protocol"] == v2.PROTOCOL
