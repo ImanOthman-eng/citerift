@@ -1,0 +1,14 @@
+"""Same bundle, extraction with the C tokenizer (5b1dcb0) vs the pure-Python one (0dfef1c). Run once per checkout via PYTHONPATH."""
+import sys, time, tempfile
+from pathlib import Path
+sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/tests/stage03")
+import citerift
+from wiki_support import bundle
+from citerift.wiki.extract import extract_bundle, ExtractConfig
+n = int(sys.argv[1])
+text = "Intro text.<ref>{{cite journal |title=T |doi=10.1234/abc}}</ref>\n" + "[[a|" * n + "\n"
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+b = bundle(tmp, text)
+t = time.time()
+doc = extract_bundle(b, ExtractConfig())
+print(citerift.__file__.split("/scratchpad/")[1][:30], "stray '[[a|' x", n, f"({len(text)} bytes)", "->", sorted({i['code'] for i in doc['issues']}) or "OK, identifiers=%d" % len(doc.get('identifiers', [])), f"{time.time()-t:.1f}s")

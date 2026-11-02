@@ -17,8 +17,9 @@ id>-a<n>``. Every request goes through the project network gate, which also hold
     by an atomic rename, so the directory exists only when complete), the bundle's own capture record is adopted
     and journalled as a recovered ``end``: a published capture is never repeated (R6 RR-6). Otherwise the run is
     recorded as interrupted and charged at its worst case against the ceilings.
-  - A final journal line torn by a kill (no line end) is moved to a side file and removed before anything is
-    appended; a reader ignores it (R6 RR-4). A malformed complete line stays an error.
+  - A final journal line torn by a kill (no line end) is moved to a new side file and removed before anything is
+    appended; a reader ignores it (R6 RR-4). A final line that is a whole JSON object missing only its line end is
+    completed instead (R7 RF7-5). A malformed complete line stays an error.
   - An ``end`` line that is missing from the state (a crash before the state was saved) is adopted.
   - Run numbers continue after every number seen in the state, the log or the bundle directory, so an existing
     bundle path is never reused.
@@ -128,12 +129,16 @@ def _journal(out: Path) -> list[dict[str, Any]]:
         return []
     data = log.read_bytes()
     complete = data[: data.rfind(b"\n") + 1]
-    return [json.loads(line) for line in complete.decode("utf-8").splitlines() if line.strip()]
+    # Only "\n" ends a line: json.dumps(ensure_ascii=False) leaves U+0085, U+2028 and U+2029 raw inside strings,
+    # and str.splitlines() would split there (review R7, RF7-4).
+    return [json.loads(line) for line in complete.decode("utf-8").split("\n") if line.strip()]
 
 
 def repair_journal(out: Path) -> str | None:
-    """Move a torn final journal line to a side file and cut it from the journal, so that the next append starts a
-    new line. Returns the side file's name, or None. Called only by the holder of the driver lock."""
+    """Repair a final journal line without its line end, so that the next append starts a new line. Called only by
+    the holder of the driver lock. A line that is one complete JSON object (the kill fell just before its line end)
+    is completed. Any other tail is torn: it is moved to a new side file (never one that exists) and cut from the
+    journal (review R7, RF7-5). Returns what was done, or None."""
     log = out / "captures.jsonl"
     if not log.exists():
         return None
@@ -141,17 +146,29 @@ def repair_journal(out: Path) -> str | None:
     cut = data.rfind(b"\n") + 1
     if cut == len(data):
         return None
-    side = out / f"captures.jsonl.torn-at-{cut}"
-    if not side.exists():
-        with side.open("wb") as fh:
-            fh.write(data[cut:])
+    try:
+        whole = isinstance(json.loads(data[cut:].decode("utf-8")), dict)
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        whole = False
+    if whole:
+        with log.open("ab") as fh:
+            fh.write(b"\n")
             fh.flush()
             os.fsync(fh.fileno())
+        return "completed the final line"
+    n = 1
+    while (out / f"captures.jsonl.torn-at-{cut}-{n}").exists():
+        n += 1
+    side = out / f"captures.jsonl.torn-at-{cut}-{n}"
+    with side.open("xb") as fh:
+        fh.write(data[cut:])
+        fh.flush()
+        os.fsync(fh.fileno())
     with log.open("r+b") as fh:
         fh.truncate(cut)
         fh.flush()
         os.fsync(fh.fileno())
-    return side.name
+    return f"moved a torn final line to {side.name}"
 
 
 def reported_attempts(end: dict[str, Any]) -> list[dict[str, Any]] | None:
@@ -197,7 +214,12 @@ def summarize(exit_code: int, stdout: dict[str, Any]) -> dict[str, Any]:
     not_before = cap.get("not_before")
     if status == "partial" and render.get("code") == "DEFERRED_RETRY_AFTER":
         not_before = render.get("not_before")
-    problems = sorted({a.get("retry_after_problem") for a in cap.get("attempts") or [] if isinstance(a, dict)} - {None})
+    # Only the attempt that ended a failed operation decides (review R7, RF7-6): a header on an accepted response, or
+    # on an attempt followed by another, did not stop the capture.
+    last_by_operation = {a.get("operation"): a for a in cap.get("attempts") or [] if isinstance(a, dict)}
+    problems = sorted(
+        {a.get("retry_after_problem") for a in last_by_operation.values() if a.get("code") is not None} - {None}
+    )
     return {
         "exit": exit_code,
         "status": status,
@@ -354,9 +376,9 @@ def _run_locked(
     acquisition_end: float = ACQUISITION_END,
 ) -> int:
     states_path, log = out / "capture_states.json", out / "captures.jsonl"
-    torn = repair_journal(out)
-    if torn is not None:
-        print(f"journal: a torn final line was moved to {torn}", file=sys.stderr)
+    repaired = repair_journal(out)
+    if repaired is not None:
+        print(f"journal: {repaired}", file=sys.stderr)
     states: dict[str, Any] = (
         json.loads(states_path.read_text(encoding="utf-8")) if states_path.exists() else {"articles": {}}
     )

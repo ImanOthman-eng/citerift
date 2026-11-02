@@ -39,11 +39,10 @@ from citerift.wiki.profile import TAG_REF, Profile, WikiProfile
 
 PARSER_NAME = "mwparserfromhell"
 PARSER_VERSION = mwparserfromhell.__version__
-# The pure-Python tokenizer. The C tokenizer of 0.7.2 can crash the worker with a segmentation fault when an
-# allocation fails under the worker's address-space limit, instead of raising MemoryError, so the failure was
-# reported as EXTRACTION_WORKER_FAILED (MF-1). Both tokenizers give identical token streams on every retained real
-# source (docs/verification/stage-03/review/failfirst/mf-1/); the Python one is slower but within the budgets.
-mwparserfromhell.parser.use_c = False
+# The library's C tokenizer is used (its default). It can crash the extraction worker with a segmentation fault when
+# an allocation fails under the worker's address-space limit; the worker runner classifies that crash (MF-1, see
+# extract._run_worker). The pure-Python tokenizer is not used for extraction: it differs from the C one (and from
+# MediaWiki) on bare URLs followed by ``:`` ``;`` ``!``, and is far slower on unclosed constructs (review R7, RF7-1/2).
 
 # A DOI starts with "10.", a registrant code of 4 to 9 digits (optionally subdivided) and a slash. Its end in free
 # text is the first whitespace or wikitext delimiter; nothing else is trimmed (SPECIFICATION.md 11.4).

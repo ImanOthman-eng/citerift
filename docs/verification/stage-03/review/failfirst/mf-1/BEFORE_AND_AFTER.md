@@ -37,3 +37,18 @@ real source and the 20,000-reference stress page):
 - Regression test: `tests/stage03/test_wiki_mf1_tokenizer.py`.
 - after the repair, the full suite: 1777 passed in 535.20s (Python 3.12, local).
 - real-data impact: none of the 70 retained real bundles changes (`real_bundles_impact.json`).
+
+## Superseded by MF-1 v2 after review R7 (2026-11-02)
+
+The focused review R7 showed that the pure-Python tokenizer is not equivalent outside the retained corpus: it keeps
+`:`, `;` and `!` inside a bare URL followed by a space (MediaWiki and the C tokenizer do not), and it is 10 to 150
+times slower on unclosed constructs (RF7-1, RF7-2; `review/round-7/`). "Identical token streams on all 84 texts" was
+true only of those texts. The repair above was therefore replaced:
+
+- the engine keeps the C tokenizer, as for all evidence before `b00fa65`;
+- `extract._run_worker` classifies a worker death by SIGSEGV or SIGBUS with one more run of the same work, under the
+  same limits, with the pure-Python tokenizer: `EXTRACTION_MEMORY_EXCEEDED` when that run exceeds the memory limit,
+  otherwise `EXTRACTION_WORKER_FAILED`; its output is never returned as an extraction.
+
+Under a 64 MiB limit, 30 extractions of the stress page: the first (C) run crashed 2 times and reported memory 28
+times; all 30 results are `EXTRACTION_MEMORY_EXCEEDED` (`review/round-7/mf1v2_crash_classification_probe.out.txt`).

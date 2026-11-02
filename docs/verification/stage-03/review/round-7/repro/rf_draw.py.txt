@@ -1,0 +1,44 @@
+import importlib, json, tempfile, sys
+from pathlib import Path
+from types import SimpleNamespace as NS
+from drv_common import *
+sel = importlib.import_module("select_confirmation")
+base = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out")
+def att(code=None, problem=None, body=100): return NS(to_json=lambda: {"code": code, "body_bytes": body, "retry_after_problem": problem}, )
+def ans(code=None, nb=None, attempts=(), js=None):
+    return NS(code=code, not_before=nb, attempts=list(attempts), body=b"{}" if code is None else None, json=js)
+def mk(answers, t=T0):
+    d = Path(tempfile.mkdtemp(dir=base)); c = Clock(t)
+    it = iter(answers); calls = []
+    def fetch(url): calls.append(url); return next(it)
+    return sel.LiveGet(d, fetch, c, c.sleep), c, calls, d
+# (a) deferral then success
+g, c, calls, d = mk([ans("DEFERRED_RETRY_AFTER", stamp(T0+120)), ans(None, js={"ok": 1}, attempts=[att()])])
+print("a:", g("u"), "sleeps", c.sleeps, "calls", len(calls), "used", sel.cc.used(sel.cc._journal(d/"capture")))
+# (b) far deferral stops
+g, c, calls, d = mk([ans("DEFERRED_RETRY_AFTER", stamp(T0+7200))])
+try: g("u")
+except SystemExit as e: print("b: SystemExit", str(e)[:60], "sleeps", c.sleeps)
+# (c) endless deferrals with a clock whose sleep does not advance
+g, c, calls, d = mk([ans("DEFERRED_RETRY_AFTER", stamp(T0+10))]*20)
+c.sleep = lambda s: c.sleeps.append(s)   # no advance
+g.sleep = c.sleep
+try: g("u")
+except SystemExit as e: print("c: SystemExit after", len(calls), "calls; sleeps", len(c.sleeps))
+# (d) retryable failure once, then success; problem -> no retry
+g, c, calls, d = mk([ans("HTTP_UNAVAILABLE", attempts=[att("HTTP_UNAVAILABLE")]), ans(None, js={"x": 1}, attempts=[att()])])
+print("d1:", g("u"), "calls", len(calls))
+g, c, calls, d = mk([ans("HTTP_RATE_LIMITED", attempts=[att("HTTP_RATE_LIMITED", "RETRY_AFTER_UNREADABLE")]), ans(None, js={"x": 1})])
+print("d2:", g("u"), "calls", len(calls))
+# (e) numbering continues after an interrupted draw; earlier listed
+g, c, calls, d = mk([ans(None, js={"x":1}, attempts=[att()])])
+g("u")
+g2 = sel.LiveGet(d, lambda u: ans(None, js={"y": 1}, attempts=[att()]), c, c.sleep)
+print("e: earlier", g2.earlier, "number", g2.number); g2("v"); print("   keys", [e["key"] for e in sel.cc._journal(d/"capture") if e["event"]=="start"])
+# (f) deferral whose not_before is already past (skew) -> sleeps 0 then retries
+g, c, calls, d = mk([ans("DEFERRED_RETRY_AFTER", stamp(T0-100)), ans(None, js={"z":1}, attempts=[att()])])
+print("f:", g("u"), c.sleeps)
+# (g) acquisition limit
+g, c, calls, d = mk([ans(None, js={})], t=sel.cc.ACQUISITION_END + 1)
+try: g("u")
+except SystemExit as e: print("g:", e)

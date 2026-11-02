@@ -1,0 +1,29 @@
+"""Adoption of a published bundle: variants. Stand-in CLI only."""
+import tempfile, json
+from pathlib import Path
+from drv_common import *
+base = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out")
+def scenario(name, record, killed_after_publish=True, status_in_dir=None):
+    tmp = Path(tempfile.mkdtemp(dir=base)); out = tmp / "out"
+    class Cli:
+        calls = []
+        def __call__(s, argv):
+            s.calls.append(argv)
+            o = Path(argv[argv.index("--out")+1]); o.mkdir(parents=True)
+            if len(s.calls) == 1:
+                (o/"capture.json").write_text(json.dumps(record))
+                raise Killed
+            return 0, json.dumps(rec("complete")), ""
+    cli = Cli(); c = Clock()
+    try: cc.run(plan(tmp, ("holdout","en",1)), out, cli, c, c.sleep)
+    except Killed: pass
+    rc = cc.run(plan(tmp, ("holdout","en",1)), out, cli, c, c.sleep)
+    st = json.loads((out/"capture_states.json").read_text())["articles"]["holdout/en-1"]
+    ent = cc._journal(out)
+    print(f"{name}: rc={rc} cli_calls={len(cli.calls)} runs={[(r['run'], r['status'], r.get('interrupted')) for r in st['runs']]} used={cc.used(ent)}")
+good = {"attempts": [{"code": None, "body_bytes": 5000}], "issues": [], "not_before": None, "render": {}}
+scenario("complete bundle", {**good, "status": "complete"})
+scenario("partial render-deferred", {**good, "status": "partial", "render": {"code": "DEFERRED_RETRY_AFTER", "not_before": stamp(T0+50)}, "issues":[{"code":"DEFERRED_RETRY_AFTER","severity":"error"}]})
+scenario("partial retryable render failure", {**good, "status": "partial", "issues":[{"code":"HTTP_UNAVAILABLE","severity":"error"}]})
+scenario("status failed in dir", {**good, "status": "failed"})
+scenario("capture.json without attempts key", {"status": "complete", "issues": []})

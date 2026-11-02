@@ -1,0 +1,14 @@
+"""Two kills tear different lines at the same offset: the second tear's bytes are discarded, not kept."""
+import tempfile, json
+from pathlib import Path
+from drv_common import *
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+out = tmp / "out"; out.mkdir()
+log = out / "captures.jsonl"
+log.write_text('{"event": "start", "key": "k", "run": 1}\n{"event": "end", "key": "k", "ru')          # tear 1
+print("repair 1 ->", cc.repair_journal(out), "| file now ends at", len(log.read_bytes()))
+with log.open("a") as fh: fh.write('{"event": "start", "key": "OTHER-EVIDENCE", "run"')               # tear 2, same cut
+print("repair 2 ->", cc.repair_journal(out))
+for p in sorted(out.glob("captures.jsonl.torn-at-*")):
+    print(p.name, "holds", p.read_bytes())
+print("bytes of tear 2 kept anywhere:", any(b"OTHER-EVIDENCE" in p.read_bytes() for p in out.glob("captures.jsonl.torn-at-*")))

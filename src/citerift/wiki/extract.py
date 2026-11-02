@@ -615,15 +615,42 @@ def extract_bundle(
 
 
 def _run_worker(bundle: Bundle, config: ExtractConfig, operation: str = "extract") -> dict[str, Any]:
-    """Run extraction or marker-witness reconstruction with the same offline process limits."""
+    """Run extraction or marker-witness reconstruction with the same offline process limits.
+
+    MF-1: the C tokenizer can die with SIGSEGV (or SIGBUS) when an allocation fails under the address-space limit,
+    instead of raising MemoryError. Such a crash is classified by one more run of the same work, under the same
+    limits, with the pure-Python tokenizer, whose allocation failures raise MemoryError: if that run exceeds the
+    memory limit, the result is EXTRACTION_MEMORY_EXCEEDED; otherwise the crash stays EXTRACTION_WORKER_FAILED. The
+    second run's output is never returned as an extraction, so every extraction is made by one tokenizer."""
+    doc, crashed = _run_worker_once(bundle, config, operation, python_tokenizer=False)
+    if not crashed:
+        return doc
+    second, _ = _run_worker_once(bundle, config, operation, python_tokenizer=True)
+    codes = {i["code"] for i in second.get("issues", [])} if second.get("status") == "failed" else set()
+    if "EXTRACTION_MEMORY_EXCEEDED" in codes:
+        return failure_document(
+            bundle.capture_sha256,
+            config,
+            "EXTRACTION_MEMORY_EXCEEDED",
+            f"address space limit {config.worker_memory_mib} MiB (native tokenizer crashed; confirmed by a second run)",
+        )
+    return doc
+
+
+def _run_worker_once(
+    bundle: Bundle, config: ExtractConfig, operation: str, *, python_tokenizer: bool
+) -> tuple[dict[str, Any], bool]:
+    """One worker run: (document, whether the worker died by SIGSEGV or SIGBUS)."""
     if not hasattr(os, "setsid"):
-        return failure_document(bundle.capture_sha256, config, "PLATFORM_UNSUPPORTED", "POSIX process limits")
+        return failure_document(bundle.capture_sha256, config, "PLATFORM_UNSUPPORTED", "POSIX process limits"), False
     src_root = str(Path(__file__).resolve().parents[2])
     code = (
         "import sys; sys.path.insert(0, sys.argv[1]); "
         "from citerift.wiki.worker import main; sys.exit(main(sys.argv[2:]))"
     )
     cmd = [sys.executable, "-I", "-c", code, src_root, str(bundle.path), json.dumps(config.to_json()), operation]
+    if python_tokenizer:
+        cmd.append("python-tokenizer")
     proc = subprocess.Popen(  # noqa: S603 - fixed interpreter and arguments, no shell
         cmd,
         stdout=subprocess.PIPE,
@@ -639,7 +666,7 @@ def _run_worker(bundle: Bundle, config: ExtractConfig, operation: str = "extract
         proc.communicate()
         return failure_document(
             bundle.capture_sha256, config, "EXTRACTION_DEADLINE_EXCEEDED", f"killed after {config.worker_wall_s} s"
-        )
+        ), False
     if proc.returncode == 0 and len(stdout) <= MAX_OUTPUT_BYTES:
         try:
             result: dict[str, Any] = loads_strict(stdout)
@@ -652,8 +679,8 @@ def _run_worker(bundle: Bundle, config: ExtractConfig, operation: str = "extract
                     config,
                     "BUNDLE_DIGEST_MISMATCH",
                     "capture.json changed after it was verified",
-                )
-            return result
+                ), False
+            return result, False
     tail = stderr[-2000:].decode("utf-8", "replace")
     if proc.returncode == 3 or "MemoryError" in tail:
         return failure_document(
@@ -661,13 +688,14 @@ def _run_worker(bundle: Bundle, config: ExtractConfig, operation: str = "extract
             config,
             "EXTRACTION_MEMORY_EXCEEDED",
             f"address space limit {config.worker_memory_mib} MiB",
-        )
+        ), False
     if proc.returncode == -signal.SIGXCPU:
-        return failure_document(bundle.capture_sha256, config, "EXTRACTION_DEADLINE_EXCEEDED", "CPU limit")
+        return failure_document(bundle.capture_sha256, config, "EXTRACTION_DEADLINE_EXCEEDED", "CPU limit"), False
     last = tail.strip().splitlines()[-1] if tail.strip() else ""
+    crashed = proc.returncode in (-signal.SIGSEGV, -signal.SIGBUS)
     return failure_document(
         bundle.capture_sha256, config, "EXTRACTION_WORKER_FAILED", f"exit {proc.returncode}: {last[:300]}"
-    )
+    ), crashed
 
 
 def write_canonical(doc: dict[str, Any]) -> bytes:

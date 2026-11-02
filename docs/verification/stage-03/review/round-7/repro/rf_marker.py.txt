@@ -1,0 +1,8 @@
+from drv_common import *
+import importlib
+wc = importlib.import_module("warning_challenge")
+print({w: wc.MARKERS[w] for w in wc.MARKERS})
+for w, t in [("en", "{{Template:Retracted|x}}"), ("en", "{{TEMPLATE:retracted|x}}"), ("en", "{{template : Retracted}}"), ("en", "{{Tempate:Retracted}}"),
+             ("en", "{{Template_talk:Retracted}}"), ("en", "{{Retracted article|x}}"), ("ar", "{{Template:Retracted|x}}"), ("ar", "{{قالب:مصدر مسحوب}}"), ("ar", "{{TEMPLATE:مصدر مسحوب}}"),
+             ("en", "{{قالب:Retracted}}"), ("en", "{{msgnw:Retracted}}"), ("en", "{{Template:Retracted}}<!-- {{Template:Retracted}} -->")]:
+    print(w, repr(t), wc.marker_calls(t, w))

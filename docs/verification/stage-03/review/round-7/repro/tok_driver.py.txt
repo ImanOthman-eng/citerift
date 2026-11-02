@@ -1,0 +1,10 @@
+import subprocess, sys, os
+here = os.path.dirname(os.path.abspath(__file__))
+cases = ["nested_closed30","braces3","table","refs_unclosed","quotes","extlinks","many_params","html_tags","headings","lone_braces","nested_links","tmpl_brace","tmpl_sfn_like","unclosed_tmpl","unclosed_link"]
+for c in cases:
+    for n in (1000, 5000):
+        try:
+            r = subprocess.run([sys.executable, os.path.join(here, "tok_one.py"), c, str(n)], capture_output=True, text=True, timeout=40)
+            print(r.stdout.strip() or ("ERR rc=%s %s" % (r.returncode, r.stderr[-200:])), flush=True)
+        except subprocess.TimeoutExpired:
+            print(c, n, "TIMEOUT>60s (C or Py)", flush=True)

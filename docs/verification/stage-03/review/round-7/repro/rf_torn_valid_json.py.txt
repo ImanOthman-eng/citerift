@@ -1,0 +1,20 @@
+"""A kill that tears the end line exactly before its line end: the line is a complete JSON object but is treated as torn."""
+import tempfile, json
+from pathlib import Path
+from drv_common import *
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+out = tmp / "out"; out.mkdir()
+start = {"event": "start", "key": "holdout/en-1", "run": 1, "at": "x", "argv": ["citerift-wiki","capture","--out",str(out/"bundles/holdout/en-1-a1")]}
+end = {"event": "end", "key": "holdout/en-1", "run": 1, "at": "x", "exit": 75, "stdout": rec("deferred", attempts=[], not_before=stamp(T0 + 100000))}
+(out/"captures.jsonl").write_text(json.dumps(start) + "\n" + json.dumps(end))   # no final newline, complete JSON
+print("journal entries seen by _journal:", [e["event"] for e in cc._journal(out)])
+class Cli:
+    calls = 0
+    def __call__(s, argv):
+        s.calls += 1
+        o = Path(argv[argv.index("--out")+1]); o.mkdir(parents=True)
+        return 0, json.dumps(rec("complete")), ""
+c, cli = Clock(), Cli()
+rc = cc.run(plan(tmp, ("holdout","en",1)), out, cli, c, c.sleep)
+print("rc", rc, "cli calls", cli.calls, "sleeps", c.sleeps, "side files", sorted(p.name for p in out.glob("captures.jsonl.torn*")))
+print("the deferral (not_before in +100000 s) was lost: the article ran again at once" if cli.calls else "deferral kept")

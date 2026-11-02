@@ -343,7 +343,7 @@ def main() -> int:
         result["exposure_set_sha256"] = hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest()
         result["earlier_interrupted_draw_requests"] = get.earlier
         result["requests"] = get.requests
-        out.write_text(json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        cc._write_atomic(out, result)  # a kill never leaves a partial SELECTION.json (review R7, RF7-8)
     finally:
         os.close(lock_fd)
     return 0

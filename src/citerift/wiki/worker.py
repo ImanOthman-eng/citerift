@@ -56,6 +56,11 @@ def main(argv: list[str]) -> int:
     from citerift.wiki.extract import ExtractConfig, extract_document, failure_document  # noqa: PLC0415
 
     bundle_path, config_json = argv[0], argv[1]
+    if len(argv) > 3 and argv[3] == "python-tokenizer":
+        # Only to classify a native crash (MF-1): the result of this run is never returned as an extraction.
+        import mwparserfromhell.parser  # noqa: PLC0415
+
+        mwparserfromhell.parser.use_c = False
     config = ExtractConfig.from_json(json.loads(config_json))
     try:
         bundle = open_bundle(bundle_path)  # type: ignore[arg-type]

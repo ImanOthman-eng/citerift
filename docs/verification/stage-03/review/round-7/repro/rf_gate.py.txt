@@ -1,0 +1,24 @@
+import os, sys, tempfile, time
+from citerift.wiki import fetch
+G = fetch.NetworkGate
+d = tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out")
+def read(raw: bytes):
+    p = os.path.join(d, "g"); open(p, "wb").write(raw)
+    fd = os.open(p, os.O_RDWR)
+    try: return G._read(fd)
+    finally: os.close(fd)
+now = time.time()
+big = f"{now:.3f} {now+500:.3f}\n".encode()
+small = f"{now+10:.3f} 0.000\n".encode()
+print("empty              ", read(b""))
+print("complete 2 fields  ", read(big))
+print("complete 1 field   ", read(f"{now:.3f}\n".encode()))
+print("torn no newline    ", read(big[:-1]), "(expect ~(now,now))")
+# crash between pwrite and ftruncate: new short record over old long record
+mixed = bytearray(big); mixed[:len(small)] = small
+print("new+old tail       ", read(bytes(mixed)), "-> new record used:", abs(read(bytes(mixed))[0]-(now+10))<1e-3)
+print("3 fields           ", read(b"1 2 3\n"))
+print("NaN                ", read(b"nan nan\n"))
+print("CRLF               ", read(f"{now:.3f} {now+5:.3f}\r\n".encode()))
+print("leading blank line ", read(b"\n"+big))
+print("trailing space+nl  ", read(f"{now:.3f} {now+5:.3f} \n".encode()))

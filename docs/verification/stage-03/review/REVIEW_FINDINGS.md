@@ -304,3 +304,40 @@ driver stops with `JSONDecodeError` at the first torn line (`round-6/sim-before-
 
 **Real bundles:** on the 70 retained real bundles, the R6 fixes change no extraction compared with `b00fa65`
 (`round-6/real_bundles_impact.json`).
+
+## Focused follow-up review R7 under D-034 (2026-11-02)
+
+Owner instruction D-034, section 9, allows one second focused review, only of the changes since the first. A separate
+reviewer agent (a fresh context on Sonnet) reviewed `5b1dcb0..0dfef1c` (MF-1 in `b00fa65` and the R6 fixes in
+`0dfef1c`) in its own detached worktree at `0dfef1c`, with no network request. Its report, repro scripts and outputs
+are in `round-7/`. It reports 8 findings: 0 critical, 0 high, 2 medium, 4 low, 2 informational. It confirmed the R6
+fixes for charging, adoption, the draw wait loop, the reserve step, the prediction run, the gate record, the
+short-footnote keys, the time limit and the marker regex, and that the two changed fixtures kept their assertions.
+
+| Id | Severity | Finding | Disposition |
+|---|---|---|---|
+| RF7-1 | medium | MF-1's pure-Python tokenizer keeps `:` `;` `!` inside a bare URL followed by a space, so `https://doi.org/10.1234/abc; Smith` gave DOI `10.1234/abc;`, marked valid. The equivalence claim held only for the retained corpus (fuzz: 53 of 30,000 strings differ). | **Fixed (MF-1 v2).** The engine keeps the C tokenizer. A native crash of the worker is classified by a second run with the Python tokenizer under the same limits; that run's output is never an extraction (`failfirst/mf-1/BEFORE_AND_AFTER.md`, last section). |
+| RF7-2 | low | The Python tokenizer is 10 to 150 times slower on unclosed constructs: an 18 KB page went from 1.4 s to `EXTRACTION_DEADLINE_EXCEEDED`. | **Fixed** with RF7-1: 1.5 s again (`round-7/repro-output-after/rf_tok_deadline.out.txt`). A crashing page now takes up to two worker runs. |
+| RF7-3 | medium | The R6 commit also rewrote the model rule of amendment section 7 (to evaluators on Sonnet and adjudicators on Opus, the implementing agent's own model), without listing it in section 11 or citing the owner. | **Fixed.** The edit is withdrawn. Section 7 again requires three distinct models, as committed in `5b1dcb0`, now named: implementing agent Opus, evaluators Sonnet, adjudicators Haiku (available without paid credits; checked by a one-line call before any draw). The smaller adjudicator model is reported as a limitation. Section 12 records the correction. The reviewer's reading that the implementing agent runs on Sonnet came from its own context; this session runs on Opus. |
+| RF7-4 | low | `_journal` split lines with `str.splitlines()`, so U+0085, U+2028 or U+2029 inside a journal string crashed every restart. | **Fixed.** Only `\n` ends a line. |
+| RF7-5 | low | Torn-line repair dropped a whole final JSON line missing only its `\n` (losing a deferral's `not_before`), and discarded a second tear at the same offset. | **Fixed.** A whole final object is completed; every torn tail goes to a new numbered side file. |
+| RF7-6 | low | `retry_after_problems` was read from every attempt, so an odd header on an accepted source response ended retries of an unrelated render failure. | **Fixed.** Only the last attempt of each operation, when it failed, counts. |
+| RF7-7 | info | Four unreported or interrupted runs (64 MiB each at the worst case) exhaust the 300 MiB ceiling with no real use. | **Not changed.** It follows the protocol (an interrupted run at its worst case) and RR-12. Recorded as a campaign risk. |
+| RF7-8 | info (speculative) | SELECTION.json was written non-atomically. | **Fixed.** Written atomically. |
+
+**Effect on an R6 test.** With the C tokenizer, a NUL in a source makes the parse lossy (`SOURCE_PARSE_LOSSY`), so the
+R6 NUL case (RR-11) can no longer reach the trim. That test of mine now asserts the honest failure and that the
+positional trim set has no NUL. The `MF-1` test that asserted the Python tokenizer was replaced by one that asserts
+the C tokenizer, with new tests for the bare-URL punctuation and the crash classification. The existing memory test
+`test_the_memory_limit_ends_in_a_stable_failure` is unchanged and passes.
+
+**Regressions** (`tests/stage03/test_review_r7_fixes.py` and `tests/stage03/test_wiki_mf1_tokenizer.py`, 18 cases):
+- At `0dfef1c`, before these fixes, 13 fail and 5 pass (`round-7/pytest-before-0dfef1c.txt`). The 5 that pass are
+  `.`/`,` punctuation (the same with both tokenizers), the memory test, and two classification controls.
+- After the fixes, all 18 pass.
+
+**Real bundles:** on the 70 retained real bundles, no extraction changes compared with `0dfef1c`
+(`round-7/real_bundles_impact.json`). The reviewer found the same for 83 bundles between `5b1dcb0` and `0dfef1c`.
+
+This was the one focused follow-up review the instruction allows. No further code review is made before the study;
+the evidence-integrity audit follows the study.

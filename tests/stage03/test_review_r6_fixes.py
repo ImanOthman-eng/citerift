@@ -25,6 +25,7 @@ import pytest
 from wiki_support import bundle, extract
 
 from citerift.wiki import fetch
+from citerift.wiki import source as source_module
 from citerift.wiki.fetch import FetchPolicy
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -481,7 +482,10 @@ def test_different_templates_and_targets_stay_a_conflict(tmp_path: Path, text: s
 
 
 @pytest.mark.regression
-def test_a_positional_nul_is_not_trimmed_as_lua_keeps_it(tmp_path: Path) -> None:
-    """RR-11: Lua's %s has no NUL, so ``Smith\\0`` and ``Smith`` are two names (two references)."""
+def test_a_nul_in_the_source_is_never_trimmed_into_another_name(tmp_path: Path) -> None:
+    """RR-11: Lua's %s has no NUL, so ``Smith\\0`` and ``Smith`` are two names in MediaWiki. The engine never merges
+    them: the C tokenizer cannot parse a NUL losslessly, so the extraction fails honestly (review R7 restored the C
+    tokenizer); the positional trim set is Lua's either way."""
     doc = extract(bundle(tmp_path, "A{{sfn|Smith\0|2001}} B{{sfn|Smith|2001}}"))
-    assert short(doc) == [("single_definition", 1), ("single_definition", 1)]
+    assert doc["status"] == "failed" and "SOURCE_PARSE_LOSSY" in {i["code"] for i in doc["issues"]}
+    assert "\0" in source_module._ARG_TRIM and "\0" not in source_module._LUA_TRIM

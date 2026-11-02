@@ -180,11 +180,14 @@ state it has.
 
 **Models.**
 
-- Evaluators use a different Claude model from the implementing agent: Claude Sonnet. Adjudicators use a different
-  model from the evaluators: Claude Opus, in new contexts that did not take part in the implementation.
-- All are Anthropic Claude models. No model of another vendor, and no further Claude model, is available in this
-  environment without paid usage credits. A third model was planned, but its use was refused for lack of credits on
-  2026-11-02, before any draw, so this line was corrected then.
+- Evaluators use a different Claude model from the implementing agent, and adjudicators use a third (as committed
+  in `5b1dcb0`; owner instruction D-034 section 7: different model families where possible, no paid APIs).
+- The implementing agent runs on Claude Opus. Evaluators run on Claude Sonnet. Adjudicators run on Claude Haiku, a
+  smaller model; that is a limitation of the adjudication, reported with its results. Every evaluator and adjudicator
+  is a new context that took no part in the implementation.
+- All are Anthropic Claude models. No model of another vendor is available in this environment without a paid API.
+  The model first chosen for one role (Claude Fable) was refused for lack of usage credits on 2026-11-02, before any
+  draw (section 12).
 - These are AI labels, never human gold.
 
 **Packets.** Holdout packets are made by `evaluate.py packets` with the frozen window. Challenge packets are made by
@@ -313,3 +316,28 @@ size, salt, order or stopping rule above changed. The corrections make the tools
 Engine changes made with these corrections (also before the freeze): short-footnote redirects of one template
 are one template, `ref=` is compared as a link target, positional values are trimmed as Lua trims them, and the
 network gate record is never left empty. On the 70 retained real bundles none of them changes an extraction.
+
+## 12. Corrections after the focused review R7 (2026-11-02, before any draw)
+
+The focused follow-up review R7 (`review/round-7/REVIEW.md`) found that the R6 commit (`0dfef1c`) had also rewritten
+the model rule of section 7 to two models (evaluators on Sonnet, adjudicators on Opus, the implementing agent's own
+model), without listing that edit in section 11 (RF7-3). That edit is withdrawn. Section 7 again states the rule
+committed in `5b1dcb0`, three distinct models, now with the models named. A third model that needs no paid credits
+(Claude Haiku) was confirmed available on 2026-11-02 by a one-line test call, before any draw. No other protocol rule
+changed.
+
+R7 also led to these tool and engine corrections, before any draw:
+
+- **Tokenizer (MF-1).** The engine keeps the library's C tokenizer, as for all earlier evidence. A worker that dies
+  by a native crash is classified by a second run with the pure-Python tokenizer under the same limits:
+  `EXTRACTION_MEMORY_EXCEEDED` if that run exceeds the memory limit, otherwise `EXTRACTION_WORKER_FAILED`. The second
+  run's output is never used as an extraction (RF7-1, RF7-2).
+- **Journal.** Only a line feed ends a journal line; a whole final line missing only its line end is completed; every
+  torn tail is kept in its own side file (RF7-4, RF7-5).
+- **Retry-After.** Only the attempt that ended a failed operation can make a run final for an unreadable Retry-After
+  (RF7-6).
+- **SELECTION.json** is written atomically (RF7-8).
+
+RF7-7 is not changed: an interrupted or unreported run is charged its worst case (section 6), now 6 attempts and
+64 MiB, so about four such runs would stop the campaign at the byte ceiling without real use. This is reported as a
+risk, not relaxed.

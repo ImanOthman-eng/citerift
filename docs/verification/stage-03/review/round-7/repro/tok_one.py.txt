@@ -1,0 +1,35 @@
+"""Usage: tok_one.py CASE N -> times for the C and the pure-Python tokenizer on one adversarial case."""
+import sys, time
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+case, n = sys.argv[1], int(sys.argv[2])
+cases = {
+ "unclosed_tmpl": lambda: "{{a|" * n,
+ "unclosed_link": lambda: "[[a|" * n,
+ "nested_closed30": lambda: "{{a|" * 30 + "x" + "}}" * 30,
+ "braces3": lambda: "{{{" * n,
+ "table": lambda: "{|\n" + "|-\n| a || b\n" * n + "|}",
+ "refs_unclosed": lambda: "<ref>" * n,
+ "quotes": lambda: "'''a''b" * n,
+ "extlinks": lambda: "[http://a.b " * n,
+ "many_params": lambda: "{{t" + "|a=b" * n + "}}",
+ "html_tags": lambda: "<b><i>" * n,
+ "headings": lambda: "=a=\n" * n,
+ "lone_braces": lambda: "{{" * n,
+ "nested_links": lambda: "[[a|[[b|" * n,
+ "tmpl_brace": lambda: "{{a|b}" * n,
+ "tmpl_sfn_like": lambda: "{{sfn|x|1}}<ref>{{cite|title=a}}</ref>" * n,
+}
+s = cases[case]()
+out = [case, n, len(s)]
+res = {}
+for label, Tk in (("C", CTokenizer), ("Py", Tokenizer)):
+    t = time.time()
+    try:
+        res[label] = repr(Tk().tokenize(s, 0, False))
+        out.append(f"{label}={time.time()-t:.2f}s")
+    except BaseException as e:
+        res[label] = "EXC " + type(e).__name__
+        out.append(f"{label}={time.time()-t:.2f}s EXC {type(e).__name__}")
+out.append("SAME" if res["C"] == res["Py"] else "DIFF")
+print(*out)
