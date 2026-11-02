@@ -2680,13 +2680,16 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
         "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
         "recorded_at": "2026-10-28T18:10:32Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "3e51792a38e227bd986bfbe63f16605d303c6d6c",
+        "recorded_at": "2026-11-02T18:07:49Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -3298,6 +3301,17 @@
       "recorded_by": "engineering-agent",
       "reason": "Rework under the owner's instruction of 2026-11-02 (D-034): short-footnote semantics, DOI/PMID and Retry-After audits, adversarial review, then one prospective confirmation campaign",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh"
+    },
+    {
+      "seq": 40,
+      "at": "2026-11-02T18:07:49Z",
+      "stage": "03",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "D-034 candidate frozen before the confirmation draw: sfn semantics, DOI D-1/D-2, Retry-After G-1/G-2, campaign tools, MF-1 v2, reviews R6 and R7 fixed; CI green on 3e51792",
+      "owner_ref": null
     }
   ]
 }
