@@ -225,15 +225,23 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         elif state == "identical_definitions":
             issues.append(Issue("REF_DEFINITIONS_DUPLICATE", (c.id,), f"group {group!r} name {name!r}"))
     for calls in by_sfn.values():
+        # One reference per Module:Footnotes name and group; its calls are reuses when they generate the same text
+        # and a Cite conflict when they do not (source.py, _footnote_identity).
         first = calls[0]
+        if len(calls) == 1:
+            sfn_state = "single_definition"
+        elif len({d.sfn_content for d in calls}) == 1:
+            sfn_state = "identical_definitions"
+        else:
+            sfn_state = "conflicting_definitions"
         c = Container(
             cid(),
             "generated_note",
-            "",
+            first.group,
             None,
+            first.group_raw,
             None,
-            None,
-            "single_definition" if len(calls) == 1 else "identical_definitions",
+            sfn_state,
             [_definition(d, text) for d in calls],
             first.start,
             first.end,
@@ -243,6 +251,8 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
         containers.append(c)
         for d in calls:
             ref_container[d.index] = c.id
+        if sfn_state == "conflicting_definitions":
+            issues.append(Issue("REF_DEFINITIONS_CONFLICT", (c.id,), f"short footnote group {first.group!r}"))
     containers.sort(key=lambda c: c.start)
     renumber = {c.id: f"ct-{i + 1:05d}" for i, c in enumerate(containers)}
     for c in containers:

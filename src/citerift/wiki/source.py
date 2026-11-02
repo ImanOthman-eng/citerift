@@ -111,7 +111,8 @@ class RefRecord:
     exact: bool = True
     uses_names: tuple[str, ...] = ()  # for {{r}}: the names it uses, in order
     uses_markup: tuple[bool, ...] = ()  # for {{r}}: whether each of those names holds markup (not bindable)
-    sfn_key: str | None = None  # for a short footnote: the identity of the note its parameters generate
+    sfn_key: str | None = None  # for a short footnote: the identity (name and group) of the reference it generates
+    sfn_content: str | None = None  # for a short footnote: what decides the generated note's text
     # Arguments the template call gives that do not become what they look like (issue code, detail).
     dispositions: tuple[tuple[str, str], ...] = ()
 
@@ -216,6 +217,45 @@ def effective_arguments(params: list[ParamRecord]) -> tuple[dict[str, ParamRecor
             replaced.append(effective[key])
         effective[key] = p
     return effective, replaced
+
+
+def _footnote_identity(wiki: str, template: str, effective: dict[str, ParamRecord]) -> tuple[str, str, str]:
+    """The reference a short-footnote call generates, as Module:Footnotes (``sfn``) builds it on each wiki.
+
+    Returns the identity key (the ref name and group), the content key (what decides the generated note text) and the
+    group. enwiki: name = ``FOOTNOTE`` + positional arguments 1-5 (trimmed) + ``p``/``page`` + ``pp``/``pages`` +
+    ``at``/``loc``, runs of whitespace as one space; ``group=`` is passed to the ref. arwiki: the same name from
+    ``p``/``page``, ``pp``/``pages`` and ``loc`` only, whitespace as written, and no group. The fields are kept apart
+    rather than concatenated, and a value holding a link or more than five positional arguments (enwiki) is kept as
+    written: where MediaWiki might merge two calls the engine may split them (the render step then abstains), but it
+    never merges calls that MediaWiki keeps apart. Comments are removed before the module sees a value."""
+
+    def value(*keys: str) -> str | None:
+        for k in keys:
+            p = effective.get(k)
+            if p is not None:
+                return (_without_comments(p.node.value) if p.node is not None else "").strip(_ARG_TRIM)
+        return None
+
+    positional = [value(str(i)) or "" for i in range(1, 6)]
+    page, pages = value("p", "page") or "", value("pp", "pages") or ""
+    postscript = value("postscript", "ps")
+    ref = value("ref", "Ref") or ""
+    if wiki == "ar":
+        location, group = value("loc") or "", ""
+        names = [*positional, page, pages, location]
+        extra: list[str] = []
+        postscript = "." if postscript is None else postscript
+    else:
+        location, group = value("at", "loc") or "", value("group") or ""
+        names = [_ATTR_WS.sub(" ", v) for v in (*positional, page, pages, location)]
+        extra = [
+            f"{k}={value(k)}" for k in sorted(effective, key=_numeric_order) if _POSITIVE_INT.match(k) and int(k) > 5
+        ]
+        postscript = "" if postscript == "none" else ("." if postscript is None else postscript)
+    identity = json.dumps([wiki, group, names, extra], ensure_ascii=False)
+    content = json.dumps([template, [*positional, page, pages, location], postscript, ref, extra], ensure_ascii=False)
+    return identity, content, group
 
 
 def _numeric_order(key: str) -> tuple[int, int, str]:
@@ -483,22 +523,30 @@ class Scanner:
             return
         if kind == "sfn":
             # {{sfn}} and relatives generate a short footnote from their parameters; the note text is not in the
-            # source. Identical calls share one note (the template derives the ref name from the parameters).
-            # The key is the template and its parameters as written (named ones in name order, values with spaces
-            # collapsed and trimmed), not the raw text: {{sfn}} and {{Sfn}} are one template, and "Smith J" and
-            # "SmithJ" are different authors.
-            # The key is built from the arguments the template receives (effective_arguments): {{sfn|Smith|2001}}
-            # and {{sfn|1=Smith|2=2001}} are the same call to Module:Footnotes, and a repeated argument counts once,
-            # with its last value.
+            # source. Module:Footnotes names the generated ref from some of the parameters (_footnote_identity):
+            # calls with one name and group are one reference, whose later calls are reuses when the generated text
+            # is the same and a Cite conflict when it differs. Both keys are built from the arguments the template
+            # receives (effective_arguments): {{sfn|Smith|2001}} and {{sfn|1=Smith|2=2001}} are the same call, and a
+            # repeated argument counts once, with its last value.
             effective, _ = effective_arguments(rec.params)
-            # Comments are removed before the module sees a value, as the preprocessor does.
-            args = [
-                [k, _ATTR_WS.sub(" ", _without_comments(p.node.value) if p.node is not None else "").strip(_ARG_TRIM)]
-                for k, p in sorted(effective.items(), key=lambda kv: _numeric_order(kv[0]))
-            ]
-            sfn_key = json.dumps([rec.canonical or rec.raw_name.strip(), args], ensure_ascii=False)
+            identity, content, sfn_group = _footnote_identity(
+                self.wiki.wiki, rec.canonical or rec.raw_name.strip(), effective
+            )
             self._add_ref(
-                rec.start, rec.end, None, None, "sfn", None, None, None, ctx, (), body_has_text=True, sfn_key=sfn_key
+                rec.start,
+                rec.end,
+                None,
+                None,
+                "sfn",
+                None,
+                None,
+                sfn_group,
+                ctx,
+                (),
+                body_has_text=True,
+                group_raw=sfn_group or None,
+                sfn_key=identity,
+                sfn_content=content,
             )
             for p, prm in zip(rec.params, node.params, strict=False):
                 sub = Ctx(**{**ctx.__dict__, "frames": (*ctx.frames, Frame(rec.index, p.name))})
@@ -778,6 +826,7 @@ class Scanner:
         uses_names: tuple[str, ...] = (),
         uses_markup: tuple[bool, ...] = (),
         sfn_key: str | None = None,
+        sfn_content: str | None = None,
         dispositions: tuple[tuple[str, str], ...] = (),
     ) -> int:
         if ctx.excluded:
@@ -817,6 +866,7 @@ class Scanner:
                 uses_names=uses_names,
                 uses_markup=uses_markup,
                 sfn_key=sfn_key,
+                sfn_content=sfn_content,
                 dispositions=dispositions,
             )
         )

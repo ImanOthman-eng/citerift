@@ -74,3 +74,9 @@ Retained source and HTML remain unchanged. Article content is attributed to the 
 | en | MMR vaccine | https://en.wikipedia.org/w/index.php?oldid=1381772671 | https://en.wikipedia.org/w/index.php?curid=69149&action=history |
 | en | A. J. P. Taylor | https://en.wikipedia.org/w/index.php?oldid=1381782708 | https://en.wikipedia.org/w/index.php?curid=140444&action=history |
 | en | Apple II (original) | https://en.wikipedia.org/w/index.php?oldid=1382268322 | https://en.wikipedia.org/w/index.php?curid=2275&action=history |
+
+## Retained template and module sources (2026-11-02)
+
+`design/sfn-semantics/sources/` keeps the source of enwiki `Module:Footnotes`, arwiki `وحدة:Footnotes` and arwiki
+`قالب:Sfn`, retrieved on 2026-11-02 (URLs and SHA-256 in `design/sfn-semantics/PROVENANCE.json`). Wikipedia content,
+CC BY-SA 4.0; authors are listed in each page's history.
