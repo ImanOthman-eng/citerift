@@ -238,7 +238,7 @@
               "type": "object", "additionalProperties": false, "required": ["input_steps", "structural_steps", "normalizer_input"],
               "properties": {
                 "input_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED"]}},
-                "structural_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED", "URL_OUTER_WHITESPACE_TRIMMED", "PROTOCOL_RELATIVE_URL_COMPLETED", "URL_QUERY_FRAGMENT_REMOVED", "PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE", "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS"]}},
+                "structural_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED", "URL_OUTER_WHITESPACE_TRIMMED", "PROTOCOL_RELATIVE_URL_COMPLETED", "URL_QUERY_FRAGMENT_REMOVED", "PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE", "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS", "PAGE_VIEW_SEGMENT_REMOVED"]}},
                 "normalizer_input": {"type": "string"}
               }
             }

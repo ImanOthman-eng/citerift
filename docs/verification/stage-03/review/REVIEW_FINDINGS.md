@@ -194,3 +194,39 @@ The remaining suspected items are dispositioned, not repaired:
   entities literally, and arwiki's `#tag` path drops one pair of enclosing quotes, as `tagObj` does. Regression:
   `test_wiki_reuse_names_are_not_entity_decoded`.
 - **S-6, short-footnote parameter aliases.** As RF-50: they are kept apart, which is conservative.
+
+## Findings from the final-campaign adjudication (2026-11-02, post-exposure)
+
+The final campaign's articles are exposed. Each item below was found from an adjudicated disagreement. Every
+repair here is a **post-exposure** repair: the retained articles serve as regression data only, and the frozen
+evaluation result stays as published (`../evaluation/final/adjudication/README.md`).
+
+| Id | Source | Severity | Finding | Disposition | Evidence |
+|---|---|---|---|---|---|
+| RF-60 | final campaign, en-1377523963 (adjudication confirmed the locked key) | medium (wrong normalized key; gate G2) | A publisher DOI URL ending in a page-view route (`…/doi/10.1111/0004-5608.00043/abstract`) kept the route in the normalizer input. It got the key `10.1111/0004-5608.00043/abstract` and was only flagged `IDENTIFIER_BOUNDARY_AMBIGUOUS`. Root cause: `identifiers.decode` decided not to decide the boundary, but still passed the undecided text on as the key. The guide (3.5) defines the key as the DOI of the `/doi/` path segment. The same entry's `{{Doi}}` confirms the boundary. | **Fixed** (post-exposure). See the note below the table. | `failfirst/rf-60/` (`pytest-before-d151507.txt`: 11 failed and 6 controls passed; `pytest-after.txt`: 17 passed; `real_bundles_impact.json`); `tests/stage03/test_wiki_rf60_page_view_segment.py` |
+| — | final campaign, ar-75574746 and en-1374633449 (12 `definition_extra`) | none in code; a guide ambiguity | The engine records each repeated identical `{{sfn}}` call as a definition of one container (SPECIFICATION 11.2: "identical sfn-family calls form one note"). Both final adjudicators read guide 3.2 (identical calls bind to the first) and confirmed that the later calls are not definitions. The run-1 adjudicator read guide 3.1 ("a short-footnote template call" is a definition) and added such calls as definitions (`../evaluation/annotations/adjudication_decisions/en-1380771007.json`). Uses, bindings and render links of these calls are all correct (G4 and G6 pass in both languages). | **Not changed.** The engine follows the specification and the earlier adjudicated reading. Changing it now would be post-exposure tuning toward one of two conflicting adjudications. The frozen G5a failure (ar 0.914) stands. The guide ambiguity goes to the owner. | `../evaluation/final/adjudication/decisions/ar-75574746.json`, `en-1374633449.json` |
+| — | final campaign, ar-76553307, en-1351525729, en-1372000829 (3 `identifier_missed`) | low (recall; declared support boundary) | A DOI written in a publisher URL path without `/doi/` (iopscience `/article/10.…`, Springer `/10.…`) is not an identifier occurrence for the engine. In all three references, the same DOI is also found in the template's `doi=` field. | **Not changed.** These URLs are outside the frozen support matrix ("Publisher URLs with a `/doi/10.…` path"). A host-independent rule for arbitrary `/10.` paths would add uncertain boundaries (`…/68/pdf`). Recorded as a limitation. | `../evaluation/final/adjudication/decisions/` |
+| — | final campaign, ar-73367172, en-1374633449 (unit and role items) | low (declared partial support) | Citation templates the profile does not list, including EI2, EI3, `The History of al-Tabari`, `Slaves on Horses`, `قاموس دورلاند` and `من سمى هذا`, are reported as unstructured units. Their DOIs get role `unresolved`. | **Not changed.** The frozen matrix declares templates the profile does not know as partial, role `unresolved`. Adding these names now would tune the profile to exposed articles. Recorded as a limitation. Both unit gates and G3b pass. | same |
+| — | final campaign, en-1381749944 (1 `use_missed`) | none in code; a guide ambiguity | The guide counts a list-defined `<ref>` as a use, but the specification does not (11.2). | **Not changed.** Recorded as a limitation. | same |
+
+**RF-60 fix.** One recognized page-view segment at the end of a publisher `/doi/` path (abstract, full, pdf,
+epdf, references, suppinfo, citedby, figures, summary, meta) is removed from the normalizer input, but only when
+what remains is still a DOI (`10.` + 4-9 digits + `/` + suffix). The removal is recorded as the new structural step
+`PAGE_VIEW_SEGMENT_REMOVED`. The occurrence keeps `DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS` and the
+`IDENTIFIER_BOUNDARY_AMBIGUOUS` issue. Only one segment is removed. Resolver URLs, template fields and wrapper
+arguments are unchanged.
+
+**Alternatives considered for RF-60:**
+- *Withhold the key* (abstain): never wrong, but it loses the lookup in the common case.
+- *Keep the old behavior*: always wrong for page routes.
+- *Corroborate with another identifier of the same reference*: more code, and no gain over the shape check for the
+  observed cases.
+
+The chosen rule is the smallest that gives the guide's key. Its remaining risk is a real DOI whose last suffix
+segment is exactly one of those words; such a DOI would lose that segment, but its occurrence stays flagged
+ambiguous.
+
+**Impact on the 70 retained real bundles** (exposed, regression only; extraction at `d151507` and after the fix,
+same bundles): only en-1377523963 changes. Its Wiley occurrence now has key `10.1111/0004-5608.00043`. Both
+occurrences of that key link to both rendered links. The warning `UNIT_BOUNDARY_UNRESOLVED` ("more than one
+distinct value for doi") disappears.

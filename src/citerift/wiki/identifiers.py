@@ -21,9 +21,11 @@ from citerift.retraction.identifiers import Normalized, normalize_doi, normalize
 NORMALIZER = "citerift.retraction.identifiers"
 _DOI_PATH = r"/doi/(?:(?:abs|full|pdf|epdf|book|reader)/)?(10\.[0-9]{4,9}/.+)"
 _PUBLISHER_DOI_PATH = re.compile(r"(?i)^https?://[^/]+" + _DOI_PATH + "$")
-# A path segment that names a page view of the article rather than part of the DOI. DOIs may contain "/", so the
-# boundary is not decided: the DOI is kept whole and marked ambiguous.
+# A last path segment that names a page view of the article rather than part of the DOI. DOIs may contain "/", so
+# the boundary stays reported as ambiguous. The route is removed from the normalizer input (RF-60) only when what
+# remains is still a DOI; the removal is recorded as a structural step, and only one segment is ever removed.
 _VIEW_SEGMENT = re.compile(r"(?i)/(?:abstract|full|pdf|epdf|references|suppinfo|citedby|figures|summary|meta)$")
+_DOI_SHAPE = re.compile(r"10\.[0-9]{4,9}/.+", re.DOTALL)
 DOI_RESOLVER_HOSTS = frozenset({"doi.org", "dx.doi.org", "www.doi.org"})
 _HEX2 = re.compile(r"%[0-9A-Fa-f]{2}")
 
@@ -96,8 +98,12 @@ def decode(scheme: str, origin: str, decoded: str, steps: tuple[str, ...]) -> De
                 out_steps.append("PUBLISHER_URL_DOI_PATH")
                 if once != path:
                     out_steps.append("PERCENT_DECODED_ONCE")
-                if _VIEW_SEGMENT.search(value):
+                view = _VIEW_SEGMENT.search(value)
+                if view:
                     out_steps.append("DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS")
+                    if _DOI_SHAPE.fullmatch(value[: view.start()]):
+                        value = value[: view.start()]
+                        out_steps.append("PAGE_VIEW_SEGMENT_REMOVED")
     normalized = normalize_doi(value) if scheme == "doi" else normalize_pmid(value)
     return Decoded(value, tuple(out_steps), normalized)
 
