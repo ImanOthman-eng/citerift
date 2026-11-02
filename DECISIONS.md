@@ -747,3 +747,22 @@ update PR #5 for owner review. The executor for this work is Claude Code; new co
 `Assisted-by: Claude Code (AI coding agent)`, and earlier ChatGPT/Codex attribution stays. The instruction keeps
 every frozen threshold, denominator and the one-campaign limit; it authorizes no new evaluation campaign, no
 acceptance, no merge and no later stage, and it reserves to the owner any decision about an unmet scientific gate.
+
+## D-034 — Stage 03 corrective engineering and one prospective confirmation campaign
+- Status: accepted
+- Topic: stage-03-prospective-confirmation-campaign
+- Date: 2026-11-02
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-02_CONFIRMATION.md; docs/verification/stage-03/evaluation/final/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh`,
+2026-11-02T15:37:19Z), answering the decision record of D-033 with outcome C plus engineering work: resolve the
+short-footnote definition/use semantics prospectively (original guide kept unchanged), verify RF-60 and audit the
+remaining DOI/PMID boundaries, audit Retry-After and resumption after deferral, run one independent adversarial
+review (and one focused follow-up), and then run exactly one pre-registered prospective confirmation campaign on
+unexposed articles with a frozen candidate, within 500 HTTP attempts and 300 MiB of accepted bodies, plus a separate
+positive retraction-warning challenge. G1-G11, their thresholds and the per-language minimum denominators (50
+identifiers, 80 uses, 60 definitions, 60 linkable uses) stay unchanged. The final campaign of D-031 stays published
+as a failed historical result. The instruction authorizes no acceptance, no merge and no later stage, and no
+further campaign after this one.
