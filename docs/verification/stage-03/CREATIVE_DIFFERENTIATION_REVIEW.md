@@ -166,6 +166,46 @@ p95 0.499 s; verification p50 0.379 s,p95 0.818 s; maximum worker peak RSS39128K
 OS caches were not flushed and the full suite could be running concurrently. The
 historical warm/cold figures in section5 are not relabelled as these observations.
 
-Fresh final-campaign annotation is in progress under the unchanged protocol and dated
-amendment. Its final measured benefit and gate outcome will be reported from locked
-and independently adjudicated results; no fresh prediction has yet been produced.
+The paragraph written on 30 October said the final campaign was still in progress. Its result is reported below.
+
+### 7.1 Final campaign result (frozen candidate `48cfeab`, adjudicated labels, 2026-11-02)
+
+Source: `evaluation/final/run/scores_adjudicated.json`, the frozen scorer, and `evaluation/final/adjudication/README.md`.
+There are 16 articles per language. The engine was run once, after the labels were locked.
+
+**What the ledger adds over the structural baseline B1** (same matcher, same labels):
+
+| Measure | ar engine | ar B1 | en engine | en B1 |
+|---|---|---|---|---|
+| Rendered-footnote attachments, correct / wrong | 119 / 0 | 77 / 30 | 117 / 0 | 99 / 8 |
+| Use recall | 1.000 | 0.899 | 0.992 | 0.915 |
+| Definition recall | 1.000 | 0.792 | 0.984 | 0.811 |
+| Identifier recall | 0.970 (32/33) | 0.848 | 0.963 (52/54) | 0.722 |
+| Identifier precision | 1.000 | 1.000 | 1.000 | 0.975 |
+| Promotions of notice/marker/title identifiers | 0 | 0 | 0 | 0 |
+
+**A/B/C relocation** of the annotated DOI occurrences (26 Arabic and 43 English, counted per occurrence):
+
+| Approach | Source relocated, ar | Source relocated, en | Rendered note relocated, ar | Rendered note relocated, en |
+|---|---|---|---|---|
+| (A) DOI plus revision URL | 24 unique and correct; 2 ambiguous | 33 unique and correct; 10 ambiguous | 22 | 32 (11 failed) |
+| (C) full ledger | 25 correct | 41 correct | 22 correct; 3 unverifiable; 1 abstained | 31 correct; 7 unverifiable; 5 abstained |
+
+- **Uses:** the ledger relocated 28 of 29 Arabic and 38 of 40 English uses, with 0 and 2 wrong targets.
+- **Record size:** the ledger record is about 30 times larger than (A), at 85.6 kB against 2.6 kB in Arabic and
+  124.7 kB against 4.4 kB in English.
+- **Review effort:** not measured.
+
+### 7.2 What the final campaign did not show
+
+- **No retraction warnings in the sample.** No final-campaign article showed a retraction warning: every marker
+  label is `none`. Three English entries were `not_inspected`. G7 (zero fabricated negatives) is therefore met
+  trivially and gives no evidence about warning detection on real articles. The warning evidence comes from the
+  observed challenge set of run 1, the synthetic F1-F4 and V1/V2 cases, and the retained Obokata fixtures.
+- **Frozen gates not met.** The scientific gates are not all met at the frozen candidate:
+  - Arabic definition precision is 0.914. The cause is the repeated short-footnote reading, an ambiguity in the
+    annotation guide.
+  - The Arabic identifier denominator is 33, against a minimum of 50.
+  - The English key error rate is 0.0192, from one Wiley page-view URL, since repaired after exposure as RF-60.
+- **Consequence for the claim.** The ledger's advantage over B1 is measured. The protocol's full extraction claim is
+  not established for Arabic identifiers (`evaluation/final/DECISION_RECORD.md`).

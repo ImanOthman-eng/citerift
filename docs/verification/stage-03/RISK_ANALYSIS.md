@@ -55,3 +55,12 @@ enabled access; checkpoint ec9453a was pushed to the existing branch and PR #5, 
 started. This removes the access blocker but does not establish scientific gate success. Only Linux was exercised here.
 Browser visibility remains not_evaluated; DOI/PMID co-reporting does not establish identity.
 
+
+## Risk addendum, 2026-11-02 (final adjudication and RF-60)
+
+| Id | Risk | Control | Residual |
+|---|---|---|---|
+| R-03-RF60 | The post-exposure route rule shortens a real DOI whose last suffix segment is exactly a route word (`…/full`, `…/abstract`). | The rule applies only to publisher `/doi/` URLs. The route must be written literally in ASCII, the remainder must still be a DOI, and only one segment is removed. The occurrence stays `IDENTIFIER_BOUNDARY_AMBIGUOUS`. A `doi=` field in the same unit that keeps the longer form is reported as `CO_REPORTED_IDENTIFIERS` (review RV-3). | Not observed in the 70 retained real bundles. Downstream stages must treat an ambiguous-boundary key as unconfirmed. |
+| E6 | Adjudicators disagree across campaigns on the same guide wording: run 1 read guide 3.1, the final campaign read 3.2, for repeated identical short-footnote calls. | Both readings and both decisions are published. No label was edited by the executor. | The Arabic definition-precision gate depends on the reading. The guide needs an owner-approved clarification before any future evaluation. |
+| E7 | The Arabic identifier sample is too small: 33 target occurrences, against a minimum of 50, with the sampling ceiling reached. | Reported as not met, with the actual denominator. No extra articles were acquired. | With 0 key errors in 32 matched Arabic identifiers, the one-sided 95 % upper bound on the key error rate is 8.9 %. With 1 miss in 33, the upper bound on the miss rate is 13.6 %. These are weaker than the frozen design (5.8 % at 50). |
+| E8 | The final sample contains no retraction warning, so G7 is met without any warning present. | Stated in the differentiation review (7.2) and in the handoff. | Real-article warning detection rests on run 1's observed challenge set, the synthetic cases and the Obokata fixtures, not on the final campaign. |

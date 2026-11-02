@@ -624,3 +624,39 @@ it abstains with `TIMEOUT`; one-time model initialization is outside the
 deadline. The model is excluded from the default product (R-028), so this
 affects only the opt-in experimental path. Any change needs the owner's
 authorization.
+
+## R-034 — Stage 03 frozen evaluation does not meet gate 03-G
+- Status: open
+- Severity: high
+- Kind: limitation
+- Stage: 03
+
+The single final campaign (frozen candidate `48cfeab`, adjudicated 2026-11-02) leaves three requirements of gate
+03-G unmet:
+
+- Arabic definition precision is 0.914 against 0.95. All ten false positives are repeated identical `{{sfn}}`
+  calls. The annotation guide is ambiguous here, and the run-1 and final adjudications read it in opposite ways.
+- Arabic target identifiers number 33 against a minimum of 50. The sample ceiling was reached.
+- English normalized-key error rate is 1 / 52 = 0.0192 against 0.01. The cause was a Wiley page-view route, since
+  repaired after exposure as RF-60; that repair has not been freshly evaluated.
+
+No unresolved wrong citation, binding, render attachment, promotion or fabricated negative is known. Evidence:
+`docs/verification/stage-03/evaluation/final/DECISION_RECORD.md`. The owner decides between a narrowed claim, a new
+prospective evaluation, or non-acceptance. The executor cannot record a technical verification while 03-G is unmet.
+
+## R-035 — Stage 03 declared support boundaries observed in the final campaign
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 03
+
+Observed in the adjudicated final campaign and dispositioned without code changes
+(`docs/verification/stage-03/review/REVIEW_FINDINGS.md`, sections "final-campaign adjudication" and "R5"):
+
+- **Publisher URLs without a `/doi/` path** (Springer `/10.…`, iopscience `/article/10.…`): the DOI inside them is
+  not extracted. In all three observed cases, the same DOI is extracted from the template's `doi=` field.
+- **Citation templates the profile does not list** (for example EI2, EI3, `قاموس دورلاند`): they are reported as
+  unstructured, and their DOIs get role `unresolved`.
+- **List-defined `<ref>` tags** are not counted as uses.
+- **`verify` does not re-derive identifier decoding;** only `replay` does.
+- **URL forms the page-view rule does not cover:** `%20` and `;jsessionid` after a route keep the route.

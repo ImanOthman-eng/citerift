@@ -116,3 +116,14 @@ perturbation counts as the historical table. The move-marker simulation still in
 107 same-reference swaps; these are not silently classified as correct use-level links.
 Raw outputs: current-checks/sim-fetch.json and current-checks/sim-reconcile.json.
 These are synthetic observations, not fresh empirical acceptance evidence.
+
+## Simulation addendum, 2026-11-02
+
+Both simulations were rerun at the code of `2eccc0e` (RF-60 and the R5 fixes):
+
+- **Fetch policy** (5000 sequences, seed 20261028): 0 failures, and the same outcome counts as on 2026-10-30.
+- **Reconciliation perturbation** (200 articles, seed 20261028): output identical to the 2026-10-30 run.
+
+RF-60 changes identifier decoding only, which neither simulation exercises. The decoding rule is covered by
+`tests/stage03/test_wiki_rf60_page_view_segment.py` and by the real-bundle comparison in `review/failfirst/rf-60/`.
+Outputs: `final-checks/sim-fetch.json`, `final-checks/sim-reconcile.json`. These are synthetic observations.

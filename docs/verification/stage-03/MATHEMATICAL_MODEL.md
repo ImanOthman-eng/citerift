@@ -121,3 +121,33 @@ non-marker semantic field equals a fresh extraction. Shared reconstruction rules
 implementation mistakes. The verifier establishes consistency with retained bytes, not
 publisher authenticity, scientific truth, or actual browser visibility.
 
+
+## Publisher DOI path with a page-view route (RF-60, 2026-11-02)
+
+Let `u` be a URL with a host other than a DOI resolver. Let `P` be its raw path after the ASCII `/doi/`, with the
+optional `abs|full|pdf|epdf|book|reader/` prefix removed. Let `W` be the ASCII route words. `dec(·)` is
+percent-decoding applied once, and `D` is the DOI shape `10\.[0-9]{4,9}/.+`.
+
+- If `P = R + "/" + w + ("" | "/")` with `w ∈ W` (ASCII case-insensitive), and `dec(R) ∈ D`, and the last segment
+  of `dec(R)` is not in `{"", ".", ".."}`, then the normalizer input is `dec(R)`, and the steps
+  `DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS` and `PAGE_VIEW_SEGMENT_REMOVED` are recorded.
+- Otherwise the input is `dec(P)`. `DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS` is recorded when `P` or `dec(P)` ends in a
+  route.
+
+The rule is applied at most once, so it never shortens repeatedly. The key is `normalize_doi(input)`, the accepted
+Stage 02 function, unchanged.
+
+## Final-campaign sample bounds (2026-11-02)
+
+One-sided 95 % Clopper-Pearson upper bounds (section 8) for the adjudicated final campaign:
+
+| Language | Measure | Observed | Upper bound |
+|---|---|---|---|
+| ar | key errors | 0 / 32 | 8.9 % |
+| ar | identifier misses | 1 / 33 | 13.6 % |
+| ar | definition false positives | 10 / 116 | 14.2 % |
+| en | key errors, frozen candidate | 1 / 52 | 8.8 % |
+| en | key errors, post-exposure RF-60 | 0 / 52 | 5.6 % |
+
+The RF-60 figure is measured on exposed data, so it describes the repair on the data it was designed from. It is not
+an independent estimate.

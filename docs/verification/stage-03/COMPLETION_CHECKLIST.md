@@ -29,3 +29,27 @@ Both reports pass the governance report checker. CI for the pushed checkpoint is
 Fresh initial20 and two ordered reserve pairs per language are captured; labels through14 per
 language are committed before predictions. Counts require the last pair and the amendment
 permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance or later stage.
+
+## 2 November completion (Claude Code, owner instruction D-033)
+
+- [x] Recovery: the remote head was `d151507`. No newer or local-only work and no running jobs were found.
+  `src` and `schemas` at `d151507` equal the frozen candidate `48cfeab`.
+- [x] Independent adjudication of all 37 disputed items: 34 confirmed, 3 corrected. The adjudicated scores were made
+  with the unchanged scorer, and the locked scores reproduce exactly (`evaluation/final/adjudication/`).
+- [x] Gates under adjudicated labels:
+  - Arabic G5a fails at 0.914.
+  - The Arabic identifier denominator is 33, against a minimum of 50.
+  - English G2 fails at 0.0192.
+  - All other gates pass.
+- [x] G8 and G10 at `48cfeab`: 32 / 32 verify and replay.
+- [x] RF-60, post-exposure: fail-first, fix, independent integration review R5 and its fixes. The 70 retained real
+  bundles change in one document only. Post-exposure re-extraction is labelled as non-gate evidence.
+- [x] Documents updated:
+  - risk, mathematical model and simulation addenda;
+  - differentiation review 7.1 and 7.2;
+  - specification 11.4;
+  - RISKS.md R-034 and R-035;
+  - the decision record.
+- [ ] TEST_RESULTS.md and HANDOFF.md, with the complete verification matrix at the final code commit.
+- [ ] Owner decision on the unmet gate 03-G (`evaluation/final/DECISION_RECORD.md`). No verification transition is
+  recorded while 03-G is unmet. Acceptance and merge are the owner's.
