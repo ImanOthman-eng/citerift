@@ -50,6 +50,6 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
   - specification 11.4;
   - RISKS.md R-034 and R-035;
   - the decision record.
-- [ ] TEST_RESULTS.md and HANDOFF.md, with the complete verification matrix at the final code commit.
+- [x] TEST_RESULTS.md and HANDOFF.md, with the complete verification matrix at the final code commit (`8c6fe9f`): 1690 passed on Python 3.12 and 3.13; static checks, audit, wheel smoke and CI green.
 - [ ] Owner decision on the unmet gate 03-G (`evaluation/final/DECISION_RECORD.md`). No verification transition is
   recorded while 03-G is unmet. Acceptance and merge are the owner's.

@@ -1,0 +1,83 @@
+{
+ "module": "<scratch>/wheel/venv/lib/python3.12/site-packages/citerift/wiki/__init__.py",
+ "external_schemas": "<scratch>/wheel/smoke/schemas",
+ "rows": [
+  {
+   "case": "ar-observed",
+   "op": "extract",
+   "exit": 6,
+   "verified": null,
+   "replay": null,
+   "status": "partial"
+  },
+  {
+   "case": "ar-observed",
+   "op": "verify",
+   "exit": 0,
+   "verified": true,
+   "replay": null,
+   "status": null
+  },
+  {
+   "case": "ar-observed",
+   "op": "replay",
+   "exit": 0,
+   "verified": true,
+   "replay": "reproduced",
+   "status": null
+  },
+  {
+   "case": "en-observed",
+   "op": "extract",
+   "exit": 0,
+   "verified": null,
+   "replay": null,
+   "status": "complete"
+  },
+  {
+   "case": "en-observed",
+   "op": "verify",
+   "exit": 0,
+   "verified": true,
+   "replay": null,
+   "status": null
+  },
+  {
+   "case": "en-observed",
+   "op": "replay",
+   "exit": 0,
+   "verified": true,
+   "replay": "reproduced",
+   "status": null
+  },
+  {
+   "case": "en-rf60-wiley",
+   "op": "extract",
+   "exit": 0,
+   "verified": null,
+   "replay": null,
+   "status": "complete"
+  },
+  {
+   "case": "en-rf60-wiley",
+   "op": "verify",
+   "exit": 0,
+   "verified": true,
+   "replay": null,
+   "status": null
+  },
+  {
+   "case": "en-rf60-wiley",
+   "op": "replay",
+   "exit": 0,
+   "verified": true,
+   "replay": "reproduced",
+   "status": null
+  }
+ ],
+ "wiley_keys": [
+  "10.1111/0004-5608.00043"
+ ]
+}
+SMOKE PASS
+exit 0
