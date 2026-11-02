@@ -217,6 +217,14 @@ shortened. Occurrences in comments, `<nowiki>`, `<pre>`, `<math>`, `<syntaxhighl
 URLs are `excluded_identifiers` with a reason; they are never targets. Every occurrence is kept; co-reported
 identifiers in one unit are never merged into one work (`CO_REPORTED_IDENTIFIERS`).
 
+Boundary audit of 2026-11-02 (`design/doi-boundaries/AUDIT.md`):
+
+- A bare URL inside a template field has its HTML character references decoded, like any other value text (D-1).
+- A publisher `/doi/` path may separate prefix and suffix with `%2F`, which the single percent-decoding resolves
+  (D-2).
+- Sentence punctuation after a labelled or free-text DOI stays in the key and is flagged, as above. This differs
+  from the annotation guide's key and is declared risk R-03-D5.
+
 ### 11.5 Roles (decision list, first rule that applies)
 
 1. inside a retraction-marker template (profile `markers`) → `marker_target`;

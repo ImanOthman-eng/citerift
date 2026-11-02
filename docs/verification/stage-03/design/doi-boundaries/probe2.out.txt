@@ -1,0 +1,43 @@
+A<ref>{{cite journal|title=T|url=https://onlinelibrary.wiley.com/doi/10.1002/abc&amp;123}}</ref>
+    doi url identifier_link 10.1002/abc&123 ['HTML_ENTITY_DECODED', 'PUBLISHER_URL_DOI_PATH'] None
+   codes []
+A<ref>{{cite journal|title=T|url=https://doi.org/10.1002/abc&amp;123}}</ref>
+    doi url identifier_link 10.1002/abc&123 ['HTML_ENTITY_DECODED'] None
+   codes []
+A<ref>See https://onlinelibrary.wiley.com/doi/10.1002/abc.123.</ref>
+    doi url identifier_link 10.1002/abc.123 ['PUBLISHER_URL_DOI_PATH'] None
+   codes []
+A<ref>See https://doi.org/10.1002/abc.123.</ref>
+    doi url identifier_link 10.1002/abc.123 [] None
+   codes []
+A<ref>(see https://doi.org/10.1002/abc.123)</ref>
+    doi url identifier_link 10.1002/abc.123 [] None
+   codes []
+A<ref>(see https://doi.org/10.1002/abc(1)23)</ref>
+    doi url identifier_link 10.1002/abc(1)23) [] None
+   codes []
+A<ref>[https://onlinelibrary.wiley.com/doi/10.1002%2Fabc.123 Paper]</ref>
+    doi url identifier_link 10.1002/abc.123 ['PUBLISHER_URL_DOI_PATH', 'PERCENT_DECODED_ONCE'] None
+   codes []
+A<ref>[https://onlinelibrary.wiley.com/doi/abs/10.1002%2Fabc.123 Paper]</ref>
+    doi url identifier_link 10.1002/abc.123 ['PUBLISHER_URL_DOI_PATH', 'PERCENT_DECODED_ONCE'] None
+   codes []
+A<ref>[https://web.archive.org/web/2020/https://doi.org/10.1002/abc.123 Paper]</ref>
+   codes []
+A<ref>{{cite journal|title=T|doi=10.1002/abc.123|url=https://onlinelibrary.wiley.com/doi/10.1002/abc.123/abstract|pmid=123}}</ref>
+    doi template_field primary_citation_field 10.1002/abc.123 [] None
+    doi url identifier_link 10.1002/abc.123 ['PUBLISHER_URL_DOI_PATH', 'DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS', 'PAGE_VIEW_SEGMENT_REMOVED'] None
+    pmid template_field primary_citation_field 123 [] None
+   codes ['IDENTIFIER_BOUNDARY_AMBIGUOUS']
+A<ref>{{cite journal|title=T|doi=10.1002/abc.123.}}</ref>
+    doi template_field primary_citation_field 10.1002/abc.123. [] None
+   codes []
+A<ref>doi:10.1002/abc.123.</ref>
+    doi label_text labeled_reference_text 10.1002/abc.123. [] None
+   codes ['IDENTIFIER_BOUNDARY_AMBIGUOUS']
+A<ref>[https://doi.org/10.1002/abc.123?utm=1 x]</ref>
+    doi url identifier_link 10.1002/abc.123 ['URL_QUERY_FRAGMENT_REMOVED'] None
+   codes []
+A<ref>[https://www.tandfonline.com/doi/abs/10.1080/1234/full x]</ref>
+    doi url identifier_link 10.1080/1234 ['PUBLISHER_URL_DOI_PATH', 'DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS', 'PAGE_VIEW_SEGMENT_REMOVED'] None
+   codes ['IDENTIFIER_BOUNDARY_AMBIGUOUS']

@@ -7,9 +7,10 @@ This module only performs the documented structural decoding that comes before t
 
 Structural steps never repair an identifier: no punctuation trimming, no Unicode normalization, no digit
 conversion, no bidi removal. Percent-decoding is applied at most once, and only by the Stage 02 normalizer for
-resolver URLs, or once here for the DOI path of a publisher URL (recorded as a step). One page-view route written
-literally at the end of a publisher DOI path (``/abstract``, ``/full``, ...) is not part of the DOI and is removed
-from the normalizer input (RF-60, step ``PAGE_VIEW_SEGMENT_REMOVED``); the boundary stays reported as ambiguous.
+resolver URLs, or once here for the DOI path of a publisher URL (recorded as a step; the separator after the prefix
+may itself be written ``%2F``, D-2). One page-view route written literally at the end of a publisher DOI path
+(``/abstract``, ``/full``, ...) is not part of the DOI and is removed from the normalizer input (RF-60, step
+``PAGE_VIEW_SEGMENT_REMOVED``); the boundary stays reported as ambiguous.
 """
 
 from __future__ import annotations
@@ -21,7 +22,8 @@ from typing import Any
 from citerift.retraction.identifiers import Normalized, normalize_doi, normalize_pmid
 
 NORMALIZER = "citerift.retraction.identifiers"
-_DOI_PATH = r"/doi/(?:(?:abs|full|pdf|epdf|book|reader)/)?(10\.[0-9]{4,9}/.+)"
+# The prefix and suffix are separated by "/" or by its percent-encoding (D-2), which the DOI path decoding resolves.
+_DOI_PATH = r"/doi/(?:(?:abs|full|pdf|epdf|book|reader)/)?(10\.[0-9]{4,9}(?:/|%2[Ff]).+)"
 _PUBLISHER_DOI_PATH = re.compile(r"(?ai)^https?://[^/]+" + _DOI_PATH + "$")
 # A last path segment (ASCII letters, optional final "/") that names a page view of the article rather than part of
 # the DOI. DOIs may contain "/", so the boundary stays reported as ambiguous. RF-60: the route is removed from the

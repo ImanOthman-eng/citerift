@@ -294,6 +294,11 @@ def _plain(code: Wikicode) -> tuple[str, list[str]]:
         elif isinstance(n, HTMLEntity):
             parts.append(n.normalize())
             steps.append("HTML_ENTITY_DECODED")
+        elif isinstance(n, ExternalLink) and _bare_url(n):
+            # A bare URL in a value: MediaWiki decodes the character references in the link target (D-1).
+            url, url_steps = _plain(n.url)
+            parts.append(url)
+            steps.extend(url_steps)
         else:
             parts.append(str(n))
     return "".join(parts), sorted(set(steps))
