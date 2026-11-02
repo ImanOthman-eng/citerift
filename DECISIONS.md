@@ -731,3 +731,19 @@ freezing the final candidate, preserve D-031 and the one-campaign amendment, and
 This is execution authority, not acceptance. The actual new assistant is ChatGPT/Codex; new attribution uses
 `Assisted-by: ChatGPT/Codex (AI coding agent)` rather than falsely naming Claude. Historical attribution stays.
 The owner retains acceptance and personal merge authority; no later stage or additional campaign is authorized.
+
+## D-033 — Stage 03 final recovery, adjudication, correction and handoff
+- Status: accepted
+- Topic: stage-03-final-recovery-adjudication-handoff
+- Date: 2026-11-02
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-02_RECOVERY.md; docs/verification/stage-03/evaluation/final/adjudication/README.md
+
+Owner instruction in the CITERIFT project thread (`cmsg_018VCB51nDHP6HXmLU4ea5yPAsujY49DkUw92HiR1mG4Ya`,
+2026-11-02T12:25:19Z): recover PR #5, complete the already-authorized adjudication of the final campaign, correct
+independently confirmed in-scope defects as labelled post-exposure repairs, verify, complete the deliverables and
+update PR #5 for owner review. The executor for this work is Claude Code; new commits carry
+`Assisted-by: Claude Code (AI coding agent)`, and earlier ChatGPT/Codex attribution stays. The instruction keeps
+every frozen threshold, denominator and the one-campaign limit; it authorizes no new evaluation campaign, no
+acceptance, no merge and no later stage, and it reserves to the owner any decision about an unmet scientific gate.

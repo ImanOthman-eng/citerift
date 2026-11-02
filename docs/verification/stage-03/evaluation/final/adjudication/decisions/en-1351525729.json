@@ -1,0 +1,24 @@
+{
+ "article": "en-1351525729",
+ "adjudicator": "stage03-adjudicator-en",
+ "started_at": "2026-11-02T12:30:00+00:00",
+ "finished_at": "2026-11-02T12:30:04.053284+00:00",
+ "decisions": [
+  {
+   "item": 1,
+   "kind": "identifier_missed",
+   "decision": "correct",
+   "reason": "The DOI occurrence itself is in scope (3.5: every occurrence, also in URLs) and its role is identifier_link (a publisher URL in url= pointing at the identifier), but its raw text is wrong. The raw-text table's URL row lists the URL forms whose whole URL is quoted: doi.org, dx.doi.org, the two PubMed forms and 'a publisher URL whose path contains /doi/10.…'. This link.springer.com URL has the DOI directly after the host (/10.1007/…) and no /doi/ segment, so it is not one of the listed URL forms and falls under 'anything else: the identifier text'. Ambiguity: the URL row could be read as examples rather than a closed list; the closer reading of its wording (a specific path condition, repeated in the key rule 'the DOI from the /doi/ path segment') is that it is closed. The item's start therefore moves to the first character of the DOI; key unchanged.",
+   "corrected_label": {
+    "at": {
+     "cp": 4331,
+     "quote": "10.1007/978-3-642-48590-9"
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1007/978-3-642-48590-9",
+    "notes": "Adjudicated: DOI written directly in the path of a link.springer.com publisher URL in url= (no /doi/ segment). Not one of the guide's listed URL forms, so the raw text is the identifier text (guide 3.5 'anything else'); role identifier_link because it sits in a publisher URL inside the citation template pointing at the identifier."
+   }
+  }
+ ]
+}
