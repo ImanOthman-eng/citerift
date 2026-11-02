@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import email.utils
 import os
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -114,6 +115,12 @@ def utc_text(moment: datetime) -> str:
 
 
 MAX_RETRY_AFTER_S = 366 * 86400.0
+# The date forms read (G-2): IMF-fixdate and its RFC 5322 relatives with GMT, UT, UTC or a numeric offset; RFC 850;
+# asctime (UTC by definition). Anything else, including an unknown or missing zone, is unreadable, never guessed.
+_HTTP_DATE = re.compile(
+    r"(?a)(?:[A-Za-z]{3,9}, )?\d{1,2}[ -][A-Za-z]{3}[ -]\d{2,4} \d{2}:\d{2}:\d{2} (?:GMT|UTC?|[+-]\d{4})"
+    r"|[A-Za-z]{3} [A-Za-z]{3} [ \d]\d \d{2}:\d{2}:\d{2} \d{4}"
+)
 
 
 def parse_retry_after(value: str | None, at: datetime) -> tuple[float | None, str | None]:
@@ -127,6 +134,8 @@ def parse_retry_after(value: str | None, at: datetime) -> tuple[float | None, st
         if len(text) > 12 or int(text) > MAX_RETRY_AFTER_S:
             return None, "RETRY_AFTER_OUT_OF_RANGE"
         return float(int(text)), None
+    if not _HTTP_DATE.fullmatch(text):
+        return None, "RETRY_AFTER_UNREADABLE"
     try:
         moment = email.utils.parsedate_to_datetime(text)
     except (TypeError, ValueError, IndexError, OverflowError):
@@ -357,6 +366,14 @@ class NetworkGate:
                 return "DEFERRED_RETRY_AFTER"
             return "NETWORK_GATE_BUSY"
         time.sleep(wait)
+        # G-1: record the attempt as it starts, so that a process killed during it still holds back the next one.
+        try:
+            os.ftruncate(fd, 0)
+            os.pwrite(fd, f"{time.time():.3f} {not_before:.3f}\n".encode("ascii"), 0)
+        except OSError:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+            os.close(fd)
+            return "NETWORK_GATE_UNAVAILABLE"
         self._fd = fd
         self._not_before = not_before
         return None
