@@ -13,26 +13,37 @@ id>-a<n>``. Every request goes through the project network gate, which also hold
 - **Durable state.** A ``start`` line is appended (and fsynced) to OUT_DIR/captures.jsonl before each run and an
   ``end`` line after it. OUT_DIR/capture_states.json is rewritten atomically after each run.
 - **Recovery.**
-  - A run with a ``start`` line and no ``end`` line was interrupted. It is recorded as such and charged at its worst
-    case against the ceilings.
+  - A run with a ``start`` line and no ``end`` line was interrupted. If its bundle was published (the CLI publishes
+    by an atomic rename, so the directory exists only when complete), the bundle's own capture record is adopted
+    and journalled as a recovered ``end``: a published capture is never repeated (R6 RR-6). Otherwise the run is
+    recorded as interrupted and charged at its worst case against the ceilings.
+  - A final journal line torn by a kill (no line end) is moved to a side file and removed before anything is
+    appended; a reader ignores it (R6 RR-4). A malformed complete line stays an error.
   - An ``end`` line that is missing from the state (a crash before the state was saved) is adopted.
   - Run numbers continue after every number seen in the state, the log or the bundle directory, so an existing
     bundle path is never reused.
 - **No duplicate workers.** An exclusive non-blocking lock on OUT_DIR/driver.lock. A second driver exits 3 without
   any request.
 - **Ceilings.** Before every run, the HTTP attempts and accepted body bytes already recorded must leave room for the
-  worst case of one more run (2 operations x 3 attempts; source, API envelope and HTML limits). Otherwise the driver
-  writes OUT_DIR/ceiling.json and exits 2.
+  worst case of one more run (2 operations x 3 attempts; one accepted body per operation, each at most the fetch
+  policy's 32 MiB body limit). Otherwise the driver writes OUT_DIR/ceiling.json and exits 2. A run whose capture
+  record was reported is charged what it records, zero included (a run the network gate deferred made no request);
+  only a run without a reported record is charged the worst case (R6 RR-1, RR-12).
 - **Bounded retries.** An article gets at most MAX_RUNS runs. A run is followed by another only when it was
   deferred (whole capture, or the render), interrupted, or failed with retryable codes only; the last case at most
-  once. A complete capture is never repeated.
+  once. A complete capture is never repeated. A run stopped because a server's Retry-After was unreadable or out
+  of range is final: the client never retries earlier than a server asked, and a guessed wait is not a server's
+  answer (R6 RR-3).
 - **Deferral.** The next run of a deferred article starts no earlier than its ``not_before`` plus one second. A
   wait of up to MAX_INLINE_WAIT_S is slept; a longer one leaves the article pending. The driver then finishes the
   other articles and exits 4, printing the earliest ``not_before``. Rerunning the same command after that time
   resumes it: a deterministic manual resume, with no scheduler.
 
+- **Acquisition time limit.** No run starts at or after ACQUISITION_END (AMENDMENT_2026-11-02_CONFIRMATION.md
+  section 6). The driver writes OUT_DIR/acquisition_closed.json and exits 5.
+
 Exit codes: 0 every article resolved; 2 ceiling reached; 3 another driver holds the lock; 4 deferred articles
-pending.
+pending; 5 acquisition time limit reached.
 """
 
 from __future__ import annotations
@@ -51,8 +62,12 @@ from typing import Any
 
 MAX_HTTP_ATTEMPTS = 500
 MAX_ACCEPTED_BYTES = 300 * 1024 * 1024
+# Two operations (source, render), each at most FetchPolicy.max_attempts = 3 attempts and one accepted body of at most
+# FetchPolicy.max_body_bytes = 32 MiB (the source and HTML limits apply only after a body was accepted).
 RUN_WORST_ATTEMPTS = 2 * 3
-RUN_WORST_BYTES = 4 * 1024 * 1024 + 64 * 1024 + 16 * 1024 * 1024
+RUN_WORST_BYTES = 2 * 32 * 1024 * 1024
+# AMENDMENT_2026-11-02_CONFIRMATION.md section 6: acquisition ends at 2026-11-14 23:59 UTC.
+ACQUISITION_END = datetime(2026, 11, 14, 23, 59, tzinfo=UTC).timestamp()
 MAX_RUNS = 4
 MAX_INLINE_WAIT_S = 600.0
 # Recorded times have microsecond resolution; the next run starts at least this long after a not_before, never at it.
@@ -106,14 +121,52 @@ def _append(path: Path, entry: dict[str, Any]) -> None:
 
 
 def _journal(out: Path) -> list[dict[str, Any]]:
+    """The complete journal lines. A final line without its line end was torn by a kill while it was written: it is
+    not a record and is ignored (``repair_journal`` moves it aside before the next append)."""
     log = out / "captures.jsonl"
     if not log.exists():
         return []
-    return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
+    data = log.read_bytes()
+    complete = data[: data.rfind(b"\n") + 1]
+    return [json.loads(line) for line in complete.decode("utf-8").splitlines() if line.strip()]
+
+
+def repair_journal(out: Path) -> str | None:
+    """Move a torn final journal line to a side file and cut it from the journal, so that the next append starts a
+    new line. Returns the side file's name, or None. Called only by the holder of the driver lock."""
+    log = out / "captures.jsonl"
+    if not log.exists():
+        return None
+    data = log.read_bytes()
+    cut = data.rfind(b"\n") + 1
+    if cut == len(data):
+        return None
+    side = out / f"captures.jsonl.torn-at-{cut}"
+    if not side.exists():
+        with side.open("wb") as fh:
+            fh.write(data[cut:])
+            fh.flush()
+            os.fsync(fh.fileno())
+    with log.open("r+b") as fh:
+        fh.truncate(cut)
+        fh.flush()
+        os.fsync(fh.fileno())
+    return side.name
+
+
+def reported_attempts(end: dict[str, Any]) -> list[dict[str, Any]] | None:
+    """The attempts an ``end`` line reports, or None when it reports no capture record (the client crashed or its
+    output could not be read): only then is the cost of the run unknown."""
+    stdout = end.get("stdout") or {}
+    cap = stdout.get("capture")
+    if stdout.get("status") is None or not isinstance(cap, dict) or not isinstance(cap.get("attempts"), list):
+        return None
+    return list(cap["attempts"])
 
 
 def used(entries: list[dict[str, Any]]) -> tuple[int, int]:
-    """HTTP attempts and accepted body bytes recorded so far; an interrupted or unreported run at its worst case."""
+    """HTTP attempts and accepted body bytes recorded so far. A run with a reported capture record is charged what
+    it records, zero included; an interrupted run, or one without a reported record, is charged its worst case."""
     ended = {(e["key"], e["run"]) for e in entries if e.get("event") == "end"}
     attempts = accepted = 0
     for e in entries:
@@ -122,10 +175,11 @@ def used(entries: list[dict[str, Any]]) -> tuple[int, int]:
             accepted += RUN_WORST_BYTES
         if e.get("event") != "end":
             continue
-        recorded = ((e.get("stdout") or {}).get("capture") or {}).get("attempts") or []
-        if not recorded:
+        recorded = reported_attempts(e)
+        if recorded is None:
             attempts += RUN_WORST_ATTEMPTS
             accepted += RUN_WORST_BYTES
+            continue
         for a in recorded:
             attempts += 1
             if a.get("code") is None:
@@ -143,6 +197,7 @@ def summarize(exit_code: int, stdout: dict[str, Any]) -> dict[str, Any]:
     not_before = cap.get("not_before")
     if status == "partial" and render.get("code") == "DEFERRED_RETRY_AFTER":
         not_before = render.get("not_before")
+    problems = sorted({a.get("retry_after_problem") for a in cap.get("attempts") or [] if isinstance(a, dict)} - {None})
     return {
         "exit": exit_code,
         "status": status,
@@ -150,6 +205,7 @@ def summarize(exit_code: int, stdout: dict[str, Any]) -> dict[str, Any]:
         "codes": codes,
         "not_before": not_before,
         "deferred": status == "deferred" or (status == "partial" and render.get("code") == "DEFERRED_RETRY_AFTER"),
+        "retry_after_problems": problems,
     }
 
 
@@ -163,6 +219,8 @@ def next_step(record: dict[str, Any], now: float) -> tuple[str, float | None]:
     last = runs[-1]
     if last.get("interrupted"):
         return "run", None
+    if last.get("retry_after_problems"):
+        return "done", None  # a server asked for a wait the client could not read: never retry on a guess
     if last["deferred"]:
         when = _parse_time(last["not_before"])
         if when is not None:
@@ -189,6 +247,34 @@ def _run_numbers_on_disk(out: Path, split: str, wiki: str, page_id: int) -> set[
     return {int(m.group(1)) for p in folder.iterdir() if (m := pat.fullmatch(p.name))}
 
 
+def _adopt_published(out: Path, start: dict[str, Any]) -> dict[str, Any] | None:
+    """For a run interrupted after the CLI published its bundle: an ``end`` line built from the bundle's own capture
+    record, appended to the journal (marked ``recovered``) and returned; None when no bundle was published."""
+    argv = start.get("argv") or []
+    if "--out" not in argv:
+        return None
+    target = Path(argv[argv.index("--out") + 1])
+    record_path = target / "capture.json"
+    if not record_path.is_file():
+        return None
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    status = record.get("status")
+    if status not in ("complete", "partial"):
+        return None
+    end = {
+        "event": "end",
+        "key": start["key"],
+        "run": start["run"],
+        "at": _stamp(time.time()),
+        "exit": None,
+        "stdout": {"status": status, "bundle": str(target), "capture": record},
+        "stderr": "",
+        "recovered": "bundle published before the driver was interrupted",
+    }
+    _append(out / "captures.jsonl", end)
+    return end
+
+
 def recover(out: Path, states: dict[str, Any], entries: list[dict[str, Any]]) -> None:
     """Bring the state in line with the journal after an interruption (idempotent)."""
     ends = {(e["key"], e["run"]): e for e in entries if e.get("event") == "end"}
@@ -199,6 +285,8 @@ def recover(out: Path, states: dict[str, Any], entries: list[dict[str, Any]]) ->
         if rec is None or any(r["run"] == e["run"] for r in rec["runs"]):
             continue
         end = ends.get((e["key"], e["run"]))
+        if end is None:
+            end = _adopt_published(out, e)
         if end is not None:
             rec["runs"].append({"run": e["run"], **summarize(end["exit"], end.get("stdout") or {})})
         else:
@@ -242,6 +330,7 @@ def run(
     cli: Cli = default_cli,
     clock: Callable[[], float] = time.time,
     sleep: Callable[[float], None] = time.sleep,
+    acquisition_end: float = ACQUISITION_END,
 ) -> int:
     out.mkdir(parents=True, exist_ok=True)
     lock_fd = os.open(out / "driver.lock", os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600)
@@ -251,15 +340,23 @@ def run(
         except BlockingIOError:
             print("another capture driver holds this output directory", file=sys.stderr)
             return 3
-        return _run_locked(load_plan(plan_path), out, cli, clock, sleep)
+        return _run_locked(load_plan(plan_path), out, cli, clock, sleep, acquisition_end)
     finally:
         os.close(lock_fd)
 
 
 def _run_locked(
-    plan: list[dict[str, Any]], out: Path, cli: Cli, clock: Callable[[], float], sleep: Callable[[float], None]
+    plan: list[dict[str, Any]],
+    out: Path,
+    cli: Cli,
+    clock: Callable[[], float],
+    sleep: Callable[[float], None],
+    acquisition_end: float = ACQUISITION_END,
 ) -> int:
     states_path, log = out / "capture_states.json", out / "captures.jsonl"
+    torn = repair_journal(out)
+    if torn is not None:
+        print(f"journal: a torn final line was moved to {torn}", file=sys.stderr)
     states: dict[str, Any] = (
         json.loads(states_path.read_text(encoding="utf-8")) if states_path.exists() else {"articles": {}}
     )
@@ -286,6 +383,13 @@ def _run_locked(
                 sleep(max(0.0, delay))
                 sleeps += 1
                 continue
+            if clock() >= acquisition_end:
+                _write_atomic(
+                    out / "acquisition_closed.json",
+                    {"stopped_before": a["key"], "at": _stamp(clock()), "acquisition_end": _stamp(acquisition_end)},
+                )
+                print(f"acquisition time limit: not starting {a['key']}", file=sys.stderr)
+                return 5
             entries = _journal(out)
             attempts, accepted = used(entries)
             if attempts + RUN_WORST_ATTEMPTS > MAX_HTTP_ATTEMPTS or accepted + RUN_WORST_BYTES > MAX_ACCEPTED_BYTES:

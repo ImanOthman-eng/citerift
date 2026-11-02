@@ -1,0 +1,13 @@
+import sys, os, json, hashlib, shutil
+mode, bundle, out = sys.argv[1], sys.argv[2], sys.argv[3]
+if mode == "wheel":
+    sys.path = [p for p in sys.path if not p.rstrip("/").endswith("citerift/src")]
+    sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/wheel_site")
+    os.environ["CITERIFT_SCHEMAS"] = "/home/user/citerift/schemas"
+import citerift; print(mode, citerift.__file__, file=sys.stderr)
+from citerift.wiki.cli import main
+shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+rc = main(["extract", "--bundle", bundle, "--out", out + "/e.json"]); print("extract rc", rc)
+rc2 = main(["verify", "--bundle", bundle, "--extraction", out + "/e.json"]); print("verify rc", rc2)
+rc3 = main(["replay", "--bundle", bundle, "--extraction", out + "/e.json"]); print("replay rc", rc3)
+print("sha", hashlib.sha256(open(out + "/e.json", "rb").read()).hexdigest())

@@ -1,0 +1,11 @@
+from h import *
+import shutil
+D = OUT / "wheel_bundles"; shutil.rmtree(D, ignore_errors=True); D.mkdir(parents=True)
+texts = {
+ "en1": "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}} C<ref name=x>{{cite journal|title=T|doi=10.1000/AbC}}</ref><ref name=x/>",
+ "ar1": "أ{{Sfn|سميث|2001}} ب<ref>{{استشهاد بدورية|دوي=10.1000/xyz|title=ت}}</ref>",
+}
+for k, t in texts.items():
+    w = "ar" if k.startswith("ar") else "en"
+    p = bundle(D, t, None, wiki=w, name=k)
+    print(p)

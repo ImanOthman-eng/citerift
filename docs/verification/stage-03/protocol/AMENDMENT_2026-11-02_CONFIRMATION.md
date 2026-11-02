@@ -288,3 +288,28 @@ that an article is a challenge article or which stratum it is in.
 Stage 03 moves to `VERIFIED_AWAITING_OWNER_ACCEPTANCE` only when every condition of the owner instruction section 12
 holds. The executor never records acceptance and never merges. Otherwise the exact failure is reported with the
 evidence.
+
+## 11. Tool corrections after review R6 (2026-11-02, before any draw)
+
+Review R6 (`review/round-6/REVIEW.md`, dispositions in `review/REVIEW_FINDINGS.md`) found defects in the campaign
+tools. They were corrected before any draw, exposure set or capture of this campaign. No threshold, gate, minimum,
+size, salt, order or stopping rule above changed. The corrections make the tools do what sections 3 to 9 already say:
+
+- **Ceilings (section 6).** A run is charged what its reported capture record shows, zero included; only an
+  interrupted run, or one without a reported record, is charged its worst case. The worst case of one run is
+  6 attempts and 64 MiB of accepted bodies (2 x the 32 MiB body limit of the fetch policy).
+- **Draw (sections 3 and 6).** A request deferred by a server's Retry-After waits until `not_before` plus 1 s and is
+  sent again; it is not a failed batch. A wait over one hour stops the draw before SELECTION.json is written. If a
+  draw stops that way, the next draw starts afresh, and SELECTION.json lists the earlier requests, which are reported.
+- **Driver (section 6).** A run stopped by an unreadable or out-of-range Retry-After is final. A bundle published
+  before the driver was interrupted is adopted, never captured again. A torn journal line is kept aside.
+- **Time limit (section 6).** The driver and the draw start nothing at or after 2026-11-14 23:59 UTC.
+- **Reserve decision (section 4).** It refuses unresolved captures. After a ceiling or the time limit, the articles
+  keep their states and no further block is named.
+- **Prediction run (section 8).** `confirmation-2026-11/scripts/run_confirmation.py` refuses a captured article
+  without a locked label and builds one gate split (holdout plus included reserves) and a separate challenge spec.
+- **Challenge window (section 9).** A marker call written with `Template:` in any case, on either wiki, is found.
+
+Engine changes made with these corrections (also before the freeze): short-footnote redirects of one template
+are one template, `ref=` is compared as a link target, positional values are trimmed as Lua trims them, and the
+network gate record is never left empty. On the 70 retained real bundles none of them changes an extraction.

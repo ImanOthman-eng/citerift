@@ -1,0 +1,18 @@
+from h import *
+import traceback
+cases = {
+ "numeric entity out of range in doi field": "A<ref>{{cite journal|title=T|doi=10.1000/abc&#1114112;}}</ref>",
+ "surrogate entity in doi": "A<ref>{{cite journal|title=T|doi=10.1000/abc&#xD800;}}</ref>",
+ "NUL entity": "A<ref>{{cite journal|title=T|doi=10.1000/abc&#0;}}</ref>",
+ "bare url w/ entity in url=": "A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/a&amp;b}}</ref>",
+ "bare url, huge entity": "A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/a&#99999999999;b}}</ref>",
+ "bare url, doi field": "A<ref>{{cite journal|title=T|doi=https://doi.org/10.1000/a&amp;b}}</ref>",
+ "&amp;amp;": "A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/a&amp;amp;b}}</ref>",
+ "publisher %2F": "A<ref>{{cite journal|title=T|url=https://onlinelibrary.wiley.com/doi/10.1002%2Fabc.123}}</ref>",
+}
+for k, t in cases.items():
+    try:
+        d, p = run(t, None)
+        print(k, "->", [(i["role"], i["normalization"].get("normalized"), i["normalization"].get("steps") if "steps" in i["normalization"] else None) for i in d["identifiers"]], cs(d))
+    except BaseException as e:
+        print(k, "-> EXC", type(e).__name__, str(e)[:200])

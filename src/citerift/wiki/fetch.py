@@ -368,8 +368,7 @@ class NetworkGate:
         time.sleep(wait)
         # G-1: record the attempt as it starts, so that a process killed during it still holds back the next one.
         try:
-            os.ftruncate(fd, 0)
-            os.pwrite(fd, f"{time.time():.3f} {not_before:.3f}\n".encode("ascii"), 0)
+            _write_record(fd, time.time(), not_before)
         except OSError:
             fcntl.flock(fd, fcntl.LOCK_UN)
             os.close(fd)
@@ -380,10 +379,18 @@ class NetworkGate:
 
     @staticmethod
     def _read(fd: int) -> tuple[float, float]:
-        """(wall-clock end of the last attempt, earliest wall-clock time a server allowed the next request)."""
+        """(wall-clock end of the last attempt, earliest wall-clock time a server allowed the next request). An empty
+        file has no record yet. A record is one line with one or two numbers; anything else, including a line
+        without its line end (a torn write), is unreadable and imposes the full interval."""
         try:
-            fields = os.pread(fd, 128, 0).decode("ascii").split()
-            last_end = float(fields[0]) if fields else 0.0
+            raw = os.pread(fd, 128, 0)
+            if not raw.strip():
+                return 0.0, 0.0
+            line, end, _ = raw.partition(b"\n")
+            fields = line.decode("ascii").split()
+            if not end or not 1 <= len(fields) <= 2:
+                raise ValueError("incomplete gate record")
+            last_end = float(fields[0])
             not_before = float(fields[1]) if len(fields) > 1 else 0.0
         except (OSError, UnicodeDecodeError, ValueError):
             now = time.time()  # unreadable record: wait the full interval
@@ -401,11 +408,19 @@ class NetworkGate:
         now = time.time()
         not_before = max(self._not_before, now + retry_after_s if retry_after_s is not None else 0.0)
         try:
-            os.ftruncate(fd, 0)
-            os.pwrite(fd, f"{now:.3f} {not_before:.3f}\n".encode("ascii"), 0)
+            _write_record(fd, now, not_before)
         finally:
             fcntl.flock(fd, fcntl.LOCK_UN)
             os.close(fd)
+
+
+def _write_record(fd: int, last_end: float, not_before: float) -> None:
+    """Replace the gate record. The new record is written over the old one first and the file is then cut to its
+    length, so that a process killed in between leaves a complete record (the new one, possibly followed by the old
+    one's tail, which ``_read`` ignores), never an empty one, which would impose no wait (review R6, RR-10)."""
+    data = f"{last_end:.3f} {not_before:.3f}\n".encode("ascii")
+    os.pwrite(fd, data, 0)
+    os.ftruncate(fd, len(data))
 
 
 class Fetcher:

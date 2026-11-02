@@ -148,3 +148,19 @@ the 70 retained real bundles changes (5 contain short footnotes), per `real_bund
 The frozen annotation guide, the frozen scorer, every earlier annotation, lock, prediction, score and adjudication.
 The definition-unit rule D2/D6 is applied only by the prospective guide v1.1 and the prospective scorer
 `protocol/scripts/evaluate_v2.py`, which differs from `evaluate.py` only in this derivation.
+
+## 6. Addendum after review R6 (2026-11-02, before the confirmation draw)
+
+Review R6 (RR-5, RR-11; `review/REVIEW_FINDINGS.md`) showed three places where the content key compared spellings
+rather than the generated text. They are corrected in `_footnote_identity`:
+
+- **Template variant.** A redirect is the same template. The key now uses the profile entry of the template (one
+  entry lists a template and its redirects, `wiki/data/profile-v1.json`), so `{{sfn}}`/`{{sf}}`/`{{Shortened
+  footnote}}`, `{{sfnp}}`/`{{sfnb}}` and arwiki `{{Sfn}}`/`{{Sf}}` are one variant each. `{{sfn}}` and `{{sfnp}}` stay
+  two variants.
+- **`ref=`.** It names a link target, in which spaces and underscores are the same; the key compares it that way.
+- **Trimming.** Positional values are trimmed with Lua's `%s` class (no NUL), named values as before.
+
+Not changed: `ignore-err=`, whose effect on the note text depends on whether the target exists, which the source
+does not show. Whether arwiki `Sfnp` follows the arwiki `sfn` rules is still unevidenced (only `قالب:Sfn` was
+retained), as the reviewer noted.

@@ -1,0 +1,29 @@
+"""A server wait (recorded in the shared gate) longer than one operation's deadline makes every request of the
+draw fail instantly and unattended; draw() burns all list=random batches (ar: 6) and ends with an empty frame."""
+import importlib.util, json, shutil, sys, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/src")
+import citerift.wiki.fetch as fetchmod
+from citerift.wiki.fetch import NetworkGate
+
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/draw_deferral")
+shutil.rmtree(W, ignore_errors=True); W.mkdir(parents=True)
+gate_file = W / "gate.lock"
+gate_file.write_text(f"{time.time():.3f} {time.time()+400:.3f}\n")      # Retry-After of 400 s seen by a previous request
+def boom(url, headers, timeout): raise AssertionError("NETWORK USED " + url)
+Orig = fetchmod.Fetcher
+class F(Orig):
+    def __init__(self, policy, transport=None, clock=None, gate=None):
+        super().__init__(policy, boom, clock, NetworkGate(gate_file))
+fetchmod.Fetcher = F
+
+spec = importlib.util.spec_from_file_location("sc", "/home/user/citerift/docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/select_confirmation.py")
+sc = importlib.util.module_from_spec(spec); spec.loader.exec_module(sc)
+get = sc.LiveGet(W / "campaign")
+t0 = time.time()
+frame = sc.draw(get, "ar", set(), set())
+print("elapsed s:", round(time.time()-t0, 2))
+print("batches drawn:", len(frame["batches"]), "failures:", frame["failures"])
+print("eligible:", frame["eligible"], "initial:", len(frame["initial"]), "reserve blocks:", len(frame["reserve_blocks"]))
+print("requests journalled:", len(get.requests), "codes:", {r["code"] for r in get.requests}, "http attempts:", sum(len(r["attempts"]) for r in get.requests))
+a, b = sc.cc.used(sc.cc._journal(get.capture)); print("campaign ledger charged:", a, "attempts,", round(b/2**20,1), "MiB (real requests: 0)")

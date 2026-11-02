@@ -201,6 +201,10 @@ _R_CONTENT_KEY = re.compile(
 # MediaWiki trims argument names and values with PHP trim() and Module:Arguments with mw.text.trim: ASCII
 # whitespace (and NUL) only. A no-break space is part of a name.
 _ARG_TRIM = " \t\n\r\f\v\0"
+# A positional value is not trimmed by MediaWiki; Module:Arguments trims it with Lua's %s class (space, \t, \n, \v,
+# \f, \r), which does not include NUL (review R6, RR-11).
+_LUA_TRIM = " \t\n\v\f\r"
+_ANCHOR_SPACES = re.compile(r"[ _]+")
 _TAG_QUOTED = re.compile(r"[\"'](.+)[\"']\Z|\"\"\Z|''\Z", re.DOTALL)
 
 
@@ -233,19 +237,24 @@ def _footnote_identity(wiki: str, template: str, effective: dict[str, ParamRecor
     ``p``/``page``, ``pp``/``pages`` and ``loc`` only, whitespace as written, and no group. The fields are kept apart
     rather than concatenated, and a value holding a link or more than five positional arguments (enwiki) is kept as
     written: where MediaWiki might merge two calls the engine may split them (the render step then abstains), but it
-    never merges calls that MediaWiki keeps apart. Comments are removed before the module sees a value."""
+    never merges calls that MediaWiki keeps apart. Comments are removed before the module sees a value.
+
+    ``template`` is the profile entry of the template, so that redirects of one template ({{sfn}}, {{sf}}) give the
+    same content key; ``ref=`` enters the content key as the link target it makes, with spaces and underscores alike
+    (review R6, RR-5)."""
 
     def value(*keys: str) -> str | None:
         for k in keys:
             p = effective.get(k)
             if p is not None:
-                return (_without_comments(p.node.value) if p.node is not None else "").strip(_ARG_TRIM)
+                text = _without_comments(p.node.value) if p.node is not None else ""
+                return text.strip(_ARG_TRIM if p.showkey else _LUA_TRIM)
         return None
 
     positional = [value(str(i)) or "" for i in range(1, 6)]
     page, pages = value("p", "page") or "", value("pp", "pages") or ""
     postscript = value("postscript", "ps")
-    ref = value("ref", "Ref") or ""
+    ref = _ANCHOR_SPACES.sub("_", value("ref", "Ref") or "")
     if wiki == "ar":
         location, group = value("loc") or "", ""
         names = [*positional, page, pages, location]
@@ -539,8 +548,9 @@ class Scanner:
             # receives (effective_arguments): {{sfn|Smith|2001}} and {{sfn|1=Smith|2=2001}} are the same call, and a
             # repeated argument counts once, with its last value.
             effective, _ = effective_arguments(rec.params)
+            entry = self.wiki.generated_refs.get(rec.canonical or "", TAG_REF).entry
             identity, content, sfn_group = _footnote_identity(
-                self.wiki.wiki, rec.canonical or rec.raw_name.strip(), effective
+                self.wiki.wiki, entry or rec.canonical or rec.raw_name.strip(), effective
             )
             self._add_ref(
                 rec.start,

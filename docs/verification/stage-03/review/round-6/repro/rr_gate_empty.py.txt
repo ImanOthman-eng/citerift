@@ -1,0 +1,10 @@
+"""A gate record that is empty (a process killed between ftruncate and pwrite, in acquire (G-1) or release) imposes no wait."""
+import sys, time, os
+from pathlib import Path
+sys.dont_write_bytecode = True
+from citerift.wiki.fetch import NetworkGate
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/gate_empty"); W.mkdir(parents=True, exist_ok=True)
+for label, content in [("record of an attempt that started now", f"{time.time():.3f} 0.000\n"), ("empty record (killed between ftruncate and pwrite)", ""), ("truncated record '17' (partial write)", "17")]:
+    f = W / "gate.lock"; f.write_text(content)
+    g = NetworkGate(f); t0 = time.monotonic(); r = g.acquire(3.0, 10.0); dt = time.monotonic() - t0; g.release()
+    print(f"{label:55s} acquire -> {r!r} after waiting {dt:.2f}s (min interval 3 s)")

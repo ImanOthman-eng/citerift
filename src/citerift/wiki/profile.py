@@ -31,6 +31,9 @@ class GeneratedRef:
     name_params: tuple[str, ...]
     group_params: tuple[str, ...]
     default_group: str
+    # The profile entry the name belongs to (its first name): one template and its redirects share it, so calls
+    # spelled with different redirects of one template are recognised as the same template (review R6, RR-5).
+    entry: str = ""
 
 
 @dataclass(frozen=True)
@@ -96,7 +99,12 @@ def _wiki(wiki: str, d: dict[str, Any]) -> WikiProfile:
     generated = {}
     for g in d["generated_refs"]:
         spec = GeneratedRef(
-            g["kind"], tuple(g["body_params"]), tuple(g["name_params"]), tuple(g["group_params"]), g["default_group"]
+            g["kind"],
+            tuple(g["body_params"]),
+            tuple(g["name_params"]),
+            tuple(g["group_params"]),
+            g["default_group"],
+            canon(g["names"])[0],
         )
         for name in canon(g["names"]):
             generated[name] = spec

@@ -7,7 +7,15 @@ For each language, the included articles are the initial holdout plus every rese
 state, in order. Each included article is counted from its locked label with ``reserve_decision.counts`` (unchanged):
 
 - an article without a bundle counts 0;
-- an article with a bundle must have a locked label.
+- an article with a bundle must have a locked label;
+- every article of an included block must be resolved: an article the capture driver would still run (a pending
+  deferral, an interrupted run) stops the decision, so that a decision never depends on when it was made (review
+  R6, RR-7). A block is captured once its articles have runs; a block with some articles run and others not stops
+  the decision too.
+
+When the capture stopped at a ceiling or at the acquisition time limit (CAPTURE_DIR/ceiling.json or
+acquisition_closed.json), nothing more is captured: every article keeps the state it has, an article never run
+counts 0, and no further block is named.
 
 Every lock is checked:
 
@@ -25,11 +33,13 @@ import hashlib
 import json
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[6]
 sys.path.insert(0, str(ROOT / "docs/verification/stage-03/evaluation/scripts"))
+import campaign_capture as cc  # noqa: E402
 from reserve_decision import MIN, counts, total  # noqa: E402 - unchanged count rules
 
 
@@ -56,7 +66,14 @@ def locked_labels(lock_dirs: list[Path], check_git: bool = True) -> dict[str, Pa
     return labels
 
 
-def decide(selection: dict[str, Any], states: dict[str, Any], labels: dict[str, Path]) -> dict[str, Any]:
+def decide(
+    selection: dict[str, Any],
+    states: dict[str, Any],
+    labels: dict[str, Path],
+    stopped: str | None = None,
+    now: float | None = None,
+) -> dict[str, Any]:
+    now = time.time() if now is None else now
     out: dict[str, Any] = {}
     for wiki in ("ar", "en"):
         frame = selection["frame"][wiki]
@@ -67,13 +84,18 @@ def decide(selection: dict[str, Any], states: dict[str, Any], labels: dict[str, 
         next_block = None
         for split, arts in groups:
             keys = [f"{split}/{wiki}-{a['page_id']}" for a in arts]
-            if not all(k in states for k in keys):
-                if any(k in states for k in keys):
-                    raise SystemExit(f"{split} of {wiki} is partly captured")
+            run = [k for k in keys if (states.get(k) or {}).get("runs")]
+            if not run:
                 next_block = split
                 break
+            if stopped is None:
+                if len(run) < len(keys):
+                    raise SystemExit(f"{split} of {wiki} is partly captured")
+                unresolved = [k for k in keys if cc.next_step(states[k], now)[0] != "done"]
+                if unresolved:
+                    raise SystemExit(f"{split} of {wiki}: unresolved articles {unresolved}; finish the capture first")
             for k in keys:
-                bundle = (states[k].get("final") or {}).get("bundle")
+                bundle = ((states.get(k) or {}).get("final") or {}).get("bundle")
                 c = None
                 if bundle:
                     cap = json.loads((Path(bundle) / "capture.json").read_text(encoding="utf-8"))
@@ -84,13 +106,16 @@ def decide(selection: dict[str, Any], states: dict[str, Any], labels: dict[str, 
                 rows.append({"key": k, "bundle": bundle, "counts": c})
         totals = total(rows)
         met = {k: totals[k] >= v for k, v in MIN.items()}
+        if stopped is not None:
+            next_block = None
         out[wiki] = {
             "included": [r["key"] for r in rows],
             "totals": totals,
             "minimums": MIN,
             "minimums_met": met,
             "next_block": next_block if not all(met.values()) else None,
-            "at_maximum": next_block is None and not all(met.values()),
+            "at_maximum": stopped is None and next_block is None and not all(met.values()),
+            "stopped": stopped,
             "rows": rows,
         }
     return out
@@ -98,9 +123,11 @@ def decide(selection: dict[str, Any], states: dict[str, Any], labels: dict[str, 
 
 def main() -> int:
     selection = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-    states = json.loads((Path(sys.argv[2]) / "capture_states.json").read_text(encoding="utf-8"))["articles"]
+    capture = Path(sys.argv[2])
+    states = json.loads((capture / "capture_states.json").read_text(encoding="utf-8"))["articles"]
+    stopped = next((n for n in ("ceiling.json", "acquisition_closed.json") if (capture / n).exists()), None)
     labels = locked_labels([Path(p) for p in sys.argv[3:]])
-    sys.stdout.write(json.dumps(decide(selection, states, labels), indent=1) + "\n")
+    sys.stdout.write(json.dumps(decide(selection, states, labels, stopped), indent=1) + "\n")
     return 0
 
 

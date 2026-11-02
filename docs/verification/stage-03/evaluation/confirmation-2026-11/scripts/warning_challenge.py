@@ -58,7 +58,9 @@ _HIDDEN = re.compile(r"<!--.*?-->|<nowiki\b[^>]*>.*?</nowiki\s*>", re.DOTALL | r
 def marker_calls(text: str, wiki: str) -> list[int]:
     hidden = [(m.start(), m.end()) for m in _HIDDEN.finditer(text)]
     names = "|".join(re.escape(n[0].upper() + n[1:]) + "|" + re.escape(n[0].lower() + n[1:]) for n in MARKERS[wiki])
-    pat = re.compile(r"\{\{\s*(?:(?:template|قالب)\s*:\s*)?(?:" + names.replace(r"\ ", r"[ _]+") + r")\s*[|}]")
+    # The namespace prefix is read case-insensitively, as MediaWiki does; arwiki accepts the canonical ``Template:``
+    # as well as ``قالب:`` (profile namespace_prefixes). Review R6, RR-9.
+    pat = re.compile(r"\{\{\s*(?:(?i:template|قالب)\s*:\s*)?(?:" + names.replace(r"\ ", r"[ _]+") + r")\s*[|}]")
     return [m.start() for m in pat.finditer(text) if not any(s <= m.start() < e for s, e in hidden)]
 
 

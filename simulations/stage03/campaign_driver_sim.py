@@ -2,10 +2,12 @@
 (docs/verification/stage-03/evaluation/scripts/campaign_capture.py) under scripted outcomes, kills and restarts.
 
 Each sequence draws a plan of 1-8 articles and a scripted stand-in for the capture CLI. Every run of the stand-in
-answers complete, deferred (short or long wait), render-deferred, a retryable failure or a final failure, and some
-runs are killed mid-run (the stand-in raises after creating the bundle directory, as a SIGKILL would leave it). The
-driver is restarted after every kill and after every exit 4 (deferral pending), with the clock moved to a random
-later time, until it exits 0 or 2. No request is made. Checked invariants:
+answers complete, deferred (short or long wait, or by the network gate with no request), render-deferred, a
+retryable failure, a 429 with an unreadable Retry-After, or a final failure, and some runs are killed mid-run (the
+stand-in raises after creating the bundle directory, as a SIGKILL would leave it, or after publishing a complete
+bundle). After a kill, the journal's last line is sometimes torn (a partial ``end`` line). The driver is restarted
+after every kill and after every exit 4 (deferral pending), with the clock moved to a random later time, until it
+exits 0, 2 or 5. No request is made. Checked invariants:
 
   C1  a bundle path is never reused;
   C2  no run of a deferred article starts before that article's not_before;
@@ -14,7 +16,10 @@ later time, until it exits 0 or 2. No request is made. Checked invariants:
   C5  no run starts unless the recorded HTTP attempts and accepted bytes, with an interrupted run at its worst
       case, leave room for one more worst-case run within the ceilings;
   C6  after the final restart, every run in the journal is in the state, and the state has no other run;
-  C7  a second driver started while one holds the lock makes no run.
+  C7  a second driver started while one holds the lock makes no run;
+  C8  a torn final journal line never stops a restart, and its bytes are kept in a side file;
+  C9  no run starts at or after the acquisition time limit;
+  C10 a run stopped by an unreadable Retry-After is the article's last run.
 
 Usage: python simulations/stage03/campaign_driver_sim.py [N_SEQUENCES] [SEED]  (prints a JSON summary)
 """
@@ -56,6 +61,7 @@ class World:
         self.complete: set[str] = set()
         self.failures: list[str] = []
         self.attempts_per_run = attempts_per_run
+        self.ra_problem: set[str] = set()
 
     def clock(self) -> float:
         return self.t
@@ -72,16 +78,24 @@ class World:
             self.failures.append(f"C2 {art} at {self.t} before {self.not_before[art]}")
         if art in self.complete:
             self.failures.append(f"C3 {art} run again")
+        if art in self.ra_problem:
+            self.failures.append(f"C10 {art} run again after an unreadable Retry-After")
+        if self.t >= cc.ACQUISITION_END:
+            self.failures.append(f"C9 {art} run at {self.t}")
         self.runs.append((str(out), self.t))
         out.mkdir(parents=True, exist_ok=True)
         self.t += self.rng.uniform(1, 60)
         roll = self.rng.random()
-        if roll < 0.12:
-            raise Killed
         attempts = [{"code": None, "body_bytes": self.rng.randint(10_000, 3_000_000)}] * self.rng.randint(
             1, self.attempts_per_run
         )
         cap: dict[str, Any] = {"attempts": attempts, "issues": [], "not_before": None, "render": {}}
+        if roll < 0.06:
+            raise Killed
+        if roll < 0.12:  # killed after the CLI published a complete bundle
+            (out / "capture.json").write_text(json.dumps({**cap, "status": "complete"}), encoding="utf-8")
+            self.complete.add(art)
+            raise Killed
         if roll < 0.45:
             status = "complete"
             self.complete.add(art)
@@ -95,9 +109,20 @@ class World:
             nb = self.t + self.rng.choice([20, 2000])
             cap["render"] = {"code": "DEFERRED_RETRY_AFTER", "not_before": stamp(nb)}
             self.not_before[art] = nb
-        elif roll < 0.9:
+        elif roll < 0.8:
             status = "failed"
             cap["issues"] = [{"code": "ATTEMPTS_EXHAUSTED", "severity": "error"}]
+        elif roll < 0.85:  # deferred by the network gate: no request was made
+            status = "deferred"
+            nb = self.t + self.rng.choice([30, 4000])
+            cap["attempts"] = []
+            cap["not_before"] = stamp(nb)
+            self.not_before[art] = nb
+        elif roll < 0.9:
+            status = "failed"
+            cap["attempts"] = [{"code": "HTTP_RATE_LIMITED", "retry_after_problem": "RETRY_AFTER_UNREADABLE"}]
+            cap["issues"] = [{"code": "HTTP_RATE_LIMITED", "severity": "error"}]
+            self.ra_problem.add(art)
         else:
             status = "failed"
             cap["issues"] = [{"code": "PAGE_NOT_FOUND", "severity": "error"}]
@@ -129,7 +154,14 @@ def sequence(rng: random.Random, tmp: Path) -> tuple[list[str], Counter[str]]:
         except Killed:
             outcomes["killed"] += 1
             world.t += rng.uniform(0, 600)
+            if rng.random() < 0.5:  # the kill tore the end line being written
+                with (out / "captures.jsonl").open("a", encoding="utf-8") as fh:
+                    fh.write('{"event": "end", "key": "holdout/' + "x" * rng.randint(0, 40))
+                outcomes["torn"] += 1
             continue
+        except Exception as exc:  # any other exception is a failed restart
+            world.failures.append(f"C8 restart raised {type(exc).__name__}: {exc}")
+            break
         outcomes[f"exit_{code}"] += 1
         if code == 4:
             world.t += rng.uniform(60, 5000)
@@ -137,6 +169,11 @@ def sequence(rng: random.Random, tmp: Path) -> tuple[list[str], Counter[str]]:
         break
     else:
         world.failures.append("C4 did not end within 200 restarts")
+    torn_kept = sum(len(p.read_bytes()) > 0 for p in out.glob("captures.jsonl.torn-at-*"))
+    if outcomes["torn"] and not torn_kept:
+        world.failures.append("C8 a torn line was not kept")
+    if not (out / "capture_states.json").exists():
+        return world.failures, outcomes
     states = json.loads((out / "capture_states.json").read_text(encoding="utf-8"))["articles"]
     for key, rec in states.items():
         if len(rec["runs"]) > cc.MAX_RUNS:

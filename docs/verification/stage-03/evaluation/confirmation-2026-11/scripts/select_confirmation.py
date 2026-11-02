@@ -24,17 +24,33 @@ Warning challenge, per wiki and stratum (retraction, concern, correction):
 Every request goes through the production client (fixed hosts, ``maxlag``, Retry-After, the project network gate).
 Before each request, the campaign journal (CAMPAIGN_DIR/capture/captures.jsonl, shared with the capture driver)
 must leave room for one worst-case run within the campaign ceilings. Each request is journalled there, and every
-accepted body is kept by SHA-256. No article content is read. The draw cannot be re-run (``list=random``); its
-answers are kept so it can be audited.
+accepted body is kept by SHA-256. No article content is read. The draw holds the capture driver's lock, so no
+capture runs meanwhile.
+
+Waits and failures (review R6, RR-2):
+
+- a request deferred by a server's Retry-After (through the network gate) is not a failed batch: the draw waits
+  until ``not_before`` plus 1 s and sends it again; a wait over DRAW_MAX_WAIT_S stops the draw without writing
+  SELECTION.json;
+- a retryable failure is sent once more; a failure that is not retryable, a second failure, or a Retry-After the
+  client could not read, fails that request, and the draw records it.
+
+The draw is made once (``list=random`` cannot be repeated). If it is stopped before SELECTION.json is written, the
+next draw starts afresh: its request numbers continue after the earlier ones, and SELECTION.json lists the earlier
+requests (RR-13), so the restart is reported, never hidden.
 
 Outputs: CAMPAIGN_DIR/selection/SELECTION.json and CAMPAIGN_DIR/selection/artifacts/.
 """
 
 from __future__ import annotations
 
+import fcntl
 import hashlib
 import json
+import os
+import re
 import sys
+import time
 import urllib.parse
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -67,6 +83,9 @@ STRATA: dict[str, list[tuple[str, list[str]]]] = {
     ],
 }
 HOSTS = {"ar": "ar.wikipedia.org", "en": "en.wikipedia.org"}
+DRAW_MAX_WAIT_S = 3600.0
+DRAW_TRIES = 2
+DRAW_MAX_DEFERRALS = 5
 
 Get = Callable[[str], Any]
 
@@ -80,19 +99,58 @@ def order(salt: str, *parts: object) -> str:
     return hashlib.sha256("|".join([salt, *map(str, parts)]).encode()).hexdigest()
 
 
-class LiveGet:
-    """One journalled, ceiling-checked request through the production client."""
+def _live_fetch(url: str) -> Any:
+    from citerift.wiki.fetch import Fetcher, FetchPolicy  # noqa: PLC0415 - live path only
 
-    def __init__(self, campaign: Path) -> None:
+    return Fetcher(FetchPolicy()).get(url, expect="json")
+
+
+class LiveGet:
+    """One journalled, ceiling-checked request through the production client, sent again after a server-requested
+    wait or once after a retryable failure."""
+
+    def __init__(
+        self,
+        campaign: Path,
+        fetch: Callable[[str], Any] = _live_fetch,
+        clock: Callable[[], float] = time.time,
+        sleep: Callable[[float], None] = time.sleep,
+    ) -> None:
         self.capture = campaign / "capture"
         self.artifacts = campaign / "selection" / "artifacts"
         self.capture.mkdir(parents=True, exist_ok=True)
         self.artifacts.mkdir(parents=True, exist_ok=True)
+        self.fetch, self.clock, self.sleep = fetch, clock, sleep
         self.requests: list[dict[str, Any]] = []
+        pat = re.compile(r"selection/request-([0-9]+)\Z")
+        self.earlier = sorted(
+            {e["key"] for e in cc._journal(self.capture) if pat.match(str(e.get("key")))}  # an interrupted draw
+        )
+        self.number = max((int(pat.match(k).group(1)) for k in self.earlier), default=0)  # type: ignore[union-attr]
 
     def __call__(self, url: str) -> Any:
-        from citerift.wiki.fetch import Fetcher, FetchPolicy  # noqa: PLC0415 - live path only
+        tries = deferrals = 0
+        while True:
+            entry = self._once(url)
+            if entry["code"] is None:
+                return entry.pop("_json")
+            if entry["code"] == "DEFERRED_RETRY_AFTER":
+                deferrals += 1
+                when = cc._parse_time(entry["not_before"])
+                wait = (when + cc.NOT_BEFORE_MARGIN_S - self.clock()) if when is not None else None
+                if wait is None or wait > DRAW_MAX_WAIT_S or deferrals > DRAW_MAX_DEFERRALS:
+                    raise SystemExit(
+                        f"draw stopped: a server asked to wait until {entry['not_before']}; SELECTION.json is not"
+                        " written, and a later draw starts afresh and lists these requests"
+                    )
+                self.sleep(max(0.0, wait))
+                continue
+            tries += 1
+            problem = any(a.get("retry_after_problem") for a in entry["attempts"])
+            if problem or entry["code"] not in cc.RETRYABLE or tries >= DRAW_TRIES:
+                return None
 
+    def _once(self, url: str) -> dict[str, Any]:
         log = self.capture / "captures.jsonl"
         attempts, accepted = cc.used(cc._journal(self.capture))
         if (
@@ -100,11 +158,13 @@ class LiveGet:
             or accepted + cc.RUN_WORST_BYTES > cc.MAX_ACCEPTED_BYTES
         ):
             raise SystemExit(f"campaign ceiling: draw stopped before a request ({attempts} attempts, {accepted} bytes)")
-        n = len(self.requests) + 1
-        key = f"selection/request-{n:04d}"
+        if self.clock() >= cc.ACQUISITION_END:
+            raise SystemExit("acquisition time limit: draw stopped before a request")
+        self.number += 1
+        key = f"selection/request-{self.number:04d}"
         now = datetime.now(UTC).isoformat(timespec="seconds")
         cc._append(log, {"event": "start", "key": key, "run": 1, "at": now, "url": url})
-        answer = Fetcher(FetchPolicy()).get(url, expect="json")
+        answer = self.fetch(url)
         entry: dict[str, Any] = {
             "url": url,
             "code": answer.code,
@@ -123,12 +183,15 @@ class LiveGet:
                 "run": 1,
                 "at": datetime.now(UTC).isoformat(timespec="seconds"),
                 "exit": 0 if answer.code is None else 1,
-                "stdout": {"capture": {"attempts": entry["attempts"]}},
+                "stdout": {
+                    "status": "complete" if answer.code is None else "failed",
+                    "capture": {"attempts": entry["attempts"]},
+                },
             },
         )
         self.requests.append(entry)
         print(json.dumps({"url": url, "code": answer.code}, ensure_ascii=False), file=sys.stderr, flush=True)
-        return answer.json if answer.code is None else None
+        return {**entry, "_json": answer.json if answer.code is None else None}
 
 
 def draw(get: Get, wiki: str, ex_ids: set[int], ex_titles: set[str]) -> dict[str, Any]:
@@ -265,11 +328,24 @@ def main() -> int:
     out = campaign / "selection" / "SELECTION.json"
     if out.exists():
         raise SystemExit(f"{out} exists; the draw is made once")
-    get = LiveGet(campaign)
-    result = select(get, exposure)
-    result["exposure_set_sha256"] = hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest()
-    result["requests"] = get.requests
-    out.write_text(json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    (campaign / "capture").mkdir(parents=True, exist_ok=True)
+    lock_fd = os.open(
+        campaign / "capture" / "driver.lock", os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600
+    )
+    try:
+        try:
+            fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise SystemExit("a capture driver holds the campaign journal") from None
+        cc.repair_journal(campaign / "capture")
+        get = LiveGet(campaign)
+        result = select(get, exposure)
+        result["exposure_set_sha256"] = hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest()
+        result["earlier_interrupted_draw_requests"] = get.earlier
+        result["requests"] = get.requests
+        out.write_text(json.dumps(result, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    finally:
+        os.close(lock_fd)
     return 0
 
 

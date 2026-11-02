@@ -167,7 +167,7 @@ def test_a_second_driver_on_the_same_directory_makes_no_request(tmp_path: Path) 
 def test_the_ceiling_stops_before_a_run_that_could_cross_it(tmp_path: Path) -> None:
     p, out, clock = plan(tmp_path, ("holdout", "ar", 1)), tmp_path / "out", Clock()
     out.mkdir()
-    big = {"capture": {"attempts": [{"code": "HTTP_RATE_LIMITED"}] * 495}}
+    big = {"status": "failed", "capture": {"attempts": [{"code": "HTTP_RATE_LIMITED"}] * 495}}  # a reported record
     lines = [
         {"event": "start", "key": "x/ar-9", "run": 1},
         {"event": "end", "key": "x/ar-9", "run": 1, "exit": 1, "stdout": big},

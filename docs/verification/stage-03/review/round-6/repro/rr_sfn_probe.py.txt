@@ -1,0 +1,18 @@
+from h import *
+def one(label, t, wiki="en"):
+    d, _ = run(t, wiki=wiki)
+    print(f"{label:55s}", short(d), [c for c in cs(d) if c.startswith("REF")])
+# expectations (MediaWiki): same / differ
+one("pos+named same  (expect 1 ref identical)", "A{{sfn|Smith|2001}}B{{sfn| 1 = Smith | 2 = 2001 }}")
+one("2=override later wins vs pos (expect 2 refs? )", "A{{sfn|Smith|2001|2=2002}}B{{sfn|Smith|2002}}")
+one("\\v trim: MW keeps apart (expect 2 refs)", "A{{sfn|Smith\x0b|2001}}B{{sfn|Smith|2001}}")
+one("empty p= beats page= (expect same ref)", "A{{sfn|Smith|2001|p=|page=5}}B{{sfn|Smith|2001}}")
+one("ref= anchorEncode equal (MW text same)", "A{{sfn|Smith|2001|ref=a b}}B{{sfn|Smith|2001|ref=a_b}}")
+one("ps=. equals default (expect identical)", "A{{sfn|Smith|2001|ps=.}}B{{sfn|Smith|2001}}")
+one("ar: ps=. equals default", "أ{{Sfn|سميث|2001|ps=.}}ب{{Sfn|سميث|2001}}", "ar")
+one("en P5 non-year differs (MW same name+text)", "A{{sfn|A|B|C|D|X}}B{{sfn|A|B|C|D|Y}}")
+one("en group differs", "A{{sfn|Smith|2001|group=n}}B{{sfn|Smith|2001}}")
+one("en at= vs loc=", "A{{sfn|Smith|2001|at=x}}B{{sfn|Smith|2001|loc=x}}")
+one("ar at= is ignored by arwiki module (expect same name)", "أ{{Sfn|سميث|2001|at=x}}ب{{Sfn|سميث|2001}}", "ar")
+one("en ignore-err differs", "A{{sfn|Smith|2001|ignore-err=yes}}B{{sfn|Smith|2001}}")
+one("sfn inside <ref> and nowiki", "A<ref>{{sfn|Smith|2001}}</ref>B{{sfn|Smith|2001}}")

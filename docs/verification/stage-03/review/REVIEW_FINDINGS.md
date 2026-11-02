@@ -255,3 +255,52 @@ material. Its own focused runs passed; it did not run the full suite.
 - After the fixes, all 27 pass.
 
 **Real bundles:** on the same 70 retained real bundles, the R5 fixes change no extraction compared with `949cdc4`.
+
+## Adversarial integration review R6 under D-034 (2026-11-02)
+
+Owner instruction D-034, section 9, asks for one independent adversarial integration review after the fixes and
+before the study. A separate reviewer agent (a fresh Claude Code context on Sonnet; it wrote none of the code under
+review) reviewed candidate `5b1dcb0` (`eca4389..5b1dcb0`: short-footnote identity, DOI D-1/D-2, Retry-After G-1/G-2,
+the capture driver, the confirmation tools, scorer v2). It made no network request. Its report, repro scripts and
+logs are in `round-6/` (`REVIEW.md`, `repro/*.py.txt`). During the review the MF-1 change (`b00fa65`) was being
+made in the same working tree; the reviewer noted it (RR-13) and its runs partly saw it.
+
+It reports 13 findings: 0 critical, 2 high, 2 medium, 5 low, 4 informational. I reran every repro at `b00fa65`
+before any fix (`round-6/repro-output-before-b00fa65/`); each reproduced as reported.
+
+| Id | Severity | Finding | Disposition |
+|---|---|---|---|
+| RR-1 | high | The driver and the draw charged every finished run without recorded attempts the full worst case, including runs the network gate deferred without any request. 14 gate deferrals reached a phantom 300 MiB ceiling. | **Fixed.** A run with a reported capture record is charged what it records, zero included. Only a run without a reported record (crash, unreadable output) or without an `end` line is charged the worst case. |
+| RR-2 | high | A draw request deferred by a server's Retry-After counted as a failed `list=random` batch at once; one long wait emptied a wiki's frame and SELECTION.json was then written. | **Fixed.** A deferred request waits until `not_before` + 1 s and is sent again. A wait over 3600 s stops the draw before SELECTION.json is written. A retryable failure is sent once more; an unreadable Retry-After is never retried. The draw holds the driver lock. |
+| RR-3 | medium | A 429 whose Retry-After was unreadable or out of range was rerun by the driver after the 10 s gate interval. | **Fixed.** Such a run is final; the state records `retry_after_problems`. |
+| RR-4 | medium | A journal line torn by a kill made every later driver start raise `JSONDecodeError`. | **Fixed.** Readers ignore a final line without its line end. The driver (and the draw), holding the lock, move it to `captures.jsonl.torn-at-<offset>` before the next append. A malformed complete line stays an error. |
+| RR-5 | low | The short-footnote content key compared template spellings: redirects of one template (`sfn`/`sf`, `sfnp`/`sfnb`, arwiki `Sfn`/`Sf`) gave a false `conflicting_definitions`, and `ref=a b` vs `ref=a_b` too. | **Fixed.** The content key uses the profile entry of the template (one entry holds a template and its redirects) and `ref=` as a link target (spaces and underscores alike). `sfn` vs `sfnp` and different `ref=` targets stay conflicts. `ignore-err=` is **not changed**: its effect depends on whether the target exists, which the source does not show. |
+| RR-6 | low | A capture published by the CLI before the driver was killed (before the `end` line) was captured again. | **Fixed.** Recovery adopts the published bundle's own capture record (the CLI publishes by atomic rename) and journals it as a recovered `end`. The reviewer's repro writes a placeholder `capture.json` of `{}`, which is not a capture record and is still not adopted; the unit test uses a real record shape. |
+| RR-7 | low | `reserve_step.decide` counted an unresolved (pending) article as 0 and named the next block; a planned but never-run block looked captured. | **Fixed.** Unresolved or partly run blocks stop the decision. A block counts as captured only once its articles have runs. After a ceiling or the acquisition time limit, every article keeps its state, and no further block is named. |
+| RR-8 | low | `run_holdout.py` silently left a captured article without a label in its single lock directory out of the scoring spec. | **Fixed for this campaign** with a new tool, `confirmation-2026-11/scripts/run_confirmation.py`. It takes every lock directory, refuses a captured article without a locked label or an unresolved capture, and writes one `gate` split (holdout and included reserves) and a separate challenge spec. `run_holdout.py` is **not changed**: it produced earlier committed evidence. |
+| RR-9 | low | `warning_challenge.marker_calls` missed `{{Template:...}}` (capital, and any `Template:` on arwiki). | **Fixed.** The namespace prefix is matched case-insensitively, and `Template:` is accepted on both wikis. |
+| RR-10 | info | The gate record was replaced by truncate-then-write; an empty or partial record imposed no wait. | **Fixed.** The record is written first and the file is then cut to its length. A non-empty record that is not one complete line of one or two numbers now imposes the full interval. An empty file is still "no record yet" (the initial state). |
+| RR-11 | info | Positional values were trimmed with the PHP set (with NUL); the reviewer said Lua's trim keeps `\v`. | **Partly confirmed.** Lua's `%s` includes `\v` (`round-6/reference-sources/`), so `Smith\v` and `Smith` are one name in MediaWiki too; the reviewer's expectation was wrong for `\v`. NUL is the real difference: positional values are now trimmed with the Lua set (no NUL); named values keep the PHP-and-Lua set. |
+| RR-12 | info | `RUN_WORST_BYTES` (20.06 MiB) was below what one run can accept (2 x 32 MiB). | **Fixed.** `RUN_WORST_BYTES` = 64 MiB; a test ties both worst cases to `FetchPolicy`. |
+| RR-13 | info | The working tree was not the candidate; the acquisition time limit was enforced by no tool; an interrupted draw was not resumable and its request numbers restarted. | **Fixed** where it is a tool defect: the driver exits 5 and the draw stops at 2026-11-14 23:59 UTC; draw request numbers continue after an interrupted draw, and SELECTION.json lists the earlier requests. The candidate identity is handled by freezing a committed revision before the draw (MANIFEST.json). |
+
+**Two existing tests of mine had fixtures in the old shape** (both added under D-034, not part of accepted
+evidence). `test_the_ceiling_stops_before_a_run_that_could_cross_it` now gives its synthetic `end` line a `status`,
+so that it is a reported record; its assertions are unchanged. `test_the_reserve_step_adds_the_next_block_from_locked_counts_only`
+now gives each article a resolved run, as the driver records it; its assertions are unchanged.
+
+**Regressions** (`tests/stage03/test_review_r6_fixes.py`, 38 cases):
+- At `b00fa65`, before the fixes, 29 fail and 9 pass (`round-6/pytest-before-b00fa65.txt`). The 9 that pass are
+  controls whose behaviour must not change (two conflicts that stay conflicts, an `قالب:` marker call, `Smith\v`
+  trimmed as Lua trims it, an empty gate file, a malformed complete journal line, an interrupted run without a
+  bundle) and the two RR-8 cases, which test the new tool.
+- After the fixes, all 38 pass.
+
+**Simulation.** `simulations/stage03/campaign_driver_sim.py` now also draws gate deferrals without requests,
+unreadable Retry-After answers, kills after a published bundle and torn journal lines, and checks C8 (a torn line
+never stops a restart and is kept), C9 (no run after the acquisition time limit) and C10 (no rerun after an
+unreadable Retry-After). With seed 20261102, 300 sequences: 0 failures. The same simulation on the `b00fa65`
+driver stops with `JSONDecodeError` at the first torn line (`round-6/sim-before-b00fa65.txt`).
+
+**Real bundles:** on the 70 retained real bundles, the R6 fixes change no extraction compared with `b00fa65`
+(`round-6/real_bundles_impact.json`).

@@ -1,0 +1,17 @@
+from h import *
+def show(label, text, body, wiki="en"):
+    d, _ = run(text, body, wiki)
+    print("==", label, cs(d))
+    for c in d["containers"]:
+        print("  ct", c["id"], c["layout"], c["binding_state"], "render:", c["render"]["state"], c["render"].get("region_id"))
+    for u in d["uses"]:
+        print("  use", u["id"], u["container_id"], u["render"]["state"], (u["render"].get("locator") or {}).get("element_id"))
+    for m in d["markers"]:
+        print("  marker", m["container_id"], m["state"])
+note = "cite_note-FOOTNOTEABCD-1"
+li = note_li(note, ["cite_ref-FOOTNOTEABCD_1-0", "cite_ref-FOOTNOTEABCD_1-1"], "A et al. Retracted.")
+body = "<p>x" + ref_sup(1, note, "cite_ref-FOOTNOTEABCD_1-0", "FOOTNOTEABCD") + " y" + ref_sup(1, note, "cite_ref-FOOTNOTEABCD_1-1", "FOOTNOTEABCD") + "</p>" + references([li])
+show("P5 non-year differs: MW one note, engine two containers", "x{{sfn|A|B|C|D|X}} y{{sfn|A|B|C|D|Y}}", body)
+# same, merged correctly
+body2 = "<p>x" + ref_sup(1, note, "cite_ref-FOOTNOTEABCD_1-0", "FOOTNOTEABCD") + " y" + ref_sup(1, note, "cite_ref-FOOTNOTEABCD_1-1", "FOOTNOTEABCD") + "</p>" + references([li])
+show("identical", "x{{sfn|A|B|C|D|X}} y{{sfn|A|B|C|D|X}}", body2)

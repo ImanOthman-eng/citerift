@@ -218,7 +218,10 @@ def test_the_reserve_step_adds_the_next_block_from_locked_counts_only(tmp_path: 
         for i, r in enumerate(selection["frame"][wiki]["initial"]):
             rev = r["page_id"] * 10 + (1 if wiki == "ar" else 2)
             b, f = _label(tmp_path, wiki, rev, ids=2 if wiki == "ar" else 4)
-            states[f"holdout/{wiki}-{r['page_id']}"] = {"final": {"bundle": str(b) if i else None}}
+            # A resolved capture state, as the driver records it: complete, or failed for good (no bundle).
+            run = {"run": 1, "status": "complete" if i else "failed", "bundle": str(b) if i else None}
+            run |= {"codes": [] if i else ["PAGE_NOT_FOUND"], "deferred": False, "not_before": None}
+            states[f"holdout/{wiki}-{r['page_id']}"] = {"runs": [run], "final": run}
             labels[f.name] = f
     d = rs.decide(selection, states, labels)
     # ar: 23 captured x 2 identifiers = 46 < 50 -> the next block; en: 15 x 4 = 60 >= 50 and other minimums met
