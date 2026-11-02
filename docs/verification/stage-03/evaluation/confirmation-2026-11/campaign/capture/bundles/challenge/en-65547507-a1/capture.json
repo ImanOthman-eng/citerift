@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 5458,
+   "body_sha256": "07cc81550887fe4916965885f8361a7c267cb9a0e326143d10c291e037ac62d7",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.507,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:30:10.667353Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=65547507",
+   "wire_bytes": 2500
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "23b5b8eba2e5ee0e61c13dd984006c5adecdcf637d068b8220356e70792a4d46",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.411,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:30:21.176454Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1360148888/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 43311,
+   "body_sha256": "7046cdcf3aed9f6f8abf0f50266f2d6b123fc6d5e3db8e578b8fd9bca1eb16a5",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.485,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:31:00.588387Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1360148888/html",
+   "wire_bytes": 8282
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "23b5b8eba2e5ee0e61c13dd984006c5adecdcf637d068b8220356e70792a4d46"
+ ],
+ "finished_at": "2026-11-02T19:31:01.073516Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 65547507,
+  "parent_revision_id": 1359002248,
+  "redirect_followed": null,
+  "revision_id": 1360148888,
+  "revision_timestamp": "2026-06-19T15:14:17Z",
+  "sha1": "29428b48c8e7cbc514e86731b27c70d2d5ce3c6e",
+  "size": 4902,
+  "title": "Culturomics (microbiology)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "7046cdcf3aed9f6f8abf0f50266f2d6b123fc6d5e3db8e578b8fd9bca1eb16a5",
+  "bytes": 43311,
+  "checks": {
+   "document_revision_id": "1360148888",
+   "header_revision_id": "1360148888",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "65547507",
+   "render_id": "2f0a92fb-cdf8-11f1-bfbd-037c63f4450e",
+   "revision_sha1": "29428b48c8e7cbc514e86731b27c70d2d5ce3c6e",
+   "revision_sha1_base36": "4ti88ix50d976kb3rc9pj55t5hc5y7i"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1360148888",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:31:00 GMT",
+   "etag": "W/\"1360148888/2f0a92fb-cdf8-11f1-bfbd-037c63f4450e/view\"",
+   "last-modified": "Tue, 22 Sep 2026 07:24:15 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1360148888/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 65547507,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "e39160c901e18b5e3d0325265ff1f70a76c459ff0094c0441a138f4d2ea18d9a",
+  "bytes": 4902,
+  "response_artifact": "07cc81550887fe4916965885f8361a7c267cb9a0e326143d10c291e037ac62d7",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=65547507"
+ },
+ "started_at": "2026-11-02T19:30:00.935876Z",
+ "status": "complete"
+}

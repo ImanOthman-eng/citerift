@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "c35468a069a543636a3bea3f959c74c9afa5c5a9fd04cc64949d3f04e2f83be9",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.401,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "26",
+   "retry_after_s": 26.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:43:34.201314Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5480790",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 20305,
+   "body_sha256": "03be9c62587d55fac36586baf3dd436a5ff2229869a210696ddb2a9ea9092922",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.413,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:44:00.603140Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5480790",
+   "wire_bytes": 6858
+  },
+  {
+   "body_bytes": 136281,
+   "body_sha256": "d9708b94d0485718023fbec15ec291e4227d999c5b5b5f851d30692a2e2e79a4",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.696,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:44:11.016234Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76371393/html",
+   "wire_bytes": 24273
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "c35468a069a543636a3bea3f959c74c9afa5c5a9fd04cc64949d3f04e2f83be9"
+ ],
+ "finished_at": "2026-11-02T18:44:12.713204Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 5480790,
+  "parent_revision_id": 70553940,
+  "redirect_followed": null,
+  "revision_id": 76371393,
+  "revision_timestamp": "2026-08-29T02:08:21Z",
+  "sha1": "0d35d3894350d668af840feb6edeec43e19c73bd",
+  "size": 19633,
+  "title": "المجلس الأمريكي للطب الباطني",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "d9708b94d0485718023fbec15ec291e4227d999c5b5b5f851d30692a2e2e79a4",
+  "bytes": 136281,
+  "checks": {
+   "document_revision_id": "76371393",
+   "header_revision_id": "76371393",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "5480790",
+   "render_id": "6547f5ea-d6ed-11f1-8678-abfa06bb0e89",
+   "revision_sha1": "0d35d3894350d668af840feb6edeec43e19c73bd",
+   "revision_sha1_base36": "1jjv4vp9r232e06nfyxb8jzgdjraim5"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76371393",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:44:11 GMT",
+   "etag": "W/\"76371393/6547f5ea-d6ed-11f1-8678-abfa06bb0e89/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:23:29 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76371393/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 5480790,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "d041cc1d328695de45911305421526789deb6a8953405d7cb32f314959788e5d",
+  "bytes": 19633,
+  "response_artifact": "03be9c62587d55fac36586baf3dd436a5ff2229869a210696ddb2a9ea9092922",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5480790"
+ },
+ "started_at": "2026-11-02T18:43:24.470917Z",
+ "status": "complete"
+}

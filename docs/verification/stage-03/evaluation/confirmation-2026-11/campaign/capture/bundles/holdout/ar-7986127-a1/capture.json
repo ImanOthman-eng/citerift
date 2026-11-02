@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "bb5ca19c6128f869b1797ba4a55dddb608808d74b6f4dd31b87b4c7c4e478a24",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.404,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:52:10.904439Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7986127",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 3523,
+   "body_sha256": "49aadc5bba64b780d1f3950161f996c81fab17d4fb3c95ddadc0589348c54544",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.449,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:53:00.309600Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7986127",
+   "wire_bytes": 1389
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "080efb6ff497c4952f076f0180cd7d34294aae301d62588b5ac273bcfcfd354f",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.388,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:53:10.759126Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/73397303/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 93344,
+   "body_sha256": "52a5c90f8db71301bdcae0ed3c04c5d76da7dc2893d047964a75c8ad02f55fff",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.499,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:54:00.147951Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/73397303/html",
+   "wire_bytes": 15667
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "bb5ca19c6128f869b1797ba4a55dddb608808d74b6f4dd31b87b4c7c4e478a24",
+  "080efb6ff497c4952f076f0180cd7d34294aae301d62588b5ac273bcfcfd354f"
+ ],
+ "finished_at": "2026-11-02T18:54:00.647695Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7986127,
+  "parent_revision_id": 68791224,
+  "redirect_followed": null,
+  "revision_id": 73397303,
+  "revision_timestamp": "2026-02-10T20:03:26Z",
+  "sha1": "6344d903948f611e4e8892b69d6e37f6ad61f148",
+  "size": 2971,
+  "title": "دانيال دي. بارنارد",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "52a5c90f8db71301bdcae0ed3c04c5d76da7dc2893d047964a75c8ad02f55fff",
+  "bytes": 93344,
+  "checks": {
+   "document_revision_id": "73397303",
+   "header_revision_id": "73397303",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7986127",
+   "render_id": "ad6800cf-d656-11f1-a14a-6103bdb30045",
+   "revision_sha1": "6344d903948f611e4e8892b69d6e37f6ad61f148",
+   "revision_sha1_base36": "blg1vccf0d7hk3ds0zgzifqmbuxm62w"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "73397303",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:54:00 GMT",
+   "etag": "W/\"73397303/ad6800cf-d656-11f1-a14a-6103bdb30045/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:31:54 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/73397303/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7986127,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "20ab0d7fa6bc495f54ad4c5cfe71682511fd74ab8d1400f2215e768feb6147b0",
+  "bytes": 2971,
+  "response_artifact": "49aadc5bba64b780d1f3950161f996c81fab17d4fb3c95ddadc0589348c54544",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7986127"
+ },
+ "started_at": "2026-11-02T18:52:01.188663Z",
+ "status": "complete"
+}

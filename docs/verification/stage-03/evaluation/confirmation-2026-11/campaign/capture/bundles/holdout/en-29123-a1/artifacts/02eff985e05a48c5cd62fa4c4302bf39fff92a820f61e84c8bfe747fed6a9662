@@ -1,0 +1,380 @@
+{{Short description|Extension of the Web to facilitate data exchange}}
+{{Use American English|date=December 2021}}
+[[File:Rdf-graph2.png|thumb|upright=1.35|class=skin-invert-image|A [[tag cloud]] (a typical Web 3.0 phenomenon in itself) presenting Web 3.0 themes]]
+{{Semantics}}
+
+The '''Semantic Web''', sometimes known as '''Web 3.0''', is an extension of the [[World Wide Web]] through standards<ref>{{Cite web |title=Semantic Web |url=https://www.w3.org/standards/semanticweb/ |url-status=dead |archive-url=https://web.archive.org/web/20220404092556/https://www.w3.org/standards/semanticweb/ |archive-date=4 April 2022 |access-date=4 April 2022 |website=W3C}}</ref> set by the [[World Wide Web Consortium]] (W3C).<!--ref>{{cite web|url=http://www.dblab.ntua.gr/~bikakis/XML%20and%20Semantic%20Web%20W3C%20Standards%20Timeline-History.pdf|title=XML and Semantic Web W3C Standards Timeline|date=2012-02-04}}</ref--> The goal of the Semantic Web is to make [[Internet]] data [[machine-readable]].
+
+To enable the encoding of [[semantics]] with the data, technologies such as [[Resource Description Framework]] (RDF)<ref>{{cite web|url=http://www.w3.org/TR/rdf-syntax-grammar/ | title=World Wide Web Consortium (W3C), "RDF/XML Syntax Specification (Revised)", 25 Feb. 2014.}}</ref> and [[Web Ontology Language]] (OWL)<ref>{{cite web|url=http://www.w3.org/TR/owl-features/ | title=World Wide Web Consortium (W3C), "OWL Web Ontology Language Overview", W3C Recommendation, 10 Feb. 2004.}}</ref> are used. These technologies are used to formally represent [[metadata]]. For example, [[Ontology (information science)|ontology]] can describe [[concept]]s, relationships between [[Entity–relationship model|entities]], and categories of things. These embedded semantics offer significant advantages such as [[reasoning engine|reasoning]] over data and operating with heterogeneous data sources.<ref>{{cite journal|url=https://purkh.com/index.php/tocomp/article/view/33|last=Chung|first=Seung-Hwa|title=The MOUSE approach: Mapping Ontologies using UML for System Engineers|date=2018|journal=Computer Reviews Journal|issn=2581-6640|pages=8–29}}</ref>
+These standards promote common data formats and exchange protocols on the Web, fundamentally the RDF. According to the W3C, "The Semantic Web provides a common framework that allows data to be shared and reused across application, enterprise, and community boundaries."<ref name="W3C-SWA" /> The Semantic Web is therefore regarded as an integrator across different content and information applications and systems.
+
+==History==
+The term was coined by [[Tim Berners-Lee]] for a web of data (or '''data web''')<ref>{{cite news|url=https://www.bloomberg.com/news/articles/2007-04-09/q-and-a-with-tim-berners-leebusinessweek-business-news-stock-market-and-financial-advice|title=Q&A with Tim Berners-Lee, Special Report |newspaper=Bloomberg|access-date=14 April 2018}}</ref> that can be processed by machines<ref name="Berners-Lee"/>—that is, one in which much of the [[meaning (linguistics)|meaning]] is [[machine-readable data|machine-readable]]. While its critics have questioned its feasibility, proponents argue that applications in [[Library science|library]] and [[information science]], industry, [[biology]] and [[human science]]s research have already proven the validity of the original concept.<ref>{{cite magazine |access-date=February 24, 2010 |url=http://www.thefigtrees.net/lee/sw/sciam/semantic-web-in-action |title=The Semantic Web in Action |magazine=Scientific American |date=May 1, 2007 |author=Lee Feigenbaum}}</ref>
+
+The idea of adding semantics to the Web predates the term itself. Berners-Lee discussed the need for semantics in the Web at the first [[International World Wide Web Conference]] in 1994.<ref>{{cite web |last=Berners-Lee |first=Tim |title=Plenary Talk at the First International World Wide Web Conference |url=https://www.w3.org/Talks/WWW94Tim |year=1994 |publisher=W3C}}</ref> In 1998, he published a design document titled "Semantic Web Road map", outlining the architecture for a web of machine-processable data.<ref>{{cite web |last=Berners-Lee |first=Tim |title=Semantic Web Road map |url=https://www.w3.org/DesignIssues/Semantic.html |year=1998 |publisher=W3C}}</ref> The first patent for the creation of a semantic web was filed by [[Amit Sheth]] et al. on 30 October 2001.<ref>{{cite journal |last1=Sheth |first1=Amit |last2=Avant |first2=David |last3=Bertram |first3=Charles |title=System and method for creating a semantic web and its applications in browsing, searching, profiling, personalization and advertising |journal=Scholarcommons, University of South Carolina |year=2001 |url=https://scholarcommons.sc.edu/aii_fac_pub/226}}</ref>
+
+Berners-Lee originally expressed his vision of the Semantic Web in 1999 as follows:
+{{blockquote|I have a dream for the Web [in which computers] become capable of analyzing all the data on the Web&nbsp;– the content, links, and transactions between people and computers. A "Semantic Web", which makes this possible, has yet to emerge, but when it does, the day-to-day mechanisms of trade, bureaucracy and our daily lives will be handled by machines talking to machines. The "[[intelligent agent]]s" people have touted for ages will finally materialize.<ref>{{cite book |last=Berners-Lee |first=Tim |author-link=Tim Berners-Lee |author2=Fischetti, Mark |title=Weaving the Web |publisher=[[HarperSanFrancisco]] |year=1999 |pages=[https://archive.org/details/isbn_9780062515872/page/ chapter 12] |isbn=978-0-06-251587-2 |no-pp=true |title-link=Tim Berners Lee#Weaving the Web}}</ref>}}
+
+The 2001 ''[[Scientific American]]'' article by Berners-Lee, [[James Hendler|Hendler]], and [[Ora Lassila|Lassila]] described an expected evolution of the existing Web to a Semantic Web.<ref>{{cite magazine |access-date=March 13, 2008 |url=https://pdfs.semanticscholar.org/566c/1c6bd366b4c9e07fc37eb372771690d5ba31.pdf |archive-url=https://web.archive.org/web/20171010210556/https://pdfs.semanticscholar.org/566c/1c6bd366b4c9e07fc37eb372771690d5ba31.pdf |url-status=dead |archive-date=October 10, 2017 |title=The Semantic Web |magazine=Scientific American |date=May 17, 2001|volume=284|number=5|pages=34–43 |last1=Berners-Lee|first1= Tim|last2=Hendler|first2=James|last3=Lassila|first3=Ora |s2cid=56818714|jstor=26059207}}</ref> In 2006, Berners-Lee and colleagues stated that: "This simple idea…remains largely unrealized".<ref>{{cite web
+ | url=http://eprints.ecs.soton.ac.uk/12614/1/Semantic_Web_Revisted.pdf
+ | title=The Semantic Web Revisited
+ | access-date=April 13, 2007
+ | author1=Nigel Shadbolt
+ | author2=Wendy Hall
+ | author3=Tim Berners-Lee
+ | year=2006
+ | work=[[IEEE Intelligent Systems]]
+ | archive-date=March 20, 2013
+ | archive-url=https://web.archive.org/web/20130320130521/http://eprints.soton.ac.uk/262614/1/Semantic_Web_Revisted.pdf
+ | url-status=dead
+ }}</ref>
+In 2013, more than four million Web domains (out of roughly 250 million total) contained Semantic Web markup.<ref>{{cite web
+ | url=http://iswc2013.semanticweb.org/content/keynote-ramanathan-v-guha.html
+ | title=Light at the End of the Tunnel
+ | access-date=March 8, 2015
+ | author=Ramanathan V. Guha
+ | year=2013
+ | work=[[International Semantic Web Conference]] 2013 Keynote}}</ref>
+
+== Example ==
+In the following example, the text "Paul Schuster was born in Dresden" on a website will be annotated, connecting a person with their place of birth. The following [[HTML]] fragment shows how a small graph is being described, in [[RDFa]]-syntax using a [[schema.org]] vocabulary and a [[Wikidata]] ID:
+<syntaxhighlight lang="html">
+<div vocab="https://schema.org/" typeof="Person">
+  <span property="name">Paul Schuster</span> was born in
+  <span property="birthPlace" typeof="Place" href="https://www.wikidata.org/entity/Q1731">
+    <span property="name">Dresden</span>.
+  </span>
+</div>
+</syntaxhighlight>
+[[File:RDF example.svg|framed|class=skin-invert-image|{{anchor|graph1}}Graph resulting from the RDFa example]]{{clear}}
+
+The example defines the following five [[Semantic triple|triples]] (shown in [[Turtle (syntax)|Turtle]] syntax). Each triple represents one edge in the resulting graph: the first element of the triple (the ''subject'') is the name of the node where the edge starts, the second element (the ''predicate'') the type of the edge, and the last and third element (the ''object'') either the name of the node where the edge ends or a literal value (e.g. a text, a number, etc.).
+<syntaxhighlight lang="turtle">
+ _:a <https://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://schema.org/Person> .
+ _:a <https://schema.org/name> "Paul Schuster" .
+ _:a <https://schema.org/birthPlace> <https://www.wikidata.org/entity/Q1731> .
+ <https://www.wikidata.org/entity/Q1731> <https://schema.org/itemtype> <https://schema.org/Place> .
+ <https://www.wikidata.org/entity/Q1731> <https://schema.org/name> "Dresden" .
+</syntaxhighlight>
+
+The triples result in the graph shown in [[#graph1|the given figure]].
+
+[[File:RDF example extended.svg|framed|class=skin-invert-image|Graph resulting from the RDFa example, enriched with further data from the Web]]
+
+One of the advantages of using [[Uniform Resource Identifier|Uniform Resource Identifiers (URIs)]] is that they can be dereferenced using the [[HTTP]] protocol. According to the so-called [[Linked Open Data]] principles, such a dereferenced URI should result in a document that offers further data about the given URI. In this example, all URIs, both for edges and nodes (e.g. {{code|http://schema.org/Person}}, {{code|http://schema.org/birthPlace}}, {{code|http://www.wikidata.org/entity/Q1731}}) can be dereferenced and will result in further RDF graphs, describing the URI, e.g. that Dresden is a city in Germany, or that a person, in the sense of that URI, can be fictional.
+
+The second graph shows the previous example, but now enriched with a few of the triples from the documents that result from dereferencing {{code|https://schema.org/Person}} (green edge) and {{code|https://www.wikidata.org/entity/Q1731}} (blue edges).
+
+Additionally to the edges given in the involved documents explicitly, edges can be automatically inferred: the triple
+<syntaxhighlight lang="turtle">
+ _:a <https://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+</syntaxhighlight>
+
+from the original RDFa fragment and the triple
+<syntaxhighlight lang="turtle">
+ <https://schema.org/Person> <http://www.w3.org/2002/07/owl#equivalentClass> <http://xmlns.com/foaf/0.1/Person> .
+</syntaxhighlight>
+
+from the document at {{code|https://schema.org/Person}} (green edge in the figure) allow to infer the following triple, given [[Web Ontology Language|OWL]] semantics (red dashed line in the second Figure):
+<syntaxhighlight lang="turtle">
+ _:a <https://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+</syntaxhighlight>
+
+== Background ==
+{{Further|Semantic network#History}}
+The concept of the [[semantic network]] was used in the 1950s and 1960s by researchers such as the [[Richard H. Richens]]<ref>{{cite book |editor1-last=Lehmann |editor1-first=Fritz |editor2-last=Rodin |editor2-first=Ervin Y. |date=1992 |title=Semantic networks in artificial intelligence |series=International series in modern applied mathematics and computer science |volume=24 |location=Oxford; New York |publisher=[[Pergamon Press]] |isbn=978-0-08-042012-7 |oclc=26391254 |page=6 |quote=The first semantic network for computers was Nude, created by R. H. Richens of the Cambridge Language Research Unit in 1956 as an interlingua for machine translation of natural languages.}}</ref>, [[Cognitive science|cognitive scientist]] [[Allan M. Collins]],  [[Computational linguistics|computational linguist]] [[M. Ross Quillian]]<ref>Quillian, R. A notation for representing conceptual information: An application to semantics and mechanical English para- phrasing. SP-1395, System Development Corporation, Santa Monica, 29 October 1963. https://www.semanticscholar.org/paper/A-NOTATION-FOR-REPRESENTING-CONCEPTUAL-INFORMATION.-Quillian/0f9b084ecc74cac339bc46b3e0d3961048689564</ref><ref>Quillian, M. Ross, Semantic Memory, pages 227-270 in Semantic Information Processing, editor Minsky, Marvin Lee, MIT Press, Cambridge, Mass., 1968 https://archive.org/details/semanticinformat00mins</ref> and [[psychologist]] [[Elizabeth F. Loftus]] to represent semantically structured knowledge, both conceptually and in computer systems. 
+
+The term "Semantic Web" was coined by Tim Berners-Lee,<ref name="Berners-Lee"/> the inventor of the World Wide Web and director of the World Wide Web Consortium ("[[W3C]]"), which oversees the development of proposed Semantic Web standards. He defines the Semantic Web as "a web of data that can be processed directly and indirectly by machines". The Semantic Web extends the network of [[hyperlink]]ed human-readable [[web pages]] by inserting machine-readable metadata about pages and how they are related to each other.  This enables [[Web crawler|automated agents]] to access the Web more intelligently and perform more tasks on behalf of users. 
+
+Many of the technologies proposed by the W3C already existed before they were positioned under the W3C umbrella. These are used in various contexts, particularly those dealing with information that encompasses a limited and defined domain, and where sharing data is a common necessity, such as scientific research or data exchange among businesses. In addition, other technologies with similar goals have emerged, such as [[microformat]]s.
+
+=== Limitations of HTML ===
+Many files on a typical computer can be loosely divided into either human-readable documents, or machine-readable data. Examples of human-readable document files are mail messages, reports, and brochures. Examples of machine-readable data files are calendars, address books, playlists, and spreadsheets, which are presented to a user using an application program that lets the files be viewed, searched, and combined.
+
+Currently, the World Wide Web is based mainly on documents written in [[Hypertext Markup Language]] (HTML), a markup convention that is used for coding a body of text interspersed with multimedia objects such as images and interactive forms. Metadata tags provide a method by which computers can categorize the content of web pages. In the examples below, the field names "keywords", "description" and "author" are assigned values such as "computing", and "cheap widgets for sale" and "John Doe".
+
+<syntaxhighlight lang="html">
+<meta name="keywords" content="computing, computer studies, computer" />
+<meta name="description" content="Cheap widgets for sale" />
+<meta name="author" content="John Doe" />
+</syntaxhighlight>
+
+Because of this metadata tagging and categorization, other computer systems that want to access and share this data can easily identify the relevant values.
+
+With HTML and a tool to render it (perhaps [[web browser]] software, perhaps another [[user agent]]), one can create and present a page that lists items for sale. The HTML of this catalog page can make simple, document-level assertions such as "this document's title is 'Widget Superstore{{'"}}, but there is no capability within the HTML itself to assert unambiguously that, for example, item number X586172 is an Acme Gizmo with a retail price of €199, or that it is a consumer product. Rather, HTML can only say that the span of text "X586172" is something that should be positioned near "Acme Gizmo" and "€199", etc. There is no way to say "this is a catalog" or even to establish that "Acme Gizmo" is a kind of title or that "€199" is a price. There is also no way to express that these pieces of information are bound together in describing a discrete item, distinct from other items perhaps listed on the page.
+
+[[Semantic HTML]] refers to the traditional HTML practice of markup following intention, rather than specifying layout details directly. For example, the use of {{tag|em|o}} denoting "emphasis" rather than {{tag|i|o}}, which specifies [[italics]]. Layout details are left up to the browser, in combination with [[Cascading Style Sheets]]. But this practice falls short of specifying the semantics of objects such as items for sale or prices.
+
+Microformats extend HTML syntax to create [[Machine-readable data|machine-readable]] semantic markup about objects including people, organizations, events and products.<ref>{{cite book |last=Allsopp |first=John |title=Microformats: Empowering Your Markup for Web 2.0 |date=March 2007 |publisher=[[Apress|Friends of ED]] |isbn=978-1-59059-814-6 |page=[https://archive.org/details/isbn_9781590598146/page/368 368] |url-access=registration |url=https://archive.org/details/isbn_9781590598146/page/368 }}</ref> Similar initiatives include [[RDFa]], [[Microdata (HTML)|Microdata]] and [[Schema.org]].
+
+=== Semantic Web solutions ===
+The Semantic Web takes the solution further. It involves publishing in languages specifically designed for data: [[Resource Description Framework]] (RDF), [[Web Ontology Language]] (OWL), and Extensible Markup Language ([[XML]]). HTML describes documents and the links between them. RDF, OWL, and XML, by contrast, can describe arbitrary things such as people, meetings, or airplane parts.
+
+These technologies are combined in order to provide descriptions that supplement or replace the content of Web documents. Thus, content may manifest itself as descriptive data stored in Web-accessible [[database]]s,<ref>Artem Chebotko and Shiyong Lu, "Querying the Semantic Web: An Efficient Approach Using Relational Databases", [[LAP Lambert Academic Publishing]], {{ISBN|978-3-8383-0264-5}}, 2009.</ref> or as markup within documents (particularly, in Extensible HTML ([[XHTML]]) interspersed with XML, or, more often, purely in XML, with layout or rendering cues stored separately). The machine-readable descriptions enable content managers to add meaning to the content, i.e., to describe the structure of the knowledge we have about that content. In this way, a machine can process knowledge itself, instead of text, using processes similar to human [[deductive reasoning]] and [[inference]], thereby obtaining more meaningful results and helping computers to perform automated information gathering and research.
+
+An example of a tag that would be used in a non-semantic web page:
+<syntaxhighlight lang="xml">
+<item>blog</item>
+</syntaxhighlight>
+
+Encoding similar information in a semantic web page might look like this:
+<syntaxhighlight lang="xml">
+<item rdf:about="https://example.org/semantic-web/">Semantic Web</item>
+</syntaxhighlight>
+
+Tim Berners-Lee calls the resulting network of [[Linked Data]] the [[Giant Global Graph]], in contrast to the HTML-based World Wide Web. Berners-Lee posits that if the past was document sharing, the future is [[data sharing]]. His answer to the question of "how" provides three points of instruction. One, a URL should point to the data. Two, anyone accessing the URL should get data back. Three, relationships in the data should point to additional URLs with data.
+
+==== Tags and identifiers ====
+[[Tag (metadata)|Tag]]s, including hierarchical categories and tags that are collaboratively added and maintained (e.g. with [[folksonomy|folksonomies]]) can be considered part of, of potential use to or a step towards the semantic Web vision.<ref>{{cite web |title=Towards the Semantic Web: Collaborative Tag Suggestions |url=https://www.ambuehler.ethz.ch/CDstore/www2006/www.rawsugar.com/www2006/13.pdf}}</ref><ref>{{cite book |last1=Specia |first1=Lucia |last2=Motta |first2=Enrico |title=The Semantic Web: Research and Applications |chapter=Integrating Folksonomies with the Semantic Web |series=Lecture Notes in Computer Science |date=2007 |volume=4519 |pages=624–639 |doi=10.1007/978-3-540-72667-8_44 |publisher=Springer |isbn=978-3-540-72666-1 |language=en|doi-access=free }}</ref><ref>{{cite web |title=Bridging the gap between folksonomies and the semantic web: an experience report |url=http://oro.open.ac.uk/23608/4/semnet2007.pdf}}</ref>
+
+Unique [[identifier]]s, including hierarchical categories and collaboratively added ones, analysis tools and [[metadata]], including tags, can be used to create forms of semantic webs – webs that are to a certain degree semantic<!-- (often also available on the Web)-->.<ref>{{cite journal |last1=Nicholson |first1=Josh M. |last2=Mordaunt |first2=Milo |last3=Lopez |first3=Patrice |last4=Uppala |first4=Ashish |last5=Rosati |first5=Domenic |last6=Rodrigues |first6=Neves P. |last7=Grabitz |first7=Peter |last8=Rife |first8=Sean C. |title=scite: A smart citation index that displays the context of citations and classifies their intent using deep learning |journal=Quantitative Science Studies |date=5 November 2021 |volume=2 |issue=3 |pages=882–898 |doi=10.1162/qss_a_00146|doi-access=free }}</ref>  In particular, such has been used for structuring scientific research i.a. by research topics and [[branches of science|scientific fields]] by the projects [[OpenAlex]],<ref>{{cite news |last1=Singh Chawla |first1=Dalmeet |title=Massive open index of scholarly papers launches |url=https://www.nature.com/articles/d41586-022-00138-y |access-date=14 February 2022 |journal=[[Nature (journal)|Nature]] |date=24 January 2022 |language=en |doi=10.1038/d41586-022-00138-y}}</ref><ref>{{cite news |title=OpenAlex: The Promising Alternative to Microsoft Academic Graph |url=https://library.smu.edu.sg/topics-insights/openalex-promising-alternative-microsoft-academic-graph |access-date=14 February 2022 |work=Singapore Management University (SMU) |language=en}}</ref><ref>{{cite web |title=OpenAlex Documentation |url=https://docs.openalex.org/ |access-date=18 February 2022}}</ref> [[Wikidata]] and Scholia which are under development and provide [[API]]s, Web-pages, feeds and graphs for various [[Semantic query|semantic queries]].
+
+=== Web 3.0<!--'Web 3.0' redirects here--> ===
+Tim Berners-Lee has described the Semantic Web as a component of Web 3.0.<ref>{{cite news
+ | url=https://www.nytimes.com/2006/05/23/technology/23iht-web.html
+ | title=A 'more revolutionary' Web
+ | date=23 May 2006
+ | last=Shannon |first=Victoria 
+ | access-date=26 June 2006
+ | work=[[International Herald Tribune]]}}</ref>
+
+{{blockquote|People keep asking what Web 3.0 is. I think maybe when you've got an overlay of [[scalable vector graphics]] – everything rippling and folding and looking misty&nbsp;– on [[Web 2.0]] and access to a semantic Web integrated across a huge space of data, you'll have access to an unbelievable data resource …|Tim Berners-Lee, 2006}}
+
+"Semantic Web" is sometimes used as a synonym for "Web 3.0",<ref>{{Cite web |title=Web 3.0 Explained, Plus the History of Web 1.0 and 2.0 |url=https://www.investopedia.com/web-20-web-30-5208698 |access-date=2022-10-21 |website=Investopedia |language=en}}</ref> though the definition of each term varies.
+
+===Beyond Web 3.0===
+The next generation of the Web is often termed Web 4.0, but its definition is not clear. According to some sources, it is a Web that involves [[artificial intelligence]],<ref>{{Cite web | title=Archived copy | url=https://www.rsisinternational.org/IJRSI/Issue31/75-78.pdf | archive-url=https://web.archive.org/web/20180508104833/http://rsisinternational.org/IJRSI/Issue31/75-78.pdf | archive-date=2018-05-08 | access-date=2024-08-30 | url-status=live }}</ref> the [[internet of things]], [[pervasive computing]], [[ubiquitous computing]] and the [[Web of Things]] among other concepts.<ref>Almeida, F. (2017). Concept and dimensions of web 4.0. International journal of computers and technology, 16(7).</ref> According to the European Union, Web 4.0 is "the expected fourth generation of the World Wide Web. Using advanced artificial and ambient intelligence, the internet of things, trusted blockchain transactions, virtual worlds and XR capabilities, digital and real objects and environments are fully integrated and communicate with each other, enabling truly intuitive, immersive experiences, seamlessly blending the physical and digital worlds".<ref>{{cite web | url=https://www.politico.eu/article/the-commission-wants-the-eu-to-lead-in-web-4-0-come-again/ | title=The Commission wants the EU to lead on 'Web 4.0' — whatever that is | date=11 July 2023 }}</ref>
+
+== Challenges ==
+Some of the challenges for the Semantic Web include vastness, vagueness, uncertainty, inconsistency, and deceit. [[Automated reasoning system]]s will have to deal with all of these issues in order to deliver on the promise of the Semantic Web.
+* Vastness: The World Wide Web contains many billions of pages. The [[SNOMED CT]] [[medical terminology]] [[ontology (information science)|ontology]] alone contains 370,000 [[Class (programming)|class]] names, and existing technology has not yet been able to eliminate all semantically duplicated terms. Any automated reasoning system will have to deal with truly huge inputs.
+* Vagueness: These are imprecise concepts like "young" or "tall". This arises from the vagueness of user queries, of concepts represented by content providers, of matching query terms to provider terms and of trying to combine different [[knowledge base]]s with overlapping but subtly different concepts. [[Fuzzy logic]] is the most common technique for dealing with vagueness.
+* Uncertainty: These are precise concepts with uncertain values. For example, a patient might present a set of symptoms that correspond to a number of different distinct diagnoses each with a different probability. [[Probabilistic logic|Probabilistic]] reasoning techniques are generally employed to address uncertainty.
+* Inconsistency: These are logical contradictions that will inevitably arise during the development of large ontologies, and when ontologies from separate sources are combined. Deductive reasoning fails catastrophically when faced with inconsistency, because [[Principle of explosion|"anything follows from a contradiction"]]. [[Defeasible reasoning]] and [[Paraconsistent logic|paraconsistent reasoning]] are two techniques that can be employed to deal with inconsistency.
+* Deceit: This is when the producer of the information is intentionally misleading the consumer of the information. [[Cryptography]] techniques are currently utilized to alleviate this threat. By providing a means to determine the information's integrity, including that which relates to the identity of the entity that produced or published the information, however [[credibility]] issues still have to be addressed in cases of potential deceit.
+
+This list of challenges is illustrative rather than exhaustive, and it focuses on the challenges to the "unifying logic" and "proof" layers of the Semantic Web. The World Wide Web Consortium (W3C) Incubator Group for Uncertainty Reasoning for the World Wide Web<ref>{{Cite web|title=W3C Uncertainty Reasoning for the World Wide Web|url=https://www.w3.org/2005/Incubator/urw3/Overview.html|access-date=2021-05-14|website=www.w3.org}}</ref> (URW3-XG) final report lumps these problems together under the single heading of "uncertainty".<ref>{{cite web|url=http://www.w3.org/2005/Incubator/urw3/XGR-urw3-20080331/Overview.html|title=Uncertainty Reasoning for the World Wide Web|website=W3.org|access-date=20 December 2018}}</ref> Many of the techniques mentioned here will require extensions to the Web Ontology Language (OWL) for example to annotate conditional probabilities. This is an area of active research.<ref>{{cite journal |last=Lukasiewicz |first=Thomas |author2=Umberto Straccia |title=Managing uncertainty and vagueness in description logics for the Semantic Web |doi=10.1016/j.websem.2008.04.001 |volume=6 |issue=4 |journal=Web Semantics: Science, Services and Agents on the World Wide Web |pages=291–308|year=2008 |url=http://faure.isti.cnr.it/~straccia/download/papers/JWS08/JWS08.pdf }}</ref>
+
+== Standards ==
+Standardization for Semantic Web in the context of Web 3.0 is under the care of W3C.<ref>{{cite web|url=http://www.w3.org/2001/sw/wiki/Main_Page|title=Semantic Web Standards|website=W3.org|access-date=14 April 2018|archive-date=3 September 2025|archive-url=https://web.archive.org/web/20250903220533/https://www.w3.org/2001/sw/wiki/Main_Page|url-status=dead}}</ref>
+
+=== Components ===
+The term "Semantic Web" is often used more specifically to refer to the formats and technologies that enable it.<ref name="W3C-SWA" /> The collection, structuring and recovery of linked data are enabled by technologies that provide a [[description logic|formal description]] of concepts, terms, and relationships within a given [[knowledge domain]]. These technologies are specified as W3C standards and include:
+* [[Resource Description Framework]] (RDF), a general method for describing information
+* [[RDF Schema]] (RDFS)
+* [[Simple Knowledge Organization System]] (SKOS)
+* [[SPARQL]], an RDF query language
+* [[Notation3]] (N3), designed with human readability in mind
+* [[N-Triples]], a format for storing and transmitting data
+* [[Turtle (syntax)|Turtle]] (Terse RDF Triple Language)
+* [[Web Ontology Language]] (OWL), a family of [[knowledge representation language]]s
+* [[Rule Interchange Format]] (RIF), a framework of web rule language dialects supporting rule interchange on the Web
+* [[JSON-LD|JavaScript Object Notation for Linked Data]] (JSON-LD), a JSON-based method to describe data
+* [[ActivityPub]], a generic way for client and server to communicate with each other. This is used by the popular decentralized social network [[Mastodon (software)|Mastodon]].
+
+The [[Semantic Web Stack]] illustrates the architecture of the Semantic Web. The functions and relationships of the components can be summarized as follows:<ref>{{cite web |url=http://www.w3.org/TR/owl-features/ |title=OWL Web Ontology Language Overview |date=February 10, 2004 |publisher=World Wide Web Consortium (W3C) |access-date=November 26, 2011}}</ref>
+* XML provides an elemental syntax for content structure within documents, yet associates no semantics with the meaning of the content contained within. XML is not at present a necessary component of Semantic Web technologies in most cases, as alternative syntaxes exist, such as [[Turtle (syntax)|Turtle]]. Turtle is a de facto standard, but has not been through a formal standardization process.
+* [[W3C XML Schema|XML Schema]] is a language for providing and restricting the structure and content of elements contained within XML documents.
+* RDF is a simple language for expressing [[data model]]s, which refer to objects ("[[web resource]]s") and their relationships. An RDF-based model can be represented in a variety of syntaxes, e.g., [[RDF/XML]], N3, Turtle, and RDFa. RDF is a fundamental standard of the Semantic Web.<ref>{{cite web|url=http://www.w3.org/RDF/ | title=Resource Description Framework (RDF) | publisher=[[World Wide Web Consortium]]}}</ref><ref>{{cite book |last1=Allemang |first1=Dean |last2=Hendler |first2=James |last3=Gandon |first3=Fabien |title=Semantic Web for the Working Ontologist : Effective Modeling for Linked Data, RDFS, and OWL |date=August 3, 2020 |publisher=ACM Books; 3rd edition |location=[New York, NY, USA] |isbn=978-1450376143 |edition=Third}}</ref>
+* RDF Schema extends RDF and is a vocabulary for describing properties and classes of RDF-based resources, with semantics for generalized-hierarchies of such properties and classes.
+* OWL adds more vocabulary for describing properties and classes: among others, relations between classes (e.g. disjointness), cardinality (e.g. "exactly one"), equality, richer typing of properties, characteristics of properties (e.g. symmetry), and enumerated classes.
+* SPARQL is a protocol and query language for semantic web data sources.
+* RIF is the W3C Rule Interchange Format. It is an XML language for expressing Web rules that computers can execute. RIF provides multiple versions, called dialects. It includes a RIF Basic Logic Dialect (RIF-BLD) and RIF Production Rules Dialect (RIF PRD).
+
+=== Current state of standardization ===
+Well-established standards:
+* [[Resource Description Framework|RDF - Resource Description Framework]]
+* [[RDFS|RDFS - Resource Description Framework Schema]]
+* [[Rule Interchange Format | RIF - Rule Interchange Format]]
+* [[SPARQL | SPARQL - 'SPARQL Protocol and RDF Query Language']]
+* [[Unicode]]
+* [[Uniform Resource Identifier | URI - Uniform Resource Identifier]]
+* [[Web Ontology Language | OWL - Web Ontology Language]]
+* [[XML | XML - Extensible Markup Language]]
+
+Not yet fully realized:
+* Unifying Logic and Proof layers
+* [[Semantic Web Rule Language | SWRL - Semantic Web Rule Language]]
+
+==Applications==
+The intent is to enhance the [[usability]] and usefulness of the Web and its interconnected [[resource (computer science)|resources]] by creating [[semantic web service]]s, such as:
+* Servers that expose existing data systems using the RDF and SPARQL standards. Many converters to RDF exist from different applications.<ref>{{cite web|url=https://www.w3.org/wiki/ConverterToRdf|title=ConverterToRdf - W3C Wiki|website=W3.org|access-date=20 December 2018}}</ref> [[Relational database]]s are an important source. The semantic web server attaches to the existing system without affecting its operation.
+* Documents "marked up" with semantic information (an [[Extensibility|extension]] of the HTML {{code|<meta>}} [[HTML element|tags]] used in today's Web pages to supply information for [[Web search engine]]s using [[web crawler]]s). This could be [[Artificial intelligence|machine-understandable]] information about the human-understandable content of the document (such as the creator, title, description, etc.) or it could be purely metadata representing a set of facts (such as resources and services elsewhere on the site). Note that ''anything'' that can be identified with a ''Uniform Resource Identifier'' (URI) can be described, so the semantic web can reason about animals, people, places, ideas, etc.  There are four semantic annotation formats that can be used in HTML documents; Microformat, RDFa, Microdata and [[JSON-LD]].<ref>{{Cite book|title = Mastering Structured Data on the Semantic Web: From HTML5 Microdata to Linked Open Data|last = Sikos|first = Leslie F.|publisher = Apress|year = 2015|isbn = 978-1-4842-1049-9|pages = 23}}</ref> Semantic markup is often generated automatically, rather than manually.
+[[File:Revision histories of argumentative claims from the online debate platform Kialo (collaborative refinement for optimal arguments).png|thumb|class=skin-invert-image|Arguments as distinct semantic units with specified relations and version control on [[Kialo]]]]
+* Common metadata vocabularies ([[Ontology (information science)|ontologies]]) and maps between vocabularies that allow document creators to know how to mark up their documents so that agents can use the information in the supplied metadata (so that ''Author'' in the sense of 'the Author of the page' will not be confused with ''Author'' in the sense of a book that is the subject of a book review).
+* Automated agents to perform tasks for users of the semantic web using this data.
+* [[Semantic translation]]. An alternative or complementary approach are improvements to contextual and semantic understanding of texts – these could be aided via Semantic Web methods so that only increasingly small numbers of mistranslations need to be corrected [[Machine translation#Neural MT|in manual or semi-automated post-editing]].
+* Web-based services (often with agents of their own) to supply information specifically to agents, for example, a [[Trust service]] that an agent could ask if some online store has a history of poor service or [[spamming]].
+* Semantic Web ideas are implemented in collaborative structured [[argument map]]ping sites where their relations are organized semantically, arguments can be mirrored (linked) to multiple places, reused (copied), rated, and [[version control software|changed]] as semantic distinct units. Ideas for such, or a more widely adopted "World Wide Argument Web", go back to at least 2007<ref>{{cite book |last1=Kiesel |first1=Johannes |last2=Lang |first2=Kevin |last3=Wachsmuth |first3=Henning |last4=Hornecker |first4=Eva |last5=Stein |first5=Benno |title=Proceedings of the 2020 Conference on Human Information Interaction and Retrieval |chapter=Investigating Expectations for Voice-based and Conversational Argument Search on the Web |date=14 March 2020 |pages=53–62 |doi=10.1145/3343413.3377978 |publisher=ACM |isbn=9781450368926 |s2cid=212676751 |language=en}}</ref> and have been implemented to some degree in [[Argüman]]<ref>{{cite journal |last1=Vetere |first1=Guido |title=L'impossibile necessità delle piattaforme sociali decentralizzate |journal=DigitCult - Scientific Journal on Digital Cultures |date=30 June 2018 |volume=3 |issue=1 |pages=41–50 |doi=10.4399/97888255159096}}</ref> and [[Kialo]]. Further steps towards semantic web services may include enabling "Querying", argument search engines,<ref>{{cite journal |last1=Bikakis |first1=Antonis |last2=Flouris |first2=Giorgos |last3=Patkos |first3=Theodore |last4=Plexousakis |first4=Dimitris |title=Sketching the vision of the Web of Debates |journal=Frontiers in Artificial Intelligence |date=2023 |volume=6 |doi=10.3389/frai.2023.1124045 |pmid=37396970 |pmc=10313200 |issn=2624-8212 |doi-access=free }}</ref> and "summarizing the contentious and agreed-upon points of a discussion".<ref>{{cite journal |last1=Schneider |first1=Jodi |last2=Groza |first2=Tudor |last3=Passant |first3=Alexandre |title=A Review of Argumentation for the Social Semantic Web |url=https://www.semantic-web-journal.net/sites/default/files/swj138_2.pdf}}</ref>
+
+Such services could be useful to public search engines, or could be used for [[knowledge management]] within an organization.  Business applications include:
+* Facilitating the integration of information from mixed sources<ref>{{cite book |last1=Zhang |first1=Chuanrong |last2=Zhao |first2=Tian |last3=Li |first3=Weidong |title=Geospatial Semantic Web |date=2015 |publisher=Springer International Publishing : Imprint: Springer |isbn=978-3-319-17801-1}}</ref> 
+* Dissolving ambiguities in corporate terminology
+* Improving [[information retrieval]] thereby reducing [[information overload]] and increasing the refinement and precision of the data retrieved<ref>Omar Alonso and Hugo Zaragoza. 2008. Exploiting semantic annotations in information retrieval: ESAIR '08. SIGIR Forum 42, 1 (June 2008), 55–58. {{doi|10.1145/1394251.1394262}}</ref><ref>Jaap Kamps, [[Jussi Karlgren]], and Ralf Schenkel. 2011. Report on the third workshop on exploiting semantic annotations in information retrieval (ESAIR). SIGIR Forum 45, 1 (May 2011), 33–41. {{doi|10.1145/1988852.1988858}}</ref><ref>Jaap Kamps, [[Jussi Karlgren]], Peter Mika, and Vanessa Murdock. 2012. Fifth workshop on exploiting semantic annotations in information retrieval: ESAIR '12). In Proceedings of the 21st ACM international conference on information and knowledge management (CIKM '12). ACM, New York, NY, USA, 2772–2773. {{doi|10.1145/2396761.2398761}}</ref><ref>Omar Alonso, Jaap Kamps, and [[Jussi Karlgren]]. 2015. Report on the Seventh Workshop on Exploiting Semantic Annotations in Information Retrieval (ESAIR '14). SIGIR Forum 49, 1 (June 2015), 27–34. {{doi|10.1145/2795403.2795412}}</ref>
+* Identifying relevant information with respect to a given domain<ref>{{cite journal
+| ref         = Kuriakose2009
+| last        = Kuriakose
+| first       = John
+|date=September 2009
+| title       = Understanding and Adopting Semantic Web Technology
+| journal     = Cutter IT Journal
+| volume      = 22
+| issue       = 9
+| pages       = 10–18
+| publisher   = CUTTER INFORMATION CORP.
+  |url=http://www.cutter.com/itjournal/fulltext/2009/09/itj0909b.html
+}}</ref>
+* Providing decision making support
+
+In a corporation, there is a closed group of users and the management is able to enforce company guidelines like the adoption of specific ontologies and use of [[semantic annotation]]. Compared to the public Semantic Web there are lesser requirements on [[scalability]] and the information circulating within a company can be more trusted in general; privacy is less of an issue outside of handling of customer data.
+
+== Skeptical reactions ==
+=== Practical feasibility ===
+Critics question the basic feasibility of a complete or even partial fulfillment of the Semantic Web, pointing out both difficulties in setting it up and a lack of general-purpose usefulness that prevents the required effort from being invested. In a 2003 paper, Marshall and Shipman point out the cognitive overhead inherent in formalizing knowledge, compared to the authoring of traditional web [[hypertext]]:<ref name="which">{{cite conference |title=Which semantic web? |last1=Marshall |first1=Catherine C. |last2=Shipman |first2=Frank M. |conference=Proc. ACM Conf. on Hypertext and Hypermedia |pages=57–66 |year=2003 |url=http://www.csdl.tamu.edu/~marshall/ht03-sw-4.pdf |access-date=2015-04-17 |archive-date=2015-09-23 |archive-url=https://web.archive.org/web/20150923211553/http://www.csdl.tamu.edu/~marshall/ht03-sw-4.pdf |url-status=dead }}</ref>
+
+{{blockquote|While learning the basics of HTML is relatively straightforward, learning a knowledge representation language or tool requires the author to learn about the representation's methods of abstraction and their effect on reasoning. For example, understanding the class-instance relationship, or the superclass-subclass relationship, is more than understanding that one concept is a "type of" another concept. [...] These abstractions are taught to computer scientists generally and knowledge engineers specifically but do not match the similar natural language meaning of being a "type of" something. Effective use of such a formal representation requires the author to become a skilled knowledge engineer in addition to any other skills required by the domain. [...] Once one has learned a formal representation language, it is still often much more effort to express ideas in that representation than in a less formal representation [...]. Indeed, this is a form of programming based on the declaration of semantic data and requires an understanding of how reasoning algorithms will interpret the authored structures.}}
+
+According to Marshall and Shipman, the [[tacit knowledge|tacit]] and changing nature of much knowledge adds to the [[knowledge engineering]] problem, and limits the Semantic Web's applicability to specific domains. A further issue that they point out are domain- or organization-specific ways to express knowledge, which must be solved through community agreement rather than only technical means.{{r|which}} As it turns out, specialized communities and organizations for intra-company projects have tended to adopt semantic web technologies greater than peripheral and less-specialized communities.<ref name="Herman000">{{cite conference |url=http://www.w3.org/2007/Talks/0424-Stavanger-IH/Slides.pdf |title=State of the Semantic Web |access-date=July 26, 2007 |author=Ivan Herman |year=2007 |conference=Semantic Days 2007}}</ref> The practical constraints toward adoption have appeared less challenging where domain and scope is more limited than that of the general public and the World-Wide Web.{{r|Herman000}}
+
+Finally, Marshall and Shipman see pragmatic problems in the idea of ([[Knowledge Navigator]]-style) intelligent agents working in the largely manually curated Semantic Web:{{r|which}}
+
+{{blockquote|In situations in which user needs are known and distributed information resources are well described, this approach can be highly effective; in situations that are not foreseen and that bring together an unanticipated array of information resources, the Google approach is more robust. Furthermore, the Semantic Web relies on inference chains that are more brittle; a missing element of the chain results in a failure to perform the desired action, while the human can supply missing pieces in a more Google-like approach. [...] cost-benefit tradeoffs can work in favor of specially-created Semantic Web metadata directed at weaving together sensible well-structured domain-specific information resources; close attention to user/customer needs will drive these federations if they are to be successful.}}
+
+[[Cory Doctorow]]'s critique ("[[metacrap]]")<ref>{{cite web |last1=Doctorow |first1=Cory |title=Metacrap: Putting the torch to seven straw-men of the meta-utopia |url=https://people.well.com/user/doctorow/metacrap.htm |website=www.well.com/ |access-date=11 September 2023}}</ref> is from the perspective of human behavior and personal preferences. For example, people may include spurious metadata into Web pages in an attempt to mislead Semantic Web engines that naively assume the metadata's veracity. This phenomenon was well known with metatags that fooled the [[Altavista]] ranking algorithm into elevating the ranking of certain Web pages: the Google indexing engine specifically looks for such attempts at manipulation. [[Peter Gärdenfors]] and [[Timo Honkela]] point out that logic-based semantic web technologies cover only a fraction of the relevant phenomena related to semantics.<ref name="Gardenfors04">{{Cite book
+ | title=How to make the Semantic Web more semantic
+ | first=Peter
+ | last=Gärdenfors
+ | pages=17–34
+ | publisher=IOS Press
+ | year=2004
+ | work=Formal Ontology in Information Systems: proceedings of the third international conference (FOIS-2004)}}</ref><ref name="Honkela08">{{cite journal
+ | title=Simulating processes of concept formation and communication
+ | year=2008
+ | first1=Timo
+ | last1=Honkela
+ | first2=Ville
+ | last2=Könönen
+ | first3=Tiina
+ | last3=Lindh-Knuutila
+ | first4=Mari-Sanna
+ | last4=Paukkeri
+ | journal=Journal of Economic Methodology| volume=15
+ | issue=3
+ | pages=245–259
+ | doi=10.1080/13501780802321350
+ | s2cid=16994027
+ }}</ref>
+
+=== Censorship and privacy ===
+Enthusiasm about the semantic web could be tempered by concerns regarding [[Internet censorship|censorship]] and [[privacy]]. For instance, [[Intelligent text analysis|text-analyzing]] techniques can now be easily bypassed by using other words, metaphors for instance, or by using images in place of words. An advanced implementation of the semantic web would make it much easier for governments to control the viewing and creation of online information, as this information would be much easier for an automated content-blocking machine to understand. In addition, the issue has also been raised that, with the use of [[FOAF (software)|FOAF]] files and geolocation [[meta-data]], there would be very little anonymity associated with the authorship of articles on things such as a personal blog. Some of these concerns were addressed in the "Policy Aware Web" project<ref>{{cite web|url=http://www.policyawareweb.org/ |title=Policy Aware Web Project |publisher=Policyawareweb.org |access-date=2013-06-14}}</ref> and is an active research and development topic.
+
+=== Doubling output formats ===
+Another criticism of the semantic web is that it would be much more time-consuming to create and publish content because there would need to be two formats for one piece of data: one for human viewing and one for machines. However, many web applications in development are addressing this issue by creating a machine-readable format upon the publishing of data or the request of a machine for such data. The development of microformats has been one reaction to this kind of criticism. Another argument in defense of the feasibility of semantic web is the likely falling price of human intelligence tasks in digital labor markets, such as [[Amazon.com|Amazon]]'s [[Amazon Mechanical Turk|Mechanical Turk]].{{Citation needed|date=February 2015}}
+
+Specifications such as eRDF and RDFa allow arbitrary RDF data to be embedded in HTML pages. The [[GRDDL]] (Gleaning Resource Descriptions from Dialects of Language) mechanism allows existing material (including microformats) to be automatically interpreted as RDF, so publishers only need to use a single format, such as HTML.
+
+== Research activities on corporate applications ==
+The first research group explicitly focusing on the Corporate Semantic Web was the ACACIA team at [[Institut national de recherche en informatique et en automatique|INRIA-Sophia-Antipolis]], founded in 2002. Results of their work include the [[RDF Schema|RDF(S)]] based Corese<ref>{{cite journal |last1=Corby |first1=Olivier |last2=Dieng-Kuntz |first2=Rose |last3=Zucker |first3=Catherine Faron |last4=Gandon |first4=Fabien |title=Searching the Semantic Web: Approximate Query Processing based on Ontologies |url=https://hal.inria.fr/hal-01150215 |journal=IEEE Intelligent Systems |year=2006 |pages=20–27 |language=en |doi=10.1109/MIS.2006.16 |volume=21 |s2cid=11488848 }}</ref> search engine, and the application of semantic web technology in the realm of [[distributed artificial intelligence]] for knowledge management (e.g. ontologies and [[multi-agent systems]] for corporate semantic Web)<ref>{{cite thesis |last1=Gandon |first1=Fabien |title=Distributed Artificial Intelligence And Knowledge Management: Ontologies And Multi-Agent Systems For A Corporate Semantic Web |url=https://tel.archives-ouvertes.fr/tel-00378201 |publisher=Université Nice Sophia Antipolis |language=en |date=7 November 2002|type=phdthesis }}</ref> and [[E-learning]].<ref>{{cite conference
+ | url=http://www-sop.inria.fr/acacia/personnel/Sylvain.Dehors/SW-EL@AIED-BuffaDehorsFaronSander_short.pdf
+ | title=Towards a Corporate Semantic Web Approach in Designing Learning Systems: Review of the Trial Solutioins Project
+ | first1=Michel | last1=Buffa
+ | first2=Sylvain | last2=Dehors
+ | first3=Catherine | last3=Faron-Zucker
+ | first4=Peter | last4=Sander
+ | book-title=International Workshop on Applications of Semantic Web Technologies for E-Learning
+ | location=Amsterdam, Holland
+ | pages=73–76
+ | year=2005
+}}</ref>
+
+Since 2008, the Corporate Semantic Web research group, located at the [[Free University of Berlin]], focuses on building blocks: Corporate Semantic Search, Corporate Semantic Collaboration, and Corporate Ontology Engineering.<ref>{{cite web|url=http://www.corporate-semantic-web.de|title=Corporate Semantic Web - Home|website=Corporate-semantic-web.de|access-date=14 April 2018}}</ref>
+
+Ontology engineering research includes the question of how to involve non-expert users in creating ontologies and semantically annotated content<ref>{{cite conference
+ | url=http://iswc2012.semanticweb.org/sites/default/files/76490161.pdf
+ | title=Semantic Enrichment by Non-Experts: Usability of Manual Annotation Tools
+ | first1=Annika | last1=Hinze
+ | first2=Ralf | last2=Heese
+ | first3=Markus | last3=Luczak-Rösch
+ | first4=Adrian | last4=Paschke
+ | book-title=ISWC'12 - Proceedings of the 11th international conference on The Semantic Web
+ | location=Boston, USA
+ | pages=165–181
+ | year=2012
+}}</ref> and for extracting explicit knowledge from the interaction of users within enterprises.
+
+===Future of applications===
+[[Tim O'Reilly]], who coined the term Web 2.0, proposed a long-term vision of the Semantic Web as a web of data, where sophisticated applications are navigating and manipulating it.<ref>{{cite news|url=https://www.theguardian.com/technology/2006/apr/06/guardianweeklytechnologysection.timbernerslee |title=Spread the word, and join it up |first=S. A. |last=Mathieson |date=6 April 2006 |work=[[The Guardian]] |access-date=14 April 2018}}</ref> The data web transforms the World Wide Web from a [[Distributed computing|distributed]] [[file system]] into a [[distributed database]].<ref>{{cite web|url=https://novaspivack.typepad.com/nova_spivacks_weblog/2007/09/hyperdata.html |title=The Semantic Web, Collective Intelligence and Hyperdata |last=Spivack |first=Nova |date=18 September 2007 |website=novaspivack.typepad.com/nova_spivacks_weblog [This Blog has Moved to NovaSpivack.com] |access-date=14 April 2018}}</ref>
+
+==See also==
+{{Div col|colwidth=20em}}
+* [[AGRIS]]
+* [[Business semantics management]]
+* [[Computational semantics]]
+* [[Calais (Reuters product)]]
+* [[DBpedia]]
+* [[Entity–attribute–value model]]
+* [[EU Open Data Portal]]
+* [[History of the World Wide Web]]
+* [[Hyperdata]]
+* [[Internet of things]]
+* [[Linked data]]
+* [[List of emerging technologies]]
+* [[Nextbio]]
+* [[Ontology alignment]]
+* [[Ontology learning]]
+* [[Resource Description Framework|RDF]] and [[Web Ontology Language|OWL]]
+* [[Semantic architecture]]
+* [[Semantic computing]]
+* [[Semantic Geospatial Web]]
+* [[Semantic heterogeneity]]
+* [[Semantic integration]]
+* [[Semantic matching]]
+* [[Semantic MediaWiki]]
+* [[Semantic Sensor Web]]
+* [[Semantic social network]]
+* [[Semantic technology]]
+* ''[[Semantic Web (journal)|Semantic Web]]''
+* [[Semantically-Interlinked Online Communities]]
+* [[Smart-M3]]
+* [[Social Semantic Web]]
+* [[Web engineering]]
+* [[Web resource]]
+* [[Web science]]
+{{div col end}}
+
+== References ==
+{{Reflist
+|refs=
+<ref name="Berners-Lee">{{cite magazine |last1 = Berners-Lee |first1 = Tim |author2=James Hendler |author3=Ora Lassila |title=The Semantic Web |magazine=Scientific American |date=May 17, 2001 |url = https://www.scientificamerican.com/article/the-semantic-web/ |access-date=July 2, 2019 }}</ref>
+
+<ref name="W3C-SWA">{{cite web |url = http://www.w3.org/2001/sw/ |title = W3C Semantic Web Activity |date=November 7, 2011 |publisher=[[World Wide Web Consortium]] (W3C) |access-date=November 26, 2011 }}</ref>
+}}
+
+== Further reading ==
+* {{cite book |title=A Developer's Guide to the Semantic Web, 2nd ed. |author=Liyang Yu |publisher=Springer |date=December 14, 2014 |isbn=978-3-662-43796-4 |url=https://www.springer.com/computer/database+management+%26+information+retrieval/book/978-3-662-43795-7}}
+* [[commons:File:Aaron Swartz s A Programmable Web An Unfinished Work.pdf|Aaron Swartz's A Programmable Web: An unfinished Work]] donated by Morgan & Claypool Publishers after [[Aaron Swartz]]'s death in January 2013.
+* {{cite book |title=A Semantic Web Primer, 2nd Edition |author=Grigoris Antoniou, [[Frank van Harmelen]] |publisher=The [[MIT Press]] |date=March 31, 2008 |isbn=978-0-262-01242-3}}
+* {{cite book |last1=Allemang |first1=Dean |last2=Hendler |first2=James |last3=Gandon |first3=Fabien |title=Semantic Web for the Working Ontologist : Effective Modeling for Linked Data, RDFS, and OWL |date=August 3, 2020 |publisher=ACM Books; 3rd edition |location=[New York, NY, USA] |isbn=978-1450376143 |edition=Third}}
+* {{cite book |title=Foundations of Semantic Web Technologies |author1=Pascal Hitzler |author2=Markus Krötzsch |author3=Sebastian Rudolph |publisher=CRCPress |date=August 25, 2009 |isbn=978-1-4200-9050-5 |url=http://www.semantic-web-book.org|author1-link=Pascal Hitzler }}
+* {{cite book |title=Explorer's Guide to the Semantic Web |author=Thomas B. Passin |publisher=Manning Publications |date=March 1, 2004 |isbn=978-1-932394-20-7}}
+* {{cite book |title=Semantic Web For Dummies |author=Jeffrey T. Pollock |publisher=For Dummies |date=March 23, 2009 |isbn=978-0-470-39679-7 |url=https://archive.org/details/isbn_9780470396797 |url-access=registration }}
+* {{cite journal |last1=Hitzler |first1=Pascal |title=A Review of the Semantic Web Field |journal=Communications of the ACM |date=February 2021 |volume=64 |issue=2 |pages=76–83 |doi=10.1145/3397512 |doi-access=free }}
+* {{cite journal |last1=Unni |first1=Deepak |title=FAIRification of health-related data using semantic web technologies in the Swiss Personalized Health Network|journal=  Scientific Data|date= March 2023 
+ |volume=10 |issue=1 |article-number=127 |doi=10.1038/s41597-023-02028-y |pmid=36899064 |pmc=10006404 |bibcode=2023NatSD..10..127T |url=https://rdcu.be/c7ogw }}
+
+== External links ==
+{{Sister project links|commons=Category:Semantic Web|d=Q54837|wikt=no|s=no|v=no|b=Semantic Web|n=no|q=no}}
+{{scholia|topic}}
+* {{Official website|http://www.w3.org/standards/semanticweb/}}
+
+{{Semantic Web}}
+{{emerging technologies|topics=yes|infocom=yes}}
+{{Digital humanities}}
+{{Authority control}}
+<!-- Please respect alphabetical order -->
+
+[[Category:Semantic Web| ]]
+[[Category:Internet ages|Web 3s]]
+[[Category:Knowledge engineering]]
+[[Category:Web services]]

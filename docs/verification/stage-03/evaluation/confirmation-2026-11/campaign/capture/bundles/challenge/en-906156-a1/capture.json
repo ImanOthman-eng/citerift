@@ -1,0 +1,166 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "3494ef83fdf35d996d643cae67b3473bc34f5bbd3c0107adf77e18d2eba90968",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.371,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:23:11.231338Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=906156",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 107059,
+   "body_sha256": "ca36ce971a5b5c8008f0a9d67e43c93fd0cef690b30b63fe1c1bae4950a9ce6d",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.475,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:24:00.603587Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=906156",
+   "wire_bytes": 36601
+  },
+  {
+   "body_bytes": 1966,
+   "body_sha256": "612b79091069733e11609f46134e4640a6c459114afada972aea51822e61b503",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.381,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:24:11.080147Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382942090/html",
+   "wire_bytes": 1966
+  },
+  {
+   "body_bytes": 1966,
+   "body_sha256": "51ace1c82fe38b23eaf22b9c62a0e3bdf17539629d6164afa884ba51719a27e6",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.369,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:24:21.461457Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382942090/html",
+   "wire_bytes": 1966
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "65199ea698f4f1c7cd6150f0698adc90290e68aca7424291c6cfbc3b4c547267",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.397,
+   "number": 3,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:24:31.831780Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382942090/html",
+   "wire_bytes": 274
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "3494ef83fdf35d996d643cae67b3473bc34f5bbd3c0107adf77e18d2eba90968",
+  "612b79091069733e11609f46134e4640a6c459114afada972aea51822e61b503",
+  "51ace1c82fe38b23eaf22b9c62a0e3bdf17539629d6164afa884ba51719a27e6",
+  "65199ea698f4f1c7cd6150f0698adc90290e68aca7424291c6cfbc3b4c547267"
+ ],
+ "finished_at": "2026-11-02T19:24:32.229073Z",
+ "issues": [
+  {
+   "code": "ATTEMPTS_EXHAUSTED",
+   "detail": "render",
+   "entities": [],
+   "evidence": [],
+   "retryable": true,
+   "severity": "error"
+  }
+ ],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 906156,
+  "parent_revision_id": 1381477800,
+  "redirect_followed": null,
+  "revision_id": 1382942090,
+  "revision_timestamp": "2026-10-31T03:03:54Z",
+  "sha1": "6a2517f16cb3cc02eb983fa680b033924f2857f8",
+  "size": 105902,
+  "title": "Hydrogen economy",
+  "wiki": "en"
+ },
+ "render": {
+  "code": "ATTEMPTS_EXHAUSTED",
+  "not_before": "2026-11-02T19:25:00.228879Z",
+  "state": "failed",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382942090/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 906156,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "07860ea77759218ad3c1aff7dd1f9970427183a745f04bba22f9a6696ab83622",
+  "bytes": 105902,
+  "response_artifact": "ca36ce971a5b5c8008f0a9d67e43c93fd0cef690b30b63fe1c1bae4950a9ce6d",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=906156"
+ },
+ "started_at": "2026-11-02T19:23:01.479200Z",
+ "status": "partial"
+}

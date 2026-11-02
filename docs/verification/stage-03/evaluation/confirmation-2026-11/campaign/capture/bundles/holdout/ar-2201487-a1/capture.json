@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 25022,
+   "body_sha256": "e21dde560471b91cd882ee061a53f82e56a354a6860e601113f1c75cb1476ba1",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.484,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:54:10.647231Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=2201487",
+   "wire_bytes": 8107
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "0cd53a8a1d91df636429ad0ff8436f26b3df9b774b6c999f796df8f98a274118",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.404,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:54:21.131601Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76304883/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 119863,
+   "body_sha256": "00ec19595aa647d2a44fbde993bf9f15cb302dcdee7a973b9fbb5cebfdc5eac7",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.889,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:55:00.536724Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76304883/html",
+   "wire_bytes": 21982
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "0cd53a8a1d91df636429ad0ff8436f26b3df9b774b6c999f796df8f98a274118"
+ ],
+ "finished_at": "2026-11-02T18:55:02.426575Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 2201487,
+  "parent_revision_id": 64517974,
+  "redirect_followed": null,
+  "revision_id": 76304883,
+  "revision_timestamp": "2026-08-23T01:10:36Z",
+  "sha1": "59430177436a99117f31411f02984dd723662c66",
+  "size": 24362,
+  "title": "المسيحية في ليبيريا",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "00ec19595aa647d2a44fbde993bf9f15cb302dcdee7a973b9fbb5cebfdc5eac7",
+  "bytes": 119863,
+  "checks": {
+   "document_revision_id": "76304883",
+   "header_revision_id": "76304883",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "2201487",
+   "render_id": "e8b60b95-d6ee-11f1-b68a-05051b2f1596",
+   "revision_sha1": "59430177436a99117f31411f02984dd723662c66",
+   "revision_sha1_base36": "afd38sulqpi5khzir8wbi3sfcld9w86"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76304883",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:55:00 GMT",
+   "etag": "W/\"76304883/e8b60b95-d6ee-11f1-b68a-05051b2f1596/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:13:53 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76304883/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 2201487,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3ffe2a73fa0b157fad76043f0a57774196f73da758f0f9744b9e4922277b97b8",
+  "bytes": 24362,
+  "response_artifact": "e21dde560471b91cd882ee061a53f82e56a354a6860e601113f1c75cb1476ba1",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=2201487"
+ },
+ "started_at": "2026-11-02T18:54:01.003500Z",
+ "status": "complete"
+}
