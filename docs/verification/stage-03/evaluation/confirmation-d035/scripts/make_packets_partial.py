@@ -25,13 +25,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-FROZEN = (
-    Path(__file__).resolve().parents[2] / "confirmation-2026-11" / "campaign" / "annotations" / "make_packets.py"
-)
-OLD = (
-    '        if final.get("status") != "complete":\n'
-    '            raise SystemExit(f"{key} has no complete capture")\n'
-)
+FROZEN = Path(__file__).resolve().parents[2] / "confirmation-2026-11" / "campaign" / "annotations" / "make_packets.py"
+OLD = '        if final.get("status") != "complete":\n            raise SystemExit(f"{key} has no complete capture")\n'
 NEW = (
     '        if final.get("status") not in ("complete", "partial") or not final.get("bundle"):\n'
     '            raise SystemExit(f"{key} has no capture bundle")\n'
