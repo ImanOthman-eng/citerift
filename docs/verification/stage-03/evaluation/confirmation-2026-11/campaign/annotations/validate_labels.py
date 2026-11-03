@@ -38,7 +38,9 @@ def _at(text: str, at: Any) -> bool:
     if not isinstance(at, dict):
         return False
     cp, q = at.get("cp"), at.get("quote")
-    return isinstance(cp, int) and not isinstance(cp, bool) and isinstance(q, str) and q != "" and text[cp : cp + len(q)] == q
+    if not isinstance(cp, int) or isinstance(cp, bool) or not isinstance(q, str) or q == "":
+        return False
+    return text[cp : cp + len(q)] == q
 
 
 def check(packet: Path, label: Path) -> list[str]:

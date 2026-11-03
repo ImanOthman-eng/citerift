@@ -33,7 +33,7 @@ packets and an empty `out/`. Challenge instances were not told that their articl
 - The label files were copied byte for byte into `locked/initial-ar` (24), `locked/initial-en` (16) and
   `locked/challenge-en` (10). `evaluate.py lock` wrote each `ANNOTATION_LOCK.json`; `LOCK_RECORD.json` records the
   frozen candidate (`3e51792`) and the guide's hash. They were committed before any extraction of these articles.
-- `evaluator_tools/` keeps the helper snippets each instance wrote in its own `tools/` directory.
+- `evaluator_tools/` keeps the helper snippets each instance wrote in its own `tools/` directory, byte for byte, with `.txt` appended to the names of Python files so that the repository linters do not treat them as project code.
 
 ## Isolation audit
 

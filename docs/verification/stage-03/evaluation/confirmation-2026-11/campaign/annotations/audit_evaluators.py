@@ -5,8 +5,8 @@ Usage: python audit_evaluators.py MAP_JSON TRANSCRIPT_DIR > EVALUATOR_AUDIT.json
 MAP_JSON maps each transcript id to its instance and work directory. For each transcript the audit lists:
 
 - the instruction files the harness attached to the instance's context (not chosen by the instance);
-- every tool call, and the ones whose input names an absolute path outside the work directory (system paths of
-  the Python interpreter excepted) or runs git, uv, curl, wget, pip or a ``citerift`` command;
+- every tool call, and the ones whose input names an absolute path outside the work directory (under /home, /mnt,
+  /root, /tmp, /etc, /var, /opt or /srv) or runs git, uv, curl, wget, pip or a ``citerift`` command;
 - the instance's final report (its SubagentHandback message).
 
 It reads the transcripts only and changes nothing.
@@ -22,7 +22,6 @@ from typing import Any
 
 PATH = re.compile(r"(?<![\w.])/(?:home|mnt|root|tmp|etc|var|opt|srv)/[^\s'\"`)\]}>,;]*")
 COMMAND = re.compile(r"(?:^|[\s;&|(])(git|uv|curl|wget|pip3?|citerift[\w-]*)(?=\s)")
-SYSTEM = ("/usr/", "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval/")
 
 
 def audit(path: Path, work: str) -> dict[str, Any]:
