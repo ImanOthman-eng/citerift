@@ -1,0 +1,41 @@
+{
+ "why": "These files are verbatim captures of enwiki article 614753 (revision 1380218630) and its evaluator packet. The article's wikitext and render contain a third-party presigned download URL with an AWS access key id (pattern AKIA[0-9A-Z]{16}). The accepted Stage 00 test tests/stage00/test_repository.py::test_no_secrets_in_repository_files forbids that pattern in any tracked file, and Stage 00 is not modified. The files cannot be edited: bundles and packets are verified by SHA-256. They are therefore untracked at the current head and kept unchanged on disk for the campaign's prediction run, verify and replay; they remain byte-identical in git history at the commits named below (history is never rewritten) and in the checksummed evidence export. Nothing else is withheld.",
+ "restore": "git show <committed_in>:<campaign path>; compare with sha256",
+ "files": [
+  {
+   "path": "annotations/packets/en-h3/packets/en-1380218630/render.html",
+   "sha256": "6a364c979373ef850fa1d833554369b4ef530bf4651e9cc781fbe0ad2b60c7fc",
+   "bytes": 395389,
+   "committed_in": "763c1c4a148029e54b33851419df1fcc54568ec0",
+   "matches": 3
+  },
+  {
+   "path": "annotations/packets/en-h3/packets/en-1380218630/source.wikitext",
+   "sha256": "1b2a65fa4224f8ee0b1de1a37e892e1c2aa275f28e40ce82a4d4ddcad7a8a530",
+   "bytes": 61148,
+   "committed_in": "763c1c4a148029e54b33851419df1fcc54568ec0",
+   "matches": 1
+  },
+  {
+   "path": "capture/bundles/holdout/en-614753-a1/artifacts/1b2a65fa4224f8ee0b1de1a37e892e1c2aa275f28e40ce82a4d4ddcad7a8a530",
+   "sha256": "1b2a65fa4224f8ee0b1de1a37e892e1c2aa275f28e40ce82a4d4ddcad7a8a530",
+   "bytes": 61148,
+   "committed_in": "4766a1f38932742f77e4ec166aad739087a6b97f",
+   "matches": 1
+  },
+  {
+   "path": "capture/bundles/holdout/en-614753-a1/artifacts/6a364c979373ef850fa1d833554369b4ef530bf4651e9cc781fbe0ad2b60c7fc",
+   "sha256": "6a364c979373ef850fa1d833554369b4ef530bf4651e9cc781fbe0ad2b60c7fc",
+   "bytes": 395389,
+   "committed_in": "4766a1f38932742f77e4ec166aad739087a6b97f",
+   "matches": 3
+  },
+  {
+   "path": "capture/bundles/holdout/en-614753-a1/artifacts/9d7694863d62cbe6db04df75630db4adc7b25ede2c75fe04be3c9b1e55bcfa34",
+   "sha256": "9d7694863d62cbe6db04df75630db4adc7b25ede2c75fe04be3c9b1e55bcfa34",
+   "bytes": 62461,
+   "committed_in": "4766a1f38932742f77e4ec166aad739087a6b97f",
+   "matches": 1
+  }
+ ]
+}
