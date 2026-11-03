@@ -2680,13 +2680,16 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
         "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
         "recorded_at": "2026-10-28T18:10:32Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "fff0e5be55a1d7e396c6d8460cc05284cd0ddac4",
+        "recorded_at": "2026-11-03T14:31:36Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -3320,6 +3323,17 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner instruction of 2026-11-03 (D-035): correct the G5c citation-unit semantics and run one further prospective confirmation of the corrected candidate",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPBxa7nEyAiE3VN5Lw442e8F"
+    },
+    {
+      "seq": 42,
+      "at": "2026-11-03T14:31:36Z",
+      "stage": "03",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "D-035 candidate frozen before the confirmation draw: citation-unit classes A-H, both independent reviews fixed, MF-1 v3; CI green on fff0e5b",
+      "owner_ref": null
     }
   ]
 }
