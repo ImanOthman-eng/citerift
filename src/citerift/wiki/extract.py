@@ -38,9 +38,10 @@ from citerift.wiki.source import (
     scan_source,
 )
 from citerift.wiki.textmap import ByteMap
+from citerift.wiki.units import template_evidence
 
 EXTRACTION_SCHEMA = "urn:citerift:schema:wiki:v1:extraction"
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.1.0"  # 1.1.0 (D-035): unit kind unsupported_citation_template added
 MAX_OUTPUT_BYTES = 256 * 1024 * 1024
 
 
@@ -178,45 +179,53 @@ def extract_document(bundle: Bundle, config: ExtractConfig) -> dict[str, Any]:
     components: dict[str, Any] = {}
     try:
         scan = scan_source(text, w, profile, config.limits())
-        model = build(scan, w, profile, bmap)
     except LimitExceeded as exc:
-        doc.issues.append(Issue(exc.code, (), exc.detail))
-        components["source"] = {"state": "failed", "code": exc.code}
-        return _finalize(out, doc, "failed", components, {})
+        return _source_failed(out, doc, components, exc.code, exc.detail)
     except RecursionError:
-        doc.issues.append(Issue("LIMIT_DEPTH", (), "the parser's recursion limit"))
-        components["source"] = {"state": "failed", "code": "LIMIT_DEPTH"}
-        return _finalize(out, doc, "failed", components, {})
-    components["source"] = {"state": _source_component(scan, doc, bmap)}
-    doc.issues.extend(model.issues)
+        return _source_failed(out, doc, components, "LIMIT_DEPTH", "the parser's recursion limit")
 
-    # Render ---------------------------------------------------------------------------------------------
+    # Render document (read before the source model: a template's rendered output is evidence of what it is) ----
     render = reader = rec = None
+    render_issues: list[Issue] = []
     render_state = cap.get("render", {}).get("state", "not_requested")
-    if render_state == "captured":
+    captured = render_state == "captured"
+    if captured:
         try:
             html = bundle.artifact(cap["render"]["artifact"], limit=16 * 1024 * 1024)
             render, reader = read_render(html, config.max_render_elements)
         except RenderLimitExceeded as exc:
-            doc.issues.append(Issue("LIMIT_OCCURRENCES", (), f"render: {exc}"))
+            render_issues.append(Issue("LIMIT_OCCURRENCES", (), f"render: {exc}"))
             render_state = "failed"
         except (ValueError, SyntaxError) as exc:
-            doc.issues.append(Issue("RENDER_PARSE_FAILED", (), type(exc).__name__))
+            render_issues.append(Issue("RENDER_PARSE_FAILED", (), type(exc).__name__))
             render_state = "failed"
         else:
             if render.revision_about not in (None, page.get("revision_id")):
-                doc.issues.append(Issue("RENDER_REVISION_MISMATCH", (), f"document states {render.revision_about}"))
+                render_issues.append(Issue("RENDER_REVISION_MISMATCH", (), f"document states {render.revision_about}"))
                 render = reader = None
                 render_state = "rejected"
-            else:
-                rec = reconcile(model, render, w, profile, text)
-                doc.issues.extend(rec.issues)
-                for dup in render.duplicate_ids:
-                    doc.issues.append(Issue("DOM_ID_DUPLICATE", (), dup))
-                if render.data_mw_errors:
-                    doc.issues.append(Issue("RENDER_DATA_MW_INVALID", (), f"{render.data_mw_errors} attributes"))
-                for warning, count in sorted(Counter(w["warning"] for w in render.limit_warnings).items()):
-                    doc.issues.append(Issue("RENDER_TEMPLATE_OMITTED", (), f"{count} x {warning}"))
+    try:
+        evidence = None if render is None or reader is None else template_evidence(scan, render, reader, w, text)
+        model = build(scan, w, profile, bmap, evidence)
+    except LimitExceeded as exc:
+        return _source_failed(out, doc, components, exc.code, exc.detail)
+    except RecursionError:
+        return _source_failed(out, doc, components, "LIMIT_DEPTH", "the parser's recursion limit")
+    components["source"] = {"state": _source_component(scan, doc, bmap)}
+    doc.issues.extend(model.issues)
+    doc.issues.extend(render_issues)
+
+    # Reconciliation -------------------------------------------------------------------------------------
+    if captured:
+        if render is not None:
+            rec = reconcile(model, render, w, profile, text)
+            doc.issues.extend(rec.issues)
+            for dup in render.duplicate_ids:
+                doc.issues.append(Issue("DOM_ID_DUPLICATE", (), dup))
+            if render.data_mw_errors:
+                doc.issues.append(Issue("RENDER_DATA_MW_INVALID", (), f"{render.data_mw_errors} attributes"))
+            for warning, count in sorted(Counter(w["warning"] for w in render.limit_warnings).items()):
+                doc.issues.append(Issue("RENDER_TEMPLATE_OMITTED", (), f"{count} x {warning}"))
     else:
         doc.issues.append(Issue("RECONCILIATION_UNAVAILABLE", (), f"render {render_state}"))
     components["render"] = {"state": "complete" if render is not None else render_state}
@@ -243,6 +252,14 @@ def extract_document(bundle: Bundle, config: ExtractConfig) -> dict[str, Any]:
     states = [c["state"] for c in components.values()]
     status = "complete" if all(s == "complete" for s in states) else "partial"
     return _finalize(out, doc, status, components, body.get("accounting", {}))
+
+
+def _source_failed(
+    out: dict[str, Any], doc: _Doc, components: dict[str, Any], code: str, detail: str
+) -> dict[str, Any]:
+    doc.issues.append(Issue(code, (), detail))
+    components["source"] = {"state": "failed", "code": code}
+    return _finalize(out, doc, "failed", components, {})
 
 
 def _assemble(
@@ -335,6 +352,9 @@ def _assemble(
                 "render": render_part,
             }
         )
+    for issue in model.issues:
+        if issue.code == "UNIT_CLASSIFICATION_UNRESOLVED":
+            doc.ledger(issue.entities[0], "container", issue.code, issue.detail)
     units = []
     for un in model.units:
         render_part = {"state": "not_reconciled"}

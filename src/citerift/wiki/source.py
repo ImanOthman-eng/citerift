@@ -184,6 +184,10 @@ class SourceScan:
     headings: list[tuple[int, int, str]] = field(default_factory=list)
     comment_cut: int | None = None
     nodes: int = 0
+    # Refs whose own text (outside every template called inside the ref) has a letter or a digit, and refs that give
+    # an external link at that level (SPECIFICATION.md 11.3, citation-unit classes; D-035).
+    ref_text: set[int] = field(default_factory=set)
+    ref_links: set[int] = field(default_factory=set)
 
 
 _ATTR_WS = re.compile(r"[\t\r\n ]+")
@@ -897,6 +901,8 @@ class Scanner:
         return url_scheme(url)
 
     def _external_link(self, node: ExternalLink, start: int, end: int, ctx: Ctx, depth: int) -> None:
+        if ctx.ref is not None and self._own_level(ctx):
+            self.scan.ref_links.add(ctx.ref)
         url_start = start + 1 if node.brackets else start
         url_str = str(node.url)
         url_end = url_start + len(url_str)
@@ -950,9 +956,25 @@ class Scanner:
                     ends.append(s + i + 1)
         return "".join(chars), starts, ends
 
+    def _own_level(self, ctx: Ctx) -> bool:
+        """The position is in a ref's own content: inside a ref, not excluded, and inside no template that was called
+        within that ref (a template around the ref, such as the one that generates it, does not count)."""
+        return (
+            ctx.ref is not None
+            and not ctx.excluded
+            and all(self.scan.templates[f.template].ref != ctx.ref for f in ctx.frames)
+        )
+
     def _text_run(self, run: list[tuple[Node, int, int]], ctx: Ctx) -> None:
         decoded, starts, ends = self._decoded_run(run)
         raw_start, raw_end = run[0][1], run[-1][2]
+        if (
+            ctx.ref is not None
+            and ctx.ref not in self.scan.ref_text
+            and self._own_level(ctx)
+            and any(ch.isalnum() for ch in decoded)
+        ):
+            self.scan.ref_text.add(ctx.ref)
         if "<!--" in self.text[raw_start:raw_end] and not ctx.excluded:
             at = raw_start + self.text[raw_start:raw_end].index("<!--")
             if self.scan.comment_cut is None or at < self.scan.comment_cut:

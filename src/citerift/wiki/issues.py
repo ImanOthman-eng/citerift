@@ -125,6 +125,16 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
         "an identifier parameter repeated later in the same template; only the last value is used",
     ),
     "UNIT_BOUNDARY_UNRESOLVED": ("warning", False, "several identifiers in unstructured text; works not separated"),
+    "UNIT_CLASSIFICATION_UNRESOLVED": (
+        "warning",
+        False,
+        "whether a reference definition holds a citation unit cannot be established; no unit is claimed",
+    ),
+    "CITATION_TEMPLATE_UNSUPPORTED": (
+        "info",
+        False,
+        "a template the profile does not list renders a citation; kept as a unit whose fields are not read",
+    ),
     "DUPLICATE_TEMPLATE_PARAMETER": ("warning", False, "a template repeats a parameter; all values are kept"),
     "IDENTIFIER_VALUE_HAS_MARKUP": ("warning", False, "an identifier value contains markup; not normalized"),
     "IDENTIFIER_DECODING_FAILED": (

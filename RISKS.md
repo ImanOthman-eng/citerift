@@ -660,7 +660,11 @@ Observed in the adjudicated final campaign and dispositioned without code change
 - **Publisher URLs without a `/doi/` path** (Springer `/10.…`, iopscience `/article/10.…`): the DOI inside them is
   not extracted. In all three observed cases, the same DOI is extracted from the template's `doi=` field.
 - **Citation templates the profile does not list** (for example EI2, EI3, `قاموس دورلاند`): they are reported as
-  unstructured, and their DOIs get role `unresolved`.
+  unstructured, and their DOIs get role `unresolved`. Superseded by D-035 at engine 1.1.0:
+  - a template whose render is a CS1/CS2 citation (EI2) is an `unsupported_citation_template` unit;
+  - one whose render shows no citation markup (`قاموس دورلاند`) leaves its definition unresolved
+    (`UNIT_CLASSIFICATION_UNRESOLVED`), with no unit;
+  - DOIs keep the role `unresolved`.
 - **List-defined `<ref>` tags** are not counted as uses.
 - **`verify` does not re-derive identifier decoding;** only `replay` does.
 - **URL forms the page-view rule does not cover:** `%20` and `;jsessionid` after a route keep the route.
@@ -681,3 +685,31 @@ Harvard short-citation links (13), explanatory notes that cite nothing (4) and t
 11 are in one article. None of the 19 involves an identifier, binding, render link or marker. No repair is allowed after the
 prediction run. Evidence: `docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/REPORT.md` and
 `DECISION_RECORD.md` there. The owner decides; the executor records no verification while G5c is unmet.
+
+Update 2026-11-03 (D-035): the owner rejected a narrowed claim and ordered a semantic correction and one more
+prospective confirmation. The engine now separates citation-unit classes A-H. A definition is `unstructured_text`
+only on positive evidence. Harvard links, explanatory notes, unlisted citation-like templates and unresolved
+definitions are distinguished (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.md`). On the
+exposed confirmation data, the frozen scorer gives English G5c 1.000 and Arabic G5c 1.000. This is regression only,
+not a pass. This entry stays open until the prospective confirmation of D-035 is scored.
+
+## R-037 — Stage 03 citation-unit classification (D-035): residual limits
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 03
+
+The D-035 rule recognizes a plain-text citation only on positive evidence: a locator, or the text of a citation
+reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.md` section 5). Known limits:
+
+- **Explanatory text in an ordinary reference.** A `<ref>` (including one in a `group="note"`) that holds only
+  explanatory prose is still `unstructured_text`. A group name is free text, and reading it would be a keyword rule.
+- **Short link with text.** A Harvard link beside plain text without a link or identifier is unresolved. A genuine
+  second citation written there without a locator is reported, not claimed as a unit.
+- **Render dependence.** Without a usable render, and for refs inside template parameters (which have no render
+  output of their own), every template-only definition is unresolved.
+- **Evidence marks.** Two render marks decide unlisted templates: CS1/CS2 `<cite class="citation">` and `#CITEREF`
+  links. A citation module that writes neither, or a non-citation template that writes `<cite class="citation">`,
+  would be misclassified. Neither was observed in the 146 retained bundles.
+- **`efn` only.** Only the profile's `efn` family is treated as explanatory. `{{refn}}` is treated like `<ref>`, and no
+  retained bundle contains it.

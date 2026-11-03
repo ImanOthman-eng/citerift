@@ -61,7 +61,7 @@ class Unit:
     id: str
     container_id: str
     definition_id: str | None
-    kind: str  # citation_template | external_data_template | unstructured_text
+    kind: str  # citation_template | external_data_template | unsupported_citation_template | unstructured_text
     template: int | None
     start: int
     end: int
@@ -142,8 +142,24 @@ def _role(
     return "textual_mention", "free text"
 
 
-def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) -> SourceModel:
+# Render evidence for a template the profile does not classify (read by citerift.wiki.units).
+CITATION_MARKUP = "citation_markup"
+SHORT_CITATION_LINK = "short_citation_link"
+NO_CITATION_MARKUP = "no_citation_markup"
+
+
+def build(
+    scan: SourceScan,
+    wiki: WikiProfile,
+    profile: Profile,
+    bmap: ByteMap,
+    evidence: dict[int, str] | None = None,
+) -> SourceModel:
+    """``evidence``: what the render shows each deciding template to be (``citerift.wiki.units``); None when there is
+    no usable render, in which case no unprofiled template is ever established as a citation construct."""
     del bmap
+    rendered = evidence is not None
+    evidence = evidence or {}
     issues: list[Issue] = []
     refs = {r.index: r for r in scan.refs}
     templates = {t.index: t for t in scan.templates}
@@ -383,7 +399,26 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
     # Units -----------------------------------------------------------------------------------------------
     units: list[Unit] = []
     template_unit: dict[int, str] = {}
-    unit_templates = [tpl for tpl in scan.templates if tpl.kind in ("citation", "external_data") and not tpl.excluded]
+    # A template that is a citation template only by the unlisted-family name rule (RF-37) and whose render is a
+    # short-citation link is a link to an entry elsewhere (class E), not a citation of its own.
+    unit_templates = [
+        tpl
+        for tpl in scan.templates
+        if tpl.kind in ("citation", "external_data")
+        and not tpl.excluded
+        and not (tpl.family == "unlisted" and evidence.get(tpl.index) == SHORT_CITATION_LINK)
+    ]
+    # G: a template the profile does not list whose render is a CS1/CS2 citation. It is a citation unit whose fields
+    # are not supported: kept with its anchors, never read as plain text (D-035).
+    unit_templates += [
+        tpl
+        for tpl in scan.templates
+        if tpl.kind == "other"
+        and not tpl.excluded
+        and evidence.get(tpl.index) == CITATION_MARKUP
+        and outermost_in_ref(tpl, templates)
+    ]
+    unit_templates.sort(key=lambda t: t.index)
     for tpl in unit_templates:
         if tpl.ref is not None:
             if tpl.ref not in ref_container:
@@ -399,11 +434,13 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             f"un-{len(units) + 1:05d}",
             owner_id,
             definition_id,
-            "external_data_template" if tpl.kind == "external_data" else "citation_template",
+            _TEMPLATE_UNIT_KIND[tpl.kind],
             tpl.index,
             tpl.start,
             tpl.end,
         )
+        if tpl.kind == "other":
+            issues.append(Issue("CITATION_TEMPLATE_UNSUPPORTED", (un.id,), tpl.canonical or tpl.raw_name.strip()))
         names = [p.name for p in tpl.params]
         un.duplicate_params = sorted({n for n in names if names.count(n) > 1})
         if un.duplicate_params:
@@ -417,9 +454,19 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
                 un.parent_unit = template_unit[parent]
                 break
             parent = templates[parent].parent_template if parent in templates else None
-    # Unstructured units: a definition or bibliography entry without any citation template.
+    # Unstructured units. A bibliography entry without a template was made from an identifier on its line, so it
+    # holds a located work. A definition is unstructured only on positive evidence (SPECIFICATION.md 11.3, D-035): the
+    # absence of a recognized citation template is not enough.
     with_template = {un.container_id for un in units}
     defined = {un.definition_id for un in units}
+    own_templates: dict[int, list[TemplateRecord]] = {}
+    for t in scan.templates:
+        if t.ref is not None and not t.excluded and outermost_in_ref(t, templates):
+            own_templates.setdefault(t.ref, []).append(t)
+    own_candidates: dict[int, list[Candidate]] = {}
+    for cand in scan.candidates:
+        if cand.ref is not None:
+            own_candidates.setdefault(cand.ref, []).append(cand)
     for c in containers:
         if c.kind == "bibliography_entry":
             if c.id not in with_template:
@@ -429,7 +476,15 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             continue  # the note text is generated; the cited work is in the bibliography
         for i, dfn in enumerate(c.definitions):
             def_id = f"{c.id}/d{i + 1}"
-            if def_id not in defined:
+            if def_id in defined:
+                continue
+            r = refs[dfn["_ref"]]
+            verdict, reason = _plain_definition(
+                r, scan, templates, own_templates.get(r.index, []), own_candidates.get(r.index, []), evidence, rendered
+            )
+            if verdict == "unresolved":
+                issues.append(Issue("UNIT_CLASSIFICATION_UNRESOLVED", (c.id,), f"definition {i + 1}: {reason}"))
+            if verdict == "unstructured":
                 units.append(
                     Unit(
                         f"un-{len(units) + 1:05d}",
@@ -514,6 +569,76 @@ def build(scan: SourceScan, wiki: WikiProfile, profile: Profile, bmap: ByteMap) 
             code = "UNIT_BOUNDARY_UNRESOLVED" if un.kind == "unstructured_text" else "CO_REPORTED_IDENTIFIERS"
             issues.append(Issue(code, (un.id,), "more than one distinct value for " + ",".join(multi)))
     return SourceModel(containers, uses, units, occurrences, issues, ref_container, template_unit, templates, refs)
+
+
+_TEMPLATE_UNIT_KIND = {
+    "citation": "citation_template",
+    "external_data": "external_data_template",
+    "other": "unsupported_citation_template",
+}
+
+
+def outermost_in_ref(t: TemplateRecord, templates: dict[int, TemplateRecord]) -> bool:
+    """``t`` is called inside a ref and inside no other template called within that same ref."""
+    if t.ref is None:
+        return False
+    parent = t.parent_template
+    return parent is None or parent not in templates or templates[parent].ref != t.ref
+
+
+def _plain_definition(
+    r: RefRecord,
+    scan: SourceScan,
+    templates: dict[int, TemplateRecord],
+    own: list[TemplateRecord],
+    candidates: list[Candidate],
+    evidence: dict[int, str],
+    rendered: bool,
+) -> tuple[str, str]:
+    """Class of a definition with no template unit: ``unstructured`` (D), ``none`` (E, F or empty) or ``unresolved``
+    (H), with the reason. SPECIFICATION.md 11.3:
+
+    1. a locator the definition gives itself (an external link in its own text, or a DOI/PMID in its text or in a
+       profile identifier wrapper) makes it a citation of that work: D;
+    2. otherwise its own text decides: beside a short-citation link the text may be a comment or a second citation,
+       and nothing in the markup says which: H; in an explanatory footnote (the profile's ``efn`` family) text is the
+       explanation: F; in any other reference (a ``<ref>``, a list-defined or ``#tag`` reference) the reference
+       mechanism says it is a citation: D;
+    3. with no own text: short-citation links and nothing else only refer to entries elsewhere: E; any other
+       template (whose render shows no citation markup, or that has no usable render) cannot be established as a
+       citation: H; nothing at all: none.
+
+    ``own`` are the templates called in the ref outside any other template of it; ``candidates`` its identifier
+    candidates.
+    """
+    short = [t for t in own if evidence.get(t.index) == SHORT_CITATION_LINK]
+    located = r.index in scan.ref_links or any(
+        cand.origin != "template_field"
+        and all(
+            templates[f.template].kind == "wrapper"
+            for f in cand.frames
+            if f.template in templates and templates[f.template].ref == r.index
+        )
+        for cand in candidates
+    )
+    if located:
+        return "unstructured", ""
+    if r.index in scan.ref_text:
+        if short:
+            return "unresolved", "plain text beside a short-citation link"
+        if r.origin == "efn":
+            return "none", ""
+        return "unstructured", ""
+    if own and len(short) == len(own):
+        return "none", ""
+    if own:
+        names = ", ".join(sorted({t.canonical or t.raw_name.strip() for t in own}))
+        if not rendered:
+            return "unresolved", f"only templates, and no usable render to show what they are: {names}"
+        if any(t.index not in evidence for t in own if t.kind == "other"):
+            return "unresolved", f"only templates, some without output of their own in the render: {names}"
+        return "unresolved", f"only templates whose render shows no citation markup: {names}"
+    return "none", ""
 
 
 def _definition(r: RefRecord, text: str) -> dict[str, Any]:

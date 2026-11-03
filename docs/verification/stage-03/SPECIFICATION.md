@@ -1,4 +1,4 @@
-# Stage 03 specification: Wikipedia Extraction Engine (`citerift.wiki`, engine 1.0.0)
+# Stage 03 specification: Wikipedia Extraction Engine (`citerift.wiki`, engine 1.1.0; 1.0.0 until D-035)
 
 Owner directive: `cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS` (copy in
 `authorization/OWNER_DIRECTIVE_2026-10-28.md`). This is the final specification of what is implemented. It
@@ -52,12 +52,13 @@ provenance (inspected template pages) is `calibration/profile-v1.provenance.json
 | `bundle.py`, `canonical.py` | bundle layout, atomic publication, path safety, canonical JSON and digests (9) |
 | `source.py`, `textmap.py` | lossless wikitext traversal; code point to byte offsets (11, 12.1) |
 | `model.py`, `identifiers.py` | containers, uses, units, identifier occurrences, roles; Stage 02 adapter (10, 11) |
+| `units.py` | render evidence for templates inside references: citation markup or short-citation link (11.3, D-035) |
 | `render.py`, `reconcile.py` | Parsoid HTML reading and DOM locators; source/render joins (12) |
 | `markers.py` | marker observations (13) |
 | `extract.py`, `worker.py` | document assembly; isolated worker with limits and no network (10, 16) |
 | `verify.py` | offline verification and replay (14) |
 | `cli.py` | `citerift-wiki` (15) |
-| `issues.py` | catalog of 102 stable issue codes with severity and retryability (10) |
+| `issues.py` | catalog of stable issue codes with severity and retryability (113 at engine 1.1.0) (10) |
 | `schemas.py` | validation against `schemas/wiki/v1` and the accepted `schemas/contracts/v1` common definitions |
 
 ## 5. Python API (`citerift.wiki`)
@@ -201,7 +202,8 @@ that is only a Harvard short-citation link (`{{harvnb}}`), an explanatory note t
 template the profile does not list is also `unstructured_text`. The annotation guide's `unstructured` is narrower.
 The confirmation campaign measured the difference as English G5c 0.869 (RISKS.md R-036,
 `evaluation/confirmation-2026-11/DECISION_RECORD.md`). This text records the behaviour of the frozen candidate; it is
-not changed after the campaign.
+not changed after the campaign. **Superseded for engine 1.1.0 by the section "Changes under owner instruction D-035"
+at the end of this file.**
 
 ### 11.4 Identifier occurrences
 
@@ -420,3 +422,58 @@ the worker refuses network connections (tested). `RISK_ANALYSIS.md` lists residu
 - Review fixes R6 and R7 (`review/REVIEW_FINDINGS.md`).
 
 The engine has not changed since `3e51792`.
+
+## Changes under owner instruction D-035 (2026-11-03): citation-unit classes
+
+Decision record: `design/unit-semantics/SEMANTIC_DECISION.md`; fail-first tests `tests/stage03/test_g5c_unit_semantics.py`;
+differential over every retained real bundle `design/unit-semantics/differential/DIFFERENTIAL.md`.
+
+**Required invariant:** the absence of a recognized citation template is not sufficient evidence that an
+unstructured bibliographic citation exists.
+
+Section 11.3 is replaced, for engine 1.1.0, by the following.
+
+**Unit kinds:**
+- `citation_template` and `external_data_template`: as before, with one exception. A template that is a citation
+  template only by the RF-37 name rule and whose render is a short-citation link is not a unit.
+- `unsupported_citation_template` (new): a template the profile does not list whose own Parsoid output contains a
+  CS1/CS2 `<cite class="citation">`, called inside a ref and not inside another template of that ref. It is kept
+  with its source anchors and the issue `CITATION_TEMPLATE_UNSUPPORTED`; its fields are not read. An identifier in
+  it keeps the role `unresolved`.
+- `unstructured_text`: only on positive evidence. For a definition with no template unit:
+  1. its own external link or DOI/PMID (in text or in a profile wrapper) gives D;
+  2. else its own text (a letter or a digit outside every template called in the ref):
+     - beside a short-citation link: unresolved;
+     - in an `efn` explanatory note: no unit;
+     - otherwise: D;
+  3. else:
+     - only short-citation links: no unit;
+     - any other template: unresolved;
+     - nothing: no unit.
+
+  Short footnotes and bibliography entries are unchanged.
+
+**Unresolved definitions** carry `UNIT_CLASSIFICATION_UNRESOLVED`, a warning, with the container id and
+"definition N: reason". The same entry is in the exception ledger. No unit is claimed.
+
+**Render evidence** (`units.py`):
+- *citation markup*: a `<cite class="citation">`;
+- *short-citation link*: a link to a `#CITEREF…` anchor.
+
+It is read from the template's single-template transclusion, paired by canonical target and parameters. There is no
+evidence when the template:
+- has no output of its own;
+- has several parts;
+- was not expanded (parser-limit warning);
+- has calls whose outputs disagree.
+
+Without a usable render, no unlisted template is established as a citation construct.
+
+**Compatibility:**
+- extraction `schema_version` 1.1.0, an additive enum value;
+- engine `citerift-wiki` 1.1.0, so a 1.0.0 document replays as `REPLAY_IDENTITY_MISMATCH`;
+- profile unchanged (same digest);
+- the frozen scorer, guide and protocol unchanged.
+
+The render is now read before the source model is built. Render read failures are reported as before.
+

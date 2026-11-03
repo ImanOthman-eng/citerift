@@ -193,7 +193,7 @@
         "id": {"$ref": "#/$defs/id"},
         "container_id": {"$ref": "#/$defs/id"},
         "definition_id": {"type": ["string", "null"]},
-        "kind": {"enum": ["citation_template", "external_data_template", "unstructured_text"]},
+        "kind": {"enum": ["citation_template", "external_data_template", "unsupported_citation_template", "unstructured_text"]},
         "template": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/template_ref"},
         "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"},
         "parent_unit": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},

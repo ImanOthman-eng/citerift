@@ -240,6 +240,85 @@ def test_unsupported_template_identifier_stays_unresolved_in_its_unit(tmp_path: 
 
 
 @pytest.mark.regression
+def test_short_citation_link_beside_unknown_template_is_unresolved(tmp_path: Path) -> None:
+    """H: a Harvard link is class E only when nothing else is in the definition; an unknown template beside it may be
+    the citation."""
+    text = "A<ref>{{harvnb|Fox|2002}} {{NRDB species|genus=Polemon}}</ref>"
+    inner = (
+        transclusion(5, "harvnb", {"1": "Fox", "2": "2002"}, citeref("Fox2002", "Fox 2002"))
+        + " "
+        + transclusion(6, "NRDB species", {"genus": "Polemon"}, "<i>Polemon</i>")
+    )
+    doc = run(tmp_path, text, one_note("A", inner))
+    assert kinds(doc) == []
+    assert len(unresolved(doc)) == 1
+
+
+@pytest.mark.regression
+def test_template_without_own_render_output_is_unresolved(tmp_path: Path) -> None:
+    """H: a ref inside an infobox parameter has no transclusion of its own in the render (Parsoid renders the
+    infobox as one block), so the render cannot show what a template in it is."""
+    text = "{{Infobox person|birth_date=1945<ref>{{Who's Who|title=Wheeler|year=2023}}</ref>}}"
+    infobox = transclusion(
+        1,
+        "Infobox person",
+        {"birth_date": "1945<ref>{{Who's Who|title=Wheeler|year=2023}}</ref>"},
+        f"<table><tr><td>1945{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</td></tr></table>",
+        "div",
+    )
+    body = infobox + references([note_li("cite_note-1", ["cite_ref-1"], "<cite class='citation'>Who's Who</cite>")])
+    doc = run(tmp_path, text, body)
+    assert kinds(doc) == []
+    [issue] = unresolved(doc)
+    assert "without output of their own" in issue["detail"]
+
+
+@pytest.mark.regression
+def test_conflicting_render_evidence_is_unresolved(tmp_path: Path) -> None:
+    """H: two calls with one key whose outputs disagree give no evidence (equal keys must expand equally)."""
+    text = "A<ref>{{Fish db|x}}</ref> B<ref name=b>{{Fish db|x}}</ref>"
+    body = (
+        f"<p>A{ref_sup(1, 'cite_note-1', 'cite_ref-1')} B{ref_sup(2, 'cite_note-b-2', 'cite_ref-b-2', name='b')}</p>"
+        + references(
+            [
+                note_li("cite_note-1", ["cite_ref-1"], transclusion(5, "Fish db", {"1": "x"}, cs1("Fish"))),
+                note_li("cite_note-b-2", ["cite_ref-b-2"], transclusion(6, "Fish db", {"1": "x"}, "Fish")),
+            ]
+        )
+    )
+    doc = run(tmp_path, text, body)
+    assert kinds(doc) == []
+    assert len(unresolved(doc)) == 2
+
+
+@pytest.mark.regression
+def test_omitted_template_is_unresolved(tmp_path: Path) -> None:
+    """H: the output of a template MediaWiki stopped expanding (a parser-limit warning) is not evidence, even when it
+    holds citation markup; the definition is never read as plain text."""
+    text = "A<ref>{{Fish db|x}}</ref>"
+    inner = transclusion(
+        5, "Fish db", {"1": "x"}, "<!-- WARNING: template omitted, post-expand include size too large -->" + cs1("F")
+    )
+    doc = run(tmp_path, text, one_note("A", inner))
+    assert kinds(doc) == []
+    assert len(unresolved(doc)) == 1
+
+
+@pytest.mark.regression
+def test_unresolved_definition_is_in_the_exception_ledger(tmp_path: Path) -> None:
+    doc = run(tmp_path, "A<ref>{{NRDB species|genus=Polemon}}</ref>", None)
+    [container] = doc["containers"]
+    assert [e for e in doc["exceptions"] if e["code"] == UNRESOLVED] == [
+        {
+            "entity": container["id"],
+            "entity_type": "container",
+            "code": UNRESOLVED,
+            "detail": "definition 1: only templates, and no usable render to show what they are: NRDB species",
+        }
+    ]
+
+
+@pytest.mark.regression
 @pytest.mark.parametrize("with_render", [True, False])
 def test_unknown_template_alone_is_unresolved(tmp_path: Path, with_render: bool) -> None:
     """H: a template whose output shows no citation markup (or no render at all) is not plain text."""
@@ -354,7 +433,8 @@ def test_document_with_new_kind_validates(tmp_path: Path) -> None:
     path = bundle(tmp_path, text, one_note("A", inner))
     doc = extract(path)
     assert kinds(doc) == ["unsupported_citation_template"]
-    assert verify_bundle(path, doc)["status"] == "verified"
+    report = verify_bundle(path, doc)
+    assert report["verified"] is True, report
 
 
 # The 21 false positives of the 2026-11 confirmation campaign (exposed data, regression only) --------------------
