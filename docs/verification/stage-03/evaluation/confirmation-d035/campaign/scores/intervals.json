@@ -1,0 +1,362 @@
+{
+ "procedure": "[D-035 copy; see the end of this docstring.]\nInterval estimates of the confirmation campaign (AMENDMENT_2026-11-02_CONFIRMATION.md section 8, \"Estimands\").\n\nUsage (from the repository root): python intervals.py SCORES_JSON CHALLENGE_JSON > intervals.json\n\nWritten after the scores existed; it computes nothing that decides a gate. The gates are those of the scores file.\n\n- Article-cluster bootstrap, 95 % percentile intervals, with the frozen scorer's own ``aggregate``, seed and number\n  of resamples (``evaluate.py``), over the per-article rows of each language and label set. The frozen\n  ``bootstrap`` covers eight ratios; this adds unit precision and recall (G5c, G5d), the key-error rate (G2), role\n  agreement (G3b) and binding accuracy (G4c), resampled the same way.\n- For the zero-tolerance gates G2 (key errors among matched target identifiers), G3a (promotions among matched\n  target identifiers) and G7 (fabricated negatives among labelled warnings), the exact one-sided 95 %\n  Clopper-Pearson upper bound of the rate for the observed count.\n- For the warning challenge, the exact two-sided 95 % Clopper-Pearson interval of sensitivity.\n\n\nCopied for the D-035 confirmation (AMENDMENT_2026-11-03_D035_CONFIRMATION.md) from\n``../../confirmation-2026-11/scripts/`` with only the changes that amendment lists.\n",
+ "gate": {
+  "ar/locked": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 0.9672131147540983,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 0.9951690821256038,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 1.0,
+    "units.recall": 0.9923664122137404,
+    "render.precision": 0.9891304347826086,
+    "render.coverage": 0.9238578680203046
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8947368421052632,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     0.985981308411215,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     1.0,
+     1.0
+    ],
+    "units.recall": [
+     0.9767441860465116,
+     1.0
+    ],
+    "render.precision": [
+     0.9622641509433962,
+     1.0
+    ],
+    "render.coverage": [
+     0.7799227799227799,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 59,
+     "upper": 0.049507609888226944
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 59,
+     "upper": 0.049507609888226944
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "ar/adjudicated": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 0.9672131147540983,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 0.9951690821256038,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 1.0,
+    "units.recall": 0.9923664122137404,
+    "render.precision": 0.9891304347826086,
+    "render.coverage": 0.9238578680203046
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8947368421052632,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     0.985981308411215,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     1.0,
+     1.0
+    ],
+    "units.recall": [
+     0.9767441860465116,
+     1.0
+    ],
+    "render.precision": [
+     0.9622641509433962,
+     1.0
+    ],
+    "render.coverage": [
+     0.7799227799227799,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 59,
+     "upper": 0.049507609888226944
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 59,
+     "upper": 0.049507609888226944
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "en/locked": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 1.0,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 0.9857142857142858,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 0.9944444444444445,
+    "units.recall": 0.9944444444444445,
+    "render.precision": 1.0,
+    "render.coverage": 0.9806763285024155
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     1.0,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     0.9493670886075949,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     0.9782608695652174,
+     1.0
+    ],
+    "units.recall": [
+     0.9797297297297297,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     0.9384615384615385,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 60,
+     "upper": 0.04870291331009752
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 60,
+     "upper": 0.04870291331009752
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "en/adjudicated": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 1.0,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 0.9857142857142858,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 0.9944444444444445,
+    "units.recall": 0.9944444444444445,
+    "render.precision": 1.0,
+    "render.coverage": 0.9806763285024155
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     1.0,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     0.9493670886075949,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     0.9782608695652174,
+     1.0
+    ],
+    "units.recall": [
+     0.9797297297297297,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     0.9384615384615385,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 60,
+     "upper": 0.04870291331009752
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 60,
+     "upper": 0.04870291331009752
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  }
+ },
+ "challenge": {}
+}

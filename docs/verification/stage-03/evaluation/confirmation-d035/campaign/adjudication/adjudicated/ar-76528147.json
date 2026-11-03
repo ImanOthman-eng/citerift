@@ -1,0 +1,577 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "ar",
+    "revision_id": 76528147,
+    "source_sha256": "b8292f75a5bdf7d10d60a2073411edc3d2ba0eabf7f8ef5fb97f01da7d5d7437",
+    "html_sha256": "e2011ab67c5fb04da0c3cbf686c71ee7ff2347bb4938d8d3a5492b8755b7ba41",
+    "window": [
+      368,
+      8368
+    ]
+  },
+  "provenance": {
+    "agent": "d035-eval-ar-h1",
+    "started_at": "2026-11-03T09:00:00Z",
+    "finished_at": "2026-11-03T10:00:00Z",
+    "files_opened": [
+      {
+        "path": "ANNOTATION_GUIDE_v1.1.md",
+        "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+      },
+      {
+        "path": "packets/ar-76528147/packet.json",
+        "sha256": "268fc428d69c76505a7fe40c0c1ffd30bcdf40d0aea5953ab29e073178427093"
+      },
+      {
+        "path": "packets/ar-76528147/source.wikitext",
+        "sha256": "b8292f75a5bdf7d10d60a2073411edc3d2ba0eabf7f8ef5fb97f01da7d5d7437"
+      },
+      {
+        "path": "packets/ar-76528147/render.html",
+        "sha256": "e2011ab67c5fb04da0c3cbf686c71ee7ff2347bb4938d8d3a5492b8755b7ba41"
+      }
+    ],
+    "tools": "python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand",
+    "unresolved": "The rendered page has 4 Wikidata-generated references (nasonline, ae-info, royalsociety URLs) in the infobox, not in source; not labelled. ref name=bristol (cp 99, infobox) starts before the window and has no use in the window. {{اعتبارا من|2016}} and {{اقتباس}} are not citations. bibcode= fields are not DOI/PMID."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "frs",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 575,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        },
+        {
+          "at": {
+            "cp": 1100,
+            "quote": "{{استشهاد بويب|مسار=http"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-frs-6",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Body = citation template + prose attribution notice + {{اقتباس}} containing a second citation template (Royal Society terms page); both templates listed."
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 1434,
+        "quote": "<ref name=\"MAE2\">{{استشهاد بوي"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "MAE2",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1451,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-MAE2-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 2402,
+        "quote": "<ref name=\"phd\">{{استشهاد بأطر"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "phd",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2418,
+            "quote": "{{استشهاد بأطروحة|الدرجة"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-phd-8",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 2689,
+        "quote": "<ref name=\"CashmanMarsh1988\">{"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "CashmanMarsh1988",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2718,
+            "quote": "{{استشهاد بدورية محكمة|ا"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-CashmanMarsh1988-9",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 3436,
+        "quote": "<ref name=\"axa\">{{استشهاد بويب"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "axa",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3452,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-axa-10",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 4309,
+        "quote": "<ref name=\"KlugCashman1996\">{{"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "KlugCashman1996",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 4337,
+            "quote": "{{استشهاد بدورية محكمة|ا"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-KlugCashman1996-11",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 4642,
+        "quote": "<ref name=\"googlescholar\">{{مع"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "googlescholar",
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-googlescholar-12",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Body is only {{معرف جوجل سكولار}}, an identifier/link template, not a citation template; read as unstructured (no citation template)."
+    },
+    {
+      "id": "d8",
+      "at": {
+        "cp": 5134,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 5139,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-13",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d9",
+      "at": {
+        "cp": 5563,
+        "quote": "<ref name=\"Cashman1992\">{{استش"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Cashman1992",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 5587,
+            "quote": "{{استشهاد بدورية محكمة|ا"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Cashman1992-14",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d10",
+      "at": {
+        "cp": 6105,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 6110,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-15",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d11",
+      "at": {
+        "cp": 6826,
+        "quote": "<ref name=\"mae\">{{استشهاد بويب"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "mae",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 6842,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-mae-16",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d12",
+      "at": {
+        "cp": 7376,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 7381,
+            "quote": "{{استشهاد بويب\n| مسار = "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-17",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "binds_to": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-frs_6-0",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 1434,
+        "quote": "<ref name=\"MAE2\">{{استشهاد بوي"
+      },
+      "binds_to": {
+        "cp": 1434,
+        "quote": "<ref name=\"MAE2\">{{استشهاد بوي"
+      },
+      "render_ref_id": "cite_ref-MAE2_7-0",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 2402,
+        "quote": "<ref name=\"phd\">{{استشهاد بأطر"
+      },
+      "binds_to": {
+        "cp": 2402,
+        "quote": "<ref name=\"phd\">{{استشهاد بأطر"
+      },
+      "render_ref_id": "cite_ref-phd_8-0",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 2689,
+        "quote": "<ref name=\"CashmanMarsh1988\">{"
+      },
+      "binds_to": {
+        "cp": 2689,
+        "quote": "<ref name=\"CashmanMarsh1988\">{"
+      },
+      "render_ref_id": "cite_ref-CashmanMarsh1988_9-0",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 3436,
+        "quote": "<ref name=\"axa\">{{استشهاد بويب"
+      },
+      "binds_to": {
+        "cp": 3436,
+        "quote": "<ref name=\"axa\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-axa_10-0",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 4291,
+        "quote": "<ref name=\"frs\" /><ref name=\"K"
+      },
+      "binds_to": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-frs_6-1",
+      "notes": ""
+    },
+    {
+      "id": "u7",
+      "at": {
+        "cp": 4309,
+        "quote": "<ref name=\"KlugCashman1996\">{{"
+      },
+      "binds_to": {
+        "cp": 4309,
+        "quote": "<ref name=\"KlugCashman1996\">{{"
+      },
+      "render_ref_id": "cite_ref-KlugCashman1996_11-0",
+      "notes": ""
+    },
+    {
+      "id": "u8",
+      "at": {
+        "cp": 4642,
+        "quote": "<ref name=\"googlescholar\">{{مع"
+      },
+      "binds_to": {
+        "cp": 4642,
+        "quote": "<ref name=\"googlescholar\">{{مع"
+      },
+      "render_ref_id": "cite_ref-googlescholar_12-0",
+      "notes": ""
+    },
+    {
+      "id": "u9",
+      "at": {
+        "cp": 5134,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "binds_to": {
+        "cp": 5134,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "render_ref_id": "cite_ref-13",
+      "notes": ""
+    },
+    {
+      "id": "u10",
+      "at": {
+        "cp": 5563,
+        "quote": "<ref name=\"Cashman1992\">{{استش"
+      },
+      "binds_to": {
+        "cp": 5563,
+        "quote": "<ref name=\"Cashman1992\">{{استش"
+      },
+      "render_ref_id": "cite_ref-Cashman1992_14-0",
+      "notes": ""
+    },
+    {
+      "id": "u11",
+      "at": {
+        "cp": 6105,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "binds_to": {
+        "cp": 6105,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "render_ref_id": "cite_ref-15",
+      "notes": ""
+    },
+    {
+      "id": "u12",
+      "at": {
+        "cp": 6549,
+        "quote": "<ref name=\"frs\" /> {{اعتبارا م"
+      },
+      "binds_to": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-frs_6-2",
+      "notes": ""
+    },
+    {
+      "id": "u13",
+      "at": {
+        "cp": 6789,
+        "quote": "<ref name=\"frs\" /><ref name=\"M"
+      },
+      "binds_to": {
+        "cp": 559,
+        "quote": "<ref name=\"frs\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-frs_6-3",
+      "notes": ""
+    },
+    {
+      "id": "u14",
+      "at": {
+        "cp": 6807,
+        "quote": "<ref name=\"MAE2\" /><ref name=\""
+      },
+      "binds_to": {
+        "cp": 1434,
+        "quote": "<ref name=\"MAE2\">{{استشهاد بوي"
+      },
+      "render_ref_id": "cite_ref-MAE2_7-1",
+      "notes": ""
+    },
+    {
+      "id": "u15",
+      "at": {
+        "cp": 6826,
+        "quote": "<ref name=\"mae\">{{استشهاد بويب"
+      },
+      "binds_to": {
+        "cp": 6826,
+        "quote": "<ref name=\"mae\">{{استشهاد بويب"
+      },
+      "render_ref_id": "cite_ref-mae_16-0",
+      "notes": ""
+    },
+    {
+      "id": "u16",
+      "at": {
+        "cp": 7376,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "binds_to": {
+        "cp": 7376,
+        "quote": "<ref>{{استشهاد بويب\n| مسار = h"
+      },
+      "render_ref_id": "cite_ref-17",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 3119,
+        "quote": "10.1007/BF00375363"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1007/bf00375363",
+      "notes": "DOI= field of citation template (key lower-cased)"
+    },
+    {
+      "at": {
+        "cp": 4585,
+        "quote": "10.1007/s004450050128"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1007/s004450050128",
+      "notes": "DOI= field of citation template (key lower-cased)"
+    },
+    {
+      "at": {
+        "cp": 5963,
+        "quote": "10.1007/BF00306547"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1007/bf00306547",
+      "notes": "DOI= field of citation template (key lower-cased)"
+    }
+  ],
+  "unresolved_notes": [
+    "The rendered page has 4 Wikidata-generated references (nasonline, ae-info, royalsociety URLs) in the infobox, not in source; not labelled. ref name=bristol (cp 99, infobox) starts before the window and has no use in the window. {{اعتبارا من|2016}} and {{اقتباس}} are not citations. bibcode= fields are not DOI/PMID."
+  ],
+  "adjudication": {
+    "adjudicator": "d035-adj-ar-g1",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj-d035/ar-g1/out/decisions/ar-76528147.json",
+    "changed_items": []
+  }
+}
