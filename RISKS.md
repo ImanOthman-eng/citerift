@@ -693,6 +693,11 @@ definitions are distinguished (`docs/verification/stage-03/design/unit-semantics
 exposed confirmation data, the frozen scorer gives English G5c 1.000 and Arabic G5c 1.000. This is regression only,
 not a pass. This entry stays open until the prospective confirmation of D-035 is scored.
 
+Update 2026-11-03 (D-035 confirmation scored): on 24 unexposed English articles, unit precision is 179 / 180 = 0.994
+(95 % article-cluster interval 0.978 to 1.000) and unit recall 0.994; Arabic 1.000 and 0.992. G5c and G5d pass in
+both languages (`docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md`). The stage is still
+not verified, because of R-038. This entry stays open until the owner accepts the stage.
+
 ## R-037 — Stage 03 citation-unit classification (D-035): residual limits
 - Status: open
 - Severity: medium
@@ -753,3 +758,30 @@ reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.m
 - **Harvard link beside a plain citation without a locator** (review RV-12) is unresolved. The owner's directive asks
   that "a genuine plain-text citation in the same definition must be retained". It is retained as a unit only when
   it carries a link, DOI or PMID; otherwise it is reported. This trade-off is for the owner.
+
+## R-038 — Stage 03 reconciliation pairs repeated names inside a template's output in source order
+- Status: open
+- Severity: high
+- Kind: defect
+- Stage: 03
+
+In the prospective confirmation campaign of D-035 (candidate `fff0e5b`, adjudicated 2026-11-03), Arabic gate G6b
+fails: 2 false render attachments against the frozen limit max(1, 1 % of 184 engine links) = 1. Every other gate
+passes in both languages, including English G5c 0.994 and G5d 0.994.
+
+Both false attachments are in `ar-76814232`, an infobox that renders its U−B row before its B−V row. The named
+reference `Mallama2014` is defined in the B−V row and reused in the U−B row; the engine attached the first rendered
+marker to the definition and the second to the reuse, the reverse of the render. The locked label is correct and the
+adjudicator confirmed it. Cause: `src/citerift/wiki/reconcile.py` `_align_unordered` pairs the k-th source use of a
+name with its k-th rendered marker inside one template's output, although the template decides the rendered order
+(the function's own docstring). The two markers of one reference cannot be told apart in the render, so the pairing
+is a guess that is not reported as one. Both markers cite the same work; what is wrong is the source position each
+is attributed to. The code dates from `a29bb4e` (2026-10-29) and is unchanged by D-035. In the 204 retained extraction
+documents, 15 groups in 12 articles are paired this way; this is the only one known to be wrong (5 of the 12
+articles have scored render labels).
+
+The amendment of D-035 (section 8) forbids repair or rerun after the prediction run, so the defect is preserved and
+Stage 03 stays `IMPLEMENTED_NOT_VERIFIED`. A correction (abstain unless the render proves the order) needs a new owner
+authorization and a new prospective confirmation. Evidence:
+`docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md` section 5 and `DECISION_RECORD.md`
+there.

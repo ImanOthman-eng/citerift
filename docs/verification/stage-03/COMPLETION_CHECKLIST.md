@@ -69,3 +69,22 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
 - [x] Complete verification matrix at the final head (TEST_RESULTS.md section 7).
 - [ ] English G5c is 0.869 against 0.95, so no verification transition is recorded. The owner decides
   (`evaluation/confirmation-2026-11/DECISION_RECORD.md`). Acceptance and merge are the owner's.
+
+## 3 November: G5c semantic correction and one further confirmation (Claude Code, owner instruction D-035)
+
+- [x] Fail-first reproduction of the 19 English false positives (`design/unit-semantics/FAIL_FIRST_BEFORE.txt`);
+  citation-unit classes A-H, `unstructured_text` only on positive evidence (`design/unit-semantics/SEMANTIC_DECISION.md`).
+- [x] Differential checks on the 146 retained bundles; one independent adversarial review and a second independent
+  review, every confirmed finding fixed before the freeze (`design/unit-semantics/review/`, `review2/`).
+- [x] Prospective amendment and copied scripts (`1483024`); candidate `fff0e5b` frozen (`b1e069e`); exposure set
+  committed before the draw (`fdc8b66`).
+- [x] One bilingual campaign: draw, capture, AI evaluator labels locked before predictions, two reserve blocks for
+  English from locked counts, one prediction run, locked scores, adjudication (45 confirmed, 1 corrected), adjudicated
+  scores, intervals (`evaluation/confirmation-d035/campaign/REPORT.md`). 280 attempts, 9.2 MB.
+- [x] Evidence-integrity audit: 28 / 28 checks pass (`evaluation/confirmation-d035/campaign/audit/EVIDENCE_AUDIT.json`).
+- [x] English G5c 0.994 and G5d 0.994; Arabic 1.000 and 0.992.
+- [ ] **Arabic G6b fails** (2 false attachments against a limit of 1), caused by a verified engine defect (RISKS.md
+  R-038). No repair is allowed after the run, so no verification transition is recorded. The owner decides
+  (`evaluation/confirmation-d035/DECISION_RECORD.md`). Acceptance and merge are the owner's.
+- [x] Documents, decision record, RISKS.md R-038 and the R-036 update.
+- [x] Complete verification matrix at `6c499a7` (TEST_RESULTS.md section 8).

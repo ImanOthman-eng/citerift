@@ -547,3 +547,21 @@ stays `EXTRACTION_WORKER_FAILED`. Tests: `tests/stage03/test_wiki_mf1_tokenizer.
 peak that really reached the limit; the symptom without memory pressure; other exceptions). Which exception a real
 allocation failure raises depends on the memory layout: on CI's runners the same probe raised MemoryError, so the
 classification test does not depend on it (CI run 41647876812).
+
+## Known defect found by the D-035 confirmation (2026-11-03): repeated names inside one template's output
+
+Not changed: the amendment of D-035 forbids repair after the prediction run (RISKS.md R-038).
+
+Uses produced in a template's output are paired with markers of the same transclusion (MATHEMATICAL_MODEL.md
+section 5). The implementing function (`src/citerift/wiki/reconcile.py`, `_align_unordered`) states in its docstring
+that the template decides the rendered order, so names pair regardless of position. It does that for a name with one
+use. For a name with **more than one** use in one template's
+output, it pairs the k-th source use with the k-th rendered marker of that name, which is correct only when the
+template keeps source order. An infobox that renders its rows in another order swaps the attachments of those uses
+(`evaluation/confirmation-d035/campaign/REPORT.md` section 5). The two markers of one reference point to the same note
+and carry the same content, so the render cannot tell them apart.
+
+The behaviour this specification requires, and which the code does not yet implement: for a name with more than one
+use in one template's output, a pairing is accepted only when the render proves it; otherwise the uses are
+`abstained` with `RECONCILIATION_ABSTAINED`. Container, note and marker observations are not affected, because both
+uses belong to one container.

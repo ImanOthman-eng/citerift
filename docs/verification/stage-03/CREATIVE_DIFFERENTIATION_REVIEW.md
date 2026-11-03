@@ -239,3 +239,31 @@ English articles, one prediction run after the labels were locked.
 - **Gate not met:** English G5c (R-036). The ledger's `unstructured_text` kind is wider than the guide's
   `unstructured`; see SPECIFICATION 11.3.
 
+
+### 7.4 D-035 confirmation result (candidate `fff0e5b`, engine 1.1.0, adjudicated labels, 2026-11-03)
+
+Source: `evaluation/confirmation-d035/campaign/REPORT.md` and `scores/adjudicated.json` there. 24 Arabic and 24
+English unexposed articles, one prediction run after the labels were locked.
+
+| Measure | ar engine | ar B1 | en engine | en B1 |
+|---|---|---|---|---|
+| Rendered-footnote attachments, correct / wrong | 182 / **2** | 81 / 59 | 203 / 0 | 143 / 47 |
+| Use recall | 0.995 | 0.725 | 0.986 | 0.919 |
+| Definition recall | 1.000 | 0.765 | 1.000 | 0.815 |
+| Identifier recall | 0.967 (59/61) | 0.639 | 1.000 (60/60) | 0.700 |
+| Unit precision | 1.000 | 1.000 | **0.994** | 0.969 |
+
+**A/B/C relocation** of the annotated DOI occurrences (45 Arabic, 39 English):
+
+| Approach | Source relocated, ar | Source relocated, en | Rendered note, ar | Rendered note, en |
+|---|---|---|---|---|
+| (A) DOI plus revision URL | 39 correct; 6 ambiguous | 36 correct; 3 ambiguous | 30 correct; 14 failed; 1 ambiguous | 32 correct; 7 failed |
+| (C) full ledger | 43 correct; 2 failed | 39 correct | 27 correct; 1 unverifiable; 17 abstained | 32 correct; 7 unverifiable |
+
+- **Uses:** the ledger relocated 30 of 45 Arabic uses with none wrong, and 35 of 35 English uses with 3 wrong targets.
+- **Record size:** 131.3 kB against 4.6 kB (A) in Arabic, 123.0 kB against 4.2 kB in English.
+- **What the D-035 correction adds:** the citation-unit classes remove the English unit-precision gap of 7.3 (0.869
+  → 0.994 on fresh articles; B1 0.969), so in English the ledger now equals or exceeds B1 on every measure in the first table.
+- **What it does not establish:** Arabic G6b fails. Two of 184 Arabic render links are a same-reference swap inside
+  an infobox (RISKS.md R-038), against 59 wrong links for B1. The ledger's claim "no wrong rendered attachment" does
+  not hold on this sample; it holds in English (0 of 203).

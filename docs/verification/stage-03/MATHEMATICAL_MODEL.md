@@ -264,3 +264,21 @@ inside $b$. A candidate $c$ of $b$ that is not a template field gives $D$ when $
 profile wrappers, or when $b$ has letters or digits outside every template of $T_b$ and every ref starting in $b$
 (review 2, RV2-3). A candidate off a list line belongs to the list line on which the innermost template holding it
 starts (RV2-7).
+
+## D-035 confirmation estimates and the G6b computation (2026-11-03)
+
+The estimators are those of the confirmation-campaign section above, applied to 24 + 24 unexposed articles
+(`evaluation/confirmation-d035/campaign/scores/intervals.json`).
+
+**G6b.** With $L$ engine render links and $F$ false attachments, the frozen gate value is
+$F - \max(1, \lfloor 0.01\,L \rfloor)$, and the gate passes iff it is $\le 0$. Arabic: $L = 184$, $F = 2$, value
+$2 - 1 = 1$, fail. English: $L = 203$, $F = 0$, value $0 - 2 = -2$, pass. The exact two-sided 95 % Clopper-Pearson
+interval of the Arabic false-attachment rate, $2/184$, is $[0.0013, 0.0387]$; it is reported, not gated.
+
+**Model correction for section 5.** For a group of uses produced in one template's output, let $S_x$ and $R_x$ be the
+source uses and rendered markers with name $x$. The pairing of section 5 is fixed by name only when
+$|S_x| = |R_x| = 1$. When $|S_x| = |R_x| = k > 1$, the $k!$ bijections between $S_x$ and $R_x$ are indistinguishable
+by name and content, and the template, not source order, decides which one the render realizes. The specified
+rule is to accept a bijection only on evidence that excludes the others, and otherwise to abstain on all of $S_x$.
+The implementation at `fff0e5b` takes the order-preserving bijection instead (SPECIFICATION.md, "Known defect found
+by the D-035 confirmation").

@@ -139,3 +139,68 @@ cancelled), not test failures.
 
 Engineering verification is complete at `e6b3d7b`. It is not scientific acceptance: English G5c is unmet
 (`evaluation/confirmation-2026-11/DECISION_RECORD.md`), so no verification transition is recorded.
+
+## 8. D-035 confirmation campaign and complete verification matrix at `6c499a7` (owner instruction D-035, 2026-11-03)
+
+### 8.1 Revisions
+
+| Role | Revision |
+|---|---|
+| Confirmation candidate, frozen in `b1e069e` (`evaluation/confirmation-d035/MANIFEST.json`) | `fff0e5b` |
+| Complete verification matrix below | `6c499a724c6d690f72c1bd1caf2f1b5ea3befb55` |
+
+`git diff fff0e5b 6c499a7 -- src schemas pyproject.toml uv.lock tests` is empty: the engine verified here is the
+engine evaluated. Only campaign evidence and documents are added after the candidate.
+
+### 8.2 Matrix
+
+Each suite ran in its own clean detached worktree of `6c499a7` (`git status --porcelain` empty before and after),
+after `uv sync --locked --python <version>` (`run_suite.sh.txt`). The other checks ran in the main worktree at
+`6c499a7` with an empty `git status --porcelain`. Reports: `final-checks/6c499a7/`.
+
+| Check | Result |
+|---|---|
+| Complete suite, Python 3.12.3 (`python -P -m pytest -p no:cacheprovider --citerift-report`) | **1972 passed**, 0 failed or skipped, 627 s, exit 0 (`pytest-3.12.txt`) |
+| Complete suite, Python 3.13.18 | **1972 passed**, 0 failed or skipped, 580 s, exit 0 (`pytest-3.13.txt`) |
+| By suite marker (both versions) | unit 531, integration 324, negative 844, regression 600, reproducibility 14, security 372, contracts 103, simulation 82 (`test-report-*.json`) |
+| `citerift-gov check-report` on both reports | 0 problems each (`check-report-*.txt`) |
+| `ruff check .` | All checks passed |
+| `ruff format --check .` | 345 files already formatted |
+| `mypy` | no issues in 52 source files |
+| `citerift-gov check`, `render-status --check` | 0 errors, 0 warnings; PROJECT_STATUS.md up to date |
+| `uv lock --check` | consistent |
+| `citerift.contracts.validate check-schemas` | 2 schemas checked, 0 problems |
+| Dependency audit (`uv export --locked --all-groups`, `pip-audit --strict --disable-pip --require-hashes`) | No known vulnerabilities found |
+| Protected paths against `94ac4f8` (Stage 00/02 code and tests, `.github`, governance code and schemas, `GOVERNANCE.md`, `CLAUDE.md`) | no change (`protected-paths.json`) |
+| Installed wheel (`uv build --wheel`; Python 3.12 venv with the hash-checked locked runtime dependencies; external schema copy; relocated bundles; `wheel_smoke.py.txt`, `wheel_and_sims.sh.txt`) | SMOKE PASS. The module loads from site-packages. The three earlier cases pass as before. Three D-035 campaign bundles (`ar-9335702`, partial, no render; `en-1473997`, reserve block 2; `ar-10469946`, the G6b infobox article) extract, verify and replay, and **all three extractions are byte-identical** to the committed campaign predictions |
+| Simulations: fetch policy 5000 / 20261028; reconciliation 200 / 20261028; campaign driver 2000 / 20261028 | 0 failures each; all three **byte-identical** to the runs at `e6b3d7b` (`sims-exit.txt`) |
+
+**Test changes since the last externally reviewed head `f88bdd7`.** Every change is in `tests/stage03/`. New files:
+`test_g5c_unit_semantics.py`, `test_g5c_review2.py`, `test_confirmation_d035_scripts.py`. Modified:
+`test_wiki_mf1_tokenizer.py` (additions only: the MF-1 v3 classification tests) and
+`fixtures/observed/expected.json` (the two expected extraction digests, which change with the engine version 1.1.0;
+every other expected value is unchanged, `11bb5b2`). No test was skipped, removed or weakened.
+
+### 8.3 Campaign evidence
+
+| Item | Result | Evidence |
+|---|---|---|
+| Gates, adjudicated labels | en: every G1-G7 and minimum passes (G5c 0.994, G5d 0.994). ar: every gate passes except **G6b (2 false attachments, limit 1)** | `evaluation/confirmation-d035/campaign/REPORT.md` section 4 |
+| G8 verify / G10 replay | 48 / 48 exit 0 / 48 / 48 exit 0 at `fff0e5b` | `campaign/prediction/runs.json` |
+| G9 acquisition | 48 / 48 recorded; 47 complete, 1 partial (ar 23 / 24 with render) | `campaign/capture/capture_states.json` |
+| G11 synthetic challenge | passes (part of the complete suite above) | `pytest-*.txt` |
+| Score reproduction | `locked.json` and `adjudicated.json` byte-identical on re-run | `campaign/audit/EVIDENCE_AUDIT.json`, check 9 |
+| Evidence integrity | 28 / 28 checks pass | `campaign/audit/EVIDENCE_AUDIT.json` |
+
+### 8.4 GitHub CI
+
+The run on the final pull-request head is given in the pull request #5 description and the owner handoff, because a
+commit cannot contain its own CI run. The `ci-gate` run on `b8d9834` failed the Stage 00 secret scan; the cause and
+its handling are in `evaluation/confirmation-d035/campaign/REPORT.md` section 6. Other runs on intermediate heads of
+2026-11-03 that show `ci-gate` failures were cancelled by a newer push.
+
+### 8.5 What these results do not show
+
+Engineering verification is complete at `6c499a7`. It is not scientific acceptance: Arabic G6b is unmet because of a
+verified engine defect (RISKS.md R-038; `evaluation/confirmation-d035/DECISION_RECORD.md`), so no verification
+transition is recorded.

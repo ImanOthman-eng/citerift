@@ -145,3 +145,22 @@ All three simulations were run at `e6b3d7b`, whose engine equals the confirmatio
 
 The real campaign used the same driver: 54 articles complete, 5 of them on a second run after the first ended with `ATTEMPTS_EXHAUSTED` (3 failed, 2 partial), 263 attempts
 (`evaluation/confirmation-2026-11/campaign/capture/`). These simulations are synthetic; they make no request.
+
+## Simulation addendum, 2026-11-03 (owner instruction D-035)
+
+All three simulations were run again at `6c499a7`, whose `src/`, `schemas/`, `pyproject.toml` and `uv.lock` equal
+the D-035 candidate `fff0e5b` (`final-checks/6c499a7/`): fetch policy 5000 / 20261028, reconciliation perturbation
+200 / 20261028 and campaign driver 2000 / 20261028. Each has 0 failures, and each output is **byte-identical** to the
+run at `e6b3d7b` (D-034). The D-035 correction changes citation-unit classification, which none of the three
+simulates.
+
+**Same-reference swaps observed on a real article.** Section 3 measured 107 same-reference swaps when a marker is
+moved and left the real frequency to the holdout. The D-035 holdout observed the first one: in `ar-76814232` an
+infobox renders its rows in another order than the source, and the two uses of `Mallama2014` were attached to each
+other's markers. G6b counts both, and Arabic G6b fails (`evaluation/confirmation-d035/campaign/REPORT.md` section 5;
+RISKS.md R-038). The simulation does not generate template output whose rows are reordered, so it neither predicted
+nor excluded this case. A correction would need such a perturbation in the simulation.
+
+The D-035 campaign used the same capture driver: 48 articles, 47 complete (6 on a second run) and 1 partial
+(`ar-9335702`, source only, `ATTEMPTS_EXHAUSTED` in both runs), 280 attempts including the draw
+(`evaluation/confirmation-d035/campaign/capture/`).
