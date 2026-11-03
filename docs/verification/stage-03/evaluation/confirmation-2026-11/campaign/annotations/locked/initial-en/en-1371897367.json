@@ -1,0 +1,447 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1371897367,
+  "source_sha256": "1e42336da7a39b066ec04382c3b1fd84a45d5c2e00e203b90a4285506c8fa716",
+  "html_sha256": "99fd00b5bae11a56b62e5d0312a138734582afc2d2f48c4a9914df1bfc7ccdff",
+  "window": [
+   0,
+   3877
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h2",
+  "started_at": "2026-11-03T01:58:30Z",
+  "finished_at": "2026-11-03T01:58:30Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1371897367/source.wikitext",
+    "sha256": "1e42336da7a39b066ec04382c3b1fd84a45d5c2e00e203b90a4285506c8fa716"
+   },
+   {
+    "path": "packets/en-1371897367/render.html",
+    "sha256": "99fd00b5bae11a56b62e5d0312a138734582afc2d2f48c4a9914df1bfc7ccdff"
+   },
+   {
+    "path": "packets/en-1371897367/packet.json",
+    "sha256": "97966430c20ebf762d2345ba800c0e4d0784e2203ff0a45ededadf62d862e137"
+   }
+  ],
+  "tools": "python3 -I with stdlib re/json and lxml (list sup[typeof=mw:Extension/ref] and li[id^=cite_note] from render.html; regex search of source.wikitext for <ref, {{cite, doi, PMID); location verification text[cp:cp+len(quote)]==quote; build script in tools/. Labels decided by hand.",
+  "unresolved": "none beyond notes"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 196,
+    "quote": "<ref>K. J. Gabriel"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 386,
+    "quote": "<ref>Cleopatra"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 618,
+    "quote": "<ref>Moghimi, M. J. Chattergoon"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1363,
+    "quote": "<ref>{{cite journal|last1=Bifano"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1368,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 1588,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J.|last2"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1593,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "This <ref> starts on a new line directly after the previous </ref>; still a normal unnamed reference."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 1983,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J|title=MO"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1988,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 2365,
+    "quote": "<ref>{{cite web|url=http://www.imagine"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2370,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 2496,
+    "quote": "<ref>{{cite web|url=http://www.bridger"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2501,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 2704,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. Dickensheets"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 3085,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. R."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 3360,
+    "quote": "<ref>{{cite book|last1=Bansal"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3365,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 196,
+    "quote": "<ref>K. J. Gabriel"
+   },
+   "binds_to": {
+    "cp": 196,
+    "quote": "<ref>K. J. Gabriel"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 386,
+    "quote": "<ref>Cleopatra"
+   },
+   "binds_to": {
+    "cp": 386,
+    "quote": "<ref>Cleopatra"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 618,
+    "quote": "<ref>Moghimi, M. J. Chattergoon"
+   },
+   "binds_to": {
+    "cp": 618,
+    "quote": "<ref>Moghimi, M. J. Chattergoon"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1363,
+    "quote": "<ref>{{cite journal|last1=Bifano"
+   },
+   "binds_to": {
+    "cp": 1363,
+    "quote": "<ref>{{cite journal|last1=Bifano"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1588,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J.|last2"
+   },
+   "binds_to": {
+    "cp": 1588,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J.|last2"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 1983,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J|title=MO"
+   },
+   "binds_to": {
+    "cp": 1983,
+    "quote": "<ref>{{cite journal|last1=Moghimi|first1=Mohammad J|title=MO"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2365,
+    "quote": "<ref>{{cite web|url=http://www.imagine"
+   },
+   "binds_to": {
+    "cp": 2365,
+    "quote": "<ref>{{cite web|url=http://www.imagine"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 2496,
+    "quote": "<ref>{{cite web|url=http://www.bridger"
+   },
+   "binds_to": {
+    "cp": 2496,
+    "quote": "<ref>{{cite web|url=http://www.bridger"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 2704,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. Dickensheets"
+   },
+   "binds_to": {
+    "cp": 2704,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. Dickensheets"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 3085,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. R."
+   },
+   "binds_to": {
+    "cp": 3085,
+    "quote": "<ref>Moghimi, M. J. Wilson, C. R."
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 3360,
+    "quote": "<ref>{{cite book|last1=Bansal"
+   },
+   "binds_to": {
+    "cp": 3360,
+    "quote": "<ref>{{cite book|last1=Bansal"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1527,
+    "quote": "10.1038/nphoton.2010.297"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/nphoton.2010.297",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1933,
+    "quote": "10.1109/JMEMS.2013.2251320"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1109/jmems.2013.2251320",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2216,
+    "quote": "10.1117/1.3574129"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1117/1.3574129",
+   "notes": "|doi-access=free present."
+  }
+ ],
+ "unresolved_notes": []
+}
