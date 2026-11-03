@@ -341,3 +341,23 @@ the C tokenizer, with new tests for the bare-URL punctuation and the crash class
 
 This was the one focused follow-up review the instruction allows. No further code review is made before the study;
 the evidence-integrity audit follows the study.
+
+## Findings under D-034 outside the reviews, and from the confirmation campaign (2026-11-02 to 2026-11-03)
+
+The audits of owner instruction sections 4 and 5 found four engine defects before the freeze. Each was reproduced
+before its fix and is described with its tests in the audit named.
+
+| Id | Severity | Finding | Disposition |
+|---|---|---|---|
+| D-1 | medium | An HTML character reference in a bare URL inside a template field (`url=…&amp;…`) stayed in the DOI key. | **Fixed** in `8753448` (`design/doi-boundaries/AUDIT.md`). |
+| D-2 | medium | A `%2F` separator in a publisher `/doi/` path gave no identifier. | **Fixed** in `8753448` (same audit). |
+| G-1 | medium | An attempt interrupted by a killed process left no record, so the next process could send a request inside the minimum interval. | **Fixed** in `7c2b260`: a provisional record on acquire (`design/retry-after/AUDIT.md`). |
+| G-2 | low | The HTTP-date reader accepted unknown or missing zones and trailing text, guessing a wait. | **Fixed** in `7c2b260`: strict forms, anything else `RETRY_AFTER_UNREADABLE`. |
+
+Found during the campaign, after the freeze (`../evaluation/confirmation-2026-11/campaign/REPORT.md` section 6):
+
+| Id | Severity | Finding | Disposition |
+|---|---|---|---|
+| CF-1 | medium (evaluation tool) | The frozen `disagreements_v2.py` raised RecursionError on a challenge split: its replacement of `evaluate.load_bundle` was called again through `warning_challenge.load`. | The frozen file is unchanged. A wrapper (`../evaluation/confirmation-2026-11/scripts/disagreements_challenge_fix.py`) binds the challenge loader to the original function. `tests/stage03/test_disagreements_challenge_fix.py`: the frozen function recurses; the wrapper lists the challenge split; on the gate split it equals the frozen output (also checked on the campaign data). No engine code involved. |
+| CF-2 | low (campaign tool) | `make_packets.py` resolved the repository root one level too high, and would have given reserve blocks the challenge window and tag. | Fixed before any packet was built; the reserve windows were checked to equal the frozen window. |
+| CF-3 | specification divergence | English G5c fails (0.869): SPECIFICATION 11.3 makes every definition without a template unit `unstructured_text`, while the guide gives `unstructured` only to a plain-text citation. 19 definitions (Harvard short-citation links, explanatory notes, two unlisted citation-like templates) differ. | **Not changed.** No repair after the prediction run (amendment section 8). Reported as the campaign's failure; the owner decides (`../evaluation/confirmation-2026-11/DECISION_RECORD.md`). |

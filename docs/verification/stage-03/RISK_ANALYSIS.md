@@ -76,3 +76,13 @@ Browser visibility remains not_evaluated; DOI/PMID co-reporting does not establi
 | R-03-CEIL | Interrupted or unreported runs are charged their worst case (6 attempts, 64 MiB each), so about four of them stop the campaign at the 300 MiB ceiling with no real use (review R7, RF7-7). | Published bundles are adopted with their real cost; gate deferrals cost zero; the driver holds one lock and journals every run (`review/REVIEW_FINDINGS.md`, R6 and R7). | A campaign stopped this way ends with fewer articles; uncaptured articles keep their states and the minimums may stay unmet. |
 | R-03-MF1 | A native tokenizer crash is classified by a second run with the pure-Python tokenizer; a page that crashes for a reason other than memory takes up to two worker runs and is reported `EXTRACTION_WORKER_FAILED`. | The second run's output is never an extraction; every extraction uses the C tokenizer (`review/failfirst/mf-1/BEFORE_AND_AFTER.md`). | Such pages give no extraction; they count as failures in G9. |
 | E9 | Labels come from AI evaluators (Claude Sonnet) and adjudication from a smaller model (Claude Haiku), all from one vendor. No human gold. | Separate contexts working outside the repository, raw packets only, locks committed before predictions; three distinct models (amendment section 7). | Shared-vendor blind spots cannot be ruled out; adjudication quality is limited by the smaller model. Reported with the results. |
+
+## Risk addendum, 2026-11-03 (confirmation campaign results)
+
+| Id | Risk | Control | Residual |
+|---|---|---|---|
+| E10 | The engine's `unstructured_text` unit is wider than the guide's `unstructured` (Harvard short-citation links, notes that cite nothing, unlisted citation-like templates); English G5c is 0.869. | Reported as measured, with no repair after the run (RISKS.md R-036). | A downstream stage that reads `unstructured_text` as "cites a work in plain text" would over-count citations. Stage 04 must not. |
+| E11 | No Arabic article in the frame transcludes a warning template, so Arabic warning detection has no field evidence. | Stated as a limitation; never counted as a pass. | Arabic warning detection rests on synthetic and fixture tests only. |
+| E12 | Six English positives give a wide sensitivity interval ([0.541, 1.000]). | Denominator and interval reported. | Real-article sensitivity below 0.9 cannot be excluded. |
+| E13 | The harness attached the repository `CLAUDE.md` to every evaluator and adjudicator context; one evaluator wrote one scratch file outside its work directory. | Both are recorded with the transcripts' audit (`campaign/annotations/EVALUATOR_AUDIT.json`). The file holds no label, output or result. | Independence is procedural and AI-only (E9). |
+

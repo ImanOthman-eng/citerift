@@ -151,3 +151,23 @@ One-sided 95 % Clopper-Pearson upper bounds (section 8) for the adjudicated fina
 
 The RF-60 figure is measured on exposed data, so it describes the repair on the data it was designed from. It is not
 an independent estimate.
+
+## Confirmation-campaign estimates (2026-11-03)
+
+The estimands of amendment section 8, computed by
+`evaluation/confirmation-2026-11/scripts/intervals.py` with the frozen scorer's aggregate, seed 20261028 and 2000
+article-cluster resamples (`evaluation/confirmation-2026-11/campaign/scores/intervals.json`, adjudicated labels):
+
+| Language | Measure | Observed | 95 % interval |
+|---|---|---|---|
+| ar | identifier recall | 98 / 103 = 0.951 | bootstrap [0.857, 0.992] |
+| ar | key errors (G2) | 0 / 98 | one-sided upper 3.0 % |
+| ar | promotions (G3a) | 0 / 98 | one-sided upper 3.0 % |
+| en | unit precision (G5c) | 126 / 145 = 0.869 | bootstrap [0.718, 0.971] |
+| en | key errors (G2) | 0 / 48 | one-sided upper 6.1 % |
+| en | promotions (G3a) | 0 / 48 | one-sided upper 6.1 % |
+| en | warning sensitivity (challenge) | 6 / 6 | Clopper-Pearson [0.541, 1.000] |
+
+At these sample sizes a zero count bounds the rate only at 3 % (n = 98) and 6 % (n = 48), not at the 1 % of the G2
+threshold. Gates are decided on the point values, as frozen; the intervals are reported, not gated.
+

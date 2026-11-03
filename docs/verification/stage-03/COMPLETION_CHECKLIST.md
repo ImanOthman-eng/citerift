@@ -53,3 +53,19 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
 - [x] TEST_RESULTS.md and HANDOFF.md, with the complete verification matrix at the final code commit (`8c6fe9f`): 1690 passed on Python 3.12 and 3.13; static checks, audit, wheel smoke and CI green.
 - [ ] Owner decision on the unmet gate 03-G (`evaluation/final/DECISION_RECORD.md`). No verification transition is
   recorded while 03-G is unmet. Acceptance and merge are the owner's.
+
+## 2 to 3 November: corrective engineering and confirmation campaign (Claude Code, owner instruction D-034)
+
+- [x] Short-footnote semantics decided and implemented (`design/sfn-semantics/`); DOI audit with D-1 and D-2 fixed;
+  Retry-After audit with G-1 and G-2 fixed and a resumable campaign driver.
+- [x] One adversarial review (R6) and one focused review (R7); every confirmed finding fixed before the freeze.
+- [x] Prospective protocol (amendment, guide 1.1, briefs) committed; candidate `3e51792` frozen; exposure set
+  committed before the draw.
+- [x] One campaign: draw, capture, AI evaluator labels locked before predictions, reserve decisions from locked
+  counts, one prediction run, locked scores, adjudication, adjudicated scores, intervals, warning challenge
+  (`evaluation/confirmation-2026-11/campaign/REPORT.md`). 263 attempts, 12.6 MB.
+- [x] Evidence-integrity audit: 27 / 27 checks pass (`campaign/audit/EVIDENCE_AUDIT.json`).
+- [x] Documents updated, decision record written, RISKS.md R-036 added.
+- [x] Complete verification matrix at the final head (TEST_RESULTS.md section 7).
+- [ ] English G5c is 0.869 against 0.95, so no verification transition is recorded. The owner decides
+  (`evaluation/confirmation-2026-11/DECISION_RECORD.md`). Acceptance and merge are the owner's.

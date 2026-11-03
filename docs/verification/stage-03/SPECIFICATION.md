@@ -196,6 +196,13 @@ starts with "Cite " or "استشهاد ب" (family `unlisted`), is a `citation_t
 `unstructured_text`. Parameter names are compared after trimming; a repeated parameter is recorded in
 `duplicate_params`.
 
+`unstructured_text` therefore means "no recognised citation template unit", not "a plain-text citation": a body
+that is only a Harvard short-citation link (`{{harvnb}}`), an explanatory note that cites nothing, or a citation-like
+template the profile does not list is also `unstructured_text`. The annotation guide's `unstructured` is narrower.
+The confirmation campaign measured the difference as English G5c 0.869 (RISKS.md R-036,
+`evaluation/confirmation-2026-11/DECISION_RECORD.md`). This text records the behaviour of the frozen candidate; it is
+not changed after the campaign.
+
 ### 11.4 Identifier occurrences
 
 Candidates: identifier fields of templates (`doi`, `DOI`, `دوي`, `biorxiv`, `medrxiv`, `pmid`, `PMID`), wrapper
@@ -395,3 +402,21 @@ Read-only access to two fixed hosts; no credentials; no paid or new services; no
 resolver or PubMed pages; no execution of retained HTML; no path from titles; no symlink following when reading or
 publishing; no replacement of existing outputs; strict JSON; no `eval`/`exec`/`shell=True` in the engine (tested);
 the worker refuses network connections (tested). `RISK_ANALYSIS.md` lists residual risks.
+
+## Changes under owner instruction D-034 (2026-11-02), all before the confirmation freeze `3e51792`
+
+- **Short-footnote identity** follows Module:Footnotes: a call's note name is built from its positional arguments
+  1-5 and its page, pages and location values, as the module builds it (`design/sfn-semantics/SEMANTIC_DECISION.md`).
+  Calls with the same name and group are one `generated_note` container. Every call is a use and keeps its own
+  source anchor; the reference definition is the first call in source order (decision D2). When two containers point
+  to one rendered note, the note is withdrawn from both (an abstention, never an attachment; R-03-SFN).
+- **DOI boundaries** D-1 and D-2 (section 11.4 above, `design/doi-boundaries/AUDIT.md`).
+- **Retry-After and the network gate**: an attempt is recorded when it starts (G-1), and a Retry-After HTTP-date is
+  read only in its strict forms, anything else stopping the capture as `RETRY_AFTER_UNREADABLE` (G-2)
+  (`design/retry-after/AUDIT.md`).
+- **Tokenizer (MF-1 v2)**: extraction uses mwparserfromhell's C tokenizer; a native crash of the worker is classified
+  by a second run with the pure-Python tokenizer under the same limits, whose output is never an extraction
+  (`review/failfirst/mf-1/BEFORE_AND_AFTER.md`).
+- Review fixes R6 and R7 (`review/REVIEW_FINDINGS.md`).
+
+The engine has not changed since `3e51792`.

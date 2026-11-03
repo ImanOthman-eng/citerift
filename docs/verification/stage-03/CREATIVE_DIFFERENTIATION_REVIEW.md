@@ -209,3 +209,33 @@ There are 16 articles per language. The engine was run once, after the labels we
   - The English key error rate is 0.0192, from one Wiley page-view URL, since repaired after exposure as RF-60.
 - **Consequence for the claim.** The ledger's advantage over B1 is measured. The protocol's full extraction claim is
   not established for Arabic identifiers (`evaluation/final/DECISION_RECORD.md`).
+
+### 7.3 Confirmation campaign result (candidate `3e51792`, adjudicated labels, 2026-11-03)
+
+Source: `evaluation/confirmation-2026-11/campaign/REPORT.md` and `scores/adjudicated.json` there. 24 Arabic and 20
+English articles, one prediction run after the labels were locked.
+
+| Measure | ar engine | ar B1 | en engine | en B1 |
+|---|---|---|---|---|
+| Rendered-footnote attachments, correct / wrong | 189 / 0 | 113 / 76 | 274 / 0 | 168 / 76 |
+| Use recall | 1.000 | 1.000 | 1.000 | 0.891 |
+| Definition recall | 1.000 | 0.850 | 0.987 | 0.828 |
+| Identifier recall | 0.951 (98/103) | 0.466 | 0.960 (48/50) | 0.800 |
+| Unit precision | 0.988 | 0.985 | **0.869** | 0.885 |
+
+**A/B/C relocation** of the annotated DOI occurrences (62 Arabic, 42 English):
+
+| Approach | Source relocated, ar | Source relocated, en | Rendered note, ar | Rendered note, en |
+|---|---|---|---|---|
+| (A) DOI plus revision URL | 44 correct; 18 ambiguous | 34 correct; 8 ambiguous | 35 correct; 25 failed; 2 ambiguous | 40 correct; 2 failed |
+| (C) full ledger | 58 correct; 4 failed | 40 correct; 2 failed | 35 correct; 12 unverifiable; 15 abstained | 38 correct; 2 unverifiable; 2 abstained |
+
+- **Uses:** the ledger relocated 45 of 55 Arabic and 48 of 50 English uses, with 1 wrong target in each language.
+- **Record size:** 177.0 kB against 6.4 kB (A) in Arabic, 132.9 kB against 4.5 kB in English.
+- **What the ledger adds:** no wrong rendered attachment where B1 makes 76 in each language, and higher identifier
+  and definition recall. It does not improve unit precision in English, where B1 is slightly higher.
+- **Warnings:** on enwiki, 6 of 6 labelled retraction and concern warnings were recognised, with no fabricated
+  negative and no false warning. No Arabic positive exists in the frame.
+- **Gate not met:** English G5c (R-036). The ledger's `unstructured_text` kind is wider than the guide's
+  `unstructured`; see SPECIFICATION 11.3.
+

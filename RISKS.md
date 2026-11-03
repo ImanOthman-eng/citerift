@@ -644,6 +644,10 @@ No unresolved wrong citation, binding, render attachment, promotion or fabricate
 `docs/verification/stage-03/evaluation/final/DECISION_RECORD.md`. The owner decides between a narrowed claim, a new
 prospective evaluation, or non-acceptance. The executor cannot record a technical verification while 03-G is unmet.
 
+Update 2026-11-03: the owner chose a new prospective evaluation (D-034). In that campaign, at candidate `3e51792`, none
+of the three failures above recurs (Arabic G5a 1.000, Arabic identifiers 103, English G2 0.000), but a different gate
+fails (R-036). This entry stays open until the owner decides on R-036.
+
 ## R-035 — Stage 03 declared support boundaries observed in the final campaign
 - Status: open
 - Severity: low
@@ -660,3 +664,20 @@ Observed in the adjudicated final campaign and dispositioned without code change
 - **List-defined `<ref>` tags** are not counted as uses.
 - **`verify` does not re-derive identifier decoding;** only `replay` does.
 - **URL forms the page-view rule does not cover:** `%20` and `;jsessionid` after a route keep the route.
+
+## R-036 — Stage 03 confirmation campaign: English unit precision does not meet G5c
+- Status: open
+- Severity: high
+- Kind: limitation
+- Stage: 03
+
+In the prospective confirmation campaign of D-034 (candidate `3e51792`, adjudicated 2026-11-03), English unit
+precision is 126 / 145 = 0.869 against 0.95 (95 % article-cluster interval 0.718 to 0.971). Every other gate passes
+in both languages, and both languages reach every minimum denominator.
+
+All 19 false positives are `unstructured_text` units. SPECIFICATION 11.3 gives that kind to every definition with no
+template unit; the annotation guide gives `unstructured` only to a plain-text citation. The definitions concerned are
+Harvard short-citation links (13), explanatory notes that cite nothing (4) and two unlisted citation-like templates;
+11 are in one article. None of the 19 involves an identifier, binding, render link or marker. No repair is allowed after the
+prediction run. Evidence: `docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/REPORT.md` and
+`DECISION_RECORD.md` there. The owner decides; the executor records no verification while G5c is unmet.
