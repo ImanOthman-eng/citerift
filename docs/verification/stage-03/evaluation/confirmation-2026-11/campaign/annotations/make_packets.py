@@ -1,6 +1,8 @@
 """Evaluator packets for the initial draw (AMENDMENT_2026-11-02_CONFIRMATION.md section 7).
 
-Usage (from the repository root): python make_packets.py PLAN_JSON OUT_DIR
+Usage (from the repository root): python make_packets.py PLAN_JSON OUT_DIR [SPLIT ...]
+
+With SPLIT names, only the articles of those splits are packed (a reserve block after its decision).
 
 Articles are taken in plan order and split, per wiki and split, into evaluator instances of at most 6 articles
 (sizes as even as possible). Holdout packets come from ``evaluate.py packets`` (frozen window), challenge packets from
@@ -27,8 +29,11 @@ def main() -> int:
     out = Path(sys.argv[2])
     capture = Path(sys.argv[1]).parent / "capture"
     states = json.loads((capture / "capture_states.json").read_text(encoding="utf-8"))["articles"]
+    only = set(sys.argv[3:])
     groups: dict[tuple[str, str], list[str]] = {}
     for a in plan["articles"]:
+        if only and a["split"] not in only:
+            continue
         key = f"{a['split']}/{a['wiki']}-{a['page_id']}"
         final = states[key]["final"]
         if final.get("status") != "complete":
@@ -43,8 +48,9 @@ def main() -> int:
         for i in range(n):
             part = bundles[start : start + size + (i < extra)]
             start += len(part)
-            name = f"{wiki}-{'h' if split == 'holdout' else 'c'}{i + 1}"
-            tool = EVALUATE if split == "holdout" else CHALLENGE
+            tag = {"holdout": "h", "challenge": "c"}.get(split, split.replace("reserve", "r") + "-")
+            name = f"{wiki}-{tag}{i + 1}"
+            tool = CHALLENGE if split == "challenge" else EVALUATE
             subprocess.run(  # noqa: S603 - fixed argv
                 [sys.executable, str(tool), "packets", str(out / name / "packets"), *part], check=True
             )
