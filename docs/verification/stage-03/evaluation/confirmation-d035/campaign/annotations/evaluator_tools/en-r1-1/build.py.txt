@@ -1,0 +1,42 @@
+import json,sys,datetime
+START=datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r1-1'
+GUIDE='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+def run(rev, build):
+    d=f'{BASE}/packets/en-{rev}'
+    pk=json.load(open(d+'/packet.json'))
+    t=open(d+'/source.wikitext',encoding='utf-8').read()
+    def L(needle,nth=0):
+        i=-1
+        for _ in range(nth+1):
+            i=t.index(needle,i+1)
+        assert t[i:i+len(needle)]==needle
+        return {"cp":i,"quote":needle}
+    D=[];U=[];I=[];UN=[]
+    build(t,L,D,U,I,UN)
+    a,b=pk['window']['cp_start'],pk['window']['cp_end']
+    for x in D+U: assert t[x['at']['cp']:].startswith(x['at']['quote'])
+    for x in D: x['in_window']=a<=x['at']['cp']<b
+    out={"format":"citerift-stage03-annotation-v1",
+     "article":{"wiki":"en","revision_id":rev,"source_sha256":pk['source_sha256'],"html_sha256":pk['html_sha256'],"window":[a,b]},
+     "provenance":{"agent":"d035-eval-en-r1-1","started_at":START,"finished_at":datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+      "files_opened":[{"path":"ANNOTATION_GUIDE_v1.1.md","sha256":GUIDE},
+        {"path":f"packets/en-{rev}/source.wikitext","sha256":pk['source_sha256']},
+        {"path":f"packets/en-{rev}/render.html","sha256":pk['html_sha256']},
+        {"path":f"packets/en-{rev}/packet.json","sha256":"(not listed in packet.json itself; read for window and hashes)"}],
+      "tools":"Read/Bash; python3 -I standard library and lxml, only to search wikitext, check quote positions and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*> elements. All labels decided by hand.",
+      "unresolved":"; ".join(UN) if UN else "nothing undecided beyond the notes"},
+     "definitions":D,"uses":U,"identifiers":[],"unresolved_notes":UN}
+    for x in I:
+        assert t[x['at']['cp']:].startswith(x['at']['quote'])
+        assert a<=x['at']['cp']<b
+        out['identifiers'].append(x)
+    for k,v in out.items(): pass
+    json.dump(out,open(f'{BASE}/out/en-{rev}.json','w'),ensure_ascii=False,indent=1)
+    print(rev,len(D),len(U),len(I),sum(1 for x in D if x['in_window']))
+def dfn(id,at,kind,name,group,templates,unstr,rid,marker_text,notes="",marker="none"):
+    return {"id":id,"at":at,"kind":kind,"name":name,"group":group,"templates":[{"at":x} for x in templates],"unstructured":unstr,"render_note_id":rid,"marker":marker,"marker_text":marker_text,"notes":notes}
+def use(id,at,binds,rid,notes=""):
+    return {"id":id,"at":at,"binds_to":binds,"render_ref_id":rid,"notes":notes}
+def ident(at,scheme,role,key,notes=""):
+    return {"at":at,"scheme":scheme,"role":role,"key":key,"notes":notes}

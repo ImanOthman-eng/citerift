@@ -77,3 +77,16 @@ Their `notes`, `unresolved_notes` and reports hold the full list. The recurring 
   matched by rendered text; ar-h2 found no marker for one call and set its `render_ref_id` to null.
 - `ar-70571172` (no render): every `render_note_id` and `render_ref_id` null and every marker `cannot_tell`.
 - No instance found a retraction, expression of concern or correction marker.
+
+## Reserve block 1 (enwiki)
+
+- Reserve decision 1 (`../reserve/step-1.json`, from the committed locks only) named block `reserve1` for enwiki
+  (identifiers 31 of 50). It was captured (capture-2, all four complete at the first run), packed with the frozen
+  window (`packets-reserve1/`, committed in `d9ad58a`) and labelled by one more instance, d035-eval-en-r1-1 (Claude
+  Sonnet, same brief), transcript 16:24:41 to 16:26:51 UTC.
+- Its four files passed `validate_labels.py` at first submission and are locked in `locked/reserve1-en`
+  (`LOCK_RECORD.json`: candidate `fff0e5b`, amendment `1483024`).
+- The isolation audit covers it with the same result: no flagged call; `CLAUDE.md` attached by the harness.
+- Its judgement calls: list-defined `<ref>` tags counted as uses of themselves with `render_ref_id` null;
+  `{{NRDB species}}` counted as a citation template; a hand-written Further reading item without template or
+  identifier not labelled (guide 3.4).

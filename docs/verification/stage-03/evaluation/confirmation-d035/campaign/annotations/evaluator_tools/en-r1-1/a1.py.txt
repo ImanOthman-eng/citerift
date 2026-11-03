@@ -1,0 +1,16 @@
+import sys;sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r1-1/tools')
+from build import *
+def b(t,L,D,U,I,UN):
+    iu=L('<ref name=iucn>');rd=L('<ref name=RDB>');be=L('<ref>[[species:Bo Beolens');sp=L('<ref name=Spawlsetal2018>');sp2=L('<ref name=Spawlsetal2018/>')
+    D.append(dfn('d1',iu,'note','iucn','',[L('{{cite iucn')],False,'cite_note-iucn-1','Spawls, S.; Branch, W.R.; Malonza, P. (2022) [amended version of 2014 assessment]. "Meizodon krameri ". IUCN Red List of Threatened Species. 2022 e.T13265429A217783846. doi:10.2305/IUCN.UK.2022-1.RLTS.T13265429A217783846.en. Retrieved 9 June 2023.','Inside the status_ref parameter of {{Speciesbox}}; written in the article source, so labelled.'))
+    D.append(dfn('d2',rd,'note','RDB','',[L('{{NRDB species')],False,'cite_note-RDB-2','Meizodon krameri at the Reptarium.cz Reptile Database','{{NRDB species}} is a Reptile Database citation-style template (renders a link to the database entry); counted as a citation template as its purpose is to format a source link. Judgement call.'))
+    D.append(dfn('d3',be,'note',None,'',[],True,'cite_note-3','Beolens B, Watkins M, Grayson M (2011). The Eponym Dictionary of Reptiles. ... ISBN 978-1-4214-0135-5. (Meizodon krameri, p. 146).','Hand-written reference; {{ISBN}} is not a DOI/PMID.'))
+    D.append(dfn('d4',sp,'note','Spawlsetal2018','',[],True,'cite_note-Spawlsetal2018-4','Spawls S, Howell K, Hinkel H, Menegon M (2018). A Field Guide to East African Reptiles, Second Edition. ... ISBN 978-1-399-40481-5. (Meizodon krameri, pp. 480-481).','Hand-written reference; reused once by a self-closing tag.'))
+    U.append(use('u1',iu,iu,'cite_ref-iucn_1-0'))
+    U.append(use('u2',rd,rd,'cite_ref-RDB_2-0'))
+    U.append(use('u3',be,be,'cite_ref-3'))
+    U.append(use('u4',sp,sp,'cite_ref-Spawlsetal2018_4-0'))
+    U.append(use('u5',sp2,sp,'cite_ref-Spawlsetal2018_4-1','Self-closing reuse.'))
+    I.append(ident(L('10.2305/IUCN.UK.2022-1.RLTS.T13265429A217783846.en'),'doi','primary_citation_field','10.2305/iucn.uk.2022-1.rlts.t13265429a217783846.en'))
+    UN.append('Further reading item "*[[species:Beat Schätti|Schätti B]] (1985)..." is a hand-written list item with no citation template and no DOI/PMID, so under 3.4 it is not a bibliography entry; not labelled.')
+run(1354690436,b)

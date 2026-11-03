@@ -1,0 +1,12 @@
+import sys,lxml.html,re
+d=sys.argv[1]
+h=lxml.html.parse(f'packets/{d}/render.html').getroot()
+for s in h.iter('sup'):
+    if 'mw:Extension/ref' in (s.get('typeof') or ''):
+        print('SUP',s.get('id'),(s.get('data-mw') or '')[:130], '|', s.text_content())
+for li in h.iter('li'):
+    i=li.get('id') or ''
+    if i.startswith('cite_note'):
+        print('LI',i,re.sub(r'\s+',' ',li.text_content())[:200])
+for a in h.iter('a'):
+    if a.get('class') and 'new' in a.get('class').split(): print('RED',a.get('title'))
