@@ -90,3 +90,15 @@ Their `notes`, `unresolved_notes` and reports hold the full list. The recurring 
 - Its judgement calls: list-defined `<ref>` tags counted as uses of themselves with `render_ref_id` null;
   `{{NRDB species}}` counted as a citation template; a hand-written Further reading item without template or
   identifier not labelled (guide 3.4).
+
+## Reserve block 2 (enwiki)
+
+- Reserve decision 2 (`../reserve/step-2.json`) named block `reserve2` for enwiki (identifiers 37 of 50). It was
+  captured (capture-3, all four complete at the first run), packed (`packets-reserve2/`, committed in `f4e0162`) and
+  labelled by d035-eval-en-r2-1 (Claude Sonnet, same brief), transcript 16:31:38 to 16:35:09 UTC.
+- Its four files passed `validate_labels.py` at first submission and are locked in `locked/reserve2-en`.
+- The isolation audit covers it: no flagged call; `CLAUDE.md` attached by the harness. Its final report ends with the
+  governance line "NOT VERIFIED" from that file, which has no meaning for the labels.
+- Its judgement calls: refs inside HTML comments not labelled as definitions or uses, their identifiers
+  `not_a_target`; `{{HESA citation}}` counted as a citation template; hand-written list items without template or
+  identifier not labelled (guide 3.4).

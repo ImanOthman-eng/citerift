@@ -1,0 +1,49 @@
+import json,hashlib,re
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r2-1/'
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+class A:
+    def __init__(s,rev):
+        s.rev=rev; s.dir=BASE+'packets/en-%d/'%rev
+        s.pk=json.load(open(s.dir+'packet.json'))
+        s.text=open(s.dir+'source.wikitext',encoding='utf-8').read()
+        assert hashlib.sha256(open(s.dir+'source.wikitext','rb').read()).hexdigest()==s.pk['source_sha256']
+        s.defs=[];s.uses=[];s.ids=[];s.unres=[]
+        s.w=(s.pk['window']['cp_start'],s.pk['window']['cp_end'])
+    def L(s,needle,nth=0,after=0,n=60):
+        """location of the nth occurrence of needle at/after cp 'after'"""
+        i=after-1
+        for _ in range(nth+1):
+            i=s.text.find(needle,i+1)
+            assert i>=0,(needle,nth,after)
+        q=s.text[i:i+max(len(needle),min(n,len(needle)+0))]
+        return {'cp':i,'quote':q}
+    def chk(s,l):
+        assert s.text[l['cp']:l['cp']+len(l['quote'])]==l['quote'],l
+        return l
+    def D(s,id,at,kind,name=None,group="",templates=(),unstructured=False,note_id=None,marker='none',marker_text=None,notes=''):
+        at=s.chk(at); 
+        s.defs.append({'id':id,'at':at,'in_window':s.w[0]<=at['cp']<s.w[1],'kind':kind,'name':name,'group':group,
+          'templates':[{'at':s.chk(t)} for t in templates],'unstructured':unstructured,'render_note_id':note_id,
+          'marker':marker,'marker_text':marker_text,'notes':notes})
+    def U(s,id,at,bind,rid=None,notes=''):
+        s.chk(at)
+        if isinstance(bind,dict): s.chk(bind)
+        s.uses.append({'id':id,'at':at,'binds_to':bind,'render_ref_id':rid,'notes':notes})
+    def I(s,at,scheme,role,key,notes=''):
+        s.ids.append({'at':s.chk(at),'scheme':scheme,'role':role,'key':key,'notes':notes})
+    def write(s,started,tools,unresolved,extra_files=()):
+        pk=s.pk
+        files=[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE_SHA},
+          {'path':'packets/en-%d/source.wikitext'%s.rev,'sha256':pk['source_sha256']},
+          {'path':'packets/en-%d/render.html'%s.rev,'sha256':pk['html_sha256']},
+          {'path':'packets/en-%d/packet.json'%s.rev,'sha256':None,'note':'packet metadata; hash not given in packet.json itself'}]
+        import datetime
+        out={'format':'citerift-stage03-annotation-v1',
+         'article':{'wiki':'en','revision_id':s.rev,'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':list(s.w)},
+         'provenance':{'agent':'d035-eval-en-r2-1','started_at':started,'finished_at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+           'files_opened':files,'tools':tools,'unresolved':unresolved},
+         'definitions':s.defs,'uses':s.uses,'identifiers':s.ids,'unresolved_notes':s.unres}
+        json.dump(out,open(BASE+'out/en-%d.json'%s.rev,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
+        # in-window counts
+        print(s.rev,'defs',sum(d['in_window'] for d in s.defs),'(total',len(s.defs),') uses',len(s.uses),'ids',len(s.ids))
+TOOLS='python3 -I stdlib + lxml: str.find location search, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note], sha256sum; position checks text[cp:cp+len(quote)]==quote'
