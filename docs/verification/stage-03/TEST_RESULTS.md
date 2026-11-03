@@ -75,3 +75,67 @@ No existing test was modified, skipped or removed by this work. The only test ch
   (`evaluation/final/DECISION_RECORD.md`).
 - RF-60 is evaluated only on exposed and synthetic data.
 - Only Linux was exercised. Browser visibility is never evaluated.
+
+## 7. Confirmation campaign and complete verification matrix at `e6b3d7b` (owner instruction D-034, 2026-11-03)
+
+Sections 1 to 6 describe the work of 2026-11-02 under D-033. This section is the release verification of D-034
+(owner instruction section 10).
+
+### 7.1 Revisions
+
+| Role | Revision |
+|---|---|
+| Confirmation candidate, frozen in `0d46ba4` (`MANIFEST.json`) | `3e51792a38e227bd986bfbe63f16605d303c6d6c` |
+| Complete verification matrix below | `e6b3d7b78dc2d6026923fc4da1c858925f827beb` |
+
+`git diff 3e51792 e6b3d7b -- src schemas pyproject.toml uv.lock` is empty: the engine verified here is the engine
+evaluated. Only documents and retained reports are added after `e6b3d7b`.
+
+### 7.2 Matrix
+
+Each suite ran in its own clean detached worktree of `e6b3d7b` (`git status --porcelain` empty before and after),
+after `uv sync --locked --python <version>` (`run_suite.sh.txt`). The other checks ran in the main worktree at
+`e6b3d7b` with an empty `git status --porcelain`. Reports: `final-checks/e6b3d7b/`.
+
+| Check | Result |
+|---|---|
+| Complete suite, Python 3.12.3 (`python -P -m pytest -p no:cacheprovider --citerift-report`) | **1834 passed**, 0 failed or skipped, 532 s, exit 0 (`pytest-3.12.txt`) |
+| Complete suite, Python 3.13.18 | **1834 passed**, 0 failed or skipped, 516 s, exit 0 (`pytest-3.13.txt`) |
+| `citerift-gov check-report` on both reports (report copied to an untracked path in the clean worktree) | 0 problems each (`check-report-*.txt`) |
+| `ruff check .` | All checks passed |
+| `ruff format --check .` | 316 files already formatted |
+| `mypy` | no issues in 51 source files |
+| `citerift-gov check`, `render-status --check` | 0 errors, 0 warnings; PROJECT_STATUS.md up to date |
+| `uv lock --check` | consistent |
+| `citerift.contracts.validate check-schemas` | 2 schemas checked, 0 problems |
+| Dependency audit (`uv export --locked --all-groups`, `pip-audit --strict --disable-pip --require-hashes`) | No known vulnerabilities found |
+| Protected paths against `94ac4f8` (Stage 00/02 code, `.github`, governance code and schemas, `GOVERNANCE.md`, `CLAUDE.md`) | no change (`protected-paths.json`) |
+| Installed wheel (`uv build --wheel`; Python 3.12 venv with the hash-checked locked runtime dependencies; external schema copy; relocated bundles; `wheel_smoke.py.txt`) | SMOKE PASS. The module loads from site-packages. The three earlier cases pass as before; two confirmation-campaign bundles (ar-76524679, exit 6 `partial`; en-1383058278, retraction challenge) extract, verify and replay, and **both extractions are byte-identical** to the committed campaign predictions |
+| Simulations: fetch policy 5000 / 20261028; reconciliation 200 / 20261028; campaign driver 2000 / 20261028 | 0 failures each; the first two byte-identical to the earlier outputs (SIMULATION_REPORT.md, 2026-11-03 addendum) |
+
+The suite includes the security, negative, contract and schema, cross-language, Retry-After, worker-containment,
+reproducibility, offline verify and replay and synthetic challenge (G11) tests by marker, and the campaign tools'
+tests. Since `eca4389`, every test change is a new file under `tests/stage03/`; no test that existed at `eca4389`
+was modified, skipped or removed.
+
+### 7.3 Campaign evidence
+
+| Item | Result | Evidence |
+|---|---|---|
+| Gates, adjudicated labels | ar: all G1-G7 pass. en: all pass except **G5c 0.869 < 0.95** | `evaluation/confirmation-2026-11/campaign/REPORT.md` section 4 |
+| G8 verify / G10 replay | 54 / 54 exit 0 / 54 / 54 exit 0 at `3e51792` | `campaign/prediction/runs.json` |
+| G9 acquisition | 54 / 54 complete | `campaign/capture/capture_states.json` |
+| Score reproduction | `locked.json`, `adjudicated.json`, `challenge.json` byte-identical on re-run | `campaign/audit/EVIDENCE_AUDIT.json`, check 9 |
+| Evidence integrity | 27 / 27 checks pass | `campaign/audit/EVIDENCE_AUDIT.json` |
+
+### 7.4 GitHub CI
+
+The run on the final pull-request head is given in the pull request #5 description and the owner handoff, because
+a commit cannot contain its own CI run. Runs on intermediate heads of 2026-11-03 show `ci-gate` failures that are
+cancellations by a newer push (for example run 41566509876 on `cfd10b2`: verify 3.13 success, verify 3.12
+cancelled), not test failures.
+
+### 7.5 What these results do not show
+
+Engineering verification is complete at `e6b3d7b`. It is not scientific acceptance: English G5c is unmet
+(`evaluation/confirmation-2026-11/DECISION_RECORD.md`), so no verification transition is recorded.

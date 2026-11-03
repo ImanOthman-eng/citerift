@@ -127,3 +127,21 @@ Both simulations were rerun at the code of `2eccc0e` (RF-60 and the R5 fixes):
 RF-60 changes identifier decoding only, which neither simulation exercises. The decoding rule is covered by
 `tests/stage03/test_wiki_rf60_page_view_segment.py` and by the real-bundle comparison in `review/failfirst/rf-60/`.
 Outputs: `final-checks/sim-fetch.json`, `final-checks/sim-reconcile.json`. These are synthetic observations.
+
+## Simulation addendum, 2026-11-03 (owner instruction D-034)
+
+All three simulations were run at `e6b3d7b`, whose engine equals the confirmation candidate `3e51792`
+(`final-checks/e6b3d7b/`):
+
+- **Fetch policy** (5000 sequences, seed 20261028): 0 failures; output byte-identical to the 2026-10-30 and 2026-11-02
+  runs. The G-1 and G-2 fixes change the network gate's record and the HTTP-date reader, which this simulation's
+  scripted transport does not reach with an unreadable date; both are covered by `test_wiki_retry_after_audit.py`.
+- **Reconciliation perturbation** (200 articles, seed 20261028): output byte-identical to the earlier runs.
+- **Campaign capture driver** (`simulations/stage03/campaign_driver_sim.py`, added in `7c2b260`; 2000 sequences, seed
+  20261028): 0 failures of invariants C1-C10 (bundle paths never reused; no run before a deferral's `not_before`; no
+  complete article run again; bounded runs and restarts; ceilings with interrupted runs charged at their worst case;
+  journal and state agree; one driver at a time; torn journal lines kept; no run after the acquisition limit; an
+  unreadable Retry-After ends the article). The sequences included 1607 kills and 825 torn journal lines.
+
+The real campaign used the same driver: 54 articles complete, 5 of them on a second run after the first ended with `ATTEMPTS_EXHAUSTED` (3 failed, 2 partial), 263 attempts
+(`evaluation/confirmation-2026-11/campaign/capture/`). These simulations are synthetic; they make no request.

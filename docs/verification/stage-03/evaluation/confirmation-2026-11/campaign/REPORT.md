@@ -33,7 +33,7 @@ Each step is a commit; `audit/EVIDENCE_AUDIT.json` re-checks the order from git 
 
 **Resources.** 263 HTTP attempts and 12,593,218 accepted bytes for the whole campaign, including the draw, against
 ceilings of 500 attempts and 300 MiB (recomputed from `capture/captures.jsonl` by the audit, check 8). All 54
-articles were captured `complete` (49 on the first run, 5 on a second run after a deferral).
+articles were captured `complete` (49 on the first run; 5 on a second run, after a first run that ended with `ATTEMPTS_EXHAUSTED`: 3 failed, 2 partial).
 
 ## 2. Sample and denominators
 
