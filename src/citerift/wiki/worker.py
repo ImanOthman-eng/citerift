@@ -48,6 +48,41 @@ def forbid_network() -> None:
     _socket.getaddrinfo = _no_network
 
 
+# CPython 3.12 and 3.13 raise this SystemError, not MemoryError, when a Python call cannot get a new frame-stack
+# chunk under the address-space limit (the chunk allocation fails without setting an exception). Which allocation
+# fails first depends on the memory layout, so a memory failure can surface this way instead of as MemoryError.
+_NO_EXCEPTION_SET = "error return without exception set"
+# A frame-stack chunk is 16 KiB unless one frame needs more; 1 MiB of headroom covers it with a wide margin.
+_PEAK_MARGIN_BYTES = 1 << 20
+
+
+def _peak_address_space() -> int | None:
+    """The process's peak virtual size in bytes (Linux ``VmPeak``), or None where it cannot be read."""
+    try:
+        with open("/proc/self/status", encoding="ascii") as fh:
+            for line in fh:
+                if line.startswith("VmPeak:"):
+                    return int(line.split()[1]) * 1024
+    except (OSError, ValueError, IndexError):
+        return None
+    return None
+
+
+def interpreter_memory_failure(exc: BaseException) -> bool:
+    """Whether a SystemError is the interpreter's own allocation failure at the address-space limit: the message
+    of a call that failed without setting an exception, and a peak address space that reached the limit. Without
+    both (or where either cannot be read) the error stays a worker failure."""
+    if type(exc) is not SystemError or str(exc) != _NO_EXCEPTION_SET:
+        return False
+    import resource  # noqa: PLC0415 - POSIX only; the parent runs this worker on POSIX only
+
+    limit = resource.getrlimit(resource.RLIMIT_AS)[0]
+    peak = _peak_address_space()
+    if limit == resource.RLIM_INFINITY or peak is None:
+        return False
+    return peak >= limit - _PEAK_MARGIN_BYTES
+
+
 def main(argv: list[str]) -> int:
     forbid_network()
     # Imported only after the network is closed, so that no import can open a connection first.
@@ -74,6 +109,11 @@ def main(argv: list[str]) -> int:
         doc = failure_document(None, config, exc.issue.code, exc.issue.detail)
     except MemoryError:
         print("MemoryError", file=sys.stderr)
+        return 3
+    except SystemError as exc:
+        if not interpreter_memory_failure(exc):
+            raise
+        print("MemoryError (interpreter frame allocation failed at the address-space limit)", file=sys.stderr)
         return 3
     sys.stdout.buffer.write(canonical_bytes(doc))
     sys.stdout.buffer.flush()

@@ -435,45 +435,74 @@ Section 11.3 is replaced, for engine 1.1.0, by the following.
 
 **Unit kinds:**
 - `citation_template` and `external_data_template`: as before, with one exception. A template that is a citation
-  template only by the RF-37 name rule and whose render is a short-citation link is not a unit.
+  template only by the RF-37 name rule (the annotation guide's "Cite …", "استشهاد …") and whose own render is a
+  short-citation link is not a unit. Without that evidence the name rule stands (review RV-3).
 - `unsupported_citation_template` (new): a template the profile does not list whose own Parsoid output contains a
-  CS1/CS2 `<cite class="citation">`, called inside a ref and not inside another template of that ref. It is kept
-  with its source anchors and the issue `CITATION_TEMPLATE_UNSUPPORTED`; its fields are not read. An identifier in
-  it keeps the role `unresolved`.
+  CS1/CS2 `<cite class="citation">`. It must be called inside a ref and not inside another template of that ref, or
+  at the top level of a bibliography entry. It must hold no citation, external-data or unclassified template in its
+  arguments, whose output Parsoid would render inside it (review RV-1). It is kept with its source anchors and the
+  issue `CITATION_TEMPLATE_UNSUPPORTED`; its fields are not read. An identifier in it keeps the role `unresolved`.
 - `unstructured_text`: only on positive evidence. For a definition with no template unit:
   1. its own external link or DOI/PMID (in text or in a profile wrapper) gives D;
   2. else its own text (a letter or a digit outside every template called in the ref):
-     - beside a short-citation link: unresolved;
-     - in an `efn` explanatory note: no unit;
+     - beside a template whose render is read and is a short-citation link, citation markup it cannot own, or
+       absent (no usable render, no output of its own, conflicting outputs): unresolved (review RV-4);
+     - in an `efn` explanatory note: unresolved (review RV-6);
      - otherwise: D;
-  3. else:
+  3. else, letters or digits only inside a tag the engine does not read (`<nowiki>`, `<pre>`, …): unresolved (RV-8);
+  4. else:
      - only short-citation links: no unit;
      - any other template: unresolved;
      - nothing: no unit.
 
-  Short footnotes and bibliography entries are unchanged.
+  Short footnotes are unchanged. A bibliography entry without a template unit is D only when an identifier on its
+  line is its own text, a resolver link or in a profile identifier wrapper. When its identifiers are only fields of
+  other templates, it is unresolved ("bibliography entry: …").
 
-**Unresolved definitions** carry `UNIT_CLASSIFICATION_UNRESOLVED`, a warning, with the container id and
-"definition N: reason". The same entry is in the exception ledger. No unit is claimed.
+**Unresolved definitions** carry `UNIT_CLASSIFICATION_UNRESOLVED`, a warning, with the container id and either
+"definition N: reason" or "bibliography entry: reason". The reason names the evidence actually read (review RV-10).
+The same entry is in the exception ledger. No unit is claimed.
+
+**Issue entities.** Containers and units are renumbered by position after they are made. Every issue made before a
+renumbering is remapped, so it names the entity it was made for (review RV-2; the defect predates D-035).
 
 **Render evidence** (`units.py`):
 - *citation markup*: a `<cite class="citation">`;
 - *short-citation link*: a link to a `#CITEREF…` anchor.
 
-It is read from the template's single-template transclusion, paired by canonical target and parameters. There is no
-evidence when the template:
+It is read from the template's single-template transclusion, paired by canonical target and parameters. It is read
+for these templates:
+- inside a ref, called outside any other template of that ref: unclassified and RF-37 templates;
+- outside refs: unclassified templates at the top level that hold an identifier.
+
+There is no evidence when the template:
 - has no output of its own;
 - has several parts;
 - was not expanded (parser-limit warning);
 - has calls whose outputs disagree.
 
-Without a usable render, no unlisted template is established as a citation construct.
+Without a usable render, no template the profile does not classify is established as a citation construct.
 
 **Compatibility:**
-- extraction `schema_version` 1.1.0, an additive enum value;
+- extraction `schema_version` 1.1.0 and schema `x-citerift-version` 1.1.0, an additive enum value;
+- capture code unchanged; a capture records the package version as its client version, so new captures say 1.1.0;
+- reconciliation unchanged: a bibliography entry with a G unit is matched to the render through its template, as an
+  entry with a listed citation template is;
 - engine `citerift-wiki` 1.1.0, so a 1.0.0 document replays as `REPLAY_IDENTITY_MISMATCH`;
 - profile unchanged (same digest);
 - the frozen scorer, guide and protocol unchanged.
 
 The render is now read before the source model is built. Render read failures are reported as before.
 
+
+**Memory failures reported by the interpreter (MF-1 v3).** CPython 3.12 and 3.13 raise
+`SystemError: error return without exception set`, not `MemoryError`, when a Python call cannot get a new frame-stack
+chunk under the address-space limit. Which allocation fails first depends on the memory layout. With engine 1.1.0 the
+first failure of the 20000-reference memory test moved from the C tokenizer (a SIGSEGV, handled by MF-1 v2) to such a
+frame allocation, so the run was reported as `EXTRACTION_WORKER_FAILED` (3 of 3 runs).
+
+The worker now treats that exact SystemError as a memory failure (exit code 3, `EXTRACTION_MEMORY_EXCEEDED`) only
+when the process's peak address space (`VmPeak`) reached the limit within 1 MiB. A frame-stack chunk is 16 KiB unless
+one frame needs more. Any other SystemError, the same message far below the limit, or a platform without `/proc`
+stays `EXTRACTION_WORKER_FAILED`. Tests: `tests/stage03/test_wiki_mf1_tokenizer.py` (a real allocation failure at
+the limit; the symptom without memory pressure; other exceptions).

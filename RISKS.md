@@ -707,9 +707,31 @@ reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.m
 - **Short link with text.** A Harvard link beside plain text without a link or identifier is unresolved. A genuine
   second citation written there without a locator is reported, not claimed as a unit.
 - **Render dependence.** Without a usable render, and for refs inside template parameters (which have no render
-  output of their own), every template-only definition is unresolved.
+  output of their own), every template-only definition is unresolved, and so is plain text beside an unclassified
+  template (review RV-4). In the 146 retained bundles this changed two definitions, both in one capture whose
+  render failed (`en-906156-a1`).
+- **Plain citation inside a formatting or identifier template** (`{{lang}}`, `{{nowrap}}`, `{{ISBN}}`, `{{URL}}` with
+  no text outside) is unresolved, not `unstructured_text` (review RV-7). It is reported, not lost.
+- **Unclassified template without citation markup beside text** (review RV-5). `{{NRDB species}} Retrieved …` or
+  `{{IUCN2008|…}}` followed by commentary stays `unstructured_text`, while `{{ISBN}}`, `{{Webarchive}}` or
+  `{{US patent}}` beside a hand-written citation must stay `unstructured_text`. Nothing in the markup or the render
+  separates the two without a word list. Exposed instance: run 1, Arabic holdout `ar-2700573-a1` (adjudicated
+  `unstructured: false`). The reviewer counted about 1 such case among about 170 D units with an unclassified
+  template beside text.
+- **Arabic Harvard template without evidence** (review RV-3). `استشهاد بهارفارد دون أقواس` matches the guide's name
+  rule ("استشهاد …", RF-37). It is not a unit only when its own render shows a short-citation link. With no render,
+  nested in another template or in a template parameter it stays a `citation_template` unit, while `{{harvnb}}` in
+  the same place is unresolved. Requiring render evidence for every name-rule template was implemented and measured:
+  it removed 21 genuine CS1 wrappers (Cite iucn in taxobox parameters, Cite patent, Cite simbad, …) from the retained
+  bundles, a recall loss, so it was not adopted.
+- **No record for E and empty definitions** (review RV-11). A definition that is only a short-citation link, or
+  empty, gets no unit and no issue. Stage 04 cannot tell these apart from each other from the extraction alone.
+  Unresolved definitions are named by container, with the definition number in the issue detail ("definition N").
 - **Evidence marks.** Two render marks decide unlisted templates: CS1/CS2 `<cite class="citation">` and `#CITEREF`
   links. A citation module that writes neither, or a non-citation template that writes `<cite class="citation">`,
   would be misclassified. Neither was observed in the 146 retained bundles.
-- **`efn` only.** Only the profile's `efn` family is treated as explanatory. `{{refn}}` is treated like `<ref>`, and no
-  retained bundle contains it.
+- **`efn` only.** Only the profile's `efn` family is treated as possibly explanatory: its text without a locator is
+  unresolved, not dropped (review RV-6). `{{refn}}` is treated like `<ref>`, and no retained bundle contains it.
+- **Harvard link beside a plain citation without a locator** (review RV-12) is unresolved. The owner's directive asks
+  that "a genuine plain-text citation in the same definition must be retained". It is retained as a unit only when
+  it carries a link, DOI or PMID; otherwise it is reported. This trade-off is for the owner.

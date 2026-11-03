@@ -1,0 +1,25 @@
+"""Arabic Harvard template (RF-37 unlisted family): render-dependent unit; asymmetry with {{harvnb}}."""
+from rvlib import *
+H = "استشهاد بهارفارد دون أقواس"
+text = f"أ<ref>{{{{{H}|فوكس|2002}}}}</ref>"
+inner = transclusion(5, H, {"1": "فوكس", "2": "2002"}, citeref("فوكس2002", "فوكس 2002"))
+show("ar harvard, render", run(text, one_note("أ", inner), "ar"), text)
+show("ar harvard, NO render", run(text, None, "ar"), text)
+t_en = "A<ref>{{harvnb|Fox|2002}}</ref>"
+show("en harvnb, NO render", run(t_en, None, "en"), t_en)
+# Arabic harvard inside a wrapper inside the ref (not outermost -> no evidence read)
+text2 = f"أ<ref>{{{{نص صغير|{{{{{H}|فوكس|2002}}}}}}}}</ref>"
+inner2 = transclusion(5, "نص صغير", {"1": f"{{{{{H}|فوكس|2002}}}}"}, citeref("فوكس2002", "فوكس 2002"), "small")
+show("ar harvard nested in wrapper, render", run(text2, one_note("أ", inner2), "ar"), text2)
+# Arabic harvard in an infobox-parameter ref (no own transclusion)
+text3 = f"{{{{صندوق معلومات شخص|ولادة=1945<ref>{{{{{H}|فوكس|2002}}}}</ref>}}}}"
+info = transclusion(1, "صندوق معلومات شخص", {"ولادة": f"1945<ref>{{{{{H}|فوكس|2002}}}}</ref>"},
+                    f"<table><tr><td>1945{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</td></tr></table>", "div")
+body3 = info + references([note_li("cite_note-1", ["cite_ref-1"], citeref("فوكس2002", "فوكس 2002"))])
+show("ar harvard in infobox param ref, render", run(text3, body3, "ar"), text3)
+# English harvnb in same position -> H
+text4 = "{{Infobox person|birth_date=1945<ref>{{harvnb|Fox|2002}}</ref>}}"
+info4 = transclusion(1, "Infobox person", {"birth_date": "1945<ref>{{harvnb|Fox|2002}}</ref>"},
+                    f"<table><tr><td>1945{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</td></tr></table>", "div")
+body4 = info4 + references([note_li("cite_note-1", ["cite_ref-1"], citeref("Fox2002", "Fox 2002"))])
+show("en harvnb in infobox param ref, render", run(text4, body4, "en"), text4)

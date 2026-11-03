@@ -1,0 +1,7 @@
+import sys, tempfile
+from pathlib import Path
+sys.path.insert(0, str(Path.cwd() / "tests/stage03"))
+from wiki_support import bundle, extract
+text2 = "A<ref>Smith, J. A book. 2001.</ref> B<ref>{{cite book |title=X |title=Y}}</ref>"
+doc = extract(bundle(Path(tempfile.mkdtemp()), text2, None))
+print([(u["id"], u["kind"]) for u in doc["units"]], [(i["code"], i["entities"]) for i in doc["issues"] if i["code"]=="DUPLICATE_TEMPLATE_PARAMETER"])

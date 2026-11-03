@@ -188,6 +188,9 @@ class SourceScan:
     # an external link at that level (SPECIFICATION.md 11.3, citation-unit classes; D-035).
     ref_text: set[int] = field(default_factory=set)
     ref_links: set[int] = field(default_factory=set)
+    # Refs whose own level holds a letter or a digit only inside a tag the engine does not read (``<nowiki>``,
+    # ``<pre>``, ``<math>``, …): ref index -> the first such tag. Such a ref is not empty (review RV-8).
+    ref_hidden: dict[int, str] = field(default_factory=dict)
 
 
 _ATTR_WS = re.compile(r"[\t\r\n ]+")
@@ -737,6 +740,13 @@ class Scanner:
                 return
             offset = self._contents_offset(node, start, end)
             if offset is not None and node.contents is not None:
+                if (
+                    ctx.ref is not None
+                    and ctx.ref not in self.scan.ref_hidden
+                    and self._own_level(ctx)
+                    and any(ch.isalnum() for ch in str(node.contents))
+                ):
+                    self.scan.ref_hidden[ctx.ref] = name
                 self._scan_excluded(offset, offset + len(str(node.contents)), ctx, f"tag:{name}")
             return
         if name == "ref" and not node.invalid:

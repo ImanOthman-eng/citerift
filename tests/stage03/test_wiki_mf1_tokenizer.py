@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import json
 import signal
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +20,7 @@ from wiki_support import bundle
 import citerift.wiki.source  # noqa: F401 - importing the engine must not change the tokenizer
 from citerift.wiki import extract as ex
 from citerift.wiki.extract import ExtractConfig, extract_bundle
+from citerift.wiki.worker import interpreter_memory_failure
 
 
 @pytest.mark.regression
@@ -92,3 +95,69 @@ def test_other_worker_failures_are_not_run_again(tmp_path: Path, monkeypatch: py
     calls = _scripted(monkeypatch, [FakeProc(1, b"Traceback\nValueError: x")])
     doc = extract_bundle(b)
     assert {i["code"] for i in doc["issues"]} == {"EXTRACTION_WORKER_FAILED"} and len(calls) == 1
+
+
+# CPython 3.12 and 3.13 report a frame-stack allocation failure under the address-space limit as
+# "SystemError: error return without exception set". The worker classifies it as a memory failure only when the
+# process's peak address space reached the limit (D-035 regression: the memory-limit tests above failed 3 of 3 runs
+# with EXTRACTION_WORKER_FAILED once the engine's memory layout changed).
+_PRESSURE = """
+import resource, sys
+sys.path.insert(0, sys.argv[1])
+from citerift.wiki.worker import interpreter_memory_failure
+sys.setrecursionlimit(100000)
+limit = 64 << 20
+resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
+hog = []
+def rec(n):
+    return 0 if n == 0 else rec(n - 1) + 1
+try:
+    while True:
+        hog.append(bytearray(256 << 10))
+except MemoryError:
+    pass
+hog.pop()
+try:
+    rec(5000)
+    print("no failure")
+except SystemError as exc:
+    del hog
+    print(type(exc).__name__, interpreter_memory_failure(exc))
+"""
+
+
+def _src() -> str:
+    return str(Path(ex.__file__).resolve().parents[2])
+
+
+@pytest.mark.regression
+@pytest.mark.skipif(not Path("/proc/self/status").exists(), reason="VmPeak is read from /proc (Linux)")
+def test_a_frame_allocation_failure_at_the_limit_is_a_memory_failure() -> None:
+    out = subprocess.run(
+        [sys.executable, "-I", "-c", _PRESSURE, _src()], capture_output=True, text=True, timeout=60, check=False
+    )
+    assert out.stdout.strip() == "SystemError True", out.stderr
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "exc",
+    [SystemError("error return without exception set"), SystemError("other"), RuntimeError("x"), MemoryError()],
+)
+def test_a_system_error_far_below_the_limit_is_not_a_memory_failure(exc: BaseException) -> None:
+    assert interpreter_memory_failure(exc) is False
+
+
+@pytest.mark.negative
+@pytest.mark.skipif(not Path("/proc/self/status").exists(), reason="VmPeak is read from /proc (Linux)")
+def test_the_symptom_without_memory_pressure_is_not_a_memory_failure() -> None:
+    code = (
+        "import resource, sys; sys.path.insert(0, sys.argv[1]); "
+        "from citerift.wiki.worker import interpreter_memory_failure; "
+        "resource.setrlimit(resource.RLIMIT_AS, (1 << 33, 1 << 33)); "
+        "print(interpreter_memory_failure(SystemError('error return without exception set')))"
+    )
+    out = subprocess.run(
+        [sys.executable, "-I", "-c", code, _src()], capture_output=True, text=True, timeout=60, check=False
+    )
+    assert out.stdout.strip() == "False", out.stderr

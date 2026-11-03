@@ -8,7 +8,7 @@ template's ``refs=`` is not a use. Conflicting definitions stay conflicting; not
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from citerift.wiki.identifiers import Decoded, decode
@@ -274,6 +274,7 @@ def build(
     for c in containers:
         c.id = renumber[c.id]
     ref_container = {k: renumber[v] for k, v in ref_container.items()}
+    issues = _remap_entities(issues, renumber)
     key_container = {(c.group, c.name): c for c in containers if c.name is not None}
     by_id = {c.id: c for c in containers}
 
@@ -387,6 +388,7 @@ def build(
             renumber[c.id] = new
         c.id = new
     ref_container = {k: renumber[v] for k, v in ref_container.items()}
+    issues = _remap_entities(issues, renumber)
     for u in uses:
         if u.container_id is not None:
             u.container_id = renumber[u.container_id]
@@ -399,8 +401,11 @@ def build(
     # Units -----------------------------------------------------------------------------------------------
     units: list[Unit] = []
     template_unit: dict[int, str] = {}
-    # A template that is a citation template only by the unlisted-family name rule (RF-37) and whose render is a
-    # short-citation link is a link to an entry elsewhere (class E), not a citation of its own.
+    # A template that is a citation template only by the unlisted-family name rule (RF-37, the annotation guide's
+    # "Cite …", "استشهاد …") and whose own render is a short-citation link is a link to an entry elsewhere (class E),
+    # not a citation of its own. Without that evidence the guide's name rule stands: requiring citation markup
+    # instead removed 21 genuine CS1 wrappers (Cite iucn in taxobox parameters, Cite patent, …) from the retained
+    # bundles, whose own output Parsoid does not separate (review RV-3, design/unit-semantics/review/DISPOSITIONS.md).
     unit_templates = [
         tpl
         for tpl in scan.templates
@@ -408,15 +413,20 @@ def build(
         and not tpl.excluded
         and not (tpl.family == "unlisted" and evidence.get(tpl.index) == SHORT_CITATION_LINK)
     ]
-    # G: a template the profile does not list whose render is a CS1/CS2 citation. It is a citation unit whose fields
-    # are not supported: kept with its anchors, never read as plain text (D-035).
+    # G: a template the profile does not list whose own render is a CS1/CS2 citation. It is a citation unit whose
+    # fields are not supported: kept with its anchors, never read as plain text (D-035). Parsoid renders a template
+    # nested in another as part of the outer one, so markup in the output of a template that holds a citation-like
+    # or unclassified template cannot be attributed to the outer one (review RV-1): such a template is not G.
+    # Outside refs, the same holds for a top-level template in a bibliography entry.
+    holders = _citation_like_holders(scan, templates)
     unit_templates += [
         tpl
         for tpl in scan.templates
         if tpl.kind == "other"
         and not tpl.excluded
         and evidence.get(tpl.index) == CITATION_MARKUP
-        and outermost_in_ref(tpl, templates)
+        and (outermost_in_ref(tpl, templates) or (tpl.ref is None and tpl.parent_template is None))
+        and tpl.index not in holders
     ]
     unit_templates.sort(key=lambda t: t.index)
     for tpl in unit_templates:
@@ -469,7 +479,15 @@ def build(
             own_candidates.setdefault(cand.ref, []).append(cand)
     for c in containers:
         if c.kind == "bibliography_entry":
-            if c.id not in with_template:
+            if c.id in with_template:
+                continue
+            # An entry without a template unit was made from an identifier on its line. It is a hand-written entry
+            # only when that identifier is its own text (or a profile identifier wrapper), not a field of a template
+            # the profile does not list (D-035: the absence of a recognized template is not evidence).
+            verdict, reason = _bibliography_entry(c, outside_cands, templates, evidence, rendered, holders)
+            if verdict == "unresolved":
+                issues.append(Issue("UNIT_CLASSIFICATION_UNRESOLVED", (c.id,), f"bibliography entry: {reason}"))
+            else:
                 units.append(Unit(f"un-{len(units) + 1:05d}", c.id, None, "unstructured_text", None, c.start, c.end))
             continue
         if c.layout == "short_footnote":
@@ -480,7 +498,14 @@ def build(
                 continue
             r = refs[dfn["_ref"]]
             verdict, reason = _plain_definition(
-                r, scan, templates, own_templates.get(r.index, []), own_candidates.get(r.index, []), evidence, rendered
+                r,
+                scan,
+                templates,
+                own_templates.get(r.index, []),
+                own_candidates.get(r.index, []),
+                evidence,
+                rendered,
+                holders,
             )
             if verdict == "unresolved":
                 issues.append(Issue("UNIT_CLASSIFICATION_UNRESOLVED", (c.id,), f"definition {i + 1}: {reason}"))
@@ -503,6 +528,7 @@ def build(
         if un.parent_unit:
             un.parent_unit = renumber_u[un.parent_unit]
     template_unit = {k: renumber_u[v] for k, v in template_unit.items()}
+    issues = _remap_entities(issues, renumber_u)
     for c in containers:
         c.unit_ids = [un.id for un in units if un.container_id == c.id]
 
@@ -586,6 +612,76 @@ def outermost_in_ref(t: TemplateRecord, templates: dict[int, TemplateRecord]) ->
     return parent is None or parent not in templates or templates[parent].ref != t.ref
 
 
+def _remap_entities(issues: list[Issue], mapping: dict[str, str]) -> list[Issue]:
+    """Issues name containers and units by the ids they had when the issue was made; ids are renumbered by position
+    afterwards, so every renumbering is applied to the issues made before it (review RV-2)."""
+    return [
+        replace(i, entities=tuple(mapping.get(e, e) for e in i.entities))
+        if any(e in mapping for e in i.entities)
+        else i
+        for i in issues
+    ]
+
+
+def _citation_like_holders(scan: SourceScan, templates: dict[int, TemplateRecord]) -> set[int]:
+    """Templates that hold, in their arguments within the same ref, a citation, external-data or unclassified
+    template: their render output includes that template's output."""
+    out: set[int] = set()
+    for t in scan.templates:
+        if t.excluded or t.kind not in ("citation", "external_data", "other"):
+            continue
+        parent = t.parent_template
+        while parent is not None and parent in templates and templates[parent].ref == t.ref:
+            out.add(parent)
+            parent = templates[parent].parent_template
+    return out
+
+
+def _bibliography_entry(
+    c: Container,
+    candidates: list[Candidate],
+    templates: dict[int, TemplateRecord],
+    evidence: dict[int, str],
+    rendered: bool,
+    holders: set[int],
+) -> tuple[str, str]:
+    """Class of a bibliography entry with no template unit: ``unstructured`` when an identifier on its line is its
+    own text or in a profile identifier wrapper; otherwise ``unresolved`` (the identifiers are fields of templates the
+    profile does not list, whose render shows no citation of their own)."""
+    inside = [cand for cand in candidates if c.start <= cand.start < c.end]
+    if any(
+        cand.origin != "template_field"
+        and all(templates[f.template].kind == "wrapper" for f in cand.frames if f.template in templates)
+        for cand in inside
+    ):
+        return "unstructured", ""
+    outer = sorted(
+        {
+            templates[f.template].index
+            for cand in inside
+            for f in cand.frames[:1]
+            if f.template in templates and templates[f.template].kind != "wrapper"
+        }
+    )
+    ts = [templates[i] for i in outer]
+    if any(t.index in holders and evidence.get(t.index) == CITATION_MARKUP for t in ts):
+        return "unresolved", f"identifiers in templates whose citation markup holds nested templates: {_names(ts)}"
+    if not rendered or any(t.index not in evidence for t in ts if t.kind == "other"):
+        unseen = "no usable render" if not rendered else "no output of their own in the render, or conflicting outputs"
+        return "unresolved", f"identifiers only in templates with {unseen}: {_names(ts)}"
+    return "unresolved", f"identifiers only in templates that are not citation templates: {_names(ts)}"
+
+
+def _decides(t: TemplateRecord) -> bool:
+    """Templates whose render is read as evidence (``citerift.wiki.units``): unclassified ones, and citation templates
+    only by the unlisted-family name rule."""
+    return t.kind == "other" or (t.kind == "citation" and t.family == "unlisted")
+
+
+def _names(ts: list[TemplateRecord]) -> str:
+    return ", ".join(sorted({t.canonical or t.raw_name.strip() for t in ts}))
+
+
 def _plain_definition(
     r: RefRecord,
     scan: SourceScan,
@@ -594,24 +690,30 @@ def _plain_definition(
     candidates: list[Candidate],
     evidence: dict[int, str],
     rendered: bool,
+    holders: set[int],
 ) -> tuple[str, str]:
-    """Class of a definition with no template unit: ``unstructured`` (D), ``none`` (E, F or empty) or ``unresolved``
-    (H), with the reason. SPECIFICATION.md 11.3:
+    """Class of a definition with no template unit: ``unstructured`` (D), ``none`` (E or empty) or ``unresolved``
+    (H), with the reason. SPECIFICATION.md, section "Changes under owner instruction D-035":
 
     1. a locator the definition gives itself (an external link in its own text, or a DOI/PMID in its text or in a
        profile identifier wrapper) makes it a citation of that work: D;
-    2. otherwise its own text decides: beside a short-citation link the text may be a comment or a second citation,
-       and nothing in the markup says which: H; in an explanatory footnote (the profile's ``efn`` family) text is the
-       explanation: F; in any other reference (a ``<ref>``, a list-defined or ``#tag`` reference) the reference
-       mechanism says it is a citation: D;
-    3. with no own text: short-citation links and nothing else only refer to entries elsewhere: E; any other
-       template (whose render shows no citation markup, or that has no usable render) cannot be established as a
-       citation: H; nothing at all: none.
+    2. otherwise its own text decides. It is H when nothing establishes what the text is: beside a short-citation
+       link (a comment or a second citation), beside a template whose citation markup cannot be attributed to it,
+       beside a template the render cannot show (no usable render, no output of its own, conflicting outputs), or in
+       an explanatory footnote (the profile's ``efn`` family, whose text may explain or cite). In any other
+       reference (a ``<ref>``, a list-defined or ``#tag`` reference) the reference mechanism says it is a citation:
+       D;
+    3. with no own text: text only inside a tag the engine does not read: H; short-citation links and nothing else
+       only refer to entries elsewhere: E; any other template cannot be established as a citation: H; nothing at
+       all: empty, no unit.
 
     ``own`` are the templates called in the ref outside any other template of it; ``candidates`` its identifier
-    candidates.
+    candidates; ``holders`` the templates whose render output includes a nested citation-like template.
     """
-    short = [t for t in own if evidence.get(t.index) == SHORT_CITATION_LINK]
+    deciding = [t for t in own if _decides(t)]
+    short = [t for t in deciding if evidence.get(t.index) == SHORT_CITATION_LINK]
+    marked = [t for t in deciding if evidence.get(t.index) == CITATION_MARKUP]  # not units: a holder (RV-1)
+    unknown = [t for t in deciding if t.index not in evidence]
     located = r.index in scan.ref_links or any(
         cand.origin != "template_field"
         and all(
@@ -623,22 +725,36 @@ def _plain_definition(
     )
     if located:
         return "unstructured", ""
+    unseen = "no usable render" if not rendered else "no output of their own in the render, or conflicting outputs"
     if r.index in scan.ref_text:
         if short:
             return "unresolved", "plain text beside a short-citation link"
+        if marked:
+            names = _names(marked)
+            return "unresolved", f"plain text beside templates whose citation markup holds nested templates: {names}"
+        if unknown:
+            return "unresolved", f"plain text beside templates with {unseen}: {_names(unknown)}"
         if r.origin == "efn":
-            return "none", ""
+            return "unresolved", "explanatory-note text without a locator"
         return "unstructured", ""
+    if r.index in scan.ref_hidden:
+        return "unresolved", f"text only inside <{scan.ref_hidden[r.index]}>, which is not read"
     if own and len(short) == len(own):
         return "none", ""
-    if own:
-        names = ", ".join(sorted({t.canonical or t.raw_name.strip() for t in own}))
-        if not rendered:
-            return "unresolved", f"only templates, and no usable render to show what they are: {names}"
-        if any(t.index not in evidence for t in own if t.kind == "other"):
-            return "unresolved", f"only templates, some without output of their own in the render: {names}"
-        return "unresolved", f"only templates whose render shows no citation markup: {names}"
-    return "none", ""
+    if not own:
+        return "none", ""
+    if marked:
+        return "unresolved", f"only templates, whose citation markup holds nested templates: {_names(marked)}"
+    if unknown:
+        return "unresolved", f"only templates, some with {unseen}: {_names(unknown)}"
+    parts = []
+    plain = [t for t in deciding if t not in short]
+    if plain:
+        parts.append(f"render shows no citation markup: {_names(plain)}")
+    other = [t for t in own if not _decides(t)]
+    if other:
+        parts.append(f"not citation templates in the profile: {_names(other)}")
+    return "unresolved", "only templates; " + "; ".join(parts)
 
 
 def _definition(r: RefRecord, text: str) -> dict[str, Any]:

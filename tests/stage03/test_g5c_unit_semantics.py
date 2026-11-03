@@ -154,11 +154,13 @@ def test_short_citation_link_without_render_is_unresolved(tmp_path: Path) -> Non
         ("ar", "أ{{ملا|كانت محكمة الإير محكمة متنقلة.}}\n{{ثبت الملاحظة}}"),
     ],
 )
-def test_explanatory_note_is_not_unstructured(tmp_path: Path, wiki: str, text: str) -> None:
-    """F: an explanatory footnote (the profile's ``efn`` family) whose text carries no locator cites nothing."""
+def test_explanatory_note_text_is_unresolved(tmp_path: Path, wiki: str, text: str) -> None:
+    """H, not F (review RV-6): the text of an explanatory footnote (the profile's ``efn`` family) without a locator
+    may explain or cite; it is not ``unstructured_text``, and the abstention is reported, not silent."""
     doc = run(tmp_path, text, None, wiki)
     assert kinds(doc) == []
-    assert unresolved(doc) == []
+    [issue] = unresolved(doc)
+    assert issue["detail"] == "definition 1: explanatory-note text without a locator"
 
 
 @pytest.mark.regression
@@ -270,7 +272,7 @@ def test_template_without_own_render_output_is_unresolved(tmp_path: Path) -> Non
     doc = run(tmp_path, text, body)
     assert kinds(doc) == []
     [issue] = unresolved(doc)
-    assert "without output of their own" in issue["detail"]
+    assert "no output of their own in the render" in issue["detail"]
 
 
 @pytest.mark.regression
@@ -313,7 +315,7 @@ def test_unresolved_definition_is_in_the_exception_ledger(tmp_path: Path) -> Non
             "entity": container["id"],
             "entity_type": "container",
             "code": UNRESOLVED,
-            "detail": "definition 1: only templates, and no usable render to show what they are: NRDB species",
+            "detail": "definition 1: only templates, some with no usable render: NRDB species",
         }
     ]
 
@@ -356,16 +358,66 @@ def test_unknown_template_identifier_has_no_unit(tmp_path: Path) -> None:
         ("ar", "أ<ref>سميث، ج. كتاب. 2001.</ref>"),
         ("en", "A<ref>Berlak, p. 63.</ref>"),
         ("ar", "أ<ref>مركز بيو: ليبيريا</ref>"),
-        ("en", "A<ref>Beolens, B. (2011). ''The Eponym Dictionary''. {{ISBN|978-1-907807-44-2}}.</ref>"),
-        ("en", "A<ref>Danilatos, G.D. {{US patent|4785182}} filed 1987.</ref>"),
-        ("ar", "أ<ref>القاموس الطبي {{Webarchive|url=http://example.org/a|date=2020}}</ref>"),
     ],
 )
 def test_plain_text_reference_stays_unstructured(tmp_path: Path, with_render: bool, wiki: str, text: str) -> None:
-    """D: a ``<ref>`` whose own text is a hand-written citation, with or without helper templates beside it."""
+    """D: a ``<ref>`` whose own text is a hand-written citation."""
     doc = run(tmp_path, text, one_note("A", "x") if with_render else None, wiki)
     assert kinds(doc) == ["unstructured_text"]
     assert unresolved(doc) == []
+
+
+HELPERS = [
+    (
+        "en",
+        "A<ref>Beolens, B. (2011). ''The Eponym Dictionary''. {{ISBN|978-1-907807-44-2}}.</ref>",
+        "ISBN",
+        {"1": "978-1-907807-44-2"},
+        '<a href="./Special:BookSources/9781907807442">ISBN 978-1-907807-44-2</a>',
+    ),
+    (
+        "en",
+        "A<ref>Danilatos, G.D. {{US patent|4785182}} filed 1987.</ref>",
+        "US patent",
+        {"1": "4785182"},
+        '<a rel="mw:ExtLink" href="https://patents.google.com/patent/US4785182" class="external text">US patent'
+        " 4,785,182</a>",
+    ),
+    (
+        "ar",
+        "أ<ref>القاموس الطبي {{Webarchive|url=http://example.org/a|date=2020}}</ref>",
+        "Webarchive",
+        {"url": "http://example.org/a", "date": "2020"},
+        '<a rel="mw:ExtLink" href="http://example.org/a" class="external text">مؤرشف</a>',
+    ),
+]
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(("wiki", "text", "target", "params", "output"), HELPERS)
+def test_plain_text_beside_a_helper_template_stays_unstructured(
+    tmp_path: Path, wiki: str, text: str, target: str, params: dict[str, str], output: str
+) -> None:
+    """D: a hand-written citation with a helper template beside it whose own render shows no citation markup and no
+    short-citation link."""
+    doc = run(tmp_path, text, one_note("A", "x " + transclusion(5, target, params, output)), wiki)
+    assert kinds(doc) == ["unstructured_text"]
+    assert unresolved(doc) == []
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(("wiki", "text", "target", "params", "output"), HELPERS)
+def test_plain_text_beside_a_template_the_render_cannot_show_is_unresolved(
+    tmp_path: Path, wiki: str, text: str, target: str, params: dict[str, str], output: str
+) -> None:
+    """H (review RV-4): without evidence of what the template beside the text is (no render, or no transclusion of
+    its own), it could be a short-citation link and the text a comment, so no unit is claimed."""
+    del target, params, output
+    for n, body in enumerate((None, one_note("A", "x"))):
+        doc = extract(bundle(tmp_path, text, body, wiki=wiki, name=f"b{n}"))
+        assert kinds(doc) == []
+        [issue] = unresolved(doc)
+        assert issue["detail"].startswith("definition 1: plain text beside templates with ")
 
 
 @pytest.mark.regression
@@ -447,10 +499,10 @@ CAMPAIGN_CASES: list[tuple[str, int, str]] = [
     ],
     ("reserve1/en-9778156-a1", 4252, "E"),
     ("holdout/en-67651016-a1", 3402, "H"),
-    ("holdout/en-67651016-a1", 208, "F"),
-    ("holdout/en-38148109-a1", 6358, "F"),
-    ("holdout/en-38148109-a1", 6857, "F"),
-    ("holdout/en-38148109-a1", 10376, "F"),
+    ("holdout/en-67651016-a1", 208, "H"),
+    ("holdout/en-38148109-a1", 6358, "H"),
+    ("holdout/en-38148109-a1", 6857, "H"),
+    ("holdout/en-38148109-a1", 10376, "H"),
     ("holdout/en-25916990-a1", 729, "G"),
     ("holdout/en-28279091-a1", 1399, "H"),
     ("holdout/ar-1325389-a1", 154, "H"),
@@ -516,3 +568,272 @@ def test_campaign_labelled_unstructured_definitions_keep_their_unit() -> None:
         if covered(before) and not covered(campaign_doc(name)):
             lost.append((name, cp))
     assert lost == []
+
+
+# Independent adversarial review of D-035 (design/unit-semantics/review/REVIEW.md) --------------------------------
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("wiki", "text", "wrapper", "params", "inner_name"),
+    [
+        (
+            "en",
+            "A<ref>{{small|{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}}}</ref>",
+            "small",
+            {"1": "{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}"},
+            "Cite web",
+        ),
+        (
+            "ar",
+            "أ<ref>{{نص صغير|{{استشهاد بكتاب|عنوان=ك}}}}</ref>",
+            "نص صغير",
+            {"1": "{{استشهاد بكتاب|عنوان=ك}}"},
+            "استشهاد بكتاب",
+        ),
+    ],
+)
+def test_a_wrapper_around_a_citation_template_is_not_a_second_unit(
+    tmp_path: Path, wiki: str, text: str, wrapper: str, params: dict[str, str], inner_name: str
+) -> None:
+    """RV-1: Parsoid renders a nested template as part of the outer one, so the outer template's output holds the
+    nested citation's markup. The wrapper is not a G unit; the one unit is the citation, with no parent."""
+    doc = run(tmp_path, text, one_note("A", transclusion(5, wrapper, params, cs1("T"))), wiki)
+    assert [(u["kind"], u["parent_unit"]) for u in doc["units"]] == [("citation_template", None)]
+    assert "CITATION_TEMPLATE_UNSUPPORTED" not in codes(doc)
+    assert unresolved(doc) == []
+    del inner_name
+
+
+@pytest.mark.regression
+def test_a_wrapper_around_an_unclassified_template_with_citation_markup_is_unresolved(tmp_path: Path) -> None:
+    """RV-1: the markup cannot be attributed to the wrapper or to the template inside it, so neither is a unit."""
+    text = "A<ref>{{small|{{Fishbase|Osteobrama|bhimensis}}}}</ref>"
+    body = one_note("A", transclusion(5, "small", {"1": "{{Fishbase|Osteobrama|bhimensis}}"}, cs1("Froese")))
+    doc = run(tmp_path, text, body)
+    assert kinds(doc) == []
+    [issue] = unresolved(doc)
+    assert "citation markup holds nested templates: Small" in issue["detail"]
+
+
+@pytest.mark.regression
+def test_issues_name_the_renumbered_unit(tmp_path: Path) -> None:
+    """RV-2: units are renumbered by position after template units are made; the issues follow the renumbering."""
+    text = (
+        "A<ref>Smith, J. A book. 2001.</ref> B<ref>{{Fishbase|Osteobrama|bhimensis}}</ref>"
+        " C<ref>{{cite web |title=T |title=U}}</ref>"
+    )
+    body = (
+        f"<p>A{ref_sup(1, 'cite_note-1', 'cite_ref-1')} B{ref_sup(2, 'cite_note-2', 'cite_ref-2')}"
+        f" C{ref_sup(3, 'cite_note-3', 'cite_ref-3')}</p>"
+        + references(
+            [
+                note_li("cite_note-1", ["cite_ref-1"], "Smith, J. A book. 2001."),
+                note_li(
+                    "cite_note-2",
+                    ["cite_ref-2"],
+                    transclusion(5, "Fishbase", {"1": "Osteobrama", "2": "bhimensis"}, cs1("Froese")),
+                ),
+                note_li("cite_note-3", ["cite_ref-3"], cs1("U")),
+            ]
+        )
+    )
+    doc = run(tmp_path, text, body)
+    by_kind = {u["kind"]: u["id"] for u in doc["units"]}
+    assert set(by_kind) == {"unstructured_text", "unsupported_citation_template", "citation_template"}
+    [unsupported] = [i for i in doc["issues"] if i["code"] == "CITATION_TEMPLATE_UNSUPPORTED"]
+    [duplicate] = [i for i in doc["issues"] if i["code"] == "DUPLICATE_TEMPLATE_PARAMETER"]
+    assert unsupported["entities"] == [by_kind["unsupported_citation_template"]]
+    assert duplicate["entities"] == [by_kind["citation_template"]]
+
+
+@pytest.mark.regression
+def test_container_issues_name_the_renumbered_container(tmp_path: Path) -> None:
+    """RV-2 (same cause, found while fixing it): containers are renumbered by position; a conflict issue made
+    before that names the conflicting container, not the one that took its former id."""
+    doc = run(tmp_path, "A<ref name=x>Smith 2001</ref> B<ref name=x>Jones 2002</ref> C<ref>Anon 2003</ref>", None)
+    [conflict] = [i for i in doc["issues"] if i["code"] == "REF_DEFINITIONS_CONFLICT"]
+    [named] = [c for c in doc["containers"] if c["name"] == "x"]
+    assert conflict["entities"] == [named["id"]]
+
+
+ARABIC_HARVARD = "استشهاد بهارفارد دون أقواس"
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    "text",
+    ["A<ref>{{harvnb|Fox|2002}}</ref>", "{{Infobox person|birth_date=1945<ref>{{harvnb|Fox|2002}}</ref>}}"],
+)
+def test_an_unclassified_template_without_evidence_is_not_a_citation_unit(tmp_path: Path, text: str) -> None:
+    """RV-3 (English side): without render evidence an unclassified template is not established as a citation."""
+    doc = run(tmp_path, text, None)
+    assert kinds(doc) == []
+    assert len(unresolved(doc)) == 1
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    "text",
+    [
+        f"أ<ref>{{{{{ARABIC_HARVARD}|فوكس|2002}}}}</ref>",
+        f"{{{{صندوق معلومات شخص|ولادة=1945<ref>{{{{{ARABIC_HARVARD}|فوكس|2002}}}}</ref>}}}}",
+    ],
+)
+def test_a_name_rule_template_without_evidence_keeps_the_guide_name_rule(tmp_path: Path, text: str) -> None:
+    """RV-3, decided and measured (DISPOSITIONS.md): a template named like a citation template ("استشهاد …", RF-37,
+    the annotation guide's own examples) stays a citation unit unless its own render shows a short-citation link.
+    Requiring render evidence instead removed 21 genuine CS1 wrappers from the retained bundles. The Arabic Harvard
+    template without evidence is therefore a residual risk (RISKS.md R-037), pinned here so that it is visible."""
+    doc = run(tmp_path, text, None, "ar")
+    assert kinds(doc) == ["citation_template"]
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("wiki", "text"),
+    [
+        ("en", "A<ref>{{harvnb|Németh|2018|p=3}}, treats these as two separate volumes.</ref>"),
+        ("en", "{{Infobox person|birth_date=1945<ref>{{harvnb|Németh|2018}}, treats these as two.</ref>}}"),
+        ("ar", "أ<ref>{{قالب مجهول|فوكس|2002}}، ويقول إن المحكمة متنقلة.</ref>"),
+    ],
+)
+def test_short_link_and_comment_without_evidence_is_unresolved(tmp_path: Path, wiki: str, text: str) -> None:
+    """RV-4: plain text beside a template the render cannot show is not called unstructured; it is reported."""
+    doc = run(tmp_path, text, None, wiki)
+    assert kinds(doc) == []
+    [issue] = unresolved(doc)
+    assert "plain text beside templates with no usable render" in issue["detail"]
+
+
+@pytest.mark.regression
+def test_the_same_revision_is_unresolved_with_or_without_its_render() -> None:
+    """RV-4 on retained data (exposed, regression only): two captures of one revision, one whose render failed."""
+    for name in ("challenge/en-906156-a1", "challenge/en-906156-a2"):
+        doc = campaign_doc(name)
+        for cp in (49257, 49521):
+            [(container, definition)] = [
+                (c, d) for c in doc["containers"] for d in c["definitions"] if d["body"]["cp_start"] == cp
+            ]
+            assert [u for u in doc["units"] if u["definition_id"] == definition["id"]] == [], name
+            assert [i for i in unresolved(doc) if i["entities"] == [container["id"]]], name
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("wiki", "text"),
+    [
+        ("en", "A{{efn|Smith, J. (2001). ''A Book''. Publisher. p. 5.}}\n{{notelist}}"),
+        ("ar", "أ{{ملا|سميث، ج. (2001). كتاب. الناشر. ص 5.}}\n{{ثبت الملاحظة}}"),
+    ],
+)
+def test_a_citation_written_in_an_explanatory_note_is_reported(tmp_path: Path, wiki: str, text: str) -> None:
+    """RV-6: an efn whose text may be a citation is not dropped silently."""
+    doc = run(tmp_path, text, None, wiki)
+    assert kinds(doc) == []
+    assert len(unresolved(doc)) == 1
+
+
+@pytest.mark.regression
+def test_a_ref_whose_text_is_only_in_nowiki_is_reported(tmp_path: Path) -> None:
+    """RV-8: text in a tag the engine does not read is not an empty definition."""
+    doc = run(tmp_path, "A<ref><nowiki>Smith, J. Book. 2001.</nowiki></ref>", None)
+    assert kinds(doc) == []
+    [issue] = unresolved(doc)
+    assert issue["detail"] == "definition 1: text only inside <nowiki>, which is not read"
+
+
+@pytest.mark.regression
+def test_a_ref_with_only_a_comment_or_punctuation_is_empty(tmp_path: Path) -> None:
+    """Controls for RV-8: a comment is not text of the definition, and punctuation is not a citation."""
+    doc = run(tmp_path, "A<ref><!-- Originally: x --></ref> B<ref>.&nbsp;</ref>", None)
+    assert kinds(doc) == []
+    assert unresolved(doc) == []
+
+
+@pytest.mark.regression
+def test_the_reason_does_not_claim_render_evidence_that_was_not_read(tmp_path: Path) -> None:
+    """RV-10: templates of profile kinds other than citation templates are named as such, not as renders."""
+    doc = run(tmp_path, "A<ref>{{Retracted|doi=10.1000/x}}</ref>", one_note("A", "x"))
+    [issue] = unresolved(doc)
+    assert issue["detail"] == "definition 1: only templates; not citation templates in the profile: Retracted"
+
+
+# Bibliography entries (found in the exposed regression of the final English holdout, after the review) -------
+
+
+EI2 = "{{EI2|last=Barthold|title=al-Barāmika|doi=10.1163/1573-3912_islam_COM_0099}}"
+EI2_PARAMS = {"last": "Barthold", "title": "al-Barāmika", "doi": "10.1163/1573-3912_islam_COM_0099"}
+
+
+def bibliography(inner: str) -> str:
+    return f"<h2>Sources</h2><ul><li>{inner}</li></ul>"
+
+
+@pytest.mark.regression
+def test_an_unlisted_template_with_citation_markup_in_a_bibliography_entry_is_g(tmp_path: Path) -> None:
+    """G outside refs: the entry was made from the DOI field of a template the profile does not list. Its own render
+    is a CS1 citation, so the entry's unit is that template, not ``unstructured_text``."""
+    doc = run(tmp_path, f"== Sources ==\n* {EI2}\n", bibliography(transclusion(1, "EI2", EI2_PARAMS, cs1("Barthold"))))
+    [unit] = doc["units"]
+    assert unit["kind"] == "unsupported_citation_template"
+    [entry] = [c for c in doc["containers"] if c["kind"] == "bibliography_entry"]
+    assert unit["container_id"] == entry["id"]
+    [ident] = doc["identifiers"]
+    assert ident["unit_id"] == unit["id"] and ident["role"] == "unresolved"
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("body", "reason"),
+    [
+        (None, "identifiers only in templates with no usable render: EI2"),
+        (
+            bibliography(transclusion(1, "EI2", EI2_PARAMS, "Barthold, al-Barāmika")),
+            "identifiers only in templates that are not citation templates: EI2",
+        ),
+        (bibliography("Barthold"), "identifiers only in templates with no output of their own"),
+    ],
+)
+def test_a_bibliography_entry_made_only_from_a_template_field_is_unresolved(
+    tmp_path: Path, body: str | None, reason: str
+) -> None:
+    """H outside refs: an identifier that is a field of an unlisted template is not evidence of a hand-written
+    entry, and without citation markup of its own the template is not established as a citation."""
+    doc = run(tmp_path, f"== Sources ==\n* {EI2}\n", body)
+    assert kinds(doc) == []
+    [issue] = unresolved(doc)
+    assert issue["detail"].startswith(f"bibliography entry: {reason}")
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    "line",
+    [
+        "* Barthold, W. ''al-Barāmika''. doi:10.1163/1573-3912_islam_COM_0099",
+        "* Barthold, W. ''al-Barāmika''. {{doi|10.1163/1573-3912_islam_COM_0099}}",
+        "* Barthold, W. ''al-Barāmika''. https://doi.org/10.1163/1573-3912_islam_COM_0099",
+    ],
+)
+def test_a_hand_written_bibliography_entry_stays_unstructured(tmp_path: Path, line: str) -> None:
+    """D outside refs (control): the identifier is the entry's own text, a profile wrapper or a resolver link."""
+    doc = run(tmp_path, f"== Sources ==\n{line}\n", None)
+    assert kinds(doc) == ["unstructured_text"]
+    assert unresolved(doc) == []
+
+
+@pytest.mark.regression
+def test_the_final_holdout_encyclopaedia_of_islam_entries_are_g() -> None:
+    """Exposed regression: the three unstructured false positives of the final English holdout were
+    ``{{EI2}}``/``{{EI3}}`` bibliography entries (adjudicated: templates, not unstructured)."""
+    doc = extract_bundle(
+        ROOT / "docs/verification/stage-03/evaluation/final/capture/bundles/holdout/en-66266685-a1",
+        ExtractConfig(),
+        isolated=False,
+    )
+    got = {u["source"]["cp_start"]: u["kind"] for u in doc["units"] if u["source"]["cp_start"] in (2449, 3074, 3222)}
+    assert got == {
+        2449: "unsupported_citation_template",
+        3074: "unsupported_citation_template",
+        3222: "unsupported_citation_template",
+    }

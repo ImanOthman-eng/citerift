@@ -1,0 +1,76 @@
+"""Survey of retained real bundles (regression/exposed data only): definitions the new engine calls D while an own
+template of kind other renders no citation markup; wrappers (kind other) that hold a profile citation template."""
+import json, sys
+from collections import Counter
+from pathlib import Path
+from citerift.wiki.bundle import open_bundle
+from citerift.wiki.profile import load_profile
+from citerift.wiki.source import scan_source
+from citerift.wiki.render import read_render
+from citerift.wiki.units import template_evidence
+from citerift.wiki.model import build, outermost_in_ref, _plain_definition
+from citerift.wiki.textmap import ByteMap
+from citerift.wiki.extract import ExtractConfig
+
+root = Path("/home/user/citerift")
+profile = load_profile()
+cfg = ExtractConfig()
+d_with_other = Counter(); d_examples = []
+wrap_nested = Counter(); wrap_examples = []
+efn_text = []
+n = 0
+for cap in sorted(root.glob("docs/verification/stage-03/**/capture.json")):
+    c = json.loads(cap.read_text())
+    title = (c.get("page") or {}).get("title") or ""
+    if "SYNTHETIC" in title.upper() or "/synthetic" in cap.parent.as_posix():
+        continue
+    b = open_bundle(cap.parent)
+    w = profile.wikis.get(c["page"]["wiki"])
+    if w is None or not c.get("source"):
+        continue
+    text = b.artifact(c["source"]["artifact"], limit=4*1024*1024).decode()
+    scan = scan_source(text, w, profile, cfg.limits())
+    ev = None
+    if (c.get("render") or {}).get("state") == "captured":
+        try:
+            render, reader = read_render(b.artifact(c["render"]["artifact"], limit=16*1024*1024), cfg.max_render_elements)
+            ev = template_evidence(scan, render, reader, w, text)
+        except Exception as e:
+            ev = None
+    n += 1
+    templates = {t.index: t for t in scan.templates}
+    model = build(scan, w, profile, ByteMap(text), ev)
+    rel = cap.parent.relative_to(root).as_posix()
+    # D units with own 'other' templates
+    for un in model.units:
+        if un.kind != "unstructured_text" or un.definition_id is None:
+            continue
+        cont = next(x for x in model.containers if x.id == un.container_id)
+        di = int(un.definition_id.rsplit("/d", 1)[1]) - 1
+        r = model.refs[cont.def_refs[di]]
+        own = [t for t in scan.templates if t.ref == r.index and not t.excluded and outermost_in_ref(t, templates) and t.kind == "other"]
+        for t in own:
+            e = (ev or {}).get(t.index, "none")
+            d_with_other[(t.canonical, e)] += 1
+            if len(d_examples) < 400:
+                d_examples.append((rel, t.canonical, e, text[r.body_start:r.body_end][:160].replace("\n", " ")))
+        if r.origin == "efn":
+            pass
+    # wrappers: G units with a nested C unit
+    gs = {un.id for un in model.units if un.kind == "unsupported_citation_template"}
+    for un in model.units:
+        if un.parent_unit in gs:
+            wrap_nested[rel] += 1
+    # efn F with text (no locator) -> check how they look
+    for cont in model.containers:
+        for di, ri in enumerate(cont.def_refs):
+            r = model.refs[ri]
+            if r.origin == "efn" and r.index in scan.ref_text and not any(u.definition_id == f"{cont.id}/d{di+1}" for u in model.units):
+                efn_text.append((rel, text[r.body_start:r.body_end][:200].replace("\n", " ") if r.body_start is not None else ""))
+print("bundles", n)
+print("D units with own kind-other templates (canonical, evidence):")
+for k, v in d_with_other.most_common(60):
+    print("  ", v, k)
+print("G units holding nested C units:", dict(wrap_nested))
+print("efn definitions with own text and no unit (F):", len(efn_text))
+json.dump({"d_examples": d_examples, "efn_text": efn_text}, open(sys.argv[1], "w"), ensure_ascii=False, indent=1)

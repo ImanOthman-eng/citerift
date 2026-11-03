@@ -14,10 +14,12 @@ render, or whose transclusions disagree, gets no entry: what it is cannot be est
 
 The evidence is read for the templates that can decide a unit, called inside a ref and not inside another template
 of that ref: templates the profile does not classify (kind ``other``), and templates that are citation templates only
-by the name rule for unlisted families (RF-37: "Cite …", "استشهاد ب…"). A name is not semantics: the Arabic
-Harvard template ``استشهاد بهارفارد دون أقواس`` matches the name rule and renders a short-citation link. A source
-template and a render transclusion are paired by their canonical target and parameters, the key reconciliation
-uses; equal keys expand to the same output, so the pairing does not depend on document order.
+by the name rule for unlisted families (RF-37: "Cite …", "استشهاد ب…"). Outside refs it is read for unclassified
+templates called at the top level that hold an identifier, which can make a bibliography entry. A name is not
+semantics: the Arabic Harvard template ``استشهاد بهارفارد دون أقواس`` matches the name rule and renders a
+short-citation link. A source template and a render transclusion are paired by their canonical target and
+parameters, the key reconciliation uses; equal keys expand to the same output, so the pairing does not depend on
+document order.
 """
 
 from __future__ import annotations
@@ -33,14 +35,24 @@ from citerift.wiki.source import SourceScan, TemplateRecord
 
 
 def deciding_templates(scan: SourceScan) -> list[TemplateRecord]:
+    """Templates whose render decides a unit: inside a ref, the unclassified and RF-37 templates called outside any
+    other template of that ref; outside refs, the unclassified templates called at the top level that hold an
+    identifier occurrence (they can make a bibliography entry)."""
     templates = {t.index: t for t in scan.templates}
+    holding = {f.template for c in scan.candidates if c.ref is None for f in c.frames}
     return [
         t
         for t in scan.templates
-        if (t.kind == "other" or (t.kind == "citation" and t.family == "unlisted"))
-        and not t.excluded
-        and outermost_in_ref(t, templates)
+        if not t.excluded
+        and (
+            (_decides_in_ref(t) and outermost_in_ref(t, templates))
+            or (t.kind == "other" and t.ref is None and t.parent_template is None and t.index in holding)
+        )
     ]
+
+
+def _decides_in_ref(t: TemplateRecord) -> bool:
+    return t.kind == "other" or (t.kind == "citation" and t.family == "unlisted")
 
 
 def output_evidence(elements: list[Any]) -> str:
