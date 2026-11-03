@@ -88,3 +88,5 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
   (`evaluation/confirmation-d035/DECISION_RECORD.md`). Acceptance and merge are the owner's.
 - [x] Documents, decision record, RISKS.md R-038 and the R-036 update.
 - [x] Complete verification matrix at `6c499a7` (TEST_RESULTS.md section 8).
+- [x] Final independent integration audit (`evaluation/confirmation-d035/INTEGRATION_AUDIT.md`): no critical finding;
+  F-1 is R-038; F-2 to F-7 recorded.

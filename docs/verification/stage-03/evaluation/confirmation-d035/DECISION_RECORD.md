@@ -51,7 +51,9 @@ The owner decides. The executor's assessment of the smallest legitimate path to 
 
 1. **Authorize a narrow engine correction** of `_align_unordered`: when one name has more than one use inside one
    template's output, pair those uses only when the render proves the order, and otherwise abstain (state
-   `abstained`, issue `RECONCILIATION_ABSTAINED`) instead of guessing. Abstaining can lower G6c coverage slightly; it
+   `abstained`, issue `RECONCILIATION_ABSTAINED`) instead of guessing. In this case the render carries the evidence (not
+   yet implemented or tested): only the definition's marker has a Parsoid `data-mw` `body`, so a definition plus one reuse can be paired by that
+   evidence; with two or more reuses, the reuses stay unordered and abstain. Abstaining can lower G6c coverage slightly; it
    cannot add a wrong attachment. Fail-first test on this case, a differential check on all retained bundles, and the
    full verification matrix. The scope: in the 204 retained extraction documents, 15 such groups in 12 articles are paired
    this way today; those are the pairings such a correction could change.

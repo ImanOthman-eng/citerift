@@ -774,8 +774,8 @@ reference `Mallama2014` is defined in the B−V row and reused in the U−B row;
 marker to the definition and the second to the reuse, the reverse of the render. The locked label is correct and the
 adjudicator confirmed it. Cause: `src/citerift/wiki/reconcile.py` `_align_unordered` pairs the k-th source use of a
 name with its k-th rendered marker inside one template's output, although the template decides the rendered order
-(the function's own docstring). The two markers of one reference cannot be told apart in the render, so the pairing
-is a guess that is not reported as one. Both markers cite the same work; what is wrong is the source position each
+(the function's own docstring). The pairing is a guess that is not reported as one: the engine's render-use record
+drops the Parsoid `data-mw` `body` that marks which marker carries the definition. Both markers cite the same work; what is wrong is the source position each
 is attributed to. The code dates from `a29bb4e` (2026-10-29) and is unchanged by D-035. In the 204 retained extraction
 documents, 15 groups in 12 articles are paired this way; this is the only one known to be wrong (5 of the 12
 articles have scored render labels).

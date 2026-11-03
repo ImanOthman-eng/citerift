@@ -125,9 +125,11 @@ either language (`scores/adjudicated.json`, `per_article`).
 **Cause.** `src/citerift/wiki/reconcile.py`, `_align_unordered` (lines 282-337). Its docstring states that inside one
 template's output "the template decides the order … so names pair regardless of position". For a name with more
 than one use, the code nevertheless pairs the k-th source use with the k-th rendered marker (`zip(uses, rs)`, line
-309), which assumes the template keeps source order. An infobox that reorders its rows breaks that assumption. The
-two rendered markers of one named reference are indistinguishable (same note, same content), so nothing in the render
-can correct the pairing. The code dates from `a29bb4e` (2026-10-29) and is unchanged by D-035
+309), which assumes the template keeps source order. An infobox that reorders its rows breaks that assumption. Both
+rendered markers point to the same note and show the same text. They differ in one place: the Parsoid `data-mw` of
+`…_4-1` (B−V row) has a `body` (`mw-reference-text-cite_note-Mallama2014-4`), which marks the definition, while that of
+`…_4-0` (U−B row) has none, which marks a reuse (independent integration audit, `../INTEGRATION_AUDIT.md`). The
+engine's render-use record does not keep that field, so it cannot use it. The code dates from `a29bb4e` (2026-10-29) and is unchanged by D-035
 (`git diff 3e51792 fff0e5b -- src/citerift/wiki/reconcile.py` is empty).
 
 **Scope in the retained data (diagnostic, read-only).** Across the 204 retained extraction documents, 15 groups (one
@@ -156,7 +158,7 @@ A correction would need a new owner authorization and a new prospective confirma
 | Item | What happened | Effect |
 |---|---|---|
 | Partial capture `ar-9335702` | The frozen `make_packets.py` refuses a plan with a capture that is not `complete`. The failure policy and `run_confirmation.py` (RR-8) require the article to be labelled. `../scripts/make_packets_partial.py` runs the frozen file with exactly one guard changed (a capture with a bundle is accepted) | The packet has no `render.html`, as the unchanged brief allows; every other packet is as the frozen tool makes it. The article counts in G9 and in every source-side gate |
-| Five captured files with a third-party AWS access key id | The wikitext and render of enwiki revision 1380218630 (`holdout/en-614753`) contain a public academia.edu presigned URL. CI on `b8d9834` failed the accepted Stage 00 secret scan | The files are untracked from `eba17d7` and ignored; their sha256 and the commits holding them (`4766a1f`, `763c1c4`) are in `WITHHELD_FILES.json`. They stay on disk unchanged; audit check 10 verifies them. The Stage 00 test is not changed. The checksum-verified export includes them |
+| Five captured files with a third-party AWS access key id | The wikitext and render of enwiki revision 1380218630 (`holdout/en-614753`) contain a public academia.edu presigned URL. CI on `b8d9834` failed the accepted Stage 00 secret scan | The files are untracked from `eba17d7` and ignored; their sha256 and the commits holding them (`4766a1f`, `763c1c4`) are in `WITHHELD_FILES.json`. They stay on disk unchanged; audit check 10 verifies them. The Stage 00 test is not changed. The pattern remains in git history at `4766a1f`, `763c1c4`, `153efae` and `0ff6446`, which a merge commit publishes to `main` (`../INTEGRATION_AUDIT.md` F-3) The checksum-verified export includes them |
 | `CLAUDE.md` in subagent contexts | The harness attached the repository's governance instructions to every evaluator and adjudicator context | It holds no label, output or result. Two reports end with a governance line from it (en-r2-1 "NOT VERIFIED", ar-g2 "VERIFIED COMPLETE"), which has no meaning for labels |
 | Self-reported times | ar-h1's `started_at`/`finished_at` (09:00-10:00) are not real; the transcript times are authoritative | None; these fields are not validated (`annotations/EVALUATOR_RUNS.md`) |
 | Adjudication tools | The 2026-11 `make_adjudication_items.py` and `validate_adjudication.py` (`../../confirmation-2026-11/campaign/adjudication/`) were run unchanged, by path; they are not listed among the MANIFEST's copied tools | None; neither file has changed since the 2026-11 campaign |

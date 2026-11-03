@@ -559,9 +559,12 @@ use. For a name with **more than one** use in one template's
 output, it pairs the k-th source use with the k-th rendered marker of that name, which is correct only when the
 template keeps source order. An infobox that renders its rows in another order swaps the attachments of those uses
 (`evaluation/confirmation-d035/campaign/REPORT.md` section 5). The two markers of one reference point to the same note
-and carry the same content, so the render cannot tell them apart.
+and show the same text; only the Parsoid `data-mw` `body`, present on the marker of the definition, distinguishes
+the definition from its reuses, and the engine's render-use record does not keep it.
 
 The behaviour this specification requires, and which the code does not yet implement: for a name with more than one
-use in one template's output, a pairing is accepted only when the render proves it; otherwise the uses are
+use in one template's output, a pairing is accepted only when the render proves it (for example, the `data-mw`
+`body` that marks the definition's marker, when exactly one source use is a definition and the others are reuses
+with no further order to decide); otherwise the uses are
 `abstained` with `RECONCILIATION_ABSTAINED`. Container, note and marker observations are not affected, because both
 uses belong to one container.

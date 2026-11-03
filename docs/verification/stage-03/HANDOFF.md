@@ -94,6 +94,8 @@ TEST_RESULTS, COMPLETION_CHECKLIST, this handoff, the campaign report and decisi
 English unexposed articles (two English reserve blocks); 280 HTTP attempts and 9.2 MB of 500 / 300 MiB; labels by 9
 isolated AI evaluator instances, locked before the single prediction run; 46 disputed items adjudicated by 3 AI
 adjudicator instances (45 confirmed, 1 corrected); 48 / 48 extractions verify and replay; evidence audit 28 / 28.
+A final independent integration audit (`evaluation/confirmation-d035/INTEGRATION_AUDIT.md`) confirmed the change set,
+the G6b diagnosis and the deviations; it found no critical issue and no defect introduced by D-035.
 
 | Adjudicated labels | ar | en |
 |---|---|---|

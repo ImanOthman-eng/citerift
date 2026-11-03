@@ -278,7 +278,8 @@ interval of the Arabic false-attachment rate, $2/184$, is $[0.0013, 0.0387]$; it
 **Model correction for section 5.** For a group of uses produced in one template's output, let $S_x$ and $R_x$ be the
 source uses and rendered markers with name $x$. The pairing of section 5 is fixed by name only when
 $|S_x| = |R_x| = 1$. When $|S_x| = |R_x| = k > 1$, the $k!$ bijections between $S_x$ and $R_x$ are indistinguishable
-by name and content, and the template, not source order, decides which one the render realizes. The specified
+by name and text (only the `data-mw` `body` of the definition's marker separates the definition from the reuses),
+and the template, not source order, decides which one the render realizes. The specified
 rule is to accept a bijection only on evidence that excludes the others, and otherwise to abstain on all of $S_x$.
 The implementation at `fff0e5b` takes the order-preserving bijection instead (SPECIFICATION.md, "Known defect found
 by the D-035 confirmation").
