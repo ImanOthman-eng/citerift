@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "552c39c36f5674f7f36fd5bd7c757d07cbb12dc7af26c613e2a79ae5c8d39af9",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.353,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-03T16:28:21.095325Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9552768",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 5855,
+   "body_sha256": "48788e62e2d15cd4bc5133e238900667831b18bd30ecfd135a7c6cfe8512c6fd",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.346,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:29:00.449030Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9552768",
+   "wire_bytes": 2687
+  },
+  {
+   "body_bytes": 47307,
+   "body_sha256": "8ca3ecb55c8796c7957f1d1820023edbd01da4dd06d78e3ecbf39518b78d27a2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.38,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:29:10.795139Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1372018857/html",
+   "wire_bytes": 10736
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "552c39c36f5674f7f36fd5bd7c757d07cbb12dc7af26c613e2a79ae5c8d39af9"
+ ],
+ "finished_at": "2026-11-03T16:29:11.175594Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9552768,
+  "parent_revision_id": 1370898931,
+  "redirect_followed": null,
+  "revision_id": 1372018857,
+  "revision_timestamp": "2026-08-29T21:33:10Z",
+  "sha1": "7589d08216f7017af931825edda70e69544850b5",
+  "size": 5193,
+  "title": "Jean-Baptiste Bouillaud",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "8ca3ecb55c8796c7957f1d1820023edbd01da4dd06d78e3ecbf39518b78d27a2",
+  "bytes": 47307,
+  "checks": {
+   "document_revision_id": "1372018857",
+   "header_revision_id": "1372018857",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9552768",
+   "render_id": "6d2884f2-d72f-11f1-85b5-03194ba35d6e",
+   "revision_sha1": "7589d08216f7017af931825edda70e69544850b5",
+   "revision_sha1_base36": "dq9t19l5z7b96px480e1pwepxake2lx"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1372018857",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 16:29:11 GMT",
+   "etag": "W/\"1372018857/6d2884f2-d72f-11f1-85b5-03194ba35d6e/view\"",
+   "last-modified": "Fri, 30 Oct 2026 04:27:36 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1372018857/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9552768,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "f9222f01e4be95096d65a6d81c94777526483869429a3617bce68d8288435d36",
+  "bytes": 5193,
+  "response_artifact": "48788e62e2d15cd4bc5133e238900667831b18bd30ecfd135a7c6cfe8512c6fd",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9552768"
+ },
+ "started_at": "2026-11-03T16:28:11.439000Z",
+ "status": "complete"
+}
