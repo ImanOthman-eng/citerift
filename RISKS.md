@@ -706,10 +706,28 @@ reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.m
   explanatory prose is still `unstructured_text`. A group name is free text, and reading it would be a keyword rule.
 - **Short link with text.** A Harvard link beside plain text without a link or identifier is unresolved. A genuine
   second citation written there without a locator is reported, not claimed as a unit.
-- **Render dependence.** Without a usable render, and for refs inside template parameters (which have no render
-  output of their own), every template-only definition is unresolved, and so is plain text beside an unclassified
-  template (review RV-4). In the 146 retained bundles this changed two definitions, both in one capture whose
-  render failed (`en-906156-a1`).
+- **Render dependence.** Without a usable render, every template-only definition is unresolved, and so is plain
+  text beside an unclassified template (review RV-4). In the 146 retained bundles this changed two definitions, both
+  in one capture whose render failed (`en-906156-a1`). For refs inside template arguments (a reference list's
+  `refs=`, `{{refn}}`, an infobox parameter), whose templates have no output of their own, the rendered note decides
+  (review 2, RV2-4); where the ref's container is not matched to exactly one note, they stay unresolved (IUCN in
+  the exposed `ar-1325389-a1`). The reviewer measured that 36 of 476 `unstructured_text` units in refs of the
+  retained bundles depend on render evidence.
+- **A located identifier beside a template unit** (review 2, RV2-2). A hand-written citation with its own DOI or
+  PMID beside a C or G unit is not a unit of its own; its identifier carries `IDENTIFIER_OUTSIDE_UNITS`. If the
+  annotation guide counts it as a second, unstructured unit, that is a recall loss, as under the frozen engine.
+  Three such identifiers in the retained data, all Arabic refs where a bot added an archive `{{استشهاد ويب}}`.
+- **Magic words and nested templates** (review 2, RV2-5 and RV2-8). Only `{{!}}` and `{{=}}` are known to be syntax.
+  Other magic words and parser functions are unclassified templates: without a render, a plain citation holding one
+  is unresolved. A G template holding an unclassified template that has no transclusion of its own anywhere in the
+  render (`{{Fishbase|title={{lang|la|…}}}}`) is unresolved, because nothing shows that the nested template did not
+  make the citation markup. No retained bundle has either case.
+- **MF-1 v3 reads the lifetime peak** (review 2, RV2-9). A non-memory SystemError with exactly CPython's message
+  "error return without exception set", after a transient peak at the limit that was freed, would be reported as
+  `EXTRACTION_MEMORY_EXCEEDED`. That message comes only from CPython's own error paths, so this is improbable.
+- **Rules shaped by exposed data** (review 2, RV2-11). The bibliography-entry rule was designed after inspecting the
+  final English holdout's false positives and lifts that split's G5c to 1.000. Only the prospective D-035
+  confirmation is evidence that the rules generalize.
 - **Plain citation inside a formatting or identifier template** (`{{lang}}`, `{{nowrap}}`, `{{ISBN}}`, `{{URL}}` with
   no text outside) is unresolved, not `unstructured_text` (review RV-7). It is reported, not lost.
 - **Unclassified template without citation markup beside text** (review RV-5). `{{NRDB species}} Retrieved …` or

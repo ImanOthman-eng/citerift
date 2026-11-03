@@ -1,0 +1,60 @@
+"""Bibliography-entry rule attacks (synthetic)."""
+import sys, tempfile
+from pathlib import Path
+from rv2lib import *
+
+EI2 = "{{EI2|last=Barthold|title=al-Barāmika|doi=10.1163/1573-3912_islam_COM_0099}}"
+P = {"last": "Barthold", "title": "al-Barāmika", "doi": "10.1163/1573-3912_islam_COM_0099"}
+def bib(inner): return f"<h2>Sources</h2><ul><li>{inner}</li></ul>"
+cases = []
+# B1 hand-written citation with its own DOI, plus an EI2 on the same line
+t = f"== Sources ==\n* Smith, J. (2001). ''Own work''. Journal 5. doi:10.1000/own123 {EI2}\n"
+cases.append(("B1 own-DOI text + EI2(cs1) same line", t, bib("Smith, J. (2001). Own work. Journal 5. doi:10.1000/own123 " + transclusion(1, "EI2", P, cs1("Barthold")))))
+# B1n same, no render
+cases.append(("B1n same, no render", t, None))
+# B2 list wrapped in columns-list, hand-written entry with own DOI text
+t2 = "== Sources ==\n{{Columns-list|colwidth=30em|\n* Smith, J. (2001). ''Own work''. Journal 5. doi:10.1000/own123\n* Jones, K. (2003). ''Other''. Press. doi:10.1000/own456\n}}\n"
+body2 = transclusion(1, "Columns-list", {"colwidth": "30em", "1": "\n* Smith, J. (2001). ''Own work''. Journal 5. doi:10.1000/own123\n* Jones, K. (2003). ''Other''. Press. doi:10.1000/own456\n"}, "<ul><li>Smith, J. (2001). Own work. Journal 5. doi:10.1000/own123</li><li>Jones</li></ul>", tag="div")
+cases.append(("B2 hand-written entries inside Columns-list (render)", t2, "<h2>Sources</h2>" + body2))
+cases.append(("B2n same, no render", t2, None))
+# B3 own DOI inside formatting template
+t3 = "== Sources ==\n* Smith, J. (2001). ''Own work''. Journal 5. {{small|doi:10.1000/own123}}\n"
+cases.append(("B3 own DOI in {{small}} (render, no cite)", t3, bib("Smith, J. (2001). Own work. Journal 5. " + transclusion(1, "small", {"1": "doi:10.1000/own123"}, "<small>doi:10.1000/own123</small>"))))
+# B3r same structure in a ref
+t3r = "A<ref>Smith, J. (2001). ''Own work''. Journal 5. {{small|doi:10.1000/own123}}</ref>\n"
+cases.append(("B3r same text in a <ref> (render)", t3r, one_note("A", "Smith " + transclusion(5, "small", {"1": "doi:10.1000/own123"}, "<small>doi:10.1000/own123</small>"))))
+# B4 two EI2 on one line
+t4 = "== Sources ==\n* {{EI2|title=A|doi=10.1163/aaa}}; {{EI2|title=B|doi=10.1163/bbb}}\n"
+cases.append(("B4 two EI2 on one line", t4, bib(transclusion(1, "EI2", {"title": "A", "doi": "10.1163/aaa"}, cs1("A")) + "; " + transclusion(2, "EI2", {"title": "B", "doi": "10.1163/bbb"}, cs1("B")))))
+# B5 doi wrapper inside EI2
+t5 = "== Sources ==\n* {{EI2|title=A|doi={{doi|10.1163/aaa}}}}\n"
+cases.append(("B5 {{doi}} inside EI2 doi=", t5, bib(transclusion(1, "EI2", {"title": "A", "doi": "{{doi|10.1163/aaa}}"}, cs1("A")))))
+t5b = "== Sources ==\n* {{EI2|title=A|{{doi|10.1163/aaa}}}}\n"
+cases.append(("B5b {{doi}} positional inside EI2", t5b, bib(transclusion(1, "EI2", {"title": "A", "1": "{{doi|10.1163/aaa}}"}, cs1("A")))))
+# B6 small wrapping EI2
+t6 = f"== Sources ==\n* {{{{small|{EI2}}}}}\n"
+cases.append(("B6 {{small}} around EI2", t6, bib(transclusion(1, "small", {"1": EI2}, "<small>" + cs1("Barthold") + "</small>"))))
+# B7 multi-line EI2 on a list line
+t7 = "== Sources ==\n* {{EI2|last=Barthold|title=al-Barāmika\n|doi=10.1163/1573-3912_islam_COM_0099}}\n"
+cases.append(("B7 multi-line EI2 on list line", t7, bib(transclusion(1, "EI2", {"last": "Barthold", "title": "al-Barāmika", "doi": "10.1163/1573-3912_islam_COM_0099"}, cs1("Barthold")))))
+t7c = "== Sources ==\n* {{cite journal|last=Barthold|title=al-Barāmika\n|doi=10.1163/1573-3912_islam_COM_0099}}\n"
+cases.append(("B7c multi-line cite journal on list line (control)", t7c, None))
+# B8 nested list, ; and : lines
+cases.append(("B8 ** line", f"== Sources ==\n* Group\n** {EI2}\n", bib(transclusion(1, "EI2", P, cs1("Barthold")))))
+cases.append(("B8b : line", f"== Sources ==\n: {EI2}\n", "<dl><dd>" + transclusion(1, "EI2", P, cs1("Barthold")) + "</dd></dl>"))
+cases.append(("B8c ; line", f"== Sources ==\n; Encyclopaedia: {EI2}\n", "<dl><dt>Encyclopaedia</dt><dd>" + transclusion(1, "EI2", P, cs1("Barthold")) + "</dd></dl>"))
+# B9 ref inside list line with EI2 in ref, plus EI2 outside
+t9 = "== Sources ==\n* Prose sentence.<ref>{{EI2|title=R|doi=10.1163/rrr}}</ref> {{EI2|title=A|doi=10.1163/aaa}}\n"
+cases.append(("B9 EI2 in ref inside list line + EI2 outside", t9, bib("Prose sentence." + ref_sup(1, "cite_note-1", "cite_ref-1") + " " + transclusion(2, "EI2", {"title": "A", "doi": "10.1163/aaa"}, cs1("A"))) + references([note_li("cite_note-1", ["cite_ref-1"], transclusion(3, "EI2", {"title": "R", "doi": "10.1163/rrr"}, cs1("R")))])))
+# B10 Arabic equivalents
+tA = "== مصادر ==\n* سميث، ج. (2001). ''عمل''. مجلة 5. دوي:10.1000/own123 {{دائرة المعارف الإسلامية|عنوان=أ|doi=10.1163/aaa}}\n"
+cases.append(("B10 ar own DOI + unlisted with cs1", tA, bib("سميث " + transclusion(1, "دائرة المعارف الإسلامية", {"عنوان": "أ", "doi": "10.1163/aaa"}, cs1("أ")))))
+tA2 = "== مصادر ==\n{{أعمدة|\n* سميث، ج. (2001). ''عمل''. مجلة 5. دوي:10.1000/own123\n}}\n"
+cases.append(("B10b ar hand-written in layout template, no render", tA2, None))
+for i, (label, text, body) in enumerate(cases):
+    with tempfile.TemporaryDirectory() as d:
+        wiki = "ar" if label.startswith("B10") else "en"
+        try:
+            show(label, run(Path(d), text, body, wiki=wiki))
+        except Exception as e:
+            print("==", label, "ERROR", type(e).__name__, e)

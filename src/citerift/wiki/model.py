@@ -146,6 +146,13 @@ def _role(
 CITATION_MARKUP = "citation_markup"
 SHORT_CITATION_LINK = "short_citation_link"
 NO_CITATION_MARKUP = "no_citation_markup"
+# MediaWiki's own magic words for a literal "|" and "=" (core since 1.24 and 1.39). They are syntax, not templates:
+# they output that one character and cannot format a citation or link to one (review 2, RV2-5 and RV2-8).
+LITERAL_MAGIC_WORDS = frozenset({"!", "="})
+
+
+def is_literal_magic_word(t: TemplateRecord) -> bool:
+    return t.canonical in LITERAL_MAGIC_WORDS
 
 
 def build(
@@ -348,11 +355,26 @@ def build(
         le = text.find("\n", end)
         return ls, (len(text) if le < 0 else le)
 
+    def list_line(pos: int) -> bool:
+        ls = text.rfind("\n", 0, pos) + 1
+        return text[ls : ls + 1] in ("*", "#", ":", ";")
+
+    def member_start(cand: Candidate) -> int:
+        """An identifier belongs to the list line it is on, or else to the list line on which the innermost template
+        holding it starts: a template call may continue over several lines (review 2, RV2-7)."""
+        if list_line(cand.start):
+            return cand.start
+        for f in reversed(cand.frames):
+            t = templates.get(f.template) if f.template is not None else None
+            if t is not None and t.ref is None and list_line(t.start):
+                return t.start
+        return cand.start
+
     bib: dict[int, Container] = {}
     outside_templates = [t for t in scan.templates if t.ref is None and t.kind in ("citation", "external_data")]
     outside_cands = [c for c in scan.candidates if c.ref is None]
     members: list[tuple[int, int]] = [(t.start, t.end) for t in outside_templates]
-    members += [(c.start, c.end) for c in outside_cands]
+    members += [(member_start(c), c.end) for c in outside_cands]
     for start, end in sorted(members):
         ls, le = line_bounds(start, end)
         if text[ls : ls + 1] in ("*", "#", ":", ";"):
@@ -418,7 +440,7 @@ def build(
     # nested in another as part of the outer one, so markup in the output of a template that holds a citation-like
     # or unclassified template cannot be attributed to the outer one (review RV-1): such a template is not G.
     # Outside refs, the same holds for a top-level template in a bibliography entry.
-    holders = _citation_like_holders(scan, templates)
+    holders = _citation_like_holders(scan, templates, evidence)
     unit_templates += [
         tpl
         for tpl in scan.templates
@@ -484,7 +506,7 @@ def build(
             # An entry without a template unit was made from an identifier on its line. It is a hand-written entry
             # only when that identifier is its own text (or a profile identifier wrapper), not a field of a template
             # the profile does not list (D-035: the absence of a recognized template is not evidence).
-            verdict, reason = _bibliography_entry(c, outside_cands, templates, evidence, rendered, holders)
+            verdict, reason = _bibliography_entry(c, outside_cands, scan, templates, evidence, rendered, holders)
             if verdict == "unresolved":
                 issues.append(Issue("UNIT_CLASSIFICATION_UNRESOLVED", (c.id,), f"bibliography entry: {reason}"))
             else:
@@ -565,6 +587,10 @@ def build(
                 issues.append(
                     Issue("TEMPLATE_UNSUPPORTED", (oid,), owner_tpl.canonical or "?" if owner_tpl is not None else "?")
                 )
+        if holder is not None and unit_id is None and role in ("identifier_link", "labeled_reference_text"):
+            # A located identifier of a reference outside every unit it has: beside a template unit it may be a
+            # second work (review 2, RV2-2). It is reported, never silently dropped or guessed into a unit.
+            issues.append(Issue("IDENTIFIER_OUTSIDE_UNITS", (oid,)))
         if cand.boundary in AMBIGUOUS_BOUNDARIES:
             issues.append(Issue("IDENTIFIER_BOUNDARY_AMBIGUOUS", (oid,)))
         if decoded is not None and "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS" in decoded.steps:
@@ -623,12 +649,19 @@ def _remap_entities(issues: list[Issue], mapping: dict[str, str]) -> list[Issue]
     ]
 
 
-def _citation_like_holders(scan: SourceScan, templates: dict[int, TemplateRecord]) -> set[int]:
+def _citation_like_holders(
+    scan: SourceScan, templates: dict[int, TemplateRecord], evidence: dict[int, str]
+) -> set[int]:
     """Templates that hold, in their arguments within the same ref, a citation, external-data or unclassified
-    template: their render output includes that template's output."""
+    template that could have made citation markup: their render output includes that template's output.
+
+    An unclassified template could not when it is a literal magic word (``{{!}}``), or when every transclusion of
+    its own in the same render shows no citation markup (``citerift.wiki.units``; review 2, RV2-5)."""
     out: set[int] = set()
     for t in scan.templates:
         if t.excluded or t.kind not in ("citation", "external_data", "other"):
+            continue
+        if t.kind == "other" and (is_literal_magic_word(t) or evidence.get(t.index) == NO_CITATION_MARKUP):
             continue
         parent = t.parent_template
         while parent is not None and parent in templates and templates[parent].ref == t.ref:
@@ -640,28 +673,31 @@ def _citation_like_holders(scan: SourceScan, templates: dict[int, TemplateRecord
 def _bibliography_entry(
     c: Container,
     candidates: list[Candidate],
+    scan: SourceScan,
     templates: dict[int, TemplateRecord],
     evidence: dict[int, str],
     rendered: bool,
     holders: set[int],
 ) -> tuple[str, str]:
-    """Class of a bibliography entry with no template unit: ``unstructured`` when an identifier on its line is its
-    own text or in a profile identifier wrapper; otherwise ``unresolved`` (the identifiers are fields of templates the
-    profile does not list, whose render shows no citation of their own)."""
+    """Class of a bibliography entry with no template unit: ``unstructured`` when an identifier on its line is not a
+    template field and is either in no template of the entry but a profile identifier wrapper, or in text of an entry
+    that has text of its own (as in a ref, review 2, RV2-3); otherwise ``unresolved`` (the identifiers are fields of
+    templates the profile does not list, whose render shows no citation of their own). A template that starts before
+    the entry (a layout template around the whole list) is not part of it."""
     inside = [cand for cand in candidates if c.start <= cand.start < c.end]
+
+    def entry_frames(cand: Candidate) -> list[TemplateRecord]:
+        held = [templates[f.template] for f in cand.frames if f.template in templates]
+        return [t for t in held if t.start >= c.start]
+
+    own_text = _entry_has_own_text(scan, c.start, c.end)
     if any(
-        cand.origin != "template_field"
-        and all(templates[f.template].kind == "wrapper" for f in cand.frames if f.template in templates)
+        cand.origin != "template_field" and (own_text or all(t.kind == "wrapper" for t in entry_frames(cand)))
         for cand in inside
     ):
         return "unstructured", ""
     outer = sorted(
-        {
-            templates[f.template].index
-            for cand in inside
-            for f in cand.frames[:1]
-            if f.template in templates and templates[f.template].kind != "wrapper"
-        }
+        {frames[0].index for cand in inside if (frames := [t for t in entry_frames(cand) if t.kind != "wrapper"])}
     )
     ts = [templates[i] for i in outer]
     if any(t.index in holders and evidence.get(t.index) == CITATION_MARKUP for t in ts):
@@ -672,10 +708,28 @@ def _bibliography_entry(
     return "unresolved", f"identifiers only in templates that are not citation templates: {_names(ts)}"
 
 
+_COMMENT = re.compile(r"<!--.*?(?:-->|$)", re.S)
+
+
+def _entry_has_own_text(scan: SourceScan, start: int, end: int) -> bool:
+    """Letters or digits on a bibliography entry's lines outside every template call and ref that starts in it."""
+    cut = sorted(
+        [(t.start, t.end) for t in scan.templates if start <= t.start < end]
+        + [(r.start, r.end) for r in scan.refs if start <= r.start < end]
+    )
+    pieces, pos = [], start
+    for s0, e0 in cut:
+        if s0 > pos:
+            pieces.append(scan.text[pos:s0])
+        pos = max(pos, e0)
+    pieces.append(scan.text[pos:end])
+    return any(ch.isalnum() for ch in _COMMENT.sub("", "".join(pieces)))
+
+
 def _decides(t: TemplateRecord) -> bool:
     """Templates whose render is read as evidence (``citerift.wiki.units``): unclassified ones, and citation templates
     only by the unlisted-family name rule."""
-    return t.kind == "other" or (t.kind == "citation" and t.family == "unlisted")
+    return (t.kind == "other" and not is_literal_magic_word(t)) or (t.kind == "citation" and t.family == "unlisted")
 
 
 def _names(ts: list[TemplateRecord]) -> str:

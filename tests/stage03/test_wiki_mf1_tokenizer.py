@@ -144,7 +144,9 @@ def test_a_frame_allocation_failure_at_the_limit_is_a_memory_failure() -> None:
     "exc",
     [SystemError("error return without exception set"), SystemError("other"), RuntimeError("x"), MemoryError()],
 )
-def test_a_system_error_far_below_the_limit_is_not_a_memory_failure(exc: BaseException) -> None:
+def test_other_errors_and_an_unlimited_address_space_are_not_memory_failures(exc: BaseException) -> None:
+    """In the test process RLIMIT_AS is unlimited, so even the exact symptom is not a memory failure. The case far
+    below a set limit is ``test_the_symptom_without_memory_pressure_is_not_a_memory_failure`` (review 2, RV2-9)."""
     assert interpreter_memory_failure(exc) is False
 
 

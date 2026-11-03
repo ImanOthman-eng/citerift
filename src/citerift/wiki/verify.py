@@ -478,20 +478,17 @@ def _reconstruct_markers(bundle: Bundle, config: ExtractConfig) -> dict[str, Any
     identifier/unit/exception claims: replay remains the full re-derivation check.
     """
     from citerift.wiki.markers import observe  # noqa: PLC0415
-    from citerift.wiki.model import build  # noqa: PLC0415
-    from citerift.wiki.reconcile import reconcile  # noqa: PLC0415
     from citerift.wiki.render import read_render  # noqa: PLC0415
     from citerift.wiki.source import LimitExceeded, scan_source  # noqa: PLC0415
+    from citerift.wiki.units import source_model  # noqa: PLC0415
 
     cap = bundle.capture
     profile = load_profile()
     wiki = profile.wikis[cap["page"]["wiki"]]
     text = bundle.artifact(cap["source"]["artifact"], limit=MAX_SOURCE_BYTES).decode("utf-8")
-    try:
-        model = build(scan_source(text, wiki, profile, config.limits()), wiki, profile, ByteMap(text))
-    except (LimitExceeded, RecursionError) as exc:
-        return {"capture": {"capture_sha256": bundle.capture_sha256}, "status": "failed", "detail": str(exc)[:200]}
-    render = reader = rec = None
+    # The render is read before the source model, as in extraction: what a template renders is evidence of what it
+    # is, and the units decide which bibliography entries are reconciled (review 2, RV2-1).
+    render = reader = None
     state = cap["render"]["state"]
     if state == "captured":
         try:
@@ -504,8 +501,11 @@ def _reconstruct_markers(bundle: Bundle, config: ExtractConfig) -> dict[str, Any
             if render.revision_about not in (None, cap["page"]["revision_id"]):
                 render = reader = None
                 state = "rejected"
-            else:
-                rec = reconcile(model, render, wiki, profile, text)
+    try:
+        scan = scan_source(text, wiki, profile, config.limits())
+        model, rec = source_model(scan, wiki, profile, ByteMap(text), render, reader, text)
+    except (LimitExceeded, RecursionError) as exc:
+        return {"capture": {"capture_sha256": bundle.capture_sha256}, "status": "failed", "detail": str(exc)[:200]}
     return {
         "capture": {"capture_sha256": bundle.capture_sha256},
         "status": "complete",

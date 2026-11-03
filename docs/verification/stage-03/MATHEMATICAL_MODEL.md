@@ -190,12 +190,27 @@ For a template $t$ let $e(t) \in \{\mathsf{cite}, \mathsf{short}, \mathsf{none},
 
 Equal source keys must give one value of $e$, otherwise $e = \bot$.
 
+**Note evidence** (review 2, RV2-4). Let $\bot_0(t)$ hold when no render transclusion has $t$'s key at all (so not a
+conflict and not an unexpanded call). For a definition $d$ with $C(d) \cup G(d) = \emptyset$ whose container is
+matched to exactly one note $n(d)$ (backlinks agree, no conflicting definitions, no unexpanded template in the note),
+let $e(n(d))$ be the same function of the note's elements, and $B(d) = \{t \in \Delta(d) : e(t) = \bot \wedge
+\bot_0(t)\}$. If every $t \in \Delta(d) \setminus B(d)$ has $e(t) = \mathsf{none}$, then $e$ is redefined on
+$B(d)$:
+- $e(n(d)) = \mathsf{none} \Rightarrow e(t) := \mathsf{none}$ for every $t \in B(d)$;
+- $|B(d)| = 1 \Rightarrow e(t) := e(n(d))$ for its one element.
+
+The model is then rebuilt with the redefined $e$. A note shows the whole definition, so $e(n(d)) = \mathsf{none}$
+implies that no template of $d$ writes citation markup or a short link; with one template without evidence and
+every other one showing none, a mark in the note can only be that template's.
+
 **Kind sets.** Let $P$ be the profile citation and external-data templates, and $U \subseteq P$ those that are citation
 templates only by the RF-37 name rule.
 
 **Units.** Let $N(t)$ hold when some template of $P$, or some template the profile does not classify, is called
 inside the arguments of $t$ within the same ref: Parsoid renders it as part of $t$, so $t$'s output also holds its
-markup. The template units of $d$ are
+markup. An unclassified nested template $s$ is not counted when it is a literal magic word (`{{!}}`, `{{=}}`), or
+when every single-template transclusion of its canonical name in the render has evidence $\mathsf{none}$ and there is
+at least one (review 2, RV2-5). Literal magic words are also excluded from $\Delta(d)$ (RV2-8). The template units of $d$ are
 
 $$C(d) = \{t \in d : t \in P \wedge \neg(t \in U \wedge e(t) = \mathsf{short})\}, \qquad
 G(d) = \{t \in T(d) : t \notin P \wedge e(t) = \mathsf{cite} \wedge \neg N(t)\}.$$
@@ -239,3 +254,13 @@ Each definition costs $O(|T(d)| + |\mathrm{cand}(d)|)$. The whole step is $O(n)$
 transclusions, plus one walk of the output elements of each transclusion whose key is wanted. $N$ is one walk up the parent chain of
 each citation-like template, $O(n \cdot \mathrm{depth})$. No step depends on
 iteration order: sets of evidence values are compared only for size, and unit order is by span.
+
+Note evidence needs the matched notes, so when it redefines $e$ on some template the model is built and reconciled a
+second time. Containers, uses and their notes do not depend on units, so the second reconciliation matches the same
+notes and the procedure stops after two passes; its cost is at most twice that of one pass.
+
+**Bibliography entries.** Let an entry $b$ span the lines of its list items, and $T_b$ the templates that start
+inside $b$. A candidate $c$ of $b$ that is not a template field gives $D$ when $c$ is nested in $T_b$ only in
+profile wrappers, or when $b$ has letters or digits outside every template of $T_b$ and every ref starting in $b$
+(review 2, RV2-3). A candidate off a list line belongs to the list line on which the innermost template holding it
+starts (RV2-7).

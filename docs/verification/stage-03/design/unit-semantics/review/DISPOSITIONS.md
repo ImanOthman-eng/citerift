@@ -41,12 +41,19 @@ them pass.
 
 ## Effect on the retained data (exposed, regression only)
 
-Compared with the reviewed commit `4d44e6c`, over all 146 retained real bundles:
-- no unit is added;
-- two `unstructured_text` units are removed, both RV-4 in `challenge/en-906156-a1`;
+Corrected after the second review (`../review2/REVIEW.md`, RV2-6). The first version of this section left out the
+bibliography-entry rule, which was added in the same commit after the review, and said that no unit was added and
+that G5c and G5d were unchanged. Measured against the reviewed commit `4d44e6c` over all 146 retained real bundles,
+`11bb5b2` changed these:
+- three `unsupported_citation_template` units are added: the `{{EI2}}`/`{{EI3}}` bibliography entries of the final
+  English holdout `en-66266685-a1` (bibliography-entry rule);
+- five `unstructured_text` units are removed: the three of those entries, and two RV-4 units in
+  `challenge/en-906156-a1`;
 - five definitions go from F to H (RV-6);
 - 13 container issues and one `DUPLICATE_TEMPLATE_PARAMETER` issue change entity, each now naming the right entity
   (RV-2);
 - the wording of the H reasons changes (RV-10).
 
-The frozen scorer gives the same G5c and G5d as at `4d44e6c` on every exposed campaign (`differential/RESCORE_EXPOSED.txt`).
+With the frozen scorer (`differential/RESCORE_EXPOSED.txt`), every exposed campaign has the same G5c and G5d as at
+`4d44e6c` except the final English holdout: G5c 0.9732 → 1.0 and G5d 0.9561 → 0.9825, from the bibliography-entry
+rule. Those data shaped that rule, so this is regression evidence only (RV2-11).

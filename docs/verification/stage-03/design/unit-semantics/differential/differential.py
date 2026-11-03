@@ -3,6 +3,9 @@
 Unit references are compared by (kind, span) because unit ids are renumbered when units disappear. Everything
 except the units, identifier-to-unit links, container unit lists, unit issues, the exception ledger and the unit
 accounting must be identical; any other difference is reported as unexpected.
+
+Usage: ``python differential.py <base dir> <new dir> [<repository root>]``. With the repository root, the list item
+that an "explained" bibliography entry is matched to is checked against the render (review 2, RV2-10).
 """
 
 import json
@@ -11,8 +14,13 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from citerift.wiki.bundle import open_bundle
+from citerift.wiki.render import read_render
+
 base, new = Path(sys.argv[1]), Path(sys.argv[2])
+ROOT = Path(sys.argv[3]) if len(sys.argv) > 3 else None
 UNIT_CODES = {
+    "IDENTIFIER_OUTSIDE_UNITS",
     "UNIT_CLASSIFICATION_UNRESOLVED",
     "CITATION_TEMPLATE_UNSUPPORTED",
     "UNIT_BOUNDARY_UNRESOLVED",
@@ -38,11 +46,37 @@ def entity_fits(doc, issue):
     if code == "DUPLICATE_TEMPLATE_PARAMETER":
         return all(",".join(us[e]["duplicate_params"]) == issue["detail"] for e in ents)
     if code == "UNIT_CLASSIFICATION_UNRESOLVED":
-        return all(e in cs and cs[e]["kind"] != "bibliography_entry" for e in ents)
+        # A definition is reported as "definition N: ...", a bibliography entry as "bibliography entry: ..."
+        # (review 2, RV2-10: the bibliography form was rejected before).
+        entry = issue["detail"].startswith("bibliography entry: ")
+        return all(e in cs and (cs[e]["kind"] == "bibliography_entry") == entry for e in ents)
+    if code == "IDENTIFIER_OUTSIDE_UNITS":
+        ids = {i["id"]: i for i in doc["identifiers"]}
+        return all(e in ids and ids[e]["unit_id"] is None and ids[e]["container_id"] is not None for e in ents)
     return True
 
 
-def bibliography_g_reconciliation(b, n):
+def g_items_match_render(bundle_rel, n, g):
+    """Each explained entry is matched to the render list item that holds its G unit's transclusion, and its marker
+    region is that item (review 2, RV2-10). Returns the entries for which this does not hold."""
+    bd = open_bundle(ROOT / bundle_rel)
+    render, _ = read_render(bd.artifact(bd.capture["render"]["artifact"], limit=64 << 20), 2_000_000)
+    bad = []
+    for c in n["containers"]:
+        if c["id"] not in g:
+            continue
+        items = {
+            render.transclusion(u["render"]["transclusion"]).in_list_item
+            for u in n["units"]
+            if u["container_id"] == c["id"] and u["render"]["transclusion"]
+        }
+        marker = next((m for m in n["markers"] if m["container_id"] == c["id"]), None)
+        if items != {c["render"]["region_id"]} or marker is None or marker["region"]["region_id"] not in items:
+            bad.append(c["id"])
+    return bad
+
+
+def bibliography_g_reconciliation(b, n, bundle_rel):
     """A bibliography entry is matched to the render through its template unit (reconcile.py). An entry whose unit
     became an ``unsupported_citation_template`` is therefore now found in the render. Exactly these differences
     follow, and nothing else may differ:
@@ -76,6 +110,10 @@ def bibliography_g_reconciliation(b, n):
     for mb, mn in zip(b["markers"], n["markers"], strict=True):
         if mb != mn and not (mn["container_id"] in g and mb["state"] == "not_inspected"):
             left.append(f"marker of {mb['container_id']}")
+    if ROOT is None:
+        left.append("render not checked (no repository root given)")
+    else:
+        left += [f"entry {c} not matched to its G unit's list item" for c in g_items_match_render(bundle_rel, n, g)]
     gone = [r for r in b["render_only"]["identifiers"] if r not in n["render_only"]["identifiers"]]
     if [r for r in n["render_only"]["identifiers"] if r not in b["render_only"]["identifiers"]] or any(
         r["list_item"] not in regions for r in gone
@@ -206,7 +244,9 @@ for f in sorted(base.glob("*.json")):
             cls = "template unit removed: " + (bu["template"] or {}).get("canonical", "?")
         elif g:
             cls = "G"
-        elif c is not None and (c["id"], f"definition {idx}") in unresolved:
+        elif (c is not None and (c["id"], f"definition {idx}") in unresolved) or (
+            bu["definition_id"] is None and (bu["container_id"], "bibliography entry") in unresolved
+        ):
             cls = "H"
         elif d is not None and d.get("origin") == "efn":
             cls = "F"  # an efn without own text (efn text without a locator is H since review RV-6)
@@ -236,6 +276,8 @@ for f in sorted(base.glob("*.json")):
     totals["identifiers losing a unit"] += lost_ids
     totals["identifiers moving unit"] += moved_ids
     totals["issue entity corrected (RV-2)"] += renamed
+    outside = Counter(json.loads(i)[0] for i in nn["issues"]) - Counter(json.loads(i)[0] for i in nb["issues"])
+    totals["IDENTIFIER_OUTSIDE_UNITS added"] += outside["IDENTIFIER_OUTSIDE_UNITS"]
     if rows or unexpected or lost_ids or moved_ids or renamed:
         report["changed"].append(
             {
@@ -250,7 +292,7 @@ for f in sorted(base.glob("*.json")):
     else:
         report["unchanged"] += 1
     if unexpected:
-        left = bibliography_g_reconciliation(b, n)
+        left = bibliography_g_reconciliation(b, n, f.name[:-5].replace("__", "/"))
         acc_keys = {k for k in set(acc_b) | set(acc_n) if acc_b.get(k) != acc_n.get(k)}
         allowed = {"components", "markers", "render_only", "status", "accounting (other than units)"}
         allowed.add("exceptions (other than unit classification)")

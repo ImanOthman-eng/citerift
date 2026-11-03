@@ -440,7 +440,9 @@ Section 11.3 is replaced, for engine 1.1.0, by the following.
 - `unsupported_citation_template` (new): a template the profile does not list whose own Parsoid output contains a
   CS1/CS2 `<cite class="citation">`. It must be called inside a ref and not inside another template of that ref, or
   at the top level of a bibliography entry. It must hold no citation, external-data or unclassified template in its
-  arguments, whose output Parsoid would render inside it (review RV-1). It is kept with its source anchors and the
+  arguments, whose output Parsoid would render inside it (review RV-1). An unclassified template held in it does not
+  count when it cannot make citation markup: a literal magic word (`{{!}}`, `{{=}}`), or a template whose every
+  transclusion of its own name elsewhere in the same render shows none (review 2, RV2-5). It is kept with its source anchors and the
   issue `CITATION_TEMPLATE_UNSUPPORTED`; its fields are not read. An identifier in it keeps the role `unresolved`.
 - `unstructured_text`: only on positive evidence. For a definition with no template unit:
   1. its own external link or DOI/PMID (in text or in a profile wrapper) gives D;
@@ -456,8 +458,23 @@ Section 11.3 is replaced, for engine 1.1.0, by the following.
      - nothing: no unit.
 
   Short footnotes are unchanged. A bibliography entry without a template unit is D only when an identifier on its
-  line is its own text, a resolver link or in a profile identifier wrapper. When its identifiers are only fields of
-  other templates, it is unresolved ("bibliography entry: …").
+  lines is not a template field and is either in no template of the entry but a profile identifier wrapper (its own
+  text or a resolver link), or in text of an entry that has text of its own outside its templates and refs, as in a
+  ref (review 2, RV2-3). A template that starts before the entry, such as a layout template around the whole list,
+  is not part of it. When its identifiers are only fields of other templates, it is unresolved
+  ("bibliography entry: …"). An identifier belongs to the list line it is on or, when it is not on a list line, to
+  the list line on which the innermost template holding it starts: a call may continue over several lines (review
+  2, RV2-7).
+
+**Identifiers outside every unit.** A located identifier of a reference (role `identifier_link` or
+`labeled_reference_text`, in a container) that is in none of its units carries `IDENTIFIER_OUTSIDE_UNITS`, a
+warning naming the identifier. This happens beside a template unit, for example a hand-written citation with its own
+DOI beside a bot-added archive `{{cite web}}` or an unlisted template rendered as a citation. Whether it is a second
+work is not established, so no unit is guessed and it is never silent (review 2, RV2-2).
+
+**Literal magic words.** `{{!}}` and `{{=}}` are MediaWiki syntax for one character. They never decide a unit and
+are not unknown templates (review 2, RV2-8). Other magic words and parser functions (`{{PAGENAME}}`, `{{#if:}}`,
+`{{#invoke:}}`) are unclassified templates, as before.
 
 **Unresolved definitions** carry `UNIT_CLASSIFICATION_UNRESOLVED`, a warning, with the container id and either
 "definition N: reason" or "bibliography entry: reason". The reason names the evidence actually read (review RV-10).
@@ -481,7 +498,29 @@ There is no evidence when the template:
 - was not expanded (parser-limit warning);
 - has calls whose outputs disagree.
 
+**Note evidence** (review 2, RV2-4). Parsoid renders the templates of a ref written inside another template's
+arguments (a reference list's `refs=`, `{{refn}}`, an infobox parameter) as part of that template, so they never have
+output of their own. For a definition without a unit whose deciding templates include some without any
+transclusion of their own (not omitted, not conflicting: absent), the definition's rendered note decides, when the
+container is matched to exactly one note, its backlinks agree, its definitions do not conflict, and the note holds no
+unexpanded template:
+- a note with neither citation markup nor a short-citation link shows that none of those templates is either;
+- otherwise the note's evidence is given to the definition's one template without evidence, only when every other
+  deciding template of it shows no citation markup of its own; with two or more, nothing is attributed.
+
+The model is then built and reconciled a second time with that evidence. Containers and their notes do not depend on
+units, so the second reconciliation matches the same notes.
+
+**Nested evidence** (review 2, RV2-5). For an unclassified template nested in another template's arguments, every
+single-template transclusion of the same canonical name in the render is read. When all show no citation markup, the
+nested template cannot have made the outer template's citation markup. This is used only for the RV-1 holder rule.
+
 Without a usable render, no template the profile does not classify is established as a citation construct.
+
+**One path for extraction, replay and verification** (review 2, RV2-1). `units.source_model` builds the model with
+the render's evidence and reconciles it. Extraction, replay and the worker's marker reconstruction in `verify` all
+use it. Before, the marker reconstruction built the model without evidence, so a document with a bibliography G unit
+failed verification.
 
 **Compatibility:**
 - extraction `schema_version` 1.1.0 and schema `x-citerift-version` 1.1.0, an additive enum value;

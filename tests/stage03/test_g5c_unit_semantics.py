@@ -257,9 +257,21 @@ def test_short_citation_link_beside_unknown_template_is_unresolved(tmp_path: Pat
 
 
 @pytest.mark.regression
-def test_template_without_own_render_output_is_unresolved(tmp_path: Path) -> None:
-    """H: a ref inside an infobox parameter has no transclusion of its own in the render (Parsoid renders the
-    infobox as one block), so the render cannot show what a template in it is."""
+@pytest.mark.parametrize(
+    ("note", "expected", "reason"),
+    [
+        ("<cite class='citation'>Who's Who</cite>", ["unsupported_citation_template"], None),
+        ("Who's Who 2023", [], "only templates; render shows no citation markup: Who's Who"),
+        (None, [], "only templates, some with no usable render: Who's Who"),
+    ],
+)
+def test_template_without_own_render_output_is_decided_by_its_note(
+    tmp_path: Path, note: str | None, expected: list[str], reason: str | None
+) -> None:
+    """A ref inside an infobox parameter has no transclusion of its own in the render (Parsoid renders the infobox as
+    one block). Its rendered note shows the whole definition, whose one template made it (review 2, RV2-4): a
+    citation there is G; a note without citation markup or link is H as for a template that renders none; without a
+    render it is H (at 11bb5b2 every case was H, "no output of their own in the render")."""
     text = "{{Infobox person|birth_date=1945<ref>{{Who's Who|title=Wheeler|year=2023}}</ref>}}"
     infobox = transclusion(
         1,
@@ -268,11 +280,10 @@ def test_template_without_own_render_output_is_unresolved(tmp_path: Path) -> Non
         f"<table><tr><td>1945{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</td></tr></table>",
         "div",
     )
-    body = infobox + references([note_li("cite_note-1", ["cite_ref-1"], "<cite class='citation'>Who's Who</cite>")])
+    body = None if note is None else infobox + references([note_li("cite_note-1", ["cite_ref-1"], note)])
     doc = run(tmp_path, text, body)
-    assert kinds(doc) == []
-    [issue] = unresolved(doc)
-    assert "no output of their own in the render" in issue["detail"]
+    assert kinds(doc) == expected
+    assert [i["detail"] for i in unresolved(doc)] == ([] if reason is None else [f"definition 1: {reason}"])
 
 
 @pytest.mark.regression
@@ -410,14 +421,17 @@ def test_plain_text_beside_a_helper_template_stays_unstructured(
 def test_plain_text_beside_a_template_the_render_cannot_show_is_unresolved(
     tmp_path: Path, wiki: str, text: str, target: str, params: dict[str, str], output: str
 ) -> None:
-    """H (review RV-4): without evidence of what the template beside the text is (no render, or no transclusion of
-    its own), it could be a short-citation link and the text a comment, so no unit is claimed."""
+    """H (review RV-4): without evidence of what the template beside the text is, it could be a short-citation link
+    and the text a comment, so no unit is claimed. Without a render there is none; with a render where the template
+    has no transclusion of its own, its note shows a short-citation link (review 2, RV2-4: a note that shows neither
+    a link nor citation markup is evidence, ``test_g5c_review2.py``)."""
     del target, params, output
-    for n, body in enumerate((None, one_note("A", "x"))):
+    link = one_note("A", 'x <a href="./SYNTHETIC#CITEREFSmith2001">Smith 2001</a>')
+    for n, (body, reason) in enumerate(((None, "templates with no usable render"), (link, "a short-citation link"))):
         doc = extract(bundle(tmp_path, text, body, wiki=wiki, name=f"b{n}"))
         assert kinds(doc) == []
         [issue] = unresolved(doc)
-        assert issue["detail"].startswith("definition 1: plain text beside templates with ")
+        assert issue["detail"].startswith(f"definition 1: plain text beside {reason}")
 
 
 @pytest.mark.regression

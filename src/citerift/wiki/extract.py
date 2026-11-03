@@ -24,9 +24,8 @@ from citerift.wiki.bundle import Bundle, BundleError, open_bundle
 from citerift.wiki.canonical import StrictJSONError, canonical_bytes, digest, loads_strict, sha256_hex
 from citerift.wiki.issues import Issue, sort_issues
 from citerift.wiki.markers import observe
-from citerift.wiki.model import OVERRIDDEN, SourceModel, build
+from citerift.wiki.model import OVERRIDDEN, SourceModel
 from citerift.wiki.profile import Profile, load_profile
-from citerift.wiki.reconcile import reconcile
 from citerift.wiki.render import HTML_PARSER, HTML_PARSER_VERSION, LIBXML_VERSION, RenderLimitExceeded, read_render
 from citerift.wiki.source import (
     AMBIGUOUS_BOUNDARIES,
@@ -38,7 +37,7 @@ from citerift.wiki.source import (
     scan_source,
 )
 from citerift.wiki.textmap import ByteMap
-from citerift.wiki.units import template_evidence
+from citerift.wiki.units import source_model
 
 EXTRACTION_SCHEMA = "urn:citerift:schema:wiki:v1:extraction"
 SCHEMA_VERSION = "1.1.0"  # 1.1.0 (D-035): unit kind unsupported_citation_template added
@@ -205,8 +204,7 @@ def extract_document(bundle: Bundle, config: ExtractConfig) -> dict[str, Any]:
                 render = reader = None
                 render_state = "rejected"
     try:
-        evidence = None if render is None or reader is None else template_evidence(scan, render, reader, w, text)
-        model = build(scan, w, profile, bmap, evidence)
+        model, rec = source_model(scan, w, profile, bmap, render, reader, text)
     except LimitExceeded as exc:
         return _source_failed(out, doc, components, exc.code, exc.detail)
     except RecursionError:
@@ -217,8 +215,7 @@ def extract_document(bundle: Bundle, config: ExtractConfig) -> dict[str, Any]:
 
     # Reconciliation -------------------------------------------------------------------------------------
     if captured:
-        if render is not None:
-            rec = reconcile(model, render, w, profile, text)
+        if render is not None and rec is not None:
             doc.issues.extend(rec.issues)
             for dup in render.duplicate_ids:
                 doc.issues.append(Issue("DOM_ID_DUPLICATE", (), dup))

@@ -76,13 +76,23 @@ Evidence is read only for templates that can decide a unit:
 
 Parsoid renders a template nested in another as part of the outer one. Citation markup in the output of a template
 that holds a citation, external-data or unclassified template therefore cannot be attributed to the outer one
-(RV-1).
+(RV-1). A nested unclassified template does not count when it cannot make citation markup (review 2, RV2-5):
+- a literal magic word, `{{!}}` or `{{=}}`, which is MediaWiki syntax for one character;
+- a template whose every transclusion of its own name elsewhere in the same render shows no citation markup.
 
-A template gets no evidence in these cases:
+A template gets no evidence of its own in these cases:
 - its transclusion has several parts;
 - MediaWiki stopped expanding it (a parser-limit warning);
-- it has no transclusion of its own, as for a ref inside an infobox parameter;
+- it has no transclusion of its own, as for a ref inside an infobox parameter, a reference list's `refs=` or
+  `{{refn}}`;
 - its calls with one key disagree.
+
+**The rendered note** (review 2, RV2-4). In the third case only (no transclusion at all, which is structural), the
+definition's rendered note decides, when its container is matched to exactly one note with agreeing backlinks and no
+unexpanded template, and its definitions do not conflict. A note with neither mark shows that none of those templates
+is a citation or a link. A note with a mark gives it to the definition's one template without evidence, when every
+other deciding template of it has no citation markup; with two or more without evidence nothing is attributed.
+Without this, every hand-written citation with an `{{ISBN}}` or `{{Webarchive}}` in a list-defined ref was H.
 
 The survey of every retained bundle (`evidence/render_evidence_survey.txt`, 146 real bundles, before the fix)
 separates the template families without exception:
@@ -122,13 +132,24 @@ For any other definition of a `<ref>`, list-defined, `#tag` or generated note (s
      its own; markup it cannot own; or not a citation template in the profile, RV-10);
    - nothing at all: F (empty).
 
-**Bibliography entries.** An entry is made from a citation template or an identifier on a list line, as before.
-Without a C or G unit:
-- an identifier that is the entry's own text, a resolver link, or in a profile identifier wrapper: D, as before;
+**Bibliography entries.** An entry is made from a citation template or an identifier on a list line, as before. An
+identifier off a list line belongs to the list line on which the innermost template holding it starts, so a call over
+several lines makes an entry too (review 2, RV2-7). Without a C or G unit:
+- an identifier that is not a template field, and is in no template of the entry but a profile identifier wrapper
+  (its own text, a resolver link), or in an entry that has text of its own outside its templates and refs: D. A
+  template that starts before the entry, such as `{{Columns-list}}` around the whole list, is not part of it
+  (review 2, RV2-3);
 - identifiers only as fields of other templates: H, "bibliography entry: …" with the reason.
 
-This rule was added after the review. The exposed regression showed three `* {{EI2|…|doi=…}}` entries in the final
-English holdout that were `unstructured_text` only because the profile does not list EI2.
+This rule was added after the first review. The exposed regression showed three `* {{EI2|…|doi=…}}` entries in the
+final English holdout that were `unstructured_text` only because the profile does not list EI2. It was therefore
+designed on exposed data, and the lift of that split's G5c to 1.000 is not evidence that it generalizes (RV2-11).
+
+**A located identifier outside every unit** (review 2, RV2-2). A hand-written citation with its own DOI beside a C or
+G unit gets no `unstructured_text` unit, as before for C: whether it is a second work or part of the template's
+citation is not established. Its identifier now carries `IDENTIFIER_OUTSIDE_UNITS`, so it is never silent. In the
+retained data this is three identifiers in two Arabic refs where a bot added an archive `{{استشهاد ويب}}` beside a
+hand-written citation.
 
 **Identifiers** are unchanged in role, normalization and anchors:
 - an identifier inside a G template moves to that unit, keeping the role `unresolved` and the issue
@@ -151,6 +172,11 @@ id. That defect predates D-035 and also affected container issues.
   from names. In the retained data this affects one capture whose render failed (`en-906156-a1`, two definitions).
 - **Wrapped plain citations.** A whole plain citation inside `{{lang}}`, `{{nowrap}}`, `{{ISBN}}` or `{{URL}}`, with
   no text outside, is H (RV-7).
+- **Other magic words without a render.** `{{PAGENAME}}`, `{{#if:}}` and the like are unclassified templates. With a
+  render, the note decides; without one, a plain citation holding one is H (RV2-8).
+- **A G template holding a template never rendered on its own** (RV2-5). `{{Fishbase|title={{lang|la|…}}}}` is H
+  when `{{lang}}` has no transclusion of its own anywhere in the render: nothing shows that it did not make the
+  citation markup.
 - **Unclassified template without citation markup beside text** (RV-5). `{{NRDB species}} Retrieved …` stays D,
   because nothing separates it from `{{ISBN}}` beside a hand-written citation without a word list.
 - **Name-rule templates without evidence** (RV-3). The Arabic Harvard template with no render, or nested, stays C.
@@ -169,7 +195,10 @@ id. That defect predates D-035 and also affected container issues.
 - **Reconciliation** is unchanged. It now also matches a bibliography entry with a G unit to its rendered list item,
   through the template's transclusion, exactly as for a listed citation template. That entry's markers are then
   inspected (`differential/DIFFERENTIAL.md`).
-- **Issue codes.** `UNIT_CLASSIFICATION_UNRESOLVED` (warning) and `CITATION_TEMPLATE_UNSUPPORTED` (info) are new.
+- **Issue codes.** `UNIT_CLASSIFICATION_UNRESOLVED` (warning), `CITATION_TEMPLATE_UNSUPPORTED` (info) and
+  `IDENTIFIER_OUTSIDE_UNITS` (warning, review 2) are new.
+- **Verification** rebuilds the model through the same function as extraction (`units.source_model`, review 2,
+  RV2-1).
 - **Engine `citerift-wiki` 1.1.0.** The replay of a document from engine 1.0.0 now stops at
   `REPLAY_IDENTITY_MISMATCH` instead of reporting a digest difference.
 - **The frozen scorer is unchanged.** It maps every kind other than `unstructured_text` to "template", so a G unit is
@@ -182,7 +211,9 @@ id. That defect predates D-035 and also affected container issues.
   - The review fixes and the bibliography rule have their own fail-first record: 27 + 5 new or changed tests fail
     on the reviewed commit `4d44e6c`, and every control passes there (`review/FAIL_FIRST_REVIEW.txt`).
   - After the fix every case passes.
-- **Independent review:** `review/REVIEW.md` and `review/DISPOSITIONS.md`.
+- **Independent review:** `review/REVIEW.md` and `review/DISPOSITIONS.md`; second round `review2/REVIEW.md` and
+  `review2/DISPOSITIONS.md`, with its fail-first record `review2/FAIL_FIRST_REVIEW2.txt` (23 of 28 new tests fail
+  on `11bb5b2`, every control passes).
 - **Differential:** `differential/` covers every retained real bundle, comparing the frozen engine with this one.
   There is no unexpected difference.
 

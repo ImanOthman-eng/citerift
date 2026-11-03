@@ -1,0 +1,23 @@
+"""Shared helpers for review 2 (synthetic bundles through the production capture code)."""
+import sys, json
+from pathlib import Path
+ROOT = Path("/home/user/citerift")
+sys.path.insert(0, str(ROOT / "tests/stage03"))
+from wiki_support import bundle, extract, note_li, ref_sup, references  # noqa
+from test_g5c_unit_semantics import transclusion, cs1, citeref, one_note  # noqa
+
+def run(tmp, text, body, wiki="en", name="b"):
+    return extract(bundle(tmp, text, body, wiki=wiki, name=name))
+
+def summary(doc):
+    units = [(u["id"], u["kind"], u["container_id"], (u.get("template") or {}).get("canonical"), u.get("parent_unit")) for u in doc["units"]]
+    unres = [(i["entities"], i["detail"]) for i in doc["issues"] if i["code"] == "UNIT_CLASSIFICATION_UNRESOLVED"]
+    unsup = [(i["entities"], i["detail"]) for i in doc["issues"] if i["code"] == "CITATION_TEMPLATE_UNSUPPORTED"]
+    ids = [(i["id"], i["source"]["raw"] if "raw" in i["source"] else None, i["role"], i["container_id"], i["unit_id"]) for i in doc["identifiers"]]
+    cont = [(c["id"], c["kind"], c.get("layout")) for c in doc["containers"]]
+    return {"units": units, "H": unres, "G-issue": unsup, "ids": ids, "containers": cont}
+
+def show(label, doc):
+    print("==", label)
+    for k, v in summary(doc).items():
+        print("  ", k, v)

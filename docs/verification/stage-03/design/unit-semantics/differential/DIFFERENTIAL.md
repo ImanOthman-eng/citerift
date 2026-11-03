@@ -2,8 +2,8 @@
 
 The baseline is the engine at `26398f5`, whose `src`, `schemas`, `pyproject.toml` and `uv.lock` are identical to the
 frozen candidate `3e51792`. Its 54 confirmation extractions are byte-identical to the committed predictions
-(`campaign/prediction/extractions/`). The corrected engine is the D-035 fix after the independent review
-(`../review/DISPOSITIONS.md`), with the bibliography-entry rule added after the review.
+(`campaign/prediction/extractions/`). The corrected engine is the D-035 fix after both independent reviews
+(`../review/DISPOSITIONS.md`, `../review2/DISPOSITIONS.md`).
 
 Scope: all 146 real bundles retained under `docs/verification/stage-03/` (synthetic ones excluded):
 - the 54 of the 2026-11 confirmation campaign;
@@ -15,18 +15,24 @@ Each bundle is extracted in process with the default configuration (`extract_all
 a container or a unit are checked to name an entity that fits them.
 
 Files:
-- `DIFFERENTIAL.json`: the raw report.
-- `OUTPUTS.sha256`: output digests for three engines:
+- `DIFFERENTIAL.json`: the raw report, frozen engine against this engine (`differential.py base new <root>`).
+- `DIFFERENTIAL_REVIEW2.json`: the same tool, `11bb5b2` (the second review's subject) against this engine.
+- `OUTPUTS.sha256`: output digests for four engines:
   - `base/`: the frozen engine;
-  - `reviewed-4d44e6c/`: the commit the reviewer examined;
+  - `reviewed-4d44e6c/`: the commit the first reviewer examined;
+  - `reviewed-11bb5b2/`: the commit the second reviewer examined;
   - `new/`: this engine.
+- `VERIFY.txt`: `verify_all.py`, offline verification of every document of this engine against its bundle (review 2,
+  RV2-1: the differential compares documents, it does not verify them).
 - `RESCORE_EXPOSED.txt`: the frozen scorer on the exposed campaigns (`rescore_exposed.py`).
 
 ## Result
 
 - **120 bundles are unchanged; 26 change.**
 - **No unexpected difference** (`unexpected` is empty). One bundle has an *explained* difference, verified field by
-  field by `differential.py` (see "Bibliography entries reconciled through G units" below). Containers, definitions, uses, bindings and identifiers are
+  field by `differential.py`, and against the retained render (see "Bibliography entries reconciled through G
+  units" below).
+- **All 146 documents verify** offline (`VERIFY.txt`). Containers, definitions, uses, bindings and identifiers are
   identical, apart from the identifier-to-unit links listed below. Identifier roles, normalization and anchors,
   render links, markers and the excluded identifiers are identical too. So are every non-unit issue apart from its
   entity, the accounting apart from unit counts, and every accounting check.
@@ -46,16 +52,17 @@ Files:
 
 | Change | Count |
 |---|---|
-| `unstructured_text` unit removed: short-citation link only, or empty (E) | 224 |
-| `unstructured_text` unit removed, classification unresolved (H, issue and ledger entry) | 128 |
-| `unstructured_text` unit replaced by an `unsupported_citation_template` unit (G): 9 in refs, 3 bibliography entries | 12 |
+| `unstructured_text` unit removed: short-citation link only, or empty (E) | 226 |
+| `unstructured_text` unit removed, classification unresolved (H, issue and ledger entry) | 125 |
+| `unstructured_text` unit replaced by an `unsupported_citation_template` unit (G): 10 in refs, 3 bibliography entries | 13 |
 | `citation_template` unit removed: Arabic Harvard template `استشهاد بهارفارد دون أقواس` (E, or H with text) | 8 |
-| identifiers moving to another unit (all into G units, role `unresolved` kept) | 9 |
-| identifiers losing their unit (a field of a template with no render output of its own, role `unresolved` kept) | 1 |
+| identifiers moving to another unit (all into G units, role `unresolved` kept) | 10 |
+| identifiers losing their unit | 0 |
 | container issues naming the corrected container (RV-2) | 13 |
+| `IDENTIFIER_OUTSIDE_UNITS` added (review 2, RV2-2) | 3 |
 
-No `unstructured_text` unit is added, and no profile `citation_template` unit is removed or added. The 128 H
-include the five `efn` notes that the reviewed commit classed F (review RV-6) and the two definitions of
+No `unstructured_text` unit is added, and no profile `citation_template` unit is removed or added. The 125 H
+include the five `efn` notes that the first reviewed commit classed F (review RV-6) and the two definitions of
 `challenge/en-906156-a1`, whose render failed (review RV-4).
 
 ## Per bundle
@@ -64,13 +71,13 @@ include the five `efn` notes that the reviewed commit classed F (review RV-6) an
 |---|---|---|---|---|
 | `evaluation/capture/bundles/challenge/en-41925151-a1` | none | 0 | 0 | 10 |
 | `evaluation/capture/bundles/holdout/en-63163494-a1` | H 1 | 0 | 0 | 0 |
-| `evaluation/capture/bundles/holdout/en-74446941-a1` | H 1 | 1 | 0 | 0 |
+| `evaluation/capture/bundles/holdout/en-74446941-a1` | G 1 (note evidence) | 0 | 1 | 0 |
 | `evaluation/capture/bundles/reserve/ar-9617858-a1` | H 2 | 0 | 0 | 0 |
 | `evaluation/capture/bundles/reserve/en-1505283-a1` | H 1 | 0 | 0 | 1 |
 | `evaluation/capture/bundles/reserve/en-1898990-a1` | H 1 (efn) | 0 | 0 | 0 |
 | `evaluation/capture/bundles/reserve/en-55111438-a1` | G 6 | 0 | 6 | 1 |
 | `evaluation/confirmation-2026-11/…/challenge/en-3202774-a1` | H 1 | 0 | 0 | 0 |
-| `evaluation/confirmation-2026-11/…/challenge/en-71205055-a2` | E 32, H 1 | 0 | 0 | 0 |
+| `evaluation/confirmation-2026-11/…/challenge/en-71205055-a2` | E 33 | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/challenge/en-72994622-a1` | E 1, H 85 | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/challenge/en-906156-a1` | H 2 (render failed) | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/challenge/en-906156-a2` | H 2 | 0 | 0 | 0 |
@@ -81,7 +88,7 @@ include the five `efn` notes that the reviewed commit classed F (review RV-6) an
 | `evaluation/confirmation-2026-11/…/holdout/en-28279091-a1` | H 1 | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/holdout/en-38148109-a1` | H 3 (efn) | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/holdout/en-67651016-a1` | H 2 (1 efn) | 0 | 0 | 0 |
-| `evaluation/confirmation-2026-11/…/reserve1/en-186224-a1` | E 184, H 18 | 0 | 0 | 0 |
+| `evaluation/confirmation-2026-11/…/reserve1/en-186224-a1` | E 185, H 17 | 0 | 0 | 0 |
 | `evaluation/confirmation-2026-11/…/reserve1/en-9778156-a1` | E 7 | 0 | 0 | 0 |
 | `evaluation/confirmation-superseded/capture/bundles/confirmation/en-23645349-a1` | G 1 | 0 | 0 | 0 |
 | `evaluation/confirmation-superseded/capture/bundles/confirmation/en-31718-a1` | H 4 | 0 | 0 | 0 |
@@ -116,11 +123,10 @@ positives of `en-186224` and the one of `en-9778156` are among them.
   - Bibleverse (3) and Bibleref2-nb;
   - قاموس دورلاند and من سمى هذا.
 - **Templates without render output of their own.** These are refs inside infobox parameters, which Parsoid renders
-  as part of the infobox:
-  - IUCN in `ar-1325389`, the Arabic false positive;
-  - NRDB species in `en-63163494`;
-  - Who's Who in `en-74446941`. Its DOI, role `unresolved`, loses its unit;
-  - one Harvnb each in `en-71205055` and `en-186224`.
+  as part of the infobox. The rendered note decides where the ref's container is matched to one note (review 2,
+  RV2-4):
+  - IUCN in `ar-1325389`, the Arabic false positive: its container is not matched to a note, so it stays H;
+  - NRDB species in `en-63163494`: the note shows no citation markup, H ("render shows no citation markup").
 - **Explanatory-note text without a locator** (review RV-6): five `{{efn}}` notes. Four are adjudicated false
   positives: three in `en-38148109` and one in `en-67651016`.
 
@@ -129,7 +135,17 @@ positives of `en-186224` and the one of `en-9778156` are among them.
 - EI2, the Arabic false positive;
 - LepIndex;
 - Who's Who, six identical definitions in `reserve/en-55111438-a1`. Their DOIs, role `unresolved`, move into the G
-  units.
+  units;
+- Who's Who in the infobox ref of `en-74446941`, by its note's citation markup (review 2, RV2-4). Its DOI, role
+  `unresolved`, moves into the unit.
+
+**Class E by note evidence.** One infobox ref holding only `{{Harvnb}}` in each of `en-71205055-a2` and
+`en-186224-a1`: the note shows only a short-citation link (review 2, RV2-4).
+
+**`IDENTIFIER_OUTSIDE_UNITS`** (review 2, RV2-2). Three identifiers in `holdout/ar-3190666-a1` (a PMID) and
+`holdout/ar-4242367-a1` (a DOI link and `{{دوي}}`). Each is in a hand-written citation beside a bot-added archive
+`{{استشهاد ويب}}`, the definition's one unit. That was so under the frozen engine too; the identifiers are now
+reported.
 
 - EI2 and EI3, three bibliography list entries (`* {{EI2|…|doi=…}}`) in the final English holdout
   `en-66266685-a1`. These are its three adjudicated false positives. The entries were made from the DOI field of a
@@ -147,6 +163,10 @@ follow, and `differential.py` checks that nothing else differs:
 - their marker regions are inspected (`no_recognized_warning_in_inspected_region`) instead of `not_inspected`;
 - the six render links of those items are no longer render-only identifiers, and their exceptions disappear;
 - status and components go from `partial` to `complete`.
+
+Since review 2 (RV2-10) the tool also reads the retained render and requires each such entry to be matched to the
+list item that holds its G unit's transclusion, with its marker region that same item. The new document of this
+bundle verifies; at `11bb5b2` it did not (RV2-1).
 
 **Arabic Harvard template.** In `holdout/ar-4242367-a1`, 8 calls of `استشهاد بهارفارد دون أقواس` were
 `citation_template` units only by the RF-37 name rule. They render `#CITEREF` links: 7 are now E and 1 is H. All 8

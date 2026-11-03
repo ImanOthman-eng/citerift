@@ -125,6 +125,11 @@ CATALOG: dict[str, tuple[str, bool, str]] = {
         "an identifier parameter repeated later in the same template; only the last value is used",
     ),
     "UNIT_BOUNDARY_UNRESOLVED": ("warning", False, "several identifiers in unstructured text; works not separated"),
+    "IDENTIFIER_OUTSIDE_UNITS": (
+        "warning",
+        False,
+        "a located identifier of a reference is in none of its units; whether it is a further work is not established",
+    ),
     "UNIT_CLASSIFICATION_UNRESOLVED": (
         "warning",
         False,
