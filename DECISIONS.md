@@ -766,3 +766,22 @@ positive retraction-warning challenge. G1-G11, their thresholds and the per-lang
 identifiers, 80 uses, 60 definitions, 60 linkable uses) stay unchanged. The final campaign of D-031 stays published
 as a failed historical result. The instruction authorizes no acceptance, no merge and no later stage, and no
 further campaign after this one.
+
+## D-035 — Stage 03 G5c semantic correction and one further prospective confirmation
+- Status: accepted
+- Topic: stage-03-g5c-correction-and-confirmation
+- Date: 2026-11-03
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-03_G5C.md; docs/verification/stage-03/evaluation/confirmation-2026-11/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yPBxa7nEyAiE3VN5Lw442e8F`,
+2026-11-03T05:53:24Z), answering the decision record of the D-034 campaign. The owner rejects outcome A (no narrowing,
+no waiver of G5c) and orders a correction of the citation-unit semantics at the model level: the absence of a
+recognized citation template is not evidence of an unstructured bibliographic citation. The work comprises
+fail-first reproduction of the 19 English false positives, the smallest correct semantic fix, differential checks on
+the retained bundles, an independent adversarial review, and exactly one further bounded, pre-registered prospective
+confirmation of the corrected candidate on unexposed articles (500 HTTP attempts and 300 MiB of accepted bodies,
+G1-G11 thresholds and minimum denominators unchanged), followed by full release verification. The D-031 and D-034
+campaigns stay published unchanged as historical results. The instruction authorizes no acceptance, no merge, no
+later stage and no further campaign after this one.
