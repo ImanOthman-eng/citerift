@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "51104de8be75356bef4931f8e6591dab8ba1779b53e8e9a3d980eb41020b53c7",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.364,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:59:10.814402Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=614753",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 62461,
+   "body_sha256": "9d7694863d62cbe6db04df75630db4adc7b25ede2c75fe04be3c9b1e55bcfa34",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.55,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:00:00.179088Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=614753",
+   "wire_bytes": 18981
+  },
+  {
+   "body_bytes": 395389,
+   "body_sha256": "6a364c979373ef850fa1d833554369b4ef530bf4651e9cc781fbe0ad2b60c7fc",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.467,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:00:10.730139Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380218630/html",
+   "wire_bytes": 63468
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "51104de8be75356bef4931f8e6591dab8ba1779b53e8e9a3d980eb41020b53c7"
+ ],
+ "finished_at": "2026-11-03T16:00:11.199474Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 614753,
+  "parent_revision_id": 1379830939,
+  "redirect_followed": null,
+  "revision_id": 1380218630,
+  "revision_timestamp": "2026-10-14T13:45:53Z",
+  "sha1": "6a8bce3859624cb25ad058f0cc7de6c65f13c17e",
+  "size": 61148,
+  "title": "Max Planck Society",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "6a364c979373ef850fa1d833554369b4ef530bf4651e9cc781fbe0ad2b60c7fc",
+  "bytes": 395389,
+  "checks": {
+   "document_revision_id": "1380218630",
+   "header_revision_id": "1380218630",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "614753",
+   "render_id": "352c3daa-d745-11f1-a8b5-85e17da3c57a",
+   "revision_sha1": "6a8bce3859624cb25ad058f0cc7de6c65f13c17e",
+   "revision_sha1_base36": "cg1q2h9khuwlv32sbikf99rnveusf3y"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1380218630",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 16:00:11 GMT",
+   "etag": "W/\"1380218630/352c3daa-d745-11f1-a8b5-85e17da3c57a/view\"",
+   "last-modified": "Tue, 03 Nov 2026 05:05:11 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380218630/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 614753,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1b2a65fa4224f8ee0b1de1a37e892e1c2aa275f28e40ce82a4d4ddcad7a8a530",
+  "bytes": 61148,
+  "response_artifact": "9d7694863d62cbe6db04df75630db4adc7b25ede2c75fe04be3c9b1e55bcfa34",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=614753"
+ },
+ "started_at": "2026-11-03T15:59:01.203373Z",
+ "status": "complete"
+}

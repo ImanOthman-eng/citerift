@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 1966,
+   "body_sha256": "863aa844eacb597a4e82a67c95f79c015c31f42c4bc33f7877691de5306ed776",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.327,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:47:10.922320Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=460054",
+   "wire_bytes": 1966
+  },
+  {
+   "body_bytes": 4489,
+   "body_sha256": "14e291278c02b5d1eeb3fc65ebcc93461b5850b77e50e0def38ece04f15a80f5",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.422,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:47:21.249885Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=460054",
+   "wire_bytes": 2218
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "2d60fadba02145e234fd1e235b08a904c60c0fceb6594f26e7a451fc13ee7906",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.319,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:47:31.672270Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1136335007/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 17272,
+   "body_sha256": "f10efdcb700a7fcebc90324e9f656681c25db68a0c66936aa34305e501eb8493",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.401,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:47:59.992151Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1136335007/html",
+   "wire_bytes": 5408
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "863aa844eacb597a4e82a67c95f79c015c31f42c4bc33f7877691de5306ed776",
+  "2d60fadba02145e234fd1e235b08a904c60c0fceb6594f26e7a451fc13ee7906"
+ ],
+ "finished_at": "2026-11-03T15:48:00.393421Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 460054,
+  "parent_revision_id": 1120013387,
+  "redirect_followed": null,
+  "revision_id": 1136335007,
+  "revision_timestamp": "2023-01-29T21:28:01Z",
+  "sha1": "130859a7504a73f713cc125a97090b93eebd0da3",
+  "size": 3920,
+  "title": "Glacial geology of the Genesee River",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f10efdcb700a7fcebc90324e9f656681c25db68a0c66936aa34305e501eb8493",
+  "bytes": 17272,
+  "checks": {
+   "document_revision_id": "1136335007",
+   "header_revision_id": "1136335007",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "460054",
+   "render_id": "d1f94e3b-d1fa-11f1-bdd6-01f4e7334801",
+   "revision_sha1": "130859a7504a73f713cc125a97090b93eebd0da3",
+   "revision_sha1_base36": "281ane7s2powcvphuk3a96w1t9rk0bn"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1136335007",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 15:48:00 GMT",
+   "etag": "W/\"1136335007/d1f94e3b-d1fa-11f1-bdd6-01f4e7334801/view\"",
+   "last-modified": "Tue, 27 Oct 2026 05:47:25 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1136335007/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 460054,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "2ab2c6e5bb124f958f9701d4831dc5c9c638a783f8f050c177678e0a1c05a00a",
+  "bytes": 3920,
+  "response_artifact": "14e291278c02b5d1eeb3fc65ebcc93461b5850b77e50e0def38ece04f15a80f5",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=460054"
+ },
+ "started_at": "2026-11-03T15:47:01.335969Z",
+ "status": "complete"
+}

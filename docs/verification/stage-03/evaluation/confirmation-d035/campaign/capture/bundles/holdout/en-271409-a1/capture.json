@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "3c3a6b62eda9f4d3b86856a3779eb64e315d349d797e0ae9d9f441325490b3fc",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.289,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:49:21.569383Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=271409",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 147042,
+   "body_sha256": "7d0dee330883ebac778f15c3d0ff2f6b99463e87f246a00d54b307970d7cd524",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.435,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:50:00.858521Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=271409",
+   "wire_bytes": 47794
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "1fb42ab3b58a9b93c9208373f145b534aa429d6d558c14a56de1cff2832abf01",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.304,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:50:11.295161Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382843355/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 931621,
+   "body_sha256": "cd140907aeb411ec66d25b9578759bea072cce54a4370bc6a80e9e3283885bfa",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.441,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:51:00.600133Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382843355/html",
+   "wire_bytes": 142912
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "3c3a6b62eda9f4d3b86856a3779eb64e315d349d797e0ae9d9f441325490b3fc",
+  "1fb42ab3b58a9b93c9208373f145b534aa429d6d558c14a56de1cff2832abf01"
+ ],
+ "finished_at": "2026-11-03T15:51:01.051931Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 271409,
+  "parent_revision_id": 1373911852,
+  "redirect_followed": null,
+  "revision_id": 1382843355,
+  "revision_timestamp": "2026-10-30T16:24:43Z",
+  "sha1": "5dade439e9c24ce0501a47c2af1f8811e890b52f",
+  "size": 145817,
+  "title": "Northern Cyprus",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "cd140907aeb411ec66d25b9578759bea072cce54a4370bc6a80e9e3283885bfa",
+  "bytes": 931621,
+  "checks": {
+   "document_revision_id": "1382843355",
+   "header_revision_id": "1382843355",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "271409",
+   "render_id": "77db1555-d71f-11f1-9cc1-e300fec70422",
+   "revision_sha1": "5dade439e9c24ce0501a47c2af1f8811e890b52f",
+   "revision_sha1_base36": "axxuhe0jsk4ahfvbiicujn067i3d4xb"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1382843355",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 15:51:00 GMT",
+   "etag": "W/\"1382843355/77db1555-d71f-11f1-9cc1-e300fec70422/view\"",
+   "last-modified": "Sun, 01 Nov 2026 01:36:25 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382843355/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 271409,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "93c57e69e10773da6fd7118d480ed8a51d11d1c184952d9bdd9ac30abcaaaef1",
+  "bytes": 145817,
+  "response_artifact": "7d0dee330883ebac778f15c3d0ff2f6b99463e87f246a00d54b307970d7cd524",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=271409"
+ },
+ "started_at": "2026-11-03T15:49:11.883863Z",
+ "status": "complete"
+}
