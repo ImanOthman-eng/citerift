@@ -37,9 +37,9 @@ packets and an empty `out/`. Challenge instances were not told that their articl
 
 ## Isolation audit
 
-`audit_evaluators.py` read the 18 transcripts (both launches) and wrote `EVALUATOR_AUDIT.json`:
+`audit_evaluators.py` read the transcripts of both launches and of the reserve instance and wrote `EVALUATOR_AUDIT.json`:
 
-- **No tool call** names an absolute path outside the instance's own work directory, and none runs git, uv, curl,
+- **For the nine initial instances, no tool call** names an absolute path outside the instance's own work directory, and none runs git, uv, curl,
   wget, pip or a `citerift` command. Relative `..` paths in the transcripts all stay inside the work directory
   (`tools/../packets`).
 - **Attached by the harness, not opened by the instances:** each instance's context included the repository's
@@ -48,6 +48,17 @@ packets and an empty `out/`. Challenge instances were not told that their articl
   why two reports end with a governance verdict line ("VERIFIED COMPLETE", "NOT VERIFIED"), which has no meaning for
   the labels. No project memory was attached. This is recorded as a deviation from "receives only".
 - Each instance's final report is kept in `EVALUATOR_AUDIT.json` (`final_report`).
+
+## Reserve block 1 (enwiki)
+
+- Reserve decision 1 (`../reserve/step-1.json`, from the committed locks only) named block `reserve1` for enwiki.
+  It was captured (capture-2), packed with the frozen window (`packets-reserve1/`, committed in `6f39025`) and
+  labelled by one more instance, cf11-eval-en-r1-1 (Claude Sonnet, same brief), launched 2026-11-03 02:09:55.
+- Its four files passed `validate_labels.py` at first submission and are locked in `locked/reserve1-en`.
+- **Isolation deviation.** The audit flagged two of its 17 tool calls: it wrote its own scan listing of one packet
+  (`en-1371940951`) to `/tmp/claude-0/s3.txt`, outside its work directory, and read it back. The file holds only
+  lines of that packet's source text; a copy is kept as
+  `evaluator_tools/en-r1-1/OUTSIDE_WORKDIR_tmp_claude-0_s3.txt`. It read no other path outside its directory.
 
 ## Judgement calls the instances reported
 

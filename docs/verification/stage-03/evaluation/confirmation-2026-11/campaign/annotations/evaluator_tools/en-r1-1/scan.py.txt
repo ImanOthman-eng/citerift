@@ -1,0 +1,17 @@
+import sys,re,json
+from lxml import html
+d=sys.argv[1]
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+w=json.load(open(f'packets/{d}/packet.json'))['window']
+a,b=w['cp_start'],w['cp_end']
+mode=sys.argv[2]
+if mode=='src':
+    pat=re.compile(r'<ref\b[^>]*?/?>|</ref>|\{\{\s*(?:cite|citation|sfn|sfnp|efn|refn|r\||harv|reflist|notelist|doi|pmid|retracted|expression)[^|}]*|10\.\d{4,9}/|pmid|pubmed|doi',re.I)
+    for m in pat.finditer(t):
+        if a<=m.start()<b+300: print(m.start(),repr(t[m.start():m.start()+70]))
+else:
+    h=html.fromstring(open(f'packets/{d}/render.html',encoding='utf-8').read())
+    for e in h.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+        print('SUP',e.get('id'),(e.get('data-mw') or '')[:150])
+    for e in h.xpath('//li[starts-with(@id,"cite_note")]'):
+        print('LI',e.get('id'),' '.join(e.text_content().split())[:160])
