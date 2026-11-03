@@ -13,3 +13,21 @@
   (wrapper, both splits) are identical.
 - `disagreements.json`: 56 disputed items in 44 gate articles and 57 in 10 challenge articles. These go to the
   adjudicators (Claude Haiku) under `../../ADJUDICATION_BRIEF_v1.1.md`.
+
+## Adjudication (2026-11-03)
+
+- Five Claude Haiku instances (`cf11-adj-ar-g1`, `ar-g2`, `en-g1`, `en-g2`, `en-c1`) decided the 113 disputed items
+  under the filled briefs in `briefs/` (inputs `items/`, committed in `6c2b544` before they started).
+- `validate_adjudication.py` (format only: every item decided once with a reason; the adjudicated file passes the
+  label check; the JSON paths changed from the locked label are listed) passed for four instances. For
+  `en-1329904848` the first submission (`en-c1`) gave no reason for items 1 to 20. Under section 7 it was returned to
+  a new instance of the same role, `cf11-adj-en-c1b`, with the validation message (`briefs/en-c1b.txt`); its result
+  is used. The returned submission is kept in `returned/en-c1/`. Both instances made the same single correction.
+- Result (`decisions/`, `adjudicated/`, `ADJUDICATION_VALIDATION.json`): 104 items confirmed, 9 corrected
+  (ar: 2 identifier keys lower-cased under guide 3.5, 1 marker `none` to `cannot_tell` for an unrendered footnote,
+  1 template location moved to its own reference; en gate: 2 `[[doi:…]]` interwiki links from
+  `labeled_reference_text` to `identifier_link`; en challenge: 2 Gaia EDR3 erratum notes from `none` to
+  `ambiguous`). The changed JSON paths match the corrections the instances reported.
+- `ADJUDICATOR_AUDIT.json` (same audit as for the evaluators): no tool call outside the instance's work directory,
+  no git/uv/network command; the harness again attached the repository `CLAUDE.md` to each context.
+- `adjudicator_tools/` keeps the instances' helper scripts with `.txt` appended.

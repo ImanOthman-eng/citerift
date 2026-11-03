@@ -1,0 +1,7 @@
+import sys
+from lxml import html
+p = sys.argv[1]
+doc = html.parse(p).getroot()
+for li in doc.xpath('//li[starts-with(@id,"cite_note")]'):
+    txt = ' '.join(li.text_content().split())
+    print(li.get('id'), '|', txt[:260])

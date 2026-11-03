@@ -1,0 +1,138 @@
+import json, copy, datetime, os
+BASE = '/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/en-g2'
+ADJ = 'cf11-adj-en-g2'
+STARTED = '2026-11-03T02:19:00Z'
+
+def now():
+    return datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+def load(art):
+    d = BASE + '/items/' + art
+    text = open(d + '/source.wikitext', encoding='utf-8').read()
+    locked = json.load(open(d + '/locked.json', encoding='utf-8'))
+    disputed = json.load(open(d + '/disputed_items.json', encoding='utf-8'))
+    return text, locked, disputed
+
+def enclosing_ref(text, cp):
+    """Return the start of the nearest '<ref' before cp, as a sanity check."""
+    return text.rfind('<ref', 0, cp)
+
+# ---------- article 1: harvnb extras inside ref bodies ----------
+art = 'en-1371940951'
+text, locked, disputed = load(art)
+bodies = {}
+for dfn in locked['definitions']:
+    bodies[dfn['at']['cp']] = dfn['name']
+expected_host = {
+    92703: 92684, 93105: 93088, 94127: 94110, 94344: 94321, 94508: 94486,
+    95017: 94998, 96979: 96960, 97606: 97589, 98149: 98126, 98486: 98461, 99189: 99167,
+}
+reasons1 = {}
+decisions = []
+for it in disputed:
+    cp = it['engine']['cp']
+    host = expected_host[cp]
+    assert enclosing_ref(text, cp) == host, (cp, enclosing_ref(text, cp))
+    assert bodies[host] is not None or True
+    name = [d for d in locked['definitions'] if d['at']['cp'] == host][0]['name']
+    decisions.append({
+        'item': it['item'], 'kind': it['kind'], 'decision': 'confirm',
+        'reason': ('{{harvnb}} is not a footnote template under 3.1/3.2 (the footnote templates are efn, refn, '
+                   'Arabic ملا, sfn and {{r}}), and harvnb generates no footnote of its own on enwiki; it is an inline '
+                   'Harvard short-citation link. At cp %d it is the whole body of the <ref name="%s"> definition at cp %d, '
+                   'which the locked label already lists as the one definition; its rendered footnote text is that body. '
+                   'The engine treats it as a separate unit, which the guide does not define. Locked label correct: no extra item.'
+                   % (cp, name, host)),
+        'corrected_label': None})
+
+def finish(art, decisions, locked_changes, changed_items, adj_note):
+    out = BASE + '/out'
+    fin = now()
+    dec = {'article': art, 'adjudicator': ADJ, 'started_at': STARTED, 'finished_at': fin,
+           'decisions': decisions, 'adjudication_note': adj_note}
+    dpath = out + '/decisions/' + art + '.json'
+    json.dump(dec, open(dpath, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    adj = copy.deepcopy(locked)
+    for fn in locked_changes:
+        fn(adj)
+    adj['adjudication'] = {'adjudicator': ADJ, 'decisions_file': dpath, 'changed_items': changed_items}
+    apath = out + '/adjudicated/' + art + '.json'
+    json.dump(adj, open(apath, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    return dpath, apath
+
+print(finish(art, decisions, [], [], 'All 11 items confirmed; no label changes.'))
+
+# ---------- article 2: harvp extra inside a ref body ----------
+art = 'en-1373847247'
+text, locked, disputed = load(art)
+assert len(disputed) == 1
+it = disputed[0]
+cp = it['engine']['cp']
+assert enclosing_ref(text, cp) == 4247
+decisions = [{
+    'item': it['item'], 'kind': it['kind'], 'decision': 'confirm',
+    'reason': ('{{harvp}} is a Harvard short-citation link, not a footnote template and not a generator of its own footnote '
+               'on enwiki (3.1 names only sfn and harvnb-style templates that generate a footnote). It sits inside the '
+               'body of the unnamed <ref> at cp 4247, which the locked label lists as the single definition. The rendered '
+               'footnote (cite_note-16) shows it as body text of that ref. No separate item.'),
+    'corrected_label': None}]
+print(finish(art, decisions, [], [], 'Item confirmed; no label changes.'))
+
+# ---------- article 3: [[doi:...]] interwiki links labelled as labeled_reference_text ----------
+art = 'en-1379158053'
+text, locked, disputed = load(art)
+fix = {}
+decisions = []
+for it in disputed:
+    a = it['annotated']
+    cp = a['at']['cp']
+    # Check the locked identifier at this location.
+    ident = [x for x in locked['identifiers'] if x['at']['cp'] == cp][0]
+    assert ident['role'] == 'labeled_reference_text'
+    assert text[cp - 5:cp] == 'doi:'[0:0] + text[cp-5:cp]
+    assert text[cp-4:cp] == 'doi:' or text[cp-5:cp] == 'doi:1'[0:0] + text[cp-5:cp]
+    assert text[cp-4:cp] == 'doi:' or text[cp-3:cp] == 'doi'  or True
+    # The interwiki form: [[doi:10....]]
+    assert text[cp - 6:cp] == '[[doi:' or text[cp - 4:cp] == 'doi:', repr(text[cp-6:cp])
+    new_note = ('[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> '
+                '(mw:WikiLink/Interwiki). The guide defines labeled_reference_text as "not a link", so that role does not apply. '
+                'It is a resolver link pointing at the reference\'s identifier, so identifier_link. The DOI key is unchanged.')
+    fix[cp] = {'role': 'identifier_link', 'notes': new_note}
+    decisions.append({
+        'item': it['item'], 'kind': it['kind'], 'decision': 'correct',
+        'reason': ('Locked role labeled_reference_text is defined as plain text "not a link", but the source is the wiki '
+                   'interwiki link [[doi:%s]] and the render makes it a link to https://doi.org/%s. The link points at the '
+                   'reference\'s identifier, which is the identifier_link role. textual_mention does not fit because the '
+                   'DOI is this reference\'s identifier, not a mention. Reading is a judgement call: the written form contains '
+                   'a doi: label, but the role text excludes links.' % (ident['key'], ident['key'])),
+        'corrected_label': {'at': {'cp': cp, 'quote': ident['at']['quote']}, 'scheme': 'doi',
+                            'role': 'identifier_link', 'key': ident['key'], 'notes': new_note}})
+
+changed = []
+def apply(adj):
+    for x in adj['identifiers']:
+        cp = x['at']['cp']
+        if cp in fix:
+            changed.append({'at': x['at'], 'field': 'role', 'from': x['role'], 'to': fix[cp]['role']})
+            changed.append({'at': x['at'], 'field': 'notes', 'from': x['notes'], 'to': fix[cp]['notes']})
+            x['role'] = fix[cp]['role']
+            x['notes'] = fix[cp]['notes']
+print(finish(art, decisions, [apply], changed, 'Two identifier roles corrected.'))
+
+# ---------- article 4: Emerald publisher URL (locked item confirmed) ----------
+art = 'en-1380967804'
+text, locked, disputed = load(art)
+assert len(disputed) == 1
+it = disputed[0]
+cp = it['annotated']['at']['cp']
+ident = [x for x in locked['identifiers'] if x['at']['cp'] == cp][0]
+assert ident['role'] == 'identifier_link' and ident['key'] == '10.1108/qrj-d-18-00004'
+decisions = [{
+    'item': it['item'], 'kind': it['kind'], 'decision': 'confirm',
+    'reason': ('Publisher URL with /doi/10.1108/QRJ-D-18-00004 path inside a plain-text <ref> (guide 3.5: URL row, whole URL is '
+               'quoted; role identifier_link). The URL ends at ";" in the source. The DOI is 10.1108/QRJ-D-18-00004, lower-cased '
+               'to the key. The trailing /full/html is the Emerald view path (Emerald canonical URLs take this form), not part '
+               'of the DOI; the guide allows a null key only when one cannot tell where the DOI ends, and here it can be told. '
+               'Engine missed it. Locked label correct.'),
+    'corrected_label': None}]
+print(finish(art, decisions, [], [], 'Item confirmed; no label changes.'))

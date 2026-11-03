@@ -1,0 +1,20 @@
+import json, sys, re
+base = sys.argv[1]
+t = open(base + '/source.wikitext', encoding='utf-8').read()
+L = json.load(open(base + '/locked.json', encoding='utf-8'))
+D = json.load(open(base + '/disputed_items.json', encoding='utf-8'))
+uses = {u['id']: u for u in L['uses']}
+defs = {d['id']: d for d in L['definitions']}
+refs_span = None
+m1 = t.find('<references'); m2 = t.find('</references>')
+print('references block', m1, m2, 'len', len(t))
+print('reflist refs= at', [m.start() for m in re.finditer(r'\{\{Reflist', t)])
+for it in D:
+    a = it.get('annotated')
+    if not a: continue
+    at = a['at']; cp = at['cp']; q = at['quote']
+    ok = t[cp:cp+len(q)] == q
+    end = t.find('</ref>', cp)
+    body = t[cp:end+6]
+    inside = (m1 != -1 and m1 < cp < m2)
+    print(it['item'], a['id'], 'ok' if ok else 'BAD', 'inside_references' if inside else 'outside_references', 'selfclose' if t[cp:cp+200].split('>')[0].endswith('/') else '', repr(body[:120]))

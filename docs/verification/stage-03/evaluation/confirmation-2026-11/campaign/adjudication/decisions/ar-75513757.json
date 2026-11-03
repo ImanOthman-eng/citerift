@@ -1,0 +1,29 @@
+{
+  "article": "ar-75513757",
+  "adjudicator": "cf11-adj-ar-g1",
+  "started_at": "2026-11-03T02:21:46Z",
+  "finished_at": "2026-11-03T02:21:46Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "reason": "PMID 7984195 is the pmid= query value in https://content.nejm.org/cgi/pmidlookup?...&pmid=7984195 in the url= field of a citation template. That resolver is not one of the URL shapes listed in guide 3.5, so the raw text is 'anything else' = the identifier text, which the quote gives. The URL resolves the PMID and sits in url= of a citation, so identifier_link fits. Ambiguity: the guide's role text names resolvers generally while its raw-text table names specific shapes; I followed the table for the quote and the role text for the role.",
+      "corrected_label": null
+    },
+    {
+      "item": 1,
+      "kind": "identifier_extra",
+      "decision": "confirm",
+      "reason": "The engine's hit is a single space at cp 1635, inside the empty field |doi= |, in the Bolognia citation template (container ct-00004). An empty doi= field holds no identifier occurrence, and the engine's own key is null, so there is no DOI at that place. Under the guide the locked label correctly has none.",
+      "corrected_label": null
+    },
+    {
+      "item": 2,
+      "kind": "identifier_extra",
+      "decision": "confirm",
+      "reason": "The engine's hit is a single space at cp 2590, inside the empty field |doi= |, in the Andrews citation template (container ct-00006). Same reasoning as item 1: no identifier text, key null, so the locked label correctly has none.",
+      "corrected_label": null
+    }
+  ]
+}

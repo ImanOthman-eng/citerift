@@ -1,0 +1,41 @@
+{
+ "article": "en-1379158053",
+ "adjudicator": "cf11-adj-en-g2",
+ "started_at": "2026-11-03T02:19:00Z",
+ "finished_at": "2026-11-03T02:20:38Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "identifier_role",
+   "decision": "correct",
+   "reason": "Locked role labeled_reference_text is defined as plain text \"not a link\", but the source is the wiki interwiki link [[doi:10.1002/anie.197800161]] and the render makes it a link to https://doi.org/10.1002/anie.197800161. The link points at the reference's identifier, which is the identifier_link role. textual_mention does not fit because the DOI is this reference's identifier, not a mention. Reading is a judgement call: the written form contains a doi: label, but the role text excludes links.",
+   "corrected_label": {
+    "at": {
+     "cp": 6945,
+     "quote": "10.1002/anie.197800161]].\n</ref>\n\nA disa"
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1002/anie.197800161",
+    "notes": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+   }
+  },
+  {
+   "item": 1,
+   "kind": "identifier_role",
+   "decision": "correct",
+   "reason": "Locked role labeled_reference_text is defined as plain text \"not a link\", but the source is the wiki interwiki link [[doi:10.1002/aic.690360207]] and the render makes it a link to https://doi.org/10.1002/aic.690360207. The link points at the reference's identifier, which is the identifier_link role. textual_mention does not fit because the DOI is this reference's identifier, not a mention. Reading is a judgement call: the written form contains a doi: label, but the role text excludes links.",
+   "corrected_label": {
+    "at": {
+     "cp": 9292,
+     "quote": "10.1002/aic.690360207]].\n</ref> In case "
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1002/aic.690360207",
+    "notes": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+   }
+  }
+ ],
+ "adjudication_note": "Two identifier roles corrected."
+}

@@ -1,0 +1,34 @@
+{
+  "article": "ar-76436758",
+  "adjudicator": "cf11-adj-ar-g1",
+  "started_at": "2026-11-03T02:21:46Z",
+  "finished_at": "2026-11-03T02:21:46Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "template_unit_missed",
+      "decision": "correct",
+      "reason": "The locked template unit for d15 is at cp 26647, but that location is inside d13 (the ref at cp 26642), a different and earlier reference. Guide 3.1 lists a definition's citation templates inside that definition. d15 starts at cp 28169 and its own citation template starts at cp 28174 (5 characters after the <ref>). The locked quote validates, because the text at 28174 is identical to the text at 26647, so the error is in the position. Corrected: d15's template is cp 28174. d13 keeps its own template at 26647.",
+      "corrected_label": {
+        "definition": "d15",
+        "at": {
+          "cp": 28174,
+          "quote": "{{استشهاد بكتاب|مؤلف=Ferngren, G.B.|محرر=Ferngren, G.B.|سنة="
+        }
+      }
+    },
+    {
+      "item": 1,
+      "kind": "template_unit_extra",
+      "decision": "correct",
+      "reason": "The engine's unit at cp 28174 is the citation template inside d15's own body, which 3.1 requires d15 to list. The locked label had no entry there. This is the same edit as item 0: d15's single template entry moves from cp 26647 to cp 28174. No extra entry is added, so the d15 template list has one unit.",
+      "corrected_label": {
+        "definition": "d15",
+        "at": {
+          "cp": 28174,
+          "quote": "{{استشهاد بكتاب|مؤلف=Ferngren, G.B.|محرر=Ferngren, G.B.|سنة="
+        }
+      }
+    }
+  ]
+}

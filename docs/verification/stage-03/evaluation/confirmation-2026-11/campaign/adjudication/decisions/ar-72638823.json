@@ -1,0 +1,22 @@
+{
+  "article": "ar-72638823",
+  "adjudicator": "cf11-adj-ar-g1",
+  "started_at": "2026-11-03T02:21:46Z",
+  "finished_at": "2026-11-03T02:21:46Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "reason": "DOI 10.1093/ww/9780199540884.001.0001/ww-9780199540884-e-16908 is the tail of https://www.ukwhoswho.com/view/10.1093/... in the مسار (url) field of the Gee citation template in the ref at cp 1329. The URL has no /doi/ segment, so guide 3.5 gives the identifier text as raw text, as the locked quote does. The DOI runs to the end of the URL (the next character is the | separator), and it is syntactically valid. identifier_link fits a publisher URL in url=. Locked label is right.",
+      "corrected_label": null
+    },
+    {
+      "item": 1,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "reason": "DOI 10.2307/4591085 is in the path of https://www.jstor.org/stable/10.2307/4591085?origin=crossref in the مسار field of a citation template. /stable/ is not /doi/, so the raw text is the identifier text. The query ?origin=crossref is not part of the DOI, which the locked key respects. identifier_link fits. Locked label is right.",
+      "corrected_label": null
+    }
+  ]
+}
