@@ -34,7 +34,9 @@ them pass.
     such a frame allocation.
   - The worker now classifies that exact message as a memory failure only when the process's peak address space
     reached the limit (SPECIFICATION.md "MF-1 v3").
-  - Tests: three in `test_wiki_mf1_tokenizer.py` (a real allocation failure at the limit, and two negatives).
+  - Tests: three in `test_wiki_mf1_tokenizer.py` (the symptom after a peak at the limit, and two negatives). The
+    first version provoked a real frame-allocation failure; CI's runners raised MemoryError there instead, so it was
+    made independent of the memory layout (CI run 41647876812, after `11bb5b2`).
 - **Observed-revision fixtures** (`fixtures/observed/expected.json`). The two pinned extraction digests changed. A
   field-by-field comparison with the frozen engine shows that only `schema_version` and the extractor version differ.
   Units, identifiers, issues and everything else are identical.

@@ -543,5 +543,7 @@ frame allocation, so the run was reported as `EXTRACTION_WORKER_FAILED` (3 of 3 
 The worker now treats that exact SystemError as a memory failure (exit code 3, `EXTRACTION_MEMORY_EXCEEDED`) only
 when the process's peak address space (`VmPeak`) reached the limit within 1 MiB. A frame-stack chunk is 16 KiB unless
 one frame needs more. Any other SystemError, the same message far below the limit, or a platform without `/proc`
-stays `EXTRACTION_WORKER_FAILED`. Tests: `tests/stage03/test_wiki_mf1_tokenizer.py` (a real allocation failure at
-the limit; the symptom without memory pressure; other exceptions).
+stays `EXTRACTION_WORKER_FAILED`. Tests: `tests/stage03/test_wiki_mf1_tokenizer.py` (the exact symptom after a
+peak that really reached the limit; the symptom without memory pressure; other exceptions). Which exception a real
+allocation failure raises depends on the memory layout: on CI's runners the same probe raised MemoryError, so the
+classification test does not depend on it (CI run 41647876812).

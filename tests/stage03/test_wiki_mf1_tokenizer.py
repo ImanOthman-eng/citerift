@@ -100,29 +100,24 @@ def test_other_worker_failures_are_not_run_again(tmp_path: Path, monkeypatch: py
 # CPython 3.12 and 3.13 report a frame-stack allocation failure under the address-space limit as
 # "SystemError: error return without exception set". The worker classifies it as a memory failure only when the
 # process's peak address space reached the limit (D-035 regression: the memory-limit tests above failed 3 of 3 runs
-# with EXTRACTION_WORKER_FAILED once the engine's memory layout changed).
+# with EXTRACTION_WORKER_FAILED once the engine's memory layout changed). Which error a real allocation failure raises
+# depends on the memory layout (CI's runners raised MemoryError where this container raised SystemError), so the
+# classification is tested at a peak that really reached the limit, with the exact exception; the end-to-end memory
+# test above covers the worker.
 _PRESSURE = """
 import resource, sys
 sys.path.insert(0, sys.argv[1])
 from citerift.wiki.worker import interpreter_memory_failure
-sys.setrecursionlimit(100000)
 limit = 64 << 20
 resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
 hog = []
-def rec(n):
-    return 0 if n == 0 else rec(n - 1) + 1
 try:
     while True:
         hog.append(bytearray(256 << 10))
 except MemoryError:
     pass
-hog.pop()
-try:
-    rec(5000)
-    print("no failure")
-except SystemError as exc:
-    del hog
-    print(type(exc).__name__, interpreter_memory_failure(exc))
+del hog
+print(interpreter_memory_failure(SystemError("error return without exception set")))
 """
 
 
@@ -132,11 +127,11 @@ def _src() -> str:
 
 @pytest.mark.regression
 @pytest.mark.skipif(not Path("/proc/self/status").exists(), reason="VmPeak is read from /proc (Linux)")
-def test_a_frame_allocation_failure_at_the_limit_is_a_memory_failure() -> None:
+def test_the_symptom_after_the_peak_reached_the_limit_is_a_memory_failure() -> None:
     out = subprocess.run(
         [sys.executable, "-I", "-c", _PRESSURE, _src()], capture_output=True, text=True, timeout=60, check=False
     )
-    assert out.stdout.strip() == "SystemError True", out.stderr
+    assert out.stdout.strip() == "True", out.stderr
 
 
 @pytest.mark.negative
