@@ -1,0 +1,17 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h2/tools")
+from lib import A
+a=A('ar-76533435','2026-11-03T16:32:00Z')
+def df(s,nm,n,r):
+    assert a.t.startswith('<ref',s)
+    at=a.L(s,40); t=a.L(a.cp("{{استشهاد",0,s),20)
+    a.D(at,"note",name=nm,templates=[t],rid=n); a.U(at,at,rid=r); return at
+df(1770,"osirisrex","cite_note-osirisrex-1","cite_ref-osirisrex_1-0")
+df(2403,None,"cite_note-2","cite_ref-2")
+df(2950,"NASA-20160615","cite_note-NASA-20160615-3","cite_ref-NASA-20160615_3-0")
+df(3436,"2016HO3","cite_note-2016HO3-4","cite_ref-2016HO3_4-0")
+df(4270,"TheiaPothesis","cite_note-TheiaPothesis-5","cite_ref-TheiaPothesis_5-0")
+a.defs[4]['notes']="Ref sits inside a bullet list item in the See also section, after the link; it is a footnote, not a bibliography entry."
+a.I(a.L(2653,13),"doi","primary_citation_field","10.1038/42585","doi= field")
+a.I(a.L(3894,21),"doi","primary_citation_field","10.1093/mnras/stw1972","doi= field")
+a.unres.append("arxiv=1608.01518 and bibcode fields are not DOI/PMID; not labelled.")
+a.write()

@@ -1,0 +1,9 @@
+import sys,re
+from lxml import html
+d=sys.argv[1]
+t=open(f'packets/{d}/render.html',encoding='utf8').read()
+h=html.fromstring(t)
+for s in h.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+    print('SUP',s.get('id'),(s.get('data-mw') or '')[:150].replace('\n',' '))
+for l in h.xpath('//li[starts-with(@id,"cite_note")]'):
+    print('LI',l.get('id'),' '.join(l.text_content().split())[:200])

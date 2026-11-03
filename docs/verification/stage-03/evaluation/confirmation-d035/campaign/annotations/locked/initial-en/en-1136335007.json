@@ -1,0 +1,92 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1136335007,
+  "source_sha256": "2ab2c6e5bb124f958f9701d4831dc5c9c638a783f8f050c177678e0a1c05a00a",
+  "html_sha256": "f10efdcb700a7fcebc90324e9f656681c25db68a0c66936aa34305e501eb8493",
+  "window": [
+   0,
+   3918
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h1",
+  "started_at": "2026-11-03T16:11:06Z",
+  "finished_at": "2026-11-03T16:11:44Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1136335007/source.wikitext",
+    "sha256": "2ab2c6e5bb124f958f9701d4831dc5c9c638a783f8f050c177678e0a1c05a00a"
+   },
+   {
+    "path": "packets/en-1136335007/render.html",
+    "sha256": "f10efdcb700a7fcebc90324e9f656681c25db68a0c66936aa34305e501eb8493"
+   },
+   {
+    "path": "packets/en-1136335007/packet.json",
+    "sha256": "cf3449c145b71c5f6e18537d99622e703ee07d6e5b4806f57e126b267b1139bc"
+   }
+  ],
+  "tools": "python3 -I with standard library and lxml (regex search of wikitext, listing of sup/li elements in render.html, location verification); hand labelling",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 634,
+    "quote": "<ref>{{Cite journal |last=Young"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 639,
+      "quote": "{{Cite journal |last=Young"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": "Young ... (2020). \"Evidence for a late glacial advance ...\" Geosphere. 17: 1–35. doi:10.1130/GES02257.1. ISSN 1553-040X.",
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 634,
+    "quote": "<ref>{{Cite journal |last=Young"
+   },
+   "binds_to": {
+    "cp": 634,
+    "quote": "<ref>{{Cite journal |last=Young"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1161,
+    "quote": "10.1130/GES02257.1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1130/ges02257.1",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

@@ -1,0 +1,17 @@
+import sys,re; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h3/tools')
+from lib import *
+a=A('en-1380218630'); t=a.t
+L=[m.start() for m in re.finditer(r'<ref\b',t)]
+for i,cp in enumerate(L):
+    if not(a.w[0]<=cp<a.w[1]): continue
+    end=t.index('</ref>',cp)
+    tm=[m.start() for m in re.finditer(r'\{\{\s*cite',t[cp:end],re.I)]
+    tm=[cp+x for x in tm]
+    n=i-13
+    notes=''
+    if cp==L[51]: notes='Contains a bare URL, a {{Webarchive}} and then a {{cite web}} in one ref; labelled structured because a citation template is present.'
+    if cp in(L[46],L[47]): notes='Two adjacent unnamed refs on the same cell, each its own footnote.'
+    a.D(cp,'note',templates=tm,unstructured=not tm,rid='cite_note-%d'%n,q='<ref>',notes=notes)
+    a.U(cp,cp,'cite_ref-%d'%n,q='<ref>')
+a.un=['No DOI or PMID in window (checked doi, pmid, 10.dddd/). {{Webarchive}} is not a citation template.']
+a.save(None,'python3 stdlib (re, json), lxml','Nothing undecided.')

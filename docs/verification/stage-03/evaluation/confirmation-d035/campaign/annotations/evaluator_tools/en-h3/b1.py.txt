@@ -1,0 +1,15 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h3/tools')
+from lib import *
+a=A('en-1364421640'); t=a.t
+US=5932; APS=6967; FUN=13360; KIRK=13569; YAM=8163
+a.D(US,'note',name='US',unstructured=True,rid='cite_note-US-10',q='<ref name=US>',notes='Out of window; first body of US, kept as binding target. Bare external link with title text, no citation template.')
+a.D(APS,'note',name='APS',unstructured=True,rid='cite_note-APS-11',q='<ref name=APS>',notes='Bare external link; no citation template. Earlier self-closing uses of APS (6510) precede this first body.')
+a.D(YAM,'note',unstructured=True,rid='cite_note-12',q='<ref>[http://www.eppo.int',notes='Bare link plus {{Webarchive}} (not a citation template).')
+a.D(FUN,'list_defined_note',name='Fungorum',templates=[13379],unstructured=False,rid='cite_note-Fungorum-3',q='<ref name=Fungorum>',tq='{{cite web',notes='Defined inside {{Reflist|refs=}}; used at 1190 (before window) and 8528.')
+a.D(KIRK,'list_defined_note',name='Kirk2008',templates=[13588],rid='cite_note-Kirk2008-2',q='<ref name=Kirk2008>',tq='{{cite book',notes='List-defined; its only call is at 1116 (before window).')
+for cp,b,r in [(6496,US,'cite_ref-US_10-2'),(6510,APS,'cite_ref-APS_11-0'),(6862,US,'cite_ref-US_10-3'),(6967,APS,'cite_ref-APS_11-1'),(7233,APS,'cite_ref-APS_11-2'),(7273,US,'cite_ref-US_10-4'),(7513,US,'cite_ref-US_10-5'),(7547,APS,'cite_ref-APS_11-3'),(7696,US,'cite_ref-US_10-6'),(7846,US,'cite_ref-US_10-7'),(YAM,YAM,'cite_ref-12'),(8528,FUN,'cite_ref-Fungorum_3-1')]:
+    a.U(cp,b,r,q=('<ref name=APS>' if cp==APS else None),notes='Self-closing reuse by name.' if cp not in(APS,YAM) else '')
+a.un=['Window contains no DOI or PMID (only an ISBN in Kirk2008, which is out of scope).',
+'The two "Other sources" list items (6451+: Phillips & Burdekin; Scharpf) are plain-text lists with no citation template, DOI or PMID, so not bibliography entries under 3.4; not labelled.',
+'List-defined <ref> tags inside {{Reflist|refs=}} are labelled as definitions only, not as uses (they are not calls in the text). Their calls are the in-text self-closing refs.']
+a.save(None,'python3 stdlib (re, json), lxml; sed/cat for reading','Whether list-defined refs should also count as uses; I counted them as definitions only.')

@@ -1,0 +1,27 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h2/tools')
+from build import *
+def mk(rev):
+    pk,t=load(rev)
+    def f(s,n=0):
+        i=-1
+        for _ in range(n+1): i=t.index(s,i+1)
+        return i
+    return t,f
+# article 2
+rev=1348777404; t,f=mk(rev)
+iu=f('<ref name="iucn status'); sc=f('<ref name=POWO/>'); po=f('<ref name=POWO>'); co=f('<ref name=COL>')
+defs=[D('d1',t,iu,'note','iucn status 17 November 2021','','cite_note-iucn_status_17_November_2021-1',notes='Cite iucn template; in infobox status_ref.'),
+ D('d2',t,po,'note','POWO','','cite_note-POWO-2',notes='First occurrence with a body; the earlier <ref name=POWO/> in synonyms_ref is self-closing.'),
+ D('d3',t,co,'note','COL','','cite_note-COL-3')]
+uses=[U('u1',t,iu,iu,'cite_ref-iucn_status_17_November_2021_1-0'),
+ U('u2',t,sc,po,'cite_ref-POWO_2-0','self-closing, in infobox synonyms_ref; binds to later body'),
+ U('u3',t,po,po,'cite_ref-POWO_2-1'),U('u4',t,co,co,'cite_ref-COL_3-0')]
+ids=ids_in(t,iu,ref_end(t,iu))
+write(rev,defs,uses,ids,['{{Taxonbar|from=Q3013221}} and Speciesbox may emit Wikidata-derived content; none identified in source, not listed.'],TOOLS)
+# article 3
+rev=1362916349; t,f=mk(rev)
+k=f('<ref>{{cite encyclopedia'); e1=f('<ref>{{cite web |url=https://www.ensinger'); e2=f('<ref>{{cite web |url=https://fiberlogy')
+defs=[D('d1',t,k,'note',None,'','cite_note-1'),D('d2',t,e1,'note',None,'','cite_note-2'),D('d3',t,e2,'note',None,'','cite_note-3')]
+uses=[U('u1',t,k,k,'cite_ref-1'),U('u2',t,e1,e1,'cite_ref-2'),U('u3',t,e2,e2,'cite_ref-3')]
+ids=ids_in(t,k,ref_end(t,k))
+write(rev,defs,uses,ids,['Two External links bullets are plain external links without citation template or DOI/PMID; not bibliography entries. CAS number 25135-20-0 and ISBN are not DOI/PMID.'],TOOLS)

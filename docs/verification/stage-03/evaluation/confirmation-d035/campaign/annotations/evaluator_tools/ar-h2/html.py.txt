@@ -1,0 +1,15 @@
+import sys,re,json
+from lxml import html
+d=sys.argv[1]
+doc=html.parse(f'../packets/{d}/render.html')
+for s in doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+    dm=s.get('data-mw') or ''
+    try: j=json.loads(dm); a=j.get('attrs'); b=(j.get('body') or {}).get('html','')[:50]
+    except Exception: a=None;b=dm[:60]
+    print('SUP',s.get('id'),a,b)
+for li in doc.xpath('//li[starts-with(@id,"cite_note")]'):
+    print('LI',li.get('id'),' '.join(li.text_content().split())[:160])
+for e in doc.xpath('//a[contains(@class,"new")]'): print('REDLINK',e.get('title'))
+t=open(f'../packets/{d}/render.html',encoding='utf-8').read()
+for k in ['ريتراكت','مسحوب','Retract','retract','سحب','erratum','withdrawn']:
+    if k in t: print('KW',k,t.count(k))

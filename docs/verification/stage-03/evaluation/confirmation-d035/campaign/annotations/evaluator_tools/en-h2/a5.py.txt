@@ -1,0 +1,17 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h2/tools')
+from build import *
+rev=1373742336; pk,t=load(rev)
+P=[2843,3193,3599,3982,4329,7523,7900,8271,8665,9039,9399,10092]
+defs=[];uses=[];ids=[]
+for i,p in enumerate(P):
+    assert t[p:p+5]=='<ref>'
+    n=i+3
+    defs.append(D(f'd{i+1}',t,p,'note',None,'',f'cite_note-{n}'))
+    uses.append(U(f'u{i+1}',t,p,p,f'cite_ref-{n}'))
+    ids+=ids_in(t,p,ref_end(t,p))
+for x in ids:
+    pass
+# doi-access / other
+unres=['Several refs carry arxiv= and bibcode= fields; these are not DOI/PMID and not labelled.','Refs at the first two positions before the window (cp 165, 696) are outside the window and not needed.']
+write(rev,defs,uses,ids,unres,TOOLS)
+for x in ids: print(x['at']['cp'],x['scheme'],x['key'])

@@ -1,0 +1,368 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 70268903,
+  "source_sha256": "b68040ef7cb8df12c78555de8abf83e9a7acfb88dbac8006baa0fb5b26b2e2e5",
+  "html_sha256": "87921b56e6829190740734df44356870ee6dd78fa9765c242746a1c098283524",
+  "window": [
+   4883,
+   12883
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h1",
+  "started_at": "2026-11-03T09:00:00Z",
+  "finished_at": "2026-11-03T10:00:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-70268903/packet.json",
+    "sha256": "9c5964c22ba1df3f8db9a19c0de2374d99cbcda5eb8c7564127fc88f98cb5bb5"
+   },
+   {
+    "path": "packets/ar-70268903/source.wikitext",
+    "sha256": "b68040ef7cb8df12c78555de8abf83e9a7acfb88dbac8006baa0fb5b26b2e2e5"
+   },
+   {
+    "path": "packets/ar-70268903/render.html",
+    "sha256": "87921b56e6829190740734df44356870ee6dd78fa9765c242746a1c098283524"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand",
+  "unresolved": "No DOI/PMID starts inside the window (the 10.1525/nrbp… DOI occurrences are at cp 1795, 3770, 4445-4482, before the window start 4883). The ref name=\"CityofJackson\" starts at cp 4694, before the window, and is not used in the window, so it is not listed. \"10.\" at cp 7987 is a sentence number, not a DOI."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1284,
+    "quote": "<ref name=\":0\">{{استشهاد بدوري"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1299,
+      "quote": "{{استشهاد بدورية محكمة|ع"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "starts before the window; listed as binding target"
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3248,
+    "quote": "<ref name=\"مولد تلقائيا1\">{{اس"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "مولد تلقائيا1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3274,
+      "quote": "{{استشهاد بدورية محكمة|ع"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا1-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "starts before the window; listed as binding target. Same body as name=\":0\" but a different name, so a separate reference."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 5715,
+    "quote": "<ref name=\"Happy 80th birthday"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Happy 80th birthday to Dr. Leslie McLemore, civil rights hero and my dad",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5800,
+      "quote": "{{استشهاد ويب|عنوان=Happ"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Happy_80th_birthday_to_Dr._Leslie_McLemore,_civil_rights_hero_and_my_dad-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 6573,
+    "quote": "<ref name=\"مولد تلقائيا2\">\n{{ا"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6600,
+      "quote": "{{استشهاد ويب|عنوان=Lesl"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا2-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body also contains pasted rendered <cite class=\"citation web cs1\"> HTML after the template (leftover from visual editor); counted as part of the same definition, no second citation template."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 7991,
+    "quote": "<ref name=\"مولد تلقائيا3\">{{اس"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا3",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8017,
+      "quote": "{{استشهاد ويب|عنوان=Happ"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا3-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Same cited page as the Happy 80th ref but a different name, so a separate reference; body also contains pasted <cite> HTML after the template."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 10148,
+    "quote": "<ref name=\"مولد تلقائيا4\">{{اس"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا4",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10174,
+      "quote": "{{استشهاد ويب|عنوان=McLe"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا4-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body also contains pasted <cite> HTML after the template."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 11180,
+    "quote": "<ref name=\"DeSoto County Democ"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "DeSoto County Democrats Make History In Walls & Horn Lake",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11250,
+      "quote": "{{استشهاد ويب|عنوان=DeSo"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-DeSoto_County_Democrats_Make_History_In_Walls_&_Horn_Lake-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 11944,
+    "quote": "<ref>{{استشهاد ويب|عنوان=Dr. L"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11949,
+      "quote": "{{استشهاد ويب|عنوان=Dr. "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 5375,
+    "quote": "<ref name=\"مولد تلقائيا1\" /> ك"
+   },
+   "binds_to": {
+    "cp": 3248,
+    "quote": "<ref name=\"مولد تلقائيا1\">{{اس"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 5715,
+    "quote": "<ref name=\"Happy 80th birthday"
+   },
+   "binds_to": {
+    "cp": 5715,
+    "quote": "<ref name=\"Happy 80th birthday"
+   },
+   "render_ref_id": "cite_ref-Happy_80th_birthday_to_Dr._Leslie_McLemore,_civil_rights_hero_and_my_dad_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 6462,
+    "quote": "<ref name=\":0\" />\n\n== المسيرة "
+   },
+   "binds_to": {
+    "cp": 1284,
+    "quote": "<ref name=\":0\">{{استشهاد بدوري"
+   },
+   "render_ref_id": "cite_ref-:0_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 6573,
+    "quote": "<ref name=\"مولد تلقائيا2\">\n{{ا"
+   },
+   "binds_to": {
+    "cp": 6573,
+    "quote": "<ref name=\"مولد تلقائيا2\">\n{{ا"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا2_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 7991,
+    "quote": "<ref name=\"مولد تلقائيا3\">{{اس"
+   },
+   "binds_to": {
+    "cp": 7991,
+    "quote": "<ref name=\"مولد تلقائيا3\">{{اس"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا3_8-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 9378,
+    "quote": "<ref name=\"مولد تلقائيا1\" />\n\n"
+   },
+   "binds_to": {
+    "cp": 3248,
+    "quote": "<ref name=\"مولد تلقائيا1\">{{اس"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_4-2",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 9897,
+    "quote": "<ref name=\"مولد تلقائيا1\" /> ب"
+   },
+   "binds_to": {
+    "cp": 3248,
+    "quote": "<ref name=\"مولد تلقائيا1\">{{اس"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_4-3",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 10148,
+    "quote": "<ref name=\"مولد تلقائيا4\">{{اس"
+   },
+   "binds_to": {
+    "cp": 10148,
+    "quote": "<ref name=\"مولد تلقائيا4\">{{اس"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا4_9-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 11180,
+    "quote": "<ref name=\"DeSoto County Democ"
+   },
+   "binds_to": {
+    "cp": 11180,
+    "quote": "<ref name=\"DeSoto County Democ"
+   },
+   "render_ref_id": "cite_ref-DeSoto_County_Democrats_Make_History_In_Walls_&_Horn_Lake_10-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 11944,
+    "quote": "<ref>{{استشهاد ويب|عنوان=Dr. L"
+   },
+   "binds_to": {
+    "cp": 11944,
+    "quote": "<ref>{{استشهاد ويب|عنوان=Dr. L"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "No DOI/PMID starts inside the window (the 10.1525/nrbp… DOI occurrences are at cp 1795, 3770, 4445-4482, before the window start 4883). The ref name=\"CityofJackson\" starts at cp 4694, before the window, and is not used in the window, so it is not listed. \"10.\" at cp 7987 is a sentence number, not a DOI."
+ ]
+}

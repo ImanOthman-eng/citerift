@@ -1,0 +1,182 @@
+import json,re,hashlib,os
+from lxml import html
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h1'
+GUIDE='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+T0='2026-11-03T09:00:00Z'
+def sha(p): return hashlib.sha256(open(p,'rb').read()).hexdigest()
+
+class Art:
+    def __init__(s,rev):
+        s.rev=rev; d=f'{BASE}/packets/ar-{rev}'; s.dirp=d
+        s.pk=json.load(open(d+'/packet.json'))
+        s.t=open(d+'/source.wikitext',encoding='utf-8').read()
+        assert sha(d+'/source.wikitext')==s.pk['source_sha256']
+        s.has_html=s.pk['html_sha256'] is not None
+        s.sups=[];s.lis=[]
+        if s.has_html:
+            assert sha(d+'/render.html')==s.pk['html_sha256']
+            r=html.parse(d+'/render.html').getroot()
+            for e in r.iter('sup'):
+                if 'mw:Extension/ref' in (e.get('typeof') or ''):
+                    dm=json.loads(e.get('data-mw')); s.sups.append((e.get('id'),dm))
+            s.lis=[e.get('id') for e in r.iter('li') if (e.get('id') or '').startswith('cite_note')]
+        s.defs=[];s.uses=[];s.ids=[];s.unres=[]
+    def pos(s,sub,n=0,start=0):
+        i=start-1
+        for _ in range(n+1):
+            i=s.t.find(sub,i+1); assert i>=0,(sub,n)
+        return i
+    def loc(s,cp,ln=40):
+        q=s.t[cp:cp+ln]; assert s.t[cp:cp+len(q)]==q; return {'cp':cp,'quote':q}
+    def note_id(s,si):
+        if si is None: return None
+        dm=s.sups[si][1]; b=dm.get('body',{})
+        if 'id' in b: return b['id'].replace('mw-reference-text-','')
+        return None
+    def d(s,cp,kind,name,group,tpls,unstr,si=None,li=None,marker=None,mtext=None,notes='',inw=True,ln=40):
+        did=f'd{len(s.defs)+1}'
+        nid=li if li else s.note_id(si)
+        if marker is None: marker='none' if s.has_html else 'cannot_tell'
+        s.defs.append({'id':did,'at':s.loc(cp,ln),'in_window':inw,'kind':kind,'name':name,'group':group,
+          'templates':[{'at':s.loc(c,24)} for c in tpls],'unstructured':unstr,'render_note_id':nid,
+          'marker':marker,'marker_text':mtext,'notes':notes})
+    def u(s,cp,bind,si=None,notes='',ln=40):
+        rid=s.sups[si][0] if (si is not None and s.has_html) else None
+        s.uses.append({'id':f'u{len(s.uses)+1}','at':s.loc(cp,ln),'binds_to':s.loc(bind,ln) if bind!='missing' else 'missing',
+          'render_ref_id':rid,'notes':notes})
+    def i(s,cp,ln,scheme,role,key,notes=''):
+        raw=s.t[cp:cp+ln]
+        s.ids.append({'at':{'cp':cp,'quote':raw},'scheme':scheme,'role':role,'key':key,'notes':notes})
+    def write(s,tools,unresolved):
+        w=s.pk['window']; w=[w['cp_start'],w['cp_end']]
+        for L in [x['at'] for x in s.defs+s.uses+s.ids]:
+            assert s.t[L['cp']:L['cp']+len(L['quote'])]==L['quote']
+        files=[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE},
+               {'path':f'packets/ar-{s.rev}/packet.json','sha256':sha(s.dirp+'/packet.json')},
+               {'path':f'packets/ar-{s.rev}/source.wikitext','sha256':s.pk['source_sha256']}]
+        if s.has_html: files.append({'path':f'packets/ar-{s.rev}/render.html','sha256':s.pk['html_sha256']})
+        out={'format':'citerift-stage03-annotation-v1',
+         'article':{'wiki':'ar','revision_id':s.rev,'source_sha256':s.pk['source_sha256'],'html_sha256':s.pk['html_sha256'],'window':w},
+         'provenance':{'agent':'d035-eval-ar-h1','started_at':T0,'finished_at':'2026-11-03T10:00:00Z','files_opened':files,
+           'tools':'python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand',
+           'unresolved':unresolved},
+         'definitions':s.defs,'uses':s.uses,'identifiers':s.ids,'unresolved_notes':[unresolved] if unresolved else []}
+        json.dump(out,open(f'{BASE}/out/ar-{s.rev}.json','w'),ensure_ascii=False,indent=1)
+        print(s.rev,'defs',len(s.defs),'uses',len(s.uses),'ids',len(s.ids),'window',w)
+
+# ---- 61696203
+a=Art(61696203)
+a.write('', 'No <ref>, footnote template, citation template, DOI or PMID in the window. The rendered page shows 4 Wikidata-generated references (infobox/{{معرفات الأصنوفة}}, with DOIs such as 10.14344/IOC.ML.6.3) that have no source location; not labelled (guide 3.3).')
+
+# ---- 76467554
+a=Art(76467554)
+p1=a.pos('<ref>'); p2=a.pos('<ref>',1)
+a.d(p1,'note',None,'',[p1+5],False,si=0,mtext=None,notes='')
+a.d(p2,'note',None,'',[p2+5],False,si=1,mtext='"معلومات عن تبعثر الضوء على موقع jstor.org". jstor.org. مؤرشف من الأصل في 2020-04-14.')
+a.u(p1,p1,si=0);a.u(p2,p2,si=1)
+a.write('','Rendered text of footnote 1 begins with inline CSS; no warning vocabulary seen in either footnote.')
+
+# ---- 76081354
+a=Art(76081354)
+refs={n:a.pos(f'<ref name="{n}">') for n in ['abc','d3c','ora','theses']}
+lis={'abc':'cite_note-abc-4','d3c':'cite_note-d3c-1','ora':'cite_note-ora-2','theses':'cite_note-theses-3'}
+for n in sorted(refs,key=lambda k:refs[k]):
+    cp=refs[n]; tp=a.t.find('{{استشهاد',cp)
+    a.d(cp,'list_defined_note',n,'',[tp],False,li=lis[n],notes='inside <references> block in the references section',ln=30)
+calls=[m.start() for m in re.finditer(r'\{\{استشهاد متعدد\|',a.t)]
+assert len(calls)==7
+for si,c in enumerate(calls):
+    nm=re.match(r'\{\{استشهاد متعدد\|([^}]*)\}\}',a.t[c:]).group(1)
+    assert a.sups[si][1]['attrs']['name']==nm
+    a.u(c,refs[nm],si=si,notes='template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name '+nm+')',ln=20)
+# bibliography entries via {{rma|X|{{استشهاد
+for m in re.finditer(r'\{\{rma\|([A-D])\|',a.t):
+    cp=m.end(); assert a.t.startswith('{{استشهاد',cp)
+    a.d(cp,'bibliography_entry',None,'',[cp],False,li=None,notes='Citation template wrapped in {{rma|%s|…}} (reference-note anchor target, rendered as an anchor in the "منشورات مختارة" section, not as a cite_note footnote); read as a standalone citation template outside footnotes, hence a bibliography entry. Best reading.'%m.group(1),ln=24)
+# identifiers
+for m in re.finditer(r'doi\s*=\s*(10\.[^\s|}]+)',a.t):
+    k=m.group(1).lower()
+    a.i(m.start(1),len(m.group(1)),'doi','primary_citation_field',k,'doi= field of a citation template in rma bibliography entry')
+m=re.search(r'doi=(10\.1007/s00373-007-0721-4)',a.t)
+a.i(m.start(1),len(m.group(1)),'doi','primary_citation_field','10.1007/s00373-007-0721-4','doi= field inside ref name=abc')
+seen=set();a.ids=[x for x in sorted(a.ids,key=lambda x:x['at']['cp']) if not (x['at']['cp'] in seen or seen.add(x['at']['cp']))]
+a.write('','{{ran|A..D}} calls (positions in the "الإسهامات العلمية" text) are anchor links to the {{rma}} entries, not footnote calls in the guide sense and produce no mw:Extension/ref marker or cite_note; not labelled as uses. mr= fields are MathSciNet ids, not DOI/PMID. All four rma entries and the 4 list-defined refs have marker none.')
+
+# ---- 70571172
+a=Art(70571172)
+def nref(n): return a.pos(f'<ref name="{n}">')
+d_={}
+for n in ['merip2','cjps2','salamey092','constitution']:
+    cp=nref(n); d_[n]=cp
+    a.d(cp,'note',n,'',[a.t.find('{{استشهاد',cp)],False,notes='no render.html in packet: render_note_id and marker not determinable',ln=30)
+un1=a.pos('<ref>{{استشهاد ويب|موقع=Un.int'); un2=a.pos('<ref>{{استشهاد ويب|لغة=en|تاريخ الوصول=2022-07-10')
+for cp in (un1,un2):
+    a.d(cp,'note',None,'',[cp+5],False,notes='no render.html in packet: render_note_id and marker not determinable',ln=30)
+a.d  # noqa
+for n in ['merip2','cjps2','salamey092','constitution']:
+    a.u(d_[n],d_[n],ln=30)
+a.u(un1,un1,ln=30);a.u(un2,un2,ln=30)
+a.u(a.pos('<ref name="salamey092" />'),d_['salamey092'],ln=30,notes='repeat by name')
+a.u(a.pos('<ref name="constitution" />',start=d_['constitution']+10),d_['constitution'],ln=30,notes='repeat by name')
+a.uses.sort(key=lambda x:x['at']['cp']); 
+for k,x in enumerate(a.uses): x['id']=f'u{k+1}'
+a.defs.sort(key=lambda x:x['at']['cp'])
+for k,x in enumerate(a.defs): x['id']=f'd{k+1}'
+m=re.search(r'DOI=(10\.1017/s0008423906060185)',a.t)
+a.i(m.start(1),len(m.group(1)),'doi','primary_citation_field','10.1017/s0008423906060185','field written uppercase DOI= in citation template (arwiki template may or may not accept this casing; read as identifier field). The neal2 DOI at cp 1675 starts before the window; jstor= fields are not DOI/PMID.')
+a.write('','No render.html: render_note_id null, render_ref_id null, markers cannot_tell for all items.')
+
+# ---- 70268903
+a=Art(70268903)
+n1=a.pos('<ref name="مولد تلقائيا1">'); n0=a.pos('<ref name=":0">')
+a.d(n1,'note','مولد تلقائيا1','',[a.t.find('{{استشهاد',n1)],False,si=3,inw=False,notes='starts before the window; listed as binding target. Same body as name=":0" but a different name, so a separate reference.',ln=30)
+a.d(n0,'note',':0','',[a.t.find('{{استشهاد',n0)],False,si=1,inw=False,notes='starts before the window; listed as binding target',ln=30)
+def dd(sub,name,si,notes='',**kw):
+    cp=a.pos(sub); a.d(cp,'note',name,'',[a.t.find('{{استشهاد',cp)],False,si=si,notes=notes,ln=30); return cp
+c_h=dd('<ref name="Happy 80th','Happy 80th birthday to Dr. Leslie McLemore, civil rights hero and my dad',6)
+c_2=dd('<ref name="مولد تلقائيا2">','مولد تلقائيا2',8,'Body also contains pasted rendered <cite class="citation web cs1"> HTML after the template (leftover from visual editor); counted as part of the same definition, no second citation template.')
+c_3=dd('<ref name="مولد تلقائيا3">','مولد تلقائيا3',9,'Same cited page as the Happy 80th ref but a different name, so a separate reference; body also contains pasted <cite> HTML after the template.')
+c_4=dd('<ref name="مولد تلقائيا4">','مولد تلقائيا4',12,'Body also contains pasted <cite> HTML after the template.')
+c_d=dd('<ref name="DeSoto','DeSoto County Democrats Make History In Walls & Horn Lake',13)
+c_u=a.pos('<ref>{وي'.replace('وي','')) if False else a.pos('<ref>{{استشهاد ويب|عنوان=Dr. Leslie-Burl')
+a.d(c_u,'note',None,'',[c_u+5],False,si=14,ln=30)
+# uses in window
+a.u(a.pos('<ref name="مولد تلقائيا1" />',0),n1,si=5,ln=30)
+a.u(c_h,c_h,si=6,ln=30)
+a.u(a.pos('<ref name=":0" />'),n0,si=7,ln=30)
+a.u(c_2,c_2,si=8,ln=30);a.u(c_3,c_3,si=9,ln=30)
+a.u(a.pos('<ref name="مولد تلقائيا1" />',1),n1,si=10,ln=30)
+a.u(a.pos('<ref name="مولد تلقائيا1" />',2),n1,si=11,ln=30)
+a.u(c_4,c_4,si=12,ln=30);a.u(c_d,c_d,si=13,ln=30);a.u(c_u,c_u,si=14,ln=30)
+a.defs.sort(key=lambda x:x['at']['cp']); [x.update(id=f'd{k+1}') for k,x in enumerate(a.defs)]
+a.write('','No DOI/PMID starts inside the window (the 10.1525/nrbp… DOI occurrences are at cp 1795, 3770, 4445-4482, before the window start 4883). The ref name="CityofJackson" starts at cp 4694, before the window, and is not used in the window, so it is not listed. "10." at cp 7987 is a sentence number, not a DOI.')
+
+# ---- 76528147
+a=Art(76528147)
+def nm(n,k=0): return a.pos(f'<ref name="{n}">',k) if n!='bristol' else None
+frs=nm('frs'); mae2=nm('MAE2'); phd=nm('phd'); cm=nm('CashmanMarsh1988'); axa=nm('axa'); kl=nm('KlugCashman1996'); gs=nm('googlescholar'); c92=nm('Cashman1992'); mae=nm('mae')
+t=a.t
+un=[m.start() for m in re.finditer(r'<ref>',t)]; assert len(un)==3,un
+def ct(cp): return t.find('{{استشهاد',cp)
+second=t.find('{{استشهاد بويب|مسار=https://royalsociety.org/about-us',frs)
+a.d(frs,'note','frs','',[ct(frs),second],False,si=5,notes='Body = citation template + prose attribution notice + {{اقتباس}} containing a second citation template (Royal Society terms page); both templates listed.',ln=30)
+for cp,n,si in [(mae2,'MAE2',6),(phd,'phd',7),(cm,'CashmanMarsh1988',8),(axa,'axa',9),(kl,'KlugCashman1996',11)]:
+    a.d(cp,'note',n,'',[ct(cp)],False,si=si,ln=30)
+a.d(gs,'note','googlescholar','',[],True,si=12,notes='Body is only {{معرف جوجل سكولار}}, an identifier/link template, not a citation template; read as unstructured (no citation template).',ln=30)
+a.d(un[0],'note',None,'',[ct(un[0])],False,si=13,ln=30)
+a.d(c92,'note','Cashman1992','',[ct(c92)],False,si=14,ln=30)
+a.d(un[1],'note',None,'',[ct(un[1])],False,si=15,ln=30)
+a.d(mae,'note','mae','',[ct(mae)],False,si=19,ln=30)
+a.d(un[2],'note',None,'',[ct(un[2])],False,si=20,ln=30)
+a.defs.sort(key=lambda x:x['at']['cp']); [x.update(id=f'd{k+1}') for k,x in enumerate(a.defs)]
+# uses
+seq=[(frs,frs,5),(mae2,mae2,6),(phd,phd,7),(cm,cm,8),(axa,axa,9)]
+f_uses=[m.start() for m in re.finditer(r'<ref name="frs" />',t)]; assert len(f_uses)==3
+mu=t.find('<ref name="MAE2" />'); assert mu>0
+seq=[(frs,frs,5),(mae2,mae2,6),(phd,phd,7),(cm,cm,8),(axa,axa,9),(f_uses[0],frs,10),(kl,kl,11),(gs,gs,12),(un[0],un[0],13),(c92,c92,14),(un[1],un[1],15),(f_uses[1],frs,16),(f_uses[2],frs,17),(mu,mae2,18),(mae,mae,19),(un[2],un[2],20)]
+for c,b,si in seq:
+    assert a.sups[si][1]['attrs'].get('name')==(t[c:c+60].split('"')[1] if t[c:c+10].startswith('<ref name=') else None) or t[c:c+10]=='<ref>' ,(c,si)
+    a.u(c,b,si=si,ln=30)
+for m in re.finditer(r'DOI=(10\.[^|}\s]+)',t):
+    a.i(m.start(1),len(m.group(1)),'doi','primary_citation_field',m.group(1).lower(),'DOI= field of citation template (key lower-cased)')
+a.write('','The rendered page has 4 Wikidata-generated references (nasonline, ae-info, royalsociety URLs) in the infobox, not in source; not labelled. ref name=bristol (cp 99, infobox) starts before the window and has no use in the window. {{اعتبارا من|2016}} and {{اقتباس}} are not citations. bibcode= fields are not DOI/PMID.')

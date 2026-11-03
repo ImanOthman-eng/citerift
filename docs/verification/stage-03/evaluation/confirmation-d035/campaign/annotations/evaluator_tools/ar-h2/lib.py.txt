@@ -1,0 +1,54 @@
+import json,hashlib,os
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h2'
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+class A:
+    def __init__(s,d,started):
+        s.d=d; s.started=started
+        s.t=open(f'{BASE}/packets/{d}/source.wikitext',encoding='utf-8').read()
+        s.p=json.load(open(f'{BASE}/packets/{d}/packet.json'))
+        s.defs=[];s.uses=[];s.ids=[];s.unres=[];s.unr_prov=''
+    def cp(s,needle,occ=0,after=0):
+        i=after-1
+        for _ in range(occ+1):
+            i=s.t.find(needle,i+1)
+            assert i>=0,(needle,occ)
+        return i
+    def L(s,cp,n=45):
+        q=s.t[cp:cp+n]
+        assert s.t[cp:cp+len(q)]==q
+        return {"cp":cp,"quote":q}
+    def Ln(s,needle,occ=0,after=0,n=45):
+        return s.L(s.cp(needle,occ,after),n)
+    def D(s,at,kind,name=None,group="",templates=(),unstructured=False,rid=None,marker="none",mtext=None,notes="",inw=True):
+        i=f"d{len(s.defs)+1}"
+        s.defs.append({"id":i,"at":at,"in_window":inw,"kind":kind,"name":name,"group":group,"templates":[{"at":x} for x in templates],"unstructured":unstructured,"render_note_id":rid,"marker":marker,"marker_text":mtext,"notes":notes})
+        return at
+    def U(s,at,binds,rid=None,notes=""):
+        s.uses.append({"id":f"u{len(s.uses)+1}","at":at,"binds_to":binds,"render_ref_id":rid,"notes":notes})
+    def I(s,at,scheme,role,key,notes=""):
+        s.ids.append({"at":at,"scheme":scheme,"role":role,"key":key,"notes":notes})
+    def write(s,tools="python3 -I stdlib (str.find, re) and lxml for listing HTML elements; own helper scripts in tools/",unresolved="",finished=None):
+        import datetime
+        fin=finished or datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+        # verify
+        def chk(l):
+            if isinstance(l,dict) and 'cp' in l: assert s.t[l['cp']:l['cp']+len(l['quote'])]==l['quote'],l
+        for x in s.defs:
+            chk(x['at']); [chk(y['at']) for y in x['templates']]
+        for x in s.uses:
+            chk(x['at']); chk(x['binds_to'])
+        for x in s.ids: chk(x['at'])
+        pk=s.p
+        out={"format":"citerift-stage03-annotation-v1",
+         "article":{"wiki":pk['wiki'],"revision_id":pk['revision_id'],"source_sha256":pk['source_sha256'],"html_sha256":pk['html_sha256'],"window":[pk['window']['cp_start'],pk['window']['cp_end']]},
+         "provenance":{"agent":"d035-eval-ar-h2","started_at":s.started,"finished_at":fin,
+          "files_opened":[{"path":"ANNOTATION_GUIDE_v1.1.md","sha256":GUIDE_SHA},
+            {"path":f"packets/{s.d}/packet.json","sha256":None},
+            {"path":f"packets/{s.d}/source.wikitext","sha256":pk['source_sha256']},
+            {"path":f"packets/{s.d}/render.html","sha256":pk['html_sha256']}],
+          "tools":tools,"unresolved":unresolved},
+         "definitions":s.defs,"uses":s.uses,"identifiers":s.ids,"unresolved_notes":s.unres}
+        pj=hashlib.sha256(open(f'{BASE}/packets/{s.d}/packet.json','rb').read()).hexdigest()
+        out['provenance']['files_opened'][1]['sha256']=pj
+        json.dump(out,open(f"{BASE}/out/{pk['wiki']}-{pk['revision_id']}.json",'w'),ensure_ascii=False,indent=1)
+        print(s.d,'defs',len(s.defs),'uses',len(s.uses),'ids',len(s.ids))

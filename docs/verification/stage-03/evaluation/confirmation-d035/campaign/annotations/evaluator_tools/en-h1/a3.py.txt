@@ -1,0 +1,49 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1/tools')
+from lib import *
+S='2026-11-03T16:20:00Z'
+a=A('en-1333180865',S)
+T=a.t
+def tpl_at(refcp): # first {{ after refcp
+    i=T.find('{{',refcp); j=T.find('|',i); k=T.find('}}',i)
+    return i
+# definitions: (id,ref start quote, name, note id, template quote, marker_text)
+defs=[('d1','<ref name="CBC">','CBC','cite_note-CBC-2','{{cite web|url=http://www.cbc.ca','"2002: The Polished Hoe by Austin Clarke". CBC Books. 7 August 2013. Retrieved 25 May 2017.'),
+('d2','<ref>{{cite book|author=Donna Bailey Nurse',None,'cite_note-3','{{cite book|author=Donna Bailey Nurse','Donna Bailey Nurse (2009). What\'s a Black Critic to Do? ... p. 209. ISBN 978-1-897414-53-8.'),
+('d3','<ref name="PBS">','PBS','cite_note-PBS-4','{{cite web|url=https://www.pbs.org','Jeffrey Brown (5 September 2003). "\'The Polished Hoe\'". PBS. Retrieved 25 May 2017.'),
+('d4','<ref name="Clarke2015">','Clarke2015','cite_note-Clarke2015-6','{{cite book|author=Austin Clarke','Austin Clarke (22 August 2015). The Austin Clarke Library ... Dundurn. ISBN 978-1-4597-3440-1.'),
+('d5','<ref>{{cite web|url=http://www.scotiabankgillerprize.ca',None,'cite_note-7','{{cite web|url=http://www.scotiabankgillerprize.ca','"Past Winners and Juries". Scotiabank Giller Prize. Retrieved 25 May 2017.'),
+('d6','<ref name="DD">','DD','cite_note-DD-8','{{cite web|url=https://www.dundurn.com','"The Polished Hoe @ Dundurn". Dundurn. Retrieved 25 May 2017.'),
+('d7','<ref>{{cite web|url=http://www.omdc.on.ca',None,'cite_note-9','{{cite web|url=http://www.omdc.on.ca','"Trillium Book Award Winners". Ontario Media Development Corporation. Retrieved 30 May 2017.'),
+('d8','<ref name="NY">','NY','cite_note-NY-10','{{cite magazine|url=http://www.newyorker','"The Polished Hoe". The New Yorker. 4 August 2003. Retrieved 25 May 2017.'),
+('d9','<ref name="Muse">','Muse','cite_note-Muse-11','{{cite journal |author=Walcott','Walcott-Hackshaw, Elizabeth (2006). "The Polished Hoe (review)". Callaloo. 29 (2): 680–682. doi:10.1353/cal.2006.0103. S2CID 161215737. Retrieved 25 May 2017 – via Project MUSE.'),
+('d10','<ref name="BB">','BB','cite_note-BB-12','{{cite web|url=https://www.bookbrowse','"The Polished Hoe". Book Browse. Retrieved 25 May 2017.'),
+('d11','<ref name="HC">','HC','cite_note-HC-13','{{cite web|url= http://www.chron.com','Latha Viswanathan (17 August 2003). "\'The Polished Hoe\' by Austin Clarke ...". chron. Retrieved 25 May 2017.'),
+('d12','<ref name="KR">','KR','cite_note-KR-14','{{cite web|url=https://www.kirkusreviews','"The Polished Hoe". Kirkus Reviews. 1 May 2003. Retrieved 25 May 2017.'),
+('d13','<ref name="NYT">','NYT','cite_note-NYT-15','{{cite news|url=https://www.nytimes','Ihsan Taylor (14 September 2003). "Mary-Mathilda\'s Murderous Monologue". The New York Times. Retrieved 25 May 2017.'),
+('d14','<ref name="TG">','TG','cite_note-TG-1','{{cite news|url=https://www.theguardian','Maya Jaggi (3 April 2004). "Swimming with barracudas". The Guardian. Retrieved 25 May 2017.'),
+('d15','<ref name="PW">','PW','cite_note-PW-16','{{cite web|url=https://www.publishersweekly','Naeem Murr (1 May 2003). "The Book Review: The Polished Hoe". Publishers Weekly. Retrieved 25 May 2017.'),
+('d16','<ref name="QQ">','QQ','cite_note-QQ-5','{{cite web|url=http://www.quillandquire','"Book Review: The Polished Hoe". Quill & Quire. 20 February 2004. Retrieved 29 May 2017.')]
+D={}
+for i,q,nm,nid,tq,mt in defs:
+    n=0
+    notes=''
+    if nm=='QQ': notes='Definition follows its self-closing use <ref name="QQ"/> earlier in source; first (only) body of QQ.'
+    if nm=='TG': notes='First body for TG; an earlier self-closing <ref name="TG"/> (before the window) binds here.'
+    if nm=='PBS': notes='Reused later by <ref name="PBS"/>.'
+    D[nm or i]=a.define(i,q,name=nm,tpl=[tq],note_id=nid,marker_text=mt,notes=notes)
+    D[i]=D[nm or i]
+# uses in source order
+uses=[('<ref name="CBC">','d1',0,'cite_ref-CBC_2-0'),('<ref>{{cite book|author=Donna','d2',0,'cite_ref-3'),('<ref name="PBS">','d3',0,'cite_ref-PBS_4-0'),
+('<ref name="QQ"/>','d16',0,'cite_ref-QQ_5-0'),('<ref name="Clarke2015">','d4',0,'cite_ref-Clarke2015_6-0')]
+for k in range(5): uses.append(('<ref name="Clarke2015"/>','d4',k,'cite_ref-Clarke2015_6-%d'%(k+1)))
+uses+= [('<ref>{{cite web|url=http://www.scotia','d5',0,'cite_ref-7'),('<ref name="DD">','d6',0,'cite_ref-DD_8-0'),('<ref>{{cite web|url=http://www.omdc','d7',0,'cite_ref-9'),
+('<ref name="NY">','d8',0,'cite_ref-NY_10-0'),('<ref name="Muse">','d9',0,'cite_ref-Muse_11-0'),('<ref name="BB">','d10',0,'cite_ref-BB_12-0'),('<ref name="HC">','d11',0,'cite_ref-HC_13-0'),
+('<ref name="KR">','d12',0,'cite_ref-KR_14-0'),('<ref name="NYT">','d13',0,'cite_ref-NYT_15-0'),('<ref name="TG">','d14',0,'cite_ref-TG_1-1'),('<ref name="PW">','d15',0,'cite_ref-PW_16-0'),
+('<ref name="QQ">','d16',0,'cite_ref-QQ_5-1'),('<ref name="PBS"/>','d3',0,'cite_ref-PBS_4-1')]
+for j,(q,d,n,rid) in enumerate(uses,1):
+    nn=''
+    if q.startswith('<ref name="QQ"/>'): nn='Reuse placed before the QQ body in source; binds to the later definition.'
+    a.use('u%d'%j,q,D[d],n=n,rid=rid,notes=nn)
+a.ident('10.1353/cal.2006.0103','doi','primary_citation_field','10.1353/cal.2006.0103')
+a.unres.append('{{rp|135}} after the Donna Bailey Nurse ref is a page-number template, not a footnote call; not labelled as a use. A <ref name="TG"/> before the window (cp ~2400) is outside scope; its binding target (d14) is in the window.')
+a.write(S)

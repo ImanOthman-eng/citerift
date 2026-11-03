@@ -1,0 +1,4 @@
+import sys,re
+t=open(sys.argv[1]+'/source.wikitext',encoding='utf-8').read()
+for m in re.finditer(r'<ref\b[^>]*?/?>|</ref>|\{\{\s*(?:cite|citation|efn|refn|sfn|harv\w*|r\||doi|pmid|reflist|refbegin|notelist)[^|}]*|10\.\d{4,9}/|PMID|pmid|doi|<!--|<nowiki|ncbi|pubmed',t,re.I):
+    print(m.start(),repr(m.group()[:90]))

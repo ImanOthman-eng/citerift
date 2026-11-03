@@ -1,0 +1,10 @@
+import sys,json,lxml.html
+d=sys.argv[1]
+h=lxml.html.parse(f'packets/{d}/render.html').getroot()
+for s in h.iter('sup'):
+    if 'mw:Extension/ref' in (s.get('typeof') or ''):
+        print('SUP',s.get('id'),(s.get('data-mw') or '')[:int(sys.argv[2]) if len(sys.argv)>2 else 150].replace('\n',' '))
+for li in h.iter('li'):
+    i=li.get('id') or ''
+    if i.startswith('cite_note'):
+        print('LI',i,' '.join(li.text_content().split())[:int(sys.argv[3]) if len(sys.argv)>3 else 120])
