@@ -1,0 +1,29 @@
+import sys; sys.path.insert(0,'.')
+from lib import *
+S='2026-11-04T10:30:00Z'
+TOOLS='python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/sfn/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification'
+a=Art('ar-75843579'); t=a.t
+names=[('Lucena','<ref>Manuel de Lucena'),('Pais','<ref>Jorge Pais'),('Loff','<ref>Manuel Loff'),('Martins','<ref>Hermínio')]
+rid={'Lucena':25,'Pais':26,'Loff':27,'Martins':28}
+for i,(k,n) in enumerate(names):
+    at=a.L(n)
+    a.D('d%d'%(i+1),at,'note',None,'',[],True,'cite_note-%d'%rid[k],notes='hand-written plain-text reference, no citation template')
+    a.U('u%d'%(i+1),at,at,'cite_ref-%d'%rid[k])
+kay=a.L('{{Sfn|Kay|1970}}'); g=a.L('{{Sfn|Griffin|2007}}'); w=a.L('{{Sfn|Ward|2013}}')
+a.D('d5',kay,'generated_note',None,'',[],False,'cite_note-FOOTNOTEKay1970-29',notes='arwiki short footnote; no group (arwiki Module:Footnotes ignores group)')
+a.U('u5',kay,kay,'cite_ref-FOOTNOTEKay1970_29-0')
+a.D('d6',g,'generated_note',None,'',[],False,'cite_note-FOOTNOTEGriffin2007-30',notes='first of 4 identical {{Sfn|Griffin|2007}} calls (18272, 20882, 21346, 21638); later calls are uses only')
+a.U('u6',g,g,'cite_ref-FOOTNOTEGriffin2007_30-0')
+for i,n in enumerate((1,2,3)):
+    a.U('u%d'%(7+i),a.L('{{Sfn|Griffin|2007}}',n),g,'cite_ref-FOOTNOTEGriffin2007_30-%d'%n,'repeat of identical short footnote')
+a.D('d7',w,'generated_note',None,'',[],False,'cite_note-FOOTNOTEWard2013-34',notes='arwiki short footnote; no group')
+a.U('u10',w,w,'cite_ref-FOOTNOTEWard2013_34-0')
+for k,(nm,tpl,rid_,ref) in enumerate([('berlet1','{{استشهاد بكتاب','cite_note-berlet1-31','cite_ref-berlet1_31-0'),('berlet2','{{استشهاد بكتاب','cite_note-berlet2-32','cite_ref-berlet2_32-0'),('mozaffari1','{{استشهاد بدورية محكمة','cite_note-mozaffari1-33','cite_ref-mozaffari1_33-0')]):
+    at=a.L('<ref name="%s">'%nm)
+    a.D('d%d'%(8+k),at,'note',nm,'',[a.L(tpl,0,at['cp'])],False,rid_)
+    a.U('u%d'%(11+k),at,at,ref)
+doi=t.find('DOI=10.1080/14690760601121622')+4
+a.I(a.Lq(doi,26),'doi','primary_citation_field','10.1080/14690760601121622','field "DOI=" of an Arabic cite-journal template')
+a.un.append('Article is outside window for earlier refs; the window opens in the "types of clerical fascism" bullet list (bullets 14461-15856 contain wikilinks only, no references). ISBN fields are not DOI/PMID and not labelled.')
+a.un.append('The Sfn targets (Kay 1970, Griffin 2007, Ward 2013) have no matching bibliography entry in the source (no CITEREF targets), so the rendered notes are not links to entries; not a labelling issue.')
+a.write(0,S,TOOLS,'Nothing undecided. Only note: the four plain-text refs are unstructured=true with no templates.')

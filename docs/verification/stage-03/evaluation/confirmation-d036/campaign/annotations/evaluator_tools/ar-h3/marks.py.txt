@@ -1,0 +1,10 @@
+import sys,re
+from lxml import html
+for d in sys.argv[1:]:
+    r=html.parse(f'packets/{d}/render.html').getroot()
+    for l in r.xpath('//li[starts-with(@id,"cite_note")]'):
+        txt=' '.join(l.text_content().split())
+        for a in l.xpath('.//a[contains(@class,"new")]'):
+            print(d,l.get('id'),'REDLINK',a.get('title'),a.get('href','')[:80])
+        if re.search(r'retract|withdraw|erratum|correct|concern|مسحوب|سحب|تصحيح|Retract|Expression',txt,re.I):
+            print(d,l.get('id'),'VOCAB',re.findall(r'.{30}(?:retract|withdraw|erratum|correct|concern|مسحوب|سحب|تصحيح|Expression).{30}',txt,re.I)[:3])

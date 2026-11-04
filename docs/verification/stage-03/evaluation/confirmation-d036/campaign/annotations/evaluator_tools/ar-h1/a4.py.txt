@@ -1,0 +1,68 @@
+import sys; sys.path.insert(0,'.')
+from lib import *
+S='2026-11-04T10:50:00Z'
+TOOLS='python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification'
+a=Art('ar-77050950'); t=a.t
+CJ='{{استشهاد بدورية محكمة'
+def T(at,c): return [a.L(c,0,at['cp'])]
+def at_(p,n=40): return a.Lq(p,n)
+# out-of-window targets
+vo=at_(39186); wi=at_(40562)
+a.D('d1',vo,'note','voanews.com','',T(vo,'{{استشهاد بخبر'),False,'cite_note-voanews.com-64',notes='starts before window; target of use at 47240',in_window=False)
+a.D('d2',wi,'note','Witte2004','',T(wi,CJ),False,'cite_note-Witte2004-67',notes='starts before window; target of uses at 43135, 43351',in_window=False)
+defs=[('d3',41603,'Alekshun2007',CJ,False,'cite_note-Alekshun2007-69','cite_ref-Alekshun2007_69-0'),
+('d4',42255,None,CJ,False,'cite_note-70','cite_ref-70'),
+('d5',42728,None,CJ,False,'cite_note-71','cite_ref-71'),
+('d6',43374,'Baker2006',CJ,False,'cite_note-Baker2006-72','cite_ref-Baker2006_72-0'),
+('d7',44526,'Marino','{{استشهاد بكتاب',False,'cite_note-Marino-73','cite_ref-Marino_73-0'),
+('d8',45033,'Larson2007',CJ,False,'cite_note-Larson2007-74','cite_ref-Larson2007_74-0'),
+('d9',45832,'pharmguide',None,True,'cite_note-pharmguide-75','cite_ref-pharmguide_75-0'),
+('d10',46173,None,None,True,'cite_note-76','cite_ref-76'),
+('d11',46540,None,CJ,False,'cite_note-77','cite_ref-77'),
+('d12',47265,'Hawkey2008',CJ,False,'cite_note-Hawkey2008-78','cite_ref-Hawkey2008_78-0'),
+('d13',48744,None,None,True,'cite_note-79','cite_ref-79'),
+('d14',49086,None,None,True,'cite_note-80','cite_ref-80'),
+('d15',49317,None,None,True,'cite_note-81','cite_ref-81')]
+loc={}
+for i,(d,p,nm,c,un,rn,rr) in enumerate(defs):
+    x=at_(p); loc[nm or p]=x
+    n=''
+    if nm=='Marino': n='unquoted name attribute; only one occurrence. ISBN is in ردمك field, not a DOI/PMID.'
+    if un: n='plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template'
+    a.D(d,x,'note',nm,'',T(x,c) if c else [],un,rn,notes=n)
+    a.U('u%d'%(i+1),x,x,rr)
+k=len(defs)
+def sc(u,p,n,b,r):
+    a.U(u,at_(p,n),b,r,'self-closing reuse')
+sc('u14',42106,len('<ref name="Alekshun2007"/>'),loc['Alekshun2007'],'cite_ref-Alekshun2007_69-1')
+sc('u15',43135,len('<ref name="Witte2004"/>'),wi,'cite_ref-Witte2004_67-1')
+sc('u16',43351,len('<ref name="Witte2004"/>'),wi,'cite_ref-Witte2004_67-2')
+sc('u17',43863,len('<ref name="Baker2006"/>'),loc['Baker2006'],'cite_ref-Baker2006_72-1')
+sc('u18',44050,len('<ref name="Baker2006"/>'),loc['Baker2006'],'cite_ref-Baker2006_72-2')
+sc('u19',45393,len('<ref name="Larson2007"/>'),loc['Larson2007'],'cite_ref-Larson2007_74-1')
+sc('u20',47240,len('<ref name="voanews.com"/>'),vo,'cite_ref-voanews.com_64-1')
+sc('u21',47640,len('<ref name="Hawkey2008"/>'),loc['Hawkey2008'],'cite_ref-Hawkey2008_78-1')
+# identifiers
+def idv(after,needle,val,scheme,role,key,notes=''):
+    p=t.find(needle,after)+len(needle)-len(val) if False else t.find(needle,after)
+    assert p>=0
+    q=p+len(needle)-len(val)
+    assert t[q:q+len(val)]==val
+    a.I(a.Lq(q,len(val)),scheme,role,key,notes)
+def field(ref,name,val,scheme,key):
+    idv(ref,name+val,val,scheme,'primary_citation_field',key)
+F='primary_citation_field'
+for p,pm,do in [(41603,'17382878','10.1016/j.cell.2007.03.004'),(42728,'19231985','10.1146/annurev.biochem.78.082907.145923'),(43374,'16537105','10.1016/j.tim.2006.02.006'),(45033,'17094768','10.1146/annurev.publhealth.28.021406.144020'),(47265,'18684701','10.1093/jac/dkn241')]:
+    field(p,'pmid=',pm,'pmid',pm); field(p,'doi=',do,'doi',do.lower())
+field(42255,'pmid=','9736537','pmid','9736537')
+idv(42600,'&pmid=9736537','9736537','pmid','not_a_target','9736537','inside web.archive.org snapshot URL of another site (aac.asm.org pmidlookup); pmid= text within another site\'s URL')
+# the above second call finds the first 'pmid=9736537|' occurrence: verify it is the archive one
+field(46540,'doi=','10.1371/journal.pmed.1000084','doi','10.1371/journal.pmed.1000084')
+p=t.find('article?id=10.1371/journal.pmed.1000084',46540)+len('article?id=')
+a.I(a.Lq(p,len('10.1371/journal.pmed.1000084')),'doi','identifier_link','10.1371/journal.pmed.1000084','DOI in query of PLOS publisher URL (مسار=); not a /doi/ path nor resolver, quoted as bare identifier text')
+p=t.find('info:doi/10.1371/journal.pmed.1000084',46540)+len('info:doi/')
+a.I(a.Lq(p,len('10.1371/journal.pmed.1000084')),'doi','not_a_target','10.1371/journal.pmed.1000084','inside web.archive.org snapshot URL (info:doi/) of another site')
+a.un.append('Window starts mid-article; refs voanews.com (39186) and Witte2004 (40562) start before the window and are in the output with in_window=false as binding targets.')
+a.un.append('Ref at 41165 starts before the window (41443) so is not in scope.')
+a.un.append('pmc= field (105782) is a PubMed Central id, not DOI/PMID; not labelled.')
+a.write(0,S,TOOLS,'Nothing undecided.')

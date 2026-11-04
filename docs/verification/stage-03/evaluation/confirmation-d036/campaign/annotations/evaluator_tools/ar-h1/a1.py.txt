@@ -1,0 +1,46 @@
+import sys; sys.path.insert(0,'.')
+from lib import *
+S='2026-11-04T10:22:30Z'
+TOOLS='python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification'
+# 68752197
+a=Art('ar-68752197')
+a.un.append('No <ref>, footnote template, citation template, DOI or PMID in the window. {{مراجع}} at 188 is an empty references list. "* {{ويكي سكاي}}" (218) is an external-link template list item with no citation template, DOI or PMID, so not labelled as bibliography entry (3.4).')
+a.write(0,S,TOOLS,'Nothing undecided; article has no in-scope items. Whether the external-link list item counts as a bibliography entry: judged no per 3.4.')
+# 76748683
+a=Art('ar-76748683')
+t=a.t
+j=a.L('<ref name="jpl">')
+r2=a.L('<ref>{{استشهاد ويب')
+aas=a.L('<ref name="AAS-MB-2011">')
+a.D('d1',j,'note','jpl','',[a.L('{{استشهاد ويب',0,j['cp'])],False,'cite_note-jpl-2')
+a.D('d2',r2,'note',None,'',[a.L('{{استشهاد ويب',0,r2['cp'])],False,'cite_note-3')
+a.D('d3',aas,'note','AAS-MB-2011','',[a.L('{{استشهاد بدورية محكمة',0,aas['cp'])],False,'cite_note-AAS-MB-2011-4')
+a.U('u1',j,j,'cite_ref-jpl_2-0')
+a.U('u2',r2,r2,'cite_ref-3')
+a.U('u3',a.L('<ref name="jpl"/>',0),j,'cite_ref-jpl_2-1','self-closing reuse')
+a.U('u4',a.L('<ref name="jpl"/>',1),j,'cite_ref-jpl_2-2','self-closing reuse')
+a.U('u5',aas,aas,'cite_ref-AAS-MB-2011_4-0')
+doi=t.find('|DOI=10.1088')+5
+a.I(a.Lq(doi,26),'doi','primary_citation_field','10.1088/0004-637x/741/2/68','field "DOI=" (upper case) of an Arabic cite-journal template')
+u1=t.find('10.1088/0004-637X/741/2/68')
+a.I(a.Lq(u1,26),'doi','identifier_link','10.1088/0004-637x/741/2/68','DOI inside the iopscience /article/ URL in مسار=; not a /doi/ path nor a resolver, so quoted as bare identifier text ("anything else")')
+u2=t.find('10.1088/0004-637X/741/2/68',u1+5)
+a.I(a.Lq(u2,26),'doi','not_a_target','10.1088/0004-637x/741/2/68','inside web.archive.org snapshot URL (مسار أرشيف=) of another site; quoted as bare identifier text')
+a.un.append('Infobox {{معلومات كوكب}} emits 10 Wikidata-generated references (cite_ref-wikidata-..._1-0..9, cite_note-wikidata-...-1) that are not in the source; not listed (3.3).')
+a.un.append('{{JPL small body}}, {{ويكي سكاي}} list items under "وصلات خارجية" are external-link templates, not citation templates; not bibliography entries.')
+a.write(0,S,TOOLS,'Nothing undecided. Judgement calls: the iopscience /article/ URL DOI treated as identifier_link; archive URL DOI as not_a_target.')
+# 77000476
+a=Art('ar-77000476'); t=a.t
+r1=a.L('<ref>{{استشهاد بدورية محكمة'); r2=a.L('<ref>{{استشهاد بويب')
+a.D('d1',r1,'note',None,'',[a.L('{{استشهاد بدورية محكمة',0,r1['cp'])],False,'cite_note-1')
+a.D('d2',r2,'note',None,'',[a.L('{{استشهاد بويب',0,r2['cp'])],False,'cite_note-2',notes='Template name "استشهاد بويب" (typo for ويب) does not exist; rendered as a red-link/error text "{{استشهاد بويب}}: تحقق من التاريخ..." (rendered li shows the template-call error). Still counted as a citation template call. No retraction marker.')
+a.U('u1',r1,r1,'cite_ref-1'); a.U('u2',r2,r2,'cite_ref-2')
+p=t.find('https://www.science.org/doi/10.1126/science.1057103')
+url='https://www.science.org/doi/10.1126/science.1057103'
+a.I(a.Lq(p,len(url)),'doi','identifier_link',"10.1126/science.1057103",'publisher URL with /doi/ path in مسار=; ends at "|"')
+f=t.find('دوي=10.1126')+4
+a.I(a.Lq(f,31),'doi','primary_citation_field','10.1126/science.1057103','field دوي=')
+au='http://web.archive.org/web/20250825175205/https://www.science.org/doi/10.1126/science.1057103'
+q=t.find(au)
+a.I(a.Lq(q,len(au)),'doi','not_a_target','10.1126/science.1057103','archive.org snapshot URL of another site containing a publisher DOI URL; key is the DOI inside')
+a.write(0,S,TOOLS,'Nothing undecided.')

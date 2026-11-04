@@ -1,0 +1,15 @@
+import sys
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+A=Art(1348311623)
+iu=A.at('<ref name= iucn>'); po=A.at('<ref name = powo>')
+A.d(iu,'note',name='iucn',group='',tpl=[A.at('{{cite iucn')],rid='cite_note-iucn-1',notes='ref inside the status_ref parameter of {{Speciesbox}}; name written as "name= iucn"')
+A.d(po,'note',name='powo',group='',tpl=[A.at('{{cite web')],rid='cite_note-powo-2',notes='ref inside the synonyms_ref parameter of {{Speciesbox}}; name written as "name = powo"')
+A.u(iu,iu,'cite_ref-iucn_1-0')
+A.u(po,po,'cite_ref-powo_2-0')
+p1=A.at('<ref name = powo/>'); A.u(p1,po,'cite_ref-powo_2-1')
+i1=A.at('<ref name = iucn/>'); A.u(i1,iu,'cite_ref-iucn_1-1')
+p2=A.at('<ref name = powo/>',0,p1+5); A.u(p2,po,'cite_ref-powo_2-2')
+A.i(A.at('10.2305/IUCN'),'10.2305/IUCN.UK.1998.RLTS.T31501A9637127.en','doi','primary_citation_field','10.2305/iucn.uk.1998.rlts.t31501a9637127.en')
+A.unres.append('{{Taxonbar|from=Q5438167}} and Speciesbox may emit Wikidata-derived content; no source references listed for them.')
+A.write(None,TOOLS,'Nothing undecided.')

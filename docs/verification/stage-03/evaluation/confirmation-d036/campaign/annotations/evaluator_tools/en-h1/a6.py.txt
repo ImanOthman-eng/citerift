@@ -1,0 +1,19 @@
+import sys
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+A=Art(1378886592)
+ch=A.at('<ref name=Chinjikeros>')
+A.d(ch,'note',name='Chinjikeros',group='',tpl=[A.at('{{Cite journal',0,ch)],rid='cite_note-Chinjikeros-1')
+A.u(ch,ch,'cite_ref-Chinjikeros_1-0')
+for s,n,tp in [('<ref>{{cite web |title=Antilopini',2,'{{cite web'),('<ref>{{cite journal |last1=Kostopoulos',3,'{{cite journal'),('<ref>{{cite web |title=Praemadoqua',4,'{{cite web')]:
+    cp=A.at(s); A.d(cp,'note',name=None,group='',tpl=[A.at(tp,0,cp)],rid='cite_note-%d'%n)
+    if n==2: second=cp
+    A.u(cp,cp,'cite_ref-%d'%n)
+# self-closing reuse sits between ref 2 and 3 in source
+sc=A.at('<ref name=Chinjikeros />')
+A.u(sc,ch,'cite_ref-Chinjikeros_1-1')
+A.uses.sort(key=lambda x:x['at']['cp'])
+for i,x in enumerate(A.uses): x['id']='u%d'%(i+1)
+A.i(A.at('10.18563/pv.49.2.e1'),'10.18563/pv.49.2.e1','doi','primary_citation_field','10.18563/pv.49.2.e1')
+A.unres.append('Automatic taxobox, Artiodactyla navbox and Taxonbar may render Wikidata/template-derived content; no source references listed for them.')
+A.write(None,TOOLS,'Nothing undecided.')

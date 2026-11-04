@@ -1,0 +1,208 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 60741333,
+  "source_sha256": "7a6b2933cc7fee54058546c73660d08343676be8b4d638426b86c705fe9f6365",
+  "html_sha256": "94f605d62ad4479d7519d5e9c18c9e7446f7f7bea40e979e76427dd7f8665339",
+  "window": [
+   0,
+   2182
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h4",
+  "started_at": "2026-11-04T10:22:00Z",
+  "finished_at": "2026-11-04T11:00:00Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-60741333/source.wikitext",
+    "sha256": "7a6b2933cc7fee54058546c73660d08343676be8b4d638426b86c705fe9f6365"
+   },
+   {
+    "path": "packets/ar-60741333/render.html",
+    "sha256": "94f605d62ad4479d7519d5e9c18c9e7446f7f7bea40e979e76427dd7f8665339"
+   },
+   {
+    "path": "packets/ar-60741333/packet.json",
+    "sha256": "3130dff0d69fbf5cb422b9d34cf768eb671654d36cb8de59c78a01fd3d351398"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: regex search of source.wikitext for ref/template/doi/pmid positions; lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; str slice check of every quote. No general reference parser. Labels decided by reading.",
+  "unresolved": "{{يتيمة}} maintenance template at start has no citation content; nothing else unplaced."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 218,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 223,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": "Barker، Lewellys F. (1916). Monographic Medicine: The clinical diagnosis of internal diseases. D. Appleton and Company. ص. 483. اطلع عليه بتاريخ 2015-06-24.",
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 585,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 590,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": "\"The Basic Geriatric Respiratory Examination\". Medscape. مؤرشف من الأصل في 2017-09-12. اطلع عليه بتاريخ 2015-06-24.",
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1375,
+    "quote": "<ref>{{استشهاد بدورية"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1380,
+      "quote": "{{استشهاد بدورية"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": "Urmey، WF؛ De Troyer، A؛ Kelly، KB؛ Loring، SH (1988). \"Pleural pressure increases during inspiration in the zone of apposition of diaphragm to rib cage\". J. Appl. Physiol. ج. 65 ع. 5: 2207–12. DOI:10.1152/jappl.1988.65.5.2207. PMID:3209564.",
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1864,
+    "quote": "<ref>Argente"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": "Argente, A. Horacio, Marcelo, Alvarez (2013) \"Semiologia Medica; fisiopatologia, semiotecnia y propedeutica\": pg. 565. 2a Edicion, Buenos Aires, Argentina.",
+   "notes": "Hand-written plain-text citation, no citation template."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 218,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "binds_to": {
+    "cp": 218,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 585,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 585,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1375,
+    "quote": "<ref>{{استشهاد بدورية"
+   },
+   "binds_to": {
+    "cp": 1375,
+    "quote": "<ref>{{استشهاد بدورية"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1864,
+    "quote": "<ref>Argente"
+   },
+   "binds_to": {
+    "cp": 1864,
+    "quote": "<ref>Argente"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1409,
+    "quote": "3209564"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "3209564",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1825,
+    "quote": "10.1152/jappl.1988.65.5.2207"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1152/jappl.1988.65.5.2207",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "{{يتيمة}} maintenance template at start has no citation content; nothing else unplaced."
+ ]
+}

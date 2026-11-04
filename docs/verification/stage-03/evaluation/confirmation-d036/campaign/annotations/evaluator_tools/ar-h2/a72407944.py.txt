@@ -1,0 +1,11 @@
+from lib import *
+a=A('ar-72407944')
+R=[a.L('<ref>',i) for i in range(4)]
+for i,r in enumerate(R):
+    n=i+1
+    a.D(f'd{n}',r,'note',templates=[a.L('{{استشهاد ',0,r['cp'])],rid=f'cite_note-{n}')
+    a.U(f'u{n}',r,r,rid=f'cite_ref-{n}')
+a.I(a.L('10.1016/s1240-1307(97)81550-6'),'doi','primary_citation_field','10.1016/s1240-1307(97)81550-6','field written as DOI=')
+a.I(a.L('10.1016/s0306-9877(03)00113-0'),'doi','primary_citation_field','10.1016/s0306-9877(03)00113-0','field written as DOI=')
+a.un.append('Plain bulleted list under "مؤلفاته" (works by the subject) has no citation template, DOI or PMID, so not labeled as bibliography entries (3.4).')
+a.save()

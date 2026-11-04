@@ -1,0 +1,50 @@
+import sys; sys.path.insert(0,'tools')
+from build import *
+a=A('ar-73694006')
+l=a.loc
+t=a.t
+W=3925
+def R(anchor,n=0): return l(anchor,n,after=W)
+r_bl=R('<ref>{{استشهاد بويب |الأخير1= Blust')
+r_wk=R('<ref>{{استشهاد بويب |عنوان=Wiktionary')
+r_fi=R('<ref >{{استشهاد بدورية')
+r_tm_use1=R('<ref name="Tradisi Malamang"/>',0)
+r_yo=R('<ref name=Yovani2019>')
+r_ka=R('<ref>{{استشهاد بويب|الأخير=Kaya')
+r_tm=R('<ref name="Tradisi Malamang">')
+r_tr=R('<ref name="Tribun Lemang">')
+r_g3u=R('<ref name="مولد تلقائيا3" />')
+r_re=R('<ref>{{استشهاد بويب|تاريخ=2016')
+r_tm_u2=R('<ref name="Tradisi Malamang"/>',1)
+r_tm_u3=R('<ref name="Tradisi Malamang"/>',2)
+r_ay=R('<ref>{{استشهاد|مسار=http://www.themalaymailonline')
+r_ro=R('<ref>{{استشهاد بويب |الأخير1=Rohman')
+r_g3=l('<ref name="مولد تلقائيا3">')
+assert r_g3['cp']<W
+def T(r): return {'cp':r['cp']+5 if r['quote'].startswith('<ref>') else r['cp']+len(r['quote'].split('{{')[0]),'quote':'{{'+r['quote'].split('{{',1)[1]} 
+def tpl(r):
+    i=t.find('{{',r['cp']); return {'cp':i,'quote':t[i:i+50]}
+a.D('d0',r_g3,name='مولد تلقائيا3',templates=[tpl(r_g3)],render='cite_note-مولد_تلقائيا3-5',inw=False,notes='starts before window; target of the use at the self-closing ref in the window')
+a.D('d1',r_bl,templates=[tpl(r_bl)],render='cite_note-7')
+a.D('d2',r_wk,templates=[tpl(r_wk)],render='cite_note-8')
+a.D('d3',r_fi,templates=[tpl(r_fi)],render='cite_note-9',notes='tag written as "<ref >"')
+a.D('d4',r_yo,name='Yovani2019',templates=[tpl(r_yo)],render='cite_note-Yovani2019-11',notes='Same work as auto-named reference "مولد تلقائيا2" (before window) but a different name, so a separate reference in MediaWiki.')
+a.D('d5',r_ka,templates=[tpl(r_ka)],render='cite_note-12',notes='title contains {{!}} (pipe helper, not a citation template)')
+a.D('d6',r_tm,name='Tradisi Malamang',templates=[tpl(r_tm)],render='cite_note-Tradisi_Malamang-10',notes='First use of the name (self-closing ref earlier in source) has no body; this is the first occurrence with a body.')
+a.D('d7',r_tr,name='Tribun Lemang',templates=[tpl(r_tr)],render='cite_note-Tribun_Lemang-13')
+a.D('d8',r_re,templates=[tpl(r_re)],render='cite_note-14')
+a.D('d9',r_ay,templates=[tpl(r_ay)],render='cite_note-15')
+a.D('d10',r_ro,templates=[tpl(r_ro)],render='cite_note-16')
+U=a.U
+U('u1',r_bl,r_bl,'cite_ref-7');U('u2',r_wk,r_wk,'cite_ref-8');U('u3',r_fi,r_fi,'cite_ref-9')
+U('u4',r_tm_use1,r_tm,'cite_ref-Tradisi_Malamang_10-0','self-closing; precedes the definition in source')
+U('u5',r_yo,r_yo,'cite_ref-Yovani2019_11-0');U('u6',r_ka,r_ka,'cite_ref-12')
+U('u7',r_tm,r_tm,'cite_ref-Tradisi_Malamang_10-1');U('u8',r_tr,r_tr,'cite_ref-Tribun_Lemang_13-0')
+U('u9',r_g3u,r_g3,'cite_ref-مولد_تلقائيا3_5-1','binds to definition before the window')
+U('u10',r_re,r_re,'cite_ref-14')
+U('u11',r_tm_u2,r_tm,'cite_ref-Tradisi_Malamang_10-2');U('u12',r_tm_u3,r_tm,'cite_ref-Tradisi_Malamang_10-3')
+U('u13',r_ay,r_ay,'cite_ref-15');U('u14',r_ro,r_ro,'cite_ref-16')
+a.I(R('10.24815/siele.v5i1.9431'),'doi','primary_citation_field','10.24815/siele.v5i1.9431')
+a.I(R('10.1186/s42779-019-0029-z'),'doi','primary_citation_field','10.1186/s42779-019-0029-z')
+a.unres.append('s2cid=209325826 in Yovani2019 is not a DOI/PMID; not labelled.')
+a.write('python3 -I str.find/regex scans, lxml listing of sup/li','none')

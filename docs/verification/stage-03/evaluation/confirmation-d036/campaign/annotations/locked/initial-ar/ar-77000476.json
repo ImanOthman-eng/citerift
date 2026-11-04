@@ -1,0 +1,149 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 77000476,
+  "source_sha256": "62e179d8ecd3e9d4fbd3a907a778207726ae46bba5551602d9f51fc7f560712e",
+  "html_sha256": "738ebca649df3efe949149dc85bdf48eddcbd9e04e909467d64523b0e93e90cd",
+  "window": [
+   0,
+   2845
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h1",
+  "started_at": "2026-11-04T10:22:30Z",
+  "finished_at": "2026-11-04T10:25:37Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-77000476/source.wikitext",
+    "sha256": "62e179d8ecd3e9d4fbd3a907a778207726ae46bba5551602d9f51fc7f560712e"
+   },
+   {
+    "path": "packets/ar-77000476/render.html",
+    "sha256": "738ebca649df3efe949149dc85bdf48eddcbd9e04e909467d64523b0e93e90cd"
+   },
+   {
+    "path": "packets/ar-77000476/packet.json",
+    "sha256": "c7f4dac5289cdebd5300569d29ba433915c11f1071ee4996c5b04556d81cb9db"
+   }
+  ],
+  "tools": "python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 368,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=The Indian Ocean Experimen"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 373,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=The Indian Ocean Experiment: Wi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1300,
+    "quote": "<ref>{{استشهاد بويب|عنوان=تجربة المحيط الهندي\nتجربة ميدانية "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1305,
+      "quote": "{{استشهاد بويب|عنوان=تجربة المحيط الهندي\nتجربة ميدانية دولية"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Template name \"استشهاد بويب\" (typo for ويب) does not exist; rendered as a red-link/error text \"{{استشهاد بويب}}: تحقق من التاريخ...\" (rendered li shows the template-call error). Still counted as a citation template call. No retraction marker."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 368,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=The Indian Ocean Experimen"
+   },
+   "binds_to": {
+    "cp": 368,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=The Indian Ocean Experimen"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1300,
+    "quote": "<ref>{{استشهاد بويب|عنوان=تجربة المحيط الهندي\nتجربة ميدانية "
+   },
+   "binds_to": {
+    "cp": 1300,
+    "quote": "<ref>{{استشهاد بويب|عنوان=تجربة المحيط الهندي\nتجربة ميدانية "
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 505,
+    "quote": "https://www.science.org/doi/10.1126/science.1057103"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1126/science.1057103",
+   "notes": "publisher URL with /doi/ path in مسار=; ends at \"|\""
+  },
+  {
+   "at": {
+    "cp": 880,
+    "quote": "10.1126/science.1057103|مسار أر"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1126/science.1057103",
+   "notes": "field دوي="
+  },
+  {
+   "at": {
+    "cp": 915,
+    "quote": "http://web.archive.org/web/20250825175205/https://www.science.org/doi/10.1126/science.1057103"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1126/science.1057103",
+   "notes": "archive.org snapshot URL of another site containing a publisher DOI URL; key is the DOI inside"
+  }
+ ],
+ "unresolved_notes": []
+}

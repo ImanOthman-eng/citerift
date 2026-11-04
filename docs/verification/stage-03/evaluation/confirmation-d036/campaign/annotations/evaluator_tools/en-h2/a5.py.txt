@@ -1,0 +1,74 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2/tools')
+from gen import *
+rev=1363090931; p,t=load(rev); s=sups(rev)
+refs=[m for m in re.finditer(r'<ref\b([^>]*?)(/>|>(.*?)</ref>)',t,re.S)]
+assert len(refs)==len(s)==110
+w0,w1=p['window']['cp_start'],p['window']['cp_end']
+def attrs(m):
+    a=dict(re.findall(r'(\w+)="([^"]*)"',m.group(1))); return a.get('name'),a.get('group','')
+# LI ids
+d=html.parse(f'{B}/packets/en-{rev}/render.html').getroot()
+lis=[l.get('id') for l in d.iter('li') if (l.get('id') or '').startswith('cite_note')]
+def note_id(sid,name,grp):
+    # name-based: cite_note-<name>-<n> ; unnamed/group: cite_note-<n>
+    m=re.match(r'cite_ref-(.+?)(?:_(\d+)-\d+|)$',sid)
+    n=sid.split('_')[-1] if name else sid[len('cite_ref-'):]
+    if name:
+        n=re.match(r'.*_(\d+)-\d+$',sid).group(1); c=f'cite_note-{name}-{n}'
+    else: c='cite_note-'+n
+    assert c in lis,c; return c
+first={}; bodies={}
+defsrc={}
+defs=[];uses=[]
+for m,sid in zip(refs,s):
+    name,grp=attrs(m); body=m.group(3)
+    key=(name,grp) if name else None
+    isdef=False;bind=None
+    if body is not None and body.strip():
+        if not name: isdef=True
+        else:
+            bs=bodies.setdefault(key,[])
+            if body.strip() not in bs: isdef=True; bs.append(body.strip())
+    if name and key not in first and isdef: first[key]=m.start()
+    pos=m.start()
+    # binding: first definition of key; may be later (forward ref)
+    if isdef:
+        tpl=[mm.start()+m.start(0)+0 for mm in []]
+        tpls=[m.start(3)+mm.start() for mm in re.finditer(r'\{\{[Cc]ite|\{\{[Cc]itation',body)]
+        keep=(w0<=pos<w1)
+        defsrc[pos]=(name,grp,tpls,sid)
+    uses.append((pos,name,grp,sid,isdef,body))
+# binding for named: first def with that key anywhere
+firstdef={}
+for pos,name,grp,sid,isdef,body in uses:
+    if isdef and name and (name,grp) not in firstdef: firstdef[(name,grp)]=pos
+D_out=[];U_out=[]
+# which defs to list: in window, or bound by in-window uses
+need=set()
+for pos,name,grp,sid,isdef,body in uses:
+    if w0<=pos<w1:
+        if isdef: need.add(pos)
+        else: need.add(firstdef[(name,grp)])
+need=sorted(need)
+did={}
+for k,pos in enumerate(need):
+    name,grp,tpls,sid=defsrc[pos]
+    plain=not tpls
+    note=''
+    if name and (name,grp)==('Ormerod429','') : note="First use (self-closing, in {{Quote box}} |source=) precedes this definition in source order; reference has one definition with body."
+    if name=='Ormerod436': note="Same name used 3 times; the third occurrence repeats the identical body (use only, not a definition)."
+    if name=='Ormerod434': note="Definition before the window; listed because the in-window use binds to it."
+    nid=note_id(sid,name,grp)
+    D_out.append(D(f'd{k+1}',t,pos,'note',name,grp,tpls,plain,nid,note,in_window=(w0<=pos<w1)))
+    did[pos]=True
+j=0
+for pos,name,grp,sid,isdef,body in uses:
+    if w0<=pos<w1:
+        j+=1; b=pos if isdef else firstdef[(name,grp)]
+        nt=''
+        if name=='Ormerod429' and pos<firstdef[(name,grp)]: nt="Forward reference: binds to the first definition, which comes later in source (the cite after 'Murder has never been statutorily defined')."
+        if body is not None and not isdef and body.strip(): nt="Repeats the identical body of the first definition of this reference: a use only, not a definition."
+        U_out.append(U(f'u{j}',t,pos,b,sid,nt))
+# fix template Hyam
+doi_ids=[]
+finish(rev,p,t,D_out,U_out,[],"Window holds no DOI/PMID text (the nearest, doi=10.1177/00220183211004068, starts at 14758, before the window). Group 'c' refs are bare case citations; no {{Reflist|group=c}} falls in the window. Markers align one-to-one with the 110 <ref> tags in source order (verified by name and group).",["{{Quote box}} |source= contains <ref name=\"Ormerod429\"/> which precedes its definition; Parsoid still places the marker in source order (cite_ref-Ormerod429_28-0)."])

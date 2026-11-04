@@ -1,0 +1,135 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1374321138,
+  "source_sha256": "5500657e5560cabcddd955607a612cce0bd457b4f346033c8895f6140157a21a",
+  "html_sha256": "ae402225ad54a57b2c05e413ef71daaef66b2fc5293ffd6e6d39e61f068833ef",
+  "window": [
+   0,
+   1589
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h2",
+  "started_at": "2026-11-04T10:13:59Z",
+  "finished_at": "2026-11-04T10:25:59Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1374321138/packet.json",
+    "sha256": "b1c26a0aa56e8173685ce2d4c0488d2c736055d78baf5745955e6c3ac8dc01e3"
+   },
+   {
+    "path": "packets/en-1374321138/source.wikitext",
+    "sha256": "5500657e5560cabcddd955607a612cce0bd457b4f346033c8895f6140157a21a"
+   },
+   {
+    "path": "packets/en-1374321138/render.html",
+    "sha256": "ae402225ad54a57b2c05e413ef71daaef66b2fc5293ffd6e6d39e61f068833ef"
+   }
+  ],
+  "tools": "Python 3 standard library (re, json, str.find) and lxml, run from tools/ scripts to search wikitext and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*>; every location verified with text[cp:cp+len(quote)]==quote. Labels decided by reading the text.",
+  "unresolved": "The bulleted line '* Bank, R. A.; Neubert, E. (2017)...' has no citation template, DOI or PMID, so not labelled a bibliography entry (3.4). {{cite iucn}} has |article-number= and |volume= fields only; no other identifiers."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 141,
+    "quote": "<ref name=\"iucn status 11 Sept"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn status 11 September 2026",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 183,
+      "quote": "{{cite iucn |author=Arrébola, "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn_status_11_September_2026-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined in speciesbox |status_ref=; reused in |synonyms=."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 800,
+    "quote": "<ref name=\"WoRMS\">MolluscaBase"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "WoRMS",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-WoRMS-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written MolluscaBase citation; contains marinespecies.org URL, no DOI/PMID."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 141,
+    "quote": "<ref name=\"iucn status 11 Sept"
+   },
+   "binds_to": {
+    "cp": 141,
+    "quote": "<ref name=\"iucn status 11 Sept"
+   },
+   "render_ref_id": "cite_ref-iucn_status_11_September_2026_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 531,
+    "quote": "<ref name=\"iucn status 11 Sept"
+   },
+   "binds_to": {
+    "cp": 141,
+    "quote": "<ref name=\"iucn status 11 Sept"
+   },
+   "render_ref_id": "cite_ref-iucn_status_11_September_2026_1-1",
+   "notes": "Self-closing reuse (with space before />)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 800,
+    "quote": "<ref name=\"WoRMS\">MolluscaBase"
+   },
+   "binds_to": {
+    "cp": 800,
+    "quote": "<ref name=\"WoRMS\">MolluscaBase"
+   },
+   "render_ref_id": "cite_ref-WoRMS_2-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 310,
+    "quote": "10.2305/IUCN.UK.2026-1.RLTS.T9793A215029503.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2026-1.rlts.t9793a215029503.en",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

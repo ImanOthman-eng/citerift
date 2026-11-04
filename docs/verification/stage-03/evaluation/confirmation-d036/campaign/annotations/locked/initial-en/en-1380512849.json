@@ -1,0 +1,743 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1380512849,
+  "source_sha256": "f03d601feff8ce6bf93451a6489d8d2b71509e93314a19b1069a8fb8876de489",
+  "html_sha256": "4f6bea8971179af0450fce3e82bc992696d90291a912a004b0cdde753eb71265",
+  "window": [
+   9049,
+   17049
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h3",
+  "started_at": "2026-11-04T10:25:00Z",
+  "finished_at": "2026-11-04T13:49:05Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1380512849/source.wikitext",
+    "sha256": "f03d601feff8ce6bf93451a6489d8d2b71509e93314a19b1069a8fb8876de489"
+   },
+   {
+    "path": "packets/en-1380512849/render.html",
+    "sha256": "4f6bea8971179af0450fce3e82bc992696d90291a912a004b0cdde753eb71265"
+   },
+   {
+    "path": "packets/en-1380512849/packet.json",
+    "sha256": "59bc9128cd49e11f8bae4d9835d2c6d60e4e493a5e2036ca22b4bcbce41661ee"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: regex search of source for <ref, {{cite, 10., pmid; lxml listing of sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; each quote verified against source text. Roles, bindings and markers decided by reading.",
+  "unresolved": "none"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 8922,
+    "quote": "<ref>{{cite journal|last1=Nam-Gyun|first1=K.|las"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8927,
+      "quote": "{{cite journal|last1=Nam-Gyun|first1=K.|last2=Ko"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts before the window; listed only because its pmid and doi fields start inside the window."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 9411,
+    "quote": "<ref>{{cite journal|last1=Gottardi|first1=C.|las"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9416,
+      "quote": "{{cite journal|last1=Gottardi|first1=C.|last2=Wo"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 10396,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10401,
+      "quote": "{{cite journal|last1=Leontieva|first1=O.|last2=B"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 10872,
+    "quote": "<ref>{{cite journal|last1=Puliafito|first1=A.|la"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10877,
+      "quote": "{{cite journal|last1=Puliafito|first1=A.|last2=H"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 11321,
+    "quote": "<ref>{{cite journal|last1=Stoker|first1=M.G.|tit"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11326,
+      "quote": "{{cite journal|last1=Stoker|first1=M.G.|title=De"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref whose body is identical to the earlier unnamed Stoker ref; unnamed refs are separate footnotes in MediaWiki (rendered as its own li cite_note-16), so it is a definition, not a repeat."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 12019,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12024,
+      "quote": "{{cite journal|last1=Leontieva|first1=O.|last2=D"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 12640,
+    "quote": "<ref>{{cite journal|last=Bell|first=P.|title=Con"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12645,
+      "quote": "{{cite journal|last=Bell|first=P.|title=Contact "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 14397,
+    "quote": "<ref>{{cite journal|last1=Roycroft|first1=A.|las"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14402,
+      "quote": "{{cite journal|last1=Roycroft|first1=A.|last2=Ma"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 14797,
+    "quote": "<ref>{{cite journal|last1=Abercrombie|first1=M.|"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14802,
+      "quote": "{{cite journal|last1=Abercrombie|first1=M.|last2"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-20",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 15207,
+    "quote": "<ref>{{cite journal|last1=Davis|first1=J.R.|last"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 15212,
+      "quote": "{{cite journal|last1=Davis|first1=J.R.|last2=Luc"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 15742,
+    "quote": "<ref>{{cite journal|last=Weiser|first=R.J.|autho"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 15747,
+      "quote": "{{cite journal|last=Weiser|first=R.J.|author2=Do"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-22",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 16325,
+    "quote": "<ref>{{cite book|last=Lackie|first=John M.|title"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 16330,
+      "quote": "{{cite book|last=Lackie|first=John M.|title=The "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-23",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 16644,
+    "quote": "<ref>{{cite journal|last=Abercrombie|first=M.|ti"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 16649,
+      "quote": "{{cite journal|last=Abercrombie|first=M.|title=C"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-24",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 9411,
+    "quote": "<ref>{{cite journal|last1=Gottardi|first1=C.|las"
+   },
+   "binds_to": {
+    "cp": 9411,
+    "quote": "<ref>{{cite journal|last1=Gottardi|first1=C.|las"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 10396,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "binds_to": {
+    "cp": 10396,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 10872,
+    "quote": "<ref>{{cite journal|last1=Puliafito|first1=A.|la"
+   },
+   "binds_to": {
+    "cp": 10872,
+    "quote": "<ref>{{cite journal|last1=Puliafito|first1=A.|la"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 11321,
+    "quote": "<ref>{{cite journal|last1=Stoker|first1=M.G.|tit"
+   },
+   "binds_to": {
+    "cp": 11321,
+    "quote": "<ref>{{cite journal|last1=Stoker|first1=M.G.|tit"
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 12019,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "binds_to": {
+    "cp": 12019,
+    "quote": "<ref>{{cite journal|last1=Leontieva|first1=O.|la"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 12640,
+    "quote": "<ref>{{cite journal|last=Bell|first=P.|title=Con"
+   },
+   "binds_to": {
+    "cp": 12640,
+    "quote": "<ref>{{cite journal|last=Bell|first=P.|title=Con"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 14397,
+    "quote": "<ref>{{cite journal|last1=Roycroft|first1=A.|las"
+   },
+   "binds_to": {
+    "cp": 14397,
+    "quote": "<ref>{{cite journal|last1=Roycroft|first1=A.|las"
+   },
+   "render_ref_id": "cite_ref-19",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 14797,
+    "quote": "<ref>{{cite journal|last1=Abercrombie|first1=M.|"
+   },
+   "binds_to": {
+    "cp": 14797,
+    "quote": "<ref>{{cite journal|last1=Abercrombie|first1=M.|"
+   },
+   "render_ref_id": "cite_ref-20",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 15207,
+    "quote": "<ref>{{cite journal|last1=Davis|first1=J.R.|last"
+   },
+   "binds_to": {
+    "cp": 15207,
+    "quote": "<ref>{{cite journal|last1=Davis|first1=J.R.|last"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 15742,
+    "quote": "<ref>{{cite journal|last=Weiser|first=R.J.|autho"
+   },
+   "binds_to": {
+    "cp": 15742,
+    "quote": "<ref>{{cite journal|last=Weiser|first=R.J.|autho"
+   },
+   "render_ref_id": "cite_ref-22",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 16325,
+    "quote": "<ref>{{cite book|last=Lackie|first=John M.|title"
+   },
+   "binds_to": {
+    "cp": 16325,
+    "quote": "<ref>{{cite book|last=Lackie|first=John M.|title"
+   },
+   "render_ref_id": "cite_ref-23",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 16644,
+    "quote": "<ref>{{cite journal|last=Abercrombie|first=M.|ti"
+   },
+   "binds_to": {
+    "cp": 16644,
+    "quote": "<ref>{{cite journal|last=Abercrombie|first=M.|ti"
+   },
+   "render_ref_id": "cite_ref-24",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 9218,
+    "quote": "21730131"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "21730131",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 9231,
+    "quote": "10.1073/pnas.1103345108"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.1103345108",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 9695,
+    "quote": "11381089"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "11381089",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 9708,
+    "quote": "10.1083/jcb.153.5.1049"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1083/jcb.153.5.1049",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 10716,
+    "quote": "21212465"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "21212465",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 10729,
+    "quote": "10.18632/aging.100265"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.18632/aging.100265",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 11131,
+    "quote": "10.1073/pnas.1007809109"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.1007809109",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 11160,
+    "quote": "22228306"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "22228306",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 11492,
+    "quote": "10.1038/215171a0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/215171a0",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 11542,
+    "quote": "6049107|"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "6049107",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 12356,
+    "quote": "24889617"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "24889617",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 12369,
+    "quote": "10.1073/pnas.1405723111"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.1405723111",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 12859,
+    "quote": "346078}}"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "346078",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 14606,
+    "quote": "25981318"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "25981318",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 14619,
+    "quote": "10.1016/j.tcb.2015.05.001"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.tcb.2015.05.001",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 15085,
+    "quote": "10.1016/0014-4827(53)90098-6"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0014-4827(53)90098-6",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 15119,
+    "quote": "13083622"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "13083622",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 15428,
+    "quote": "25799385"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "25799385",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 15441,
+    "quote": "10.1016/j.cell.2015.02.015"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.cell.2015.02.015",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 15973,
+    "quote": "10.1016/0014-4827(85)90472-0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0014-4827(85)90472-0",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 16008,
+    "quote": "3924641|"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "3924641",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 16808,
+    "quote": "10.1038/281259a0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/281259a0",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 16830,
+    "quote": "551275|b"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "551275",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}
