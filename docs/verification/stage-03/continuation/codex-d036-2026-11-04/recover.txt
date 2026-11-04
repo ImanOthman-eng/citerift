@@ -1,0 +1,44 @@
+CITERIFT recovery report for ImanOthman-eng/citerift
+HEAD: 80000f292b1991ab14c0dfa5edc8e78d2e3ed06a on codex/stage03-d036-safe-continuation
+Uncommitted changes: 0
+
+Authoritative revisions:
+  stage 00: verified 0c21182e5871f772c3a76c75a1217c7641a63bbb, accepted 0c21182e5871f772c3a76c75a1217c7641a63bbb
+  stage 01: verified 85da719ac43fc46170310b225c9190b63a046df8, accepted 85da719ac43fc46170310b225c9190b63a046df8
+  stage 02: verified cf060834afedfa4a82712ca247ad2fc2b2fa9665, accepted cf060834afedfa4a82712ca247ad2fc2b2fa9665
+Completed and accepted: 00, 01, 02
+Verified, awaiting owner acceptance: none
+Open:
+  IMPLEMENTED_NOT_VERIFIED: 03
+Not started: 04, 05, 06, 07, 08, 09
+Open blockers:
+  none
+Open risks, defects and limitations:
+  R-005 [medium limitation, stage 00]: Contract compatibility is checked against fixtures, not proven
+  R-006 [medium limitation, stage 00, 02, 03]: Contract field formats are not yet validated against real data
+  R-008 [medium risk, stage 03, 05, 07]: Wikimedia API rate limiting
+  R-009 [high risk, stage 09]: No license chosen
+  R-010 [high risk, stage project]: Hackathon deadline
+  R-013 [low risk, stage 06]: Future ML libraries may drop Python 3.12
+  R-025 [medium limitation, stage 02]: Identity beyond exact identifiers is not validated
+  R-029 [medium limitation, stage 02]: Bridged evidence is withheld, not resolved
+  R-031 [medium limitation, stage 02]: The role of a PMID given for both an original and its notice is not resolved
+  R-032 [low limitation, stage 02]: Follow-up: computational complexity of the Stage 02 engine is not documented
+  R-033 [low limitation, stage 02]: Follow-up: the experimental model's inference deadline is checked between candidates
+  R-034 [high limitation, stage 03]: Stage 03 frozen evaluation does not meet gate 03-G
+  R-035 [low limitation, stage 03]: Stage 03 declared support boundaries observed in the final campaign
+  R-036 [high limitation, stage 03]: Stage 03 confirmation campaign: English unit precision does not meet G5c
+  R-037 [medium limitation, stage 03]: Stage 03 citation-unit classification (D-035): residual limits
+  R-038 [high defect, stage 03]: Stage 03 reconciliation pairs repeated names inside a template's output in source order
+Pending decisions:
+  D-006: Optional cryptographic owner signatures for acceptance
+  D-007: License for code, documentation and data
+Recent changes:
+  2026-11-02T18:07:49Z stage 03 IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED (engineering-agent)
+  2026-11-03T05:56:20Z stage 03 IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS (engineering-agent)
+  2026-11-03T14:31:36Z stage 03 IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED (engineering-agent)
+  2026-11-04T02:22:53Z stage 03 IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS (engineering-agent)
+  2026-11-04T09:05:12Z stage 03 IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED (engineering-agent)
+Next actions:
+  - Stage 03 (Wikipedia Extraction Engine): authorized work may continue (IMPLEMENTED_NOT_VERIFIED)
+Consistency: 0 errors, 0 warnings

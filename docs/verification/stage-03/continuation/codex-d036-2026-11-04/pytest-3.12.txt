@@ -1,0 +1,371 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.7.0
+rootdir: /workspace/citerift
+configfile: pyproject.toml
+testpaths: tests
+plugins: platformdirs-4.13.5
+collected 2051 items
+
+tests/stage00/test_cli.py .........                                      [  0%]
+tests/stage00/test_contracts.py ........................................ [  2%]
+..........................................                               [  4%]
+tests/stage00/test_corrections.py ...................................... [  6%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+.......                                                                  [ 13%]
+tests/stage00/test_failure_simulation.py ............                    [ 14%]
+tests/stage00/test_integration_scenarios.py ............................ [ 15%]
+.                                                                        [ 15%]
+tests/stage00/test_maintenance.py ...................................... [ 17%]
+........                                                                 [ 17%]
+tests/stage00/test_properties.py ......                                  [ 18%]
+tests/stage00/test_recovery.py ...                                       [ 18%]
+tests/stage00/test_registry_tampering.py .......................         [ 19%]
+tests/stage00/test_repository.py .........................               [ 20%]
+tests/stage00/test_simulation.py ........                                [ 21%]
+tests/stage00/test_unit_model_evidence_memory.py ....................... [ 22%]
+......                                                                   [ 22%]
+tests/stage01/test_census.py ........................................    [ 24%]
+tests/stage01/test_crosswiki.py .............................            [ 25%]
+tests/stage01/test_discovery_errors.py ...................               [ 26%]
+tests/stage01/test_render_check.py .............                         [ 27%]
+tests/stage02/test_rde_advisory.py ..........................            [ 28%]
+tests/stage02/test_rde_audit_fixes.py .........                          [ 29%]
+tests/stage02/test_rde_bridge_sufficiency.py .........................   [ 30%]
+tests/stage02/test_rde_corroboration.py .....................            [ 31%]
+tests/stage02/test_rde_dates.py ...........................              [ 32%]
+tests/stage02/test_rde_export_diff.py ......                             [ 32%]
+tests/stage02/test_rde_identifiers.py .................................. [ 34%]
+.........................................                                [ 36%]
+tests/stage02/test_rde_import.py ...............................         [ 38%]
+tests/stage02/test_rde_local_model.py ..............................     [ 39%]
+tests/stage02/test_rde_lookup.py .............                           [ 40%]
+tests/stage02/test_rde_oracle_selftest.py .............................. [ 41%]
+........................................................................ [ 45%]
+.................................................                        [ 47%]
+tests/stage02/test_rde_policy_cases.py ................................. [ 49%]
+.....................                                                    [ 50%]
+tests/stage02/test_rde_policy_properties.py .....                        [ 50%]
+tests/stage02/test_rde_policy_regressions.py ...........                 [ 50%]
+tests/stage02/test_rde_real_cases.py ................................... [ 52%]
+..................                                                       [ 53%]
+tests/stage02/test_rde_review_findings.py ...................EE......... [ 55%]
+...........                                                              [ 55%]
+tests/stage02/test_rde_schemas.py ........                               [ 55%]
+tests/stage02/test_rde_spec_changes.py ......                            [ 56%]
+tests/stage02/test_rde_tension_properties.py .....                       [ 56%]
+tests/stage03/test_campaign_capture_driver.py ................           [ 57%]
+tests/stage03/test_confirmation_campaign_tools.py ...........            [ 57%]
+tests/stage03/test_confirmation_d035_scripts.py ........                 [ 58%]
+tests/stage03/test_confirmation_d036_scripts.py ........................ [ 59%]
+.                                                                        [ 59%]
+tests/stage03/test_disagreements_challenge_fix.py ...                    [ 59%]
+tests/stage03/test_g5c_review2.py ............................           [ 60%]
+tests/stage03/test_g5c_unit_semantics.py ............................... [ 62%]
+.................................................................        [ 65%]
+tests/stage03/test_r038_template_output_order.py ....................... [ 66%]
+...............................                                          [ 68%]
+tests/stage03/test_review_r6_fixes.py .................................. [ 69%]
+....                                                                     [ 70%]
+tests/stage03/test_review_r7_fixes.py .......                            [ 70%]
+tests/stage03/test_scorer_v2_definition_rule.py ...                      [ 70%]
+tests/stage03/test_wiki_bilingual_matrix.py ............................ [ 71%]
+....................                                                     [ 72%]
+tests/stage03/test_wiki_bundle_verify.py ............................... [ 74%]
+.............                                                            [ 75%]
+tests/stage03/test_wiki_cli.py .......................                   [ 76%]
+tests/stage03/test_wiki_doi_boundaries_d1_d2.py ...............          [ 76%]
+tests/stage03/test_wiki_f1_f4.py ....................................... [ 78%]
+........................................................................ [ 82%]
+............                                                             [ 82%]
+tests/stage03/test_wiki_fetch_capture.py ............................... [ 84%]
+.....................................                                    [ 86%]
+tests/stage03/test_wiki_mf1_tokenizer.py .................               [ 87%]
+tests/stage03/test_wiki_observed_regression.py .....                     [ 87%]
+tests/stage03/test_wiki_properties.py .................................. [ 88%]
+.........................                                                [ 90%]
+tests/stage03/test_wiki_render_ledger.py .....................           [ 91%]
+tests/stage03/test_wiki_retry_after_audit.py .........................   [ 92%]
+tests/stage03/test_wiki_review_regressions.py .......................... [ 93%]
+........................F.F........F                                     [ 95%]
+tests/stage03/test_wiki_rf60_page_view_segment.py ...................... [ 96%]
+.....                                                                    [ 96%]
+tests/stage03/test_wiki_sfn_identity.py ...............                  [ 97%]
+tests/stage03/test_wiki_source_extraction.py ........................... [ 98%]
+.                                                                        [ 98%]
+tests/stage03/test_wiki_v1_v2.py .......................                 [100%]
+
+==================================== ERRORS ====================================
+_____________ ERROR at setup of test_rde_s3_redirects_are_refused ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc8a43daab0>
+
+    @pytest.fixture
+    def loopback(monkeypatch: pytest.MonkeyPatch) -> Iterator[str]:
+        """A loopback HTTP server standing in for the API host (no external network)."""
+        _Handler.hits = []
+>       server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage02/test_rde_review_findings.py:265: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+___ ERROR at setup of test_rde_s8_request_deadline_covers_the_whole_response ___
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fc8a49df5f0>
+
+    @pytest.fixture
+    def loopback(monkeypatch: pytest.MonkeyPatch) -> Iterator[str]:
+        """A loopback HTTP server standing in for the API host (no external network)."""
+        _Handler.hits = []
+>       server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage02/test_rde_review_findings.py:265: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+=================================== FAILURES ===================================
+_______ test_wiki_a_drip_fed_body_cannot_outlast_the_operation_deadline ________
+
+    @pytest.mark.security
+    def test_wiki_a_drip_fed_body_cannot_outlast_the_operation_deadline() -> None:
+        """RF-28 (P3-01): read(65536) waited for 64 KiB, so one byte at a time held the connection for days."""
+    
+        class Drip(http.server.BaseHTTPRequestHandler):
+            def do_GET(self) -> None:
+                self.send_response(200)
+                self.send_header("content-type", "application/json")
+                self.end_headers()
+                try:
+                    for _ in range(40):
+                        self.wfile.write(b" ")
+                        self.wfile.flush()
+                        time.sleep(0.25)
+                except OSError:
+                    pass
+    
+            def log_message(self, *args: Any) -> None:
+                return None
+    
+>       server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Drip)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_wiki_review_regressions.py:448: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+_______________ test_wiki_worker_blocks_the_c_level_socket_type ________________
+
+    @pytest.mark.security
+    def test_wiki_worker_blocks_the_c_level_socket_type() -> None:
+        """RF-30 (P3-10): _socket.socket.connect still connected after forbid_network()."""
+        code = (
+            "import _socket, socket\n"
+            "from citerift.wiki.worker import forbid_network\n"
+            "a, b = socket.socketpair(); forbid_network()\n"
+            "s = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)\n"
+            "try:\n    s.connect(('127.0.0.1', 9))\nexcept PermissionError:\n    print('blocked')\n"
+        )
+>       out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, check=True, timeout=60)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_wiki_review_regressions.py:484: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = 60, check = True
+popenargs = (['/workspace/citerift/.venv/bin/python', '-c', "import _socket, socket\nfrom citerift.wiki.worker import forbid_netwo..._INET, _socket.SOCK_STREAM)\ntry:\n    s.connect(('127.0.0.1', 9))\nexcept PermissionError:\n    print('blocked')\n"],)
+kwargs = {'text': True, 'stdout': -1, 'stderr': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/workspace/citerift/.venv/bin/python', '-c', "import _socket, socket\nfrom citerift.wiki.worker import forbid_network\na, b = socket.socketpair(); forbid_network()\ns = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)\ntry:\n    s.connect(('127.0.0.1', 9))\nexcept PermissionError:\n    print('blocked')\n"]' returned non-zero exit status 1.
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py:571: CalledProcessError
+________ test_wiki_a_complete_body_with_content_length_reads_to_the_end ________
+
+    @pytest.mark.regression
+    def test_wiki_a_complete_body_with_content_length_reads_to_the_end() -> None:
+        """RF-38: after read1 took the last byte, http.client closed the socket and the next per-read timeout raised
+        EBADF, so a capture ended in an internal error (found in the confirmation capture)."""
+        body = json.dumps({"batchcomplete": True, "pad": "x" * 200_000}).encode()
+    
+        class Whole(http.server.BaseHTTPRequestHandler):
+            def do_GET(self) -> None:
+                self.send_response(200)
+                self.send_header("content-type", "application/json")
+                self.send_header("content-length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+    
+            def log_message(self, *args: Any) -> None:
+                return None
+    
+>       server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Whole)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_wiki_review_regressions.py:578: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:233: PermissionError
+=========================== short test summary info ============================
+ERROR tests/stage02/test_rde_review_findings.py::test_rde_s3_redirects_are_refused
+ERROR tests/stage02/test_rde_review_findings.py::test_rde_s8_request_deadline_covers_the_whole_response
+FAILED tests/stage03/test_wiki_review_regressions.py::test_wiki_a_drip_fed_body_cannot_outlast_the_operation_deadline
+FAILED tests/stage03/test_wiki_review_regressions.py::test_wiki_worker_blocks_the_c_level_socket_type
+FAILED tests/stage03/test_wiki_review_regressions.py::test_wiki_a_complete_body_with_content_length_reads_to_the_end
+============= 3 failed, 2046 passed, 2 errors in 474.27s (0:07:54) =============
