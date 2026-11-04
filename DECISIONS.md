@@ -785,3 +785,23 @@ confirmation of the corrected candidate on unexposed articles (500 HTTP attempts
 G1-G11 thresholds and minimum denominators unchanged), followed by full release verification. The D-031 and D-034
 campaigns stay published unchanged as historical results. The instruction authorizes no acceptance, no merge, no
 later stage and no further campaign after this one.
+
+## D-036 — Stage 03 R-038 correction, pre-validation review and one final prospective confirmation
+- Status: accepted
+- Topic: stage-03-r038-correction-and-final-confirmation
+- Date: 2026-11-04
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-04_R038.md; docs/verification/stage-03/evaluation/confirmation-d035/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7`,
+2026-11-04T02:20:42Z), answering the decision record of the D-035 campaign. The owner orders a fail-first, evidence-based
+correction of R-038 (repeated reference names inside one template's output), a full adversarial pre-validation
+review of the Stage 03 flow with correction of every confirmed material defect, differential regression on every
+retained bundle, an independent engineering readiness gate with a focused re-review, and then exactly one further
+bounded, pre-registered prospective bilingual confirmation of the frozen corrected candidate on unexposed articles
+(500 HTTP attempts and 300 MiB of accepted bodies; G1-G11 thresholds and minimum denominators unchanged; G5c not
+excluded, G6b not exempted). It also orders a security review of the withheld presigned-URL files and a
+nondestructive clean merge path where possible. The D-031, D-034 and D-035 campaigns stay published unchanged. The
+instruction authorizes no acceptance, no merge, no force push or history rewrite, no later stage and no further
+campaign after this one.
