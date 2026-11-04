@@ -1,0 +1,52 @@
+Review B-4: every recorded extraction document under docs/verification/stage-03 (except en-1380218630, whose
+files are withheld) verified with `verify` of the engine after the review fixes (1.2.0, this tree), against its bundle.
+`verify` rebuilds marker context and render regions with the CURRENT engine, so a document written by an earlier
+engine verifies only where that reconstruction is unchanged. Every document listed below verifies with the engine of
+its own campaign (ec81c7f, whose src equals the D-035 candidate fff0e5b): the 15 newly failing ones were checked
+there for this file, the 8 earlier ones by reviewer B (review/REVIEW_B_integration.md, B-4).
+
+Counts (engine version of the document, verified now): 1.0.0 False: 18, 1.0.0 True: 138, 1.1.0 False: 5, 1.1.0 True: 42
+
+Not verifying now, and already not verifying at 10bf0d2 (reviewer B):
+  evaluation/final/post-exposure-rf60/extractions/en-1374633449.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00009
+  evaluation/final/run/extractions/en-1374633449.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00009
+  evaluation/run-1/extractions/ar-60748138.json  1.0.0  BUNDLE_SCHEMA_INVALID: schema extraction: /markers/3/evidence/0: 'locator' is a required p
+  evaluation/run-1/extractions/ar-76372332.json  1.0.0  BUNDLE_SEMANTIC_INVALID: an identifier link lies in a reference or a citation template: id
+  evaluation/run-1/extractions/ar-76488293.json  1.0.0  BUNDLE_SCHEMA_INVALID: schema extraction: /markers/3/evidence/0: 'locator' is a required p
+  evaluation/run-1/extractions/en-1340894376.json  1.0.0  BUNDLE_SCHEMA_INVALID: schema extraction: /markers/0/evidence/0: 'locator' is a required p
+  evaluation/run-1/extractions/en-1366809278.json  1.0.0  BUNDLE_SCHEMA_INVALID: schema extraction: /markers/0/evidence/0: 'locator' is a required p
+  evaluation/run-1/extractions/en-1380422581.json  1.0.0  BUNDLE_SCHEMA_INVALID: schema extraction: /markers/1/evidence/0: 'locator' is a required p
+
+Not verifying now, verifying at 10bf0d2 (changed by the review fixes: bibliography regions A-03, groups by transclusion A-02):
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/ar-76492454.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00005
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/ar-76524679.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00003
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1323580591.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00081
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1361411235.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00013
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1371940951.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00339
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1377237744.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00028
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1377291884.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00272
+  evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1378959744.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00012
+  evaluation/confirmation-d035/campaign/prediction/extractions/ar-76491054.json  1.1.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00005
+  evaluation/confirmation-d035/campaign/prediction/extractions/ar-76814232.json  1.1.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00002
+  evaluation/confirmation-d035/campaign/prediction/extractions/en-1356437999.json  1.1.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00004
+  evaluation/confirmation-d035/campaign/prediction/extractions/en-1375552426.json  1.1.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00057
+  evaluation/confirmation-d035/campaign/prediction/extractions/en-1382220660.json  1.1.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00549
+  evaluation/run-1/extractions/en-1379214029.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00019
+  evaluation/run-1/extractions/en-1381005609.json  1.0.0  BUNDLE_SEMANTIC_INVALID: marker context reproduces: ct-00018
+
+The same 15 with the engine of ec81c7f (all True):
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/ar-76492454.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/ar-76524679.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1323580591.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1361411235.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1371940951.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1377237744.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1377291884.json
+  True evaluation/confirmation-2026-11/campaign/prediction/extractions/en-1378959744.json
+  True evaluation/confirmation-d035/campaign/prediction/extractions/ar-76491054.json
+  True evaluation/confirmation-d035/campaign/prediction/extractions/ar-76814232.json
+  True evaluation/confirmation-d035/campaign/prediction/extractions/en-1356437999.json
+  True evaluation/confirmation-d035/campaign/prediction/extractions/en-1375552426.json
+  True evaluation/confirmation-d035/campaign/prediction/extractions/en-1382220660.json
+  True evaluation/run-1/extractions/en-1379214029.json
+  True evaluation/run-1/extractions/en-1381005609.json

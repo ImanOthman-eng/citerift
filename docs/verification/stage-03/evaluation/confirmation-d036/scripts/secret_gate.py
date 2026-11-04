@@ -1,11 +1,17 @@
-"""Secret gate of the D-036 campaign (AMENDMENT_2026-11-04_D036_CONFIRMATION.md section 7): no captured or derived
+"""Secret gate of the D-036 campaign (AMENDMENT_2026-11-04_D036_CONFIRMATION.md section 5): no captured or derived
 file that matches the accepted Stage 00 secret patterns is ever committed.
 
 Usage (from the repository root): python secret_gate.py CAMPAIGN_DIR
 
-The patterns are read from the accepted, unchanged Stage 00 test (``tests/stage00/test_repository.py``,
-``SECRET_PATTERNS``), so this gate and that test can never disagree. Every file under CAMPAIGN_DIR that is not yet
-tracked is scanned (bytes, decoded as UTF-8 with replacement, so a binary file is scanned too). For every match:
+The patterns are those of the accepted, unchanged Stage 00 test (``tests/stage00/test_repository.py``,
+``SECRET_PATTERNS``), read from that file so the gate can never miss what that test finds, plus ``EXTRA_PATTERNS``
+below (readiness review B-3): the shapes of access-bearing URLs and keys that the Stage 00 list does not cover
+(S3 SigV2 and SigV4 presigned URLs, temporary STS key ids and session tokens, Google Cloud Storage signed URLs, Azure
+shared access signatures, Google API keys, Slack webhooks). The extra patterns are deliberately broad: a false match
+only withholds a file from the public repository; it stays on disk and in the checksummed export.
+
+Every file under CAMPAIGN_DIR that is not yet tracked is scanned (bytes, decoded as UTF-8 with replacement, so a
+binary file is scanned too). For every match:
 
 - the file's path is added to CAMPAIGN_DIR/.gitignore (it stays on disk, byte-identical, for the prediction run,
   verify and replay);
@@ -30,6 +36,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[6]
 STAGE00 = ROOT / "tests/stage00/test_repository.py"
+# Review B-3. Parameter names are matched, not values, so a key id that is percent-encoded is still caught.
+EXTRA_PATTERNS = [
+    re.compile(p)
+    for p in (
+        r"AWSAccessKeyId=",
+        r"X-Amz-(?:Credential|Security-Token|Signature)=",
+        r"ASIA[0-9A-Z]{16}",
+        r"X-Goog-(?:Credential|Signature)=",
+        r"[?&;]sv=20\d\d-\d\d-\d\d[^\s\"'<>]*[&;]sig=",
+        r"[?&;]sig=[^\s\"'<>]*[&;]sv=20\d\d-\d\d-\d\d",
+        r"AIza[0-9A-Za-z_-]{35}",
+        r"hooks\.slack\.com/services/[A-Za-z0-9]+/[A-Za-z0-9]+/[A-Za-z0-9]+",
+    )
+]
 
 
 def patterns() -> list[re.Pattern[str]]:
@@ -38,7 +58,7 @@ def patterns() -> list[re.Pattern[str]]:
         raise SystemExit(2)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return list(module.SECRET_PATTERNS)
+    return [*module.SECRET_PATTERNS, *EXTRA_PATTERNS]
 
 
 def untracked(campaign: Path) -> list[Path]:
@@ -75,8 +95,9 @@ def main(argv: list[str]) -> int:
         return 0
     ledger.setdefault(
         "why",
-        "Files matching the accepted Stage 00 secret patterns are never committed (amendment section 7). They stay on "
-        "disk unchanged for the prediction run, verify and replay, and are in the checksummed export.",
+        "Files matching the accepted Stage 00 secret patterns or the access-bearing URL patterns of review B-3 are "
+        "never committed (amendment section 5). They stay on disk unchanged for the prediction run, verify and "
+        "replay, and are in the checksummed export.",
     )
     ledger["files"].extend(found)
     ledger_path.write_text(json.dumps(ledger, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")

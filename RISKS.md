@@ -794,3 +794,13 @@ articles that had no scored render labels (15 swapped uses in 7 articles in all)
 abstained, and no other pairing changed in the 195 retained real bundles. On every retained label: false
 attachments 4 -> 0, correct links 1,372 -> 1,376 (post-exposure). The entry stays open until the single D-036
 prospective confirmation is scored.
+
+Update 2026-11-04, after the readiness reviews (D-036 section 7). Two independent reviewers found that the first
+correction could still swap markers when a template restyles one value or one value has no readable text (A-01,
+B-1), and found four narrower defects around it (multi-part transclusions A-02, count-only pairs A-04, nested repeated
+names A-05, shared bibliography regions A-03). All were fixed fail-first: support is now a generous superset of the
+exact text relation, with a safety argument (`docs/verification/stage-03/MATHEMATICAL_MODEL.md`). Both simulations
+show 0 wrong links. On every retained label (post-exposure): false attachments 0, correct links 1,387; on the D-035
+articles, Arabic 192 of 197 correct, 0 false. Dispositions:
+`docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md`. The entry stays open until the
+single D-036 prospective confirmation is scored.

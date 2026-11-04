@@ -130,7 +130,52 @@ def test_d036_secret_gate_withholds_a_matching_file_and_records_no_secret(
 
 
 @pytest.mark.security
-def test_d036_secret_gate_uses_the_stage00_patterns() -> None:
+def test_d036_secret_gate_uses_the_stage00_patterns_and_more() -> None:
     gate = _load(NEW / "secret_gate.py")
     stage00 = _load(ROOT / "tests/stage00/test_repository.py")
-    assert [p.pattern for p in gate.patterns()] == [p.pattern for p in stage00.SECRET_PATTERNS]
+    found = [p.pattern for p in gate.patterns()]
+    assert found[: len(stage00.SECRET_PATTERNS)] == [p.pattern for p in stage00.SECRET_PATTERNS]
+    assert found[len(stage00.SECRET_PATTERNS) :] == [p.pattern for p in gate.EXTRA_PATTERNS]
+
+
+# Review B-3: access-bearing shapes the Stage 00 list misses. Every sample is FAKE, built from repeated characters at
+# run time.
+B3_SAMPLES = {
+    "s3 sigv4 sts": "https://b.s3.example.invalid/o?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential="
+    + "AS"
+    + "IA"
+    + "Q" * 16
+    + "%2F20261104%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Security-Token="
+    + "F" * 300
+    + "&X-Amz-Signature="
+    + "a" * 64,
+    "s3 percent-encoded key id": "https://b.s3.example.invalid/o?X-Amz-Credential=%41KIA" + "Q" * 16 + "%2F2026",
+    "s3 sigv2 html-escaped": "https://s3.example.invalid/b/o?AWSAccessKeyId=" + "X" * 20 + "&amp;Expires=1",
+    "gcs v4": "https://storage.example.invalid/b/o?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Signature=" + "a" * 512,
+    "azure sas": "https://acct.blob.example.invalid/c/o?sv=2022-11-02&se=2026-12-01&sp=r&sig=" + "A" * 43 + "%3D",
+    "azure sas html-escaped, sig first": "https://acct.blob.example.invalid/c/o?sig=" + "A" * 43 + "&amp;sv=2022-11-02",
+    "google api key": "key=" + "AI" + "za" + "B" * 35,
+    "slack webhook": "https://hooks.slack.com/services/T" + "0" * 8 + "/B" + "0" * 8 + "/" + "x" * 24,
+}
+
+
+@pytest.mark.security
+@pytest.mark.parametrize("name", sorted(B3_SAMPLES))
+def test_d036_secret_gate_catches_access_bearing_urls_stage00_misses(name: str) -> None:
+    gate = _load(NEW / "secret_gate.py")
+    stage00 = _load(ROOT / "tests/stage00/test_repository.py")
+    sample = B3_SAMPLES[name]
+    assert not any(p.search(sample) for p in stage00.SECRET_PATTERNS)
+    assert any(p.search(sample) for p in gate.patterns())
+
+
+@pytest.mark.security
+@pytest.mark.negative
+def test_d036_secret_gate_leaves_ordinary_citation_urls_alone() -> None:
+    gate = _load(NEW / "secret_gate.py")
+    ordinary = (
+        '<a href="https://doi.org/10.1000/xyz">doi</a> '
+        '<a href="https://books.example.invalid/books?id=abc&amp;pg=PA5&amp;sig=ACfU3U0">book</a> '
+        '<a href="https://archive.example.invalid/web/20200101000000/https://example.org/?sv=1">archive</a>'
+    )
+    assert not any(p.search(ordinary) for p in gate.patterns())

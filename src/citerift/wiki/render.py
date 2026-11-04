@@ -13,6 +13,7 @@ No script is executed and no resource is fetched.
 
 from __future__ import annotations
 
+import bisect
 import hashlib
 import json
 import re
@@ -251,6 +252,33 @@ def anchor_norm(text: str) -> str:
     return _ANCHOR_SPACES.sub(" ", unicodedata.normalize("NFC", text)).strip()
 
 
+def _tail_norms(parts: list[str], cuts: list[int]) -> list[str]:
+    """For each ``k`` in ``cuts``: ``anchor_norm("".join(parts[:k]))[-ANCHOR_KEEP:]``, without normalizing the whole
+    text before every cut. The text is cut at the latest space-like character after which at least ``ANCHOR_KEEP``
+    normalized characters follow: a space-like character neither composes under NFC nor survives trimming, so the
+    text from it on normalizes to exactly the end of the whole text's normalization."""
+    raw = "".join(parts)
+    ends = [0]
+    for part in parts:
+        ends.append(ends[-1] + len(part))
+    spaces = [m.start() for m in _ANCHOR_SPACES.finditer(raw)]
+    out = []
+    for k in cuts:
+        end = ends[k]
+        tail = None
+        i = bisect.bisect_left(spaces, end) - 1
+        while i >= 0:
+            cut = spaces[i]
+            if end - cut >= ANCHOR_KEEP:  # a shorter raw text cannot normalize to ANCHOR_KEEP characters
+                norm = anchor_norm(raw[cut:end])
+                if len(norm) >= ANCHOR_KEEP:
+                    tail = norm[-ANCHOR_KEEP:]
+                    break
+            i -= 1
+        out.append(tail if tail is not None else anchor_norm(raw[:end])[-ANCHOR_KEEP:])
+    return out
+
+
 def body_role(dm: dict[str, Any] | None, target: str | None) -> str | None:
     """What a reference marker's data-mw says about its reference text (see ``RenderUse.body_role``)."""
     if dm is None:
@@ -336,6 +364,9 @@ class RenderReader:
         self._by_path: dict[str, Any] = {}  # elements this reader has located (paths it produced itself)
         self._about_index: dict[str, list[Any]] | None = None
         self._locators: dict[Any, Locator] = {}  # the tree never changes after parsing
+        # block element -> {marker element: its before-marker text}, or None when the block is too large; filled in
+        # one pass per block (review B-2: one walk per marker made many markers in one block quadratic)
+        self._block_prefixes: dict[tuple[Any, int], dict[Any, str] | None] = {}
         count = 0
         self.omitted: dict[str, str] = {}  # about -> parser limit warning
         self.limit_warnings: list[dict[str, Any]] = []
@@ -657,12 +688,60 @@ class RenderReader:
     def preceding_text(self, el: Any, max_nodes: int = ANCHOR_MAX_NODES) -> str | None:
         """The visible text before ``el`` in its nearest block (a table cell, list item, paragraph, ...), without
         reference markers and without text the HTML hides, normalized by ``anchor_norm`` (its last
-        ``ANCHOR_KEEP`` characters). None when there is no block or the block is larger than ``max_nodes``."""
+        ``ANCHOR_KEEP`` characters). None when there is no block or the block has more than ``max_nodes`` nodes
+        (every element and every child visited counts).
+
+        The texts of all the markers of one block are collected in one pass and kept, so many markers in one block
+        cost one walk (review B-2). A marker inside text the HTML hides is not reached by that pass; it gets its
+        own walk, which enters the hidden elements on its path."""
         block = el.getparent()
         while block is not None and block.tag not in _BLOCK_TAGS and block.tag != "body":
             block = block.getparent()
         if block is None:
             return None
+        key = (block, max_nodes)
+        if key not in self._block_prefixes:
+            self._block_prefixes[key] = self._collect_prefixes(block, max_nodes)
+        found = self._block_prefixes[key]
+        if found is None:
+            return None
+        if el in found:
+            return found[el]
+        return self._walk_to(block, el, max_nodes)
+
+    def _collect_prefixes(self, block: Any, max_nodes: int) -> dict[Any, str] | None:
+        parts: list[str] = []
+        at: dict[Any, int] = {}  # marker -> number of parts before it
+        budget = [max_nodes]
+
+        def walk(node: Any) -> None:
+            budget[0] -= 1
+            if budget[0] < 0:
+                raise RenderLimitExceeded("anchor block")
+            if node.text:
+                parts.append(node.text)
+            for child in node:
+                budget[0] -= 1
+                if budget[0] < 0:
+                    raise RenderLimitExceeded("anchor block")
+                if isinstance(child.tag, str):
+                    if "mw:Extension/ref" in (child.get("typeof") or "").split():
+                        at[child] = len(parts)
+                        parts.append(" ")  # another marker: the texts on its two sides are not one word
+                    elif not self._anchor_skips(child):
+                        walk(child)
+                if child.tail:
+                    parts.append(child.tail)
+
+        try:
+            walk(block)
+        except RenderLimitExceeded:
+            return None
+        markers = list(at)
+        return dict(zip(markers, _tail_norms(parts, [at[m] for m in markers]), strict=True))
+
+    def _walk_to(self, block: Any, el: Any, max_nodes: int) -> str | None:
+        """The text before ``el`` in ``block`` by its own walk, entering the hidden elements that contain ``el``."""
         parts: list[str] = []
         budget = [max_nodes]
         # The elements that contain ``el``, held (not their id()s): lxml makes element proxies on demand, and the id of
@@ -677,13 +756,16 @@ class RenderReader:
             if node.text:
                 parts.append(node.text)
             for child in node:
+                budget[0] -= 1
+                if budget[0] < 0:
+                    raise RenderLimitExceeded("anchor block")
                 if child is el:
                     return True
                 if child in on_path:
                     return walk(child)
                 if isinstance(child.tag, str):
                     if "mw:Extension/ref" in (child.get("typeof") or "").split():
-                        parts.append(" ")  # another marker: the texts on its two sides are not one word
+                        parts.append(" ")
                     elif not self._anchor_skips(child):
                         walk(child)
                 if child.tail:
@@ -694,7 +776,7 @@ class RenderReader:
             walk(block)
         except RenderLimitExceeded:
             return None
-        return anchor_norm("".join(parts))[-ANCHOR_KEEP:]
+        return _tail_norms(parts, [len(parts)])[0]
 
     def _anchor_skips(self, node: Any) -> bool:
         """Elements whose text a reader does not see: hidden elements, styles and scripts."""

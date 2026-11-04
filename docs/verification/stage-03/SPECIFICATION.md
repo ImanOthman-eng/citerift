@@ -572,34 +572,76 @@ uses belong to one container.
 
 ## Changes under owner instruction D-036 (2026-11-04): R-038 corrected (engine 1.2.0, extraction schema 1.2.0)
 
-Design record, surveys, differential and fail-first evidence: `design/r038-reconciliation/DESIGN.md`. Only the
-pairing of a name with **two or more** uses on both sides inside one template's output changes
-(`Reconciler._same_name`); a name used once there still pairs by name (`name_in_template_output`), and article text,
-nested references, containers, units, identifiers, marker observations and witnesses are unchanged.
+Design record, surveys, readiness reviews, dispositions, differential and fail-first evidence:
+`design/r038-reconciliation/DESIGN.md` and `design/r038-reconciliation/review/`. The main change is the pairing of a
+name with **two or more** uses on both sides inside one template's output (`Reconciler._same_name`); a name used
+once there still pairs by name (`name_in_template_output`). The readiness reviews added five narrower changes,
+listed after the rule. The pairing of uses in article text, the source model (containers, definitions, uses,
+units, identifiers and their roles) and the scorer are unchanged.
 
 **Render evidence.** Each rendered marker now carries `body_role`, read from its `data-mw`:
 `definition` (a `body.id` naming this marker's own note text, or a non-empty `body.html`), `reuse` (no `body`, or an
 empty `body.html`), `contradictory` (a `body.id` naming another note, or a body of another shape) or none (no
 readable `data-mw`). `RenderReader.preceding_text` gives the visible text before a marker in its nearest block
 element (table cell, list item, paragraph, heading, ...), skipping hidden elements, with a space where another
-marker stands; at most `ANCHOR_MAX_NODES` = 20,000 elements, the last `ANCHOR_KEEP` = 200 characters kept.
+marker stands; at most `ANCHOR_MAX_NODES` = 20,000 children are iterated (every child counts, markers and hidden
+elements included), the last `ANCHOR_KEEP` = 200 characters are kept, and the texts of all markers of one block come
+from one walk of that block.
+
+**Support.** The source text before the `<ref>` in its parameter (`source_anchor`: its last line, reduced to visible
+text; at most the last 8,192 characters of the parameter are read) supports a marker when it occurs in the marker's
+preceding text as whole words, anywhere in it (a template may add a unit, an age or a qualifier after a value), also
+after folding both texts (case, non-ASCII digits, the Arabic decimal separator, the minus sign, digit-group
+separators), and, for a text without letters with at least 3 digits, when its numbers occur in a row among the
+marker's numbers. When the line holds templates, its numbers (`source_numbers`, at least 3 digits in all) support a
+marker whose numbers contain them in a row. Support is deliberately generous: a marker wrongly included only makes
+the pairing ambiguous, while the true marker left out could force a swap (`MATHEMATICAL_MODEL.md`).
 
 **Pairing rule** for one name with n ≥ 2 compatible uses on both sides (n ≤ 2,000):
 1. every marker has a readable, non-contradictory role and the number of source definitions (a `<ref>` with
    content) equals the number of `definition` markers, else no use of the name is paired;
 2. a role held by one use on each side pairs those two (`reference_role_in_template_output`);
-3. otherwise, within each role, the source text before the `<ref>` in its parameter (reduced to visible text, or
-   failing that, to its numbers when the line holds templates) is compared with each marker's preceding text; a pair
-   is fixed only when one side has a single choice left (`anchor_in_template_output`, then
-   `elimination_in_template_output` for a use with no readable text), and the group is accepted only when every use
-   is fixed that way;
-4. a group not settled completely keeps only pairs whose anchor is shared with no other use and no other marker;
-   the other uses are `abstained` with `RECONCILIATION_ABSTAINED`;
-5. a use whose anchor supports only markers of the other role makes the whole name unpaired.
+3. otherwise, within each role, a use with support may take only a marker that supports it, and a marker that
+   supports some use only a use it supports; the uses with support must be exactly as many as the markers that
+   support some use, and at most one use without support may be left; a pair is fixed only when one side has a
+   single choice left (`anchor_in_template_output`, then `elimination_in_template_output` for the use without
+   support), and the group is accepted only when every use is fixed that way;
+4. a group not settled completely keeps only pairs whose support is one marker supported by no other use; the
+   other uses are `abstained` with `RECONCILIATION_ABSTAINED`;
+5. a use whose support holds only markers of the other role makes the whole name unpaired.
 
 Nothing in the rule names an article, template, parameter or reference name.
 
+**Changes from the readiness reviews** (`design/r038-reconciliation/review/DISPOSITIONS.md`):
+* **One group per transclusion** (A-02). Source templates that Parsoid renders as one multi-part transclusion (one
+  `about`, for example `{{Election box begin}}` ... `{{Election box end}}`) are reconciled as one group against that
+  transclusion's markers, so no marker is claimed twice and a name reused across the parts is paired by the rule
+  above.
+* **Count-only pairs need agreeing text** (A-04). An anonymous use paired only because it is the one use left on each
+  side of a template's output is not paired when its parameter text (or numbers) can be read, the marker's preceding
+  text can be read and is not empty, and that text does not support it (the template did not show this reference
+  and emitted its own).
+* **Repeated names among nested uses** (A-05). When a name is used two or more times among the uses nested in one
+  reference, those uses are paired by the rule above instead of by document order; the rest are abstained.
+* **Bibliography regions** (A-03). A render region claimed by two or more bibliography entries (the whole output of a
+  multi-part list transclusion such as `{{div col}}` ... `{{div col end}}`) is given to none of them: each such entry
+  takes the one list item holding a link to its own identifier (its URL, or a link that decodes to one of its cited
+  identifiers) that no other entry claims, or is `note_ambiguous` with `RENDER_NOTE_AMBIGUOUS` (and its marker
+  observation is `not_inspected`). Entries in paragraphs rather than list items of such a transclusion are
+  therefore `note_ambiguous`.
+* **Abstention issues** (A-07). A `RECONCILIATION_ABSTAINED` issue names only uses whose final state is
+  `abstained` (not those found `source_only`).
+
+**Verification of earlier documents** (B-4). `verify` rebuilds marker context and render regions with the current
+engine. A document written by an earlier engine therefore verifies only where that reconstruction did not change:
+23 of the 203 recorded documents (8 already at 10bf0d2, 15 more after the review fixes) do not verify with engine
+1.2.0, and every one of them verifies with the engine of its own campaign
+(`design/r038-reconciliation/evidence/VERIFY_HISTORICAL_DOCUMENTS.txt`). To check a recorded campaign, use the
+candidate revision that campaign recorded.
+
 **Versions.** Engine `citerift-wiki` 1.2.0 and extraction schema 1.2.0, whose `render_basis` enum gains the three
-bases above. A 1.1.0 document replays as `REPLAY_IDENTITY_MISMATCH`, as for every engine change. Profile, scorer,
-guide, protocol and gates unchanged.
+bases above. A 1.1.0 document replays as `REPLAY_IDENTITY_MISMATCH`, as for every engine change. The version string
+does not bind the code (B-7): the D-036 confirmation therefore records the Git tree digests of `src` and `schemas` of
+its candidate in its MANIFEST and checks them before its prediction run. Profile, scorer, guide, protocol and gates
+unchanged.
 

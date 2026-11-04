@@ -164,3 +164,28 @@ nor excluded this case. A correction would need such a perturbation in the simul
 The D-035 campaign used the same capture driver: 48 articles, 47 complete (6 on a second run) and 1 partial
 (`ar-9335702`, source only, `ATTEMPTS_EXHAUSTED` in both runs), 280 attempts including the draw
 (`evaluation/confirmation-d035/campaign/capture/`).
+
+## Simulation addendum, 2026-11-04 (owner instruction D-036)
+
+**Template order.** The perturbation that section 3 lacked now exists: `simulations/stage03/template_order_sim.py`
+renders an infobox's parameters in a random order, with clean values and with adversarial ones (several cells showing
+similar text), with and without one marker's `data-mw`. Each marker id encodes its source use, so every wrong pair is
+counted. Results, 200 articles per mode and perturbation, seed 20261104
+(`design/r038-reconciliation/simulation/`):
+
+| Engine | Swaps | Wrong | Linked, clean values with data-mw |
+|---|---|---|---|
+| before the correction (`ec81c7f`) | 2,916 | 0 | 500 of 1,502 |
+| first correction (`10bf0d2`) | 12, all with adversarial values | 0 | 1,326 of 1,502 |
+| after S-1 (`2229146`) | 0 | 0 | 1,326 of 1,502 |
+| after the readiness-review fixes | 0 | 0 | 1,325 of 1,502 |
+
+Reviewer B wrote a second, independent metamorphic simulation. Its template may add a label, a unit or an age
+around a value, show a `{{val}}` number, or show only an icon. At `10bf0d2` it found 10 wrong pairs (seed 1); after the
+fixes it finds 0 in seeds 1 to 8 (`design/r038-reconciliation/evidence/REVIEWER_B_SIMULATION_after_fixes.txt`).
+`tests/stage03/test_r038_template_output_order.py` runs the first simulation on 40 articles.
+
+**Limits.** Both simulations generate the restylings their authors thought of. A template that shows a value in a
+form neither covers, beside another cell showing that value's source text, could still swap two markers
+(MATHEMATICAL_MODEL.md, "Safety"). The single D-036 prospective confirmation measures this on unseen articles.
+

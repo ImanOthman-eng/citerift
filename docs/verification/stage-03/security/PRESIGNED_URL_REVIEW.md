@@ -41,8 +41,11 @@ blobs. They are reachable only from the pull-request branch `claude/beautiful-pl
 | `eba17d7` | removed the five files from the index (they stay on disk, untracked) |
 
 None of these commits is in `main` (`git merge-base --is-ancestor 4766a1f origin/main` is false). At the pull
-request's head no tracked file contains the pattern, the words `AWSAccessKeyId` or `X-Amz-Signature`, or the URL's
-expiry value (`git grep` at HEAD), and the Stage 00 secret test passes.
+request's head no tracked file contains the key-id pattern or the URL's expiry value (`git grep` at HEAD), and the
+Stage 00 secret test passes. The words `AWSAccessKeyId` and `X-Amz-Signature` occur at the head only as words: in this
+review, in the copy of readiness reviewer B's report, in the D-036 secret gate (as patterns to withhold) and in
+that gate's tests (readiness review
+B-5 corrected an earlier claim that they occur nowhere).
 
 The nested `.gitignore` that keeps the five untracked files out of `git status` does not remove anything from
 history and is not relied on here as proof of anything (integration audit F-4).
@@ -110,5 +113,6 @@ for b in blobs:
 print(len(blobs), "blobs,", hits, "with the pattern")
 PY
 git log --all --format=%h --find-object=<blob id>    # for each blob found
-git grep -c -I -E "AKIA[0-9A-Z]{16}|AWSAccessKeyId|X-Amz-Signature" HEAD -- .   # empty at the head
+git grep -c -I -E "AKIA[0-9A-Z]{16}" HEAD -- .          # empty at the head (exit status 1)
+git grep -l -I -E "AWSAccessKeyId|X-Amz-Signature" HEAD -- .   # only documentation, the gate and its tests (words, no values)
 ```

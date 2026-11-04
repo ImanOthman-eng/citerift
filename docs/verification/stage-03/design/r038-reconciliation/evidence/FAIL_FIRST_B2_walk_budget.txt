@@ -1,0 +1,9 @@
+# Fail-first: review B-2 (before-marker walk budget and single pass), engine at 2a94110 with the new tests only
+# command: uv run pytest -q tests/stage03/test_r038_template_output_order.py -k 'budget or collected_once'
+E       AssertionError: assert 'text end' is None
+E        +  where 'text end' = preceding_text(<Element sup at 0x7f4d51821900>, max_nodes=10)
+E        +    where preceding_text = <citerift.wiki.render.RenderReader object at 0x7f4d529511f0>.preceding_text
+E       AttributeError: type object 'RenderReader' has no attribute '_collect_prefixes'
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_before_marker_budget_counts_every_child
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_before_marker_texts_of_one_block_are_collected_once
+2 failed, 34 deselected in 0.45s

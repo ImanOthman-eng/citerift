@@ -6,6 +6,10 @@ Owner instruction of 2026-11-04 (DECISIONS.md D-036, `../../authorization/OWNER_
 sections 3 and 4). Status of this document: engineering record of the correction. It is not a verification result
 and not acceptance.
 
+Sections 1 to 8 record the correction as first committed (`10bf0d2`). Sections 9 to 12 record what changed after it:
+the weak-number fix S-1 (`2229146`) and the fixes of the readiness reviews (section 7 of the directive). Where
+they differ, the later sections, SPECIFICATION.md and MATHEMATICAL_MODEL.md describe the engine as it is.
+
 ## 1. Root cause
 
 `src/citerift/wiki/reconcile.py`, `Reconciler._align_unordered` (engine 1.1.0, code from `a29bb4e`, unchanged by
@@ -161,3 +165,111 @@ counted them. No labelled correct attachment is lost and no new false attachment
 * Reuses whose parameter values come from templates that show other text than their arguments (data templates,
   date templates that add an age): supported boundary; they are abstained and counted.
 * A template that shows two parameters with identical text or numbers: supported boundary (ambiguous, abstained).
+* After the review fixes: the readiness-review findings and their classification are in `review/DISPOSITIONS.md`.
+
+## 9. S-1: a one- or two-digit number is too weak to anchor (`2229146`)
+
+`simulations/stage03/template_order_sim.py` renders an infobox's parameters in random order, with clean values and
+with adversarial values (several cells showing similar text), with and without one marker's data-mw. In the
+adversarial mode the first correction made 12 swaps, all from a small number shown by two cells (`{{double|2}}`
+showing 4 beside a cell showing 2). A number support now needs at least 3 digits in all. The fail-first evidence is
+in `evidence/FAIL_FIRST_weak_number_anchor.txt`; the simulation outputs are in `simulation/` (the engine before the
+correction: 2,916 swaps in 800 articles).
+
+## 10. Readiness review and fixes
+
+Two independent reviewers examined `10bf0d2`: A the reconciliation subsystem, B the integration boundary
+(`review/`). A found two high defects. A-01: a template that restyles one value (`12345` shown as `12,345`), or a
+value with no readable text, let elimination swap two markers. A-03: bibliography entries inside one multi-part list
+transclusion shared the whole list as their region. A and B found five medium defects: A-02, A-04, A-05, B-1 and B-2.
+Every confirmed finding was fixed fail-first or documented (`review/DISPOSITIONS.md`). The central change answers
+A-01 and B-1 together. A swap can only come from a support relation that **misses** a use's true marker (the safety
+argument in `MATHEMATICAL_MODEL.md`), so support was made generous instead of exact:
+
+* whole-word occurrence anywhere in the before-marker text, not only at its end (a unit, an age or a qualifier may
+  follow the value);
+* the same comparison after folding case, digits, the Arabic decimal separator, the minus sign and digit-group
+  separators;
+* for a value without letters, its numbers in a row among the marker's numbers;
+* `_settle` accepts a class only when the uses with support are exactly as many as the markers that support some
+  use, and at most one use without support is left.
+
+A marker added to a support wrongly can only make a class ambiguous (an abstention), never a wrong pair.
+
+Simulations after the fixes:
+
+| Simulation | Before the fixes | After |
+|---|---|---|
+| `template_order_sim.py` 200 articles, seed 20261104 (`simulation/template_order_sim.review-fixes.json`), 4 modes | 0 swaps, 0 wrong | 0 swaps, 0 wrong; clean/none linked 1,326 → 1,325 |
+| reviewer B's metamorphic simulation, 200 articles per seed, seeds 1 to 8 (`evidence/REVIEWER_B_SIMULATION_after_fixes.txt`) | seed 1: 906 linked, 10 wrong | seed 1: 1,155 linked, 0 wrong; seeds 2 to 8: 0 wrong |
+
+The one link lost in `template_order_sim.py` (article 121) shows why. Three cells of one name show `+2.43`, `-2.43`
+and `-2.43`. The text `+2.43` occurs only in its own cell, but its number run `2.43` occurs in all three, so it is
+no longer settled. Pathological sizes, before and after, are in `evidence/PERFORMANCE_after_fixes.txt`. No case
+reaches the worker deadline; the reviewers' worst case went from 30.3 s (failed) to 5.5 s.
+
+A nested use that A-05 re-pairs reports the bases of the same-name rule (`reference_role_in_template_output`,
+`anchor_in_template_output`, `elimination_in_template_output`), although it is not in template output. The schema's
+basis enum was not widened for a naming detail.
+
+One pinned regression changed: the observed fixture `ar-76190003` (`tests/stage03/fixtures/observed/expected.json`)
+gets a new extraction digest. Its only difference is that the `RECONCILIATION_ABSTAINED` issue naming `us-00002`, a
+use that ends `source_only` in both versions, is no longer emitted (A-07). Every other pinned value is the same.
+
+## 11. Differential and labels after the review fixes
+
+The same 195 retained real bundles and the same engine before the correction (`ec81c7f`):
+`differential/DIFFERENTIAL.review-fixes.json` and `OUTPUTS.review-fixes.sha256`. Two extractions of the current
+tree gave byte-identical documents.
+
+| Change of a use's render pairing against `ec81c7f` | After `10bf0d2` | After the review fixes |
+|---|---|---|
+| unchanged | 6,693 | 6,656 |
+| same marker, new basis | 32 | 34 |
+| different marker (the old pairing was a swap) | 15 | 15 |
+| abstained before, matched now | 0 | 35 |
+| matched before, abstained now | 2 | 2 |
+
+The script reports one difference as unexpected, because it expects only template-output bases to change. It is the
+two nested `Warren919` uses of `en-38148109-a1`, the corpus's one nested repeated name. They keep the same markers
+(`cite_ref-Warren919_14-0`, `-1`) with the A-05 basis.
+
+The full comparison with the extraction after S-1 is `differential/COMPARE_S1_TO_REVIEW_FIXES.txt`, made by
+`compare_runs.py`:
+
+* 35 uses in 4 articles gain a link (`en-2695828-a1` 16, `ar-10469946-a1` 8, `en-78365026-a1` 7,
+  `en-70970708-a2` 4), from the grouping by transclusion (A-02) and the wider support;
+* 63 bibliography entries move from a shared transclusion region to their own list item, and 32 that had no region
+  gain one (A-03: the list item holding the entry's own identifier link);
+* 303 entries that shared a region and have no list item of their own become `note_ambiguous`, so their marker
+  observation is `not_inspected` instead of `no_recognized_warning_in_inspected_region` (no negative is made over
+  a region that holds other entries);
+* 60 identifier witnesses become `render_link_found`. One becomes `region_not_reconciled`: `en-1473997-a1`, an
+  entry printed as a paragraph inside `{{Refbegin}}`, not as a list item;
+* 9 statuses become `partial` (a `RENDER_NOTE_AMBIGUOUS` issue) and 3 become `complete`.
+
+Every retained label (`differential/LABELLED_LINKS.review-fixes.json`, 150 files, post-exposure, not a gate):
+
+| Labelled render links | Before (`ec81c7f`) | After `10bf0d2` + S-1 | After the review fixes |
+|---|---|---|---|
+| engine marker = label | 1,372 | 1,376 | 1,387 |
+| false attachments | 4 | 0 | 0 |
+| engine abstained, label has a marker | 69 | 69 | 58 |
+
+## 12. D-035 scored again after the review fixes (post-exposure, not a gate result)
+
+`post-exposure-d035/review-fixes/` uses the same method as `post-exposure-d035/README.md`: the 48 D-035 bundles
+extracted again and scored by the frozen `evaluate_v2.py` against the campaign's own locked and adjudicated labels.
+
+| Language | Render links correct | False | Abstained | G6c | Gates |
+|---|---|---|---|---|---|
+| ar, D-035 candidate (published) | 182 / 197 | 2 | 13 | 0.924 | G6b failed |
+| ar, after `10bf0d2` | 184 / 197 | 0 | 13 | 0.934 | all pass |
+| ar, after the review fixes | 192 / 197 | 0 | 5 | 0.975 | all pass |
+| en, every engine | 203 / 207 | 0 | 4 | 0.981 | all pass |
+
+Every other metric is unchanged except the marker confusion. In Arabic, 9 definitions move from `not_inspected` to
+inspected `none`, all correct. In English, 5 move from `none` to `not_inspected` (the A-03 ambiguous bibliography
+entries). G7 (fabricated negatives) stays 0 in both languages. These articles were exposed, so this shows only that
+the fixes cost nothing on them. It is not evidence about unseen articles.
+

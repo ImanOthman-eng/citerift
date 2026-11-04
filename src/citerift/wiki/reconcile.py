@@ -20,6 +20,7 @@ same scheme and normalized value. Links that no source occurrence explains are l
 from __future__ import annotations
 
 import bisect
+import dataclasses
 import html
 import re
 import unicodedata
@@ -30,7 +31,7 @@ from typing import Any
 
 from citerift.wiki.identifiers import decode_render_href
 from citerift.wiki.issues import Issue
-from citerift.wiki.model import SourceModel, Use
+from citerift.wiki.model import Container, SourceModel, Use
 from citerift.wiki.profile import Profile, WikiProfile
 from citerift.wiki.render import (
     ANCHOR_KEEP,
@@ -49,8 +50,11 @@ _URL_IN_TEXT = re.compile(r"(?i)(?:https?:)?//[^\s|\[\]{}<>\"']+")
 # Before-marker text of a reference in a template parameter (R-038): the parameter text up to the <ref>, with the
 # wikitext that renders as plain text reduced to that text. Anything else gives no anchor.
 _ANCHOR_TAIL = 32  # characters compared
-_ANCHOR_MIN = 3  # a shorter text anchors only a block whose whole before-marker text it is
+_ANCHOR_MIN = 3  # numbers with fewer digits in all give no number support
 SAME_NAME_LIMIT = 2_000  # uses of one name in one template's output beyond which no pairing is attempted
+# Source characters before a <ref> that the anchors read (review B-2: reading the whole parameter for every use was
+# quadratic). A cut inside a reference, comment, link or template leaves a fragment that makes the anchor None.
+ANCHOR_SOURCE_MAX = 8_192
 _A_COMMENT = re.compile(r"(?s)<!--.*?(?:-->|$)")
 _A_REF = re.compile(r"(?is)<ref\b[^>]*?/\s*>|<ref\b[^>]*>.*?</ref\s*>")
 _A_PIPED_LINK = re.compile(r"\[\[([^\[\]|:]*)\|([^\[\]|]*)\]\]")
@@ -68,8 +72,10 @@ _NUMBER = re.compile(r"\d+(?:[.,\u066b\u066c]\d+)*")
 def source_anchor(raw: str) -> tuple[str, bool] | None:
     """The before-marker text of a parameter value ``raw`` (the source up to the reference): its last characters
     after anchor normalization, and whether they were cut. None when the text cannot be read without rendering
-    (an unclosed template or table, a file or category link, a numbered external link, an unknown tag)."""
-    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw))  # another reference renders as a marker between two words
+    (an unclosed template or table, a file or category link, a numbered external link, an unknown tag). Only the
+    last ``ANCHOR_SOURCE_MAX`` characters are read."""
+    # another reference renders as a marker between two words
+    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw[-ANCHOR_SOURCE_MAX:]))
     line = raw.rsplit("\n", 1)[-1]
     if "}}" in line:
         line = line[line.rindex("}}") + 2 :]
@@ -87,18 +93,52 @@ def source_anchor(raw: str) -> tuple[str, bool] | None:
 
 
 def anchor_supports(anchor: tuple[str, bool] | None, rendered: str | None) -> bool:
-    """The rendered before-marker text ends with the source's; a whole (uncut) source text must not continue a
-    longer word or number (``1.31`` does not anchor ``11.31``); a text shorter than ``_ANCHOR_MIN`` characters must
-    be the whole rendered text (``6`` anchors a cell that shows only ``6``)."""
+    """The source text occurs in the rendered before-marker text as whole words: not inside a longer word or number
+    (``1.31`` does not anchor ``11.31``; ``6`` anchors ``c. 6`` and ``6 km`` but not ``16``). It need not be at the
+    end: a template may show a unit, an age or a note after the value (review B-1). A text that was cut to its last
+    characters may begin inside a word."""
     if anchor is None or rendered is None:
         return False
     tail, cut = anchor
-    if len(tail) < _ANCHOR_MIN:
-        return rendered == tail
-    if not rendered.endswith(tail):
-        return False
-    before = rendered[: len(rendered) - len(tail)]
-    return cut or not (before and before[-1].isalnum() and tail[0].isalnum())
+    at = rendered.find(tail)
+    while at >= 0:
+        end = at + len(tail)
+        left = cut or at == 0 or not (rendered[at - 1].isalnum() and tail[0].isalnum())
+        right = end == len(rendered) or not (rendered[end].isalnum() and tail[-1].isalnum())
+        if left and right:
+            return True
+        at = rendered.find(tail, at + 1)
+    return False
+
+
+_WORD = re.compile(r"\w+")
+_FOLD_GROUP = re.compile(r"(?<=\d)[,\u066c\u00a0\u2009\u202f' ](?=\d{3}(?!\d))")
+
+
+def anchor_fold(text: str) -> str:
+    """Text as a template may restyle it: case folded, every decimal digit as ASCII, the Arabic decimal separator as a
+    point, the minus sign as a hyphen, and digit-group separators dropped (``12,345``, ``١٢٬٣٤٥`` and ``12 345``
+    all fold to ``12345``)."""
+    out = "".join(str(unicodedata.digit(c)) if c.isdigit() and not c.isascii() else c for c in text.casefold())
+    out = out.replace("\u066b", ".").replace("\u2212", "-")
+    return _FOLD_GROUP.sub("", out)
+
+
+def anchor_numbers(anchor: tuple[str, bool]) -> tuple[str, ...] | None:
+    """The numbers of a text anchor that holds no letter (a value such as ``+1.31`` or ``12345``) when they hold at
+    least ``_ANCHOR_MIN`` digits, the first one left out when the text was cut (it may be part of a longer number);
+    else None. A value is often shown with a unit or a qualifier around it (``12,345 km``)."""
+    tail, cut = anchor
+    if any(c.isalpha() for c in tail):
+        return None
+    found = numbers_of(tail)[1 if cut else 0 :]
+    return found if sum(c.isdigit() for x in found for c in x) >= _ANCHOR_MIN else None
+
+
+def contains_run(seq: tuple[str, ...], run: tuple[str, ...]) -> bool:
+    """``run`` occurs in ``seq`` as consecutive items."""
+    k = len(run)
+    return any(seq[i : i + k] == run for i in range(len(seq) - k + 1))
 
 
 def numbers_of(text: str) -> tuple[str, ...]:
@@ -118,7 +158,7 @@ def source_numbers(raw: str) -> tuple[str, ...] | None:
     support. None when the line has no template, no number, or cannot be read, and when its numbers have fewer
     than ``_ANCHOR_MIN`` digits in all: a one- or two-digit number is shown by too many cells to tell parameters
     apart (``{{double|2}}`` showing 4 beside another cell showing 2)."""
-    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw))
+    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw[-ANCHOR_SOURCE_MAX:]))
     line = raw.rsplit("\n", 1)[-1]
     if "{{" not in line or "{{{" in line or line.count("{{") != line.count("}}"):
         return None
@@ -206,6 +246,7 @@ class Reconciler:
         self.r = render
         self.reader = reader
         self._prefix: dict[int, str | None] = {}
+        self._param_spans: dict[int, list[tuple[int, int]]] = {}
         self.wiki = wiki
         self.profile = profile
         self.out = Reconciliation()
@@ -404,7 +445,13 @@ class Reconciler:
                 s_anon.append(u)
             else:
                 s_by_key.setdefault(k, []).append(u)
-        if len(src) == 1 and len(ren) == 1 and _compatible(src[0], ren[0]) and self._not_contradicted(src[0], ren[0]):
+        if (
+            len(src) == 1
+            and len(ren) == 1
+            and _compatible(src[0], ren[0])
+            and self._not_contradicted(src[0], ren[0])
+            and (_key(src[0]) is not None or not self._anchor_contradicts(src[0], ren[0]))
+        ):
             self._pair(src[0], ren[0], "single_use_in_template_output")
             self.out.segments["template:matched"] += 1
             return
@@ -431,6 +478,7 @@ class Reconciler:
             and len(r_anon) == 1
             and _compatible(s_anon[0], r_anon[0])
             and self._not_contradicted(s_anon[0], r_anon[0])
+            and not self._anchor_contradicts(s_anon[0], r_anon[0])
         ):
             self._pair(s_anon[0], r_anon[0], "single_anonymous_in_template_output")
         else:
@@ -479,16 +527,9 @@ class Reconciler:
         numbers = [source_numbers(p) if p is not None and anchors[i] is None else None for i, p in enumerate(params)]
         wanted = any(a is not None for a in anchors) or any(x is not None for x in numbers)
         prefixes = [self._render_prefix(r) if wanted else None for r in rs]
-        # A before-marker text of ANCHOR_KEEP characters may have been cut: its numbers are not all known.
-        shown = [numbers_of(p) if p is not None and len(p) < ANCHOR_KEEP else None for p in prefixes]
-        support: list[set[int]] = []
-        for i in range(n):
-            if anchors[i] is not None:
-                support.append({j for j in range(n) if anchor_supports(anchors[i], prefixes[j])})
-            elif numbers[i] is not None:
-                support.append({j for j in range(n) if shown[j] == numbers[i]})
-            else:
-                support.append(set())
+        # A before-marker text of ANCHOR_KEEP characters may have been cut inside its first number.
+        shown = [None if p is None else numbers_of(p)[1 if len(p) >= ANCHOR_KEEP else 0 :] for p in prefixes]
+        support = _support_sets(anchors, numbers, prefixes, shown)
         if any(sup and all(r_def[j] != s_def[i] for j in sup) for i, sup in enumerate(support)):
             return []
         out: list[tuple[Use, RenderUse, str]] = []
@@ -512,15 +553,73 @@ class Reconciler:
                         out.append((uses[i], rs[j], "anchor_in_template_output"))
         return out
 
+    def _repeated_nested(self, uses: list[Use], ren: list[RenderUse]) -> None:
+        """Review A-05: a citation template inside a reference shows its parameters in its own order, so a name used
+        two or more times among one reference's nested uses is not paired by document order either. The pairing
+        ``_align`` made for such a name is replaced by the evidence-based one of ``_same_name`` (R-038); a use it
+        leaves unpaired is abstained."""
+        by_key: dict[tuple[str, str], list[Use]] = {}
+        for u in uses:
+            k = _key(u)
+            if k is not None:
+                by_key.setdefault(k, []).append(u)
+        for k, group in by_key.items():
+            if len(group) < 2:
+                continue
+            rs = [x for x in ren if x.name and (html.unescape(x.group).strip(), html.unescape(x.name).strip()) == k]
+            for u in group:  # undo the order-based pairing of this name
+                if self.out.use_state.get(u.id) == "matched":
+                    self.out.render_use_matched.discard(self.out.use_match.pop(u.id))
+                    self.out.use_basis.pop(u.id, None)
+                self.out.use_state[u.id] = "abstained"
+            paired: list[tuple[Use, RenderUse, str]] = []
+            if (
+                len(rs) == len(group)
+                and all(_compatible(a, rs[0]) for a in group)
+                and all(_compatible(group[0], b) for b in rs)
+            ):
+                paired = self._same_name(sorted(group, key=lambda u: (u.start, u.position)), rs)
+            for a, b, basis in paired:
+                self._pair(a, b, basis)
+            done = {a.id for a, _, _ in paired}
+            left = [u.id for u in group if u.id not in done]
+            if left:
+                self.out.issues.append(
+                    Issue(
+                        "RECONCILIATION_ABSTAINED", tuple(sorted(left)), "nested: repeated name, no unambiguous pairing"
+                    )
+                )
+
+    def _anchor_contradicts(self, u: Use, r: RenderUse) -> bool:
+        """An anonymous use paired only because it is the one left on each side (review A-04): the pair is refused
+        when the use's parameter text or numbers can be read, the marker's before-marker text can be read and is not
+        empty, and that text does not show them (the template did not show this reference and emitted its own)."""
+        p = self._param_text(u)
+        if p is None:
+            return False
+        anchor = source_anchor(p)
+        numbers = source_numbers(p) if anchor is None else None
+        if anchor is None and numbers is None:
+            return False
+        prefix = self._render_prefix(r)
+        if not prefix:
+            return False
+        shown = numbers_of(prefix)[1 if len(prefix) >= ANCHOR_KEEP else 0 :]
+        return not _support_sets([anchor], [numbers], [prefix], [shown])[0]
+
     def _param_text(self, u: Use) -> str | None:
         """The source text of the template parameter that holds a use, up to the use; None outside a parameter."""
         r = self.m.refs[u.ref]
         t = self.m.templates.get(u.template) if u.template is not None else None
         if t is None:
             return None
-        for p in t.params:
-            if p.value_start <= r.start < p.value_end:
-                return self.text[p.value_start : r.start]
+        spans = self._param_spans.get(t.index)
+        if spans is None:  # once per template (review B-2: a scan per use was quadratic)
+            spans = sorted((p.value_start, p.value_end) for p in t.params)
+            self._param_spans[t.index] = spans
+        k = bisect.bisect_right(spans, (r.start, float("inf"))) - 1
+        if k >= 0 and spans[k][0] <= r.start < spans[k][1]:
+            return self.text[spans[k][0] : r.start]
         return None
 
     def _render_prefix(self, r: RenderUse) -> str | None:
@@ -574,8 +673,11 @@ class Reconciler:
         for x in r.uses:
             if x.in_transclusion is not None and x.in_note is None:
                 ren_by_about.setdefault(x.in_transclusion, []).append(x)
+        # Several source templates can share one rendered output (a multi-part transclusion such as {{Starbox begin}}
+        # ... {{Starbox end}}): their uses are aligned together against that output, once (review A-02), so no two
+        # templates can claim one marker and a name used in two of them is still paired.
+        by_about: dict[str, list[Use]] = {}
         for top, uses in sorted(by_template.items(), key=lambda kv: m.templates[kv[0]].start):
-            uses.sort(key=lambda u: (u.start, u.position))
             about = self.out.template_about.get(top)
             if about is None:
                 for u in uses:
@@ -584,7 +686,10 @@ class Reconciler:
                     Issue("RECONCILIATION_ABSTAINED", tuple(u.id for u in uses), "template output not identified")
                 )
                 continue
-            self._align_unordered(uses, ren_by_about.get(about[0], []))
+            by_about.setdefault(about[0], []).extend(uses)
+        for about_id, uses in by_about.items():
+            uses.sort(key=lambda u: (u.start, u.position))
+            self._align_unordered(uses, ren_by_about.get(about_id, []))
 
         # Containers from matched uses (needed before nested uses, whose parent is a container).
         self._containers()
@@ -613,6 +718,7 @@ class Reconciler:
                 )
                 continue
             self._align(sorted(uses, key=lambda u: (u.start, u.position)), ren_by_note.get(note, []), "nested")
+            self._repeated_nested(uses, ren_by_note.get(note, []))
         self._containers()  # containers that only nested uses point to
 
         for u in m.uses:
@@ -624,6 +730,19 @@ class Reconciler:
         for u in m.uses:
             if self.out.use_state[u.id] == "abstained" and not any(not x.data_mw_ok or _compatible(u, x) for x in left):
                 self.out.use_state[u.id] = "source_only"
+        # An abstention issue names only uses that end abstained (review A-07: not those found source_only, nor those
+        # paired later).
+        kept: list[Issue] = []
+        for found in self.out.issues:
+            issue = found
+            if issue.code == "RECONCILIATION_ABSTAINED":
+                ids = tuple(e for e in issue.entities if self.out.use_state.get(e) == "abstained")
+                if not ids:
+                    continue
+                if ids != issue.entities:
+                    issue = dataclasses.replace(issue, entities=ids)
+            kept.append(issue)
+        self.out.issues = kept
         for idx in self.out.unmatched_render_uses:
             self.out.issues.append(Issue("RENDER_USE_UNMATCHED", (f"render-use-{idx}",)))
         self._bibliography()
@@ -701,11 +820,42 @@ class Reconciler:
                 self.out.issues.append(Issue("RENDER_NOTE_AMBIGUOUS", (cid,), f"{note} is claimed by {claims[note]}"))
 
     def _bibliography(self) -> None:
-        """A bibliography entry is matched to the render list item that holds the output of its templates."""
+        """A bibliography entry is matched to the render list item that holds the output of its templates. A region
+        claimed by two or more entries (for example the whole output of a multi-part ``{{div col}}`` ...
+        ``{{div col end}}`` transclusion, which is not one list item) belongs to none of them alone (review A-03): each
+        such entry then falls back to its identifier URL in exactly one list item that no other entry claims, or has
+        no region (``note_ambiguous``)."""
         by_about = {t.about: t for t in self.r.transclusions}
-        for c in self.m.containers:
-            if c.kind != "bibliography_entry":
-                continue
+        entries = [c for c in self.m.containers if c.kind == "bibliography_entry"]
+
+        def by_href(c: Container) -> set[str]:
+            # The list items holding a link to an identifier of the entry: its exact URL, or a link that decodes to one
+            # of its cited identifiers (a DOI link of the entry's citation template).
+            hrefs = {
+                o.cand.decoded.strip() for o in self.m.occurrences if o.container_id == c.id and o.cand.origin == "url"
+            }
+            keys = {
+                (o.cand.scheme, o.decoded.normalized.normalized)
+                for o in self.m.occurrences
+                if o.container_id == c.id
+                and o.role in ("primary_citation_field", "identifier_link")
+                and o.decoded is not None
+                and o.decoded.normalized.valid
+            }
+            out = set()
+            for x in self.r.links:
+                if x.in_list_item is None or x.in_note is not None:
+                    continue
+                if x.href in hrefs:
+                    out.add(x.in_list_item)
+                elif keys:
+                    got = decode_render_href(x.href)
+                    if got is not None and got[1].normalized.valid and (got[0], got[1].normalized.normalized) in keys:
+                        out.add(x.in_list_item)
+            return out
+
+        found: dict[str, set[str]] = {}
+        for c in entries:
             items = set()
             for u in self.m.units:
                 if u.container_id != c.id or u.template is None:
@@ -713,21 +863,26 @@ class Reconciler:
                 about = self.out.template_about.get(u.template)
                 if about is not None and about[0] in by_about:
                     items.add(by_about[about[0]].in_list_item or f"about:{about[0]}")
-            if not items:
-                # No template output: an identifier URL of the entry whose exact href is a link in one list item.
-                hrefs = {
-                    o.cand.decoded.strip()
-                    for o in self.m.occurrences
-                    if o.container_id == c.id and o.cand.origin == "url"
-                }
-                items = {
-                    x.in_list_item
-                    for x in self.r.links
-                    if x.in_list_item is not None and x.in_note is None and x.href in hrefs
-                }
+            found[c.id] = items or by_href(c)
+        claims = Counter(next(iter(v)) for v in found.values() if len(v) == 1)
+        shared = {c.id for c in entries if len(found[c.id]) == 1 and claims[next(iter(found[c.id]))] > 1}
+        for c in entries:
+            if c.id in shared:
+                own = by_href(c)
+                found[c.id] = own if len(own) == 1 and claims[next(iter(own))] == 0 else set()
+        final = Counter(next(iter(v)) for v in found.values() if len(v) == 1)
+        for c in entries:  # two fallbacks to one list item: neither keeps it
+            if len(found[c.id]) == 1 and final[next(iter(found[c.id]))] > 1:
+                found[c.id] = set()
+                shared.add(c.id)
+        for c in entries:
+            items = found[c.id]
             if len(items) == 1:
                 self.out.container_note[c.id] = items.pop()
                 self.out.container_state[c.id] = "matched"
+            elif c.id in shared:
+                self.out.container_state[c.id] = "note_ambiguous"
+                self.out.issues.append(Issue("RENDER_NOTE_AMBIGUOUS", (c.id,), "region shared by several entries"))
             elif items:
                 self.out.container_state[c.id] = "conflicting_notes"
                 self.out.issues.append(Issue("RENDER_CONTAINER_CONFLICT", (c.id,), f"{len(items)} list items"))
@@ -895,39 +1050,118 @@ class Reconciler:
                 )
 
 
+def _support_sets(
+    anchors: list[tuple[str, bool] | None],
+    numbers: list[tuple[str, ...] | None],
+    prefixes: list[str | None],
+    shown: list[tuple[str, ...] | None],
+) -> list[set[int]]:
+    """For each use, the markers that may show its value. A support relation that misses a use's own marker can force
+    a swap (review B-1), while one that also holds other markers only makes the pairing ambiguous, so support is
+    generous: a text anchor is supported by a marker whose before-marker text holds it as whole words
+    (``anchor_supports``), also after ``anchor_fold`` on both sides (``12345`` shown as ``12,345``), or, for a value
+    without letters with at least ``_ANCHOR_MIN`` digits, whose numbers contain the anchor's numbers in a row; a
+    number anchor by a marker whose numbers contain its numbers in a row (``{{val|1.2|0.4|e=3}}`` shows 1.2±0.4
+    times ten cubed). The markers are indexed by their words and their numbers, so many uses of one name cost about
+    as many lookups as uses (review B-2), not uses times markers."""
+    by_number: dict[str, set[int]] = {}
+    for j, x in enumerate(shown):
+        for value in x or ():
+            by_number.setdefault(value, set()).add(j)
+
+    def number_support(run: tuple[str, ...]) -> set[int]:
+        cands = by_number.get(run[0], set())
+        return {j for j in cands if contains_run(shown[j] or (), run)}
+
+    folded = [anchor_fold(p) if p is not None else None for p in prefixes]
+    words: dict[str, set[int]] = {}
+    for texts in (prefixes, folded):
+        for j, p in enumerate(texts):
+            for w in _WORD.findall(p or ""):
+                words.setdefault(w, set()).add(j)
+
+    def occurs(texts: list[str | None], anchor: tuple[str, bool]) -> set[int]:
+        found = _WORD.findall(anchor[0])
+        if not found or (anchor[1] and len(found) == 1):  # a cut text may begin inside its only word
+            cands: set[int] = set(range(len(texts)))
+        else:
+            cands = words.get(found[-1], set())
+        return {j for j in cands if anchor_supports(anchor, texts[j])}
+
+    out: list[set[int]] = []
+    for i, anchor in enumerate(anchors):
+        if anchor is not None:
+            found = occurs(prefixes, anchor) | occurs(folded, (anchor_fold(anchor[0]), anchor[1]))
+            run = anchor_numbers(anchor)
+            if run:
+                found |= number_support(run)
+            out.append(found)
+        elif numbers[i]:
+            out.append(number_support(numbers[i]))  # type: ignore[arg-type]
+        else:
+            out.append(set())
+    return out
+
+
 def _settle(src: list[int], ren: list[int], support: list[set[int]]) -> list[tuple[int, int]] | None:
     """The one pairing of ``src`` with ``ren`` that the anchors force, or None. A use with an anchor in ``ren`` may
     take only such a marker; a marker that anchors some use may be taken only by such a use; any other use may take
     any marker. A pair is fixed only when one side has a single choice left; the pairing is returned only when every
-    use is fixed that way (so it is the only complete pairing the constraints allow)."""
+    use is fixed that way (so it is the only complete pairing the constraints allow).
+
+    The constraints split the problem in two: anchored uses can take only markers that anchor some use, and the other
+    uses only the other markers, among which every choice is open (so that part is forced only when it holds one use
+    and one marker). The anchored part is settled by propagation over the support relation, whose cost follows the
+    number of supporting pairs (review B-2), not uses times markers."""
     ren_set = set(ren)
-    takers: dict[int, set[int]] = {j: {i for i in src if j in support[i]} for j in ren}
-    allowed: dict[int, set[int]] = {}
-    for i in src:
-        own = support[i] & ren_set
-        allowed[i] = {j for j in (own or ren_set) if not takers[j] or i in takers[j]}
-    free_s, free_r = set(src), set(ren_set)
-    out: list[tuple[int, int]] = []
-    while free_s:
-        pick = None
-        for i in sorted(free_s):
-            options = allowed[i] & free_r
-            if not options:
+    own = {i: support[i] & ren_set for i in src}
+    anchored = [i for i in src if own[i]]
+    takers: dict[int, set[int]] = {}
+    for i in anchored:
+        for j in own[i]:
+            takers.setdefault(j, set()).add(i)
+    open_uses = [i for i in src if not own[i]]
+    open_markers = [j for j in ren if j not in takers]
+    if len(anchored) != len(takers) or len(open_uses) != len(open_markers) or len(open_uses) > 1:
+        return None
+    out: list[tuple[int, int]] = list(zip(open_uses, open_markers, strict=True))
+    options = {i: set(own[i]) for i in anchored}
+    queue = [("u", i) for i in anchored if len(options[i]) == 1] + [("m", j) for j in takers if len(takers[j]) == 1]
+    fixed_u: set[int] = set()
+    fixed_m: set[int] = set()
+    while queue:
+        side, x = queue.pop()
+        if side == "u":
+            if x in fixed_u:
+                continue
+            if len(options[x]) != 1:
                 return None
-            if len(options) == 1:
-                pick = (i, next(iter(options)))
-                break
-        if pick is None:
-            for j in sorted(free_r):
-                options_s = {i for i in free_s if j in allowed[i]}
-                if len(options_s) == 1:
-                    pick = (next(iter(options_s)), j)
-                    break
-        if pick is None:
-            return None
-        out.append(pick)
-        free_s.discard(pick[0])
-        free_r.discard(pick[1])
+            i, j = x, next(iter(options[x]))
+        else:
+            if x in fixed_m:
+                continue
+            if len(takers[x]) != 1:
+                return None
+            i, j = next(iter(takers[x])), x
+        fixed_u.add(i)
+        fixed_m.add(j)
+        out.append((i, j))
+        for j2 in options[i] - {j}:  # i is no longer a taker of its other markers
+            takers[j2].discard(i)
+            if not takers[j2]:
+                return None
+            if len(takers[j2]) == 1:
+                queue.append(("m", j2))
+        for i2 in takers[j] - {i}:  # j is no longer an option of its other takers
+            options[i2].discard(j)
+            if not options[i2]:
+                return None
+            if len(options[i2]) == 1:
+                queue.append(("u", i2))
+        options[i] = {j}
+        takers[j] = {i}
+    if len(fixed_u) != len(anchored):
+        return None
     return sorted(out)
 
 

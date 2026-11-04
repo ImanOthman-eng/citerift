@@ -641,3 +641,291 @@ def test_r038_template_order_simulation_has_no_swap_or_wrong_attachment() -> Non
     totals = summary["totals"]
     assert all(t["swap"] == 0 and t["wrong"] == 0 for t in totals.values())
     assert totals["clean/none"]["linked"] > totals["clean/none"]["abstain"] > 0
+
+
+@pytest.mark.negative
+def test_r038_before_marker_budget_counts_every_child() -> None:
+    """Review B-2: the node budget of the before-marker walk must count every child it iterates, markers and hidden
+    elements included, so a block that holds many markers is "too large" (no anchor) instead of costing a walk over
+    all of them for every marker."""
+    from citerift.wiki.render import read_render
+
+    sups = "".join(marker(1, "cite_note-M-1", f"cite_ref-M_1-{k}", "M", body="reuse") for k in range(30))
+    render, reader = read_render(parsoid(f"<p>text {sups} end{sups}</p>", "x"))
+    last = reader.element_by_path(render.uses[-1].locator.path)
+    assert reader.preceding_text(last, max_nodes=10) is None
+    assert reader.preceding_text(last) == "text end"
+
+
+@pytest.mark.regression
+def test_r038_before_marker_texts_of_one_block_are_collected_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Review B-2: the texts before all the markers of one block come from one walk of that block, and each equals the
+    text a walk to that marker alone gives."""
+    from citerift.wiki import render as render_module
+
+    sups = [marker(1, "cite_note-M-1", f"cite_ref-M_1-{k}", "M", body="reuse") for k in range(50)]
+    body = "<p>" + "".join(f"item {k} " + s for k, s in enumerate(sups)) + "</p><p>other " + sups[0] + "</p>"
+    render, reader = render_module.read_render(parsoid(body, "x"))
+    calls: list[object] = []
+    original = render_module.RenderReader._collect_prefixes
+
+    def counting(self: object, block: object, max_nodes: int) -> object:
+        calls.append(block)
+        return original(self, block, max_nodes)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(render_module.RenderReader, "_collect_prefixes", counting)
+    els = [reader.element_by_path(u.locator.path) for u in render.uses]
+    texts = [reader.preceding_text(el) for el in els]
+    assert len(calls) == 2  # two paragraphs
+    assert texts[:3] == ["item 0", "item 0 item 1", "item 0 item 1 item 2"]
+    p = els[0].getparent()
+    assert all(texts[k] == reader._walk_to(p, els[k], 20_000) for k in range(50))
+
+
+def no_wrong_link(text: str, doc: dict[str, Any], values: list[str], order: list[int]) -> list[str]:
+    """Each value's use is either attached to its own marker or abstained; returns the states."""
+    got = pairs(doc, "M")
+    states = []
+    for i, v in enumerate(values):
+        state, marker_id = got[reuse_at(text, v)]
+        assert state == "abstained" or marker_id == expected_marker(order, i), (v, state, marker_id)
+        states.append(state)
+    return states
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("values", "texts"),
+    [
+        # review A-01 S1: the template groups the digits of one value; another value shows them ungrouped
+        (["12345", "{{val|12345}}"], ["12,345", "12345"]),
+        # review A-01 S1b: the other value is read from a data source, so its source text cannot be read
+        (["12345", "{{Wikidata|P1082}}"], ["12,345", "12345"]),
+        # the template adds a unit after one value
+        (["12345", "{{Wikidata|P1082}}"], ["12,345 km", "12345"]),
+        # review B-1: a short value shown with a qualifier, beside a template value showing the same digit
+        (["{{val|6}}", "6"], ["6", "c. 6"]),
+    ],
+)
+def test_r038_a_restyled_value_never_takes_another_values_marker(
+    tmp_path: Path, values: list[str], texts: list[str]
+) -> None:
+    """Reviews A-01 and B-1: when a template restyles one value (digit groups, a unit, a qualifier) and another
+    marker of the same name shows that value's source text, the support of the restyled value must still hold its own
+    marker. Otherwise elimination gives both uses each other's markers. Here the evidence cannot decide, so both
+    abstain."""
+    order = [0, 1]
+    text, body = shown(values, texts, order)
+    states = no_wrong_link(text, extract(bundle(tmp_path, text, body)), values, order)
+    assert states == ["abstained", "abstained"]
+
+
+@pytest.mark.integration
+def test_r038_grouped_digits_and_case_still_anchor(tmp_path: Path) -> None:
+    """Folding keeps coverage: a value shown with digit groups or another case still pairs when nothing else
+    matches it."""
+    values = ["12345", "Kaiser Wilhelm Society", "{{icon|x}}"]
+    texts = ["12,345", "KAISER WILHELM SOCIETY", '<span class="flagicon"><img alt="" src="./x.png"/></span>']
+    order = [2, 0, 1]
+    text, body = shown(values, texts, order)
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    for i, v in enumerate(values):
+        assert got[reuse_at(text, v)] == ("matched", expected_marker(order, i)), v
+
+
+# Review findings on the R-038 correction (A-02 to A-07). Each case is a SYNTHETIC Parsoid document built after the
+# reviewer's reproduction.
+
+
+def multipart(parts: list[tuple[str, dict[str, str]] | str], inner: str, tag: str = "table", n: int = 7) -> str:
+    """One Parsoid transclusion element for several top-level source templates (a multi-part transclusion, as
+    ``{{Election box begin}} ... {{Election box end}}`` or ``{{div col}} ... {{div col end}}`` render)."""
+    out: list[object] = []
+    for i, p in enumerate(parts):
+        if isinstance(p, str):
+            out.append(p)
+        else:
+            target, params = p
+            out.append(
+                {"template": {"target": {"wt": target}, "params": {k: {"wt": v} for k, v in params.items()}, "i": i}}
+            )
+    dm = html.escape(json.dumps({"parts": out}, ensure_ascii=False), quote=True)
+    return f'<{tag} about="#mwt{n}" typeof="mw:Transclusion" data-mw="{dm}">{inner}</{tag}>'
+
+
+def located(doc: dict[str, Any]) -> dict[int, tuple[str, str | None]]:
+    return {
+        u["source"]["cp_start"]: (u["render"]["state"], (u["render"].get("locator") or {}).get("element_id"))
+        for u in doc["uses"]
+    }
+
+
+def election(candidates: list[tuple[str, str]], rows: list[tuple[str, str]]) -> tuple[str, str]:
+    """``candidates``: (party, votes wikitext) in source order; ``rows``: (party, cell HTML) in render order."""
+    src = "Intro.\n{{Election box begin|title=Election}}\n"
+    src += "".join(f"{{{{Election box candidate|party={p}|votes={v}}}}}\n" for p, v in candidates)
+    src += "{{Election box end}}\n"
+    parts: list[tuple[str, dict[str, str]] | str] = [("Election box begin", {"title": "Election"}), "\n"]
+    for p, v in candidates:
+        parts += [("Election box candidate", {"party": p, "votes": v}), "\n"]
+    parts.append(("Election box end", {}))
+    inner = "<tbody>" + "".join(f"<tr><td>{p}</td><td>{cell}</td></tr>" for p, cell in rows) + "</tbody>"
+    return src, "<p>Intro.</p>" + multipart(parts, inner)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("second_shown", [True, False])
+def test_r038_templates_of_one_transclusion_never_claim_one_marker_twice(tmp_path: Path, second_shown: bool) -> None:
+    """Review A-02: several source templates rendered as one transclusion share its markers. They are reconciled as
+    one group, so no marker is paired with two uses and no use takes a marker its template does not show."""
+    rows = [("A", "100" + marker(1, "cite_note-1", "cite_ref-1"))]
+    notes = [note_li("cite_note-1", ["cite_ref-1"], "Official result A")]
+    if second_shown:
+        rows.append(("B", "200" + marker(2, "cite_note-2", "cite_ref-2")))
+        notes.append(note_li("cite_note-2", ["cite_ref-2"], "Official result B"))
+    else:
+        rows.append(("B", "200"))
+    src, body = election([("A", "100<ref>Official result A</ref>"), ("B", "200<ref>Official result B</ref>")], rows)
+    doc = extract(bundle(tmp_path, src, body + references(notes)))
+    truth = {src.index("<ref>Official result A"): "cite_ref-1", src.index("<ref>Official result B"): "cite_ref-2"}
+    got = located(doc)
+    claimed = [m for state, m in got.values() if state == "matched"]
+    assert len(claimed) == len(set(claimed))
+    for cp, want in truth.items():
+        state, marker_id = got[cp]
+        assert state != "matched" or marker_id == want, (cp, state, marker_id)
+
+
+@pytest.mark.integration
+def test_r038_a_name_reused_across_templates_of_one_transclusion_pairs_by_evidence(tmp_path: Path) -> None:
+    """Review A-02: a reference defined in one part and reused in another part of one transclusion is paired by role
+    and anchors across the parts, whatever order the rows are rendered in."""
+    rows = [
+        ("B", "2000" + marker(1, "cite_note-r-1", "cite_ref-r_1-1", "r", body="reuse")),
+        ("A", "1000" + marker(1, "cite_note-r-1", "cite_ref-r_1-0", "r")),
+    ]
+    src, body = election([("A", '1000<ref name="r">Official result</ref>'), ("B", '2000<ref name="r"/>')], rows)
+    note = note_li("cite_note-r-1", ["cite_ref-r_1-0", "cite_ref-r_1-1"], "Official result")
+    got = located(extract(bundle(tmp_path, src, body + references([note]))))
+    assert got[src.index('<ref name="r">')] == ("matched", "cite_ref-r_1-0")
+    assert got[src.index('<ref name="r"/>')] == ("matched", "cite_ref-r_1-1")
+
+
+@pytest.mark.regression
+def test_r038_nested_uses_of_one_name_pair_by_evidence_not_order(tmp_path: Path) -> None:
+    """Review A-05: two uses of one name inside a citation template inside a reference. The template renders its
+    parameters in its own order (author before title), so the k-th use is not the k-th marker."""
+    src = (
+        'Claim.<ref name="X">{{cite book |title=Title{{r|a}} |author=Author{{r|a}}}}</ref>'
+        ' Other.<ref name="a">Def A</ref>\n'
+    )
+    note_x = note_li(
+        "cite_note-X-1",
+        ["cite_ref-X_1-0"],
+        '<cite class="citation book cs1">Author'
+        + marker(2, "cite_note-a-2", "cite_ref-a_2-1", "a", body="empty_html")
+        + ". <i>Title"
+        + marker(2, "cite_note-a-2", "cite_ref-a_2-2", "a", body="empty_html")
+        + "</i>.</cite>",
+    )
+    note_a = note_li("cite_note-a-2", ["cite_ref-a_2-0", "cite_ref-a_2-1", "cite_ref-a_2-2"], "Def A")
+    body = (
+        "<p>Claim."
+        + marker(1, "cite_note-X-1", "cite_ref-X_1-0", "X")
+        + " Other."
+        + marker(2, "cite_note-a-2", "cite_ref-a_2-0", "a")
+        + "</p>"
+        + references([note_x, note_a])
+    )
+    got = located(extract(bundle(tmp_path, src, body)))
+    for at, want in (("Title{{r|a}}", "cite_ref-a_2-2"), ("Author{{r|a}}", "cite_ref-a_2-1")):
+        state, marker_id = got[src.index(at) + at.index("{{")]
+        assert state != "matched" or marker_id == want, (at, state, marker_id)
+        assert state == "matched"
+
+
+@pytest.mark.negative
+def test_r038_a_count_only_pair_in_template_output_needs_agreeing_text(tmp_path: Path) -> None:
+    """Review A-04: a template that does not show the parameter holding a source reference, and shows a reference of
+    its own (here imported from a data source), is not paired by count alone when the texts disagree (the source
+    reference stands after 500, the marker after 480). The container is then not matched to another reference's note,
+    and no negative marker observation is made over that note."""
+    src, box = infobox(
+        "Infobox town",
+        [("name", "X"), ("populaton", "500<ref>Smith 2001, p. 5. Retracted.</ref>")],
+        [("Name", "X"), ("Population", "480" + marker(1, "cite_note-1", "cite_ref-1"))],
+    )
+    note = note_li(
+        "cite_note-1", ["cite_ref-1"], 'Imported from a data source: <a href="https://stats.example.org/x">S</a>'
+    )
+    doc = extract(bundle(tmp_path, "Intro.\n" + src + "\n", "<p>Intro.</p>" + box + references([note])))
+    assert [u["render"]["state"] for u in doc["uses"]] == ["abstained"]
+    assert [c["render"]["state"] for c in doc["containers"]] == ["unmatched"]
+    assert all(m["state"] != "no_recognized_warning_in_inspected_region" for m in doc["markers"])
+
+
+def bibliography(entries: list[tuple[str, str | None, str]]) -> tuple[str, str]:
+    """``entries``: (title, DOI or None, trailing source wikitext) in a ``{{div col}}`` list; the render is one
+    multi-part transclusion whose first element is the column ``div``."""
+    src = "Intro.\n== Further reading ==\n{{div col}}\n"
+    parts: list[tuple[str, dict[str, str]] | str] = [("div col", {})]
+    items = ""
+    for title, doi, tail in entries:
+        params = {"title": title} | ({"doi": doi} if doi else {})
+        src += "* {{cite journal |" + " |".join(f"{k}={v}" for k, v in params.items()) + "}}" + tail + "\n"
+        parts += ["\n* ", ("cite journal", params)]
+        if tail:
+            parts += [" ", ("Retracted", {})]
+        link = doi_link(doi) if doi else ""
+        shown_tail = " <b>Retracted article</b>" if tail else ""
+        items += f'<li><cite class="citation journal cs1">"{title}". {link}</cite>{shown_tail}</li>'
+    src += "{{div col end}}\n"
+    parts += ["\n", ("div col end", {})]
+    body = "<p>Intro.</p><h2>Further reading</h2>" + multipart(parts, f"<ul>{items}</ul>", tag="div")
+    return src, body
+
+
+@pytest.mark.regression
+def test_r038_bibliography_entries_of_one_list_template_get_their_own_items(tmp_path: Path) -> None:
+    """Review A-03: entries inside one multi-part list transclusion do not share the whole list as their region; each
+    is matched to the list item that holds its own identifier link, so one entry's retraction text is not reported
+    for another entry."""
+    src, body = bibliography([("Alpha study", "10.1000/a", ""), ("Beta study", "10.1000/b", " {{Retracted}}")])
+    doc = extract(bundle(tmp_path, src, body))
+    regions = [c["render"]["region_id"] for c in doc["containers"]]
+    assert len(set(regions)) == 2 and all(r and r.endswith(("li[1]", "li[2]")) for r in regions)
+    states = {m["container_id"]: m["state"] for m in doc["markers"]}
+    first, second = (c["id"] for c in doc["containers"])
+    assert states[first] == "no_recognized_warning_in_inspected_region"
+    assert states[second] == "recognized_warning_text"
+
+
+@pytest.mark.negative
+def test_r038_bibliography_entries_without_their_own_item_are_ambiguous(tmp_path: Path) -> None:
+    """Review A-03: when the shared list region cannot be split (no entry has a link of its own), no entry is given
+    the whole list: each is reported ambiguous and no marker observation is made over another entry's text."""
+    src, body = bibliography([("Alpha study", None, ""), ("Beta study", None, " {{Retracted}}")])
+    doc = extract(bundle(tmp_path, src, body))
+    assert [c["render"]["state"] for c in doc["containers"]] == ["note_ambiguous", "note_ambiguous"]
+    assert "RENDER_NOTE_AMBIGUOUS" in codes(doc)
+    assert all(
+        m["state"] not in ("recognized_warning_text", "no_recognized_warning_in_inspected_region")
+        for m in doc["markers"]
+    )
+
+
+@pytest.mark.regression
+def test_r038_an_abstention_issue_names_only_uses_that_end_abstained(tmp_path: Path) -> None:
+    """Review A-07: a use found ``source_only`` (no rendered counterpart is left) is not named by a
+    ``RECONCILIATION_ABSTAINED`` issue."""
+    src, box = infobox(
+        "Infobox town",
+        [("name", "X"), ("populaton", "500<ref>Smith 2001.</ref>")],
+        [("Name", "X")],
+    )
+    doc = extract(bundle(tmp_path, "Intro.\n" + src + "\n", "<p>Intro.</p>" + box))
+    states = {u["id"]: u["render"]["state"] for u in doc["uses"]}
+    assert list(states.values()) == ["source_only"]
+    for issue in doc["issues"]:
+        if issue["code"] == "RECONCILIATION_ABSTAINED":
+            assert all(states.get(e) == "abstained" for e in issue["entities"]), issue

@@ -287,30 +287,58 @@ by the D-035 confirmation").
 ## Same-name pairing inside template output (owner instruction D-036, engine 1.2.0)
 
 Replaces, for template output only, the k-th-to-k-th rule of section 5 for a name `x` with
-`n = #{s ∈ S : name(s) = x} = #{r ∈ R : name(r) = x} ≥ 2` (R-038). Let `U` and `M` be those uses and markers.
+`n = #{s ∈ S : name(s) = x} = #{r ∈ R : name(r) = x} ≥ 2` (R-038). Let `U` and `M` be those uses and markers, taken
+over one transclusion (all source templates that Parsoid renders as one `about`, review A-02).
 
 **Roles.** `ρ(u) = def` iff the source use has content; `ρ(m) ∈ {def, reuse, ⊥}` from `data-mw` (`⊥` for unreadable
 or contradictory). If some `ρ(m) = ⊥` or `#{u : ρ(u)=def} ≠ #{m : ρ(m)=def}`, the pairing is empty. Otherwise the
 problem splits into two independent role classes `(U_def, M_def)` and `(U_reuse, M_reuse)` of equal sizes.
 
-**Support.** For each use `u`, `a(u)` is its source anchor (visible text) or, if absent, its number tuple `ν(u)`;
-`t(m)` is the marker's preceding text and `ν(m)` its numbers. Define the relation
-`u ~ m` iff `t(m)` ends with `a(u)` at a word boundary (an anchor shorter than 3 characters only when
-`t(m) = a(u)`), or `ν(u) = ν(m)` when `u` has only numbers. A use with neither has no constraint.
+**Support.** For each use `u`, `a(u)` is its source anchor (visible text) or, if absent, its number tuple `ν(u)`
+(only when its digits number at least 3 in all, S-1); `t(m)` is the marker's preceding text and `ν(m)` its numbers.
+`w(a, t)` holds when `a` occurs in `t` as whole words (not inside a longer word or number), anywhere in `t`; `φ` folds
+case, digits, the Arabic decimal separator, the minus sign and digit-group separators; `run(ν, ν')` holds when `ν`
+occurs in `ν'` as consecutive items. The support of `u` is
 
-**Feasible pairings.** A bijection `π : U_c → M_c` within a class `c` is feasible iff for every `u`: if some marker
-of `M_c` supports `u`, then `u ~ π(u)`; and if `π(u)` supports some use of `U_c`, then `u ~ π(u)`. A use whose text
-or numbers match no marker of its class carries no constraint (its text was transformed by the template, so it says
-nothing about position).
+`σ(u) = {m : w(a(u), t(m)) ∨ w(φ(a(u)), φ(t(m))) ∨ (a(u) has no letter, ≥ 3 digits, and run(ν(a(u)), ν(m)))}`
 
-**Decision.** `_settle` repeatedly fixes `(u, m)` when, among the unfixed elements, `u` has exactly one feasible
-marker or `m` exactly one feasible use. If every element gets fixed, the result is the unique feasible bijection
-(each fixing step removes no other feasible bijection), and it is accepted. Otherwise only pairs `(u, m)` with
-`{m' : u ~ m'} = {m}` and `{u' : u' ~ m} = {u}` are kept; every other use of the class is abstained. A use `u` with
-an anchor whose supporting markers all lie in the other class empties the pairing of `x`.
+for a text anchor, `σ(u) = {m : run(ν(u), ν(m))}` for a number anchor, and `σ(u) = ∅` otherwise. Within a class `c`
+write `σ_c(u) = σ(u) ∩ M_c`, `A_c = {u : σ_c(u) ≠ ∅}` (anchored uses), `O_c = U_c \ A_c` (open uses) and
+`T_c = ∪_{u ∈ A_c} σ_c(u)` (markers that support some use).
+
+**Decision.** The class is attempted only when `|A_c| = |T_c|`, `|O_c| = |M_c \ T_c|` and `|O_c| ≤ 1`. Then `O_c`
+pairs with `M_c \ T_c` (`elimination_in_template_output`), and `A_c` with `T_c` by unit propagation: `(u, m)` is fixed
+when `u` has one option left or `m` one taker left, and removed from the other options and takers
+(`anchor_in_template_output`). The class is accepted only when every use is fixed. Otherwise only pairs `(u, m)` with
+`σ_c(u) = {m}` and `{u' : m ∈ σ_c(u')} = {u}` are kept; every other use of the class is abstained. A use `u` with
+`σ(u) ≠ ∅` and `σ(u) ⊆ M_c'` for the other class `c'` empties the pairing of `x`.
+
+**Safety.** Let `π*` be the true pairing and assume **(G)**: for every use `u` with `σ(u) ≠ ∅`, `π*(u) ∈ σ(u)`.
+Then every emitted pair is true:
+1. The `|O_c| ≤ 1` and counting conditions: by (G), `π*` maps `A_c` injectively into `T_c`; `|A_c| = |T_c|` makes it
+   onto, so no open use is truly paired with a marker of `T_c`; hence `π*(O_c) = M_c \ T_c`, and with one open use
+   the elimination pair is true.
+2. Propagation: `π*` restricted to `A_c` is a perfect matching inside the support relation. A fixing step takes a
+   use with one option (which by (G) is its true marker) or a marker with one taker (which, since `π*` is onto `T_c`,
+   is its true use), so it never removes a true pair.
+3. The partial rule: `σ_c(u) = {m}` and (G) give `m = π*(u)`.
+
+So a wrong pair needs (G) to fail: the true marker of some use with support is not in that support. That is why
+support is generous (review A-01, B-1): it is a superset of the exact relation, so a marker added wrongly only makes
+the class ambiguous (an abstention), while a marker left out could force a swap. (G) can still fail when a
+template shows a value in a form the folding does not cover **and** another marker shows the source text or its
+numbers (a swap needs both); the template-order simulation, reviewer B's metamorphic simulation and every retained
+label show no such case (`design/r038-reconciliation/DESIGN.md` sections 9 to 12).
+
+**Nested uses** (A-05). For a name used two or more times among the uses nested in one reference, the same decision
+replaces the order-based pairing of those uses; whatever it does not pair is abstained.
+
+**Count-only pairs** (A-04). For the anonymous use left alone on each side of a template's output, the pair is
+refused when `a(u)` (or `ν(u)`) exists, `t(m)` is readable and non-empty, and `m ∉ σ(u)`.
 
 **Properties.** (i) No pairing depends on source or render order. (ii) A pair is emitted only when it is forced by
-roles, by mutually unique support, or by elimination within a completely settled class, so a swap requires the
-evidence itself to be wrong (a marker whose `data-mw` names the wrong role, or a rendered text that equals another
-parameter's text). (iii) For `n = 1` the rule is unchanged. (iv) The cost is `O(n²)` comparisons for `n ≤ 2000`.
+roles, by the counting conditions with propagation, or by a support that is one marker supported by no other use.
+(iii) For `n = 1` the rule is unchanged. (iv) Cost: the markers are indexed by their words and numbers, so building
+`σ` costs about one lookup per use plus the size of the support relation, and propagation is linear in that size
+(review B-2); `n ≤ 2000`.
 
