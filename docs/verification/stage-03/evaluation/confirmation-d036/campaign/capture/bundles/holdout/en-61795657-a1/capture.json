@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 15305,
+   "body_sha256": "e16cd2c8f1dca3c28813150727b853df26f4865fe8531f980b0ac8795a743c94",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.421,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:03:10.853388Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=61795657",
+   "wire_bytes": 6013
+  },
+  {
+   "body_bytes": 113575,
+   "body_sha256": "858cf4b1809a53e98e0aeba7597775a205fbfab4ba0adb5151b8d5b05bdce77b",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.475,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:03:21.275571Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377880902/html",
+   "wire_bytes": 20529
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-04T10:03:21.751839Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 61795657,
+  "parent_revision_id": 1364206621,
+  "redirect_followed": null,
+  "revision_id": 1377880902,
+  "revision_timestamp": "2026-10-01T18:38:01Z",
+  "sha1": "cc58b10bc11a2bae3fecc9eea484008bf45ac0bb",
+  "size": 14506,
+  "title": "Gennadiy Borisov",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "858cf4b1809a53e98e0aeba7597775a205fbfab4ba0adb5151b8d5b05bdce77b",
+  "bytes": 113575,
+  "checks": {
+   "document_revision_id": "1377880902",
+   "header_revision_id": "1377880902",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "61795657",
+   "render_id": "3d3daf6b-d7e9-11f1-9a24-7df8d4de9a1b",
+   "revision_sha1": "cc58b10bc11a2bae3fecc9eea484008bf45ac0bb",
+   "revision_sha1_base36": "nvbg5jx0r9htz815tsvhwtbkg454a0r"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1377880902",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:03:21 GMT",
+   "etag": "W/\"1377880902/3d3daf6b-d7e9-11f1-9a24-7df8d4de9a1b/view\"",
+   "last-modified": "Sat, 31 Oct 2026 03:28:16 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377880902/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 61795657,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "bf72e200ab218f4bfd8f0ede24a7f5ff0612e88f95a53e10b4a546cfbccecc26",
+  "bytes": 14506,
+  "response_artifact": "e16cd2c8f1dca3c28813150727b853df26f4865fe8531f980b0ac8795a743c94",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=61795657"
+ },
+ "started_at": "2026-11-04T10:03:01.165495Z",
+ "status": "complete"
+}

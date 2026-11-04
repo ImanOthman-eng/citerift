@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 17657,
+   "body_sha256": "9e683095694de4698943331a27430cf8d05157126ec31ebb523f1abd2ab57ede",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.193,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:19:10.876327Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6020806",
+   "wire_bytes": 6793
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "f7142057d97541f4eb5613fb521d9cb74f669ec578f5a7bbc641113dc367c99e",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.322,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:19:21.069845Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380512849/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 104078,
+   "body_sha256": "4f6bea8971179af0450fce3e82bc992696d90291a912a004b0cdde753eb71265",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.422,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:20:00.392831Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380512849/html",
+   "wire_bytes": 18027
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "f7142057d97541f4eb5613fb521d9cb74f669ec578f5a7bbc641113dc367c99e"
+ ],
+ "finished_at": "2026-11-04T10:20:00.815576Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 6020806,
+  "parent_revision_id": 1373310123,
+  "redirect_followed": null,
+  "revision_id": 1380512849,
+  "revision_timestamp": "2026-10-16T05:00:50Z",
+  "sha1": "d8da53d906bceb773deddb2919f990eb278bd79b",
+  "size": 17100,
+  "title": "Contact inhibition",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "4f6bea8971179af0450fce3e82bc992696d90291a912a004b0cdde753eb71265",
+  "bytes": 104078,
+  "checks": {
+   "document_revision_id": "1380512849",
+   "header_revision_id": "1380512849",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "6020806",
+   "render_id": "9045f23d-d418-11f1-93c0-d93b4670cd88",
+   "revision_sha1": "d8da53d906bceb773deddb2919f990eb278bd79b",
+   "revision_sha1_base36": "pbwr8wbw6xk36c83bode463xshdqdgb"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1380512849",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:20:00 GMT",
+   "etag": "W/\"1380512849/9045f23d-d418-11f1-93c0-d93b4670cd88/view\"",
+   "last-modified": "Fri, 30 Oct 2026 04:14:45 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380512849/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 6020806,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "f03d601feff8ce6bf93451a6489d8d2b71509e93314a19b1069a8fb8876de489",
+  "bytes": 17100,
+  "response_artifact": "9e683095694de4698943331a27430cf8d05157126ec31ebb523f1abd2ab57ede",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6020806"
+ },
+ "started_at": "2026-11-04T10:19:01.213317Z",
+ "status": "complete"
+}

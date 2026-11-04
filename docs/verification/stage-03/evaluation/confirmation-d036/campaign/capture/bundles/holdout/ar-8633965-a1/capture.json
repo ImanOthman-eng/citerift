@@ -1,0 +1,166 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "0f6cbe6b23ca541e493780ac22664d5630fd4c16dd5b974e4fdc702bb6dc4dbf",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.329,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:43:21.067412Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8633965",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 6170,
+   "body_sha256": "3cee8eb6375e51326dd430be8cba9939db545a8bd4a3edf703cd7cd9518e5237",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.506,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T09:44:00.397505Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8633965",
+   "wire_bytes": 2780
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "0c5ce2c91fb25ed70de9889cab66064c744e77e9356b7a609e807ffe660db46a",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.315,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:44:10.904151Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75963419/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 1965,
+   "body_sha256": "b5540fa476ac10043d38956bab9e5f02c734a20cf53b60a2f97e37db7d21dd15",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.326,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:45:00.220518Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75963419/html",
+   "wire_bytes": 1965
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "d581a2bd000922cfb754c016b767e1abb3ad7f347320ac05623f857888a522dd",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.351,
+   "number": 3,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:45:10.546928Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75963419/html",
+   "wire_bytes": 274
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "0f6cbe6b23ca541e493780ac22664d5630fd4c16dd5b974e4fdc702bb6dc4dbf",
+  "0c5ce2c91fb25ed70de9889cab66064c744e77e9356b7a609e807ffe660db46a",
+  "b5540fa476ac10043d38956bab9e5f02c734a20cf53b60a2f97e37db7d21dd15",
+  "d581a2bd000922cfb754c016b767e1abb3ad7f347320ac05623f857888a522dd"
+ ],
+ "finished_at": "2026-11-04T09:45:10.898084Z",
+ "issues": [
+  {
+   "code": "ATTEMPTS_EXHAUSTED",
+   "detail": "render",
+   "entities": [],
+   "evidence": [],
+   "retryable": true,
+   "severity": "error"
+  }
+ ],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 8633965,
+  "parent_revision_id": 73456293,
+  "redirect_followed": null,
+  "revision_id": 75963419,
+  "revision_timestamp": "2026-07-22T00:16:14Z",
+  "sha1": "8ed2187232fadbd55e574ec95f65ab9071604193",
+  "size": 5563,
+  "title": "كاشف تيبي",
+  "wiki": "ar"
+ },
+ "render": {
+  "code": "ATTEMPTS_EXHAUSTED",
+  "not_before": "2026-11-04T09:46:00.897811Z",
+  "state": "failed",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75963419/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 8633965,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "42a6025a09ef9a6fc40ec4812f5048667e11493f8b7b3f4c7bc7b42c75299121",
+  "bytes": 5563,
+  "response_artifact": "3cee8eb6375e51326dd430be8cba9939db545a8bd4a3edf703cd7cd9518e5237",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8633965"
+ },
+ "started_at": "2026-11-04T09:43:11.431606Z",
+ "status": "partial"
+}

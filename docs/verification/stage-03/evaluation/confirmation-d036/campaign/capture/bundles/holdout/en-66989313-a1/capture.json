@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 1932,
+   "body_sha256": "6387a1e3b8eed1acddd309a549aa148291110678f6b9af0c8c3031ff18caa54a",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.358,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:18:10.820493Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=66989313",
+   "wire_bytes": 1069
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "39532832eb84e781b9d347957e45504f45e1a521f9b80a696f5ca536295869ef",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.329,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:18:21.179411Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1343268522/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 30183,
+   "body_sha256": "54fc106a203818555e5f504e134bc81ccf8d1714d3f487d1dd1471fc2454d87e",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.366,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:19:00.509329Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1343268522/html",
+   "wire_bytes": 7256
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "39532832eb84e781b9d347957e45504f45e1a521f9b80a696f5ca536295869ef"
+ ],
+ "finished_at": "2026-11-04T10:19:00.876112Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 66989313,
+  "parent_revision_id": 1098365072,
+  "redirect_followed": null,
+  "revision_id": 1343268522,
+  "revision_timestamp": "2026-03-13T08:22:38Z",
+  "sha1": "92bc4244d02a0d7d3241cd3b5c1788dad8c83338",
+  "size": 1373,
+  "title": "Tephraciura sphenoptera",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "54fc106a203818555e5f504e134bc81ccf8d1714d3f487d1dd1471fc2454d87e",
+  "bytes": 30183,
+  "checks": {
+   "document_revision_id": "1343268522",
+   "header_revision_id": "1343268522",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "66989313",
+   "render_id": "359ccaf6-d5c3-11f1-9a4c-6d03e9ce2af2",
+   "revision_sha1": "92bc4244d02a0d7d3241cd3b5c1788dad8c83338",
+   "revision_sha1_base36": "h51v8e82hvw5eeunrvj0ays3g3j27ug"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1343268522",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:19:00 GMT",
+   "etag": "W/\"1343268522/359ccaf6-d5c3-11f1-9a4c-6d03e9ce2af2/view\"",
+   "last-modified": "Fri, 30 Oct 2026 21:45:05 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1343268522/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 66989313,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "fa620145f061d11adee542441f4025330c68ff3692e26dbaebe2780ccf7e908a",
+  "bytes": 1373,
+  "response_artifact": "6387a1e3b8eed1acddd309a549aa148291110678f6b9af0c8c3031ff18caa54a",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=66989313"
+ },
+ "started_at": "2026-11-04T10:18:01.257383Z",
+ "status": "complete"
+}

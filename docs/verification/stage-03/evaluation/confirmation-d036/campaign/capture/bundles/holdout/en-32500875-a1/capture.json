@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "0ef16a29644fb6c902c8e02641dc70b81e7f0e2e303da07d890a15967ca59426",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.315,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:06:20.886399Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=32500875",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 9250,
+   "body_sha256": "c43f641b66d59a6ca1213535d2ad2a446ffd90aec261aa28fbdbf51e0cdea936",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.402,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:07:00.201848Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=32500875",
+   "wire_bytes": 3605
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "267628f53378ca27cb70bfc9ca783485339ca5b4f9ea913dec82ddaf1f2f497b",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.306,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:07:10.604773Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1331125905/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 67304,
+   "body_sha256": "854369c26c734f384a388c25485806db84915da91f0d9bd6204787657fa6e4e7",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.399,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:08:00.911793Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1331125905/html",
+   "wire_bytes": 11721
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "0ef16a29644fb6c902c8e02641dc70b81e7f0e2e303da07d890a15967ca59426",
+  "267628f53378ca27cb70bfc9ca783485339ca5b4f9ea913dec82ddaf1f2f497b"
+ ],
+ "finished_at": "2026-11-04T10:08:01.312584Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 32500875,
+  "parent_revision_id": 1331125553,
+  "redirect_followed": null,
+  "revision_id": 1331125905,
+  "revision_timestamp": "2026-01-04T18:11:08Z",
+  "sha1": "c146c36c877722fdcee4ef99fe00bbb55dc1387d",
+  "size": 8659,
+  "title": "Dopaminergic cell groups",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "854369c26c734f384a388c25485806db84915da91f0d9bd6204787657fa6e4e7",
+  "bytes": 67304,
+  "checks": {
+   "document_revision_id": "1331125905",
+   "header_revision_id": "1331125905",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "32500875",
+   "render_id": "1e92eacd-d7f8-11f1-9ca0-35315454d4ce",
+   "revision_sha1": "c146c36c877722fdcee4ef99fe00bbb55dc1387d",
+   "revision_sha1_base36": "mkrl4obon9zejs2nxw65xspgafre1z1"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1331125905",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:08:01 GMT",
+   "etag": "W/\"1331125905/1e92eacd-d7f8-11f1-9ca0-35315454d4ce/view\"",
+   "last-modified": "Sun, 01 Nov 2026 01:37:26 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1331125905/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 32500875,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "04dad476f7b049880da5fae9b24a348974307dc96956ac3ab4fbbf6e67ffe79b",
+  "bytes": 8659,
+  "response_artifact": "c43f641b66d59a6ca1213535d2ad2a446ffd90aec261aa28fbdbf51e0cdea936",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=32500875"
+ },
+ "started_at": "2026-11-04T10:06:11.235839Z",
+ "status": "complete"
+}
