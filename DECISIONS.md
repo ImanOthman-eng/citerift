@@ -805,3 +805,24 @@ excluded, G6b not exempted). It also orders a security review of the withheld pr
 nondestructive clean merge path where possible. The D-031, D-034 and D-035 campaigns stay published unchanged. The
 instruction authorizes no acceptance, no merge, no force push or history rewrite, no later stage and no further
 campaign after this one.
+
+## D-037 — Prospective OpenAI-model substitution for unfinished D-036 work
+- Status: accepted
+- Topic: stage-03-d036-prospective-model-substitution
+- Date: 2026-11-04
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-04_D037.md; docs/verification/stage-03/protocol/AMENDMENT_2026-11-04_D037_MODELS.md; docs/verification/stage-03/continuation/d037-2026-11-04/CAPABILITY_REPORT.md
+
+The owner's current instruction, titled "CITERIFT — STAGE 03 FINAL COMPLETION UNDER OWNER-AUTHORIZED D-037",
+explicitly authorizes isolated OpenAI-model evaluators/adjudicators for unfinished D-036 work while Claude is
+unavailable. No platform message identifier was exposed; the retained exact instruction is the authority reference.
+It was received after checkpoint 7646fe7, not before the original freeze. This changes only the evaluator/adjudicator
+model requirement and minimum necessary provenance procedures; the candidate, source/schema trees, initial 40 locked
+labels, sample/order, all G1–G11 thresholds, minimum denominators, ceilings and stopping rules remain unchanged.
+This is an amended mixed-model D-036 campaign, not an unchanged replication or another campaign. Exact requested
+identifiers and the lack of attested serving snapshots are disclosed in the amendment. No scientific replacement
+was launched: hosted subagents lack enforceable per-instance access controls/native transcript export, while the
+native CLI authentication probe failed before completion. The authorization is accepted; experimental execution
+remains blocked until genuine isolation, model metadata and durable raw provenance can be established. No labels,
+locks, predictions or scores are invented. No acceptance, merge, history rewrite or Stage 04 is authorized.
