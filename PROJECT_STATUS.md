@@ -14,7 +14,7 @@ Only the owner can accept a stage or authorize one.
 | 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 0c21182e5871 | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `ACCEPTED_CLOSED` | 85da719ac43f | yes |
 | 02 | Retraction Data Engine | engineering-agent | 00, 01 | `ACCEPTED_CLOSED` | cf060834afed | yes |
-| 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `IN_PROGRESS` | - | no |
+| 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `IMPLEMENTED_NOT_VERIFIED` | - | no |
 | 04 | Detection Engine and Vertical Slice | engineering-agent | 02, 03 | `NOT_STARTED` | - | no |
 | 05 | Citation Context and Evidence Preparation | engineering-agent | 04 | `NOT_STARTED` | - | no |
 | 06 | AI Investigation and Scientific Evaluation | engineering-agent | 05 | `NOT_STARTED` | - | no |
@@ -24,7 +24,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 03 (Wikipedia Extraction Engine): authorized work may continue (IN_PROGRESS)
+- Stage 03 (Wikipedia Extraction Engine): authorized work may continue (IMPLEMENTED_NOT_VERIFIED)
 
 ## Open blockers
 
@@ -36,7 +36,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Recent history
 
-- 2026-10-28T13:28:52Z stage 02: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. All nine gates pass at cf06083 after the audit fixes: clean-tree complete test reports (Python 3.12.3 and 3.13.17, 1,159 passed each) and green CI on Python 3.12 and 3.13 (push run 40695812191, pull request run 40695821728). Fail-first regressions recorded against ac959c6; real-data impact: on the RW-only index 2 PMID keys stated as verified corrections become uncertain, 2 become bridged, 2,097 keys report PMID_ROLE_COLLISION; no date changes. D-026 stays pending the owner. Owner acceptance and the merge are the owner's.
 - 2026-10-28T15:15:05Z stage 02: VERIFIED_AWAITING_OWNER_ACCEPTANCE -> ACCEPTED_CLOSED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPXLtGyHjV52VwjSnTKz35e6`). Owner accepts Stage 02 (Retraction Data Engine) verified at cf06083, covering the reviewed implementation at PR #4 head f9592b1: the engine, Evidence Tension and the R-026, F1 and F3 corrections. D-026 approved; the evaluated local model is excluded from the default product with its negative evaluation preserved; R-029 and R-031 acknowledged as unresolved limitations (DECISIONS.md D-026, D-028). Stage 03 not authorized.
 - 2026-10-28T18:10:32Z stage 03: NOT_STARTED -> AUTHORIZED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS`). Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.
 - 2026-10-28T18:10:34Z stage 03: AUTHORIZED -> IN_PROGRESS by engineering-agent. Stage 03 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS), retained at docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-28.md. Implementation base: main 94ac4f8df27383a03a810a4501ed1439bf8bcaea (equal to the confirmed baseline).
@@ -46,6 +45,7 @@ Only the owner can accept a stage or authorize one.
 - 2026-11-03T05:56:20Z stage 03: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPBxa7nEyAiE3VN5Lw442e8F`). Owner instruction of 2026-11-03 (D-035): correct the G5c citation-unit semantics and run one further prospective confirmation of the corrected candidate
 - 2026-11-03T14:31:36Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. D-035 candidate frozen before the confirmation draw: citation-unit classes A-H, both independent reviews fixed, MF-1 v3; CI green on fff0e5b
 - 2026-11-04T02:22:53Z stage 03: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7`). Owner instruction of 2026-11-04 (D-036): correct R-038 fail-first, review the Stage 03 flow before validation, and run one final prospective bilingual confirmation of the frozen corrected candidate
+- 2026-11-04T09:05:12Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. D-036 candidate frozen before the confirmation draw: R-038 corrected, two independent reviews and the focused re-review fixed; CI green on 8901a59
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).

@@ -2680,13 +2680,16 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "IN_PROGRESS",
+      "status": "IMPLEMENTED_NOT_VERIFIED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
         "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
         "recorded_at": "2026-10-28T18:10:32Z"
       },
-      "implementation": null,
+      "implementation": {
+        "revision": "8901a597015b7c6d6eb8464554e79b4fa1383615",
+        "recorded_at": "2026-11-04T09:05:12Z"
+      },
       "verification": null,
       "acceptance": null,
       "blockers": [],
@@ -3342,6 +3345,17 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner instruction of 2026-11-04 (D-036): correct R-038 fail-first, review the Stage 03 flow before validation, and run one final prospective bilingual confirmation of the frozen corrected candidate",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7"
+    },
+    {
+      "seq": 44,
+      "at": "2026-11-04T09:05:12Z",
+      "stage": "03",
+      "from": "IN_PROGRESS",
+      "to": "IMPLEMENTED_NOT_VERIFIED",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "D-036 candidate frozen before the confirmation draw: R-038 corrected, two independent reviews and the focused re-review fixed; CI green on 8901a59",
+      "owner_ref": null
     }
   ]
 }
