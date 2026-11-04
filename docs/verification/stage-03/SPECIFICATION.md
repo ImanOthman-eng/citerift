@@ -601,11 +601,13 @@ the pairing ambiguous, while the true marker left out could force a swap (`MATHE
 1. every marker has a readable, non-contradictory role and the number of source definitions (a `<ref>` with
    content) equals the number of `definition` markers, else no use of the name is paired;
 2. a role held by one use on each side pairs those two (`reference_role_in_template_output`);
-3. otherwise, within each role, a use with support may take only a marker that supports it, and a marker that
-   supports some use only a use it supports; the uses with support must be exactly as many as the markers that
-   support some use, and at most one use without support may be left; a pair is fixed only when one side has a
-   single choice left (`anchor_in_template_output`, then `elimination_in_template_output` for the use without
-   support), and the group is accepted only when every use is fixed that way;
+3. otherwise, within each role, every marker must support some use, else no use of the role is paired (a marker
+   that no value explains shows a value that is not shown as written, which is how an anchor can mislead;
+   focused re-review R-02). Then the uses with support must be exactly as many as the markers (so no use is
+   without support), a use may take only a marker that supports it and a marker only a use it supports; a pair
+   is fixed only when one side has a single choice left (`anchor_in_template_output`), and the group is accepted
+   only when every use is fixed that way. (`elimination_in_template_output`, the basis for a use without support
+   paired with the one marker left, stays in the schema but is no longer produced in template output.)
 4. a group not settled completely keeps only pairs whose support is one marker supported by no other use; the
    other uses are `abstained` with `RECONCILIATION_ABSTAINED`;
 5. a use whose support holds only markers of the other role makes the whole name unpaired.
@@ -617,8 +619,8 @@ Nothing in the rule names an article, template, parameter or reference name.
   `about`, for example `{{Election box begin}}` ... `{{Election box end}}`) are reconciled as one group against that
   transclusion's markers, so no marker is claimed twice and a name reused across the parts is paired by the rule
   above.
-* **Count-only pairs need agreeing text** (A-04). An anonymous use paired only because it is the one use left on each
-  side of a template's output is not paired when its parameter text (or numbers) can be read, the marker's preceding
+* **Count-only pairs need agreeing text** (A-04, R-01). A use paired only because it is the one use left on each
+  side of a template's output, without equal names on both sides, is not paired when its parameter text (or numbers) can be read, the marker's preceding
   text can be read and is not empty, and that text does not support it (the template did not show this reference
   and emitted its own).
 * **Repeated names among nested uses** (A-05). When a name is used two or more times among the uses nested in one

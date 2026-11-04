@@ -15,8 +15,8 @@ binary file is scanned too). For every match:
 
 - the file's path is added to CAMPAIGN_DIR/.gitignore (it stays on disk, byte-identical, for the prediction run,
   verify and replay);
-- CAMPAIGN_DIR/WITHHELD_FILES.json records its path, SHA-256, size and the number of matches, never the matched
-  text.
+- CAMPAIGN_DIR/WITHHELD_FILES.json records its path, SHA-256, size and the number of matches (summed over the
+  text and its two percent-decoded readings), never the matched text.
 
 The script prints only paths and counts. It exits 0 when nothing new was found, 3 when it withheld files (the caller
 then reviews and commits the updated .gitignore and WITHHELD_FILES.json before anything else), and 2 on misuse.
@@ -32,18 +32,23 @@ import json
 import re
 import subprocess
 import sys
+import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[6]
 STAGE00 = ROOT / "tests/stage00/test_repository.py"
-# Review B-3. Parameter names are matched, not values, so a key id that is percent-encoded is still caught.
+# Review B-3 and re-review R-03. Parameter names are matched (in any case), not values, so a key id that is
+# percent-encoded is still caught; the text is also scanned once and twice percent-decoded (``scanned``), so a
+# signed URL nested inside another URL is caught too.
 EXTRA_PATTERNS = [
     re.compile(p)
     for p in (
-        r"AWSAccessKeyId=",
-        r"X-Amz-(?:Credential|Security-Token|Signature)=",
+        r"(?i)AWSAccessKeyId=",
+        r"(?i)X-Amz-(?:Credential|Security-Token|Signature)=",
         r"ASIA[0-9A-Z]{16}",
-        r"X-Goog-(?:Credential|Signature)=",
+        r"(?i)X-Goog-(?:Credential|Signature)=",
+        r"(?i)GoogleAccessId=",
+        r"(?i)Key-Pair-Id=",
         r"[?&;]sv=20\d\d-\d\d-\d\d[^\s\"'<>]*[&;]sig=",
         r"[?&;]sig=[^\s\"'<>]*[&;]sv=20\d\d-\d\d-\d\d",
         r"AIza[0-9A-Za-z_-]{35}",
@@ -59,6 +64,13 @@ def patterns() -> list[re.Pattern[str]]:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return [*module.SECRET_PATTERNS, *EXTRA_PATTERNS]
+
+
+def scanned(data: bytes) -> list[str]:
+    """The file's text, and that text percent-decoded once and twice (a URL nested in a redirect is encoded twice)."""
+    text = data.decode("utf-8", errors="replace")
+    once = urllib.parse.unquote(text)
+    return [text, once, urllib.parse.unquote(once)]
 
 
 def untracked(campaign: Path) -> list[Path]:
@@ -82,8 +94,7 @@ def main(argv: list[str]) -> int:
     found = []
     for path in sorted(untracked(campaign)):
         data = path.read_bytes()
-        text = data.decode("utf-8", errors="replace")
-        matches = sum(len(p.findall(text)) for p in pats)
+        matches = sum(len(p.findall(text)) for text in scanned(data) for p in pats)
         if not matches:
             continue
         rel = path.relative_to(campaign).as_posix()

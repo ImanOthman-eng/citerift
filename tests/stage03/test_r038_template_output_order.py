@@ -723,10 +723,11 @@ def test_r038_a_restyled_value_never_takes_another_values_marker(
 @pytest.mark.integration
 def test_r038_grouped_digits_and_case_still_anchor(tmp_path: Path) -> None:
     """Folding keeps coverage: a value shown with digit groups or another case still pairs when nothing else
-    matches it."""
-    values = ["12345", "Kaiser Wilhelm Society", "{{icon|x}}"]
-    texts = ["12,345", "KAISER WILHELM SOCIETY", '<span class="flagicon"><img alt="" src="./x.png"/></span>']
-    order = [2, 0, 1]
+    matches it. (A third value shown only as an icon used to be settled by elimination; since re-review R-02 a
+    marker that no value explains blocks the name, see the test below.)"""
+    values = ["12345", "Kaiser Wilhelm Society"]
+    texts = ["12,345", "KAISER WILHELM SOCIETY"]
+    order = [1, 0]
     text, body = shown(values, texts, order)
     got = pairs(extract(bundle(tmp_path, text, body)), "M")
     for i, v in enumerate(values):
@@ -929,3 +930,71 @@ def test_r038_an_abstention_issue_names_only_uses_that_end_abstained(tmp_path: P
     for issue in doc["issues"]:
         if issue["code"] == "RECONCILIATION_ABSTAINED":
             assert all(states.get(e) == "abstained" for e in issue["entities"]), issue
+
+
+# Focused re-review (R-01, R-02, R-04).
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("values", "texts"),
+    [
+        # R-02: a value shown in a form the folding does not cover, and the partner shows the value's source text
+        (["5%", "{{Wikidata|P2}}"], ["5 %", "5%"]),
+        # R-02: a value the template replaces by another one
+        (["Kaiser Wilhelm Society", "{{Wikidata|P1}}"], ["Max Planck Society", "Kaiser Wilhelm Society"]),
+        # R-02: a value the template hides (shows only an icon)
+        (
+            ["Kaiser Wilhelm Society", "{{Wikidata|P1}}"],
+            ['<span class="flagicon"><img alt="" src="./x.png"/></span>', "Kaiser Wilhelm Society"],
+        ),
+    ],
+)
+def test_r038_a_marker_no_value_explains_blocks_the_whole_name(
+    tmp_path: Path, values: list[str], texts: list[str]
+) -> None:
+    """Re-review R-02: a marker whose text supports no use means some value is not shown as written, so an anchor of
+    another use may point to the wrong marker (the safety condition of MATHEMATICAL_MODEL.md fails). The class is
+    then not settled at all: no elimination and no anchor pair."""
+    order = [0, 1]
+    text, body = shown(values, texts, order)
+    states = no_wrong_link(text, extract(bundle(tmp_path, text, body)), values, order)
+    assert states == ["abstained", "abstained"]
+
+
+@pytest.mark.negative
+def test_r038_a_named_template_use_is_not_paired_by_count_with_a_disagreeing_marker(tmp_path: Path) -> None:
+    """Re-review R-01: a named use made by a template (``{{r|census}}``) and an anonymous marker that the template emits
+    itself are not paired by count alone when the texts disagree (500 against 480)."""
+    src = (
+        'Intro.<ref name="census">Census 2001.</ref>\n{{Infobox town\n| name = X\n| population = 500{{r|census}}\n}}\n'
+    )
+    part = {
+        "target": {"wt": "Infobox town"},
+        "params": {"name": {"wt": "X"}, "population": {"wt": "500{{r|census}}"}},
+        "i": 0,
+    }
+    dm = html.escape(json.dumps({"parts": [{"template": part}]}), quote=True)
+    box = (
+        f'<table about="#mwt5" typeof="mw:Transclusion" data-mw="{dm}"><tbody><tr><th>Name</th><td>X</td></tr>'
+        f"<tr><th>Population</th><td>480{marker(2, 'cite_note-2', 'cite_ref-2')}</td></tr></tbody></table>"
+    )
+    notes = [
+        note_li("cite_note-census-1", ["cite_ref-census_1-0"], "Census 2001."),
+        note_li("cite_note-2", ["cite_ref-2"], "Imported from a data source"),
+    ]
+    body = "<p>Intro." + marker(1, "cite_note-census-1", "cite_ref-census_1-0", "census") + "</p>" + box
+    doc = extract(bundle(tmp_path, src, body + references(notes)))
+    got = located(doc)
+    assert got[src.index("{{r|census}}")][1] != "cite_ref-2"
+
+
+@pytest.mark.regression
+def test_r038_the_word_index_never_drops_a_support() -> None:
+    """Re-review R-04: the index of before-marker words must find every marker that ``anchor_supports`` accepts (an
+    underscore is a word character for ``\\w`` but not for the whole-word rule)."""
+    from citerift.wiki.reconcile import _support_sets, anchor_supports
+
+    for anchor, rendered in ((("Alpha", False), "Alpha_1"), (("x_y", False), "a x_y"), (("12345", False), "n_12345")):
+        want = {0} if anchor_supports(anchor, rendered) else set()
+        assert _support_sets([anchor], [None], [rendered], [()]) == [want], (anchor, rendered)

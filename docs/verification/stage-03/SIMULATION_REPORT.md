@@ -179,13 +179,19 @@ counted. Results, 200 articles per mode and perturbation, seed 20261104
 | first correction (`10bf0d2`) | 12, all with adversarial values | 0 | 1,326 of 1,502 |
 | after S-1 (`2229146`) | 0 | 0 | 1,326 of 1,502 |
 | after the readiness-review fixes | 0 | 0 | 1,325 of 1,502 |
+| after the focused re-review fixes | 0 | 0 | 943 of 1,502 |
 
 Reviewer B wrote a second, independent metamorphic simulation. Its template may add a label, a unit or an age
 around a value, show a `{{val}}` number, or show only an icon. At `10bf0d2` it found 10 wrong pairs (seed 1); after the
-fixes it finds 0 in seeds 1 to 8 (`design/r038-reconciliation/evidence/REVIEWER_B_SIMULATION_after_fixes.txt`).
+fixes it finds 0 in seeds 1 to 8 (`design/r038-reconciliation/evidence/REVIEWER_B_SIMULATION_after_fixes.txt`). The
+focused re-reviewer wrote a third one, with hidden, replaced and rounded values. It found 21 wrong in 1,762 links
+after the review fixes, and 0 after its fixes (`.../evidence/RE_REVIEWER_SIMULATION_after_fixes.txt`). Its rule
+(a group is paired only when every marker supports some use) costs coverage in these generators. Most of their
+articles hold an unreadable or restyled value. On the retained real corpus the cost is 9 uses
+(`design/r038-reconciliation/DESIGN.md` section 13).
 `tests/stage03/test_r038_template_output_order.py` runs the first simulation on 40 articles.
 
-**Limits.** Both simulations generate the restylings their authors thought of. A template that shows a value in a
-form neither covers, beside another cell showing that value's source text, could still swap two markers
+**Limits.** The simulations generate the restylings their authors thought of. A swap now needs two coincidences in
+one group: a use's own marker shows another use's text, and the use's own text appears at another marker
 (MATHEMATICAL_MODEL.md, "Safety"). The single D-036 prospective confirmation measures this on unseen articles.
 

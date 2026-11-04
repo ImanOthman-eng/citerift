@@ -306,12 +306,16 @@ for a text anchor, `σ(u) = {m : run(ν(u), ν(m))}` for a number anchor, and `�
 write `σ_c(u) = σ(u) ∩ M_c`, `A_c = {u : σ_c(u) ≠ ∅}` (anchored uses), `O_c = U_c \ A_c` (open uses) and
 `T_c = ∪_{u ∈ A_c} σ_c(u)` (markers that support some use).
 
-**Decision.** The class is attempted only when `|A_c| = |T_c|`, `|O_c| = |M_c \ T_c|` and `|O_c| ≤ 1`. Then `O_c`
-pairs with `M_c \ T_c` (`elimination_in_template_output`), and `A_c` with `T_c` by unit propagation: `(u, m)` is fixed
-when `u` has one option left or `m` one taker left, and removed from the other options and takers
-(`anchor_in_template_output`). The class is accepted only when every use is fixed. Otherwise only pairs `(u, m)` with
-`σ_c(u) = {m}` and `{u' : m ∈ σ_c(u')} = {u}` are kept; every other use of the class is abstained. A use `u` with
-`σ(u) ≠ ∅` and `σ(u) ⊆ M_c'` for the other class `c'` empties the pairing of `x`.
+**Decision.** A class is paired by support only when every marker is explained, `T_c = M_c` (focused re-review
+R-02): a marker outside `T_c` shows a value that is not shown as written (hidden, replaced, rounded or restyled
+beyond `φ`), which is how (G) comes to fail. If not, every use of the class is abstained. Otherwise `_settle` applies
+its general conditions `|A_c| = |T_c|`, `|O_c| = |M_c \ T_c|` and `|O_c| ≤ 1`; with `T_c = M_c` they leave no open
+use, so its elimination step (`O_c` with `M_c \ T_c`, basis `elimination_in_template_output`) no longer pairs
+anything in template output. `A_c` is paired with `T_c` by unit propagation: `(u, m)` is fixed when `u` has one
+option left or `m` one taker left, and is removed from the other options and takers (`anchor_in_template_output`).
+The class is accepted only when every use is fixed. Otherwise only pairs `(u, m)` with `σ_c(u) = {m}` and
+`{u' : m ∈ σ_c(u')} = {u}` are kept; every other use of the class is abstained. A use `u` with `σ(u) ≠ ∅` and
+`σ(u) ⊆ M_c'` for the other class `c'` empties the pairing of `x`.
 
 **Safety.** Let `π*` be the true pairing and assume **(G)**: for every use `u` with `σ(u) ≠ ∅`, `π*(u) ∈ σ(u)`.
 Then every emitted pair is true:
@@ -323,18 +327,21 @@ Then every emitted pair is true:
    is its true use), so it never removes a true pair.
 3. The partial rule: `σ_c(u) = {m}` and (G) give `m = π*(u)`.
 
-So a wrong pair needs (G) to fail: the true marker of some use with support is not in that support. That is why
+So a wrong pair needs (G) to fail: the true marker of some use with support is not in that support. With `T_c = M_c`
+that marker must itself support another use, so a swap needs two coincidences in one group: a use's own marker shows
+another use's text, and the use's own text appears at another marker. That is why
 support is generous (review A-01, B-1): it is a superset of the exact relation, so a marker added wrongly only makes
 the class ambiguous (an abstention), while a marker left out could force a swap. (G) can still fail when a
-template shows a value in a form the folding does not cover **and** another marker shows the source text or its
-numbers (a swap needs both); the template-order simulation, reviewer B's metamorphic simulation and every retained
-label show no such case (`design/r038-reconciliation/DESIGN.md` sections 9 to 12).
+template shows a value in a form the folding does not cover, that form supports another use, **and** another marker
+shows the first use's source text or numbers. The three simulations and every retained label show no such case
+(`design/r038-reconciliation/DESIGN.md` sections 9 to 13).
 
 **Nested uses** (A-05). For a name used two or more times among the uses nested in one reference, the same decision
 replaces the order-based pairing of those uses; whatever it does not pair is abstained.
 
-**Count-only pairs** (A-04). For the anonymous use left alone on each side of a template's output, the pair is
-refused when `a(u)` (or `ν(u)`) exists, `t(m)` is readable and non-empty, and `m ∉ σ(u)`.
+**Count-only pairs** (A-04, R-01). For the use left alone on each side of a template's output without equal names
+on both sides, the pair is refused when `a(u)` (or `ν(u)`) exists, `t(m)` is readable and non-empty, and
+`m ∉ σ(u)`.
 
 **Properties.** (i) No pairing depends on source or render order. (ii) A pair is emitted only when it is forced by
 roles, by the counting conditions with propagation, or by a support that is one marker supported by no other use.

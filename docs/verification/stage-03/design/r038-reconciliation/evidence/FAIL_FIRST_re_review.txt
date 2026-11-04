@@ -1,0 +1,75 @@
+Fail-first evidence for the fixes of the focused re-review (R-01 to R-04), run on c144a09 (engine and gate before these fixes):
+  pytest -q tests/stage03/test_r038_template_output_order.py tests/stage03/test_confirmation_d036_scripts.py --tb=line
+The 10 new tests fail, each for the reason it names; every earlier test passes.
+
+.................................................FFFFF.............FFF.. [ 91%]
+F..F...                                                                  [100%]
+=================================== FAILURES ===================================
+E   AssertionError: ('5%', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('5%', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: ('Kaiser Wilhelm Society', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('Kaiser Wilhelm Society', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: ('Kaiser Wilhelm Society', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('Kaiser Wilhelm Society', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: assert 'cite_ref-2' != 'cite_ref-2'
+tests/stage03/test_r038_template_output_order.py:988: AssertionError: assert 'cite_ref-2' != 'cite_ref-2'
+E   AssertionError: (('Alpha', False), 'Alpha_1')
+    assert [set()] == [{0}]
+      
+      At index 0 diff: set() != {0}
+      Use -v to get more diff
+tests/stage03/test_r038_template_output_order.py:999: AssertionError: (('Alpha', False), 'Alpha_1')
+E   assert False
+     +  where False = any(<generator object test_d036_secret_gate_catches_access_bearing_urls_stage00_misses.<locals>.<genexpr> at 0x7f10c9e1bae0>)
+tests/stage03/test_confirmation_d036_scripts.py:180: assert False
+E   assert False
+     +  where False = any(<generator object test_d036_secret_gate_catches_access_bearing_urls_stage00_misses.<locals>.<genexpr> at 0x7f10c97a04a0>)
+tests/stage03/test_confirmation_d036_scripts.py:180: assert False
+E   assert False
+     +  where False = any(<generator object test_d036_secret_gate_catches_access_bearing_urls_stage00_misses.<locals>.<genexpr> at 0x7f10ca636c00>)
+tests/stage03/test_confirmation_d036_scripts.py:180: assert False
+E   assert False
+     +  where False = any(<generator object test_d036_secret_gate_catches_access_bearing_urls_stage00_misses.<locals>.<genexpr> at 0x7f10ca609540>)
+tests/stage03/test_confirmation_d036_scripts.py:180: assert False
+E   assert False
+     +  where False = any(<generator object test_d036_secret_gate_catches_access_bearing_urls_stage00_misses.<locals>.<genexpr> at 0x7f10c97a2b20>)
+tests/stage03/test_confirmation_d036_scripts.py:180: assert False
+=========================== short test summary info ============================
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_marker_no_value_explains_blocks_the_whole_name[values0-texts0]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_marker_no_value_explains_blocks_the_whole_name[values1-texts1]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_marker_no_value_explains_blocks_the_whole_name[values2-texts2]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_named_template_use_is_not_paired_by_count_with_a_disagreeing_marker
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_the_word_index_never_drops_a_support
+FAILED tests/stage03/test_confirmation_d036_scripts.py::test_d036_secret_gate_catches_access_bearing_urls_stage00_misses[azure sas nested in a redirect]
+FAILED tests/stage03/test_confirmation_d036_scripts.py::test_d036_secret_gate_catches_access_bearing_urls_stage00_misses[cloudfront]
+FAILED tests/stage03/test_confirmation_d036_scripts.py::test_d036_secret_gate_catches_access_bearing_urls_stage00_misses[gcs v2]
+FAILED tests/stage03/test_confirmation_d036_scripts.py::test_d036_secret_gate_catches_access_bearing_urls_stage00_misses[lowercase sigv4 names]
+FAILED tests/stage03/test_confirmation_d036_scripts.py::test_d036_secret_gate_catches_access_bearing_urls_stage00_misses[s3 sigv4 nested in a redirect]
+10 failed, 69 passed in 6.51s

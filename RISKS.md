@@ -801,6 +801,8 @@ B-1), and found four narrower defects around it (multi-part transclusions A-02, 
 names A-05, shared bibliography regions A-03). All were fixed fail-first: support is now a generous superset of the
 exact text relation, with a safety argument (`docs/verification/stage-03/MATHEMATICAL_MODEL.md`). Both simulations
 show 0 wrong links. On every retained label (post-exposure): false attachments 0, correct links 1,387; on the D-035
-articles, Arabic 192 of 197 correct, 0 false. Dispositions:
+articles, Arabic 192 of 197 correct, 0 false. A focused re-review then built silent swaps from hidden or replaced
+values (R-02). A group is now paired only when every marker supports some use, which removed all 21 of its wrong
+links at a cost of 9 abstained uses on the real corpus. Dispositions:
 `docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md`. The entry stays open until the
 single D-036 prospective confirmation is scored.

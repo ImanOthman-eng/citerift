@@ -32,7 +32,26 @@ Each fix below was made fail-first. The new tests fail on `2a94110`, the engine 
 | B-7 | info | yes | **Mitigated in the procedure.** The confirmation MANIFEST records the Git tree digests of `src` and `schemas` at the candidate, and they are checked against the working tree before the prediction run | amendment section 6 |
 | B-8 | info | yes | **Fixed.** SPECIFICATION.md, MATHEMATICAL_MODEL.md, RISK_ANALYSIS.md and SIMULATION_REPORT.md describe engine 1.2.0 | those files |
 
-No critical or high defect remains open. The directive (section 7) requires "no incorrect source/render link known"
-before the next evaluation. After these fixes no known input yields a wrong render link. That covers the
-reviewers' reproductions, both simulations, every retained bundle and every retained label (0 false attachments).
-The focused re-review (`RE_REVIEW.md`, when it is done) checks these fixes.
+## Focused re-review
+
+One focused re-review (`RE_REVIEW.md`) examined the fixes at `c144a09`. It found no critical or high defect, and
+confirmed the fixes of A-01, A-02, A-03, A-05, A-06, A-07, B-1 and B-2. It also showed that the sentence this file
+first ended with, "no known input yields a wrong render link", was false. It found:
+
+| id | severity | disposition | evidence after |
+|---|---|---|---|
+| R-01 | medium | **Fixed.** A-04 was half fixed: a named use made by a template (`{{r|census}}`) was still paired by count with an anonymous marker the template emits itself. The text check now applies whenever the names are not equal on both sides | `test_r038_a_named_template_use_is_not_paired_by_count_with_a_disagreeing_marker` |
+| R-02 | medium | **Fixed for every case it reproduced.** Silent swaps when a value is hidden, replaced, rounded or restyled beyond the folding, and another marker shows that value's source text: 21 wrong in 1,762 links in its simulation. Such a value leaves a marker that supports no use, so a role group is now paired by anchors or elimination only when every one of its markers supports some use. The cost on real data: 9 uses in 2 articles become abstained, no labelled correct link is lost, and the D-035 scores are byte-identical | `test_r038_a_marker_no_value_explains_blocks_the_whole_name` (3 cases); `../evidence/RE_REVIEWER_SIMULATION_after_fixes.txt` (21 → 0 wrong); DESIGN.md section 13 |
+| R-03 | low | **Fixed.** The gate adds GCS V2 (`GoogleAccessId=`) and CloudFront (`Key-Pair-Id=`) signed URLs and matches parameter names in any case. It also scans each file's text once and twice percent-decoded, so a signed URL nested in a redirect is caught | `test_d036_secret_gate_catches_access_bearing_urls_stage00_misses` (5 new samples) |
+| R-04 | low | **Fixed.** The word index uses runs of letters and digits, as the whole-word rule does, so it never drops a support | `test_r038_the_word_index_never_drops_a_support` |
+
+All ten new tests fail on `c144a09` (`../evidence/FAIL_FIRST_re_review.txt`) and pass after.
+
+**What remains.** No critical or high defect is open. No reproduction from the reviews, the re-review, the three
+simulations (0 wrong in all), the 195 retained bundles or the 150 retained label files (0 false attachments)
+yields a wrong render link after these fixes.
+
+One boundary remains, by construction, in `MATHEMATICAL_MODEL.md` ("Safety"). A swap still needs (G) to fail with
+every marker supporting some use: a use's own marker must show another use's text while its own text appears at
+another marker. That takes two coincidences in one name's group, and no case of it is known. It is a scientific
+limitation, not a known defect. The D-036 prospective confirmation measures G6a and G6b on unseen articles.

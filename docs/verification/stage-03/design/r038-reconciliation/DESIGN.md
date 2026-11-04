@@ -6,8 +6,9 @@ Owner instruction of 2026-11-04 (DECISIONS.md D-036, `../../authorization/OWNER_
 sections 3 and 4). Status of this document: engineering record of the correction. It is not a verification result
 and not acceptance.
 
-Sections 1 to 8 record the correction as first committed (`10bf0d2`). Sections 9 to 12 record what changed after it:
-the weak-number fix S-1 (`2229146`) and the fixes of the readiness reviews (section 7 of the directive). Where
+Sections 1 to 8 record the correction as first committed (`10bf0d2`). Sections 9 to 13 record what changed after it:
+the weak-number fix S-1 (`2229146`), the fixes of the readiness reviews and of the focused re-review (section 7 of
+the directive). Where
 they differ, the later sections, SPECIFICATION.md and MATHEMATICAL_MODEL.md describe the engine as it is.
 
 ## 1. Root cause
@@ -272,4 +273,40 @@ Every other metric is unchanged except the marker confusion. In Arabic, 9 defini
 inspected `none`, all correct. In English, 5 move from `none` to `not_inspected` (the A-03 ambiguous bibliography
 entries). G7 (fabricated negatives) stays 0 in both languages. These articles were exposed, so this shows only that
 the fixes cost nothing on them. It is not evidence about unseen articles.
+
+## 13. Focused re-review and its fixes
+
+One focused re-review of `c144a09` (`review/RE_REVIEW.md`) found no critical or high defect and four residuals:
+R-01, R-02, R-03 and R-04 (`review/DISPOSITIONS.md`). The material one is R-02. Its simulation linked 1,762 uses and
+made 21 wrong ones in 13 SYNTHETIC infoboxes. Each wrong one had a value hidden, replaced, rounded or restyled beyond
+the folding (`5 %` for `5%`), while another marker showed that value's source text and the other use had no
+readable text. The safety argument covers this: (G) fails. But section 10 had claimed that no known input gives a
+wrong link, and that claim was wrong.
+
+The fix uses what such inputs have in common. A value that is not shown as written leaves a marker that supports no
+use. A role group is now paired by support only when **every** marker supports some use; otherwise all its uses
+abstain. With that condition no use is left without support, so the elimination basis is no longer produced. The
+counting conditions of `_settle` still hold. A swap now needs two coincidences in one group (MATHEMATICAL_MODEL.md).
+
+Fail-first: the ten new tests (R-01, R-02 three cases, R-04, R-03 five samples) fail on `c144a09`
+(`evidence/FAIL_FIRST_re_review.txt`). One earlier test gave up a case. `test_r038_grouped_digits_and_case_still_anchor`
+had a third value shown only as an icon, settled by elimination. That is exactly the hidden-value situation, so the
+case was removed and the test keeps its purpose (folding).
+
+| Measure | After the review fixes (`c144a09`) | After the re-review fixes |
+|---|---|---|
+| re-reviewer's simulation, 6 × 150 infoboxes (`evidence/RE_REVIEWER_SIMULATION_after_fixes.txt`) | 1,762 linked, 21 wrong | 606 linked, 0 wrong |
+| reviewer B's simulation, seeds 1 to 8 (`evidence/REVIEWER_B_SIMULATION_after_fixes.txt`) | 0 wrong (seed 1: 1,155 linked) | 0 wrong (seed 1: 755 linked) |
+| `template_order_sim.py`, clean values with data-mw (`simulation/template_order_sim.re-review-fixes.json`) | 1,325 of 1,502 linked, 0 swaps | 943 of 1,502 linked, 0 swaps, 0 wrong in every mode |
+| 195 retained real bundles (`differential/COMPARE_REVIEW_FIXES_TO_RE_REVIEW_FIXES.txt`) | | 9 uses in 2 articles matched → abstained; nothing else changes |
+| 150 retained label files (`differential/LABELLED_LINKS.re-review-fixes.json`) | 1,387 correct, 0 false | 1,387 correct, 0 false |
+| D-035 articles scored again (post-exposure) | ar 192/197, en 203/207 | byte-identical scores and extractions |
+
+The simulations lose coverage because their generators give most articles a value that has no readable text or is
+restyled. Real infoboxes rarely do: on the retained corpus the cost is 9 uses, none of them labelled: 5 in
+`en-1381005609` (bundle `en-2695828-a1`, gained in section 11) and 4 of `Koutoulaki et al. 2018` in `en-1329904848`
+(bundle `en-78365026-a1`). Against `ec81c7f` (`differential/DIFFERENTIAL.re-review-fixes.json`), 13 uses now move to
+their true marker instead of 15. The other 2 swaps (`Koutoulaki et al. 2018`) are no longer paired at all
+(abstained) instead of being corrected. Two extractions gave byte-identical documents, and the historical-document verification is unchanged
+(`evidence/VERIFY_HISTORICAL_DOCUMENTS.txt`).
 

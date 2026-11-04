@@ -111,7 +111,7 @@ def anchor_supports(anchor: tuple[str, bool] | None, rendered: str | None) -> bo
     return False
 
 
-_WORD = re.compile(r"\w+")
+_WORD = re.compile(r"[^\W_]+")  # runs of letters and digits, as the whole-word rule of anchor_supports (re-review R-04)
 _FOLD_GROUP = re.compile(r"(?<=\d)[,\u066c\u00a0\u2009\u202f' ](?=\d{3}(?!\d))")
 
 
@@ -450,7 +450,7 @@ class Reconciler:
             and len(ren) == 1
             and _compatible(src[0], ren[0])
             and self._not_contradicted(src[0], ren[0])
-            and (_key(src[0]) is not None or not self._anchor_contradicts(src[0], ren[0]))
+            and ((_key(src[0]) is not None and bool(ren[0].name)) or not self._anchor_contradicts(src[0], ren[0]))
         ):
             self._pair(src[0], ren[0], "single_use_in_template_output")
             self.out.segments["template:matched"] += 1
@@ -507,7 +507,9 @@ class Reconciler:
         * anchor: the visible text just before a marker in its block ends with the parameter text just before the
           ``<ref>`` in the source (``source_anchor``, ``anchor_supports``);
         * elimination: within one role, a use whose parameter text cannot be read takes the one marker left once
-          every other use is settled by an anchor that no other use or marker shares.
+          every other use is settled by an anchor that no other use or marker shares;
+        * explanation: a role group is paired by anchors or elimination only when every one of its markers supports
+          some use (re-review R-02); a marker no value explains means a value is not shown as written.
 
         A role group that is not settled completely keeps only its pairs whose anchor is shared with no other use
         or marker; the rest stay unpaired (``RECONCILIATION_ABSTAINED``). An anchor that points only to a marker
@@ -538,6 +540,12 @@ class Reconciler:
             ren = [j for j in range(n) if r_def[j] == role]
             if len(src) == 1:
                 out.append((uses[src[0]], rs[ren[0]], "reference_role_in_template_output"))
+                continue
+            # Re-review R-02: a marker that supports no use shows a value that is not shown as written (hidden,
+            # replaced, rounded or restyled beyond the folding), so the support of some use may miss its own marker,
+            # which is the one way an anchor can mislead (MATHEMATICAL_MODEL.md, "Safety"). Then nothing is paired.
+            explained = set().union(*(support[i] & set(ren) for i in src))
+            if any(j not in explained for j in ren):
                 continue
             found = _settle(src, ren, support)
             if found is not None:
@@ -591,7 +599,8 @@ class Reconciler:
                 )
 
     def _anchor_contradicts(self, u: Use, r: RenderUse) -> bool:
-        """An anonymous use paired only because it is the one left on each side (review A-04): the pair is refused
+        """A use paired only because it is the one left on each side, without equal names on both sides (an anonymous
+        use, or a named use made by a template beside an anonymous marker; reviews A-04 and R-01): the pair is refused
         when the use's parameter text or numbers can be read, the marker's before-marker text can be read and is not
         empty, and that text does not show them (the template did not show this reference and emitted its own)."""
         p = self._param_text(u)

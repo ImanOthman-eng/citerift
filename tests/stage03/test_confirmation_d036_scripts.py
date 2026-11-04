@@ -156,6 +156,17 @@ B3_SAMPLES = {
     "azure sas html-escaped, sig first": "https://acct.blob.example.invalid/c/o?sig=" + "A" * 43 + "&amp;sv=2022-11-02",
     "google api key": "key=" + "AI" + "za" + "B" * 35,
     "slack webhook": "https://hooks.slack.com/services/T" + "0" * 8 + "/B" + "0" * 8 + "/" + "x" * 24,
+    # re-review R-03
+    "gcs v2": "https://storage.example.invalid/b/o.pdf?GoogleAccessId=svc@p.example.invalid&Expires=1&Signature="
+    + "A" * 40,
+    "cloudfront": "https://d1.example.invalid/f.pdf?Expires=1&Signature=" + "B" * 40 + "&Key-Pair-Id=K" + "Q" * 13,
+    "s3 sigv4 nested in a redirect": "https://r.example.invalid/url?q=https://b.example.invalid/o%3FX-Amz-Credential%3D%2541KIA"
+    + "Q" * 16
+    + "%252F2026%26X-Amz-Signature%3D"
+    + "a" * 64,
+    "azure sas nested in a redirect": "https://r.example.invalid/url?q=https://a.example.invalid/c/o%3Fsv%3D2022-11-02%26sig%3D"
+    + "A" * 43,
+    "lowercase sigv4 names": "https://b.example.invalid/o?x-amz-credential=x&x-amz-signature=" + "a" * 64,
 }
 
 
@@ -166,7 +177,7 @@ def test_d036_secret_gate_catches_access_bearing_urls_stage00_misses(name: str) 
     stage00 = _load(ROOT / "tests/stage00/test_repository.py")
     sample = B3_SAMPLES[name]
     assert not any(p.search(sample) for p in stage00.SECRET_PATTERNS)
-    assert any(p.search(sample) for p in gate.patterns())
+    assert any(p.search(text) for text in gate.scanned(sample.encode()) for p in gate.patterns())
 
 
 @pytest.mark.security
@@ -178,4 +189,4 @@ def test_d036_secret_gate_leaves_ordinary_citation_urls_alone() -> None:
         '<a href="https://books.example.invalid/books?id=abc&amp;pg=PA5&amp;sig=ACfU3U0">book</a> '
         '<a href="https://archive.example.invalid/web/20200101000000/https://example.org/?sv=1">archive</a>'
     )
-    assert not any(p.search(ordinary) for p in gate.patterns())
+    assert not any(p.search(text) for text in gate.scanned(ordinary.encode()) for p in gate.patterns())
