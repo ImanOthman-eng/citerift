@@ -115,7 +115,9 @@ def source_numbers(raw: str) -> tuple[str, ...] | None:
     """For a parameter value whose last line before the reference holds templates (so ``source_anchor`` cannot read
     it): the numbers of that line with template names and named-argument keys left out (``{{val|9494|143|u=K}}``
     gives 9494, 143). A template usually shows the numbers it is given; one that changes them simply gives no
-    support. None when the line has no template, no number, or cannot be read."""
+    support. None when the line has no template, no number, or cannot be read, and when its numbers have fewer
+    than ``_ANCHOR_MIN`` digits in all: a one- or two-digit number is shown by too many cells to tell parameters
+    apart (``{{double|2}}`` showing 4 beside another cell showing 2)."""
     raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw))
     line = raw.rsplit("\n", 1)[-1]
     if "{{" not in line or "{{{" in line or line.count("{{") != line.count("}}"):
@@ -126,7 +128,10 @@ def source_numbers(raw: str) -> tuple[str, ...] | None:
     line = _A_INLINE_TAG.sub("", _A_ARG_KEY.sub("|", _A_TEMPLATE_NAME.sub("{{", line)))
     if "<" in line or ">" in line:
         return None
-    return numbers_of(html.unescape(line)) or None
+    numbers = numbers_of(html.unescape(line))
+    if sum(c.isdigit() for x in numbers for c in x) < _ANCHOR_MIN:
+        return None
+    return numbers
 
 
 @dataclass

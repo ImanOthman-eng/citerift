@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import html
 import json
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -608,3 +610,34 @@ def test_r038_real_english_infobox_borisov2023_labelled_swap() -> None:
     assert got[2233] == ("matched", "cite_ref-Borisov2023_11-0")
     assert got[2291] == ("matched", "cite_ref-Borisov2023_11-2")
     assert got[2482] == ("matched", "cite_ref-Borisov2023_11-3")
+
+
+@pytest.mark.negative
+def test_r038_a_one_or_two_digit_number_is_too_weak_to_anchor(tmp_path: Path) -> None:
+    """Found by the template-order simulation (``simulations/stage03/template_order_sim.py``, adversarial mode): a
+    template that changes its small argument (``{{double|2}}`` shows 4) while another parameter's template shows
+    exactly that argument (a data template showing 2). The number 2 then points to the other parameter's marker and
+    elimination gives the rest: a swap. A number support needs at least three digits in all."""
+    values = ["{{double|2}}", "{{data|k}}"]
+    texts = ["4", "2"]
+    text, body = shown(values, texts, [1, 0])
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    assert [got[reuse_at(text, v)][0] for v in values] == ["abstained", "abstained"]
+
+
+@pytest.mark.simulation
+def test_r038_template_order_simulation_has_no_swap_or_wrong_attachment() -> None:
+    """``simulations/stage03/template_order_sim.py``: random parameter orders, clean and adversarial values, with
+    and without a marker's data-mw. No use may take another use's marker (swap) or another reference's (wrong)."""
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "simulations" / "stage03" / "template_order_sim.py"), "40", "20261104"],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=600,
+    )
+    summary = json.loads(proc.stdout)
+    assert summary["failure_count"] == 0
+    totals = summary["totals"]
+    assert all(t["swap"] == 0 and t["wrong"] == 0 for t in totals.values())
+    assert totals["clean/none"]["linked"] > totals["clean/none"]["abstain"] > 0

@@ -550,7 +550,8 @@ classification test does not depend on it (CI run 41647876812).
 
 ## Known defect found by the D-035 confirmation (2026-11-03): repeated names inside one template's output
 
-Not changed: the amendment of D-035 forbids repair after the prediction run (RISKS.md R-038).
+Not changed by D-035: the amendment of D-035 forbids repair after the prediction run (RISKS.md R-038). Corrected
+under owner instruction D-036 in engine 1.2.0; see the next section. This section is kept as written.
 
 Uses produced in a template's output are paired with markers of the same transclusion (MATHEMATICAL_MODEL.md
 section 5). The implementing function (`src/citerift/wiki/reconcile.py`, `_align_unordered`) states in its docstring
@@ -568,3 +569,37 @@ use in one template's output, a pairing is accepted only when the render proves 
 with no further order to decide); otherwise the uses are
 `abstained` with `RECONCILIATION_ABSTAINED`. Container, note and marker observations are not affected, because both
 uses belong to one container.
+
+## Changes under owner instruction D-036 (2026-11-04): R-038 corrected (engine 1.2.0, extraction schema 1.2.0)
+
+Design record, surveys, differential and fail-first evidence: `design/r038-reconciliation/DESIGN.md`. Only the
+pairing of a name with **two or more** uses on both sides inside one template's output changes
+(`Reconciler._same_name`); a name used once there still pairs by name (`name_in_template_output`), and article text,
+nested references, containers, units, identifiers, marker observations and witnesses are unchanged.
+
+**Render evidence.** Each rendered marker now carries `body_role`, read from its `data-mw`:
+`definition` (a `body.id` naming this marker's own note text, or a non-empty `body.html`), `reuse` (no `body`, or an
+empty `body.html`), `contradictory` (a `body.id` naming another note, or a body of another shape) or none (no
+readable `data-mw`). `RenderReader.preceding_text` gives the visible text before a marker in its nearest block
+element (table cell, list item, paragraph, heading, ...), skipping hidden elements, with a space where another
+marker stands; at most `ANCHOR_MAX_NODES` = 20,000 elements, the last `ANCHOR_KEEP` = 200 characters kept.
+
+**Pairing rule** for one name with n ≥ 2 compatible uses on both sides (n ≤ 2,000):
+1. every marker has a readable, non-contradictory role and the number of source definitions (a `<ref>` with
+   content) equals the number of `definition` markers, else no use of the name is paired;
+2. a role held by one use on each side pairs those two (`reference_role_in_template_output`);
+3. otherwise, within each role, the source text before the `<ref>` in its parameter (reduced to visible text, or
+   failing that, to its numbers when the line holds templates) is compared with each marker's preceding text; a pair
+   is fixed only when one side has a single choice left (`anchor_in_template_output`, then
+   `elimination_in_template_output` for a use with no readable text), and the group is accepted only when every use
+   is fixed that way;
+4. a group not settled completely keeps only pairs whose anchor is shared with no other use and no other marker;
+   the other uses are `abstained` with `RECONCILIATION_ABSTAINED`;
+5. a use whose anchor supports only markers of the other role makes the whole name unpaired.
+
+Nothing in the rule names an article, template, parameter or reference name.
+
+**Versions.** Engine `citerift-wiki` 1.2.0 and extraction schema 1.2.0, whose `render_basis` enum gains the three
+bases above. A 1.1.0 document replays as `REPLAY_IDENTITY_MISMATCH`, as for every engine change. Profile, scorer,
+guide, protocol and gates unchanged.
+

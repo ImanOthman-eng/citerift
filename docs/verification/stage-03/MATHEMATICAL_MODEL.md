@@ -283,3 +283,34 @@ and the template, not source order, decides which one the render realizes. The s
 rule is to accept a bijection only on evidence that excludes the others, and otherwise to abstain on all of $S_x$.
 The implementation at `fff0e5b` takes the order-preserving bijection instead (SPECIFICATION.md, "Known defect found
 by the D-035 confirmation").
+
+## Same-name pairing inside template output (owner instruction D-036, engine 1.2.0)
+
+Replaces, for template output only, the k-th-to-k-th rule of section 5 for a name `x` with
+`n = #{s ∈ S : name(s) = x} = #{r ∈ R : name(r) = x} ≥ 2` (R-038). Let `U` and `M` be those uses and markers.
+
+**Roles.** `ρ(u) = def` iff the source use has content; `ρ(m) ∈ {def, reuse, ⊥}` from `data-mw` (`⊥` for unreadable
+or contradictory). If some `ρ(m) = ⊥` or `#{u : ρ(u)=def} ≠ #{m : ρ(m)=def}`, the pairing is empty. Otherwise the
+problem splits into two independent role classes `(U_def, M_def)` and `(U_reuse, M_reuse)` of equal sizes.
+
+**Support.** For each use `u`, `a(u)` is its source anchor (visible text) or, if absent, its number tuple `ν(u)`;
+`t(m)` is the marker's preceding text and `ν(m)` its numbers. Define the relation
+`u ~ m` iff `t(m)` ends with `a(u)` at a word boundary (an anchor shorter than 3 characters only when
+`t(m) = a(u)`), or `ν(u) = ν(m)` when `u` has only numbers. A use with neither has no constraint.
+
+**Feasible pairings.** A bijection `π : U_c → M_c` within a class `c` is feasible iff for every `u`: if some marker
+of `M_c` supports `u`, then `u ~ π(u)`; and if `π(u)` supports some use of `U_c`, then `u ~ π(u)`. A use whose text
+or numbers match no marker of its class carries no constraint (its text was transformed by the template, so it says
+nothing about position).
+
+**Decision.** `_settle` repeatedly fixes `(u, m)` when, among the unfixed elements, `u` has exactly one feasible
+marker or `m` exactly one feasible use. If every element gets fixed, the result is the unique feasible bijection
+(each fixing step removes no other feasible bijection), and it is accepted. Otherwise only pairs `(u, m)` with
+`{m' : u ~ m'} = {m}` and `{u' : u' ~ m} = {u}` are kept; every other use of the class is abstained. A use `u` with
+an anchor whose supporting markers all lie in the other class empties the pairing of `x`.
+
+**Properties.** (i) No pairing depends on source or render order. (ii) A pair is emitted only when it is forced by
+roles, by mutually unique support, or by elimination within a completely settled class, so a swap requires the
+evidence itself to be wrong (a marker whose `data-mw` names the wrong role, or a rendered text that equals another
+parameter's text). (iii) For `n = 1` the rule is unchanged. (iv) The cost is `O(n²)` comparisons for `n ≤ 2000`.
+

@@ -785,3 +785,12 @@ Stage 03 stays `IMPLEMENTED_NOT_VERIFIED`. A correction (abstain unless the rend
 authorization and a new prospective confirmation. Evidence:
 `docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md` section 5 and `DECISION_RECORD.md`
 there.
+
+Update 2026-11-04 (owner instruction D-036, which authorized the correction). Corrected in engine 1.2.0: a name with
+two or more uses in one template's output is paired only on evidence (the marker's `data-mw` body role, the visible
+text or numbers before the marker, elimination within a completely settled group) and abstained otherwise
+(`docs/verification/stage-03/design/r038-reconciliation/DESIGN.md`). The full survey found the same swap in 6 more
+articles that had no scored render labels (15 swapped uses in 7 articles in all); all 15 are corrected, 2 uses are now
+abstained, and no other pairing changed in the 195 retained real bundles. On every retained label: false
+attachments 4 -> 0, correct links 1,372 -> 1,376 (post-exposure). The entry stays open until the single D-036
+prospective confirmation is scored.
