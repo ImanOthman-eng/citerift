@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html prefix="dc: http://purl.org/dc/terms/ mw: http://mediawiki.org/rdf/" about="//en.wikipedia.org/wiki/Special:Redirect/revision/1326396809"><head prefix="mwr: //en.wikipedia.org/wiki/Special:Redirect/"><meta charset="utf-8"/><link rel="dc:replaces" resource="mwr:revision/1316306049"/><meta property="mw:revisionSHA1" content="j0at4w85ppfmc0goda1de8454w54v3m"/><meta property="dc:modified" content="2025-12-08T19:34:12Z"/><meta property="mw:pageNamespace" content="0"/><meta property="mw:pageId" content="75508474"/><meta property="mw:htmlVersion" content="2.8.0"/><meta property="mw:html:version" content="2.8.0"/><base href="//en.wikipedia.org/wiki/"/><link rel="dc:isVersionOf" href="//en.wikipedia.org/wiki/Line-cylinder_intersection"/><title>Line-cylinder intersection</title><meta property="mw:jsConfigVars" content='{"wgParsoidHtmlVersion":"2.8.0"}'/><meta property="mw:generalModules" content="ext.math.polyfills|ext.cite.ux-enhancements|mediawiki.page.media"/><meta property="mw:moduleStyles" content="ext.math.styles|ext.cite.parsoid.styles|ext.cite.styles"/><link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=ext.math.styles%7Cext.cite.parsoid.styles%7Cext.cite.styles%7Cmediawiki.skinning.content.parsoid%7Cmediawiki.skinning.interface%7Csite.styles&amp;only=styles&amp;skin=vector"/><meta http-equiv="content-language" content="en"/><meta http-equiv="vary" content="Accept"/><meta http-equiv="x-mediawiki-render-id" content="c22581a7-d44d-11f1-9e6e-1b1174177746"/></head><body class="mw-content-ltr sitedir-ltr ltr mw-body-content mediawiki mw-parser-output parsoid-body" lang="en" dir="ltr" data-mw-parsoid-version="0.24.0.0-alpha27" data-mw-html-version="2.8.0"><section data-mw-section-id="0" id="mwAQ"><div class="shortdescription nomobile noexcerpt noprint searchaux" style="display:none" about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"Short description","href":"./Template:Short_description"},"params":{"1":{"wt":"Geometry calculation"}},"i":0}}]}' id="mwAg">Geometry calculation</div><span class="mw-empty-elt" about="#mwt1"><link rel="mw:PageProp/Category" href="./Category:Articles_with_short_description"/><link rel="mw:PageProp/Category" href="./Category:Short_description_matches_Wikidata"/></span>
+
+<figure class="mw-default-size" typeof="mw:File/Thumb" id="mwAw"><a href="./File:Line-cylinder_intersection_cases.png" class="mw-file-description" id="mwBA"><img resource="./File:Line-cylinder_intersection_cases.png" src="//thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Line-cylinder_intersection_cases.png/250px-Line-cylinder_intersection_cases.png?utm_source=en.wikipedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail" decoding="async" loading="lazy" srcset="//thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Line-cylinder_intersection_cases.png/500px-Line-cylinder_intersection_cases.png?utm_source=en.wikipedia.org&amp;utm_campaign=parser&amp;utm_content=thumbnail 2x" data-file-width="2216" data-file-height="1876" data-file-type="bitmap" height="212" width="250" class="mw-file-element" id="mwBQ"/></a><figcaption id="mwBg">Four cases for an intersection of a line and a cylinder. Intersections with the gray cylinder are highlighted in red. Global axes are black. The magenta line has zero intersections with the cylinder. Cyan line has a single point of intersection. Green line has two intersections. Yellow line lies tangent to the cylinder, so has infinitely many points of intersection.</figcaption></figure>
+<p id="mwBw"><b id="mwCA">Line-cylinder intersection</b> is the calculation of any points of <a rel="mw:WikiLink" href="./Intersection_(geometry)" title="Intersection (geometry)" id="mwCQ">intersection</a>, given an <a rel="mw:WikiLink" href="./Analytic_geometry" title="Analytic geometry" id="mwCg">analytic geometry</a> description of a <a rel="mw:WikiLink" href="./Line_(geometry)" title="Line (geometry)" id="mwCw">line</a> and a <a rel="mw:WikiLink" href="./Cylinder_(geometry)" title="Cylinder (geometry)" class="mw-redirect" id="mwDA">cylinder</a> in 3D space.</p>
+
+<p id="mwDQ">An arbitrary line and cylinder may have no intersection at all. Or there may be one or two points of intersection.<sup about="#mwt4" class="mw-ref reference" id="cite_ref-1" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{},"body":{"id":"mw-reference-text-cite_note-1"}}'><a href="./Line-cylinder_intersection#cite_note-1" id="mwDg"><span class="mw-reflink-text" id="mwDw"><span class="cite-bracket" id="mwEA">[</span>1<span class="cite-bracket" id="mwEQ">]</span></span></a></sup> Or a line may lie along the surface of a cylinder, parallel to its axis, resulting in infinitely many points of intersection. The method described here distinguishes between these cases, and when intersections exist, computes their positions.</p>
+
+<p id="mwEg">The term "cylinder" can refer to a <a rel="mw:WikiLink" href="./Solid_geometry" title="Solid geometry" id="mwEw">three-dimensional solid</a> or, as in this article, only the curved external <a rel="mw:WikiLink" href="./Surface#In_mathematics" title="Surface" id="mwFA">surface</a> of the solid. This is why a line piercing a cylinder's volume is considered to have <b id="mwFQ">two</b> points of intersection: the surface point where it enters and the one where it leaves. See <a rel="mw:WikiLink" href="./Line-cylinder_intersection#End_caps" class="mw-selflink-fragment" id="mwFg">§ end caps</a>.</p>
+
+<p id="mwFw">A key intuition of this sort of intersection problem is to represent each shape as an equation which is true for all points on the shape. Solving them as a system of two simultaneous equations finds the points which belong to both shapes, which is the intersection. The equations below were solved using <a rel="mw:WikiLink" href="./Maple_(software)" title="Maple (software)" id="mwGA">Maple</a>.</p>
+
+<p id="mwGQ">This method has applications in <a rel="mw:WikiLink" href="./Computational_geometry" title="Computational geometry" id="mwGg">computational geometry</a>, <a rel="mw:WikiLink" href="./Rendering_(computer_graphics)" title="Rendering (computer graphics)" id="mwGw">graphics rendering</a>, <a rel="mw:WikiLink" href="./Shape_Modeling_International" title="Shape Modeling International" id="mwHA">shape modeling</a>, <a rel="mw:WikiLink" href="./Physical_simulation" title="Physical simulation" class="mw-redirect" id="mwHQ">physics-based modeling</a>, and related types of computational 3d simulations. This has led to various implementations.<sup about="#mwt7" class="mw-ref reference" id="cite_ref-2" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{},"body":{"id":"mw-reference-text-cite_note-2"}}'><a href="./Line-cylinder_intersection#cite_note-2" id="mwHg"><span class="mw-reflink-text" id="mwHw"><span class="cite-bracket" id="mwIA">[</span>2<span class="cite-bracket" id="mwIQ">]</span></span></a></sup><sup about="#mwt10" class="mw-ref reference" id="cite_ref-3" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{},"body":{"id":"mw-reference-text-cite_note-3"}}'><a href="./Line-cylinder_intersection#cite_note-3" id="mwIg"><span class="mw-reflink-text" id="mwIw"><span class="cite-bracket" id="mwJA">[</span>3<span class="cite-bracket" id="mwJQ">]</span></span></a></sup><sup about="#mwt13" class="mw-ref reference" id="cite_ref-4" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{},"body":{"id":"mw-reference-text-cite_note-4"}}'><a href="./Line-cylinder_intersection#cite_note-4" id="mwJg"><span class="mw-reflink-text" id="mwJw"><span class="cite-bracket" id="mwKA">[</span>4<span class="cite-bracket" id="mwKQ">]</span></span></a></sup> This method is closely related to <a rel="mw:WikiLink" href="./Line–sphere_intersection" title="Line–sphere intersection" id="mwKg">Line–sphere intersection</a>.</p>
+
+<meta property="mw:PageProp/toc" data-mw='{"autoGenerated":true}' id="mwKw"/></section><section data-mw-section-id="1" id="mwLA"><h2 data-mw-wikitext="" id="Cylinder_equation,_end_caps_excluded"><span id="Cylinder_equation.2C_end_caps_excluded" typeof="mw:FallbackId"></span>Cylinder equation, end caps excluded</h2>
+
+<p id="mwLQ">Let <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt14" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar b} = ( b_x , b_y ,  b_z )"}}' id="mwLg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {b}}=(b_{x},b_{y},b_{z})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mo stretchy="false">(</mo>
+        <msub>
+          <mi>b</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>x</mi>
+          </mrow>
+        </msub>
+        <mo>,</mo>
+        <msub>
+          <mi>b</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>y</mi>
+          </mrow>
+        </msub>
+        <mo>,</mo>
+        <msub>
+          <mi>b</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>z</mi>
+          </mrow>
+        </msub>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {b}}=(b_{x},b_{y},b_{z})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d484d215849366fc099699ec6dd1255902799c8b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.005ex; width:14.354ex; height:3.176ex;" alt="{\displaystyle {\bar {b}}=(b_{x},b_{y},b_{z})}"/></span> be the cylinder base (or one endpoint),
+<span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt15" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a} = ( a_x ,  a_y ,  a_z )"}}' id="mwLw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}=(a_{x},a_{y},a_{z})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mo stretchy="false">(</mo>
+        <msub>
+          <mi>a</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>x</mi>
+          </mrow>
+        </msub>
+        <mo>,</mo>
+        <msub>
+          <mi>a</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>y</mi>
+          </mrow>
+        </msub>
+        <mo>,</mo>
+        <msub>
+          <mi>a</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>z</mi>
+          </mrow>
+        </msub>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}=(a_{x},a_{y},a_{z})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/19ade0185fa789b6482731e01eb3dca895ee7e19" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.005ex; width:15.118ex; height:3.009ex;" alt="{\displaystyle {\hat {a}}=(a_{x},a_{y},a_{z})}"/></span> be the cylinder axis <a rel="mw:WikiLink" href="./Unit_vector" title="Unit vector" id="mwMA">unit vector</a>,
+cylinder radius <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt16" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"r"}}' id="mwMQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0d1ecb613aa2984f0576f70f86650b7c2a132538" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.049ex; height:1.676ex;" alt="{\displaystyle r}"/></span>, and height (or axis length) <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt17" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"h"}}' id="mwMg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b26be3e694314bc90c3215047e4a2010c6ee184a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.339ex; height:2.176ex;" alt="{\displaystyle h}"/></span>. The cylinder may be in any orientation.</p>
+
+<p id="mwMw">The equation for an infinite cylinder can be written as</p>
+<dl id="mwNA"><dd id="mwNQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt18" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\lVert {\\hat a} \\times ({\\bar p} - {\\bar b}) \\rVert = r"}}' id="mwNg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert =r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>×<!-- × --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mo>=</mo>
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert =r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/59481b312ddf42e1f38ffd86e959b57b5d07b904" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:17.714ex; height:3.009ex;" alt="{\displaystyle \lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert =r}"/></span></dd></dl>
+<p id="mwNw">where <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt19" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p} = (x , \\  y , \\  z )"}}' id="mwOA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}=(x,\ y,\ z)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo>,</mo>
+        <mtext> </mtext>
+        <mi>y</mi>
+        <mo>,</mo>
+        <mtext> </mtext>
+        <mi>z</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}=(x,\ y,\ z)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/4ae4f4ac3133ad81e6e1652af61e93c8d8665e6b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; margin-left: -0.089ex; width:13.159ex; height:2.843ex;" alt="{\displaystyle {\bar {p}}=(x,\ y,\ z)}"/></span> is any point on the cylinder surface. The equation simply states that points <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt20" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p}"}}' id="mwOQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/27bcf72dd4d0cc7bdee4b0ee758d4db57f2a7be6" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; margin-left: -0.089ex; width:1.449ex; height:2.343ex;" alt="{\displaystyle {\bar {p}}}"/></span> are exactly at <a rel="mw:WikiLink" href="./Euclidean_distance" title="Euclidean distance" id="mwOg">Euclidean distance</a> <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt21" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"r"}}' id="mwOw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0d1ecb613aa2984f0576f70f86650b7c2a132538" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.049ex; height:1.676ex;" alt="{\displaystyle r}"/></span> from the axis <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt22" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mwPA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span> starting from point <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt23" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar b}"}}' id="mwPQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/89e44ed80d87353f07b93aa5b68876724e564ff1" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.162ex; height:2.509ex;" alt="{\displaystyle {\bar {b}}}"/></span>, where <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt24" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"r"}}' id="mwPg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0d1ecb613aa2984f0576f70f86650b7c2a132538" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.049ex; height:1.676ex;" alt="{\displaystyle r}"/></span> is measured in units of <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt25" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\lVert{\\hat a}\\rVert"}}' id="mwPw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \lVert {\hat {a}}\rVert }">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \lVert {\hat {a}}\rVert }</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d29428aa5596af7f9ecf1f9abf880602a54db6b6" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:3.555ex; height:2.843ex;" alt="{\displaystyle \lVert {\hat {a}}\rVert }"/></span>. Note that <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt26" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\lVert{\\hat a}\\rVert = 1"}}' id="mwQA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \lVert {\hat {a}}\rVert =1}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mo>=</mo>
+        <mn>1</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \lVert {\hat {a}}\rVert =1}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/95cfd53a6114e95c204feacd64802827b997d1cb" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:7.816ex; height:2.843ex;" alt="{\displaystyle \lVert {\hat {a}}\rVert =1}"/></span> if <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt27" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mwQQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span> is a unit vector. Because both sides of the equation are always positive or zero, we can square it, and eliminate the <a rel="mw:WikiLink" href="./Square_root" title="Square root" id="mwQg">square root</a> operation in the <a rel="mw:WikiLink" href="./Euclidean_norm" title="Euclidean norm" class="mw-redirect" id="mwQw">Euclidean norm</a> on the left side:</p>
+<dl id="mwRA"><dd id="mwRQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt28" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\lVert {\\hat a} \\times ({\\bar p} - {\\bar b}) \\rVert}^2 = r^2"}}' id="mwRg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>a</mi>
+                  <mo stretchy="false">^<!-- ^ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>×<!-- × --></mo>
+            <mo stretchy="false">(</mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>p</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>−<!-- − --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>b</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo stretchy="false">)</mo>
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>=</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d7107b98a4e35029ff94e7204e7c50796281dc0c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:19.822ex; height:3.509ex;" alt="{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}"/></span></dd></dl>
+<p id="mwRw">Point <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt29" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p}"}}' id="mwSA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/27bcf72dd4d0cc7bdee4b0ee758d4db57f2a7be6" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; margin-left: -0.089ex; width:1.449ex; height:2.343ex;" alt="{\displaystyle {\bar {p}}}"/></span> is at signed distance</p>
+<dl id="mwSQ"><dd id="mwSg"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt30" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = {\\hat a} \\cdot ({\\bar p} - {\\bar b})"}}' id="mwSw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t={\hat {a}}\cdot ({\bar {p}}-{\bar {b}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t={\hat {a}}\cdot ({\bar {p}}-{\bar {b}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3c331cc36dfcb9a944769c692ca9f0d586f4f0df" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:14.019ex; height:3.009ex;" alt="{\displaystyle t={\hat {a}}\cdot ({\bar {p}}-{\bar {b}})}"/></span></dd></dl>
+<p id="mwTA">from the base along the axis. Therefore, the two equations defining the cylinder, excluding the end caps, is</p>
+<dl id="mwTQ"><dd id="mwTg"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt31" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\lVert {\\hat a} \\times ({\\bar p} - {\\bar b}) \\rVert}^2 = r^2"}}' id="mwTw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>a</mi>
+                  <mo stretchy="false">^<!-- ^ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>×<!-- × --></mo>
+            <mo stretchy="false">(</mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>p</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>−<!-- − --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>b</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo stretchy="false">)</mo>
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>=</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d7107b98a4e35029ff94e7204e7c50796281dc0c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:19.822ex; height:3.509ex;" alt="{\displaystyle {\lVert {\hat {a}}\times ({\bar {p}}-{\bar {b}})\rVert }^{2}=r^{2}}"/></span></dd>
+<dd id="mwUA"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt32" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"0 \\leq {\\hat a} \\cdot ({\\bar p} - {\\bar b}) \\leq h"}}' id="mwUQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 0\leq {\hat {a}}\cdot ({\bar {p}}-{\bar {b}})\leq h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>0</mn>
+        <mo>≤<!-- ≤ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 0\leq {\hat {a}}\cdot ({\bar {p}}-{\bar {b}})\leq h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/fed7f96b8fbe295ac61b93d36fe38edee7ce83ad" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:18.779ex; height:3.009ex;" alt="{\displaystyle 0\leq {\hat {a}}\cdot ({\bar {p}}-{\bar {b}})\leq h}"/></span></dd></dl>
+
+</section><section data-mw-section-id="2" id="mwUg"><h2 data-mw-wikitext="" id="The_line">The line</h2>
+
+<p id="mwUw">Let <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt33" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p} = {\\hat n} d"}}' id="mwVA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}={\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}={\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/9f37d830fc39828167699126f8963c0eee75e375" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; margin-left: -0.089ex; width:7.158ex; height:2.509ex;" alt="{\displaystyle {\bar {p}}={\hat {n}}d}"/></span> be a line through origin, <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt34" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat n}"}}' id="mwVQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {n}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {n}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d125dccc556f5c8b0bf98a4f3847590b3f353bd4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.395ex; height:2.176ex;" alt="{\displaystyle {\hat {n}}}"/></span> being the unit vector,
+and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt35" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwVg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span> the distance from origin.</p>
+
+<p id="mwVw">If your line does not pass through origin but point <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt36" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar o}"}}' id="mwWA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {o}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>o</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {o}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5d7cd60bbe4b4c5549ff07099af463bd8d7fc1eb" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.292ex; height:2.009ex;" alt="{\displaystyle {\bar {o}}}"/></span>, i.e. your line is <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt37" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar o} + {\\hat n} d"}}' id="mwWQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {o}}+{\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>o</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>+</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {o}}+{\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0a685fd00d79ea0d5af6986cd7389735b09c6e36" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:6.743ex; height:2.343ex;" alt="{\displaystyle {\bar {o}}+{\hat {n}}d}"/></span>,
+replace <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt38" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar b}"}}' id="mwWg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/89e44ed80d87353f07b93aa5b68876724e564ff1" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.162ex; height:2.509ex;" alt="{\displaystyle {\bar {b}}}"/></span> with <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt39" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\bar b}-{\\bar o})"}}' id="mwWw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\bar {b}}-{\bar {o}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>o</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\bar {b}}-{\bar {o}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/052bf249939ade55a76ed56d2c9a436adebbbfc2" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:7.104ex; height:3.009ex;" alt="{\displaystyle ({\bar {b}}-{\bar {o}})}"/></span> everywhere; distance <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt40" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwXA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span> is then the distance from <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt41" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar o}"}}' id="mwXQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {o}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>o</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {o}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5d7cd60bbe4b4c5549ff07099af463bd8d7fc1eb" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.292ex; height:2.009ex;" alt="{\displaystyle {\bar {o}}}"/></span>.</p>
+
+</section><section data-mw-section-id="3" id="mwXg"><h2 data-mw-wikitext="" id="The_intersection_problem">The intersection problem</h2>
+
+<p id="mwXw">The intersection between the line and the cylinder is</p>
+<dl id="mwYA"><dd id="mwYQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt42" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\lVert {\\hat a} \\times ({\\hat n} d - {\\bar b}) \\rVert}^2 = r^2"}}' id="mwYg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\lVert {\hat {a}}\times ({\hat {n}}d-{\bar {b}})\rVert }^{2}=r^{2}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>a</mi>
+                  <mo stretchy="false">^<!-- ^ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>×<!-- × --></mo>
+            <mo stretchy="false">(</mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>n</mi>
+                  <mo stretchy="false">^<!-- ^ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mi>d</mi>
+            <mo>−<!-- − --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>b</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo stretchy="false">)</mo>
+            <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>=</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\lVert {\hat {a}}\times ({\hat {n}}d-{\bar {b}})\rVert }^{2}=r^{2}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/8067512e8bce4a6ece940d267f3296aa13e81456" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:21.073ex; height:3.509ex;" alt="{\displaystyle {\lVert {\hat {a}}\times ({\hat {n}}d-{\bar {b}})\rVert }^{2}=r^{2}}"/></span></dd>
+<dd id="mwYw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt43" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"0 \\leq t \\leq h"}}' id="mwZA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 0\leq t\leq h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>0</mn>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>t</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 0\leq t\leq h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/39cdb6d90bb974f0ac554f88fd8f2ead3c7a70d5" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:9.538ex; height:2.343ex;" alt="{\displaystyle 0\leq t\leq h}"/></span></dd></dl>
+<p id="mwZQ">where the <a rel="mw:WikiLink" href="./Signed_distance_function" title="Signed distance function" id="mwZg">signed distance</a> along the axis <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt44" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwZw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> is</p>
+<dl id="mwaA"><dd id="mwaQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt45" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = {\\hat a} \\cdot ({\\hat n} d - {\\bar b})"}}' id="mwag"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b9394324dede385f4494374da208a6f447786e33" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:15.27ex; height:3.009ex;" alt="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}"/></span></dd></dl>
+
+</section><section data-mw-section-id="4" id="mwaw"><h2 data-mw-wikitext="" id="Solution">Solution</h2>
+
+<p id="mwbA">Rearranging the first equation gives a <a rel="mw:WikiLink" href="./Quadratic_equation" title="Quadratic equation" id="mwbQ">quadratic equation</a> for <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt46" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwbg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>. Solving that for <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt47" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwbw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span> gives</p>
+<dl id="mwcA"><dd id="mwcQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt48" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d = \\frac{({\\hat n}\\times{\\hat a})\\cdot({\\bar b}\\times{\\hat a}) \\pm\\sqrt{ ({\\hat n}\\times{\\hat a})\\cdot({\\hat n}\\times{\\hat a}) r^2 - ({\\hat a}\\cdot{\\hat a})({\\bar b}\\cdot({\\hat n}\\times{\\hat a}))^2}}{({\\hat n}\\times{\\hat a})\\cdot({\\hat n}\\times{\\hat a})}"}}' id="mwcg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d={\frac {({\hat {n}}\times {\hat {a}})\cdot ({\bar {b}}\times {\hat {a}})\pm {\sqrt {({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}}}}{({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mo stretchy="false">(</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>×<!-- × --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo stretchy="false">)</mo>
+              <mo>⋅<!-- ⋅ --></mo>
+              <mo stretchy="false">(</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>b</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>×<!-- × --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo stretchy="false">)</mo>
+              <mo>±<!-- ± --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <msqrt>
+                  <mo stretchy="false">(</mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>n</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo>×<!-- × --></mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>a</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo stretchy="false">)</mo>
+                  <mo>⋅<!-- ⋅ --></mo>
+                  <mo stretchy="false">(</mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>n</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo>×<!-- × --></mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>a</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo stretchy="false">)</mo>
+                  <msup>
+                    <mi>r</mi>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>2</mn>
+                    </mrow>
+                  </msup>
+                  <mo>−<!-- − --></mo>
+                  <mo stretchy="false">(</mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>a</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo>⋅<!-- ⋅ --></mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>a</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo stretchy="false">)</mo>
+                  <mo stretchy="false">(</mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>b</mi>
+                        <mo stretchy="false">¯<!-- ¯ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo>⋅<!-- ⋅ --></mo>
+                  <mo stretchy="false">(</mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>n</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo>×<!-- × --></mo>
+                  <mrow class="MJX-TeXAtom-ORD">
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mover>
+                        <mi>a</mi>
+                        <mo stretchy="false">^<!-- ^ --></mo>
+                      </mover>
+                    </mrow>
+                  </mrow>
+                  <mo stretchy="false">)</mo>
+                  <msup>
+                    <mo stretchy="false">)</mo>
+                    <mrow class="MJX-TeXAtom-ORD">
+                      <mn>2</mn>
+                    </mrow>
+                  </msup>
+                </msqrt>
+              </mrow>
+            </mrow>
+            <mrow>
+              <mo stretchy="false">(</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>×<!-- × --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo stretchy="false">)</mo>
+              <mo>⋅<!-- ⋅ --></mo>
+              <mo stretchy="false">(</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>×<!-- × --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo stretchy="false">)</mo>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d={\frac {({\hat {n}}\times {\hat {a}})\cdot ({\bar {b}}\times {\hat {a}})\pm {\sqrt {({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}}}}{({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7920a0344c0e805517d1182a9763207b84e0f303" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -2.671ex; width:66.408ex; height:8.509ex;" alt="{\displaystyle d={\frac {({\hat {n}}\times {\hat {a}})\cdot ({\bar {b}}\times {\hat {a}})\pm {\sqrt {({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}}}}{({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})}}}"/></span></dd></dl>
+<p id="mwcw">where <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt49" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\hat a}\\cdot{\\hat a}) = 1"}}' id="mwdA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\hat {a}}\cdot {\hat {a}})=1}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>=</mo>
+        <mn>1</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\hat {a}}\cdot {\hat {a}})=1}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f46dd599a97338580e0895abe47a7c0cd55411ea" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:10.209ex; height:2.843ex;" alt="{\displaystyle ({\hat {a}}\cdot {\hat {a}})=1}"/></span> if <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt50" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mwdQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span> is a unit vector. If</p>
+<dl id="mwdg"><dd id="mwdw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt51" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\lVert {\\hat n} \\times {\\hat a} \\rVert = 0"}}' id="mweA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \lVert {\hat {n}}\times {\hat {a}}\rVert =0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>×<!-- × --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+        <mo>=</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \lVert {\hat {n}}\times {\hat {a}}\rVert =0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2ea1c1f68349121cb850a1699c50fadf38d41a42" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:12.051ex; height:2.843ex;" alt="{\displaystyle \lVert {\hat {n}}\times {\hat {a}}\rVert =0}"/></span></dd></dl>
+<p id="mweQ">the line is parallel to the axis, and there is no intersection, or the intersection is a line. If</p>
+<dl id="mweg"><dd id="mwew"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt52" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\hat n}\\times{\\hat a})\\cdot({\\hat n}\\times{\\hat a}) r^2 - ({\\hat a}\\cdot{\\hat a})({\\bar b}\\cdot({\\hat n}\\times{\\hat a}))^2 &lt; 0"}}' id="mwfA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}&lt;0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>×<!-- × --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>×<!-- × --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>−<!-- − --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>×<!-- × --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <msup>
+          <mo stretchy="false">)</mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>&lt;</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}&lt;0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/cde5d0cf8a70bc90cd9f8373ea293672e10dc317" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:44.359ex; height:3.176ex;" alt="{\displaystyle ({\hat {n}}\times {\hat {a}})\cdot ({\hat {n}}\times {\hat {a}})r^{2}-({\hat {a}}\cdot {\hat {a}})({\bar {b}}\cdot ({\hat {n}}\times {\hat {a}}))^{2}&lt;0}"/></span></dd></dl>
+<p id="mwfQ">the line does not intersect the cylinder.</p>
+
+<p id="mwfg">Solving <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt53" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwfw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span> only gives you the distance at which the line intersects the <i id="mwgA">infinite</i> cylinder. To see if the intersection occurs within the part we consider the actual cylinder, we need to check if the signed distance <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt54" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwgQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> from the cylinder base <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt55" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar b}"}}' id="mwgg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/89e44ed80d87353f07b93aa5b68876724e564ff1" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.162ex; height:2.509ex;" alt="{\displaystyle {\bar {b}}}"/></span> along the axis <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt56" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mwgw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span> to the intersection <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt57" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p} = {\\hat n} d"}}' id="mwhA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}={\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}={\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/9f37d830fc39828167699126f8963c0eee75e375" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; margin-left: -0.089ex; width:7.158ex; height:2.509ex;" alt="{\displaystyle {\bar {p}}={\hat {n}}d}"/></span> is within zero and the length of the cylinder:</p>
+<dl id="mwhQ"><dd id="mwhg"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt58" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"0 \\le t \\le h"}}' id="mwhw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 0\leq t\leq h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>0</mn>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>t</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 0\leq t\leq h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/39cdb6d90bb974f0ac554f88fd8f2ead3c7a70d5" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:9.538ex; height:2.343ex;" alt="{\displaystyle 0\leq t\leq h}"/></span></dd></dl>
+<p id="mwiA">where <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt59" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwiQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> is still</p>
+<dl id="mwig"><dd id="mwiw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt60" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = {\\hat a} \\cdot ({\\hat n} d - {\\bar b})"}}' id="mwjA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b9394324dede385f4494374da208a6f447786e33" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:15.27ex; height:3.009ex;" alt="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}"/></span></dd></dl>
+
+</section><section data-mw-section-id="5" id="mwjQ"><h2 data-mw-wikitext="" id="End_caps">End caps</h2>
+
+<p id="mwjg">The above assumes that the cylinder does not have end caps; they must be checked for separately.
+The seam where the end cap meets the cylinder is assumed to belong to the cylinder, and is excluded from the end cap.</p>
+
+<section data-mw-section-id="6" id="mwjw"><h3 data-mw-wikitext="" id="Hemispherical_end_caps">Hemispherical end caps</h3>
+
+<p id="mwkA">Hemispherical end caps are just half-spheres at both ends of the cylinder. This object is sometimes called a capsule,
+or possibly fixed-radius linearly-swept sphere.</p>
+
+<p id="mwkQ">Cylinder height <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt61" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"h"}}' id="mwkg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b26be3e694314bc90c3215047e4a2010c6ee184a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.339ex; height:2.176ex;" alt="{\displaystyle h}"/></span> does not include the end caps. If <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt62" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"H"}}' id="mwkw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle H}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>H</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle H}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/75a9edddcca2f782014371f75dca39d7e13a9c1b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:2.064ex; height:2.176ex;" alt="{\displaystyle H}"/></span> is the cylinder height including both hemispherical end caps, then <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt63" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"h = H - 2 r"}}' id="mwlA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle h=H-2r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>h</mi>
+        <mo>=</mo>
+        <mi>H</mi>
+        <mo>−<!-- − --></mo>
+        <mn>2</mn>
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle h=H-2r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/de7cad53517a49787ad0fa227880ac8ef31c9855" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:11.553ex; height:2.343ex;" alt="{\displaystyle h=H-2r}"/></span>.</p>
+
+<p id="mwlQ">Check if the line <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt64" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar p} = {\\hat n} d"}}' id="mwlg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {p}}={\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>p</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {p}}={\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/9f37d830fc39828167699126f8963c0eee75e375" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; margin-left: -0.089ex; width:7.158ex; height:2.509ex;" alt="{\displaystyle {\bar {p}}={\hat {n}}d}"/></span> intersects
+either sphere: center <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt65" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar c} = {\\bar b}"}}' id="mwlw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {c}}={\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {c}}={\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/4b08f8ff26f5b237c0b2f6444271e11ff5cbb35c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.553ex; height:2.509ex;" alt="{\displaystyle {\bar {c}}={\bar {b}}}"/></span> or <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt66" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar c} = {\\bar b} + {\\hat a} h"}}' id="mwmA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>+</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/de8c8336fb133c433e6881f2afb418a81db9047a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:10.962ex; height:2.676ex;" alt="{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}"/></span> and radius <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt67" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"r"}}' id="mwmQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0d1ecb613aa2984f0576f70f86650b7c2a132538" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.049ex; height:1.676ex;" alt="{\displaystyle r}"/></span>:</p>
+<dl id="mwmg"><dd id="mwmw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt68" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d = {\\hat n}\\cdot{\\bar c} \\pm \\sqrt{({\\hat n}\\cdot{\\bar c})^2 + r^2 - ({\\bar c}\\cdot{\\bar c})}"}}' id="mwnA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d={\hat {n}}\cdot {\bar {c}}\pm {\sqrt {({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>±<!-- ± --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <msqrt>
+            <mo stretchy="false">(</mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>n</mi>
+                  <mo stretchy="false">^<!-- ^ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>⋅<!-- ⋅ --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>c</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <msup>
+              <mo stretchy="false">)</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+            <mo>+</mo>
+            <msup>
+              <mi>r</mi>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mn>2</mn>
+              </mrow>
+            </msup>
+            <mo>−<!-- − --></mo>
+            <mo stretchy="false">(</mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>c</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo>⋅<!-- ⋅ --></mo>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mrow class="MJX-TeXAtom-ORD">
+                <mover>
+                  <mi>c</mi>
+                  <mo stretchy="false">¯<!-- ¯ --></mo>
+                </mover>
+              </mrow>
+            </mrow>
+            <mo stretchy="false">)</mo>
+          </msqrt>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d={\hat {n}}\cdot {\bar {c}}\pm {\sqrt {({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2dda3356944d96f9ed7dc2a74455c8f8e5e7c2c3" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.671ex; width:34.928ex; height:4.843ex;" alt="{\displaystyle d={\hat {n}}\cdot {\bar {c}}\pm {\sqrt {({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})}}}"/></span></dd></dl>
+<p id="mwnQ">If</p>
+<dl id="mwng"><dd id="mwnw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt69" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\hat n}\\cdot{\\bar c})^2 + r^2 - ({\\bar c}\\cdot{\\bar c}) &lt; 0"}}' id="mwoA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})&lt;0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <msup>
+          <mo stretchy="false">)</mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>+</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mo>−<!-- − --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>&lt;</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})&lt;0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/cd58d2182fdf5bf8381868bcab8effd6dc4a1f90" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:25.345ex; height:3.176ex;" alt="{\displaystyle ({\hat {n}}\cdot {\bar {c}})^{2}+r^{2}-({\bar {c}}\cdot {\bar {c}})&lt;0}"/></span></dd></dl>
+<p id="mwoQ">the line does not intersect the end cap sphere.</p>
+
+<p id="mwog">If there are solutions <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt70" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwow"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>, accept only those that hit the actual end cap hemisphere:</p>
+<dl id="mwpA"><dd id="mwpQ"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt71" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"-r \\le t &lt; 0"}}' id="mwpg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle -r\leq t&lt;0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo>−<!-- − --></mo>
+        <mi>r</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>t</mi>
+        <mo>&lt;</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle -r\leq t&lt;0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a2c96b4b59d0503b41e4b47c6d9884fe3a4e6c2d" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:11.056ex; height:2.343ex;" alt="{\displaystyle -r\leq t&lt;0}"/></span> <span typeof="mw:Entity" id="mwpw"> </span> or <span typeof="mw:Entity" id="mwqA"> </span> <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt72" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"h &lt; t \\le h+r"}}' id="mwqQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle h&lt;t\leq h+r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>h</mi>
+        <mo>&lt;</mo>
+        <mi>t</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+        <mo>+</mo>
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle h&lt;t\leq h+r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b886c6d35aff0c64e917a1c0bab0413aa9d2efc9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:13.604ex; height:2.343ex;" alt="{\displaystyle h&lt;t\leq h+r}"/></span></dd></dl>
+<p id="mwqg">where, once again,</p>
+<dl id="mwqw"><dd id="mwrA"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt73" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = {\\hat a} \\cdot ({\\hat n} d - {\\bar b})"}}' id="mwrQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b9394324dede385f4494374da208a6f447786e33" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:15.27ex; height:3.009ex;" alt="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}"/></span></dd></dl>
+
+</section><section data-mw-section-id="7" id="mwrg"><h3 data-mw-wikitext="" id="Planar_end_caps">Planar end caps</h3>
+
+<p id="mwrw">Planar end caps are circular regions, radius <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt74" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"r"}}' id="mwsA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0d1ecb613aa2984f0576f70f86650b7c2a132538" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.049ex; height:1.676ex;" alt="{\displaystyle r}"/></span>, in planes centered at <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt75" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar c} = {\\bar b}"}}' id="mwsQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {c}}={\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {c}}={\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/4b08f8ff26f5b237c0b2f6444271e11ff5cbb35c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.553ex; height:2.509ex;" alt="{\displaystyle {\bar {c}}={\bar {b}}}"/></span> and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt76" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar c} = {\\bar b} + {\\hat a}h"}}' id="mwsg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>+</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/de8c8336fb133c433e6881f2afb418a81db9047a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:10.962ex; height:2.676ex;" alt="{\displaystyle {\bar {c}}={\bar {b}}+{\hat {a}}h}"/></span>, with unit normal vectors <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt77" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"-{\\hat a}"}}' id="mwsw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle -{\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle -{\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/1867f2d81469b96dffa2183cdbd8c98b89dd2221" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:3.038ex; height:2.343ex;" alt="{\displaystyle -{\hat {a}}}"/></span> and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt78" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mwtA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span>, respectively. The line <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt79" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat n}d"}}' id="mwtQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c05730214b97db7f88fa7ef11c75f4ac7aece03" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:2.611ex; height:2.176ex;" alt="{\displaystyle {\hat {n}}d}"/></span> intersects the plane if and only if</p>
+<dl id="mwtg"><dd id="mwtw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt80" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\hat n} d - {\\bar c}) \\cdot {\\hat a} = 0"}}' id="mwuA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot {\hat {a}}=0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot {\hat {a}}=0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a3cbaaaceb6a10e00155bab31bed7c65848752c2" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:15.722ex; height:2.843ex;" alt="{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot {\hat {a}}=0}"/></span></dd></dl>
+<p id="mwuQ">Solving d is simple,</p>
+<dl id="mwug"><dd id="mwuw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt81" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d = \\frac{ {\\hat a} \\cdot {\\bar c} }{ {\\hat a} \\cdot {\\hat n} }"}}' id="mwvA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d={\frac {{\hat {a}}\cdot {\bar {c}}}{{\hat {a}}\cdot {\hat {n}}}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>⋅<!-- ⋅ --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>c</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+            </mrow>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>⋅<!-- ⋅ --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d={\frac {{\hat {a}}\cdot {\bar {c}}}{{\hat {a}}\cdot {\hat {n}}}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ec88a8a32a54cfdfa6c38d828c1bc0df7fe27e42" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -2.005ex; width:9.454ex; height:5.509ex;" alt="{\displaystyle d={\frac {{\hat {a}}\cdot {\bar {c}}}{{\hat {a}}\cdot {\hat {n}}}}}"/></span></dd></dl>
+<p id="mwvQ">Note that if</p>
+<dl id="mwvg"><dd id="mwvw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt82" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a} \\cdot {\\hat n} = 0"}}' id="mwwA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}\cdot {\hat {n}}=0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}\cdot {\hat {n}}=0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f70836b7d5e4b24a5a83fb6231dc9bff2884ec52" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:8.565ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}\cdot {\hat {n}}=0}"/></span></dd></dl>
+<p id="mwwQ">the line is parallel to the end cap plane (and also perpendicular to the cylinder axis). Finally, if and only if</p>
+<dl id="mwwg"><dd id="mwww"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt83" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"({\\hat n} d - {\\bar c}) \\cdot ({\\hat n} d - {\\bar c}) &lt; r^2"}}' id="mwxA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot ({\hat {n}}d-{\bar {c}})&lt;r^{2}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>c</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+        <mo>&lt;</mo>
+        <msup>
+          <mi>r</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot ({\hat {n}}d-{\bar {c}})&lt;r^{2}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/63e6e7f9ab4a0196119dc39299ef3f04c8affc25" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:23.984ex; height:3.176ex;" alt="{\displaystyle ({\hat {n}}d-{\bar {c}})\cdot ({\hat {n}}d-{\bar {c}})&lt;r^{2}}"/></span></dd></dl>
+<p id="mwxQ">the intersection point <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt84" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat n}d"}}' id="mwxg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c05730214b97db7f88fa7ef11c75f4ac7aece03" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:2.611ex; height:2.176ex;" alt="{\displaystyle {\hat {n}}d}"/></span> is within the actual end cap (the circular region in the plane).</p>
+
+</section></section><section data-mw-section-id="8" id="mwxw"><h2 data-mw-wikitext="" id="Unit_normal_vector_at_an_intersection_point">Unit normal vector at an intersection point</h2>
+
+<p id="mwyA">One of the many applications for this algorithm is in <a rel="mw:WikiLink" href="./Ray_tracing_(graphics)" title="Ray tracing (graphics)" id="mwyQ">ray tracing</a>, where the cylinder unit normal vector <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt85" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v}"}}' id="mwyg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2790b6cafab4cc0f98a9ae8beb550947e60062f1" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.227ex; height:2.176ex;" alt="{\displaystyle {\hat {v}}}"/></span> at the intersection <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt86" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat n} d"}}' id="mwyw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c05730214b97db7f88fa7ef11c75f4ac7aece03" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:2.611ex; height:2.176ex;" alt="{\displaystyle {\hat {n}}d}"/></span> is needed for refracted and reflected rays and lighting.</p>
+
+<p id="mwzA">The equations below use the signed distance <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt87" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwzQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> to the intersection point <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt88" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat n} d"}}' id="mwzg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {n}}d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {n}}d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/7c05730214b97db7f88fa7ef11c75f4ac7aece03" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:2.611ex; height:2.176ex;" alt="{\displaystyle {\hat {n}}d}"/></span> from base <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt89" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\bar b}"}}' id="mwzw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\bar {b}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\bar {b}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/89e44ed80d87353f07b93aa5b68876724e564ff1" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.162ex; height:2.509ex;" alt="{\displaystyle {\bar {b}}}"/></span> along the axis <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt90" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat a}"}}' id="mw0A"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/233a5bda7c263f804b049be11c03d12e3d65103a" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.23ex; height:2.176ex;" alt="{\displaystyle {\hat {a}}}"/></span>, which is always</p>
+<dl id="mw0Q"><dd id="mw0g"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt91" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = {\\hat a} \\cdot ({\\hat n} d - {\\bar b})"}}' id="mw0w"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>⋅<!-- ⋅ --></mo>
+        <mo stretchy="false">(</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>n</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mi>d</mi>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>b</mi>
+              <mo stretchy="false">¯<!-- ¯ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b9394324dede385f4494374da208a6f447786e33" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:15.27ex; height:3.009ex;" alt="{\displaystyle t={\hat {a}}\cdot ({\hat {n}}d-{\bar {b}})}"/></span></dd></dl>
+
+<p id="mw1A">For the cylinder surface (excluding the end caps, but including the seam), <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt92" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"0 \\le t \\le h"}}' id="mw1Q"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 0\leq t\leq h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>0</mn>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>t</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 0\leq t\leq h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/39cdb6d90bb974f0ac554f88fd8f2ead3c7a70d5" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:9.538ex; height:2.343ex;" alt="{\displaystyle 0\leq t\leq h}"/></span>:</p>
+<dl id="mw1g"><dd id="mw1w"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt93" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v} = \\frac{ {\\hat n} d - {\\hat a} t - {\\bar b} }{ \\lVert {\\hat n} d - {\\hat a} t - {\\bar b} \\rVert }"}}' id="mw2A"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\hat {a}}t-{\bar {b}}}{\lVert {\hat {n}}d-{\hat {a}}t-{\bar {b}}\rVert }}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>d</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>t</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>b</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+            </mrow>
+            <mrow>
+              <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>d</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>t</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>b</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo fence="false" stretchy="false">‖<!-- ‖ --></mo>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\hat {a}}t-{\bar {b}}}{\lVert {\hat {n}}d-{\hat {a}}t-{\bar {b}}\rVert }}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ef0beff2c67356d086c95f36fbb9c1fc8faf848f" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -2.838ex; width:19.01ex; height:6.676ex;" alt="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\hat {a}}t-{\bar {b}}}{\lVert {\hat {n}}d-{\hat {a}}t-{\bar {b}}\rVert }}}"/></span></dd></dl>
+
+<p id="mw2Q">For a spherical end cap at the base, <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt94" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"-r \\le t &lt; 0"}}' id="mw2g"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle -r\leq t&lt;0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mo>−<!-- − --></mo>
+        <mi>r</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>t</mi>
+        <mo>&lt;</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle -r\leq t&lt;0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a2c96b4b59d0503b41e4b47c6d9884fe3a4e6c2d" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:11.056ex; height:2.343ex;" alt="{\displaystyle -r\leq t&lt;0}"/></span>:</p>
+<dl id="mw2w"><dd id="mw3A"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt95" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v} = \\frac{ {\\hat n} d - {\\bar b} }{ r }"}}' id="mw3Q"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}}{r}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>d</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>b</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+            </mrow>
+            <mi>r</mi>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}}{r}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2457da3b48592fe3cb2061391244aa9738d9afba" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.838ex; width:11.775ex; height:5.676ex;" alt="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}}{r}}}"/></span></dd></dl>
+<p id="mw3g">for a spherical end cap at the other end, <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt96" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"h &lt; t \\le h + r"}}' id="mw3w"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle h&lt;t\leq h+r}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>h</mi>
+        <mo>&lt;</mo>
+        <mi>t</mi>
+        <mo>≤<!-- ≤ --></mo>
+        <mi>h</mi>
+        <mo>+</mo>
+        <mi>r</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle h&lt;t\leq h+r}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b886c6d35aff0c64e917a1c0bab0413aa9d2efc9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:13.604ex; height:2.343ex;" alt="{\displaystyle h&lt;t\leq h+r}"/></span>:</p>
+<dl id="mw4A"><dd id="mw4Q"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt97" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v} = \\frac{ {\\hat n} d - {\\bar b} - {\\hat a} h }{ r }"}}' id="mw4g"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}-{\hat {a}}h}{r}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>n</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>d</mi>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>b</mi>
+                    <mo stretchy="false">¯<!-- ¯ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mo>−<!-- − --></mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mover>
+                    <mi>a</mi>
+                    <mo stretchy="false">^<!-- ^ --></mo>
+                  </mover>
+                </mrow>
+              </mrow>
+              <mi>h</mi>
+            </mrow>
+            <mi>r</mi>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}-{\hat {a}}h}{r}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a17e12e165ca90aecfec02b6581d05ff023d094f" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.838ex; width:17.184ex; height:5.676ex;" alt="{\displaystyle {\hat {v}}={\frac {{\hat {n}}d-{\bar {b}}-{\hat {a}}h}{r}}}"/></span></dd></dl>
+
+<p id="mw4w">For a planar end cap at the base, <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt98" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = 0"}}' id="mw5A"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t=0}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mn>0</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t=0}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/43469ec032d858feae5aa87029e22eaaf0109e9c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.101ex; height:2.176ex;" alt="{\displaystyle t=0}"/></span>:</p>
+<dl id="mw5Q"><dd id="mw5g"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt99" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v} = -{\\hat a}"}}' id="mw5w"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}=-{\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mo>−<!-- − --></mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}=-{\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/0e12f8c6475942fbe1964b5f2e21005bab677b1b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:7.363ex; height:2.343ex;" alt="{\displaystyle {\hat {v}}=-{\hat {a}}}"/></span></dd></dl>
+<p id="mw6A">for a planar end cap at the other end, <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt100" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t = h"}}' id="mw6Q"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t=h}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>=</mo>
+        <mi>h</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t=h}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/26e5b8f1e5a88e465c16e7642224a510671b8477" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.277ex; height:2.176ex;" alt="{\displaystyle t=h}"/></span>:</p>
+<dl id="mw6g"><dd id="mw6w"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt101" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"{\\hat v} = {\\hat a}"}}' id="mw7A"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\hat {v}}={\hat {a}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>v</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mrow class="MJX-TeXAtom-ORD">
+            <mover>
+              <mi>a</mi>
+              <mo stretchy="false">^<!-- ^ --></mo>
+            </mover>
+          </mrow>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\hat {v}}={\hat {a}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/183b7bd0e7e9b99d869f14b2c33330cf73ed0fe9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.555ex; height:2.176ex;" alt="{\displaystyle {\hat {v}}={\hat {a}}}"/></span></dd></dl>
+
+</section><section data-mw-section-id="9" id="mw7Q"><h2 data-mw-wikitext="" id="See_also">See also</h2>
+<ul id="mw7g"><li id="mw7w"><a rel="mw:WikiLink" href="./Line–sphere_intersection" title="Line–sphere intersection" id="mw8A">Line–sphere intersection</a></li>
+<li id="mw8Q"><a rel="mw:WikiLink" href="./Line–plane_intersection" title="Line–plane intersection" id="mw8g">Line–plane intersection</a></li>
+<li id="mw8w"><a rel="mw:WikiLink" href="./Intersection_(geometry)" title="Intersection (geometry)" id="mw9A">Intersection (geometry)</a></li></ul>
+
+</section><section data-mw-section-id="10" id="mw9Q"><h2 data-mw-wikitext="" id="References">References</h2>
+<span class="mw-empty-elt" about="#mwt102" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"reflist","href":"./Template:Reflist"},"params":{},"i":0}}]}' id="mw9g"><style data-mw-deduplicate="TemplateStyles:r1327269900" typeof="mw:Extension/templatestyles" about="#mwt103" data-mw='{"name":"templatestyles","attrs":{"src":"Reflist/styles.css"}}'>.mw-parser-output .reflist-columns-2{column-width:30em}.mw-parser-output .reflist-columns-3{column-width:25em}body.skin-vector-2022 .mw-parser-output .reflist-columns-2{column-width:27em}body.skin-vector-2022 .mw-parser-output .reflist-columns-3{column-width:22.5em}.mw-parser-output .references[data-mw-group=upper-alpha]{list-style-type:upper-alpha}.mw-parser-output .references[data-mw-group=upper-roman]{list-style-type:upper-roman}.mw-parser-output .references[data-mw-group=lower-alpha]{list-style-type:lower-alpha}.mw-parser-output .references[data-mw-group=lower-greek]{list-style-type:lower-greek}.mw-parser-output .references[data-mw-group=lower-roman]{list-style-type:lower-roman}.mw-parser-output div.reflist-liststyle-upper-alpha .references{list-style-type:upper-alpha}.mw-parser-output div.reflist-liststyle-upper-roman .references{list-style-type:upper-roman}.mw-parser-output div.reflist-liststyle-lower-alpha .references{list-style-type:lower-alpha}.mw-parser-output div.reflist-liststyle-lower-greek .references{list-style-type:lower-greek}.mw-parser-output div.reflist-liststyle-lower-roman .references{list-style-type:lower-roman}</style></span><div about="#mwt102" id="mw9w">
+<div class="mw-references-wrap" typeof="mw:Extension/references" about="#mwt104" data-mw='{"name":"references","attrs":{"group":"","responsive":"1"},"body":{"extsrc":""}}' id="mw-A"><ol class="mw-references references" id="mw-Q"><li about="#cite_note-1" id="cite_note-1" data-mw-footnote-number="1"><span class="mw-cite-backlink" id="mw-g"><a href="./Line-cylinder_intersection#cite_ref-1" rel="mw:referencedBy" id="mw-w"><span class="mw-linkback-text" id="mw_A">↑</span></a></span> <span id="mw-reference-text-cite_note-1" class="mw-reference-text reference-text"><style data-mw-deduplicate="TemplateStyles:r1333433106" typeof="mw:Extension/templatestyles mw:Transclusion" about="#mwt2" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite book ","href":"./Template:Cite_book"},"params":{"last":{"wt":"Narrien"},"first":{"wt":"John"},"date":{"wt":"1846"},"title":{"wt":"Analytical Geometry with the Properties of Conic Sections"},"location":{"wt":"London"},"publisher":{"wt":"Longman, Brown, Green, and Longmans"},"isbn":{"wt":""},"chapter-url":{"wt":"https://books.google.com/books?id=6h9kAAAAcAAJ&amp;dq=%22Thus+a+straight+line+can+cut+a+curve+surface+of+the+second+order+in+only+two+points%22&amp;pg=PA156"},"access-date":{"wt":"December 12, 2023"},"chapter":{"wt":"Chap. VI"},"page":{"wt":"156"},"quote":{"wt":"...Thus a straight line can cut a curve surface of the second order in only two points..."}},"i":0}}]}' id="mw_Q">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:"\"""\"""'""'"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url("//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url("//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url("//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url("//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><cite id="CITEREFNarrien1846" class="citation book cs1" about="#mwt2">Narrien, John (1846). <a rel="mw:ExtLink nofollow" href="https://books.google.com/books?id=6h9kAAAAcAAJ&amp;dq=%22Thus+a+straight+line+can+cut+a+curve+surface+of+the+second+order+in+only+two+points%22&amp;pg=PA156" class="external text" id="mw_g">"Chap. VI"</a>. <i id="mw_w">Analytical Geometry with the Properties of Conic Sections</i>. London: Longman, Brown, Green, and Longmans. p.<span typeof="mw:Entity" id="mwAQA"> </span>156<span class="reference-accessdate" id="mwAQE">. Retrieved <span class="nowrap" id="mwAQI">December 12,</span> 2023</span>. <q id="mwAQM">...Thus a straight line can cut a curve surface of the second order in only two points...</q></cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=Chap.+VI&amp;rft.btitle=Analytical+Geometry+with+the+Properties+of+Conic+Sections&amp;rft.place=London&amp;rft.pages=156&amp;rft.pub=Longman%2C+Brown%2C+Green%2C+and+Longmans&amp;rft.date=1846&amp;rft.aulast=Narrien&amp;rft.aufirst=John&amp;rft_id=https%3A%2F%2Fbooks.google.com%2Fbooks%3Fid%3D6h9kAAAAcAAJ%26dq%3D%2522Thus%2Ba%2Bstraight%2Bline%2Bcan%2Bcut%2Ba%2Bcurve%2Bsurface%2Bof%2Bthe%2Bsecond%2Border%2Bin%2Bonly%2Btwo%2Bpoints%2522%26pg%3DPA156&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ALine-cylinder+intersection" class="Z3988" about="#mwt2" id="mwAQQ"></span></span></li>
+<li about="#cite_note-2" id="cite_note-2" data-mw-footnote-number="2"><span class="mw-cite-backlink" id="mwAQU"><a href="./Line-cylinder_intersection#cite_ref-2" rel="mw:referencedBy" id="mwAQY"><span class="mw-linkback-text" id="mwAQc">↑</span></a></span> <span id="mw-reference-text-cite_note-2" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt5" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite book ","href":"./Template:Cite_book"},"params":{"last":{"wt":"Shene"},"first":{"wt":"Ching-Kuang"},"date":{"wt":"1994"},"editor-last":{"wt":"Heckbert"},"editor-first":{"wt":"Paul"},"title":{"wt":"Graphics Gems IV"},"publisher":{"wt":"AP Professional, Boston"},"pages":{"wt":"353–355"},"chapter":{"wt":"Computing the intersection of a line and a cylinder (Chapter V.1)"},"isbn":{"wt":"9780123361561"},"chapter-url":{"wt":"https://books.google.com/books?id=brDfBAAAQBAJ&amp;dq=%22Computing%20the%20intersection%20of%20a%20line%20and%20a%20cylinder%22&amp;pg=PA354"},"access-date":{"wt":"December 12, 2023"}},"i":0}}]}' id="mwAQg"/><cite id="CITEREFShene1994" class="citation book cs1" about="#mwt5">Shene, Ching-Kuang (1994). <a rel="mw:ExtLink nofollow" href="https://books.google.com/books?id=brDfBAAAQBAJ&amp;dq=%22Computing%20the%20intersection%20of%20a%20line%20and%20a%20cylinder%22&amp;pg=PA354" class="external text" id="mwAQk">"Computing the intersection of a line and a cylinder (Chapter V.1)"</a>. In Heckbert, Paul (ed.). <i id="mwAQo">Graphics Gems IV</i>. AP Professional, Boston. pp.<span typeof="mw:Entity" id="mwAQs"> </span><span class="nowrap" id="mwAQw">353–</span>355. <a rel="mw:WikiLink" href="./ISBN_(identifier)" title="ISBN (identifier)" class="mw-redirect" id="mwAQ0">ISBN</a><span typeof="mw:Entity" id="mwAQ4"> </span><a rel="mw:WikiLink" href="./Special:BookSources/9780123361561" title="Special:BookSources/9780123361561" id="mwAQ8"><bdi id="mwARA">9780123361561</bdi></a><span class="reference-accessdate" id="mwARE">. Retrieved <span class="nowrap" id="mwARI">December 12,</span> 2023</span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=Computing+the+intersection+of+a+line+and+a+cylinder+%28Chapter+V.1%29&amp;rft.btitle=Graphics+Gems+IV&amp;rft.pages=353-355&amp;rft.pub=AP+Professional%2C+Boston&amp;rft.date=1994&amp;rft.isbn=9780123361561&amp;rft.aulast=Shene&amp;rft.aufirst=Ching-Kuang&amp;rft_id=https%3A%2F%2Fbooks.google.com%2Fbooks%3Fid%3DbrDfBAAAQBAJ%26dq%3D%2522Computing%2520the%2520intersection%2520of%2520a%2520line%2520and%2520a%2520cylinder%2522%26pg%3DPA354&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ALine-cylinder+intersection" class="Z3988" about="#mwt5" id="mwARM"></span></span></li>
+<li about="#cite_note-3" id="cite_note-3" data-mw-footnote-number="3"><span class="mw-cite-backlink" id="mwARQ"><a href="./Line-cylinder_intersection#cite_ref-3" rel="mw:referencedBy" id="mwARU"><span class="mw-linkback-text" id="mwARY">↑</span></a></span> <span id="mw-reference-text-cite_note-3" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt8" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite book ","href":"./Template:Cite_book"},"params":{"last1":{"wt":"Cychosz"},"first1":{"wt":"Joseph M."},"last2":{"wt":"Waggenspack"},"first2":{"wt":"Warren N. Jr."},"date":{"wt":"1994"},"editor-last":{"wt":"Heckbert"},"editor-first":{"wt":"Paul"},"title":{"wt":"Graphics Gems IV"},"publisher":{"wt":"AP Professional, Boston"},"pages":{"wt":"356–365"},"chapter":{"wt":"Intersecting a Ray with a Cylinder (Chapter V.2)"},"isbn":{"wt":"9780123361561"},"chapter-url":{"wt":"https://books.google.com/books?id=CCqzMm_-WucC&amp;dq=%22Intersecting%20a%20Ray%20with%20a%20Cylinder%22&amp;pg=PA356"},"access-date":{"wt":"December 12, 2023"}},"i":0}}]}' id="mwARc"/><cite id="CITEREFCychoszWaggenspack1994" class="citation book cs1" about="#mwt8">Cychosz, Joseph M.; Waggenspack, Warren N. Jr. (1994). <a rel="mw:ExtLink nofollow" href="https://books.google.com/books?id=CCqzMm_-WucC&amp;dq=%22Intersecting%20a%20Ray%20with%20a%20Cylinder%22&amp;pg=PA356" class="external text" id="mwARg">"Intersecting a Ray with a Cylinder (Chapter V.2)"</a>. In Heckbert, Paul (ed.). <i id="mwARk">Graphics Gems IV</i>. AP Professional, Boston. pp.<span typeof="mw:Entity" id="mwARo"> </span><span class="nowrap" id="mwARs">356–</span>365. <a rel="mw:WikiLink" href="./ISBN_(identifier)" title="ISBN (identifier)" class="mw-redirect" id="mwARw">ISBN</a><span typeof="mw:Entity" id="mwAR0"> </span><a rel="mw:WikiLink" href="./Special:BookSources/9780123361561" title="Special:BookSources/9780123361561" id="mwAR4"><bdi id="mwAR8">9780123361561</bdi></a><span class="reference-accessdate" id="mwASA">. Retrieved <span class="nowrap" id="mwASE">December 12,</span> 2023</span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=Intersecting+a+Ray+with+a+Cylinder+%28Chapter+V.2%29&amp;rft.btitle=Graphics+Gems+IV&amp;rft.pages=356-365&amp;rft.pub=AP+Professional%2C+Boston&amp;rft.date=1994&amp;rft.isbn=9780123361561&amp;rft.aulast=Cychosz&amp;rft.aufirst=Joseph+M.&amp;rft.au=Waggenspack%2C+Warren+N.+Jr.&amp;rft_id=https%3A%2F%2Fbooks.google.com%2Fbooks%3Fid%3DCCqzMm_-WucC%26dq%3D%2522Intersecting%2520a%2520Ray%2520with%2520a%2520Cylinder%2522%26pg%3DPA356&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ALine-cylinder+intersection" class="Z3988" about="#mwt8" id="mwASI"></span></span></li>
+<li about="#cite_note-4" id="cite_note-4" data-mw-footnote-number="4"><span class="mw-cite-backlink" id="mwASM"><a href="./Line-cylinder_intersection#cite_ref-4" rel="mw:referencedBy" id="mwASQ"><span class="mw-linkback-text" id="mwASU">↑</span></a></span> <span id="mw-reference-text-cite_note-4" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt11" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal ","href":"./Template:Cite_journal"},"params":{"last":{"wt":"Held"},"first":{"wt":"Martin"},"date":{"wt":"1997"},"title":{"wt":"ERIT—A Collection of Efficient and Reliable Intersection Tests"},"url":{"wt":""},"journal":{"wt":"Journal of Graphics Tools"},"volume":{"wt":"2"},"issue":{"wt":"4"},"pages":{"wt":"25–44"},"doi":{"wt":"10.1080/10867651.1997.10487482"}},"i":0}}]}' id="mwASY"/><cite id="CITEREFHeld1997" class="citation journal cs1" about="#mwt11">Held, Martin (1997). "ERIT—A Collection of Efficient and Reliable Intersection Tests". <i id="mwASc">Journal of Graphics Tools</i>. <b id="mwASg">2</b> (4): <span class="nowrap" id="mwASk">25–</span>44. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect" id="mwASo">doi</a>:<a rel="mw:ExtLink nofollow" href="https://doi.org/10.1080%2F10867651.1997.10487482" class="external text" id="mwASs">10.1080/10867651.1997.10487482</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Journal+of+Graphics+Tools&amp;rft.atitle=ERIT%E2%80%94A+Collection+of+Efficient+and+Reliable+Intersection+Tests&amp;rft.volume=2&amp;rft.issue=4&amp;rft.pages=25-44&amp;rft.date=1997&amp;rft_id=info%3Adoi%2F10.1080%2F10867651.1997.10487482&amp;rft.aulast=Held&amp;rft.aufirst=Martin&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ALine-cylinder+intersection" class="Z3988" about="#mwt11" id="mwASw"></span></span></li>
+</ol></div></div>
+
+</section><section data-mw-section-id="11" id="mwAS0"><h2 data-mw-wikitext="" id="External_links">External links</h2>
+<ul id="mwAS4"><li id="mwAS8">Collections of intersection techniques for computational geometry:
+<ul id="mwATA"><li id="mwATE"><a rel="mw:ExtLink nofollow" href="https://www.realtimerendering.com/intersections.html" class="external text" id="mwATI">Intersections (Ray Tracing Resources Page)</a> by <a rel="mw:WikiLink" href="./Eric_Haines" title="Eric Haines" id="mwATM">Eric Haines</a>, table of links for many intersection calculations, including ray-cylinder.</li>
+<li id="mwATQ"><a rel="mw:ExtLink nofollow" href="https://iquilezles.org/articles/intersectors/" class="external text" id="mwATU">collection of ray-surface intersectors for GPU shaders</a> by Inigo Quilez, including ray-cylinder.</li></ul></li>
+<li id="mwATY">Derivations which require cylinder be in a constrained orientation:
+<ul id="mwATc"><li id="mwATg"><a rel="mw:ExtLink nofollow" href="https://johannesbuchner.github.io/intersection/intersection_line_cylinder.html" class="external text" id="mwATk">line - cylinder intersection</a> in Johannes Buchner's collection of <a rel="mw:ExtLink nofollow" href="https://github.com/JohannesBuchner/intersection" class="external text" id="mwATo">Line-Intersection formulae</a></li>
+<li id="mwATs"><a rel="mw:ExtLink nofollow" href="http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php" class="external text" id="mwATw">Line - Cylinder intersection -</a> at IllusionCatalyst</li>
+<li id="mwAT0"><a rel="mw:ExtLink nofollow" href="https://math.stackexchange.com/questions/2613781/line-cylinder-intersection" class="external text" id="mwAT4">Line Cylinder Intersection</a> at Mathematics Stack Exchange (math.stackexchange.com)</li></ul></li>
+<li id="mwAT8">Partial solution:
+<ul id="mwAUA"><li id="mwAUE"><a rel="mw:ExtLink nofollow" href="https://math.stackexchange.com/questions/3248356/calculating-ray-cylinder-intersection-points" class="external text" id="mwAUI">Calculating ray-cylinder intersection points</a>  at Mathematics Stack Exchange (math.stackexchange.com)</li></ul></li></ul>
+
+<link rel="mw:PageProp/Category" href="./Category:Analytic_geometry" id="mwAUM"/>
+<link rel="mw:PageProp/Category" href="./Category:Geometric_algorithms" id="mwAUQ"/>
+<link rel="mw:PageProp/Category" href="./Category:Geometric_intersection" id="mwAUU"/></section></body></html>
