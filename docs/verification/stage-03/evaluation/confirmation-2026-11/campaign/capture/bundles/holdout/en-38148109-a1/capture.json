@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "e9e16db96068e16a49d2a5399cbd4e734d5b410c7f3829a273423149d88d5ca3",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.373,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:19:10.627419Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38148109",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 17760,
+   "body_sha256": "006f98d22e17359bce4238f6a895fc980ac55c69194f4c5c88b4e09b5d43c9c5",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.47,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:20:01.001275Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38148109",
+   "wire_bytes": 6825
+  },
+  {
+   "body_bytes": 104681,
+   "body_sha256": "2eb8cf0ef122deaa1eece2fc420685de1383c128edf3fc5e3c0c5d0d798f547f",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.255,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:20:11.471330Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377237744/html",
+   "wire_bytes": 18806
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "e9e16db96068e16a49d2a5399cbd4e734d5b410c7f3829a273423149d88d5ca3"
+ ],
+ "finished_at": "2026-11-02T19:20:11.727381Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 38148109,
+  "parent_revision_id": 1377237332,
+  "redirect_followed": null,
+  "revision_id": 1377237744,
+  "revision_timestamp": "2026-09-28T12:51:30Z",
+  "sha1": "ee004bd29b905014753f364871c247ef4ff619a3",
+  "size": 17120,
+  "title": "Reginald de Warenne",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "2eb8cf0ef122deaa1eece2fc420685de1383c128edf3fc5e3c0c5d0d798f547f",
+  "bytes": 104681,
+  "checks": {
+   "document_revision_id": "1377237744",
+   "header_revision_id": "1377237744",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "38148109",
+   "render_id": "1453a073-d428-11f1-a045-65b6ddc1f2b0",
+   "revision_sha1": "ee004bd29b905014753f364871c247ef4ff619a3",
+   "revision_sha1_base36": "rsucbkshb39aekgi4twvnaznd7psk2r"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1377237744",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:20:11 GMT",
+   "etag": "W/\"1377237744/1453a073-d428-11f1-a045-65b6ddc1f2b0/view\"",
+   "last-modified": "Fri, 30 Oct 2026 05:38:56 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377237744/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 38148109,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "beef157f597c4b0c0eb54f25b93bfb7df607b7bed2e7b6b25f347510d9518380",
+  "bytes": 17120,
+  "response_artifact": "006f98d22e17359bce4238f6a895fc980ac55c69194f4c5c88b4e09b5d43c9c5",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38148109"
+ },
+ "started_at": "2026-11-02T19:19:00.914160Z",
+ "status": "complete"
+}

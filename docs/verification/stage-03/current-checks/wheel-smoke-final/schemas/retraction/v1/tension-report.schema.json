@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:tension-report",
+  "title": "CITERIFT Evidence Tension report, major version 1",
+  "description": "Evidence Tension v0 (SPECIFICATION.md 11.2): hypothetical views of one evidence set under a fixed policy. There is deliberately no score or probability field.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "base",
+    "base_unresolved",
+    "baseline",
+    "diagnostic_classes",
+    "interventions",
+    "lookup_state",
+    "note",
+    "origins",
+    "policy_version",
+    "query",
+    "single_origin",
+    "snapshot_id",
+    "source_pointers",
+    "tension_version"
+  ],
+  "properties": {
+    "tension_version": {
+      "type": "string",
+      "pattern": "^citerift-evidence-tension/[0-9]+\\.[0-9]+\\.[0-9]+$(?!\\n)"
+    },
+    "policy_version": {
+      "type": "string",
+      "pattern": "^citerift-rde-policy/[0-9]+\\.[0-9]+\\.[0-9]+$(?!\\n)"
+    },
+    "snapshot_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
+        }
+      ]
+    },
+    "query": {
+      "type": "object"
+    },
+    "lookup_state": {
+      "enum": [
+        "matched",
+        "notice_only",
+        "ambiguous_identity",
+        "no_record",
+        "unavailable"
+      ]
+    },
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "evidence_digest",
+        "result",
+        "retraction_date",
+        "retraction_status"
+      ],
+      "properties": {
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "definite_orderings",
+            "identity.status",
+            "lookup_state",
+            "notice_links",
+            "retraction_date.status",
+            "retraction_date.value",
+            "retraction_status.status",
+            "retraction_status.value",
+            "support.observations",
+            "support.origins"
+          ],
+          "properties": {
+            "lookup_state": {},
+            "retraction_status.status": {},
+            "retraction_status.value": {},
+            "retraction_date.status": {},
+            "retraction_date.value": {},
+            "support.observations": {},
+            "support.origins": {},
+            "identity.status": {},
+            "notice_links": {},
+            "definite_orderings": {}
+          }
+        },
+        "retraction_status": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "retraction_date": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "basis": {
+          "type": "object"
+        },
+        "evidence_digest": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+        }
+      }
+    },
+    "interventions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "intervention",
+          "origins",
+          "applicable",
+          "result",
+          "changed_fields",
+          "affected_assertions",
+          "reason_codes",
+          "evidence_digest"
+        ],
+        "properties": {
+          "intervention": {
+            "enum": [
+              "collapse_shared_origin",
+              "exclude_origin",
+              "exclude_ambiguous_links",
+              "require_temporal_bounds"
+            ]
+          },
+          "origins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 2
+          },
+          "applicable": {
+            "type": "boolean"
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "definite_orderings",
+              "identity.status",
+              "lookup_state",
+              "notice_links",
+              "retraction_date.status",
+              "retraction_date.value",
+              "retraction_status.status",
+              "retraction_status.value",
+              "support.observations",
+              "support.origins"
+            ],
+            "properties": {
+              "lookup_state": {},
+              "retraction_status.status": {},
+              "retraction_status.value": {},
+              "retraction_date.status": {},
+              "retraction_date.value": {},
+              "support.observations": {},
+              "support.origins": {},
+              "identity.status": {},
+              "notice_links": {},
+              "definite_orderings": {}
+            }
+          },
+          "changed_fields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "lookup_state",
+                "retraction_status.status",
+                "retraction_status.value",
+                "retraction_date.status",
+                "retraction_date.value",
+                "support.observations",
+                "support.origins",
+                "identity.status",
+                "notice_links",
+                "definite_orderings"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "affected_assertions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "reason_codes": {
+            "type": "array",
+            "items": {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+            }
+          },
+          "evidence_digest": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+          },
+          "not_applicable_reason": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+          },
+          "dependence_unknown": {
+            "description": "exclude_origin: kept assertions whose dependence on the excluded origin is unknown (SPECIFICATION.md 8); they stay in the view but are not shown to be independent.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "applicable": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "not_applicable_reason"
+              ],
+              "properties": {
+                "changed_fields": {
+                  "maxItems": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "diagnostic_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "redistributed_support",
+          "uncertain_identity_or_notice",
+          "unsupported_temporal_precision",
+          "origin_dependence",
+          "control"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "origins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "single_origin": {
+      "type": "boolean"
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "design",
+        "answer"
+      ],
+      "properties": {
+        "design": {
+          "const": "event_log_baseline"
+        }
+      }
+    },
+    "source_pointers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assertion_id",
+          "source_ref"
+        ],
+        "properties": {
+          "assertion_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ref": {
+            "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/source_ref"
+          }
+        }
+      }
+    },
+    "note": {
+      "type": "string"
+    },
+    "base_unresolved": {
+      "description": "The base result is not a verified fact (uncertain, conflicting or unavailable). With no changed field the report is then not a control: the base is already unresolved and no intervention can resolve it.",
+      "type": "boolean"
+    }
+  }
+}

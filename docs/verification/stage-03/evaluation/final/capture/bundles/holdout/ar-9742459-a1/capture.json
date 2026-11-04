@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 8479,
+   "body_sha256": "a53b9f4b76cae965df851eb7a8a1a06cf740a5de45730d725b9e6257f41fc884",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.418,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:53:22.432147Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9742459",
+   "wire_bytes": 2846
+  },
+  {
+   "body_bytes": 84820,
+   "body_sha256": "6cd967d5819bb74f350dbee72aecf0a1a477c981318e814a7a549a6a683a1a6a",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.391,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:53:32.850781Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76545799/html",
+   "wire_bytes": 15955
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:53:34.242250Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9742459,
+  "parent_revision_id": 69481575,
+  "redirect_followed": null,
+  "revision_id": 76545799,
+  "revision_timestamp": "2026-09-13T11:58:07Z",
+  "sha1": "d58bb9c2a4c2a7894c9b8e68fd14b18ed04a92fe",
+  "size": 7892,
+  "title": "جامعة ستندن قطر",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "6cd967d5819bb74f350dbee72aecf0a1a477c981318e814a7a549a6a683a1a6a",
+  "bytes": 84820,
+  "checks": {
+   "document_revision_id": "76545799",
+   "header_revision_id": "76545799",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9742459",
+   "render_id": "f7f54aa7-d4a3-11f1-b2b3-1da941a02c01",
+   "revision_sha1": "d58bb9c2a4c2a7894c9b8e68fd14b18ed04a92fe",
+   "revision_sha1_base36": "oy042whqry424unz6zw0977t1gdrv26"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76545799",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:53:33 GMT",
+   "etag": "W/\"76545799/f7f54aa7-d4a3-11f1-b2b3-1da941a02c01/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:34:54 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76545799/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9742459,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "b424d4e040e6b3ca7cba33b3373123b35ac7b662ac0eccccc09021b7d5973b5c",
+  "bytes": 7892,
+  "response_artifact": "a53b9f4b76cae965df851eb7a8a1a06cf740a5de45730d725b9e6257f41fc884",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9742459"
+ },
+ "started_at": "2026-10-30T20:53:12.864557Z",
+ "status": "complete"
+}

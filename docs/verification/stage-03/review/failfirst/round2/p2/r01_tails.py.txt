@@ -1,0 +1,10 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import one_note, show, doi_link
+T = 'A.<ref name="a">{{cite journal |title=Paper |doi=10.1000/p}} Retracted.</ref>\n'
+base = "<cite>Paper " + doi_link("10.1000/p") + "</cite>"
+show("control (plain text after cite)", one_note(T, base + " Retracted."))
+show("text after an HTML comment     ", one_note(T, base + "<!-- note --> Retracted."))
+show("text after <link> (category)   ", one_note(T, base + '<link rel="mw:PageProp/Category" href="./Category:CS1_maint:_x"/> Retracted.'))
+show("text after <style>             ", one_note(T, base + '<style>.x{}</style> Retracted.'))
+show("text after <meta>              ", one_note(T, base + '<meta typeof="mw:Placeholder/StrippedTag"/> Retracted.'))
+show("text after backlink span       ", one_note(T, '<span class="mw-cite-backlink">x</span> Retracted.'))

@@ -1,0 +1,18 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r2-1/tools")
+from lib import *
+import re
+a=A(1372018857); L=a.L
+r=L('<ref>Ojeda Reyes')
+a.D('d1',r,'note',unstructured=True,note_id='cite_note-1',notes='Hand-written citation, no template.')
+a.U('u1',r,r,'cite_ref-1')
+for n in range(6):
+    b=L('*{{cite journal',n)
+    t=L('{{cite journal',n)
+    a.D('d%d'%(n+2),b,'bibliography_entry',templates=[t],notes='Further reading, standalone cite journal.')
+for m in re.finditer(r'\|\s*(pmid|doi)\s*=\s*(\S+)',a.text):
+    s,v=m.group(1),m.group(2)
+    cp=m.start(2)
+    key=v.lower() if s=='doi' else v
+    a.I({'cp':cp,'quote':v},s,'primary_citation_field',key)
+a.unres.append('Further reading lines for Britannica and Who Named It are plain external links with no citation template/DOI/PMID; not labelled as bibliography entries (3.4).')
+a.write('2026-11-03T16:32:17Z',TOOLS,'Nothing undecided besides the plain-link Further reading items (not labelled).')

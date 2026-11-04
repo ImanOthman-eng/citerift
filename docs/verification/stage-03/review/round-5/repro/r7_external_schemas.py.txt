@@ -1,0 +1,19 @@
+"""An installed wheel validates against an external schema directory (CITERIFT_SCHEMAS). The retained wheel-smoke
+schema copy (pre-RF-60, same schema id and schema_version 1.0.0) rejects a document produced after RF-60.
+Run with CITERIFT_SCHEMAS set to the copy to be tested."""
+import os, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/src")
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract  # noqa: E402
+from citerift.wiki.verify import verify_bundle  # noqa: E402
+
+print("CITERIFT_SCHEMAS =", os.environ.get("CITERIFT_SCHEMAS"))
+with tempfile.TemporaryDirectory() as d:
+    for text, label in (("A<ref>https://onlinelibrary.wiley.com/doi/10.1002/abc.123/abstract</ref>", "route URL"),
+                        ("A<ref>https://onlinelibrary.wiley.com/doi/10.1002/abc.123</ref>", "plain URL")):
+        b = bundle(Path(d), text, name=label.replace(" ", "_"))
+        doc = extract(b)
+        v = verify_bundle(b, doc)
+        print(f"{label:10} schema_version={doc['schema_version']} status={doc['status']} verified={v['verified']} "
+              f"issues={[ (i['code'], i.get('detail','')[:110]) for i in v['issues']]}")

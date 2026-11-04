@@ -1,0 +1,17 @@
+import random, sys
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+rng = random.Random(7)
+atoms = ["{{", "}}", "{{{", "}}}", "[[", "]]", "[", "]", "|", "=", "==", "'", "''", "'''", "<ref>", "</ref>", "<ref name=a/>", "<!--", "-->", "<nowiki>", "</nowiki>",
+         "{|", "|}", "|-", "\n", " ", "http://x.y", "&amp;", "&#32;", "a", "Sfn", "sfn", "cite", "doi=10.1/x", ":", "*", "#", "<b>", "</b>", "<", ">", " ", "قالب", "~~~~", "__TOC__", "{{#if:", "<math>", "</math>", "[[File:x|", "{{!}}"]
+diff = 0; N = int(sys.argv[1])
+for i in range(N):
+    s = "".join(rng.choice(atoms) for _ in range(rng.randint(1, 40)))
+    try: c = repr(CTokenizer().tokenize(s, 0, False))
+    except Exception as e: c = "EXC" + type(e).__name__
+    try: p = repr(Tokenizer().tokenize(s, 0, False))
+    except Exception as e: p = "EXC" + type(e).__name__
+    if c != p:
+        diff += 1
+        if diff <= 5: print("DIFF", repr(s))
+print(N, "fuzz texts,", diff, "differ")

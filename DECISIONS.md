@@ -652,3 +652,156 @@ without expanding the implementation during closure: R-032 and R-033.
 Recorded as: Stage 02 `ACCEPTED_CLOSED` through `citerift-gov` with this
 owner reference. Merging pull request #4 is the owner's ("I will merge it").
 This decision authorizes no stage; Stage 03 is not authorized or started.
+
+## D-029 — Stage 03 extraction stack and render source
+- Status: accepted
+- Topic: stage-03-extraction-stack
+- Date: 2026-10-28
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/calibration/CALIBRATION_REPORT.md; docs/verification/stage-03/calibration/parser_qualification.json; docs/verification/stage-03/calibration/profile-v1.provenance.json
+
+Delegated engineering decision under the owner's Stage 03 directive
+(`cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS`, sections 6 and 7), taken
+from development measurements; it is not an owner approval of any outcome.
+Source wikitext is parsed with mwparserfromhell 0.7.2 and rendered HTML with
+lxml 6.1.3 (selectolax 1.0.2 was qualified as a challenger and not adopted;
+wikitextparser and Playwright are not used). The render is the Core REST
+Parsoid HTML of the pinned revision (HTML 2.8.0, with `data-mw`, revision and
+page identity checked), not the Action API parse output, which lacks most of
+the structure the reconciliation needs. Extraction runs in a child process
+with a 30 s wall limit and a 1024 MiB address-space limit (raised from the
+initial 512 MiB after a synthetic page at the declared size limits peaked at
+455 MiB). Live requests pass a host-wide lock so that one request is in
+flight across processes, with at least 10 s between requests.
+
+## D-030 — Stage 03 frozen evaluation protocol and refined gates
+- Status: accepted
+- Topic: stage-03-evaluation-protocol
+- Date: 2026-10-28
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/protocol/FROZEN_PROTOCOL.md; docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md; docs/verification/stage-03/protocol/scripts/evaluate.py; governance/stage_registry.json (Stage 03 gates 03-A to 03-K)
+
+Delegated engineering decision under the owner's Stage 03 directive (section
+6, step D): the support matrix, splits, annotation protocol, matching rules,
+metrics, per-language gates, minimum denominators, baselines and budgets are
+frozen before any holdout article is selected or any holdout prediction
+exists. Gate 03-A keeps the Master Plan wording; 03-B to 03-K refine it
+(directive section 20). The protocol is the executor's; its outcomes remain
+for the owner to accept or reject.
+
+## D-031 — Stage 03 supplemental correction batch and one fresh final confirmation campaign
+- Status: accepted
+- Topic: stage-03-supplemental-correction-and-final-confirmation
+- Date: 2026-10-29
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-29_SUPPLEMENT.md; docs/verification/stage-03/protocol/AMENDMENT_2026-10-29.md
+
+Owner instruction (owner directive delivered in the Stage 03 cloud session on
+2026-10-29; no platform message id is exposed to that session, so the
+reference is the retained text at
+docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-29_SUPPLEMENT.md):
+Stage 03 only. The executor repairs the independently reproduced defects F1-F4
+(warning words broken by inline markup or comments, discarded ordinary
+red-link labels, hidden ancestors ignored, explicitly numbered reuse arguments
+dropped) and other material in-scope defects, then runs one additional
+correction batch followed by one fresh final confirmation campaign. This
+satisfies FROZEN_PROTOCOL.md section 9's requirement to bring further rounds
+to the owner, for this cycle only. Metric definitions, per-language
+thresholds, minimum denominators and failure accounting stay as frozen; old
+selections, locks, annotations, predictions, scores and adjudications stay
+published; the additive amendment is dated and recorded before use. Network
+ceilings for the added campaign: 500 HTTP attempts and 300 MiB accepted
+bodies; export at most 1 GiB. The directive does not accept the stage,
+authorize Stage 04 or merging, or permit unlimited tuning cycles.
+
+## D-032 — Stage 03 executor handoff and verifier corrections
+- Status: accepted
+- Topic: stage-03-executor-handoff-verifier-corrections
+- Date: 2026-10-30
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-30_HANDOFF.md
+
+Owner-delivered authorization in the current ChatGPT/Codex conversation, retained by document reference because
+no platform message ID is exposed. Continue the existing branch and PR #5; correct V1/RF-56 and V2/RF-57 before
+freezing the final candidate, preserve D-031 and the one-campaign amendment, and complete verification/delivery.
+This is execution authority, not acceptance. The actual new assistant is ChatGPT/Codex; new attribution uses
+`Assisted-by: ChatGPT/Codex (AI coding agent)` rather than falsely naming Claude. Historical attribution stays.
+The owner retains acceptance and personal merge authority; no later stage or additional campaign is authorized.
+
+## D-033 — Stage 03 final recovery, adjudication, correction and handoff
+- Status: accepted
+- Topic: stage-03-final-recovery-adjudication-handoff
+- Date: 2026-11-02
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-02_RECOVERY.md; docs/verification/stage-03/evaluation/final/adjudication/README.md
+
+Owner instruction in the CITERIFT project thread (`cmsg_018VCB51nDHP6HXmLU4ea5yPAsujY49DkUw92HiR1mG4Ya`,
+2026-11-02T12:25:19Z): recover PR #5, complete the already-authorized adjudication of the final campaign, correct
+independently confirmed in-scope defects as labelled post-exposure repairs, verify, complete the deliverables and
+update PR #5 for owner review. The executor for this work is Claude Code; new commits carry
+`Assisted-by: Claude Code (AI coding agent)`, and earlier ChatGPT/Codex attribution stays. The instruction keeps
+every frozen threshold, denominator and the one-campaign limit; it authorizes no new evaluation campaign, no
+acceptance, no merge and no later stage, and it reserves to the owner any decision about an unmet scientific gate.
+
+## D-034 — Stage 03 corrective engineering and one prospective confirmation campaign
+- Status: accepted
+- Topic: stage-03-prospective-confirmation-campaign
+- Date: 2026-11-02
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-02_CONFIRMATION.md; docs/verification/stage-03/evaluation/final/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh`,
+2026-11-02T15:37:19Z), answering the decision record of D-033 with outcome C plus engineering work: resolve the
+short-footnote definition/use semantics prospectively (original guide kept unchanged), verify RF-60 and audit the
+remaining DOI/PMID boundaries, audit Retry-After and resumption after deferral, run one independent adversarial
+review (and one focused follow-up), and then run exactly one pre-registered prospective confirmation campaign on
+unexposed articles with a frozen candidate, within 500 HTTP attempts and 300 MiB of accepted bodies, plus a separate
+positive retraction-warning challenge. G1-G11, their thresholds and the per-language minimum denominators (50
+identifiers, 80 uses, 60 definitions, 60 linkable uses) stay unchanged. The final campaign of D-031 stays published
+as a failed historical result. The instruction authorizes no acceptance, no merge and no later stage, and no
+further campaign after this one.
+
+## D-035 — Stage 03 G5c semantic correction and one further prospective confirmation
+- Status: accepted
+- Topic: stage-03-g5c-correction-and-confirmation
+- Date: 2026-11-03
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-03_G5C.md; docs/verification/stage-03/evaluation/confirmation-2026-11/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yPBxa7nEyAiE3VN5Lw442e8F`,
+2026-11-03T05:53:24Z), answering the decision record of the D-034 campaign. The owner rejects outcome A (no narrowing,
+no waiver of G5c) and orders a correction of the citation-unit semantics at the model level: the absence of a
+recognized citation template is not evidence of an unstructured bibliographic citation. The work comprises
+fail-first reproduction of the 19 English false positives, the smallest correct semantic fix, differential checks on
+the retained bundles, an independent adversarial review, and exactly one further bounded, pre-registered prospective
+confirmation of the corrected candidate on unexposed articles (500 HTTP attempts and 300 MiB of accepted bodies,
+G1-G11 thresholds and minimum denominators unchanged), followed by full release verification. The D-031 and D-034
+campaigns stay published unchanged as historical results. The instruction authorizes no acceptance, no merge, no
+later stage and no further campaign after this one.
+
+## D-036 — Stage 03 R-038 correction, pre-validation review and one final prospective confirmation
+- Status: accepted
+- Topic: stage-03-r038-correction-and-final-confirmation
+- Date: 2026-11-04
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-04_R038.md; docs/verification/stage-03/evaluation/confirmation-d035/DECISION_RECORD.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7`,
+2026-11-04T02:20:42Z), answering the decision record of the D-035 campaign. The owner orders a fail-first, evidence-based
+correction of R-038 (repeated reference names inside one template's output), a full adversarial pre-validation
+review of the Stage 03 flow with correction of every confirmed material defect, differential regression on every
+retained bundle, an independent engineering readiness gate with a focused re-review, and then exactly one further
+bounded, pre-registered prospective bilingual confirmation of the frozen corrected candidate on unexposed articles
+(500 HTTP attempts and 300 MiB of accepted bodies; G1-G11 thresholds and minimum denominators unchanged; G5c not
+excluded, G6b not exempted). It also orders a security review of the withheld presigned-URL files and a
+nondestructive clean merge path where possible. The D-031, D-034 and D-035 campaigns stay published unchanged. The
+instruction authorizes no acceptance, no merge, no force push or history rewrite, no later stage and no further
+campaign after this one.

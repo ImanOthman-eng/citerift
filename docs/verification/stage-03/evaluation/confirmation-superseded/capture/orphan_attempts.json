@@ -1,0 +1,6 @@
+{
+ "note": "Capture attempts whose CLI output was not logged by capture_sample.py because the driver was stopped (RF-38) while the capture subprocess was in flight. The subprocess finished and published its bundle; the resumed driver then tried the same path for its first attempt and was refused before any request (BUNDLE_PATH_UNSAFE, RF-29). The bundle verifies (citerift-wiki verify exit 0).",
+ "attempts": [
+  {"article": "confirmation/ar-3972291", "attempt": 1, "bundle": "bundles/confirmation/ar-3972291-a1", "status": "complete", "capture_started_at": "2026-10-29T09:31:12.091645Z", "capture_finished_at": "2026-10-29T09:32:13.191352Z", "verify_exit": 0}
+ ]
+}

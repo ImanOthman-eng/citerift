@@ -1,0 +1,13 @@
+"""Harvard link + comment text: H with a render, unstructured_text without one (or without own render output)."""
+from rvlib import *
+text = "A<ref>{{harvnb|Németh|2018|p=3}}, treats these as two separate volumes.</ref>"
+inner = transclusion(5, "harvnb", {"1": "Németh", "2": "2018", "p": "3"}, citeref("Németh2018", "Németh 2018")) + ", treats these as two separate volumes."
+show("with render", run(text, one_note("A", inner)), text)
+show("without render", run(text, None), text)
+text2 = "{{Infobox person|birth_date=1945<ref>{{harvnb|Németh|2018|p=3}}, treats these as two separate volumes.</ref>}}"
+info = transclusion(1, "Infobox person", {"birth_date": "1945<ref>{{harvnb|Németh|2018|p=3}}, treats these as two separate volumes.</ref>"},
+                    f"<table><tr><td>1945{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</td></tr></table>", "div")
+body2 = info + references([note_li("cite_note-1", ["cite_ref-1"], citeref("Németh2018", "Németh 2018") + ", treats these as two separate volumes.")])
+show("ref inside infobox param, render present", run(text2, body2), text2)
+textar = "أ<ref>{{استشهاد بهارفارد دون أقواس|فوكس|2002}}، ويقول إن المجلدين منفصلان.</ref>"
+show("ar harvard + comment, no render", run(textar, None, "ar"), textar)

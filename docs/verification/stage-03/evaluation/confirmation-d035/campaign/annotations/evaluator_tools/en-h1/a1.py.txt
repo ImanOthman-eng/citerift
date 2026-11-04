@@ -1,0 +1,16 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1/tools')
+from lib import *
+S='2026-11-03T16:11:06Z'
+a=A('en-1136335007',S)
+d=a.define('d1','<ref>{{Cite journal |last=Young',cp=None,tpl=['{{Cite journal |last=Young'],note_id='cite_note-1',marker_text='Young ... (2020). "Evidence for a late glacial advance ..." Geosphere. 17: 1–35. doi:10.1130/GES02257.1. ISSN 1553-040X.')
+a.use('u1','<ref>{{Cite journal |last=Young',d,rid='cite_ref-1')
+a.ident('10.1130/GES02257.1','doi','primary_citation_field','10.1130/ges02257.1')
+a.write(S,0,'')
+b=A('en-1276757708',S)
+d1=b.define('d1','<ref>{{Cite book|last=Mikic',tpl=['{{Cite book|last=Mikic'],note_id='cite_note-1',marker_text='Mikic, Zelimir Dj (March 2007). Ever Yours Sincerely. Perfect Publishers. ISBN 978-1-905399-27-7.',notes='ISBN only; no DOI/PMID.')
+d2=b.define('d2','<ref>{{Cite journal|last1=Dobanov',tpl=['{{Cite journal|last1=Dobanov'],note_id='cite_note-2',marker_text='Dobanovački ... (2015). "Chronicle of the \'Anglo-Yugoslav Children\'s Hospital\' in Sremska Kamenica". Medicinski Pregled. 68 (7–8): 277–282. doi:10.2298/mpns1508277D. ISSN 0025-8105. PMID 26591642.')
+b.use('u1','<ref>{{Cite book|last=Mikic',d1,rid='cite_ref-1')
+b.use('u2','<ref>{{Cite journal|last1=Dobanov',d2,rid='cite_ref-2')
+b.ident('10.2298/mpns1508277D','doi','primary_citation_field','10.2298/mpns1508277d')
+b.ident('26591642','pmid','primary_citation_field','26591642')
+b.write(S,0,'')

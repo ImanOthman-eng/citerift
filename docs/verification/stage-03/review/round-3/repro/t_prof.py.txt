@@ -1,0 +1,7 @@
+import sys, time, cProfile, pstats; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+N = int(sys.argv[1])
+inner = "Paper. " + "Retracted " * N
+b = bundle(tmpdir(), EN_TEXT, note_body(inner))
+pr = cProfile.Profile(); pr.enable(); doc = extract(b); pr.disable()
+pstats.Stats(pr).sort_stats("cumulative").print_stats(18)

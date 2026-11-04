@@ -1,0 +1,18 @@
+===== external link display (control) 'A<ref>[https://example.org/retraction-notice doi:10.1000/ext]</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi label_text labeled_reference_text '10.1000/ext' -> 10.1000/ext delimited ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== wikilink display text 'A<ref>[[Retraction of Smith 2001|doi:10.1000/wl]]</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi label_text labeled_reference_text '10.1000/wl' -> 10.1000/wl delimited ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== wikilink target (interwiki prefix doi:) 'A<ref>[[doi:10.1000/iw]]</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi label_text textual_mention '10.1000/iw' -> 10.1000/iw delimited ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE']

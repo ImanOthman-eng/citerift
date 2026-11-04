@@ -1,0 +1,33 @@
+from lib import *
+a=A('ar-73440513')
+r1=a.L('<ref name=IUCN>')
+r2=a.L('<ref name="Dufresnes2019">')
+r3=a.L('<ref name="مولد تلقائيا1">')
+r4=a.L('<ref name="Halliday2019">')
+a.D('d1',r1,'note',name='IUCN',templates=[a.L('{{استشهاد بالاتحاد الدولي لحفظ الطبيعة')],rid='cite_note-IUCN-1',notes='ref sits inside the status_ref parameter of the taxobox ({{صندوق صنف}}); still a ref in the source.')
+a.D('d2',r2,'note',name='Dufresnes2019',templates=[a.L('{{استشهاد بدورية محكمة')],rid='cite_note-Dufresnes2019-2')
+a.D('d3',r3,'note',name='مولد تلقائيا1',unstructured=True,rid='cite_note-مولد_تلقائيا1-3',notes='Hand-written HTML <cite> markup (CX auto-generated, name means "auto-generated 1"), no citation template; a {{Webarchive}} template follows (not a citation template).')
+a.D('d4',r4,'note',name='Halliday2019',templates=[a.L('{{استشهاد بكتاب')],rid='cite_note-Halliday2019-4')
+a.U('u1',r1,r1,rid='cite_ref-IUCN_1-0')
+a.U('u2',r2,r2,rid='cite_ref-Dufresnes2019_2-0')
+a.U('u3',a.L('<ref name="Dufresnes2019" />',0),r2,rid='cite_ref-Dufresnes2019_2-1')
+a.U('u4',a.L('<ref name="Dufresnes2019" />',1),r2,rid='cite_ref-Dufresnes2019_2-2')
+a.U('u5',r3,r3,rid='cite_ref-مولد_تلقائيا1_3-0')
+a.U('u6',r4,r4,rid='cite_ref-Halliday2019_4-0')
+k='10.2305/iucn.uk.2015-1.rlts.t153568a74497730.en'
+a.I(a.L('10.2305/IUCN.UK.2015-1.RLTS.T153568A74497730.en',0),'doi','primary_citation_field',k)
+a.I(a.L('10.1016/j.ympev.2019.106615'),'doi','primary_citation_field','10.1016/j.ympev.2019.106615')
+a.I(a.L('31520778'),'pmid','primary_citation_field','31520778')
+full='10.2305/IUCN.UK.2015-1.RLTS.T153568A74497730.en'
+for n in (1,2,3):
+    pass
+i1=a.L('[[doi:'+full+'|10.2305/IUCN.]]',0)['cp']+6
+a.I(a.L(full,1,i1-1) if False else {'cp':i1,'quote':full},'doi','identifier_link',k,'target of a wikilink [[doi:...]] produced by the hand-pasted rendered citation, inside the ref.')
+j=a.t.find('|10.2305/IUCN.]]',i1)+1
+a.I({'cp':j,'quote':'10.2305/IUCN.'},'doi','textual_mention','10.2305/iucn','Link display text: only the first fragment of the DOI ("10.2305/IUCN."); trailing full stop treated as punctuation.')
+i2=a.t.find('[[doi:'+full+'|<span',j)+6
+a.I({'cp':i2,'quote':full},'doi','identifier_link',k,'second wikilink target (display text is the fragment "UK.2015-1.RLTS.").')
+i3=a.t.find('[[doi:'+full+'|T153568',i2)+6
+a.I({'cp':i3,'quote':full},'doi','identifier_link',k,'third wikilink target (display text is the final fragment).')
+a.un.append('Rendered footnote 1 (IUCN) carries a "{{cite iucn}}: uses deprecated parameter" maintenance message; not a retraction marker, so marker=none.')
+a.save()

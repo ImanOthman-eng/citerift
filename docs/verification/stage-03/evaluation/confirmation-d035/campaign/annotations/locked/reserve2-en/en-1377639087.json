@@ -1,0 +1,632 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1377639087,
+  "source_sha256": "b2b798b33ae9efaa7f45c002e7b99b350ca2d857a952d5db1ee9b894bc26bbd6",
+  "html_sha256": "0b88a10552d4406e9268c4879e0c2fecc981d6a381c22bc9e0e74f792e96884a",
+  "window": [
+   19257,
+   27257
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-r2-1",
+  "started_at": "2026-11-03T16:32:17Z",
+  "finished_at": "2026-11-03T16:34:46Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1377639087/source.wikitext",
+    "sha256": "b2b798b33ae9efaa7f45c002e7b99b350ca2d857a952d5db1ee9b894bc26bbd6"
+   },
+   {
+    "path": "packets/en-1377639087/render.html",
+    "sha256": "0b88a10552d4406e9268c4879e0c2fecc981d6a381c22bc9e0e74f792e96884a"
+   },
+   {
+    "path": "packets/en-1377639087/packet.json",
+    "sha256": null,
+    "note": "packet metadata; hash not given in packet.json itself"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: str.find location search, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note], sha256sum; position checks text[cp:cp+len(quote)]==quote",
+  "unresolved": "Nothing blocking; judgement calls: commented-out refs excluded; hybrid IBD phage therapy ref counted as having a citation template."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 9787,
+    "quote": "<ref name=\":3\">{{cite journal"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":3",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9802,
+      "quote": "{{cite journal | last1 = Thaiss | first1 = CA | last2 = Itav"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:3-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts before the window; listed as binding target for the use at \":3\" in the window."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 28698,
+    "quote": "<ref name=\":1\">{{cite journal"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 28713,
+      "quote": "{{cite journal | last1 = Ze'Evy"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:1-27",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts after the window; first occurrence of :1 with a body (earlier use at 19869 is self-closing, later one at 32007 is self-closing). Listed as binding target."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 19343,
+    "quote": "<ref name=\":0\">Suez J"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-:0-26",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with plain-text PMID; {{dead link}} and {{cbignore}} are maintenance templates, not citation templates. Reused (self-closing) at 27270, just after the window."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 19908,
+    "quote": "<ref>Veiga P, Suez J"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-28",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with plain-text PMID."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 20587,
+    "quote": "<ref name=\"BiomX\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "BiomX",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 20605,
+      "quote": "{{cite web |title=Prof. Eran Elinav |url=https://www.biomx.com/about/"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-BiomX-29",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 20724,
+    "quote": "<ref name=\"IBD phage therapy\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "IBD phage therapy",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21586,
+      "quote": "{{cite journal |title=Prof. Eran Elinav |journal=Cell|year=2022"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-IBD_phage_therapy-30",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body is a plain-text author list that ends with an embedded {{cite journal}} (whose own title/authors differ, a source oddity). Counted as structured since it contains a citation template."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 23079,
+    "quote": "<ref>{{cite news |last1=Wadyka"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23084,
+      "quote": "{{cite news |last1=Wadyka"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-31",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 23350,
+    "quote": "<ref name=:13>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":13",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23364,
+      "quote": "{{cite journal | last1 = Suez | first1 = J | last2 = Zmora | first2 = N | last3 = Zilbrerman"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:13-32",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unquoted name with colon; MediaWiki treats the name as \":13\"."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 24507,
+    "quote": "<ref>{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 24512,
+      "quote": "{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-33",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 24806,
+    "quote": "<ref name=:15>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":15",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 24820,
+      "quote": "{{cite journal | last1 = Lev-Sagie"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:15-34",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unquoted name with colon."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 25561,
+    "quote": "<ref name=:16>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":16",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 25575,
+      "quote": "{{cite journal | last1 = Thaiss | first1 = CA | last2 = Levy | first2 = M | last3 = Grosheva"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:16-35",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unquoted name with colon."
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 26628,
+    "quote": "<ref>Grosheva I, Zheng D"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-36",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with plain-text PMID and a sciencedirect URL (not a DOI URL)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 19343,
+    "quote": "<ref name=\":0\">Suez J"
+   },
+   "binds_to": {
+    "cp": 19343,
+    "quote": "<ref name=\":0\">Suez J"
+   },
+   "render_ref_id": "cite_ref-:0_26-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 19869,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 28698,
+    "quote": "<ref name=\":1\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-:1_27-0",
+   "notes": "Self-closing use that precedes its definition in source order (definition at 28698, after the window)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 19908,
+    "quote": "<ref>Veiga P, Suez J"
+   },
+   "binds_to": {
+    "cp": 19908,
+    "quote": "<ref>Veiga P, Suez J"
+   },
+   "render_ref_id": "cite_ref-28",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 20551,
+    "quote": "<ref name=\":3\" />"
+   },
+   "binds_to": {
+    "cp": 9787,
+    "quote": "<ref name=\":3\">{{cite journal"
+   },
+   "render_ref_id": "cite_ref-:3_15-1",
+   "notes": "Definition at 9787, before the window."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 20587,
+    "quote": "<ref name=\"BiomX\">"
+   },
+   "binds_to": {
+    "cp": 20587,
+    "quote": "<ref name=\"BiomX\">"
+   },
+   "render_ref_id": "cite_ref-BiomX_29-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 20724,
+    "quote": "<ref name=\"IBD phage therapy\">"
+   },
+   "binds_to": {
+    "cp": 20724,
+    "quote": "<ref name=\"IBD phage therapy\">"
+   },
+   "render_ref_id": "cite_ref-IBD_phage_therapy_30-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 23079,
+    "quote": "<ref>{{cite news |last1=Wadyka"
+   },
+   "binds_to": {
+    "cp": 23079,
+    "quote": "<ref>{{cite news |last1=Wadyka"
+   },
+   "render_ref_id": "cite_ref-31",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 23350,
+    "quote": "<ref name=:13>"
+   },
+   "binds_to": {
+    "cp": 23350,
+    "quote": "<ref name=:13>"
+   },
+   "render_ref_id": "cite_ref-:13_32-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 24507,
+    "quote": "<ref>{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran"
+   },
+   "binds_to": {
+    "cp": 24507,
+    "quote": "<ref>{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran"
+   },
+   "render_ref_id": "cite_ref-33",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 24806,
+    "quote": "<ref name=:15>"
+   },
+   "binds_to": {
+    "cp": 24806,
+    "quote": "<ref name=:15>"
+   },
+   "render_ref_id": "cite_ref-:15_34-0",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 25561,
+    "quote": "<ref name=:16>"
+   },
+   "binds_to": {
+    "cp": 25561,
+    "quote": "<ref name=:16>"
+   },
+   "render_ref_id": "cite_ref-:16_35-0",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 26628,
+    "quote": "<ref>Grosheva I, Zheng D"
+   },
+   "binds_to": {
+    "cp": 26628,
+    "quote": "<ref>Grosheva I, Zheng D"
+   },
+   "render_ref_id": "cite_ref-36",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 19854,
+    "quote": "25097255"
+   },
+   "scheme": "pmid",
+   "role": "labeled_reference_text",
+   "key": "25097255",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 20100,
+    "quote": "32393856"
+   },
+   "scheme": "pmid",
+   "role": "labeled_reference_text",
+   "key": "32393856",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 20462,
+    "quote": "31061539"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "31061539",
+   "notes": "Inside an HTML comment (commented-out reference)."
+  },
+  {
+   "at": {
+    "cp": 20479,
+    "quote": "10.1038/s41591-019-0439-x"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1038/s41591-019-0439-x",
+   "notes": "Inside an HTML comment (commented-out reference)."
+  },
+  {
+   "at": {
+    "cp": 21655,
+    "quote": "10.1016/j.cell.2022.07.003"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.cell.2022.07.003",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 21688,
+    "quote": "35931020"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "35931020",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 22860,
+    "quote": "https://www.ncbi.nlm.nih.gov/pubmed/15"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15",
+   "notes": "Inside an HTML comment (commented-out reference)."
+  },
+  {
+   "at": {
+    "cp": 22971,
+    "quote": "10.1016/0006-2952(75)90013-1"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1016/0006-2952(75)90013-1",
+   "notes": "Inside an HTML comment (commented-out reference)."
+  },
+  {
+   "at": {
+    "cp": 23020,
+    "quote": "15"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15",
+   "notes": "Inside an HTML comment (commented-out reference)."
+  },
+  {
+   "at": {
+    "cp": 24420,
+    "quote": "30193113"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "30193113",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 24437,
+    "quote": "10.1016/j.cell.2018.08.047"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.cell.2018.08.047",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 25431,
+    "quote": "31591599"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "31591599",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 25448,
+    "quote": "10.1038/s41591-019-0600-6"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/s41591-019-0600-6",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 26527,
+    "quote": "29519916"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "29519916",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 26544,
+    "quote": "10.1126/science.aar3318"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1126/science.aar3318",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 27096,
+    "quote": "32653496"
+   },
+   "scheme": "pmid",
+   "role": "labeled_reference_text",
+   "key": "32653496",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "HTML-commented references inside the window (comment 20114-20517 holding <ref name=\"newreview> with a malformed unclosed quote, and comment 22635-23034 holding <ref name=:14>) are not rendered; not labelled as definitions or uses. Their DOI/PMID occurrences are listed with role not_a_target.",
+  "Reference :1 is used (self-closing) at 19869 before its only body at 28698, after the window; bound to that later definition."
+ ]
+}

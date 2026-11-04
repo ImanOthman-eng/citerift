@@ -1,0 +1,42 @@
+"""Offline resource observations; fresh interpreters, no cache-flush claim."""
+import json, subprocess, sys, statistics, time
+from pathlib import Path
+
+ROOT = Path(sys.argv[1]).resolve()
+OUT = Path(sys.argv[2]).resolve()
+OUT.mkdir(exist_ok=False)
+CHILD = r'''
+import json,resource,sys,time
+from pathlib import Path
+from citerift.wiki.extract import extract_bundle
+from citerift.wiki.verify import verify_bundle
+t=time.perf_counter(); c=time.process_time()
+d=extract_bundle(Path(sys.argv[1])); extraction_s=time.perf_counter()-t
+t=time.perf_counter();v=verify_bundle(Path(sys.argv[1]),d);verify_s=time.perf_counter()-t
+r=resource.getrusage(resource.RUSAGE_SELF);ch=resource.getrusage(resource.RUSAGE_CHILDREN)
+print(json.dumps({'extraction_wall_s':extraction_s,'verification_wall_s':verify_s,
+ 'parent_cpu_s':time.process_time()-c,'children_cpu_s':ch.ru_utime+ch.ru_stime,
+ 'parent_peak_rss_kib':r.ru_maxrss,'children_peak_rss_kib':ch.ru_maxrss,
+ 'status':d['status'],'verified':v['verified'],'digest':d['extraction_digest'],
+ 'compact_json_bytes':len(json.dumps(d,ensure_ascii=False,separators=(',',':')).encode())}))
+'''
+rows = json.loads((Path('/workspace/stage03-work/current-evidence/REAL_RESULTS.json')).read_text())['rows']
+observations=[]
+for row in rows:
+    b=ROOT/row['bundle']
+    t=time.perf_counter()
+    p=subprocess.run([str(ROOT/'.venv/bin/python'),'-I','-c',CHILD,str(b)],capture_output=True,text=True,check=True)
+    x=json.loads(p.stdout);x['process_wall_s']=time.perf_counter()-t
+    x.update({k:row[k] for k in ['bundle','wiki','revision_id','capture_sha256']})
+    x['bundle_bytes']=sum(f.stat().st_size for f in b.rglob('*') if f.is_file())
+    observations.append(x)
+    print(len(observations),x['wiki'],round(x['extraction_wall_s'],3),flush=True)
+def q(key):
+    xs=sorted(x[key] for x in observations)
+    return {'n':len(xs),'p50':statistics.median(xs),'p95':xs[round(.95*(len(xs)-1))],'max':max(xs)}
+result={'code_revision':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+ 'method':'Linux, 46 exposed retained bundles, one fresh interpreter per bundle, actual default isolated extraction then bounded verification. No new HTTP requests. OS caches not flushed; complete regression suite may be concurrently running. RSS is maximum per process, not concurrent aggregate. Import/startup excluded from extraction_wall_s but included in process_wall_s.',
+ 'default_limits':{'worker_wall_s':30,'worker_memory_mib':1024},'rows':observations,
+ 'summary':{k:q(k) for k in ['extraction_wall_s','verification_wall_s','process_wall_s','children_cpu_s','parent_peak_rss_kib','children_peak_rss_kib','bundle_bytes','compact_json_bytes']}}
+(OUT/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
+assert all(x['verified'] for x in observations)

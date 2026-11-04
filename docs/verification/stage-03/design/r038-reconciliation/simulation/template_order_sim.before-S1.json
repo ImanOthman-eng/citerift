@@ -1,0 +1,125 @@
+{
+ "articles": 200,
+ "failure_count": 12,
+ "failures": [
+  {
+   "article": 2,
+   "got": "cite_ref-r1_3-3",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 6
+  },
+  {
+   "article": 2,
+   "got": "cite_ref-r1_3-0",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 8
+  },
+  {
+   "article": 40,
+   "got": "cite_ref-r0_1-4",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 3
+  },
+  {
+   "article": 77,
+   "got": "cite_ref-r0_1-4",
+   "mode": "adversarial",
+   "perturbation": "missing_data_mw",
+   "use": 2
+  },
+  {
+   "article": 89,
+   "got": "cite_ref-r1_1-0",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 1
+  },
+  {
+   "article": 101,
+   "got": "cite_ref-r0_1-3",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 1
+  },
+  {
+   "article": 104,
+   "got": "cite_ref-r0_1-3",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 2
+  },
+  {
+   "article": 104,
+   "got": "cite_ref-r0_1-0",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 3
+  },
+  {
+   "article": 115,
+   "got": "cite_ref-r2_2-1",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 8
+  },
+  {
+   "article": 127,
+   "got": "cite_ref-r1_1-0",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 3
+  },
+  {
+   "article": 128,
+   "got": "cite_ref-r2_2-0",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 3
+  },
+  {
+   "article": 128,
+   "got": "cite_ref-r2_2-1",
+   "mode": "adversarial",
+   "perturbation": "none",
+   "use": 9
+  }
+ ],
+ "seed": 20261104,
+ "totals": {
+  "adversarial/missing_data_mw": {
+   "abstain": 912,
+   "articles": 200,
+   "linked": 634,
+   "swap": 1,
+   "uses": 1547,
+   "wrong": 0
+  },
+  "adversarial/none": {
+   "abstain": 328,
+   "articles": 200,
+   "linked": 1152,
+   "swap": 11,
+   "uses": 1491,
+   "wrong": 0
+  },
+  "clean/missing_data_mw": {
+   "abstain": 815,
+   "articles": 200,
+   "linked": 683,
+   "swap": 0,
+   "uses": 1498,
+   "wrong": 0
+  },
+  "clean/none": {
+   "abstain": 176,
+   "articles": 200,
+   "linked": 1326,
+   "swap": 0,
+   "uses": 1502,
+   "wrong": 0
+  }
+ }
+}

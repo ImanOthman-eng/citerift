@@ -1,0 +1,179 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 73356164,
+  "source_sha256": "a1d1b301d46ad3c973a03246fdc8610af45cef93ab4ad0ceaa9d6eb61dc91f92",
+  "html_sha256": "e8688c705c61f800e01e36263c0a8c3f37256d2a87de9a61947249b443beb2d7",
+  "window": [
+   0,
+   1589
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:49:56Z",
+  "finished_at": "2026-10-29T08:52:19Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-73356164/packet.json",
+    "sha256": "7b82cda2934197f6a576403d9f558fe83ba3eaed9761a6d5f140f834950f17c2"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-73356164/source.wikitext",
+    "sha256": "a1d1b301d46ad3c973a03246fdc8610af45cef93ab4ad0ceaa9d6eb61dc91f92"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r2/ar-73356164/render.html",
+    "sha256": "e8688c705c61f800e01e36263c0a8c3f37256d2a87de9a61947249b443beb2d7"
+   }
+  ],
+  "tools": "bash cat/sha256sum to view files; python3 -I with the standard library (str.find, re.finditer for '<ref', '{{', '10.', 'pmid', 'doi', 'دوي', retraction vocabulary) and lxml.html (listing elements whose typeof contains mw:Extension/ref with id and data-mw, and <li id='cite_note-...'> with text content and <a> class/title/href); every location checked with text[cp:cp+len(quote)] == quote. Labels decided by reading the text.",
+  "unresolved": "Whether {{ITIS}} and {{FishBase species}} count as citation templates: I judged yes (their purpose is to format a citation to a database record)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 137,
+    "quote": "<ref name=\"iucn status 19 November 2021\">{{ci"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn status 19 November 2021",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 178,
+      "quote": "{{cite iucn |author=Smith-Vani"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn_status_19_November_2021-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "In the infobox status_ref parameter. {{cite iucn}} is a citation template. Rendered note shows a maintenance message about deprecated |page=, no retraction wording."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 741,
+    "quote": "<ref name=\"itis\">{{ITIS | id = 168593 | "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "itis",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 758,
+      "quote": "{{ITIS | id = 168593 | taxon ="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-itis-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{ITIS}} treated as a citation template (it formats a citation to an ITIS record). Rendered note shows 'TSN {{{1}}}' and a URL with search_value={{{1}}} because the template call uses id= rather than a positional parameter; still a rendered footnote. Reused earlier at cp 627 by <ref name=itis />."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1064,
+    "quote": "<ref>{{FishBase species | genus = Trachurus |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1069,
+      "quote": "{{FishBase species | genus = T"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{FishBase species}} treated as a citation template (formats a FishBase citation)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 137,
+    "quote": "<ref name=\"iucn status 19 November 2021\">{{ci"
+   },
+   "binds_to": {
+    "cp": 137,
+    "quote": "<ref name=\"iucn status 19 November 2021\">{{ci"
+   },
+   "render_ref_id": "cite_ref-iucn_status_19_November_2021_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 627,
+    "quote": "<ref name=itis />"
+   },
+   "binds_to": {
+    "cp": 741,
+    "quote": "<ref name=\"itis\">{{ITIS | id = 168593 | "
+   },
+   "render_ref_id": "cite_ref-itis_2-0",
+   "notes": "Self-closing reuse in the infobox synonyms_ref, before the defining ref; binds forward to the definition named itis."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 741,
+    "quote": "<ref name=\"itis\">{{ITIS | id = 168593 | "
+   },
+   "binds_to": {
+    "cp": 741,
+    "quote": "<ref name=\"itis\">{{ITIS | id = 168593 | "
+   },
+   "render_ref_id": "cite_ref-itis_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1064,
+    "quote": "<ref>{{FishBase species | genus = Trachurus |"
+   },
+   "binds_to": {
+    "cp": 1064,
+    "quote": "<ref>{{FishBase species | genus = Trachurus |"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 302,
+    "quote": "10.2305/IUCN.UK.2015-4.RLTS.T198646A43156817.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2015-4.rlts.t198646a43156817.en",
+   "notes": "doi= field of {{cite iucn}}."
+  }
+ ],
+ "unresolved_notes": []
+}

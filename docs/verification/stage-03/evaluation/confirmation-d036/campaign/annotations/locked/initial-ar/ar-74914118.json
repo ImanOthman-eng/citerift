@@ -1,0 +1,102 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 74914118,
+  "source_sha256": "375888760f649744fb019f4e74b4fec81da56adcf59d4f6fd4be2d8a98f31351",
+  "html_sha256": "e916485cde5bd9f36a0512b67005e02cb6201f3de5c9602b1961bb126b441666",
+  "window": [
+   0,
+   826
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h2",
+  "started_at": "2026-11-04T10:24:00Z",
+  "finished_at": "2026-11-04T10:24:33Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-74914118/packet.json",
+    "sha256": "f8790df31876c00b6e21b4c22a7dc810ad66515d9794e5ccc5bafcbbcd7b85aa"
+   },
+   {
+    "path": "packets/ar-74914118/source.wikitext",
+    "sha256": "375888760f649744fb019f4e74b4fec81da56adcf59d4f6fd4be2d8a98f31351"
+   },
+   {
+    "path": "packets/ar-74914118/render.html",
+    "sha256": "e916485cde5bd9f36a0512b67005e02cb6201f3de5c9602b1961bb126b441666"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: regex scan of source, lxml listing of sup/li elements; locations verified by slicing",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 101,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 106,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "single unnamed ref with citation template"
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 101,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 101,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 133,
+    "quote": "10.1016/0002-9610(94)90254-2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0002-9610(94)90254-2",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 450,
+    "quote": "8185045"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "8185045",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

@@ -1,0 +1,25 @@
+import json, sys, os
+base = sys.argv[1]
+bad = 0
+n = 0
+def walk(o, path):
+    global bad, n
+    if isinstance(o, dict):
+        if 'cp' in o and 'quote' in o and isinstance(o['cp'], int):
+            n += 1
+            if text[o['cp']:o['cp']+len(o['quote'])] != o['quote']:
+                bad += 1
+                print('BAD', path, o)
+        for k, v in o.items():
+            walk(v, path + '/' + k)
+    elif isinstance(o, list):
+        for i, v in enumerate(o):
+            walk(v, path + '[%d]' % i)
+for art in sorted(os.listdir(base + '/items')):
+    d = base + '/items/' + art
+    text = open(d + '/source.wikitext', encoding='utf-8').read()
+    locked = json.load(open(d + '/locked.json', encoding='utf-8'))
+    before = bad
+    walk(locked, art)
+    print(art, 'code points', len(text), 'bad so far', bad - before)
+print('locations checked', n, 'bad', bad)

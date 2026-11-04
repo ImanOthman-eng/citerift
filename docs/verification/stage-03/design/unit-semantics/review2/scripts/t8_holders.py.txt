@@ -1,0 +1,17 @@
+"""RV-1 holder rule: a G-capable template that holds any unclassified template (formatting, {{lang}}, {{!}})."""
+import tempfile
+from pathlib import Path
+from rv2lib import *
+def bib(inner): return f"<h2>Sources</h2><ul><li>{inner}</li></ul>"
+cases = []
+for nested in ("{{lang|la|Osteobrama}}", "Foo {{!}} Bar", "{{transl|ar|al-Barāmika}}"):
+    p = {"1": "Osteobrama", "2": "bhimensis", "title": nested}
+    t = f"A<ref>{{{{Fishbase|Osteobrama|bhimensis|title={nested}}}}}</ref>\n"
+    cases.append((f"ref Fishbase title={nested}", t, one_note("A", transclusion(5, "Fishbase", p, cs1("Osteobrama")))))
+    P2 = {"last": "Barthold", "title": nested, "doi": "10.1163/1573-3912_islam_COM_0099"}
+    t2 = f"== Sources ==\n* {{{{EI2|last=Barthold|title={nested}|doi=10.1163/1573-3912_islam_COM_0099}}}}\n"
+    cases.append((f"bib EI2 title={nested}", t2, bib(transclusion(1, "EI2", P2, cs1("Barthold")))))
+for label, text, body in cases:
+    with tempfile.TemporaryDirectory() as d:
+        s = summary(run(Path(d), text, body))
+        print(f"{label:55s} units={[u[1] for u in s['units']]} H={[h[1] for h in s['H']]}")

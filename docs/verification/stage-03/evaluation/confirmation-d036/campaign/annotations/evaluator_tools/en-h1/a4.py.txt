@@ -1,0 +1,22 @@
+import sys
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+A=Art(1372334491)
+t=A.t
+spec=[('<ref>{{Cite web |title=Barron',1,'{{Cite web',False),
+('<ref>{{Cite web |title=Alumni',2,'{{Cite web',False),
+('<ref>Fama, Eugene F.; French, Kenneth R. (1992)',3,None,True),
+('<ref>{{Cite journal |last=Fama',4,'{{Cite journal',False),
+('<ref>{{Cite web |title=Trademark',5,'{{Cite web',False),
+('<ref>{{Cite news |last=Fisher',6,'{{Cite news',False),
+('<ref>{{Cite web |last=N.A',7,'{{Cite web',False)]
+for s,n,tp,uns in spec:
+    cp=A.at(s)
+    assert A.inwin(cp)
+    A.d(cp,'note',name=None,group='',tpl=([A.at(tp,0,cp)] if tp else []),unstructured=uns,rid='cite_note-%d'%n,
+        notes=('Hand-written reference, no citation template; contains labelled text doi:' if uns else ''))
+    A.u(cp,cp,'cite_ref-%d'%n)
+A.i(A.at('10.1111/j.1540-6261.1992.tb04398.x'),'10.1111/j.1540-6261.1992.tb04398.x','doi','labeled_reference_text','10.1111/j.1540-6261.1992.tb04398.x')
+A.i(A.at('10.1016/0304-405X(93)90023-5'),'10.1016/0304-405X(93)90023-5','doi','primary_citation_field','10.1016/0304-405x(93)90023-5')
+A.unres.append('The window ends inside the heading "== Boards & advisory roles ==" (cp 9517); references after it (Q Group onward) are not listed. Infobox person has no references.')
+A.write(None,TOOLS,'Nothing undecided.')

@@ -1,0 +1,778 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76372332,
+  "source_sha256": "3ecce4637eed8b2aff6ff0b6208a1f35c3e0bcd3e44268d395ee61a7ce84e672",
+  "html_sha256": "4883c2cfdc4fcde7018d908af162eac83f858d8eb99e70ad95fbcdfd9d70c292",
+  "window": [
+   798,
+   8798
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:13:37Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76372332/packet.json",
+    "sha256": "b43793ae9169d56bd852a2797f9b88d4bf4e110222c8c22b723767f6097bd125"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76372332/source.wikitext",
+    "sha256": "3ecce4637eed8b2aff6ff0b6208a1f35c3e0bcd3e44268d395ee61a7ce84e672"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h2/ar-76372332/render.html",
+    "sha256": "4883c2cfdc4fcde7018d908af162eac83f858d8eb99e70ad95fbcdfd9d70c292"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str/re to print the source with code-point offsets and to find '<ref', '{{استشهاد', 'doi='/'pmid=', '10.', pubmed/ncbi URLs, comments/nowiki and retraction vocabulary; lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw and <li id=cite_note-*> texts and red links; every location asserted with text[cp:cp+len(quote)]==quote and field values checked to end at '|' or '}'. Labels decided by reading.",
+  "unresolved": "Role of the two bare PubMed URLs in the external-links section (textual_mention chosen; identifier_link is the alternative). pmc= values (PMC ids) and bibcode are not DOI/PMID and are not listed. Process notes: started_at is the start of the whole labelling session (09:10:12Z); per-article start times were not recorded separately. Early in the session I briefly wrote two throwaway lxml/re listing scripts to scratchpad/eval/tools/ (outside the permitted output directory), then deleted that directory and used stdin-only snippets afterwards. At the very end I ran a read-only 'git status --short' in /home/user/citerift (which produced no output), contrary to the no-git rule; no repository file was modified."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 505,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عنوان=Other Herpe"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 510,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=Other Herpesviru"
+     }
+    },
+    {
+     "at": {
+      "cp": 764,
+      "quote": "{{استشهاد بدورية محكمة|doi=10.1017/S095026889"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts before the window (cp 505 < 798); listed with in_window=false because its second template's pmid=10487654 (cp 1021) lies in the window. One <ref> holding two {{استشهاد بدورية محكمة}} citations separated by '; '. Its doi 10.1111/j.1600-6135.2004.00697.x (cp 690), pmid 15504215 (cp 677) and doi 10.1017/S0950268899002599 (cp 791, the window starts inside this DOI at cp 798) start before the window and are not listed as identifiers. Its use (the same <ref> at cp 505, marker cite_ref-1) is before the window and is not listed as a use."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1399,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1073/pnas."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1404,
+      "quote": "{{استشهاد بدورية محكمة|doi=10.1073/pnas.87.2."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2268,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Cohe"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2273,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Cohen|مؤل"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2891,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1542/peds."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2896,
+      "quote": "{{استشهاد بدورية محكمة|doi=10.1542/peds.99.3."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 3281,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1136/adc.7"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3286,
+      "quote": "{{استشهاد بدورية محكمة|doi=10.1136/adc.77.1.4"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 4073,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hara"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4078,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hara|مؤلف"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 4646,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Van "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4651,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Van Den B"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 5239,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Kawa"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5244,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Kawada|مؤ"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 5770,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hash"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5775,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hashida|م"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 6329,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Miha"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6334,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Mihara|مؤ"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 6850,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1017/S0950"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6855,
+      "quote": "{{استشهاد بدورية محكمة|doi=10.1017/S095026880"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 7190,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Chiu"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7195,
+      "quote": "{{استشهاد بدورية محكمة|مؤلف-الأخير1=Chiu|مؤلف"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 7799,
+    "quote": "<ref name=\"UpToDate\">{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "UpToDate",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7820,
+      "quote": "{{استشهاد ويب|عنوان=Human herpesvirus 7 infec"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-UpToDate-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref; no reuse of the name elsewhere in the source. {{استشهاد ويب}} has no url (rendered with a missing-URL error)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1399,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1073/pnas."
+   },
+   "binds_to": {
+    "cp": 1399,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1073/pnas."
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 2268,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Cohe"
+   },
+   "binds_to": {
+    "cp": 2268,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Cohe"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2891,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1542/peds."
+   },
+   "binds_to": {
+    "cp": 2891,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1542/peds."
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 3281,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1136/adc.7"
+   },
+   "binds_to": {
+    "cp": 3281,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1136/adc.7"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4073,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hara"
+   },
+   "binds_to": {
+    "cp": 4073,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hara"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 4646,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Van "
+   },
+   "binds_to": {
+    "cp": 4646,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Van "
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 5239,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Kawa"
+   },
+   "binds_to": {
+    "cp": 5239,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Kawa"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 5770,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hash"
+   },
+   "binds_to": {
+    "cp": 5770,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Hash"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 6329,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Miha"
+   },
+   "binds_to": {
+    "cp": 6329,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Miha"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 6850,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1017/S0950"
+   },
+   "binds_to": {
+    "cp": 6850,
+    "quote": "<ref>{{استشهاد بدورية محكمة|doi=10.1017/S0950"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 7190,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Chiu"
+   },
+   "binds_to": {
+    "cp": 7190,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف-الأخير1=Chiu"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 7799,
+    "quote": "<ref name=\"UpToDate\">{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 7799,
+    "quote": "<ref name=\"UpToDate\">{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-UpToDate_13-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1021,
+    "quote": "10487654"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "10487654",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 1. Second citation template of the out-of-window footnote d1."
+  },
+  {
+   "at": {
+    "cp": 1431,
+    "quote": "10.1073/pnas.87.2.748"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.87.2.748",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 2."
+  },
+  {
+   "at": {
+    "cp": 1946,
+    "quote": "2153965"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "2153965",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 2."
+  },
+  {
+   "at": {
+    "cp": 2629,
+    "quote": "20419813"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "20419813",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 3."
+  },
+  {
+   "at": {
+    "cp": 2654,
+    "quote": "10.1002/jmv.21751"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/jmv.21751",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 3."
+  },
+  {
+   "at": {
+    "cp": 2923,
+    "quote": "10.1542/peds.99.3.e4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1542/peds.99.3.e4",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 4."
+  },
+  {
+   "at": {
+    "cp": 3266,
+    "quote": "9099769"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9099769",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 4."
+  },
+  {
+   "at": {
+    "cp": 3313,
+    "quote": "10.1136/adc.77.1.42"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1136/adc.77.1.42",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 5."
+  },
+  {
+   "at": {
+    "cp": 3834,
+    "quote": "9279150"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9279150",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 5."
+  },
+  {
+   "at": {
+    "cp": 4606,
+    "quote": "16088166"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16088166",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 6."
+  },
+  {
+   "at": {
+    "cp": 4619,
+    "quote": "10.1159/000086449"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1159/000086449",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 6."
+  },
+  {
+   "at": {
+    "cp": 5174,
+    "quote": "10102435"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "10102435",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 7."
+  },
+  {
+   "at": {
+    "cp": 5687,
+    "quote": "15275707"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15275707",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 8."
+  },
+  {
+   "at": {
+    "cp": 5700,
+    "quote": "10.1016/j.braindev.2003.12.003"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.braindev.2003.12.003",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 8."
+  },
+  {
+   "at": {
+    "cp": 6314,
+    "quote": "7567349"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "7567349",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 9."
+  },
+  {
+   "at": {
+    "cp": 6763,
+    "quote": "16286551"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16286551",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 10."
+  },
+  {
+   "at": {
+    "cp": 6776,
+    "quote": "10.1001/archneur.62.11.1755"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1001/archneur.62.11.1755",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 10."
+  },
+  {
+   "at": {
+    "cp": 6882,
+    "quote": "10.1017/S0950268804002304"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1017/s0950268804002304",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 11."
+  },
+  {
+   "at": {
+    "cp": 7162,
+    "quote": "15188706"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15188706",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 11."
+  },
+  {
+   "at": {
+    "cp": 7599,
+    "quote": "9659100"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9659100",
+   "notes": "pmid= field of {{استشهاد بدورية محكمة}} in footnote 12."
+  },
+  {
+   "at": {
+    "cp": 7623,
+    "quote": "10.1136/adc.78.5.479"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1136/adc.78.5.479",
+   "notes": "doi= field of {{استشهاد بدورية محكمة}} in footnote 12."
+  },
+  {
+   "at": {
+    "cp": 8282,
+    "quote": "http://www.ncbi.nlm.nih.gov/pubmed/9380475"
+   },
+   "scheme": "pmid",
+   "role": "textual_mention",
+   "key": "9380475",
+   "notes": "Bare PubMed URL on its own (non-list) line in the external links section (وصلات خارجية), outside any <ref> and any citation template. Not a bibliography entry (no list marker, no citation template). identifier_link is defined for URLs inside a reference or citation template, so I chose textual_mention as the role for a bare link in article text; uncertain between this and identifier_link."
+  },
+  {
+   "at": {
+    "cp": 8385,
+    "quote": "http://www.ncbi.nlm.nih.gov/pubmed/9380475"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "9380475",
+   "notes": "The PubMed URL embedded inside the archive.org snapshot URL in {{webarchive|url=https://web.archive.org/web/20131219160441/...}}; another site's URL."
+  },
+  {
+   "at": {
+    "cp": 8453,
+    "quote": "http://www.ncbi.nlm.nih.gov/pubmed/12069636"
+   },
+   "scheme": "pmid",
+   "role": "textual_mention",
+   "key": "12069636",
+   "notes": "Bare PubMed URL on its own line in the external links section, outside any reference; same reasoning as the URL at cp 8282."
+  },
+  {
+   "at": {
+    "cp": 8557,
+    "quote": "http://www.ncbi.nlm.nih.gov/pubmed/12069636"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "12069636",
+   "notes": "PubMed URL embedded inside the archive.org snapshot URL in {{webarchive|url=https://web.archive.org/web/20131219160338/...}}."
+  }
+ ],
+ "unresolved_notes": [
+  "Window starts at cp 798, inside the DOI 10.1017/S0950268899002599 (starts cp 791) of the first footnote; that DOI and the earlier pmid/doi of the first footnote are out of scope.",
+  "External links lines 'http://jid.oxfordjournals.org/content/193/8/1063.long' (cp 8089) and its webarchive copy carry no DOI/PMID.",
+  "Red links in notes are article-namespace links (journal/publisher names), not template pages; markers 'none'."
+ ],
+ "adjudication": {
+  "adjudicator": "stage03-adjudicator-ar",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-ar/decisions/ar-76372332.json",
+  "changed_items": []
+ }
+}

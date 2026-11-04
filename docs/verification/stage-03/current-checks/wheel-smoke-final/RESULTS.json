@@ -1,0 +1,105 @@
+{
+  "module_probe": "/workspace/stage03-work/wheel-venv/lib/python3.12/site-packages/citerift/wiki/__init__.py",
+  "module_probe_exit": 0,
+  "cwd": "/workspace/stage03-work/wheel-smoke-final",
+  "external_schemas": "/workspace/stage03-work/wheel-smoke-final/schemas",
+  "platform": "Linux",
+  "rows": [
+    {
+      "wiki": "ar",
+      "operation": "extract",
+      "exit": 6,
+      "verified": null,
+      "replay": null,
+      "status": "partial",
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "extract",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/ar",
+        "--out",
+        "/workspace/stage03-work/wheel-smoke-final/ar.json"
+      ]
+    },
+    {
+      "wiki": "ar",
+      "operation": "verify",
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "status": null,
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/ar",
+        "--extraction",
+        "/workspace/stage03-work/wheel-smoke-final/ar.json"
+      ]
+    },
+    {
+      "wiki": "ar",
+      "operation": "replay",
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "status": null,
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/ar",
+        "--extraction",
+        "/workspace/stage03-work/wheel-smoke-final/ar.json"
+      ]
+    },
+    {
+      "wiki": "en",
+      "operation": "extract",
+      "exit": 0,
+      "verified": null,
+      "replay": null,
+      "status": "complete",
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "extract",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/en",
+        "--out",
+        "/workspace/stage03-work/wheel-smoke-final/en.json"
+      ]
+    },
+    {
+      "wiki": "en",
+      "operation": "verify",
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "status": null,
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/en",
+        "--extraction",
+        "/workspace/stage03-work/wheel-smoke-final/en.json"
+      ]
+    },
+    {
+      "wiki": "en",
+      "operation": "replay",
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "status": null,
+      "argv": [
+        "/workspace/stage03-work/wheel-venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/stage03-work/wheel-smoke-final/en",
+        "--extraction",
+        "/workspace/stage03-work/wheel-smoke-final/en.json"
+      ]
+    }
+  ]
+}

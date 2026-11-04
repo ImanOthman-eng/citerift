@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "76294537c78d196737cc350afe4a7e3c2d70d47e452c5330e9fe3612cd0ffe62",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.482,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-10-29T09:43:21.822228Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=23645349",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 1603,
+   "body_sha256": "536d8152809c19ae47c727abd629c58f003da9250640ab0d6bdb8c47df1b77dc",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.478,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:44:00.304372Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=23645349",
+   "wire_bytes": 969
+  },
+  {
+   "body_bytes": 33835,
+   "body_sha256": "0eafd92fdfb2b3214f0ac9fadc74b54b0ba01c513329dc55995e2749d137f2c2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.457,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T09:44:10.783136Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1345211755/html",
+   "wire_bytes": 7915
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "76294537c78d196737cc350afe4a7e3c2d70d47e452c5330e9fe3612cd0ffe62"
+ ],
+ "finished_at": "2026-10-29T09:44:11.241849Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 23645349,
+  "parent_revision_id": 1301421813,
+  "redirect_followed": null,
+  "revision_id": 1345211755,
+  "revision_timestamp": "2026-03-24T23:01:56Z",
+  "sha1": "b1031885738daf3e959fadab039cfed29a5eab82",
+  "size": 1062,
+  "title": "Somatolophia",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "0eafd92fdfb2b3214f0ac9fadc74b54b0ba01c513329dc55995e2749d137f2c2",
+  "bytes": 33835,
+  "checks": {
+   "document_revision_id": "1345211755",
+   "header_revision_id": "1345211755",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "23645349",
+   "render_id": "91142689-d187-11f1-afa9-4b4bbfeae68a",
+   "revision_sha1": "b1031885738daf3e959fadab039cfed29a5eab82",
+   "revision_sha1_base36": "koddi7qub1pdbopbs1eulwtxe19wneq"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1345211755",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 09:44:11 GMT",
+   "etag": "W/\"1345211755/91142689-d187-11f1-afa9-4b4bbfeae68a/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:42:05 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1345211755/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 23645349,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "992c0a1f1248cb84316ea79c7bce6720e4abba6923a01f1fab8b78785facc98d",
+  "bytes": 1062,
+  "response_artifact": "536d8152809c19ae47c727abd629c58f003da9250640ab0d6bdb8c47df1b77dc",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=23645349"
+ },
+ "started_at": "2026-10-29T09:43:12.155045Z",
+ "status": "complete"
+}

@@ -1,0 +1,25 @@
+"""Harness: build a SYNTHETIC source-only (or with HTML body) bundle and print the extraction summary."""
+import sys, json, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract, codes  # noqa: E402
+
+_n = [0]
+def run(text, body=None, wiki="en", show=True, label=""):
+    tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p1"))
+    p = bundle(tmp, text, body, wiki=wiki)
+    doc = extract(p)
+    if show:
+        print("=====", label, repr(text))
+        print("status", doc["status"])
+        for c in doc["containers"]:
+            print(" C", c["id"], c["kind"], repr(c.get("name")), repr(c["group"]), c["binding_state"], "uses", c.get("use_ids"), "units", c.get("unit_ids"))
+        for u in doc["uses"]:
+            print(" U", u["id"], u["origin"], u.get("zone"), repr(u.get("name")), repr(u["group"]), u["binding"], u["container_id"])
+        for i in doc["identifiers"]:
+            n = i["normalization"]
+            print(" I", i["id"], i["scheme"], i["origin"], i["role"], repr(i["raw"] if "raw" in i else n["raw"]), "->", n["normalized"], i.get("boundary"), i.get("container_id"), i.get("unit_id"))
+        for i in doc.get("excluded_identifiers", []):
+            print(" X", i.get("scheme"), i.get("reason"), i.get("raw"))
+        print(" issues", sorted(codes(doc)))
+    return p, doc

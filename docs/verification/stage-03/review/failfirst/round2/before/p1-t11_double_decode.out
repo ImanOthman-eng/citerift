@@ -1,0 +1,10 @@
+===== double-decoded name 'A<ref name="x&amp;lt;y">{{cite journal|doi=10.1000/a}}</ref> B<ref name="x<y">{{cite journal|doi=10.1000/b}}</ref> C{{r|x&lt;y}}'
+status partial
+ C ct-00001 note 'x&lt;y' '' single_definition uses ['us-00001'] units ['un-00001']
+ C ct-00002 note 'x<y' '' single_definition uses ['us-00002', 'us-00003'] units ['un-00002']
+ U us-00001 tag prose 'x&lt;y' '' bound ct-00001
+ U us-00002 tag prose 'x<y' '' bound ct-00002
+ U us-00003 r prose 'x<y' '' bound ct-00002
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/b' -> 10.1000/b field ct-00002 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']

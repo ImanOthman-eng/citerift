@@ -1,0 +1,58 @@
+{
+ "campaign": {
+  "initial": {
+   "ar": 24,
+   "en": 16
+  },
+  "maximum": {
+   "ar": 48,
+   "en": 32
+  },
+  "block": 4,
+  "http_attempts_ceiling": 500,
+  "accepted_body_bytes_ceiling": 314572800,
+  "worst_case_per_unreported_run": {
+   "http_attempts": 6,
+   "accepted_body_bytes": 67108864
+  },
+  "acquisition_end": "2026-11-14T23:59:00+00:00",
+  "campaign_directory": "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign",
+  "network_gate": "default (~/.cache/citerift/wiki-network.lock); no other process uses it during the campaign"
+ },
+ "authority": "owner instruction 2026-11-02 (cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh), DECISIONS.md D-034",
+ "candidate_revision": "3e51792a38e227bd986bfbe63f16605d303c6d6c",
+ "candidate_ci": "PR #5 checks verify (python 3.12), verify (python 3.13) and ci-gate succeeded on this revision (2026-11-02)",
+ "protocol": "docs/verification/stage-03/protocol/AMENDMENT_2026-11-02_CONFIRMATION.md (sections 1-12)",
+ "files_sha256_at_candidate": {
+  "docs/verification/stage-03/protocol/FROZEN_PROTOCOL.md": "398b9cbcbcb03f42cbdcfdff5a78cea77dc2fd4806b14ee0097f35f507b5f886",
+  "docs/verification/stage-03/protocol/AMENDMENT_2026-11-02_CONFIRMATION.md": "2db80fe3ab1ce9467caf5e708e5c81deb694ca64418d46a796252502b28bad52",
+  "docs/verification/stage-03/protocol/ANNOTATION_GUIDE_v1.1.md": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e",
+  "docs/verification/stage-03/protocol/scripts/evaluate.py": "095248da890ce8bfcf7b0dd4f56faaf82d3188eec4a9bcff1f956f81018c9adf",
+  "docs/verification/stage-03/protocol/scripts/evaluate_v2.py": "f91d53b1b1608e164e86985d641417974328ae18e0bc8f04b02ee67859a6d288",
+  "docs/verification/stage-03/design/sfn-semantics/SEMANTIC_DECISION.md": "875788c44869fce891b73070380112202b943092e996c0c1945a2c8a597555bb",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/EVALUATOR_BRIEF_v1.1.md": "b9ac15b49945ba8798cbd0f7cca3433fc480ed2a89e1b87b19f33f09ff9f1a9c",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/ADJUDICATION_BRIEF_v1.1.md": "34e2fe47768b9968cd696c651143354f3906b6902151801087a72e45b2f1a2b0",
+  "docs/verification/stage-03/evaluation/scripts/campaign_capture.py": "532d21e00307673b90d3e59a798689e35eccf1332aa1c803028880d79b6d201b",
+  "docs/verification/stage-03/evaluation/scripts/reserve_decision.py": "7dec7c9fa4d02f10ba213e9998a8c2e2d70cd4c2fa9415d7bc86830f0ca9bbcb",
+  "docs/verification/stage-03/evaluation/scripts/run_holdout.py": "485fcb852e039f4eaa1f34249b945030e905efd8c7d9ae951ee7ef09a2995390",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/disagreements_v2.py": "9ddda25fdab218a492199c470cf9edf67bfb597ec31028193c7cacfa5c83af62",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/exposure_set.py": "ef71d9a94185424d4317db18ef134af409e7fd534c7a7e37da50c8efe283e508",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/reserve_step.py": "0366295c40de68f2df4406900d5ac1b9b1bffd0175699ae157fa43eaa20d315b",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/run_confirmation.py": "1f8505cc0fc8d2cbd8fdfcd02e691b6723c016b403959ba0cf5db39f8431ea12",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/select_confirmation.py": "a3c9826745ed8fdcea8bcc897346760d4578893aca45ba6e52ffb758d6e00924",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/warning_challenge.py": "7a31c686677b790774e471ce1c25df3b03af08a6235043262d69ccbdc505f4da",
+  "src/citerift/wiki/data/profile-v1.json": "57bfbfdd6759c64670891d5321b70b2c4020684fb2532f73c8b9919da5b98fa3"
+ },
+ "frozen_at": "2026-11-02T18:07:44+00:00",
+ "draw_started": false,
+ "capture_started": false,
+ "predictions_before_annotation_lock": false,
+ "models": {
+  "implementing_agent": "Claude Opus (this session)",
+  "evaluators": "Claude Sonnet, separate contexts, at most 6 articles each, working outside the repository",
+  "adjudicators": "Claude Haiku, separate contexts, working outside the repository",
+  "note": "AI labels, never human gold. No other vendor's model without a paid API."
+ },
+ "executor": "Claude Code (AI coding agent) under the direction of EVE TELOS · IM",
+ "tool_cost": "No paid service added. Token totals are not exposed to the agent; no spend figure is inferred."
+}

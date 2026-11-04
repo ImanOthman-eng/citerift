@@ -1,0 +1,9 @@
+# tests/stage03/test_wiki_doi_boundaries_d1_d2.py run against the source of cb305bf (before D-1/D-2)
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_character_reference_in_a_url_field_is_decoded[https://onlinelibrary.wiley.com/doi/10.1002/abc&amp;123]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_character_reference_in_a_url_field_is_decoded[https://doi.org/10.1002/abc&amp;123]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_character_reference_in_a_url_field_is_decoded[https://onlinelibrary.wiley.com/doi/10.1002/abc&#38;123]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_encoded_separator_in_a_publisher_doi_path[https://onlinelibrary.wiley.com/doi/10.1002%2Fabc.123-en]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_encoded_separator_in_a_publisher_doi_path[https://onlinelibrary.wiley.com/doi/10.1002%2Fabc.123-ar]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_encoded_separator_in_a_publisher_doi_path[https://onlinelibrary.wiley.com/doi/abs/10.1002%2fabc.123-en]
+FAILED tests/stage03/test_wiki_doi_boundaries_d1_d2.py::test_encoded_separator_in_a_publisher_doi_path[https://onlinelibrary.wiley.com/doi/abs/10.1002%2fabc.123-ar]
+7 failed, 8 passed in 0.67s

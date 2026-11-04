@@ -1,0 +1,140 @@
+{
+  "bundle": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/dev/bundles/en-1381772671-a1",
+  "capture": {
+    "attempts": [
+      {
+        "body_bytes": 57793,
+        "body_sha256": "7e23e4d5ba2ee6fedec4c5c560b861e0097b7ad3e2ced4f71b2d789e593d91b7",
+        "code": null,
+        "content_type": "application/json; charset=utf-8",
+        "detail": "",
+        "duration_s": 0.51,
+        "number": 1,
+        "operation": "source",
+        "retry_after_problem": null,
+        "retry_after_raw": null,
+        "retry_after_s": null,
+        "retryable": false,
+        "started_at": "2026-10-29T09:24:59.936283Z",
+        "status": 200,
+        "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1381772671",
+        "wire_bytes": 18876
+      },
+      {
+        "body_bytes": 274,
+        "body_sha256": "1807781a7fef9b624321d0248373dedb4889641037bc90f9ac488f16781be74f",
+        "code": "HTTP_RATE_LIMITED",
+        "content_type": "text/plain",
+        "detail": "",
+        "duration_s": 0.39,
+        "number": 1,
+        "operation": "render",
+        "retry_after_problem": null,
+        "retry_after_raw": "39",
+        "retry_after_s": 39.0,
+        "retryable": true,
+        "started_at": "2026-10-29T09:25:20.957210Z",
+        "status": 429,
+        "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381772671/html",
+        "wire_bytes": 274
+      },
+      {
+        "body_bytes": 422679,
+        "body_sha256": "734998546cb213a208264c3c4147910c9b2072ea57ab11585a0ee651039770b9",
+        "code": null,
+        "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+        "detail": "",
+        "duration_s": 1.013,
+        "number": 2,
+        "operation": "render",
+        "retry_after_problem": null,
+        "retry_after_raw": null,
+        "retry_after_s": null,
+        "retryable": false,
+        "started_at": "2026-10-29T09:26:10.879268Z",
+        "status": 200,
+        "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381772671/html",
+        "wire_bytes": 68595
+      }
+    ],
+    "client": {
+      "name": "citerift-wiki",
+      "policy": {
+        "backoff_s": 10.0,
+        "deadline_s": 180.0,
+        "max_attempts": 3,
+        "max_body_bytes": 33554432,
+        "max_wire_bytes": 33554432,
+        "maxlag_s": 5,
+        "min_interval_s": 10.0,
+        "op_timeout_s": 30.0,
+        "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+      },
+      "version": "1.0.0"
+    },
+    "failure_artifacts": [
+      "1807781a7fef9b624321d0248373dedb4889641037bc90f9ac488f16781be74f"
+    ],
+    "finished_at": "2026-10-29T09:26:11.900283Z",
+    "issues": [],
+    "not_before": null,
+    "page": {
+      "content_model": "wikitext",
+      "host": "en.wikipedia.org",
+      "is_latest": true,
+      "namespace": 0,
+      "page_id": 69149,
+      "parent_revision_id": 1381624017,
+      "redirect_followed": null,
+      "revision_id": 1381772671,
+      "revision_timestamp": "2026-10-24T18:35:10Z",
+      "sha1": "6d3db470fbb390ea2d80297e496a1ebf925a2d33",
+      "size": 56971,
+      "title": "MMR vaccine",
+      "wiki": "en"
+    },
+    "render": {
+      "artifact": "734998546cb213a208264c3c4147910c9b2072ea57ab11585a0ee651039770b9",
+      "bytes": 422679,
+      "checks": {
+        "document_revision_id": "1381772671",
+        "header_revision_id": "1381772671",
+        "html_version": "2.8.0",
+        "namespace": "0",
+        "page_id": "69149",
+        "render_id": "41c323b8-d33c-11f1-a1f2-0d4373f1f9a7",
+        "revision_sha1": "6d3db470fbb390ea2d80297e496a1ebf925a2d33",
+        "revision_sha1_base36": "crdp7wz4uglwg5zize4uur205xk1lwz"
+      },
+      "headers": {
+        "content-language": "en",
+        "content-revision-id": "1381772671",
+        "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+        "date": "Thu, 29 Oct 2026 09:26:11 GMT",
+        "etag": "W/\"1381772671/41c323b8-d33c-11f1-a1f2-0d4373f1f9a7/view\"",
+        "last-modified": "Thu, 29 Oct 2026 01:57:52 GMT"
+      },
+      "state": "captured",
+      "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381772671/html"
+    },
+    "request": {
+      "follow_redirect": false,
+      "page_id": null,
+      "render": true,
+      "revision_id": 1381772671,
+      "title": null,
+      "wiki": "en"
+    },
+    "schema": "urn:citerift:schema:wiki:v1:capture",
+    "schema_version": "1.0.0",
+    "source": {
+      "artifact": "1546e494bdcab54364e02a29bece4cd5cc1661c40db1b586a17487696d111582",
+      "bytes": 56971,
+      "response_artifact": "7e23e4d5ba2ee6fedec4c5c560b861e0097b7ad3e2ced4f71b2d789e593d91b7",
+      "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1381772671"
+    },
+    "started_at": "2026-10-29T09:24:11.934323Z",
+    "status": "complete"
+  },
+  "status": "complete"
+}

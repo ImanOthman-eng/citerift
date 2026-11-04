@@ -1,0 +1,19 @@
+"""reserve_step.decide treats a deferred-pending (not yet resolved) article as 'no bundle = 0 counts' and names the next block."""
+import importlib.util, json, sys
+sys.path.insert(0, "/home/user/citerift/docs/verification/stage-03/evaluation/scripts")
+spec = importlib.util.spec_from_file_location("rs", "/home/user/citerift/docs/verification/stage-03/evaluation/confirmation-2026-11/scripts/reserve_step.py")
+rs = importlib.util.module_from_spec(spec); spec.loader.exec_module(rs)
+art = lambda n: {"page_id": n, "title": f"T{n}"}
+sel = {"frame": {w: {"initial": [art(1), art(2)], "reserve_blocks": [[art(3)], [art(4)]]} for w in ("ar", "en")}}
+# the en article 2 is deferred by Retry-After: driver exit 4, runs pending, no bundle yet
+def st(key, final): return {"split": key.split("/")[0], "runs": [], "final": final}
+states = {}
+for w in ("ar", "en"):
+    states[f"holdout/{w}-1"] = st(f"holdout/{w}-1", None)
+    states[f"holdout/{w}-2"] = st(f"holdout/{w}-2", None)
+states["holdout/en-2"]["runs"] = [{"run": 1, "status": "deferred", "deferred": True, "not_before": "2026-11-03T00:00:00Z", "codes": ["DEFERRED_RETRY_AFTER"]}]
+states["holdout/en-2"]["final"] = states["holdout/en-2"]["runs"][0]
+out = rs.decide(sel, states, {})
+for w in ("ar", "en"):
+    print(w, "next_block:", out[w]["next_block"], "| included:", out[w]["included"], "| at_maximum:", out[w]["at_maximum"])
+print("note: en-2 is still pending (deferred until 2026-11-03); nothing in the decision says so")

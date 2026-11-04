@@ -1,0 +1,140 @@
+# Fail-first run of tests/stage03/test_r038_template_output_order.py on the unchanged engine
+# revision: ec81c7f5e586e4005c7eff3e1063a74f3bfc2918 (engine 1.1.0, src unchanged since the D-035 candidate fff0e5b)
+# command: uv run pytest tests/stage03/test_r038_template_output_order.py -q -p no:cacheprovider -rA --tb=line
+F.F..FFFF.FFFFFFF.FFFFFFF                                                [100%]
+=================================== FAILURES ===================================
+E   AssertionError: the definition is the marker whose data-mw has a body
+    assert ('matched', 'cite_ref-M_1-0') == ('matched', 'cite_ref-M_1-1')
+      
+      At index 1 diff: 'cite_ref-M_1-0' != 'cite_ref-M_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:143: AssertionError: the definition is the marker whose data-mw has a body
+E   AssertionError: assert ('matched', 'cite_ref-M_1-0') == ('matched', 'cite_ref-M_1-1')
+      
+      At index 1 diff: 'cite_ref-M_1-0' != 'cite_ref-M_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:162: AssertionError: assert ('matched', 'cite_ref-M_1-0') == ('matched', 'cite_ref-M_1-1')
+E   AssertionError: assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched)
+<repo>/tests/stage03/test_r038_template_output_order.py:185: AssertionError: assert ('matched' == 'abstained'
+E   AssertionError: assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched)
+<repo>/tests/stage03/test_r038_template_output_order.py:185: AssertionError: assert ('matched' == 'abstained'
+E   AssertionError: assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched)
+<repo>/tests/stage03/test_r038_template_output_order.py:185: AssertionError: assert ('matched' == 'abstained'
+E   AssertionError: the definition is in the second rendered row
+    assert False
+     +  where False = <built-in method endswith of str object at 0x7f44d3be3b40>('tr[2]/td/sup')
+     +    where <built-in method endswith of str object at 0x7f44d3be3b40> = '/html/body/table/tbody/tr[1]/td/sup'.endswith
+<repo>/tests/stage03/test_r038_template_output_order.py:198: AssertionError: the definition is in the second rendered row
+E   AssertionError: 6,187
+    assert ('matched', 'cite_ref-M_1-4') == ('matched', 'cite_ref-M_1-5')
+      
+      At index 1 diff: 'cite_ref-M_1-4' != 'cite_ref-M_1-5'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:264: AssertionError: 6,187
+E   AssertionError: Kaiser Wilhelm Society
+    assert ('matched', 'cite_ref-M_1-1') == ('matched', 'cite_ref-M_1-2')
+      
+      At index 1 diff: 'cite_ref-M_1-1' != 'cite_ref-M_1-2'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:275: AssertionError: Kaiser Wilhelm Society
+E   AssertionError: {{val|0.403}}
+    assert 'matched' == 'abstained'
+      
+      - abstained
+      + matched
+<repo>/tests/stage03/test_r038_template_output_order.py:286: AssertionError: {{val|0.403}}
+E   AssertionError: assert ['matched', 'matched'] == ['abstained', 'abstained']
+      
+      At index 0 diff: 'matched' != 'abstained'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:296: AssertionError: assert ['matched', 'matched'] == ['abstained', 'abstained']
+E   AssertionError: assert ('matched', 'cite_ref-M_1-1') == ('matched', 'cite_ref-M_1-2')
+      
+      At index 1 diff: 'cite_ref-M_1-1' != 'cite_ref-M_1-2'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:305: AssertionError: assert ('matched', 'cite_ref-M_1-1') == ('matched', 'cite_ref-M_1-2')
+E   AssertionError: 1.31
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-1' == 'cite_ref-M_1-2'
+      
+      - cite_ref-M_1-2
+      ?              ^
+      + cite_ref-M_1-1
+      ?              ^)
+<repo>/tests/stage03/test_r038_template_output_order.py:317: AssertionError: 1.31
+E   AssertionError: assert ('matched', '..._ref-n-M_1-0') == ('matched', '..._ref-n-M_1-1')
+      
+      At index 1 diff: 'cite_ref-n-M_1-0' != 'cite_ref-n-M_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:342: AssertionError: assert ('matched', '..._ref-n-M_1-0') == ('matched', '..._ref-n-M_1-1')
+E   AssertionError: assert ('matched', 'cite_ref-M_1-0') == ('matched', 'cite_ref-M_1-1')
+      
+      At index 1 diff: 'cite_ref-M_1-0' != 'cite_ref-M_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:385: AssertionError: assert ('matched', 'cite_ref-M_1-0') == ('matched', 'cite_ref-M_1-1')
+E   AssertionError: assert ('matched', '...f-مالاما_1-0') == ('matched', '...f-مالاما_1-1')
+      
+      At index 1 diff: 'cite_ref-مالاما_1-0' != 'cite_ref-مالاما_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:410: AssertionError: assert ('matched', '...f-مالاما_1-0') == ('matched', '...f-مالاما_1-1')
+E   assert False
+     +  where False = all(<generator object test_r038_large_reversed_template_with_anchors.<locals>.<genexpr> at 0x7f44d3f7d580>)
+<repo>/tests/stage03/test_r038_template_output_order.py:425: assert False
+E   assert 0 == 300
+     +  where 0 = sum(<generator object test_r038_large_template_without_anchors_abstains.<locals>.<genexpr> at 0x7f44d53d0e10>)
+<repo>/tests/stage03/test_r038_template_output_order.py:437: assert 0 == 300
+E   AssertionError: assert ('matched', '...lama2014_4-0') == ('matched', '...lama2014_4-1')
+      
+      At index 1 diff: 'cite_ref-Mallama2014_4-0' != 'cite_ref-Mallama2014_4-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:457: AssertionError: assert ('matched', '...lama2014_4-0') == ('matched', '...lama2014_4-1')
+E   AssertionError: assert ('matched', '...des_2001_1-0') == ('matched', '...des_2001_1-1')
+      
+      At index 1 diff: 'cite_ref-Chryssides_2001_1-0' != 'cite_ref-Chryssides_2001_1-1'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:466: AssertionError: assert ('matched', '...des_2001_1-0') == ('matched', '...des_2001_1-1')
+E   AssertionError: 6,187
+    assert ('matched', '...res2023_12-3') == ('matched', '...res2023_12-4')
+      
+      At index 1 diff: 'cite_ref-ayres2023_12-3' != 'cite_ref-ayres2023_12-4'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:477: AssertionError: 6,187
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_definition_followed_by_reuse_in_source_order
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_missing_or_unreadable_data_mw_abstains[no_data_mw]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_missing_or_unreadable_data_mw_abstains[bad_json]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_render_of_another_revision_attaches_nothing
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_two_anonymous_references_in_template_output_abstain
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_reuse_rendered_before_definition_pairs_by_body
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_empty_inline_body_is_a_reuse
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies0]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies1]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies2]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_duplicate_marker_ids_never_attach_wrongly
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_multiple_reuses_reordered_pair_by_text_anchor
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_one_unanchored_reuse_is_settled_by_elimination
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_unanchored_reuses_abstain
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_identical_anchors_are_ambiguous
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_distinct_anchors_with_a_shared_ending_settle
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_number_inside_a_longer_number_is_not_an_anchor
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_same_name_in_two_groups_and_reordered_group
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_nested_template_parameters_reordered
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_arabic_infobox_reordered
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_large_reversed_template_with_anchors
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_large_template_without_anchors_abstains
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_real_arabic_infobox_mallama2014
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_chryssides_2001
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_ayres2023_reuses
+20 failed, 5 passed in 19.31s

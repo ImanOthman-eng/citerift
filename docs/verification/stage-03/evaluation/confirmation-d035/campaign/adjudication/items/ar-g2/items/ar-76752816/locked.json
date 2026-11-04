@@ -1,0 +1,594 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76752816,
+  "source_sha256": "f0eed768ef473f681218b886249118237a24ea41f0415d6b937bf90eea8e456a",
+  "html_sha256": "2ae40fd1fc8efd7ca265d303c3c09644d7a80b3a80e31cbaf4c44ff59a6d36bf",
+  "window": [
+   16924,
+   24924
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h3",
+  "started_at": "2026-11-03T16:11:00Z",
+  "finished_at": "2026-11-03T16:13:20Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-76752816/source.wikitext",
+    "sha256": "f0eed768ef473f681218b886249118237a24ea41f0415d6b937bf90eea8e456a"
+   },
+   {
+    "path": "packets/ar-76752816/render.html",
+    "sha256": "2ae40fd1fc8efd7ca265d303c3c09644d7a80b3a80e31cbaf4c44ff59a6d36bf"
+   },
+   {
+    "path": "packets/ar-76752816/packet.json",
+    "sha256": "(not hashed separately; read for window and hashes)"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote",
+  "unresolved": "scielo URL \".../v22n1/10.pdf\" in مولد تلقائيا3 is a file name, not a DOI; not labelled.; Window starts at 16924; the definitions of Chhabra (14541) and مولد تلقائيا1 (14958) precede it and are listed with in_window=false as binding targets.; Springer chapter URL: DOI identified from a /chapter/ path rather than /doi/; labelled identifier_link with key 10.1007/978-981-19-5486-3_11 (judgement)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 14541,
+    "quote": "<ref name=\"Chhabra\""
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "Chhabra",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Chhabra-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined before the window (cp 14541), listed only as a binding target. Plain-text citation, no template. Three uses in all, two in the window."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 14958,
+    "quote": "<ref name=\"مولد تلقائيا1\""
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "مولد تلقائيا1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14984,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا1-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined before the window (cp 14958), listed only as a binding target."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 17974,
+    "quote": "<ref name=\"مولد تلقائيا2\""
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 18000,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا2-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 19184,
+    "quote": "<ref name=\"Ashworth\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Ashworth",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Ashworth-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written plain-text citation, no citation template."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 19443,
+    "quote": "<ref name=\"مولد تلقائيا3\""
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا3",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 19469,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا3-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 20475,
+    "quote": "<ref name=\"Chacupe\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Chacupe",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Chacupe-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link plus {{Webarchive}} (archive-link template, not a citation template)."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 21216,
+    "quote": "<ref name=\"gmw_20230629\""
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "gmw_20230629",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21241,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-gmw_20230629-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 21521,
+    "quote": "<ref name=\"springer\""
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "springer",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21542,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-springer-20",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 22208,
+    "quote": "<ref>{{استشهاد بويب|عنوان=盐碱地养海鲜"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 22213,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 22474,
+    "quote": "<ref>{{استشهاد بويب|عنوان=海鲜返销"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 22479,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-22",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 23046,
+    "quote": "<ref>{{استشهاد بويب|عنوان=关于推介"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23051,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-23",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 23381,
+    "quote": "<ref>{{استشهاد بويب|عنوان=China: Utilizing"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23386,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-24",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 23973,
+    "quote": "<ref>{{استشهاد بويب|عنوان=FAO Aquaculture"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23978,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-25",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 17207,
+    "quote": "<ref name=\"Chhabra\" />"
+   },
+   "binds_to": {
+    "cp": 14541,
+    "quote": "<ref name=\"Chhabra\""
+   },
+   "render_ref_id": "cite_ref-Chhabra_13-1",
+   "notes": "reuse; first definition precedes the window"
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 17974,
+    "quote": "<ref name=\"مولد تلقائيا2\""
+   },
+   "binds_to": {
+    "cp": 17974,
+    "quote": "<ref name=\"مولد تلقائيا2\""
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا2_15-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 18759,
+    "quote": "<ref name=\"Chhabra\" />"
+   },
+   "binds_to": {
+    "cp": 14541,
+    "quote": "<ref name=\"Chhabra\""
+   },
+   "render_ref_id": "cite_ref-Chhabra_13-2",
+   "notes": "reuse; first definition precedes the window"
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 19184,
+    "quote": "<ref name=\"Ashworth\">"
+   },
+   "binds_to": {
+    "cp": 19184,
+    "quote": "<ref name=\"Ashworth\">"
+   },
+   "render_ref_id": "cite_ref-Ashworth_16-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 19443,
+    "quote": "<ref name=\"مولد تلقائيا3\""
+   },
+   "binds_to": {
+    "cp": 19443,
+    "quote": "<ref name=\"مولد تلقائيا3\""
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا3_17-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 20475,
+    "quote": "<ref name=\"Chacupe\">"
+   },
+   "binds_to": {
+    "cp": 20475,
+    "quote": "<ref name=\"Chacupe\">"
+   },
+   "render_ref_id": "cite_ref-Chacupe_18-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 21216,
+    "quote": "<ref name=\"gmw_20230629\""
+   },
+   "binds_to": {
+    "cp": 21216,
+    "quote": "<ref name=\"gmw_20230629\""
+   },
+   "render_ref_id": "cite_ref-gmw_20230629_19-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 21521,
+    "quote": "<ref name=\"springer\""
+   },
+   "binds_to": {
+    "cp": 21521,
+    "quote": "<ref name=\"springer\""
+   },
+   "render_ref_id": "cite_ref-springer_20-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 21861,
+    "quote": "<ref name=\"مولد تلقائيا1\" />"
+   },
+   "binds_to": {
+    "cp": 14958,
+    "quote": "<ref name=\"مولد تلقائيا1\""
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_14-1",
+   "notes": "reuse; definition precedes the window"
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 21932,
+    "quote": "<ref name=\"مولد تلقائيا2\" />"
+   },
+   "binds_to": {
+    "cp": 17974,
+    "quote": "<ref name=\"مولد تلقائيا2\""
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا2_15-1",
+   "notes": "reuse (inside ... التحديات ... sentence, after the Chinese refs)"
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 21960,
+    "quote": "<ref name=\"مولد تلقائيا3\" />"
+   },
+   "binds_to": {
+    "cp": 19443,
+    "quote": "<ref name=\"مولد تلقائيا3\""
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا3_17-1",
+   "notes": "reuse"
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 22208,
+    "quote": "<ref>{{استشهاد بويب|عنوان=盐碱地养海鲜"
+   },
+   "binds_to": {
+    "cp": 22208,
+    "quote": "<ref>{{استشهاد بويب|عنوان=盐碱地养海鲜"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 22474,
+    "quote": "<ref>{{استشهاد بويب|عنوان=海鲜返销"
+   },
+   "binds_to": {
+    "cp": 22474,
+    "quote": "<ref>{{استشهاد بويب|عنوان=海鲜返销"
+   },
+   "render_ref_id": "cite_ref-22",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 23019,
+    "quote": "<ref name=\"gmw_20230629\" />"
+   },
+   "binds_to": {
+    "cp": 21216,
+    "quote": "<ref name=\"gmw_20230629\""
+   },
+   "render_ref_id": "cite_ref-gmw_20230629_19-1",
+   "notes": "reuse"
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 23046,
+    "quote": "<ref>{{استشهاد بويب|عنوان=关于推介"
+   },
+   "binds_to": {
+    "cp": 23046,
+    "quote": "<ref>{{استشهاد بويب|عنوان=关于推介"
+   },
+   "render_ref_id": "cite_ref-23",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 23381,
+    "quote": "<ref>{{استشهاد بويب|عنوان=China: Utilizing"
+   },
+   "binds_to": {
+    "cp": 23381,
+    "quote": "<ref>{{استشهاد بويب|عنوان=China: Utilizing"
+   },
+   "render_ref_id": "cite_ref-24",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 23795,
+    "quote": "<ref name=\"springer\" />"
+   },
+   "binds_to": {
+    "cp": 21521,
+    "quote": "<ref name=\"springer\""
+   },
+   "render_ref_id": "cite_ref-springer_20-1",
+   "notes": "reuse"
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 23973,
+    "quote": "<ref>{{استشهاد بويب|عنوان=FAO Aquaculture"
+   },
+   "binds_to": {
+    "cp": 23973,
+    "quote": "<ref>{{استشهاد بويب|عنوان=FAO Aquaculture"
+   },
+   "render_ref_id": "cite_ref-25",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 21617,
+    "quote": "https://link.springer.com/chapter/10.1007/978-981-19-5486-3_11"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1007/978-981-19-5486-3_11",
+   "notes": "publisher URL of a Springer chapter whose path carries the DOI (/chapter/10.1007/…), not the usual /doi/ form; included because the identifier is plainly a DOI (guide: \"anything else: the identifier text\" but quoted as whole URL). Judgement call; DOI ends at the end of the URL / the following |."
+  },
+  {
+   "at": {
+    "cp": 21726,
+    "quote": "http://web.archive.org/web/20240219190511/https://link.sprin"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1007/978-981-19-5486-3_11",
+   "notes": "web.archive.org snapshot URL embedding the Springer URL (another site's URL); this is the |مسار أرشيف= value"
+  }
+ ],
+ "unresolved_notes": [
+  "scielo URL \".../v22n1/10.pdf\" in مولد تلقائيا3 is a file name, not a DOI; not labelled.",
+  "Window starts at 16924; the definitions of Chhabra (14541) and مولد تلقائيا1 (14958) precede it and are listed with in_window=false as binding targets.",
+  "Springer chapter URL: DOI identified from a /chapter/ path rather than /doi/; labelled identifier_link with key 10.1007/978-981-19-5486-3_11 (judgement)."
+ ]
+}

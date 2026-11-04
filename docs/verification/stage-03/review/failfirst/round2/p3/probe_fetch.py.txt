@@ -1,0 +1,47 @@
+"""P3 probes of citerift.wiki.fetch with injected transports only (no sockets)."""
+import gzip, json, sys, traceback
+from datetime import UTC, datetime, timedelta
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import ScriptedClock, response, scripted, JSON_TYPE
+from citerift.wiki.fetch import Fetcher, FetchPolicy, parse_retry_after, TransportError
+from citerift.wiki.canonical import loads_strict
+
+API = "https://en.wikipedia.org/w/api.php?action=query&format=json"
+def run(name, answers, expect="json"):
+    t, seen = scripted(answers)
+    clock = ScriptedClock()
+    try:
+        a = Fetcher(FetchPolicy(), t, clock).get(API, expect=expect)
+        print(f"{name}: code={a.code} requests={len(seen)} body={a.body!r:.60} json={a.json!r:.80} not_before={a.not_before} sleeps={clock.sleeps}")
+    except Exception as e:
+        print(f"{name}: EXCEPTION {type(e).__name__}: {str(e)[:120]}")
+
+good = json.dumps({"query": {"x": 1}}).encode()
+# 1 gzip: trailing garbage after the gzip member, and a second member
+run("gzip+trailing-garbage", [response(200, {"content-type": JSON_TYPE, "content-encoding": "gzip"}, gzip.compress(good) + b"GARBAGE-NOT-GZIP")])
+run("gzip two members", [response(200, {"content-type": JSON_TYPE, "content-encoding": "gzip"}, gzip.compress(b'{"query": {"x": 1}') + gzip.compress(b', "extra": 2}'))])
+# 2 non-finite numbers via overflow
+for txt in ['{"query": {"x": 1e400}}', '{"a": -1E999}']:
+    try:
+        v = loads_strict(txt); print("loads_strict", txt, "->", v)
+    except Exception as e:
+        print("loads_strict", txt, "refused", e)
+run("api answer with 1e400", [response(200, {"content-type": JSON_TYPE}, b'{"query": {"pages": [], "n": 1e400}}')])
+# 3 Retry-After forms
+at = datetime(2026, 10, 28, 12, 0, tzinfo=UTC)
+for v in ["Wed, 28 Oct 2026 12:01:30 GMT", "Wednesday, 28-Oct-26 12:01:30 GMT", "Wed Oct 28 12:01:30 2026",
+          "Wed, 28 Oct 2026 12:01:30 -0000", "Wed, 28 Oct 2026 12:01:30 UTC", "120 ", "1" * 400, "1" * 5000,
+          "100000000000000", "Fri, 31 Dec 9999 23:59:59 GMT"]:
+    try:
+        print("parse_retry_after", repr(v[:40]), "->", parse_retry_after(v, at))
+    except Exception as e:
+        print("parse_retry_after", repr(v[:40]), "EXCEPTION", type(e).__name__, str(e)[:80])
+# 4 retry with unreadable-but-valid RFC 850 / asctime date asking 300 s
+for v in ["Wednesday, 28-Oct-26 12:05:00 GMT", "Wed Oct 28 12:05:00 2026"]:
+    run(f"429 retry-after {v!r}", [response(429, {"content-type": "text/html", "retry-after": v}, b"slow"), response(200, {"content-type": JSON_TYPE}, good)])
+# 5 huge Retry-After values from the server
+for v in ["100000000000000", "1" * 400, "1" * 5000, "Fri, 31 Dec 9999 23:59:59 GMT"]:
+    run(f"429 retry-after {v[:20]!r}...", [response(429, {"content-type": "text/html", "retry-after": v}, b"slow")])
+# 6 Retry-After on the final (3rd) attempt is dropped: no not_before
+run("3x429 with Retry-After 100 on last", [response(429, {"content-type": "text/html", "retry-after": "15"}, b"s"),
+    response(429, {"content-type": "text/html", "retry-after": "15"}, b"s"), response(429, {"content-type": "text/html", "retry-after": "100"}, b"s")])

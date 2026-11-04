@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "42dcd2a5a60a8588638b29a865fcc677c2f2e225424a0d64fc458dd6f8266346",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.412,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:17:11.186206Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10489931",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 5850,
+   "body_sha256": "e0062350774f96b28e40c93b799ee1454c6f1c669923f970bd46dce99635caf3",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.48,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:18:00.599068Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10489931",
+   "wire_bytes": 2732
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "6bf778533d52106ad7307c418bc132be95a12ad05cab6ebc9060ef1399b3139f",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.405,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:18:11.080155Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76270947/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 82689,
+   "body_sha256": "3d46ddbec2e980a2cdbe52b659929b23a2c1930d9bbde0a35520c59603dc03a2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.501,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:19:00.485600Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76270947/html",
+   "wire_bytes": 15173
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "42dcd2a5a60a8588638b29a865fcc677c2f2e225424a0d64fc458dd6f8266346",
+  "6bf778533d52106ad7307c418bc132be95a12ad05cab6ebc9060ef1399b3139f"
+ ],
+ "finished_at": "2026-10-29T08:19:00.988456Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 10489931,
+  "parent_revision_id": 76268613,
+  "redirect_followed": null,
+  "revision_id": 76270947,
+  "revision_timestamp": "2026-08-19T11:16:16Z",
+  "sha1": "e7e8de32dd3aaa1b33517e2c0b6d26091ce5d27f",
+  "size": 5252,
+  "title": "استقلالية في مجال الطاقة (كتاب)",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "3d46ddbec2e980a2cdbe52b659929b23a2c1930d9bbde0a35520c59603dc03a2",
+  "bytes": 82689,
+  "checks": {
+   "document_revision_id": "76270947",
+   "header_revision_id": "76270947",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "10489931",
+   "render_id": "c76f8681-d12a-11f1-8e21-b10aad4b9394",
+   "revision_sha1": "e7e8de32dd3aaa1b33517e2c0b6d26091ce5d27f",
+   "revision_sha1_base36": "r385wxfz9rf2ibnqhs9zwacpddybb0f"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76270947",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:19:00 GMT",
+   "etag": "W/\"76270947/c76f8681-d12a-11f1-8e21-b10aad4b9394/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:36:22 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76270947/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 10489931,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "56dfd53460676aa05a14efa6b15b56b53aa7fc45d837c08571ee8fb36b31a16f",
+  "bytes": 5252,
+  "response_artifact": "e0062350774f96b28e40c93b799ee1454c6f1c669923f970bd46dce99635caf3",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10489931"
+ },
+ "started_at": "2026-10-29T08:17:01.520261Z",
+ "status": "complete"
+}

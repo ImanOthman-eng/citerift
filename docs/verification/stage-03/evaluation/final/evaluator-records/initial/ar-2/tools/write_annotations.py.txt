@@ -1,0 +1,91 @@
+"""Serialize manually decided labels at explicitly inspected source positions.
+No reference parsing or automatic classification is performed here.
+"""
+from pathlib import Path
+import json
+import hashlib
+from datetime import datetime, timezone
+
+ROOT = Path('/workspace/stage03-work/final-evaluators-initial')
+OUT = ROOT / 'output-ar-2'
+REVS = [76509905, 76545799, 76553307, 76927230, 76937308]
+opened = []
+for p in [ROOT/'ar-2-BRIEF.md', ROOT/'ANNOTATION_GUIDE.md', Path(__file__)]:
+    opened.append({'path': str(p), 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()})
+sources, packets = {}, {}
+for rev in REVS:
+    folder = ROOT/'ar-2'/f'ar-{rev}'
+    packet_path = folder/'packet.json'
+    packet = json.loads(packet_path.read_text(encoding='utf-8'))
+    packets[rev] = packet
+    opened.append({'path': str(packet_path), 'sha256': hashlib.sha256(packet_path.read_bytes()).hexdigest()})
+    for filename, key in [('source.wikitext', 'source_sha256'), ('render.html', 'html_sha256')]:
+        p = folder/filename
+        raw = p.read_bytes()
+        assert hashlib.sha256(raw).hexdigest() == packet[key]
+        opened.append({'path': str(p), 'sha256': packet[key]})
+        if filename == 'source.wikitext':
+            sources[rev] = raw.decode('utf-8')
+
+# Explicit manual tables: source start, citation-template start, name, rendered note.
+DEFS = {
+76509905: [(248,253,None,'1'),(614,634,'Kreiger','Kreiger-2'),(1216,1221,None,'3'),(2428,2433,None,'4'),(2842,2847,None,'5'),(3831,3836,None,'6')],
+76545799: [(1386,1401,':1',':1-2'),(2689,2694,None,'3'),(3737,3752,':0',':0-4')],
+76553307: [(301,306,None,'2'),(661,677,'jpl','jpl-3'),(2444,2468,'AAS-MB-2011','AAS-MB-2011-4')],
+76927230: [(444,462,'جامعة','جامعة-2'),(1123,1140,'كوبر','كوبر-1'),(1753,1773,'واس2007','واس2007-3'),(2058,2078,'واس2017','واس2017-4'),(2899,2917,'جازان','جازان-5'),(3851,3869,'مفتاح','مفتاح-6'),(4154,4173,'الرياض','الرياض-7')],
+76937308: [(43960,43965,None,'20'),(44334,44339,None,'21')]
+}
+# Source start, manually selected definition start, rendered marker.
+USES = {
+76509905: [(248,248,'1'),(614,614,'Kreiger_2-0'),(1216,1216,'3'),(2428,2428,'4'),(2842,2842,'5'),(3831,3831,'6')],
+76545799: [(1386,1386,':1_2-0'),(2048,1386,':1_2-1'),(2689,2689,'3'),(3380,3737,':0_4-0'),(3737,3737,':0_4-1')],
+76553307: [(301,301,'2'),(661,661,'jpl_3-0'),(1427,661,'jpl_3-1'),(1994,661,'jpl_3-2'),(2444,2444,'AAS-MB-2011_4-0')],
+76927230: [(257,1123,'كوبر_1-0'),(352,1123,'كوبر_1-1'),(444,444,'جامعة_2-0'),(937,444,'جامعة_2-1'),(1123,1123,'كوبر_1-2'),(1753,1753,'واس2007_3-0'),(2058,2058,'واس2017_4-0'),(2614,1123,'كوبر_1-3'),(2899,2899,'جازان_5-0'),(3460,1123,'كوبر_1-4'),(3576,444,'جامعة_2-2'),(3762,2899,'جازان_5-1'),(3851,3851,'مفتاح_6-0'),(4154,4154,'الرياض_7-0'),(4614,1123,'كوبر_1-5'),(4736,3851,'مفتاح_6-1'),(4900,4154,'الرياض_7-1'),(5070,2899,'جازان_5-2'),(5326,1123,'كوبر_1-6')],
+76937308: [(43960,43960,'20'),(44334,44334,'21')]
+}
+IDENTIFIERS = {
+76509905: [(578,'10.1016/j.autcon.2016.08.026','primary_citation_field',''),(955,'10.1016/j.addma.2019.02.015','primary_citation_field',''),(4230,'10.1016/j.jobe.2023.105863','primary_citation_field','')],
+76545799: [],
+76553307: [(2939,'10.1088/0004-637X/741/2/68','textual_mention','Literal reading of guide 3.5: DOI embedded in a non-identifier URL parameter. This publisher URL uses /article/ rather than the specified /doi/ path, so the raw occurrence is the DOI text, not the entire URL. The role/raw boundary would differ under a broader interpretation of publisher URLs; uncertainty retained.'),(3087,'10.1088/0004-637X/741/2/68','not_a_target','DOI text inside an archive.org snapshot URL; not a separate citation target.'),(3147,'10.1088/0004-637X/741/2/68','primary_citation_field','')],
+76927230: [(1389,'10.1111/aae.12046','primary_citation_field','')],
+76937308: []
+}
+UNRESOLVED = {
+76509905: [],
+76545799: ['Four rendered uses of wikidata-f7dba22262986ac02d5422dd495bf5d2fc813c60, including a rendered DOI, originate from the infobox rather than article source; excluded under section 3.3.'],
+76553307: ['Ten rendered uses of wikidata-93956a9eeb6a362a587ea6af342e7060cdd64079 originate from the infobox rather than article source; excluded under section 3.3.', 'Uncertainty at cp 2939: the publisher URL uses /article/10... rather than the /doi/10... URL form explicitly described in section 3.5. Best literal reading labels the embedded DOI textual_mention; all three source occurrences are retained.'],
+76927230: [],
+76937308: []
+}
+
+for rev in REVS:
+    s, p = sources[rev], packets[rev]
+    start, end = p['window']['cp_start'], p['window']['cp_end']
+    def loc(cp, quote=None):
+        quote = s[cp:cp+55] if quote is None else quote
+        assert s[cp:cp+len(quote)] == quote
+        return {'cp': cp, 'quote': quote}
+    definitions = []
+    for i,(cp,tp,name,note) in enumerate(DEFS[rev],1):
+        assert s.startswith('<ref',cp) and s.startswith('{{استشهاد',tp)
+        definitions.append({'id':f'd{i}','at':loc(cp),'in_window':start <= cp < end,'kind':'note','name':name,'group':'','templates':[{'at':loc(tp)}],'unstructured':False,'render_note_id':'cite_note-'+note,'marker':'none','marker_text':None,'notes':''})
+    uses = []
+    for i,(cp,target,marker) in enumerate(USES[rev],1):
+        assert start <= cp < end and s.startswith('<ref',cp)
+        uses.append({'id':f'u{i}','at':loc(cp),'binds_to':loc(target),'render_ref_id':'cite_ref-'+marker,'notes':'Named use precedes its content-bearing definition.' if cp < target else ''})
+    identifiers = []
+    for cp,raw,role,notes in IDENTIFIERS[rev]:
+        assert start <= cp < end
+        identifiers.append({'at':loc(cp,raw),'scheme':'doi','role':role,'key':raw.lower(),'notes':notes})
+    doc = {'format':'citerift-stage03-annotation-v1','article':{'wiki':'ar','revision_id':rev,'source_sha256':p['source_sha256'],'html_sha256':p['html_sha256'],'window':[start,end]},'provenance':{'agent':'stage03-evaluator-ar-2','started_at':'2026-10-31T06:01:04.335402+00:00','finished_at':datetime.now(timezone.utc).isoformat(),'files_opened':opened,'tools':'ChatGPT/Codex independent evaluator; functions.exec with exec_command, cat, isolated Python standard library and lxml for raw text searches and HTML element/attribute listings; apply_patch for this explicit manual-table serialization helper. No network, git, repository code, parser reuse, or engine output. started_at is the first captured UTC timestamp during initial packet discovery.','unresolved':'See unresolved_notes; publisher /article/ URL interpretation uncertainty for ar-76553307.' if rev==76553307 else 'No unresolved source bindings or warning classifications. Render-only infobox references are documented separately where applicable.'},'definitions':definitions,'uses':uses,'identifiers':identifiers,'unresolved_notes':UNRESOLVED[rev]}
+    def validate_locations(x):
+        if isinstance(x,dict):
+            if 'cp' in x and 'quote' in x:
+                assert s[x['cp']:x['cp']+len(x['quote'])] == x['quote']
+            for value in x.values(): validate_locations(value)
+        elif isinstance(x,list):
+            for value in x: validate_locations(value)
+    validate_locations(doc)
+    path = OUT/f'ar-{rev}.json'
+    path.write_text(json.dumps(doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print(path.name,'definitions',len(definitions),'uses',len(uses),'identifiers',len(identifiers))

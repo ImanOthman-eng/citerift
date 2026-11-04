@@ -1,0 +1,26 @@
+"""RV: a kind-other wrapper around a profile citation template becomes an unsupported_citation_template unit."""
+from rvlib import *
+
+# 1. {{small|{{cite web}}}} inside a ref
+text = "A<ref>{{small|{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}}}</ref>"
+inner = transclusion(5, "small", {"1": "{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}"},
+                     cs1('<a href="http://example.org/a">T</a>. doi:10.1000/abc'), "small")
+doc = run(text, one_note("A", inner))
+show("small around cite web (render)", doc, text)
+
+# 2. multiref-style bundle of two cite templates
+text2 = "A<ref>{{Unbulleted list citebundle|{{cite book |title=B1}}|{{cite book |title=B2}}}}</ref>"
+inner2 = transclusion(5, "Unbulleted list citebundle", {"1": "{{cite book |title=B1}}", "2": "{{cite book |title=B2}}"},
+                      "<ul><li>" + cs1("B1") + "</li><li>" + cs1("B2") + "</li></ul>", "div")
+doc2 = run(text2, one_note("A", inner2))
+show("citebundle around two cite book (render)", doc2, text2)
+
+# 3. same without render
+doc3 = run(text, None)
+show("small around cite web (no render)", doc3, text)
+
+# 4. Arabic: {{لغة|...}}-like wrapper around استشهاد بكتاب
+text4 = "أ<ref>{{نص صغير|{{استشهاد بكتاب|عنوان=ك}}}}</ref>"
+inner4 = transclusion(5, "نص صغير", {"1": "{{استشهاد بكتاب|عنوان=ك}}"}, cs1("ك"), "small")
+doc4 = run(text4, one_note("أ", inner4), "ar")
+show("arabic wrapper around cite (render)", doc4, text4)

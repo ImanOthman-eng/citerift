@@ -1,0 +1,273 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76532222,
+  "source_sha256": "87a070c04915252c48c6a153253b0af80b78c53698884c35cb31289b1e1e6754",
+  "html_sha256": "9cc214c745c954f9654b7da61b162a0f98e6770d073f2ae13d7fcc8f58d542fc",
+  "window": [
+   0,
+   7875
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h4",
+  "started_at": "2026-11-04T10:22:00Z",
+  "finished_at": "2026-11-04T11:00:00Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-76532222/source.wikitext",
+    "sha256": "87a070c04915252c48c6a153253b0af80b78c53698884c35cb31289b1e1e6754"
+   },
+   {
+    "path": "packets/ar-76532222/render.html",
+    "sha256": "9cc214c745c954f9654b7da61b162a0f98e6770d073f2ae13d7fcc8f58d542fc"
+   },
+   {
+    "path": "packets/ar-76532222/packet.json",
+    "sha256": "c1d3b29ef8f1e7c3ce290d59046644bcfc8a301380fb5ae72899c262b2796632"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: regex search of source.wikitext for ref/template/doi/pmid positions; lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; str slice check of every quote. No general reference parser. Labels decided by reading.",
+  "unresolved": "pmc=2813482 in the li2010 citation is a PMC id, out of scope (only DOI and PMID).; No ISBN/ISSN labelled (out of scope)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 284,
+    "quote": "<ref>{{استشهاد بويكي"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 289,
+      "quote": "{{استشهاد بويكي بيانات"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": "وليم بينز (1996). معجم التكنولوجيا الحيوية. الألف كتاب الثاني (216) (بالعربية والإنجليزية). ترجمة: هاشم أحمد. مراجعة: إبراهيم عبد المقصود. القاهرة: دار الكتب والوثائق القومية. ص. 198. ISBN:978-977-01-4733-7. OCLC:745327518. QID:Q125620730.",
+   "notes": "Citation template pulls the work from Wikidata item Q125620730; no identifier in source."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 757,
+    "quote": "<ref name='pevsner2009'>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pevsner2009",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 781,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pevsner2009-2",
+   "marker": "none",
+   "marker_text": "Pevsner، Jonathan (2009). Bioinformatics and functional genomics (ط. 2nd). Hoboken, N.J: Wiley-Blackwell. ISBN:9780470085851.",
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2048,
+    "quote": "<ref name=doe2009>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "doe2009",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2066,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-doe2009-3",
+   "marker": "none",
+   "marker_text": "\"Potential Benefits of Human Genome Project Research\". وزارة الطاقة الأمريكية, Human Genome Project Information. 9 أكتوبر 2009. مؤرشف من الأصل في 2013-07-08. اطلع عليه بتاريخ 2010-06-18.",
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2508,
+    "quote": "<ref name='li2010'>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "li2010",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2527,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-li2010-4",
+   "marker": "none",
+   "marker_text": "Li، Ruiqiang (فبراير 2010). \"De novo assembly of human genomes with massively parallel short read sequencing\". Genome Research. ج. 20 ع. 2: 265–272. DOI:10.1101/gr.097261.109. ISSN:1549-5469. PMC:2813482. PMID:20019144. {{استشهاد بدورية محكمة}}: تجاهل المحلل الوسيط |مؤلفين مشاركين= لأنه غير معروف، و",
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4941,
+    "quote": "<ref name=Stein2001>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Stein2001",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4961,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Stein2001-5",
+   "marker": "none",
+   "marker_text": "Stein، L. (2001). \"Genome annotation: from sequence to biology\". Nature Reviews Genetics. ج. 2 ع. 7: 493–503. DOI:10.1038/35080529. PMID:11433356.",
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 284,
+    "quote": "<ref>{{استشهاد بويكي"
+   },
+   "binds_to": {
+    "cp": 284,
+    "quote": "<ref>{{استشهاد بويكي"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 757,
+    "quote": "<ref name='pevsner2009'>"
+   },
+   "binds_to": {
+    "cp": 757,
+    "quote": "<ref name='pevsner2009'>"
+   },
+   "render_ref_id": "cite_ref-pevsner2009_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2048,
+    "quote": "<ref name=doe2009>"
+   },
+   "binds_to": {
+    "cp": 2048,
+    "quote": "<ref name=doe2009>"
+   },
+   "render_ref_id": "cite_ref-doe2009_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2508,
+    "quote": "<ref name='li2010'>"
+   },
+   "binds_to": {
+    "cp": 2508,
+    "quote": "<ref name='li2010'>"
+   },
+   "render_ref_id": "cite_ref-li2010_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4941,
+    "quote": "<ref name=Stein2001>"
+   },
+   "binds_to": {
+    "cp": 4941,
+    "quote": "<ref name=Stein2001>"
+   },
+   "render_ref_id": "cite_ref-Stein2001_5-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 2558,
+    "quote": "10.1101/gr.097261.109"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1101/gr.097261.109",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3011,
+    "quote": "20019144"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "20019144",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5166,
+    "quote": "10.1038/35080529"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/35080529",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5193,
+    "quote": "11433356"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "11433356",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "pmc=2813482 in the li2010 citation is a PMC id, out of scope (only DOI and PMID).",
+  "No ISBN/ISSN labelled (out of scope)."
+ ]
+}

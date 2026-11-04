@@ -1,0 +1,17 @@
+import subprocess, sys, os, json
+from pathlib import Path
+R = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt")
+srcs = []
+for p in (R/"docs/verification/stage-03/evaluation").rglob("capture.json"):
+    cap = json.loads(p.read_text())
+    a = (cap.get("source") or {}).get("artifact")
+    if a: srcs.append(((p.parent/"artifacts"/a).stat().st_size, p.parent/"artifacts"/a))
+srcs.sort(); print("sources", len(srcs), "largest", srcs[-1][0], "median", srcs[len(srcs)//2][0], flush=True)
+src = srcs[-1][1]
+here = os.path.dirname(os.path.abspath(__file__))
+for v in ["orig","pre[[","pre{{","pre{|","pre<ref>","pre[http","pre<!--","pre<nowiki>","pre{{{","mid[[","mid{{","pre<ref name=a>"]:
+    try:
+        r = subprocess.run([sys.executable, os.path.join(here,"tok_real.py"), str(src), v], capture_output=True, text=True, timeout=100)
+        print(r.stdout.strip() or ("ERR " + r.stderr[-200:]), flush=True)
+    except subprocess.TimeoutExpired:
+        print(v, "TIMEOUT>100s", flush=True)

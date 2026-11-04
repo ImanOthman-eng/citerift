@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:build-manifest",
+  "title": "Retraction index build manifest, major version 1",
+  "description": "Written beside each published index (SPECIFICATION.md 10.1). run_* fields describe the build run and are in no digest.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_version",
+    "snapshot_id",
+    "policy_version",
+    "parser_version",
+    "schema_version",
+    "index_format",
+    "receipt",
+    "source",
+    "counts",
+    "corroboration",
+    "digests",
+    "run_built_at",
+    "run_python",
+    "run_sqlite",
+    "run_build_seconds"
+  ],
+  "properties": {
+    "manifest_version": {
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
+    },
+    "policy_version": {
+      "type": "string"
+    },
+    "parser_version": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "index_format": {
+      "const": 2001
+    },
+    "receipt": {
+      "$ref": "urn:citerift:schema:retraction:v1:receipt"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bytes",
+        "git_blob_sha1",
+        "sha256"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "git_blob_sha1": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$(?!\\n)"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "records",
+        "accepted",
+        "quarantined",
+        "events",
+        "physical_lines",
+        "header_lines",
+        "record_lines",
+        "blank_lines"
+      ],
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "object"
+        ]
+      }
+    },
+    "corroboration": {
+      "type": "object",
+      "required": [
+        "manifests"
+      ]
+    },
+    "digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_digest",
+        "export_lines",
+        "semantic_digest"
+      ],
+      "properties": {
+        "artifact_digest": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+        },
+        "semantic_digest": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/sha256"
+        },
+        "export_lines": {
+          "type": "string",
+          "pattern": "^[0-9]+$(?!\\n)"
+        }
+      }
+    },
+    "run_built_at": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"
+    },
+    "run_python": {
+      "type": "string"
+    },
+    "run_sqlite": {
+      "type": "string"
+    },
+    "run_build_seconds": {
+      "type": "number",
+      "minimum": 0
+    }
+  }
+}

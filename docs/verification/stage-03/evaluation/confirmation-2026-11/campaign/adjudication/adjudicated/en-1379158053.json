@@ -1,0 +1,554 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1379158053,
+  "source_sha256": "b686a2889943c8baf9c585d74126d29958cf29737801af63d9ada702fbcfe6f0",
+  "html_sha256": "8b28f5ecc09a33080a76dd02f337c31175f9f2871afab8d537793fa85d874c4a",
+  "window": [
+   4062,
+   12062
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h1",
+  "started_at": "2026-11-03T02:03:00Z",
+  "finished_at": "2026-11-03T01:57:59Z",
+  "files_opened": [
+   {
+    "path": "packets/en-1379158053/source.wikitext",
+    "sha256": "b686a2889943c8baf9c585d74126d29958cf29737801af63d9ada702fbcfe6f0"
+   },
+   {
+    "path": "packets/en-1379158053/render.html",
+    "sha256": "8b28f5ecc09a33080a76dd02f337c31175f9f2871afab8d537793fa85d874c4a"
+   },
+   {
+    "path": "packets/en-1379158053/packet.json",
+    "sha256": "1cd515a388d1367adf39d0e8a20b6bbfad2ed36844c993bc02ec2e3db6433f7d"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "Python 3 standard library (re/str.find, slicing) to list and verify locations; lxml (xpath) to list sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; grep for retraction vocabulary in render.html. Labels decided by reading the text.",
+  "unresolved": "Only the role of [[doi:…]] interwiki links is a judgement call."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 4158,
+    "quote": "<ref>\"The Photochemical Rearrangement of"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, hand-written plain-text citation, no template, no identifier."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4365,
+    "quote": "<Ref Name=Schuster2>{{cite journal|last="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Schuster2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4385,
+      "quote": "{{cite journal|last=Zimmerman|first=Howa"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Schuster2-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Tag written <Ref Name=...> (capitalised, unquoted value); Parsoid treats it as a ref named Schuster2. Reused later by <Ref Name=Schuster2/>."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 5213,
+    "quote": "<ref>\"Terenin, A.; Ermolaev, V. Sensitiz"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, hand-written plain text."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 6256,
+    "quote": "<ref>Mario Schiavello (Hrsg.): ''Photoel"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, hand-written text; {{ISBN|…}} is an identifier-link template, not a citation template."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 6760,
+    "quote": "<ref name=\"mfischer\">Martin Fischer: ''I"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "mfischer",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-mfischer-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written text with [[doi:…]] interwiki link. Reused by <ref name=\"mfischer\" /> later."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 7363,
+    "quote": "<ref name=\"wöhrle\">Dieter Wöhrle, Michae"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "wöhrle",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-wöhrle-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written text with {{ISBN}}."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 8214,
+    "quote": "<ref name=\"sparre\">{{cite patent |countr"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "sparre",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8233,
+      "quote": "{{cite patent |country=US |number=137936"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-sparre-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{cite patent}} with google patents url; no DOI/PMID."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 8532,
+    "quote": "<ref name=\"leiser\">{{cite patent |countr"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "leiser",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8551,
+      "quote": "{{cite patent |country=US |number=145977"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-leiser-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{cite patent}}; no DOI/PMID."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 9082,
+    "quote": "<ref name=\"mixon\">David A. Mixon, Michae"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "mixon",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-mixon-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written text with [[doi:…]] interwiki link."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 10224,
+    "quote": "<ref name=\"hartig\">H. Hartig: ''Einfache"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "hartig",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-hartig-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written text with {{doi|…}} wrapper template."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 10502,
+    "quote": "<ref>{{cite journal|first1=R. L.|last1=C"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10507,
+      "quote": "{{cite journal|first1=R. L.|last1=Cargil"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; cite journal with doi= and doi-access=free. Title contains &#91; entities."
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 11844,
+    "quote": "<Ref Name=Wilson>\"Mechanistic and Explor"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Wilson",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Wilson-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Tag written <Ref Name=Wilson>; hand-written text."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 4158,
+    "quote": "<ref>\"The Photochemical Rearrangement of"
+   },
+   "binds_to": {
+    "cp": 4158,
+    "quote": "<ref>\"The Photochemical Rearrangement of"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 4365,
+    "quote": "<Ref Name=Schuster2>{{cite journal|last="
+   },
+   "binds_to": {
+    "cp": 4365,
+    "quote": "<Ref Name=Schuster2>{{cite journal|last="
+   },
+   "render_ref_id": "cite_ref-Schuster2_9-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 5213,
+    "quote": "<ref>\"Terenin, A.; Ermolaev, V. Sensitiz"
+   },
+   "binds_to": {
+    "cp": 5213,
+    "quote": "<ref>\"Terenin, A.; Ermolaev, V. Sensitiz"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 6256,
+    "quote": "<ref>Mario Schiavello (Hrsg.): ''Photoel"
+   },
+   "binds_to": {
+    "cp": 6256,
+    "quote": "<ref>Mario Schiavello (Hrsg.): ''Photoel"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 6760,
+    "quote": "<ref name=\"mfischer\">Martin Fischer: ''I"
+   },
+   "binds_to": {
+    "cp": 6760,
+    "quote": "<ref name=\"mfischer\">Martin Fischer: ''I"
+   },
+   "render_ref_id": "cite_ref-mfischer_12-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 7363,
+    "quote": "<ref name=\"wöhrle\">Dieter Wöhrle, Michae"
+   },
+   "binds_to": {
+    "cp": 7363,
+    "quote": "<ref name=\"wöhrle\">Dieter Wöhrle, Michae"
+   },
+   "render_ref_id": "cite_ref-wöhrle_13-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 8214,
+    "quote": "<ref name=\"sparre\">{{cite patent |countr"
+   },
+   "binds_to": {
+    "cp": 8214,
+    "quote": "<ref name=\"sparre\">{{cite patent |countr"
+   },
+   "render_ref_id": "cite_ref-sparre_14-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 8532,
+    "quote": "<ref name=\"leiser\">{{cite patent |countr"
+   },
+   "binds_to": {
+    "cp": 8532,
+    "quote": "<ref name=\"leiser\">{{cite patent |countr"
+   },
+   "render_ref_id": "cite_ref-leiser_15-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 9082,
+    "quote": "<ref name=\"mixon\">David A. Mixon, Michae"
+   },
+   "binds_to": {
+    "cp": 9082,
+    "quote": "<ref name=\"mixon\">David A. Mixon, Michae"
+   },
+   "render_ref_id": "cite_ref-mixon_16-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 9781,
+    "quote": "<ref name=\"mfischer\" />\n\nThe influence o"
+   },
+   "binds_to": {
+    "cp": 6760,
+    "quote": "<ref name=\"mfischer\">Martin Fischer: ''I"
+   },
+   "render_ref_id": "cite_ref-mfischer_12-1",
+   "notes": "Self-closing reuse."
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 10224,
+    "quote": "<ref name=\"hartig\">H. Hartig: ''Einfache"
+   },
+   "binds_to": {
+    "cp": 10224,
+    "quote": "<ref name=\"hartig\">H. Hartig: ''Einfache"
+   },
+   "render_ref_id": "cite_ref-hartig_17-0",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 10502,
+    "quote": "<ref>{{cite journal|first1=R. L.|last1=C"
+   },
+   "binds_to": {
+    "cp": 10502,
+    "quote": "<ref>{{cite journal|first1=R. L.|last1=C"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 10989,
+    "quote": "<Ref Name=Schuster2/> Here the n-pi* [[M"
+   },
+   "binds_to": {
+    "cp": 4365,
+    "quote": "<Ref Name=Schuster2>{{cite journal|last="
+   },
+   "render_ref_id": "cite_ref-Schuster2_9-1",
+   "notes": "Self-closing reuse written <Ref Name=Schuster2/>."
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 11844,
+    "quote": "<Ref Name=Wilson>\"Mechanistic and Explor"
+   },
+   "binds_to": {
+    "cp": 11844,
+    "quote": "<Ref Name=Wilson>\"Mechanistic and Explor"
+   },
+   "render_ref_id": "cite_ref-Wilson_19-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4697,
+    "quote": "10.1021/ja00882a032}}</ref>\n\nParallel to"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1021/ja00882a032",
+   "notes": "doi= field of cite journal."
+  },
+  {
+   "at": {
+    "cp": 6945,
+    "quote": "10.1002/anie.197800161]].\n</ref>\n\nA disa"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1002/anie.197800161",
+   "notes": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+  },
+  {
+   "at": {
+    "cp": 9292,
+    "quote": "10.1002/aic.690360207]].\n</ref> In case "
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1002/aic.690360207",
+   "notes": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+  },
+  {
+   "at": {
+    "cp": 10387,
+    "quote": "10.1002/cite.330422002}}.\n</ref>\n\n==Case"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1002/cite.330422002",
+   "notes": "Argument of {{doi|…}} wrapper template inside a reference."
+  },
+  {
+   "at": {
+    "cp": 10636,
+    "quote": "10.15227/orgsyn.062.0118 |doi-access=fre"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.15227/orgsyn.062.0118",
+   "notes": "doi= field of cite journal."
+  }
+ ],
+ "unresolved_notes": [
+  "[[doi:…]] interwiki links (two occurrences) fit neither identifier_link (URL/wrapper template) nor labeled_reference_text (plain text) exactly; labelled labeled_reference_text.",
+  "Definitions that start before the window (e.g. d at cp 1323 Roth, 2986 woodward2) have no use or identifier in the window and are not listed."
+ ],
+ "adjudication": {
+  "adjudicator": "cf11-adj-en-g2",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/en-g2/out/decisions/en-1379158053.json",
+  "changed_items": [
+   {
+    "at": {
+     "cp": 6945,
+     "quote": "10.1002/anie.197800161]].\n</ref>\n\nA disa"
+    },
+    "field": "role",
+    "from": "labeled_reference_text",
+    "to": "identifier_link"
+   },
+   {
+    "at": {
+     "cp": 6945,
+     "quote": "10.1002/anie.197800161]].\n</ref>\n\nA disa"
+    },
+    "field": "notes",
+    "from": "Inside [[doi:10.1002/anie.197800161]] interwiki link in hand-written reference text; read as labelled text (not a URL, field or wrapper template).",
+    "to": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+   },
+   {
+    "at": {
+     "cp": 9292,
+     "quote": "10.1002/aic.690360207]].\n</ref> In case "
+    },
+    "field": "role",
+    "from": "labeled_reference_text",
+    "to": "identifier_link"
+   },
+   {
+    "at": {
+     "cp": 9292,
+     "quote": "10.1002/aic.690360207]].\n</ref> In case "
+    },
+    "field": "notes",
+    "from": "Inside [[doi:…]] interwiki link in hand-written reference text; read as labelled text.",
+    "to": "[[doi:...]] is an interwiki link whose target is the DOI; the render links it to //doi.org/<DOI> (mw:WikiLink/Interwiki). The guide defines labeled_reference_text as \"not a link\", so that role does not apply. It is a resolver link pointing at the reference's identifier, so identifier_link. The DOI key is unchanged."
+   }
+  ]
+ }
+}

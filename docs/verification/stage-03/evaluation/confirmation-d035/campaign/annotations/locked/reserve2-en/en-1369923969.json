@@ -1,0 +1,279 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1369923969,
+  "source_sha256": "68735473f1f1b93e552c75872ac7954178a75994f6bdfc5aabee84cb99c296b5",
+  "html_sha256": "c11116c763a50bc158e70e9e7d713bd83c3e51611135dd6262957ee6cb830203",
+  "window": [
+   0,
+   3494
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-r2-1",
+  "started_at": "2026-11-03T16:32:17Z",
+  "finished_at": "2026-11-03T16:32:34Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1369923969/source.wikitext",
+    "sha256": "68735473f1f1b93e552c75872ac7954178a75994f6bdfc5aabee84cb99c296b5"
+   },
+   {
+    "path": "packets/en-1369923969/render.html",
+    "sha256": "c11116c763a50bc158e70e9e7d713bd83c3e51611135dd6262957ee6cb830203"
+   },
+   {
+    "path": "packets/en-1369923969/packet.json",
+    "sha256": null,
+    "note": "packet metadata; hash not given in packet.json itself"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: str.find location search, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note], sha256sum; position checks text[cp:cp+len(quote)]==quote",
+  "unresolved": "Whether the Emsley ISBN-only line should count as a bibliography entry (decided no, per 3.4 wording)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 296,
+    "quote": "<ref>{{Cite journal|last=Warr"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 301,
+      "quote": "{{Cite journal|last=Warr"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Inside infobox parameter IMAsymbol."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 2057,
+    "quote": "<ref name=\"Mindat\">{{Cite web"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Mindat",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2076,
+      "quote": "{{Cite web |title=Hafnon"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Mindat-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "First occurrence with a body; earlier self-closing use at the lead binds here."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1630,
+    "quote": "<ref>http://www.minerals.net"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare URL plus plain-text label."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2211,
+    "quote": "<ref>{{Cite web|title=Hafnon Mineral Data"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2216,
+      "quote": "{{Cite web|title=Hafnon Mineral Data"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 2548,
+    "quote": "<ref>http://www.handbookofmineralogy.org"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare URL plus {{Webarchive}} (not a citation template) and plain-text label."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 3040,
+    "quote": "*{{cite journal \n | journal =[[American"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3041,
+      "quote": "{{cite journal \n | journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Standalone cite journal in References section. The preceding \"*Emsley, John...\" line has only {{ISBN}} (no citation template, DOI or PMID), so not listed per 3.4; see unresolved_notes."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 296,
+    "quote": "<ref>{{Cite journal|last=Warr"
+   },
+   "binds_to": {
+    "cp": 296,
+    "quote": "<ref>{{Cite journal|last=Warr"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1259,
+    "quote": "<ref name=\"Mindat\" />"
+   },
+   "binds_to": {
+    "cp": 2057,
+    "quote": "<ref name=\"Mindat\">{{Cite web"
+   },
+   "render_ref_id": "cite_ref-Mindat_2-0",
+   "notes": "Self-closing; precedes its definition in source order."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1630,
+    "quote": "<ref>http://www.minerals.net"
+   },
+   "binds_to": {
+    "cp": 1630,
+    "quote": "<ref>http://www.minerals.net"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2057,
+    "quote": "<ref name=\"Mindat\">{{Cite web"
+   },
+   "binds_to": {
+    "cp": 2057,
+    "quote": "<ref name=\"Mindat\">{{Cite web"
+   },
+   "render_ref_id": "cite_ref-Mindat_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2211,
+    "quote": "<ref>{{Cite web|title=Hafnon Mineral Data"
+   },
+   "binds_to": {
+    "cp": 2211,
+    "quote": "<ref>{{Cite web|title=Hafnon Mineral Data"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2548,
+    "quote": "<ref>http://www.handbookofmineralogy.org"
+   },
+   "binds_to": {
+    "cp": 2548,
+    "quote": "<ref>http://www.handbookofmineralogy.org"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2911,
+    "quote": "<ref name=Mindat/>"
+   },
+   "binds_to": {
+    "cp": 2057,
+    "quote": "<ref name=\"Mindat\">{{Cite web"
+   },
+   "render_ref_id": "cite_ref-Mindat_2-2",
+   "notes": "Unquoted name, self-closing."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 455,
+    "quote": "10.1180/mgm.2021.43"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1180/mgm.2021.43",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Line \"*Emsley, John. Nature's Building Blocks. Oxford, 2001. {{ISBN|0-19-850341-5}}\" is a plain-text book bibliography item with only an ISBN; not a bibliography entry under 3.4 (no citation template, DOI or PMID), so not labelled. Infobox/template-generated references: none seen."
+ ]
+}

@@ -1,0 +1,21 @@
+import sys,re; sys.path.insert(0,'tools')
+from lib import A
+from lxml import html
+def run(d, unstr_names=(), unstr_pos=(), defnote=None):
+    a=A(d); t=a.t; w0,w1=a.p['window']['cp_start'],a.p['window']['cp_end']
+    H=html.fromstring(open(f'packets/{d}/render.html',encoding='utf-8').read())
+    sups=[]
+    for e in H.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+        dm=e.get('data-mw'); at=dm.split('"attrs"')[1] if '"attrs"' in dm else ''
+        m=re.search(r'"name":"([^"]*)"',at.split('}')[0]); sups.append((e.get('id'),m.group(1) if m else None))
+    lis=[e.get('id') for e in H.xpath('//li[starts-with(@id,"cite_note")]')]
+    tags=[m for m in re.finditer(r'<ref\b[^>]*>',t)]
+    def nm(m):
+        x=re.search(r'name\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s/>]+))',m.group()); 
+        return (x.group(1) or x.group(2) or x.group(3)) if x else None
+    uses=[m for m in tags if w0<=m.start()<w1]
+    names=[nm(m) for m in uses]
+    return a,t,sups,lis,tags,uses,names,nm
+def align(sups,names):
+    n=len(names); c=[i for i in range(len(sups)-n+1) if [s[1] for s in sups[i:i+n]]==names]
+    return c

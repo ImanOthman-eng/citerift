@@ -1,0 +1,38 @@
+"""C vs pure-Python tokenizer: time and token equality on adversarial inputs (no network)."""
+import time, sys
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+import mwparserfromhell.parser.tokenizer as T
+print("py limits", Tokenizer.MAX_DEPTH)
+N = 2_000_000  # source limit region
+cases = {
+ "unclosed {{ x50000": "{{a|" * 50000,
+ "unclosed [[ x50000": "[[a|" * 50000,
+ "nested {{ closed 30": "{{a|" * 30 + "x" + "}}" * 30,
+ "braces 3x": "{{{" * 30000,
+ "pipes-in-table": "{|\n" + "|-\n| a || b\n" * 30000 + "|}",
+ "refs-unclosed": "<ref>" * 40000,
+ "quotes": "'''a''b" * 40000,
+ "ext-links": "[http://a.b " * 30000,
+ "template-many-params": "{{t" + "|a=b" * 100000 + "}}",
+ "html tags": "<b><i>" * 40000,
+ "heading-spam": "=a=\n" * 100000,
+ "lone {{": "{{" * 200000,
+ "nested links": "[[a|[[b|" * 20000,
+ "tmpl then brace": ("{{a|b}" * 50000),
+}
+for name, s in cases.items():
+    row = [name, len(s)]
+    res = {}
+    for label, Tk in (("C", CTokenizer), ("Py", Tokenizer)):
+        t = time.time()
+        try:
+            toks = Tk().tokenize(s, 0, False)
+            res[label] = repr(toks)
+            row.append(f"{label} {time.time()-t:.2f}s")
+        except BaseException as e:
+            res[label] = f"EXC {type(e).__name__}"
+            row.append(f"{label} {time.time()-t:.2f}s EXC {type(e).__name__}")
+        sys.stdout.flush()
+    row.append("SAME" if res["C"] == res["Py"] else "DIFF")
+    print(*row, flush=True)

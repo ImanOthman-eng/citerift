@@ -1,0 +1,9 @@
+import sys, cProfile, pstats; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+import citerift.wiki.markers as M
+M._exclusion = lambda *a, **k: None
+kind, N = sys.argv[1], int(sys.argv[2])
+inner = ("Paper. " + "Retracted<img/>x " * N) if kind == "soft" else ("<span>" + "lorem ipsum " * 40000 + "</span>" + "Retracted " * N)
+b = bundle(tmpdir(), EN_TEXT, note_body(inner))
+pr = cProfile.Profile(); pr.enable(); doc = extract(b); pr.disable()
+pstats.Stats(pr).sort_stats("tottime").print_stats(8)

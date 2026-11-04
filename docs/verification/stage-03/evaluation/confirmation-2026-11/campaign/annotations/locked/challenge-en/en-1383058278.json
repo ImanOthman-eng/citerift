@@ -1,0 +1,745 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1383058278,
+  "source_sha256": "f9524ef55024e5fc8c9f2722813008707f78433e13b15c4335a7900e6e19a5df",
+  "html_sha256": "0d8ab230208c128c9d3a66c9b9e02975cbb9006af870507d4cb82b0cd067e165",
+  "window": [
+   32370,
+   40370
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-c1",
+  "started_at": "2026-11-03T01:59:01Z",
+  "finished_at": "2026-11-03T01:59:01Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1383058278/packet.json",
+    "sha256": "22633bda2c69337166124f0297728279e99e00ac5ceadb1b1ee76c2932128b56"
+   },
+   {
+    "path": "packets/en-1383058278/source.wikitext",
+    "sha256": "f9524ef55024e5fc8c9f2722813008707f78433e13b15c4335a7900e6e19a5df"
+   },
+   {
+    "path": "packets/en-1383058278/render.html",
+    "sha256": "0d8ab230208c128c9d3a66c9b9e02975cbb9006af870507d4cb82b0cd067e165"
+   }
+  ],
+  "tools": "python3 standard library and lxml (stdin/tools scripts) for str.find location checks and listing HTML sup/li elements; every location verified text[cp:cp+len(quote)]==quote",
+  "unresolved": "Nothing undecided. Summer and Norem refs are plain-text citations with external links and no DOI/PMID."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 32653,
+    "quote": "<ref name=\":0\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 32668,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-48",
+   "marker": "warning",
+   "marker_text": "(Retracted, see doi:10.1016/j.jogc.2022.06.009, PMID 35934417. If this is an intentional citation to a retracted paper, please replace {{retracted|...}} with {{retracted|...|intentional=yes}}.)",
+   "notes": "Body also holds {{Retracted|doi=...|pmid=...}} (not a citation template); rendered note says the cited JOGC paper is retracted."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 33576,
+    "quote": "<ref>{{cite journal | doi = 10.1001/jama.252.11.1438"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33581,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-49",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 34451,
+    "quote": "<ref>Summer [http://msc.sagepub.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-50",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written plain-text citation with a bare external link; no citation template; no DOI/PMID."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 34819,
+    "quote": "<ref>{{Cite journal | doi=10.1111/j.1471-0528.2008.01700.x"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 34824,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-51",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 35388,
+    "quote": "<ref>Norem et.al [http://journals.lww.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-52",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written plain-text citation with a bare external link; no citation template; no DOI/PMID."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 35919,
+    "quote": "<ref>{{Cite journal |last1=De Wals |first1=Philippe"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 35924,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-53",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Same NEJM paper (doi 10.1056/NEJMoa067103) as the later De Wals reference, but the bodies differ and both are unnamed, so each is its own definition."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 36738,
+    "quote": "<ref>{{cite journal |last1=Daly |first1=S"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 36743,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-54",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 37312,
+    "quote": "<ref>{{Cite journal |last=Ray |first=Joel G."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 37317,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-55",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 37977,
+    "quote": "<ref name=\"Greene, N. D. E. 20092\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Greene, N. D. E. 20092",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 38012,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Greene,_N._D._E._20092-56",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Distinct from the earlier name \"Genetics of human neural tube defects\" (before window)."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 38285,
+    "quote": "<ref>{{cite journal |last1=Milunsky |first1=A |last2=Jick"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 38290,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-57",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 38768,
+    "quote": "<ref>{{cite journal |last1=Goh |first1=YI"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 38773,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-58",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 39219,
+    "quote": "<ref>{{cite journal |author=De Wals P"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 39224,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-59",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Same NEJM paper as the earlier De Wals reference (d6) but different body and unnamed, so a separate definition."
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 39961,
+    "quote": "<ref>{{Cite journal |last1=Naithani"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 39966,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-60",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 32653,
+    "quote": "<ref name=\":0\">"
+   },
+   "binds_to": {
+    "cp": 32653,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_48-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 33384,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 32653,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_48-1",
+   "notes": "Self-closing reuse of :0; binds to the first definition (retracted-paper reference)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 33576,
+    "quote": "<ref>{{cite journal | doi = 10.1001/jama.252.11.1438"
+   },
+   "binds_to": {
+    "cp": 33576,
+    "quote": "<ref>{{cite journal | doi = 10.1001/jama.252.11.1438"
+   },
+   "render_ref_id": "cite_ref-49",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 34451,
+    "quote": "<ref>Summer [http://msc.sagepub.com"
+   },
+   "binds_to": {
+    "cp": 34451,
+    "quote": "<ref>Summer [http://msc.sagepub.com"
+   },
+   "render_ref_id": "cite_ref-50",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 34819,
+    "quote": "<ref>{{Cite journal | doi=10.1111/j.1471-0528.2008.01700.x"
+   },
+   "binds_to": {
+    "cp": 34819,
+    "quote": "<ref>{{Cite journal | doi=10.1111/j.1471-0528.2008.01700.x"
+   },
+   "render_ref_id": "cite_ref-51",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 35388,
+    "quote": "<ref>Norem et.al [http://journals.lww.com"
+   },
+   "binds_to": {
+    "cp": 35388,
+    "quote": "<ref>Norem et.al [http://journals.lww.com"
+   },
+   "render_ref_id": "cite_ref-52",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 35919,
+    "quote": "<ref>{{Cite journal |last1=De Wals |first1=Philippe"
+   },
+   "binds_to": {
+    "cp": 35919,
+    "quote": "<ref>{{Cite journal |last1=De Wals |first1=Philippe"
+   },
+   "render_ref_id": "cite_ref-53",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 36738,
+    "quote": "<ref>{{cite journal |last1=Daly |first1=S"
+   },
+   "binds_to": {
+    "cp": 36738,
+    "quote": "<ref>{{cite journal |last1=Daly |first1=S"
+   },
+   "render_ref_id": "cite_ref-54",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 37312,
+    "quote": "<ref>{{Cite journal |last=Ray |first=Joel G."
+   },
+   "binds_to": {
+    "cp": 37312,
+    "quote": "<ref>{{Cite journal |last=Ray |first=Joel G."
+   },
+   "render_ref_id": "cite_ref-55",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 37977,
+    "quote": "<ref name=\"Greene, N. D. E. 20092\">"
+   },
+   "binds_to": {
+    "cp": 37977,
+    "quote": "<ref name=\"Greene, N. D. E. 20092\">"
+   },
+   "render_ref_id": "cite_ref-Greene,_N._D._E._20092_56-0",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 38285,
+    "quote": "<ref>{{cite journal |last1=Milunsky |first1=A |last2=Jick"
+   },
+   "binds_to": {
+    "cp": 38285,
+    "quote": "<ref>{{cite journal |last1=Milunsky |first1=A |last2=Jick"
+   },
+   "render_ref_id": "cite_ref-57",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 38768,
+    "quote": "<ref>{{cite journal |last1=Goh |first1=YI"
+   },
+   "binds_to": {
+    "cp": 38768,
+    "quote": "<ref>{{cite journal |last1=Goh |first1=YI"
+   },
+   "render_ref_id": "cite_ref-58",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 39219,
+    "quote": "<ref>{{cite journal |author=De Wals P"
+   },
+   "binds_to": {
+    "cp": 39219,
+    "quote": "<ref>{{cite journal |author=De Wals P"
+   },
+   "render_ref_id": "cite_ref-59",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 39961,
+    "quote": "<ref>{{Cite journal |last1=Naithani"
+   },
+   "binds_to": {
+    "cp": 39961,
+    "quote": "<ref>{{Cite journal |last1=Naithani"
+   },
+   "render_ref_id": "cite_ref-60",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 33116,
+    "quote": "10.1016/s1701-2163(15)30444-8"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s1701-2163(15)30444-8",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 33151,
+    "quote": "25375307"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "25375307",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 33211,
+    "quote": "10.1016/j.jogc.2022.06.009"
+   },
+   "scheme": "doi",
+   "role": "marker_target",
+   "key": "10.1016/j.jogc.2022.06.009",
+   "notes": "Argument of {{Retracted}}: DOI/PMID of the retraction notice for the Wilson et al. paper."
+  },
+  {
+   "at": {
+    "cp": 33243,
+    "quote": "35934417"
+   },
+   "scheme": "pmid",
+   "role": "marker_target",
+   "key": "35934417",
+   "notes": "Argument of {{Retracted}}: DOI/PMID of the retraction notice for the Wilson et al. paper."
+  },
+  {
+   "at": {
+    "cp": 33604,
+    "quote": "10.1001/jama.252.11.1438"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1001/jama.252.11.1438",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 33886,
+    "quote": "6206249"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "6206249",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 34845,
+    "quote": "10.1111/j.1471-0528.2008.01700.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1471-0528.2008.01700.x",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 34884,
+    "quote": "18410651"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "18410651",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 36482,
+    "quote": "10.1056/NEJMoa067103"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1056/nejmoa067103",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 36509,
+    "quote": "17625125"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17625125",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 37137,
+    "quote": "10.1016/S0140-6736(97)07247-4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0140-6736(97)07247-4",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 37173,
+    "quote": "9400511"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9400511",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 37499,
+    "quote": "10.1111/j.1753-4887.2004.tb00072.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1753-4887.2004.tb00072.x",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 37558,
+    "quote": "15298446"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15298446",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38231,
+    "quote": "10.1093/hmg/ddp347"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1093/hmg/ddp347",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38269,
+    "quote": "19808787"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "19808787",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38722,
+    "quote": "10.1001/jama.262.20.2847"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1001/jama.262.20.2847",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38753,
+    "quote": "2478730"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "2478730",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38961,
+    "quote": "10.1080/01443610701814195"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/01443610701814195",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 38993,
+    "quote": "18259891"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "18259891",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 39676,
+    "quote": "10.1056/NEJMoa067103"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1056/nejmoa067103",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 39703,
+    "quote": "17625125"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17625125",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

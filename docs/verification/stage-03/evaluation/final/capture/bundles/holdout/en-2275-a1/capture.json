@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 45492,
+   "body_sha256": "c65b601a44e53b46d6ecaa10741c1a4fecfe84f332cba6ce64ba50070320937b",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.644,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:54:26.095149Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=2275",
+   "wire_bytes": 17031
+  },
+  {
+   "body_bytes": 253762,
+   "body_sha256": "470b9a1ec896b63b3bdbaa795e77c30306567b04238cb983acbbf802040699d1",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.878,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:54:36.741649Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382268322/html",
+   "wire_bytes": 47463
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:54:37.622267Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 2275,
+  "parent_revision_id": 1382142408,
+  "redirect_followed": null,
+  "revision_id": 1382268322,
+  "revision_timestamp": "2026-10-27T17:56:05Z",
+  "sha1": "03b257caa1a02c82810a2d73efbd36e4cb908903",
+  "size": 44681,
+  "title": "Apple II (original)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "470b9a1ec896b63b3bdbaa795e77c30306567b04238cb983acbbf802040699d1",
+  "bytes": 253762,
+  "checks": {
+   "document_revision_id": "1382268322",
+   "header_revision_id": "1382268322",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "2275",
+   "render_id": "cd0fef5a-d414-11f1-8f4b-eba0062f532e",
+   "revision_sha1": "03b257caa1a02c82810a2d73efbd36e4cb908903",
+   "revision_sha1_base36": "0fjmjbkj5hzg8gfy83ssi5wvyx3vshv"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1382268322",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:54:37 GMT",
+   "etag": "W/\"1382268322/cd0fef5a-d414-11f1-8f4b-eba0062f532e/view\"",
+   "last-modified": "Fri, 30 Oct 2026 03:47:33 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382268322/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 2275,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "c3372d300fe56bcffded99b4b1a56a8c5eeec6d53a47c61878aeaf77acc6c7af",
+  "bytes": 44681,
+  "response_artifact": "c65b601a44e53b46d6ecaa10741c1a4fecfe84f332cba6ce64ba50070320937b",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=2275"
+ },
+ "started_at": "2026-10-30T20:54:16.696131Z",
+ "status": "complete"
+}

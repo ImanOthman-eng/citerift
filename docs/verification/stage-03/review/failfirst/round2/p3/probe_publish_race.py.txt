@@ -1,0 +1,23 @@
+"""publish_bundle: an empty directory that appears at the target between the last lexists() check and
+os.rename() is silently replaced (rename(2) replaces an empty directory). Simulated by creating it in an os.rename
+wrapper, i.e. inside the race window, in the scratch dir."""
+import os, shutil, sys
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+import citerift.wiki.bundle as bundle_mod
+W = Path(__file__).resolve().parent / "work_race"; shutil.rmtree(W, ignore_errors=True); W.mkdir()
+target = W / "b"
+real_rename = os.rename
+def racing_rename(src, dst):
+    os.mkdir(dst)                      # another process creates the path now (e.g. its own bundle dir, still empty)
+    (Path(dst)).chmod(0o755)
+    print("before rename: target exists =", os.path.lexists(dst), "inode", os.stat(dst).st_ino)
+    return real_rename(src, dst)
+bundle_mod.os.rename = racing_rename
+try:
+    out = bundle_mod.publish_bundle(target, {"x": 1}, {})
+    print("publish_bundle returned", out.name, "- target now holds", sorted(os.listdir(target)), "inode", os.stat(target).st_ino)
+except Exception as e:
+    print("refused:", type(e).__name__, e)
+finally:
+    bundle_mod.os.rename = real_rename

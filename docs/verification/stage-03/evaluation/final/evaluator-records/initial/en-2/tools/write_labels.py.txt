@@ -1,0 +1,148 @@
+"""Serialize hand-decided, article-specific labels; no reference parsing."""
+from pathlib import Path
+import json, hashlib, datetime
+from lxml import html
+BASE = Path('/workspace/stage03-work/final-evaluators-initial')
+OUT = BASE/'output-en-2'
+REVS = [1374633449,1377523963,1381749944,1381782708,1382268322]
+START = '2026-10-31T06:01:24.622072+00:00'
+opened=[]
+for path in [BASE/'en-2-BRIEF.md', BASE/'ANNOTATION_GUIDE.md']:
+    opened.append({'path':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+packets={}; texts={}; docs={}
+for rev in REVS:
+    p=BASE/'en-2'/f'en-{rev}'
+    packet=json.loads((p/'packet.json').read_text(encoding='utf-8')); packets[rev]=packet
+    for name,key in [('packet.json',None),('source.wikitext','source_sha256'),('render.html','html_sha256')]:
+        data=(p/name).read_bytes(); sha=hashlib.sha256(data).hexdigest()
+        if key: assert sha==packet[key]
+        opened.append({'path':str(p/name),'sha256':sha})
+        if name=='source.wikitext': texts[rev]=data.decode('utf-8')
+        if name=='render.html': docs[rev]=html.fromstring(data)
+opened.append({'path':str(Path(__file__)),'sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
+
+def begin(rev):
+    global text, doc, data
+    text=texts[rev]; doc=docs[rev]; p=packets[rev]
+    data={'format':'citerift-stage03-annotation-v1','article':{'wiki':p['wiki'],'revision_id':p['revision_id'],'source_sha256':p['source_sha256'],'html_sha256':p['html_sha256'],'window':[p['window']['cp_start'],p['window']['cp_end']]},'provenance':{'agent':'stage03-evaluator-en-2','started_at':START,'finished_at':None,'files_opened':opened,'tools':'ChatGPT/Codex evaluator; functions.exec and exec_command; cat; isolated Python standard library for literal text searches, hashing, hand-label serialization and exact location validation; lxml for listing Parsoid HTML elements, attributes and rendered text. No general reference parser, network, git, engine code or predictions used. The files_opened list records the whole five-article assignment, including the evaluator-owned serialization helper.','unresolved':'No unplaced source items. Interpretation choices are documented on the affected labels and in unresolved_notes.'},'definitions':[],'uses':[],'identifiers':[],'unresolved_notes':[]}
+
+def loc(cp,prefix=None,raw=None):
+    if prefix is not None: assert text.startswith(prefix,cp),(cp,prefix,text[cp:cp+60])
+    quote=raw if raw is not None else text[cp:cp+60]
+    assert text[cp:cp+len(quote)]==quote
+    return {'cp':cp,'quote':quote}
+
+def definition(cp,kind='note',name=None,templates=(),note_id=None,unstructured=False,notes=''):
+    at=loc(cp,'*' if kind=='bibliography_entry' else '{{sfn' if kind=='generated_note' else '<ref')
+    if note_id is not None: assert doc.xpath('//li[@id=$x]',x=note_id),note_id
+    data['definitions'].append({'id':f'd{len(data["definitions"])+1}','at':at,'in_window':data['article']['window'][0]<=cp<data['article']['window'][1],'kind':kind,'name':name,'group':'','templates':[{'at':loc(t,'{{')} for t in templates],'unstructured':unstructured,'render_note_id':note_id,'marker':'none','marker_text':None,'notes':notes})
+
+def use(cp,target,ref_id,notes=''):
+    if ref_id is not None: assert doc.xpath('//sup[@id=$x and contains(@typeof,"mw:Extension/ref")]',x=ref_id),ref_id
+    data['uses'].append({'id':f'u{len(data["uses"])+1}','at':loc(cp),'binds_to':loc(target),'render_ref_id':ref_id,'notes':notes})
+
+def identifier(cp,raw,key,scheme='doi',role='primary_citation_field',notes=''):
+    data['identifiers'].append({'at':loc(cp,raw=raw),'scheme':scheme,'role':role,'key':key,'notes':notes})
+
+def finish():
+    data['definitions'].sort(key=lambda x:x['at']['cp']); data['uses'].sort(key=lambda x:x['at']['cp'])
+    for field,prefix in [('definitions','d'),('uses','u')]:
+        for n,item in enumerate(data[field],1): item['id']=prefix+str(n)
+    def validate(x):
+        if isinstance(x,dict):
+            if 'cp' in x and 'quote' in x: assert text[x['cp']:x['cp']+len(x['quote'])]==x['quote']
+            for v in x.values(): validate(v)
+        elif isinstance(x,list):
+            for v in x: validate(v)
+    validate(data)
+    for use_item in data['uses']:
+        assert any(d['at']['cp']==use_item['binds_to']['cp'] for d in data['definitions'])
+    data['provenance']['finished_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()
+    path=OUT/f'en-{data["article"]["revision_id"]}.json'
+    path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print(path.name, 'definitions',len(data['definitions']),'uses',len(data['uses']),'identifiers',len(data['identifiers']))
+
+begin(1374633449)
+# Eight distinct short notes; three identical calls produce the same note.
+for cp,stem,num in [
+ (1213,'BartholdSourdel19601036',1),(1430,'BartholdSourdel19601034',2),
+ (1642,'Bosworth1989152–153',3),(1773,'Kennedy200633,_79',4),
+ (1917,'Crone1980176',5),(2056,'van_Bladel2012',6),
+ (2079,'Bosworth1989219,_222,_224',7),(2330,'Madelung2002243',8)]:
+    definition(cp,kind='generated_note',note_id=f'cite_note-FOOTNOTE{stem}-{num}',notes='Structured short-footnote call; no citation template inside it. No name is written in the source. '+('Identical calls at cp 1562 and 2020 share this first definition and its rendered note.' if cp==1213 else ''))
+    use(cp,cp,f'cite_ref-FOOTNOTE{stem}_{num}-0')
+use(1562,1213,'cite_ref-FOOTNOTEBartholdSourdel19601036_1-1','Identical short-footnote call binds to the first at cp 1213.')
+use(2020,1213,'cite_ref-FOOTNOTEBartholdSourdel19601036_1-2','Identical short-footnote call binds to the first at cp 1213.')
+for cp in [2447,2681,2722,2745,3072,3220]:
+    definition(cp,kind='bibliography_entry',templates=[cp+2],notes='Specialist citation-formatting template, confirmed by its rendered bibliography entry.' if cp!=2745 else '')
+identifier(2613,'10.1163/1573-3912_islam_COM_0099','10.1163/1573-3912_islam_com_0099')
+identifier(3185,'10.1163/1573-3912_islam_SIM_7947','10.1163/1573-3912_islam_sim_7947')
+identifier(3291,'10.1163/1573-3912_ei3_COM_24302','10.1163/1573-3912_ei3_com_24302')
+data['unresolved_notes'].append('Interpretation: identical sfn calls are one reference with three uses; the generated HTML name is not copied to name because the guide asks for the name as written. Specialist EI2, EI3, The History of al-Tabari and Slaves on Horses calls are citation templates on the evidence of their rendered entries.')
+finish()
+
+begin(1377523963)
+for cp,tp,name,stem in [
+ (4937,4958,'Roth2010','Roth2010-5'),(5810,5833,'Penn State','Penn_State-6'),
+ (7042,7047,None,'7'),(7487,7512,'Voila_20191203','Voila_20191203-8'),
+ (10911,10931,'ICA2023','ICA2023-9'),(11250,11273,'MILLER2019','MILLER2019-10')]:
+    definition(cp,name=name,templates=[tp],note_id='cite_note-'+stem)
+    # IDs transcribed from the inspected Parsoid sup elements.
+    rid={4937:'cite_ref-Roth2010_5-0',5810:'cite_ref-Penn_State_6-0',7042:'cite_ref-7',7487:'cite_ref-Voila_20191203_8-0',10911:'cite_ref-ICA2023_9-0',11250:'cite_ref-MILLER2019_10-0'}[cp]
+    use(cp,cp,rid)
+use(6785,5810,'cite_ref-Penn_State_6-1')
+for cp in [7924,8084,8238,8424,8968,9554,9908,10192]: definition(cp,kind='bibliography_entry',templates=[cp+2])
+definition(10441,kind='bibliography_entry',unstructured=True,notes='Hand-written bibliography entry with an external publisher link and a DOI wrapper. The Doi wrapper makes an identifier link; it is not a citation-formatting template.')
+for cp,raw in [(5150,'10.14714/CP66.104'),(8714,'10.1179/000870403235002042'),(9313,'10.1016/j.amepre.2005.09.007'),(9834,'10.1559/152304003100010929'),(10119,'10.1559/152304003100011126'),(10385,'10.1179/caj.1996.33.2.79')]: identifier(cp,raw,raw.lower())
+identifier(9347,'16458787','16458787',scheme='pmid')
+# Exact URL start and extent, inspected in the raw bibliography entry.
+url='http://onlinelibrary.wiley.com/doi/10.1111/0004-5608.00043/abstract'
+identifier(text.index(url,10441),url,'10.1111/0004-5608.00043',role='identifier_link',notes='The final /abstract is the publisher page-view route, not the DOI suffix; the Doi wrapper in the same entry confirms the DOI boundary.')
+identifier(10725,'10.1111/0004-5608.00043','10.1111/0004-5608.00043',role='identifier_link',notes='Argument of the Doi wrapper in the hand-written bibliography entry.')
+data['unresolved_notes'].append('The publisher URL DOI boundary is supported by the adjacent explicit Doi wrapper; both raw occurrences are retained. Award-list citations occur inside refs, so those award list items are not separate bibliography entries.')
+finish()
+
+begin(1381749944)
+for cp,tp,name,note,ref in [
+ (16787,16823,'TDK acquires InvenSense','cite_note-TDK_acquires_InvenSense-31','cite_ref-TDK_acquires_InvenSense_31-0'),
+ (17349,17393,'TDK acquires Chirp Microsystems','cite_note-TDK_acquires_Chirp_Microsystems-32','cite_ref-TDK_acquires_Chirp_Microsystems_32-0'),
+ (17628,17633,None,'cite_note-33','cite_ref-33'),
+ (18050,18088,'TDK acquires Faraday Semi','cite_note-TDK_acquires_Faraday_Semi-34','cite_ref-TDK_acquires_Faraday_Semi_34-0'),
+ (18557,18562,None,'cite_note-35','cite_ref-35'),
+ (19044,19094,'IAAF World Championships in Athletics','cite_note-IAAF_World_Championships_in_Athletics-36','cite_ref-IAAF_World_Championships_in_Athletics_36-0'),
+ (20202,20207,None,'cite_note-37','cite_ref-37'),
+ (20679,20725,'TDK Corporate Branding Activities','cite_note-TDK_Corporate_Branding_Activities-38','cite_ref-TDK_Corporate_Branding_Activities_38-0'),
+ (21343,21378,'TDK Orchestra Concerts','cite_note-TDK_Orchestra_Concerts-39','cite_ref-TDK_Orchestra_Concerts_39-0'),
+ (21843,21848,None,'cite_note-40','cite_ref-40'),
+ (22624,22647,'TDK Museum','cite_note-TDK_Museum-41','cite_ref-TDK_Museum_41-0')]:
+    definition(cp,name=name,templates=[tp],note_id=note); use(cp,cp,ref)
+definition(23310,kind='list_defined_note',name='tdk_sale_pr',templates=[23334],note_id='cite_note-tdk_sale_pr-6',notes='Definition nested in <references>, equivalent to the guide’s reference-list template case. Earlier source reuses are outside the window.')
+use(23310,23310,None,'The guide counts each ref tag as a use. This list-defined ref supplies a note but generates no inline sup marker at its own location; the two rendered markers belong to the earlier out-of-window reuses.')
+data['unresolved_notes'].append('The <references> definition is labeled list_defined_note. Its source tag is included as a use per the guide’s every-ref rule, with render_ref_id null because defining a reference inside the list emits no inline marker.')
+finish()
+
+begin(1381782708)
+for cp,tp,num in [(26895,26900,20),(27506,27511,21),(27650,27655,22),(27809,27814,23),(27950,27955,24),(28097,28102,25),(28394,None,26),(33336,33341,27)]:
+    definition(cp,templates=[] if tp is None else [tp],note_id=f'cite_note-{num}',unstructured=tp is None)
+    use(cp,cp,f'cite_ref-{num}')
+finish()
+
+begin(1382268322)
+for cp,tp,name,note,ref in [
+ (3369,3374,None,'cite_note-4','cite_ref-4'),(3696,3701,None,'cite_note-5','cite_ref-5'),
+ (3935,3940,None,'cite_note-6','cite_ref-6'),(4184,4189,None,'cite_note-7','cite_ref-7'),
+ (4473,4478,None,'cite_note-8','cite_ref-8'),(5122,5139,'e149','cite_note-e149-9','cite_ref-e149_9-0'),
+ (5424,5445,'JobsBio1','cite_note-JobsBio1-10','cite_ref-JobsBio1_10-0'),
+ (5731,5750,'wozorg','cite_note-wozorg-11','cite_ref-wozorg_11-0'),
+ (6327,6332,None,'cite_note-12','cite_ref-12'),
+ (6864,6887,'Stein 2011','cite_note-Stein_2011-13','cite_ref-Stein_2011_13-0'),
+ (7309,7314,None,'cite_note-14','cite_ref-14'),(7796,7801,None,'cite_note-15','cite_ref-15'),
+ (8126,8131,None,'cite_note-16','cite_ref-16'),
+ (9031,9050,'hist90','cite_note-hist90-17','cite_ref-hist90_17-0'),
+ (10371,None,None,'cite_note-18','cite_ref-18'),
+ (10671,10699,'wozniak20140501','cite_note-wozniak20140501-19','cite_ref-wozniak20140501_19-0')]:
+    definition(cp,name=name,templates=[] if tp is None else [tp],note_id=note,unstructured=tp is None,
+       notes='The definition begins in the window and continues beyond its end; included by start position.' if cp==10671 else '')
+    use(cp,cp,ref)
+identifier(7078,'10.2752/175470811X13002771867842','10.2752/175470811x13002771867842')
+finish()

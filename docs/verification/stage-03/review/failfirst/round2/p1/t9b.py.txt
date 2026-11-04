@@ -1,0 +1,4 @@
+from h import run
+_, d = run('A<ref>https://pubs.acs.org/doi/10.1021/ab%zz {{cite journal|title=T|url= https://doi.org/10.1000/ws }}</ref>', show=False)
+for i in d["identifiers"]:
+    print(i["source"]["raw"].__repr__(), i["decoding"], i["normalization"]["transformations"], i["normalization"]["issues"], i["normalization"]["valid"])

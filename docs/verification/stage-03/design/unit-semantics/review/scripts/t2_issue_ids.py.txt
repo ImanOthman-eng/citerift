@@ -1,0 +1,19 @@
+"""RV: CITATION_TEMPLATE_UNSUPPORTED names the unit id given before units are renumbered by position."""
+from rvlib import *
+
+text = "A<ref>Smith, J. A book. 2001.</ref> B<ref>{{Fishbase|Osteobrama|bhimensis}}</ref>"
+body = (f"<p>A{ref_sup(1, 'cite_note-1', 'cite_ref-1')} B{ref_sup(2, 'cite_note-2', 'cite_ref-2')}</p>"
+        + references([note_li("cite_note-1", ["cite_ref-1"], "Smith, J. A book. 2001."),
+                      note_li("cite_note-2", ["cite_ref-2"], transclusion(5, "Fishbase", {"1": "Osteobrama", "2": "bhimensis"}, cs1("FishBase")))]))
+doc, path, rep = run(text, body, verify=True)
+show("plain ref then G ref", doc, text)
+print("verify:", rep.get("verified"))
+bad = [i for i in doc["issues"] if i["code"] == "CITATION_TEMPLATE_UNSUPPORTED"]
+for i in bad:
+    u = next(u for u in doc["units"] if u["id"] == i["entities"][0])
+    print("issue names", i["entities"][0], "which is kind", u["kind"], "- issue detail", i["detail"])
+
+# pre-existing analogue: DUPLICATE_TEMPLATE_PARAMETER
+text2 = "A<ref>Smith, J. A book. 2001.</ref> B<ref>{{cite book |title=X |title=Y}}</ref>"
+doc2 = run(text2, None)
+show("plain ref then cite with duplicate param (pre-existing pattern)", doc2, text2)

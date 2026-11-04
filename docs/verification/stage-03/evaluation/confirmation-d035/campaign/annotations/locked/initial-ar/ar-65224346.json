@@ -1,0 +1,104 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 65224346,
+  "source_sha256": "7be63b2881f17bda44f8752ee757073c0dcdfcf847830315ca3a82038e82b149",
+  "html_sha256": "07fdbb4b7b7d524ffcb375320ecfccfa1ef1df2822cb531c4a1f152374a42ba1",
+  "window": [
+   0,
+   1530
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h3",
+  "started_at": "2026-11-03T16:11:00Z",
+  "finished_at": "2026-11-03T16:12:21Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-65224346/source.wikitext",
+    "sha256": "7be63b2881f17bda44f8752ee757073c0dcdfcf847830315ca3a82038e82b149"
+   },
+   {
+    "path": "packets/ar-65224346/render.html",
+    "sha256": "07fdbb4b7b7d524ffcb375320ecfccfa1ef1df2822cb531c4a1f152374a42ba1"
+   },
+   {
+    "path": "packets/ar-65224346/packet.json",
+    "sha256": "(not hashed separately; read for window and hashes)"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote",
+  "unresolved": "Rendered reference list contains a Wikidata-generated reference (infobox, cite_ref-wikidata-b327…_1-0) with no source location; not labelled (guide 3.3)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 250,
+    "quote": "<ref name=range"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "range",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 266,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-range-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "arwiki citation template alias \"استشهاد بدورية محكمة\"; {{وإو}} inside is a language/interwiki-link wrapper, not a citation template. Rendered list also has a Wikidata-generated reference (cite_note-wikidata-…) from the infobox that is not in the source."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 250,
+    "quote": "<ref name=range"
+   },
+   "binds_to": {
+    "cp": 250,
+    "quote": "<ref name=range"
+   },
+   "render_ref_id": "cite_ref-range_2-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 812,
+    "quote": "10.1016/j.crvi.2007.02.008"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.crvi.2007.02.008",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 846,
+    "quote": "17434121"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17434121",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Rendered reference list contains a Wikidata-generated reference (infobox, cite_ref-wikidata-b327…_1-0) with no source location; not labelled (guide 3.3)."
+ ]
+}

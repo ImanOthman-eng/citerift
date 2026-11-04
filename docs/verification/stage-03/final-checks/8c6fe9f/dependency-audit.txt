@@ -1,0 +1,4 @@
+$ uv export --frozen --no-emit-project --all-groups > requirements-locked.txt
+$ uv run pip-audit --strict --require-hashes --disable-pip -r requirements-locked.txt
+No known vulnerabilities found
+exit 0

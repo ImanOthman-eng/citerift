@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "c40a982dc71f2d0ff4ae73d75e6bc057193564ef55378a85a6bf53c759b2f218",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.852,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "16",
+   "retry_after_s": 16.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:52:43.458186Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1898990",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 25954,
+   "body_sha256": "8bc771dc76ae139c7067702bb45077498f144ef0057e5f74deb6a995623eac69",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.463,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:53:00.310935Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1898990",
+   "wire_bytes": 8701
+  },
+  {
+   "body_bytes": 238140,
+   "body_sha256": "b2afae8ce91d4341ed5b8c1cbe4c9ff280e242bacc71a5511b45953110e3f717",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.505,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:53:10.776175Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1379214029/html",
+   "wire_bytes": 35406
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "c40a982dc71f2d0ff4ae73d75e6bc057193564ef55378a85a6bf53c759b2f218"
+ ],
+ "finished_at": "2026-10-29T08:53:11.284404Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1898990,
+  "parent_revision_id": 1374515097,
+  "redirect_followed": null,
+  "revision_id": 1379214029,
+  "revision_timestamp": "2026-10-08T16:36:06Z",
+  "sha1": "dc6e1096487ae0c7035ddcf61f9182502e5a1448",
+  "size": 25246,
+  "title": "National Assembly (Nigeria)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "b2afae8ce91d4341ed5b8c1cbe4c9ff280e242bacc71a5511b45953110e3f717",
+  "bytes": 238140,
+  "checks": {
+   "document_revision_id": "1379214029",
+   "header_revision_id": "1379214029",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "1898990",
+   "render_id": "4d6d11d0-d351-11f1-8cb6-735b9d8317a2",
+   "revision_sha1": "dc6e1096487ae0c7035ddcf61f9182502e5a1448",
+   "revision_sha1_base36": "pqya83d1qi41etkjxv957mkxgvlqcso"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1379214029",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:53:11 GMT",
+   "etag": "W/\"1379214029/4d6d11d0-d351-11f1-8cb6-735b9d8317a2/view\"",
+   "last-modified": "Thu, 29 Oct 2026 04:15:43 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1379214029/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1898990,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "256812057da3797b5762d8d0261a9107664fd69b09710beb019c1c17cb22c3b9",
+  "bytes": 25246,
+  "response_artifact": "8bc771dc76ae139c7067702bb45077498f144ef0057e5f74deb6a995623eac69",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1898990"
+ },
+ "started_at": "2026-10-29T08:52:33.814041Z",
+ "status": "complete"
+}

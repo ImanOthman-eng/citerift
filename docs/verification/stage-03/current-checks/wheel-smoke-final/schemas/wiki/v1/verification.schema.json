@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:wiki:v1:verification",
+  "title": "CITERIFT Stage 03 verification and replay report, major version 1",
+  "description": "The result of verify (capture bundle and optional extraction document) or replay (offline re-extraction compared with a recorded document). Checks are tallied by name; at most 20 issues are listed per check.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "operation", "capture_sha256", "verified", "extraction_digest", "checks", "issues"],
+  "properties": {
+    "schema": {"const": "urn:citerift:schema:wiki:v1:verification"},
+    "schema_version": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/schema_version"},
+    "operation": {"enum": ["verify", "replay"]},
+    "capture_sha256": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}]},
+    "verified": {"type": "boolean"},
+    "extraction_digest": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}]},
+    "replay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": {"enum": ["reproduced", "differs", "not_compared", "failed"]},
+        "new_status": {"enum": ["complete", "partial", "failed"]},
+        "new_digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+        "recorded_digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+        "differing_keys": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "checked", "failed", "first_failure"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "checked": {"type": "integer", "minimum": 1},
+          "failed": {"type": "integer", "minimum": 0},
+          "first_failure": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "issues": {"type": "array", "items": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/issue"}}
+  },
+  "allOf": [
+    {"if": {"properties": {"operation": {"const": "replay"}}}, "then": {"required": ["replay"]}, "else": {"not": {"required": ["replay"]}}}
+  ]
+}

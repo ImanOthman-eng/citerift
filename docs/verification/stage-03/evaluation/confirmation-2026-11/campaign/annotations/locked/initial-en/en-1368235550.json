@@ -1,0 +1,434 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1368235550,
+  "source_sha256": "c1fd470e716965659b6a1be2b7bbe983da4b7543aa1d01b6075fe0112c087fbe",
+  "html_sha256": "625fce4e47f9874a89f9872baa03632922425e51a5911b66f59efecf5b78744b",
+  "window": [
+   0,
+   5461
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h2",
+  "started_at": "2026-11-03T01:58:30Z",
+  "finished_at": "2026-11-03T01:58:30Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1368235550/source.wikitext",
+    "sha256": "c1fd470e716965659b6a1be2b7bbe983da4b7543aa1d01b6075fe0112c087fbe"
+   },
+   {
+    "path": "packets/en-1368235550/render.html",
+    "sha256": "625fce4e47f9874a89f9872baa03632922425e51a5911b66f59efecf5b78744b"
+   },
+   {
+    "path": "packets/en-1368235550/packet.json",
+    "sha256": "7a3b62616a223bbda292d00e11daa096bcc178979248952985171354e04853d8"
+   }
+  ],
+  "tools": "python3 -I with stdlib re/json and lxml (list sup[typeof=mw:Extension/ref] and li[id^=cite_note] from render.html; regex search of source.wikitext for <ref, {{cite, doi, PMID); location verification text[cp:cp+len(quote)]==quote; build script in tools/. Labels decided by hand.",
+  "unresolved": "none beyond notes"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 534,
+    "quote": "<ref name=anuario2024>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "anuario2024",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 556,
+      "quote": "{{Cite report"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-anuario2024-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Inside |amount= of {{Infobox Mine}} (present in source)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1293,
+    "quote": "<ref name=\"Iacobeni\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Iacobeni",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1314,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Iacobeni-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1827,
+    "quote": "<ref>{{Cite journal |title=Processing"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1832,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2468,
+    "quote": "<ref name=ciperbronce>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ciperbronce",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2490,
+      "quote": "{{Cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ciperbronce-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 3000,
+    "quote": "<ref>{{Cite news |title=Disputada"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3005,
+      "quote": "{{Cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 3301,
+    "quote": "<ref name=Sonia2015>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Sonia2015",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3321,
+      "quote": "{{Cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Sonia2015-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 3778,
+    "quote": "<ref name=bnamericas>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "bnamericas",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3799,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-bnamericas-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 4072,
+    "quote": "<ref>{{Cite journal |title=Miner"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4077,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 4699,
+    "quote": "<ref name=Piqueretal1019>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Piqueretal1019",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4724,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Piqueretal1019-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 534,
+    "quote": "<ref name=anuario2024>"
+   },
+   "binds_to": {
+    "cp": 534,
+    "quote": "<ref name=anuario2024>"
+   },
+   "render_ref_id": "cite_ref-anuario2024_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1293,
+    "quote": "<ref name=\"Iacobeni\">"
+   },
+   "binds_to": {
+    "cp": 1293,
+    "quote": "<ref name=\"Iacobeni\">"
+   },
+   "render_ref_id": "cite_ref-Iacobeni_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1827,
+    "quote": "<ref>{{Cite journal |title=Processing"
+   },
+   "binds_to": {
+    "cp": 1827,
+    "quote": "<ref>{{Cite journal |title=Processing"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2468,
+    "quote": "<ref name=ciperbronce>"
+   },
+   "binds_to": {
+    "cp": 2468,
+    "quote": "<ref name=ciperbronce>"
+   },
+   "render_ref_id": "cite_ref-ciperbronce_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2977,
+    "quote": "<ref name=ciperbronce/>"
+   },
+   "binds_to": {
+    "cp": 2468,
+    "quote": "<ref name=ciperbronce>"
+   },
+   "render_ref_id": "cite_ref-ciperbronce_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 3000,
+    "quote": "<ref>{{Cite news |title=Disputada"
+   },
+   "binds_to": {
+    "cp": 3000,
+    "quote": "<ref>{{Cite news |title=Disputada"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3301,
+    "quote": "<ref name=Sonia2015>"
+   },
+   "binds_to": {
+    "cp": 3301,
+    "quote": "<ref name=Sonia2015>"
+   },
+   "render_ref_id": "cite_ref-Sonia2015_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 3692,
+    "quote": "<ref name=Sonia2015/>"
+   },
+   "binds_to": {
+    "cp": 3301,
+    "quote": "<ref name=Sonia2015>"
+   },
+   "render_ref_id": "cite_ref-Sonia2015_6-1",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 3778,
+    "quote": "<ref name=bnamericas>"
+   },
+   "binds_to": {
+    "cp": 3778,
+    "quote": "<ref name=bnamericas>"
+   },
+   "render_ref_id": "cite_ref-bnamericas_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 4072,
+    "quote": "<ref>{{Cite journal |title=Miner"
+   },
+   "binds_to": {
+    "cp": 4072,
+    "quote": "<ref>{{Cite journal |title=Miner"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 4699,
+    "quote": "<ref name=Piqueretal1019>"
+   },
+   "binds_to": {
+    "cp": 4699,
+    "quote": "<ref name=Piqueretal1019>"
+   },
+   "render_ref_id": "cite_ref-Piqueretal1019_9-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 2180,
+    "quote": "10.1007/s11837-020-04255-9"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/s11837-020-04255-9",
+   "notes": "doi= value of the JOM citation."
+  },
+  {
+   "at": {
+    "cp": 2054,
+    "quote": "10.1007/s11837-020-04255-9"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1007/s11837-020-04255-9",
+   "notes": "DOI embedded in the publisher URL (link.springer.com/content/pdf/10.1007/...pdf) in |url=. The path has no \"/doi/\" segment, so it is not one of the URL forms the guide lists; labelled as \"anything else: the identifier text\" (quote starts at \"10.1007\"), \".pdf\" is not part of the DOI. May be out of scope under a strict reading."
+  },
+  {
+   "at": {
+    "cp": 5133,
+    "quote": "10.5027/andgeoV46n2-3108"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.5027/andgeov46n2-3108",
+   "notes": "doi= value; |doi-access=free present."
+  }
+ ],
+ "unresolved_notes": []
+}

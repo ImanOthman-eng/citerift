@@ -1,0 +1,15 @@
+The focused re-reviewer's metamorphic simulation (review-d036/R/s02_metamorphic.py in the evidence export; sha256 19e1b6870b06de04903d7552d0a78228b7990d2e0a503e9301ca4c4b18a1f98d),
+6 seeds x 150 SYNTHETIC infoboxes. At c144a09 the re-reviewer reported 1,762 linked and 21 wrong uses in 13 articles
+(review/RE_REVIEW.md, R-02). After the re-review fixes, run on this tree (the script copied with its worktree path replaced
+by the repository path, nothing else changed):
+seed=1 N=150 {'linked': 88, 'abstained': 352, 'wrong': 0}
+seed=2 N=150 {'linked': 101, 'abstained': 350, 'wrong': 0}
+seed=3 N=150 {'linked': 92, 'abstained': 354, 'wrong': 0}
+seed=4 N=150 {'linked': 95, 'abstained': 351, 'wrong': 0}
+seed=5 N=150 {'linked': 129, 'abstained': 319, 'wrong': 0}
+seed=6 N=150 {'linked': 101, 'abstained': 347, 'wrong': 0}
+
+The re-reviewer's boundary cases (s10_boundary.py) after the fixes:
+[hidden value + data-source partner] status=partial wrong=0
+[percent restyled (5 % in cell) + partner showing 5%] status=partial wrong=0
+[same, but partner text readable (control: abstains)] status=partial wrong=0

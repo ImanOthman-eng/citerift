@@ -1,0 +1,303 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1364421640,
+  "source_sha256": "686617bafd8dfce2c16734fc07ae6d7a620f4e97e781cd657d3ed6fca5b6b8cf",
+  "html_sha256": "c52fb7c30296169432fd51cc90ab7cdb9ee382a56b22a0029a43889a4829493e",
+  "window": [
+   6451,
+   14451
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h3",
+  "started_at": "2026-11-03T16:11:49Z",
+  "finished_at": "2026-11-03T16:11:49Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1364421640/source.wikitext",
+    "sha256": "686617bafd8dfce2c16734fc07ae6d7a620f4e97e781cd657d3ed6fca5b6b8cf"
+   },
+   {
+    "path": "packets/en-1364421640/render.html",
+    "sha256": "c52fb7c30296169432fd51cc90ab7cdb9ee382a56b22a0029a43889a4829493e"
+   },
+   {
+    "path": "packets/en-1364421640/packet.json",
+    "sha256": "(not given in packet.json)"
+   }
+  ],
+  "tools": "python3 stdlib (re, json), lxml; sed/cat for reading",
+  "unresolved": "Whether list-defined refs should also count as uses; I counted them as definitions only."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 5932,
+    "quote": "<ref name=US>"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "US",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-US-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Out of window; first body of US, kept as binding target. Bare external link with title text, no citation template."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 6967,
+    "quote": "<ref name=APS>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "APS",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-APS-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link; no citation template. Earlier self-closing uses of APS (6510) precede this first body."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 8163,
+    "quote": "<ref>[http://www.eppo.int"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare link plus {{Webarchive}} (not a citation template)."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 13360,
+    "quote": "<ref name=Fungorum>"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "Fungorum",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13379,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Fungorum-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined inside {{Reflist|refs=}}; used at 1190 (before window) and 8528."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 13569,
+    "quote": "<ref name=Kirk2008>"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "Kirk2008",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13588,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Kirk2008-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List-defined; its only call is at 1116 (before window)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 6496,
+    "quote": "<ref name=US/><ref name=APS/>\n|-\n|''[[Gy"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-2",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 6510,
+    "quote": "<ref name=APS/>\n|-\n|''[[Gymnosporangium "
+   },
+   "binds_to": {
+    "cp": 6967,
+    "quote": "<ref name=APS>[http://www.apsnet.org/pub"
+   },
+   "render_ref_id": "cite_ref-APS_11-0",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 6862,
+    "quote": "<ref name=US/>\n|-\n|''[[Gymnosporangium k"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-3",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 6967,
+    "quote": "<ref name=APS>"
+   },
+   "binds_to": {
+    "cp": 6967,
+    "quote": "<ref name=APS>[http://www.apsnet.org/pub"
+   },
+   "render_ref_id": "cite_ref-APS_11-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 7233,
+    "quote": "<ref name=APS/> Incense cedar broom rust"
+   },
+   "binds_to": {
+    "cp": 6967,
+    "quote": "<ref name=APS>[http://www.apsnet.org/pub"
+   },
+   "render_ref_id": "cite_ref-APS_11-2",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 7273,
+    "quote": "<ref name=US/>\n|-\n|''[[Gymnosporangium m"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-4",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 7513,
+    "quote": "<ref name=US/> Rocky Mountain pear<ref n"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-5",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 7547,
+    "quote": "<ref name=APS/>\n|-\n|''[[Gymnosporangium "
+   },
+   "binds_to": {
+    "cp": 6967,
+    "quote": "<ref name=APS>[http://www.apsnet.org/pub"
+   },
+   "render_ref_id": "cite_ref-APS_11-3",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 7696,
+    "quote": "<ref name=US/>\n|-\n|''[[Gymnosporangium s"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-6",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 7846,
+    "quote": "<ref name=US/>\n|-\n|''[[Gymnosporangium t"
+   },
+   "binds_to": {
+    "cp": 5932,
+    "quote": "<ref name=US>[http://www.prevalentfungi."
+   },
+   "render_ref_id": "cite_ref-US_10-7",
+   "notes": "Self-closing reuse by name."
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 8163,
+    "quote": "<ref>[http://www.eppo.int/QUARANTINE/fun"
+   },
+   "binds_to": {
+    "cp": 8163,
+    "quote": "<ref>[http://www.eppo.int/QUARANTINE/fun"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 8528,
+    "quote": "<ref name=Fungorum/>\n{{div col|colwidth="
+   },
+   "binds_to": {
+    "cp": 13360,
+    "quote": "<ref name=Fungorum>{{cite web |title=Spe"
+   },
+   "render_ref_id": "cite_ref-Fungorum_3-1",
+   "notes": "Self-closing reuse by name."
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Window contains no DOI or PMID (only an ISBN in Kirk2008, which is out of scope).",
+  "The two \"Other sources\" list items (6451+: Phillips & Burdekin; Scharpf) are plain-text lists with no citation template, DOI or PMID, so not bibliography entries under 3.4; not labelled.",
+  "List-defined <ref> tags inside {{Reflist|refs=}} are labelled as definitions only, not as uses (they are not calls in the text). Their calls are the in-text self-closing refs."
+ ]
+}

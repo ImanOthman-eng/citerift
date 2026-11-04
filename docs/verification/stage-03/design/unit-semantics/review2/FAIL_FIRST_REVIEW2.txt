@@ -1,0 +1,136 @@
+# tests/stage03/test_g5c_review2.py run against the engine of 11bb5b2 (git worktree, PYTHONPATH=<worktree>/src; the
+# verification worker is started from that source root too), before any production change. Long parameter ids are
+# shortened to […]. Command: PYTHONPATH=<worktree>/src uv run pytest -q -p no:cacheprovider tests/stage03/test_g5c_review2.py --tb=line
+FFFFFF.FFFFF.FFFFFF.FF.FFFF.                                             [100%]
+=================================== FAILURES ===================================
+E   AssertionError: […]
+    assert False is True
+/home/user/citerift/tests/stage03/test_g5c_review2.py:42: AssertionError: […]
+E   AssertionError: […]
+    assert False is True
+/home/user/citerift/tests/stage03/test_g5c_review2.py:42: AssertionError: […]
+E   AssertionError: […]
+    assert False is True
+/home/user/citerift/tests/stage03/test_g5c_review2.py:51: AssertionError: […]
+E   AssertionError: assert [] == [['id-00001']]
+      
+      Right contains one more item: ['id-00001']
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:73: AssertionError: assert [] == [['id-00001']]
+E   AssertionError: assert [] == [['id-00001']]
+      
+      Right contains one more item: ['id-00001']
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:73: AssertionError: assert [] == [['id-00001']]
+E   AssertionError: assert [] == [['id-00002']]
+      
+      Right contains one more item: ['id-00002']
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:83: AssertionError: assert [] == [['id-00002']]
+E   AssertionError: assert ([] == ['unstructure...uctured_text']
+      
+      Right contains 2 more items, first extra item: 'unstructured_text'
+      Use -v to get more diff)
+/home/user/citerift/tests/stage03/test_g5c_review2.py:126: AssertionError: assert ([] == ['unstructure...uctured_text']
+E   AssertionError: assert ([] == ['unstructure...uctured_text']
+      
+      Right contains 2 more items, first extra item: 'unstructured_text'
+      Use -v to get more diff)
+/home/user/citerift/tests/stage03/test_g5c_review2.py:126: AssertionError: assert ([] == ['unstructure...uctured_text']
+E   AssertionError: assert ([] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff)
+/home/user/citerift/tests/stage03/test_g5c_review2.py:126: AssertionError: assert ([] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:139: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:139: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:192: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:192: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:207: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert ['definition ...puts: Harvnb'] == ['definition ...itation link']
+      
+      At index 0 diff: 'definition 1: plain text beside templates with no output of their own in the render, or conflicting outputs: Harvnb' != 'definition 1: plain text beside a short-citation link'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:241: AssertionError: assert ['definition ...puts: Harvnb'] == ['definition ...itation link']
+E   AssertionError: assert ['definition ...puts: Harvnb'] == []
+      
+      Left contains one more item: 'definition 1: only templates, some with no output of their own in the render, or conflicting outputs: Harvnb'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:241: AssertionError: assert ['definition ...puts: Harvnb'] == []
+E   AssertionError: assert [] == ['unsupported...ion_template']
+      
+      Right contains one more item: 'unsupported_citation_template'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:239: AssertionError: assert [] == ['unsupported...ion_template']
+E   AssertionError: assert [] == ['unsupported...ion_template']
+      
+      Right contains one more item: 'unsupported_citation_template'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:267: AssertionError: assert [] == ['unsupported...ion_template']
+E   AssertionError: assert [] == ['unsupported...ion_template']
+      
+      Right contains one more item: 'unsupported_citation_template'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:267: AssertionError: assert [] == ['unsupported...ion_template']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:288: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:288: AssertionError: assert [] == ['unstructured_text']
+E   AssertionError: assert [] == ['unstructured_text']
+      
+      Right contains one more item: 'unstructured_text'
+      Use -v to get more diff
+/home/user/citerift/tests/stage03/test_g5c_review2.py:297: AssertionError: assert [] == ['unstructured_text']
+E   ValueError: not enough values to unpack (expected 1, got 0)
+/home/user/citerift/tests/stage03/test_g5c_review2.py:307: ValueError: not enough values to unpack (expected 1, got 0)
+=========================== short test summary info ============================
+FAILED tests/stage03/test_g5c_review2.py::test_a_bibliography_entry_with_a_g_unit_verifies[en]
+FAILED tests/stage03/test_g5c_review2.py::test_a_bibliography_entry_with_a_g_unit_verifies[ar]
+FAILED tests/stage03/test_g5c_review2.py::test_the_final_holdout_bundle_with_bibliography_g_units_verifies
+FAILED tests/stage03/test_g5c_review2.py::test_a_located_identifier_beside_a_g_unit_on_a_bibliography_line_is_reported[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_located_identifier_beside_a_g_unit_on_a_bibliography_line_is_reported[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_located_identifier_beside_a_citation_template_in_a_ref_is_reported
+FAILED tests/stage03/test_g5c_review2.py::test_hand_written_entries_inside_a_list_layout_template_stay_unstructured[…]
+FAILED tests/stage03/test_g5c_review2.py::test_hand_written_entries_inside_a_list_layout_template_stay_unstructured[…]
+FAILED tests/stage03/test_g5c_review2.py::test_hand_written_entries_inside_a_list_layout_template_stay_unstructured[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_hand_written_entry_with_its_doi_in_a_formatting_template_stays_unstructured[False]
+FAILED tests/stage03/test_g5c_review2.py::test_a_hand_written_entry_with_its_doi_in_a_formatting_template_stays_unstructured[True]
+FAILED tests/stage03/test_g5c_review2.py::test_a_list_defined_plain_citation_beside_a_helper_template_stays_unstructured[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_list_defined_plain_citation_beside_a_helper_template_stays_unstructured[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_refn_plain_citation_beside_a_helper_template_stays_unstructured
+FAILED tests/stage03/test_g5c_review2.py::test_the_rendered_note_decides_only_what_it_can_attribute[…]
+FAILED tests/stage03/test_g5c_review2.py::test_the_rendered_note_decides_only_what_it_can_attribute[{{harvnb|Smith|2001|p=5}}-<a href="./SYNTHETIC#CITEREFSmith2001">Smith 2001</a>, p. 5-expected_kinds1-None]
+FAILED tests/stage03/test_g5c_review2.py::test_the_rendered_note_decides_only_what_it_can_attribute[{{Fishbase|Osteobrama|bhimensis}}-<cite class="citation web cs1">Froese</cite>-expected_kinds2-None]
+FAILED tests/stage03/test_g5c_review2.py::test_a_g_template_holding_a_template_that_cannot_make_citation_markup_stays_g[Foo {{!}} Bar--]
+FAILED tests/stage03/test_g5c_review2.py::test_a_g_template_holding_a_template_that_cannot_make_citation_markup_stays_g[…]
+FAILED tests/stage03/test_g5c_review2.py::test_a_pipe_magic_word_in_a_plain_citation_is_not_an_unknown_template[False]
+FAILED tests/stage03/test_g5c_review2.py::test_a_pipe_magic_word_in_a_plain_citation_is_not_an_unknown_template[True]
+FAILED tests/stage03/test_g5c_review2.py::test_a_magic_word_without_output_of_its_own_is_decided_by_the_note
+FAILED tests/stage03/test_g5c_review2.py::test_a_multi_line_template_on_a_list_line_makes_an_entry
+23 failed, 5 passed in 1.93s

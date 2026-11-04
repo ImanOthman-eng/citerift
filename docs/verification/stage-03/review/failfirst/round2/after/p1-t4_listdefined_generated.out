@@ -1,0 +1,24 @@
+===== notelist refs efn 'Text.{{efn|name=n1}}\n{{notelist|refs=\n{{efn|name=n1|A note citing doi:10.1000/a}}\n{{efn|name=unused|Never cited doi:10.1000/b}}\n}}'
+status partial
+ C ct-00001 list_defined_note 'n1' 'lower-alpha' single_definition uses ['us-00001'] units ['un-00001']
+ C ct-00002 list_defined_note 'unused' 'lower-alpha' single_definition uses [] units ['un-00002']
+ U us-00001 efn prose 'n1' 'lower-alpha' bound ct-00001
+ I id-00001 doi label_text labeled_reference_text '10.1000/a' -> 10.1000/a delimited ct-00001 un-00001
+ I id-00002 doi label_text labeled_reference_text '10.1000/b' -> 10.1000/b delimited ct-00002 un-00002
+ issues ['LIST_DEFINED_UNUSED', 'RECONCILIATION_UNAVAILABLE']
+===== references #tag:ref 'Text.<ref name=r1/>\n<references>\n{{#tag:ref|{{cite journal|doi=10.1000/c}}|name=r1}}\n{{#tag:ref|{{cite journal|doi=10.1000/d}}|name=r2}}\n</references>'
+status partial
+ C ct-00001 list_defined_note 'r1' '' single_definition uses ['us-00001'] units ['un-00001']
+ C ct-00002 list_defined_note 'r2' '' single_definition uses [] units ['un-00002']
+ U us-00001 tag prose 'r1' '' bound ct-00001
+ I id-00001 doi template_field primary_citation_field '10.1000/c' -> 10.1000/c field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/d' -> 10.1000/d field ct-00002 un-00002
+ issues ['LIST_DEFINED_UNUSED', 'RECONCILIATION_UNAVAILABLE']
+===== control <ref> tags 'Text.<ref name=r1/>\n<references>\n<ref name=r1>{{cite journal|doi=10.1000/c}}</ref>\n<ref name=r2>{{cite journal|doi=10.1000/d}}</ref>\n</references>'
+status partial
+ C ct-00001 list_defined_note 'r1' '' single_definition uses ['us-00001'] units ['un-00001']
+ C ct-00002 list_defined_note 'r2' '' single_definition uses [] units ['un-00002']
+ U us-00001 tag prose 'r1' '' bound ct-00001
+ I id-00001 doi template_field primary_citation_field '10.1000/c' -> 10.1000/c field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/d' -> 10.1000/d field ct-00002 un-00002
+ issues ['LIST_DEFINED_UNUSED', 'RECONCILIATION_UNAVAILABLE']

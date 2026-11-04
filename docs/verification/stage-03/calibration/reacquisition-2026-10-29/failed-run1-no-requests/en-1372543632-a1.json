@@ -1,0 +1,52 @@
+{
+  "bundle": null,
+  "capture": {
+    "attempts": [],
+    "client": {
+      "name": "citerift-wiki",
+      "policy": {
+        "backoff_s": 10.0,
+        "deadline_s": 180.0,
+        "max_attempts": 3,
+        "max_body_bytes": 33554432,
+        "max_wire_bytes": 33554432,
+        "maxlag_s": 5,
+        "min_interval_s": 10.0,
+        "op_timeout_s": 30.0,
+        "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+      },
+      "version": "1.0.0"
+    },
+    "failure_artifacts": [],
+    "finished_at": "2026-10-29T09:10:51.191189Z",
+    "issues": [
+      {
+        "code": "BUNDLE_PATH_UNSAFE",
+        "detail": "parent directory /tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/dev/bundles is not accessible: No such file or directory",
+        "entities": [],
+        "evidence": [],
+        "retryable": false,
+        "severity": "error"
+      }
+    ],
+    "not_before": null,
+    "page": null,
+    "render": {
+      "state": "not_requested"
+    },
+    "request": {
+      "follow_redirect": false,
+      "page_id": null,
+      "render": true,
+      "revision_id": 1372543632,
+      "title": null,
+      "wiki": "en"
+    },
+    "schema": "urn:citerift:schema:wiki:v1:capture",
+    "schema_version": "1.0.0",
+    "source": null,
+    "started_at": "2026-10-29T09:10:51.190987Z",
+    "status": "failed"
+  },
+  "status": "failed"
+}

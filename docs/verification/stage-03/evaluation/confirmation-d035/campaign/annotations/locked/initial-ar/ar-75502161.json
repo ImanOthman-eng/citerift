@@ -1,0 +1,137 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75502161,
+  "source_sha256": "f7e98f4ab1e9b45865c462c733370a9c99aadae72bc36ce078e4cf0cdea94e3e",
+  "html_sha256": "988beb0b59e489399183bcb3749787b9bfa19e2db6f1763893bbc749eba97897",
+  "window": [
+   0,
+   2570
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h2",
+  "started_at": "2026-11-03T16:14:00Z",
+  "finished_at": "2026-11-03T16:12:09Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-75502161/packet.json",
+    "sha256": "1ee2c2c1a061b2b5a3f5e2074dfa07765f9d6e705ded83ff109f28015160ee97"
+   },
+   {
+    "path": "packets/ar-75502161/source.wikitext",
+    "sha256": "f7e98f4ab1e9b45865c462c733370a9c99aadae72bc36ce078e4cf0cdea94e3e"
+   },
+   {
+    "path": "packets/ar-75502161/render.html",
+    "sha256": "988beb0b59e489399183bcb3749787b9bfa19e2db6f1763893bbc749eba97897"
+   }
+  ],
+  "tools": "python3 -I stdlib (str.find, re) and lxml for listing HTML elements; own helper scripts in tools/",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 300,
+    "quote": "<ref name=scaf>[https://scafricanamerican.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "scaf",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-scaf-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written link plus {{Webarchive}} (not a citation template)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 608,
+    "quote": "<ref>[http://www.musicvf.com/songs.php?page=a"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written link plus {{Webarchive}} (not a citation template)."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 945,
+    "quote": "<ref name=franklin>[https://books.google.co.u"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "franklin",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-franklin-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written link plus {{Webarchive}} (not a citation template)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 300,
+    "quote": "<ref name=scaf>[https://scafricanamerican.com"
+   },
+   "binds_to": {
+    "cp": 300,
+    "quote": "<ref name=scaf>[https://scafricanamerican.com"
+   },
+   "render_ref_id": "cite_ref-scaf_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 608,
+    "quote": "<ref>[http://www.musicvf.com/songs.php?page=a"
+   },
+   "binds_to": {
+    "cp": 608,
+    "quote": "<ref>[http://www.musicvf.com/songs.php?page=a"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 945,
+    "quote": "<ref name=franklin>[https://books.google.co.u"
+   },
+   "binds_to": {
+    "cp": 945,
+    "quote": "<ref name=franklin>[https://books.google.co.u"
+   },
+   "render_ref_id": "cite_ref-franklin_5-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Two wikidata-generated references in the rendered list (infobox), not in source; not listed (3.3).",
+  "No DOI/PMID occurrences in source."
+ ]
+}

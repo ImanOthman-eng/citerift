@@ -1,0 +1,77 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 442,
+   "body_sha256": "0eed5d751200d6c9cdb907e442f6a5758e3c7aa2ec29797751c18c93b499f053",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.0,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-28T12:00:00.000000Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=900000001",
+   "wire_bytes": 442
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-28T12:00:00.000000Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 900000002,
+  "parent_revision_id": 0,
+  "redirect_followed": null,
+  "revision_id": 900000001,
+  "revision_timestamp": "2026-10-28T00:00:00Z",
+  "sha1": "7bd3a2529de7cdc6b5d871f2b45cf55827e2b4e6",
+  "size": 63,
+  "title": "SYNTHETIC page",
+  "wiki": "ar"
+ },
+ "render": {
+  "state": "not_requested"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": null,
+  "render": false,
+  "revision_id": 900000001,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "6bb8da0b718efa2204aec57d6234d176450da058ba2eaff0eb1591a70405ae43",
+  "bytes": 63,
+  "response_artifact": "0eed5d751200d6c9cdb907e442f6a5758e3c7aa2ec29797751c18c93b499f053",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=900000001"
+ },
+ "started_at": "2026-10-28T12:00:00.000000Z",
+ "status": "complete"
+}

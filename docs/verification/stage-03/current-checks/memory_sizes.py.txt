@@ -1,0 +1,10 @@
+import json,sys,time,tempfile
+from pathlib import Path
+sys.path[:0]=[sys.argv[1]+"/src",sys.argv[1]+"/tests/stage03"]
+from wiki_support import bundle
+from citerift.wiki.extract import extract_bundle,ExtractConfig
+for n in [3000,6000,12000,20000]:
+ text="".join(f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(n))
+ b=bundle(Path(tempfile.mkdtemp()),text)
+ t=time.monotonic();d=extract_bundle(b,ExtractConfig(worker_memory_mib=64))
+ print(json.dumps({"n":n,"bytes":len(text),"seconds":time.monotonic()-t,"status":d["status"],"issues":d["issues"]}),flush=True)

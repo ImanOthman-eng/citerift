@@ -1,0 +1,99 @@
+{
+  "historical_records": [
+    {
+      "label": "evaluation/capture/captures.jsonl",
+      "http_attempts": 156,
+      "accepted_body_bytes": 5470355,
+      "accepted_wire_bytes": 1007100,
+      "statuses": {
+        "429": 78,
+        "200": 78
+      },
+      "retry_after_count": 78,
+      "request_seconds": {
+        "sum": 78.69200000000001,
+        "p50": 0.4525,
+        "max": 2.396
+      }
+    },
+    {
+      "label": "evaluation/confirmation-superseded/capture/captures.jsonl",
+      "http_attempts": 38,
+      "accepted_body_bytes": 1570497,
+      "accepted_wire_bytes": 326722,
+      "statuses": {
+        "429": 21,
+        "200": 17
+      },
+      "retry_after_count": 21,
+      "request_seconds": {
+        "sum": 18.714,
+        "p50": 0.4405,
+        "max": 1.635
+      }
+    },
+    {
+      "label": "historical original selection",
+      "http_attempts": 40,
+      "accepted_body_bytes": 158962,
+      "accepted_wire_bytes": 56503,
+      "statuses": {
+        "200": 25,
+        "429": 15
+      },
+      "retry_after_count": 15,
+      "request_seconds": {
+        "sum": 20.407,
+        "p50": 0.527,
+        "max": 0.779
+      }
+    },
+    {
+      "label": "historical 29 October reacquisition",
+      "http_attempts": 11,
+      "accepted_body_bytes": 953870,
+      "accepted_wire_bytes": 183539,
+      "statuses": {
+        "429": 5,
+        "200": 6
+      },
+      "retry_after_count": 5,
+      "request_seconds": {
+        "sum": 5.492,
+        "p50": 0.467,
+        "max": 1.013
+      }
+    }
+  ],
+  "old_known_totals": {
+    "http_attempts": 245,
+    "accepted_body_bytes": 8153684,
+    "accepted_wire_bytes": 1573864
+  },
+  "additional": {
+    "label": "additional final campaign including preflight and Arabic draw",
+    "http_attempts": 79,
+    "accepted_body_bytes": 5844955,
+    "accepted_wire_bytes": 1083842,
+    "statuses": {
+      "200": 79
+    },
+    "retry_after_count": 0,
+    "request_seconds": {
+      "sum": 55.571,
+      "p50": 0.509,
+      "max": 7.079
+    }
+  },
+  "cumulative_known_totals": {
+    "http_attempts": 324,
+    "accepted_body_bytes": 13998639,
+    "accepted_wire_bytes": 2657706
+  },
+  "ceilings": {
+    "final_http_attempts": 500,
+    "final_accepted_body_bytes": 314572800,
+    "evidence_export_bytes": 1073741824
+  },
+  "limits": "Lost original calibration and first acquisition logs cannot be reconstructed. These are totals from retained actual request records, not an assertion that the historical campaign-wide total is fully known. Historical run1 costs counted selection API operations (26) rather than HTTP attempts (40); both its original182 figure and this additive corrected accounting are retained. Reacquisition is a new observation, not restoration of lost receipts."
+}

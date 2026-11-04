@@ -1,0 +1,684 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 68257358,
+  "source_sha256": "3319e7ad89aa0e1c6675b579f570e87c2faa917b49a3a32266d11aeb46f3a326",
+  "html_sha256": "19443f1c44302157f17124c9071ba41de3dd76cc9a658c9d89c6adcf982b8c4c",
+  "window": [
+   519,
+   8519
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:49:56Z",
+  "finished_at": "2026-10-29T08:53:21Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-68257358/packet.json",
+    "sha256": "5ffdd08d9bd3c3046fff4fd0e3d4e96d2b8ddbaaf52dc59552e5e08bd74446a4",
+    "note": "sha256 computed with sha256sum; packet.json does not hash itself"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-68257358/source.wikitext",
+    "sha256": "3319e7ad89aa0e1c6675b579f570e87c2faa917b49a3a32266d11aeb46f3a326"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-68257358/render.html",
+    "sha256": "19443f1c44302157f17124c9071ba41de3dd76cc9a658c9d89c6adcf982b8c4c"
+   }
+  ],
+  "tools": "cat/sha256sum; python3 -I (stdlib re, json, hashlib) for str.find/regex listing of <ref, {{, 10., doi, pmid/pubmed, comments/nowiki in source.wikitext and for location verification text[cp:cp+len(quote)]==quote; lxml 6.1.3 (lxml.html) to list <sup typeof=mw:Extension/ref> ids and data-mw, <li id=cite_note-...> text, red links (class=new) and Template:/قالب: links, and retraction vocabulary in render.html. Labels decided by reading the text. Procedural note: early in the run three throwaway listing scripts (scan/listing helpers, no reference parsing) were briefly written to scratchpad/eval/tools/ outside the annotations directory; they were deleted before any annotation was written and all later code ran inline from stdin.",
+  "unresolved": "Nothing undecided. Minor judgement: the quote for DOIs/PMIDs embedded in archive.org snapshot URLs is the embedded URL, not the whole archive URL."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 253,
+    "quote": "<ref name=\":0\">{{استشهاد بدورية محكمة"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 268,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts before the window (cp 253); listed because its doi field (cp 561) and four reuses lie in the window. Only definition of name \":0\"; its own use at cp 253 is outside the window and not listed."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1372,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1377,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1844,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1849,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2598,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2603,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 3313,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3318,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Contains {{!}} pipe-escape templates in the title; not citation templates."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 3651,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3656,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Contains {{!}} pipe-escape templates in the title; not citation templates."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 4221,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4226,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Contains {{!}} pipe-escape templates in the title; not citation templates."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 4701,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4706,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 5105,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5110,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 5416,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5421,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 5997,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6002,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 7299,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7304,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 989,
+    "quote": "<ref name=\":0\" /> أصبحت طريقته أصلاً في صناعة [[صن"
+   },
+   "binds_to": {
+    "cp": 253,
+    "quote": "<ref name=\":0\">{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-:0_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1372,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 1372,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1844,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 1844,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2598,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 2598,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 3296,
+    "quote": "<ref name=\":0\" /><ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 253,
+    "quote": "<ref name=\":0\">{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-:0_1-2",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 3313,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 3313,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3651,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 3651,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 4077,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 253,
+    "quote": "<ref name=\":0\">{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-:0_1-3",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 4221,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 4221,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 4701,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 4701,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 5105,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 5105,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 5416,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "binds_to": {
+    "cp": 5416,
+    "quote": "<ref>{{استشهاد بكتاب"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 5997,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 5997,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 7233,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 253,
+    "quote": "<ref name=\":0\">{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-:0_1-4",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 7299,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 7299,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 561,
+    "quote": "10.1177/0192623310385255"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1177/0192623310385255",
+   "notes": "doi= of d1 (ref \":0\", which starts before the window)."
+  },
+  {
+   "at": {
+    "cp": 661,
+    "quote": "https://journals.sagepub.com/doi/10.1177/0192623310385255"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1177/0192623310385255",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target."
+  },
+  {
+   "at": {
+    "cp": 1622,
+    "quote": "10.1038/280104a0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/280104a0",
+   "notes": "The url= (nature.com/articles/280104a0) carries only the DOI suffix, no 10. prefix; not counted as an identifier occurrence."
+  },
+  {
+   "at": {
+    "cp": 2099,
+    "quote": "https://doi.org/10.3109/10408448209003367"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.3109/10408448209003367",
+   "notes": "Resolver URL in مسار (url=)."
+  },
+  {
+   "at": {
+    "cp": 2238,
+    "quote": "10.3109/10408448209003367"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.3109/10408448209003367",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2339,
+    "quote": "https://doi.org/10.3109%2F10408448209003367"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.3109/10408448209003367",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target. Key percent-decoded once (%2F -> /)."
+  },
+  {
+   "at": {
+    "cp": 2803,
+    "quote": "http://journals.sagepub.com/doi/10.1177/074823378900500204"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1177/074823378900500204",
+   "notes": "Publisher URL with /doi/ path in مسار (url=)."
+  },
+  {
+   "at": {
+    "cp": 2967,
+    "quote": "10.1177/074823378900500204"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1177/074823378900500204",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3069,
+    "quote": "https://journals.sagepub.com/doi/10.1177/074823378900500204"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1177/074823378900500204",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target."
+  },
+  {
+   "at": {
+    "cp": 4793,
+    "quote": "http://dx.doi.org/10.1787/9789264071025-en"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1787/9789264071025-en",
+   "notes": "Resolver URL (dx.doi.org) in مسار (url=)."
+  },
+  {
+   "at": {
+    "cp": 4950,
+    "quote": "10.1787/9789264071025-en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1787/9789264071025-en",
+   "notes": "Field written in upper case as DOI = ."
+  },
+  {
+   "at": {
+    "cp": 5031,
+    "quote": "https://dx.doi.org/10.1787/9789264071025-en"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1787/9789264071025-en",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target."
+  },
+  {
+   "at": {
+    "cp": 6142,
+    "quote": "https://pubmed.ncbi.nlm.nih.gov/9086506/"
+   },
+   "scheme": "pmid",
+   "role": "identifier_link",
+   "key": "9086506",
+   "notes": "PubMed URL in مسار (url=)."
+  },
+  {
+   "at": {
+    "cp": 6252,
+    "quote": "9086506"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9086506",
+   "notes": "Field written in upper case as PMID = ."
+  },
+  {
+   "at": {
+    "cp": 6539,
+    "quote": "https://pubmed.ncbi.nlm.nih.gov/9086506/"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "9086506",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target."
+  }
+ ],
+ "unresolved_notes": [
+  "No bibliography entries: the bullet lists under \"قائمة مرجعية للعينة\" are plain symptom lists with no citation template or DOI/PMID.",
+  "{{مراجع|2}} (cp 8246) is the references-list template without refs=; no list-defined references.",
+  "Identifiers before the window not listed: the url= of d1 (http://journals.sagepub.com/doi/10.1177/0192623310385255, cp 405) starts at cp < 519.",
+  "Several rendered footnotes (cite_note-:0-1, -2, -4) show CS1 maintenance/error text (تحقق من التاريخ) with a blue link to قالب:استشهاد بدورية محكمة; this is not a warning marker and not a red link, so marker = none."
+ ]
+}

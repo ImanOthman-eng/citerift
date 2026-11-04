@@ -1,0 +1,60 @@
+import sys; sys.argv=[0,sys.argv[1]]
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h3/tools')
+from build import *
+rev=76752816; pj,T,L=ctx(rev)
+def at(p,n=30): return {'cp':p,'quote':T[p:p+n]}
+def ref(name,nth_global):
+    ps=[m.start() for m in re.finditer('<ref name="'+re.escape(name)+'"',T)]
+    return at(ps[nth_global],len('<ref name="'+name+'"'))
+tpl=lambda p,s='{{استشهاد بويب': at(T.index(s,p),len(s))
+cw=ref('Chhabra',0); m1=ref('مولد تلقائيا1',0)
+cw_u1=at(17207,len('<ref name="Chhabra" />')); cw_u2=at(18759,len('<ref name="Chhabra" />'))
+d={}
+def namedef(name,i,tplflag=True,**kw):
+    r=ref(name,0 if name not in('مولد تلقائيا2','مولد تلقائيا3','gmw_20230629','springer') else 0)
+    return r
+a2=ref('مولد تلقائيا2',0); a3=ref('مولد تلقائيا3',0); gm=ref('gmw_20230629',0); sp=ref('springer',0)
+ash=at(T.index('<ref name="Ashworth">'),len('<ref name="Ashworth">')); chq=at(T.index('<ref name="Chacupe">'),len('<ref name="Chacupe">'))
+def unn(s): 
+    p=T.index(s); return at(p,len(s))
+z=unn('<ref>{{استشهاد بويب|عنوان=盐碱地养海鲜'); c=unn('<ref>{{استشهاد بويب|عنوان=海鲜返销'); mo=unn('<ref>{{استشهاد بويب|عنوان=关于推介'); tr=unn('<ref>{{استشهاد بويب|عنوان=China: Utilizing'); fa=unn('<ref>{{استشهاد بويب|عنوان=FAO Aquaculture')
+def tp(r): return tpl(r['cp'])
+defs=[
+ D('d1',cw,'note','Chhabra','',[],True,'cite_note-Chhabra-13','Defined before the window (cp 14541), listed only as a binding target. Plain-text citation, no template. Three uses in all, two in the window.',in_window=False),
+ D('d2',m1,'note','مولد تلقائيا1','',[tpl(m1['cp'])],False,'cite_note-مولد_تلقائيا1-14','Defined before the window (cp 14958), listed only as a binding target.',in_window=False),
+ D('d3',a2,'note','مولد تلقائيا2','',[tp(a2)],False,'cite_note-مولد_تلقائيا2-15'),
+ D('d4',ash,'note','Ashworth','',[],True,'cite_note-Ashworth-16','Hand-written plain-text citation, no citation template.'),
+ D('d5',a3,'note','مولد تلقائيا3','',[tp(a3)],False,'cite_note-مولد_تلقائيا3-17'),
+ D('d6',chq,'note','Chacupe','',[],True,'cite_note-Chacupe-18','Bare external link plus {{Webarchive}} (archive-link template, not a citation template).'),
+ D('d7',gm,'note','gmw_20230629','',[tp(gm)],False,'cite_note-gmw_20230629-19'),
+ D('d8',sp,'note','springer','',[tp(sp)],False,'cite_note-springer-20'),
+ D('d9',z,'note',None,'',[tp(z)],False,'cite_note-21'),
+ D('d10',c,'note',None,'',[tp(c)],False,'cite_note-22'),
+ D('d11',mo,'note',None,'',[tp(mo)],False,'cite_note-23'),
+ D('d12',tr,'note',None,'',[tp(tr)],False,'cite_note-24'),
+ D('d13',fa,'note',None,'',[tp(fa)],False,'cite_note-25')]
+m1u=at(21861,len('<ref name="مولد تلقائيا1" />')); a2u=at(21932,len('<ref name="مولد تلقائيا2" />')); a3u=at(21960,len('<ref name="مولد تلقائيا3" />'))
+gmu=at(23019,len('<ref name="gmw_20230629" />')); spu=at(23795,len('<ref name="springer" />'))
+uses=[U('u1',cw_u1,cw,'cite_ref-Chhabra_13-1','reuse; first definition precedes the window'),
+ U('u2',a2,a2,'cite_ref-مولد_تلقائيا2_15-0'),
+ U('u3',cw_u2,cw,'cite_ref-Chhabra_13-2','reuse; first definition precedes the window'),
+ U('u4',ash,ash,'cite_ref-Ashworth_16-0'),U('u5',a3,a3,'cite_ref-مولد_تلقائيا3_17-0'),U('u6',chq,chq,'cite_ref-Chacupe_18-0'),
+ U('u7',gm,gm,'cite_ref-gmw_20230629_19-0'),U('u8',sp,sp,'cite_ref-springer_20-0'),
+ U('u9',m1u,m1,'cite_ref-مولد_تلقائيا1_14-1','reuse; definition precedes the window'),
+ U('u10',z,z,'cite_ref-21'),U('u11',c,c,'cite_ref-22'),
+ U('u12',gmu,gm,'cite_ref-gmw_20230629_19-1','reuse'),
+ U('u13',mo,mo,'cite_ref-23'),U('u14',tr,tr,'cite_ref-24'),U('u15',spu,sp,'cite_ref-springer_20-1','reuse'),U('u16',fa,fa,'cite_ref-25')]
+# the 2 and 3 reuses sit before "Chhabra" etc in source order; insert after rendering order: add a2u,a3u
+uses.insert(10,U('u17',a2u,a2,'cite_ref-مولد_تلقائيا2_15-1','reuse (inside ... التحديات ... sentence, after the Chinese refs)'))
+uses.insert(11,U('u18',a3u,a3,'cite_ref-مولد_تلقائيا3_17-1','reuse'))
+uses.sort(key=lambda u:u['at']['cp'])
+for i,u in enumerate(uses): u['id']=f'u{i+1}'
+su='https://link.springer.com/chapter/10.1007/978-981-19-5486-3_11'
+sp_u=T.index(su); ar_u=T.index('http://web.archive.org/web/20240219190511/'+su)
+ids=[I(at(sp_u,len(su)),'doi','identifier_link','10.1007/978-981-19-5486-3_11','publisher URL of a Springer chapter whose path carries the DOI (/chapter/10.1007/…), not the usual /doi/ form; included because the identifier is plainly a DOI (guide: "anything else: the identifier text" but quoted as whole URL). Judgement call; DOI ends at the end of the URL / the following |.'),
+     I(at(ar_u,60),'doi','not_a_target','10.1007/978-981-19-5486-3_11','web.archive.org snapshot URL embedding the Springer URL (another site\'s URL); this is the |مسار أرشيف= value')]
+# non-DOI traps
+unres=['scielo URL ".../v22n1/10.pdf" in مولد تلقائيا3 is a file name, not a DOI; not labelled.',
+ 'Window starts at 16924; the definitions of Chhabra (14541) and مولد تلقائيا1 (14958) precede it and are listed with in_window=false as binding targets.',
+ 'Springer chapter URL: DOI identified from a /chapter/ path rather than /doi/; labelled identifier_link with key 10.1007/978-981-19-5486-3_11 (judgement).']
+finish(rev,pj,T,defs,uses,ids,unres)

@@ -1,0 +1,54 @@
+import json,re,hashlib,datetime
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/'
+STARTED=datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+class Art:
+    def __init__(s,rev):
+        s.rev=rev; s.dir=BASE+'packets/en-%d/'%rev
+        s.pk=json.load(open(s.dir+'packet.json'))
+        s.t=open(s.dir+'source.wikitext',encoding='utf-8').read()
+        assert hashlib.sha256(open(s.dir+'source.wikitext','rb').read()).hexdigest()==s.pk['source_sha256']
+        assert hashlib.sha256(open(s.dir+'render.html','rb').read()).hexdigest()==s.pk['html_sha256']
+        s.w=(s.pk['window']['cp_start'],s.pk['window']['cp_end'])
+        s.defs=[];s.uses=[];s.ids=[];s.unres=[]
+    def loc(s,cp,n=40):
+        q=s.t[cp:cp+n]
+        assert s.t[cp:cp+len(q)]==q
+        return {'cp':cp,'quote':q}
+    def at(s,sub,nth=0,after=0):
+        i=after-1
+        for _ in range(nth+1):
+            i=s.t.index(sub,i+1)
+        return i
+    def inwin(s,cp): return s.w[0]<=cp<s.w[1]
+    def d(s,cp,kind,name=None,group='',tpl=(),unstructured=False,rid=None,marker='none',mt=None,notes=''):
+        s.defs.append({'id':'d%d'%(len(s.defs)+1),'at':s.loc(cp),'in_window':s.inwin(cp),'kind':kind,'name':name,'group':group,
+          'templates':[{'at':s.loc(c)} for c in tpl],'unstructured':unstructured,'render_note_id':rid,'marker':marker,'marker_text':mt,'notes':notes})
+        return cp
+    def u(s,cp,bind,rid=None,notes=''):
+        s.uses.append({'id':'u%d'%(len(s.uses)+1),'at':s.loc(cp),'binds_to':(s.loc(bind) if isinstance(bind,int) else bind),'render_ref_id':rid,'notes':notes})
+    def i(s,cp,val,scheme,role,key,notes=''):
+        assert s.t[cp:cp+len(val)]==val
+        s.ids.append({'at':{'cp':cp,'quote':val},'scheme':scheme,'role':role,'key':key,'notes':notes})
+    def write(s,files,tools,unresolved):
+        out={'format':'citerift-stage03-annotation-v1',
+         'article':{'wiki':'en','revision_id':s.rev,'source_sha256':s.pk['source_sha256'],'html_sha256':s.pk['html_sha256'],'window':[s.w[0],s.w[1]]},
+         'provenance':{'agent':'d036-eval-en-h1','started_at':STARTED,'finished_at':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+           'files_opened':[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':'2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'},
+             {'path':'packets/en-%d/source.wikitext'%s.rev,'sha256':s.pk['source_sha256']},
+             {'path':'packets/en-%d/render.html'%s.rev,'sha256':s.pk['html_sha256']},
+             {'path':'packets/en-%d/packet.json'%s.rev,'sha256':hashlib.sha256(open(s.dir+'packet.json','rb').read()).hexdigest()}],
+           'tools':tools,'unresolved':unresolved},
+         'definitions':s.defs,'uses':s.uses,'identifiers':s.ids,'unresolved_notes':s.unres}
+        for x in s.defs+s.uses+s.ids:
+            c=x['at']; assert s.t[c['cp']:c['cp']+len(c['quote'])]==c['quote']
+        for x in s.defs:
+            for tt in x['templates']:
+                c=tt['at']; assert s.t[c['cp']:c['cp']+len(c['quote'])]==c['quote']
+        for x in s.uses:
+            b=x['binds_to']
+            if isinstance(b,dict): assert s.t[b['cp']:b['cp']+len(b['quote'])]==b['quote']
+        json.dump(out,open(BASE+'out/en-%d.json'%s.rev,'w',encoding='utf-8'),ensure_ascii=False,indent=1)
+        print(s.rev,'defs',len(s.defs),'uses',len(s.uses),'ids',len(s.ids))
+TOOLS='python3 -I stdin/scripts with stdlib re/json/hashlib and lxml (tools/find.py, tools/html.py list text matches and HTML sup/li elements; tools/lib.py only builds JSON and verifies quotes); cat/sed to read files'
+def rn(sid):
+    m=re.match(r'^cite_ref-(.*)_(\d+)-\d+$',sid); return 'cite_note-%s-%s'%(m.group(1),m.group(2))

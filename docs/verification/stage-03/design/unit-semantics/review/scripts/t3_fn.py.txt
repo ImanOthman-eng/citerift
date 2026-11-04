@@ -1,0 +1,51 @@
+"""False negatives / class checks without render (and with a trivial render where relevant)."""
+from rvlib import *
+
+CASES = [
+ ("en", "wikilink only", "A<ref>[[Encyclopaedia Britannica]]</ref>"),
+ ("en", "italic wikilink", "A<ref>''[[Some Book]]''</ref>"),
+ ("en", "span", "A<ref><span class=x>Smith 2001</span></ref>"),
+ ("en", "small tag", "A<ref><small>Smith 2001</small></ref>"),
+ ("en", "bold", "A<ref>'''Smith''' 2001</ref>"),
+ ("en", "entity digit", "A<ref>&#49;</ref>"),
+ ("en", "nbsp only", "A<ref>&nbsp;</ref>"),
+ ("en", "punctuation only", "A<ref>.</ref>"),
+ ("ar", "arabic-indic digits", "أ<ref>١٩٩٠</ref>"),
+ ("ar", "arabic text with tatweel", "أ<ref>ابن خلدون، المقدمة</ref>"),
+ ("en", "nowiki", "A<ref><nowiki>Smith, J. Book. 2001.</nowiki></ref>"),
+ ("en", "comment only", "A<ref><!-- Smith 2001 --></ref>"),
+ ("en", "#tag:ref", "A{{#tag:ref|Smith, J. Book. 2001.}}"),
+ ("en", "#tag:ref group note", "A{{#tag:ref|Smith, J. Book. 2001.|group=note}}"),
+ ("en", "refn", "A{{refn|Smith, J. Book. 2001.}}"),
+ ("en", "efn plain citation", "A{{efn|Smith, J. (2001). ''A Book''. Publisher. p. 5.}}\n{{notelist}}"),
+ ("ar", "ملا plain citation", "أ{{ملا|سميث، ج. (2001). كتاب. الناشر. ص 5.}}\n{{ثبت الملاحظة}}"),
+ ("en", "efn with ISBN text", "A{{efn|Smith, J. (2001). ''A Book''. ISBN 978-0-00-000000-2.}}\n{{notelist}}"),
+ ("en", "efn with doi text", "A{{efn|Smith, J. (2001). ''A Paper''. doi:10.1000/xyz}}\n{{notelist}}"),
+ ("en", "efn with wikilink-only book", "A{{efn|[[A Book (novel)|A Book]]}}\n{{notelist}}"),
+ ("en", "infobox param ref", "{{Infobox person|birth_date=1945<ref>Smith, J. Book. 2001.</ref>}}"),
+ ("en", "references block list-defined", "A<ref name=a/>\n<references>\n<ref name=a>Smith, J. Book. 2001.</ref>\n</references>"),
+ ("en", "reflist refs", "A<ref name=a/>\n{{reflist|refs=\n<ref name=a>Smith, J. Book. 2001.</ref>\n}}"),
+ ("en", "efn holds nested ref", "A{{efn|Note.<ref>Smith, J. Book. 2001.</ref>}}\n{{notelist}}\n{{reflist}}"),
+ ("en", "identical named defs", "A<ref name=a>Smith 2001</ref> B<ref name=a>Smith 2001</ref>"),
+ ("en", "conflicting named defs plain+harv", "A<ref name=a>Smith 2001</ref> B<ref name=a>{{harvnb|Smith|2001}}</ref>"),
+ ("en", "ISBN template only", "A<ref>{{ISBN|978-0-00-000000-2}}</ref>"),
+ ("en", "arxiv template only", "A<ref>{{arxiv|1234.5678}}</ref>"),
+ ("en", "URL template only", "A<ref>{{URL|http://example.org/a}}</ref>"),
+ ("en", "lang wraps whole citation", "A<ref>{{lang|fr|Dupont, ''Histoire'', 1990}}</ref>"),
+ ("en", "nowrap wraps whole citation", "A<ref>{{nowrap|Smith, J. Book. 2001.}}</ref>"),
+ ("en", "bare url in template param of ref (webarchive)", "A<ref>{{webarchive|url=http://web.archive.org/x|title=Smith report}}</ref>"),
+ ("en", "harv + wikilink", "A<ref>{{harvnb|Fox|2002}} [[A Book]]</ref>"),
+ ("en", "harv + ISBN template", "A<ref>{{harvnb|Fox|2002}} {{ISBN|978-0-00-000000-2}}</ref>"),
+ ("en", "harv + doi wrapper", "A<ref>{{harvnb|Fox|2002}} {{doi|10.1000/x}}</ref>"),
+ ("en", "harv + bare pmid text", "A<ref>{{harvnb|Fox|2002}}; PMID 12345</ref>"),
+ ("en", "efn holding harv", "A{{efn|{{harvnb|Fox|2002}}}}\n{{notelist}}"),
+ ("en", "efn holding harv + text", "A{{efn|{{harvnb|Fox|2002}}, p. 4}}\n{{notelist}}"),
+ ("en", "group note prose", "A<ref group=note>An eyre was a court.</ref>\n{{reflist|group=note}}"),
+ ("en", "sfn", "A{{sfn|Fox|2002|p=4}}"),
+ ("en", "r template", "A<ref name=a>Smith 2001</ref> B{{r|a}}"),
+ ("en", "{{cite}} nested in efn", "A{{efn|Note {{cite book|title=T}}}}\n{{notelist}}"),
+]
+for wiki, label, text in CASES:
+    doc = run(text, None, wiki)
+    s = summary(doc, text)
+    print(f"[{wiki}] {label}: units={[u[1] for u in s['units']]} issues={[(i[0], i[2]) for i in s['issues'] if i[0]=='UNIT_CLASSIFICATION_UNRESOLVED']} kinds={[c['kind'] for c in doc['containers']]}")

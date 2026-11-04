@@ -1,0 +1,42 @@
+import json,re,hashlib,sys
+from lxml import html
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/ar-h4'
+GUIDE=('ANNOTATION_GUIDE_v1.1.md','2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e')
+def build(rev, defs, uses, ids, unresolved=(), started='', ):
+    d=f'ar-{rev}'
+    pk=json.load(open(f'{BASE}/packets/{d}/packet.json'))
+    t=open(f'{BASE}/packets/{d}/source.wikitext',encoding='utf-8').read()
+    assert len(t)==pk['source_code_points']
+    tree=html.parse(f'{BASE}/packets/{d}/render.html').getroot()
+    lis={l.get('id'):l for l in tree.xpath('//li[starts-with(@id,"cite_note")]')}
+    def loc(cp,q):
+        assert t[cp:cp+len(q)]==q,(cp,q,t[cp:cp+len(q)])
+        return {'cp':cp,'quote':q}
+    def txt(i):
+        if i is None: return None
+        l=lis[i]
+        for s in l.xpath('.//style'): s.getparent().remove(s)
+        s=' '.join(l.text_content().split())
+        return s.lstrip('↑ ').strip()[:300]
+    out_defs=[]
+    for i,x in enumerate(defs,1):
+        marker=x.get('marker','none')
+        out_defs.append({'id':f'd{i}','at':loc(*x['at']),'in_window':x.get('in_window',True),'kind':x.get('kind','note'),
+          'name':x.get('name'),'group':x.get('group',''),'templates':[{'at':loc(*a)} for a in x.get('templates',[])],
+          'unstructured':x.get('unstructured',False),'render_note_id':x.get('note_id'),'marker':marker,
+          'marker_text':txt(x.get('note_id')),'notes':x.get('notes','')})
+    out_uses=[{'id':f'u{i}','at':loc(*x['at']),'binds_to':loc(*x['binds']) if x['binds'] not in ('missing','unclear') else x['binds'],
+               'render_ref_id':x.get('ref_id'),'notes':x.get('notes','')} for i,x in enumerate(uses,1)]
+    out_ids=[{'at':loc(*x['at']),'scheme':x['scheme'],'role':x['role'],'key':x['key'],'notes':x.get('notes','')} for x in ids]
+    files=[{'path':f'packets/{d}/source.wikitext','sha256':pk['source_sha256']},{'path':f'packets/{d}/render.html','sha256':pk['html_sha256']},
+           {'path':f'packets/{d}/packet.json','sha256':hashlib.sha256(open(f'{BASE}/packets/{d}/packet.json','rb').read()).hexdigest()},
+           {'path':GUIDE[0],'sha256':GUIDE[1]}]
+    o={'format':'citerift-stage03-annotation-v1',
+       'article':{'wiki':'ar','revision_id':pk['revision_id'],'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':[pk['window']['cp_start'],pk['window']['cp_end']]},
+       'provenance':{'agent':'d036-eval-ar-h4','started_at':'2026-11-04T10:22:00Z','finished_at':'2026-11-04T11:00:00Z','files_opened':files,
+         'tools':'python3 -I standard library + lxml: regex search of source.wikitext for ref/template/doi/pmid positions; lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; str slice check of every quote. No general reference parser. Labels decided by reading.',
+         'unresolved':'; '.join(unresolved) or 'nothing undecided beyond unresolved_notes'},
+       'definitions':out_defs,'uses':out_uses,'identifiers':out_ids,'unresolved_notes':list(unresolved)}
+    json.dump(o,open(f'{BASE}/out/ar-{rev}.json','w'),ensure_ascii=False,indent=1)
+    print(rev,len(out_defs),len(out_uses),len(out_ids))
+def at(t_path_unused=None): pass

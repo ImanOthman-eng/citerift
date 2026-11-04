@@ -1,0 +1,8 @@
+import sys,lxml.html,re
+d=lxml.html.parse(sys.argv[1]+'/render.html').getroot()
+for l in d.xpath('//li[starts-with(@id,"cite_note")]'):
+    for s in l.xpath('.//style'): s.drop_tree()
+    tx=' '.join(l.text_content().split())
+    flag=re.search(r'retract|erratum|errata|corrigend|withdraw|concern|correct|مسحوب|سحب|correction',tx,re.I)
+    print(l.get('id'),'|',tx[:400] if (flag or len(sys.argv)>2) else '', 'FLAG' if flag else '')
+    for a in l.xpath('.//a[@class="new"]'): print('   RED',a.get('title'))

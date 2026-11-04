@@ -1,0 +1,10 @@
+import sys,lxml.html,json
+p=sys.argv[1]
+d=lxml.html.parse(p+'/render.html').getroot()
+for s in d.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+    dm=json.loads(s.get('data-mw','{}'))
+    a=dm.get('attrs',{}); b=(dm.get('body') or {}).get('html','')
+    print('SUP',s.get('id'),a,b[:60].replace('\n',' '))
+for l in d.xpath('//li[starts-with(@id,"cite_note")]'):
+    print('LI',l.get('id'),' '.join(l.text_content().split())[:150])
+    for a in l.xpath('.//a[@class="new"]'): print('   RED',a.get('title'))

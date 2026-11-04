@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "0387a52ef43c94093c5483752811ec303c3166f08ab6a17614826b54ef857ef1",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.356,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:01:21.575349Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=75438310",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 2139,
+   "body_sha256": "e3b0af3d185369a712f9edc5a539d87f8d499f2bfc5a7f18ab67b541b2ab57c8",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.481,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:02:00.932152Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=75438310",
+   "wire_bytes": 1143
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "9c6d2fb7650738faf353d6268665a95711828bf0cb9799f225e2729181545070",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.362,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:02:11.414207Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1292736651/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 26965,
+   "body_sha256": "6679f40cb45b1b5a211f24a0ec81eac7e926b62b22aa545bd4c8d758632378f0",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.473,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:03:00.777308Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1292736651/html",
+   "wire_bytes": 6605
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "0387a52ef43c94093c5483752811ec303c3166f08ab6a17614826b54ef857ef1",
+  "9c6d2fb7650738faf353d6268665a95711828bf0cb9799f225e2729181545070"
+ ],
+ "finished_at": "2026-11-02T19:03:01.250117Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 75438310,
+  "parent_revision_id": 1290315576,
+  "redirect_followed": null,
+  "revision_id": 1292736651,
+  "revision_timestamp": "2025-05-28T14:51:07Z",
+  "sha1": "726142ab83b4b324b2ad73b6104f713cee55f21b",
+  "size": 1591,
+  "title": "Rhynchoconger bicoloratus",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "6679f40cb45b1b5a211f24a0ec81eac7e926b62b22aa545bd4c8d758632378f0",
+  "bytes": 26965,
+  "checks": {
+   "document_revision_id": "1292736651",
+   "header_revision_id": "1292736651",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "75438310",
+   "render_id": "b606e2a7-d480-11f1-b85a-f5f7b26fdf94",
+   "revision_sha1": "726142ab83b4b324b2ad73b6104f713cee55f21b",
+   "revision_sha1_base36": "dcznv2cu5w2fwa8jt8yryykk4d3zsij"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1292736651",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:03:01 GMT",
+   "etag": "W/\"1292736651/b606e2a7-d480-11f1-b85a-f5f7b26fdf94/view\"",
+   "last-modified": "Fri, 30 Oct 2026 06:33:12 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1292736651/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 75438310,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "10423902ce8b1052b83b10a396570d11b3dea1cfe748e91e6721c37625555ad5",
+  "bytes": 1591,
+  "response_artifact": "e3b0af3d185369a712f9edc5a539d87f8d499f2bfc5a7f18ab67b541b2ab57c8",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=75438310"
+ },
+ "started_at": "2026-11-02T19:01:11.846914Z",
+ "status": "complete"
+}

@@ -1,0 +1,36 @@
+import json,hashlib,sys,datetime
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+START=open('tools/start.txt').read().strip()
+class A:
+    def __init__(s,d):
+        s.d=d; s.t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+        s.p=json.load(open(f'packets/{d}/packet.json'))
+        s.defs=[];s.uses=[];s.ids=[];s.unres=[]
+    def loc(s,anchor,n=0,after=0,ql=50):
+        i=after-1
+        for _ in range(n+1):
+            i=s.t.find(anchor,i+1)
+            assert i>=0,(anchor,n)
+        q=s.t[i:i+max(len(anchor),min(ql,len(s.t)-i))]
+        if len(anchor)>ql:q=anchor[:ql]
+        return {'cp':i,'quote':q}
+    def D(s,id,at,kind='note',name=None,group='',templates=(),unstructured=False,render=None,marker='none',mt=None,notes='',inw=True):
+        s.defs.append(dict(id=id,at=at,in_window=inw,kind=kind,name=name,group=group,templates=[{'at':x} for x in templates],unstructured=unstructured,render_note_id=render,marker=marker,marker_text=mt,notes=notes))
+    def U(s,id,at,binds,render=None,notes=''):
+        s.uses.append(dict(id=id,at=at,binds_to=binds,render_ref_id=render,notes=notes))
+    def I(s,at,scheme,role,key,notes=''):
+        s.ids.append(dict(at=at,scheme=scheme,role=role,key=key,notes=notes))
+    def write(s,tools,unresolved):
+        for x in [d['at'] for d in s.defs]+[u['at'] for u in s.uses]+[u['binds_to'] for u in s.uses if isinstance(u['binds_to'],dict)]+[i['at'] for i in s.ids]+[t['at'] for d in s.defs for t in d['templates']]:
+            assert s.t[x['cp']:x['cp']+len(x['quote'])]==x['quote'],x
+        p=s.p
+        out={'format':'citerift-stage03-annotation-v1',
+         'article':{'wiki':p['wiki'],'revision_id':p['revision_id'],'source_sha256':p['source_sha256'],'html_sha256':p['html_sha256'],'window':[p['window']['cp_start'],p['window']['cp_end']]},
+         'provenance':{'agent':'d036-eval-ar-h3','started_at':START,'finished_at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+           'files_opened':[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE_SHA},{'path':f'packets/{s.d}/source.wikitext','sha256':p['source_sha256']},{'path':f'packets/{s.d}/render.html','sha256':p['html_sha256']},{'path':f'packets/{s.d}/packet.json','sha256':None}],
+           'tools':tools,'unresolved':unresolved},
+         'definitions':s.defs,'uses':s.uses,'identifiers':s.ids,'unresolved_notes':s.unres}
+        a,b=p['window']['cp_start'],p['window']['cp_end']
+        json.dump(out,open(f'out/ar-{p["revision_id"]}.json','w'),ensure_ascii=False,indent=1)
+        iw=lambda l:sum(1 for x in l if a<=x['at']['cp']<b)
+        print(s.d,'defs',iw(s.defs),'(total',len(s.defs),') uses',iw(s.uses),'ids',iw(s.ids))

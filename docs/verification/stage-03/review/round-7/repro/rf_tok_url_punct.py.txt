@@ -1,0 +1,17 @@
+"""A bare DOI URL followed by ; : ! : the C tokenizer (5b1dcb0) and the pure-Python one (0dfef1c) give different extracted identifiers."""
+import sys, tempfile, json
+from pathlib import Path
+sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/tests/stage03")
+import citerift
+from wiki_support import bundle
+from citerift.wiki.extract import extract_bundle, ExtractConfig
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+where = citerift.__file__.split("/scratchpad/")[1][:24]
+for tail in (": Smith 2001", "; Smith 2001", "! Smith", ". Smith 2001", ", Smith 2001", "&amp; x", "<!-- c --> x", "{{!}} x", "&#32;x"):
+    text = f"Claim.<ref>https://doi.org/10.1234/abc{tail}</ref>\n"
+    d = tmp / str(abs(hash(tail)))
+    d.mkdir()
+    b = bundle(d, text)
+    doc = extract_bundle(b, ExtractConfig())
+    vals = [(i["origin"], i["normalization"]["raw"], i["normalization"]["normalized"], i["normalization"]["valid"]) for i in doc["identifiers"]]
+    print(where, repr(tail), "->", vals, sorted({x["code"] for x in doc["issues"] if x["code"] not in ("RECONCILIATION_UNAVAILABLE",)}))

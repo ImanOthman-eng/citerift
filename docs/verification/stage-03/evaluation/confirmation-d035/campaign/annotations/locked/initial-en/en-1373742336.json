@@ -1,0 +1,652 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1373742336,
+  "source_sha256": "13db39cd0f975e7e2e69efc0c65487c18192169dabfd631953b799b53c174230",
+  "html_sha256": "1afea1ad616251de9e36a61eb83d5e8bf221efe8f00f0d6cebda1999431e2b59",
+  "window": [
+   2799,
+   10799
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h2",
+  "started_at": "2026-11-03T16:13:08Z",
+  "finished_at": "2026-11-03T16:13:08Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1373742336/packet.json",
+    "sha256": "(not hashed in packet; read for window and hashes)"
+   },
+   {
+    "path": "packets/en-1373742336/source.wikitext",
+    "sha256": "13db39cd0f975e7e2e69efc0c65487c18192169dabfd631953b799b53c174230"
+   },
+   {
+    "path": "packets/en-1373742336/render.html",
+    "sha256": "1afea1ad616251de9e36a61eb83d5e8bf221efe8f00f0d6cebda1999431e2b59"
+   }
+  ],
+  "tools": "python3 -I stdin/stdlib scripts (re, json, lxml) in tools/: regex scan for <ref/{{cite/10./PMID, listing of sup typeof=mw:Extension/ref and li cite_note ids, substring verification of every quote; labels decided by reading",
+  "unresolved": "Several refs carry arxiv= and bibcode= fields; these are not DOI/PMID and not labelled.; Refs at the first two positions before the window (cp 165, 696) are outside the window and not needed."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 2843,
+    "quote": "<ref>{{cite journal\n | last1 ="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2848,
+      "quote": "{{cite journal\n | la"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3193,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3198,
+      "quote": "{{cite journal\n | au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 3599,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3604,
+      "quote": "{{cite journal\n | au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 3982,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3987,
+      "quote": "{{cite journal\n | au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4329,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4334,
+      "quote": "{{cite journal\n | au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 7523,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7528,
+      "quote": "{{cite journal\n |las"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 7900,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7905,
+      "quote": "{{cite journal\n |las"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 8271,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8276,
+      "quote": "{{cite journal\n |las"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 8665,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8670,
+      "quote": "{{cite journal\n |las"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 9039,
+    "quote": "<ref>{{cite magazine\n |last=Da"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9044,
+      "quote": "{{cite magazine\n |la"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 9399,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9404,
+      "quote": "{{cite journal\n | au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 10092,
+    "quote": "<ref>{{cite book\n |last=Damjan"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10097,
+      "quote": "{{cite book\n |last=D"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 2843,
+    "quote": "<ref>{{cite journal\n | last1 ="
+   },
+   "binds_to": {
+    "cp": 2843,
+    "quote": "<ref>{{cite journal\n | last1 ="
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3193,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "binds_to": {
+    "cp": 3193,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 3599,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "binds_to": {
+    "cp": 3599,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 3982,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "binds_to": {
+    "cp": 3982,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4329,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "binds_to": {
+    "cp": 4329,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 7523,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "binds_to": {
+    "cp": 7523,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 7900,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "binds_to": {
+    "cp": 7900,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 8271,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "binds_to": {
+    "cp": 8271,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 8665,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "binds_to": {
+    "cp": 8665,
+    "quote": "<ref>{{cite journal\n |last=Arn"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 9039,
+    "quote": "<ref>{{cite magazine\n |last=Da"
+   },
+   "binds_to": {
+    "cp": 9039,
+    "quote": "<ref>{{cite magazine\n |last=Da"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 9399,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "binds_to": {
+    "cp": 9399,
+    "quote": "<ref>{{cite journal\n | author "
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 10092,
+    "quote": "<ref>{{cite book\n |last=Damjan"
+   },
+   "binds_to": {
+    "cp": 10092,
+    "quote": "<ref>{{cite book\n |last=Damjan"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3138,
+    "quote": "10.1103/PhysRevLett.75.1272"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1103/physrevlett.75.1272",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3175,
+    "quote": "10060251"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "10060251",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3534,
+    "quote": "10.1016/S0370-2693(98)00083-5"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0370-2693(98)00083-5",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3884,
+    "quote": "10.1016/S0375-9474(99)85005-2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0375-9474(99)85005-2",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4266,
+    "quote": "10.1140/epjc/s2005-02272-3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1140/epjc/s2005-02272-3",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4628,
+    "quote": "10.1103/PhysRevLett.91.042301"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1103/physrevlett.91.042301",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4668,
+    "quote": "12906652"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12906652",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 7792,
+    "quote": "10.1103/PhysRevLett.96.162302"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1103/physrevlett.96.162302",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 7828,
+    "quote": "16712218"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16712218",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8168,
+    "quote": "10.1103/PhysRevLett.100.022302"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1103/physrevlett.100.022302",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8205,
+    "quote": "18232858"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "18232858",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8591,
+    "quote": "10.1140/epjc/s10052-008-0857-2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1140/epjc/s10052-008-0857-2",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8936,
+    "quote": "10.1103/PhysRevLett.102.222301"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1103/physrevlett.102.222301",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 8973,
+    "quote": "19658858"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "19658858",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 9665,
+    "quote": "10.1063/1.3541982"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1063/1.3541982",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 10628,
+    "quote": "10.1007/978-3-031-92353-1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-031-92353-1",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Several refs carry arxiv= and bibcode= fields; these are not DOI/PMID and not labelled.",
+  "Refs at the first two positions before the window (cp 165, 696) are outside the window and not needed."
+ ]
+}

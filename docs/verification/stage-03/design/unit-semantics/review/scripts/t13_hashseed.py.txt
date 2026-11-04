@@ -1,0 +1,21 @@
+"""Digest of documents with E/G/H/D mixes; run under different PYTHONHASHSEED values."""
+import sys, json, tempfile
+from pathlib import Path
+from rvlib import bundle, transclusion, cs1, citeref, ref_sup, note_li, references
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+specs = [("harvnb", {"1": "Fox", "2": "2002"}, citeref("Fox2002", "Fox")), ("Fish db", {"1": "x"}, cs1("F")),
+         ("NRDB species", {"g": "P"}, "P"), ("harvnb", {"1": "Fox", "2": "2002"}, citeref("Fox2002", "Fox"))]
+parts, sups, notes = [], [], []
+for i, (t, p, out) in enumerate(specs * 5):
+    call = "{{" + t + "".join(f"|{k}={v}" for k, v in p.items()) + "}}" + (" and text" if i % 3 == 0 else "")
+    parts.append(f"T{i}<ref>{call}</ref> ")
+    sups.append(f"T{i}" + ref_sup(i + 1, f"cite_note-{i+1}", f"cite_ref-{i+1}"))
+    notes.append(note_li(f"cite_note-{i+1}", [f"cite_ref-{i+1}"], transclusion(1000 + i, t, p, out) + (" and text" if i % 3 == 0 else "")))
+text = "".join(parts)
+tmp = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-d035/hs-bundle")
+import shutil
+if not (tmp / "b").exists():
+    bundle(tmp, text, "<p>" + "".join(sups) + "</p>" + references(notes))
+doc = extract_bundle(tmp / "b", ExtractConfig(), isolated=False)
+from collections import Counter
+print(doc["extraction_digest"], Counter(u["kind"] for u in doc["units"]), sum(1 for i in doc["issues"] if i["code"] == "UNIT_CLASSIFICATION_UNRESOLVED"))

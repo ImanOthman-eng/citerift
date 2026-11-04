@@ -1,0 +1,41 @@
+import json
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+sys.path.insert(0, "tests/stage03")
+from wiki_support import bundle
+
+from citerift.wiki import extract as ex
+
+text = "".join(
+    f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(20000)
+)
+b = bundle(Path(tempfile.mkdtemp()), text)
+cfg = ex.ExtractConfig(worker_memory_mib=64)
+src_root = str(Path(ex.__file__).resolve().parents[2])
+code = (
+    "import sys; sys.path.insert(0, sys.argv[1]); from citerift.wiki.worker import main; sys.exit(main(sys.argv[2:]))"
+)
+for k in range(60):
+    cmd = [
+        sys.executable,
+        "-X",
+        "faulthandler",
+        "-I",
+        "-c",
+        code,
+        src_root,
+        str(b),
+        json.dumps(cfg.to_json()),
+        "extract",
+    ]
+    p = subprocess.run(cmd, capture_output=True, env={"PATH": os.environ["PATH"]}, preexec_fn=ex._limits(64, 31))
+    if p.returncode not in (0, 3) and b"MemoryError" not in p.stderr[-2000:]:
+        print("rc", p.returncode)
+        print(p.stderr.decode(errors="replace")[-3000:])
+        break
+else:
+    print("no crash in 60")

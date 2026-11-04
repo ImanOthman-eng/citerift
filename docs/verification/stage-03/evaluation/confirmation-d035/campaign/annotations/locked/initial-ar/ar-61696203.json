@@ -1,0 +1,44 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 61696203,
+  "source_sha256": "8b99a541728d318fb3485ce9382d7f2c5ed51b5ee8ff1f9c3b4f3756b3732028",
+  "html_sha256": "a2ecfc7d9c590bede776fad91e13b6e0f5cb897f2d6d239c3ee9833f851bfaa8",
+  "window": [
+   0,
+   713
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h1",
+  "started_at": "2026-11-03T09:00:00Z",
+  "finished_at": "2026-11-03T10:00:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-61696203/packet.json",
+    "sha256": "5639e25328b54bcc31b8d244e47f9d289457f45be6953e04b31c6dabb2bc66e6"
+   },
+   {
+    "path": "packets/ar-61696203/source.wikitext",
+    "sha256": "8b99a541728d318fb3485ce9382d7f2c5ed51b5ee8ff1f9c3b4f3756b3732028"
+   },
+   {
+    "path": "packets/ar-61696203/render.html",
+    "sha256": "a2ecfc7d9c590bede776fad91e13b6e0f5cb897f2d6d239c3ee9833f851bfaa8"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand",
+  "unresolved": "No <ref>, footnote template, citation template, DOI or PMID in the window. The rendered page shows 4 Wikidata-generated references (infobox/{{معرفات الأصنوفة}}, with DOIs such as 10.14344/IOC.ML.6.3) that have no source location; not labelled (guide 3.3)."
+ },
+ "definitions": [],
+ "uses": [],
+ "identifiers": [],
+ "unresolved_notes": [
+  "No <ref>, footnote template, citation template, DOI or PMID in the window. The rendered page shows 4 Wikidata-generated references (infobox/{{معرفات الأصنوفة}}, with DOIs such as 10.14344/IOC.ML.6.3) that have no source location; not labelled (guide 3.3)."
+ ]
+}

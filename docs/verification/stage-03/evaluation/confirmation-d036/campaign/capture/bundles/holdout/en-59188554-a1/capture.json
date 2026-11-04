@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 2839,
+   "body_sha256": "27ebe6dd3abf2164f2e564db37a8a40b3dd00394cd8008803c8ff340aa9efb50",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.376,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:11:10.545410Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=59188554",
+   "wire_bytes": 1395
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "974f1c7aaf44b57f4698cae3386afd1cc37d5ca32b50e0a9e1f10d4672098217",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.302,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:11:20.921644Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1259385037/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 40193,
+   "body_sha256": "dd6801853d6429529e656b7d960b114d4a97aaeb3783126600355c3eed17eb1c",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.43,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:12:00.224357Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1259385037/html",
+   "wire_bytes": 8686
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "974f1c7aaf44b57f4698cae3386afd1cc37d5ca32b50e0a9e1f10d4672098217"
+ ],
+ "finished_at": "2026-11-04T10:12:00.655813Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 59188554,
+  "parent_revision_id": 1254880176,
+  "redirect_followed": null,
+  "revision_id": 1259385037,
+  "revision_timestamp": "2024-11-24T21:43:10Z",
+  "sha1": "691725fb42726fa89d72cae20e1336190fa12824",
+  "size": 2288,
+  "title": "Aridibacter famidurans",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "dd6801853d6429529e656b7d960b114d4a97aaeb3783126600355c3eed17eb1c",
+  "bytes": 40193,
+  "checks": {
+   "document_revision_id": "1259385037",
+   "header_revision_id": "1259385037",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "59188554",
+   "render_id": "edd556be-d4a7-11f1-85a0-b1e094249db0",
+   "revision_sha1": "691725fb42726fa89d72cae20e1336190fa12824",
+   "revision_sha1_base36": "c9xcmrjnm9xulaqq55qfvo200i1uwbo"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1259385037",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:12:00 GMT",
+   "etag": "W/\"1259385037/edd556be-d4a7-11f1-85a0-b1e094249db0/view\"",
+   "last-modified": "Fri, 30 Oct 2026 06:14:11 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1259385037/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 59188554,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1d33e224a42fc13c99b67aa8280f3c7859ceb878f52fd66f41ec5005514847c7",
+  "bytes": 2288,
+  "response_artifact": "27ebe6dd3abf2164f2e564db37a8a40b3dd00394cd8008803c8ff340aa9efb50",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=59188554"
+ },
+ "started_at": "2026-11-04T10:11:00.999403Z",
+ "status": "complete"
+}

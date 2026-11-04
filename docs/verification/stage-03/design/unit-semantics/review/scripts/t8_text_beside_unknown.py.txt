@@ -1,0 +1,18 @@
+"""Unknown (no citation markup) template + accessory text: D (unstructured) -> the category-3 false positive returns."""
+from rvlib import *
+cases = [
+ ("en", "NRDB species + Retrieved", "A<ref>{{NRDB species|genus=Polemon|species=christyi}} Retrieved 5 May 2024.</ref>",
+  "NRDB species", {"genus": "Polemon", "species": "christyi"}, "<i>Polemon christyi</i> at the Reptarium", " Retrieved 5 May 2024."),
+ ("en", "NRDB species alone", "A<ref>{{NRDB species|genus=Polemon|species=christyi}}</ref>",
+  "NRDB species", {"genus": "Polemon", "species": "christyi"}, "<i>Polemon christyi</i> at the Reptarium", ""),
+ ("ar", "IUCN-like + accessed (ar)", "أ<ref>{{القائمة الحمراء|معرف=1234}} تاريخ الاطلاع 2020.</ref>",
+  "القائمة الحمراء", {"معرف": "1234"}, "القائمة الحمراء 1234", " تاريخ الاطلاع 2020."),
+ ("en", "lang wraps whole citation (render)", "A<ref>{{lang|fr|Dupont, ''Histoire'', 1990}}</ref>",
+  "lang", {"1": "fr", "2": "Dupont, ''Histoire'', 1990"}, "<i lang='fr'>Dupont, Histoire, 1990</i>", ""),
+ ("en", "ISBN only (render)", "A<ref>{{ISBN|978-0-00-000000-2}}</ref>",
+  "ISBN", {"1": "978-0-00-000000-2"}, "<a href='./Special:BookSources/9780000000002'>ISBN 978-0-00-000000-2</a>", ""),
+]
+for wiki, label, text, tgt, params, out, tail in cases:
+    inner = transclusion(5, tgt, params, out) + tail
+    doc = run(text, one_note("A", inner), wiki)
+    print(f"[{wiki}] {label}: units={[u['kind'] for u in doc['units']]} H={[i['detail'] for i in doc['issues'] if i['code']=='UNIT_CLASSIFICATION_UNRESOLVED']}")

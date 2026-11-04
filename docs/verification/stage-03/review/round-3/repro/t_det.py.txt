@@ -1,0 +1,13 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+from citerift.wiki.schemas import *
+inner = ('Paper. <span style="display:none">Re<b>tracted</b></span> <cite>Foo <i>Expression</i> of concern</cite> '
+         'Re<img/>tracted <a rel="mw:WikiLink" href="./Template:Retracted?action=edit&amp;redlink=1" class="new">Retracted</a>'
+         '<span class="cs1-maint"><a href="./Template:Retraction" title="Template:Retraction">x</a></span>   '
+         '<!-- c --> R&#x65;tracted <?pi x?> <span hidden>مسحوب</span> withdrawn erratum <q>Retracted</q> &amp;')
+text = 'A.<ref name="a">Smith 2001.</ref> {{r|a|1=a|n2=a|g=}} {{sfn|S|2001}} {{sfn|1=S|2=2001}}\n'
+b = bundle(tmpdir(), text, note_body(inner))
+d1 = extract(b, isolated=True); d2 = extract(b, isolated=True); d3 = extract(b, isolated=False)
+print("digests", d1["extraction_digest"] == d2["extraction_digest"] == d3["extraction_digest"], d1["status"])
+print(short(d1["markers"][0]))
+r = verify_bundle(b, d1); print("verified", r["verified"], [i for i in r["issues"] if i.get("severity") == "error"][:3])

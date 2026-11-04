@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:wiki:v1:common",
+  "title": "CITERIFT Stage 03 shared definitions, major version 1",
+  "description": "Definitions shared by the Stage 03 capture, extraction and verification records. Hashes, timestamps and versions reuse the common v1 contract definitions.",
+  "x-citerift-version": "1.0.0",
+  "$defs": {
+    "wiki": {
+      "description": "The supported Wikipedia editions (Stage 03 scope). A narrowing of the common wiki_language definition.",
+      "allOf": [{"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/wiki_language"}, {"enum": ["ar", "en"]}]
+    },
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "severity", "retryable", "entities", "detail", "evidence"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$(?!\\n)"},
+        "severity": {"enum": ["error", "warning", "info"]},
+        "retryable": {"type": "boolean"},
+        "entities": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "detail": {"type": "string"},
+        "evidence": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "span": {
+      "description": "A half-open interval of the retained source: Unicode code points and the matching UTF-8 bytes.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cp_start", "cp_end", "byte_start", "byte_end"],
+      "properties": {
+        "cp_start": {"type": "integer", "minimum": 0},
+        "cp_end": {"type": "integer", "minimum": 0},
+        "byte_start": {"type": "integer", "minimum": 0},
+        "byte_end": {"type": "integer", "minimum": 0}
+      }
+    },
+    "anchor": {
+      "description": "An exact evidence anchor: the span, the raw source text it covers and that text's SHA-256 (UTF-8).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cp_start", "cp_end", "byte_start", "byte_end", "raw", "raw_sha256", "exact"],
+      "properties": {
+        "cp_start": {"type": "integer", "minimum": 0},
+        "cp_end": {"type": "integer", "minimum": 0},
+        "byte_start": {"type": "integer", "minimum": 0},
+        "byte_end": {"type": "integer", "minimum": 0},
+        "raw": {"type": "string"},
+        "raw_sha256": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+        "exact": {"const": true}
+      }
+    },
+    "locator": {
+      "description": "A render element under the declared HTML parser profile: id (and whether it is unique), lxml element path, a short text quote and the SHA-256 of the element's lxml serialization.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["element_id", "id_unique", "path", "quote", "subtree_sha256"],
+      "properties": {
+        "element_id": {"type": ["string", "null"]},
+        "id_unique": {"type": "boolean"},
+        "path": {"type": "string", "maxLength": 12000, "pattern": "^(?:/[a-z][a-z0-9]{0,15}(?:\\[[1-9][0-9]{0,6}\\])?)+$(?!\\n)"},
+        "quote": {"type": "string", "maxLength": 160},
+        "subtree_sha256": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}
+      }
+    },
+    "template_ref": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "canonical", "kind", "family"],
+          "properties": {
+            "name": {"type": "string"},
+            "canonical": {"type": ["string", "null"]},
+            "kind": {"enum": ["citation", "external_data", "wrapper", "marker", "generated_ref", "reflist", "other"]},
+            "family": {"type": ["string", "null"]}
+          }
+        }
+      ]
+    }
+  }
+}

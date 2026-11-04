@@ -1,0 +1,618 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1379214029,
+  "source_sha256": "256812057da3797b5762d8d0261a9107664fd69b09710beb019c1c17cb22c3b9",
+  "html_sha256": "b2afae8ce91d4341ed5b8c1cbe4c9ff280e242bacc71a5511b45953110e3f717",
+  "window": [
+   17223,
+   25223
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:05:16Z",
+  "finished_at": "2026-10-29T09:10:07Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1379214029/packet.json",
+    "sha256": "ceeebb854aba1fc462a1b950f728e0733aa8a9eeb69b4787b7584f6d85f06944"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1379214029/source.wikitext",
+    "sha256": "256812057da3797b5762d8d0261a9107664fd69b09710beb019c1c17cb22c3b9"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-r2/en-1379214029/render.html",
+    "sha256": "b2afae8ce91d4341ed5b8c1cbe4c9ff280e242bacc71a5511b45953110e3f717"
+   }
+  ],
+  "tools": "python3 -I (standard library re/json/str.find and lxml.html) used only to list the positions of <ref, {{sfn/{{cite, 10./doi/PMID strings and HTML comments in the wikitext, to list <sup typeof~=mw:Extension/ref> ids with their data-mw attrs and <li id=cite_note-...> ids in render.html in document order, and to verify every quote with text[cp:cp+len(quote)]==quote; every label decided by reading the text. sha256sum for file hashes. The throwaway snippets (token lister, marker lister, per-article label tables) were kept as files in a temporary scratchpad folder outside the output directory while working and deleted at the end.",
+  "unresolved": "The journals.co.za URL with path /doi/abs/10.10520/EJC123796 was read as a publisher DOI URL (identifier_link) although the path has /doi/abs/ rather than /doi/10.; recorded in its notes."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 17722,
+    "quote": "<ref name=\":1\">{{Cite web |last=Agbalajobi |first=Damilola |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 17737,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:1-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref; no reuse of :1 elsewhere in the article."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 18304,
+    "quote": "<ref>{{Cite journal |last=Ette |first=Mercy |date=2017-10-03"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 18309,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 18963,
+    "quote": "<ref>{{Cite journal |last=Okoosi |first=Simbine Antonia Taiy"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 18968,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Rendered footnote shows \"doi:... (inactive 1 July 2025)\" and a CS1 maintenance message about an inactive DOI (doi-broken-date); this is not retraction/correction vocabulary, so marker none."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 19682,
+    "quote": "<ref>{{Cite journal |last1=Ette |first1=Mercy |last2=Akpan-O"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 19687,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 20521,
+    "quote": "<ref>{{Cite news |date=2022-04-16 |title=2023 PRESIDENCY: Wh"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 20526,
+      "quote": "{{Cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 20870,
+    "quote": "* {{cite journal | last=Usonka| first=Cornelia Orieoma| jour"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 20872,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}}). Target of {{sfn|Usonka|2019|p=89}} earlier in the article."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 21230,
+    "quote": "* {{cite web | title= Oversight functions of the legislature"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21232,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}}). Target of {{sfn|Arowolo|2010|p=27}} earlier in the article."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 21480,
+    "quote": "* {{cite book | last1=Fashagba | first1=Joseph Yinka | last2"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21482,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 21768,
+    "quote": "* {{cite book | last1=Oni | first1=Samuel | last2=Olanrewaju"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 21770,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 22175,
+    "quote": "* {{cite book | last1=Tongs | first1=Lucky A. | last2=Fagbad"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 22177,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 22606,
+    "quote": "* {{cite journal | last=Udeuhele | first=Godwin | title=Nige"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 22608,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 22974,
+    "quote": "* {{cite journal |ssrn=2205855 |doi=10.1515/mjss-2017-0010 |"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 22976,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 23300,
+    "quote": "* {{cite book | last1=Nwozor | first1=Agaptus | last2=Olanre"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23302,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 23800,
+    "quote": "* {{cite book | last=Muheeb | first=Ibraheem O. | title=The "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 23802,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 24199,
+    "quote": "* {{cite journal | last1=Arowosegbe | first1=J. O. | last2=A"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 24201,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 24476,
+    "quote": "* {{cite web | last=Abegunde | first=O. | title=Legislature "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 24478,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item in the \"Sources\" section (inside {{Refbegin}}/{{Refend}})."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 17722,
+    "quote": "<ref name=\":1\">{{Cite web |last=Agbalajobi |first=Damilola |"
+   },
+   "binds_to": {
+    "cp": 17722,
+    "quote": "<ref name=\":1\">{{Cite web |last=Agbalajobi |first=Damilola |"
+   },
+   "render_ref_id": "cite_ref-:1_14-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 18304,
+    "quote": "<ref>{{Cite journal |last=Ette |first=Mercy |date=2017-10-03"
+   },
+   "binds_to": {
+    "cp": 18304,
+    "quote": "<ref>{{Cite journal |last=Ette |first=Mercy |date=2017-10-03"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 18963,
+    "quote": "<ref>{{Cite journal |last=Okoosi |first=Simbine Antonia Taiy"
+   },
+   "binds_to": {
+    "cp": 18963,
+    "quote": "<ref>{{Cite journal |last=Okoosi |first=Simbine Antonia Taiy"
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 19682,
+    "quote": "<ref>{{Cite journal |last1=Ette |first1=Mercy |last2=Akpan-O"
+   },
+   "binds_to": {
+    "cp": 19682,
+    "quote": "<ref>{{Cite journal |last1=Ette |first1=Mercy |last2=Akpan-O"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 20521,
+    "quote": "<ref>{{Cite news |date=2022-04-16 |title=2023 PRESIDENCY: Wh"
+   },
+   "binds_to": {
+    "cp": 20521,
+    "quote": "<ref>{{Cite news |date=2022-04-16 |title=2023 PRESIDENCY: Wh"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 18471,
+    "quote": "https://doi.org/10.1080/0966369X.2017.1387104"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1080/0966369x.2017.1387104",
+   "notes": "doi.org resolver URL in url= of {{Cite journal}}."
+  },
+  {
+   "at": {
+    "cp": 18593,
+    "quote": "10.1080/0966369X.2017.1387104"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/0966369x.2017.1387104",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 19093,
+    "quote": "https://journals.co.za/doi/abs/10.10520/EJC123796"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.10520/ejc123796",
+   "notes": "Publisher URL in url= of {{Cite journal}}; the path is /doi/abs/10.10520/EJC123796 (an \"abs\" segment between /doi/ and the DOI). Read as a DOI-bearing publisher URL; the DOI runs to the end of the URL. It differs from the citation's doi= value (10.20940/...); hdl=10520/EJC123796 is a Handle, not a DOI, and is not listed."
+  },
+  {
+   "at": {
+    "cp": 19219,
+    "quote": "10.20940/JAE/2012/v11i1a5"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.20940/jae/2012/v11i1a5",
+   "notes": "doi= field; the citation also carries doi-broken-date=1 July 2025 (DOI marked inactive)."
+  },
+  {
+   "at": {
+    "cp": 19986,
+    "quote": "10.1177/00219096221084253"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1177/00219096221084253",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 21738,
+    "quote": "10.1007/978-3-030-50509-7_6"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-030-50509-7_6",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 22145,
+    "quote": "10.1007/978-3-030-11905-8_2"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-030-11905-8_2",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 22576,
+    "quote": "10.1007/978-3-031-24695-1_3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-031-24695-1_3",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 23010,
+    "quote": "10.1515/mjss-2017-0010"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1515/mjss-2017-0010",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 23640,
+    "quote": "10.1007/978-3-030-11905-8_10"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-030-11905-8_10",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 24169,
+    "quote": "10.1007/978-3-030-11905-8_3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-030-11905-8_3",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  },
+  {
+   "at": {
+    "cp": 24430,
+    "quote": "10.1177/2158244016658503"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1177/2158244016658503",
+   "notes": "doi= field of a bibliography entry in \"Sources\"."
+  }
+ ],
+ "unresolved_notes": [
+  "cp 24838: \"* {{Official website|http://www.nass.gov.ng/}}\" under External links is a list item with a link template, not a citation template; not labelled as a bibliography entry.",
+  "cp 20803/20832: {{notelist}} and {{Reflist}} are list templates without refs= content; nothing defined there.",
+  "hdl=10520/EJC123796 (cp ~19253) is a Handle identifier, not a DOI or PMID; not listed."
+ ]
+}

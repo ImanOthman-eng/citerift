@@ -1,0 +1,23 @@
+import collections
+import sys
+import tempfile
+from pathlib import Path
+
+sys.path.insert(0, "tests/stage03")
+from wiki_support import bundle
+
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+
+text = "".join(
+    f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(20000)
+)
+c = collections.Counter()
+for k in range(int(sys.argv[1])):
+    d = Path(tempfile.mkdtemp())
+    b = bundle(d, text)
+    for mib in (64, 72, 80, 96):
+        doc = extract_bundle(b, ExtractConfig(worker_memory_mib=mib))
+        for i in doc["issues"]:
+            c[(mib, i["code"], i.get("detail", "")[:120])] += 1
+for k, v in sorted(c.items()):
+    print(v, k)

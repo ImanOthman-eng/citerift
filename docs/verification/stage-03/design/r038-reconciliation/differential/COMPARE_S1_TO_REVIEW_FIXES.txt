@@ -1,0 +1,67 @@
+# python compare_runs.py <after S-1, 2229146> <after the review fixes> 6
+63 container matched->matched region changed
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00021', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[3]', 'state': 'matched'})
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00022', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[4]', 'state': 'matched'})
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00023', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[5]', 'state': 'matched'})
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00025', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[7]', 'state': 'matched'})
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00026', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[8]', 'state': 'matched'})
+     ('re__bundles__reserve__en-1898990-a1.json', 'ct-00027', {'region_id': 'about:#mwt94', 'state': 'matched'}, {'region_id': '/html/body/section[8]/div/ul/li[9]', 'state': 'matched'})
+303 container matched->note_ambiguous
+     ('s__network-preflight__en-1381772671.json', 'ct-00079', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+     ('s__network-preflight__en-1381772671.json', 'ct-00080', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+     ('s__network-preflight__en-1381772671.json', 'ct-00081', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+     ('s__network-preflight__en-1381772671.json', 'ct-00082', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+     ('s__network-preflight__en-1381772671.json', 'ct-00083', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+     ('s__network-preflight__en-1381772671.json', 'ct-00084', {'region_id': 'about:#mwt331', 'state': 'matched'}, {'region_id': None, 'state': 'note_ambiguous'})
+32 container unmatched->matched
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00005', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[1]', 'state': 'matched'})
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00006', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[2]', 'state': 'matched'})
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00007', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[3]', 'state': 'matched'})
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00008', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[4]', 'state': 'matched'})
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00009', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[5]', 'state': 'matched'})
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00010', {'region_id': None, 'state': 'unmatched'}, {'region_id': '/html/body/section[4]/div[1]/div/ul/li[6]', 'state': 'matched'})
+60 identifier region_not_reconciled->render_link_found
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00008')
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00009')
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00010')
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00011')
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00012')
+     ('__bundles__challenge__ar-4541237-a1.json', 'id-00013')
+1 identifier render_link_found->region_not_reconciled
+     ('e__bundles__reserve2__en-1473997-a1.json', 'id-00001')
+303 marker observation no_recognized_warning_in_inspected_region->not_inspected
+     ('s__network-preflight__en-1381772671.json', 'ct-00079')
+     ('s__network-preflight__en-1381772671.json', 'ct-00080')
+     ('s__network-preflight__en-1381772671.json', 'ct-00081')
+     ('s__network-preflight__en-1381772671.json', 'ct-00082')
+     ('s__network-preflight__en-1381772671.json', 'ct-00083')
+     ('s__network-preflight__en-1381772671.json', 'ct-00084')
+32 marker observation not_inspected->no_recognized_warning_in_inspected_region
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00005')
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00006')
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00007')
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00008')
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00009')
+     ('__bundles__challenge__ar-4541237-a1.json', 'ct-00010')
+9 status complete->partial
+     s__network-preflight__en-1381772671.json
+     onstrations__bundles__en-1381772671.json
+     re__bundles__reserve__en-1898990-a1.json
+     _bundles__challenge__en-71205055-a2.json
+     _bundles__challenge__en-72994622-a1.json
+     e__bundles__holdout__en-38148109-a1.json
+3 status partial->complete
+     __bundles__challenge__ar-4541237-a1.json
+     re__bundles__holdout__ar-4539695-a1.json
+     re__bundles__holdout__ar-4537689-a1.json
+35 use abstained->matched
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00001', None, 'cite_ref-aaa474_2_653_1-0')
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00002', None, 'cite_ref-aaa474_2_653_1-1')
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00003', None, 'cite_ref-clpl4_99_2-0')
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00006', None, 'cite_ref-mnras384_1_173_4-0')
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00007', None, 'cite_ref-tuchow2024_5-0')
+     ('re__bundles__reserve__en-2695828-a1.json', 'us-00010', None, 'cite_ref-mnras384_1_173_4-1')
+3 use basis only
+     ('e__bundles__holdout__en-38148109-a1.json', 'us-00027', 'name_anchor', 'reference_role_in_template_output')
+     ('e__bundles__holdout__en-38148109-a1.json', 'us-00030', 'name_anchor', 'reference_role_in_template_output')
+     ('ure__bundles__holdout__en-614753-a1.json', 'us-00002', 'elimination_in_template_output', 'anchor_in_template_output')

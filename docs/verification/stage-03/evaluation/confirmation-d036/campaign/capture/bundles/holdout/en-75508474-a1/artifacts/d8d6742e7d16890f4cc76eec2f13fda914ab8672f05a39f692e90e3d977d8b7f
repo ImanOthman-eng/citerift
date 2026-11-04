@@ -1,0 +1,138 @@
+{{Short description|Geometry calculation}}
+
+[[File:Line-cylinder intersection cases.png|thumb|Four cases for an intersection of a line and a cylinder. Intersections with the gray cylinder are highlighted in red. Global axes are black. The magenta line has zero intersections with the cylinder. Cyan line has a single point of intersection. Green line has two intersections. Yellow line lies tangent to the cylinder, so has infinitely many points of intersection.]]
+'''Line-cylinder intersection''' is the calculation of any points of [[Intersection (geometry)|intersection]], given an [[analytic geometry]] description of a [[Line (geometry)|line]] and a [[Cylinder (geometry)|cylinder]] in 3D space.
+
+An arbitrary line and cylinder may have no intersection at all. Or there may be one or two points of intersection.<ref>{{cite book |last=Narrien |first=John |date=1846 |title= Analytical Geometry with the Properties of Conic Sections |location=London |publisher=Longman, Brown, Green, and Longmans |isbn= |chapter-url=https://books.google.com/books?id=6h9kAAAAcAAJ&dq=%22Thus+a+straight+line+can+cut+a+curve+surface+of+the+second+order+in+only+two+points%22&pg=PA156 |access-date=December 12, 2023 |chapter=Chap. VI |page=156 |quote=...Thus a straight line can cut a curve surface of the second order in only two points...}}</ref> Or a line may lie along the surface of a cylinder, parallel to its axis, resulting in infinitely many points of intersection. The method described here distinguishes between these cases, and when intersections exist, computes their positions.
+
+The term "cylinder" can refer to a [[Solid geometry|three-dimensional solid]] or, as in this article, only the curved external [[Surface#In mathematics|surface]] of the solid. This is why a line piercing a cylinder's volume is considered to have '''two''' points of intersection: the surface point where it enters and the one where it leaves. See [[#End caps|§ end caps]].
+
+A key intuition of this sort of intersection problem is to represent each shape as an equation which is true for all points on the shape. Solving them as a system of two simultaneous equations finds the points which belong to both shapes, which is the intersection. The equations below were solved using [[Maple (software)|Maple]].
+
+This method has applications in [[computational geometry]], [[Rendering (computer graphics)|graphics rendering]], [[Shape Modeling International|shape modeling]], [[Physical simulation|physics-based modeling]], and related types of computational 3d simulations. This has led to various implementations.<ref>{{cite book |last=Shene |first=Ching-Kuang |date=1994 |editor-last=Heckbert |editor-first=Paul |title=Graphics Gems IV |publisher=AP Professional, Boston |pages=353–355 |chapter=Computing the intersection of a line and a cylinder (Chapter V.1) |isbn=9780123361561|chapter-url=https://books.google.com/books?id=brDfBAAAQBAJ&dq=%22Computing%20the%20intersection%20of%20a%20line%20and%20a%20cylinder%22&pg=PA354|access-date=December 12, 2023}}</ref><ref>{{cite book |last1=Cychosz |first1=Joseph M. |last2=Waggenspack |first2=Warren N. Jr. |date=1994 |editor-last=Heckbert |editor-first=Paul |title=Graphics Gems IV |publisher=AP Professional, Boston |pages=356–365 |chapter= Intersecting a Ray with a Cylinder (Chapter V.2) |isbn=9780123361561 |chapter-url=https://books.google.com/books?id=CCqzMm_-WucC&dq=%22Intersecting%20a%20Ray%20with%20a%20Cylinder%22&pg=PA356 |access-date=December 12, 2023}}</ref><ref>{{cite journal |last= Held |first=Martin |date= 1997 |title= ERIT—A Collection of Efficient and Reliable Intersection Tests |url= |journal= Journal of Graphics Tools |volume=2 |issue=4 |pages= 25–44 |doi=10.1080/10867651.1997.10487482}}</ref> This method is closely related to [[Line–sphere intersection]].
+
+== Cylinder equation, end caps excluded ==
+
+Let <math>{\bar b} = ( b_x , b_y ,  b_z )</math> be the cylinder base (or one endpoint),
+<math>{\hat a} = ( a_x ,  a_y ,  a_z )</math> be the cylinder axis [[unit vector]],
+cylinder radius <math>r</math>, and height (or axis length) <math>h</math>. The cylinder may be in any orientation.
+
+The equation for an infinite cylinder can be written as
+:<math>\lVert {\hat a} \times ({\bar p} - {\bar b}) \rVert = r</math>
+where <math>{\bar p} = (x , \  y , \  z )</math> is any point on the cylinder surface. The equation simply states that points <math>{\bar p}</math> are exactly at [[Euclidean distance]] <math>r</math> from the axis <math>{\hat a}</math> starting from point <math>{\bar b}</math>, where <math>r</math> is measured in units of <math>\lVert{\hat a}\rVert</math>. Note that <math>\lVert{\hat a}\rVert = 1</math> if <math>{\hat a}</math> is a unit vector. Because both sides of the equation are always positive or zero, we can square it, and eliminate the [[square root]] operation in the [[Euclidean norm]] on the left side:
+:<math>{\lVert {\hat a} \times ({\bar p} - {\bar b}) \rVert}^2 = r^2</math>
+Point <math>{\bar p}</math> is at signed distance
+:<math>t = {\hat a} \cdot ({\bar p} - {\bar b})</math>
+from the base along the axis. Therefore, the two equations defining the cylinder, excluding the end caps, is
+:<math>{\lVert {\hat a} \times ({\bar p} - {\bar b}) \rVert}^2 = r^2</math>
+:<math>0 \leq {\hat a} \cdot ({\bar p} - {\bar b}) \leq h</math>
+
+== The line ==
+
+Let <math>{\bar p} = {\hat n} d</math> be a line through origin, <math>{\hat n}</math> being the unit vector,
+and <math>d</math> the distance from origin.
+
+If your line does not pass through origin but point <math>{\bar o}</math>, i.e. your line is <math>{\bar o} + {\hat n} d</math>,
+replace <math>{\bar b}</math> with <math>({\bar b}-{\bar o})</math> everywhere; distance <math>d</math> is then the distance from <math>{\bar o}</math>.
+
+== The intersection problem ==
+
+The intersection between the line and the cylinder is
+:<math>{\lVert {\hat a} \times ({\hat n} d - {\bar b}) \rVert}^2 = r^2</math>
+:<math>0 \leq t \leq h</math>
+where the [[Signed distance function|signed distance]] along the axis <math>t</math> is
+:<math>t = {\hat a} \cdot ({\hat n} d - {\bar b})</math>
+
+== Solution ==
+
+Rearranging the first equation gives a [[quadratic equation]] for <math>d</math>. Solving that for <math>d</math> gives
+:<math>d = \frac{({\hat n}\times{\hat a})\cdot({\bar b}\times{\hat a}) \pm\sqrt{ ({\hat n}\times{\hat a})\cdot({\hat n}\times{\hat a}) r^2 - ({\hat a}\cdot{\hat a})({\bar b}\cdot({\hat n}\times{\hat a}))^2}}{({\hat n}\times{\hat a})\cdot({\hat n}\times{\hat a})}</math>
+where <math>({\hat a}\cdot{\hat a}) = 1</math> if <math>{\hat a}</math> is a unit vector. If
+:<math>\lVert {\hat n} \times {\hat a} \rVert = 0</math>
+the line is parallel to the axis, and there is no intersection, or the intersection is a line. If
+:<math>({\hat n}\times{\hat a})\cdot({\hat n}\times{\hat a}) r^2 - ({\hat a}\cdot{\hat a})({\bar b}\cdot({\hat n}\times{\hat a}))^2 < 0</math>
+the line does not intersect the cylinder.
+
+Solving <math>d</math> only gives you the distance at which the line intersects the ''infinite'' cylinder. To see if the intersection occurs within the part we consider the actual cylinder, we need to check if the signed distance <math>t</math> from the cylinder base <math>{\bar b}</math> along the axis <math>{\hat a}</math> to the intersection <math>{\bar p} = {\hat n} d</math> is within zero and the length of the cylinder:
+:<math>0 \le t \le h</math>
+where <math>t</math> is still
+:<math>t = {\hat a} \cdot ({\hat n} d - {\bar b})</math>
+
+== End caps ==
+
+The above assumes that the cylinder does not have end caps; they must be checked for separately.
+The seam where the end cap meets the cylinder is assumed to belong to the cylinder, and is excluded from the end cap.
+
+=== Hemispherical end caps ===
+
+Hemispherical end caps are just half-spheres at both ends of the cylinder. This object is sometimes called a capsule,
+or possibly fixed-radius linearly-swept sphere.
+
+Cylinder height <math>h</math> does not include the end caps. If <math>H</math> is the cylinder height including both hemispherical end caps, then <math>h = H - 2 r</math>.
+
+Check if the line <math>{\bar p} = {\hat n} d</math> intersects
+either sphere: center <math>{\bar c} = {\bar b}</math> or <math>{\bar c} = {\bar b} + {\hat a} h</math> and radius <math>r</math>:
+:<math>d = {\hat n}\cdot{\bar c} \pm \sqrt{({\hat n}\cdot{\bar c})^2 + r^2 - ({\bar c}\cdot{\bar c})}</math>
+If
+:<math>({\hat n}\cdot{\bar c})^2 + r^2 - ({\bar c}\cdot{\bar c}) < 0</math>
+the line does not intersect the end cap sphere.
+
+If there are solutions <math>d</math>, accept only those that hit the actual end cap hemisphere:
+:<math>-r \le t < 0</math> &nbsp; or &nbsp; <math>h < t \le h+r</math>
+where, once again,
+:<math>t = {\hat a} \cdot ({\hat n} d - {\bar b})</math>
+
+=== Planar end caps ===
+
+Planar end caps are circular regions, radius <math>r</math>, in planes centered at <math>{\bar c} = {\bar b}</math> and <math>{\bar c} = {\bar b} + {\hat a}h</math>, with unit normal vectors <math>-{\hat a}</math> and <math>{\hat a}</math>, respectively. The line <math>{\hat n}d</math> intersects the plane if and only if
+:<math>({\hat n} d - {\bar c}) \cdot {\hat a} = 0</math>
+Solving d is simple,
+:<math>d = \frac{ {\hat a} \cdot {\bar c} }{ {\hat a} \cdot {\hat n} }</math>
+Note that if
+:<math>{\hat a} \cdot {\hat n} = 0</math>
+the line is parallel to the end cap plane (and also perpendicular to the cylinder axis). Finally, if and only if
+:<math>({\hat n} d - {\bar c}) \cdot ({\hat n} d - {\bar c}) < r^2</math>
+the intersection point <math>{\hat n}d</math> is within the actual end cap (the circular region in the plane).
+
+== Unit normal vector at an intersection point ==
+
+One of the many applications for this algorithm is in [[Ray tracing (graphics)|ray tracing]], where the cylinder unit normal vector <math>{\hat v}</math> at the intersection <math>{\hat n} d</math> is needed for refracted and reflected rays and lighting.
+
+The equations below use the signed distance <math>t</math> to the intersection point <math>{\hat n} d</math> from base <math>{\bar b}</math> along the axis <math>{\hat a}</math>, which is always
+:<math>t = {\hat a} \cdot ({\hat n} d - {\bar b})</math>
+
+For the cylinder surface (excluding the end caps, but including the seam), <math>0 \le t \le h</math>:
+:<math>{\hat v} = \frac{ {\hat n} d - {\hat a} t - {\bar b} }{ \lVert {\hat n} d - {\hat a} t - {\bar b} \rVert }</math>
+
+For a spherical end cap at the base, <math>-r \le t < 0</math>:
+:<math>{\hat v} = \frac{ {\hat n} d - {\bar b} }{ r }</math>
+for a spherical end cap at the other end, <math>h < t \le h + r</math>:
+:<math>{\hat v} = \frac{ {\hat n} d - {\bar b} - {\hat a} h }{ r }</math>
+
+For a planar end cap at the base, <math>t = 0</math>:
+:<math>{\hat v} = -{\hat a}</math>
+for a planar end cap at the other end, <math>t = h</math>:
+:<math>{\hat v} = {\hat a}</math>
+
+==See also==
+* [[Line–sphere intersection]]
+* [[Line–plane intersection]]
+* [[Intersection (geometry)]]
+
+== References ==
+{{reflist}}
+
+== External links ==
+* Collections of intersection techniques for computational geometry:
+** [https://www.realtimerendering.com/intersections.html Intersections (Ray Tracing Resources Page)] by [[Eric Haines]], table of links for many intersection calculations, including ray-cylinder.
+** [https://iquilezles.org/articles/intersectors/ collection of ray-surface intersectors for GPU shaders] by Inigo Quilez, including ray-cylinder.
+* Derivations which require cylinder be in a constrained orientation:
+** [https://johannesbuchner.github.io/intersection/intersection_line_cylinder.html line - cylinder intersection] in Johannes Buchner's collection of [https://github.com/JohannesBuchner/intersection Line-Intersection formulae]
+** [http://www.illusioncatalyst.com/notes_files/mathematics/line_cylinder_intersection.php Line - Cylinder intersection -] at IllusionCatalyst
+** [https://math.stackexchange.com/questions/2613781/line-cylinder-intersection Line Cylinder Intersection] at Mathematics Stack Exchange (math.stackexchange.com)
+* Partial solution:
+** [https://math.stackexchange.com/questions/3248356/calculating-ray-cylinder-intersection-points Calculating ray-cylinder intersection points]  at Mathematics Stack Exchange (math.stackexchange.com)
+
+[[Category:Analytic geometry]]
+[[Category:Geometric algorithms]]
+[[Category:Geometric intersection]]

@@ -1,0 +1,26 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval/ar-h4/tools')
+from lib import *
+A=Art('ar-76336375'); T=A.t
+dI=A.defn(A.at('<ref>{{IUCN'),'note',templates=[A.at('{{IUCN')],rid=None,notes='Inside the infobox field وصلة حالة الحفظ; the rendered page shows no footnote for it (the infobox renders its own Wikidata refs instead), so no li. {{IUCN}} treated as a citation template (formats an IUCN Red List citation); judgement call.')
+A.use(dI,dI,None,'No marker found in render for this infobox ref; the four wikidata-* markers come from infobox Wikidata output, not from this source ref.')
+refcol=A.at('<ref name=":1" />')
+# need def locations first
+d_1=A.at('<ref name=":1">{{استشهاد بويكي بيانات|Q113643886')
+d_A=A.at('<ref name="ReferenceA">كتاب')
+A.use(refcol,d_1,'cite_ref-:1_5-0','self-closing use before its definition in source order')
+d0=A.defn(A.at('<ref name=":0">'),'note',name=':0',templates=[A.at('{{استشهاد بويكي بيانات|Q113297966')],rid='cite_note-:0-6')
+A.use(d0,d0,'cite_ref-:0_6-0')
+dq1=A.defn(A.at('<ref>{{استشهاد بويكي بيانات|Q121071043'),'note',templates=[A.at('{{استشهاد بويكي بيانات|Q121071043')],rid='cite_note-7')
+A.use(dq1,dq1,'cite_ref-7')
+dq2=A.defn(A.at('<ref>{{استشهاد بويكي بيانات|Q118109726'),'note',templates=[A.at('{{استشهاد بويكي بيانات|Q118109726')],rid='cite_note-8')
+A.use(dq2,dq2,'cite_ref-8')
+A.use(A.at('<ref name="ReferenceA"/>',1),d_A,'cite_ref-ReferenceA_9-0','self-closing use before definition')
+A.defn(d_1,'note',name=':1',templates=[A.at('{{استشهاد بويكي بيانات|Q113643886')],rid='cite_note-:1-5',notes='Definition comes after a self-closing use of the same name.')
+A.use(d_1,d_1,'cite_ref-:1_5-1')
+A.defn(d_A,'note',name='ReferenceA',unstructured=True,rid='cite_note-ReferenceA-9',notes='Plain-text hand-written reference (book), no citation template. Reused 5 more times by self-closing refs.')
+A.use(d_A,d_A,'cite_ref-ReferenceA_9-1')
+for n,rid in ((2,'cite_ref-ReferenceA_9-2'),(3,'cite_ref-ReferenceA_9-3'),(4,'cite_ref-ReferenceA_9-4'),(5,'cite_ref-ReferenceA_9-5')):
+    A.use(A.at('<ref name="ReferenceA"/>',n) if n<5 else A.at('<ref name="ReferenceA"/>',5),d_A,rid)
+dn=A.defn(A.at('<ref>[http://www.alriyadh.com'),'note',unstructured=True,rid='cite_note-10',notes='Bare external link with title plus {{Webarchive}} (an archive-link template, not a citation template).')
+A.use(dn,dn,'cite_ref-10')
+A.write(0,'python3 stdlib listing, lxml sup/li listing, own quote-checking builder tools/lib.py','The four wikidata-* refs rendered from the infobox have no source location and are not labelled. IUCN template counted as citation template (judgement).','2026-11-03T01:56:13Z')

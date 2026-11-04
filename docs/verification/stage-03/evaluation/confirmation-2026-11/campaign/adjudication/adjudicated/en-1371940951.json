@@ -1,0 +1,976 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1371940951,
+  "source_sha256": "dcb0649c9539f50bbcaee6b8542ccd0aebb1ac94e6af3a35409441dd1ed908d0",
+  "html_sha256": "c23eb7a1e2b5ff7e8119c83db77856a024595e65065d9a550e5fc46a801f63ea",
+  "window": [
+   92128,
+   100128
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-r1-1",
+  "started_at": "2026-11-03T02:12:14Z",
+  "finished_at": "2026-11-03T02:12:14Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1371940951/source.wikitext",
+    "sha256": "dcb0649c9539f50bbcaee6b8542ccd0aebb1ac94e6af3a35409441dd1ed908d0"
+   },
+   {
+    "path": "packets/en-1371940951/render.html",
+    "sha256": "c23eb7a1e2b5ff7e8119c83db77856a024595e65065d9a550e5fc46a801f63ea"
+   },
+   {
+    "path": "packets/en-1371940951/packet.json",
+    "sha256": "a12cb9274e8fe1975a95a87cbc65f6c479d46f4ba9296a9271af420205b84fc5"
+   }
+  ],
+  "tools": "python3 stdlib + lxml helper snippets (regex search for refs/templates/identifiers, HTML sup/li listing, quote verification); labels decided by hand",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 91800,
+    "quote": "<ref name=\"JMF3\">"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "JMF3",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-JMF3-233",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 91902,
+    "quote": "<ref name=Wallis131>"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "Wallis131",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-Wallis131-235",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 92684,
+    "quote": "<ref name=\"JMF3-4\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "JMF3-4",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-JMF3-4-236",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "JMF4",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-JMF4-237",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Its first use (self-closing at an earlier position) precedes this definition; binds forward to it."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "JMF5",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-JMF5-238",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 94321,
+    "quote": "<ref name=\"HBU-ZTB172\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "HBU-ZTB172",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-HBU-ZTB172-239",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Gordon3-8",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-Gordon3-8-240",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 94998,
+    "quote": "<ref name=\"MFLM35\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "MFLM35",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-MFLM35-241",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 95838,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 95843,
+      "quote": "{{Cite web |da"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-242",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 96292,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 96297,
+      "quote": "{{Cite web |ti"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-243",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 96960,
+    "quote": "<ref name=\"TLS198\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "TLS198",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-TLS198-244",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 97589,
+    "quote": "<ref name=\"JMF6\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "JMF6",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-JMF6-225",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 98126,
+    "quote": "<ref name=\"HBU-ZTB170\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "HBU-ZTB170",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-HBU-ZTB170-245",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Aveling94-86",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-Aveling94-86-246",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 99167,
+    "quote": "<ref name=\"Gordon114\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Gordon114",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-Gordon114-247",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 99300,
+    "quote": "<ref name=\"TOI3104\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "TOI3104",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 99320,
+      "quote": "{{cite news|au"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-TOI3104-248",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d17",
+   "at": {
+    "cp": 99866,
+    "quote": "<ref name=\"Hindu\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Hindu",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Hindu-249",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with a bare web.archive.org link, no citation template."
+  },
+  {
+   "id": "d18",
+   "at": {
+    "cp": 101794,
+    "quote": "<ref name=\"HBU-ZTB169\">"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "HBU-ZTB169",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-HBU-ZTB169-226",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 92264,
+    "quote": "<ref name=\"JMF3\"/>"
+   },
+   "binds_to": {
+    "cp": 91800,
+    "quote": "<ref name=\"JMF3\">"
+   },
+   "render_ref_id": "cite_ref-JMF3_233-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 92282,
+    "quote": "<ref name=\"Wallis131\" />"
+   },
+   "binds_to": {
+    "cp": 91902,
+    "quote": "<ref name=Wallis131>"
+   },
+   "render_ref_id": "cite_ref-Wallis131_235-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 92662,
+    "quote": "<ref name=Wallis131 />"
+   },
+   "binds_to": {
+    "cp": 91902,
+    "quote": "<ref name=Wallis131>"
+   },
+   "render_ref_id": "cite_ref-Wallis131_235-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 92684,
+    "quote": "<ref name=\"JMF3-4\">"
+   },
+   "binds_to": {
+    "cp": 92684,
+    "quote": "<ref name=\"JMF3-4\">"
+   },
+   "render_ref_id": "cite_ref-JMF3-4_236-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 92864,
+    "quote": "<ref name=\"JMF4\" />"
+   },
+   "binds_to": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "render_ref_id": "cite_ref-JMF4_237-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "binds_to": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "render_ref_id": "cite_ref-JMF4_237-1",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 93217,
+    "quote": "<ref name=Wallis131 />"
+   },
+   "binds_to": {
+    "cp": 91902,
+    "quote": "<ref name=Wallis131>"
+   },
+   "render_ref_id": "cite_ref-Wallis131_235-4",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 93239,
+    "quote": "<ref name=\"JMF3-4\" />"
+   },
+   "binds_to": {
+    "cp": 92684,
+    "quote": "<ref name=\"JMF3-4\">"
+   },
+   "render_ref_id": "cite_ref-JMF3-4_236-1",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 93419,
+    "quote": "<ref name=\"JMF4\" />"
+   },
+   "binds_to": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "render_ref_id": "cite_ref-JMF4_237-2",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 93700,
+    "quote": "<ref name=Wallis131 />"
+   },
+   "binds_to": {
+    "cp": 91902,
+    "quote": "<ref name=Wallis131>"
+   },
+   "render_ref_id": "cite_ref-Wallis131_235-5",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 93722,
+    "quote": "<ref name=\"JMF4\" />"
+   },
+   "binds_to": {
+    "cp": 93088,
+    "quote": "<ref name=\"JMF4\">"
+   },
+   "render_ref_id": "cite_ref-JMF4_237-3",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 93873,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-0",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 93958,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-1",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 93977,
+    "quote": "<ref name=\"HBU-ZTB172\" />"
+   },
+   "binds_to": {
+    "cp": 94321,
+    "quote": "<ref name=\"HBU-ZTB172\">"
+   },
+   "render_ref_id": "cite_ref-HBU-ZTB172_239-0",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-2",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 94213,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-3",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 94232,
+    "quote": "<ref name=\"HBU-ZTB172\" />"
+   },
+   "binds_to": {
+    "cp": 94321,
+    "quote": "<ref name=\"HBU-ZTB172\">"
+   },
+   "render_ref_id": "cite_ref-HBU-ZTB172_239-1",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 94321,
+    "quote": "<ref name=\"HBU-ZTB172\">"
+   },
+   "binds_to": {
+    "cp": 94321,
+    "quote": "<ref name=\"HBU-ZTB172\">"
+   },
+   "render_ref_id": "cite_ref-HBU-ZTB172_239-2",
+   "notes": ""
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-0",
+   "notes": ""
+  },
+  {
+   "id": "u20",
+   "at": {
+    "cp": 94623,
+    "quote": "<ref name=\"Gordon3-8\" />"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-1",
+   "notes": ""
+  },
+  {
+   "id": "u21",
+   "at": {
+    "cp": 94808,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-4",
+   "notes": ""
+  },
+  {
+   "id": "u22",
+   "at": {
+    "cp": 94827,
+    "quote": "<ref name=\"Gordon3-8\" />"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-2",
+   "notes": ""
+  },
+  {
+   "id": "u23",
+   "at": {
+    "cp": 94974,
+    "quote": "<ref name=\"Gordon3-8\" />"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-3",
+   "notes": ""
+  },
+  {
+   "id": "u24",
+   "at": {
+    "cp": 94998,
+    "quote": "<ref name=\"MFLM35\">"
+   },
+   "binds_to": {
+    "cp": 94998,
+    "quote": "<ref name=\"MFLM35\">"
+   },
+   "render_ref_id": "cite_ref-MFLM35_241-0",
+   "notes": ""
+  },
+  {
+   "id": "u25",
+   "at": {
+    "cp": 95220,
+    "quote": "<ref name=\"Gordon3-8\" />"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-4",
+   "notes": ""
+  },
+  {
+   "id": "u26",
+   "at": {
+    "cp": 95244,
+    "quote": "<ref name=\"MFLM35\" />"
+   },
+   "binds_to": {
+    "cp": 94998,
+    "quote": "<ref name=\"MFLM35\">"
+   },
+   "render_ref_id": "cite_ref-MFLM35_241-1",
+   "notes": ""
+  },
+  {
+   "id": "u27",
+   "at": {
+    "cp": 95354,
+    "quote": "<ref name=\"Gordon3-8\" />"
+   },
+   "binds_to": {
+    "cp": 94486,
+    "quote": "<ref name=\"Gordon3-8\">"
+   },
+   "render_ref_id": "cite_ref-Gordon3-8_240-5",
+   "notes": ""
+  },
+  {
+   "id": "u28",
+   "at": {
+    "cp": 95378,
+    "quote": "<ref name=\"MFLM35\" />"
+   },
+   "binds_to": {
+    "cp": 94998,
+    "quote": "<ref name=\"MFLM35\">"
+   },
+   "render_ref_id": "cite_ref-MFLM35_241-2",
+   "notes": ""
+  },
+  {
+   "id": "u29",
+   "at": {
+    "cp": 95637,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-5",
+   "notes": ""
+  },
+  {
+   "id": "u30",
+   "at": {
+    "cp": 95838,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 95838,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-242",
+   "notes": ""
+  },
+  {
+   "id": "u31",
+   "at": {
+    "cp": 96292,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 96292,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-243",
+   "notes": ""
+  },
+  {
+   "id": "u32",
+   "at": {
+    "cp": 96960,
+    "quote": "<ref name=\"TLS198\">"
+   },
+   "binds_to": {
+    "cp": 96960,
+    "quote": "<ref name=\"TLS198\">"
+   },
+   "render_ref_id": "cite_ref-TLS198_244-0",
+   "notes": ""
+  },
+  {
+   "id": "u33",
+   "at": {
+    "cp": 97078,
+    "quote": "<ref name=\"JMF5\" />"
+   },
+   "binds_to": {
+    "cp": 94110,
+    "quote": "<ref name=\"JMF5\">"
+   },
+   "render_ref_id": "cite_ref-JMF5_238-6",
+   "notes": ""
+  },
+  {
+   "id": "u34",
+   "at": {
+    "cp": 97589,
+    "quote": "<ref name=\"JMF6\">"
+   },
+   "binds_to": {
+    "cp": 97589,
+    "quote": "<ref name=\"JMF6\">"
+   },
+   "render_ref_id": "cite_ref-JMF6_225-2",
+   "notes": ""
+  },
+  {
+   "id": "u35",
+   "at": {
+    "cp": 97909,
+    "quote": "<ref name=\"JMF6\" />"
+   },
+   "binds_to": {
+    "cp": 97589,
+    "quote": "<ref name=\"JMF6\">"
+   },
+   "render_ref_id": "cite_ref-JMF6_225-3",
+   "notes": ""
+  },
+  {
+   "id": "u36",
+   "at": {
+    "cp": 98101,
+    "quote": "<ref name=\"HBU-ZTB169\" />"
+   },
+   "binds_to": {
+    "cp": 101794,
+    "quote": "<ref name=\"HBU-ZTB169\">"
+   },
+   "render_ref_id": "cite_ref-HBU-ZTB169_226-1",
+   "notes": ""
+  },
+  {
+   "id": "u37",
+   "at": {
+    "cp": 98126,
+    "quote": "<ref name=\"HBU-ZTB170\">"
+   },
+   "binds_to": {
+    "cp": 98126,
+    "quote": "<ref name=\"HBU-ZTB170\">"
+   },
+   "render_ref_id": "cite_ref-HBU-ZTB170_245-0",
+   "notes": ""
+  },
+  {
+   "id": "u38",
+   "at": {
+    "cp": 98269,
+    "quote": "<ref name=\"JMF6\" />"
+   },
+   "binds_to": {
+    "cp": 97589,
+    "quote": "<ref name=\"JMF6\">"
+   },
+   "render_ref_id": "cite_ref-JMF6_225-4",
+   "notes": ""
+  },
+  {
+   "id": "u39",
+   "at": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "binds_to": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "render_ref_id": "cite_ref-Aveling94-86_246-0",
+   "notes": ""
+  },
+  {
+   "id": "u40",
+   "at": {
+    "cp": 98638,
+    "quote": "<ref name=\"Aveling94-86\" />"
+   },
+   "binds_to": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "render_ref_id": "cite_ref-Aveling94-86_246-1",
+   "notes": ""
+  },
+  {
+   "id": "u41",
+   "at": {
+    "cp": 98820,
+    "quote": "<ref name=\"Aveling94-86\" />"
+   },
+   "binds_to": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "render_ref_id": "cite_ref-Aveling94-86_246-2",
+   "notes": ""
+  },
+  {
+   "id": "u42",
+   "at": {
+    "cp": 98909,
+    "quote": "<ref name=\"Aveling94-86\" />"
+   },
+   "binds_to": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "render_ref_id": "cite_ref-Aveling94-86_246-3",
+   "notes": ""
+  },
+  {
+   "id": "u43",
+   "at": {
+    "cp": 99030,
+    "quote": "<ref name=\"Aveling94-86\" />"
+   },
+   "binds_to": {
+    "cp": 98461,
+    "quote": "<ref name=\"Aveling94-86\">"
+   },
+   "render_ref_id": "cite_ref-Aveling94-86_246-4",
+   "notes": ""
+  },
+  {
+   "id": "u44",
+   "at": {
+    "cp": 99167,
+    "quote": "<ref name=\"Gordon114\">"
+   },
+   "binds_to": {
+    "cp": 99167,
+    "quote": "<ref name=\"Gordon114\">"
+   },
+   "render_ref_id": "cite_ref-Gordon114_247-0",
+   "notes": ""
+  },
+  {
+   "id": "u45",
+   "at": {
+    "cp": 99300,
+    "quote": "<ref name=\"TOI3104\">"
+   },
+   "binds_to": {
+    "cp": 99300,
+    "quote": "<ref name=\"TOI3104\">"
+   },
+   "render_ref_id": "cite_ref-TOI3104_248-0",
+   "notes": ""
+  },
+  {
+   "id": "u46",
+   "at": {
+    "cp": 99866,
+    "quote": "<ref name=\"Hindu\">"
+   },
+   "binds_to": {
+    "cp": 99866,
+    "quote": "<ref name=\"Hindu\">"
+   },
+   "render_ref_id": "cite_ref-Hindu_249-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Window contains no DOI or PMID occurrences (checked by text search for 10.dddd/, doi, pmid, pubmed). Definitions whose body is only {{harvnb|...}} have no citation template; unstructured=false because they are structured short-citation links."
+ ],
+ "adjudication": {
+  "adjudicator": "cf11-adj-en-g2",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/en-g2/out/decisions/en-1371940951.json",
+  "changed_items": []
+ }
+}

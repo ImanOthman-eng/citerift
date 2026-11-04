@@ -1,0 +1,44 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 68752197,
+  "source_sha256": "37b226c28a031ae7f3bb7e993ac59e8172f620ef476bd73656c1e9dd381b9d19",
+  "html_sha256": "286ccac800c89de264e02e5dab8d38816560d3454ec7caf763f2251c1768fdca",
+  "window": [
+   0,
+   479
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h1",
+  "started_at": "2026-11-04T10:22:30Z",
+  "finished_at": "2026-11-04T10:25:37Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-68752197/source.wikitext",
+    "sha256": "37b226c28a031ae7f3bb7e993ac59e8172f620ef476bd73656c1e9dd381b9d19"
+   },
+   {
+    "path": "packets/ar-68752197/render.html",
+    "sha256": "286ccac800c89de264e02e5dab8d38816560d3454ec7caf763f2251c1768fdca"
+   },
+   {
+    "path": "packets/ar-68752197/packet.json",
+    "sha256": "2370323ec0646f40e88daf1ecf1e93a44932af961e037f1dddffc2e570f766ac"
+   }
+  ],
+  "tools": "python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification",
+  "unresolved": "Nothing undecided; article has no in-scope items. Whether the external-link list item counts as a bibliography entry: judged no per 3.4."
+ },
+ "definitions": [],
+ "uses": [],
+ "identifiers": [],
+ "unresolved_notes": [
+  "No <ref>, footnote template, citation template, DOI or PMID in the window. {{مراجع}} at 188 is an empty references list. \"* {{ويكي سكاي}}\" (218) is an external-link template list item with no citation template, DOI or PMID, so not labelled as bibliography entry (3.4)."
+ ]
+}

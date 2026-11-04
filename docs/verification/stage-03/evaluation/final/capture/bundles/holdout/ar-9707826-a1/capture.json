@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 7682,
+   "body_sha256": "806be61bdff6ec6497a7324de53ad326b754e261f43166cd3159d905ccfb8111",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.351,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:53:01.575122Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9707826",
+   "wire_bytes": 3039
+  },
+  {
+   "body_bytes": 59452,
+   "body_sha256": "5cd49d77d76c422bca372d9074e3dfcfe5680e5661a4374cfc1573a60501be05",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.502,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:53:11.929809Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76509905/html",
+   "wire_bytes": 12215
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:53:12.432730Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9707826,
+  "parent_revision_id": 75246357,
+  "redirect_followed": null,
+  "revision_id": 76509905,
+  "revision_timestamp": "2026-09-10T17:56:20Z",
+  "sha1": "cd7d9435cc23cf85e652be1b184a653ee171f21a",
+  "size": 7095,
+  "title": "طباعة المباني ثلاثية الأبعاد",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "5cd49d77d76c422bca372d9074e3dfcfe5680e5661a4374cfc1573a60501be05",
+  "bytes": 59452,
+  "checks": {
+   "document_revision_id": "76509905",
+   "header_revision_id": "76509905",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9707826",
+   "render_id": "bd2c9620-d0e8-11f1-8703-a32fcfa0900e",
+   "revision_sha1": "cd7d9435cc23cf85e652be1b184a653ee171f21a",
+   "revision_sha1_base36": "o04ndu4f69f4z3ay6hrj77oa6ktco4a"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76509905",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:53:12 GMT",
+   "etag": "W/\"76509905/bd2c9620-d0e8-11f1-8703-a32fcfa0900e/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:34:51 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76509905/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9707826,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "a0e3e8730f83cb526990f233efbb15ba5937576568f82c09a4e7aaf9f19584db",
+  "bytes": 7095,
+  "response_artifact": "806be61bdff6ec6497a7324de53ad326b754e261f43166cd3159d905ccfb8111",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9707826"
+ },
+ "started_at": "2026-10-30T20:52:51.929173Z",
+ "status": "complete"
+}

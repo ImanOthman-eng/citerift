@@ -1,0 +1,37 @@
+"""RF-60 integration paths: co-reported values in one template, units, roles, render witnesses and pairing.
+SYNTHETIC captures built by the repository's test helpers (production capture code, scripted transport)."""
+import json, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/src")
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract, codes, references, note_li, ref_sup, doi_link  # noqa: E402
+
+def show(title, doc):
+    print("==", title)
+    for i in doc["identifiers"]:
+        n = i["normalization"]
+        print("  ", i["id"], i["scheme"], i["role"], i["origin"], "key=", n and n["normalized"],
+              "steps=", i["decoding"] and i["decoding"]["structural_steps"], "unit=", i.get("unit_id"))
+    for x in doc["issues"]:
+        if x["code"] in ("CO_REPORTED_IDENTIFIERS", "UNIT_BOUNDARY_UNRESOLVED", "IDENTIFIER_BOUNDARY_AMBIGUOUS",
+                         "RENDER_ONLY_IDENTIFIER", "RECONCILIATION_ABSTAINED"):
+            print("   issue", x["code"], x.get("subjects") or x.get("entities"), x.get("detail"))
+    print("   status", doc["status"])
+
+W = "https://www.tandfonline.com/doi/"
+cases = {
+    # A DOI whose real suffix ends in a route word, written both as the field and as the publisher URL.
+    "field+url same text (suffix ends in /references)":
+        "A<ref>{{cite journal|title=T|doi=10.1080/1/2/references|url=" + W + "10.1080/1/2/references}}</ref>",
+    "field+url route (the RF-60 case)":
+        "A<ref>{{cite journal|title=T|doi=10.1080/12.34|url=" + W + "10.1080/12.34/abstract}}</ref>",
+    "bare url only, real DOI ends /full":
+        "A<ref>" + W + "10.1080/1/full</ref>",
+    "two refs: X/full by doi field, X/full by url":
+        "A<ref>{{cite journal|title=T|doi=10.1080/x/full}}</ref>B<ref>[" + W + "10.1080/x/full T2]</ref>",
+}
+for wiki in ("en", "ar"):
+    for title, text in cases.items():
+        with tempfile.TemporaryDirectory() as d:
+            doc = extract(bundle(Path(d), text, wiki=wiki))
+            show(f"[{wiki}] {title}", doc)

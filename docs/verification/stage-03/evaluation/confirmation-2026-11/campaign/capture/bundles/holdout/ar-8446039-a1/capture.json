@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "aac2d2dee47f219d0142e2fce5bb8cef51e4ef264da3852a9e009deba9e8cf3d",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.405,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "47",
+   "retry_after_s": 47.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:38:12.697303Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8446039",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 11621,
+   "body_sha256": "9277d9dff44283c2e789a9c5edb8c433251c23f5bb82743adff963f770570720",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.502,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:39:00.103145Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8446039",
+   "wire_bytes": 3689
+  },
+  {
+   "body_bytes": 99141,
+   "body_sha256": "864ae5720cb6fcf1454f6ba4de03c9e4dadc631a104ea0211ba29133f8aaa8a2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.468,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:39:10.606128Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77110166/html",
+   "wire_bytes": 16931
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "aac2d2dee47f219d0142e2fce5bb8cef51e4ef264da3852a9e009deba9e8cf3d"
+ ],
+ "finished_at": "2026-11-02T18:39:11.074153Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 8446039,
+  "parent_revision_id": 72786901,
+  "redirect_followed": null,
+  "revision_id": 77110166,
+  "revision_timestamp": "2026-10-30T21:36:24Z",
+  "sha1": "0ce72bcfd4986ca3ff6541aab227b081c7f883e4",
+  "size": 10974,
+  "title": "تمام بن علقمة الوزير",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "864ae5720cb6fcf1454f6ba4de03c9e4dadc631a104ea0211ba29133f8aaa8a2",
+  "bytes": 99141,
+  "checks": {
+   "document_revision_id": "77110166",
+   "header_revision_id": "77110166",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "8446039",
+   "render_id": "f75fc005-d4a9-11f1-a280-593eb67b8be0",
+   "revision_sha1": "0ce72bcfd4986ca3ff6541aab227b081c7f883e4",
+   "revision_sha1_base36": "1i9cnppizzuon1vd0tiyq7fecye0yck"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77110166",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:39:10 GMT",
+   "etag": "W/\"77110166/f75fc005-d4a9-11f1-a280-593eb67b8be0/view\"",
+   "last-modified": "Fri, 30 Oct 2026 21:36:25 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77110166/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 8446039,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "e52a0f6ad13d9fb1385601fcdf8f7a0c53b5540ba0ba463e9d55abbe462fe324",
+  "bytes": 10974,
+  "response_artifact": "9277d9dff44283c2e789a9c5edb8c433251c23f5bb82743adff963f770570720",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8446039"
+ },
+ "started_at": "2026-11-02T18:38:02.991828Z",
+ "status": "complete"
+}

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 13419,
+   "body_sha256": "af50201ee33308220c8d6dcf88bcf8043efc1c941f4f3d8330d96a30e77937d0",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.336,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:55:29.023485Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=37174434",
+   "wire_bytes": 5204
+  },
+  {
+   "body_bytes": 108630,
+   "body_sha256": "faf081b0bae5117ec458c9018046b76230463d9f1b8c79eef48fba1708323628",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.439,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:55:39.361597Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377523963/html",
+   "wire_bytes": 20671
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:55:39.801296Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 37174434,
+  "parent_revision_id": 1372237152,
+  "redirect_followed": null,
+  "revision_id": 1377523963,
+  "revision_timestamp": "2026-09-29T21:13:22Z",
+  "sha1": "bcc6f06a93e19125c57a1f78ab5f1099c6972e5c",
+  "size": 12747,
+  "title": "Cynthia Brewer",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "faf081b0bae5117ec458c9018046b76230463d9f1b8c79eef48fba1708323628",
+  "bytes": 108630,
+  "checks": {
+   "document_revision_id": "1377523963",
+   "header_revision_id": "1377523963",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "37174434",
+   "render_id": "3f40fe91-d42e-11f1-b3ab-d351692d492b",
+   "revision_sha1": "bcc6f06a93e19125c57a1f78ab5f1099c6972e5c",
+   "revision_sha1_base36": "m1ug4w0yh7eve8v1bz15kks5bevkrbw"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1377523963",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:55:39 GMT",
+   "etag": "W/\"1377523963/3f40fe91-d42e-11f1-b3ab-d351692d492b/view\"",
+   "last-modified": "Fri, 30 Oct 2026 05:37:02 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1377523963/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 37174434,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3d2e8fdd30fa67f06036bbee1553fb3a986187b12747823b153e5ab85b3c33c3",
+  "bytes": 12747,
+  "response_artifact": "af50201ee33308220c8d6dcf88bcf8043efc1c941f4f3d8330d96a30e77937d0",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=37174434"
+ },
+ "started_at": "2026-10-30T20:55:19.589827Z",
+ "status": "complete"
+}

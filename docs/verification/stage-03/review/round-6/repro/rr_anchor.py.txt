@@ -1,0 +1,15 @@
+from h import *
+cases = [
+ "A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/a&amp;b|pmid=123}}</ref>",
+ "A<ref>{{cite journal|title=T|doi=https://doi.org/10.1000/a&amp;b&#x26;c|pmid=123}}</ref>",
+ "A<ref>{{cite journal|title=T &amp; U|doi=10.1000/&#x61;bc|pmid=0123}}</ref>",
+ "A<ref>{{cite journal|title=T|url=https://onlinelibrary.wiley.com/doi/10.1002%2Fabc&amp;d/full}}</ref>",
+]
+for t in cases:
+    d, p = run(t)
+    print(repr(t))
+    for i in d["identifiers"]:
+        s = i["source"]
+        raw = slice_bytes(p, d, {"byte_start": s["byte_start"], "byte_end": s["byte_end"]}).decode()
+        cp = t[s["cp_start"]:s["cp_end"]]
+        print("   ", i["scheme"], i["role"], "key", i["normalization"]["normalized"], "| span cp text:", repr(cp), "| bytes text:", repr(raw), "| flags", [x for x in i.get("issue_codes", [])] if "issue_codes" in i else "")

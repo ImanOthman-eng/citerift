@@ -1,0 +1,11 @@
+import sys;sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval/ar-h3/tools')
+from lib import A
+a=A('ar-73397303')
+d1=a.D('d1','<ref>{{استشهاد ويب|عنوان=Daniel D. Barnard|مسار=http://politicalgraveyard',tpl=[('{{استشهاد ويب',)],rn='cite_note-2')
+d2=a.D('d2','<ref>Daniel Barnard, [https://blurblawg',unstructured=True,rn='cite_note-3',notes='hand-written citation; {{Webarchive}} is an archive-link template, not a citation template')
+d3=a.D('d3','<ref>{{استشهاد ويب|عنوان=Daniel D. Barnard|مسار=https://history',tpl=[('{{استشهاد ويب',)],rn='cite_note-4')
+a.U('u1','<ref>{{استشهاد ويب|عنوان=Daniel D. Barnard|مسار=http://politicalgraveyard',d1,'cite_ref-2')
+a.U('u2','<ref>Daniel Barnard, [https://blurblawg',d2,'cite_ref-3')
+a.U('u3','<ref>{{استشهاد ويب|عنوان=Daniel D. Barnard|مسار=https://history',d3,'cite_ref-4')
+a.un.append('Rendered HTML has a Wikidata-generated reference (cite_ref-wikidata-1b76..._1-0, from the infobox template); not in source, not labelled (guide 3.3).')
+a.write()

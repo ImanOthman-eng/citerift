@@ -1,0 +1,15 @@
+from h import *
+sys.path.insert(0, "/home/user/citerift/docs/verification/stage-03/protocol/scripts")
+import evaluate_v2 as v2
+cases = {
+ "sfn vs sfnp (conflict, distinct text)": "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}",
+ "3 calls: ps=x / none / postscript=x (2 contents, 3 source texts)": "A{{sfn|Smith|2001|ps=x}} B{{sfn|Smith|2001}} C{{sfn|Smith|2001|postscript=x}}",
+ "alias only": "A{{sfn|Smith|2001}} B{{sf|Smith|2001}} C{{sfn|Smith|2001}}",
+ "p=5 / page=5 / sfnp": "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}} C{{sfnp|Smith|2001|p=5}}",
+}
+for k, t in cases.items():
+    d, p = run(t)
+    rep = v2.repeat_definitions(d, t)
+    pred = v2.engine_predictions_v2(d, t)
+    c = [c for c in d["containers"] if c["layout"] == "short_footnote"][0]
+    print(f"{k}\n   state={c['binding_state']} engine defs={len(c['definitions'])} scorer-v2 predicted defs={len(pred.definitions)} dropped={sorted(rep)}")

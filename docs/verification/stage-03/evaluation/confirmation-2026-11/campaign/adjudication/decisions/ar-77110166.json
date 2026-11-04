@@ -1,0 +1,22 @@
+{
+  "article": "ar-77110166",
+  "adjudicator": "cf11-adj-ar-g2",
+  "started_at": "2026-11-03T02:18:53Z",
+  "finished_at": "2026-11-03T02:20:34Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "Under 3.1 and 3.1's templates rule, citation templates are those 'whose purpose is to format a citation' (the guide's examples are not exhaustive: 'and similar'). The template {{EI2}} at cp 2278 is a transclusion (its template page is not a red link) and its rendered output in the li cite_note-EI2-4 is a CS1 citation ('<cite class=\"citation encyclopaedia cs1\">', 'The Encyclopaedia of Islam, Second Edition (12 vols.). Leiden: E. J. Brill. 1960–2005.'). So d4 has a citation template and is not unstructured. AMBIGUITY: the guide does not name EI2; I read 'purpose' as the test, which the render confirms. The locked notes recorded uncertainty; the decision here resolves it.",
+      "corrected_label": null
+    },
+    {
+      "item": 1,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "The engine's unstructured unit at the same location (cp 2278, {{EI2}}) is not an item under the guide: unstructured is true only when the definition cites in plain text with no citation template (3.1). Because {{EI2}} is a citation template by purpose (item 0), d4 is not unstructured, so the locked label correctly has no such unit.",
+      "corrected_label": null
+    }
+  ]
+}

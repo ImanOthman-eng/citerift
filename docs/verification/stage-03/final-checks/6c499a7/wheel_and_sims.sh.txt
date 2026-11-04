@@ -1,0 +1,20 @@
+#!/bin/bash
+SP=<scratch>; R=$SP/final-6c499a7; W=$R/wheel; REPO=<repo>
+mkdir -p $W; cd $REPO
+(uv build --wheel --out-dir $W/dist 2>&1 | grep -v UV_NATIVE) > $R/wheel-build.txt
+uv export --locked --format requirements-txt --no-emit-project --no-dev 2>/dev/null > $W/runtime-req.txt
+uv venv -q --python 3.12 $W/venv
+uv pip install -q --python $W/venv/bin/python --require-hashes -r $W/runtime-req.txt >> $R/wheel-build.txt 2>&1
+uv pip install -q --python $W/venv/bin/python --no-deps $W/dist/*.whl >> $R/wheel-build.txt 2>&1
+echo "install exit $?" >> $R/wheel-build.txt
+python3 -I $R/wheel_smoke.py.txt $REPO $W/venv/bin $W/smoke > $R/wheel-smoke.txt 2>&1; echo "smoke exit $?" >> $R/wheel-smoke.txt
+C=$REPO/docs/verification/stage-03/evaluation/confirmation-d035/campaign/prediction/extractions
+for p in "d035-ar-no-render ar-70571172" "d035-en-reserve2 en-1375552426" "d035-ar-infobox-g6b ar-76814232"; do set -- $p
+  if cmp -s $W/smoke/$1.json $C/$2.json; then echo "$1 byte-identical to prediction $2" ; else echo "$1 DIFFERS from $2"; fi; done >> $R/wheel-smoke.txt
+cd $REPO
+.venv/bin/python -P simulations/stage03/fetch_policy_sim.py 5000 20261028 > $R/sim-fetch.json 2>&1; echo "fetch exit $?" > $R/sims-exit.txt
+.venv/bin/python -P simulations/stage03/reconcile_perturbation_sim.py 200 20261028 > $R/sim-reconcile.json 2>&1; echo "reconcile exit $?" >> $R/sims-exit.txt
+.venv/bin/python -P simulations/stage03/campaign_driver_sim.py 2000 20261028 > $R/sim-driver.json 2>&1; echo "driver exit $?" >> $R/sims-exit.txt
+for f in fetch reconcile driver; do cmp -s $R/sim-$f.json $SP/final-e6b3d7b/sim-$f.json && echo "sim-$f identical to e6b3d7b" || echo "sim-$f differs from e6b3d7b"; done >> $R/sims-exit.txt
+echo "porcelain after wheel/sims: $(git status --porcelain | wc -l)" >> $R/sims-exit.txt
+echo DONE >> $R/sims-exit.txt

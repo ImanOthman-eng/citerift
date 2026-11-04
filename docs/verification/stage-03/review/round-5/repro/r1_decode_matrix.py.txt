@@ -1,0 +1,54 @@
+"""RF-60 adversarial decode matrix (unit level). Prints normalizer_input, key, steps for each input."""
+import sys
+sys.path.insert(0, "/home/user/citerift/src")
+from citerift.wiki.identifiers import decode, decode_render_href, url_scheme
+
+H = "https://onlinelibrary.wiley.com"
+cases = [
+    H + "/doi/10.1002/abc.123/abstract",
+    H + "/doi/10.1002/abc.123%2Fabstract",          # encoded slash: one path segment
+    H + "/doi/10.1002%2Fabc.123%2Fabstract",
+    H + "/doi/10.1002/abc.123/%61bstract",          # encoded route word
+    H + "/doi/10.1002/abc.123/abstract/",           # trailing slash
+    H + "/doi/10.1002/abc.123/abstract?x=1#y",
+    H + "/doi/10.1002/abc.123/ABSTRACT",
+    H + "/doi/10.1002/abc.123/Abstract",
+    H + "/doi/abs/10.1002/abc.123/abstract",
+    H + "/doi/reader/10.1002/abc.123/pdf",
+    "//onlinelibrary.wiley.com/doi/10.1002/abc.123/full",
+    H + "/doi/10.1002/مرجع/abstract",                # Arabic suffix
+    H + "/doi/10.1002/abc.123/ملخص",                # Arabic last segment
+    H + "/doi/10.1002/abc.123/abstract‏",      # RLM after route word
+    H + "/doi/10.1002/abc.123/abstract%20",
+    H + "/doi/10.1002/abc.123/abstract\n",          # newline inside (before trim?)
+    H + "/doi/10.1002/abc.123//abstract",           # empty segment
+    H + "/doi/10.1002/abc.123/ /abstract",
+    H + "/doi/10.1002/x/abstract",
+    H + "/doi/10.1002/./abstract",
+    H + "/doi/10.1002/%20/abstract",
+    H + "/doi/10.1002/​/abstract",             # zero-width suffix
+    H + "/doi/10.1002//abstract",
+    H + "/doi/10.12345/abstract/abstract",
+    H + "/doi/10.1002/abc.123/pdf/abstract",
+    H + "/doi/10.1002/abc.123/ab%73tract",
+    H + "/doi/10.1002/abc.123/abſtract",            # long s: casefold
+    H + "/doi/10.1002/abc.123/ＰＤＦ",                 # fullwidth
+    H + "/doi/10.1002/abc.123/pdf\u0000",
+    "https://doi.org/10.1002/abc.123/abstract",
+    "https://DOI.ORG/10.1002/abc.123/abstract",
+    "https://doi.org./10.1002/abc.123/abstract",    # trailing dot host
+    "https://doi.org:443/10.1002/abc.123/abstract", # port host
+    "https://user@doi.org/10.1002/abc.123/abstract",
+]
+for u in cases:
+    got = decode("doi", "url", u, ())
+    r = decode_render_href(u)
+    if got is None:
+        print(repr(u), "-> None"); continue
+    n = got.normalized
+    print(repr(u))
+    print("   src  in=%r key=%r valid=%s steps=%s" % (got.normalizer_input, n.normalized, n.valid, list(got.steps)))
+    if r is None:
+        print("   render: not an identifier link (url_scheme=%r)" % url_scheme(u))
+    elif r[1].normalized.normalized != n.normalized:
+        print("   RENDER DIFFERS key=%r" % r[1].normalized.normalized)

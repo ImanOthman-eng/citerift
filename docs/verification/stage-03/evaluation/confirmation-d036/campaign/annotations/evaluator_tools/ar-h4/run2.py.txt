@@ -1,0 +1,63 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/ar-h4/tools')
+from build import build
+from run1 import T,P
+# ar-76532222
+t=T(76532222)
+r1=P(t,'<ref>{{استشهاد بويكي'); r2=P(t,"<ref name='pevsner2009'>"); r3=P(t,'<ref name=doe2009>'); r4=P(t,"<ref name='li2010'>"); r5=P(t,'<ref name=Stein2001>')
+def tt(r,tag,q): return (r[0]+len(tag),q)
+defs=[dict(at=r1,note_id='cite_note-1',templates=[tt(r1,'<ref>','{{استشهاد بويكي بيانات')],notes='Citation template pulls the work from Wikidata item Q125620730; no identifier in source.'),
+ dict(at=r2,name='pevsner2009',note_id='cite_note-pevsner2009-2',templates=[tt(r2,"<ref name='pevsner2009'>",'{{استشهاد بكتاب')]),
+ dict(at=r3,name='doe2009',note_id='cite_note-doe2009-3',templates=[tt(r3,'<ref name=doe2009>','{{استشهاد ويب')]),
+ dict(at=r4,name='li2010',note_id='cite_note-li2010-4',templates=[tt(r4,"<ref name='li2010'>",'{{استشهاد بدورية محكمة')]),
+ dict(at=r5,name='Stein2001',note_id='cite_note-Stein2001-5',templates=[tt(r5,'<ref name=Stein2001>','{{استشهاد بدورية محكمة')])]
+uses=[dict(at=r,binds=r,ref_id=i) for r,i in zip([r1,r2,r3,r4,r5],['cite_ref-1','cite_ref-pevsner2009_2-0','cite_ref-doe2009_3-0','cite_ref-li2010_4-0','cite_ref-Stein2001_5-0'])]
+ids=[dict(at=P(t,'10.1101/gr.097261.109'),scheme='doi',role='primary_citation_field',key='10.1101/gr.097261.109'),
+     dict(at=P(t,'20019144'),scheme='pmid',role='primary_citation_field',key='20019144'),
+     dict(at=P(t,'10.1038/35080529'),scheme='doi',role='primary_citation_field',key='10.1038/35080529'),
+     dict(at=P(t,'11433356'),scheme='pmid',role='primary_citation_field',key='11433356')]
+build(76532222,defs,uses,ids,['pmc=2813482 in the li2010 citation is a PMC id, out of scope (only DOI and PMID).','No ISBN/ISSN labelled (out of scope).'])
+
+# ar-67036660
+t=T(67036660)
+W0=7499
+import re
+pos=[m.start() for m in re.finditer(r'<ref[ >]',t)]
+pre=lambda q: P(t,q)
+# pre-window targets
+d1=(263,t[263:263+30]); d5=(4494,t[4494:4494+30])
+assert t[263:263+10]=='<ref name=' and t[4494:4494+14]=='<ref name=":2"'
+note={9:'cite_note-9',10:'cite_note-10',11:'cite_note-11'}
+defs=[dict(at=(263,'<ref name=":1">{{استشهاد ويب'),in_window=False,name=':1',note_id='cite_note-:1-1',templates=[],notes='Before the window; included only as binding target of the uses at 8985 and 15336. Templates not listed (start before window).'),
+      dict(at=(4494,'<ref name=":2">{{استشهاد ويب'),in_window=False,name=':2',note_id='cite_note-:2-5',templates=[],notes='Before the window; included only as binding target of the use at 15353.')]
+refs=[p for p in pos if p>=W0]
+ref_list=[]
+for p in refs:
+    seg=t[p:p+12]
+    if t.startswith('<ref name=":1" />',p) or t.startswith('<ref name=":2" />',p): continue
+    ref_list.append(p)
+ids_map={}
+n=9
+uses=[]
+for p in ref_list:
+    q=t[p:p+5]
+    assert t[p:p+5]=='<ref>', (p,t[p:p+20])
+    tp=p+5
+    tq=re.match(r'\{\{استشهاد[^|{}]*',t[tp:]).group(0).rstrip()
+    nid=f'cite_note-{n}'
+    d=dict(at=(p,'<ref>'+tq),note_id=nid,templates=[(tp,tq)])
+    defs.append(d)
+    uses.append(dict(at=(p,'<ref>'+tq),binds=(p,'<ref>'+tq),ref_id=f'cite_ref-{n}'))
+    n+=1
+assert n==22,n
+defs[-0]  # noop
+# reuse uses
+for p,nm,rid in ((8985,':1','cite_ref-:1_1-1'),(15336,':1','cite_ref-:1_1-2'),(15353,':2','cite_ref-:2_5-1')):
+    assert t.startswith(f'<ref name="{nm}" />',p),(p,t[p:p+20])
+    binds=(263,'<ref name=":1">{{استشهاد ويب') if nm==':1' else (4494,'<ref name=":2">{{استشهاد ويب')
+    uses.append(dict(at=(p,f'<ref name="{nm}" />'),binds=binds,ref_id=rid,notes='Self-closing reuse by name; no body.'))
+uses.sort(key=lambda u:u['at'][0])
+ids=[dict(at=P(t,'10.1038/s41586-020-2462-y',1),scheme='doi',role='primary_citation_field',key='10.1038/s41586-020-2462-y',notes='Value of دوي= field.')]
+# check the journal def has the id inside
+build(67036660,defs,uses,ids,['The nature.com URL (https://www.nature.com/articles/s41586-020-2462-y) and its web.archive.org copy end in a Springer Nature article id that equals the DOI suffix, but do not contain the literal "10.1038/" text; not labelled as identifier occurrences.',
+  'Definitions at 263 (:1) and 4494 (:2) start before the window and are listed with in_window=false only as binding targets.',
+  'Pre-window refs (:0, unnamed at 2396, 3323, 5657, 6571, 6865) are not listed (their starts are before the window and nothing in the window binds to them).'])

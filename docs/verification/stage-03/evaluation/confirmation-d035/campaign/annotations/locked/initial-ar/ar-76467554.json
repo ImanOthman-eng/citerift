@@ -1,0 +1,120 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76467554,
+  "source_sha256": "740b75e5b234b879c9de1b8e7b4b2e18d0085e4175e14c3267db46e6cd56f3bb",
+  "html_sha256": "513ada3c6ab50f9c470b0c08d85d38d726e68131fe585f404780c4a189a78200",
+  "window": [
+   0,
+   1299
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h1",
+  "started_at": "2026-11-03T09:00:00Z",
+  "finished_at": "2026-11-03T10:00:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-76467554/packet.json",
+    "sha256": "4d8b8d798b858cb64926948baf3c77eeb67b6eb1e28b524e876227e209d5d615"
+   },
+   {
+    "path": "packets/ar-76467554/source.wikitext",
+    "sha256": "740b75e5b234b879c9de1b8e7b4b2e18d0085e4175e14c3267db46e6cd56f3bb"
+   },
+   {
+    "path": "packets/ar-76467554/render.html",
+    "sha256": "513ada3c6ab50f9c470b0c08d85d38d726e68131fe585f404780c4a189a78200"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand",
+  "unresolved": "Rendered text of footnote 1 begins with inline CSS; no warning vocabulary seen in either footnote."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 183,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://bigen"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 188,
+      "quote": "{{استشهاد ويب| مسار = ht"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 436,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.j"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 441,
+      "quote": "{{استشهاد ويب| مسار = ht"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": "\"معلومات عن تبعثر الضوء على موقع jstor.org\". jstor.org. مؤرشف من الأصل في 2020-04-14.",
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 183,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://bigen"
+   },
+   "binds_to": {
+    "cp": 183,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://bigen"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 436,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.j"
+   },
+   "binds_to": {
+    "cp": 436,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.j"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Rendered text of footnote 1 begins with inline CSS; no warning vocabulary seen in either footnote."
+ ]
+}

@@ -1,0 +1,34 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+cases = [
+ ("en", 'Paper. <cite class="citation journal">Smith. Foo. Retrac</cite>ted.'),
+ ("en", 'Paper. Re<cite>tracted</cite>.'),
+ ("en", 'Paper. <cite>Smith. Expression of</cite> concern.'),
+ ("en", 'Paper. <cite>Smith. Expression</cite> of concern.'),
+ ("ar", 'ورقة. <cite>سميث. مس</cite>حوب.'),
+ ("ar", 'ورقة. <cite>سميث. مصدر</cite> مسحوب.'),
+ ("en", 'Paper. Re<a rel="mw:WikiLink" href="./Template:Retracted">tracted</a>.'),
+ ("en", 'Paper. <span class="mw-cite-backlink"><a href="./X#cite_ref-1">^</a></span>Retracted.'),
+ ("en", 'Paper. <bdi>Retracted</bdi>'),
+ ("en", 'Paper. <abbr title="x">Retr</abbr>acted'),
+ ("en", 'Paper. <font>Retr</font>acted'),
+ ("en", 'Paper. <span>Retr</span><wbr/>acted'),
+ ("en", 'Paper. Retr&shy;acted'),
+ ("en", 'Paper. Retr​acted'),
+ ("en", 'Paper. R&#x0065;tracted'),
+ ("en", 'Paper. <span>Expression of</span><br/><span>concern</span>'),
+ ("en", 'Paper. <span typeof="mw:Entity">R</span>etracted'),
+ ("en", 'Paper. <span typeof="mw:Transclusion" about="#mwt9" data-mw="{}">Retr</span>acted'),
+ ("en", 'Paper. <link rel="mw:PageProp/Category" href="./Category:X"/>Retr<link rel="mw:PageProp/Category" href="./Category:X"/>acted'),
+ ("en", 'Paper. <style>.x{}</style>Retracted'),
+ ("en", 'Paper. Retr<script>x</script>acted'),
+]
+for wiki, inner in cases:
+    try:
+        doc, rep, b = observe(inner, wiki)
+        m = doc["markers"][0]
+        print(f"{wiki} {inner!r}\n    -> {short(m)} verified={rep['verified']}")
+        if not rep["verified"]:
+            print("      ", [i for i in rep["issues"]][:3])
+    except Exception as e:
+        print(f"{wiki} {inner!r}\n    -> EXC {type(e).__name__}: {e}")

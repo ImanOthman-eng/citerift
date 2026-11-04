@@ -1,0 +1,20 @@
+import importlib, json, sys, tempfile
+from pathlib import Path
+R = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt")
+sys.path.insert(0, str(R / "docs/verification/stage-03/evaluation/scripts"))
+sys.path.insert(0, str(R / "docs/verification/stage-03/evaluation/confirmation-2026-11/scripts"))
+cc = importlib.import_module("campaign_capture")
+T0 = 1_793_600_000.0
+class Clock:
+    def __init__(s, t=T0): s.t = t; s.sleeps = []
+    def __call__(s): return s.t
+    def sleep(s, x): s.sleeps.append(x); s.t += x
+def stamp(t): return cc._stamp(t).replace("+00:00", "Z")
+def plan(tmp, *arts):
+    p = Path(tmp) / "plan.json"
+    p.write_text(json.dumps({"campaign": "t", "articles": [{"split": s, "wiki": w, "page_id": n} for s, w, n in arts]}))
+    return p
+def rec(status="complete", attempts=None, **kw):
+    r = {"attempts": [{"code": None, "body_bytes": 1000}] if attempts is None else attempts, "issues": [], "not_before": None, "render": {}, **kw}
+    return {"status": status, "bundle": "b", "capture": r}
+class Killed(BaseException): pass

@@ -1,0 +1,36 @@
+{
+  "capture_sha256": "0232a17bec55e33387288006b841a875baea21d297e7b3709495ec2c039167fb",
+  "checks": [
+    {
+      "checked": 1,
+      "failed": 0,
+      "first_failure": null,
+      "name": "schema extraction"
+    }
+  ],
+  "extraction_digest": "5dedefded92b728a7fa530f2b32f6bbecf6a354ea1af1f578c2289eab6ae44f0",
+  "issues": [
+    {
+      "code": "REPLAY_DIFFERS",
+      "detail": "differs in accounting, markers",
+      "entities": [],
+      "evidence": [],
+      "retryable": false,
+      "severity": "error"
+    }
+  ],
+  "operation": "replay",
+  "replay": {
+    "differing_keys": [
+      "accounting",
+      "markers"
+    ],
+    "new_digest": "5dedefded92b728a7fa530f2b32f6bbecf6a354ea1af1f578c2289eab6ae44f0",
+    "new_status": "complete",
+    "recorded_digest": "c0aa14fbfac559a4000d13b0fe52932829b13f6df220baf7dbb5e163406cb842",
+    "state": "differs"
+  },
+  "schema": "urn:citerift:schema:wiki:v1:verification",
+  "schema_version": "1.0.0",
+  "verified": false
+}

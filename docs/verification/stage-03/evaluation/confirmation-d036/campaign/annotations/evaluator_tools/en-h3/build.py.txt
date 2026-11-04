@@ -1,0 +1,28 @@
+import re,json,sys,hashlib
+from urllib.parse import unquote
+import html as H
+AG='d036-eval-en-h3'
+START='2026-11-04T10:25:00Z'
+def run(d):
+    pk=json.load(open(f'packets/{d}/packet.json'))
+    w=pk['window']; cs,ce=w['cp_start'],w['cp_end']
+    t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+    def loc(cp,n=48):
+        q=t[cp:cp+n]; assert t[cp:cp+len(q)]==q and len(q)>=8; return {'cp':cp,'quote':q}
+    refs=[]  # each: start,end,name,selfclosing,body
+    for m in re.finditer(r'<ref\b([^>]*?)(/?)>',t):
+        nm=re.search(r'name\s*=\s*"?([^"\s/>]+(?:[^"/>]*[^"\s/>])?)"?',m.group(1))
+        name=nm.group(1) if nm else None
+        if m.group(2)=='/':
+            refs.append(dict(start=m.start(),end=m.end(),name=name,sc=True,body=None))
+        else:
+            e=t.index('</ref>',m.end())
+            refs.append(dict(start=m.start(),end=e+6,name=name,sc=False,body=t[m.end():e],bstart=m.end()))
+    return pk,t,loc,refs,(cs,ce)
+
+def idents(t,loc,r,note_rolesfn=None):
+    out=[]
+    body=t[r['bstart']:r['end']-6]; b0=r['bstart']
+    for m in re.finditer(r'\|\s*(doi|pmid)\s*=\s*([^|}]*?)\s*(?=\||\}\})',body):
+        out.append((b0+m.start(2),m.group(2),m.group(1)))
+    return out

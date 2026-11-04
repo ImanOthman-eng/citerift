@@ -1,0 +1,4 @@
+E verify (title with lone surrogate): (1, ["internal error: UnicodeEncodeError: 'utf-8' codec can't encode character '\\ud800' in position 1616: surrogates not allowed"], '')
+E replay (title with lone surrogate): (1, ["internal error: UnicodeEncodeError: 'utf-8' codec can't encode character '\\ud800' in position 1616: surrogates not allowed"], '')
+F verify (capture page title with lone surrogate): (5, ['verification failed: BUNDLE_SEMANTIC_INVALID'], '{\n  "capture_sha256": "2c71089d64597a6d7aa7e300f2dac40e7c27dfc0aa8f0adf000d21f95')
+F extract: (3, ['extraction failed: BUNDLE_SEMANTIC_INVALID'], '{\n  "accounting": {},\n  "capture": {\n    "capture_sha256": "2c71089d64597a6d7aa7')

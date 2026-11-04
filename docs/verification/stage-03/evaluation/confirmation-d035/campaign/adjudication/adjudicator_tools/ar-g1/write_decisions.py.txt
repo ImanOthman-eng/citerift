@@ -1,0 +1,67 @@
+import json, os, datetime
+
+BASE = "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj-d035/ar-g1"
+ADJ = "d035-adj-ar-g1"
+STARTED = "2026-11-03T16:40:58Z"
+FINISHED = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+MARK_REASON = ("Confirm the locked marker 'none'. The entry is a standalone citation template (bibliography entry, "
+               "no cite_note). The entry's source text and its rendered citation in the bibliography section contain "
+               "no retraction, withdrawal, erratum or expression-of-concern vocabulary. The engine state "
+               "'not_inspected' means the engine did not look, not that it disagrees.")
+
+ARTICLES = {
+    "ar-76081354": [
+        {"item": 0, "kind": "marker", "decision": "confirm", "corrected_label": None,
+         "reason": MARK_REASON + " Entry d5 (rma A) renders as CITEREFSbihi1980 with no warning text."},
+        {"item": 1, "kind": "marker", "decision": "confirm", "corrected_label": None,
+         "reason": MARK_REASON + " Entry d6 (rma B) renders as CITEREFChvátalSbihi1987 with no warning text."},
+        {"item": 2, "kind": "marker", "decision": "confirm", "corrected_label": None,
+         "reason": MARK_REASON + " Entry d7 (rma C) renders as CITEREFChvátalSbihi1988 with no warning text."},
+        {"item": 3, "kind": "marker", "decision": "confirm", "corrected_label": None,
+         "reason": MARK_REASON + " Entry d8 (rma D) renders as CITEREFReedSbihi1995 with no warning text."},
+    ],
+    "ar-76491054": [
+        {"item": i, "kind": "marker", "decision": "confirm", "corrected_label": None,
+         "reason": MARK_REASON + " Further-reading entry rendered in the refbegin list (Parsoid cite element) "
+                   "with no warning text; the source list item has no such vocabulary either."}
+        for i in range(7)
+    ],
+    "ar-76531212": [
+        {"item": 0, "kind": "identifier_missed", "decision": "confirm", "corrected_label": None,
+         "reason": ("Confirm the locked identifier at cp 2949. The DOI 10.1088/0004-637X/741/2/68 sits in the path of a "
+                    "publisher URL (/article/10.…, not /doi/10.…) in the url= field of a citation template inside a "
+                    "<ref>. Section 3.5 gives the publisher-URL whole-URL rule only for /doi/ paths, so the raw text is "
+                    "the identifier text ('anything else' row). The role identifier_link fits a publisher URL in url= "
+                    "pointing at the identifier. The engine missing it does not make it not an occurrence. Ambiguity: "
+                    "the guide does not say how a non-/doi/ publisher URL is quoted; the identifier-text reading was chosen.")},
+    ],
+    "ar-76528147": [
+        {"item": 0, "kind": "unstructured_unit_missed", "decision": "confirm", "corrected_label": None,
+         "reason": ("Confirm unstructured=true for the ref 'googlescholar' (cp 4642). Its body is only "
+                    "{{معرف جوجل سكولار}}, which produces a link to the subject's Google Scholar profile. No citation "
+                    "template is present (the guide's test is 'no citation template', section 3.1), and the footnote "
+                    "cites a source with a bare link, like the guide's bare-URL example. Ambiguity: an identifier template "
+                    "is not literally plain text, so unstructured=false is an arguable reading; the chosen reading "
+                    "follows the 'no citation template' test most closely.")},
+    ],
+}
+
+for article, decisions in ARTICLES.items():
+    adir = os.path.join(BASE, "out", "decisions")
+    odir = os.path.join(BASE, "out", "adjudicated")
+    os.makedirs(adir, exist_ok=True)
+    os.makedirs(odir, exist_ok=True)
+    dec_path = os.path.join(adir, article + ".json")
+    doc = {"article": article, "adjudicator": ADJ, "started_at": STARTED, "finished_at": FINISHED,
+           "decisions": decisions}
+    with open(dec_path, "w", encoding="utf-8") as f:
+        json.dump(doc, f, ensure_ascii=False, indent=2)
+
+    src = os.path.join(BASE, "items", article, "locked.json")
+    locked = json.load(open(src, encoding="utf-8"))
+    changed = [d["item"] for d in decisions if d["decision"] == "correct"]
+    locked["adjudication"] = {"adjudicator": ADJ, "decisions_file": dec_path, "changed_items": changed}
+    with open(os.path.join(odir, article + ".json"), "w", encoding="utf-8") as f:
+        json.dump(locked, f, ensure_ascii=False, indent=2)
+    print(article, "confirm", sum(d["decision"] == "confirm" for d in decisions), "correct", len(changed))

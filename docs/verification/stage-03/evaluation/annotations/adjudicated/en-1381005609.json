@@ -1,0 +1,679 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1381005609,
+    "source_sha256": "3016c0be131c236bcfa6e947e412363c2d4927833d71385aa40c271660ff5e4a",
+    "html_sha256": "83b9a5726d811935310f6804012eaa9c3e74e35bb5215efc621624865e074a0f",
+    "window": [
+      10017,
+      18017
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en",
+    "started_at": "2026-10-29T09:05:16Z",
+    "finished_at": "2026-10-29T09:08:44Z",
+    "files_opened": [
+      {
+        "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "packets/en-r1/en-1381005609/packet.json",
+        "sha256": "b8d9bd457c26ae6d4d54409a953a34064a9e651af8ac886b3e0a10d4dd9c7a71 (computed; packet.json does not list its own hash)"
+      },
+      {
+        "path": "packets/en-r1/en-1381005609/source.wikitext",
+        "sha256": "3016c0be131c236bcfa6e947e412363c2d4927833d71385aa40c271660ff5e4a"
+      },
+      {
+        "path": "packets/en-r1/en-1381005609/render.html",
+        "sha256": "83b9a5726d811935310f6804012eaa9c3e74e35bb5215efc621624865e074a0f"
+      }
+    ],
+    "tools": "Read tool and cat/grep for viewing; python3 -I snippets (stdlib re/str.find + lxml) to list <ref/{{cite/10./doi/pmid positions in source.wikitext and to list <sup typeof=mw:Extension/ref> (id, data-mw attrs) and <li id=cite_note-...> text/red links in render.html; a small writer that builds quotes from hand-chosen positions and asserts text[cp:cp+len(quote)]==quote. Every label decided by reading the text.",
+    "unresolved": "Judgement call: list-defined <ref> definitions inside {{Reflist|refs=}} are not counted as uses (they produce no marker). {{cite simbad}} counted as a citation template; bibcode/arxiv/s2cid/issn are not DOI/PMID and were not labelled."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 10017,
+        "quote": "<ref name=gcrv1953>{{cite journal | last=Wilson |"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "gcrv1953",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 10036,
+            "quote": "{{cite journal | last=Wilson | first=Ralph Elmer |"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-gcrv1953-9",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 10300,
+        "quote": "<ref name=apjs180_1_117>{{cite journal | last1=Abt"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "apjs180_1_117",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 10324,
+            "quote": "{{cite journal | last1=Abt | first1=Helmut A. | ti"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-apjs180_1_117-6",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 10620,
+        "quote": "<ref name=apj1_354_310>{{cite journal | last1=Bala"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "apj1_354_310",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 10643,
+            "quote": "{{cite journal | last1=Balachandran | first1=Suchi"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-apj1_354_310-13",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 10904,
+        "quote": "<ref name=aaa493_3_1099>{{cite journal | last1=Sch"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "aaa493_3_1099",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 10928,
+            "quote": "{{cite journal | last1=Schröder | first1=C. | last"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-aaa493_3_1099-14",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 11335,
+        "quote": "<ref name=clpl4_99>{{cite journal | display-author"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "clpl4_99",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 11354,
+            "quote": "{{cite journal | display-authors=1 | last1=Johnson"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-clpl4_99-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 11710,
+        "quote": "<ref name=Fuhrmann2018>{{Cite journal |last1=Fuhrm"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Fuhrmann2018",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 11733,
+            "quote": "{{Cite journal |last1=Fuhrmann |first1=Klaus |last"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Fuhrmann2018-19",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 12020,
+        "quote": "<ref name=SIMBAD>{{cite simbad | title=Alpha Trian"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "SIMBAD",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 12037,
+            "quote": "{{cite simbad | title=Alpha Trianguli | accessdate"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-SIMBAD-17",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841). {{cite simbad}} counted as a citation template."
+    },
+    {
+      "id": "d8",
+      "at": {
+        "cp": 12109,
+        "quote": "<ref name=SIMBADC>{{cite simbad | title=TIC 282449"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "SIMBADC",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 12127,
+            "quote": "{{cite simbad | title=TIC 28244970 | accessdate=20"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-SIMBADC-18",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841). {{cite simbad}} counted as a citation template."
+    },
+    {
+      "id": "d9",
+      "at": {
+        "cp": 12196,
+        "quote": "<ref name=aaa418_989>{{cite journal |title=The Gen"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "aaa418_989",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 12217,
+            "quote": "{{cite journal |title=The Geneva-Copenhagen survey"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-aaa418_989-10",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d10",
+      "at": {
+        "cp": 12829,
+        "quote": "<ref name=Firth2013>{{cite journal |last1=Frith |f"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Firth2013",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 12849,
+            "quote": "{{cite journal |last1=Frith |first1=J. |last2=Pinf"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Firth2013-8",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d11",
+      "at": {
+        "cp": 13414,
+        "quote": "<ref name=aj125_4_2196>{{cite journal |last1=Fekel"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "aj125_4_2196",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 13437,
+            "quote": "{{cite journal |last1=Fekel |first1=Francis C. |la"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-aj125_4_2196-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d12",
+      "at": {
+        "cp": 13806,
+        "quote": "<ref name=jbaa_108_9>{{cite journal | last=Rogers"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "jbaa_108_9",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 13827,
+            "quote": "{{cite journal | last=Rogers | first=J. H. | title"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-jbaa_108_9-24",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d13",
+      "at": {
+        "cp": 14101,
+        "quote": "<ref name=allen1962>{{cite book |last=Allen |first"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "allen1962",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 14121,
+            "quote": "{{cite book |last=Allen |first=R. H. |date=1899 |a"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-allen1962-16",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d14",
+      "at": {
+        "cp": 14352,
+        "quote": "<ref name=csiro>{{cite web|title=The Colour of Sta"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "csiro",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 14368,
+            "quote": "{{cite web|title=The Colour of Stars |date=Decembe"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-csiro-27",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841). url-status=dead with archive URL; no identifier."
+    },
+    {
+      "id": "d15",
+      "at": {
+        "cp": 14859,
+        "quote": "<ref name=mnras384_1_173>{{cite journal |last1=Fuh"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "mnras384_1_173",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 14884,
+            "quote": "{{cite journal |last1=Fuhrmann |first1=Klaus |titl"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-mnras384_1_173-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d16",
+      "at": {
+        "cp": 15196,
+        "quote": "<ref name=\"pike1978\">{{cite journal |bibcode=1978A"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "pike1978",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 15217,
+            "quote": "{{cite journal |bibcode=1978AcA....28..235P |title"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-pike1978-11",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841). Name written quoted in source (\"pike1978\")."
+    },
+    {
+      "id": "d17",
+      "at": {
+        "cp": 15477,
+        "quote": "<ref name=Moore1948>{{Cite journal |last1=Moore |f"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "Moore1948",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 15497,
+            "quote": "{{Cite journal |last1=Moore |first1=Joseph Haines"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Moore1948-26",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d18",
+      "at": {
+        "cp": 15834,
+        "quote": "<ref name=HU2023>{{Cite journal |last1=Hardegree-U"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "HU2023",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 15851,
+            "quote": "{{Cite journal |last1=Hardegree-Ullman |first1=Kev"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-HU2023-15",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d19",
+      "at": {
+        "cp": 16421,
+        "quote": "<ref name=tuchow2024>{{cite journal |last1=Tuchow"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "tuchow2024",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 16442,
+            "quote": "{{cite journal |last1=Tuchow |first1=Noah W. |last"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-tuchow2024-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d20",
+      "at": {
+        "cp": 16803,
+        "quote": "<ref name=ayres2023>{{cite journal |last1=Ayres |f"
+      },
+      "in_window": true,
+      "kind": "list_defined_note",
+      "name": "ayres2023",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 16823,
+            "quote": "{{cite journal |last1=Ayres |first1=Thomas |title="
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-ayres2023-12",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "List-defined reference inside {{Reflist|30em|refs=...}} (opens at cp 7841)."
+    },
+    {
+      "id": "d21",
+      "at": {
+        "cp": 17147,
+        "quote": "*{{citation|first1=James B. |last1=Kaler |work=Sta"
+      },
+      "in_window": true,
+      "kind": "bibliography_entry",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 17148,
+            "quote": "{{citation|first1=James B. |last1=Kaler |work=Star"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": null,
+      "marker": "none",
+      "marker_text": null,
+      "notes": "External links list item containing {{citation}} (Kaler, \"MOTHALLAH (Alpha Trianguli)\"). No footnote; marker \"none\" from its rendered citation in the External links list and its source."
+    }
+  ],
+  "uses": [],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 10534,
+        "quote": "10.1088/0067-0049/180/1/117"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1088/0067-0049/180/1/117",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 10849,
+        "quote": "10.1086/168691"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1086/168691",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 11249,
+        "quote": "10.1051/0004-6361:200810377"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1051/0004-6361:200810377",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 11924,
+        "quote": "10.3847/2515-5172/aacc72"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.3847/2515-5172/aacc72",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 12707,
+        "quote": "10.1051/0004-6361:20035959"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1051/0004-6361:20035959",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 13319,
+        "quote": "10.1093/mnras/stt1436"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1093/mnras/stt1436",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 13735,
+        "quote": "10.1086/368239"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1086/368239",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 15108,
+        "quote": "10.1111/j.1365-2966.2007.12671.x"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1111/j.1365-2966.2007.12671.x",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 15748,
+        "quote": "10.5479/ADS/bib/1948LicOB.20.1M"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.5479/ads/bib/1948licob.20.1m",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 16307,
+        "quote": "10.3847/1538-3881/acd1ec"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.3847/1538-3881/acd1ec",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 16704,
+        "quote": "10.3847/1538-3881/ad25ec"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.3847/1538-3881/ad25ec",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 17043,
+        "quote": "10.3847/1538-4365/acb535"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.3847/1538-4365/acb535",
+      "notes": ""
+    }
+  ],
+  "unresolved_notes": [
+    "The 20 list-defined <ref name=...>...</ref> definitions in the window are recorded as definitions only, not as uses: they sit inside {{Reflist|refs=}} and call no footnote marker themselves (the markers come from the self-closing calls in the body).",
+    "No uses start in the window: every <ref name=... /> call to these list-defined references is in the infobox or body before cp 10017. All 20 in-window list-defined references are rendered (each has a cite_note li and at least one marker).",
+    "List-defined references GaiaDR3-C, hr, wds, garfinckle1997, WGSN2, WGSN, IAU-LSN, MAST and aaa474_2_653 start before the window and have nothing in the window pointing at them; not listed. The DOI 10.1051/0004-6361:20078357 at cp 9931 is before the window.",
+    "cite_note-GaiaDR3-C-3 renders doi 10.1051/0004-6361/202243940 generated by {{cite DR3}} (before the window); that DOI is not in the source.",
+    "Window ends at cp 18017 inside the category links; nothing in scope after the External links citation."
+  ],
+  "adjudication": {
+    "adjudicator": "stage03-adjudicator-en",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-en/decisions/en-1381005609.json",
+    "changed_items": []
+  }
+}

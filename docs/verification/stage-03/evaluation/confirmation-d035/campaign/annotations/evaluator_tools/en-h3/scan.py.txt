@@ -1,0 +1,9 @@
+import sys,re,json
+d=sys.argv[1]
+p=json.load(open(f'packets/{d}/packet.json'))
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+a,b=p['window']['cp_start'],p['window']['cp_end']
+pat=re.compile(r'<ref\b[^>]*>|</ref>|\{\{\s*(?:cite|citation|efn|refn|sfn|sfnp|harv\w*|r\||doi|pmid|reflist|refbegin|notelist|rp|retracted|expression)[^|}]*|10\.\d{4,9}/|pmid|doi|\{\{#tag:ref|<!--|<nowiki|^[*#:;]',re.I|re.M)
+for m in pat.finditer(t):
+    if a<=m.start()<b or (m.start()<a and m.start()>a-0):
+        print(m.start(), repr(t[m.start():m.start()+70]))

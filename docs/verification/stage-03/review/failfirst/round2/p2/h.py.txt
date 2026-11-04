@@ -1,0 +1,21 @@
+"""SYNTHETIC harness for P2 review (non-editing)."""
+import sys, tempfile, json
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract, note_li, ref_sup, references, doi_link  # noqa
+
+_tmp = Path(tempfile.mkdtemp(prefix="p2-", dir="/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2"))
+_n = [0]
+
+def run(text, body, wiki="en"):
+    _n[0] += 1
+    return extract(bundle(_tmp, text, body, wiki=wiki, name=f"b{_n[0]}"))
+
+def one_note(text, inner, wiki="en"):
+    body = ("<p>A." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>"
+            + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], inner)]))
+    return run(text, body, wiki)
+
+def show(label, doc, i=0):
+    m = doc["markers"][i]
+    print(f"{label}: state={m['state']!r} evidence={[ (e.get('kind'), e.get('matched')) for e in m['evidence']]}")

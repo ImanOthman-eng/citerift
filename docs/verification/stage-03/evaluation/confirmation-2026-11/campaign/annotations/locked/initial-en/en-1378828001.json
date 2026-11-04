@@ -1,0 +1,311 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1378828001,
+  "source_sha256": "addb52b9817936a2d827931b3fea9dfbd6ccdf9695344959469a372c1835853b",
+  "html_sha256": "04cedbbdab9d06e157a1e189678af0274a3a2fd85e62110fa2bf108c5f817b30",
+  "window": [
+   2787,
+   10787
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h1",
+  "started_at": "2026-11-03T01:58:00Z",
+  "finished_at": "2026-11-03T01:57:24Z",
+  "files_opened": [
+   {
+    "path": "packets/en-1378828001/source.wikitext",
+    "sha256": "addb52b9817936a2d827931b3fea9dfbd6ccdf9695344959469a372c1835853b"
+   },
+   {
+    "path": "packets/en-1378828001/render.html",
+    "sha256": "04cedbbdab9d06e157a1e189678af0274a3a2fd85e62110fa2bf108c5f817b30"
+   },
+   {
+    "path": "packets/en-1378828001/packet.json",
+    "sha256": "b7f400e838c050946aea2ca6ab413a6410f0bd6553a8e7d779d99409738ee098"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "Python 3 standard library (re/str.find, slicing) to list and verify locations; lxml (xpath) to list sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; grep for retraction vocabulary in render.html. Labels decided by reading the text.",
+  "unresolved": "Nothing undecided; only judgement call is the /doi/full/ publisher URL, labelled identifier_link."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 3078,
+    "quote": "<ref>{{cite web |url= http://atlas.media"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3083,
+      "quote": "{{cite web |url= http://atlas.media.mit."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; cite web, url-status dead with archiveurl."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3998,
+    "quote": "<ref>{{citation |author= Dominik Hartman"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4003,
+      "quote": "{{citation |author= Dominik Hartmann, Mi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; {{citation}} with doi, arxiv, s2cid."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4886,
+    "quote": "<ref name=\"ET\">{{Cite news|title=India t"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ET",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4901,
+      "quote": "{{Cite news|title=India tops list of fas"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ET-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Named ref, used once in the whole article."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 5391,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5396,
+      "quote": "{{Cite journal |last=Balland |first=Pier"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; cite journal with doi and DOI-bearing publisher URL."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 5769,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5774,
+      "quote": "{{Cite journal |last=Balland |first=Pier"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref; cite journal with doi."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 6540,
+    "quote": "<ref>{{Cite web |title=The Atlas of Econ"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6545,
+      "quote": "{{Cite web |title=The Atlas of Economic "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref inside a table caption (|+ line); renders as a normal footnote."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 3078,
+    "quote": "<ref>{{cite web |url= http://atlas.media"
+   },
+   "binds_to": {
+    "cp": 3078,
+    "quote": "<ref>{{cite web |url= http://atlas.media"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3998,
+    "quote": "<ref>{{citation |author= Dominik Hartman"
+   },
+   "binds_to": {
+    "cp": 3998,
+    "quote": "<ref>{{citation |author= Dominik Hartman"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 4886,
+    "quote": "<ref name=\"ET\">{{Cite news|title=India t"
+   },
+   "binds_to": {
+    "cp": 4886,
+    "quote": "<ref name=\"ET\">{{Cite news|title=India t"
+   },
+   "render_ref_id": "cite_ref-ET_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 5391,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "binds_to": {
+    "cp": 5391,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 5769,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "binds_to": {
+    "cp": 5769,
+    "quote": "<ref>{{Cite journal |last=Balland |first"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 6540,
+    "quote": "<ref>{{Cite web |title=The Atlas of Econ"
+   },
+   "binds_to": {
+    "cp": 6540,
+    "quote": "<ref>{{Cite web |title=The Atlas of Econ"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4257,
+    "quote": "10.1016/j.worlddev.2016.12.020 |arxiv= 1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.worlddev.2016.12.020",
+   "notes": "doi= field of {{citation}}."
+  },
+  {
+   "at": {
+    "cp": 5542,
+    "quote": "https://www.tandfonline.com/doi/full/10.1080/00130095.2016.1"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1080/00130095.2016.1205947",
+   "notes": "url= field; path is /doi/full/10.… (not exactly /doi/10.…), DOI read from the path segment after /doi/full/. Whole URL quoted."
+  },
+  {
+   "at": {
+    "cp": 5687,
+    "quote": "10.1080/00130095.2016.1205947 |issn=0013"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/00130095.2016.1205947",
+   "notes": "doi= field."
+  },
+  {
+   "at": {
+    "cp": 6216,
+    "quote": "10.1038/s41562-019-0803-3 |issn=2397-337"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/s41562-019-0803-3",
+   "notes": "doi= field."
+  }
+ ],
+ "unresolved_notes": [
+  "https://www.nature.com/articles/s41562-019-0803-3 (url= of the Nature Human Behaviour citation) contains the DOI suffix but no 10.1038 prefix, so it was not labelled as a DOI occurrence.",
+  "https://www.sciencedirect.com/science/article/abs/pii/S0305750X15309876 contains a PII, not a DOI; not labelled.",
+  "Ref at cp 1337 (before window, cite_ref-1) and ref at cp 15892 (after window, cite_ref-8) are outside the window and not listed; no use in the window binds to them."
+ ]
+}

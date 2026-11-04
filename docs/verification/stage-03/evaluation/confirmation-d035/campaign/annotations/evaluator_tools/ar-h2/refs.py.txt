@@ -1,0 +1,7 @@
+import sys,re
+d=sys.argv[1]
+t=open(f'../packets/{d}/source.wikitext',encoding='utf-8').read()
+for m in re.finditer(r'<ref\b[^>]*?/>|<ref\b[^>]*>.*?</ref\s*>',t,re.S):
+    print(m.start(),m.end(),repr(m.group()))
+print('--- non-ref tmpl')
+for m in re.finditer(r'\{\{\s*(sfn|efn|refn|ملا|r|harv\w*|doi|دوي|pmid)\b',t,re.I): print(m.start(),repr(t[m.start():m.start()+80]))

@@ -1,0 +1,22 @@
+import sys; sys.path.insert(0,'tools')
+from build import *
+a=A('ar-76509376');t=a.t
+def P(cp,n=45): return {'cp':cp,'quote':t[cp:cp+n]}
+def tpl(r):
+    i=t.find('{{',r['cp']); return P(i)
+g1=P(883); assert t[883:].startswith('<ref name="مولد تلقائيا1">')
+cps=[9375,10019,10659,11262,11708,12131,13404,14573,14892,15348,15739,16422]
+ids=[15,16,17,18,19,20,21,23,24,25,26,27]
+a.D('d0',g1,name='مولد تلقائيا1',templates=[tpl(g1)],render='cite_note-مولد_تلقائيا1-1',inw=False,notes='starts before window; target of the use at 11234')
+n=1
+for cp,i in zip(cps,ids):
+    r=P(cp); a.D(f'd{n}',r,templates=[tpl(r)],render=f'cite_note-{i}')
+    a.U(f'u{n}',r,r,f'cite_ref-{i}'); n+=1
+g2=P(13717); a.D('d13',g2,name='مولد تلقائيا2',templates=[tpl(g2)],render='cite_note-مولد_تلقائيا2-22')
+a.U('u13',g2,g2,'cite_ref-مولد_تلقائيا2_22-0')
+a.U('u14',P(11234),g1,'cite_ref-مولد_تلقائيا1_1-1','self-closing; binds to definition before window')
+a.U('u15',P(14016),g2,'cite_ref-مولد_تلقائيا2_22-1','self-closing')
+a.I(P(14686,len('10.1002/pts.2770070205')),'doi','primary_citation_field','10.1002/pts.2770070205','field DOI=')
+a.I(P(14972,len('10.1016/S0260-8774(00)00118-7')),'doi','primary_citation_field','10.1016/s0260-8774(00)00118-7','field DOI=; letters lower-cased')
+a.unres.append('Rendered notes 12 and 13 carry template-maintenance error lines; no retraction marker. Red link in note 20 is to an article (Leicester Mercury), not a template.')
+a.write('python3 -I str.find/regex scans, lxml listing of sup/li and red links','none')

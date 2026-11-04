@@ -1,0 +1,25 @@
+import sys;sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r1-1/tools')
+from build import *
+def b(t,L,D,U,I,UN):
+    n='Body self-closing reuse (inside the lead sentence).'
+    ln='List-defined <ref> inside {{Reflist|refs=}}; it produces no marker of its own, the marker is the body call (see the self-closing use).'
+    names=[('itis','d1',"Disonycha semicarbonata Report. Integrated Taxonomic Information System. Retrieved 2019-09-23.",'{{Cite web| title=\'\'Disonycha semicarbonata\'\' Report'),
+           ('gbif','d2','"Disonycha semicarbonata". GBIF. Retrieved 2019-09-23.','{{Cite web| title=\'\'Disonycha semicarbonata\'\'\n'),
+           ('buglink','d3','"Disonycha semicarbonata species Information". BugGuide.net. Retrieved 2019-09-23.','{{Cite web| title=\'\'Disonycha semicarbonata\'\' species')]
+    defs={}
+    for i,(nm,did,mt,tp) in enumerate(names):
+        a=L(f'<ref name={nm}>')
+        tpl=L('{{Cite web',i)
+        defs[nm]=a
+        D.append(dfn(did,a,'list_defined_note',nm,'',[tpl],False,f'cite_note-{nm}-{i+1}',mt,'Source gives the ref as list-defined; render list item text for itis begins with the CSS block then "Disonycha semicarbonata Report"...' if nm=='itis' else ''))
+    for i,nm in enumerate(['itis','gbif','buglink']):
+        U.append(use(f'u{i+1}',L(f'<ref name={nm}/>'),defs[nm],f'cite_ref-{nm}_{i+1}-0',n))
+    for i,nm in enumerate(['itis','gbif','buglink']):
+        U.append(use(f'u{i+4}',defs[nm],defs[nm],None,ln))
+    c1=L('* {{Cite journal');c2=L('* {{Cite book')
+    D.append(dfn('d4',c1,'bibliography_entry',None,'',[L('{{Cite journal')],False,None,None,'Further reading, inside {{refbegin}}. Citation template standing in a list item.',marker='none'))
+    D.append(dfn('d5',c2,'bibliography_entry',None,'',[L('{{Cite book')],False,None,None,'Further reading, inside {{refbegin}}.',marker='none'))
+    I.append(ident(L('10.3897/zookeys.720.13517'),'doi','primary_citation_field','10.3897/zookeys.720.13517'))
+    I.append(ident(L('29290727'),'pmid','primary_citation_field','29290727'))
+    UN.append('pmc=5740445 and bibcode are not DOI/PMID; not labelled.')
+run(1356437999,b)

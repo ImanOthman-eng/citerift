@@ -1,0 +1,62 @@
+# Article-specific manual annotations by ChatGPT/Codex. Not a reference parser.
+from pathlib import Path
+from datetime import datetime, timezone
+import json, hashlib
+from lxml import html
+base = Path('/workspace/stage03-work/final-evaluators-reserve1')
+out = base / 'output-en-1'
+# Every row was selected manually from the two raw source/HTML packets.
+definitions = {
+ 1310102239: [(404, 'WoRMS', 422, 'cite_note-WoRMS-1', 'cite_ref-WoRMS_1-0'), (611, None, 616, 'cite_note-2', 'cite_ref-2')],
+ 1372000829: [(1312,None,1317,'cite_note-1','cite_ref-1'),(1673,None,1678,'cite_note-2','cite_ref-2'),(2083,None,2088,'cite_note-3','cite_ref-3'),(2440,None,2445,'cite_note-4','cite_ref-4'),(3350,None,3355,'cite_note-5','cite_ref-5'),(3551,'MathSciNet',3574,'cite_note-MathSciNet-6','cite_ref-MathSciNet_6-0'),(3889,None,3894,'cite_note-7','cite_ref-7')]
+}
+field='primary_citation_field'
+link='identifier_link'
+uncertainty='The Springer publisher URL uses a direct /10. path rather than the guide example /doi/10. path. Best reading is a whole-URL identifier_link occurrence because the URL directly identifies the same DOI as the explicit doi= field. The raw-boundary interpretation is uncertain; the uppercase BFb in the URL is normalized using ASCII lowercase.'
+identifiers={
+ 1310102239: [(1008,'10.1080/14786419.2013.805333','doi',field,'10.1080/14786419.2013.805333',''),(1057,'23767460','pmid',field,'23767460','')],
+ 1372000829: [(1822,'https://epubs.siam.org/doi/10.1137/1014044','doi',link,'10.1137/1014044',''),(1939,'10.1137/1014044','doi',field,'10.1137/1014044',''),(2256,'https://doi.org/10.1007/bfb0058356','doi',link,'10.1007/bfb0058356','Resolver URL in the Citation template chapter-url field.'),(2492,'http://link.springer.com/10.1007/BFb0065566','doi',link,'10.1007/bfb0065566',uncertainty),(2729,'10.1007/bfb0065566','doi',field,'10.1007/bfb0065566','')]
+}
+opened=[]
+for p in [base/'en-1-BRIEF.md',base/'ANNOTATION_GUIDE.md']:
+ opened.append({'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+for rev in definitions:
+ folder=base/'en-1'/f'en-{rev}'
+ packet=json.loads((folder/'packet.json').read_text())
+ for name,key in [('packet.json',None),('source.wikitext','source_sha256'),('render.html','html_sha256')]:
+  path=folder/name; digest=hashlib.sha256(path.read_bytes()).hexdigest()
+  if key: assert digest==packet[key]
+  opened.append({'path':str(path),'sha256':digest})
+opened.append({'path':str(Path(__file__)),'sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
+for rev,rows in definitions.items():
+ folder=base/'en-1'/f'en-{rev}'
+ packet=json.loads((folder/'packet.json').read_text())
+ text=(folder/'source.wikitext').read_text(encoding='utf-8')
+ doc=html.fromstring((folder/'render.html').read_bytes())
+ window=[packet['window']['cp_start'],packet['window']['cp_end']]
+ def loc(cp,quote=None):
+  if quote is None:quote=text[cp:cp+55]
+  assert text[cp:cp+len(quote)]==quote,(cp,quote)
+  assert window[0]<=cp<window[1]
+  return {'cp':cp,'quote':quote}
+ ds=[];us=[];ids=[]
+ for number,(cp,name,template,note,marker) in enumerate(rows,1):
+  assert text[cp:cp+4]=='<ref'
+  assert text[template:template+5].lower()=='{{cit'
+  assert doc.xpath('//li[@id=$id]',id=note)
+  assert doc.xpath('//sup[@id=$id]',id=marker)
+  ds.append({'id':f'd{number}','at':loc(cp),'in_window':True,'kind':'note','name':name,'group':'','templates':[{'at':loc(template)}],'unstructured':False,'render_note_id':note,'marker':'none','marker_text':None,'notes':''})
+  us.append({'id':f'u{number}','at':loc(cp),'binds_to':loc(cp),'render_ref_id':marker,'notes':''})
+ for cp,raw,scheme,role,key,note in identifiers[rev]:
+  ids.append({'at':loc(cp,raw),'scheme':scheme,'role':role,'key':key,'notes':note})
+ result={'format':'citerift-stage03-annotation-v1','article':{'wiki':packet['wiki'],'revision_id':packet['revision_id'],'source_sha256':packet['source_sha256'],'html_sha256':packet['html_sha256'],'window':window},'provenance':{'agent':'stage03-evaluator-en-1','started_at':'2026-10-31T06:11:44.017061+00:00','finished_at':datetime.now(timezone.utc).isoformat(),'files_opened':opened,'tools':'ChatGPT/Codex manual annotation; functions.exec/exec_command; cat; isolated Python standard library pathlib, re, json, hashlib, datetime and lxml for searching raw text and listing rendered HTML elements/attributes/text. Article-specific serialization and exact-location/hash validation only; no general reference parser. started_at is the first recorded UTC timestamp, just after the brief was read. The reserve annotation session resumed after a usage-limit interruption. files_opened lists the instructions and both reserve raw packets inspected during this session, plus this helper. No network, git, engine code, predictions, tests, findings, or other evaluator outputs were inspected.','unresolved':uncertainty if rev==1372000829 else 'None; source locations, bindings and rendered markers were clear.'},'definitions':ds,'uses':us,'identifiers':ids,'unresolved_notes':[uncertainty] if rev==1372000829 else []}
+ def validate(x):
+  if isinstance(x,dict):
+   if 'cp' in x and 'quote' in x: assert text[x['cp']:x['cp']+len(x['quote'])]==x['quote']
+   for y in x.values():validate(y)
+  elif isinstance(x,list):
+   for y in x:validate(y)
+ validate(result)
+ path=out/f'en-{rev}.json'
+ path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ print(path.name,'definitions',len(ds),'uses',len(us),'identifiers',len(ids),'validated')

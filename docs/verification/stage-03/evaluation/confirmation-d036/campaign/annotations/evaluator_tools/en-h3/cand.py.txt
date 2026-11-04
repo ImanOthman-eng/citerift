@@ -1,0 +1,7 @@
+import sys,re,json
+d=sys.argv[1]
+p=json.load(open(f'packets/{d}/packet.json'));w=p['window']
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+for m in re.finditer(r'10\.\d{4,9}/|pmid|doi|pubmed|ncbi|biorxiv|medrxiv|<ref|\{\{\s*(?:sfn|efn|refn|r\||cite|harv)',t,re.I):
+    if w['cp_start']-400<=m.start()<w['cp_end']:
+        print(m.start(), 'IN ' if m.start()>=w['cp_start'] else 'PRE', repr(t[m.start():m.start()+70]))

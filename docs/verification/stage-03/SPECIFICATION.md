@@ -1,0 +1,649 @@
+# Stage 03 specification: Wikipedia Extraction Engine (`citerift.wiki`, engine 1.1.0; 1.0.0 until D-035)
+
+Owner directive: `cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS` (copy in
+`authorization/OWNER_DIRECTIVE_2026-10-28.md`). This is the final specification of what is implemented. It
+supersedes `design/INITIAL_SPECIFICATION.md` (kept as the pre-calibration record). The support matrix, splits,
+metrics and gates are frozen in `protocol/FROZEN_PROTOCOL.md` and are not repeated here. Section numbers 8-15 are
+cited from the module docstrings in `src/citerift/wiki/`.
+
+## 1. Product
+
+A deterministic, article-first extractor for **arwiki and enwiki**, namespace 0, main-slot wikitext. For one pinned
+revision it produces:
+
+- the saved source revision (ids, SHA-1, size, content model, text) and, separately identified, a render capture of
+  the same revision (Parsoid HTML);
+- reference containers (one per footnote, list-defined note, generated note or bibliography entry) with every
+  definition, and every use of each container;
+- citation units (citation templates, external-data templates, unstructured reference text);
+- every DOI and PMID occurrence, raw and normalized through the Stage 02 normalizers, with a markup role and the rule
+  that gave it;
+- exact source anchors (code point and UTF-8 byte intervals, raw text and its SHA-256) and DOM locators in the render;
+- source/render reconciliation states (`matched`, `source_only`, `render_only`, `ambiguous`/`abstained`,
+  `unavailable`), render-only uses and identifiers, and marker observations of each rendered reference;
+- an exception ledger, structured issues with stable codes, component states, accounting checks, and a digest of the
+  whole document, so that the result can be verified and replayed offline.
+
+Stage 03 does **not** decide whether any work is retracted. It never states "not retracted"; a marker observation
+says only what the captured HTML of one region shows (R-029, R-031). End-to-end retraction matching is Stage 04.
+
+## 2. Out of scope
+
+Wikipedia editing; other wikis, namespaces, slots or content models; fetching any publisher, DOI resolver or
+PubMed page; executing retained HTML or scripts; browser visibility (CSS, skins, gadgets); following short-footnote
+chains to bibliography entries; subreferences; the retraction index (no Stage 02 query, policy, advisory or local
+model module is imported, and no SQLite index is opened).
+
+## 3. Support matrix
+
+`protocol/FROZEN_PROTOCOL.md` section 2 (full, partial, unsupported per construct and language). The profile
+`src/citerift/wiki/data/profile-v1.json` (version 1.0.0, digest `ba5ae18b…c3a697`) holds every language-specific
+name: 28 citation-template families with English and Arabic names and redirects, external-data templates,
+generated-reference templates (`efn`, `refn`, `ملا`, `r`, `sfn` family), wrappers, identifier and URL parameters,
+reference-list templates, marker templates, warning and ambiguous terms, redirect words and namespace prefixes. Its
+provenance (inspected template pages) is `calibration/profile-v1.provenance.json`.
+
+## 4. Modules
+
+| Module | Role |
+|---|---|
+| `fetch.py` | the only network path: two fixed hosts, retry plan, limits, cross-process network gate (8) |
+| `capture.py` | source query and render request for one revision; identity checks; bundle publication (8) |
+| `bundle.py`, `canonical.py` | bundle layout, atomic publication, path safety, canonical JSON and digests (9) |
+| `source.py`, `textmap.py` | lossless wikitext traversal; code point to byte offsets (11, 12.1) |
+| `model.py`, `identifiers.py` | containers, uses, units, identifier occurrences, roles; Stage 02 adapter (10, 11) |
+| `units.py` | render evidence for templates inside references: citation markup or short-citation link (11.3, D-035) |
+| `render.py`, `reconcile.py` | Parsoid HTML reading and DOM locators; source/render joins (12) |
+| `markers.py` | marker observations (13) |
+| `extract.py`, `worker.py` | document assembly; isolated worker with limits and no network (10, 16) |
+| `verify.py` | offline verification and replay (14) |
+| `cli.py` | `citerift-wiki` (15) |
+| `issues.py` | catalog of stable issue codes with severity and retryability (113 at engine 1.1.0) (10) |
+| `schemas.py` | validation against `schemas/wiki/v1` and the accepted `schemas/contracts/v1` common definitions |
+
+## 5. Python API (`citerift.wiki`)
+
+| Function | Network | Result |
+|---|---|---|
+| `capture_revision(CaptureRequest, FetchPolicy=None, *, out=None)` | yes, the only one | `CaptureOutcome(status, record, bundle, issues)`; status `complete`, `partial`, `deferred` or `failed` |
+| `extract_bundle(bundle, ExtractConfig=None, *, isolated=True)` | no | extraction document (schema `urn:citerift:schema:wiki:v1:extraction`) |
+| `verify_bundle(bundle, extraction=None)` | no | verification report (schema `…:verification`), `verified` true only without error issues |
+| `replay_bundle(bundle, pinned_config=None, recorded=None)` | no | verification report with `replay.state` `reproduced`, `differs`, `not_compared` or `failed` |
+
+A failure is always a document with `status: failed` and an error issue, never an exception and never an empty
+result.
+
+## 6. Dependencies
+
+Runtime additions (locked in `uv.lock`): `mwparserfromhell` 0.7.2 (wikitext) and `lxml` 6.1.3 with libxml2 2.14.6
+(HTML), qualified against selectolax 1.0.2 in `calibration/parser_qualification.json` (D-029). Existing:
+`jsonschema` and the Stage 02 identifier normalizers. Python 3.12 and 3.13.
+
+## 7. Decisions
+
+D-029 (stack and render source: Core REST `/w/rest.php/v1/revision/{id}/html`, Parsoid HTML 2.x) and D-030 (frozen
+evaluation protocol and gates 03-A to 03-K), both delegated engineering decisions recorded in `DECISIONS.md`.
+
+## 8. Network and capture
+
+### 8.1 Policy (`FetchPolicy`, frozen values)
+
+One request in flight; at least 10 s between the end of one attempt and the start of the next; at most 3 attempts
+per operation; 30 s per attempt; a global capture deadline of 180 s; `maxlag=5` on every Action API request;
+`Retry-After` (delta seconds or HTTP date) honored and never shortened, otherwise backoff 10 s × 2^(n−1); when the
+next allowed attempt would start after the deadline the operation ends `DEFERRED_RETRY_AFTER` with `not_before`
+(with Retry-After) or `DEADLINE_EXCEEDED`. 403, 404, 3xx and other unexpected statuses are final and never retried;
+429, 502-504 and other 5xx, timeouts, connection failures, `maxlag` and `ratelimited` API errors, incomplete bodies
+and unparseable JSON are retried. Bodies are streamed with a 32 MiB wire limit and a 32 MiB decompressed limit
+(gzip only), and `Content-Length` must match. Only `https://ar.wikipedia.org` and `https://en.wikipedia.org`
+without port, credentials or fragment are requested; redirects are refused. A fixed User-Agent names the project.
+No proxy rotation, no identity change, no 403 bypass. The retry decision is the pure function `plan_next`.
+
+### 8.2 Network gate
+
+With the default transport every attempt holds an exclusive `flock` on one file (`CITERIFT_WIKI_NETWORK_LOCK`,
+default `~/.cache/citerift/wiki-network.lock`, opened with `O_NOFOLLOW`), which stores the wall-clock end of the last
+attempt of any process; the minimum interval therefore holds across processes and captures. A gate that cannot be
+had before the deadline ends `NETWORK_GATE_BUSY`; a platform without `fcntl` or an unusable lock file ends
+`NETWORK_GATE_UNAVAILABLE` (fail closed).
+
+### 8.3 Source identity
+
+One Action API `query` (`prop=revisions|info`, `rvslots=main`, by title, page id or revision id) must name exactly
+one page in namespace 0, the requested page id or revision id, a main slot with content model `wikitext`, visible
+text, and text whose SHA-1 and byte size equal the revision's. A redirect page is refused unless `--follow-redirect`
+was given (then exactly one hop). Source text above 4 MiB is refused.
+
+### 8.4 Render identity
+
+The render of exactly that revision id is requested. It is accepted only when it is UTF-8, at most 16 MiB, of
+Parsoid HTML profile 2.x, and every revision statement it makes (`Content-Revision-Id` header, the document's
+`about` revision) equals the source revision, with the same page id, namespace 0 and the same revision SHA-1
+(`mw:revisionSHA1`, base 36). A render that states no revision at all is not accepted
+(`RENDER_REVISION_UNCHECKED`). A rejected or failed render leaves the capture `partial` with the source kept and the
+reason recorded; render and source are never joined across revisions.
+
+## 9. Bundles and canonical form
+
+A bundle is a directory with `capture.json` (schema `…:capture`) and `artifacts/<sha256>` for every retained body
+(source text, the source answer, the render, failure bodies up to 64 KiB). Paths are never derived from titles. A
+bundle is written in a fresh temporary directory beside its target and renamed into place; an existing target is
+never replaced. Reading refuses symbolic links anywhere (bundle, `capture.json`, `artifacts`, each artifact),
+artifact names that are not 64 lowercase hex digits, artifacts that do not hash to their name, and duplicate keys,
+NaN or infinity in any JSON. Files the record does not list are reported (`BUNDLE_UNLISTED_FILE`, warning).
+Canonical JSON: UTF-8, sorted keys, no insignificant whitespace, non-ASCII kept; a digest is the SHA-256 of the
+canonical form of the object without its digest field.
+
+## 10. Extraction document
+
+Fields: `extractor` (name, version, profile version and digest, parser versions, normalizer), `config` and
+`config_digest`, `capture` (bundle digest, page, revision, SHA-1, artifacts, render state), `status`,
+`components` (source, render, reconciliation, markers, each with a state), `containers`, `uses`, `units`,
+`identifiers`, `excluded_identifiers`, `markers`, `render_only` (uses and identifiers), `exceptions` (the ledger),
+`issues`, `accounting` and `extraction_digest`. Every issue has a code from the catalog, a severity, the affected
+entity ids and a detail. `status` is `complete` when every requested component completed, `partial` when the source
+completed and some other component did not (for example no render requested or the render rejected), `failed`
+otherwise. The accounting checks (each with left and right counts) are: candidates = identifiers + excluded; the
+identifiers by role sum to the identifiers; one marker observation per container; every unit in exactly one
+container; no source span reported twice for one scheme.
+
+## 11. Source extraction
+
+### 11.1 Traversal
+
+mwparserfromhell parses the slot text and `str(tree) == text` is required (`SOURCE_PARSE_LOSSY` otherwise). Every
+node's interval is computed from its parent's with the serialization formula of its node type and checked against
+the text before use; a boundary that fails the check is reported (`ANCHOR_NOT_EXACT`) and never used as an exact
+anchor. No global text search locates anything.
+
+### 11.2 Containers, definitions and uses
+
+A `<ref>` with a body defines; `<ref name=… />` uses; a ref name binds within its group only (name and group compared
+after trimming and entity decoding). Definitions in `<references>` or a reference-list template's `refs=` are
+`list_defined_note` and are not uses. Identical definitions give `identical_definitions`; differing ones
+`conflicting_definitions` and no body is chosen. A named use without a definition is `definition_missing`
+(`REF_DEFINITION_MISSING`). `efn`/`refn`/`ملا` with content are `generated_note`s with the profile's default group;
+`{{r|a|b}}` is one use per name; identical `sfn`-family calls form one note. A list item or standalone citation
+template outside footnotes is a `bibliography_entry`.
+
+Template arguments are read as MediaWiki's preprocessor builds them. Unnamed arguments are numbered 1, 2, … among
+unnamed arguments only. A named argument's key is its trimmed name, so `1=` is position 1 and `01=` is not. A
+repeated key keeps its last value.
+
+The names of a reuse template follow its retained source (`review/failfirst/f1-f4/template-sources/`):
+
+- **enwiki `{{r}}` (Module:R).** The first name is the first non-blank of `name1`, `name`, `n1`, `n`, `1`. Name k is
+  the first non-blank of `namek`, `nk`, `k`, and the names stop at the first k without one. The group is `group`,
+  `grp` or `g`.
+- **arwiki `{{استشهاد متعدد}}`.** The names are `1`, then `2`…`9` while each is non-blank; an absent `1` is the text
+  `{{{1}}}`. The group is `group`.
+
+Names and argument keys are trimmed of ASCII whitespace only, as PHP `trim` and Module:Arguments do. Names keep
+character references literally: they reach Cite as attributes of `#tag` or `frame:extensionTag`, which are not
+entity-decoded, unlike `<ref name="…">`. The `#tag` path also drops one pair of enclosing quotes. Implicit and
+explicit numbering therefore give the same uses. Every replaced, unread or missing name argument is
+reported: `REUSE_ARGUMENT_REPLACED`, `REUSE_NAME_NOT_USED`, `REUSE_NAME_MISSING`. Note text added through Module:R's
+content parameters (reference, annotation, postscript and content id), or `style=sub`, is reported as
+`REUSE_CONTENT_UNSUPPORTED`. A short-footnote call is keyed by its effective arguments, with comments removed, so
+`{{sfn|Smith|2001}}` and `{{sfn|1=Smith|2=2001}}` form one note.
+
+Refs in `<gallery>`, `<poem>`, `<imagemap>` and subreferences are reported, not extracted.
+
+### 11.3 Citation units
+
+A template whose canonical name is a profile citation family, or (RF-37) a name the profile does not list that
+starts with "Cite " or "استشهاد ب" (family `unlisted`), is a `citation_template` unit; `Cite Q` and
+`استشهاد بويكي بيانات` are `external_data_template` units; a definition with no template unit is
+`unstructured_text`. Parameter names are compared after trimming; a repeated parameter is recorded in
+`duplicate_params`.
+
+`unstructured_text` therefore means "no recognised citation template unit", not "a plain-text citation": a body
+that is only a Harvard short-citation link (`{{harvnb}}`), an explanatory note that cites nothing, or a citation-like
+template the profile does not list is also `unstructured_text`. The annotation guide's `unstructured` is narrower.
+The confirmation campaign measured the difference as English G5c 0.869 (RISKS.md R-036,
+`evaluation/confirmation-2026-11/DECISION_RECORD.md`). This text records the behaviour of the frozen candidate; it is
+not changed after the campaign. **Superseded for engine 1.1.0 by the section "Changes under owner instruction D-035"
+at the end of this file.**
+
+### 11.4 Identifier occurrences
+
+Candidates: identifier fields of templates (`doi`, `DOI`, `دوي`, `biorxiv`, `medrxiv`, `pmid`, `PMID`), wrapper
+arguments (`{{doi}}`, `{{دوي}}`, `{{PMID}}`), resolver and PubMed URLs (in parameters, external links and free text),
+publisher URLs with a `/doi/10.…` path, labelled text (`doi:`, `دوي:`, `PMID`), and DOIs in free text. A free-text
+DOI is `10.` + 4-9 digits (optionally subdivided) + `/` and ends at the first whitespace or wikitext delimiter;
+trailing sentence punctuation is kept and flagged `IDENTIFIER_BOUNDARY_AMBIGUOUS`, never trimmed silently. A field
+anchor covers the value as written, including surrounding whitespace (the normalizer records
+`TRIM_OUTER_WHITESPACE`). Structural decoding (comments removed, HTML entities decoded, protocol-relative URLs
+completed, URL query and fragment removed, a publisher URL's DOI path taken and percent-decoded once) is recorded step
+by step; then the accepted Stage 02 `normalize_doi`/`normalize_pmid` are applied unchanged through `identifiers.py`.
+A publisher DOI path that ends in a page-view route (`abstract`, `full`, `pdf`, `epdf`, `references`, `suppinfo`,
+`citedby`, `figures`, `summary`, `meta`, ASCII letters in any case, optionally followed by `/`) is flagged
+`IDENTIFIER_BOUNDARY_AMBIGUOUS` (step `DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS`). When that route is written literally,
+not percent-encoded, and what precedes it is still a DOI whose last segment is not empty, `.` or `..`, exactly one
+route segment is removed from the normalizer input (step `PAGE_VIEW_SEGMENT_REMOVED`; RF-60, a post-exposure repair).
+The `/doi/` path and the route words are matched in ASCII only. Resolver URLs, fields and wrapper arguments are never
+shortened. Occurrences in comments, `<nowiki>`, `<pre>`, `<math>`, `<syntaxhighlight>`/`<source>`, ref names and other sites'
+URLs are `excluded_identifiers` with a reason; they are never targets. Every occurrence is kept; co-reported
+identifiers in one unit are never merged into one work (`CO_REPORTED_IDENTIFIERS`).
+
+Boundary audit of 2026-11-02 (`design/doi-boundaries/AUDIT.md`):
+
+- A bare URL inside a template field has its HTML character references decoded, like any other value text (D-1).
+- A publisher `/doi/` path may separate prefix and suffix with `%2F`, which the single percent-decoding resolves
+  (D-2).
+- Sentence punctuation after a labelled or free-text DOI stays in the key and is flagged, as above. This differs
+  from the annotation guide's key and is declared risk R-03-D5.
+
+### 11.5 Roles (decision list, first rule that applies)
+
+1. inside a retraction-marker template (profile `markers`) → `marker_target`;
+2. display text of a link → `textual_mention`;
+3. inside a citation or external-data template: in the template name → `textual_mention`; the value of an identifier
+   field of that template → `primary_citation_field`, unless the same template repeats the parameter later
+   (MediaWiki uses the last value) → `unresolved` with `IDENTIFIER_PARAMETER_OVERRIDDEN`; a URL or wrapper in an
+   identifier or URL parameter → `identifier_link`; labelled text there → `labeled_reference_text`; anything else in
+   the template (titles, other parameters) → `textual_mention`;
+4. an identifier field of a template the profile does not support → `unresolved` (`TEMPLATE_UNSUPPORTED`);
+5. a URL or wrapper inside a reference container (note, list-defined note, generated note, bibliography entry) →
+   `identifier_link`; outside every reference container → `textual_mention` (RF-36);
+6. labelled text inside a reference container → `labeled_reference_text`;
+7. otherwise → `textual_mention`.
+
+A notice, marker or title identifier is therefore never a `primary_citation_field`.
+
+## 12. Render and reconciliation
+
+### 12.1 Anchors
+
+Source anchors are `[cp_start, cp_end)` and `[byte_start, byte_end)` of the retained UTF-8 bytes, with the raw text and
+its SHA-256 for identifiers; `byte(i) = i + extra UTF-8 bytes of the code points before i`.
+
+### 12.2 Render reading
+
+lxml builds the DOM of the retained HTML (no script, no resource fetch). Reference uses are elements whose `typeof`
+contains `mw:Extension/ref` with `data-mw`; reference lists are `mw:Extension/references`; template output is
+grouped by `about` with the first element carrying `mw:Transclusion` and the template's `data-mw`. A locator is the
+element id with its uniqueness, the lxml element path, a short text quote and the SHA-256 of the element's lxml
+serialization (derived from the DOM, not a byte range). Duplicate DOM ids are reported (`DOM_ID_DUPLICATE`).
+
+### 12.3 Reconciliation
+
+Uses are matched within three groups the render keeps apart (article text, template output, nested in another
+reference). In article text the sequences are aligned at anchors (named uses whose name occurs equally often on both
+sides); between anchors a segment is matched position by position only when both sides have the same length, every pair is
+compatible, and the notes of the first uses it pairs appear in each reference list in source order, also relative to
+the pairs accepted before it (Cite numbers notes by first use); otherwise the segment is paired by unique shared
+content or abstained and reported (`RECONCILIATION_ABSTAINED`, `RENDER_USE_UNMATCHED`), never guessed. Template
+output is joined to the source template whose canonical name and parameter values equal those in `data-mw`. A
+container is matched to the reference-list item its matched uses all point to; a note claimed by two containers, or
+a note id that occurs twice in the DOM, is `note_ambiguous` (`RENDER_NOTE_AMBIGUOUS`) and no region is attached. A
+unit is matched to template output inside that item by the same template key. An identifier is confirmed in the render
+when an identifier link inside the matched region decodes to the same scheme and normalized value; links that no
+source occurrence explains are render-only. With no render, every render-dependent state is `unavailable` and the
+ledger says so; nothing is inferred.
+
+## 13. Marker observations
+
+One observation per container, of its matched rendered region (the reference-list or bibliography item, without
+backlinks, styles and scripts). States: `recognized_warning_text` (a profile warning term in the region's shown
+text), `ambiguous_text` (only ambiguous terms, a warning term only inside `<cite>`, or a warning or ambiguous term
+only in text the HTML hides: `display:none`, the `hidden` attribute, CS1 maintenance classes),
+`missing_template_link_only` (only a red link to a marker template), `no_recognized_warning_in_inspected_region`,
+`not_inspected` (region not reconciled or ambiguous) and `unavailable` (no render). English terms must stand as
+words; Arabic matching ignores harakat and tatweel and allows attached letters. `browser_visibility` is always
+`not_evaluated`. No path turns a failure, an unavailable render or a hidden term into "no warning".
+
+**Region text** (`RenderReader.region_text`) is rebuilt in two channels:
+
+- the text a reader is shown, each character labelled `text`, or `cite` inside `<cite>`;
+- the text the HTML hides.
+
+Links to marker-template pages are kept apart. How the pieces join:
+
+- Inline elements, comments, `<style>`, `<script>`, `<link>` and `<meta>` do not break a word:
+  `<span>Re</span>tracted` is "Retracted".
+- `<q>` adds its quotation marks.
+- Every run of Unicode whitespace is one space.
+- Block elements and `<br>` are a hard boundary (U+2029). No term, including a multi-word one, matches across it.
+- Hidden content inside shown text is a soft boundary. A match that crosses a soft boundary, or that is found only
+  with the soft boundaries joined or only with them separated, is ambiguous (`exclusion: interrupted`).
+- Content a reader sees that is not region text, touching a word with no space between, is an edge, and a match
+  that starts or ends at an edge is likewise ambiguous. Such content is a marker link's label, Parsoid's backlink
+  span (only the direct child of the note's list item holding the `mw:referencedBy` links), or an unknown element.
+
+How shown matches are classified:
+
+- A shown match is `text` evidence only when all its characters are labelled `text`.
+- Inside the citation it is ambiguous `cite_text`; across the citation's boundary, ambiguous (`spans_citation`).
+- Word boundaries and the exclusions (title prefix, negation, quotation, Arabic attached letters) read the whole
+  shown channel, so they see the text on both sides of the citation's boundary.
+
+Hiding:
+
+- The rules are inline `display:none` or `visibility:hidden`, the `hidden` attribute, the CS1 maintenance classes
+  and `mw-empty-elt`.
+- Hiding is inherited from every ancestor, including ancestors outside the region.
+- A descendant that declares itself visible is still treated as hidden, because CSS is not evaluated.
+
+**Links.** A link (red or blue) is classified by its target, read from Parsoid's `./Title` href or else from the
+title attribute. If the target is a template-namespace page of a profile marker template, the label is kept out of
+the text. A red one is then `missing_template_link` evidence, and a blue one is ambiguous (`template_page_link`).
+Any other link is ordinary: its label is text in the channel it sits in, whatever the target.
+
+**Evidence.** Each evidence item carries:
+
+- its channel (`part`), the matched original text and a snippet;
+- the DOM locator of the nearest element containing every matched character (required);
+- the exclusion basis or `hidden_basis`, when there is one;
+- for text inside a link: the link's target, how the target was read, and whether it is red.
+
+**Running text.** A citation template standing in running text is a `standalone_template` bibliography entry.
+Its region is the template's output. When letters or digits follow that output on its rendered line, that text
+was not inspected, and the observation is `not_inspected` rather than a negative.
+
+The matching cost is linear in the region's text and in its matches.
+
+## 14. Verification and replay
+
+`verify_bundle` re-checks from retained bytes only: schemas, artifact hashes and listing, source SHA-1 and size, the
+source answer against the recorded identity, the render checks of 8.4, and for an extraction: its own digest, the
+configuration digest, the capture it names, every span and exact anchor against the source bytes, every DOM locator
+against the retained HTML (marker evidence locators included), the marker evidence (below), references between
+entities and the accounting checks.
+
+**Marker evidence checks:**
+
+- a term item quotes text its element shows, in the channel its part names, with `text` labels throughout for a
+  `text` item;
+- the term matches the quoted text;
+- a link item's label, target, marker-template target and red/blue status agree with its part;
+- a hidden item's element is hidden;
+- kinds agree with parts;
+- the marker state follows from its evidence.
+
+**Additional verifier rules, 2026-10-30 (RF-56/V1, RF-57/V2):** for a document carrying markers, verification
+reconstructs the source model, structural source/render reconciliation, authorized regions and marker witnesses
+from retained bytes in an offline worker. It compares the complete marker records, including occurrence
+multiplicity, claimed region, context exclusions, channels, inherited hiding, link metadata, snippets and
+abstention reasons. A valid unrelated locator or an edited region field is not authorization. A word occurring
+in one context cannot authenticate a second, excluded occurrence. This checks marker completeness as well as
+positive witnesses; it uses the same deterministic marker rules as extraction, not an independent linguistic
+implementation. The existing local locator/text checks and their caches remain. The worker uses the recorded
+configuration's existing wall/CPU/address-space limits (defaults 30 seconds / 1024 MiB); reconstruction failure
+is verification failure, never success. Invalid recorded configuration produces a structured failure (RF-58).
+
+This changes verification behavior only. Extraction facts, schema and extractor/profile identity are unchanged;
+historical extraction digests are not rewritten. The checked code revision identifies these verifier rules.
+Verification does not fully re-derive every identifier, unit or exception claim. `replay` remains the complete
+extraction re-derivation and equality check. `replay_bundle` checks the recorded
+document's schema and own digest, refuses a pinned configuration or extractor identity (version, profile, parsers)
+that differs from the recorded one, re-extracts in the isolated worker and reports `reproduced` only when the new
+document equals the recorded one.
+
+## 15. Command line
+
+`citerift-wiki capture | extract | verify | replay`. JSON on stdout, diagnostics on stderr. Exit codes: 0 ok,
+1 internal error, 2 usage, 3 invalid input (unsafe path, malformed bundle, invalid configuration, missing schemas),
+4 unavailable (network or service failure), 5 verification failure or replay difference, 6 partial, 7 unsupported
+(wiki, namespace, content model, redirect, size), 8 deferred (`not_before` given), 9 failed. No command exits 0 with
+a failure or an empty result; outputs are never replaced.
+
+## 16. Isolation and limits
+
+`extract_bundle` runs the extraction in a child Python process (`-I`, environment reduced to `PATH`, new session)
+with `RLIMIT_AS` = `worker_memory_mib` (default 1024 MiB), `RLIMIT_CPU`, and a wall deadline `worker_wall_s`
+(default 30 s) after which the process group is killed (`EXTRACTION_DEADLINE_EXCEEDED`,
+`EXTRACTION_MEMORY_EXCEEDED`). The worker replaces socket connection functions before importing the extractor, so
+any connection attempt fails. Structural limits (nodes 400 000, depth 60, refs 20 000, templates 50 000, candidates
+50 000, render elements 2 000 000) fail closed with `LIMIT_*` codes. Every configuration value is validated
+(positive integers; memory 64-65 536 MiB; wall time in (0, 3600] s); the schema pins the configuration object.
+
+## 17. Security properties
+
+Read-only access to two fixed hosts; no credentials; no paid or new services; no outbound fetch of publisher,
+resolver or PubMed pages; no execution of retained HTML; no path from titles; no symlink following when reading or
+publishing; no replacement of existing outputs; strict JSON; no `eval`/`exec`/`shell=True` in the engine (tested);
+the worker refuses network connections (tested). `RISK_ANALYSIS.md` lists residual risks.
+
+## Changes under owner instruction D-034 (2026-11-02), all before the confirmation freeze `3e51792`
+
+- **Short-footnote identity** follows Module:Footnotes: a call's note name is built from its positional arguments
+  1-5 and its page, pages and location values, as the module builds it (`design/sfn-semantics/SEMANTIC_DECISION.md`).
+  Calls with the same name and group are one `generated_note` container. Every call is a use and keeps its own
+  source anchor; the reference definition is the first call in source order (decision D2). When two containers point
+  to one rendered note, the note is withdrawn from both (an abstention, never an attachment; R-03-SFN).
+- **DOI boundaries** D-1 and D-2 (section 11.4 above, `design/doi-boundaries/AUDIT.md`).
+- **Retry-After and the network gate**: an attempt is recorded when it starts (G-1), and a Retry-After HTTP-date is
+  read only in its strict forms, anything else stopping the capture as `RETRY_AFTER_UNREADABLE` (G-2)
+  (`design/retry-after/AUDIT.md`).
+- **Tokenizer (MF-1 v2)**: extraction uses mwparserfromhell's C tokenizer; a native crash of the worker is classified
+  by a second run with the pure-Python tokenizer under the same limits, whose output is never an extraction
+  (`review/failfirst/mf-1/BEFORE_AND_AFTER.md`).
+- Review fixes R6 and R7 (`review/REVIEW_FINDINGS.md`).
+
+The engine has not changed since `3e51792`.
+
+## Changes under owner instruction D-035 (2026-11-03): citation-unit classes
+
+Decision record: `design/unit-semantics/SEMANTIC_DECISION.md`; fail-first tests `tests/stage03/test_g5c_unit_semantics.py`;
+differential over every retained real bundle `design/unit-semantics/differential/DIFFERENTIAL.md`.
+
+**Required invariant:** the absence of a recognized citation template is not sufficient evidence that an
+unstructured bibliographic citation exists.
+
+Section 11.3 is replaced, for engine 1.1.0, by the following.
+
+**Unit kinds:**
+- `citation_template` and `external_data_template`: as before, with one exception. A template that is a citation
+  template only by the RF-37 name rule (the annotation guide's "Cite …", "استشهاد …") and whose own render is a
+  short-citation link is not a unit. Without that evidence the name rule stands (review RV-3).
+- `unsupported_citation_template` (new): a template the profile does not list whose own Parsoid output contains a
+  CS1/CS2 `<cite class="citation">`. It must be called inside a ref and not inside another template of that ref, or
+  at the top level of a bibliography entry. It must hold no citation, external-data or unclassified template in its
+  arguments, whose output Parsoid would render inside it (review RV-1). An unclassified template held in it does not
+  count when it cannot make citation markup: a literal magic word (`{{!}}`, `{{=}}`), or a template whose every
+  transclusion of its own name elsewhere in the same render shows none (review 2, RV2-5). It is kept with its source anchors and the
+  issue `CITATION_TEMPLATE_UNSUPPORTED`; its fields are not read. An identifier in it keeps the role `unresolved`.
+- `unstructured_text`: only on positive evidence. For a definition with no template unit:
+  1. its own external link or DOI/PMID (in text or in a profile wrapper) gives D;
+  2. else its own text (a letter or a digit outside every template called in the ref):
+     - beside a template whose render is read and is a short-citation link, citation markup it cannot own, or
+       absent (no usable render, no output of its own, conflicting outputs): unresolved (review RV-4);
+     - in an `efn` explanatory note: unresolved (review RV-6);
+     - otherwise: D;
+  3. else, letters or digits only inside a tag the engine does not read (`<nowiki>`, `<pre>`, …): unresolved (RV-8);
+  4. else:
+     - only short-citation links: no unit;
+     - any other template: unresolved;
+     - nothing: no unit.
+
+  Short footnotes are unchanged. A bibliography entry without a template unit is D only when an identifier on its
+  lines is not a template field and is either in no template of the entry but a profile identifier wrapper (its own
+  text or a resolver link), or in text of an entry that has text of its own outside its templates and refs, as in a
+  ref (review 2, RV2-3). A template that starts before the entry, such as a layout template around the whole list,
+  is not part of it. When its identifiers are only fields of other templates, it is unresolved
+  ("bibliography entry: …"). An identifier belongs to the list line it is on or, when it is not on a list line, to
+  the list line on which the innermost template holding it starts: a call may continue over several lines (review
+  2, RV2-7).
+
+**Identifiers outside every unit.** A located identifier of a reference (role `identifier_link` or
+`labeled_reference_text`, in a container) that is in none of its units carries `IDENTIFIER_OUTSIDE_UNITS`, a
+warning naming the identifier. This happens beside a template unit, for example a hand-written citation with its own
+DOI beside a bot-added archive `{{cite web}}` or an unlisted template rendered as a citation. Whether it is a second
+work is not established, so no unit is guessed and it is never silent (review 2, RV2-2).
+
+**Literal magic words.** `{{!}}` and `{{=}}` are MediaWiki syntax for one character. They never decide a unit and
+are not unknown templates (review 2, RV2-8). Other magic words and parser functions (`{{PAGENAME}}`, `{{#if:}}`,
+`{{#invoke:}}`) are unclassified templates, as before.
+
+**Unresolved definitions** carry `UNIT_CLASSIFICATION_UNRESOLVED`, a warning, with the container id and either
+"definition N: reason" or "bibliography entry: reason". The reason names the evidence actually read (review RV-10).
+The same entry is in the exception ledger. No unit is claimed.
+
+**Issue entities.** Containers and units are renumbered by position after they are made. Every issue made before a
+renumbering is remapped, so it names the entity it was made for (review RV-2; the defect predates D-035).
+
+**Render evidence** (`units.py`):
+- *citation markup*: a `<cite class="citation">`;
+- *short-citation link*: a link to a `#CITEREF…` anchor.
+
+It is read from the template's single-template transclusion, paired by canonical target and parameters. It is read
+for these templates:
+- inside a ref, called outside any other template of that ref: unclassified and RF-37 templates;
+- outside refs: unclassified templates at the top level that hold an identifier.
+
+There is no evidence when the template:
+- has no output of its own;
+- has several parts;
+- was not expanded (parser-limit warning);
+- has calls whose outputs disagree.
+
+**Note evidence** (review 2, RV2-4). Parsoid renders the templates of a ref written inside another template's
+arguments (a reference list's `refs=`, `{{refn}}`, an infobox parameter) as part of that template, so they never have
+output of their own. For a definition without a unit whose deciding templates include some without any
+transclusion of their own (not omitted, not conflicting: absent), the definition's rendered note decides, when the
+container is matched to exactly one note, its backlinks agree, its definitions do not conflict, and the note holds no
+unexpanded template:
+- a note with neither citation markup nor a short-citation link shows that none of those templates is either;
+- otherwise the note's evidence is given to the definition's one template without evidence, only when every other
+  deciding template of it shows no citation markup of its own; with two or more, nothing is attributed.
+
+The model is then built and reconciled a second time with that evidence. Containers and their notes do not depend on
+units, so the second reconciliation matches the same notes.
+
+**Nested evidence** (review 2, RV2-5). For an unclassified template nested in another template's arguments, every
+single-template transclusion of the same canonical name in the render is read. When all show no citation markup, the
+nested template cannot have made the outer template's citation markup. This is used only for the RV-1 holder rule.
+
+Without a usable render, no template the profile does not classify is established as a citation construct.
+
+**One path for extraction, replay and verification** (review 2, RV2-1). `units.source_model` builds the model with
+the render's evidence and reconciles it. Extraction, replay and the worker's marker reconstruction in `verify` all
+use it. Before, the marker reconstruction built the model without evidence, so a document with a bibliography G unit
+failed verification.
+
+**Compatibility:**
+- extraction `schema_version` 1.1.0 and schema `x-citerift-version` 1.1.0, an additive enum value;
+- capture code unchanged; a capture records the package version as its client version, so new captures say 1.1.0;
+- reconciliation unchanged: a bibliography entry with a G unit is matched to the render through its template, as an
+  entry with a listed citation template is;
+- engine `citerift-wiki` 1.1.0, so a 1.0.0 document replays as `REPLAY_IDENTITY_MISMATCH`;
+- profile unchanged (same digest);
+- the frozen scorer, guide and protocol unchanged.
+
+The render is now read before the source model is built. Render read failures are reported as before.
+
+
+**Memory failures reported by the interpreter (MF-1 v3).** CPython 3.12 and 3.13 raise
+`SystemError: error return without exception set`, not `MemoryError`, when a Python call cannot get a new frame-stack
+chunk under the address-space limit. Which allocation fails first depends on the memory layout. With engine 1.1.0 the
+first failure of the 20000-reference memory test moved from the C tokenizer (a SIGSEGV, handled by MF-1 v2) to such a
+frame allocation, so the run was reported as `EXTRACTION_WORKER_FAILED` (3 of 3 runs).
+
+The worker now treats that exact SystemError as a memory failure (exit code 3, `EXTRACTION_MEMORY_EXCEEDED`) only
+when the process's peak address space (`VmPeak`) reached the limit within 1 MiB. A frame-stack chunk is 16 KiB unless
+one frame needs more. Any other SystemError, the same message far below the limit, or a platform without `/proc`
+stays `EXTRACTION_WORKER_FAILED`. Tests: `tests/stage03/test_wiki_mf1_tokenizer.py` (the exact symptom after a
+peak that really reached the limit; the symptom without memory pressure; other exceptions). Which exception a real
+allocation failure raises depends on the memory layout: on CI's runners the same probe raised MemoryError, so the
+classification test does not depend on it (CI run 41647876812).
+
+## Known defect found by the D-035 confirmation (2026-11-03): repeated names inside one template's output
+
+Not changed by D-035: the amendment of D-035 forbids repair after the prediction run (RISKS.md R-038). Corrected
+under owner instruction D-036 in engine 1.2.0; see the next section. This section is kept as written.
+
+Uses produced in a template's output are paired with markers of the same transclusion (MATHEMATICAL_MODEL.md
+section 5). The implementing function (`src/citerift/wiki/reconcile.py`, `_align_unordered`) states in its docstring
+that the template decides the rendered order, so names pair regardless of position. It does that for a name with one
+use. For a name with **more than one** use in one template's
+output, it pairs the k-th source use with the k-th rendered marker of that name, which is correct only when the
+template keeps source order. An infobox that renders its rows in another order swaps the attachments of those uses
+(`evaluation/confirmation-d035/campaign/REPORT.md` section 5). The two markers of one reference point to the same note
+and show the same text; only the Parsoid `data-mw` `body`, present on the marker of the definition, distinguishes
+the definition from its reuses, and the engine's render-use record does not keep it.
+
+The behaviour this specification requires, and which the code does not yet implement: for a name with more than one
+use in one template's output, a pairing is accepted only when the render proves it (for example, the `data-mw`
+`body` that marks the definition's marker, when exactly one source use is a definition and the others are reuses
+with no further order to decide); otherwise the uses are
+`abstained` with `RECONCILIATION_ABSTAINED`. Container, note and marker observations are not affected, because both
+uses belong to one container.
+
+## Changes under owner instruction D-036 (2026-11-04): R-038 corrected (engine 1.2.0, extraction schema 1.2.0)
+
+Design record, surveys, readiness reviews, dispositions, differential and fail-first evidence:
+`design/r038-reconciliation/DESIGN.md` and `design/r038-reconciliation/review/`. The main change is the pairing of a
+name with **two or more** uses on both sides inside one template's output (`Reconciler._same_name`); a name used
+once there still pairs by name (`name_in_template_output`). The readiness reviews added five narrower changes,
+listed after the rule. The pairing of uses in article text, the source model (containers, definitions, uses,
+units, identifiers and their roles) and the scorer are unchanged.
+
+**Render evidence.** Each rendered marker now carries `body_role`, read from its `data-mw`:
+`definition` (a `body.id` naming this marker's own note text, or a non-empty `body.html`), `reuse` (no `body`, or an
+empty `body.html`), `contradictory` (a `body.id` naming another note, or a body of another shape) or none (no
+readable `data-mw`). `RenderReader.preceding_text` gives the visible text before a marker in its nearest block
+element (table cell, list item, paragraph, heading, ...), skipping hidden elements, with a space where another
+marker stands; at most `ANCHOR_MAX_NODES` = 20,000 children are iterated (every child counts, markers and hidden
+elements included), the last `ANCHOR_KEEP` = 200 characters are kept, and the texts of all markers of one block come
+from one walk of that block.
+
+**Support.** The source text before the `<ref>` in its parameter (`source_anchor`: its last line, reduced to visible
+text; at most the last 8,192 characters of the parameter are read) supports a marker when it occurs in the marker's
+preceding text as whole words, anywhere in it (a template may add a unit, an age or a qualifier after a value), also
+after folding both texts (case, non-ASCII digits, the Arabic decimal separator, the minus sign, digit-group
+separators), and, for a text without letters with at least 3 digits, when its numbers occur in a row among the
+marker's numbers. When the line holds templates, its numbers (`source_numbers`, at least 3 digits in all) support a
+marker whose numbers contain them in a row. Support is deliberately generous: a marker wrongly included only makes
+the pairing ambiguous, while the true marker left out could force a swap (`MATHEMATICAL_MODEL.md`).
+
+**Pairing rule** for one name with n ≥ 2 compatible uses on both sides (n ≤ 2,000):
+1. every marker has a readable, non-contradictory role and the number of source definitions (a `<ref>` with
+   content) equals the number of `definition` markers, else no use of the name is paired;
+2. a role held by one use on each side pairs those two (`reference_role_in_template_output`);
+3. otherwise, within each role, every marker must support some use, else no use of the role is paired (a marker
+   that no value explains shows a value that is not shown as written, which is how an anchor can mislead;
+   focused re-review R-02). Then the uses with support must be exactly as many as the markers (so no use is
+   without support), a use may take only a marker that supports it and a marker only a use it supports; a pair
+   is fixed only when one side has a single choice left (`anchor_in_template_output`), and the group is accepted
+   only when every use is fixed that way. (`elimination_in_template_output`, the basis for a use without support
+   paired with the one marker left, stays in the schema but is no longer produced in template output.)
+4. a group not settled completely keeps only pairs whose support is one marker supported by no other use; the
+   other uses are `abstained` with `RECONCILIATION_ABSTAINED`;
+5. a use whose support holds only markers of the other role makes the whole name unpaired.
+
+Nothing in the rule names an article, template, parameter or reference name.
+
+**Changes from the readiness reviews** (`design/r038-reconciliation/review/DISPOSITIONS.md`):
+* **One group per transclusion** (A-02). Source templates that Parsoid renders as one multi-part transclusion (one
+  `about`, for example `{{Election box begin}}` ... `{{Election box end}}`) are reconciled as one group against that
+  transclusion's markers, so no marker is claimed twice and a name reused across the parts is paired by the rule
+  above.
+* **Count-only pairs need agreeing text** (A-04, R-01). A use paired only because it is the one use left on each
+  side of a template's output, without equal names on both sides, is not paired when its parameter text (or numbers) can be read, the marker's preceding
+  text can be read and is not empty, and that text does not support it (the template did not show this reference
+  and emitted its own).
+* **Repeated names among nested uses** (A-05). When a name is used two or more times among the uses nested in one
+  reference, those uses are paired by the rule above instead of by document order; the rest are abstained.
+* **Bibliography regions** (A-03). A render region claimed by two or more bibliography entries (the whole output of a
+  multi-part list transclusion such as `{{div col}}` ... `{{div col end}}`) is given to none of them: each such entry
+  takes the one list item holding a link to its own identifier (its URL, or a link that decodes to one of its cited
+  identifiers) that no other entry claims, or is `note_ambiguous` with `RENDER_NOTE_AMBIGUOUS` (and its marker
+  observation is `not_inspected`). Entries in paragraphs rather than list items of such a transclusion are
+  therefore `note_ambiguous`.
+* **Abstention issues** (A-07). A `RECONCILIATION_ABSTAINED` issue names only uses whose final state is
+  `abstained` (not those found `source_only`).
+
+**Verification of earlier documents** (B-4). `verify` rebuilds marker context and render regions with the current
+engine. A document written by an earlier engine therefore verifies only where that reconstruction did not change:
+23 of the 203 recorded documents (8 already at 10bf0d2, 15 more after the review fixes) do not verify with engine
+1.2.0, and every one of them verifies with the engine of its own campaign
+(`design/r038-reconciliation/evidence/VERIFY_HISTORICAL_DOCUMENTS.txt`). To check a recorded campaign, use the
+candidate revision that campaign recorded.
+
+**Versions.** Engine `citerift-wiki` 1.2.0 and extraction schema 1.2.0, whose `render_basis` enum gains the three
+bases above. A 1.1.0 document replays as `REPLAY_IDENTITY_MISMATCH`, as for every engine change. The version string
+does not bind the code (B-7): the D-036 confirmation therefore records the Git tree digests of `src` and `schemas` of
+its candidate in its MANIFEST and checks them before its prediction run. Profile, scorer, guide, protocol and gates
+unchanged.
+

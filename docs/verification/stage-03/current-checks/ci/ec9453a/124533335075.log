@@ -1,0 +1,521 @@
+﻿2026-10-31T12:09:41.1650505Z Current runner version: '2.338.2'
+2026-10-31T12:09:41.1676422Z ##[group]Runner Image Provisioner
+2026-10-31T12:09:41.1677286Z Hosted Compute Agent
+2026-10-31T12:09:41.1677869Z Version: 20261021.618
+2026-10-31T12:09:41.1678709Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T12:09:41.1679476Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T12:09:41.1680223Z Worker ID: {e9b7bb8b-5e85-4c90-87dc-0eb9ad45dfe7}
+2026-10-31T12:09:41.1680960Z Region: canadaeast
+2026-10-31T12:09:41.1681525Z Cloud: Azure
+2026-10-31T12:09:41.1682595Z ##[endgroup]
+2026-10-31T12:09:41.1684308Z ##[group]Operating System
+2026-10-31T12:09:41.1685050Z Ubuntu
+2026-10-31T12:09:41.1685583Z 24.04.5
+2026-10-31T12:09:41.1686083Z LTS
+2026-10-31T12:09:41.1686675Z ##[endgroup]
+2026-10-31T12:09:41.1687308Z ##[group]Runner Image
+2026-10-31T12:09:41.1688053Z Image: ubuntu-24.04
+2026-10-31T12:09:41.1688700Z Version: 20261025.353.1
+2026-10-31T12:09:41.1690045Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T12:09:41.1691629Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T12:09:41.1693237Z ##[endgroup]
+2026-10-31T12:09:41.1694411Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T12:09:41.1697014Z Contents: read
+2026-10-31T12:09:41.1697686Z Metadata: read
+2026-10-31T12:09:41.1698244Z ##[endgroup]
+2026-10-31T12:09:41.1700471Z Secret source: Actions
+2026-10-31T12:09:41.1701429Z Cache mode: write
+2026-10-31T12:09:41.1702817Z Prepare workflow directory
+2026-10-31T12:09:41.2238090Z Prepare all required actions
+2026-10-31T12:09:41.2286667Z Getting action download info
+2026-10-31T12:09:41.4813550Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-31T12:09:41.5790382Z Download action repository 'astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e' (SHA:07a047e608db84b3d8c06cd9a7c7dcc9c355c18e)
+2026-10-31T12:09:41.9568899Z Download action repository 'actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+2026-10-31T12:09:42.2498202Z Complete job name: verify (python 3.13)
+2026-10-31T12:09:42.3658683Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-31T12:09:42.3661263Z with:
+2026-10-31T12:09:42.3662687Z   fetch-depth: 0
+2026-10-31T12:09:42.3663849Z   persist-credentials: false
+2026-10-31T12:09:42.3665116Z   repository: ImanOthman-eng/citerift
+2026-10-31T12:09:42.3674991Z   token: ***
+2026-10-31T12:09:42.3676034Z   ssh-strict: true
+2026-10-31T12:09:42.3677199Z   ssh-user: git
+2026-10-31T12:09:42.3678250Z   clean: true
+2026-10-31T12:09:42.3679293Z   sparse-checkout-cone-mode: true
+2026-10-31T12:09:42.3680574Z   fetch-tags: false
+2026-10-31T12:09:42.3681620Z   show-progress: true
+2026-10-31T12:09:42.3682881Z   lfs: false
+2026-10-31T12:09:42.3683944Z   submodules: false
+2026-10-31T12:09:42.3685021Z   set-safe-directory: true
+2026-10-31T12:09:42.3686294Z   allow-unsafe-pr-checkout: false
+2026-10-31T12:09:42.3687914Z env:
+2026-10-31T12:09:42.3688915Z   UV_PYTHON: 3.13
+2026-10-31T12:09:42.3689977Z   PYTHONPATH: src
+2026-10-31T12:09:42.3691132Z ##[endgroup]
+2026-10-31T12:09:42.7090840Z Syncing repository: ImanOthman-eng/citerift
+2026-10-31T12:09:42.7093266Z ##[group]Getting Git version info
+2026-10-31T12:09:42.7094201Z Working directory is '/home/runner/work/citerift/citerift'
+2026-10-31T12:09:42.7095681Z [command]/usr/bin/git version
+2026-10-31T12:09:42.7199257Z git version 2.56.0
+2026-10-31T12:09:42.7223835Z ##[endgroup]
+2026-10-31T12:09:42.7235089Z Temporarily overriding HOME='/home/runner/work/_temp/9e109dd0-03d8-44c8-ad32-66b4bf62d35a' before making global git config changes
+2026-10-31T12:09:42.7236675Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T12:09:42.7243687Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/citerift/citerift
+2026-10-31T12:09:42.7395574Z Deleting the contents of '/home/runner/work/citerift/citerift'
+2026-10-31T12:09:42.7398404Z ##[group]Determining repository object format
+2026-10-31T12:09:42.7399651Z ##[endgroup]
+2026-10-31T12:09:42.7400692Z ##[group]Initializing the repository
+2026-10-31T12:09:42.7401579Z [command]/usr/bin/git init /home/runner/work/citerift/citerift
+2026-10-31T12:09:42.7502502Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T12:09:42.7503742Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T12:09:42.7504677Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T12:09:42.7505850Z hint: call:
+2026-10-31T12:09:42.7506271Z hint:
+2026-10-31T12:09:42.7506842Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T12:09:42.7507481Z hint:
+2026-10-31T12:09:42.7508253Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T12:09:42.7509187Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T12:09:42.7509934Z hint:
+2026-10-31T12:09:42.7510457Z hint: 	git branch -m <name>
+2026-10-31T12:09:42.7510913Z hint:
+2026-10-31T12:09:42.7511571Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T12:09:42.7515398Z Initialized empty Git repository in /home/runner/work/citerift/citerift/.git/
+2026-10-31T12:09:42.7528270Z [command]/usr/bin/git remote add origin https://github.com/ImanOthman-eng/citerift
+2026-10-31T12:09:42.7585516Z ##[endgroup]
+2026-10-31T12:09:42.7586360Z ##[group]Disabling automatic garbage collection
+2026-10-31T12:09:42.7590201Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T12:09:42.7628082Z ##[endgroup]
+2026-10-31T12:09:42.7629256Z ##[group]Setting up auth
+2026-10-31T12:09:42.7629888Z Removing SSH command configuration
+2026-10-31T12:09:42.7635827Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T12:09:42.7689804Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T12:09:42.8113449Z Removing HTTP extra header
+2026-10-31T12:09:42.8120031Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T12:09:42.8165864Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T12:09:42.8407273Z Removing includeIf entries pointing to credentials config files
+2026-10-31T12:09:42.8413457Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T12:09:42.8458448Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T12:09:42.8710035Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T12:09:42.8762278Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/citerift/citerift/.git.path /home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:42.8806316Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/citerift/citerift/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:42.8852517Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:42.8896861Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:42.8938187Z ##[endgroup]
+2026-10-31T12:09:42.8938716Z ##[group]Fetching the repository
+2026-10-31T12:09:42.8946311Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +f9b07ef66228b71b0c0b1fe1be75e58c398347e7:refs/remotes/pull/5/merge
+2026-10-31T12:09:43.9942381Z From https://github.com/ImanOthman-eng/citerift
+2026-10-31T12:09:43.9943670Z  * [new branch]      claude/beautiful-planck-fm0pya           -> origin/claude/beautiful-planck-fm0pya
+2026-10-31T12:09:43.9944994Z  * [new branch]      claude/project-thread-5bfmq7             -> origin/claude/project-thread-5bfmq7
+2026-10-31T12:09:43.9946300Z  * [new branch]      claude/project-thread-70xjkv             -> origin/claude/project-thread-70xjkv
+2026-10-31T12:09:43.9947582Z  * [new branch]      claude/project-thread-84z62e             -> origin/claude/project-thread-84z62e
+2026-10-31T12:09:43.9948855Z  * [new branch]      claude/project-thread-9lab67             -> origin/claude/project-thread-9lab67
+2026-10-31T12:09:43.9950145Z  * [new branch]      claude/project-thread-ddufmg             -> origin/claude/project-thread-ddufmg
+2026-10-31T12:09:43.9951194Z  * [new branch]      main                                     -> origin/main
+2026-10-31T12:09:43.9952298Z  * [new ref]         f9b07ef66228b71b0c0b1fe1be75e58c398347e7 -> pull/5/merge
+2026-10-31T12:09:43.9954182Z ##[endgroup]
+2026-10-31T12:09:43.9954922Z ##[group]Determining the checkout info
+2026-10-31T12:09:43.9955774Z ##[endgroup]
+2026-10-31T12:09:43.9956219Z [command]/usr/bin/git sparse-checkout disable
+2026-10-31T12:09:44.0021324Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-31T12:09:44.0065235Z ##[group]Checking out the ref
+2026-10-31T12:09:44.0069473Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/5/merge
+2026-10-31T12:09:44.2301877Z Note: switching to 'refs/remotes/pull/5/merge'.
+2026-10-31T12:09:44.2303212Z 
+2026-10-31T12:09:44.2304255Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-31T12:09:44.2305424Z changes and commit them, and you can discard any commits you make in this
+2026-10-31T12:09:44.2306841Z state without impacting any branches by switching back to a branch.
+2026-10-31T12:09:44.2307617Z 
+2026-10-31T12:09:44.2308043Z If you want to create a new branch to retain commits you create, you may
+2026-10-31T12:09:44.2309121Z do so (now or later) by using -c with the switch command. Example:
+2026-10-31T12:09:44.2309788Z 
+2026-10-31T12:09:44.2310019Z   git switch -c <new-branch-name>
+2026-10-31T12:09:44.2310351Z 
+2026-10-31T12:09:44.2310538Z Or undo this operation with:
+2026-10-31T12:09:44.2310999Z 
+2026-10-31T12:09:44.2311460Z   git switch -
+2026-10-31T12:09:44.2311726Z 
+2026-10-31T12:09:44.2312556Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-31T12:09:44.2313311Z 
+2026-10-31T12:09:44.2316552Z HEAD is now at f9b07ef Merge ec9453ad0f74a425db9d68493d21bdff358543d7 into 94ac4f8df27383a03a810a4501ed1439bf8bcaea
+2026-10-31T12:09:44.2331813Z ##[endgroup]
+2026-10-31T12:09:44.2398213Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T12:09:44.2438099Z f9b07ef66228b71b0c0b1fe1be75e58c398347e7
+2026-10-31T12:09:44.2448521Z ##[group]Removing auth
+2026-10-31T12:09:44.2449035Z Removing SSH command configuration
+2026-10-31T12:09:44.2454064Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T12:09:44.2500295Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T12:09:44.2749423Z Removing HTTP extra header
+2026-10-31T12:09:44.2753911Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T12:09:44.2800172Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T12:09:44.3051284Z Removing includeIf entries pointing to credentials config files
+2026-10-31T12:09:44.3055862Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T12:09:44.3100512Z includeif.gitdir:/home/runner/work/citerift/citerift/.git.path
+2026-10-31T12:09:44.3101843Z includeif.gitdir:/home/runner/work/citerift/citerift/.git/worktrees/*.path
+2026-10-31T12:09:44.3103308Z includeif.gitdir:/github/workspace/.git.path
+2026-10-31T12:09:44.3104086Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-31T12:09:44.3113146Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/citerift/citerift/.git.path
+2026-10-31T12:09:44.3148501Z /home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:44.3169182Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/citerift/citerift/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-d61ffb32\-2245\-442b\-aa43\-5e3152de729e\.config
+2026-10-31T12:09:44.3220460Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/citerift/citerift/.git/worktrees/*.path
+2026-10-31T12:09:44.3263687Z /home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:44.3274146Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/citerift/citerift/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-d61ffb32\-2245\-442b\-aa43\-5e3152de729e\.config
+2026-10-31T12:09:44.3327540Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-31T12:09:44.3378219Z /github/runner_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:44.3388590Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-d61ffb32\-2245\-442b\-aa43\-5e3152de729e\.config
+2026-10-31T12:09:44.3441356Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-31T12:09:44.3483795Z /github/runner_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config
+2026-10-31T12:09:44.3494707Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-d61ffb32\-2245\-442b\-aa43\-5e3152de729e\.config
+2026-10-31T12:09:44.3545080Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T12:09:44.3813086Z Removing credentials config '/home/runner/work/_temp/git-credentials-d61ffb32-2245-442b-aa43-5e3152de729e.config'
+2026-10-31T12:09:44.3824003Z ##[endgroup]
+2026-10-31T12:09:44.4085041Z ##[group]Run test "$(ls -A src)" = "citerift"
+2026-10-31T12:09:44.4085460Z [36;1mtest "$(ls -A src)" = "citerift"[0m
+2026-10-31T12:09:44.4108665Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:44.4108947Z env:
+2026-10-31T12:09:44.4109160Z   UV_PYTHON: 3.13
+2026-10-31T12:09:44.4109378Z   PYTHONPATH: src
+2026-10-31T12:09:44.4109581Z ##[endgroup]
+2026-10-31T12:09:44.4234944Z ##[group]Run test ! -e .venv && test ! -L .venv
+2026-10-31T12:09:44.4235363Z [36;1mtest ! -e .venv && test ! -L .venv[0m
+2026-10-31T12:09:44.4254947Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:44.4255217Z env:
+2026-10-31T12:09:44.4255413Z   UV_PYTHON: 3.13
+2026-10-31T12:09:44.4255628Z   PYTHONPATH: src
+2026-10-31T12:09:44.4255835Z ##[endgroup]
+2026-10-31T12:09:44.4416652Z ##[group]Run astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+2026-10-31T12:09:44.4417078Z with:
+2026-10-31T12:09:44.4417284Z   version: 0.11.32
+2026-10-31T12:09:44.4417508Z   python-version: 3.13
+2026-10-31T12:09:44.4417738Z   enable-cache: false
+2026-10-31T12:09:44.4417979Z   activate-environment: false
+2026-10-31T12:09:44.4418232Z   no-project: false
+2026-10-31T12:09:44.4418531Z   working-directory: /home/runner/work/citerift/citerift
+2026-10-31T12:09:44.4421140Z   github-token: ***
+2026-10-31T12:09:44.4422209Z   cache-dependency-glob: **/*requirements*.txt
+**/*requirements*.in
+**/*constraints*.txt
+**/*constraints*.in
+**/pyproject.toml
+**/uv.lock
+**/*.py.lock
+
+2026-10-31T12:09:44.4422914Z   restore-cache: true
+2026-10-31T12:09:44.4423142Z   save-cache: auto
+2026-10-31T12:09:44.4423363Z   prune-cache: false
+2026-10-31T12:09:44.4423586Z   cache-python: false
+2026-10-31T12:09:44.4423840Z   ignore-nothing-to-cache: false
+2026-10-31T12:09:44.4424147Z   ignore-empty-workdir: false
+2026-10-31T12:09:44.4424421Z   download-from-astral-mirror: true
+2026-10-31T12:09:44.4424697Z   add-problem-matchers: true
+2026-10-31T12:09:44.4424936Z   quiet: false
+2026-10-31T12:09:44.4425151Z   resolution-strategy: highest
+2026-10-31T12:09:44.4425392Z env:
+2026-10-31T12:09:44.4425578Z   UV_PYTHON: 3.13
+2026-10-31T12:09:44.4425783Z   PYTHONPATH: src
+2026-10-31T12:09:44.4425987Z ##[endgroup]
+2026-10-31T12:09:44.6587165Z Fetching manifest data from https://raw.githubusercontent.com/astral-sh/versions/main/v1/uv.ndjson ...
+2026-10-31T12:09:44.7864389Z Downloading uv from "https://releases.astral.sh/github/uv/releases/download/0.11.32/uv-x86_64-unknown-linux-gnu.tar.gz" ...
+2026-10-31T12:09:45.1452795Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/debf5e28-9107-4dc3-8ffa-ac65c8fb7397 -f /home/runner/work/_temp/48ffd8bb-e9b6-428a-ac4c-6dd7d419132f
+2026-10-31T12:09:45.6436714Z Added /home/runner/.local/bin to the path
+2026-10-31T12:09:45.6440993Z Added /opt/hostedtoolcache/uv/0.11.32/x86_64 to the path
+2026-10-31T12:09:45.6443137Z Set UV_PYTHON_INSTALL_DIR to /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:45.6443747Z Added /home/runner/work/_temp/uv-python-dir to the path
+2026-10-31T12:09:45.6444500Z Set UV_PYTHON to 3.13
+2026-10-31T12:09:45.6467008Z Successfully installed uv version 0.11.32
+2026-10-31T12:09:45.7607395Z ##[group]Run uv sync --frozen --no-install-project --no-build
+2026-10-31T12:09:45.7607895Z [36;1muv sync --frozen --no-install-project --no-build[0m
+2026-10-31T12:09:45.7629771Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:45.7630032Z env:
+2026-10-31T12:09:45.7630221Z   UV_PYTHON: 3.13
+2026-10-31T12:09:45.7630428Z   PYTHONPATH: src
+2026-10-31T12:09:45.7630722Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:45.7631063Z ##[endgroup]
+2026-10-31T12:09:46.0084571Z Downloading cpython-3.13.14-linux-x86_64-gnu (download) (33.2MiB)
+2026-10-31T12:09:46.9239415Z  Downloaded cpython-3.13.14-linux-x86_64-gnu (download)
+2026-10-31T12:09:47.0740440Z Using CPython 3.13.14
+2026-10-31T12:09:47.0740945Z Creating virtual environment at: .venv
+2026-10-31T12:09:47.1206262Z Downloading ast-serialize (1.3MiB)
+2026-10-31T12:09:47.1210593Z Downloading pip (1.7MiB)
+2026-10-31T12:09:47.1213950Z Downloading ruff (10.0MiB)
+2026-10-31T12:09:47.1221813Z Downloading pygments (1.2MiB)
+2026-10-31T12:09:47.1237180Z Downloading lxml (5.0MiB)
+2026-10-31T12:09:47.1317585Z Downloading mypy (14.7MiB)
+2026-10-31T12:09:47.2855455Z  Downloaded ast-serialize
+2026-10-31T12:09:47.5109978Z  Downloaded lxml
+2026-10-31T12:09:47.5285920Z  Downloaded ruff
+2026-10-31T12:09:47.5615745Z  Downloaded pygments
+2026-10-31T12:09:47.5813028Z  Downloaded pip
+2026-10-31T12:09:47.7133477Z  Downloaded mypy
+2026-10-31T12:09:47.7136353Z Prepared 45 packages in 634ms
+2026-10-31T12:09:47.7566977Z Installed 45 packages in 42ms
+2026-10-31T12:09:47.7567553Z  + ast-serialize==0.13.1
+2026-10-31T12:09:47.7567986Z  + attrs==26.1.0
+2026-10-31T12:09:47.7568375Z  + boolean-py==5.0
+2026-10-31T12:09:47.7568865Z  + cachecontrol==0.14.4
+2026-10-31T12:09:47.7569275Z  + certifi==2026.10.23
+2026-10-31T12:09:47.7569708Z  + charset-normalizer==3.5.2
+2026-10-31T12:09:47.7572957Z  + cyclonedx-python-lib==11.12.0
+2026-10-31T12:09:47.7582893Z  + defusedxml==0.7.1
+2026-10-31T12:09:47.7583431Z  + filelock==4.2.4
+2026-10-31T12:09:47.7584087Z  + idna==3.20
+2026-10-31T12:09:47.7584672Z  + iniconfig==2.3.1
+2026-10-31T12:09:47.7585200Z  + jsonschema==4.26.0
+2026-10-31T12:09:47.7585767Z  + jsonschema-specifications==2025.9.1
+2026-10-31T12:09:47.7587350Z  + librt==0.16.0
+2026-10-31T12:09:47.7588434Z  + license-expression==30.4.4
+2026-10-31T12:09:47.7588896Z  + lxml==6.1.3
+2026-10-31T12:09:47.7589245Z  + markdown-it-py==4.2.0
+2026-10-31T12:09:47.7589645Z  + mdurl==0.1.2
+2026-10-31T12:09:47.7589980Z  + msgpack==1.2.3
+2026-10-31T12:09:47.7590335Z  + mwparserfromhell==0.7.2
+2026-10-31T12:09:47.7590717Z  + mypy==2.4.0
+2026-10-31T12:09:47.7591058Z  + mypy-extensions==1.1.0
+2026-10-31T12:09:47.7591462Z  + packageurl-python==0.17.6
+2026-10-31T12:09:47.7591862Z  + packaging==26.3
+2026-10-31T12:09:47.7592423Z  + pathspec==1.1.1
+2026-10-31T12:09:47.7592696Z  + pip==26.2.2
+2026-10-31T12:09:47.7592896Z  + pip-api==0.0.35
+2026-10-31T12:09:47.7593099Z  + pip-audit==2.10.1
+2026-10-31T12:09:47.7593359Z  + pip-requirements-parser==32.0.1
+2026-10-31T12:09:47.7593642Z  + platformdirs==4.13.5
+2026-10-31T12:09:47.7593855Z  + pluggy==1.7.0
+2026-10-31T12:09:47.7594061Z  + py-serializable==2.1.0
+2026-10-31T12:09:47.7594280Z  + pygments==2.21.0
+2026-10-31T12:09:47.7594482Z  + pyparsing==3.3.3
+2026-10-31T12:09:47.7594676Z  + pytest==9.1.1
+2026-10-31T12:09:47.7594873Z  + referencing==0.37.0
+2026-10-31T12:09:47.7595083Z  + requests==2.34.2
+2026-10-31T12:09:47.7595273Z  + rich==15.0.0
+2026-10-31T12:09:47.7595465Z  + rpds-py==2026.9.1
+2026-10-31T12:09:47.7595673Z  + ruff==0.17.2
+2026-10-31T12:09:47.7595885Z  + sortedcontainers==2.4.0
+2026-10-31T12:09:47.7596106Z  + tomli==2.5.0
+2026-10-31T12:09:47.7596291Z  + tomli-w==1.2.0
+2026-10-31T12:09:47.7596501Z  + typing-extensions==4.16.0
+2026-10-31T12:09:47.7596730Z  + urllib3==2.8.0
+2026-10-31T12:09:47.7670808Z ##[group]Run uv run --no-sync python -P -m citerift.governance.cli check
+2026-10-31T12:09:47.7671379Z [36;1muv run --no-sync python -P -m citerift.governance.cli check[0m
+2026-10-31T12:09:47.7671930Z [36;1muv run --no-sync python -P -m citerift.governance.cli render-status --check[0m
+2026-10-31T12:09:47.7692779Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:47.7693049Z env:
+2026-10-31T12:09:47.7693261Z   UV_PYTHON: 3.13
+2026-10-31T12:09:47.7693473Z   PYTHONPATH: src
+2026-10-31T12:09:47.7693763Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:47.7694105Z ##[endgroup]
+2026-10-31T12:09:49.3103578Z Consistency check: 0 errors, 0 warnings
+2026-10-31T12:09:49.5388210Z PROJECT_STATUS.md is up to date
+2026-10-31T12:09:49.5627824Z ##[group]Run uv lock --check
+2026-10-31T12:09:49.5628354Z [36;1muv lock --check[0m
+2026-10-31T12:09:49.5658065Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:49.5658503Z env:
+2026-10-31T12:09:49.5658859Z   UV_PYTHON: 3.13
+2026-10-31T12:09:49.5659230Z   PYTHONPATH: src
+2026-10-31T12:09:49.5659735Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:49.5660339Z ##[endgroup]
+2026-10-31T12:09:49.5911288Z Resolved 47 packages in 0.79ms
+2026-10-31T12:09:49.5958773Z ##[group]Run uv sync --locked
+2026-10-31T12:09:49.5959115Z [36;1muv sync --locked[0m
+2026-10-31T12:09:49.5979338Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:49.5979609Z env:
+2026-10-31T12:09:49.5979804Z   UV_PYTHON: 3.13
+2026-10-31T12:09:49.5980024Z   PYTHONPATH: src
+2026-10-31T12:09:49.5980330Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:49.5980676Z ##[endgroup]
+2026-10-31T12:09:49.6180587Z Resolved 47 packages in 0.78ms
+2026-10-31T12:09:49.6204921Z    Building citerift @ file:///home/runner/work/citerift/citerift
+2026-10-31T12:09:49.6218414Z       Built citerift @ file:///home/runner/work/citerift/citerift
+2026-10-31T12:09:49.6239638Z Prepared 1 package in 4ms
+2026-10-31T12:09:49.6265061Z Installed 1 package in 2ms
+2026-10-31T12:09:49.6265881Z  + citerift==0.1.0 (from file:///home/runner/work/citerift/citerift)
+2026-10-31T12:09:49.6318301Z ##[group]Run uv run --no-sync python -P -c "import citerift, pathlib, sys; sys.exit(not pathlib.Path(citerift.__file__).resolve().is_relative_to(pathlib.Path('src').resolve()))"
+2026-10-31T12:09:49.6319535Z [36;1muv run --no-sync python -P -c "import citerift, pathlib, sys; sys.exit(not pathlib.Path(citerift.__file__).resolve().is_relative_to(pathlib.Path('src').resolve()))"[0m
+2026-10-31T12:09:49.6339895Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:49.6340164Z env:
+2026-10-31T12:09:49.6340382Z   UV_PYTHON: 3.13
+2026-10-31T12:09:49.6340618Z   PYTHONPATH: src
+2026-10-31T12:09:49.6340927Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:49.6341286Z ##[endgroup]
+2026-10-31T12:09:49.6758815Z ##[group]Run uv run --no-sync ruff check .
+2026-10-31T12:09:49.6759223Z [36;1muv run --no-sync ruff check .[0m
+2026-10-31T12:09:49.6759535Z [36;1muv run --no-sync ruff format --check .[0m
+2026-10-31T12:09:49.6759845Z [36;1muv run --no-sync mypy[0m
+2026-10-31T12:09:49.6779314Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:49.6779571Z env:
+2026-10-31T12:09:49.6779772Z   UV_PYTHON: 3.13
+2026-10-31T12:09:49.6779995Z   PYTHONPATH: src
+2026-10-31T12:09:49.6780292Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:49.6780636Z ##[endgroup]
+2026-10-31T12:09:49.7743317Z All checks passed!
+2026-10-31T12:09:49.8493800Z 251 files already formatted
+2026-10-31T12:09:53.1354302Z Success: no issues found in 51 source files
+2026-10-31T12:09:53.1544821Z ##[group]Run uv run --no-sync python -P -m citerift.contracts.validate check-schemas
+2026-10-31T12:09:53.1545471Z [36;1muv run --no-sync python -P -m citerift.contracts.validate check-schemas[0m
+2026-10-31T12:09:53.1565547Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:53.1565829Z env:
+2026-10-31T12:09:53.1566039Z   UV_PYTHON: 3.13
+2026-10-31T12:09:53.1566278Z   PYTHONPATH: src
+2026-10-31T12:09:53.1566587Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:53.1566950Z ##[endgroup]
+2026-10-31T12:09:53.2533418Z <frozen runpy>:130: RuntimeWarning: 'citerift.contracts.validate' found in sys.modules after import of package 'citerift.contracts', but prior to execution of 'citerift.contracts.validate'; this may result in unpredictable behaviour
+2026-10-31T12:09:53.2983735Z 2 schemas checked, 0 problems
+2026-10-31T12:09:53.3176037Z ##[group]Run uv run --no-sync python -P -m pytest --citerift-report ci-test-report.json
+2026-10-31T12:09:53.3176694Z [36;1muv run --no-sync python -P -m pytest --citerift-report ci-test-report.json[0m
+2026-10-31T12:09:53.3196753Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:09:53.3197008Z env:
+2026-10-31T12:09:53.3197200Z   UV_PYTHON: 3.13
+2026-10-31T12:09:53.3197419Z   PYTHONPATH: src
+2026-10-31T12:09:53.3197719Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:09:53.3198114Z ##[endgroup]
+2026-10-31T12:09:55.6711664Z ============================= test session starts ==============================
+2026-10-31T12:09:55.6712652Z platform linux -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0
+2026-10-31T12:09:55.6713300Z rootdir: /home/runner/work/citerift/citerift
+2026-10-31T12:09:55.6713872Z configfile: pyproject.toml
+2026-10-31T12:09:55.6714312Z testpaths: tests
+2026-10-31T12:09:55.6714681Z plugins: platformdirs-4.13.5
+2026-10-31T12:09:55.6715176Z collected 1663 items
+2026-10-31T12:09:55.6715430Z 
+2026-10-31T12:09:58.3253598Z tests/stage00/test_cli.py .........                                      [  0%]
+2026-10-31T12:09:58.5786736Z tests/stage00/test_contracts.py ........................................ [  2%]
+2026-10-31T12:09:59.2165419Z ..........................................                               [  5%]
+2026-10-31T12:10:28.1701354Z tests/stage00/test_corrections.py ...................................... [  7%]
+2026-10-31T12:11:08.7629930Z ........................................................................ [ 12%]
+2026-10-31T12:11:37.5294002Z ........................................................................ [ 16%]
+2026-10-31T12:11:38.6196139Z .......                                                                  [ 16%]
+2026-10-31T12:11:49.4435730Z tests/stage00/test_failure_simulation.py ............                    [ 17%]
+2026-10-31T12:12:17.2030489Z tests/stage00/test_integration_scenarios.py ............................ [ 19%]
+2026-10-31T12:12:17.8396814Z .                                                                        [ 19%]
+2026-10-31T12:13:09.9237629Z tests/stage00/test_maintenance.py ...................................... [ 21%]
+2026-10-31T12:13:26.6379388Z ........                                                                 [ 22%]
+2026-10-31T12:13:46.7423776Z tests/stage00/test_properties.py ......                                  [ 22%]
+2026-10-31T12:13:49.8119599Z tests/stage00/test_recovery.py ...                                       [ 22%]
+2026-10-31T12:14:08.5458739Z tests/stage00/test_registry_tampering.py .......................         [ 23%]
+2026-10-31T12:14:09.5492832Z tests/stage00/test_repository.py .........................               [ 25%]
+2026-10-31T12:15:14.7986838Z tests/stage00/test_simulation.py ........                                [ 25%]
+2026-10-31T12:15:14.8232920Z tests/stage00/test_unit_model_evidence_memory.py ....................... [ 27%]
+2026-10-31T12:15:14.8326213Z ......                                                                   [ 27%]
+2026-10-31T12:15:14.8663908Z tests/stage01/test_census.py ........................................    [ 30%]
+2026-10-31T12:15:14.8885189Z tests/stage01/test_crosswiki.py .............................            [ 31%]
+2026-10-31T12:15:14.9071864Z tests/stage01/test_discovery_errors.py ...................               [ 33%]
+2026-10-31T12:15:14.9150773Z tests/stage01/test_render_check.py .............                         [ 33%]
+2026-10-31T12:15:15.0283319Z tests/stage02/test_rde_advisory.py ..........................            [ 35%]
+2026-10-31T12:15:15.1674444Z tests/stage02/test_rde_audit_fixes.py .........                          [ 35%]
+2026-10-31T12:15:15.6091792Z tests/stage02/test_rde_bridge_sufficiency.py .........................   [ 37%]
+2026-10-31T12:15:15.7917044Z tests/stage02/test_rde_corroboration.py .....................            [ 38%]
+2026-10-31T12:15:15.8091843Z tests/stage02/test_rde_dates.py ...........................              [ 40%]
+2026-10-31T12:15:16.3153963Z tests/stage02/test_rde_export_diff.py ......                             [ 40%]
+2026-10-31T12:15:16.3379310Z tests/stage02/test_rde_identifiers.py .................................. [ 42%]
+2026-10-31T12:15:16.3635901Z .........................................                                [ 45%]
+2026-10-31T12:15:16.5509179Z tests/stage02/test_rde_import.py ...............................         [ 47%]
+2026-10-31T12:15:16.7407063Z tests/stage02/test_rde_local_model.py ..............................     [ 48%]
+2026-10-31T12:15:18.1694921Z tests/stage02/test_rde_lookup.py .............                           [ 49%]
+2026-10-31T12:15:18.2060267Z tests/stage02/test_rde_oracle_selftest.py .............................. [ 51%]
+2026-10-31T12:15:18.2533112Z ........................................................................ [ 55%]
+2026-10-31T12:15:18.6130639Z .................................................                        [ 58%]
+2026-10-31T12:15:19.0345613Z tests/stage02/test_rde_policy_cases.py ................................. [ 60%]
+2026-10-31T12:15:19.2701255Z .....................                                                    [ 61%]
+2026-10-31T12:15:19.3511710Z tests/stage02/test_rde_policy_properties.py .....                        [ 62%]
+2026-10-31T12:15:19.4664145Z tests/stage02/test_rde_policy_regressions.py ...........                 [ 62%]
+2026-10-31T12:15:19.5986823Z tests/stage02/test_rde_real_cases.py ................................... [ 65%]
+2026-10-31T12:15:19.6266330Z ..................                                                       [ 66%]
+2026-10-31T12:15:21.5517453Z tests/stage02/test_rde_review_findings.py .............................. [ 67%]
+2026-10-31T12:15:21.6053209Z ...........                                                              [ 68%]
+2026-10-31T12:15:21.7882193Z tests/stage02/test_rde_schemas.py ........                               [ 69%]
+2026-10-31T12:15:21.8548944Z tests/stage02/test_rde_spec_changes.py ......                            [ 69%]
+2026-10-31T12:15:22.3010409Z tests/stage02/test_rde_tension_properties.py .....                       [ 69%]
+2026-10-31T12:15:22.4868966Z tests/stage03/test_wiki_bilingual_matrix.py ............................ [ 71%]
+2026-10-31T12:15:22.6103386Z ....................                                                     [ 72%]
+2026-10-31T12:15:24.7183369Z tests/stage03/test_wiki_bundle_verify.py ............................... [ 74%]
+2026-10-31T12:15:25.0248576Z .............                                                            [ 75%]
+2026-10-31T12:15:26.1578090Z tests/stage03/test_wiki_cli.py .......................                   [ 76%]
+2026-10-31T12:15:28.2668359Z tests/stage03/test_wiki_f1_f4.py ....................................... [ 78%]
+2026-10-31T12:15:43.9998334Z ........................................................................ [ 83%]
+2026-10-31T12:15:46.5580288Z ............                                                             [ 84%]
+2026-10-31T12:15:46.5822745Z tests/stage03/test_wiki_fetch_capture.py ............................... [ 85%]
+2026-10-31T12:15:48.4713487Z .....................................                                    [ 88%]
+2026-10-31T12:15:50.3866465Z tests/stage03/test_wiki_observed_regression.py .....                     [ 88%]
+2026-10-31T12:15:50.8063743Z tests/stage03/test_wiki_properties.py .................................. [ 90%]
+2026-10-31T12:15:54.5640690Z .........................                                                [ 91%]
+2026-10-31T12:15:54.9492859Z tests/stage03/test_wiki_render_ledger.py .....................           [ 93%]
+2026-10-31T12:15:55.1560175Z tests/stage03/test_wiki_review_regressions.py .......................... [ 94%]
+2026-10-31T12:15:57.9339969Z ....................................                                     [ 96%]
+2026-10-31T12:15:58.1127362Z tests/stage03/test_wiki_source_extraction.py ........................... [ 98%]
+2026-10-31T12:15:58.1193841Z .                                                                        [ 98%]
+2026-10-31T12:16:14.6788922Z tests/stage03/test_wiki_v1_v2.py .......................                 [100%]
+2026-10-31T12:16:14.6789605Z 
+2026-10-31T12:16:14.6789840Z ======================= 1663 passed in 380.67s (0:06:20) =======================
+2026-10-31T12:16:14.7766127Z ##[group]Run uv run --no-sync python -P -m citerift.governance.cli check-report ci-test-report.json
+2026-10-31T12:16:14.7766862Z [36;1muv run --no-sync python -P -m citerift.governance.cli check-report ci-test-report.json[0m
+2026-10-31T12:16:14.7787005Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:16:14.7787261Z env:
+2026-10-31T12:16:14.7787450Z   UV_PYTHON: 3.13
+2026-10-31T12:16:14.7787659Z   PYTHONPATH: src
+2026-10-31T12:16:14.7787958Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:16:14.7788297Z ##[endgroup]
+2026-10-31T12:16:14.9952652Z Test report ci-test-report.json at f9b07ef66228: 0 problems
+2026-10-31T12:16:15.0161845Z ##[group]Run git diff --exit-code
+2026-10-31T12:16:15.0162503Z [36;1mgit diff --exit-code[0m
+2026-10-31T12:16:15.0163031Z [36;1mchanges="$(git status --porcelain=v1 --untracked-files=all | grep -vx '?? ci-test-report.json' || true)"[0m
+2026-10-31T12:16:15.0163628Z [36;1mtest -z "$changes" || { echo "$changes"; exit 1; }[0m
+2026-10-31T12:16:15.0183581Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:16:15.0183853Z env:
+2026-10-31T12:16:15.0184073Z   UV_PYTHON: 3.13
+2026-10-31T12:16:15.0184311Z   PYTHONPATH: src
+2026-10-31T12:16:15.0184624Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:16:15.0184990Z ##[endgroup]
+2026-10-31T12:16:15.0420890Z ##[group]Run uv export --locked --format requirements-txt --no-emit-project --all-groups > audit-requirements.txt
+2026-10-31T12:16:15.0421720Z [36;1muv export --locked --format requirements-txt --no-emit-project --all-groups > audit-requirements.txt[0m
+2026-10-31T12:16:15.0422780Z [36;1muv run --no-sync pip-audit --strict --disable-pip --require-hashes -r audit-requirements.txt[0m
+2026-10-31T12:16:15.0441698Z shell: /usr/bin/bash -e {0}
+2026-10-31T12:16:15.0442169Z env:
+2026-10-31T12:16:15.0442485Z   UV_PYTHON: 3.13
+2026-10-31T12:16:15.0442708Z   PYTHONPATH: src
+2026-10-31T12:16:15.0443003Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:16:15.0443353Z ##[endgroup]
+2026-10-31T12:16:15.0660237Z Resolved 47 packages in 0.79ms
+2026-10-31T12:16:16.4673064Z No known vulnerabilities found
+2026-10-31T12:16:16.5205026Z ##[group]Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+2026-10-31T12:16:16.5205450Z with:
+2026-10-31T12:16:16.5205666Z   name: test-report-python-3.13
+2026-10-31T12:16:16.5205929Z   path: ci-test-report.json
+2026-10-31T12:16:16.5206173Z   if-no-files-found: warn
+2026-10-31T12:16:16.5206401Z   retention-days: 30
+2026-10-31T12:16:16.5206618Z   compression-level: 6
+2026-10-31T12:16:16.5206834Z   overwrite: false
+2026-10-31T12:16:16.5207050Z   include-hidden-files: false
+2026-10-31T12:16:16.5207287Z   archive: true
+2026-10-31T12:16:16.5207491Z env:
+2026-10-31T12:16:16.5207677Z   UV_PYTHON: 3.13
+2026-10-31T12:16:16.5207875Z   PYTHONPATH: src
+2026-10-31T12:16:16.5208152Z   UV_PYTHON_INSTALL_DIR: /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:16:16.5208493Z ##[endgroup]
+2026-10-31T12:16:16.6722885Z With the provided path, there will be 1 file uploaded
+2026-10-31T12:16:16.6728195Z Artifact name is valid!
+2026-10-31T12:16:16.6752696Z Root directory input is valid!
+2026-10-31T12:16:16.9230181Z Uploading artifact: test-report-python-3.13.zip
+2026-10-31T12:16:16.9271819Z Beginning upload of artifact content to blob storage
+2026-10-31T12:16:17.0739893Z Uploaded bytes 1089
+2026-10-31T12:16:17.1113170Z Finished uploading artifact content to blob storage!
+2026-10-31T12:16:17.1114469Z SHA256 digest of uploaded artifact is 076c32c78348cc20b51f1ae1ef64e97fd0a3e10bcbe1953d2c0dee781e9b97e0
+2026-10-31T12:16:17.1115567Z Finalizing artifact upload
+2026-10-31T12:16:17.5764090Z Artifact test-report-python-3.13 successfully finalized. Artifact ID 13042655142
+2026-10-31T12:16:17.5765132Z Artifact test-report-python-3.13 has been successfully uploaded! Final size is 1089 bytes. Artifact ID is 13042655142
+2026-10-31T12:16:17.5768370Z Artifact download URL: https://github.com/ImanOthman-eng/citerift/actions/runs/41199853645/artifacts/13042655142
+2026-10-31T12:16:17.5993666Z Post job cleanup.
+2026-10-31T12:16:17.7215253Z UV_PYTHON_INSTALL_DIR is already set to /home/runner/work/_temp/uv-python-dir
+2026-10-31T12:16:17.7366376Z Post job cleanup.
+2026-10-31T12:16:17.8306652Z [command]/usr/bin/git version
+2026-10-31T12:16:17.8354583Z git version 2.56.0
+2026-10-31T12:16:17.8404778Z Temporarily overriding HOME='/home/runner/work/_temp/f9f604db-11d1-40a2-9f40-29ad1ec144c1' before making global git config changes
+2026-10-31T12:16:17.8406289Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T12:16:17.8407298Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/citerift/citerift
+2026-10-31T12:16:17.8433417Z Removing SSH command configuration
+2026-10-31T12:16:17.8439804Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T12:16:17.8493528Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T12:16:17.8768712Z Removing HTTP extra header
+2026-10-31T12:16:17.8776211Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T12:16:17.8826878Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T12:16:17.9186833Z Removing includeIf entries pointing to credentials config files
+2026-10-31T12:16:17.9197115Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T12:16:17.9263152Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T12:16:17.9703778Z Cleaning up orphan processes
+

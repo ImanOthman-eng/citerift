@@ -1,0 +1,280 @@
+{
+  "accounting": {
+    "checks": [
+      {
+        "left": 0,
+        "name": "no source span reported twice for one scheme",
+        "ok": true,
+        "right": 0
+      },
+      {
+        "left": 0,
+        "name": "candidates = identifiers + excluded",
+        "ok": true,
+        "right": 0
+      },
+      {
+        "left": 0,
+        "name": "identifiers by role sum",
+        "ok": true,
+        "right": 0
+      },
+      {
+        "left": 1,
+        "name": "one marker observation per container",
+        "ok": true,
+        "right": 1
+      },
+      {
+        "left": 1,
+        "name": "every unit in exactly one container",
+        "ok": true,
+        "right": 1
+      },
+      {
+        "left": 1,
+        "name": "source uses = matched + abstained + source_only",
+        "ok": true,
+        "right": 1
+      },
+      {
+        "left": 1,
+        "name": "render uses = matched + unmatched",
+        "ok": true,
+        "right": 1
+      },
+      {
+        "left": 1,
+        "name": "matched pairs are one-to-one",
+        "ok": true,
+        "right": 1
+      }
+    ],
+    "containers": {
+      "note": 1
+    },
+    "excluded_identifiers": {},
+    "identifiers_by_role": {},
+    "identifiers_by_scheme": {},
+    "identifiers_render": {},
+    "markers": {
+      "recognized_warning_text": 1
+    },
+    "parse_nodes": 3,
+    "render_only_identifiers": 0,
+    "render_uses": {
+      "matched": 1,
+      "total": 1,
+      "unmatched": 0
+    },
+    "source_bytes": 28,
+    "units": {
+      "unstructured_text": 1
+    },
+    "uses": {
+      "bound": 1
+    },
+    "uses_render": {
+      "matched": 1
+    }
+  },
+  "capture": {
+    "capture_sha256": "63df6e9053c5fc9822940e13e1aec22452228323d7b708e7e37b1c7f6cdc9127",
+    "page_id": 900000002,
+    "render_artifact": "6ce0c5c892a902ace440263ad84ced28fb256de9e85ba7db2c32935ec441aaee",
+    "render_state": "captured",
+    "revision_id": 900000001,
+    "sha1": "917a7d781a950477332493f8416cf7a1e13e2120",
+    "source_artifact": "553644b5b733098015982e5447401041c1dc4560baf0150aa9d63d0b7d7fe50f",
+    "title": "SYNTHETIC page",
+    "wiki": "en"
+  },
+  "components": {
+    "markers": {
+      "state": "complete"
+    },
+    "reconciliation": {
+      "state": "complete"
+    },
+    "render": {
+      "state": "complete"
+    },
+    "source": {
+      "state": "complete"
+    }
+  },
+  "config": {
+    "max_candidates": 50000,
+    "max_depth": 60,
+    "max_nodes": 400000,
+    "max_refs": 20000,
+    "max_render_elements": 2000000,
+    "max_templates": 50000,
+    "worker_memory_mib": 1024,
+    "worker_wall_s": 30.0
+  },
+  "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+  "containers": [
+    {
+      "binding_state": "single_definition",
+      "definitions": [
+        {
+          "body": {
+            "byte_end": 22,
+            "byte_start": 16,
+            "cp_end": 22,
+            "cp_start": 16
+          },
+          "id": "ct-00001/d1",
+          "origin": "tag",
+          "source": {
+            "byte_end": 28,
+            "byte_start": 2,
+            "cp_end": 28,
+            "cp_start": 2
+          },
+          "zone": "prose"
+        }
+      ],
+      "group": "",
+      "group_raw": null,
+      "id": "ct-00001",
+      "kind": "note",
+      "layout": null,
+      "name": "a",
+      "name_raw": "a",
+      "render": {
+        "region_id": "cite_note-a-1",
+        "state": "matched"
+      },
+      "source": {
+        "byte_end": 28,
+        "byte_start": 2,
+        "cp_end": 28,
+        "cp_start": 2
+      },
+      "unit_ids": [
+        "un-00001"
+      ],
+      "use_ids": [
+        "us-00001"
+      ]
+    }
+  ],
+  "exceptions": [],
+  "excluded_identifiers": [],
+  "extraction_digest": "eda9a967035e1519c2946ca6b286f41d035f16b0f8a296e69a20d0a6f191204d",
+  "extractor": {
+    "name": "citerift-wiki",
+    "normalizer": "citerift.retraction.identifiers (Stage 02)",
+    "parsers": {
+      "html": "lxml 6.1.3 (libxml2 2.14.6)",
+      "wikitext": "mwparserfromhell 0.7.2"
+    },
+    "profile": {
+      "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+      "version": "1.0.0"
+    },
+    "version": "1.0.0"
+  },
+  "identifiers": [],
+  "issues": [],
+  "markers": [
+    {
+      "browser_visibility": "not_evaluated",
+      "container_id": "ct-00001",
+      "evidence": [
+        {
+          "kind": "warning",
+          "part": "text",
+          "term": "retracted",
+          "matched": "Retracted",
+          "snippet": "Retracted",
+          "locator": {
+            "element_id": "unrelated",
+            "id_unique": true,
+            "path": "/html/body/p[2]",
+            "quote": "Retracted",
+            "subtree_sha256": "167978a5fe457b8eb2305401c42768f63ab54658a4c67f4a7519df5f3dbf5dbc"
+          }
+        }
+      ],
+      "reason": "no profile term in the inspected text",
+      "region": {
+        "hidden_elements": 0,
+        "locator": {
+          "element_id": "cite_note-a-1",
+          "id_unique": true,
+          "path": "/html/body/div/ol/li",
+          "quote": "↑ Paper. Smith 2001.",
+          "subtree_sha256": "b4d831df54149d354b50a60e4f5a4220997d55bd2452d42a95d35c93a5908ed5"
+        },
+        "region_id": "cite_note-a-1"
+      },
+      "source_marker_templates": [],
+      "state": "recognized_warning_text"
+    }
+  ],
+  "render_only": {
+    "identifiers": [],
+    "limit_warnings": [],
+    "uses": []
+  },
+  "schema": "urn:citerift:schema:wiki:v1:extraction",
+  "schema_version": "1.0.0",
+  "status": "complete",
+  "units": [
+    {
+      "container_id": "ct-00001",
+      "definition_id": "ct-00001/d1",
+      "duplicate_params": [],
+      "id": "un-00001",
+      "identifier_ids": [],
+      "kind": "unstructured_text",
+      "parent_unit": null,
+      "render": {
+        "state": "region_only",
+        "template_omitted": null,
+        "transclusion": null
+      },
+      "source": {
+        "byte_end": 22,
+        "byte_start": 16,
+        "cp_end": 22,
+        "cp_start": 16
+      },
+      "template": null
+    }
+  ],
+  "uses": [
+    {
+      "binding": "bound",
+      "container_id": "ct-00001",
+      "group": "",
+      "id": "us-00001",
+      "name": "a",
+      "origin": "tag",
+      "position": 0,
+      "render": {
+        "basis": "name_anchor",
+        "locator": {
+          "element_id": "cite_ref-a_1-0",
+          "id_unique": true,
+          "path": "/html/body/p[1]/sup",
+          "quote": "[1]",
+          "subtree_sha256": "e39e15f8be36ffa8d23d6684de0385695947f7ced197a1a0416ac8e7ca33caa7"
+        },
+        "state": "matched",
+        "target_note": "cite_note-a-1"
+      },
+      "source": {
+        "byte_end": 28,
+        "byte_start": 2,
+        "cp_end": 28,
+        "cp_start": 2
+      },
+      "template": null,
+      "zone": "prose"
+    }
+  ]
+}

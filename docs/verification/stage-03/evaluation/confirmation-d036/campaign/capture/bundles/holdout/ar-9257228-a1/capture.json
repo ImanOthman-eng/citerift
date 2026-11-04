@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 36484,
+   "body_sha256": "40cd6876303b79969bbaf877684746ccd32e848a710708180df23401f5a45c4f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.416,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T09:19:03.439421Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9257228",
+   "wire_bytes": 11719
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "3f5f5a6b41cf281149c06bf12d152239015c3cb44afbf6f9a8986aeb35b09563",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.318,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "46",
+   "retry_after_s": 46.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:19:13.856146Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76365714/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 202095,
+   "body_sha256": "dfd935d45f5d6ac7b1429f31679bc83b78207802cf7dbd0176b76f6ac9f912ab",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.43,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T09:20:00.174818Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76365714/html",
+   "wire_bytes": 33677
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "3f5f5a6b41cf281149c06bf12d152239015c3cb44afbf6f9a8986aeb35b09563"
+ ],
+ "finished_at": "2026-11-04T09:20:00.607005Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9257228,
+  "parent_revision_id": 75818009,
+  "redirect_followed": null,
+  "revision_id": 76365714,
+  "revision_timestamp": "2026-08-28T18:19:50Z",
+  "sha1": "b2c8c89c82f941fb118f3fb82c9c456103f6b16e",
+  "size": 35750,
+  "title": "السمان أسود الصدر ذو النقرة في الذقن",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "dfd935d45f5d6ac7b1429f31679bc83b78207802cf7dbd0176b76f6ac9f912ab",
+  "bytes": 202095,
+  "checks": {
+   "document_revision_id": "76365714",
+   "header_revision_id": "76365714",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9257228",
+   "render_id": "cffa8750-d05e-11f1-9e79-9de732455cf0",
+   "revision_sha1": "b2c8c89c82f941fb118f3fb82c9c456103f6b16e",
+   "revision_sha1_base36": "kvtnzo6n957lignw5if9geq9gh16wz2"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76365714",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 09:20:00 GMT",
+   "etag": "W/\"76365714/cffa8750-d05e-11f1-9e79-9de732455cf0/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:34:11 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76365714/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9257228,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "0a483b4fe0b5076629deb737710406cff98c8c84447f7648fde7988558ad7be5",
+  "bytes": 35750,
+  "response_artifact": "40cd6876303b79969bbaf877684746ccd32e848a710708180df23401f5a45c4f",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9257228"
+ },
+ "started_at": "2026-11-04T09:19:03.437300Z",
+ "status": "complete"
+}

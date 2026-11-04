@@ -1,0 +1,41 @@
+import sys,re
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+from lxml import html
+A=Art(1331125905)
+t=A.t
+dom=html.parse(A.dir+'render.html').getroot()
+sups=[s.get('id') for s in dom.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')]
+# uses in source order
+calls=[(m.start(),m.group(0)) for m in re.finditer(r'<ref name="braininfo">|\{\{sfnp\|[^}]*\}\}',t)]
+assert len(calls)==len(sups),(len(calls),len(sups))
+first={}
+li={'braininfo':'cite_note-braininfo-1'}
+for (cp,txt),sid in zip(calls,sups):
+    if txt.startswith('<ref'): key='braininfo'; kind='note'
+    else:
+        key=txt[7:-2]; kind='generated_note'
+    # check marker id name matches
+    nm=key.replace('|','').replace(' ','_') if key!='braininfo' else key
+    assert nm in sid.replace('FOOTNOTE',''),(key,sid)
+    if key not in first:
+        first[key]=cp
+        if key=='braininfo':
+            A.d(cp,'note',name='braininfo',group='',tpl=[A.at('{{cite web',0)],rid='cite_note-braininfo-1')
+        else:
+            A.d(cp,'generated_note',name=None,group='',rid=rn(sid),notes='enwiki Module:Footnotes name: '+key+'; all later identical calls are uses only')
+    A.u(cp,first[key],sid)
+# bibliography entries in window
+for m in re.finditer(r'^\* \{\{cite',t,re.M):
+    if A.inwin(m.start()):
+        A.d(m.start(),'bibliography_entry',tpl=[m.start()+2],rid=None,marker='none',notes='bibliography entry in References section; no render_note_id')
+def ident(val,scheme,key,after):
+    cp=A.at(val,0,after); A.i(cp,val,scheme,'primary_citation_field',key)
+ident('14229500','pmid','14229500',6283)
+ident('10.1016/0361-9230(83)90045-x','doi','10.1016/0361-9230(83)90045-x',6829)
+ident('6839182','pmid','6839182',6829)
+ident('10.1016/S0074-7742(08)60167-1','doi','10.1016/s0074-7742(08)60167-1',7116)
+ident('10.1016/j.heares.2016.09.001','doi','10.1016/j.heares.2016.09.001',7383)
+ident('27620513','pmid','27620513',7383)
+A.unres.append('Infobox anatomy at the top may emit no references; none found in rendered output beyond the listed ones. The Tillet bibliography entry starts at 8281, after the window end 8154, so it is not listed. {{cn}} templates are not footnotes and are not listed. Smeets bibliography entry has ref={{sfnref|...}} (no identifiers).')
+A.write(None,TOOLS,'Nothing undecided. Bibliography entries carry no rendered footnote id, marker set to none from source text (no retraction vocabulary).')

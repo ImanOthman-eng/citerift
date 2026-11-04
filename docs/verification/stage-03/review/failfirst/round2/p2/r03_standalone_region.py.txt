@@ -1,0 +1,17 @@
+"""SYNTHETIC: a standalone citation template (bibliography_entry, layout standalone_template) whose Parsoid output
+starts with the TemplateStyles element, as CS1 output does. Only the first element of the about group is inspected."""
+import sys, json; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import run, show, doi_link
+T = "Intro.\n\n==Further reading==\n{{cite journal |title=RETRACTED: Paper |doi=10.1000/p}} (Retracted)\n"
+dm = json.dumps({"parts": [{"template": {"target": {"wt": "cite journal"}, "params": {"title": {"wt": "RETRACTED: Paper"}, "doi": {"wt": "10.1000/p"}}, "i": 0}}]})
+cite = '<cite about="#mwt5" class="citation journal cs1">"RETRACTED: Paper". ' + doi_link("10.1000/p") + "</cite>"
+first_link = (f'<p><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1" about="#mwt5" '
+              f"typeof=\"mw:Extension/templatestyles mw:Transclusion\" data-mw='{dm}'/>" + cite + " (Retracted)</p>")
+first_cite = (f"<p><cite about=\"#mwt5\" typeof=\"mw:Transclusion\" data-mw='{dm}' class=\"citation journal cs1\">"
+              '"RETRACTED: Paper". ' + doi_link("10.1000/p") + "</cite> (Retracted)</p>")
+for label, body in (("styles element first", first_link), ("cite element first  ", first_cite)):
+    d = run(T, body)
+    c = [c for c in d["containers"] if c["kind"] == "bibliography_entry"][0]
+    m = [m for m in d["markers"] if m["container_id"] == c["id"]][0]
+    print(label, "| region", m["region"]["region_id"], m["region"]["locator"]["path"], "quote=", repr(m["region"]["locator"]["quote"]),
+          "| state", m["state"], [(e["kind"], e["matched"]) for e in m["evidence"]])

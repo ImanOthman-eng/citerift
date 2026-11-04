@@ -1,0 +1,7 @@
+"""Ref-name normalization against MediaWiki Sanitizer::decodeTagAttributes (whitespace runs -> one space, PHP trim
+before entity decoding) and quote/self-close forms."""
+from h import run
+run('A<ref name="Smith  2001">{{cite journal|doi=10.1000/a}}</ref> B<ref name="Smith 2001"/>', label="internal double space")
+run('A<ref name="Smith\n2001">{{cite journal|doi=10.1000/a}}</ref> B<ref name="Smith 2001"/>', label="internal newline")
+run('A<ref name="x&nbsp;">{{cite journal|doi=10.1000/a}}</ref> B<ref name="x">{{cite journal|doi=10.1000/b}}</ref>', label="trailing &nbsp; (MW: distinct names)")
+run('A<ref name=x/>B<ref name=x>{{cite journal|doi=10.1000/a}}</ref> C<ref name=\'x\' /> D<ref NAME="x"/>', label="unquoted self-close, single quotes, upper-case attr")

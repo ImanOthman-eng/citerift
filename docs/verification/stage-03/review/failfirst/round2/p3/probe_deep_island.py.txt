@@ -1,0 +1,17 @@
+"""One deeply nested island (300 divs) BETWEEN the prose and the reference list of a SYNTHETIC render."""
+import shutil, sys
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import capture, parsoid, ref_sup, note_li, references, doi_link
+from citerift.wiki.extract import extract_bundle
+from citerift.wiki.verify import verify_bundle
+W = Path(__file__).resolve().parent / "work_island"; shutil.rmtree(W, ignore_errors=True); W.mkdir()
+text = "Claim.<ref name=\"a\">{{cite journal |title=T |doi=10.1000/x}}</ref>\n\n== References ==\n<references />\n"
+for n in (100, 300):
+    island = "<div>" * n + "x" + "</div>" * n
+    body = "<p>Claim." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + island + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], "T " + doi_link("10.1000/x"))])
+    capture(W / f"b{n}", text, parsoid(body, text))
+    doc = extract_bundle(W / f"b{n}")
+    print(f"island depth {n}: status={doc['status']} components.render={doc['components']['render']['state']} "
+          f"issues={[i['code'] for i in doc['issues']]} identifier.render={[i['render']['state'] for i in doc['identifiers']]} "
+          f"use.render={[u['render'].get('state') for u in doc['uses']]} markers={[m['state'] for m in doc['markers']]} verify={verify_bundle(W / f'b{n}', doc)['verified']}")

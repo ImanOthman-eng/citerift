@@ -1,0 +1,18 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+DEFS = '<ref name="a">Paper A</ref> <ref name="b">Paper B</ref> '
+cases = [
+ ("en", "{{r|a|ps=.}}"),
+ ("en", "{{r|a|postscript=.}}"),
+ ("en", "{{r|a|id=x}}"),
+ ("en", "{{r|a|ref=x}}"),
+ ("en", "{{r|a|b|2ps=.}}"),
+ ("en", "{{r|a }}"),
+ ("en", "{{r|a&nbsp;}}"),
+ ("ar", "{{استشهاد متعدد|a }}"),
+ ("en", "{{r|a|reference=X}}"),
+]
+for wiki, call in cases:
+    doc, _ = src(DEFS + call, wiki)
+    print(wiki, repr(call), [(u["origin"], u["name"], u["binding"]) for u in doc["uses"] if u["origin"]=="r"],
+          sorted(c for c in codes(doc) if c.startswith("REUSE") or c.startswith("REF_")))

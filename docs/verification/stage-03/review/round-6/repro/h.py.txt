@@ -1,0 +1,17 @@
+import sys, tempfile, shutil, json
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import *  # noqa
+OUT = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch")
+OUT.mkdir(parents=True, exist_ok=True)
+_n = [0]
+def run(text, body=None, wiki="en"):
+    _n[0] += 1
+    d = OUT / f"b{_n[0]}_{abs(hash(text))%10**8}"
+    if d.exists(): shutil.rmtree(d)
+    d.mkdir(parents=True)
+    p = bundle(d, text, body, wiki=wiki)
+    return extract(p), p
+def short(doc):
+    return [(c["group"], c["binding_state"], len(c["definitions"]), len(c["use_ids"])) for c in doc["containers"] if c["layout"]=="short_footnote"]
+def cs(doc): return sorted(codes(doc))

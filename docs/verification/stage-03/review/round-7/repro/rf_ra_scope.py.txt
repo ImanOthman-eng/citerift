@@ -1,0 +1,14 @@
+"""retry_after_problems is read from every attempt of the run, not from the attempt that ended the failing operation."""
+from drv_common import *
+cap = {"attempts": [
+    {"operation": "source", "code": None, "status": 200, "retry_after_raw": "soon", "retry_after_problem": "RETRY_AFTER_UNREADABLE", "body_bytes": 5000},
+    {"operation": "render", "code": "HTTP_UNAVAILABLE", "status": 503, "retry_after_raw": None, "retry_after_problem": None, "body_bytes": 0},
+    {"operation": "render", "code": "HTTP_UNAVAILABLE", "status": 503, "retry_after_problem": None, "body_bytes": 0},
+    {"operation": "render", "code": "ATTEMPTS_EXHAUSTED", "status": 503, "retry_after_problem": None, "body_bytes": 0}],
+    "issues": [{"code": "ATTEMPTS_EXHAUSTED", "severity": "error"}], "not_before": None, "render": {"state": "failed", "code": "ATTEMPTS_EXHAUSTED"}}
+s = cc.summarize(3, {"status": "partial", "bundle": "b", "capture": cap})
+rec = {"runs": [{"run": 1, **s}], "final": None}
+print("summary:", {k: s[k] for k in ("status", "codes", "retry_after_problems")})
+print("next_step:", cc.next_step(rec, T0), "(a retryable render failure with no Retry-After problem would be ('run', None))")
+rec2 = {"runs": [{"run": 1, **cc.summarize(3, {"status": "partial", "bundle": "b", "capture": {**cap, "attempts": cap["attempts"][1:]}})}], "final": None}
+print("same without the source attempt's header:", cc.next_step(rec2, T0))

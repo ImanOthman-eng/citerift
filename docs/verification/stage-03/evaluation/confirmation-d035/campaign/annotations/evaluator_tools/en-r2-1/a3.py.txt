@@ -1,0 +1,25 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r2-1/tools")
+from lib import *
+a=A(1375552426); L=a.L
+W=38037
+h=L('<ref name="HESA citation">{{HESA citation}}</ref>')
+a.D('d1',h,'note',name='HESA citation',templates=[L('{{HESA citation}}')],note_id='cite_note-HESA_citation-1',
+  notes='Starts before the window (infobox); listed as binding target. Body is only {{HESA citation}}, a wrapper that renders a CS1 web citation (rendered text: "Where do HE students study?". Higher Education Statistics Agency...); counted as a citation template as a best reading since it formats a citation. Six uses in total (3 in infobox, 3 in window), all identical, so one definition.')
+r1=L('<ref>{{Cite web|last=Liverpool Hope University|url=https://www.hope.ac.uk/halls',after=W)
+a.D('d2',r1,'note',templates=[L('{{Cite web|last=Liverpool Hope University|url=https://www.hope.ac.uk/halls',after=W)],note_id='cite_note-58')
+r2=L('<ref>{{Cite web|last=Liverpool Hope University|url=https://www.hope.ac.uk/informationfornewstudents',after=W)
+a.D('d3',r2,'note',templates=[L('{{Cite web|last=Liverpool Hope University|url=https://www.hope.ac.uk/informationfornewstudents',after=W)],note_id='cite_note-59')
+r3=L('<ref>{{cite web|url=http://www.hopesu.com',after=W)
+a.D('d4',r3,'note',templates=[L('{{cite web|url=http://www.hopesu.com',after=W)],note_id='cite_note-60')
+bibs=['{{cite book|editor-last=Elford','{{cite book|last=Heery','{{cite book|last=Pye','{{cite journal|last=Taylor']
+for i,b in enumerate(bibs):
+    l=L(b,after=W)
+    a.D('d%d'%(5+i),l,'bibliography_entry',templates=[l],notes='Standalone citation template in Bibliography section between {{Refbegin}}/{{Refend}}, outside any footnote.')
+a.U('u1',r1,r1,'cite_ref-58')
+a.U('u2',r2,r2,'cite_ref-59')
+a.U('u3',r3,r3,'cite_ref-60')
+for i,k in enumerate([40427,40781,40934]):
+    a.U('u%d'%(4+i),L('<ref name="HESA citation"/>',after=k),h,'cite_ref-HESA_citation_1-%d'%(3+i),'Self-closing reuse; definition is in the infobox before the window.')
+a.I(L('10.1080/03054980802116857'),'doi','primary_citation_field','10.1080/03054980802116857')
+a.unres.append('Bibliography {{cite book}} entries carry isbn= only (not in scope). Harvnb short footnotes in the article body (e.g. harvnb Elford|2003, Taylor|2008) all start before the window and are not labelled; {{harvnb}} generates an inline reference inside <ref>, so those ref bodies are ordinary <ref> definitions. {{NHLE}}/{{HESA ...}} data templates in the window do not emit source references.')
+a.write('2026-11-03T16:32:17Z',TOOLS,'Whether {{HESA citation}} counts as a citation template (included, best reading).')
