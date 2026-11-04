@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:wiki:v1:extraction",
   "title": "CITERIFT Wikipedia extraction document, major version 1",
   "description": "Deterministic output of extract_bundle (SPECIFICATION.md 10-14): reference containers, uses, citation units, identifier occurrences with exact source anchors and markup roles, render reconciliation, marker observations, render-only entities, the exception ledger, issues and accounting. It describes markup and rendering only: it never states that a work is or is not retracted.",
-  "x-citerift-version": "1.1.0",
+  "x-citerift-version": "1.2.0",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema", "schema_version", "extractor", "config", "config_digest", "capture", "status", "components", "containers", "uses", "units", "identifiers", "excluded_identifiers", "markers", "render_only", "exceptions", "issues", "accounting", "extraction_digest"],
@@ -178,7 +178,7 @@
           "type": "object", "additionalProperties": false, "required": ["state"],
           "properties": {
             "state": {"enum": ["not_reconciled", "matched", "abstained", "source_only"]},
-            "basis": {"enum": [null, "name_anchor", "position_between_anchors", "name_in_template_output", "single_anonymous_in_template_output", "single_use_in_template_output", "unique_url_in_reference_text", "unique_identifier_in_reference_text"]},
+            "basis": {"enum": [null, "name_anchor", "position_between_anchors", "name_in_template_output", "reference_role_in_template_output", "anchor_in_template_output", "elimination_in_template_output", "single_anonymous_in_template_output", "single_use_in_template_output", "unique_url_in_reference_text", "unique_identifier_in_reference_text"]},
             "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
             "target_note": {"type": ["string", "null"]}
           }

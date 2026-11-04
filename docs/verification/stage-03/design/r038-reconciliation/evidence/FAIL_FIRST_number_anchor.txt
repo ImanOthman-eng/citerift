@@ -1,0 +1,29 @@
+# Fail-first for the number anchor (values written with templates), run on the role-and-text correction before the number anchor was added
+# command: uv run pytest tests/stage03/test_r038_template_output_order.py -q -p no:cacheprovider -rA --tb=line -k 'numbers_they_show or changes_its_numbers or short_value or equal_numbers or borisov2023'
+F.F.F                                                                    [100%]
+=================================== FAILURES ===================================
+E   AssertionError: {{val|9494|143}}
+    assert ('abstained', None) == ('matched', 'cite_ref-M_1-2')
+      
+      At index 0 diff: 'abstained' != 'matched'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:566: AssertionError: {{val|9494|143}}
+E   AssertionError: 6
+    assert ('abstained', None) == ('matched', 'cite_ref-M_1-3')
+      
+      At index 0 diff: 'abstained' != 'matched'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:586: AssertionError: 6
+E   AssertionError: assert ('abstained', None) == ('matched', '...sov2023_11-1')
+      
+      At index 0 diff: 'abstained' != 'matched'
+      Use -v to get more diff
+<repo>/tests/stage03/test_r038_template_output_order.py:604: AssertionError: assert ('abstained', None) == ('matched', '...sov2023_11-1')
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_template_that_changes_its_numbers_gives_no_anchor
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_equal_numbers_in_two_parameters_are_ambiguous
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_template_values_pair_by_the_numbers_they_show
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_short_value_anchors_only_a_whole_cell
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_borisov2023_labelled_swap
+3 failed, 2 passed, 27 deselected in 6.76s

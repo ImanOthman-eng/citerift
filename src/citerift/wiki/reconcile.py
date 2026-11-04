@@ -22,6 +22,7 @@ from __future__ import annotations
 import bisect
 import html
 import re
+import unicodedata
 from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass, field
@@ -31,11 +32,101 @@ from citerift.wiki.identifiers import decode_render_href
 from citerift.wiki.issues import Issue
 from citerift.wiki.model import SourceModel, Use
 from citerift.wiki.profile import Profile, WikiProfile
-from citerift.wiki.render import RenderDoc, RenderLink, RenderTransclusion, RenderUse
+from citerift.wiki.render import (
+    ANCHOR_KEEP,
+    RenderDoc,
+    RenderLink,
+    RenderReader,
+    RenderTransclusion,
+    RenderUse,
+    anchor_norm,
+)
 from citerift.wiki.source import TemplateRecord
 
 TemplateKey = tuple[str, tuple[tuple[str, str], ...]]
 _URL_IN_TEXT = re.compile(r"(?i)(?:https?:)?//[^\s|\[\]{}<>\"']+")
+
+# Before-marker text of a reference in a template parameter (R-038): the parameter text up to the <ref>, with the
+# wikitext that renders as plain text reduced to that text. Anything else gives no anchor.
+_ANCHOR_TAIL = 32  # characters compared
+_ANCHOR_MIN = 3  # a shorter text anchors only a block whose whole before-marker text it is
+SAME_NAME_LIMIT = 2_000  # uses of one name in one template's output beyond which no pairing is attempted
+_A_COMMENT = re.compile(r"(?s)<!--.*?(?:-->|$)")
+_A_REF = re.compile(r"(?is)<ref\b[^>]*?/\s*>|<ref\b[^>]*>.*?</ref\s*>")
+_A_PIPED_LINK = re.compile(r"\[\[([^\[\]|:]*)\|([^\[\]|]*)\]\]")
+_A_LINK = re.compile(r"\[\[([^\[\]|:]*)\]\]")
+_A_EXT_LINK = re.compile(r"\[(?:https?:)?//[^\s\[\]<>]+\s+([^\[\]]*)\]")
+_A_QUOTES = re.compile(r"'{2,}")
+_A_INLINE_TAG = re.compile(r"(?i)</?(?:abbr|b|bdi|big|br|code|em|i|nowiki|s|small|span|strong|sub|sup|u)\b[^<>]*>")
+_A_LIST_START = re.compile(r"^[*#:;]+\s*")
+_A_UNRENDERED = re.compile(r"[\[\]{}<>|]")
+_A_TEMPLATE_NAME = re.compile(r"\{\{\s*[^{}|]*")
+_A_ARG_KEY = re.compile(r"\|\s*[^{}|=\[\]]*=")
+_NUMBER = re.compile(r"\d+(?:[.,\u066b\u066c]\d+)*")
+
+
+def source_anchor(raw: str) -> tuple[str, bool] | None:
+    """The before-marker text of a parameter value ``raw`` (the source up to the reference): its last characters
+    after anchor normalization, and whether they were cut. None when the text cannot be read without rendering
+    (an unclosed template or table, a file or category link, a numbered external link, an unknown tag)."""
+    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw))  # another reference renders as a marker between two words
+    line = raw.rsplit("\n", 1)[-1]
+    if "}}" in line:
+        line = line[line.rindex("}}") + 2 :]
+    line = _A_PIPED_LINK.sub(r"\2", line)
+    line = _A_LINK.sub(r"\1", line)
+    line = _A_EXT_LINK.sub(r"\1", line)
+    line = _A_INLINE_TAG.sub("", _A_QUOTES.sub("", line))
+    line = _A_LIST_START.sub("", line)
+    if _A_UNRENDERED.search(line):
+        return None
+    text = anchor_norm(html.unescape(line))
+    if not any(c.isalnum() for c in text):
+        return None
+    return text[-_ANCHOR_TAIL:], len(text) > _ANCHOR_TAIL
+
+
+def anchor_supports(anchor: tuple[str, bool] | None, rendered: str | None) -> bool:
+    """The rendered before-marker text ends with the source's; a whole (uncut) source text must not continue a
+    longer word or number (``1.31`` does not anchor ``11.31``); a text shorter than ``_ANCHOR_MIN`` characters must
+    be the whole rendered text (``6`` anchors a cell that shows only ``6``)."""
+    if anchor is None or rendered is None:
+        return False
+    tail, cut = anchor
+    if len(tail) < _ANCHOR_MIN:
+        return rendered == tail
+    if not rendered.endswith(tail):
+        return False
+    before = rendered[: len(rendered) - len(tail)]
+    return cut or not (before and before[-1].isalnum() and tail[0].isalnum())
+
+
+def numbers_of(text: str) -> tuple[str, ...]:
+    """The numbers in ``text``, in order, as ASCII digits: grouping separators dropped, the Arabic decimal separator
+    read as a point (``3,420`` and ``٣٬٤٢٠`` are both ``3420``)."""
+    out = []
+    for m in _NUMBER.finditer(text):
+        digits = "".join(str(unicodedata.digit(c)) if c.isdigit() else c for c in m.group(0))
+        out.append(digits.replace(",", "").replace("\u066c", "").replace("\u066b", "."))
+    return tuple(out)
+
+
+def source_numbers(raw: str) -> tuple[str, ...] | None:
+    """For a parameter value whose last line before the reference holds templates (so ``source_anchor`` cannot read
+    it): the numbers of that line with template names and named-argument keys left out (``{{val|9494|143|u=K}}``
+    gives 9494, 143). A template usually shows the numbers it is given; one that changes them simply gives no
+    support. None when the line has no template, no number, or cannot be read."""
+    raw = _A_REF.sub(" ", _A_COMMENT.sub("", raw))
+    line = raw.rsplit("\n", 1)[-1]
+    if "{{" not in line or "{{{" in line or line.count("{{") != line.count("}}"):
+        return None
+    line = _A_EXT_LINK.sub(r"\1", _A_LINK.sub(r"\1", _A_PIPED_LINK.sub(r"\2", line)))
+    if "[" in line or "]" in line:
+        return None
+    line = _A_INLINE_TAG.sub("", _A_ARG_KEY.sub("|", _A_TEMPLATE_NAME.sub("{{", line)))
+    if "<" in line or ">" in line:
+        return None
+    return numbers_of(html.unescape(line)) or None
 
 
 @dataclass
@@ -98,9 +189,18 @@ def _key(u: Use) -> tuple[str, str] | None:
 
 
 class Reconciler:
-    def __init__(self, model: SourceModel, render: RenderDoc, wiki: WikiProfile, profile: Profile) -> None:
+    def __init__(
+        self,
+        model: SourceModel,
+        render: RenderDoc,
+        wiki: WikiProfile,
+        profile: Profile,
+        reader: RenderReader | None = None,
+    ) -> None:
         self.m = model
         self.r = render
+        self.reader = reader
+        self._prefix: dict[int, str | None] = {}
         self.wiki = wiki
         self.profile = profile
         self.out = Reconciliation()
@@ -306,11 +406,21 @@ class Reconciler:
         left: list[Use] = []
         for k, uses in s_by_key.items():
             rs = r_by_key.get(k, [])
-            if len(rs) == len(uses) and all(_compatible(a, b) for a, b in zip(uses, rs, strict=True)):
-                for a, b in zip(uses, rs, strict=True):
-                    self._pair(a, b, "name_in_template_output")
-            else:
+            # One name and group on both sides, so compatibility with one counterpart is compatibility with all.
+            if len(rs) != len(uses) or not (
+                all(_compatible(a, rs[0]) for a in uses) and all(_compatible(uses[0], b) for b in rs)
+            ):
                 left.extend(uses)
+            elif len(uses) == 1:
+                self._pair(uses[0], rs[0], "name_in_template_output")
+            else:
+                # R-038: the template, not the source, decides the order of its parameters, so a repeated name is
+                # paired only on evidence (reference_role_in_template_output and the anchors below).
+                paired = self._same_name(uses, rs)
+                for a, b, basis in paired:
+                    self._pair(a, b, basis)
+                done = {a.id for a, _, _ in paired}
+                left.extend(u for u in uses if u.id not in done)
         if (
             len(s_anon) == 1
             and len(r_anon) == 1
@@ -334,6 +444,87 @@ class Reconciler:
             )
         else:
             self.out.segments["template:matched"] += 1
+
+    def _same_name(self, uses: list[Use], rs: list[RenderUse]) -> list[tuple[Use, RenderUse, str]]:
+        """Pairs for the uses of one name inside one template's output (R-038), on evidence only:
+
+        * role: Parsoid's data-mw ``body`` marks the marker that carries the reference text; it pairs with the
+          source use that has a body (the definition), and the reuses with the markers without one. The two sides
+          must show the same number of definitions, and every marker's role must be readable;
+        * anchor: the visible text just before a marker in its block ends with the parameter text just before the
+          ``<ref>`` in the source (``source_anchor``, ``anchor_supports``);
+        * elimination: within one role, a use whose parameter text cannot be read takes the one marker left once
+          every other use is settled by an anchor that no other use or marker shares.
+
+        A role group that is not settled completely keeps only its pairs whose anchor is shared with no other use
+        or marker; the rest stay unpaired (``RECONCILIATION_ABSTAINED``). An anchor that points only to a marker
+        of the other role contradicts the data-mw: then nothing in the name is paired."""
+        n = len(uses)
+        if n > SAME_NAME_LIMIT:
+            return []
+        s_def = [self.m.refs[u.ref].has_body for u in uses]
+        roles = [r.body_role for r in rs]
+        if any(x not in ("definition", "reuse") for x in roles):
+            return []
+        r_def = [x == "definition" for x in roles]
+        if sum(s_def) != sum(r_def):
+            return []
+        params = [self._param_text(u) for u in uses]
+        anchors = [source_anchor(p) if p is not None else None for p in params]
+        numbers = [source_numbers(p) if p is not None and anchors[i] is None else None for i, p in enumerate(params)]
+        wanted = any(a is not None for a in anchors) or any(x is not None for x in numbers)
+        prefixes = [self._render_prefix(r) if wanted else None for r in rs]
+        # A before-marker text of ANCHOR_KEEP characters may have been cut: its numbers are not all known.
+        shown = [numbers_of(p) if p is not None and len(p) < ANCHOR_KEEP else None for p in prefixes]
+        support: list[set[int]] = []
+        for i in range(n):
+            if anchors[i] is not None:
+                support.append({j for j in range(n) if anchor_supports(anchors[i], prefixes[j])})
+            elif numbers[i] is not None:
+                support.append({j for j in range(n) if shown[j] == numbers[i]})
+            else:
+                support.append(set())
+        if any(sup and all(r_def[j] != s_def[i] for j in sup) for i, sup in enumerate(support)):
+            return []
+        out: list[tuple[Use, RenderUse, str]] = []
+        for role in (True, False):
+            src = [i for i in range(n) if s_def[i] == role]
+            ren = [j for j in range(n) if r_def[j] == role]
+            if len(src) == 1:
+                out.append((uses[src[0]], rs[ren[0]], "reference_role_in_template_output"))
+                continue
+            found = _settle(src, ren, support)
+            if found is not None:
+                for i, j in found:
+                    basis = "anchor_in_template_output" if j in support[i] else "elimination_in_template_output"
+                    out.append((uses[i], rs[j], basis))
+                continue
+            for i in src:  # not settled: only the anchors no other use or marker shares
+                own = support[i] & set(ren)
+                if len(own) == 1:
+                    j = next(iter(own))
+                    if [k for k in src if j in support[k]] == [i]:
+                        out.append((uses[i], rs[j], "anchor_in_template_output"))
+        return out
+
+    def _param_text(self, u: Use) -> str | None:
+        """The source text of the template parameter that holds a use, up to the use; None outside a parameter."""
+        r = self.m.refs[u.ref]
+        t = self.m.templates.get(u.template) if u.template is not None else None
+        if t is None:
+            return None
+        for p in t.params:
+            if p.value_start <= r.start < p.value_end:
+                return self.text[p.value_start : r.start]
+        return None
+
+    def _render_prefix(self, r: RenderUse) -> str | None:
+        if self.reader is None:
+            return None
+        if r.index not in self._prefix:
+            el = self.reader.element_by_path(r.locator.path)
+            self._prefix[r.index] = self.reader.preceding_text(el) if el is not None else None
+        return self._prefix[r.index]
 
     def _top_template(self, t_index: int | None) -> int | None:
         cur = t_index
@@ -699,6 +890,42 @@ class Reconciler:
                 )
 
 
+def _settle(src: list[int], ren: list[int], support: list[set[int]]) -> list[tuple[int, int]] | None:
+    """The one pairing of ``src`` with ``ren`` that the anchors force, or None. A use with an anchor in ``ren`` may
+    take only such a marker; a marker that anchors some use may be taken only by such a use; any other use may take
+    any marker. A pair is fixed only when one side has a single choice left; the pairing is returned only when every
+    use is fixed that way (so it is the only complete pairing the constraints allow)."""
+    ren_set = set(ren)
+    takers: dict[int, set[int]] = {j: {i for i in src if j in support[i]} for j in ren}
+    allowed: dict[int, set[int]] = {}
+    for i in src:
+        own = support[i] & ren_set
+        allowed[i] = {j for j in (own or ren_set) if not takers[j] or i in takers[j]}
+    free_s, free_r = set(src), set(ren_set)
+    out: list[tuple[int, int]] = []
+    while free_s:
+        pick = None
+        for i in sorted(free_s):
+            options = allowed[i] & free_r
+            if not options:
+                return None
+            if len(options) == 1:
+                pick = (i, next(iter(options)))
+                break
+        if pick is None:
+            for j in sorted(free_r):
+                options_s = {i for i in free_s if j in allowed[i]}
+                if len(options_s) == 1:
+                    pick = (next(iter(options_s)), j)
+                    break
+        if pick is None:
+            return None
+        out.append(pick)
+        free_s.discard(pick[0])
+        free_r.discard(pick[1])
+    return sorted(out)
+
+
 def _longest_increasing(pairs: list[tuple[int, int]]) -> list[tuple[int, int]]:
     """Longest chain of pairs increasing in both coordinates (pairs are sorted by the first), O(n log n)."""
     tails: list[int] = []
@@ -721,5 +948,12 @@ def _longest_increasing(pairs: list[tuple[int, int]]) -> list[tuple[int, int]]:
     return out[::-1]
 
 
-def reconcile(model: SourceModel, render: RenderDoc, wiki: WikiProfile, profile: Profile, text: str) -> Reconciliation:
-    return Reconciler(model, render, wiki, profile).run(text)
+def reconcile(
+    model: SourceModel,
+    render: RenderDoc,
+    wiki: WikiProfile,
+    profile: Profile,
+    text: str,
+    reader: RenderReader | None = None,
+) -> Reconciliation:
+    return Reconciler(model, render, wiki, profile, reader).run(text)

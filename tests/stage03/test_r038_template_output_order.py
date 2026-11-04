@@ -243,9 +243,12 @@ def reuses(values: list[str], render_order: list[int], *, definition_in_prose: b
 
 
 def html_value(wikitext: str) -> str:
-    """What the synthetic template shows for a parameter value (plain text as is; {{val|x}} as ``x``)."""
+    """What the synthetic template shows for a parameter value: plain text as is; ``{{val|x}}`` as ``x``;
+    ``{{icon|x}}`` as nothing a reader can compare (an image)."""
     if wikitext.startswith("{{val|"):
         return wikitext[len("{{val|") : -2]
+    if wikitext.startswith("{{icon|"):
+        return '<span class="flagicon"><img alt="" src="./x.png"/></span>'
     return wikitext
 
 
@@ -277,7 +280,7 @@ def test_r038_one_unanchored_reuse_is_settled_by_elimination(tmp_path: Path) -> 
 
 @pytest.mark.negative
 def test_r038_unanchored_reuses_abstain(tmp_path: Path) -> None:
-    values = ["{{val|0.403}}", "{{val|0.406}}", "{{val|0.0210}}"]
+    values = ["{{icon|Germany}}", "{{icon|France}}", "{{icon|Spain}}"]
     order = [2, 1, 0]
     text, body = reuses(values, order)
     doc = extract(bundle(tmp_path, text, body))
@@ -429,7 +432,7 @@ def test_r038_large_reversed_template_with_anchors(tmp_path: Path) -> None:
 @pytest.mark.negative
 def test_r038_large_template_without_anchors_abstains(tmp_path: Path) -> None:
     n = 300
-    values = [f"{{{{val|{i}}}}}" for i in range(n)]
+    values = [f"{{{{icon|c{i}}}}}" for i in range(n)]
     order = list(reversed(range(n)))
     text, body = reuses(values, order)
     doc = extract(bundle(tmp_path, text, body))
@@ -476,3 +479,132 @@ def test_r038_real_english_infobox_ayres2023_reuses() -> None:
     assert got[2034] == ("matched", "cite_ref-ayres2023_12-2")
     assert got[2077] == ("matched", "cite_ref-ayres2023_12-4"), "6,187"
     assert got[2119] == ("matched", "cite_ref-ayres2023_12-3"), "3.66"
+
+
+@pytest.mark.negative
+def test_r038_before_marker_text_is_stable_across_element_proxies() -> None:
+    """lxml creates element proxies on demand; the before-marker text must not depend on which proxy ids happen to be
+    reused (an id()-keyed ancestor set once cut ", Germany" from "Munich, Germany" at random)."""
+    from citerift.wiki.render import read_render
+
+    cell = '<a rel="mw:WikiLink" href="./Munich">Munich</a>, Germany' + marker(
+        1, "cite_note-M-1", "cite_ref-M_1-0", "M", body="reuse"
+    )
+    filler = "".join(f"<p><span>x{i}</span><b>y</b></p>" for i in range(200))
+    render, reader = read_render(parsoid(f"{filler}<table><tbody><tr><td>{cell}</td></tr></tbody></table>", "x"))
+    el = reader.element_by_path(render.uses[0].locator.path)
+    seen = set()
+    for _ in range(300):
+        _ = [len(list(p.iter())) for p in reader.doc.iter("p")]  # create and release many proxies
+        seen.add(reader.preceding_text(el))
+    assert seen == {"Munich, Germany"}
+
+
+@pytest.mark.integration
+def test_r038_text_on_both_sides_of_another_marker_is_not_one_word(tmp_path: Path) -> None:
+    other = '<ref name="J">Other text.</ref>'
+    values = ["6,391" + other + "13,000", "7.0"]
+    order = [1, 0]
+    params = [(f"p{i}", v + REUSE) for i, v in enumerate(values)]
+    rows = [
+        ("P1", "7.0" + marker(1, "cite_note-M-1", "cite_ref-M_1-1", "M", body="reuse")),
+        (
+            "P0",
+            "6,391"
+            + marker(2, "cite_note-J-2", "cite_ref-J_2-0", "J", body="id")
+            + "13,000"
+            + marker(1, "cite_note-M-1", "cite_ref-M_1-2", "M", body="reuse"),
+        ),
+    ]
+    src, table = infobox("Infobox star", params, rows)
+    text = src + "\nThe body.\n" + DEF + "\n"
+    body = (
+        table
+        + "<p>The body."
+        + marker(1, "cite_note-M-1", "cite_ref-M_1-0", "M", body="id")
+        + "</p>"
+        + references(
+            [
+                note_li("cite_note-M-1", ["cite_ref-M_1-0", "cite_ref-M_1-1", "cite_ref-M_1-2"], "Colors."),
+                note_li("cite_note-J-2", ["cite_ref-J_2-0"], "Other text."),
+            ]
+        )
+    )
+    del order
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    assert got[reuse_at(text, "13,000")] == ("matched", "cite_ref-M_1-2")
+    assert got[reuse_at(text, "7.0")] == ("matched", "cite_ref-M_1-1")
+
+
+# Values written with templates: the numbers they show ------------------------------------------------------------
+
+
+def shown(values: list[str], render_texts: list[str], order: list[int]) -> tuple[str, str]:
+    """Like ``reuses``, but the template shows ``render_texts[i]`` for parameter ``i``."""
+    params = [(f"p{i}", v + REUSE) for i, v in enumerate(values)]
+    rows = [
+        (f"P{i}", render_texts[i] + marker(1, "cite_note-M-1", f"cite_ref-M_1-{k + 1}", "M", body="reuse"))
+        for k, i in enumerate(order)
+    ]
+    src, table = infobox("Infobox star", params, rows)
+    text = src + "\nThe body.\n" + DEF + "\n"
+    body = (
+        table
+        + "<p>The body."
+        + marker(1, "cite_note-M-1", "cite_ref-M_1-0", "M", body="id")
+        + "</p>"
+        + references([note_li("cite_note-M-1", [f"cite_ref-M_1-{k}" for k in range(len(values) + 1)], "Colors.")])
+    )
+    return text, body
+
+
+@pytest.mark.integration
+def test_r038_template_values_pair_by_the_numbers_they_show(tmp_path: Path) -> None:
+    values = ["{{val|9494|143}}", "{{val|3.94|0.09}}", "{{val|0.96|0.16}}", "2.0{{±|0.6}}"]
+    texts = ["9,494±143", "3.94±0.09", "0.96±0.16", "2.0±0.6"]
+    order = [1, 0, 3, 2]
+    text, body = shown(values, texts, order)
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    for i, v in enumerate(values):
+        assert got[reuse_at(text, v)] == ("matched", expected_marker(order, i)), v
+
+
+@pytest.mark.negative
+def test_r038_template_that_changes_its_numbers_gives_no_anchor(tmp_path: Path) -> None:
+    values = ["{{val|1.2|0.4|e=3}}", "{{val|7.0|2.1}}"]
+    texts = ["(1.2±0.4)×10<sup>3</sup>", "7.1±2.0"]  # neither shows its source numbers in order
+    text, body = shown(values, texts, [1, 0])
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    assert [got[reuse_at(text, v)][0] for v in values] == ["abstained", "abstained"]
+
+
+@pytest.mark.integration
+def test_r038_short_value_anchors_only_a_whole_cell(tmp_path: Path) -> None:
+    values = ["6", "{{val|7.0|2.1}}", "16"]
+    texts = ["6", "7.0±2.1", "16"]
+    order = [2, 1, 0]
+    text, body = shown(values, texts, order)
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    for i, v in enumerate(values):
+        assert got[reuse_at(text, v)] == ("matched", expected_marker(order, i)), v
+
+
+@pytest.mark.negative
+def test_r038_equal_numbers_in_two_parameters_are_ambiguous(tmp_path: Path) -> None:
+    values = ["{{val|0.5|0.1}}", "{{val|0.5|0.1|u=K}}"]
+    texts = ["0.5±0.1", "0.5±0.1 K"]
+    text, body = shown(values, texts, [1, 0])
+    got = pairs(extract(bundle(tmp_path, text, body)), "M")
+    assert [got[reuse_at(text, v)][0] for v in values] == ["abstained", "abstained"]
+
+
+@pytest.mark.integration
+def test_r038_real_english_infobox_borisov2023_labelled_swap() -> None:
+    """en-1378959744 (D-034 challenge split, where render links were labelled but not scored): the locked and
+    adjudicated labels attach the uses at cp 2175 and 2233 to ``…_11-1`` and ``…_11-0``; the old engine had them
+    the other way round. Values are ``{{val}}`` templates."""
+    got = by_cp(real("confirmation-2026-11/campaign/capture/bundles/challenge/en-70970708-a2"), "Borisov2023")
+    assert got[2175] == ("matched", "cite_ref-Borisov2023_11-1")
+    assert got[2233] == ("matched", "cite_ref-Borisov2023_11-0")
+    assert got[2291] == ("matched", "cite_ref-Borisov2023_11-2")
+    assert got[2482] == ("matched", "cite_ref-Borisov2023_11-3")

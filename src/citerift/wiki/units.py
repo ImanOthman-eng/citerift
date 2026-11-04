@@ -202,10 +202,10 @@ def source_model(
         return build(scan, wiki, profile, bmap, None), None
     evidence = template_evidence(scan, render, reader, wiki, text)
     model = build(scan, wiki, profile, bmap, evidence)
-    rec = reconcile(model, render, wiki, profile, text)
+    rec = reconcile(model, render, wiki, profile, text, reader)
     more = note_evidence(model, rec, render, reader, evidence, wiki, text)
     if more:
         evidence = {**evidence, **more}
         model = build(scan, wiki, profile, bmap, evidence)
-        rec = reconcile(model, render, wiki, profile, text)
+        rec = reconcile(model, render, wiki, profile, text, reader)
     return model, rec

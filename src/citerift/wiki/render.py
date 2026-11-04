@@ -16,6 +16,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import unicodedata
 import urllib.parse
 from collections import Counter
 from collections.abc import Callable
@@ -159,6 +160,10 @@ class RenderUse:
     in_transclusion: str | None  # about id of the enclosing template output
     in_note: str | None  # id of the reference list item that contains this use (nested refs)
     data_mw_ok: bool
+    # What data-mw says about the reference text (R-038): "definition" (a body that holds or names this marker's
+    # note text), "reuse" (no body, or an empty inline one), "contradictory" (a body naming another note's text or
+    # of an unknown shape), or None (no readable data-mw).
+    body_role: str | None = None
 
 
 @dataclass
@@ -233,6 +238,35 @@ def _style_hides(style: str | None) -> bool:
 
 def _norm_text(text: str) -> str:
     return _WS.sub(" ", text).strip()
+
+
+ANCHOR_KEEP = 200  # characters of before-marker text kept for comparison (R-038)
+ANCHOR_MAX_NODES = 20_000  # elements of one block walked for before-marker text; a larger block gives no anchor
+_ANCHOR_SPACES = re.compile(r"[\s\u00a0\u2007\u2009\u200a\u202f]+")
+
+
+def anchor_norm(text: str) -> str:
+    """Text compared between a source parameter and a rendered block: NFC, every space-like character as one space,
+    trimmed."""
+    return _ANCHOR_SPACES.sub(" ", unicodedata.normalize("NFC", text)).strip()
+
+
+def body_role(dm: dict[str, Any] | None, target: str | None) -> str | None:
+    """What a reference marker's data-mw says about its reference text (see ``RenderUse.body_role``)."""
+    if dm is None:
+        return None
+    if "body" not in dm:
+        return "reuse"
+    body = dm["body"]
+    if not isinstance(body, dict):
+        return "contradictory"
+    if "id" in body:
+        if isinstance(body["id"], str) and target and body["id"] == f"mw-reference-text-{target}":
+            return "definition"
+        return "contradictory"
+    if isinstance(body.get("html"), str):
+        return "definition" if body["html"].strip() else "reuse"
+    return "contradictory"
 
 
 @dataclass
@@ -447,6 +481,7 @@ class RenderReader:
                 self._transclusion_about(el, include_self=True),
                 self._note_of(el),
                 dm is not None,
+                body_role(dm, target),
             )
         )
 
@@ -618,6 +653,52 @@ class RenderReader:
                 if reason is not None:
                     return reason
         return None
+
+    def preceding_text(self, el: Any, max_nodes: int = ANCHOR_MAX_NODES) -> str | None:
+        """The visible text before ``el`` in its nearest block (a table cell, list item, paragraph, ...), without
+        reference markers and without text the HTML hides, normalized by ``anchor_norm`` (its last
+        ``ANCHOR_KEEP`` characters). None when there is no block or the block is larger than ``max_nodes``."""
+        block = el.getparent()
+        while block is not None and block.tag not in _BLOCK_TAGS and block.tag != "body":
+            block = block.getparent()
+        if block is None:
+            return None
+        parts: list[str] = []
+        budget = [max_nodes]
+        # The elements that contain ``el``, held (not their id()s): lxml makes element proxies on demand, and the id of
+        # a released proxy can come back for another element.
+        on_path = set(self._ancestors(el))
+
+        def walk(node: Any) -> bool:
+            """Collect the text of ``node`` up to ``el``; True when ``el`` was reached."""
+            budget[0] -= 1
+            if budget[0] < 0:
+                raise RenderLimitExceeded("anchor block")
+            if node.text:
+                parts.append(node.text)
+            for child in node:
+                if child is el:
+                    return True
+                if child in on_path:
+                    return walk(child)
+                if isinstance(child.tag, str):
+                    if "mw:Extension/ref" in (child.get("typeof") or "").split():
+                        parts.append(" ")  # another marker: the texts on its two sides are not one word
+                    elif not self._anchor_skips(child):
+                        walk(child)
+                if child.tail:
+                    parts.append(child.tail)
+            return False
+
+        try:
+            walk(block)
+        except RenderLimitExceeded:
+            return None
+        return anchor_norm("".join(parts))[-ANCHOR_KEEP:]
+
+    def _anchor_skips(self, node: Any) -> bool:
+        """Elements whose text a reader does not see: hidden elements, styles and scripts."""
+        return node.tag in _SKIP_TEXT_TAGS or self.hide_reason(node) is not None
 
     def region_text(self, els: list[Any], marker_link: Callable[[str], bool]) -> RegionText:
         """The text of a rendered region in two channels (SPECIFICATION.md 13): the text a reader is shown (each

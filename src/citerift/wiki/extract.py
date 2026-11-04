@@ -40,7 +40,7 @@ from citerift.wiki.textmap import ByteMap
 from citerift.wiki.units import source_model
 
 EXTRACTION_SCHEMA = "urn:citerift:schema:wiki:v1:extraction"
-SCHEMA_VERSION = "1.1.0"  # 1.1.0 (D-035): unit kind unsupported_citation_template added
+SCHEMA_VERSION = "1.2.0"  # 1.1.0 (D-035): unit kind unsupported_citation_template; 1.2.0 (D-036): R-038 bases
 MAX_OUTPUT_BYTES = 256 * 1024 * 1024
 
 
