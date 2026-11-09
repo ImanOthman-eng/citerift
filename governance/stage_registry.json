@@ -2680,7 +2680,7 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; required documents, durable evidence export with checksums, unmerged pull request"
         }
       ],
-      "status": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "status": "ACCEPTED_CLOSED",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS",
         "scope": "Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.",
@@ -21072,7 +21072,13 @@
           "conclusion": "success"
         }
       },
-      "acceptance": null,
+      "acceptance": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPA53UZUXU5DvyUnnjuxy3EJ",
+        "accepted_revision": "b93314dfde749a7cf977744a44b70a3a0d900ef2",
+        "recorded_at": "2026-11-09T19:31:25Z",
+        "recorded_by": "engineering-agent",
+        "method": "attested"
+      },
       "blockers": [
         {
           "id": "B-03-001",
@@ -21778,6 +21784,17 @@
       "recorded_by": "engineering-agent",
       "reason": "D-036 final confirmation passes every gate G1-G11 and every minimum in both languages on the adjudicated labels (evaluation/confirmation-d036/campaign/REPORT.md); complete matrix at b93314d (2051 passed on Python 3.12 and 3.13, static, governance, schema, lock, dependency audit, protected paths, installed wheel, simulations, offline verify/replay 44/44; TEST_RESULTS.md section 9); GitHub CI run 42624868434 success. Owner instruction 2026-11-09 (cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw, D-038). Not owner acceptance.",
       "owner_ref": null
+    },
+    {
+      "seq": 48,
+      "at": "2026-11-09T19:31:25Z",
+      "stage": "03",
+      "from": "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+      "to": "ACCEPTED_CLOSED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner accepts Stage 03 (Wikipedia Extraction Engine) at the verified revision b93314d, delivered through PR #6 (head eb0b694), based on the completed D-036 validation and its documented scientific limitations (Arabic G2 decided by one adjudicated correction; English G5c interval reaching 0.929, R-036; G7 vacuous in the D-036 sample; 2026-11-04 evaluator transcripts unavailable; AI labels; limited field coverage of the R-038 path). The owner confirms the D-036 evidence archive and SHA-256 manifest are saved outside the Claude workspace. Stage 04 is not authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPA53UZUXU5DvyUnnjuxy3EJ"
     }
   ]
 }
