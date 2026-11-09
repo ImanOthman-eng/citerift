@@ -1,0 +1,69 @@
+diff --git a/governance/stage_registry.json b/governance/stage_registry.json
+index f13fa62..520a847 100644
+--- a/governance/stage_registry.json
++++ b/governance/stage_registry.json
+@@ -21147,17 +21147,62 @@
+         "03"
+       ],
+       "verification_dir": "docs/verification/stage-04",
+-      "owned_paths": [],
++      "owned_paths": [
++        "src/citerift/investigation",
++        "schemas/investigation",
++        "tests/stage04",
++        "simulations/stage04"
++      ],
+       "required_test_suites": [
+         "unit",
+         "integration",
+         "negative",
+-        "regression"
++        "regression",
++        "reproducibility",
++        "security",
++        "contracts",
++        "simulation"
+       ],
+       "acceptance_gates": [
+         {
+           "id": "04-A",
+           "requirement": "A real documented investigation succeeds end-to-end, alongside negative and failure-case tests"
++        },
++        {
++          "id": "04-B",
++          "requirement": "Contracts and investigation identity: Stage 04 schemas under schemas/investigation reference contracts v1 by URN without changing them; the root of every investigation is one immutable article revision (wiki, page id, revision id and, where a capture exists, its Stage 03 bundle identity), never title text alone; citation, reference and evidence units are its children; the subject model can be extended by later stages without breaking Stage 04 records (owner decision D-4)"
++        },
++        {
++          "id": "04-C",
++          "requirement": "Detection semantics: a total, deterministic decision table with no numeric threshold; candidates only from primary citation fields and identifier links; retraction notices and marker targets never counted as citations of the retracted work; no value meaning 'not retracted'; a failure or an ambiguity never yields a positive or negative finding; zero differences against an independent reference model on the development set"
++        },
++        {
++          "id": "04-D",
++          "requirement": "Cross-identifier coherence: when the DOI and PMID of one citation resolve to incompatible works the citation enters an explicit identity-conflict state; no positive or negative detection is emitted from that pair; both identities, their lookups and provenance are kept in Investigation Memory; the controller routes the case to needs-resolution; replay preserves the conflict; regression tests cover the Arabic Obokata citation (arwiki revision 76190003) and synthetic variants; Stages 02 and 03 are not changed to hide it"
++        },
++        {
++          "id": "04-E",
++          "requirement": "Investigation Memory and Workflow Controller: append-only, hash-chained journal with content-addressed evidence; explicit lifecycle and step state machines whose state is the fold of the journal; the memory/workflow invariants hold; an interrupted investigation resumes without repeating succeeded steps and reaches the same content digest; fault injection at every step boundary and write"
++        },
++        {
++          "id": "04-F",
++          "requirement": "Replay and staleness: the same inputs reproduce byte-identical investigation content; a changed bundle, index, engine or schema is reported stale and never silently reused"
++        },
++        {
++          "id": "04-G",
++          "requirement": "Failure containment: injected rate limits, upstream errors, timeouts, a missing or mismatched index and failed extraction end blocked, partial or failed with recorded limitations, never as a negative finding or a success"
++        },
++        {
++          "id": "04-H",
++          "requirement": "Security and boundaries: no import of citerift.governance; no network use outside the Stage 03 capture path; path safety of investigation stores; secret scan of retained evidence"
++        },
++        {
++          "id": "04-I",
++          "requirement": "Scientific evaluation under a protocol pre-registered before the draw (owner decisions D-3, D-5): sampling procedure, strata, replacement rules, minimum positive, negative and identity-conflict denominators, metrics, interval method and failure criteria fixed in advance; 30 primary and 10 predetermined reserve articles per language, expanded within 200 acquisition attempts when a denominator is not met, never weakened; labels from two independent blinded Claude Sonnet annotators locked before predictions are exposed, disagreements adjudicated by a third blinded Claude Sonnet instance, with retained evidence and model metadata, disclosed as AI-generated labels from one vendor and not human gold labels; one locked prediction run; uncertainty intervals and no population-prevalence claim; Stage 03 revisions examined during planning are not final-evaluation evidence"
++        },
++        {
++          "id": "04-J",
++          "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; no new runtime dependency without a recorded reason; required documents including a measured creative differentiation review; unmerged pull request"
+         }
+       ],
+       "status": "IN_PROGRESS",

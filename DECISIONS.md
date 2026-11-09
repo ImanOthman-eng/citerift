@@ -866,3 +866,31 @@ drift still a failure, success in a clean clone holding only the main/Stage 04 h
 the minimum Stage 03 owned change, complete maintenance validation, no change to the contract schemas and no branch
 deletion. Recorded as amendment A-03-001. Stage 03 stays `ACCEPTED_CLOSED`; its acceptance is not rewritten. Branch
 cleanup of PR #5 and the Codex branch is a separate owner decision.
+
+## D-040 — Stage 04 plan accepted with conditions: owner decisions D-1 to D-5 and the identity-conflict requirement
+- Status: accepted
+- Topic: stage-04-master-execution-plan-decisions
+- Date: 2026-11-09
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/planning/STAGE04_MASTER_EXECUTION_PACKAGE.md; docs/verification/stage-04/planning/STAGE04_MASTER_EXECUTION_PACKAGE_AS_REVIEWED.md; docs/verification/stage-04/planning/PLANNING_RECORD.md; docs/verification/stage-04/planning/registry-definition/REGISTRY_DEFINITION_RECORD.md
+
+Owner decision on the Stage 04 Master Execution Package (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPRpb2tWYwbQwCYA5ps9aLth`, 2026-11-09T21:25:03Z): PROCEED WITH CONDITIONS; no
+functional Stage 04 implementation before the conditions are recorded and the package is retained in the repository.
+D-1: one controlled manual edit of the Stage 04 registry definition only (owned paths, test suites, gates 04-B to
+04-J), because citerift-gov has no command for it; authorization, status, history, accepted revisions, Stage 00-03
+definitions and Stage 05+ are not touched; diff, collision proof, schema validation, check, renderer and full matrix
+before committing. D-2: Stage 03 maintenance with a fail-closed test (D-039, A-03-001). D-3: two independent blinded
+Claude Sonnet annotators per item, labels locked before predictions, a third blinded Sonnet adjudicator, retained
+evidence and model metadata; Haiku auxiliary only; disclosed as AI-generated single-vendor labels, not human gold.
+D-4: the investigation root is an immutable article revision (wiki, page, revision, capture identity where
+applicable), never title text alone; units are children; the subject model stays extensible. D-5: 30 primary and 10
+predetermined reserve articles per language within 200 acquisition attempts as the minimum acquisition plan, with a
+pre-registered sampling procedure, strata, replacement rules, positive, negative and identity-conflict denominators,
+metrics, interval method and failure criteria; expansion instead of weaker denominators; no prevalence claim; the 16
+planning-exposed articles are design, regression, adversarial and integration data only. Inherited requirement: when
+the DOI and PMID of one citation resolve to incompatible works, Stage 04 enters an explicit identity-conflict state,
+emits no positive or negative detection from the pair, keeps both identities with provenance, routes the case to
+needs-resolution and preserves it on replay, at the Stage 04 boundary without changing Stages 02 or 03 to hide it.
+No Stage 05 work and no claim that Stage 04 is implemented or verified.

@@ -1,0 +1,34 @@
+# D-1 verification log (repository at 3def9662ca982ab2865228bc75c0228d670d19f4, 2026-11-09T21:38:15Z)
+## before
+3e535d07269598def9aef6c1970c961c8cf342c378d983d3e6c30b2165727d42  governance/stage_registry.json
+d11bb1bd0eff147a29c9e40e3dcdf9edbb700ddc327c69f48f000733e5dd80b2  PROJECT_STATUS.md
+## step 1: apply
+Stage 04 definition written; now run: citerift-gov render-status --write
+## step 2: render-status --write (renderer only), then --check
+Wrote PROJECT_STATUS.md
+PROJECT_STATUS.md is up to date
+## after
+4acc9c8f66d69a0e39946a43df329794f5643396369dd940f86513fd0e995922  governance/stage_registry.json
+d11bb1bd0eff147a29c9e40e3dcdf9edbb700ddc327c69f48f000733e5dd80b2  PROJECT_STATUS.md
+## step 3: boundary and collision proof
+unchanged: top level (policy, project, history), stages 00-03 and 05-09, every other Stage 04 field
+owned path src/citerift/investigation: no collision with any other stage's owned paths or verification directory; 0 tracked files
+owned path schemas/investigation: no collision with any other stage's owned paths or verification directory; 0 tracked files
+owned path tests/stage04: no collision with any other stage's owned paths or verification directory; 0 tracked files
+owned path simulations/stage04: no collision with any other stage's owned paths or verification directory; 0 tracked files
+  stage 00 owned: ['src/citerift/__init__.py', 'src/citerift/governance', 'src/citerift/contracts', 'schemas/governance', 'schemas/contracts/v1', 'simulations/stage00', 'tests/stage00', '.github/workflows', '.github/rulesets', '.gitattributes', 'src/citerift/py.typed'] verification: docs/verification/stage-00
+  stage 01 owned: [] verification: docs/verification/stage-01
+  stage 02 owned: ['src/citerift/retraction', 'schemas/retraction', 'tests/stage02', 'simulations/stage02'] verification: docs/verification/stage-02
+  stage 03 owned: ['src/citerift/wiki', 'schemas/wiki', 'tests/stage03', 'simulations/stage03'] verification: docs/verification/stage-03
+  stage 04 owned: ['src/citerift/investigation', 'schemas/investigation', 'tests/stage04', 'simulations/stage04'] verification: docs/verification/stage-04
+  stage 05 owned: [] verification: docs/verification/stage-05
+  stage 06 owned: [] verification: docs/verification/stage-06
+  stage 07 owned: [] verification: docs/verification/stage-07
+  stage 08 owned: [] verification: docs/verification/stage-08
+  stage 09 owned: [] verification: docs/verification/stage-09
+RESULT: PASS
+## step 4: JSON Schema validation
+schema: urn:citerift:schema:governance:stage-registry:1
+errors: 0
+## step 5: citerift-gov check
+Consistency check: 0 errors, 0 warnings
