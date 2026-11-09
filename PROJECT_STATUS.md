@@ -28,7 +28,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Open blockers
 
-- Stage 03 B-03-001: D-037 independent evaluator runtime unavailable: hosted fresh contexts expose no native full-transcript export or enforceable per-instance access restriction; native Codex CLI authentication failed before completion and local app-server transport cannot connect. No scientific replacement labels or predictions produced. Evidence: docs/verification/stage-03/continuation/d037-2026-11-04/CAPABILITY_REPORT.md
+- None recorded.
 
 ## Stage notes
 
