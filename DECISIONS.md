@@ -826,3 +826,23 @@ was launched: hosted subagents lack enforceable per-instance access controls/nat
 native CLI authentication probe failed before completion. The authorization is accepted; experimental execution
 remains blocked until genuine isolation, model metadata and durable raw provenance can be established. No labels,
 locks, predictions or scores are invented. No acceptance, merge, history rewrite or Stage 04 is authorized.
+
+## D-038 — Stage 03 D-036 resumed under its original model roles (D-037 not exercised)
+- Status: accepted
+- Topic: stage-03-d036-resumption-original-models
+- Date: 2026-11-09
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-11-09_RESUME_D036.md
+
+Owner instruction in the CITERIFT project (`cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw`,
+2026-11-09T12:57:41Z), after the executor's read-only audit of the state left on 2026-11-04. The owner orders the
+D-036 campaign to resume from its reserve1 evaluator checkpoint under the original, prospectively registered model
+roles (Claude Sonnet evaluators, Claude Haiku adjudicators, Claude Opus executor) and states that D-037 is not
+exercised for this continuation. D-037 and the Codex continuation records (`7646fe7`, `de66152`) stay in the history
+unchanged; no OpenAI-model label, adjudication, prediction or score exists. Blocker B-03-001 is resolved through
+`citerift-gov blocker resolve` only after a Claude Sonnet evaluator has actually run with a retained transcript. All
+G1-G11 thresholds, minimum denominators, ceilings (500 HTTP attempts, 300 MiB), the acquisition end
+(2026-11-14 23:59 UTC) and stopping rules stay as frozen. The instruction authorizes completion of D-036 to
+`VERIFIED_AWAITING_OWNER_ACCEPTANCE` if every requirement passes; it authorizes no acceptance, no merge, no force
+push or history rewrite, no post-prediction repair or further campaign, and no Stage 04.

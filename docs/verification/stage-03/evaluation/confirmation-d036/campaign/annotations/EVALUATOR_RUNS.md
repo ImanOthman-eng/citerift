@@ -82,3 +82,23 @@ Their `notes`, `unresolved_notes` and reports hold the full list. The recurring 
   bindings and markers itself; the brief asks for no general reference parser. The executor validates format only
   and did not return or change the files; this is recorded, not judged.
 - No instance found a retraction, expression of concern or correction marker.
+
+## Reserve block 1 (enwiki)
+
+- Reserve decision 1 (`../reserve/step-1.json`, from the committed locks only) named block `reserve1` for enwiki. It
+  was captured (capture-2) and packed with the frozen window (`packets-reserve1/`, committed in `80000f2` with the
+  filled brief `briefs/en-r1-1.txt`) before any label.
+- **Instance d036-eval-en-r1-1 (lost, never observed).** On 2026-11-04 at about 14:01 UTC the previous executor
+  session launched one Claude Sonnet instance with that brief, in a work directory of that session's container. That
+  session ended before the instance's output, transcript or isolation audit was committed. The container is gone:
+  on 2026-11-09 neither its work directory, nor its transcript, nor any copy under `/mnt/project-files` exists (the
+  Codex continuation of 2026-11-04 found the same, `../../../../continuation/codex-d036-2026-11-04/HANDOFF.md`). No
+  label of reserve1 was ever committed, read by the executor, validated or used, and no extraction of any campaign
+  article exists. Whether that instance finished is unknown and is not claimed either way.
+- **Instance d036-eval-en-r1-1b (fresh, owner directive of 2026-11-09, D-038).** Because the lost instance's context
+  cannot be resumed, one new Claude Sonnet instance labels the same four packets. Its brief `briefs/en-r1-1b.txt` is
+  the unchanged template of `../../../confirmation-2026-11/EVALUATOR_BRIEF_v1.1.md` with `{LANG}` = English and only
+  `{WORK}` and `{INSTANCE}` rebound (a new name, so that two different instances never share one). Its work
+  directory holds a byte copy of guide 1.1 (sha256 `2b40bb32…cf2e`), byte copies of `packets-reserve1/en-r1-1/packets`
+  (compared with `diff -r`) and an empty `out/`. The brief was committed before the launch. D-037 (OpenAI-model
+  substitution) is not exercised.
