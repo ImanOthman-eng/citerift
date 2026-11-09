@@ -647,3 +647,9 @@ does not bind the code (B-7): the D-036 confirmation therefore records the Git t
 its candidate in its MANIFEST and checks them before its prediction run. Profile, scorer, guide, protocol and gates
 unchanged.
 
+
+## D-036 prospective confirmation (2026-11-09)
+
+No specification change. The engine of `8901a59` (1.2.0) was evaluated once on 44 unexposed articles; every gate
+G1-G11 passes in both languages (`evaluation/confirmation-d036/campaign/REPORT.md`). The campaign was interrupted on 2026-11-04 and resumed under owner
+instruction D-038 with the originally registered model roles; D-037 was not exercised.

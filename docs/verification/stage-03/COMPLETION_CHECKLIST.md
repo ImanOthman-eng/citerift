@@ -90,3 +90,23 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
 - [x] Complete verification matrix at `6c499a7` (TEST_RESULTS.md section 8).
 - [x] Final independent integration audit (`evaluation/confirmation-d035/INTEGRATION_AUDIT.md`): no critical finding;
   F-1 is R-038; F-2 to F-7 recorded.
+
+## 4 and 9 November: R-038 correction and the final confirmation (Claude Code, owner instructions D-036 and D-038)
+
+- [x] R-038 corrected fail-first (engine 1.2.0); two independent readiness reviews and one focused re-review, every
+  confirmed finding fixed (`design/r038-reconciliation/review/DISPOSITIONS.md`); differential on every retained bundle.
+- [x] Candidate `8901a59` frozen with the prospective amendment (`10db8cb`); exposure set before the draw (`0dd921b`);
+  draw, capture, 40 locked labels and reserve decision 1 on 2026-11-04.
+- [x] Interruption on 2026-11-04 (lost reserve instance; Codex preservation `7646fe7` and D-037 record `de66152`, no
+  scientific output). Resumed on 2026-11-09 under D-038 with the original model roles; D-037 not exercised.
+- [x] Fresh Sonnet instance for en reserve1, locked (`40a1aa4`); B-03-001 resolved with `citerift-gov` (`7bab386`);
+  reserve decision 2 closes the sample (`6d2ceab`); 208 attempts, 7.4 MB, no network after 2026-11-04.
+- [x] One prediction run (`57c4c62`, 44 articles; verify and replay 44 / 44); locked scores; adjudication (16
+  confirmed, 3 corrected); adjudicated scores and intervals (`78cef7d`).
+- [x] Evidence-integrity audit: 25 / 25 (`evaluation/confirmation-d036/campaign/audit/EVIDENCE_AUDIT.json`).
+- [x] **Every gate G1-G11 passes in both languages** (`evaluation/confirmation-d036/campaign/REPORT.md`); Arabic G2
+  depends on one adjudicated correction and English G5c's interval reaches 0.929 (report section 4.1).
+- [x] Documents, RISKS.md (R-034 and R-038 closed, R-036 updated), RISK_ANALYSIS E30-E33, ATTRIBUTION for the 44
+  articles.
+- [ ] Complete verification matrix, verification record, CI and the clean delivery branch: TEST_RESULTS.md section 9
+  and HANDOFF.md.

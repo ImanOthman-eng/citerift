@@ -626,7 +626,7 @@ affects only the opt-in experimental path. Any change needs the owner's
 authorization.
 
 ## R-034 — Stage 03 frozen evaluation does not meet gate 03-G
-- Status: open
+- Status: closed
 - Severity: high
 - Kind: limitation
 - Stage: 03
@@ -647,6 +647,11 @@ prospective evaluation, or non-acceptance. The executor cannot record a technica
 Update 2026-11-03: the owner chose a new prospective evaluation (D-034). In that campaign, at candidate `3e51792`, none
 of the three failures above recurs (Arabic G5a 1.000, Arabic identifiers 103, English G2 0.000), but a different gate
 fails (R-036). This entry stays open until the owner decides on R-036.
+
+Update 2026-11-09 (D-036 confirmation scored, D-038): at candidate `8901a59`, on 24 Arabic and 20 English unexposed
+articles, every gate G1-G11 and every minimum passes in both languages, including Arabic G5a 1.000, Arabic identifiers
+56 and English G2 0.000 (`docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md`). Gate 03-G is
+met prospectively; closed.
 
 ## R-035 — Stage 03 declared support boundaries observed in the final campaign
 - Status: open
@@ -697,6 +702,12 @@ Update 2026-11-03 (D-035 confirmation scored): on 24 unexposed English articles,
 (95 % article-cluster interval 0.978 to 1.000) and unit recall 0.994; Arabic 1.000 and 0.992. G5c and G5d pass in
 both languages (`docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md`). The stage is still
 not verified, because of R-038. This entry stays open until the owner accepts the stage.
+
+Update 2026-11-09 (D-036 confirmation scored): on 20 unexposed English articles at `8901a59`, unit precision is
+129 / 132 = 0.977 (95 % article-cluster interval 0.929 to 1.000; 0.970 on the locked labels) and unit recall 0.992;
+Arabic 1.000 and 0.966. G5c and G5d pass in both languages for the second consecutive prospective campaign. The lower
+English interval bound is below 0.95, so the margin is not established at this sample size. This entry stays open
+until the owner accepts the stage.
 
 ## R-037 — Stage 03 citation-unit classification (D-035): residual limits
 - Status: open
@@ -760,7 +771,7 @@ reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.m
   it carries a link, DOI or PMID; otherwise it is reported. This trade-off is for the owner.
 
 ## R-038 — Stage 03 reconciliation pairs repeated names inside a template's output in source order
-- Status: open
+- Status: closed
 - Severity: high
 - Kind: defect
 - Stage: 03
@@ -806,3 +817,9 @@ values (R-02). A group is now paired only when every marker supports some use, w
 links at a cost of 9 abstained uses on the real corpus. Dispositions:
 `docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md`. The entry stays open until the
 single D-036 prospective confirmation is scored.
+
+Update 2026-11-09 (D-036 confirmation scored, D-038): on 44 unexposed articles at `8901a59`, 0 false render
+attachments and 0 abstentions in both languages (G6a 1.000, G6b 0, G6c 1.000). The corrected pairing path
+(`reference_role_in_template_output`) linked 8 uses in 3 articles, all correctly
+(`docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md` section 5). The defect is corrected and
+the correction is confirmed prospectively on one sample; closed. The path's field exposure is small (8 uses).

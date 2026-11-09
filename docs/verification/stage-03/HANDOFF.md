@@ -13,23 +13,31 @@ Project owner: EVE TELOS.
   D-033) and corrective engineering with one prospective confirmation campaign
   (`cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh`, D-034);
 - Claude Code, under the owner's instruction of 2026-11-03 (`cmsg_018VCB51nDHP6HXmLU4ea5yPBxa7nEyAiE3VN5Lw442e8F`,
-  D-035): G5c semantic correction and one further prospective confirmation.
+  D-035): G5c semantic correction and one further prospective confirmation;
+- Claude Code, under the owner's instruction of 2026-11-04 (`cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7`,
+  D-036): R-038 correction, readiness reviews and one final prospective confirmation;
+- OpenAI Codex, under the owner's instruction of 2026-11-04 (D-037), while Claude was unavailable: preservation and
+  audit of the D-036 checkpoint (`7646fe7`) and a contingent model-substitution record (`de66152`); no scientific
+  output;
+- Claude Code, under the owner's instruction of 2026-11-09 (`cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw`,
+  D-038): completion of D-036 with its original model roles (D-037 not exercised), verification and delivery.
 
-**Registry state.** `IMPLEMENTED_NOT_VERIFIED`, recorded at the D-035 candidate freeze (`b1e069e`, candidate
-`fff0e5b`). **No technical verification is recorded.**
+**Result (D-036 confirmation, `evaluation/confirmation-d036/campaign/REPORT.md`).** On 24 Arabic and 20 English
+unexposed articles, the frozen candidate `8901a59` passes **every gate G1 to G11 and every minimum denominator in both
+languages** on the adjudicated labels, including G5c (ar 1.000, en 0.977), G5d (0.966, 0.992), G6a (1.000, 1.000),
+G6b (0 false attachments in each) and G6c (1.000, 1.000). R-038 does not recur. Arabic G2 is decided by one
+adjudicated correction, and English G5c's interval reaches 0.929 (report section 4.1).
 
-**Current result (D-035 confirmation, `evaluation/confirmation-d035/campaign/REPORT.md`).** The G5c correction holds
-prospectively: English G5c 0.994 and G5d 0.994, Arabic 1.000 and 0.992. Every gate passes in English. In Arabic every
-gate passes except **G6b: 2 false render attachments against a frozen limit of 1**, caused by a verified engine defect
-in the reconciliation of repeated names inside an infobox (RISKS.md R-038). The amendment forbids repair after the run.
+**Registry state and delivery.** On this branch (the scientific record, continuing PR #5's history) Stage 03 stays
+`IMPLEMENTED_NOT_VERIFIED` at candidate `8901a59`. The verification transition is recorded on the clean delivery
+branch, whose history holds `main` and the final tree only (section "Verified Git commit"), so that a merge does not
+publish the restricted historical blobs (`security/PRESIGNED_URL_REVIEW.md`).
 
 **Owner actions outstanding.**
-- The decision on R-038: `evaluation/confirmation-d035/DECISION_RECORD.md`.
-- Acceptance, and the merge of pull request #5, which is open. The owner merges personally (D-019).
+- Acceptance of Stage 03, and the choice and execution of the merge. The owner merges personally (D-019).
 - No later stage is authorized or started.
 
-The D-034 sections below are kept as the historical record of that campaign. The owner rejected outcome A of its
-decision record (D-035); the D-035 results are in the section "D-035 correction and confirmation".
+The D-034 and D-035 sections below are kept as the historical record of those campaigns.
 
 ## Verified completed work
 
@@ -111,6 +119,34 @@ the G6b diagnosis and the deviations; it found no critical issue and no defect i
 Intervals: `evaluation/confirmation-d035/campaign/REPORT.md` section 7 (English G5c [0.978, 1.000], G5d
 [0.980, 1.000]).
 
+## D-036 correction and final confirmation
+
+**Correction, before the freeze** (SPECIFICATION.md, "Changes under owner instruction D-036";
+`design/r038-reconciliation/`): repeated names inside one template's output are paired only on evidence and
+abstained otherwise (engine and schema 1.2.0); fail-first reproduction; differential on every retained bundle; two
+independent readiness reviews and a focused re-review, every confirmed finding fixed
+(`design/r038-reconciliation/review/DISPOSITIONS.md`).
+
+**Confirmation campaign** (`evaluation/confirmation-d036/campaign/REPORT.md`): candidate `8901a59`; 24 Arabic and 20
+English unexposed articles (one English reserve block); 208 HTTP attempts and 7.4 MB of 500 / 300 MiB; labels by 8
+isolated Claude Sonnet instances, locked before the single prediction run; 19 disputed items adjudicated by 2 Claude
+Haiku instances (16 confirmed, 3 corrected); 44 / 44 extractions verify and replay; evidence audit 25 / 25. The
+campaign was interrupted on 2026-11-04 after its reserve packets (`80000f2`) and resumed on 2026-11-09 (D-038); one
+reserve evaluator instance whose output was never observed was replaced by a fresh one (report sections 3 and 6).
+
+| Adjudicated labels | ar | en |
+|---|---|---|
+| G1 identifier precision / recall | 1.000 / 0.929 | 1.000 / 0.984 |
+| G2 key error rate; G3 promotions / role agreement | 0.000; 0 / 0.942 | 0.000; 0 / 1.000 |
+| G4 uses: precision / recall / binding | 1.000 / 1.000 / 1.000 | 1.000 / 1.000 / 1.000 |
+| G5 definitions (precision / recall), units (precision / recall) | 1.000 / 1.000, **1.000 / 0.966** | 1.000 / 1.000, **0.977 / 0.992** |
+| G6 render precision / false attachments (limit) / coverage | **1.000 / 0 (1) / 1.000** | **1.000 / 0 (2) / 1.000** |
+| G7 fabricated negatives | 0 (no labelled warning) | 0 (no labelled warning) |
+| G8 verify / G9 acquisition / G10 replay | 24 / 24; 24 / 24 with render; 24 / 24 | 20 / 20; 20 / 20; 20 / 20 |
+| Minimum denominators: identifiers / uses / definitions / linkable | 56 / 187 / 147 / 187 | 64 / 282 / 143 / 282 |
+
+Intervals: report section 7 (English G5c [0.929, 1.000], Arabic G5d [0.897, 1.000]).
+
 ## Inputs and outputs
 
 **Inputs:**
@@ -127,19 +163,18 @@ Article content in retained bundles is attributed in ATTRIBUTION.md (CC BY-SA 4.
 
 ## Test evidence
 
-TEST_RESULTS.md section 8 holds the complete verification matrix of the D-035 work at `6c499a7` (section 7: D-034
-at `e6b3d7b`): both Python
-versions, static checks, governance, lock, dependency audit, protected paths, installed wheel, simulations. GitHub CI
-on the final pull-request head is given in the pull request #5 description, because a commit cannot contain its own
-CI run.
+TEST_RESULTS.md section 9 holds the complete verification matrix of the final delivery revision (both Python versions,
+static checks, governance, lock, dependency audit, protected paths, installed wheel, simulations), with the GitHub CI
+run of that revision. Sections 7 and 8 hold the D-034 and D-035 matrices. Earlier matrices, including the Codex
+checkpoint's, describe their own revisions only.
 
 ## Known limitations
 
-- **Arabic G6b is not met** (R-038). Inside one template's output, repeated uses of one reference name are paired
-  with their rendered markers in source order; an infobox that reorders its rows swaps them.
-- **English G5c** was not met at `3e51792` (R-036); at `fff0e5b` it is 0.994 on fresh articles. The residual limits
-  of the citation-unit classes are R-037.
-- **G7 is vacuous in the D-035 sample** (no labelled warning, no warning challenge); field sensitivity rests on the
+- **R-038 is corrected and confirmed on one sample** (0 false attachments in 469 engine links); the corrected path
+  was exercised on 8 uses in 3 articles only. Where evidence does not decide a pairing, the use is abstained.
+- **Arabic G2 depends on one adjudicated correction** (0.0192 on the locked labels), and **English G5c's interval**
+  is [0.929, 1.000] (R-036; residual limits of the citation-unit classes are R-037).
+- **G7 is vacuous in the D-035 and D-036 samples** (no labelled warning, no warning challenge); field sensitivity rests on the
   D-034 challenge (6 / 6).
 - **Five captured files are withheld from git** (a third-party AWS key id in one enwiki article); they are in the
   checksum-verified export (`evaluation/confirmation-d035/campaign/WITHHELD_FILES.json`).
@@ -148,8 +183,10 @@ CI run.
 - **Zero-tolerance gates at these sizes:** 0 key errors and 0 promotions bound the rates only at about 5 % in the
   D-035 sample (3.0 % / 6.1 % in D-034).
 - **AI labels, not human gold.** Evaluators on Claude Sonnet, adjudicators on a smaller model (Claude Haiku), one
-  vendor. The harness attached the repository `CLAUDE.md` to their contexts; one evaluator wrote one scratch file
-  outside its work directory (RISK_ANALYSIS.md E9, E13).
+  vendor. The harness attached the repository `CLAUDE.md` to their contexts; one evaluator in 2026-11 and one in
+  D-036 wrote scratch files outside their work directories (RISK_ANALYSIS.md E9, E13; D-036 report section 6).
+- **D-036 transcripts.** The seven evaluator transcripts of 2026-11-04 are no longer available; their isolation audit
+  was committed at the time (RISK_ANALYSIS.md E30).
 - **Declared support boundaries** (R-035):
   - DOIs in publisher URLs without `/doi/` are not extracted;
   - citation templates the profile does not list give unstructured units and `unresolved` roles;
@@ -158,14 +195,14 @@ CI run.
   - `%20` and `;jsessionid` route forms keep the route.
 - Only Linux was exercised. Browser visibility is `not_evaluated`. Results describe the sampled revisions, not the
   population.
-- Fifteen public commits of 2026-10-30/31 carry a personal author name. Public history is not rewritten; this is an
-  unresolved privacy concern for the owner.
+- Fifteen public commits of 2026-10-30/31 and the two Codex commits of 2026-11-04 (`7646fe7`, `de66152`) carry a
+  personal author name and e-mail address. Public history is not rewritten. None of these commits is in the clean
+  delivery branch's history; they stay on the public PR #5 and continuation branches.
 
 ## Open blockers
 
-- None are recorded in the registry.
-- Arabic G6b is unmet because of R-038. It is not a registry blocker, but it prevents a verification transition
-  until the owner decides (`evaluation/confirmation-d035/DECISION_RECORD.md`).
+- None. B-03-001 (D-037 evaluator runtime) was resolved with `citerift-gov` on 2026-11-09 (`7bab386`) after a Claude
+  Sonnet evaluator ran with a retained transcript; D-037 was not exercised.
 
 ## Dependency versions
 
@@ -175,24 +212,22 @@ CI run.
   - lxml 6.1.3;
   - jsonschema 4.26.0;
   - referencing 0.37.0.
-- Lock: `uv.lock`, unchanged since `8c6fe9f`, checked with `uv lock --check`.
+- Lock: `uv.lock`, unchanged since `8c6fe9f`, checked with `uv lock --check` (TEST_RESULTS.md section 9).
 - Accepted Stage 02 normalizers, unchanged.
 
 ## Verified Git commit
 
-- **Frozen evaluation candidate:** `fff0e5b` (D-035). `src/`, `schemas/`, `pyproject.toml` and `uv.lock` are
-  unchanged from it to the final head. The D-034 candidate was `3e51792`.
-- **Matrix revision:** `6c499a7`, named in TEST_RESULTS.md section 8. Later commits add documents only.
-
-Neither is a registry "verified revision". The stage is not verified, because Arabic G6b is unmet (R-038).
+- **Frozen evaluation candidate:** `8901a59` (D-036; `src` tree `cda4a4b6`, `schemas` tree `360501fc`). `src/`,
+  `schemas/`, `pyproject.toml` and `uv.lock` are unchanged from it to the final head of this branch and in the
+  delivery branch.
+- **Scientific record:** this branch, from `80000f2` (PR #5's head) through the campaign commits `bf7866a` to
+  `1cd45a1` and the documents. The evidence audit re-checks commit order on this history.
+- **Verified revision:** recorded on the clean delivery branch, whose first commit has `main` as its only parent and
+  whose tree equals this branch's final tree except the registry; see TEST_RESULTS.md section 9 there.
 
 ## Acceptance decision
 
-**Pending the owner.** The D-034 recommendation (outcome A) was rejected by the owner in D-035 and is withdrawn.
-For the D-035 result, `evaluation/confirmation-d035/DECISION_RECORD.md` section 4 sets out the minimum legitimate
-path: an owner-authorized narrow correction of R-038 (abstain instead of guessing), then one more bounded prospective
-bilingual confirmation under the unchanged gates. The alternative is to keep the stage unverified.
-
+**Pending the owner.** Every gate passes; the executor recommends acceptance through the clean delivery branch.
 The executor records no acceptance and merges nothing.
 
 ## Requirements for the next stage
@@ -203,7 +238,8 @@ When it starts, it must:
 
 - read `unstructured_text` only as the D-035 classes define it, and never as proof of a citation where a class is
   unresolved;
-- not rely on which source use a rendered marker of a repeated name inside a template's output belongs to (R-038);
+- treat an abstained render link (a repeated name inside a template's output without deciding evidence) as unknown,
+  not as absent (R-038);
 - treat keys with `IDENTIFIER_BOUNDARY_AMBIGUOUS` or role `unresolved` as unconfirmed;
 - never treat a missing identifier or a `not_inspected` marker as "not retracted";
 - treat Arabic warning detection as untested on real articles;

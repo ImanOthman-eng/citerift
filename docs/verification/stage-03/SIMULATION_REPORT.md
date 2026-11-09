@@ -195,3 +195,11 @@ articles hold an unreadable or restyled value. On the retained real corpus the c
 one group: a use's own marker shows another use's text, and the use's own text appears at another marker
 (MATHEMATICAL_MODEL.md, "Safety"). The single D-036 prospective confirmation measures this on unseen articles.
 
+
+## Simulation addendum, 2026-11-09 (D-036 confirmation scored)
+
+The prospective measurement the D-036 addendum left open: on 44 unexposed articles at `8901a59`, 0 false render
+attachments and 0 abstentions in both languages; the corrected pairing path linked 8 uses in 3 articles, all correctly
+(`evaluation/confirmation-d036/campaign/REPORT.md` section 5). The simulations' coverage cost (abstentions in groups with an unreadable or restyled value) did not
+appear in this sample. The simulations themselves are unchanged; their byte-identical rerun at the final revision is
+in TEST_RESULTS.md section 9.

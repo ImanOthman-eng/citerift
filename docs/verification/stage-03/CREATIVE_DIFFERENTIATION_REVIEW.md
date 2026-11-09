@@ -267,3 +267,13 @@ English unexposed articles, one prediction run after the labels were locked.
 - **What it does not establish:** Arabic G6b fails. Two of 184 Arabic render links are a same-reference swap inside
   an infobox (RISKS.md R-038), against 59 wrong links for B1. The ledger's claim "no wrong rendered attachment" does
   not hold on this sample; it holds in English (0 of 203).
+
+### 7.5 D-036 confirmation result (candidate `8901a59`, engine 1.2.0, adjudicated labels, 2026-11-09)
+
+- **Render attachment:** 0 wrong render links in 187 Arabic and 282 English engine links, against 35 and 17 wrong for
+  B1 (`evaluation/confirmation-d036/campaign/REPORT.md` section 8). The ledger's claim "no wrong rendered attachment" holds on this sample in both languages; it
+  failed in Arabic on the D-035 sample (2 of 184) and was corrected under D-036 (RISKS.md R-038).
+- **Units and recall:** English unit precision 0.977 against B1 0.960; identifier recall 0.929 / 0.984 against B1
+  0.839 / 0.828; use recall 1.000 in both languages against 0.968 / 0.848.
+- **What it does not establish:** one sample of 44 articles; the corrected same-name path was exercised on 8 uses
+  only; G7 is vacuous (no labelled warning); the labels are AI labels from one vendor.

@@ -191,3 +191,55 @@ Captured bundles under `evaluation/confirmation-2026-11/campaign/capture/bundles
 | D-035 | en | Polytheism | https://en.wikipedia.org/w/index.php?oldid=1380794712 | https://en.wikipedia.org/w/index.php?curid=19195836&action=history |
 | D-035 | en | Regency of Algiers | https://en.wikipedia.org/w/index.php?oldid=1382220660 | https://en.wikipedia.org/w/index.php?curid=2843102&action=history |
 | D-035 | en | Northern Cyprus | https://en.wikipedia.org/w/index.php?oldid=1382843355 | https://en.wikipedia.org/w/index.php?curid=271409&action=history |
+
+## Confirmation campaign of D-036 (2026-11-04 to 2026-11-09)
+
+Captured bundles under `evaluation/confirmation-d036/campaign/capture/bundles/` (no file withheld). Wikipedia content,
+CC BY-SA 4.0.
+
+| Campaign | Wiki | Article | Pinned revision | Contributor history |
+|---|---|---|---|---|
+| D-036 | ar | علامة ليتن | https://ar.wikipedia.org/w/index.php?oldid=60741333 | https://ar.wikipedia.org/w/index.php?curid=8423307&action=history |
+| D-036 | ar | غرسة الدماغ | https://ar.wikipedia.org/w/index.php?oldid=65644602 | https://ar.wikipedia.org/w/index.php?curid=6710217&action=history |
+| D-036 | ar | سارة حجي | https://ar.wikipedia.org/w/index.php?oldid=67036660 | https://ar.wikipedia.org/w/index.php?curid=9532828&action=history |
+| D-036 | ar | NGC 4109 | https://ar.wikipedia.org/w/index.php?oldid=68752197 | https://ar.wikipedia.org/w/index.php?curid=6497149&action=history |
+| D-036 | ar | NGC 6073 | https://ar.wikipedia.org/w/index.php?oldid=68753959 | https://ar.wikipedia.org/w/index.php?curid=6582092&action=history |
+| D-036 | ar | تاديو ألدروتي | https://ar.wikipedia.org/w/index.php?oldid=72407944 | https://ar.wikipedia.org/w/index.php?curid=7987991&action=history |
+| D-036 | ar | تاريخ رومانيا | https://ar.wikipedia.org/w/index.php?oldid=73363749 | https://ar.wikipedia.org/w/index.php?curid=1076320&action=history |
+| D-036 | ar | دانة أحمد الجدع | https://ar.wikipedia.org/w/index.php?oldid=73416851 | https://ar.wikipedia.org/w/index.php?curid=8334273&action=history |
+| D-036 | ar | علجوم أخضر إفريقي | https://ar.wikipedia.org/w/index.php?oldid=73440513 | https://ar.wikipedia.org/w/index.php?curid=9603943&action=history |
+| D-036 | ar | ليمانغ | https://ar.wikipedia.org/w/index.php?oldid=73694006 | https://ar.wikipedia.org/w/index.php?curid=10323174&action=history |
+| D-036 | ar | إصلاح هيل | https://ar.wikipedia.org/w/index.php?oldid=74914118 | https://ar.wikipedia.org/w/index.php?curid=6238972&action=history |
+| D-036 | ar | فاشية رجال الدين | https://ar.wikipedia.org/w/index.php?oldid=75843579 | https://ar.wikipedia.org/w/index.php?curid=8187617&action=history |
+| D-036 | ar | كاشف تيبي | https://ar.wikipedia.org/w/index.php?oldid=75963419 | https://ar.wikipedia.org/w/index.php?curid=8633965&action=history |
+| D-036 | ar | السمان أسود الصدر ذو النقرة في الذقن | https://ar.wikipedia.org/w/index.php?oldid=76365714 | https://ar.wikipedia.org/w/index.php?curid=9257228&action=history |
+| D-036 | ar | رقائق بطاطس | https://ar.wikipedia.org/w/index.php?oldid=76509376 | https://ar.wikipedia.org/w/index.php?curid=542798&action=history |
+| D-036 | ar | مشروع الجينوم (أحياء) | https://ar.wikipedia.org/w/index.php?oldid=76532222 | https://ar.wikipedia.org/w/index.php?curid=3193884&action=history |
+| D-036 | ar | (26221) 1997 WG41 | https://ar.wikipedia.org/w/index.php?oldid=76575521 | https://ar.wikipedia.org/w/index.php?curid=6443288&action=history |
+| D-036 | ar | (31758) 1999 JQ99 | https://ar.wikipedia.org/w/index.php?oldid=76589877 | https://ar.wikipedia.org/w/index.php?curid=6435787&action=history |
+| D-036 | ar | (6702) 1988 BP3 | https://ar.wikipedia.org/w/index.php?oldid=76748683 | https://ar.wikipedia.org/w/index.php?curid=6399710&action=history |
+| D-036 | ar | مسلة مونتيسيتوريو | https://ar.wikipedia.org/w/index.php?oldid=76964105 | https://ar.wikipedia.org/w/index.php?curid=10531419&action=history |
+| D-036 | ar | تجربة المحيط الهندي | https://ar.wikipedia.org/w/index.php?oldid=77000476 | https://ar.wikipedia.org/w/index.php?curid=10422354&action=history |
+| D-036 | ar | مضاد حيوي | https://ar.wikipedia.org/w/index.php?oldid=77050950 | https://ar.wikipedia.org/w/index.php?curid=66923&action=history |
+| D-036 | ar | صندوق النقد العربي | https://ar.wikipedia.org/w/index.php?oldid=77101911 | https://ar.wikipedia.org/w/index.php?curid=532312&action=history |
+| D-036 | ar | مطاردة الساحرات | https://ar.wikipedia.org/w/index.php?oldid=77132099 | https://ar.wikipedia.org/w/index.php?curid=262149&action=history |
+| D-036 | en | Aridibacter famidurans | https://en.wikipedia.org/w/index.php?oldid=1259385037 | https://en.wikipedia.org/w/index.php?curid=59188554&action=history |
+| D-036 | en | LFER solvent coefficients (data page) | https://en.wikipedia.org/w/index.php?oldid=1314035120 | https://en.wikipedia.org/w/index.php?curid=36486371&action=history |
+| D-036 | en | Line-cylinder intersection | https://en.wikipedia.org/w/index.php?oldid=1326396809 | https://en.wikipedia.org/w/index.php?curid=75508474&action=history |
+| D-036 | en | Dopaminergic cell groups | https://en.wikipedia.org/w/index.php?oldid=1331125905 | https://en.wikipedia.org/w/index.php?curid=32500875&action=history |
+| D-036 | en | Tephraciura sphenoptera | https://en.wikipedia.org/w/index.php?oldid=1343268522 | https://en.wikipedia.org/w/index.php?curid=66989313&action=history |
+| D-036 | en | Lithocarpus kunstleri | https://en.wikipedia.org/w/index.php?oldid=1348311623 | https://en.wikipedia.org/w/index.php?curid=12893421&action=history |
+| D-036 | en | Heterodactylus lundii | https://en.wikipedia.org/w/index.php?oldid=1355140902 | https://en.wikipedia.org/w/index.php?curid=61377481&action=history |
+| D-036 | en | 220 BC | https://en.wikipedia.org/w/index.php?oldid=1360598324 | https://en.wikipedia.org/w/index.php?curid=60714&action=history |
+| D-036 | en | Dimethyltryptamine-N-oxide | https://en.wikipedia.org/w/index.php?oldid=1362991706 | https://en.wikipedia.org/w/index.php?curid=39614812&action=history |
+| D-036 | en | Homicide in English law | https://en.wikipedia.org/w/index.php?oldid=1363090931 | https://en.wikipedia.org/w/index.php?curid=34255361&action=history |
+| D-036 | en | Gender and development | https://en.wikipedia.org/w/index.php?oldid=1370070834 | https://en.wikipedia.org/w/index.php?curid=32105383&action=history |
+| D-036 | en | Gregg S. Fisher | https://en.wikipedia.org/w/index.php?oldid=1372334491 | https://en.wikipedia.org/w/index.php?curid=26473411&action=history |
+| D-036 | en | Xerotricha gasulli | https://en.wikipedia.org/w/index.php?oldid=1374321138 | https://en.wikipedia.org/w/index.php?curid=12655760&action=history |
+| D-036 | en | Dick Sandberg | https://en.wikipedia.org/w/index.php?oldid=1376175856 | https://en.wikipedia.org/w/index.php?curid=76434050&action=history |
+| D-036 | en | Mycobacterium pinnipedii | https://en.wikipedia.org/w/index.php?oldid=1377158630 | https://en.wikipedia.org/w/index.php?curid=11579232&action=history |
+| D-036 | en | Caliciviridae | https://en.wikipedia.org/w/index.php?oldid=1377341430 | https://en.wikipedia.org/w/index.php?curid=1582736&action=history |
+| D-036 | en | Gennadiy Borisov | https://en.wikipedia.org/w/index.php?oldid=1377880902 | https://en.wikipedia.org/w/index.php?curid=61795657&action=history |
+| D-036 | en | Foreplay | https://en.wikipedia.org/w/index.php?oldid=1378031328 | https://en.wikipedia.org/w/index.php?curid=102306&action=history |
+| D-036 | en | Antilopinae | https://en.wikipedia.org/w/index.php?oldid=1378886592 | https://en.wikipedia.org/w/index.php?curid=1702814&action=history |
+| D-036 | en | Contact inhibition | https://en.wikipedia.org/w/index.php?oldid=1380512849 | https://en.wikipedia.org/w/index.php?curid=6020806&action=history |

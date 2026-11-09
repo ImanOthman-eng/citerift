@@ -349,3 +349,11 @@ roles, by the counting conditions with propagation, or by a support that is one 
 `σ` costs about one lookup per use plus the size of the support relation, and propagation is linear in that size
 (review B-2); `n ≤ 2000`.
 
+
+## D-036 confirmation estimates (2026-11-09)
+
+Computed by the unchanged scorer and `intervals.py` (`evaluation/confirmation-d036/campaign/REPORT.md` sections 4 and 7). G6b on the D-036 sample: Arabic
+`0 − max(1, ⌊0.01 · 187⌋) = −1`, English `0 − max(1, ⌊0.01 · 282⌋) = −2`, both ≤ 0. The zero-tolerance gates G2 and
+G3a, met with 0 events in 52 (ar) and 63 (en) matched target identifiers, have exact one-sided 95 % upper bounds of
+5.6 % and 4.6 %. English unit precision 129 / 132 = 0.977 has a 95 % article-cluster bootstrap interval of
+[0.929, 1.000].
