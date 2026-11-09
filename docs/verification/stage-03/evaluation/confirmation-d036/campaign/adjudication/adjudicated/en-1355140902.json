@@ -1,0 +1,285 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1355140902,
+  "source_sha256": "9526a48f242c9dbd97ac89d99caa0ae77390d05dfa2f5a172ac47c8ff6d961cc",
+  "html_sha256": "718e9154b14aca0e044547084fb0b1fe595030a441586661c99f239f936cc614",
+  "window": [
+   0,
+   3345
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h2",
+  "started_at": "2026-11-04T10:13:59Z",
+  "finished_at": "2026-11-04T10:25:59Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1355140902/packet.json",
+    "sha256": "a4531ea7d09b97f43642b730547023f24cd8089fac04b4e6328fa42c88ff7964"
+   },
+   {
+    "path": "packets/en-1355140902/source.wikitext",
+    "sha256": "9526a48f242c9dbd97ac89d99caa0ae77390d05dfa2f5a172ac47c8ff6d961cc"
+   },
+   {
+    "path": "packets/en-1355140902/render.html",
+    "sha256": "718e9154b14aca0e044547084fb0b1fe595030a441586661c99f239f936cc614"
+   }
+  ],
+  "tools": "Python 3 standard library (re, json, str.find) and lxml, run from tools/ scripts to search wikitext and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*>; every location verified with text[cp:cp+len(quote)]==quote. Labels decided by reading the text.",
+  "unresolved": "Whether {{NRDB species}} counts as a citation template (included, see d2 notes). The Boulenger list item (*[[George Albert Boulenger...) has no citation template, DOI or PMID so it is not labelled a bibliography entry under 3.4. Sup order checked against names: all 11 sups align one-to-one with the 11 <ref> tags in source order."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-iucn-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined inside speciesbox |status_ref=. Hand-written IUCN citation (plain text, no citation template); contains a dx.doi.org URL as plain text."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 799,
+    "quote": "<ref name=RDB>{{NRDB species |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "RDB",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 813,
+      "quote": "{{NRDB species |genus=Heteroda"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-RDB-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body is {{NRDB species}}, a reptile-database citation wrapper; counted as a citation template (purpose is to format a citation), judgement call."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1101,
+    "quote": "<ref>[[Bo Beolens|Beolens, Bo]"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written book citation with {{ISBN}} (not a citation template)."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2568,
+    "quote": "*{{cite journal |last1=Reinhar"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 2569,
+      "quote": "{{cite journal |last1=Reinhard"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further reading entry: list item containing {{cite journal}}; trailing text after the template is plain text."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 799,
+    "quote": "<ref name=RDB>{{NRDB species |"
+   },
+   "binds_to": {
+    "cp": 799,
+    "quote": "<ref name=RDB>{{NRDB species |"
+   },
+   "render_ref_id": "cite_ref-RDB_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1101,
+    "quote": "<ref>[[Bo Beolens|Beolens, Bo]"
+   },
+   "binds_to": {
+    "cp": 1101,
+    "quote": "<ref>[[Bo Beolens|Beolens, Bo]"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1612,
+    "quote": "<ref name=iucn/>\n\n==Geographic"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-1",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1729,
+    "quote": "<ref name=iucn/><ref name=RDB/"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-2",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 1745,
+    "quote": "<ref name=RDB/>\n\n==Habitat==\nT"
+   },
+   "binds_to": {
+    "cp": 799,
+    "quote": "<ref name=RDB>{{NRDB species |"
+   },
+   "render_ref_id": "cite_ref-RDB_2-1",
+   "notes": "Self-closing reuse of named ref RDB; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 1894,
+    "quote": "<ref name=iucn/>\n\n==Behavior=="
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-3",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 2011,
+    "quote": "<ref name=iucn/>\n\n==Reproducti"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-4",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 2099,
+    "quote": "<ref name=iucn/><ref name=RDB/"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-5",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 2115,
+    "quote": "<ref name=RDB/> [[Clutch (eggs"
+   },
+   "binds_to": {
+    "cp": 799,
+    "quote": "<ref name=RDB>{{NRDB species |"
+   },
+   "render_ref_id": "cite_ref-RDB_2-2",
+   "notes": "Self-closing reuse of named ref RDB; render id aligned by source order and sup data-mw name."
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 2178,
+    "quote": "<ref name=iucn/>\n\n==References"
+   },
+   "binds_to": {
+    "cp": 119,
+    "quote": "<ref name=iucn>[[species:Adria"
+   },
+   "render_ref_id": "cite_ref-iucn_1-6",
+   "notes": "Self-closing reuse of named ref iucn; render id aligned by source order and sup data-mw name."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 288,
+    "quote": "https://dx.doi.org/10.2305/IUCN.UK.2021-3.RLTS.T134884763A134884765.pt"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.2305/iucn.uk.2021-3.rlts.t134884763a134884765.pt",
+   "notes": "Whole URL quoted; trailing sentence period not part of it. Bare URL in hand-written ref text, no citation template."
+  }
+ ],
+ "unresolved_notes": [],
+ "adjudication": {
+  "adjudicator": "d036-adj-en-g1",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/adj-d036/en-g1/out/decisions/en-1355140902.json",
+  "changed_items": []
+ }
+}

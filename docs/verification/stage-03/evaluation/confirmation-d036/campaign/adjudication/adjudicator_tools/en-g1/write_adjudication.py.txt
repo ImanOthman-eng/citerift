@@ -1,0 +1,127 @@
+import json, os, copy, datetime
+
+BASE = "/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/adj-d036/en-g1"
+ADJ = "d036-adj-en-g1"
+STARTED = "2026-11-09T13:07:00Z"
+FINISHED = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+def locations(obj, path=()):
+    if isinstance(obj, dict):
+        if set(obj.keys()) >= {"cp", "quote"} and isinstance(obj.get("cp"), int):
+            yield path, obj
+        for k, v in obj.items():
+            yield from locations(v, path + (k,))
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            yield from locations(v, path + (i,))
+
+ARTICLES = {
+    "en-1355140902": {
+        "decisions": [
+            {"item": 0, "kind": "template_unit_missed", "decision": "confirm",
+             "reason": ("{{NRDB species |genus=Heterodactylus |species=lundii |accessdate=27 July 2019}} is the whole body "
+                        "of ref RDB. Its purpose is to format a citation to a Reptile Database entry; the rendered footnote "
+                        "reads 'Heterodactylus lundii at the Reptarium.cz Reptile Database. Accessed 27 July 2019.' That is a "
+                        "citation template under 3.1 ('whose purpose is to format a citation ... and similar'). The locked "
+                        "d2 template list is right and the engine missed it. Ambiguity: the guide does not name this template; "
+                        "the purpose-based wording decides it."),
+             "corrected_label": None},
+        ],
+        "changes": [],
+    },
+    "en-1377158630": {
+        "decisions": [
+            {"item": 0, "kind": "identifier_missed", "decision": "correct",
+             "reason": ("The DOI 10.1099/ijs.0.02401-0 does occur at cp 2945 (inside the url= of the d1/d4 "
+                        "citation, a publisher URL). But the URL is not one of the forms that 3.5 quotes whole: the "
+                        "publisher-URL form is only one 'whose path contains /doi/10.', and this path is "
+                        "/content/journal/ijsem/10.1099/... with no /doi/ segment. So the row 'anything else' applies and the raw "
+                        "text is the identifier text itself, at cp 3004. Role identifier_link and key are unchanged. "
+                        "Ambiguity: a reader could take 'URL' to cover every publisher URL; the wording with /doi/ "
+                        "points the other way."),
+             "corrected_label": {"at": {"cp": 3004, "quote": "10.1099/ijs.0.02401-0"}}},
+        ],
+        "changes": [
+            {"item": 0, "kind": "identifier_missed", "list": "identifiers", "index": 3,
+             "field": "at", "from": {"cp": 2945, "quote": "https://www.microbiologyresearch.org/content/journal/ijsem/1"},
+             "to": {"cp": 3004, "quote": "10.1099/ijs.0.02401-0"}},
+        ],
+    },
+    "en-1377880902": {
+        "decisions": [
+            {"item": 0, "kind": "unstructured_unit_extra", "decision": "confirm",
+             "reason": ("Note d2 ('Not to be confused with the Crimean Astrophysical Observatory...') is an explanatory "
+                        "note with an internal link and no source. It cites nothing, so unstructured stays false under the "
+                        "definition 'cites something in plain text with no citation template'."),
+             "corrected_label": None},
+            {"item": 1, "kind": "unstructured_unit_extra", "decision": "correct",
+             "reason": ("Note d3 says 'Of the 800,000 objects known to orbit the Sun, [MPC summary 737,000] (92%)'. The link "
+                        "is the source of the figures, so the note cites a web source in plain text with no citation template, "
+                        "which is the unstructured definition. Set unstructured to true. Ambiguity: the link is labelled, not a "
+                        "bare URL; I read 'bare URL, hand-written reference' as examples of plain-text citation, and this is a "
+                        "source link attached to a claim."),
+             "corrected_label": {"unstructured": True}},
+            {"item": 2, "kind": "unstructured_unit_extra", "decision": "confirm",
+             "reason": ("Note d4 links the term 'NEO Rating' to the page that computes it. The link explains the term; it is "
+                        "not a source for a claim in the note. Under the guide this is not a citation, so unstructured stays "
+                        "false. Borderline: an external link in a note could be read as a plain-text citation; the locked "
+                        "label is the closer reading."),
+             "corrected_label": None},
+            {"item": 3, "kind": "unstructured_unit_extra", "decision": "confirm",
+             "reason": ("Note d5 links 'The NEO Confirmation Page' as a pointer to the page for confirming objects. It supports "
+                        "no claim of the note and is a pointer, not a citation. unstructured stays false. Same borderline "
+                        "reading as item 2."),
+             "corrected_label": None},
+        ],
+        "changes": [
+            {"item": 1, "kind": "unstructured_unit_extra", "definition": "d3", "field": "unstructured",
+             "from": False, "to": True},
+        ],
+    },
+}
+
+def check_quotes(text, obj, label):
+    bad = []
+    for p, loc in locations(obj):
+        if text[loc["cp"]:loc["cp"] + len(loc["quote"])] != loc["quote"]:
+            bad.append((p, loc))
+    if bad:
+        raise SystemExit(f"{label}: quote mismatch {bad}")
+
+for art, spec in ARTICLES.items():
+    items_dir = os.path.join(BASE, "items", art)
+    out = os.path.join(BASE, "out")
+    os.makedirs(os.path.join(out, "decisions"), exist_ok=True)
+    os.makedirs(os.path.join(out, "adjudicated"), exist_ok=True)
+    text = open(os.path.join(items_dir, "source.wikitext"), encoding="utf-8").read()
+    locked = json.load(open(os.path.join(items_dir, "locked.json"), encoding="utf-8"))
+    disputed = json.load(open(os.path.join(items_dir, "disputed_items.json"), encoding="utf-8"))
+    assert [d["item"] for d in disputed] == [d["item"] for d in spec["decisions"]]
+    assert [d["kind"] for d in disputed] == [d["kind"] for d in spec["decisions"]]
+
+    dec_path = os.path.join(out, "decisions", art + ".json")
+    decisions_doc = {
+        "article": art, "adjudicator": ADJ, "started_at": STARTED, "finished_at": FINISHED,
+        "decisions": [{k: d[k] for k in ("item", "kind", "decision", "reason", "corrected_label")} | {}
+                      for d in spec["decisions"]],
+    }
+    for d in decisions_doc["decisions"]:
+        d.setdefault("corrected_label", None)
+    json.dump(decisions_doc, open(dec_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+
+    adj = copy.deepcopy(locked)
+    for ch in spec["changes"]:
+        if "list" in ch:
+            adj[ch["list"]][ch["index"]][ch["field"]] = copy.deepcopy(ch["to"])
+            assert adj[ch["list"]][ch["index"]][ch["field"]] == ch["to"]
+        else:
+            target = [x for x in adj["definitions"] if x["id"] == ch["definition"]]
+            assert len(target) == 1
+            assert target[0][ch["field"]] == ch["from"], target[0][ch["field"]]
+            target[0][ch["field"]] = ch["to"]
+    adj["adjudication"] = {"adjudicator": ADJ, "decisions_file": dec_path, "changed_items": spec["changes"]}
+    check_quotes(text, {k: v for k, v in adj.items() if k != "adjudication"}, art)
+    json.dump(adj, open(os.path.join(out, "adjudicated", art + ".json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    print(art, "confirmed", sum(d["decision"] == "confirm" for d in spec["decisions"]),
+          "corrected", sum(d["decision"] == "correct" for d in spec["decisions"]), "quotes ok")

@@ -1,0 +1,39 @@
+{
+ "article": "en-1377880902",
+ "adjudicator": "d036-adj-en-g1",
+ "started_at": "2026-11-09T13:07:00Z",
+ "finished_at": "2026-11-09T13:10:45Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "unstructured_unit_extra",
+   "decision": "confirm",
+   "reason": "Note d2 ('Not to be confused with the Crimean Astrophysical Observatory...') is an explanatory note with an internal link and no source. It cites nothing, so unstructured stays false under the definition 'cites something in plain text with no citation template'.",
+   "corrected_label": null
+  },
+  {
+   "item": 1,
+   "kind": "unstructured_unit_extra",
+   "decision": "correct",
+   "reason": "Note d3 says 'Of the 800,000 objects known to orbit the Sun, [MPC summary 737,000] (92%)'. The link is the source of the figures, so the note cites a web source in plain text with no citation template, which is the unstructured definition. Set unstructured to true. Ambiguity: the link is labelled, not a bare URL; I read 'bare URL, hand-written reference' as examples of plain-text citation, and this is a source link attached to a claim.",
+   "corrected_label": {
+    "definition": "d3",
+    "unstructured": true
+   }
+  },
+  {
+   "item": 2,
+   "kind": "unstructured_unit_extra",
+   "decision": "confirm",
+   "reason": "Note d4 links the term 'NEO Rating' to the page that computes it. The link explains the term; it is not a source for a claim in the note. Under the guide this is not a citation, so unstructured stays false. Borderline: an external link in a note could be read as a plain-text citation; the locked label is the closer reading.",
+   "corrected_label": null
+  },
+  {
+   "item": 3,
+   "kind": "unstructured_unit_extra",
+   "decision": "confirm",
+   "reason": "Note d5 links 'The NEO Confirmation Page' as a pointer to the page for confirming objects. It supports no claim of the note and is a pointer, not a citation. unstructured stays false. Same borderline reading as item 2.",
+   "corrected_label": null
+  }
+ ]
+}

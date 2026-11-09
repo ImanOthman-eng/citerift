@@ -1,0 +1,802 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "ar",
+    "revision_id": 77050950,
+    "source_sha256": "8319e9928660a6ebdfb5d014f46c3e2eac99523171ee831d371da48becf3847b",
+    "html_sha256": "97ab38fcc360c04ec6802c57e15e8d95c36c5d12dccf7979764dd71a53f73d6a",
+    "window": [
+      41443,
+      49443
+    ]
+  },
+  "provenance": {
+    "agent": "d036-eval-ar-h1",
+    "started_at": "2026-11-04T10:50:00Z",
+    "finished_at": "2026-11-04T13:50:25Z",
+    "files_opened": [
+      {
+        "path": "ANNOTATION_GUIDE_v1.1.md",
+        "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+      },
+      {
+        "path": "packets/ar-77050950/source.wikitext",
+        "sha256": "8319e9928660a6ebdfb5d014f46c3e2eac99523171ee831d371da48becf3847b"
+      },
+      {
+        "path": "packets/ar-77050950/render.html",
+        "sha256": "97ab38fcc360c04ec6802c57e15e8d95c36c5d12dccf7979764dd71a53f73d6a"
+      },
+      {
+        "path": "packets/ar-77050950/packet.json",
+        "sha256": "98468d1afad4f3e9e5f273383cb14842c101a6ff414344a66ba43e4a8eb5989d"
+      }
+    ],
+    "tools": "python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification",
+    "unresolved": "Nothing undecided."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 39186,
+        "quote": "<ref name=\"voanews.com\">{{استشهاد بخبر |"
+      },
+      "in_window": false,
+      "kind": "note",
+      "name": "voanews.com",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 39210,
+            "quote": "{{استشهاد بخبر | الأول=Carol | الأخير=Pearson | عنوان=Antibi"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-voanews.com-64",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "starts before window; target of use at 47240"
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 40562,
+        "quote": "<ref name=\"Witte2004\">{{استشهاد بدورية م"
+      },
+      "in_window": false,
+      "kind": "note",
+      "name": "Witte2004",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 40584,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Witte W |عنوان=International dis"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Witte2004-67",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "starts before window; target of uses at 43135, 43351"
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 41603,
+        "quote": "<ref name=\"Alekshun2007\">{{استشهاد بدوري"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Alekshun2007",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 41628,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Alekshun MN, Levy SB |عنوان=Mole"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Alekshun2007-69",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 42255,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Marshal"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 42260,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Marshall CG, Lessard IA, Park I,"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-70",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 42728,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Nikaido"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 42733,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Nikaido H |عنوان=Multidrug Resis"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-71",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 43374,
+        "quote": "<ref name=\"Baker2006\">{{استشهاد بدورية م"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Baker2006",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 43396,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Baker-Austin C, Wright MS, Stepa"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Baker2006-72",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 44526,
+        "quote": "<ref name=Marino>{{استشهاد بكتاب |مؤلف=M"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Marino",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 44543,
+            "quote": "{{استشهاد بكتاب |مؤلف=Marino PL |الفصل=Antimicrobial therapy"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Marino-73",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "unquoted name attribute; only one occurrence. ISBN is in ردمك field, not a DOI/PMID."
+    },
+    {
+      "id": "d8",
+      "at": {
+        "cp": 45033,
+        "quote": "<ref name=\"Larson2007\">{{استشهاد بدورية "
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Larson2007",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 45056,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Larson E |عنوان=Community factor"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Larson2007-74",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d9",
+      "at": {
+        "cp": 45832,
+        "quote": "<ref name=\"pharmguide\">[https://www.cdc."
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "pharmguide",
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-pharmguide-75",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template"
+    },
+    {
+      "id": "d10",
+      "at": {
+        "cp": 46173,
+        "quote": "<ref>[https://www.keepantibioticsworking"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-76",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template"
+    },
+    {
+      "id": "d11",
+      "at": {
+        "cp": 46540,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف= Sabunc"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 46545,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف= Sabuncu E, David J, Bernède-Bau"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-77",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d12",
+      "at": {
+        "cp": 47265,
+        "quote": "<ref name=\"Hawkey2008\">{{استشهاد بدورية "
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "Hawkey2008",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 47288,
+            "quote": "{{استشهاد بدورية محكمة|مؤلف=Hawkey PM |عنوان=The growing bur"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-Hawkey2008-78",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d13",
+      "at": {
+        "cp": 48744,
+        "quote": "<ref>ميلون، وذكر ''آخرون.'' (2001) ''وال"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-79",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template"
+    },
+    {
+      "id": "d14",
+      "at": {
+        "cp": 49086,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1997/WH"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-80",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template"
+    },
+    {
+      "id": "d15",
+      "at": {
+        "cp": 49317,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1998/WH"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-81",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "plain-text reference (bare URL or hand-written), {{Webarchive}} is not a citation template"
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 41603,
+        "quote": "<ref name=\"Alekshun2007\">{{استشهاد بدوري"
+      },
+      "binds_to": {
+        "cp": 41603,
+        "quote": "<ref name=\"Alekshun2007\">{{استشهاد بدوري"
+      },
+      "render_ref_id": "cite_ref-Alekshun2007_69-0",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 42255,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Marshal"
+      },
+      "binds_to": {
+        "cp": 42255,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Marshal"
+      },
+      "render_ref_id": "cite_ref-70",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 42728,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Nikaido"
+      },
+      "binds_to": {
+        "cp": 42728,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Nikaido"
+      },
+      "render_ref_id": "cite_ref-71",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 43374,
+        "quote": "<ref name=\"Baker2006\">{{استشهاد بدورية م"
+      },
+      "binds_to": {
+        "cp": 43374,
+        "quote": "<ref name=\"Baker2006\">{{استشهاد بدورية م"
+      },
+      "render_ref_id": "cite_ref-Baker2006_72-0",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 44526,
+        "quote": "<ref name=Marino>{{استشهاد بكتاب |مؤلف=M"
+      },
+      "binds_to": {
+        "cp": 44526,
+        "quote": "<ref name=Marino>{{استشهاد بكتاب |مؤلف=M"
+      },
+      "render_ref_id": "cite_ref-Marino_73-0",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 45033,
+        "quote": "<ref name=\"Larson2007\">{{استشهاد بدورية "
+      },
+      "binds_to": {
+        "cp": 45033,
+        "quote": "<ref name=\"Larson2007\">{{استشهاد بدورية "
+      },
+      "render_ref_id": "cite_ref-Larson2007_74-0",
+      "notes": ""
+    },
+    {
+      "id": "u7",
+      "at": {
+        "cp": 45832,
+        "quote": "<ref name=\"pharmguide\">[https://www.cdc."
+      },
+      "binds_to": {
+        "cp": 45832,
+        "quote": "<ref name=\"pharmguide\">[https://www.cdc."
+      },
+      "render_ref_id": "cite_ref-pharmguide_75-0",
+      "notes": ""
+    },
+    {
+      "id": "u8",
+      "at": {
+        "cp": 46173,
+        "quote": "<ref>[https://www.keepantibioticsworking"
+      },
+      "binds_to": {
+        "cp": 46173,
+        "quote": "<ref>[https://www.keepantibioticsworking"
+      },
+      "render_ref_id": "cite_ref-76",
+      "notes": ""
+    },
+    {
+      "id": "u9",
+      "at": {
+        "cp": 46540,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف= Sabunc"
+      },
+      "binds_to": {
+        "cp": 46540,
+        "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف= Sabunc"
+      },
+      "render_ref_id": "cite_ref-77",
+      "notes": ""
+    },
+    {
+      "id": "u10",
+      "at": {
+        "cp": 47265,
+        "quote": "<ref name=\"Hawkey2008\">{{استشهاد بدورية "
+      },
+      "binds_to": {
+        "cp": 47265,
+        "quote": "<ref name=\"Hawkey2008\">{{استشهاد بدورية "
+      },
+      "render_ref_id": "cite_ref-Hawkey2008_78-0",
+      "notes": ""
+    },
+    {
+      "id": "u11",
+      "at": {
+        "cp": 48744,
+        "quote": "<ref>ميلون، وذكر ''آخرون.'' (2001) ''وال"
+      },
+      "binds_to": {
+        "cp": 48744,
+        "quote": "<ref>ميلون، وذكر ''آخرون.'' (2001) ''وال"
+      },
+      "render_ref_id": "cite_ref-79",
+      "notes": ""
+    },
+    {
+      "id": "u12",
+      "at": {
+        "cp": 49086,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1997/WH"
+      },
+      "binds_to": {
+        "cp": 49086,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1997/WH"
+      },
+      "render_ref_id": "cite_ref-80",
+      "notes": ""
+    },
+    {
+      "id": "u13",
+      "at": {
+        "cp": 49317,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1998/WH"
+      },
+      "binds_to": {
+        "cp": 49317,
+        "quote": "<ref>http://whqlibdoc.who.int/hq/1998/WH"
+      },
+      "render_ref_id": "cite_ref-81",
+      "notes": ""
+    },
+    {
+      "id": "u14",
+      "at": {
+        "cp": 42106,
+        "quote": "<ref name=\"Alekshun2007\"/>"
+      },
+      "binds_to": {
+        "cp": 41603,
+        "quote": "<ref name=\"Alekshun2007\">{{استشهاد بدوري"
+      },
+      "render_ref_id": "cite_ref-Alekshun2007_69-1",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u15",
+      "at": {
+        "cp": 43135,
+        "quote": "<ref name=\"Witte2004\"/>"
+      },
+      "binds_to": {
+        "cp": 40562,
+        "quote": "<ref name=\"Witte2004\">{{استشهاد بدورية م"
+      },
+      "render_ref_id": "cite_ref-Witte2004_67-1",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u16",
+      "at": {
+        "cp": 43351,
+        "quote": "<ref name=\"Witte2004\"/>"
+      },
+      "binds_to": {
+        "cp": 40562,
+        "quote": "<ref name=\"Witte2004\">{{استشهاد بدورية م"
+      },
+      "render_ref_id": "cite_ref-Witte2004_67-2",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u17",
+      "at": {
+        "cp": 43863,
+        "quote": "<ref name=\"Baker2006\"/>"
+      },
+      "binds_to": {
+        "cp": 43374,
+        "quote": "<ref name=\"Baker2006\">{{استشهاد بدورية م"
+      },
+      "render_ref_id": "cite_ref-Baker2006_72-1",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u18",
+      "at": {
+        "cp": 44050,
+        "quote": "<ref name=\"Baker2006\"/>"
+      },
+      "binds_to": {
+        "cp": 43374,
+        "quote": "<ref name=\"Baker2006\">{{استشهاد بدورية م"
+      },
+      "render_ref_id": "cite_ref-Baker2006_72-2",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u19",
+      "at": {
+        "cp": 45393,
+        "quote": "<ref name=\"Larson2007\"/>"
+      },
+      "binds_to": {
+        "cp": 45033,
+        "quote": "<ref name=\"Larson2007\">{{استشهاد بدورية "
+      },
+      "render_ref_id": "cite_ref-Larson2007_74-1",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u20",
+      "at": {
+        "cp": 47240,
+        "quote": "<ref name=\"voanews.com\"/>"
+      },
+      "binds_to": {
+        "cp": 39186,
+        "quote": "<ref name=\"voanews.com\">{{استشهاد بخبر |"
+      },
+      "render_ref_id": "cite_ref-voanews.com_64-1",
+      "notes": "self-closing reuse"
+    },
+    {
+      "id": "u21",
+      "at": {
+        "cp": 47640,
+        "quote": "<ref name=\"Hawkey2008\"/>"
+      },
+      "binds_to": {
+        "cp": 47265,
+        "quote": "<ref name=\"Hawkey2008\">{{استشهاد بدورية "
+      },
+      "render_ref_id": "cite_ref-Hawkey2008_78-1",
+      "notes": "self-closing reuse"
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 41884,
+        "quote": "17382878"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "17382878",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 41898,
+        "quote": "10.1016/j.cell.2007.03.004"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1016/j.cell.2007.03.004",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 42901,
+        "quote": "19231985"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "19231985",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 42915,
+        "quote": "10.1146/annurev.biochem.78.082907.145923"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1146/annurev.biochem.78.082907.145923",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 43621,
+        "quote": "16537105"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "16537105",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 43635,
+        "quote": "10.1016/j.tim.2006.02.006"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1016/j.tim.2006.02.006",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 45235,
+        "quote": "17094768"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "17094768",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 45249,
+        "quote": "10.1146/annurev.publhealth.28.021406.144020"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1146/annurev.publhealth.28.021406.144020",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 47473,
+        "quote": "18684701"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "18684701",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 47487,
+        "quote": "10.1093/jac/dkn241"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1093/jac/dkn241",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 42516,
+        "quote": "9736537"
+      },
+      "scheme": "pmid",
+      "role": "primary_citation_field",
+      "key": "9736537",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 42690,
+        "quote": "9736537"
+      },
+      "scheme": "pmid",
+      "role": "not_a_target",
+      "key": "9736537",
+      "notes": "inside web.archive.org snapshot URL of another site (aac.asm.org pmidlookup); pmid= text within another site's URL"
+    },
+    {
+      "at": {
+        "cp": 46804,
+        "quote": "10.1371/journal.pmed.1000084"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1371/journal.pmed.1000084",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 46889,
+        "quote": "10.1371/journal.pmed.1000084"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1371/journal.pmed.1000084",
+      "notes": "DOI in query of PLOS publisher URL (مسار=); not a /doi/ path nor resolver, quoted as bare identifier text"
+    },
+    {
+      "at": {
+        "cp": 47020,
+        "quote": "10.1371/journal.pmed.1000084"
+      },
+      "scheme": "doi",
+      "role": "not_a_target",
+      "key": "10.1371/journal.pmed.1000084",
+      "notes": "inside web.archive.org snapshot URL (info:doi/) of another site"
+    }
+  ],
+  "unresolved_notes": [
+    "Window starts mid-article; refs voanews.com (39186) and Witte2004 (40562) start before the window and are in the output with in_window=false as binding targets.",
+    "Ref at 41165 starts before the window (41443) so is not in scope.",
+    "pmc= field (105782) is a PubMed Central id, not DOI/PMID; not labelled."
+  ],
+  "adjudication": {
+    "adjudicator": "d036-adj-ar-g1",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/adj-d036/ar-g1/out/decisions/ar-77050950.json",
+    "changed_items": []
+  }
+}
