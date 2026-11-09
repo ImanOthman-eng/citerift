@@ -21112,8 +21112,12 @@
           "requirement": "A real documented investigation succeeds end-to-end, alongside negative and failure-case tests"
         }
       ],
-      "status": "NOT_STARTED",
-      "authorization": null,
+      "status": "IN_PROGRESS",
+      "authorization": {
+        "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPFrh5szvKs3Wf6aVj3k31gR",
+        "scope": "Owner explicitly authorizes Stage 04 (Detection Engine and Vertical Slice) only, starting from main 741df40c408d9d68d9805f901ef0d82b523cdb2c after PR #6; Stages 00-03 are not modified or reopened; Stage 05 and every later stage are not authorized.",
+        "recorded_at": "2026-11-09T20:38:17Z"
+      },
       "implementation": null,
       "verification": null,
       "acceptance": null,
@@ -21795,6 +21799,28 @@
       "recorded_by": "engineering-agent",
       "reason": "Owner accepts Stage 03 (Wikipedia Extraction Engine) at the verified revision b93314d, delivered through PR #6 (head eb0b694), based on the completed D-036 validation and its documented scientific limitations (Arabic G2 decided by one adjudicated correction; English G5c interval reaching 0.929, R-036; G7 vacuous in the D-036 sample; 2026-11-04 evaluator transcripts unavailable; AI labels; limited field coverage of the R-038 path). The owner confirms the D-036 evidence archive and SHA-256 manifest are saved outside the Claude workspace. Stage 04 is not authorized.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPA53UZUXU5DvyUnnjuxy3EJ"
+    },
+    {
+      "seq": 49,
+      "at": "2026-11-09T20:38:17Z",
+      "stage": "04",
+      "from": "NOT_STARTED",
+      "to": "AUTHORIZED",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "Owner explicitly authorizes Stage 04 (Detection Engine and Vertical Slice) only, starting from main 741df40c408d9d68d9805f901ef0d82b523cdb2c after PR #6; Stages 00-03 are not modified or reopened; Stage 05 and every later stage are not authorized.",
+      "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPFrh5szvKs3Wf6aVj3k31gR"
+    },
+    {
+      "seq": 50,
+      "at": "2026-11-09T20:38:32Z",
+      "stage": "04",
+      "from": "AUTHORIZED",
+      "to": "IN_PROGRESS",
+      "actor": "engineering-agent",
+      "recorded_by": "engineering-agent",
+      "reason": "Stage 04 governance start state recorded under the owner's authorization (cmsg_018VCB51nDHP6HXmLU4ea5yPFrh5szvKs3Wf6aVj3k31gR), which permits commencement after authorization. Base: main 741df40c408d9d68d9805f901ef0d82b523cdb2c. No Stage 04 engineering performed in this step; engineering waits for the owner's next instruction.",
+      "owner_ref": null
     }
   ]
 }
