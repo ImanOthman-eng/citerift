@@ -222,11 +222,7 @@ def main() -> int:
 
     pats = sg.patterns()
     tracked = git("ls-files", "--", str(CAMP.relative_to(ROOT))).splitlines()
-    hits = [
-        p
-        for p in tracked
-        if any(pat.search(text) for text in sg.scanned((ROOT / p).read_bytes()) for pat in pats)
-    ]
+    hits = [p for p in tracked if any(pat.search(text) for text in sg.scanned((ROOT / p).read_bytes()) for pat in pats)]
     ledger = (CAMP / "WITHHELD_FILES.json").exists() or (CAMP / ".gitignore").exists()
     add(
         f"10 nothing withheld: no ledger or .gitignore; {len(tracked)} tracked campaign files match no gate pattern",
