@@ -1,0 +1,290 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1377158630,
+  "source_sha256": "caa9324e4092c5e8ddfb2f1b6166b569fed268d7f4993fd92c2438ca6c1c36b5",
+  "html_sha256": "975a07e1cab289cc4e99e5cc12ad8cbe543a4a815b3771e01dc35968199c20cf",
+  "window": [
+   0,
+   5228
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-r1-1b",
+  "started_at": "2026-11-09T13:01:02Z",
+  "finished_at": "2026-11-09T13:03:39Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1377158630/packet.json",
+    "sha256": "b209ea46b55add7f6a1d39fe9e6d1249117661464b2dbe015ab37cb1a2f93025"
+   },
+   {
+    "path": "packets/en-1377158630/source.wikitext",
+    "sha256": "caa9324e4092c5e8ddfb2f1b6166b569fed268d7f4993fd92c2438ca6c1c36b5"
+   },
+   {
+    "path": "packets/en-1377158630/render.html",
+    "sha256": "975a07e1cab289cc4e99e5cc12ad8cbe543a4a815b3771e01dc35968199c20cf"
+   }
+  ],
+  "tools": "python3 stdlib (re, json, hashlib) and lxml run via python3 -I; helper scripts in tools/ for regex listing of <ref/sfn/cite/doi/pmid positions, HTML sup/li listing, and a builder that verifies every quote at its code-point offset. Definition/use decisions and identifier roles chosen by reading the text.",
+  "unresolved": "Whether the microbiologyresearch.org URL (DOI in the path but no /doi/ segment) counts as an identifier occurrence under 3.5; included with best reading."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 515,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Dv |last2=Williams "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 520,
+      "quote": "{{Cite journal |last=Cousins |first=Dv |last2=Williams |firs"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1416,
+    "quote": "<ref>{{Cite journal |last=Ahmed |first=Niyaz |last2=Alam |fi"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1421,
+      "quote": "{{Cite journal |last=Ahmed |first=Niyaz |last2=Alam |first2="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2324,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Debby V. |last2=Bas"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2329,
+      "quote": "{{Cite journal |last=Cousins |first=Debby V. |last2=Bastida "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 3511,
+    "quote": "<ref name=Bos>{{cite journal |last1=Bos |first1=Kirsten I. |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Bos",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3525,
+      "quote": "{{cite journal |last1=Bos |first1=Kirsten I. |last2=Harkins "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Bos-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4792,
+    "quote": "*{{cite web |title=''Mycobacterium pinnipedii'' |work=NCBI T"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4793,
+      "quote": "{{cite web |title=''Mycobacterium pinnipedii'' |work=NCBI Ta"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "External links list item with a cite web template standing in a list outside any footnote (3.4). id=194542 is a taxonomy id, not a PMID."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 515,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Dv |last2=Williams "
+   },
+   "binds_to": {
+    "cp": 515,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Dv |last2=Williams "
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1416,
+    "quote": "<ref>{{Cite journal |last=Ahmed |first=Niyaz |last2=Alam |fi"
+   },
+   "binds_to": {
+    "cp": 1416,
+    "quote": "<ref>{{Cite journal |last=Ahmed |first=Niyaz |last2=Alam |fi"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2324,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Debby V. |last2=Bas"
+   },
+   "binds_to": {
+    "cp": 2324,
+    "quote": "<ref>{{Cite journal |last=Cousins |first=Debby V. |last2=Bas"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 3511,
+    "quote": "<ref name=Bos>{{cite journal |last1=Bos |first1=Kirsten I. |"
+   },
+   "binds_to": {
+    "cp": 3511,
+    "quote": "<ref name=Bos>{{cite journal |last1=Bos |first1=Kirsten I. |"
+   },
+   "render_ref_id": "cite_ref-Bos_4-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 833,
+    "quote": "https://onlinelibrary.wiley.com/doi/10.1111/j.1751-0813.1993"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1111/j.1751-0813.1993.tb03284.x",
+   "notes": "publisher URL in url= with /doi/ path; URL ends at the following space"
+  },
+  {
+   "at": {
+    "cp": 994,
+    "quote": "10.1111/j.1751-0813.1993.tb03284.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1751-0813.1993.tb03284.x",
+   "notes": "doi= field"
+  },
+  {
+   "at": {
+    "cp": 2055,
+    "quote": "10.1016/S1567-1348(02)00100-4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s1567-1348(02)00100-4",
+   "notes": "doi= field; uppercase S in source, key lower-cased"
+  },
+  {
+   "at": {
+    "cp": 2945,
+    "quote": "https://www.microbiologyresearch.org/content/journal/ijsem/1"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1099/ijs.0.02401-0",
+   "notes": "publisher URL; the DOI is the last path segment but not under a /doi/ segment; labelled as identifier_link by best reading"
+  },
+  {
+   "at": {
+    "cp": 3156,
+    "quote": "10.1099/ijs.0.02401-0"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1099/ijs.0.02401-0",
+   "notes": "doi= field"
+  },
+  {
+   "at": {
+    "cp": 4581,
+    "quote": "10.1038/nature13591"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/nature13591",
+   "notes": "doi= field"
+  },
+  {
+   "at": {
+    "cp": 4648,
+    "quote": "25141181"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "25141181",
+   "notes": "pmid= field"
+  }
+ ],
+ "unresolved_notes": [
+  "pmc=, bibcode=, issn=, url-access= not labelled.",
+  "Taxonbar/Speciesbox may render Wikidata identifiers; not in source."
+ ]
+}

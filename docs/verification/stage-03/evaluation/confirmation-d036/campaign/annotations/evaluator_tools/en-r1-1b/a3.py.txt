@@ -1,0 +1,15 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/eval-d036/en-r1-1b/tools')
+from build import *
+d='en-1377158630'
+pk,t,w0,w1,defs,uses=build(d,[])
+i=t.find('*{{cite web |title=\'\'Mycobacterium pinnipedii')
+j=t.find('{{',i+1)
+bib={'id':None,'at':loc(t,i),'in_window':True,'kind':'bibliography_entry','name':None,'group':'','templates':[{'at':loc(t,j)}],'unstructured':False,'render_note_id':None,'marker':'none','marker_text':None,'notes':'External links list item with a cite web template standing in a list outside any footnote (3.4). id=194542 is a taxonomy id, not a PMID.'}
+ids=[idn(t,'https://onlinelibrary.wiley.com/doi/10.1111/j.1751-0813.1993.tb03284.x','doi','identifier_link','10.1111/j.1751-0813.1993.tb03284.x','publisher URL in url= with /doi/ path; URL ends at the following space'),
+     idn(t,'10.1111/j.1751-0813.1993.tb03284.x','doi','primary_citation_field','10.1111/j.1751-0813.1993.tb03284.x','doi= field',after=t.find('|doi=10.1111')),
+     idn(t,'10.1016/S1567-1348(02)00100-4','doi','primary_citation_field','10.1016/s1567-1348(02)00100-4','doi= field; uppercase S in source, key lower-cased'),
+     idn(t,'https://www.microbiologyresearch.org/content/journal/ijsem/10.1099/ijs.0.02401-0','doi','identifier_link','10.1099/ijs.0.02401-0','publisher URL; the DOI is the last path segment but not under a /doi/ segment; labelled as identifier_link by best reading'),
+     idn(t,'10.1099/ijs.0.02401-0','doi','primary_citation_field','10.1099/ijs.0.02401-0','doi= field',after=t.find('|doi=10.1099')),
+     idn(t,'10.1038/nature13591','doi','primary_citation_field','10.1038/nature13591','doi= field'),
+     idn(t,'25141181','pmid','primary_citation_field','25141181','pmid= field')]
+finish(d,pk,t,defs,uses,ids,['pmc=, bibcode=, issn=, url-access= not labelled.','Taxonbar/Speciesbox may render Wikidata identifiers; not in source.'],TOOLS,'Whether the microbiologyresearch.org URL (DOI in the path but no /doi/ segment) counts as an identifier occurrence under 3.5; included with best reading.',bib=[bib])

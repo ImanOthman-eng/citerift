@@ -102,3 +102,28 @@ Their `notes`, `unresolved_notes` and reports hold the full list. The recurring 
   directory holds a byte copy of guide 1.1 (sha256 `2b40bb32…cf2e`), byte copies of `packets-reserve1/en-r1-1/packets`
   (compared with `diff -r`) and an empty `out/`. The brief was committed before the launch. D-037 (OpenAI-model
   substitution) is not exercised.
+- **Run of d036-eval-en-r1-1b.** One Claude Sonnet context (the model is recorded in its transcript), transcript
+  2026-11-09 13:00:58 to 13:03:52 UTC, 16 tool calls. Its first message equals `briefs/en-r1-1b.txt` exactly. Its four
+  files passed `validate_labels.py` (2026-11, unchanged) at first submission (`VALIDATION.json`, `en-r1-1b`); none was
+  returned, edited or chosen by the executor. They are byte copies (`cmp`) in `locked/reserve1-en`, whose
+  `ANNOTATION_LOCK.json` (`evaluate.py lock`) and `LOCK_RECORD.json` were committed before any extraction of these
+  articles. Its helper snippets are in `evaluator_tools/en-r1-1b/` (`.txt` appended, `__pycache__` not copied).
+- **Isolation audit of en-r1-1b.** `audit_evaluators.py` (2026-11, unchanged) was run on a map holding only this
+  instance, because the seven initial transcripts are no longer accessible (they were in the 2026-11-04 container);
+  its entry was added to `EVALUATOR_AUDIT.json` and every earlier entry kept byte-identical. No call runs git, uv,
+  curl, wget, pip or a `citerift` command, and no call opens the repository, `/mnt/project-files` or another
+  evaluator's directory. `CLAUDE.md` was attached by the harness, as for every earlier instance.
+  **Deviation (recorded):** two of its 16 calls are flagged. In one Bash call the instance redirected the output of
+  its own HTML-listing snippet (run on its own packet `en-1370070834`) to two scratch files, `/tmp/claude-0/h1.txt`
+  and `/tmp/claude-0/h1s.txt`, outside its work directory, and read them back in that call and the next. Rule 1 of
+  its brief says to read and write only inside the work directory, so this breaks the letter of the brief. Both files
+  were created by those calls (modification time 13:01 UTC, the time of the calls) and hold only output derived from
+  its own packet; nothing else outside the work directory was opened or listed. No information other than its
+  authorized inputs reached the instance, so the independence condition of the protocol ("every evaluator receives
+  only" its packets, the guide, an output directory and the brief) holds. The labels are kept as submitted; the two
+  files are kept unchanged with the transcript in the private evidence export.
+- **Its judgement calls (from its report):** an `{{sfn}}` with a single positional argument and no year labelled as a
+  definition with its link target noted as unclear; unnamed refs with near-identical templates and different pages
+  labelled as separate definitions; a publisher URL ending in a DOI without a `/doi/` segment labelled
+  `identifier_link` and named undecided; `ref={{sfnref|…}}` inside a citation template treated as an anchor builder;
+  `<ref name= HansmanGS>` read as the name `HansmanGS`.

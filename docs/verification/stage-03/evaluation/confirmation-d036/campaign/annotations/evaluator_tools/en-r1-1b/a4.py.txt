@@ -1,0 +1,14 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/eval-d036/en-r1-1b/tools')
+from build import *
+d='en-1377341430'
+t0=open(f'{BASE}/packets/{d}/source.wikitext',encoding='utf-8').read()
+u={t0.find('<ref>[http://viralzone.expasy.org/all_by_protein/1057'),t0.find('<ref>[http://viralzone.expasy.org/all_by_protein/806'),t0.find('<ref name=Yu2013>')}
+dn={t0.find('<ref name= HansmanGS>'):'name written with a space after = ; name is HansmanGS. Later uses spell it name="HansmanGS".',
+    t0.find('<ref name=Yu2013>'):'Hand-written reference using the {{doi}} wrapper; no citation template.',
+    t0.find('<ref>[http://viralzone.expasy.org/all_by_protein/1057'):'Bare external link with label only.',
+    t0.find('<ref>[http://viralzone.expasy.org/all_by_protein/806'):'Bare external link with label only.'}
+pk,t,w0,w1,defs,uses=build(d,[],def_notes=dn,unstructured=u)
+ids=[idn(t,'10.1099/jgv.0.001332','doi','primary_citation_field','10.1099/jgv.0.001332','doi= field'),
+     idn(t,'31573467','pmid','primary_citation_field','31573467','pmid= field'),
+     idn(t,'10.1371/journal.pone.0059817','doi','identifier_link','10.1371/journal.pone.0059817','argument of {{doi}} wrapper inside a hand-written ref')]
+finish(d,pk,t,defs,uses,ids,['External links items are plain bracketed URLs without citation template or identifier; not bibliography entries.'],TOOLS,'Nothing undecided.')

@@ -1,0 +1,17 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/eval-d036/en-r1-1b/tools')
+from build import *
+d='en-1376175856'
+t0=open(f'{BASE}/packets/{d}/source.wikitext',encoding='utf-8').read()
+u=[t0.find('<ref>https://www.ntnu.edu'),t0.find('<ref>https://www.tandfonline.com'),t0.rfind('<ref>https://www.tandfonline.com')]
+dn={u[1]:'Bare URL plus hand-written text. Body differs from the ref at the later tandfonline occurrence, so two separate unnamed refs.',
+    u[2]:'Bare URL plus hand-written text; differs from the earlier tandfonline ref. Unnamed, so a separate reference.'}
+for k,s in [('Sandberg, Dick (0000','The cite web carries ref={{sfnref|Simple search|2023}}; sfnref only builds an anchor id and is not a footnote call, so it is not listed as a use or citation template.'),
+            ('Fellows | website','ref={{sfnref|...}} builds an anchor id only; not a footnote call.')]:
+    i=t0.find('<ref>{{cite web | title='+k.split(' |')[0].replace('Sandberg, Dick (0000','Sandberg, Dick (0000'))
+for k,s in [('<ref>{{cite web | title=Sandberg, Dick',"The cite web carries ref={{sfnref | Simple search| 2023}}; sfnref only builds an anchor id and is not a footnote call, so it is not listed as a use or citation template."),
+            ('<ref>{{cite web | title=Fellows',"ref={{sfnref | ...}} builds an anchor id only; not a footnote call.")]:
+    dn[t0.find(k)]=s
+pk,t,w0,w1,defs,uses=build(d,[],def_notes=dn,unstructured=set(u))
+ids=[idn(t,'10.17632/BTCHXKTZYW.6','doi','primary_citation_field','10.17632/btchxktzyw.6','doi= field of {{citation}}; uppercase in source, key lower-cased'),
+     idn(t,'10.1007/978-3-030-81315-4','doi','primary_citation_field','10.1007/978-3-030-81315-4','doi= field of cite book')]
+finish(d,pk,t,defs,uses,ids,['External links list items are plain links with no citation template or DOI/PMID, so not bibliography entries. {{Authority control}} may render identifiers from Wikidata; not in source.','s2cid, isbn, issn and ORCID values are not DOI/PMID and not labelled.'],TOOLS,'Nothing undecided.')
