@@ -1,0 +1,18 @@
+"""Offline verify and replay of every committed D-036 prediction, run with no network namespace (unshare -n).
+usage: offline_verify_replay.py <repo> <venv_bin>"""
+import json, subprocess, sys
+from pathlib import Path
+repo, vbin = Path(sys.argv[1]), Path(sys.argv[2])
+camp = repo / "docs/verification/stage-03/evaluation/confirmation-d036/campaign"
+rows = []
+for run in json.loads((camp / "prediction/runs.json").read_text()):
+    bundle = repo / run["capture"]["bundle"]; ext = camp / "prediction/extractions" / run["name"]
+    row = {"article": run["article"], "extraction": run["name"]}
+    for op in ("verify", "replay"):
+        p = subprocess.run([str(vbin / "citerift-wiki"), op, "--bundle", str(bundle), "--extraction", str(ext)], cwd=repo, capture_output=True, text=True)
+        d = json.loads(p.stdout) if p.stdout.strip().startswith("{") else {}
+        row[op] = {"exit": p.returncode, "verified": d.get("verified"), "replay": (d.get("replay") or {}).get("state")}
+    rows.append(row)
+ok = len(rows) == 44 and all(r["verify"]["exit"] == 0 and r["verify"]["verified"] is True and r["replay"]["exit"] == 0 and r["replay"]["replay"] == "reproduced" for r in rows)
+print(json.dumps({"articles": len(rows), "verify_ok": sum(r["verify"]["exit"] == 0 and r["verify"]["verified"] is True for r in rows), "replay_reproduced": sum(r["replay"]["replay"] == "reproduced" for r in rows), "rows": rows}, indent=1))
+print("OFFLINE", "PASS" if ok else "FAIL"); sys.exit(0 if ok else 1)

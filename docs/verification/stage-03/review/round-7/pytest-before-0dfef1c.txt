@@ -1,0 +1,356 @@
+FFFFFFFFFFF...FF..                                                       [100%]
+=================================== FAILURES ===================================
+_ test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\x85] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_unicode_line_separator_0')
+char = '\x85'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("char", ["\u0085", "
+    ", "
+    "])
+    def test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end(tmp_path: Path, char: str) -> None:
+>       """RF7-4."""
+        cc._append(tmp_path / "captures.jsonl", {"event": "end", "key": "k", "run": 1, "stderr": f"a{char}b"})
+        assert cc._journal(tmp_path)[0]["stderr"] == f"a{char}b"
+
+tests/stage03/test_review_r7_fixes.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:131: in _journal
+    return [json.loads(line) for line in complete.decode("utf-8").splitlines() if line.strip()]
+            ^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f2696596c00>
+s = '{"event": "end", "key": "k", "run": 1, "stderr": "a', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 50 (char 49)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+_ test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\u2028] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_unicode_line_separator_1')
+char = '\u2028'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("char", ["\u0085", "
+    ", "
+    "])
+    def test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end(tmp_path: Path, char: str) -> None:
+>       """RF7-4."""
+        cc._append(tmp_path / "captures.jsonl", {"event": "end", "key": "k", "run": 1, "stderr": f"a{char}b"})
+        assert cc._journal(tmp_path)[0]["stderr"] == f"a{char}b"
+
+tests/stage03/test_review_r7_fixes.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:131: in _journal
+    return [json.loads(line) for line in complete.decode("utf-8").splitlines() if line.strip()]
+            ^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f2696596c00>
+s = '{"event": "end", "key": "k", "run": 1, "stderr": "a', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 50 (char 49)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+_ test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\u2029] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_unicode_line_separator_2')
+char = '\u2029'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("char", ["\u0085", "
+    ", "
+    "])
+    def test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end(tmp_path: Path, char: str) -> None:
+>       """RF7-4."""
+        cc._append(tmp_path / "captures.jsonl", {"event": "end", "key": "k", "run": 1, "stderr": f"a{char}b"})
+        assert cc._journal(tmp_path)[0]["stderr"] == f"a{char}b"
+
+tests/stage03/test_review_r7_fixes.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:131: in _journal
+    return [json.loads(line) for line in complete.decode("utf-8").splitlines() if line.strip()]
+            ^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f2696596c00>
+s = '{"event": "end", "key": "k", "run": 1, "stderr": "a', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 50 (char 49)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+__ test_a_whole_final_line_missing_only_its_line_end_is_completed_not_dropped __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_whole_final_line_missin0')
+
+    @pytest.mark.regression
+    def test_a_whole_final_line_missing_only_its_line_end_is_completed_not_dropped(tmp_path: Path) -> None:
+        """RF7-5 (a): a deferral's end line keeps its not_before."""
+        end = {"event": "end", "key": "holdout/en-1", "run": 1, "stdout": {"status": "deferred"}}
+        (tmp_path / "captures.jsonl").write_text(json.dumps({"event": "start"}) + "\n" + json.dumps(end))
+>       assert cc.repair_journal(tmp_path) == "completed the final line"
+E       AssertionError: assert 'captures.jsonl.torn-at-19' == 'completed the final line'
+E         
+E         - completed the final line
+E         + captures.jsonl.torn-at-19
+
+tests/stage03/test_review_r7_fixes.py:39: AssertionError
+_______________ test_two_tears_at_the_same_offset_are_both_kept ________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_two_tears_at_the_same_off0')
+
+    @pytest.mark.regression
+    def test_two_tears_at_the_same_offset_are_both_kept(tmp_path: Path) -> None:
+        """RF7-5 (b)."""
+        log = tmp_path / "captures.jsonl"
+        head = json.dumps({"event": "start"}) + "\n"
+        for fragment in ('{"event": "end", "ke', '{"event": "end", "key": "other'):
+            log.write_text(head + fragment)
+            cc.repair_journal(tmp_path)
+        kept = sorted(p.read_text() for p in tmp_path.glob("captures.jsonl.torn-at-*"))
+>       assert kept == sorted(['{"event": "end", "ke', '{"event": "end", "key": "other'])
+E       assert ['{"event": "end", "ke'] == ['{"event": "...key": "other']
+E         
+E         Right contains one more item: '{"event": "end", "key": "other'
+E         Use -v to get more diff
+
+tests/stage03/test_review_r7_fixes.py:52: AssertionError
+_ test_only_the_attempt_that_ended_a_failed_operation_makes_a_retry_after_problem_final _
+
+    @pytest.mark.regression
+    def test_only_the_attempt_that_ended_a_failed_operation_makes_a_retry_after_problem_final() -> None:
+        """RF7-6: an odd header on an accepted source response does not end retries of an unrelated render failure."""
+        source_ok = {"operation": "source", "code": None, "retry_after_problem": "RETRY_AFTER_UNREADABLE"}
+        render_failed = {"operation": "render", "code": "ATTEMPTS_EXHAUSTED", "retry_after_problem": None}
+        stdout = {
+            "status": "partial",
+            "capture": {
+                "attempts": [source_ok, render_failed],
+                "issues": [{"code": "ATTEMPTS_EXHAUSTED"}],
+                "render": {"code": "ATTEMPTS_EXHAUSTED"},
+            },
+        }
+        run = {"run": 1, **cc.summarize(6, stdout)}
+>       assert run["retry_after_problems"] == []
+E       AssertionError: assert ['RETRY_AFTER_UNREADABLE'] == []
+E         
+E         Left contains one more item: 'RETRY_AFTER_UNREADABLE'
+E         Use -v to get more diff
+
+tests/stage03/test_review_r7_fixes.py:70: AssertionError
+________ test_a_kill_while_selection_is_written_leaves_no_partial_file _________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_kill_while_selection_is0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2694e4f8c0>
+
+    @pytest.mark.regression
+    def test_a_kill_while_selection_is_written_leaves_no_partial_file(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """RF7-8."""
+        exposure = tmp_path / "exposure.json"
+        exposure.write_text(json.dumps({"page_ids": [], "titles": []}))
+    
+        class NoGet:
+            def __init__(self, campaign: Path) -> None:
+                (campaign / "selection").mkdir(parents=True)
+                self.earlier: list[str] = []
+                self.requests: list[dict[str, Any]] = []
+    
+        def replace(*_: Any) -> None:
+            raise Killed
+    
+        monkeypatch.setattr(sel, "LiveGet", NoGet)
+        monkeypatch.setattr(sel, "select", lambda get, exp: {"frame": {}, "challenge": {}})
+        monkeypatch.setattr(cc.os, "replace", replace)
+        monkeypatch.setattr(sys, "argv", ["select_confirmation.py", str(exposure), str(tmp_path / "campaign")])
+>       with pytest.raises(Killed):
+E       Failed: DID NOT RAISE Killed
+
+tests/stage03/test_review_r7_fixes.py:98: Failed
+_________________ test_the_engine_parses_with_the_c_tokenizer __________________
+
+    @pytest.mark.regression
+    def test_the_engine_parses_with_the_c_tokenizer() -> None:
+>       assert mwparserfromhell.parser.use_c is True
+E       AssertionError: assert False is True
+E        +  where False = <module 'mwparserfromhell.parser' from '/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/.venv/lib/python3.12/site-packages/mwparserfromhell/parser/__init__.py'>.use_c
+E        +    where <module 'mwparserfromhell.parser' from '/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/.venv/lib/python3.12/site-packages/mwparserfromhell/parser/__init__.py'> = mwparserfromhell.parser
+
+tests/stage03/test_wiki_mf1_tokenizer.py:25: AssertionError
+_ test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[: Smith 2001] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_sentence_punctuation_afte0')
+tail = ': Smith 2001'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("tail", [": Smith 2001", "; Smith 2001", "! Smith", ". Smith", ", Smith"])
+    def test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link(tmp_path: Path, tail: str) -> None:
+        """RF7-1: as MediaWiki and the C tokenizer, a bare link ends before ``,;.:!`` that a space follows."""
+        doc = extract_bundle(bundle(tmp_path, f"Claim.<ref>https://doi.org/10.1234/abc{tail}</ref>\n"))
+>       assert [i["normalization"]["normalized"] for i in doc["identifiers"]] == ["10.1234/abc"]
+E       AssertionError: assert ['10.1234/abc:'] == ['10.1234/abc']
+E         
+E         At index 0 diff: '10.1234/abc:' != '10.1234/abc'
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_mf1_tokenizer.py:34: AssertionError
+_ test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[; Smith 2001] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_sentence_punctuation_afte1')
+tail = '; Smith 2001'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("tail", [": Smith 2001", "; Smith 2001", "! Smith", ". Smith", ", Smith"])
+    def test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link(tmp_path: Path, tail: str) -> None:
+        """RF7-1: as MediaWiki and the C tokenizer, a bare link ends before ``,;.:!`` that a space follows."""
+        doc = extract_bundle(bundle(tmp_path, f"Claim.<ref>https://doi.org/10.1234/abc{tail}</ref>\n"))
+>       assert [i["normalization"]["normalized"] for i in doc["identifiers"]] == ["10.1234/abc"]
+E       AssertionError: assert ['10.1234/abc;'] == ['10.1234/abc']
+E         
+E         At index 0 diff: '10.1234/abc;' != '10.1234/abc'
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_mf1_tokenizer.py:34: AssertionError
+_ test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[! Smith] __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_sentence_punctuation_afte2')
+tail = '! Smith'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("tail", [": Smith 2001", "; Smith 2001", "! Smith", ". Smith", ", Smith"])
+    def test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link(tmp_path: Path, tail: str) -> None:
+        """RF7-1: as MediaWiki and the C tokenizer, a bare link ends before ``,;.:!`` that a space follows."""
+        doc = extract_bundle(bundle(tmp_path, f"Claim.<ref>https://doi.org/10.1234/abc{tail}</ref>\n"))
+>       assert [i["normalization"]["normalized"] for i in doc["identifiers"]] == ["10.1234/abc"]
+E       AssertionError: assert ['10.1234/abc!'] == ['10.1234/abc']
+E         
+E         At index 0 diff: '10.1234/abc!' != '10.1234/abc'
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_mf1_tokenizer.py:34: AssertionError
+_ test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded[11] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_native_crash_confirmed_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2694ee5f70>
+sig = <Signals.SIGSEGV: 11>
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("sig", [signal.SIGSEGV, signal.SIGBUS])
+    def test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, sig: int
+    ) -> None:
+        b = bundle(tmp_path, "Text.")
+        calls = _scripted(monkeypatch, [FakeProc(-sig), FakeProc(3, b"MemoryError")])
+        doc = extract_bundle(b, ExtractConfig(worker_memory_mib=64))
+>       assert {i["code"] for i in doc["issues"]} == {"EXTRACTION_MEMORY_EXCEEDED"}
+E       AssertionError: assert {'EXTRACTION_WORKER_FAILED'} == {'EXTRACTION_MEMORY_EXCEEDED'}
+E         
+E         Extra items in the left set:
+E         'EXTRACTION_WORKER_FAILED'
+E         Extra items in the right set:
+E         'EXTRACTION_MEMORY_EXCEEDED'
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_mf1_tokenizer.py:74: AssertionError
+_ test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded[7] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-71/test_a_native_crash_confirmed_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f2694e33d10>
+sig = <Signals.SIGBUS: 7>
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("sig", [signal.SIGSEGV, signal.SIGBUS])
+    def test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, sig: int
+    ) -> None:
+        b = bundle(tmp_path, "Text.")
+        calls = _scripted(monkeypatch, [FakeProc(-sig), FakeProc(3, b"MemoryError")])
+        doc = extract_bundle(b, ExtractConfig(worker_memory_mib=64))
+>       assert {i["code"] for i in doc["issues"]} == {"EXTRACTION_MEMORY_EXCEEDED"}
+E       AssertionError: assert {'EXTRACTION_WORKER_FAILED'} == {'EXTRACTION_MEMORY_EXCEEDED'}
+E         
+E         Extra items in the left set:
+E         'EXTRACTION_WORKER_FAILED'
+E         Extra items in the right set:
+E         'EXTRACTION_MEMORY_EXCEEDED'
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_mf1_tokenizer.py:74: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/stage03/test_wiki_mf1_tokenizer.py::test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[. Smith]
+PASSED tests/stage03/test_wiki_mf1_tokenizer.py::test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[, Smith]
+PASSED tests/stage03/test_wiki_mf1_tokenizer.py::test_the_memory_limit_is_reported_as_such_every_time
+PASSED tests/stage03/test_wiki_mf1_tokenizer.py::test_a_native_crash_that_is_not_memory_stays_a_worker_failure_and_no_python_output_is_used
+PASSED tests/stage03/test_wiki_mf1_tokenizer.py::test_other_worker_failures_are_not_run_again
+FAILED tests/stage03/test_review_r7_fixes.py::test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\x85]
+FAILED tests/stage03/test_review_r7_fixes.py::test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\u2028]
+FAILED tests/stage03/test_review_r7_fixes.py::test_a_unicode_line_separator_inside_a_journal_string_is_not_a_line_end[\u2029]
+FAILED tests/stage03/test_review_r7_fixes.py::test_a_whole_final_line_missing_only_its_line_end_is_completed_not_dropped
+FAILED tests/stage03/test_review_r7_fixes.py::test_two_tears_at_the_same_offset_are_both_kept
+FAILED tests/stage03/test_review_r7_fixes.py::test_only_the_attempt_that_ended_a_failed_operation_makes_a_retry_after_problem_final
+FAILED tests/stage03/test_review_r7_fixes.py::test_a_kill_while_selection_is_written_leaves_no_partial_file
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_the_engine_parses_with_the_c_tokenizer
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[: Smith 2001]
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[; Smith 2001]
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_sentence_punctuation_after_a_bare_doi_url_is_outside_the_link[! Smith]
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded[11]
+FAILED tests/stage03/test_wiki_mf1_tokenizer.py::test_a_native_crash_confirmed_as_memory_by_the_python_tokenizer_is_memory_exceeded[7]
+13 failed, 5 passed in 4.19s

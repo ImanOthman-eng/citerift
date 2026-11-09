@@ -1,0 +1,118 @@
+import json, datetime, copy
+from lxml import html as H
+
+BASE = "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/en-c1b"
+ART = BASE + "/items/en-1329904848"
+OUT = BASE + "/out"
+ARTICLE = "en-1329904848"
+ADJ = "cf11-adj-en-c1b"
+
+started = "2026-11-03T02:23:00Z"
+text = open(ART + "/source.wikitext", encoding="utf-8").read()
+locked = json.load(open(ART + "/locked.json", encoding="utf-8"))
+disputed = json.load(open(ART + "/disputed_items.json", encoding="utf-8"))
+
+# Verify that the rendered footnote for GaiaEDR3 really carries the erratum note.
+root = H.parse(ART + "/render.html").getroot()
+li = root.xpath('//li[@id="cite_note-GaiaEDR3-3"]')[0]
+rendered = " ".join(li.text_content().split())
+assert "(Erratum: doi:10.1051/0004-6361/202039657e)" in rendered
+marker_text = "(Erratum: doi:10.1051/0004-6361/202039657e)"
+
+# Verify the marker count argument used in the reasons: self-closing calls vs marker sups.
+self_closing = text.count("/>") - text.count("<references/>")  # rough check, replaced below
+import re
+sc = len(re.findall(r"<ref\s+name=[^>]*?/>", text))
+sups = len(root.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'))
+assert sc == 48 and sups == 47, (sc, sups)
+
+defs = {d["id"]: d for d in locked["definitions"]}
+uses = {u["id"]: u for u in locked["uses"]}
+
+decisions = []
+changed = []
+for it in disputed:
+    n = it["item"]
+    kind = it["kind"]
+    if kind == "marker":
+        d = it["annotated"]
+        assert d["id"] == "d2" and d["at"]["cp"] == 6848
+        assert d["marker"] == "none" and it["engine_marker"] == "ambiguous"
+        reason = ("Definition d2 (<ref name=GaiaEDR3>, cp 6848) renders as footnote cite_note-GaiaEDR3-3, whose "
+                  "text contains the CS1 note '(Erratum: doi:10.1051/0004-6361/202039657e)'. Under guide 3.6 'none' "
+                  "requires no retraction, expression-of-concern or retraction-type vocabulary in the rendered footnote, "
+                  "and 'Erratum' is named in 3.6 as correction vocabulary. It is not a retraction or expression of "
+                  "concern, so 'warning' does not apply. The guide gives no category for an erratum attached to the cited "
+                  "work; its own example (erratum in a note) is 'ambiguous', so that is the label. Guide 1.0 ambiguity: "
+                  "the template ties the erratum to this work, but guide 1.1 has no 'correction' label, so 'ambiguous' is the "
+                  "closest reading that follows the wording. The engine's 'ambiguous' agrees with this reading; that "
+                  "agreement is not the basis of the decision.")
+        corrected = {"marker": "ambiguous", "marker_text": marker_text}
+        decisions.append({"item": n, "kind": kind, "decision": "correct", "reason": reason,
+                          "corrected_label": corrected})
+        changed.append(n)
+    elif kind == "use_missed":
+        u = it["annotated"]
+        uid = u["id"]
+        cp = u["at"]["cp"]
+        q = u["at"]["quote"]
+        assert text[cp:cp+len(q)] == q
+        name = re.match(r"<ref name=([^>\s]+)>", q)
+        name = name.group(1) if name else "?"
+        # confirm: a content-bearing <ref> defined in the references list, first and only occurrence of its name
+        # content-bearing occurrences of this name: exactly one (the list-defined one)
+        occ = len(re.findall(r"<ref name=" + re.escape(name) + r">", text))
+        selfc = len(re.findall(r"<ref name=" + re.escape(name) + r"\s*/>", text))
+        assert occ == 1 and text[cp:cp+len(q)].startswith("<ref name=" + name + ">"), (name, occ)
+        assert 6751 < cp < 15823  # inside the <references> block
+        d_rel = [d for d in defs.values() if d["at"]["cp"] == cp]
+        assert len(d_rel) == 1 and d_rel[0]["name"] == name
+        reason = (f"<ref name={name}> at cp {cp} is a <ref> tag with non-empty content inside <references>. "
+                  "Guide 3.2 lists every <ref> tag with content as a use, and table 3.1 gives one content-bearing "
+                  "<ref> as 1 definition and 1 use, so the use exists and the locked use is correct. Its name occurs "
+                  "the only content-bearing occurrence of its name in the source, so it binds to itself (self-closing reuses bind to it). render_ref_id null is correct: the render has 47 cite_ref "
+                  "markers, all at self-closing calls (48 calls; GaiaEDR3 shows 4 markers for 5 calls, outside these items), "
+                  "and none at the list-defined position.")
+        decisions.append({"item": n, "kind": kind, "decision": "confirm", "reason": reason,
+                          "corrected_label": None})
+    else:
+        raise SystemExit(f"unexpected kind {kind} at item {n}")
+
+decisions.sort(key=lambda x: x["item"])
+assert [d["item"] for d in decisions] == list(range(0, 21))
+
+finished = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+dec_doc = {"article": ARTICLE, "adjudicator": ADJ, "started_at": started, "finished_at": finished,
+           "decisions": decisions}
+dec_path = OUT + "/decisions/" + ARTICLE + ".json"
+json.dump(dec_doc, open(dec_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+# Apply corrections to a copy of the locked label.
+adj = copy.deepcopy(locked)
+for dec in decisions:
+    if dec["decision"] != "correct":
+        continue
+    cl = dec["corrected_label"]
+    for d in adj["definitions"]:
+        if d["id"] == "d2":
+            d["marker"] = cl["marker"]
+            d["marker_text"] = cl["marker_text"]
+for d in adj["definitions"]:
+    if d["id"] == "d2":
+        assert d["at"]["cp"] == 6848 and text[6848:6848+len(d["at"]["quote"])] == d["at"]["quote"]
+adj["adjudication"] = {"adjudicator": ADJ, "decisions_file": dec_path, "changed_items": changed}
+# Every location still resolves.
+def check(o):
+    if isinstance(o, dict):
+        if "cp" in o and "quote" in o:
+            assert text[o["cp"]:o["cp"]+len(o["quote"])] == o["quote"], o
+        for v in o.values():
+            check(v)
+    elif isinstance(o, list):
+        for v in o:
+            check(v)
+check(locked)
+check(adj)
+json.dump(adj, open(OUT + "/adjudicated/" + ARTICLE + ".json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+print("confirmed", sum(d["decision"] == "confirm" for d in decisions),
+      "corrected", sum(d["decision"] == "correct" for d in decisions), "changed", changed)

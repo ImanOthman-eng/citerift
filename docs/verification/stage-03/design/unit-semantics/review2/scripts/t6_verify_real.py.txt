@@ -1,0 +1,9 @@
+"""verify_bundle on retained bundles with the current engine's extraction (exposed data: regression only)."""
+import json, sys
+from pathlib import Path
+from citerift.wiki.verify import verify_bundle
+ROOT = Path("/home/user/citerift"); OUT = Path(sys.argv[1])
+for rel in sys.argv[2:]:
+    doc = json.loads((OUT / (rel.replace("/", "__") + ".json")).read_text())
+    v = verify_bundle(ROOT / rel, doc)
+    print(rel.split("/")[-1], "verified", v["verified"], [(i["code"], i.get("detail", "")[:80]) for i in v["issues"]][:8])

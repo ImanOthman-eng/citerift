@@ -1,0 +1,10 @@
+from lib import *
+a=A('ar-73416851')
+R=[a.L('<ref>',i) for i in range(11)]
+for i,r in enumerate(R):
+    n=i+1
+    a.D(f'd{n}',r,'note',templates=[a.L('{{استشهاد ',0,r['cp'])],rid=f'cite_note-{n}',notes='ref inside a wikitable cell' if True else '')
+    a.U(f'u{n}',r,r,rid=f'cite_ref-{n}')
+a.I(a.L('http://dx.doi.org/10.33685/1317-000-041-004'),'doi','identifier_link','10.33685/1317-000-041-004','url= field')
+a.I(a.L('10.33685/1317-000-041-004',0,a.L('DOI=')['cp']),'doi','primary_citation_field','10.33685/1317-000-041-004','field written as DOI=')
+a.save()

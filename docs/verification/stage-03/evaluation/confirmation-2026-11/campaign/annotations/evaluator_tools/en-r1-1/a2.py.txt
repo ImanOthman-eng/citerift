@@ -1,0 +1,12 @@
+import sys; sys.path.insert(0,'tools')
+from lib import A
+a=A('en-1361996578'); L=a.loc
+r1=L('<ref>{{Cite book'); r2=L('<ref name=hawksworth1991>'); r3=L('<ref>{{cite web')
+a.define('d1',r1,'note',None,'',[L('{{Cite book',r1['cp'])],False,'cite_note-1')
+a.define('d2',r2,'note','hawksworth1991','',[L('{{cite journal',r2['cp'])],False,'cite_note-hawksworth1991-2')
+a.define('d3',r3,'note',None,'',[L('{{cite web',r3['cp'])],False,'cite_note-3')
+a.use('u1',r1,r1,'cite_ref-1'); a.use('u2',r2,r2,'cite_ref-hawksworth1991_2-0'); a.use('u3',r3,r3,'cite_ref-3')
+a.use('u4',L('<ref name=hawksworth1991/>'),r2,'cite_ref-hawksworth1991_2-1')
+a.ident(L('10.1016/b978-012509551-8/50014-3',r1['cp']),'doi','primary_citation_field','10.1016/b978-012509551-8/50014-3')
+a.ident(L('10.1016/S0953-7562(09)80810-1',r2['cp']),'doi','primary_citation_field','10.1016/s0953-7562(09)80810-1')
+a.write()

@@ -1,0 +1,168 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1362916349,
+  "source_sha256": "cbd2e505ec1389af3fc37ac5d2b77ef05a1fbb09a70983a574f5187a593593b3",
+  "html_sha256": "ba6e3030fc52dc98ec1ab8d953a1adeab6b414268b708b58f01bf322710c77cd",
+  "window": [
+   0,
+   3164
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h2",
+  "started_at": "2026-11-03T16:13:00Z",
+  "finished_at": "2026-11-03T16:13:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1362916349/packet.json",
+    "sha256": "(not hashed in packet; read for window and hashes)"
+   },
+   {
+    "path": "packets/en-1362916349/source.wikitext",
+    "sha256": "cbd2e505ec1389af3fc37ac5d2b77ef05a1fbb09a70983a574f5187a593593b3"
+   },
+   {
+    "path": "packets/en-1362916349/render.html",
+    "sha256": "ba6e3030fc52dc98ec1ab8d953a1adeab6b414268b708b58f01bf322710c77cd"
+   }
+  ],
+  "tools": "python3 -I stdin/stdlib scripts (re, json, lxml) in tools/: regex scan for <ref/{{cite/10./PMID, listing of sup typeof=mw:Extension/ref and li cite_note ids, substring verification of every quote; labels decided by reading",
+  "unresolved": "Two External links bullets are plain external links without citation template or DOI/PMID; not bibliography entries. CAS number 25135-20-0 and ISBN are not DOI/PMID."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 776,
+    "quote": "<ref>{{cite encyclopedia|autho"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 781,
+      "quote": "{{cite encyclopedia|"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 2345,
+    "quote": "<ref>{{cite web |url=https://w"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2350,
+      "quote": "{{cite web |url=http"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2582,
+    "quote": "<ref>{{cite web |url=https://f"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2587,
+      "quote": "{{cite web |url=http"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 776,
+    "quote": "<ref>{{cite encyclopedia|autho"
+   },
+   "binds_to": {
+    "cp": 776,
+    "quote": "<ref>{{cite encyclopedia|autho"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 2345,
+    "quote": "<ref>{{cite web |url=https://w"
+   },
+   "binds_to": {
+    "cp": 2345,
+    "quote": "<ref>{{cite web |url=https://w"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2582,
+    "quote": "<ref>{{cite web |url=https://f"
+   },
+   "binds_to": {
+    "cp": 2582,
+    "quote": "<ref>{{cite web |url=https://f"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1045,
+    "quote": "10.1002/14356007.a21_227"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/14356007.a21_227",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Two External links bullets are plain external links without citation template or DOI/PMID; not bibliography entries. CAS number 25135-20-0 and ISBN are not DOI/PMID."
+ ]
+}

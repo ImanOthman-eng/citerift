@@ -1,0 +1,216 @@
+import copy
+import datetime
+import json
+import os
+
+BASE = "/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/adj-d036/ar-g1"
+ADJ = "d036-adj-ar-g1"
+STARTED = "2026-11-09T13:09:12Z"
+FINISHED = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+ARTICLES = {}
+
+ARTICLES["ar-73440513"] = [
+    {
+        "item": 0, "kind": "identifier_role", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked identifier_link is right. cp 2454 is the target of the wikilink [[doi:10.2305/IUCN.UK...en|...]] "
+            "in the hand-pasted cite inside ref 'مولد تلقائيا1' (1785-3287). The render turns it into a doi.org link "
+            "to the same DOI. A DOI link inside a reference that points at the identifier is identifier_link (3.5). "
+            "It is not display text (textual_mention) and not plain labelled text (labeled_reference_text)."
+        ),
+    },
+    {
+        "item": 1, "kind": "identifier_key", "decision": "correct",
+        "corrected_label": {
+            "at": {"cp": 2502, "quote": "10.2305/IUCN."},
+            "scheme": "doi",
+            "role": "textual_mention",
+            "key": "10.2305/iucn.",
+            "notes": (
+                "Link display fragment of the DOI 10.2305/IUCN.UK.2015-1.RLTS.T153568A74497730.en; the final '.' is part "
+                "of the DOI (the same DOI continues in the next link displays), not trailing punctuation."
+            ),
+        },
+        "reason": (
+            "Locked key '10.2305/iucn' strips the final '.' of the display text '10.2305/IUCN.' as sentence punctuation. "
+            "3.5 strips only trailing sentence punctuation that is not part of the DOI. Here the '.' is part of the DOI: "
+            "the same DOI continues in the next two link displays ('UK.2015-1.RLTS.' and 'T153568A74497730.en') and in the "
+            "wikilink target. Key is therefore '10.2305/iucn.' (ASCII lower-cased, valid form 10.<4 digits>/<suffix>, so not null). "
+            "Role textual_mention stays (link display text). Ambiguity: the guide has no rule for a DOI split across "
+            "several display links; I read this fragment as part of the DOI it belongs to."
+        ),
+    },
+    {
+        "item": 2, "kind": "identifier_role", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked identifier_link is right. cp 2590 is the target of the second wikilink [[doi:10.2305/IUCN.UK...en|...]] "
+            "of the same hand-pasted cite; same reasoning as item 0. Its display 'UK.2015-1.RLTS.' is not an identifier "
+            "occurrence of its own."
+        ),
+    },
+    {
+        "item": 3, "kind": "identifier_role", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked identifier_link is right. cp 2873 is the target of the third wikilink to the same DOI in the same cite; "
+            "same reasoning as item 0."
+        ),
+    },
+]
+
+ARTICLES["ar-76575521"] = [
+    {
+        "item": 0, "kind": "identifier_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked label is right. The DOI at cp 3094 sits in the مسار= (url=) field of the AAS citation, inside the "
+            "publisher URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68. 3.5's URL row covers resolver "
+            "URLs and publisher URLs whose path contains /doi/; this path is /article/, so the 'anything else' row applies "
+            "and the raw text is the identifier text, as locked. A DOI in url= that points at the article is identifier_link "
+            "(the guide's own example). Key 10.1088/0004-637x/741/2/68 is right (ends before the space after '68'). The DOI= "
+            "field (cp 3302) and the web.archive.org snapshot (cp 3242, not_a_target) are separate locked items."
+        ),
+    },
+]
+
+ARTICLES["ar-76589877"] = [
+    {
+        "item": 0, "kind": "identifier_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked label is right. Same construction as ar-76575521: cp 3085 is the DOI in the مسار= (url=) publisher URL "
+            "https://iopscience.iop.org/article/10.1088/... (path /article/, not /doi/), so the raw text is the identifier "
+            "text and the role is identifier_link. Key is right. cp 3233 (archive snapshot) and cp 3293 (DOI=) are separate items."
+        ),
+    },
+]
+
+ARTICLES["ar-76748683"] = [
+    {
+        "item": 0, "kind": "identifier_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked label is right. cp 2926 is the DOI in the مسار= (url=) publisher URL "
+            "https://iopscience.iop.org/article/10.1088/... (path /article/, not /doi/); 3.5 'anything else' gives the "
+            "identifier text as raw text, and url= pointing at the article is identifier_link. Key is right. "
+            "cp 3074 (archive snapshot) and cp 3134 (DOI=) are separate locked items."
+        ),
+    },
+]
+
+ARTICLES["ar-77050950"] = [
+    {
+        "item": 0, "kind": "identifier_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked label is right. cp 46889 is the DOI in the query of the publisher URL "
+            "https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1000084 in the مسار= (url=) field of the "
+            "PLoS Med citation. The path is /plosmedicine/article, not /doi/, so 3.5's 'anything else' row applies and the "
+            "raw text is the identifier text, as locked. url= pointing at the identifier is identifier_link. Key "
+            "10.1371/journal.pmed.1000084 is right. The doi= field (cp 46804) and the archive snapshot (cp 47020, "
+            "not_a_target) are separate items."
+        ),
+    },
+]
+
+_HARV_REASON_SHORT = (
+    "Locked template entry is right: the template is a citation template (name starts with 'استشهاد' or is "
+    "'Harvard citation') inside the body of ref d4 (<ref> at cp 2063, </ref> at cp 3273), so 3.1 lists it under "
+    "d4.templates. It is not a separate footnote (see item 0). "
+)
+
+ARTICLES["ar-77132099"] = [
+    {
+        "item": 0, "kind": "template_unit_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            "Locked label is right. cp 2068 is a citation template ({{استشهاد بهارفارد دون أقواس}}, a 'استشهاد …' name, "
+            "which 3.1 lists) inside the body of the ref at cp 2063 (d4), so it belongs in d4.templates as locked. "
+            "In the render it appears as inline text '(Hutton 2010، صفحة 247)' in footnote cite_note-4, with no footnote "
+            "of its own. Ambiguity: section 2 lists harvnb-style templates as short footnotes only when they generate "
+            "a footnote; these do not, because they sit inside another ref's body. 'template_unit_missed' is not one of the "
+            "guide's listed item kinds; I decided on the location as the template entry the guide asks for."
+        ),
+    },
+    {
+        "item": 1, "kind": "template_unit_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            _HARV_REASON_SHORT
+            + "cp 2199 is {{Harvard citation|Scarre|Callow|2001|pp=1, 21}}; the name contains 'Citation', which 3.1 lists."
+        ),
+    },
+    {
+        "item": 2, "kind": "template_unit_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            _HARV_REASON_SHORT
+            + "cp 2458 is {{Harvard citation|Hutton|2010|p=247}}; the name contains 'Citation'."
+        ),
+    },
+    {
+        "item": 3, "kind": "template_unit_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            _HARV_REASON_SHORT
+            + "cp 2605 is {{استشهاد بهارفارد دون أقواس|Behringer|2004|p=149}}."
+        ),
+    },
+    {
+        "item": 4, "kind": "template_unit_missed", "decision": "confirm", "corrected_label": None,
+        "reason": (
+            _HARV_REASON_SHORT
+            + "cp 2658 is {{استشهاد بهارفارد دون أقواس|Roper|2004|pp=6–7}}."
+        ),
+    },
+]
+
+
+def main():
+    for article, decisions in ARTICLES.items():
+        dec_path = os.path.join(BASE, "out", "decisions", article + ".json")
+        adj_path = os.path.join(BASE, "out", "adjudicated", article + ".json")
+        src = os.path.join(BASE, "items", article, "locked.json")
+
+        decision_doc = {
+            "article": article,
+            "adjudicator": ADJ,
+            "started_at": STARTED,
+            "finished_at": FINISHED,
+            "decisions": decisions,
+        }
+        with open(dec_path, "w", encoding="utf-8") as f:
+            json.dump(decision_doc, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+
+        with open(src, encoding="utf-8") as f:
+            locked = json.load(f)
+        adjusted = copy.deepcopy(locked)
+        changed = []
+        for d in decisions:
+            if d["decision"] != "correct":
+                continue
+            corr = d["corrected_label"]
+            if corr["scheme"] == "doi" and "identifiers" in adjusted:
+                matches = [
+                    i for i, x in enumerate(adjusted["identifiers"])
+                    if x["at"] == corr["at"]
+                ]
+                assert len(matches) == 1, (article, d["item"], matches)
+                idx = matches[0]
+                old = adjusted["identifiers"][idx]
+                changed.append({
+                    "item": d["item"],
+                    "kind": d["kind"],
+                    "identifier_index": idx,
+                    "location": corr["at"],
+                    "field": "key",
+                    "from": old["key"],
+                    "to": corr["key"],
+                })
+                old["key"] = corr["key"]
+        adjusted["adjudication"] = {
+            "adjudicator": ADJ,
+            "decisions_file": dec_path,
+            "changed_items": changed,
+        }
+        with open(adj_path, "w", encoding="utf-8") as f:
+            json.dump(adjusted, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        print(article, "decisions", len(decisions), "changed", len(changed))
+
+
+if __name__ == "__main__":
+    main()

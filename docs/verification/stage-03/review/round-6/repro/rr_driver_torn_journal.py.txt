@@ -1,0 +1,25 @@
+"""A journal line torn by a crash (kill during the append of a large `end` line) makes every later driver start fail."""
+import importlib.util, json, shutil, sys, time
+from pathlib import Path
+spec = importlib.util.spec_from_file_location("cc", "/home/user/citerift/docs/verification/stage-03/evaluation/scripts/campaign_capture.py")
+cc = importlib.util.module_from_spec(spec); spec.loader.exec_module(cc)
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/torn"); shutil.rmtree(W, ignore_errors=True); W.mkdir(parents=True)
+(W/"plan.json").write_text(json.dumps({"campaign":"x","articles":[{"split":"holdout","wiki":"en","page_id":7}]}))
+ok = {"status":"complete","bundle":"b","capture":{"attempts":[{"code":None,"body_bytes":10}] * 2, "issues":[]}}
+calls = []
+def cli(argv): calls.append(argv); return 0, json.dumps(ok), ""
+# first driver run is interrupted while appending its `end` line
+orig = cc._append
+def torn(path, entry):
+    if entry["event"] == "end":
+        line = json.dumps(entry); path.open("a").write(line[: len(line)//2]); raise KeyboardInterrupt("simulated kill")
+    orig(path, entry)
+cc._append = torn
+try: cc.run(W/"plan.json", W/"out", cli=cli, clock=time.time, sleep=lambda s: None)
+except KeyboardInterrupt: print("driver killed mid-append")
+cc._append = orig
+print("journal tail:", repr((W/"out"/"captures.jsonl").read_text()[-60:]))
+try:
+    rc = cc.run(W/"plan.json", W/"out", cli=cli, clock=time.time, sleep=lambda s: None); print("rerun rc", rc)
+except Exception as e:
+    print("rerun ->", type(e).__name__, e)

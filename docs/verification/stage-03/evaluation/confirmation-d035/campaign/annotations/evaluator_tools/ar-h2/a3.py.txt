@@ -1,0 +1,21 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h2/tools")
+from lib import A
+a=A('ar-75591928','2026-11-03T16:20:00Z')
+def tm(s):
+    return a.L(a.cp("{{",0,s+1),20)
+# out-of-window target
+s=4545; assert a.t.startswith('<ref name=":04">',s)
+d04=a.L(s,40)
+a.D(d04,"note",name=":04",templates=[a.L(a.cp("{{استشهاد",0,s),20)],rid="cite_note-:04-7",inw=False,notes="Starts before the window; listed only as binding target of the use at 17471. Also used at 7776 (before window).")
+specs=[(10255,None,"cite_note-13","cite_ref-13"),(10920,":0","cite_note-:0-14","cite_ref-:0_14-0"),(11777,":1","cite_note-:1-15","cite_ref-:1_15-0"),
+(13136,None,"cite_note-16","cite_ref-16"),(13814,None,"cite_note-17","cite_ref-17"),(14339,"Raths 2012 28","cite_note-Raths_2012_28-18","cite_ref-Raths_2012_28_18-0"),
+(15388,None,"cite_note-19","cite_ref-19"),(15825,None,"cite_note-20","cite_ref-20"),(16246,None,"cite_note-21","cite_ref-21")]
+for s,nm,n,r in specs:
+    assert a.t.startswith('<ref',s)
+    at=a.L(s,40); t=a.L(a.cp("{{استشهاد",0,s),20)
+    a.D(at,"note",name=nm,templates=[t],rid=n); a.U(at,at,rid=r)
+a.U(a.L(17471,18),d04,rid="cite_ref-:04_7-2",notes="Self-closing reuse of the :04 definition at cp 4545 (before window).")
+i=a.cp("10.1016/j.childyouth.2014.09.004")
+a.I(a.L(i,34),"doi","primary_citation_field","10.1016/j.childyouth.2014.09.004","Field DOI= of the citation template in the ref at 13814.")
+a.unres.append("Window starts mid-article; only items starting at cp>=9889 labelled, plus the :04 definition as binding target.")
+a.write()

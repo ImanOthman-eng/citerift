@@ -1,0 +1,37 @@
+"""RV-4 rule on plain citations whose helper template has no own transclusion because Parsoid expands it as part
+of an outer template: list-defined refs in {{reflist|refs=}}, {{refn}}, {{#tag:ref}}. Render structure copied from
+the retained Parsoid output of en-2695828-a1 (reflist refs=: the note's inner templates carry no about)."""
+import json, tempfile
+from pathlib import Path
+from rv2lib import *
+
+def rl_transclusion(n, target, refs_wt):
+    dm = json.dumps({"parts": [{"template": {"target": {"wt": target}, "params": {"refs": {"wt": refs_wt}}, "i": 0}}]}, ensure_ascii=False).replace("'", "&#39;")
+    return f'<span class="mw-empty-elt" about="#mwt{n}" typeof="mw:Transclusion" data-mw=\'{dm}\'></span>'
+
+def case(wiki, citation, isbn_tpl, isbn_render, reflist="Reflist"):
+    body_ref = f"<ref name=a>{citation} {isbn_tpl}</ref>"
+    text = f"Text.<ref name=a/>\n\n== References ==\n{{{{{reflist}|refs=\n{body_ref}\n}}}}\n"
+    note_inner = f"{citation} {isbn_render}"   # no own about: expanded inside the outer template
+    body = f"<p>Text.{ref_sup(1, 'cite_note-a-1', 'cite_ref-a_1-0', name='a')}</p>" + rl_transclusion(127, reflist, "\n" + body_ref + "\n") + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], note_inner)])
+    return text, body
+
+cases = [
+  ("en reflist refs=", "en", *case("en", "Smith, J. (2001). ''A Book''. Press.", "{{ISBN|0-12-345678-9}}", 'ISBN <a href="./Special:BookSources/0-12-345678-9">0-12-345678-9</a>')),
+  ("ar reflist refs=", "ar", *case("ar", "سميث، ج. (2001). ''كتاب''. دار النشر.", "{{ردمك|0-12-345678-9}}", 'ردمك <a href="./Special:BookSources/0-12-345678-9">0-12-345678-9</a>', reflist="مراجع")),
+]
+# control: same ref in article text with the helper's own transclusion
+ctext = "Text.<ref>Smith, J. (2001). ''A Book''. Press. {{ISBN|0-12-345678-9}}</ref>\n"
+cbody = one_note("Text.", "Smith, J. (2001). A Book. Press. " + transclusion(5, "ISBN", {"1": "0-12-345678-9"}, 'ISBN <a href="./Special:BookSources/0-12-345678-9">0-12-345678-9</a>'))
+cases.append(("en control: inline <ref>, helper has own transclusion", "en", ctext, cbody))
+# refn: helper inside the refn argument -> no own transclusion
+rtext = "Text.{{refn|Smith, J. (2001). ''A Book''. Press. {{ISBN|0-12-345678-9}}}}\n"
+dm = json.dumps({"parts": [{"template": {"target": {"wt": "refn"}, "params": {"1": {"wt": "Smith, J. (2001). ''A Book''. Press. {{ISBN|0-12-345678-9}}"}}, "i": 0}}]}).replace("'", "&#39;")
+rbody = f'<p>Text.<sup about="#mwt3" typeof="mw:Transclusion mw:Extension/ref" class="mw-ref reference" id="cite_ref-1" data-mw=\'{dm}\'><a href="./SYNTHETIC#cite_note-1"><span class="mw-reflink-text">[1]</span></a></sup></p>' + references([note_li("cite_note-1", ["cite_ref-1"], 'Smith, J. (2001). A Book. Press. ISBN <a href="./Special:BookSources/0">0-12-345678-9</a>')])
+cases.append(("en refn (generated note)", "en", rtext, rbody))
+for label, wiki, text, body in cases:
+    with tempfile.TemporaryDirectory() as d:
+        try:
+            show(label, run(Path(d), text, body, wiki=wiki))
+        except Exception as e:
+            import traceback; traceback.print_exc()

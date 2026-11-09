@@ -1,0 +1,23 @@
+import sys; sys.path.insert(0,'tools')
+from build import *
+a=A('ar-76964105')
+l=a.loc;t=a.t;W=4325
+def R(x,n=0): return l(x,n,after=W)
+def tpl(r):
+    i=t.find('{{',r['cp']); return {'cp':i,'quote':t[i:i+50]}
+h=l("<ref name='hierolang'>"); assert h['cp']<W
+hu=R("<ref name='hierolang' />")
+na=R('<ref>{{استشهاد بكتاب|الأخير1=Nasrallah');we=R('<ref>{{استشهاد بويب|مسار=[http://omeka')
+la=R("<ref>''is autem");bu=R('<ref>{{استشهاد بكتاب|الأخير1=Budge');pa=R('<ref>{{استشهاد بكتاب|الأخير1=Parker');ha=R("<ref>''haec")
+a.D('d0',h,name='hierolang',templates=[tpl(h)],render='cite_note-hierolang-3',inw=False,notes='starts before window; target of the self-closing use in window')
+a.D('d1',na,templates=[tpl(na)],render='cite_note-5',notes='sits inside an image caption ([[ملف:...]]); isbn is not labelled')
+a.D('d2',we,templates=[tpl(we)],render='cite_note-6',notes='the rendered text shows the url field as broken markdown link; no DOI/PMID')
+a.D('d3',la,unstructured=True,render='cite_note-7',notes='Latin quotation (Pliny), no citation template')
+a.D('d4',bu,templates=[tpl(bu)],render='cite_note-8')
+a.D('d5',pa,templates=[tpl(pa)],render='cite_note-9')
+a.D('d6',ha,unstructured=True,render='cite_note-10',notes='Latin quotation with "(Naturalis Historia, XXXVI, 73)", no citation template')
+a.U('u1',hu,h,'cite_ref-hierolang_3-1','self-closing; binds to definition before window')
+for i,(r,rid) in enumerate([(na,'cite_ref-5'),(we,'cite_ref-6'),(la,'cite_ref-7'),(bu,'cite_ref-8'),(pa,'cite_ref-9'),(ha,'cite_ref-10')],2):
+    a.U(f'u{i}',r,r,rid)
+a.unres.append('Bibliography section ("== المراجع ==") with two cs journal templates starts after the window end (12325); not labelled. In-window list items ("* [[قائمة ...]]") are plain wikilinks, not citations.')
+a.write('python3 -I str.find/regex scans, lxml listing of sup/li','none')

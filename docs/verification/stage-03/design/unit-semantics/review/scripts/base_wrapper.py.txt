@@ -1,0 +1,17 @@
+"""Pre-fix engine on the RV-1 input (run from the base worktree)."""
+import sys, json, tempfile
+from pathlib import Path
+sys.path.insert(0, str(Path.cwd() / "tests/stage03"))
+from wiki_support import bundle, extract, note_li, ref_sup, references
+def transclusion(n, target, params, inner, tag="span"):
+    part = {"target": {"wt": target}, "params": {k: {"wt": v} for k, v in params.items()}, "i": 0}
+    dm = json.dumps({"parts": [{"template": part}]}, ensure_ascii=False).replace("'", "&#39;")
+    return f'<{tag} about="#mwt{n}" typeof="mw:Transclusion" data-mw=\'{dm}\'>{inner}</{tag}>'
+text = "A<ref>{{small|{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}}}</ref>"
+inner = transclusion(5, "small", {"1": "{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}"},
+                     '<cite class="citation web cs1"><a href="http://example.org/a">T</a>. doi:10.1000/abc</cite>', "small")
+body = f"<p>A{ref_sup(1, 'cite_note-1', 'cite_ref-1')}</p>" + references([note_li("cite_note-1", ["cite_ref-1"], inner)])
+p = Path(tempfile.mkdtemp())
+doc = extract(bundle(p, text, body))
+print([(u["id"], u["kind"], (u["template"] or {}).get("canonical"), u["parent_unit"], u["render"]["state"]) for u in doc["units"]])
+print([(i["normalization"]["normalized"], i["role"], i["unit_id"], i["render"] if "render" in i else None) for i in doc["identifiers"]])

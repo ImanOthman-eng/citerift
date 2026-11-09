@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 49893,
+   "body_sha256": "d4e897cad605da814ad0752cb466ca25c5d831843db2a94842d04447273fe139",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.46,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:29:00.302318Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=71205055",
+   "wire_bytes": 18245
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "4ee0fbc74b65d6f3d1b769bf3f61446f1d861b8f3a2de080e418f7c8efd04d53",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.396,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:29:10.762882Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323580591/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 312123,
+   "body_sha256": "e9199bf67b017a5fdfe93a38d0493abdf3b937637a0db8949d42cfbba23a7319",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.507,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:30:00.159620Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323580591/html",
+   "wire_bytes": 53146
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "4ee0fbc74b65d6f3d1b769bf3f61446f1d861b8f3a2de080e418f7c8efd04d53"
+ ],
+ "finished_at": "2026-11-02T19:30:00.668258Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 71205055,
+  "parent_revision_id": 1323565592,
+  "redirect_followed": null,
+  "revision_id": 1323580591,
+  "revision_timestamp": "2025-11-22T16:38:26Z",
+  "sha1": "e36bb93887529022097b3602351ed6db4f3dd4aa",
+  "size": 48996,
+  "title": "History of conversion therapy",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "e9199bf67b017a5fdfe93a38d0493abdf3b937637a0db8949d42cfbba23a7319",
+  "bytes": 312123,
+  "checks": {
+   "document_revision_id": "1323580591",
+   "header_revision_id": "1323580591",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "71205055",
+   "render_id": "c0101faf-d6b2-11f1-a497-f353816a7d84",
+   "revision_sha1": "e36bb93887529022097b3602351ed6db4f3dd4aa",
+   "revision_sha1_base36": "qkclyxt37vg4p9gadlnfetx97ztrd7u"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1323580591",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:30:00 GMT",
+   "etag": "W/\"1323580591/c0101faf-d6b2-11f1-a497-f353816a7d84/view\"",
+   "last-modified": "Mon, 02 Nov 2026 10:24:25 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323580591/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 71205055,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "797e63e400cafdd3d6d36be4486c4ee928a2b1931cc8937a0abec0d10528ef9b",
+  "bytes": 48996,
+  "response_artifact": "d4e897cad605da814ad0752cb466ca25c5d831843db2a94842d04447273fe139",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=71205055"
+ },
+ "started_at": "2026-11-02T19:28:11.571643Z",
+ "status": "complete"
+}

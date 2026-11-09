@@ -1,0 +1,14 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2/tools')
+from gen import *
+rev=1314035120; p,t=load(rev); s=sups(rev)
+refs=[m for m in re.finditer(r'<ref\b([^>]*?)(/>|>(.*?)</ref>)',t,re.S)]
+assert len(refs)==len(s)==201
+a=find(t,'<ref name="Abraham09">')
+w0,w1=p['window']['cp_start'],p['window']['cp_end']
+defs=[D('d1',t,a,'note','Abraham09','',[],True,'cite_note-Abraham09-1',"First definition of Abraham09, outside the window (listed so the in-window uses can bind to it). Hand-written citation ending in {{doi|10.1002/jps.21922}} (a wrapper, not a citation template). Defined in a table cell and reused ~160 times.",in_window=False)]
+uses=[]
+for i,(m,sid) in enumerate(zip(refs,s)):
+    if w0<=m.start()<w1:
+        assert 'name="Abraham09"' in m.group(1) and m.group(2)=='/>' and sid.startswith('cite_ref-Abraham09_1-')
+        uses.append(U(f'u{len(uses)+1}',t,m.start(),a,sid,"Self-closing reuse in table cell; render id aligned by source-order index (201 refs, 201 markers, names match)."))
+finish(rev,p,t,defs,uses,[],"None. Window [17198,25198) holds only self-closing <ref name=\"Abraham09\" /> uses; no definitions start inside it, no DOI/PMID text inside it.",[])

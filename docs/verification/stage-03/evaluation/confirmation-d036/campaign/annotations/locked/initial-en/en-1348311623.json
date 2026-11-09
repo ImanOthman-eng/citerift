@@ -1,0 +1,170 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1348311623,
+  "source_sha256": "55f93b9679f5b6c4bfb36be6040278123de38e88b78326c3f05205c42ce2924a",
+  "html_sha256": "f7cf0b90d5a95d41c21d4f7373dd3215b1ad77d3129b07db7164ef895370c5e0",
+  "window": [
+   0,
+   1853
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h1",
+  "started_at": "2026-11-04T10:25:22Z",
+  "finished_at": "2026-11-04T10:25:22Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1348311623/source.wikitext",
+    "sha256": "55f93b9679f5b6c4bfb36be6040278123de38e88b78326c3f05205c42ce2924a"
+   },
+   {
+    "path": "packets/en-1348311623/render.html",
+    "sha256": "f7cf0b90d5a95d41c21d4f7373dd3215b1ad77d3129b07db7164ef895370c5e0"
+   },
+   {
+    "path": "packets/en-1348311623/packet.json",
+    "sha256": "367810e28580e21be0127e86b35dc45ec4865b568924cb80a57896e7d9ee64ca"
+   }
+  ],
+  "tools": "python3 -I stdin/scripts with stdlib re/json/hashlib and lxml (tools/find.py, tools/html.py list text matches and HTML sup/li elements; tools/lib.py only builds JSON and verifies quotes); cat/sed to read files",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 115,
+    "quote": "<ref name= iucn>{{cite iucn |author=Chua"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 131,
+      "quote": "{{cite iucn |author=Chua, L.S.L. |date=1"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "ref inside the status_ref parameter of {{Speciesbox}}; name written as \"name= iucn\""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 652,
+    "quote": "<ref name = powo>{{cite web |title=''Lit"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "powo",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 669,
+      "quote": "{{cite web |title=''Lithocarpus kunstler"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-powo-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "ref inside the synonyms_ref parameter of {{Speciesbox}}; name written as \"name = powo\""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 115,
+    "quote": "<ref name= iucn>{{cite iucn |author=Chua"
+   },
+   "binds_to": {
+    "cp": 115,
+    "quote": "<ref name= iucn>{{cite iucn |author=Chua"
+   },
+   "render_ref_id": "cite_ref-iucn_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 652,
+    "quote": "<ref name = powo>{{cite web |title=''Lit"
+   },
+   "binds_to": {
+    "cp": 652,
+    "quote": "<ref name = powo>{{cite web |title=''Lit"
+   },
+   "render_ref_id": "cite_ref-powo_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1090,
+    "quote": "<ref name = powo/> It is native to prima"
+   },
+   "binds_to": {
+    "cp": 652,
+    "quote": "<ref name = powo>{{cite web |title=''Lit"
+   },
+   "render_ref_id": "cite_ref-powo_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1281,
+    "quote": "<ref name = iucn/>\n\nThe species was firs"
+   },
+   "binds_to": {
+    "cp": 115,
+    "quote": "<ref name= iucn>{{cite iucn |author=Chua"
+   },
+   "render_ref_id": "cite_ref-iucn_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1498,
+    "quote": "<ref name = powo/>\n\n==References==\n{{Ref"
+   },
+   "binds_to": {
+    "cp": 652,
+    "quote": "<ref name = powo>{{cite web |title=''Lit"
+   },
+   "render_ref_id": "cite_ref-powo_2-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 259,
+    "quote": "10.2305/IUCN.UK.1998.RLTS.T31501A9637127.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.1998.rlts.t31501a9637127.en",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "{{Taxonbar|from=Q5438167}} and Speciesbox may emit Wikidata-derived content; no source references listed for them."
+ ]
+}

@@ -1,0 +1,7 @@
+# Fail-first: weak number anchor (simulation finding S-1), engine at a079ae8 with the new test only
+# command: uv run pytest -q tests/stage03/test_r038_template_output_order.py -k too_weak
+>       assert [got[reuse_at(text, v)][0] for v in values] == ["abstained", "abstained"]
+E       AssertionError: assert ['matched', 'matched'] == ['abstained', 'abstained']
+tests/stage03/test_r038_template_output_order.py:623: AssertionError
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_one_or_two_digit_number_is_too_weak_to_anchor
+1 failed, 32 deselected in 8.73s

@@ -1,0 +1,73 @@
+import json, datetime, os
+BASE = "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/ar-g2"
+ITEMS = BASE + "/items"
+OUT = BASE + "/out"
+ADJ = "cf11-adj-ar-g2"
+STARTED = "2026-11-03T02:18:53Z"
+FINISHED = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+AMB = ("Guide 1.1 ambiguity noted: ")
+
+decisions = {
+ "ar-76492454": [
+  {"item": 0, "kind": "identifier_key", "decision": "correct",
+   "reason": "Section 3.5 key rule: DOI with ASCII letters A-Z lower-cased. The locked key keeps 'M608708200' in upper case; the corrected key lower-cases the ASCII letters and keeps the rest. Location (cp 447, raw field value) and role primary_citation_field are right and unchanged.",
+   "corrected_label": "10.1074/jbc.m608708200"},
+  {"item": 1, "kind": "identifier_key", "decision": "correct",
+   "reason": "Same rule as item 0: section 3.5 requires ASCII A-Z lower-cased in the DOI key. The locked key keeps 'M011084200' in upper case. Corrected key lower-cases the letters; location cp 1221 and role primary_citation_field unchanged.",
+   "corrected_label": "10.1074/jbc.m011084200"},
+ ],
+ "ar-76524679": [
+  {"item": i, "kind": "marker", "decision": "confirm",
+   "reason": "Bibliography entry (3.4) in the citations of {{PBB Further reading}}. The rendered list (render.html, the template output inside the section 'قراءة متعمقة') shows the entry as text, so it is inspectable. Searched the source and the rendered section for retraction and correction vocabulary (Retract, retract, withdraw, erratum, corrigend, مسحوب, سحب, expression of concern): none, and the only 'expression' hits are words in article titles. No red link (class=new) in the section except the article's category link. The guide's marker 'none' applies. The engine state not_inspected is not a disagreement (it records that the engine did not look).",
+   "corrected_label": None}
+  for i in range(11)
+ ],
+ "ar-76580846": [
+  {"item": 0, "kind": "identifier_missed", "decision": "confirm",
+   "reason": "The URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 is the value of the مسار (url) field of a citation template (the AAS-MB-2011 reference, in window at cp 2918). Under 3.5 it is a publisher URL pointing at the identifier, so role identifier_link is right, and the raw text is the whole URL (table row 'URL'). The key is the DOI starting at '10.' and running to the end of the URL, lower-cased: 10.1088/0004-637x/741/2/68, which is a valid DOI form. AMBIGUITY: the table's publisher-URL example is written with '/doi/' in the path, and this path uses '/article/'. Read strictly, the row would give the identifier text alone and move the location to the '10.' inside the URL. I did not adopt that: the table's row head is 'URL', the '/doi/' condition is only an example, and the locked reading follows the role definition ('a publisher URL ... pointing at the identifier'). The other occurrences of this DOI (the DOI= field at cp 3161, and the archive.org URL at cp 3023 marked not_a_target) are unchanged.",
+   "corrected_label": None},
+ ],
+ "ar-77110166": [
+  {"item": 0, "kind": "template_unit_missed", "decision": "confirm",
+   "reason": "Under 3.1 and 3.1's templates rule, citation templates are those 'whose purpose is to format a citation' (the guide's examples are not exhaustive: 'and similar'). The template {{EI2}} at cp 2278 is a transclusion (its template page is not a red link) and its rendered output in the li cite_note-EI2-4 is a CS1 citation ('<cite class=\"citation encyclopaedia cs1\">', 'The Encyclopaedia of Islam, Second Edition (12 vols.). Leiden: E. J. Brill. 1960–2005.'). So d4 has a citation template and is not unstructured. AMBIGUITY: the guide does not name EI2; I read 'purpose' as the test, which the render confirms. The locked notes recorded uncertainty; the decision here resolves it.",
+   "corrected_label": None},
+  {"item": 1, "kind": "unstructured_unit_extra", "decision": "confirm",
+   "reason": "The engine's unstructured unit at the same location (cp 2278, {{EI2}}) is not an item under the guide: unstructured is true only when the definition cites in plain text with no citation template (3.1). Because {{EI2}} is a citation template by purpose (item 0), d4 is not unstructured, so the locked label correctly has no such unit.",
+   "corrected_label": None},
+ ],
+}
+
+changed = {"ar-76492454": [0, 1]}
+for art in ["ar-76492454", "ar-76524679", "ar-76580846", "ar-77110166"]:
+    dpath = f"{OUT}/decisions/{art}.json"
+    doc = {"article": art, "adjudicator": ADJ, "started_at": STARTED, "finished_at": FINISHED,
+           "decisions": decisions[art]}
+    with open(dpath, "w", encoding="utf-8") as f:
+        json.dump(doc, f, ensure_ascii=False, indent=2); f.write("\n")
+
+    locked = json.load(open(f"{ITEMS}/{art}/locked.json", encoding="utf-8"))
+    src = open(f"{ITEMS}/{art}/source.wikitext", encoding="utf-8").read()
+    ch = []
+    if art == "ar-76492454":
+        fix = {447: "10.1074/jbc.m608708200", 1221: "10.1074/jbc.m011084200"}
+        for ident in locked["identifiers"]:
+            cp = ident["at"]["cp"]
+            if cp in fix:
+                assert ident["key"] == ident["key"]
+                ident["key"] = fix[cp]
+                ch.append(0 if cp == 447 else 1)
+        assert sorted(ch) == [0, 1], ch
+    locked["adjudication"] = {"adjudicator": ADJ, "decisions_file": dpath, "changed_items": sorted(ch)}
+    # verify every location still matches its quote
+    def check(obj):
+        if isinstance(obj, dict):
+            if "cp" in obj and "quote" in obj:
+                assert src[obj["cp"]:obj["cp"]+len(obj["quote"])] == obj["quote"], obj
+            for v in obj.values(): check(v)
+        elif isinstance(obj, list):
+            for v in obj: check(v)
+    check({k: v for k, v in locked.items() if k != "adjudication"})
+    with open(f"{OUT}/adjudicated/{art}.json", "w", encoding="utf-8") as f:
+        json.dump(locked, f, ensure_ascii=False, indent=2); f.write("\n")
+    print(art, "decisions", len(decisions[art]), "changed", sorted(ch))

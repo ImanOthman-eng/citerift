@@ -624,3 +624,202 @@ it abstains with `TIMEOUT`; one-time model initialization is outside the
 deadline. The model is excluded from the default product (R-028), so this
 affects only the opt-in experimental path. Any change needs the owner's
 authorization.
+
+## R-034 — Stage 03 frozen evaluation does not meet gate 03-G
+- Status: closed
+- Severity: high
+- Kind: limitation
+- Stage: 03
+
+The single final campaign (frozen candidate `48cfeab`, adjudicated 2026-11-02) leaves three requirements of gate
+03-G unmet:
+
+- Arabic definition precision is 0.914 against 0.95. All ten false positives are repeated identical `{{sfn}}`
+  calls. The annotation guide is ambiguous here, and the run-1 and final adjudications read it in opposite ways.
+- Arabic target identifiers number 33 against a minimum of 50. The sample ceiling was reached.
+- English normalized-key error rate is 1 / 52 = 0.0192 against 0.01. The cause was a Wiley page-view route, since
+  repaired after exposure as RF-60; that repair has not been freshly evaluated.
+
+No unresolved wrong citation, binding, render attachment, promotion or fabricated negative is known. Evidence:
+`docs/verification/stage-03/evaluation/final/DECISION_RECORD.md`. The owner decides between a narrowed claim, a new
+prospective evaluation, or non-acceptance. The executor cannot record a technical verification while 03-G is unmet.
+
+Update 2026-11-03: the owner chose a new prospective evaluation (D-034). In that campaign, at candidate `3e51792`, none
+of the three failures above recurs (Arabic G5a 1.000, Arabic identifiers 103, English G2 0.000), but a different gate
+fails (R-036). This entry stays open until the owner decides on R-036.
+
+Update 2026-11-09 (D-036 confirmation scored, D-038): at candidate `8901a59`, on 24 Arabic and 20 English unexposed
+articles, every gate G1-G11 and every minimum passes in both languages, including Arabic G5a 1.000, Arabic identifiers
+56 and English G2 0.000 (`docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md`). Gate 03-G is
+met prospectively; closed.
+
+## R-035 — Stage 03 declared support boundaries observed in the final campaign
+- Status: open
+- Severity: low
+- Kind: limitation
+- Stage: 03
+
+Observed in the adjudicated final campaign and dispositioned without code changes
+(`docs/verification/stage-03/review/REVIEW_FINDINGS.md`, sections "final-campaign adjudication" and "R5"):
+
+- **Publisher URLs without a `/doi/` path** (Springer `/10.…`, iopscience `/article/10.…`): the DOI inside them is
+  not extracted. In all three observed cases, the same DOI is extracted from the template's `doi=` field.
+- **Citation templates the profile does not list** (for example EI2, EI3, `قاموس دورلاند`): they are reported as
+  unstructured, and their DOIs get role `unresolved`. Superseded by D-035 at engine 1.1.0:
+  - a template whose render is a CS1/CS2 citation (EI2) is an `unsupported_citation_template` unit;
+  - one whose render shows no citation markup (`قاموس دورلاند`) leaves its definition unresolved
+    (`UNIT_CLASSIFICATION_UNRESOLVED`), with no unit;
+  - DOIs keep the role `unresolved`.
+- **List-defined `<ref>` tags** are not counted as uses.
+- **`verify` does not re-derive identifier decoding;** only `replay` does.
+- **URL forms the page-view rule does not cover:** `%20` and `;jsessionid` after a route keep the route.
+
+## R-036 — Stage 03 confirmation campaign: English unit precision does not meet G5c
+- Status: open
+- Severity: high
+- Kind: limitation
+- Stage: 03
+
+In the prospective confirmation campaign of D-034 (candidate `3e51792`, adjudicated 2026-11-03), English unit
+precision is 126 / 145 = 0.869 against 0.95 (95 % article-cluster interval 0.718 to 0.971). Every other gate passes
+in both languages, and both languages reach every minimum denominator.
+
+All 19 false positives are `unstructured_text` units. SPECIFICATION 11.3 gives that kind to every definition with no
+template unit; the annotation guide gives `unstructured` only to a plain-text citation. The definitions concerned are
+Harvard short-citation links (13), explanatory notes that cite nothing (4) and two unlisted citation-like templates;
+11 are in one article. None of the 19 involves an identifier, binding, render link or marker. No repair is allowed after the
+prediction run. Evidence: `docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/REPORT.md` and
+`DECISION_RECORD.md` there. The owner decides; the executor records no verification while G5c is unmet.
+
+Update 2026-11-03 (D-035): the owner rejected a narrowed claim and ordered a semantic correction and one more
+prospective confirmation. The engine now separates citation-unit classes A-H. A definition is `unstructured_text`
+only on positive evidence. Harvard links, explanatory notes, unlisted citation-like templates and unresolved
+definitions are distinguished (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.md`). On the
+exposed confirmation data, the frozen scorer gives English G5c 1.000 and Arabic G5c 1.000. This is regression only,
+not a pass. This entry stays open until the prospective confirmation of D-035 is scored.
+
+Update 2026-11-03 (D-035 confirmation scored): on 24 unexposed English articles, unit precision is 179 / 180 = 0.994
+(95 % article-cluster interval 0.978 to 1.000) and unit recall 0.994; Arabic 1.000 and 0.992. G5c and G5d pass in
+both languages (`docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md`). The stage is still
+not verified, because of R-038. This entry stays open until the owner accepts the stage.
+
+Update 2026-11-09 (D-036 confirmation scored): on 20 unexposed English articles at `8901a59`, unit precision is
+129 / 132 = 0.977 (95 % article-cluster interval 0.929 to 1.000; 0.970 on the locked labels) and unit recall 0.992;
+Arabic 1.000 and 0.966. G5c and G5d pass in both languages for the second consecutive prospective campaign. The lower
+English interval bound is below 0.95, so the margin is not established at this sample size. This entry stays open
+until the owner accepts the stage.
+
+## R-037 — Stage 03 citation-unit classification (D-035): residual limits
+- Status: open
+- Severity: medium
+- Kind: limitation
+- Stage: 03
+
+The D-035 rule recognizes a plain-text citation only on positive evidence: a locator, or the text of a citation
+reference (`docs/verification/stage-03/design/unit-semantics/SEMANTIC_DECISION.md` section 5). Known limits:
+
+- **Explanatory text in an ordinary reference.** A `<ref>` (including one in a `group="note"`) that holds only
+  explanatory prose is still `unstructured_text`. A group name is free text, and reading it would be a keyword rule.
+- **Short link with text.** A Harvard link beside plain text without a link or identifier is unresolved. A genuine
+  second citation written there without a locator is reported, not claimed as a unit.
+- **Render dependence.** Without a usable render, every template-only definition is unresolved, and so is plain
+  text beside an unclassified template (review RV-4). In the 146 retained bundles this changed two definitions, both
+  in one capture whose render failed (`en-906156-a1`). For refs inside template arguments (a reference list's
+  `refs=`, `{{refn}}`, an infobox parameter), whose templates have no output of their own, the rendered note decides
+  (review 2, RV2-4); where the ref's container is not matched to exactly one note, they stay unresolved (IUCN in
+  the exposed `ar-1325389-a1`). The reviewer measured that 36 of 476 `unstructured_text` units in refs of the
+  retained bundles depend on render evidence.
+- **A located identifier beside a template unit** (review 2, RV2-2). A hand-written citation with its own DOI or
+  PMID beside a C or G unit is not a unit of its own; its identifier carries `IDENTIFIER_OUTSIDE_UNITS`. If the
+  annotation guide counts it as a second, unstructured unit, that is a recall loss, as under the frozen engine.
+  Three such identifiers in the retained data, all Arabic refs where a bot added an archive `{{استشهاد ويب}}`.
+- **Magic words and nested templates** (review 2, RV2-5 and RV2-8). Only `{{!}}` and `{{=}}` are known to be syntax.
+  Other magic words and parser functions are unclassified templates: without a render, a plain citation holding one
+  is unresolved. A G template holding an unclassified template that has no transclusion of its own anywhere in the
+  render (`{{Fishbase|title={{lang|la|…}}}}`) is unresolved, because nothing shows that the nested template did not
+  make the citation markup. No retained bundle has either case.
+- **MF-1 v3 reads the lifetime peak** (review 2, RV2-9). A non-memory SystemError with exactly CPython's message
+  "error return without exception set", after a transient peak at the limit that was freed, would be reported as
+  `EXTRACTION_MEMORY_EXCEEDED`. That message comes only from CPython's own error paths, so this is improbable.
+- **Rules shaped by exposed data** (review 2, RV2-11). The bibliography-entry rule was designed after inspecting the
+  final English holdout's false positives and lifts that split's G5c to 1.000. Only the prospective D-035
+  confirmation is evidence that the rules generalize.
+- **Plain citation inside a formatting or identifier template** (`{{lang}}`, `{{nowrap}}`, `{{ISBN}}`, `{{URL}}` with
+  no text outside) is unresolved, not `unstructured_text` (review RV-7). It is reported, not lost.
+- **Unclassified template without citation markup beside text** (review RV-5). `{{NRDB species}} Retrieved …` or
+  `{{IUCN2008|…}}` followed by commentary stays `unstructured_text`, while `{{ISBN}}`, `{{Webarchive}}` or
+  `{{US patent}}` beside a hand-written citation must stay `unstructured_text`. Nothing in the markup or the render
+  separates the two without a word list. Exposed instance: run 1, Arabic holdout `ar-2700573-a1` (adjudicated
+  `unstructured: false`). The reviewer counted about 1 such case among about 170 D units with an unclassified
+  template beside text.
+- **Arabic Harvard template without evidence** (review RV-3). `استشهاد بهارفارد دون أقواس` matches the guide's name
+  rule ("استشهاد …", RF-37). It is not a unit only when its own render shows a short-citation link. With no render,
+  nested in another template or in a template parameter it stays a `citation_template` unit, while `{{harvnb}}` in
+  the same place is unresolved. Requiring render evidence for every name-rule template was implemented and measured:
+  it removed 21 genuine CS1 wrappers (Cite iucn in taxobox parameters, Cite patent, Cite simbad, …) from the retained
+  bundles, a recall loss, so it was not adopted.
+- **No record for E and empty definitions** (review RV-11). A definition that is only a short-citation link, or
+  empty, gets no unit and no issue. Stage 04 cannot tell these apart from each other from the extraction alone.
+  Unresolved definitions are named by container, with the definition number in the issue detail ("definition N").
+- **Evidence marks.** Two render marks decide unlisted templates: CS1/CS2 `<cite class="citation">` and `#CITEREF`
+  links. A citation module that writes neither, or a non-citation template that writes `<cite class="citation">`,
+  would be misclassified. Neither was observed in the 146 retained bundles.
+- **`efn` only.** Only the profile's `efn` family is treated as possibly explanatory: its text without a locator is
+  unresolved, not dropped (review RV-6). `{{refn}}` is treated like `<ref>`, and no retained bundle contains it.
+- **Harvard link beside a plain citation without a locator** (review RV-12) is unresolved. The owner's directive asks
+  that "a genuine plain-text citation in the same definition must be retained". It is retained as a unit only when
+  it carries a link, DOI or PMID; otherwise it is reported. This trade-off is for the owner.
+
+## R-038 — Stage 03 reconciliation pairs repeated names inside a template's output in source order
+- Status: closed
+- Severity: high
+- Kind: defect
+- Stage: 03
+
+In the prospective confirmation campaign of D-035 (candidate `fff0e5b`, adjudicated 2026-11-03), Arabic gate G6b
+fails: 2 false render attachments against the frozen limit max(1, 1 % of 184 engine links) = 1. Every other gate
+passes in both languages, including English G5c 0.994 and G5d 0.994.
+
+Both false attachments are in `ar-76814232`, an infobox that renders its U−B row before its B−V row. The named
+reference `Mallama2014` is defined in the B−V row and reused in the U−B row; the engine attached the first rendered
+marker to the definition and the second to the reuse, the reverse of the render. The locked label is correct and the
+adjudicator confirmed it. Cause: `src/citerift/wiki/reconcile.py` `_align_unordered` pairs the k-th source use of a
+name with its k-th rendered marker inside one template's output, although the template decides the rendered order
+(the function's own docstring). The pairing is a guess that is not reported as one: the engine's render-use record
+drops the Parsoid `data-mw` `body` that marks which marker carries the definition. Both markers cite the same work; what is wrong is the source position each
+is attributed to. The code dates from `a29bb4e` (2026-10-29) and is unchanged by D-035. In the 204 retained extraction
+documents, 15 groups in 12 articles are paired this way; this is the only one known to be wrong (5 of the 12
+articles have scored render labels).
+
+The amendment of D-035 (section 8) forbids repair or rerun after the prediction run, so the defect is preserved and
+Stage 03 stays `IMPLEMENTED_NOT_VERIFIED`. A correction (abstain unless the render proves the order) needs a new owner
+authorization and a new prospective confirmation. Evidence:
+`docs/verification/stage-03/evaluation/confirmation-d035/campaign/REPORT.md` section 5 and `DECISION_RECORD.md`
+there.
+
+Update 2026-11-04 (owner instruction D-036, which authorized the correction). Corrected in engine 1.2.0: a name with
+two or more uses in one template's output is paired only on evidence (the marker's `data-mw` body role, the visible
+text or numbers before the marker, elimination within a completely settled group) and abstained otherwise
+(`docs/verification/stage-03/design/r038-reconciliation/DESIGN.md`). The full survey found the same swap in 6 more
+articles that had no scored render labels (15 swapped uses in 7 articles in all); all 15 are corrected, 2 uses are now
+abstained, and no other pairing changed in the 195 retained real bundles. On every retained label: false
+attachments 4 -> 0, correct links 1,372 -> 1,376 (post-exposure). The entry stays open until the single D-036
+prospective confirmation is scored.
+
+Update 2026-11-04, after the readiness reviews (D-036 section 7). Two independent reviewers found that the first
+correction could still swap markers when a template restyles one value or one value has no readable text (A-01,
+B-1), and found four narrower defects around it (multi-part transclusions A-02, count-only pairs A-04, nested repeated
+names A-05, shared bibliography regions A-03). All were fixed fail-first: support is now a generous superset of the
+exact text relation, with a safety argument (`docs/verification/stage-03/MATHEMATICAL_MODEL.md`). Both simulations
+show 0 wrong links. On every retained label (post-exposure): false attachments 0, correct links 1,387; on the D-035
+articles, Arabic 192 of 197 correct, 0 false. A focused re-review then built silent swaps from hidden or replaced
+values (R-02). A group is now paired only when every marker supports some use, which removed all 21 of its wrong
+links at a cost of 9 abstained uses on the real corpus. Dispositions:
+`docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md`. The entry stays open until the
+single D-036 prospective confirmation is scored.
+
+Update 2026-11-09 (D-036 confirmation scored, D-038): on 44 unexposed articles at `8901a59`, 0 false render
+attachments and 0 abstentions in both languages (G6a 1.000, G6b 0, G6c 1.000). The corrected pairing path
+(`reference_role_in_template_output`) linked 8 uses in 3 articles, all correctly
+(`docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md` section 5). The defect is corrected and
+the correction is confirmed prospectively on one sample; closed. The path's field exposure is small (8 uses).

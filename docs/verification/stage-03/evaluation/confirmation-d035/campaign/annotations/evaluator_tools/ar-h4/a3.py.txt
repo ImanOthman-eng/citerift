@@ -1,0 +1,25 @@
+import sys;sys.path.insert(0,'tools')
+from lib import *
+a=A('ar-65612325')
+R=[ # anchor, name, tpl, unstr, noteid, refid
+('<ref name="def ant">','def ant',['{{استشهاد بدورية محكمة|الأخير=Dirzo'],False,'cite_note-def_ant-1','cite_ref-def_ant_1-0'),
+('<ref name=":1">',':1',['{{استشهاد بكتاب'],False,'cite_note-:1-2','cite_ref-:1_2-0'),
+('<ref>{{استشهاد بدورية محكمة|الأخير=Vignieri',None,['{{استشهاد بدورية محكمة|الأخير=Vignieri'],False,'cite_note-3','cite_ref-3'),
+('<ref name=":5">',':5',['{{استشهاد ويب'],False,'cite_note-:5-4','cite_ref-:5_4-0'),
+('<ref name="eco and evo">','eco and evo',[],True,'cite_note-eco_and_evo-5','cite_ref-eco_and_evo_5-0'),
+('<ref>[https://www.wsj.com',None,[],True,'cite_note-6','cite_ref-6'),
+('<ref>Ceballos',None,[],True,'cite_note-7','cite_ref-7'),
+('<ref>{{استشهاد بخبر|مسار=https://www.theguardian',None,['{{استشهاد بخبر|مسار=https://www.theguardian'],False,'cite_note-8','cite_ref-8'),
+('<ref>{{استشهاد بدورية محكمة|عدة مؤلفين=Ripple',None,['{{استشهاد بدورية محكمة|عدة مؤلفين=Ripple'],False,'cite_note-9','cite_ref-9'),
+('<ref>{{استشهاد بدورية محكمة|عنوان=Effects of Subsistence',None,['{{استشهاد بدورية محكمة|عنوان=Effects of Subsistence'],False,'cite_note-10','cite_ref-10'),
+('<ref name=":0">',':0',[],True,'cite_note-:0-11','cite_ref-:0_11-0'),
+('<ref>Altrichter',None,[],True,'cite_note-12','cite_ref-12'),
+('<ref>Kinnaird',None,[],True,'cite_note-13','cite_ref-13'),
+]
+for an,nm,tp,un,nid,rid in R:
+    a.D(an,name=nm,tpl=[(x,) for x in tp],unstr=un,note_id=nid,notes='Webarchive/وصلة مكسورة/ردمك templates are not citation templates.' if un else '')
+    a.U(an,rid=rid)
+for v,s in [('10.1126/science.1251817','doi'),('25061202','pmid'),('10.1126/science.345.6195.392','doi'),('25061199','pmid'),('10.1093/biosci/bix125','doi'),('10.1046/j.1523-1739.2000.98485.x','doi')]:
+    a.I(v,scheme=s,key=v)
+a.un.append('Source has 18 refs overall; only those starting before cp 8051 (13) are in the window.')
+a.save('','none',"2026-11-03T16:13:40Z")

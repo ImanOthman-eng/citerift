@@ -1,0 +1,42 @@
+# Fail-first for the review fixes: the tests of tests/stage03/test_g5c_unit_semantics.py as of the fix, run against the reviewed commit 4d44e6c (its src on PYTHONPATH, worktree), 2026-11-03.
+# Command: PYTHONPATH=<worktree 4d44e6c>/src python -m pytest -q -p no:cacheprovider tests/stage03/test_g5c_unit_semantics.py
+        """RV-4 on retained data (exposed, regression only): two captures of one revision, one whose render failed."""
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_text_is_unresolved[en-A{{efn|An eyre was an occasional circuit court.}}\n{{notelist}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_text_is_unresolved[en-A{{efn|[[Latin]]: ''Excerpta Constantiniana''; [[Greek language|Greek]]: ''Eklogai''.}}\n{{notelist}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_text_is_unresolved[ar-\u0623{{\u0645\u0644\u0627|\u0643\u0627\u0646\u062a \u0645\u062d\u0643\u0645\u0629 \u0627\u0644\u0625\u064a\u0631 \u0645\u062d\u0643\u0645\u0629 \u0645\u062a\u0646\u0642\u0644\u0629.}}\n{{\u062b\u0628\u062a \u0627\u0644\u0645\u0644\u0627\u062d\u0638\u0629}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_template_without_own_render_output_is_unresolved
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_unresolved_definition_is_in_the_exception_ledger
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_beside_a_template_the_render_cannot_show_is_unresolved[en-A<ref>Beolens, B. (2011). ''The Eponym Dictionary''. {{ISBN|978-1-907807-44-2}}.</ref>-ISBN-params0-<a href="./Special:BookSources/9781907807442">ISBN 978-1-907807-44-2</a>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_beside_a_template_the_render_cannot_show_is_unresolved[en-A<ref>Danilatos, G.D. {{US patent|4785182}} filed 1987.</ref>-US patent-params1-<a rel="mw:ExtLink" href="https://patents.google.com/patent/US4785182" class="external text">US patent 4,785,182</a>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_beside_a_template_the_render_cannot_show_is_unresolved[ar-\u0623<ref>\u0627\u0644\u0642\u0627\u0645\u0648\u0633 \u0627\u0644\u0637\u0628\u064a {{Webarchive|url=http://example.org/a|date=2020}}</ref>-Webarchive-params2-<a rel="mw:ExtLink" href="http://example.org/a" class="external text">\u0645\u0624\u0631\u0634\u0641</a>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-67651016-a1-208-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-6358-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-6857-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-10376-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_wrapper_around_a_citation_template_is_not_a_second_unit[en-A<ref>{{small|{{cite web |url=http://example.org/a |title=T |doi=10.1000/abc}}}}</ref>-small-params0-Cite web]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_wrapper_around_a_citation_template_is_not_a_second_unit[ar-\u0623<ref>{{\u0646\u0635 \u0635\u063a\u064a\u0631|{{\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0643\u062a\u0627\u0628|\u0639\u0646\u0648\u0627\u0646=\u0643}}}}</ref>-\u0646\u0635 \u0635\u063a\u064a\u0631-params1-\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0643\u062a\u0627\u0628]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_wrapper_around_an_unclassified_template_with_citation_markup_is_unresolved
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_issues_name_the_renumbered_unit
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_container_issues_name_the_renumbered_container
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_name_rule_template_without_evidence_is_not_a_citation_unit[ar-\u0623<ref>{{\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0647\u0627\u0631\u0641\u0627\u0631\u062f \u062f\u0648\u0646 \u0623\u0642\u0648\u0627\u0633|\u0641\u0648\u0643\u0633|2002}}</ref>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_name_rule_template_without_evidence_is_not_a_citation_unit[ar-{{\u0635\u0646\u062f\u0648\u0642 \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0634\u062e\u0635|\u0648\u0644\u0627\u062f\u0629=1945<ref>{{\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0647\u0627\u0631\u0641\u0627\u0631\u062f \u062f\u0648\u0646 \u0623\u0642\u0648\u0627\u0633|\u0641\u0648\u0643\u0633|2002}}</ref>}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_link_and_comment_without_evidence_is_unresolved[en-A<ref>{{harvnb|N\xe9meth|2018|p=3}}, treats these as two separate volumes.</ref>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_link_and_comment_without_evidence_is_unresolved[en-{{Infobox person|birth_date=1945<ref>{{harvnb|N\xe9meth|2018}}, treats these as two.</ref>}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_link_and_comment_without_evidence_is_unresolved[ar-\u0623<ref>{{\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0647\u0627\u0631\u0641\u0627\u0631\u062f \u062f\u0648\u0646 \u0623\u0642\u0648\u0627\u0633|\u0641\u0648\u0643\u0633|2002}}\u060c \u0648\u064a\u0642\u0648\u0644 \u0625\u0646 \u0627\u0644\u0645\u062d\u0643\u0645\u0629 \u0645\u062a\u0646\u0642\u0644\u0629.</ref>]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_the_same_revision_is_unresolved_with_or_without_its_render
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_citation_written_in_an_explanatory_note_is_reported[en-A{{efn|Smith, J. (2001). ''A Book''. Publisher. p. 5.}}\n{{notelist}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_citation_written_in_an_explanatory_note_is_reported[ar-\u0623{{\u0645\u0644\u0627|\u0633\u0645\u064a\u062b\u060c \u062c. (2001). \u0643\u062a\u0627\u0628. \u0627\u0644\u0646\u0627\u0634\u0631. \u0635 5.}}\n{{\u062b\u0628\u062a \u0627\u0644\u0645\u0644\u0627\u062d\u0638\u0629}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_ref_whose_text_is_only_in_nowiki_is_reported
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_the_reason_does_not_claim_render_evidence_that_was_not_read
+27 failed, 59 passed in 6.24s
+
+# tests/stage03/test_wiki_mf1_tokenizer.py against 4d44e6c:
+ImportError: cannot import name 'interpreter_memory_failure' from 'citerift.wiki.worker' (the classifier did not exist)
+
+# Bibliography-entry extension (found in the exposed regression after the review): the same test file, -k 'bibliography or encyclopaedia', against 4d44e6c
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_an_unlisted_template_with_citation_markup_in_a_bibliography_entry_is_g
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_bibliography_entry_made_only_from_a_template_field_is_unresolved[None-identifiers only in templates with no usable render: EI2]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_bibliography_entry_made_only_from_a_template_field_is_unresolved[<h2>Sources</h2><ul><li><span about="#mwt1" typeof="mw:Transclusion" data-mw='{"parts": [{"template": {"target": {"wt": "EI2"}, "params": {"last": {"wt": "Barthold"}, "title": {"wt": "al-Bar\u0101mika"}, "doi": {"wt": "10.1163/1573-3912_islam_COM_0099"}}, "i": 0}}]}'>Barthold, al-Bar\u0101mika</span></li></ul>-identifiers only in templates that are not citation templates: EI2]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_a_bibliography_entry_made_only_from_a_template_field_is_unresolved[<h2>Sources</h2><ul><li>Barthold</li></ul>-identifiers only in templates with no output of their own]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_the_final_holdout_encyclopaedia_of_islam_entries_are_g
+5 failed, 4 passed, 85 deselected in 0.77s

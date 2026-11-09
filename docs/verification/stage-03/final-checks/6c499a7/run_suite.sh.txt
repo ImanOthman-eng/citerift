@@ -1,0 +1,6 @@
+#!/bin/bash
+# usage: run_suite.sh <python version>
+v=$1; SP=<scratch>; R=$SP/final-6c499a7; cd $SP/wt-6c499a7-$v
+{ echo "rev $(git rev-parse HEAD)"; uv sync --locked --python $v 2>&1 | tail -2; .venv/bin/python -V; echo "porcelain lines: $(git status --porcelain | wc -l)"; } > $R/env-$v.txt 2>&1
+.venv/bin/python -P -m pytest -p no:cacheprovider --citerift-report $R/test-report-$v.json > $R/pytest-$v.txt 2>&1; echo "pytest exit $?" >> $R/pytest-$v.txt
+echo "porcelain after: $(git status --porcelain | wc -l)" >> $R/env-$v.txt

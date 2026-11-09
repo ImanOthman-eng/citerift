@@ -1,0 +1,286 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76789790,
+  "source_sha256": "a8c5162e97f0da54708d5ca501a7983273e3c145fa923384f4082cc5190e8e10",
+  "html_sha256": "d07ca458f717c2d689a39038e41946d3d93f4cf8eee499b4ef59b8eb57a73b71",
+  "window": [
+   0,
+   3651
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h3",
+  "started_at": "2026-11-03T16:11:00Z",
+  "finished_at": "2026-11-03T16:12:55Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-76789790/source.wikitext",
+    "sha256": "a8c5162e97f0da54708d5ca501a7983273e3c145fa923384f4082cc5190e8e10"
+   },
+   {
+    "path": "packets/ar-76789790/render.html",
+    "sha256": "d07ca458f717c2d689a39038e41946d3d93f4cf8eee499b4ef59b8eb57a73b71"
+   },
+   {
+    "path": "packets/ar-76789790/packet.json",
+    "sha256": "(not hashed separately; read for window and hashes)"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote",
+  "unresolved": "nothing undecided beyond unresolved_notes"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 572,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 577,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1160,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1165,
+      "quote": "{{استشهاد وي"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{وصلة مكسورة}} renders \"[وصلة مكسورة]\" (dead-link notice), not a retraction marker."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1599,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link plus {{Webarchive}} (not a citation template)."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2075,
+    "quote": "<ref name=\":0\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2090,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 2880,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2885,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 572,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 572,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1160,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 1160,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1599,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 1599,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2075,
+    "quote": "<ref name=\":0\">"
+   },
+   "binds_to": {
+    "cp": 2075,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2673,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 2075,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_4-1",
+   "notes": "self-closing reuse"
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2880,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 2880,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 840,
+    "quote": "10.1016/S0031-3955(08)70026-9"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0031-3955(08)70026-9",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2119,
+    "quote": "https://online.liebertpub.com/doi/full/10.1089/bfm.2011.9998"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1089/bfm.2011.9998",
+   "notes": "publisher URL with /doi/ path segment; DOI ends at the closing |"
+  },
+  {
+   "at": {
+    "cp": 2452,
+    "quote": "10.1089/bfm.2011.9998"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1089/bfm.2011.9998",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2486,
+    "quote": "https://web.archive.org/web/20191215020715/https://online.li"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1089/bfm.2011.9998",
+   "notes": "archive.org snapshot URL containing another site's URL"
+  },
+  {
+   "at": {
+    "cp": 3173,
+    "quote": "10.1016/j.jmwh.2007.05.005"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.jmwh.2007.05.005",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

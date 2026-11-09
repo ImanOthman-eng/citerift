@@ -1,0 +1,55 @@
+import json,re,hashlib,datetime
+B='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h2/'
+GUIDE=('ANNOTATION_GUIDE_v1.1.md','2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e')
+START=datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+def load(rev):
+    pk=json.load(open(B+f'packets/en-{rev}/packet.json'))
+    t=open(B+f'packets/en-{rev}/source.wikitext',encoding='utf-8').read()
+    return pk,t
+def loc(t,cp,n=30):
+    q=t[cp:cp+n]; assert t[cp:cp+len(q)]==q; return {'cp':cp,'quote':q}
+def ref_end(t,cp):
+    return t.index('</ref>',cp)
+def tpl_locs(t,s,e):
+    return [{'at':loc(t,m.start(),20)} for m in re.finditer(r'\{\{\s*(?:cite|Cite)\b',t[s:e]) for m in [type('M',(),{'start':lambda self,o=s+m.start():o})()]]
+def ids_in(t,s,e,role='primary_citation_field'):
+    out=[]
+    for m in re.finditer(r'\|\s*(doi|pmid)\s*=\s*([^\n|}]*?)\s*(?=[\n|}])',t[s:e]):
+        sch=m.group(1); val=m.group(2); cp=s+m.start(2)
+        assert t[cp:cp+len(val)]==val
+        if sch=='doi': key=val.lower() if re.fullmatch(r'10\.\d{4,9}/\S+',val) else None
+        else: key=val if re.fullmatch(r'[1-9]\d{0,8}',val) else None
+        out.append({'at':{'cp':cp,'quote':val},'scheme':sch,'role':role,'key':key,'notes':''})
+    return out
+def write(rev,defs,uses,idents,unres,tools,extra_files=''):
+    pk,t=load(rev)
+    for x in defs: 
+        a=x['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+        for tp in x['templates']:
+            a=tp['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+    for u in uses:
+        for k in ('at','binds_to'):
+            a=u[k]
+            if a!='missing' and a!='unclear': assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+    for i in idents:
+        a=i['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+    w=pk['window']
+    doc={'format':'citerift-stage03-annotation-v1',
+     'article':{'wiki':'en','revision_id':rev,'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':[w['cp_start'],w['cp_end']]},
+     'provenance':{'agent':'d035-eval-en-h2','started_at':START,'finished_at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+       'files_opened':[{'path':GUIDE[0],'sha256':GUIDE[1]},
+         {'path':f'packets/en-{rev}/packet.json','sha256':'(not hashed in packet; read for window and hashes)'},
+         {'path':f'packets/en-{rev}/source.wikitext','sha256':pk['source_sha256']},
+         {'path':f'packets/en-{rev}/render.html','sha256':pk['html_sha256']}],
+       'tools':tools,'unresolved':'; '.join(unres) if unres else 'nothing undecided beyond the notes'},
+     'definitions':defs,'uses':uses,'identifiers':idents,'unresolved_notes':unres}
+    json.dump(doc,open(B+f'out/en-{rev}.json','w'),ensure_ascii=False,indent=1)
+    inw=[d for d in defs if d['in_window']]
+    print(rev,'defs in window',len(inw),'defs total',len(defs),'uses',len(uses),'ids',len(idents))
+TOOLS='python3 -I stdin/stdlib scripts (re, json, lxml) in tools/: regex scan for <ref/{{cite/10./PMID, listing of sup typeof=mw:Extension/ref and li cite_note ids, substring verification of every quote; labels decided by reading'
+def D(i,t,cp,kind,name,group,render,marker='none',mt=None,notes='',unstr=False,in_window=True,end=None,templates=None):
+    e=end if end else ref_end(t,cp)
+    return {'id':i,'at':loc(t,cp),'in_window':in_window,'kind':kind,'name':name,'group':group,
+      'templates':tpl_locs(t,cp,e) if templates is None else templates,'unstructured':unstr,'render_note_id':render,'marker':marker,'marker_text':mt,'notes':notes}
+def U(i,t,cp,bind,render,notes=''):
+    return {'id':i,'at':loc(t,cp),'binds_to':loc(t,bind) if isinstance(bind,int) else bind,'render_ref_id':render,'notes':notes}

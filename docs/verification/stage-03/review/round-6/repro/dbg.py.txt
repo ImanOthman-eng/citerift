@@ -1,0 +1,7 @@
+from h2 import *
+note = "cite_note-FOOTNOTEABCD-1"
+li = note_li(note, ["cite_ref-FOOTNOTEABCD_1-0", "cite_ref-FOOTNOTEABCD_1-1"], "A et al. X.")
+b = "<p>x" + sfn_sup(1, note, "cite_ref-FOOTNOTEABCD_1-0", "FOOTNOTEABCD", {"1":"A"}) + " y" + sfn_sup(1, note, "cite_ref-FOOTNOTEABCD_1-1", "FOOTNOTEABCD", {"1":"A"}, about="mwt21") + "</p>" + references([li])
+d,_ = run("x{{sfn|A}} y{{sfn|A}}", b)
+for i in d["issues"]: print(i)
+print(d["render"] if "render" in d else d.keys())

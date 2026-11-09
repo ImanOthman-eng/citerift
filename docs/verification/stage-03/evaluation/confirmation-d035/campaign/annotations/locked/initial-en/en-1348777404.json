@@ -1,0 +1,181 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1348777404,
+  "source_sha256": "8f46b72357a679158080348fd1d01979b5b354c56db75a2c5841dbad86349cf6",
+  "html_sha256": "7fec8e5cb3c573191de45540418b932328c2e69cbebe8d8bbcc7987cd2aa7c12",
+  "window": [
+   0,
+   1729
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h2",
+  "started_at": "2026-11-03T16:13:00Z",
+  "finished_at": "2026-11-03T16:13:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1348777404/packet.json",
+    "sha256": "(not hashed in packet; read for window and hashes)"
+   },
+   {
+    "path": "packets/en-1348777404/source.wikitext",
+    "sha256": "8f46b72357a679158080348fd1d01979b5b354c56db75a2c5841dbad86349cf6"
+   },
+   {
+    "path": "packets/en-1348777404/render.html",
+    "sha256": "7fec8e5cb3c573191de45540418b932328c2e69cbebe8d8bbcc7987cd2aa7c12"
+   }
+  ],
+  "tools": "python3 -I stdin/stdlib scripts (re, json, lxml) in tools/: regex scan for <ref/{{cite/10./PMID, listing of sup typeof=mw:Extension/ref and li cite_note ids, substring verification of every quote; labels decided by reading",
+  "unresolved": "{{Taxonbar|from=Q3013221}} and Speciesbox may emit Wikidata-derived content; none identified in source, not listed."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 112,
+    "quote": "<ref name=\"iucn status 17 Nove"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn status 17 November 2021",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 153,
+      "quote": "{{cite iucn |author="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn_status_17_November_2021-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Cite iucn template; in infobox status_ref."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 710,
+    "quote": "<ref name=POWO>{{cite web |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "POWO",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 725,
+      "quote": "{{cite web |url= htt"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-POWO-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "First occurrence with a body; the earlier <ref name=POWO/> in synonyms_ref is self-closing."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1020,
+    "quote": "<ref name=COL>{{cite web |url="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "COL",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1034,
+      "quote": "{{cite web |url= htt"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-COL-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 112,
+    "quote": "<ref name=\"iucn status 17 Nove"
+   },
+   "binds_to": {
+    "cp": 112,
+    "quote": "<ref name=\"iucn status 17 Nove"
+   },
+   "render_ref_id": "cite_ref-iucn_status_17_November_2021_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 584,
+    "quote": "<ref name=POWO/>\n}}\n\n'''''Vati"
+   },
+   "binds_to": {
+    "cp": 710,
+    "quote": "<ref name=POWO>{{cite web |url"
+   },
+   "render_ref_id": "cite_ref-POWO_2-0",
+   "notes": "self-closing, in infobox synonyms_ref; binds to later body"
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 710,
+    "quote": "<ref name=POWO>{{cite web |url"
+   },
+   "binds_to": {
+    "cp": 710,
+    "quote": "<ref name=POWO>{{cite web |url"
+   },
+   "render_ref_id": "cite_ref-POWO_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1020,
+    "quote": "<ref name=COL>{{cite web |url="
+   },
+   "binds_to": {
+    "cp": 1020,
+    "quote": "<ref name=COL>{{cite web |url="
+   },
+   "render_ref_id": "cite_ref-COL_3-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 302,
+    "quote": "10.2305/IUCN.UK.2019-2.RLTS.T31446A125415943.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2019-2.rlts.t31446a125415943.en",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "{{Taxonbar|from=Q3013221}} and Speciesbox may emit Wikidata-derived content; none identified in source, not listed."
+ ]
+}

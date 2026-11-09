@@ -1,0 +1,44 @@
+import sys,re; sys.path.insert(0,'tools')
+from gen import *
+a,t,sups,lis,tags,uses,names,nm=run('en-1371940951')
+i0=align(sups,names)[0]
+L=a.loc
+defs={}
+def tm(s,e): return [{"cp":m.start()+s,"quote":t[s+m.start():s+m.start()+14]} for m in re.finditer(r'\{\{\s*[Cc]ite [a-z]+',t[s:e])]
+def li_for(name,k=None):
+    c=[x for x in lis if re.fullmatch(r'cite_note-%s-\d+'%re.escape(name.replace(' ','_')),x)]
+    assert len(c)==1,(name,c); return c[0]
+n=0
+# definitions: named-with-body refs and unnamed refs with body, whose tag start in window; plus out-of-window targets
+used=set(x for x in names if x)
+bodytags=[m for m in tags if not m.group().endswith('/>')]
+w0,w1=a.p['window']['cp_start'],a.p['window']['cp_end']
+seen=set(); k=0
+unnamed_id={95838:None,96292:None}
+# render ids of unnamed: take from sups aligned to the use
+useid={m.start():sups[i0+j][0] for j,m in enumerate(uses)}
+for m in bodytags:
+    name=nm(m); inw=w0<=m.start()<w1
+    if not inw and not (name in used and name not in seen and not any(x.start()<m.start() and nm(x)==name for x in bodytags)): continue
+    if not inw and name not in used: continue
+    if name in seen: continue
+    if name: seen.add(name)
+    k+=1; e=t.find('</ref>',m.start())
+    loc={"cp":m.start(),"quote":m.group()}
+    if name: nid=li_for(name)
+    else: nid='cite_note-'+useid[m.start()].split('cite_ref-')[1]
+    assert nid in lis,nid
+    tl=tm(m.start(),e)
+    a.define(f'd{k}',loc,'note',name,'',tl,False,nid)
+    defs[name or m.start()]=loc
+for j,m in enumerate(uses):
+    name=names[j]; loc={"cp":m.start(),"quote":m.group()[:60]}
+    b=loc if name is None else defs[name]
+    a.use(f'u{j+1}',loc,b,sups[i0+j][0])
+# note hindu unstructured
+for d in a.defs:
+    if d['name']=='Hindu': d['unstructured']=True; d['notes']='Hand-written citation with a bare web.archive.org link, no citation template.'
+    if d['name']=='JMF4': d['notes']='Its first use (self-closing at an earlier position) precedes this definition; binds forward to it.'
+    if d['templates']==[] : pass
+a.un.append("Window contains no DOI or PMID occurrences (checked by text search for 10.dddd/, doi, pmid, pubmed). Definitions whose body is only {{harvnb|...}} have no citation template; unstructured=false because they are structured short-citation links.")
+a.write()

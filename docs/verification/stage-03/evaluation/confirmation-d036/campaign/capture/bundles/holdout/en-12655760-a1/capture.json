@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 2152,
+   "body_sha256": "f516a477336f2d6d3608dfce4def6be04de16d75c8fc27f1d83eb9543971e68f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.365,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:10:10.482553Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12655760",
+   "wire_bytes": 1186
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "3d64913de6702bf2deacbf1fe9ca2d283dc06104e64f023b881956a405cb172f",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.319,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:10:20.848735Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374321138/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 33383,
+   "body_sha256": "ae402225ad54a57b2c05e413ef71daaef66b2fc5293ffd6e6d39e61f068833ef",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.376,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:11:00.168716Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374321138/html",
+   "wire_bytes": 7716
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "3d64913de6702bf2deacbf1fe9ca2d283dc06104e64f023b881956a405cb172f"
+ ],
+ "finished_at": "2026-11-04T10:11:00.545502Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 12655760,
+  "parent_revision_id": 1367250398,
+  "redirect_followed": null,
+  "revision_id": 1374321138,
+  "revision_timestamp": "2026-09-11T07:59:39Z",
+  "sha1": "ac6baaec12af95280420e03126c12bc1281e4f29",
+  "size": 1592,
+  "title": "Xerotricha gasulli",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "ae402225ad54a57b2c05e413ef71daaef66b2fc5293ffd6e6d39e61f068833ef",
+  "bytes": 33383,
+  "checks": {
+   "document_revision_id": "1374321138",
+   "header_revision_id": "1374321138",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "12655760",
+   "render_id": "bb8c0077-d437-11f1-8712-e39dcb07f49e",
+   "revision_sha1": "ac6baaec12af95280420e03126c12bc1281e4f29",
+   "revision_sha1_base36": "k52a0guvfmjzmb03nbp79yj5fk5tq95"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1374321138",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:11:00 GMT",
+   "etag": "W/\"1374321138/bb8c0077-d437-11f1-8712-e39dcb07f49e/view\"",
+   "last-modified": "Fri, 30 Oct 2026 04:38:09 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374321138/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 12655760,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "5500657e5560cabcddd955607a612cce0bd457b4f346033c8895f6140157a21a",
+  "bytes": 1592,
+  "response_artifact": "f516a477336f2d6d3608dfce4def6be04de16d75c8fc27f1d83eb9543971e68f",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12655760"
+ },
+ "started_at": "2026-11-04T10:10:00.947983Z",
+ "status": "complete"
+}

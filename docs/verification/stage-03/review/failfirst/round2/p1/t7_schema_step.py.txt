@@ -1,0 +1,12 @@
+"""An extraction document containing DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS in structural_steps against the
+extraction schema, and verify_bundle on it."""
+import json
+from h import run
+from citerift.wiki import verify_bundle
+from citerift.wiki.schemas import validate, EXTRACTION
+p, doc = run("A<ref>https://pubs.acs.org/doi/10.1021/xy.5/abstract</ref>", label="publisher view segment")
+print("structural_steps:", doc["identifiers"][0]["decoding"]["structural_steps"])
+print("schema problems:", validate(doc, EXTRACTION))
+rep = verify_bundle(p, doc)
+print("verified:", rep["verified"])
+print("error issues:", [ (i["code"], i.get("detail","")[:160]) for i in rep["issues"] if i["severity"]=="error"])

@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 2799,
+   "body_sha256": "f9445de5127beed65491348a0f5f9f8f2a7feb37fa22ff27b8d25dca8ac03fcd",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.41,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:45:11.146332Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8470133",
+   "wire_bytes": 1580
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "bbbf111d82621d02f88ed9ae63e693744b17da63d0ec08720eb9580e05557206",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.354,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:45:21.557141Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1276757708/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 70583,
+   "body_sha256": "f0d240214048cb8a74fce219902295b6abc580ee48c94cb5bf9c805ee98a66e8",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.83,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:46:00.911613Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1276757708/html",
+   "wire_bytes": 14135
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "bbbf111d82621d02f88ed9ae63e693744b17da63d0ec08720eb9580e05557206"
+ ],
+ "finished_at": "2026-11-03T15:46:01.741989Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 8470133,
+  "parent_revision_id": 1136151565,
+  "redirect_followed": null,
+  "revision_id": 1276757708,
+  "revision_timestamp": "2025-02-20T15:39:18Z",
+  "sha1": "447006103cb2878efdbae33e04fa43e72beb5faf",
+  "size": 2251,
+  "title": "Čardak, Sremska Kamenica",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f0d240214048cb8a74fce219902295b6abc580ee48c94cb5bf9c805ee98a66e8",
+  "bytes": 70583,
+  "checks": {
+   "document_revision_id": "1276757708",
+   "header_revision_id": "1276757708",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "8470133",
+   "render_id": "ab5c8b53-d79d-11f1-b4d2-07d204bc8dee",
+   "revision_sha1": "447006103cb2878efdbae33e04fa43e72beb5faf",
+   "revision_sha1_base36": "7zskuw6cckcoqzwi2er27rdsd3kl5m7"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1276757708",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 15:46:01 GMT",
+   "etag": "W/\"1276757708/ab5c8b53-d79d-11f1-b4d2-07d204bc8dee/view\"",
+   "last-modified": "Tue, 03 Nov 2026 12:28:45 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1276757708/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 8470133,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "0a1772933049c73e3ee4965159857de78c4853b0c0dd6f2b6cf906f0bf63adb2",
+  "bytes": 2251,
+  "response_artifact": "f9445de5127beed65491348a0f5f9f8f2a7feb37fa22ff27b8d25dca8ac03fcd",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8470133"
+ },
+ "started_at": "2026-11-03T15:45:01.504057Z",
+ "status": "complete"
+}

@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:contracts:v1:investigation",
+  "title": "CITERIFT investigation record, major version 1",
+  "description": "Foundation contract for one investigation of a scientific paper and the Wikipedia citations that refer to it. A retracted citation is never, by itself, a finding that the citing claim is false: this contract has no field for claim truth, and AI assessments describe how a citation is used, as model inferences.",
+  "x-citerift-version": "1.0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "investigation_id", "created_at", "status", "subject_paper", "citations", "assessments", "events", "limitations"],
+  "properties": {
+    "schema_version": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/schema_version"},
+    "investigation_id": {
+      "description": "Lowercase UUID.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$(?!\\n)"
+    },
+    "created_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+    "status": {
+      "description": "Lifecycle of the investigation record. 'partial' means it finished with documented gaps.",
+      "enum": ["created", "in_progress", "completed", "partial", "failed"]
+    },
+    "synthetic": {
+      "description": "true for fixtures and simulations. Synthetic records must never be presented as observed findings.",
+      "type": "boolean"
+    },
+    "subject_paper": {"$ref": "#/$defs/paper"},
+    "citations": {"type": "array", "items": {"$ref": "#/$defs/wiki_citation"}},
+    "assessments": {"type": "array", "items": {"$ref": "#/$defs/ai_assessment"}},
+    "events": {"type": "array", "items": {"$ref": "#/$defs/event"}},
+    "limitations": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "assertion": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/assertion"},
+    "paper": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["identifiers", "retraction_status"],
+      "if": {
+        "properties": {"retraction_status": {"properties": {"value": {"const": "not_found_in_checked_sources"}}, "required": ["value"]}},
+        "required": ["retraction_status"]
+      },
+      "then": {
+        "description": "No retraction record was found, so no retraction date can be stated (Y-12).",
+        "properties": {"retraction_date": {"properties": {"value": {"type": "null"}}, "not": {"required": ["alternatives"]}}}
+      },
+      "properties": {
+        "identifiers": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/paper_identifiers"},
+        "title": {
+          "allOf": [
+            {"$ref": "#/$defs/assertion"},
+            {"properties": {"value": {"type": ["string", "null"]}, "alternatives": {"items": {"properties": {"value": {"type": "string"}}}}}}
+          ]
+        },
+        "retraction_status": {
+          "description": "There is deliberately no value meaning 'not retracted', in 'value' or in any conflicting alternative. 'not_found_in_checked_sources' says only that the checked sources hold no record, so it must be marked uncertain, and it is never one side of a conflict: an absent record does not disagree with a present one (Y-05). Conflicting alternatives must differ; that is a semantic check. A retraction status never comes from a model: no model_inference status, and no model or confidence fields under any status.",
+          "allOf": [
+            {"$ref": "#/$defs/assertion"},
+            {
+              "properties": {
+                "value": {
+                  "enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources", null]
+                },
+                "status": {"not": {"const": "model_inference"}},
+                "alternatives": {
+                  "items": {
+                    "properties": {
+                      "value": {"enum": ["retracted", "expression_of_concern", "correction", "reinstated"]}
+                    }
+                  }
+                }
+              },
+              "not": {"anyOf": [{"required": ["model"]}, {"required": ["confidence"]}]}
+            },
+            {
+              "if": {"properties": {"value": {"const": "not_found_in_checked_sources"}}, "required": ["value"]},
+              "then": {"properties": {"status": {"const": "uncertain"}, "provenance": {"minItems": 1}}, "required": ["provenance"]}
+            }
+          ]
+        },
+        "retraction_date": {
+          "allOf": [
+            {"$ref": "#/$defs/assertion"},
+            {
+              "description": "Year, year-month or full date. Calendar validity (for example no 2020-02-30) is a semantic check.",
+              "properties": {
+                "value": {"type": ["string", "null"], "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$(?!\\n)"},
+                "alternatives": {"items": {"properties": {"value": {"type": "string", "pattern": "^[0-9]{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12][0-9]|3[01]))?)?$(?!\\n)"}}}}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "wiki_citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["citation_id", "article", "identifiers", "provenance"],
+      "properties": {
+        "citation_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$(?!\\n)"},
+        "article": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["language", "title", "revision_id"],
+          "properties": {
+            "language": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/wiki_language"},
+            "title": {"type": "string", "minLength": 1, "maxLength": 512},
+            "page_id": {"type": "integer", "minimum": 1},
+            "revision_id": {"description": "The exact revision the citation was observed in.", "type": "integer", "minimum": 1},
+            "revision_timestamp": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"}
+          }
+        },
+        "identifiers": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/paper_identifiers"},
+        "context": {
+          "description": "Text around the citation, as observed in the cited revision.",
+          "allOf": [
+            {"$ref": "#/$defs/assertion"},
+            {"properties": {"value": {"type": ["string", "null"], "maxLength": 20000}, "alternatives": {"items": {"properties": {"value": {"type": "string", "maxLength": 20000}}}}}}
+          ]
+        },
+        "provenance": {"type": "array", "minItems": 1, "items": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/source_ref"}}
+      }
+    },
+    "ai_assessment": {
+      "description": "Output of a model about how a citation is used. Always a model inference; human review is recorded separately and does not change the epistemic status.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessment_id", "target_citation_id", "task", "status", "model", "produced_at", "abstained", "label", "confidence"],
+      "properties": {
+        "assessment_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$(?!\\n)"},
+        "target_citation_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,128}$(?!\\n)"},
+        "task": {"description": "Name of the evaluated task, defined in Stage 06.", "type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$(?!\\n)"},
+        "status": {"const": "model_inference"},
+        "model": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/model_ref"},
+        "produced_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+        "abstained": {"type": "boolean"},
+        "label": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_]{1,63}$(?!\\n)"},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "rationale": {"type": "string", "maxLength": 5000},
+        "human_review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["outcome", "reviewed_at"],
+          "properties": {
+            "outcome": {"enum": ["agree", "disagree", "unsure"]},
+            "reviewed_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+            "note": {"type": "string"}
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"abstained": {"const": true}}},
+          "then": {"properties": {"label": {"type": "null"}, "confidence": {"type": "null"}}},
+          "else": {"properties": {"label": {"type": "string"}, "confidence": {"type": "number"}}}
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["at", "kind", "description"],
+      "properties": {
+        "at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$(?!\\n)"},
+        "description": {"type": "string", "minLength": 1},
+        "provenance": {"type": "array", "items": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/source_ref"}}
+      }
+    }
+  }
+}

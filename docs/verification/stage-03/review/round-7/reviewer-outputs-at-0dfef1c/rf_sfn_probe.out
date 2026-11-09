@@ -1,0 +1,17 @@
+sfn vs sf                                                  [('identical_definitions', 2, 2)] []  merge
+sfn vs Shortened footnote                                  [('identical_definitions', 2, 2)] []  merge
+sfn vs sfnp                                                [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  conflict
+sfnp vs sfnb                                               [('identical_definitions', 2, 2)] []  merge
+sfn vs sfnnb(redirect)                                     [('identical_definitions', 2, 2)] []  merge
+ref=a b vs a_b                                             [('identical_definitions', 2, 2)] []  merge
+ref=a b vs a  b                                            [('identical_definitions', 2, 2)] []  merge
+ref=a vs A                                                 [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  conflict
+ref=harv vs none                                           [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  (MW merges; engine may split)
+ref=a vs ref=(blank)                                       [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  conflict
+Ref=a vs ref=a                                             [('identical_definitions', 2, 2)] []  merge?
+NBSP vs space name                                         [('single_definition', 1, 1), ('single_definition', 1, 1)] []  apart
+tab trailing positional                                    [('identical_definitions', 2, 2)] []  merge
+ar Sfn vs Sf                                               [('identical_definitions', 2, 2)] []  merge
+ar Sfn vs Sfnp                                             [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  conflict
+ar Sfn vs Harvnp                                           [('identical_definitions', 2, 2)] []  merge (redirect)
+en sfn vs en sfn ps=none vs default                        [('conflicting_definitions', 2, 2)] ['REF_DEFINITIONS_CONFLICT']  conflict

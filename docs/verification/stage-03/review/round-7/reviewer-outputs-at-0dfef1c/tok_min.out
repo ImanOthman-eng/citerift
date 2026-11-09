@@ -1,0 +1,34 @@
+53
+'http://x.y: '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), ExternalLinkClose(), Text(text=': ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y:'), ExternalLinkClose(), Text(text=' ')]
+'http://x.y&amp;:'
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), Text(text='amp'), HTMLEntityEnd(), ExternalLinkClose(), Text(text=':')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), Text(text='amp'), HTMLEntityEnd(), Text(text=''), ExternalLinkClose(), Text(text=':')]
+'http://x.y{{!}} '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), TemplateOpen(), Text(text='!'), TemplateClose(), ExternalLinkClose(), Text(text=' ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), TemplateOpen(), Text(text='!'), TemplateClose(), Text(text=''), ExternalLinkClose(), Text(text=' ')]
+'http://x.y&amp; '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), Text(text='amp'), HTMLEntityEnd(), ExternalLinkClose(), Text(text=' ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), Text(text='amp'), HTMLEntityEnd(), Text(text=''), ExternalLinkClose(), Text(text=' ')]
+'http://x.y&#32;:'
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), HTMLEntityNumeric(), Text(text='32'), HTMLEntityEnd(), ExternalLinkClose(), Text(text=':')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), HTMLEntityNumeric(), Text(text='32'), HTMLEntityEnd(), Text(text=''), ExternalLinkClose(), Text(text=':')]
+'http://x.y&#32; '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), HTMLEntityNumeric(), Text(text='32'), HTMLEntityEnd(), ExternalLinkClose(), Text(text=' ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), HTMLEntityStart(), HTMLEntityNumeric(), Text(text='32'), HTMLEntityEnd(), Text(text=''), ExternalLinkClose(), Text(text=' ')]
+'http://x.y{{{}}} '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), ArgumentOpen(), ArgumentClose(), ExternalLinkClose(), Text(text=' ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), ArgumentOpen(), ArgumentClose(), Text(text=''), ExternalLinkClose(), Text(text=' ')]
+'http://x.y{{#if: '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y{{#if'), ExternalLinkClose(), Text(text=': ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y{{#if:'), ExternalLinkClose(), Text(text=' ')]
+'http://x.y{{{}}}:'
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), ArgumentOpen(), ArgumentClose(), ExternalLinkClose(), Text(text=':')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), ArgumentOpen(), ArgumentClose(), Text(text=''), ExternalLinkClose(), Text(text=':')]
+'http://x.y<!---->:'
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), CommentStart(), CommentEnd(), ExternalLinkClose(), Text(text=':')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), CommentStart(), CommentEnd(), Text(text=''), ExternalLinkClose(), Text(text=':')]
+'http://x.y<!----> '
+  C : [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), CommentStart(), CommentEnd(), ExternalLinkClose(), Text(text=' ')]
+  Py: [ExternalLinkOpen(brackets=False), Text(text='http://x.y'), CommentStart(), CommentEnd(), Text(text=''), ExternalLinkClose(), Text(text=' ')]

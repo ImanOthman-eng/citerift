@@ -1,0 +1,27 @@
+===== efn name= 'A{{efn|name=|First note doi:10.1000/a}} B{{efn|name=|Second note doi:10.1000/b}}\n{{notelist}}'
+status partial
+ C ct-00001 generated_note None 'lower-alpha' anonymous uses ['us-00001'] units ['un-00001']
+ C ct-00002 generated_note None 'lower-alpha' anonymous uses ['us-00002'] units ['un-00002']
+ U us-00001 efn prose None 'lower-alpha' anonymous ct-00001
+ U us-00002 efn prose None 'lower-alpha' anonymous ct-00002
+ I id-00001 doi label_text labeled_reference_text '10.1000/a' -> 10.1000/a delimited ct-00001 un-00001
+ I id-00002 doi label_text labeled_reference_text '10.1000/b' -> 10.1000/b delimited ct-00002 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== #tag:ref name= 'A{{#tag:ref|First {{cite journal|doi=10.1000/a}}|name=}} B{{#tag:ref|Second {{cite journal|doi=10.1000/b}}|name=}}'
+status partial
+ C ct-00001 generated_note None '' anonymous uses ['us-00001'] units ['un-00001']
+ C ct-00002 generated_note None '' anonymous uses ['us-00002'] units ['un-00002']
+ U us-00001 tag_ref prose None '' anonymous ct-00001
+ U us-00002 tag_ref prose None '' anonymous ct-00002
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/b' -> 10.1000/b field ct-00002 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== <ref name=''> control 'A<ref name="">First {{cite journal|doi=10.1000/a}}</ref> B<ref name="">Second {{cite journal|doi=10.1000/b}}</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ C ct-00002 note None '' anonymous uses ['us-00002'] units ['un-00002']
+ U us-00001 tag prose None '' anonymous ct-00001
+ U us-00002 tag prose None '' anonymous ct-00002
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1000/b' -> 10.1000/b field ct-00002 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']

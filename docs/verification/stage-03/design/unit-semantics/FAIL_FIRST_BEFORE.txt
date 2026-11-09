@@ -1,0 +1,68 @@
+# Fail-first record: tests/stage03/test_g5c_unit_semantics.py against the unchanged engine
+# Engine: src, schemas, pyproject.toml, uv.lock as at 3e51792 (frozen confirmation candidate); repository head 26398f5e59f8e2d0ca0fc71be855c77263d9f49a
+# Command: uv run pytest tests/stage03/test_g5c_unit_semantics.py -q -p no:randomly -rA ; run 2026-11-03T07:40:30Z, Python 3.12.3
+# Expected before the fix: every class E, F, G and H case fails; every class C and D control passes.
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_keeps_a_genuine_plain_citation[; see also [http://example.org/paper Jones, Paper, 2001].-; see also <a rel="mw:ExtLink" href="http://example.org/paper" class="external text">Jones, Paper, 2001</a>.]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_keeps_a_genuine_plain_citation[; Jones 2001, doi:10.1000/xyz-; Jones 2001, doi:10.1000/xyz]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_with_a_link_is_a_citation
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Smith, J. A book. 2001.</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Smith, J. A book. 2001.</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0633\u0645\u064a\u062b\u060c \u062c. \u0643\u062a\u0627\u0628. 2001.</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0633\u0645\u064a\u062b\u060c \u062c. \u0643\u062a\u0627\u0628. 2001.</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Berlak, p. 63.</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Berlak, p. 63.</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0645\u0631\u0643\u0632 \u0628\u064a\u0648: \u0644\u064a\u0628\u064a\u0631\u064a\u0627</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0645\u0631\u0643\u0632 \u0628\u064a\u0648: \u0644\u064a\u0628\u064a\u0631\u064a\u0627</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Beolens, B. (2011). ''The Eponym Dictionary''. {{ISBN|978-1-907807-44-2}}.</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Beolens, B. (2011). ''The Eponym Dictionary''. {{ISBN|978-1-907807-44-2}}.</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Danilatos, G.D. {{US patent|4785182}} filed 1987.</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[en-A<ref>Danilatos, G.D. {{US patent|4785182}} filed 1987.</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0627\u0644\u0642\u0627\u0645\u0648\u0633 \u0627\u0644\u0637\u0628\u064a {{Webarchive|url=http://example.org/a|date=2020}}</ref>-True]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_plain_text_reference_stays_unstructured[ar-\u0623<ref>\u0627\u0644\u0642\u0627\u0645\u0648\u0633 \u0627\u0644\u0637\u0628\u064a {{Webarchive|url=http://example.org/a|date=2020}}</ref>-False]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_locator_only_reference_stays_unstructured[A<ref>{{doi|10.1000/abc}}</ref>]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_locator_only_reference_stays_unstructured[A<ref>http://example.org/paper.pdf</ref>]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_locator_only_reference_stays_unstructured[A<ref>[https://doi.org/10.1000/abc]</ref>]
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_list_defined_plain_reference_stays_unstructured
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_citation_template_with_text_is_unchanged
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_bibliography_entry_is_unchanged
+PASSED tests/stage03/test_g5c_unit_semantics.py::test_campaign_labelled_unstructured_definitions_keep_their_unit
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_alone_is_not_unstructured[en-{{harvnb|Fox|2002|p=4}}-harvnb-params0]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_alone_is_not_unstructured[en-{{harvp|Danilatos|1988}}-harvp-params1]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_alone_is_not_unstructured[ar-{{\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0647\u0627\u0631\u0641\u0627\u0631\u062f \u062f\u0648\u0646 \u0623\u0642\u0648\u0627\u0633|\u0641\u0648\u0643\u0633|2002}}-\u0627\u0633\u062a\u0634\u0647\u0627\u062f \u0628\u0647\u0627\u0631\u0641\u0627\u0631\u062f \u062f\u0648\u0646 \u0623\u0642\u0648\u0627\u0633-params2]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_with_comment_is_unresolved
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_short_citation_link_without_render_is_unresolved
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_is_not_unstructured[en-A{{efn|An eyre was an occasional circuit court.}}\n{{notelist}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_is_not_unstructured[en-A{{efn|[[Latin]]: ''Excerpta Constantiniana''; [[Greek language|Greek]]: ''Eklogai''.}}\n{{notelist}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_is_not_unstructured[ar-\u0623{{\u0645\u0644\u0627|\u0643\u0627\u0646\u062a \u0645\u062d\u0643\u0645\u0629 \u0627\u0644\u0625\u064a\u0631 \u0645\u062d\u0643\u0645\u0629 \u0645\u062a\u0646\u0642\u0644\u0629.}}\n{{\u062b\u0628\u062a \u0627\u0644\u0645\u0644\u0627\u062d\u0638\u0629}}]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_explanatory_note_with_nested_citation
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_citation_like_template_is_kept_as_unsupported[en-{{Fishbase|Osteobrama|bhimensis|month=March|year=2024}}-Fishbase-params0]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_citation_like_template_is_kept_as_unsupported[ar-{{\u062f\u0627\u0626\u0631\u0629 \u0627\u0644\u0645\u0639\u0627\u0631\u0641 \u0627\u0644\u0625\u0633\u0644\u0627\u0645\u064a\u0629}}-\u062f\u0627\u0626\u0631\u0629 \u0627\u0644\u0645\u0639\u0627\u0631\u0641 \u0627\u0644\u0625\u0633\u0644\u0627\u0645\u064a\u0629-params1]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_citation_like_template_with_text_has_one_unit
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_unsupported_template_identifier_stays_unresolved_in_its_unit
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_unknown_template_alone_is_unresolved[True]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_unknown_template_alone_is_unresolved[False]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_unknown_template_identifier_has_no_unit
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_mixed_reference_bilingual
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_document_with_new_kind_validates
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-92703-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-93105-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-94127-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-94344-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-94508-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-95017-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-96979-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-97606-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-98149-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-98486-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-186224-a1-99189-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[reserve1/en-9778156-a1-4252-E]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-67651016-a1-3402-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-67651016-a1-208-F]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-6358-F]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-6857-F]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-38148109-a1-10376-F]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-25916990-a1-729-G]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/en-28279091-a1-1399-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/ar-1325389-a1-154-H]
+FAILED tests/stage03/test_g5c_unit_semantics.py::test_campaign_false_positive[holdout/ar-8446039-a1-2278-G]
+39 failed, 24 passed in 23.25s

@@ -1,0 +1,33 @@
+== R3-01 cross-channel split -> confident negative
+[R3-01] en 'Paper. Re<cite>tracted</cite>.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+[R3-01] en 'Paper. <cite>Smith. Expression</cite> of concern.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+[R3-01] ar 'ورقة. <cite>سميث. مس</cite>حوب.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+== R3-02 neighbour in another channel ignored -> manufactured warning
+[R3-02] en 'Paper. <cite>Smith. Un</cite>retracted.'
+      -> ('recognized_warning_text', [('warning', 'text', 'retracted', None)]) verified=True
+[R3-02] en 'Paper. <cite>Smith. It was not</cite> retracted.'
+      -> ('recognized_warning_text', [('warning', 'text', 'retracted', None)]) verified=True
+[R3-02] en 'Paper. Retracted<cite>: a title. J Foo.</cite>'
+      -> ('recognized_warning_text', [('warning', 'text', 'Retracted', None)]) verified=True
+[R3-02] ar 'ورقة. <cite>سميث. غير</cite>مسحوب.'
+      -> ('recognized_warning_text', [('warning', 'text', 'مسحوب', None)]) verified=True
+[R3-02] en 'Paper. <a rel="mw:WikiLink" href="./Template:Retracted">Un</a>retracted.'
+      -> ('recognized_warning_text', [('warning', 'text', 'retracted', None), ('ambiguous', 'template_link', 'Un', 'template_page_link')]) verified=True
+== R3-03 editor-supplied mw-cite-backlink class hides shown text
+[R3-03] en 'Paper. <span class="mw-cite-backlink">Retracted</span>.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+[R3-03] ar 'ورقة. <span class="mw-cite-backlink">مسحوب</span>.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+== R3-04 <q> quotation not seen as a quotation
+[R3-04] en 'Paper. "Retracted" article.'
+      -> ('ambiguous_text', [('ambiguous', 'text', 'Retracted', 'quoted')]) verified=True
+[R3-04] en 'Paper. <q>Retracted</q> article.'
+      -> ('recognized_warning_text', [('warning', 'text', 'Retracted', None)]) verified=True
+== R3-10 literal U+2029 vs U+2028
+[R3-10] en 'Paper. Expression\u2029of concern.'
+      -> ('no_recognized_warning_in_inspected_region', []) verified=True
+[R3-10] en 'Paper. Expression\u2028of concern.'
+      -> ('recognized_warning_text', [('warning', 'text', 'Expression of concern', None)]) verified=True

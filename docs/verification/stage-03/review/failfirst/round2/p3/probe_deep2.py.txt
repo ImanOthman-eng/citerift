@@ -1,0 +1,8 @@
+import sys, json
+from pathlib import Path
+from citerift.wiki.extract import extract_bundle
+for n in (200, 300):
+    doc = extract_bundle(Path(__file__).resolve().parent / f"work_deep{n}" / "b")
+    print(n, "issues", [(i["code"], i["severity"], i["detail"][:60]) for i in doc["issues"]])
+    print(n, "components", json.dumps(doc["components"])[:300])
+    print(n, "markers", [(m["state"]) for m in doc["markers"]], "uses render", [u["render"].get("state") for u in doc["uses"]], "render_uses", doc["accounting"].get("render_uses"))

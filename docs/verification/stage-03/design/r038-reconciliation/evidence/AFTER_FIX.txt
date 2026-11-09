@@ -1,0 +1,38 @@
+# After the correction (engine 1.2.0): uv run pytest tests/stage03/test_r038_template_output_order.py -q -p no:cacheprovider -rA --tb=line
+................................                                         [100%]
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_reuse_rendered_before_definition_pairs_by_body
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_definition_followed_by_reuse_in_source_order
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_empty_inline_body_is_a_reuse
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_missing_or_unreadable_data_mw_abstains[no_data_mw]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_missing_or_unreadable_data_mw_abstains[bad_json]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies0]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies1]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_contradictory_data_mw_abstains[bodies2]
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_duplicate_marker_ids_never_attach_wrongly
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_render_of_another_revision_attaches_nothing
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_multiple_reuses_reordered_pair_by_text_anchor
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_one_unanchored_reuse_is_settled_by_elimination
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_unanchored_reuses_abstain
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_identical_anchors_are_ambiguous
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_distinct_anchors_with_a_shared_ending_settle
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_a_number_inside_a_longer_number_is_not_an_anchor
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_same_name_in_two_groups_and_reordered_group
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_two_anonymous_references_in_template_output_abstain
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_nested_template_parameters_reordered
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_arabic_infobox_reordered
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_large_reversed_template_with_anchors
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_large_template_without_anchors_abstains
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_real_arabic_infobox_mallama2014
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_chryssides_2001
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_ayres2023_reuses
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_before_marker_text_is_stable_across_element_proxies
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_text_on_both_sides_of_another_marker_is_not_one_word
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_template_values_pair_by_the_numbers_they_show
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_template_that_changes_its_numbers_gives_no_anchor
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_short_value_anchors_only_a_whole_cell
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_equal_numbers_in_two_parameters_are_ambiguous
+PASSED tests/stage03/test_r038_template_output_order.py::test_r038_real_english_infobox_borisov2023_labelled_swap
+32 passed in 2.31s
+# Full suite on the same tree: 2004 passed in 489.40s (Python 3.12), exit 0

@@ -1,0 +1,29 @@
+{
+ "article": "en-1356437999",
+ "adjudicator": "d035-adj-en-g1",
+ "started_at": "2026-11-03T16:42:47Z",
+ "finished_at": "2026-11-03T16:47:00Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "use_missed",
+   "decision": "confirm",
+   "reason": "<ref name=itis> is a <ref> tag with content inside {{Reflist|refs=}}; 3.2 lists each such tag as a use, and as the first definition it binds to itself (u4 locked correctly). Its render_ref_id null is right: the render has exactly three mw:Extension/ref markers (cite_ref-itis_1-0, cite_ref-gbif_2-0, cite_ref-buglink_3-0), all from the self-closing body calls, so the list definition produces no marker of its own.",
+   "corrected_label": null
+  },
+  {
+   "item": 1,
+   "kind": "use_missed",
+   "decision": "confirm",
+   "reason": "Same as item 0: <ref name=gbif> inside {{Reflist|refs=}} is a content-bearing <ref> use binding to itself; no marker of its own (only cite_ref-gbif_2-0 exists, from the self-closing body call).",
+   "corrected_label": null
+  },
+  {
+   "item": 2,
+   "kind": "use_missed",
+   "decision": "confirm",
+   "reason": "Same as item 0: <ref name=buglink> inside {{Reflist|refs=}} is a content-bearing <ref> use binding to itself; no marker of its own (only cite_ref-buglink_3-0 exists, from the self-closing body call).",
+   "corrected_label": null
+  }
+ ]
+}

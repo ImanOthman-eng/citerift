@@ -1,0 +1,48 @@
+"""Content pairing (reconcile._content_pair) before/after RF-60. Two source uses, three render uses (counts differ,
+so the position alignment cannot pair and the content pairing decides). Ref A: a Wiley URL ending in /abstract.
+Ref B: {{cite journal|doi=X}}. Note A shows the Wiley link, note B the doi.org link, note C an unrelated link.
+Baseline "before" = RF-60 disabled in-process (identifiers._DOI_SHAPE never matches)."""
+import re, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/src")
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract, references, note_li, ref_sup, doi_link  # noqa: E402
+import citerift.wiki.identifiers as ident  # noqa: E402
+
+X = "10.1111/0004-5608.00043"
+WURL = f"https://onlinelibrary.wiley.com/doi/{X}/abstract"
+text = f"A<ref>{WURL}</ref> B<ref>{{{{cite journal|title=T|doi={X}}}}}</ref>"
+wlink = f'<a rel="mw:ExtLink nofollow" href="{WURL}" class="external free">{WURL}</a>'
+other = '<a rel="mw:ExtLink nofollow" href="https://example.org/z" class="external free">z</a>'
+body = (
+    "<p>A" + ref_sup(1, "cite_note-1", "cite_ref-1") + " B" + ref_sup(2, "cite_note-2", "cite_ref-2")
+    + ref_sup(3, "cite_note-3", "cite_ref-3") + "</p>"
+    + references([note_li("cite_note-1", ["cite_ref-1"], wlink),
+                  note_li("cite_note-2", ["cite_ref-2"], "T. " + doi_link(X)),
+                  note_li("cite_note-3", ["cite_ref-3"], other)])
+)
+
+def summary(doc):
+    uses = [(u["id"], u.get("state") or u.get("reconciliation", {}).get("state"),
+             u.get("basis") or u.get("reconciliation", {}).get("basis"),
+             u.get("render_use") if "render_use" in u else u.get("reconciliation", {}).get("render_use"))
+            for u in doc["uses"]]
+    iss = sorted({i["code"] for i in doc["issues"]})
+    wit = [(i["id"], (i.get("render") or {}).get("witness_state") if isinstance(i.get("render"), dict) else i.get("witness_state"))
+           for i in doc["identifiers"]]
+    return uses, iss, wit
+
+orig = ident._DOI_SHAPE
+for wiki in ("en", "ar"):
+    for label, shape in (("before (RF-60 disabled)", re.compile(r"(?!)")), ("after (RF-60)", orig)):
+        ident._DOI_SHAPE = shape
+        with tempfile.TemporaryDirectory() as d:
+            doc = extract(bundle(Path(d), text, body, wiki=wiki))
+        print(f"[{wiki}] {label}")
+        for k in ("uses",):
+            for u in doc[k]:
+                print("    use", {kk: u[kk] for kk in u if kk not in ("source",)})
+        for i in doc["identifiers"]:
+            print("    id", i["id"], i["normalization"]["normalized"], {kk: i[kk] for kk in i if "render" in kk or "witness" in kk})
+        print("    issues", sorted({i["code"] for i in doc["issues"]}))
+ident._DOI_SHAPE = orig

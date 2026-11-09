@@ -1,0 +1,693 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1323580591,
+  "source_sha256": "797e63e400cafdd3d6d36be4486c4ee928a2b1931cc8937a0abec0d10528ef9b",
+  "html_sha256": "e9199bf67b017a5fdfe93a38d0493abdf3b937637a0db8949d42cfbba23a7319",
+  "window": [
+   27659,
+   35659
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-c1",
+  "started_at": "2026-11-03T01:58:00Z",
+  "finished_at": "2026-11-03T01:58:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1323580591/packet.json",
+    "sha256": "aee5db6da38222adcedea56403d3bd9b24530251577e327e3df56f46a1c81d8f"
+   },
+   {
+    "path": "packets/en-1323580591/source.wikitext",
+    "sha256": "797e63e400cafdd3d6d36be4486c4ee928a2b1931cc8937a0abec0d10528ef9b"
+   },
+   {
+    "path": "packets/en-1323580591/render.html",
+    "sha256": "e9199bf67b017a5fdfe93a38d0493abdf3b937637a0db8949d42cfbba23a7319"
+   }
+  ],
+  "tools": "python3 standard library and lxml (stdin/tools scripts) for str.find location checks and listing HTML sup/li elements; every location verified text[cp:cp+len(quote)]==quote",
+  "unresolved": "Whether {{Harvnb}}-only <ref> bodies count as unstructured: labelled false (a template, though not a citation template). Spitzer sfn is a generated_note definition; no earlier call exists in the article."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 28036,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=173}}"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-50",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body is only {{Harvnb}} (a short-citation link template, not a citation template)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 28197,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=174}}"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-51",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Body is only {{Harvnb}} (pp=174; different from the pp=173 note)."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 28987,
+    "quote": "<ref name=\"behavioraltreatment\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "behavioraltreatment",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 29019,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-behavioraltreatment-52",
+   "marker": "warning",
+   "marker_text": "This paper currently has an expression of concern, see doi:10.1002/jaba.781, PMID 33084123, Retraction Watch.",
+   "notes": "Body also holds {{Expression of Concern}} (not a citation template), rendering a warning about the cited JABA paper. ref=none in the cite template only suppresses the harv anchor."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 29528,
+    "quote": "<ref name=\"cnn7jun2011\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "cnn7jun2011",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 29552,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-cnn7jun2011-53",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 29829,
+    "quote": "<ref>{{cite news|url=https://healthland.time.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 29834,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-54",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 30167,
+    "quote": "<ref>{{cite news|url=http://www.huffingtonpost.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 30172,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-55",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 30691,
+    "quote": "<ref>{{citation |url=http://www.apa.org"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 30696,
+      "quote": "{{citation"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-56",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 31326,
+    "quote": "<ref>{{citation|url=http://lgbtphysicists.org"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 31331,
+      "quote": "{{citation"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-57",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 31738,
+    "quote": "<ref name=\"Nicolosi\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Nicolosi",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 31759,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Nicolosi-58",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 32271,
+    "quote": "<ref name=\"NARTH\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "NARTH",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 32289,
+      "quote": "{{citation"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-NARTH-59",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 32664,
+    "quote": "<ref>{{cite news |last= Quandt"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 32669,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-60",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 33159,
+    "quote": "<ref>{{cite web|url=https://www.theatlantic.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33164,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-61",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 33540,
+    "quote": "<ref>{{cite web|url=http://www.newsweek.com"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33545,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-62",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 34030,
+    "quote": "<ref>{{Cite web|title=UN panel"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 34035,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-63",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Inside the caption of a [[File:SamBrinton.jpg]] image."
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 34446,
+    "quote": "<ref name=\"SurgeonGeneral\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "SurgeonGeneral",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 34473,
+      "quote": "{{citation"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-SurgeonGeneral-64",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 35508,
+    "quote": "<ref name=\"Ritter\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Ritter",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 35527,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Ritter-66",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d17",
+   "at": {
+    "cp": 35242,
+    "quote": "{{sfn|Spitzer|2003}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTESpitzer2003-65",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Only sfn call with these arguments in the article, so a definition. Rendered footnote \"Spitzer 2003.\" links to a bibliography entry elsewhere (outside window)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 28036,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=173}}"
+   },
+   "binds_to": {
+    "cp": 28036,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=173}}"
+   },
+   "render_ref_id": "cite_ref-50",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 28197,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=174}}"
+   },
+   "binds_to": {
+    "cp": 28197,
+    "quote": "<ref>{{Harvnb|Rekers|Lovaas|1974|pp=174}}"
+   },
+   "render_ref_id": "cite_ref-51",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 28987,
+    "quote": "<ref name=\"behavioraltreatment\">"
+   },
+   "binds_to": {
+    "cp": 28987,
+    "quote": "<ref name=\"behavioraltreatment\">"
+   },
+   "render_ref_id": "cite_ref-behavioraltreatment_52-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 29528,
+    "quote": "<ref name=\"cnn7jun2011\">"
+   },
+   "binds_to": {
+    "cp": 29528,
+    "quote": "<ref name=\"cnn7jun2011\">"
+   },
+   "render_ref_id": "cite_ref-cnn7jun2011_53-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 29829,
+    "quote": "<ref>{{cite news|url=https://healthland.time.com"
+   },
+   "binds_to": {
+    "cp": 29829,
+    "quote": "<ref>{{cite news|url=https://healthland.time.com"
+   },
+   "render_ref_id": "cite_ref-54",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 30167,
+    "quote": "<ref>{{cite news|url=http://www.huffingtonpost.com"
+   },
+   "binds_to": {
+    "cp": 30167,
+    "quote": "<ref>{{cite news|url=http://www.huffingtonpost.com"
+   },
+   "render_ref_id": "cite_ref-55",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 30691,
+    "quote": "<ref>{{citation |url=http://www.apa.org"
+   },
+   "binds_to": {
+    "cp": 30691,
+    "quote": "<ref>{{citation |url=http://www.apa.org"
+   },
+   "render_ref_id": "cite_ref-56",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 31326,
+    "quote": "<ref>{{citation|url=http://lgbtphysicists.org"
+   },
+   "binds_to": {
+    "cp": 31326,
+    "quote": "<ref>{{citation|url=http://lgbtphysicists.org"
+   },
+   "render_ref_id": "cite_ref-57",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 31738,
+    "quote": "<ref name=\"Nicolosi\">"
+   },
+   "binds_to": {
+    "cp": 31738,
+    "quote": "<ref name=\"Nicolosi\">"
+   },
+   "render_ref_id": "cite_ref-Nicolosi_58-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 32271,
+    "quote": "<ref name=\"NARTH\">"
+   },
+   "binds_to": {
+    "cp": 32271,
+    "quote": "<ref name=\"NARTH\">"
+   },
+   "render_ref_id": "cite_ref-NARTH_59-0",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 32664,
+    "quote": "<ref>{{cite news |last= Quandt"
+   },
+   "binds_to": {
+    "cp": 32664,
+    "quote": "<ref>{{cite news |last= Quandt"
+   },
+   "render_ref_id": "cite_ref-60",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 33159,
+    "quote": "<ref>{{cite web|url=https://www.theatlantic.com"
+   },
+   "binds_to": {
+    "cp": 33159,
+    "quote": "<ref>{{cite web|url=https://www.theatlantic.com"
+   },
+   "render_ref_id": "cite_ref-61",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 33540,
+    "quote": "<ref>{{cite web|url=http://www.newsweek.com"
+   },
+   "binds_to": {
+    "cp": 33540,
+    "quote": "<ref>{{cite web|url=http://www.newsweek.com"
+   },
+   "render_ref_id": "cite_ref-62",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 34030,
+    "quote": "<ref>{{Cite web|title=UN panel"
+   },
+   "binds_to": {
+    "cp": 34030,
+    "quote": "<ref>{{Cite web|title=UN panel"
+   },
+   "render_ref_id": "cite_ref-63",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 34446,
+    "quote": "<ref name=\"SurgeonGeneral\">"
+   },
+   "binds_to": {
+    "cp": 34446,
+    "quote": "<ref name=\"SurgeonGeneral\">"
+   },
+   "render_ref_id": "cite_ref-SurgeonGeneral_64-0",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 35508,
+    "quote": "<ref name=\"Ritter\">"
+   },
+   "binds_to": {
+    "cp": 35508,
+    "quote": "<ref name=\"Ritter\">"
+   },
+   "render_ref_id": "cite_ref-Ritter_66-0",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 35242,
+    "quote": "{{sfn|Spitzer|2003}}"
+   },
+   "binds_to": {
+    "cp": 35242,
+    "quote": "{{sfn|Spitzer|2003}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTESpitzer2003_65-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 29260,
+    "quote": "10.1901/jaba.1974.7-173"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1901/jaba.1974.7-173",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 29289,
+    "quote": "4436165"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "4436165",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 29347,
+    "quote": "10.1002/jaba.781"
+   },
+   "scheme": "doi",
+   "role": "marker_target",
+   "key": "10.1002/jaba.781",
+   "notes": "Argument of {{Expression of Concern}}: the notice DOI."
+  },
+  {
+   "at": {
+    "cp": 29369,
+    "quote": "33084123"
+   },
+   "scheme": "pmid",
+   "role": "marker_target",
+   "key": "33084123",
+   "notes": "Argument of {{Expression of Concern}}."
+  }
+ ],
+ "unresolved_notes": []
+}

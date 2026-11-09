@@ -1,0 +1,9 @@
+import re,sys,json
+d=sys.argv[1]
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+p=json.load(open(f'packets/{d}/packet.json'))['window']
+print('window',p,len(t))
+pat=r'<ref|</ref|\{\{\s*(?:cite|citation|استشهاد|sfn|harv|efn|refn|ملا|r\||doi|دوي|pmid|مرجع|ثبت|reflist|هوامش)|10\.\d{4}|pmid|doi|دوي|^[*#:;]|<!--|nowiki|\{\{\s*(?:sfn|ملا|مصدر|Retract)'
+for m in re.finditer(pat,t,re.I|re.M):
+    s=m.start()
+    print(s, 'IN' if p['cp_start']<=s<p['cp_end'] else 'out', repr(t[s:s+70]))

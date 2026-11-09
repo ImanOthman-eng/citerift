@@ -1,0 +1,54 @@
+# Manually selected article-specific labels, authored by ChatGPT/Codex.
+from pathlib import Path
+from datetime import datetime,timezone
+import json,hashlib
+from lxml import html
+base=Path('/workspace/stage03-work/final-evaluators-reserve2')
+out=base/'output-en-1'
+# cp, name, citation cp (None for plain text), note id, marker id
+D={1374356167:[(695,None,700,'cite_note-1','cite_ref-1'),(1252,None,1257,'cite_note-2','cite_ref-2'),(1617,None,1622,'cite_note-3','cite_ref-3'),(2284,'fang',2299,'cite_note-fang-4','cite_ref-fang_4-0'),(2520,None,2525,'cite_note-5','cite_ref-5'),(2884,None,2889,'cite_note-6','cite_ref-6'),(3937,None,None,'cite_note-7','cite_ref-7'),(4323,None,None,'cite_note-8','cite_ref-8')],1209615355:[(355,None,360,'cite_note-1','cite_ref-1'),(860,'Korochantseva',886,'cite_note-Korochantseva-2','cite_ref-Korochantseva_2-0'),(1415,'Nature1',1433,'cite_note-Nature1-3','cite_ref-Nature1_3-0'),(1825,None,None,'cite_note-4','cite_ref-4')]}
+# cp, raw identifier, scheme; every occurrence here is an explicit citation field.
+I={1374356167:[(865,'10.5840/jphil2003100224','doi'),(1520,'10.1098/rsos.180934','doi'),(1573,'31218016','pmid'),(2001,'10.1016/j.cognition.2014.06.006','doi'),(2038,'25010397','pmid'),(2465,'22184420','pmid'),(2492,'10.1128/IAI.06184-11','doi'),(2805,'10.1038/s41562-020-01040-1','doi'),(2837,'33510392','pmid')],1209615355:[(1329,'10.1111/j.1945-5100.2007.tb00221.x','doi'),(1773,'10.1038/nature02736','doi'),(1798,'15254530','pmid')]}
+opened=[]
+for p in [base/'en-1-BRIEF.md',base/'ANNOTATION_GUIDE.md']:
+ opened.append({'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+for rev in D:
+ root=base/'en-1'/f'en-{rev}';packet=json.loads((root/'packet.json').read_text())
+ for name,key in [('packet.json',None),('source.wikitext','source_sha256'),('render.html','html_sha256')]:
+  p=root/name;digest=hashlib.sha256(p.read_bytes()).hexdigest()
+  if key:assert digest==packet[key]
+  opened.append({'path':str(p),'sha256':digest})
+opened.append({'path':str(Path(__file__)),'sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
+for rev,rows in D.items():
+ root=base/'en-1'/f'en-{rev}';packet=json.loads((root/'packet.json').read_text());text=(root/'source.wikitext').read_text(encoding='utf-8');doc=html.fromstring((root/'render.html').read_bytes())
+ window=[packet['window']['cp_start'],packet['window']['cp_end']]
+ assert len(text)==packet['source_code_points']
+ def loc(cp,quote=None):
+  if quote is None:quote=text[cp:cp+55]
+  assert text[cp:cp+len(quote)]==quote
+  assert window[0]<=cp<window[1]
+  return {'cp':cp,'quote':quote}
+ definitions=[];uses=[];identifiers=[]
+ for n,(cp,name,template,note,marker) in enumerate(rows,1):
+  assert text[cp:cp+4]=='<ref'
+  if template is not None:assert text[template:template+6].lower()=='{{cite'
+  assert doc.xpath('//li[@id=$id]',id=note)
+  assert doc.xpath('//sup[@id=$id]',id=marker)
+  note_text='The ISBN wrapper formats only an ISBN, not a citation; this is a hand-written reference with no citation template.' if rev==1374356167 and cp==4323 else ''
+  definitions.append({'id':f'd{n}','at':loc(cp),'in_window':True,'kind':'note','name':name,'group':'','templates':[] if template is None else [{'at':loc(template)}],'unstructured':template is None,'render_note_id':note,'marker':'none','marker_text':None,'notes':note_text})
+  uses.append({'id':f'u{n}','at':loc(cp),'binds_to':loc(cp),'render_ref_id':marker,'notes':''})
+ for cp,raw,scheme in I[rev]:
+  identifiers.append({'at':loc(cp,raw),'scheme':scheme,'role':'primary_citation_field','key':raw.translate(str.maketrans('ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')),'notes':''})
+ notes=[]
+ if rev==1374356167:notes.append('The Further reading bullets are hand-written bibliographic prose without citation templates or DOI/PMID occurrences. They do not satisfy guide 3.4 and are not annotated as bibliography_entry definitions.')
+ if rev==1209615355:notes.append('The See also bullet at cp 831 contains three references; citation templates and DOI/PMID occurrences lie inside those refs, so the bullet is not also a bibliography_entry outside footnotes.')
+ result={'format':'citerift-stage03-annotation-v1','article':{'wiki':packet['wiki'],'revision_id':packet['revision_id'],'source_sha256':packet['source_sha256'],'html_sha256':packet['html_sha256'],'window':window},'provenance':{'agent':'stage03-evaluator-en-1','started_at':'2026-10-31T12:12:48.804262+00:00','finished_at':datetime.now(timezone.utc).isoformat(),'files_opened':opened,'tools':'ChatGPT/Codex manual raw-only annotation; functions.exec/exec_command; cat; Python -I standard library pathlib, re, json, hashlib, datetime; lxml for listing HTML footnote elements, attributes and text. This helper serializes manually selected article-specific rows and validates anchors/metadata; it is not a reference parser. started_at is the first recorded UTC timestamp, immediately after reading the brief. files_opened covers the instructions, both assigned raw packets and this helper. No network, git, predictions, engine code, tests, findings, prior locked annotations or other evaluators outputs were inspected.','unresolved':'None. Bibliography scope and the ISBN wrapper treatment are explicitly documented; all source bindings and rendered marker identities were clear.'},'definitions':definitions,'uses':uses,'identifiers':identifiers,'unresolved_notes':notes}
+ def validate(x):
+  if isinstance(x,dict):
+   if 'cp' in x and 'quote' in x:assert text[x['cp']:x['cp']+len(x['quote'])]==x['quote']
+   for y in x.values():validate(y)
+  elif isinstance(x,list):
+   for y in x:validate(y)
+ validate(result)
+ p=out/f'en-{rev}.json';p.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+ print(p.name,'definitions',len(definitions),'uses',len(uses),'identifiers',len(identifiers),'validated')

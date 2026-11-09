@@ -1,0 +1,83 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75600234,
+  "source_sha256": "bc7b151c22b7bbec6fda55b4178f8ba7978bf287e24e1e086032ef223a856f1b",
+  "html_sha256": "582894532474593f5d5c5d3daf472898cd762445f8a68eb23ea89bc3d1a48f43",
+  "window": [
+   0,
+   1162
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h3",
+  "started_at": "2026-11-03T16:11:00Z",
+  "finished_at": "2026-11-03T16:12:21Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-75600234/source.wikitext",
+    "sha256": "bc7b151c22b7bbec6fda55b4178f8ba7978bf287e24e1e086032ef223a856f1b"
+   },
+   {
+    "path": "packets/ar-75600234/render.html",
+    "sha256": "582894532474593f5d5c5d3daf472898cd762445f8a68eb23ea89bc3d1a48f43"
+   },
+   {
+    "path": "packets/ar-75600234/packet.json",
+    "sha256": "(not hashed separately; read for window and hashes)"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote",
+  "unresolved": "Two Wikidata-generated references (cite_ref-wikidata-d986…_1-0/_1-1 and wikidata-de7f…_2-0) are rendered but absent from source; one carries a DOI/ISBN in rendered text only. Not labelled (guide 3.3)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 562,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 567,
+      "quote": "{{استشهاد وي"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref. Rendered list also has two Wikidata-generated references from the infobox (not in source)."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 562,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 562,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Two Wikidata-generated references (cite_ref-wikidata-d986…_1-0/_1-1 and wikidata-de7f…_2-0) are rendered but absent from source; one carries a DOI/ISBN in rendered text only. Not labelled (guide 3.3)."
+ ]
+}

@@ -1,0 +1,3 @@
+"""Ref name entity decoding: tag attribute is decoded twice (_plain + html.unescape); MediaWiki decodes once."""
+from h import run
+run('A<ref name="x&amp;lt;y">{{cite journal|doi=10.1000/a}}</ref> B<ref name="x<y">{{cite journal|doi=10.1000/b}}</ref> C{{r|x&lt;y}}', label="double-decoded name")

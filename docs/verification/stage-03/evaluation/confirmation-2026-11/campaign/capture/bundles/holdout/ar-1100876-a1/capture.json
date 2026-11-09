@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 9532,
+   "body_sha256": "2d4507dfea24eb94b0ec352a58261f1abd854a36425cd89bdee6f737409531d5",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.416,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:43:11.293282Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1100876",
+   "wire_bytes": 3650
+  },
+  {
+   "body_bytes": 154237,
+   "body_sha256": "90fef31982804a2c5459790014c6dc9b38a7c069f9e2cf4586dd37a3cb133add",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 2.491,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:43:21.710129Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/72619788/html",
+   "wire_bytes": 26465
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-02T18:43:24.201760Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1100876,
+  "parent_revision_id": 72615908,
+  "redirect_followed": null,
+  "revision_id": 72619788,
+  "revision_timestamp": "2025-11-30T07:38:56Z",
+  "sha1": "681bcda043ee2ac4a49c0729326549c92f65a305",
+  "size": 8915,
+  "title": "مرعيان",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "90fef31982804a2c5459790014c6dc9b38a7c069f9e2cf4586dd37a3cb133add",
+  "bytes": 154237,
+  "checks": {
+   "document_revision_id": "72619788",
+   "header_revision_id": "72619788",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "1100876",
+   "render_id": "48abb782-d6ed-11f1-84b9-abbdb53c43b8",
+   "revision_sha1": "681bcda043ee2ac4a49c0729326549c92f65a305",
+   "revision_sha1_base36": "c5spscuidwxx58z3uyoxhjb80he1blx"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "72619788",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:43:22 GMT",
+   "etag": "W/\"72619788/48abb782-d6ed-11f1-84b9-abbdb53c43b8/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:12:17 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/72619788/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1100876,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9e2b6fdf033d40494929cf75038a8262bea0b7b9dd2cbc0418d7dbb7e4ad4f07",
+  "bytes": 8915,
+  "response_artifact": "2d4507dfea24eb94b0ec352a58261f1abd854a36425cd89bdee6f737409531d5",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1100876"
+ },
+ "started_at": "2026-11-02T18:43:01.597751Z",
+ "status": "complete"
+}

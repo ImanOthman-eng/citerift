@@ -1,0 +1,53 @@
+# Frozen scorer (protocol/scripts/evaluate_v2.py) on the exposed campaigns, extraction files swapped only (rescore_exposed.py). Regression evidence, not a scientific pass.
+# columns: campaign split language view G5c G5d all-gates-of-that-view
+## base (26398f5 = frozen candidate 3e51792)
+confirmation-2026-11 gate ar locked 0.9812 0.9812 False
+confirmation-2026-11 gate ar adjudicated 0.9875 0.9875 True
+confirmation-2026-11 gate en locked 0.869 0.9692 False
+confirmation-2026-11 gate en adjudicated 0.869 0.9692 False
+final holdout ar locked 0.9808 0.9808 False
+final holdout ar adjudicated 0.9808 0.9808 False
+final holdout en locked 0.9732 0.9561 True
+final holdout en adjudicated 0.9732 0.9561 True
+run-1 holdout ar locked 0.9875 0.9875 True
+run-1 holdout ar adjudicated 0.9875 0.9875 True
+run-1 holdout en locked 0.9828 0.9744 True
+run-1 holdout en adjudicated 0.9828 0.9744 False
+run-1 challenge_observed ar locked 1.0 1.0 False
+run-1 challenge_observed ar adjudicated 1.0 1.0 False
+run-1 challenge_observed en locked 1.0 1.0 False
+run-1 challenge_observed en adjudicated 1.0 1.0 False
+## corrected engine after the first review (11bb5b2)
+confirmation-2026-11 gate ar locked 0.9937 0.9875 False
+confirmation-2026-11 gate ar adjudicated 1.0 0.9938 True
+confirmation-2026-11 gate en locked 1.0 0.9769 True
+confirmation-2026-11 gate en adjudicated 1.0 0.9769 True
+final holdout ar locked 1.0 0.9808 False
+final holdout ar adjudicated 1.0 0.9808 False
+final holdout en locked 1.0 0.9825 True
+final holdout en adjudicated 1.0 0.9825 True
+run-1 holdout ar locked 0.9875 0.9875 True
+run-1 holdout ar adjudicated 0.9875 0.9875 True
+run-1 holdout en locked 0.9913 0.9744 True
+run-1 holdout en adjudicated 0.9913 0.9744 False
+run-1 challenge_observed ar locked 1.0 1.0 False
+run-1 challenge_observed ar adjudicated 1.0 1.0 False
+run-1 challenge_observed en locked 1.0 1.0 False
+run-1 challenge_observed en adjudicated 1.0 1.0 False
+## corrected engine after the second review (this tree)
+confirmation-2026-11 gate ar locked 0.9937 0.9875 False
+confirmation-2026-11 gate ar adjudicated 1.0 0.9938 True
+confirmation-2026-11 gate en locked 1.0 0.9769 True
+confirmation-2026-11 gate en adjudicated 1.0 0.9769 True
+final holdout ar locked 1.0 0.9808 False
+final holdout ar adjudicated 1.0 0.9808 False
+final holdout en locked 1.0 0.9825 True
+final holdout en adjudicated 1.0 0.9825 True
+run-1 holdout ar locked 0.9875 0.9875 True
+run-1 holdout ar adjudicated 0.9875 0.9875 True
+run-1 holdout en locked 0.9913 0.9744 True
+run-1 holdout en adjudicated 0.9913 0.9744 False
+run-1 challenge_observed ar locked 1.0 1.0 False
+run-1 challenge_observed ar adjudicated 1.0 1.0 False
+run-1 challenge_observed en locked 1.0 1.0 False
+run-1 challenge_observed en adjudicated 1.0 1.0 False

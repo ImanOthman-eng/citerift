@@ -1,0 +1,45 @@
+{
+  "article": "ar-73440513",
+  "adjudicator": "d036-adj-ar-g1",
+  "started_at": "2026-11-09T13:09:12Z",
+  "finished_at": "2026-11-09T13:11:30Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "corrected_label": null,
+      "reason": "Locked identifier_link is right. cp 2454 is the target of the wikilink [[doi:10.2305/IUCN.UK...en|...]] in the hand-pasted cite inside ref 'مولد تلقائيا1' (1785-3287). The render turns it into a doi.org link to the same DOI. A DOI link inside a reference that points at the identifier is identifier_link (3.5). It is not display text (textual_mention) and not plain labelled text (labeled_reference_text)."
+    },
+    {
+      "item": 1,
+      "kind": "identifier_key",
+      "decision": "correct",
+      "corrected_label": {
+        "at": {
+          "cp": 2502,
+          "quote": "10.2305/IUCN."
+        },
+        "scheme": "doi",
+        "role": "textual_mention",
+        "key": "10.2305/iucn.",
+        "notes": "Link display fragment of the DOI 10.2305/IUCN.UK.2015-1.RLTS.T153568A74497730.en; the final '.' is part of the DOI (the same DOI continues in the next link displays), not trailing punctuation."
+      },
+      "reason": "Locked key '10.2305/iucn' strips the final '.' of the display text '10.2305/IUCN.' as sentence punctuation. 3.5 strips only trailing sentence punctuation that is not part of the DOI. Here the '.' is part of the DOI: the same DOI continues in the next two link displays ('UK.2015-1.RLTS.' and 'T153568A74497730.en') and in the wikilink target. Key is therefore '10.2305/iucn.' (ASCII lower-cased, valid form 10.<4 digits>/<suffix>, so not null). Role textual_mention stays (link display text). Ambiguity: the guide has no rule for a DOI split across several display links; I read this fragment as part of the DOI it belongs to."
+    },
+    {
+      "item": 2,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "corrected_label": null,
+      "reason": "Locked identifier_link is right. cp 2590 is the target of the second wikilink [[doi:10.2305/IUCN.UK...en|...]] of the same hand-pasted cite; same reasoning as item 0. Its display 'UK.2015-1.RLTS.' is not an identifier occurrence of its own."
+    },
+    {
+      "item": 3,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "corrected_label": null,
+      "reason": "Locked identifier_link is right. cp 2873 is the target of the third wikilink to the same DOI in the same cite; same reasoning as item 0."
+    }
+  ]
+}

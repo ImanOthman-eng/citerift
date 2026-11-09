@@ -1,0 +1,128 @@
+"""Read-only D-036 recovery audit. Run from repository root; never extracts."""
+import hashlib
+import importlib.util
+import json
+import re
+import subprocess
+from pathlib import Path
+
+ROOT = Path.cwd()
+BASE = Path('docs/verification/stage-03/evaluation/confirmation-d036')
+CAMP = BASE / 'campaign'
+
+def read(p):
+    return json.loads(Path(p).read_text())
+
+def sha(p):
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+def load(name, p):
+    spec = importlib.util.spec_from_file_location(name, p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+manifest = read(BASE / 'MANIFEST.json')
+result = {'source_revision': git('rev-parse', 'HEAD'), 'candidate': manifest['candidate_revision']}
+for tree in ('src', 'schemas'):
+    assert git('rev-parse', f'HEAD:{tree}') == manifest['candidate_trees'][tree]
+    assert git('rev-parse', f"{manifest['candidate_revision']}:{tree}") == manifest['candidate_trees'][tree]
+assert not git('status', '--porcelain', '--', 'src', 'schemas')
+for p, h in manifest['files_sha256_at_candidate'].items():
+    assert sha(p) == h, p
+for p, h in manifest['protocol_sha256_at_freeze'].items():
+    if p != 'note':
+        assert sha(p) == h, p
+result['frozen_hashes_verified'] = len(manifest['files_sha256_at_candidate']) + 1
+locks = []
+for d in sorted((CAMP / 'annotations/locked').iterdir()):
+    lock = read(d / 'ANNOTATION_LOCK.json')
+    for p, h in lock.items():
+        assert sha(d / p) == h, p
+    record = read(d / 'LOCK_RECORD.json')
+    assert record['lock_sha256'] == sha(d / 'ANNOTATION_LOCK.json')
+    assert record['candidate_revision'] == manifest['candidate_revision']
+    locks.append({'batch': d.name, 'labels': len(lock), 'lock_sha256': sha(d / 'ANNOTATION_LOCK.json')})
+result['locks'] = locks
+validator = load('labels', 'docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/annotations/validate_labels.py')
+packet_rows = []
+for p in sorted((CAMP / 'annotations').glob('packets*/**/packet.json')):
+    info = read(p)
+    assert sha(p.parent / 'source.wikitext') == info['source_sha256'], str(p)
+    if info['html_sha256'] is not None:
+        assert sha(p.parent / 'render.html') == info['html_sha256'], str(p)
+    matching = list((CAMP / 'annotations/locked').glob(f"*/{info['wiki']}-{info['revision_id']}.json"))
+    if matching:
+        assert len(matching) == 1
+        assert not validator.check(p.parent, matching[0]), str(p)
+    packet_rows.append({'path': str(p), 'revision_id': info['revision_id'], 'source_sha256': info['source_sha256'], 'html_sha256': info['html_sha256']})
+result['packets_checked'] = len(packet_rows)
+result['reserve_packets'] = [r for r in packet_rows if 'packets-reserve1/' in r['path']]
+states = read(CAMP / 'capture/capture_states.json')['articles']
+result['capture_states'] = len(states)
+for key, state in states.items():
+    final = state['final']
+    assert final['status'] == 'complete', key
+    bundle = Path(final['bundle'])
+    cap = read(bundle / 'capture.json')
+    assert cap['page']['page_id'] == state['page_id'], key
+    assert cap['page']['wiki'] == state['wiki'], key
+    for kind in ('source', 'render'):
+        meta = cap[kind]
+        assert sha(bundle / 'artifacts' / meta['artifact']) == meta['artifact'], key
+    assert str(cap['page']['revision_id']) == cap['render']['checks']['document_revision_id']
+    assert str(cap['page']['revision_id']) == cap['render']['checks']['header_revision_id']
+    assert hashlib.sha1((bundle / 'artifacts' / cap['source']['artifact']).read_bytes()).hexdigest() == cap['page']['sha1']
+    response = read(bundle / 'artifacts' / cap['source']['response_artifact'])
+    pages = response['query']['pages']
+    if isinstance(pages, dict):
+        pages = list(pages.values())
+    assert pages[0]['revisions'][0]['revid'] == cap['page']['revision_id']
+artifacts = list(CAMP.glob('**/artifacts/*'))
+for p in artifacts:
+    assert p.is_file() and sha(p) == p.name, str(p)
+result['content_addressed_artifacts_checked'] = len(artifacts)
+selection = read(CAMP / 'selection/SELECTION.json')
+exposure = read(CAMP / 'EXPOSURE_SET.json')
+for wiki, frame in selection['frame'].items():
+    assert not {a['page_id'] for a in frame['eligible_order']} & set(exposure['page_ids'])
+    assert not {a['title'] for a in frame['eligible_order']} & set(exposure['titles'])
+    ordered = frame['eligible_order']
+    assert ordered == sorted(ordered, key=lambda a: hashlib.sha256(f"{manifest['campaign']['salt']}|{wiki}|{a['page_id']}".encode()).hexdigest())
+selected = selection['frame']['en']['reserve_blocks'][0]
+plan = [a for a in read(CAMP / 'plan-reserve1.json')['articles'] if a['split'] == 'reserve1']
+assert [a['page_id'] for a in selected] == [a['page_id'] for a in plan]
+assignment = read(CAMP / 'annotations/packets-reserve1/ASSIGNMENT.json')[0]
+assert set(assignment['bundles']) == {states[f"reserve1/en-{a['page_id']}"]['final']['bundle'] for a in selected}
+result['reserve_articles'] = []
+for a in selected:
+    bundle = Path(states[f"reserve1/en-{a['page_id']}"]['final']['bundle'])
+    cap = read(bundle / 'capture.json')
+    result['reserve_articles'].append({'page_id': a['page_id'], 'title': cap['page']['title'], 'revision_id': cap['page']['revision_id'], 'bundle': str(bundle)})
+brief = (CAMP / 'annotations/briefs/en-r1-1.txt').read_text()
+work = re.search(r'\*\*Read first, completely:\*\* `(.+)/ANNOTATION_GUIDE', brief).group(1)
+template = Path('docs/verification/stage-03/evaluation/confirmation-2026-11/EVALUATOR_BRIEF_v1.1.md').read_text().split('---\n\n', 1)[1]
+assert brief == template.replace('{LANG}', 'English').replace('{WORK}', work).replace('{INSTANCE}', 'd036-eval-en-r1-1').rstrip('\n')
+result['reserve_brief_sha256'] = sha(CAMP / 'annotations/briefs/en-r1-1.txt')
+result['original_reserve_work_directory_accessible'] = Path(work).exists()
+result['initial_denominators'] = {w: read(CAMP / 'reserve/step-1.json')[w]['totals'] for w in ('ar','en')}
+result['prediction_files_present'] = [str(p) for p in CAMP.rglob('*') if p.is_file() and any(s in p.name.lower() for s in ('extraction', 'prediction', 'score'))]
+assert not result['prediction_files_present']
+gate = load('secret_gate', BASE / 'scripts/secret_gate.py')
+patterns = gate.patterns() + gate.EXTRA_PATTERNS
+hits = []
+for p in CAMP.rglob('*'):
+    if p.is_file():
+        from urllib.parse import unquote
+        txt = p.read_text(errors='replace')
+        readings = (txt, unquote(txt), unquote(unquote(txt)))
+        if any(pat.search(t) for pat in patterns for t in readings):
+            hits.append(str(p))
+result['campaign_secret_pattern_hit_paths'] = hits
+assert not hits
+result['campaign_inventory_sha256'] = {p: sha(p) for p in git('ls-files', str(BASE)).splitlines()}
+result['audit_passed'] = True
+print(json.dumps(result, indent=2, ensure_ascii=False))

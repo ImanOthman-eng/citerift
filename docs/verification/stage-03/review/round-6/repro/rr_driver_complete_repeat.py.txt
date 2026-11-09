@@ -1,0 +1,20 @@
+"""Driver killed after the CLI published a complete bundle but before the `end` line: recovery calls the run
+interrupted and captures the article again (a second revision may be pinned)."""
+import importlib.util, json, shutil, sys, time
+from pathlib import Path
+spec = importlib.util.spec_from_file_location("cc", "/home/user/citerift/docs/verification/stage-03/evaluation/scripts/campaign_capture.py")
+cc = importlib.util.module_from_spec(spec); spec.loader.exec_module(cc)
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/repeat"); shutil.rmtree(W, ignore_errors=True); W.mkdir(parents=True)
+(W/"plan.json").write_text(json.dumps({"campaign":"x","articles":[{"split":"holdout","wiki":"en","page_id":7}]}))
+calls = []
+def cli(argv):
+    calls.append(argv); target = Path(argv[argv.index("--out")+1]); target.mkdir(parents=True)   # the CLI publishes the bundle
+    (target/"capture.json").write_text("{}")
+    if len(calls) == 1: raise KeyboardInterrupt("driver killed right after the CLI returned")
+    return 0, json.dumps({"status":"complete","bundle":str(target),"capture":{"attempts":[{"code":None,"body_bytes":1}]*2,"issues":[]}}), ""
+try: cc.run(W/"plan.json", W/"out", cli=cli, clock=time.time, sleep=lambda s: None)
+except KeyboardInterrupt: print("killed after run 1 published a bundle, before its end line")
+rc = cc.run(W/"plan.json", W/"out", cli=cli, clock=time.time, sleep=lambda s: None)
+print("rerun rc", rc, "| CLI calls:", len(calls), "| bundles on disk:", sorted(p.name for p in (W/"out"/"bundles"/"holdout").iterdir()))
+st = json.loads((W/"out"/"capture_states.json").read_text())["articles"]["holdout/en-7"]
+print("state runs:", [(r["run"], r["status"], r["codes"]) for r in st["runs"]], "final:", st["final"]["run"])

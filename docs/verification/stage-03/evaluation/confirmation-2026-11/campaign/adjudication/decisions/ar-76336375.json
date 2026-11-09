@@ -1,0 +1,29 @@
+{
+  "article": "ar-76336375",
+  "adjudicator": "cf11-adj-ar-g1",
+  "started_at": "2026-11-03T02:21:46Z",
+  "finished_at": "2026-11-03T02:21:46Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "marker",
+      "decision": "correct",
+      "reason": "Definition d1 is the <ref> at cp 149, inside the infobox parameter وصلة حالة الحفظ. The rendered HTML has no footnote for it: no cite_note li and no cite_ref points to it. The only IUCN text in the render is the Wikidata-generated status citation from the infobox (cite_note-wikidata-...). Guide 3.6 gives 'none' only when none of the markers are in the rendered footnote and source. With no rendered footnote, the enumerated value is cannot_tell ('the footnote is not rendered'). The source alone has no retraction vocabulary, but the guide requires the rendered check too. Ambiguity: a reader could take the source-only check as enough for 'none'; I followed the enumerated wording.",
+      "corrected_label": "cannot_tell"
+    },
+    {
+      "item": 1,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "The IUCN template in the d1 ref (cp 154) is a citation template under 3.1 ('citation template ... and similar'). Its parameters (id, title, assessors, version, year, accessdate) are citation fields for an IUCN Red List assessment, and it is not a wrapper or archive template. The locked label lists it, and the engine's omission is the disputed fact. Judgement call on the template's purpose, since its source is not in the packet; the locked reading is the one the wording supports.",
+      "corrected_label": null
+    },
+    {
+      "item": 2,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "The engine treats the IUCN template as an unstructured unit. Under 3.1 'unstructured' means a definition that cites in plain text with no citation template. Because {{IUCN}} is a citation template (item 1), d1 is not unstructured, so the locked false is right and no unstructured unit belongs at cp 154.",
+      "corrected_label": null
+    }
+  ]
+}

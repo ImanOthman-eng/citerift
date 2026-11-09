@@ -1,0 +1,18 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h3/tools')
+from lib import *
+a=A('en-1378617176'); t=a.t
+refs=[309,720,1189,1680,2068,2546,3050,4257,4882,5403,5863]
+tmpl={309:314,720:725,1189:1194,1680:1685,2068:2073,2546:2551,4257:4287,4882:4887,5863:5868}
+for i,r in enumerate(refs,1):
+    a.D(r,'note',name='euractive20200808' if r==4257 else None,templates=[tmpl[r]] if r in tmpl else [],unstructured=r not in tmpl,rid='cite_note-euractive20200808-8' if r==4257 else 'cite_note-%d'%(i if i<8 else i+1 if False else i),q=None,tq=None,notes=('Plain-text citation, no template; Webarchive is not a citation template.' if r in(3050,5403) else ''))
+# fix render ids: refs 1-7 -> cite_note-1..7, 8 -> euractive, 9..11 -> cite_note-9..11
+for i,d in enumerate(a.defs,1):
+    d['render_note_id']='cite_note-euractive20200808-8' if i==8 else 'cite_note-%d'%i
+    u_id='cite_ref-euractive20200808_8-0' if i==8 else 'cite_ref-%d'%i
+    a.U(refs[i-1],refs[i-1],u_id)
+u1=a.find('http://www.tandfonline.com/doi/abs/10.1080/10357718.2013.817525')
+a.I(u1,'http://www.tandfonline.com/doi/abs/10.1080/10357718.2013.817525','doi','identifier_link','10.1080/10357718.2013.817525','Publisher URL (path /doi/abs/10.…) in url= of Carr citation; DOI taken after /doi/abs/.')
+d1=a.find('doi=10.1080/10357718.2013.817525')+4
+a.I(d1,'10.1080/10357718.2013.817525','doi','primary_citation_field','10.1080/10357718.2013.817525')
+a.un=['No bibliography entries: "Related organizations"/"See also" lists are plain wikilinks, not citations. s2cid, jstor, issn are not DOI/PMID and not labelled.']
+a.save(None,'python3 stdlib (re, json), lxml','Nothing undecided.')

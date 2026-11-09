@@ -1,0 +1,13 @@
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+import mwparserfromhell
+def urls(T, s):
+    toks = T().tokenize(s, 0, False)
+    from mwparserfromhell.parser.builder import Builder
+    code = Builder().build(toks)
+    return [str(l.url) for l in code.filter_external_links()], [str(n) for n in code.nodes]
+for ch in ",;.:!?)(\"'":
+    for tail in ("", " z", "\n", "<", "]"):
+        s = f"see https://doi.org/10.1234/abc{ch}{tail}"
+        c, p = urls(CTokenizer, s), urls(Tokenizer, s)
+        if c != p: print(repr(s), "C:", c[0], "| Py:", p[0])

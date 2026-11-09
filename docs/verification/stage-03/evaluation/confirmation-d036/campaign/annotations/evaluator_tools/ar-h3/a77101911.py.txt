@@ -1,0 +1,13 @@
+import sys; sys.path.insert(0,'tools')
+from build import *
+a=A('ar-77101911')
+l=a.loc;t=a.t
+def tpl(r):
+    i=t.find('{{',r['cp']); return {'cp':i,'quote':t[i:i+50]}
+r0=l('<ref name=":0">');r1=l('<ref>{{استشهاد بويب|عنوان=مجلس');r2=l('<ref>{{استشهاد بويب|عنوان=الدكتور')
+a.D('d1',r0,name=':0',templates=[tpl(r0)],render='cite_note-:0-5',notes='ISBN only; no DOI/PMID')
+a.D('d2',r1,templates=[tpl(r1)],render='cite_note-6')
+a.D('d3',r2,templates=[tpl(r2)],render='cite_note-7',notes='title contains {{!}} (pipe helper, not a citation template)')
+for i,(r,rid) in enumerate([(r0,'cite_ref-:0_5-0'),(r1,'cite_ref-6'),(r2,'cite_ref-7')],1): a.U(f'u{i}',r,r,rid)
+a.unres.append('Rendered first footnote (cite_note-wikidata-...) comes from infobox/Wikidata, not in source; not listed. Window lists (flag templates, wikilinks) are not bibliography entries.')
+a.write('python3 -I str.find/regex scans, lxml listing of sup/li','none')

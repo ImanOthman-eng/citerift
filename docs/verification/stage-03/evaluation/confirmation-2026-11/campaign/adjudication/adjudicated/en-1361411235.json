@@ -1,0 +1,809 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1361411235,
+  "source_sha256": "3b382f27d4857ff14af5c96e7ece918317593fd48f0ba3bc32a4bcec0abe15ee",
+  "html_sha256": "b76b9b3e711a446f632066cda3c9d5e259468de76bd79422a1e9564d31c0e5e5",
+  "window": [
+   0,
+   7963
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h3",
+  "started_at": "2026-11-03T01:56:12Z",
+  "finished_at": "2026-11-03T01:57:15Z",
+  "files_opened": [
+   {
+    "path": "packets/en-1361411235/packet.json",
+    "sha256": "d7b48b62a259554b579df794623b20f34822047b6d0c325c8a828d49804c6646"
+   },
+   {
+    "path": "packets/en-1361411235/source.wikitext",
+    "sha256": "3b382f27d4857ff14af5c96e7ece918317593fd48f0ba3bc32a4bcec0abe15ee"
+   },
+   {
+    "path": "packets/en-1361411235/render.html",
+    "sha256": "b76b9b3e711a446f632066cda3c9d5e259468de76bd79422a1e9564d31c0e5e5"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "Python 3 stdlib + lxml helper snippets (text search, HTML sup/li listing, location verification); decisions made by reading the text.",
+  "unresolved": "Whether harvnb inside a ref (cp 3397) counts as unstructured; chose false."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 202,
+    "quote": "{{efn|[[Latin]]: ''Excerpta Constantinia"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "lower-alpha",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": "Latin: Excerpta Constantiniana, Excerpta Historica or simply Excerpta; Greek: ᾽Εκλογαί, Eklogai, eclogues.",
+   "notes": "efn on enwiki defaults to group lower-alpha (render data-mw group=lower-alpha). Plain-text explanatory note, no citation template."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEBanchich2012-2",
+   "marker": "none",
+   "marker_text": "Banchich 2012.",
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENeville2018110–113-3",
+   "marker": "none",
+   "marker_text": "Neville 2018, pp. 110–113.",
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 702,
+    "quote": "{{sfn|Németh|2018|pp=2–3}} The titles of"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENémeth20182–3-4",
+   "marker": "none",
+   "marker_text": "Németh 2018, pp. 2–3.",
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 937,
+    "quote": "{{sfn|Humphreys|2018}}{{sfn|Kazhdan|1991"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEHumphreys2018-5",
+   "marker": "none",
+   "marker_text": "Humphreys 2018.",
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 959,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEKazhdan1991-6",
+   "marker": "none",
+   "marker_text": "Kazhdan 1991.",
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 3060,
+    "quote": "{{sfn|Németh|2018|pp=5–11}} The ordering"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENémeth20185–11-7",
+   "marker": "none",
+   "marker_text": "Németh 2018, pp. 5–11.",
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 3258,
+    "quote": "{{sfn|Németh|2018|p=4}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENémeth20184-8",
+   "marker": "none",
+   "marker_text": "Németh 2018, p. 4.",
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 3397,
+    "quote": "<ref>{{harvnb|Németh|2018|p=3}}, treats "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": "Németh 2018, p. 3, treats these as two separate volumes.",
+   "notes": "Body is {{harvnb|Németh|2018|p=3}} plus prose. harvnb generates an inline link, not a footnote, so it is not labelled as a use or short-footnote definition; no Cite template; explanatory note."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 3627,
+    "quote": "{{sfn|Banchich|2015|p=3}} The original v"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEBanchich20153-10",
+   "marker": "none",
+   "marker_text": "Banchich 2015, p. 3.",
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 4142,
+    "quote": "{{sfn|Németh|2018|p=3}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENémeth20183-11",
+   "marker": "none",
+   "marker_text": "Németh 2018, p. 3.",
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 4796,
+    "quote": "{{sfn|Németh|2018|p=5}}"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTENémeth20185-12",
+   "marker": "none",
+   "marker_text": "Németh 2018, p. 5.",
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 6296,
+    "quote": "*{{cite encyclopedia |last=Banchich |fir"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 6297,
+      "quote": "{{cite encyclopedia |last=Banchich |firs"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 6501,
+    "quote": "*{{cite book |last=Banchich |first=Thoma"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 6502,
+      "quote": "{{cite book |last=Banchich |first=Thomas"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 6689,
+    "quote": "*{{cite encyclopedia |year=2018 |first=M"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 6690,
+      "quote": "{{cite encyclopedia |year=2018 |first=Mi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 6924,
+    "quote": "*{{cite encyclopedia |first=Alexander |l"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 6925,
+      "quote": "{{cite encyclopedia |first=Alexander |la"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d17",
+   "at": {
+    "cp": 7165,
+    "quote": "*{{cite journal |last=Manafis |first=Pan"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 7166,
+      "quote": "{{cite journal |last=Manafis |first=Pana"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d18",
+   "at": {
+    "cp": 7435,
+    "quote": "*{{cite book |first=András |last=Németh "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 7436,
+      "quote": "{{cite book |first=András |last=Németh |"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d19",
+   "at": {
+    "cp": 7605,
+    "quote": "*{{cite book |last=Neville |first=Leonor"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 7606,
+      "quote": "{{cite book |last=Neville |first=Leonora"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 202,
+    "quote": "{{efn|[[Latin]]: ''Excerpta Constantinia"
+   },
+   "binds_to": {
+    "cp": 202,
+    "quote": "{{efn|[[Latin]]: ''Excerpta Constantinia"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 681,
+    "quote": "{{sfn|Banchich|2012}}{{sfn|Németh|2018|p"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 702,
+    "quote": "{{sfn|Németh|2018|pp=2–3}} The titles of"
+   },
+   "binds_to": {
+    "cp": 702,
+    "quote": "{{sfn|Németh|2018|pp=2–3}} The titles of"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20182–3_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 770,
+    "quote": "{{sfn|Banchich|2012}} The volumes are ty"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-2",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 846,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} The titl"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-1",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 937,
+    "quote": "{{sfn|Humphreys|2018}}{{sfn|Kazhdan|1991"
+   },
+   "binds_to": {
+    "cp": 937,
+    "quote": "{{sfn|Humphreys|2018}}{{sfn|Kazhdan|1991"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEHumphreys2018_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 959,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "binds_to": {
+    "cp": 959,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEKazhdan1991_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 1498,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Nonethel"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-2",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 1576,
+    "quote": "{{sfn|Banchich|2012}} There is also comm"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-3",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 1623,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "binds_to": {
+    "cp": 959,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEKazhdan1991_6-1",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 2017,
+    "quote": "{{sfn|Neville|2018|pp=110–113}}"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-3",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 2214,
+    "quote": "{{sfn|Banchich|2012}} There is some mate"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-4",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 2543,
+    "quote": "{{sfn|Banchich|2012}}{{sfn|Kazhdan|1991}"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-5",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 2564,
+    "quote": "{{sfn|Kazhdan|1991}} Other historians in"
+   },
+   "binds_to": {
+    "cp": 959,
+    "quote": "{{sfn|Kazhdan|1991}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEKazhdan1991_6-2",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 3060,
+    "quote": "{{sfn|Németh|2018|pp=5–11}} The ordering"
+   },
+   "binds_to": {
+    "cp": 3060,
+    "quote": "{{sfn|Németh|2018|pp=5–11}} The ordering"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20185–11_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 3156,
+    "quote": "{{sfn|Banchich|2012}} An author's excerp"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-6",
+   "notes": ""
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 3258,
+    "quote": "{{sfn|Németh|2018|p=4}}"
+   },
+   "binds_to": {
+    "cp": 3258,
+    "quote": "{{sfn|Németh|2018|p=4}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20184_8-0",
+   "notes": ""
+  },
+  {
+   "id": "u20",
+   "at": {
+    "cp": 3397,
+    "quote": "<ref>{{harvnb|Németh|2018|p=3}}, treats "
+   },
+   "binds_to": {
+    "cp": 3397,
+    "quote": "<ref>{{harvnb|Németh|2018|p=3}}, treats "
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u21",
+   "at": {
+    "cp": 3627,
+    "quote": "{{sfn|Banchich|2015|p=3}} The original v"
+   },
+   "binds_to": {
+    "cp": 3627,
+    "quote": "{{sfn|Banchich|2015|p=3}} The original v"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich20153_10-0",
+   "notes": ""
+  },
+  {
+   "id": "u22",
+   "at": {
+    "cp": 3770,
+    "quote": "{{sfn|Neville|2018|pp=110–113}}"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-4",
+   "notes": ""
+  },
+  {
+   "id": "u23",
+   "at": {
+    "cp": 3950,
+    "quote": "{{sfn|Neville|2018|pp=110–113}}"
+   },
+   "binds_to": {
+    "cp": 583,
+    "quote": "{{sfn|Neville|2018|pp=110–113}} Today on"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENeville2018110–113_3-5",
+   "notes": ""
+  },
+  {
+   "id": "u24",
+   "at": {
+    "cp": 4142,
+    "quote": "{{sfn|Németh|2018|p=3}}"
+   },
+   "binds_to": {
+    "cp": 4142,
+    "quote": "{{sfn|Németh|2018|p=3}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20183_11-0",
+   "notes": ""
+  },
+  {
+   "id": "u25",
+   "at": {
+    "cp": 4416,
+    "quote": "{{sfn|Németh|2018|p=3}}"
+   },
+   "binds_to": {
+    "cp": 4142,
+    "quote": "{{sfn|Németh|2018|p=3}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20183_11-1",
+   "notes": ""
+  },
+  {
+   "id": "u26",
+   "at": {
+    "cp": 4518,
+    "quote": "{{sfn|Németh|2018|pp=2–3}} The compilers"
+   },
+   "binds_to": {
+    "cp": 702,
+    "quote": "{{sfn|Németh|2018|pp=2–3}} The titles of"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20182–3_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u27",
+   "at": {
+    "cp": 4639,
+    "quote": "{{sfn|Banchich|2012}}"
+   },
+   "binds_to": {
+    "cp": 432,
+    "quote": "{{sfn|Banchich|2012}} It was commissione"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEBanchich2012_2-7",
+   "notes": ""
+  },
+  {
+   "id": "u28",
+   "at": {
+    "cp": 4796,
+    "quote": "{{sfn|Németh|2018|p=5}}"
+   },
+   "binds_to": {
+    "cp": 4796,
+    "quote": "{{sfn|Németh|2018|p=5}}"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTENémeth20185_12-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 6466,
+    "quote": "10.1002/9781444338386.wbeah08041"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/9781444338386.wbeah08041",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 7746,
+    "quote": "10.1017/9781139626880"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1017/9781139626880",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Editions section list items (lines starting *Excerpta historica... and ** Volumen ...) hold archive.org URLs and {{ill}} templates but no citation template or DOI/PMID, so not labelled as bibliography entries.",
+  "{{CEEOL|608919}} after the Manafis cite journal is an external-link template, not a DOI/PMID; not labelled."
+ ],
+ "adjudication": {
+  "adjudicator": "cf11-adj-en-g1",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj/en-g1/out/decisions/en-1361411235.json",
+  "changed_items": []
+ }
+}

@@ -1,0 +1,13 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1/tools')
+from lib import *
+S='2026-11-03T16:15:00Z'
+a=A('en-1366839490',S)
+d1=a.define('d1','<ref name="iucn status 18 November 2021">',name='iucn status 18 November 2021',tpl=['{{cite iucn '],note_id='cite_note-iucn_status_18_November_2021-1',marker_text='Huckstorf, V.; Freyhof, J. (2011). Schistura susannae. IUCN Red List ...',notes='Inside the |status_ref= parameter of {{Speciesbox}}; the ref is in source, so labelled. Rendered note id also used by the later reuse.')
+d2=a.define('d2','<ref name =FB>',name='FB',tpl=['{{FishBase | genus'],note_id='cite_note-FB-2',marker_text='Froese, Rainer; Pauly, Daniel (eds.). "Schistura susannae". FishBase. October 2017 version.',notes='{{FishBase}} treated as a citation template (it renders a full citation); judgement call. Inside |authority= of {{Speciesbox}}. Space before = in name attribute.')
+d3=a.define('d3','<ref name = ETYFish>',name='ETYFish',tpl=['{{cite web | url'],note_id='cite_note-ETYFish-3',marker_text='"Order CYPRINIFORMES..." The ETYFish Project ... Archived from the original on 3 March 2016. Retrieved 21 January 2018.')
+a.use('u1','<ref name="iucn status 18 November 2021">',d1,rid='cite_ref-iucn_status_18_November_2021_1-0')
+a.use('u2','<ref name =FB>',d2,rid='cite_ref-FB_2-0')
+a.use('u3','<ref name="iucn status 18 November 2021" />',d1,rid='cite_ref-iucn_status_18_November_2021_1-1',notes='self-closing reuse')
+a.use('u4','<ref name = ETYFish>',d3,rid='cite_ref-ETYFish_3-0')
+a.ident('10.2305/IUCN.UK.2011-1.RLTS.T187941A8639448.en','doi','primary_citation_field','10.2305/iucn.uk.2011-1.rlts.t187941a8639448.en')
+a.write(S)

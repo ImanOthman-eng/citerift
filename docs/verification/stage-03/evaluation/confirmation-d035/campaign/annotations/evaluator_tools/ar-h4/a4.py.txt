@@ -1,0 +1,25 @@
+import sys,re;sys.path.insert(0,'tools')
+from lib import *
+from lxml import html
+a=A('ar-76217653')
+r=html.parse('packets/ar-76217653/render.html').getroot()
+sups=[s.get('id') for s in r.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')]
+calls=[(m.start(),m.group(0)) for m in re.finditer(r'<ref[^>]*>.*?</ref>|\{\{\s*sfn[^}]*\}\}',a.t,re.S)]
+assert len(calls)==len(sups)
+firsts={}
+# first: Hindawi ref
+p,c=calls[0]
+at=a.D('<ref>{{استشهاد بويب|مسار= https://www.hindawi.org',tpl=[('{{استشهاد بويب|مسار= https://www.hindawi.org',)],note_id='cite_note-1',notes='Template name spelled استشهاد بويب (typo/redirect). Contains only archive and web URL, no DOI/PMID.')
+a.U('<ref>{{استشهاد بويب|مسار= https://www.hindawi.org',rid=sups[0])
+for (p,c),sid in zip(calls[1:],sups[1:]):
+    if p>=a.w[1]: break
+    key=re.sub(r'\s+',' ',c)
+    # occurrence index of this exact text up to p
+    n=a.t[:p].count(c)
+    at=a.L(c,n); assert at['cp']==p
+    if key not in firsts:
+        nid='cite_note-'+sid.replace('cite_ref-','').rsplit('_',1)[0]+'-'+sid.rsplit('_',1)[1].split('-')[0]
+        firsts[key]=a.D(c,n,kind='generated_note',group=None,note_id=nid,notes='arwiki sfn: no group; name null. Footnote name from args: '+c)
+    a.U(c,n,bind=firsts[key],rid=sid)
+a.save('','none',"2026-11-03T16:13:40Z")
+import collections

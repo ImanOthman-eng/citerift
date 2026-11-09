@@ -1,0 +1,51 @@
+import re,json,datetime,hashlib,os
+from lxml import html
+B='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2'
+START=datetime.datetime.utcnow().replace(microsecond=0)-datetime.timedelta(minutes=12)
+GUIDE=hashlib.sha256(open(B+'/ANNOTATION_GUIDE_v1.1.md','rb').read()).hexdigest()
+def load(rev):
+    p=json.load(open(f'{B}/packets/en-{rev}/packet.json'))
+    t=open(f'{B}/packets/en-{rev}/source.wikitext',encoding='utf-8').read()
+    return p,t
+def L(t,cp,n=40):
+    q=t[cp:cp+n]
+    assert t[cp:cp+len(q)]==q
+    return {"cp":cp,"quote":q}
+def find(t,needle,start=0):
+    i=t.find(needle,start); assert i>=0,needle; return i
+def sups(rev):
+    d=html.parse(f'{B}/packets/en-{rev}/render.html').getroot()
+    return [s.get('id') for s in d.iter('sup') if 'mw:Extension/ref' in (s.get('typeof') or '')]
+def finish(rev,p,t,defs,uses,idents,unres,notes_unres):
+    w=p['window']
+    out={"format":"citerift-stage03-annotation-v1",
+     "article":{"wiki":"en","revision_id":rev,"source_sha256":p['source_sha256'],"html_sha256":p['html_sha256'],"window":[w['cp_start'],w['cp_end']]},
+     "provenance":{"agent":"d036-eval-en-h2","started_at":START.isoformat()+"Z","finished_at":datetime.datetime.utcnow().replace(microsecond=0).isoformat()+"Z",
+       "files_opened":[{"path":"ANNOTATION_GUIDE_v1.1.md","sha256":GUIDE},
+        {"path":f"packets/en-{rev}/packet.json","sha256":None},
+        {"path":f"packets/en-{rev}/source.wikitext","sha256":p['source_sha256']},
+        {"path":f"packets/en-{rev}/render.html","sha256":p['html_sha256']}],
+       "tools":"Python 3 standard library (re, json, str.find) and lxml, run from tools/ scripts to search wikitext and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*>; every location verified with text[cp:cp+len(quote)]==quote. Labels decided by reading the text.",
+       "unresolved":unres},
+     "definitions":defs,"uses":uses,"identifiers":idents,"unresolved_notes":notes_unres}
+    out['provenance']['files_opened'][1]['sha256']=hashlib.sha256(open(f'{B}/packets/en-{rev}/packet.json','rb').read()).hexdigest()
+    # verify
+    def chk(l):
+        if isinstance(l,dict) and 'cp' in l: assert t[l['cp']:l['cp']+len(l['quote'])]==l['quote'],l
+        elif isinstance(l,dict):
+            for v in l.values(): chk(v)
+        elif isinstance(l,list):
+            for v in l: chk(v)
+    chk(defs);chk(uses);chk(idents)
+    json.dump(out,open(f'{B}/out/en-{rev}.json','w'),ensure_ascii=False,indent=1)
+    inw=lambda c: w['cp_start']<=c<w['cp_end']
+    print(rev,'defs in window',sum(1 for d in defs if d['in_window']),'(total listed',len(defs),') uses',len(uses),'ids',len(idents))
+def D(i,t,cp,kind,name,group,templates,unstr,note_id,notes="",in_window=True,n=30,marker="none"):
+    return {"id":i,"at":L(t,cp,n),"in_window":in_window,"kind":kind,"name":name,"group":group,
+      "templates":[{"at":L(t,c,n)} for c in templates],"unstructured":unstr,"render_note_id":note_id,
+      "marker":marker,"marker_text":None,"notes":notes}
+def U(i,t,cp,bind,rid,notes="",n=30):
+    return {"id":i,"at":L(t,cp,n),"binds_to":(L(t,bind,n) if isinstance(bind,int) else bind),"render_ref_id":rid,"notes":notes}
+def I(t,cp,txt,scheme,role,key,notes=""):
+    assert t[cp:cp+len(txt)]==txt
+    return {"at":{"cp":cp,"quote":txt},"scheme":scheme,"role":role,"key":key,"notes":notes}

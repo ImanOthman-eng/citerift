@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "eed9e8bd463dea68785a8df0028acdb56f4ba260a5b40bc12d604de82bca4c64",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.376,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "27",
+   "retry_after_s": 27.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:45:32.951293Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=743213",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 28160,
+   "body_sha256": "47e50852e13ad470091079aabff137902ae50a18822375bad73149d0e0f3aa95",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.485,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:46:00.327702Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=743213",
+   "wire_bytes": 9042
+  },
+  {
+   "body_bytes": 65245,
+   "body_sha256": "3c4412bb441ab52e080bb5ca0fa28b0b6ea86fac692204b0b76cae0d5ff9a6ac",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.492,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:46:10.813204Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76772397/html",
+   "wire_bytes": 15673
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "eed9e8bd463dea68785a8df0028acdb56f4ba260a5b40bc12d604de82bca4c64"
+ ],
+ "finished_at": "2026-11-02T18:46:11.305681Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 743213,
+  "parent_revision_id": 76388380,
+  "redirect_followed": null,
+  "revision_id": 76772397,
+  "revision_timestamp": "2026-09-26T08:10:44Z",
+  "sha1": "8cfd04f225bdee7d0c5c31219ceaf88a39135f21",
+  "size": 27525,
+  "title": "مدينة ريبون الأثرية",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "3c4412bb441ab52e080bb5ca0fa28b0b6ea86fac692204b0b76cae0d5ff9a6ac",
+  "bytes": 65245,
+  "checks": {
+   "document_revision_id": "76772397",
+   "header_revision_id": "76772397",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "743213",
+   "render_id": "21a418e8-d061-11f1-9aa3-9d35a5000839",
+   "revision_sha1": "8cfd04f225bdee7d0c5c31219ceaf88a39135f21",
+   "revision_sha1_base36": "ggvu9dc4yaxhtrl6xo18i4xi3uk6v4x"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76772397",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:46:11 GMT",
+   "etag": "W/\"76772397/21a418e8-d061-11f1-9aa3-9d35a5000839/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:11:56 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76772397/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 743213,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "458f888c13cb33656ee20335ef51ebbf3aa6e0f4712404cd7c53b9f0aeaab369",
+  "bytes": 27525,
+  "response_artifact": "47e50852e13ad470091079aabff137902ae50a18822375bad73149d0e0f3aa95",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=743213"
+ },
+ "started_at": "2026-11-02T18:45:23.219122Z",
+ "status": "complete"
+}

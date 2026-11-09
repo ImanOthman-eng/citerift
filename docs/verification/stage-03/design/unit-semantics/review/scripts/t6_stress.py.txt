@@ -1,0 +1,36 @@
+"""Stress: many refs / templates; run in either checkout (cwd decides which engine)."""
+import sys, time, tempfile, json
+from pathlib import Path
+sys.path.insert(0, str(Path.cwd() / "tests/stage03"))
+from wiki_support import bundle, note_li, ref_sup, references
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+
+def transclusion(n, target, params, inner, tag="span"):
+    part = {"target": {"wt": target}, "params": {k: {"wt": v} for k, v in params.items()}, "i": 0}
+    dm = json.dumps({"parts": [{"template": part}]}, ensure_ascii=False).replace("'", "&#39;")
+    return f'<{tag} about="#mwt{n}" typeof="mw:Transclusion" data-mw=\'{dm}\'>{inner}</{tag}>'
+
+N = int(sys.argv[1]); mode = sys.argv[2]
+parts, sups, notes = [], [], []
+for i in range(N):
+    if mode == "harv":
+        call = f"{{{{harvnb|A{i}|2000}}}}"
+        inner = transclusion(100000 + i, "harvnb", {"1": f"A{i}", "2": "2000"}, f'<a href="./X#CITEREFA{i}2000">A{i} 2000</a>')
+    elif mode == "same":  # identical key everywhere
+        call = "{{Fish db|x}}"
+        inner = transclusion(100000 + i, "Fish db", {"1": "x"}, '<cite class="citation">F</cite>')
+    else:
+        call = f"Smith {i}, Book."
+        inner = call
+    parts.append(f"T{i}<ref>{call}</ref> ")
+    sups.append(f"T{i}" + ref_sup(i + 1, f"cite_note-{i+1}", f"cite_ref-{i+1}") + " ")
+    notes.append(note_li(f"cite_note-{i+1}", [f"cite_ref-{i+1}"], inner))
+text = "".join(parts) + "\n{{reflist}}"
+body = "<p>" + "".join(sups) + "</p>" + references(notes)
+p = bundle(Path(tempfile.mkdtemp()), text, body)
+cfg = ExtractConfig(worker_wall_s=3600, worker_memory_mib=4096)
+t = time.perf_counter()
+doc = extract_bundle(p, cfg, isolated=False)
+dt = time.perf_counter() - t
+from collections import Counter
+print(Path.cwd().name, mode, N, f"{dt:.2f}s", doc["status"], Counter(u["kind"] for u in doc["units"]), Counter(i["code"] for i in doc["issues"]).most_common(3))

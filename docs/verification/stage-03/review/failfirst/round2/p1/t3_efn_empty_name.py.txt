@@ -1,0 +1,5 @@
+"""Two anonymous footnotes written with an explicit empty name= (MediaWiki: anonymous, two notes)."""
+from h import run
+run('A{{efn|name=|First note doi:10.1000/a}} B{{efn|name=|Second note doi:10.1000/b}}\n{{notelist}}', label="efn name=")
+run('A{{#tag:ref|First {{cite journal|doi=10.1000/a}}|name=}} B{{#tag:ref|Second {{cite journal|doi=10.1000/b}}|name=}}', label="#tag:ref name=")
+run('A<ref name="">First {{cite journal|doi=10.1000/a}}</ref> B<ref name="">Second {{cite journal|doi=10.1000/b}}</ref>', label="<ref name=''> control")

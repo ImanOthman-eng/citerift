@@ -1,0 +1,527 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1332438558,
+  "source_sha256": "37f205755992201918f2d3381239bf5b3793e50da27d9bab9ca955bae74148d9",
+  "html_sha256": "302276f036e4a515b912c51b1c2677142bd7e93bd5830d2d9785c725bf07e7fa",
+  "window": [
+   8274,
+   16274
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h2",
+  "started_at": "2026-11-03T16:13:00Z",
+  "finished_at": "2026-11-03T16:13:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1332438558/packet.json",
+    "sha256": "(not hashed in packet; read for window and hashes)"
+   },
+   {
+    "path": "packets/en-1332438558/source.wikitext",
+    "sha256": "37f205755992201918f2d3381239bf5b3793e50da27d9bab9ca955bae74148d9"
+   },
+   {
+    "path": "packets/en-1332438558/render.html",
+    "sha256": "302276f036e4a515b912c51b1c2677142bd7e93bd5830d2d9785c725bf07e7fa"
+   }
+  ],
+  "tools": "python3 -I stdin/stdlib scripts (re, json, lxml) in tools/: regex scan for <ref/{{cite/10./PMID, listing of sup typeof=mw:Extension/ref and li cite_note ids, substring verification of every quote; labels decided by reading",
+  "unresolved": "No DOI or PMID text occurs in the window. The Cite Q (Q95265290) renders DOI 10.1016/j.phymed.2020.153242 and PMID 32425361 from Wikidata; not in source, not listed. Prose says \"forcing an erratum\" but that is body text, not a footnote marker."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 4350,
+    "quote": "<ref name=cbc1>{{cite news | v"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "cbc1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4365,
+      "quote": "{{cite news | vautho"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-cbc1-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Before the window; included as binding target."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 6726,
+    "quote": "<ref name=dxys-no>{{cite web |"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "dxys-no",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6744,
+      "quote": "{{cite web |trans-ti"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-dxys-no-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Before the window; included as binding target."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 9382,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9387,
+      "quote": "{{cite news | vautho"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 9951,
+    "quote": "<ref name=\"inmediahk-2022-02-2"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "inmediahk-2022-02-22",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9984,
+      "quote": "{{cite news|title=衞生"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-inmediahk-2022-02-22-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 11238,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11243,
+      "quote": "{{cite news | vautho"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 11713,
+    "quote": "<ref name=\"Q95265290\">{{cite Q"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Q95265290",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11735,
+      "quote": "{{cite Q|Q95265290}}"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Q95265290-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Cite Q: renders title/DOI/PMID from Wikidata; none of those identifiers is in the source."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 11892,
+    "quote": "<ref>{{Cite web|title=Prominen"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11897,
+      "quote": "{{Cite web|title=Pro"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": "Prominent Chinese scientist failed to disclose company ties in COVID-19 clinical trial paper\". Retraction Watch.",
+   "notes": "Rendered text contains \"Retraction Watch\" only as the publisher/work name; not a statement that the cited work is retracted."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 12895,
+    "quote": "<ref>{{cite web |title=DOH and"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12900,
+      "quote": "{{cite web |title=DO"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 13300,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13305,
+      "quote": "{{cite news | vautho"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 13845,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13850,
+      "quote": "{{cite news | vautho"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-20",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 14602,
+    "quote": "<ref>{{cite web |title=HSA Adv"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14607,
+      "quote": "{{cite web |title=HS"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 15265,
+    "quote": "<ref>{{Cite web |last=Dua |fir"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 15270,
+      "quote": "{{Cite web |last=Dua"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-22",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 15680,
+    "quote": "<ref>{{Cite web|url=https://ww"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 15685,
+      "quote": "{{Cite web|url=https"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-23",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 9266,
+    "quote": "<ref name=dxys-no/>\n\nLianhua Q"
+   },
+   "binds_to": {
+    "cp": 6726,
+    "quote": "<ref name=dxys-no>{{cite web |"
+   },
+   "render_ref_id": "cite_ref-dxys-no_10-1",
+   "notes": "reuse by name; definition before window"
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 9382,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "binds_to": {
+    "cp": 9382,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 9951,
+    "quote": "<ref name=\"inmediahk-2022-02-2"
+   },
+   "binds_to": {
+    "cp": 9951,
+    "quote": "<ref name=\"inmediahk-2022-02-2"
+   },
+   "render_ref_id": "cite_ref-inmediahk-2022-02-22_14-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 11238,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "binds_to": {
+    "cp": 11238,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 11713,
+    "quote": "<ref name=\"Q95265290\">{{cite Q"
+   },
+   "binds_to": {
+    "cp": 11713,
+    "quote": "<ref name=\"Q95265290\">{{cite Q"
+   },
+   "render_ref_id": "cite_ref-Q95265290_16-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 11892,
+    "quote": "<ref>{{Cite web|title=Prominen"
+   },
+   "binds_to": {
+    "cp": 11892,
+    "quote": "<ref>{{Cite web|title=Prominen"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 12895,
+    "quote": "<ref>{{cite web |title=DOH and"
+   },
+   "binds_to": {
+    "cp": 12895,
+    "quote": "<ref>{{cite web |title=DOH and"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 13300,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "binds_to": {
+    "cp": 13300,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "render_ref_id": "cite_ref-19",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 13845,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "binds_to": {
+    "cp": 13845,
+    "quote": "<ref>{{cite news | vauthors = "
+   },
+   "render_ref_id": "cite_ref-20",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 14602,
+    "quote": "<ref>{{cite web |title=HSA Adv"
+   },
+   "binds_to": {
+    "cp": 14602,
+    "quote": "<ref>{{cite web |title=HSA Adv"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 15265,
+    "quote": "<ref>{{Cite web |last=Dua |fir"
+   },
+   "binds_to": {
+    "cp": 15265,
+    "quote": "<ref>{{Cite web |last=Dua |fir"
+   },
+   "render_ref_id": "cite_ref-22",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 15680,
+    "quote": "<ref>{{Cite web|url=https://ww"
+   },
+   "binds_to": {
+    "cp": 15680,
+    "quote": "<ref>{{Cite web|url=https://ww"
+   },
+   "render_ref_id": "cite_ref-23",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 16101,
+    "quote": "<ref name=cbc1/> In the United"
+   },
+   "binds_to": {
+    "cp": 4350,
+    "quote": "<ref name=cbc1>{{cite news | v"
+   },
+   "render_ref_id": "cite_ref-cbc1_7-1",
+   "notes": "reuse by name; definition before window"
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "No DOI or PMID text occurs in the window. The Cite Q (Q95265290) renders DOI 10.1016/j.phymed.2020.153242 and PMID 32425361 from Wikidata; not in source, not listed. Prose says \"forcing an erratum\" but that is body text, not a footnote marker."
+ ]
+}

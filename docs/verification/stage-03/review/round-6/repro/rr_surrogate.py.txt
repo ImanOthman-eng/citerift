@@ -1,0 +1,16 @@
+import sys, os
+from h import *
+t = "A<ref>{{cite journal|title=T|doi=10.1000/abc&#xD800;}}</ref>"
+import citerift
+print("citerift from", citerift.__file__)
+for iso in (False, True):
+    d, p = run(t)  if False else (None, None)
+import shutil
+for iso in (False, True):
+    dd = OUT / f"sur_{iso}"; shutil.rmtree(dd, ignore_errors=True); dd.mkdir(parents=True)
+    p = bundle(dd, t)
+    try:
+        doc = extract(p, isolated=iso)
+        print("isolated", iso, "-> ok", sorted(codes(doc)))
+    except BaseException as e:
+        print("isolated", iso, "-> EXC", type(e).__name__, str(e)[:120])

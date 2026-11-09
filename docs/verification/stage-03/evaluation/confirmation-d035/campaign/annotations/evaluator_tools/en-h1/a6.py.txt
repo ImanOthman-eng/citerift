@@ -1,0 +1,21 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1/tools')
+from lib import *
+S='2026-11-03T16:40:00Z'
+a=A('en-1382843355',S)
+T=a.t
+refs=[(31182,'Declaration','cite_note-Declaration-3','cite_ref-Declaration_3-1'),(32664,'Immovable','cite_note-Immovable-41','cite_ref-Immovable_41-0'),
+(33688,None,'cite_note-42','cite_ref-42'),(34025,None,'cite_note-43','cite_ref-43'),(34774,None,'cite_note-44','cite_ref-44'),(35450,None,'cite_note-45','cite_ref-45'),
+(37058,None,'cite_note-46','cite_ref-46'),(38141,None,'cite_note-47','cite_ref-47'),(38494,None,'cite_note-48','cite_ref-48')]
+D={}
+for k,(cp,nm,nid,rid) in enumerate(refs,1):
+    tcp=T.index('{{',cp)
+    notes=''
+    if nm=='Declaration': notes='The first <ref name="Declaration"/> (self-closing, cp 3362) is before the window; this is the first body, so the definition.'
+    d=a.define(f'd{k}',T[cp:cp+60],cp=cp,name=nm,note_id=nid)
+    a.defs[-1]['templates']=[{'at':a.L(tcp,T[tcp:tcp+30])}]
+    a.defs[-1]['notes']=notes
+    a.use(f'u{k}',T[cp:cp+60],d,cp=cp,rid=rid)
+    D[nm]=d
+a.use('u10','<ref name="Immovable"/>',D['Immovable'],rid='cite_ref-Immovable_41-1',notes='self-closing reuse')
+a.unres.append('No DOI or PMID occurs in this window. A later <ref name="Immovable"/> (cp 57922) is outside the window. {{convert}}, {{main}}, {{wide image}} are not citation templates.')
+a.write(S)

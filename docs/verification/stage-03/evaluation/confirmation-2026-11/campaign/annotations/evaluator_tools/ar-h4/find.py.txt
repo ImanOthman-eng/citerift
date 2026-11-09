@@ -1,0 +1,6 @@
+import sys,re
+d=sys.argv[1]
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+pat=sys.argv[2]
+for m in re.finditer(pat,t,re.I):
+    print(m.start(),repr(t[m.start():m.start()+int(sys.argv[3]) if len(sys.argv)>3 else m.start()+70]))

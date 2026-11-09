@@ -1,0 +1,50 @@
+import sys; sys.path.insert(0,'.')
+from lib import *
+S='2026-11-04T10:40:00Z'
+TOOLS='python3 -I (stdlib re/json/hashlib, lxml) snippets in tools/: regex scan of source for ref/sfn/cite/doi/PMID, lxml listing of sup[mw:Extension/ref] and li[cite_note]; quote verification'
+a=Art('ar-76365714'); t=a.t
+CB='{{استشهاد بكتاب'; CW='{{استشهاد بويب'; CJ='{{استشهاد بدورية محكمة'
+def tpl(at,x): return [a.L(x,0,at['cp'])]
+mc=a.L('<ref name="McGowan 2010">'); go=a.L('<ref name="gould1865">')
+a.D('d1',mc,'note','McGowan 2010','',tpl(mc,CB),False,'cite_note-McGowan_2010-7',notes='starts before window (4583); listed as binding target for later reuses in window')
+a.D('d2',go,'note','gould1865','',tpl(go,CB),False,'cite_note-gould1865-4',notes='starts before window (3195); binding target for reuse at 7004')
+specs=[('d3','u1','<ref name="ioclist">','ioclist',CW,'cite_note-ioclist-9','cite_ref-ioclist_9-0'),
+ ('d4','u3','<ref>{{استشهاد بكتاب|عنوان=The Birds of Australia','',CB,'cite_note-10','cite_ref-10'),
+ ('d5','u5','<ref name="fraser13">','fraser13',CB,'cite_note-fraser13-11','cite_ref-fraser13_11-0'),
+ ('d6','u6','<ref name="abc2021">','abc2021',CW,'cite_note-abc2021-12','cite_ref-abc2021_12-0'),
+ ('d7','u7','<ref name="Slater70">','Slater70',CB,'cite_note-Slater70-13','cite_ref-Slater70_13-0'),
+ ('d8','u12','<ref name="Mcconnell952">','Mcconnell952',CJ,'cite_note-Mcconnell952-14','cite_ref-Mcconnell952_14-0'),
+ ('d9','u17','<ref name="Curtis">','Curtis',CB,'cite_note-Curtis-15','cite_ref-Curtis_15-0'),
+ ('d10','u19','<ref name="env">','env',CW,'cite_note-env-16','cite_ref-env_16-0'),
+ ('d11','u20','<ref name="webster2022">','webster2022',CJ,'cite_note-webster2022-17','cite_ref-webster2022_17-0'),
+ ('d12','u21','<ref>{{استشهاد بويب|مسار= http://datazone','',CW,'cite_note-18','cite_ref-18')]
+loc={}
+for d,u,n,nm,c,rn,rr in specs:
+    at=a.L(n); loc[u]=at
+    a.D(d,at,'note',nm or None,'',tpl(at,c),False,rn)
+    a.U(u,at,at,rr)
+# self-closing uses
+def reuse(u,nm,nth,bind,rid):
+    n='<ref name="%s" />'%nm
+    a.U(u,a.L(n,nth,5790),bind,rid)
+# McGowan self-closing occurrences in window in order
+mcpos=[m for m in range(len(t)) if t.startswith('<ref name="McGowan 2010" />',m) and 5790<=m<13790]
+gpos=[m for m in range(len(t)) if t.startswith('<ref name="gould1865" />',m) and 5790<=m<13790]
+spos=[m for m in range(len(t)) if t.startswith('<ref name="Slater70" />',m) and 5790<=m<13790]
+mpos=[m for m in range(len(t)) if t.startswith('<ref name="Mcconnell952" />',m) and 5790<=m<13790]
+print(mcpos,gpos,spos,mpos)
+a.U('u2',a.Lq(mcpos[0],27),mc,'cite_ref-McGowan_2010_7-1')
+a.U('u4',a.Lq(gpos[0],24),go,'cite_ref-gould1865_4-1')
+for i,(nm,pos) in enumerate([(2,0)]): pass
+# order of remaining by position
+ev=[(mcpos[1],'u8',27,mc,'cite_ref-McGowan_2010_7-2'),(mcpos[2],'u9',27,mc,'cite_ref-McGowan_2010_7-3'),
+    (spos[0],'u10',23,loc['u7'],'cite_ref-Slater70_13-1'),(mcpos[3],'u11',27,mc,'cite_ref-McGowan_2010_7-4'),
+    (mcpos[4],'u13',27,mc,'cite_ref-McGowan_2010_7-5'),(mcpos[5],'u14',27,mc,'cite_ref-McGowan_2010_7-6'),
+    (mcpos[6],'u15',27,mc,'cite_ref-McGowan_2010_7-7'),(mpos[0],'u16',28,loc['u12'],'cite_ref-Mcconnell952_14-1'),
+    (mcpos[7],'u18',27,mc,'cite_ref-McGowan_2010_7-8')]
+for p,u,n,b,r in ev: a.U(u,a.Lq(p,n),b,r,'self-closing reuse')
+w=t.find('DOI=10.1080/01584197.2022.2047733')+4
+a.I(a.Lq(w,32),'doi','primary_citation_field','10.1080/01584197.2022.2047733','field "DOI=" of an Arabic cite-journal template')
+a.un.append('Window begins mid-article; definitions McGowan 2010 (4583) and gould1865 (3195) start before the window and are listed with in_window=false.')
+a.un.append('Template {{وإو}}, {{حول مختصر}}, {{Spaced ndash}} are not citation templates. ISBN/ISSN fields are not DOI/PMID. Citation templates named "استشهاد بويب" counted as web citation templates (arwiki alias spelling in this article); rendered without errors.')
+a.write(0,S,TOOLS,'Nothing undecided.')

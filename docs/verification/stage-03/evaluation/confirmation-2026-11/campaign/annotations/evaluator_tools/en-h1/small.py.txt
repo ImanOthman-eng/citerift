@@ -1,0 +1,41 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval/en-h1/tools')
+from lib import *
+ST='2026-11-03T01:55:00Z'
+TOOLS='Python 3 standard library str.find/slicing for locating and verifying quotes; lxml (xpath) to list sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; grep for retraction vocabulary in render.html. Labels decided by reading the text.'
+# ---- 1292736651
+a=Art('en-1292736651')
+r1=a.L('<ref>{{Cite web'); r2=a.L('<ref>{{Cite journal')
+a.D('d1',r1,templates=[a.L('{{Cite web')],nid='cite_note-1',notes='Unnamed ref, cite web, no identifiers.')
+a.D('d2',r2,templates=[a.L('{{Cite journal')],nid='cite_note-2',notes='Unnamed ref, cite journal with doi, pmid and DOI-bearing publisher URL.')
+a.U('u1',r1,r1,'cite_ref-1'); a.U('u2',r2,r2,'cite_ref-2')
+a.I(a.L('https://onlinelibrary.wiley.com/doi/10.1111/jfb.15367',ql=60),'doi','identifier_link','10.1111/jfb.15367','Publisher URL whose path contains /doi/10.…; whole URL quoted.')
+a.I(a.L('10.1111/jfb.15367',n=1),'doi','primary_citation_field','10.1111/jfb.15367','doi= field.')
+a.I(a.L('36880271'),'pmid','primary_citation_field','36880271','pmid= field.')
+a.write(ST,TOOLS,'Nothing undecided.')
+# ---- 1296237338
+a=Art('en-1296237338')
+r1=a.L('<ref>{{cite journal'); r2=a.L('<ref>{{Fishbase')
+a.D('d1',r1,templates=[a.L('{{cite journal')],nid='cite_note-1',notes='Unnamed ref, cite journal with doi= (doi-access=free).')
+a.D('d2',r2,templates=[a.L('{{Fishbase')],nid='cite_note-2',notes='{{Fishbase}} is treated as a citation template: Parsoid HTML shows it expands to a cs1 "citation web" cite element. No identifiers.')
+a.U('u1',r1,r1,'cite_ref-1'); a.U('u2',r2,r2,'cite_ref-2')
+a.I(a.L('10.11609/JoTT.o2841.2078-84'),'doi','primary_citation_field','10.11609/jott.o2841.2078-84','doi= field; key lower-cased.')
+a.write(ST,TOOLS,'Whether {{Fishbase}} counts as a citation template: decided yes because it renders a cs1 citation.')
+# ---- 1353880676
+a=Art('en-1353880676')
+r1=a.L('<ref name=IUCN>'); r2=a.L('<ref name=IUCN/>')
+a.D('d1',r1,name='IUCN',templates=[a.L('{{cite iucn')],nid='cite_note-IUCN-1',notes='Defined inside the status_ref parameter of {{Speciesbox}}; a real <ref> in the source (rendered in the infobox). Reused later by <ref name=IUCN/>.')
+a.U('u1',r1,r1,'cite_ref-IUCN_1-0'); a.U('u2',r2,r1,'cite_ref-IUCN_1-1')
+a.I(a.L('10.2305/IUCN.UK.2023-1.RLTS.T35102A236675980.fr'),'doi','primary_citation_field','10.2305/iucn.uk.2023-1.rlts.t35102a236675980.fr','doi= field of {{cite iucn}}; key lower-cased.')
+a.write(ST,TOOLS,'Nothing undecided.')
+# ---- 1382801589
+a=Art('en-1382801589')
+rI=a.L('<ref name="iucn status 19 November 2021">'); uI=a.L('<ref name="iucn status 19 November 2021" />')
+uB=a.L('<ref name = "Beolens"/>'); rB=a.L('<ref name = "Beolens">')
+a.D('d1',rI,name='iucn status 19 November 2021',templates=[a.L('{{cite iucn')],nid='cite_note-iucn_status_19_November_2021-1',notes='Defined inside the status_ref parameter of {{Speciesbox}}; reused in the body by a self-closing ref.')
+a.D('d2',rB,name='Beolens',templates=[a.L('{{Cite book')],nid='cite_note-Beolens-2',notes='First use of name Beolens (self-closing, earlier in source) has no body; this later tag carries the body and is the first definition. No identifiers (isbn/oclc only).')
+a.U('u1',rI,rI,'cite_ref-iucn_status_19_November_2021_1-0')
+a.U('u2',uB,rB,'cite_ref-Beolens_2-0','Forward reference: binds to the later definition with the body.')
+a.U('u3',uI,rI,'cite_ref-iucn_status_19_November_2021_1-1')
+a.U('u4',rB,rB,'cite_ref-Beolens_2-1')
+a.I(a.L('10.2305/IUCN.UK.2016-1.RLTS.T136803A22178229.en'),'doi','primary_citation_field','10.2305/iucn.uk.2016-1.rlts.t136803a22178229.en','doi= field of {{cite iucn}}; key lower-cased.')
+a.write(ST,TOOLS,'Nothing undecided.')

@@ -1,0 +1,38 @@
+"""Failure paths: render limit, source limit, render rejected; dump normalized documents for old/new comparison."""
+import sys, json, tempfile
+from pathlib import Path
+sys.path.insert(0, str(Path.cwd() / "tests/stage03"))
+from wiki_support import bundle, note_li, ref_sup, references, capture, parsoid
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+out = {}
+text = "A<ref>Smith 2001.</ref> B<ref>{{harvnb|Fox|2002}}</ref> C<ref>{{cite book|title=T|doi=10.1000/x}}</ref>"
+body = (f"<p>A{ref_sup(1,'cite_note-1','cite_ref-1')} B{ref_sup(2,'cite_note-2','cite_ref-2')} C{ref_sup(3,'cite_note-3','cite_ref-3')}</p>"
+        + references([note_li("cite_note-1", ["cite_ref-1"], "Smith 2001."),
+                      note_li("cite_note-2", ["cite_ref-2"], '<a href="./X#CITEREFFox2002">Fox 2002</a>'),
+                      note_li("cite_note-3", ["cite_ref-3"], '<cite class="citation book">T. doi:10.1000/x</cite>')]))
+p = bundle(Path(tempfile.mkdtemp()), text, body)
+for label, cfg in [("ok", ExtractConfig()), ("render_limit", ExtractConfig(max_render_elements=5)),
+                   ("source_limit_refs", ExtractConfig(max_refs=1)), ("source_limit_templates", ExtractConfig(max_templates=1))]:
+    doc = extract_bundle(p, cfg, isolated=False)
+    for k in ("extractor", "extraction_digest", "schema_version"):
+        doc.pop(k, None)
+    out[label] = doc
+# rejected render: render that names another revision
+try:
+    html = parsoid(body, text, revision=123)
+    oc = capture(Path(tempfile.mkdtemp()) / "b", text, html)
+    if oc.bundle is not None:
+        doc = extract_bundle(oc.bundle, ExtractConfig(), isolated=False)
+        for k in ("extractor", "extraction_digest", "schema_version"):
+            doc.pop(k, None)
+        doc["capture"].pop("capture_sha256", None)
+        out["rejected"] = doc
+    else:
+        out["rejected"] = {"capture_issues": [i.code for i in oc.issues]}
+except Exception as e:
+    out["rejected"] = {"error": repr(e)}
+for d in out.values():
+    if "capture" in d:
+        d["capture"].pop("capture_sha256", None)
+Path(sys.argv[1]).write_text(json.dumps(out, indent=1, sort_keys=True, ensure_ascii=False))
+print({k: (v.get("status"), sorted({i["code"] for i in v.get("issues", [])})) for k, v in out.items()})

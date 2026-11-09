@@ -1,0 +1,217 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76583092,
+  "source_sha256": "0350cda39351c778175a141c340d44503175b3ff268e338946ba228391a01523",
+  "html_sha256": "6d4ec608f61f04de7222d66b4f1575871953985b3a4a2900c826855b3eb24a3e",
+  "window": [
+   0,
+   3724
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:49:56Z",
+  "finished_at": "2026-10-29T08:53:21Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-76583092/packet.json",
+    "sha256": "f776150c7496f67401de180553b4ba5e454a388eeadde41dae3be1efdb032565",
+    "note": "sha256 computed with sha256sum; packet.json does not hash itself"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-76583092/source.wikitext",
+    "sha256": "0350cda39351c778175a141c340d44503175b3ff268e338946ba228391a01523"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-r1/ar-76583092/render.html",
+    "sha256": "6d4ec608f61f04de7222d66b4f1575871953985b3a4a2900c826855b3eb24a3e"
+   }
+  ],
+  "tools": "cat/sha256sum; python3 -I (stdlib re, json, hashlib) for str.find/regex listing of <ref, {{, 10., doi, pmid/pubmed, comments/nowiki in source.wikitext and for location verification text[cp:cp+len(quote)]==quote; lxml 6.1.3 (lxml.html) to list <sup typeof=mw:Extension/ref> ids and data-mw, <li id=cite_note-...> text, red links (class=new) and Template:/قالب: links, and retraction vocabulary in render.html. Labels decided by reading the text. Procedural note: early in the run three throwaway listing scripts (scan/listing helpers, no reference parsing) were briefly written to scratchpad/eval/tools/ outside the annotations directory; they were deleted before any annotation was written and all later code ran inline from stdin.",
+  "unresolved": "Undecided: raw-text span for the iopscience.iop.org/article/10.… URL (whole URL vs. DOI text). The guide lists publisher URLs with a /doi/ path; this path is /article/. Chose the whole URL with role identifier_link."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 336,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd."
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "jpl",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 352,
+      "quote": "{{استشهاد ويب| مسار = https://ssd.jpl.nasa.gov/sbd"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-jpl-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 656,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanet"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 661,
+      "quote": "{{استشهاد ويب| مسار = https://www.minorplanetcente"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2586,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "AAS-MB-2011",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2610,
+      "quote": "{{استشهاد بدورية محكمة|لغة=en|الأخير=Joseph R Masi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-AAS-MB-2011-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Cite journal with DOI; rendered with a CS1 maintenance message (صيانة الاستشهاد) only; no retraction vocabulary."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 336,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd."
+   },
+   "binds_to": {
+    "cp": 336,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd."
+   },
+   "render_ref_id": "cite_ref-jpl_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 656,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanet"
+   },
+   "binds_to": {
+    "cp": 656,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanet"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1565,
+    "quote": "<ref name=\"jpl\"/>"
+   },
+   "binds_to": {
+    "cp": 336,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd."
+   },
+   "render_ref_id": "cite_ref-jpl_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2134,
+    "quote": "<ref name=\"jpl\"/>"
+   },
+   "binds_to": {
+    "cp": 336,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd."
+   },
+   "render_ref_id": "cite_ref-jpl_2-2",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2586,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة"
+   },
+   "binds_to": {
+    "cp": 2586,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة"
+   },
+   "render_ref_id": "cite_ref-AAS-MB-2011_4-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3046,
+    "quote": "https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Publisher (IOP) URL in مسار (url=) whose path is /article/<DOI> rather than /doi/<DOI>. Read as a publisher URL pointing at the identifier, so the whole URL is quoted. The DOI runs to the end of the URL. Alternative reading: quote only the DOI text at cp+35."
+  },
+  {
+   "at": {
+    "cp": 3194,
+    "quote": "https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Inside an archive.org snapshot URL (another site's URL, مسار أرشيف); quoted the embedded URL. Not a target."
+  },
+  {
+   "at": {
+    "cp": 3289,
+    "quote": "10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Field written in upper case as DOI=. Key lower-cases X."
+  }
+ ],
+ "unresolved_notes": [
+  "The infobox {{معلومات كوكب}} (cp 0) emits a Wikidata-generated reference (rendered as cite_note-wikidata-…-1 with 10 markers cite_ref-wikidata-…_1-0…9; body: minorplanetcenter.net URL with a CS1 error). It has no source location and is not listed (guide 3.3).",
+  "\"* {{JPL small body}}\" under وصلات خارجية renders an external link to the JPL Small-Body Database (no citation template, no DOI/PMID). Not treated as a bibliography entry.",
+  "{{مراجع}} is the references-list template without refs=; no list-defined references."
+ ]
+}

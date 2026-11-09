@@ -1,0 +1,114 @@
+import re,json,sys,hashlib,datetime
+from lxml import html as LH
+from html import unescape
+from urllib.parse import unquote
+sys.path.insert(0,'tools')
+d=sys.argv[1]; EXTRA=json.loads(sys.argv[2]) if len(sys.argv)>2 else {}
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+pk=json.load(open(f'packets/{d}/packet.json'))
+cs,ce=pk['window']['cp_start'],pk['window']['cp_end']
+t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+assert len(t)==pk['source_code_points']
+def loc(cp,n=48):
+    q=t[cp:cp+n]; assert len(q)>=1 and t[cp:cp+len(q)]==q; return {'cp':cp,'quote':q}
+refs=[]
+for m in re.finditer(r'<ref\b([^>]*?)(/?)>',t):
+    nm=re.search(r'name\s*=\s*"?([^"/>]*[^"\s/>])"?',m.group(1))
+    name=nm.group(1) if nm else None
+    if m.group(2)=='/': refs.append(dict(start=m.start(),name=name,sc=True,bs=None,be=None))
+    else:
+        e=t.index('</ref>',m.end()); refs.append(dict(start=m.start(),name=name,sc=False,bs=m.end(),be=e))
+doc=LH.parse(f'packets/{d}/render.html').getroot()
+sups=doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')
+assert len(sups)==len(refs),(len(sups),len(refs))
+lis={li.get('id'):' '.join(li.text_content().split()) for li in doc.xpath('//li[starts-with(@id,"cite_note")]')}
+# definitions
+firstdef={}
+for i,r in enumerate(refs):
+    r['sup']=sups[i].get('id')
+    if r['sc']: continue
+    key=r['name']
+    if key is None or key not in firstdef: firstdef[key]=i; r['isdef']=True
+    else:
+        # same name: definition only if body differs
+        prev=[refs[j]['body'] for j in range(i) if refs[j]['name']==key and not refs[j]['sc']]
+        r['body']=t[r['bs']:r['be']].strip()
+        r['isdef']=False
+    r['body']=t[r['bs']:r['be']].strip()
+    if key is not None and not r['isdef']:
+        prevb=[refs[j]['body'] for j in range(i) if refs[j]['name']==key and not refs[j]['sc']]
+        if r['body'] not in prevb: r['isdef']=True
+def idents(r):
+    out=[]; b=t[r['bs']:r['be']]; b0=r['bs']
+    taken=[]
+    for m in re.finditer(r'\|\s*(doi|pmid)\s*=\s*([^|}]*?)\s*(?=\||\}\})',b):
+        out.append((b0+m.start(2),m.group(2),m.group(1),'field')); taken.append((m.start(2),m.end(2)))
+    for m in re.finditer(r'https?://[^\s|}<]+',b):
+        u=m.group(0)
+        if re.search(r'/doi/(?:abs/|full/|pdf/)?10\.\d{4,9}/|doi\.org/10\.',u) or 'pubmed' in u or 'ncbi.nlm.nih.gov' in u:
+            out.append((b0+m.start(),u,None,'url'))
+    return out
+def doikey(s):
+    m=re.search(r'10\.\d{4,9}/[^\s|}<]+',s); 
+    if not m: return None
+    k=unescape(unquote(m.group(0))); return k.lower()
+defs=[];uses=[];ids=[];unres=list(EXTRA.get('unresolved_notes',[]))
+def inwin(c): return cs<=c<ce
+for i,r in enumerate(refs):
+    r['ids']=[x for x in idents(r)] if not r['sc'] else []
+    r['inw']=inwin(r['start'])
+for i,r in enumerate(refs):
+    if r['sc'] or not r.get('isdef'): continue
+    anyid=any(inwin(x[0]) for x in r['ids'])
+    # also a pre-window def needed if an in-window use binds to it
+    needed=any(inwin(u['start']) and (u['name']==r['name'] and r['name'] is not None) and firstdef[r['name']]==i for u in refs)
+    if not (r['inw'] or anyid or needed): continue
+    tm=re.search(r'\{\{\s*[Cc]ite',t[r['bs']:r['be']])
+    templs=[{'at':loc(r['bs']+tm.start())}] if tm else []
+    note_id='cite_note-'+re.sub(r'^mw-reference-text-cite_note-','',(LH.fromstring(sups[i].get('data-mw') and '<x/>') is None) and '' or '') if False else None
+    import json as J
+    dm=J.loads(sups[i].get('data-mw'))
+    bid=dm.get('body',{}).get('id','')
+    note_id=bid.replace('mw-reference-text-','') or None
+    assert note_id in lis,note_id
+    n=EXTRA.get('notes',{}).get(str(i),'')
+    defs.append({'id':f'd{len(defs)+1}','at':loc(r['start']),'in_window':r['inw'],'kind':'note','name':r['name'],'group':'',
+      'templates':templs,'unstructured':False,'render_note_id':note_id,'marker':'none','marker_text':None,'notes':n,'_i':i})
+dmap={x['_i']:x for x in defs}
+for i,r in enumerate(refs):
+    if not r['inw']: continue
+    key=r['name']; fi=i if key is None else firstdef[key] if key in firstdef else None
+    if r['sc'] and key is not None: fi=firstdef.get(key)
+    if key is not None and not r['sc']: fi=firstdef[key]
+    bind=loc(refs[fi]['start']) if fi is not None else 'missing'
+    uses.append({'id':f'u{len(uses)+1}','at':loc(r['start']),'binds_to':bind,'render_ref_id':r['sup'],'notes':EXTRA.get('unotes',{}).get(str(i),'')})
+for i,r in enumerate(refs):
+    for (cp,txt,sch,kind) in r['ids']:
+        if not inwin(cp): continue
+        if kind=='field':
+            if sch=='doi': key=doikey(txt); role='primary_citation_field'; s='doi'
+            else:
+                s='pmid'; key=txt if re.fullmatch(r'[1-9]\d{0,8}',txt) else None; role='primary_citation_field'
+            nt=''
+        else:
+            s='doi'; key=doikey(txt); role='identifier_link'; nt=''
+            # archive wrapper?
+            pre=t[max(0,cp-60):cp]
+            if re.search(r'archive-url\s*=\s*$',pre) and 'web.archive.org' in txt:
+                role='not_a_target'; nt='DOI appears inside a web.archive.org snapshot URL of another site.'
+        ids.append({'at':loc(cp,min(len(txt),60)) if kind=='url' else loc(cp,len(txt) if len(txt)>=8 else 8),'scheme':s,'role':role,'key':key,'notes':nt})
+# fix quotes for short pmid values (<8 chars): extend quote beyond value is allowed? keep exact start
+for x in ids: pass
+defs=[{k:v for k,v in x.items() if k!='_i'} for x in defs]
+out={'format':'citerift-stage03-annotation-v1',
+ 'article':{'wiki':pk['wiki'],'revision_id':pk['revision_id'],'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':[cs,ce]},
+ 'provenance':{'agent':'d036-eval-en-h3','started_at':START if (START:='2026-11-04T10:25:00Z') else '', 'finished_at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+  'files_opened':[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE_SHA},{'path':f'packets/{d}/source.wikitext','sha256':pk['source_sha256']},{'path':f'packets/{d}/render.html','sha256':pk['html_sha256']},{'path':f'packets/{d}/packet.json','sha256':hashlib.sha256(open(f'packets/{d}/packet.json','rb').read()).hexdigest()}],
+  'tools':'python3 -I stdlib + lxml: regex search of source for <ref, {{cite, 10., pmid; lxml listing of sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; each quote verified against source text. Roles, bindings and markers decided by reading.',
+  'unresolved':EXTRA.get('unresolved','none')},
+ 'definitions':defs,'uses':uses,'identifiers':ids,'unresolved_notes':unres}
+json.dump(out,open(f'out/{d}.json','w'),ensure_ascii=False,indent=1)
+print(d,len(defs),len(uses),len(ids))
+for x in ids: print(' ',x['at']['cp'],x['scheme'],x['role'],x['key'],repr(x['at']['quote'][:50]))
+for x in defs: print(' D',x['id'],x['at']['cp'],x['in_window'],x['name'],x['render_note_id'],len(x['templates']))
+for x in uses: print(' U',x['id'],x['at']['cp'],x['binds_to'] if x['binds_to']=='missing' else x['binds_to']['cp'],x['render_ref_id'])

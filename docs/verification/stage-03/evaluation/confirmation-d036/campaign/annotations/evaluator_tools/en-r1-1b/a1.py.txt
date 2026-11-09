@@ -1,0 +1,19 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/eval-d036/en-r1-1b/tools')
+from build import *
+d='en-1370070834'
+un={36150}
+dn={35971:'Short footnote {{sfn|Shifting views...}}: first call of footnote name "Shifting views..."; repeated later at 41753 (outside window) which is a use only. Target of the author-date link may not exist (single positional argument, no year); rendered li reads "Shifting views...". Group is "" (Module:Footnotes default).',
+    40500:'Short footnote; name joins March, Smyth, Mukhopadhyay, 1999, pp 55. Rendered "March, Smyth & Mukhopadhyay 1999, pp. 55."',
+    32007:'Definition starts before the window (named ref "Reeves 2000 8"); listed because the use at 34579 and 38320 bind to it. Citation page=8.',
+    36150:'Plain-text citation without a citation template.'}
+un_notes={}
+pk,t,w0,w1,defs,uses=build(d,[],def_notes=dn,unstructured=un)
+# adjust sfn first-call group note
+ids=[]
+ids.append(idn(t,'10.3390/ijerph182413052','doi','primary_citation_field','10.3390/ijerph182413052','doi= field of Cite journal in ref :4 (doi-access=free)'))
+ids.append(idn(t,'34948661','pmid','primary_citation_field','34948661','pmid= field of Cite journal in ref :4'))
+ids.append(idn(t,'10.1111/j.1749-5687.2011.00149.x','doi','primary_citation_field','10.1111/j.1749-5687.2011.00149.x','doi= field of cite journal (Prügl 2012)',after=38000))
+un=['Short-footnote defs (sfn) carry no citation template; unstructured=false by choice. The Shifting views... sfn has only one positional argument, so no matching bibliography target can be named from the call itself.',
+    'Reeves 2000 8 and the Razavi/Moser unnamed refs: unnamed refs with identical-looking templates but different page= values are each their own reference, so each is a definition.',
+    'hdl= fields (hdl=10419/148819) and pmc= are not DOI/PMID and were not labelled.']
+finish(d,pk,t,defs,uses,ids,un,TOOLS,'Nothing undecided beyond notes; sfn "Shifting views..." target semantics only read from rendered li.')

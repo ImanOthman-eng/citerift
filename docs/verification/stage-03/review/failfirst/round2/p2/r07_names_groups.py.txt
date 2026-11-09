@@ -1,0 +1,26 @@
+import sys, json; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import run, doi_link, ref_sup, note_li, references
+def summary(label, d):
+    print(label, [(u["name"], u.get("group"), u["render"]["state"]) for u in d["uses"]],
+          [(c["id"], c["render"]["state"], c["render"].get("region_id")) for c in d["containers"]],
+          [m["state"] for m in d["markers"]])
+# 1. <ref name=a/> (unquoted, slash attached) - MediaWiki treats it as self-closing use of "a"
+T = 'A.<ref name=a>one</ref> B.<ref name=a/>\n'
+body = ("<p>A." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + " B." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-1", name="a") + "</p>"
+        + references([note_li("cite_note-a-1", ["cite_ref-a_1-0", "cite_ref-a_1-1"], "one")]))
+summary("name=a/ :", run(T, body))
+# 2. Arabic group name, list-defined ref in <references group=...>
+T = 'أ.<ref group="ملاحظة" name="س" /> ب.\n<references group="ملاحظة">\n<ref name="س">نص</ref>\n</references>\n'
+body = ("<p>أ." + ref_sup(1, "cite_note-س-1", "cite_ref-س_1-0", name="س", group="ملاحظة") + " ب.</p>"
+        + references([note_li("cite_note-س-1", ["cite_ref-س_1-0"], "نص")], group="ملاحظة"))
+summary("arabic group LDR:", run(T, body, wiki="ar"))
+# 3. percent-encoded fragment in href (Parsoid encodes non-ASCII in href)
+import urllib.parse
+enc = urllib.parse.quote("cite_note-س-1")
+body2 = body.replace("./SYNTHETIC#cite_note-س-1", "./SYNTHETIC#" + enc)
+summary("arabic group LDR, encoded href:", run(T, body2, wiki="ar"))
+# 4. name with spaces vs underscores (Cite gives both the same anchor id)
+T = 'A.<ref name="a b">one</ref> B.<ref name="a_b">two</ref>\n'
+body = ("<p>A." + ref_sup(1, "cite_note-a_b-1", "cite_ref-a_b_1-0", name="a b") + " B." + ref_sup(2, "cite_note-a_b-2", "cite_ref-a_b_2-0", name="a_b") + "</p>"
+        + references([note_li("cite_note-a_b-1", ["cite_ref-a_b_1-0"], "one"), note_li("cite_note-a_b-2", ["cite_ref-a_b_2-0"], "two")]))
+summary("a b / a_b :", run(T, body))

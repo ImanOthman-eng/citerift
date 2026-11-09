@@ -1,0 +1,8 @@
+import sys; sys.path.insert(0,'tools')
+from build import *
+a=A('ar-73363749');t=a.t
+r={'cp':42471,'quote':t[42471:42471+50]}
+a.D('d1',r,unstructured=True,render='cite_note-19',notes='bare URL with link text; {{Webarchive}} is an archive-link template, not a citation template. HTML comment inside contains no identifier.')
+a.U('u1',r,r,'cite_ref-19')
+a.unres.append('Only one reference starts in the window (the last one in the article). {{مراجع}} at 43386 produces the list only.')
+a.write('python3 -I str.find/regex scans, lxml listing of sup/li and red links','none')

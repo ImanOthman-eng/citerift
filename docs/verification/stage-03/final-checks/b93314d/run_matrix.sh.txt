@@ -1,0 +1,8 @@
+set -u
+cd <repo>
+export PYTHONPATH=src
+date -u +%FT%TZ > <scratch>/m312.start
+.venv/bin/python -P -m pytest --citerift-report docs/verification/stage-03/test-report.json > <scratch>/pytest-3.12.txt 2>&1; echo $? > <scratch>/m312.exit
+date -u +%FT%TZ > <scratch>/m313.start
+<scratch>/venv313d/bin/python -P -m pytest --citerift-report <scratch>/test-report-py3.13.json > <scratch>/pytest-3.13.txt 2>&1; echo $? > <scratch>/m313.exit
+date -u +%FT%TZ > <scratch>/m.end

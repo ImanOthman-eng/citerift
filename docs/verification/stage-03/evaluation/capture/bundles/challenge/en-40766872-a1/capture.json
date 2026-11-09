@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "6f65bc5f887f743f1b319382d31bcdb93677c15dd8b3e77ab4daf0b73b9812f4",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.441,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:37:10.891249Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=40766872",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 12656,
+   "body_sha256": "275aed62f65fab81dcc3cf8774df3386d93844399305a99a071f32934ca3984e",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.545,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:38:00.332662Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=40766872",
+   "wire_bytes": 5332
+  },
+  {
+   "body_bytes": 154172,
+   "body_sha256": "f8668d7b7429d631d96998edbf42d654261572ac13597ec3bba701e6f44ce75f",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.506,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:38:10.879159Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1366809278/html",
+   "wire_bytes": 24519
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "6f65bc5f887f743f1b319382d31bcdb93677c15dd8b3e77ab4daf0b73b9812f4"
+ ],
+ "finished_at": "2026-10-29T08:38:11.386935Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 40766872,
+  "parent_revision_id": 1360253061,
+  "redirect_followed": null,
+  "revision_id": 1366809278,
+  "revision_timestamp": "2026-07-30T10:46:22Z",
+  "sha1": "6e6f2b9a76eb9359b484a7835fa55c663f34919e",
+  "size": 11996,
+  "title": "Opioid excess theory",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f8668d7b7429d631d96998edbf42d654261572ac13597ec3bba701e6f44ce75f",
+  "bytes": 154172,
+  "checks": {
+   "document_revision_id": "1366809278",
+   "header_revision_id": "1366809278",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "40766872",
+   "render_id": "756544f9-d198-11f1-acd1-cb3f4d94b84c",
+   "revision_sha1": "6e6f2b9a76eb9359b484a7835fa55c663f34919e",
+   "revision_sha1_base36": "cwec81j7qdv84fy750ihevqetwjw1b2"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1366809278",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:38:11 GMT",
+   "etag": "W/\"1366809278/756544f9-d198-11f1-acd1-cb3f4d94b84c/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:54:43 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1366809278/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 40766872,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "4e0b1d1ccf96a4149ac6ed5bf6cdbe0f0f6ed0d962428deec7c125d144da5666",
+  "bytes": 11996,
+  "response_artifact": "275aed62f65fab81dcc3cf8774df3386d93844399305a99a071f32934ca3984e",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=40766872"
+ },
+ "started_at": "2026-10-29T08:37:01.250327Z",
+ "status": "complete"
+}

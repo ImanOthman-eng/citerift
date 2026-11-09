@@ -1,0 +1,14 @@
+"""RF-60: the (?i) route-word regex is Unicode case-insensitive, so non-ASCII letters that are case variants of
+ASCII letters (U+017F LATIN SMALL LETTER LONG S, U+212A KELVIN SIGN, U+0130/U+0131 dotted/dotless I) match a route
+word, and the segment is removed from the key."""
+import sys, unicodedata
+sys.path.insert(0, "/home/user/citerift/src")
+from citerift.wiki.identifiers import decode, decode_render_href
+from citerift.retraction.identifiers import normalize_doi
+
+H = "https://onlinelibrary.wiley.com/doi/10.1002/abc.123/"
+for seg in ["abstract", "abſtract", "ſuppinfo", "suppınfo", "suppİnfo", "cıtedby", "fıgures", "ſummary", "referenceſ"]:
+    got = decode("doi", "url", H + seg, ())
+    print(f"{seg!r:24} non-ascii={[unicodedata.name(c) for c in seg if ord(c) > 127]}")
+    print(f"   key={got.normalized.normalized!r} steps={list(got.steps)}")
+    print(f"   Stage 02 key of the unremoved text: {normalize_doi('10.1002/abc.123/' + seg).normalized!r}")

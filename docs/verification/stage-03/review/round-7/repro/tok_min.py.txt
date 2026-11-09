@@ -1,0 +1,29 @@
+import random, sys
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+def run(T, s):
+    try: return repr(T().tokenize(s, 0, False))
+    except Exception as e: return "EXC " + type(e).__name__ + str(e)[:50]
+def differs(s): return run(CTokenizer, s) != run(Tokenizer, s)
+exec(open(__file__.replace("tok_min", "tok_fuzz")).read().split("diff = 0")[0].split("rng = random.Random(7)")[1].replace("\n", "\n", 1)) if False else None
+rng = random.Random(7)
+atoms = ["{{", "}}", "{{{", "}}}", "[[", "]]", "[", "]", "|", "=", "==", "'", "''", "'''", "<ref>", "</ref>", "<ref name=a/>", "<!--", "-->", "<nowiki>", "</nowiki>",
+         "{|", "|}", "|-", "\n", " ", "http://x.y", "&amp;", "&#32;", "a", "Sfn", "sfn", "cite", "doi=10.1/x", ":", "*", "#", "<b>", "</b>", "<", ">", " ", "قالب", "~~~~", "__TOC__", "{{#if:", "<math>", "</math>", "[[File:x|", "{{!}}"]
+found = []
+for i in range(30000):
+    parts = [rng.choice(atoms) for _ in range(rng.randint(1, 40))]
+    if differs("".join(parts)): found.append(parts)
+print(len(found))
+res = []
+for parts in found:
+    p = list(parts)
+    ch = True
+    while ch:
+        ch = False
+        for i in range(len(p)):
+            q = p[:i] + p[i+1:]
+            if q and differs("".join(q)): p = q; ch = True; break
+    res.append("".join(p))
+print(len(set(res)), "distinct minimal"); [print(repr(s)) for s in sorted(set(res), key=len) if not s.startswith("http://x.y")]
+for s in []:
+    print(repr(s)); print("  C :", run(CTokenizer, s)[:300]); print("  Py:", run(Tokenizer, s)[:300])

@@ -1,0 +1,16 @@
+"""Replay/verify of a 1.0.0 document from the frozen candidate under engine 1.1.0 (exposed data, regression only)."""
+import json
+from pathlib import Path
+from citerift.wiki.verify import verify_bundle, replay_bundle
+C = Path("/home/user/citerift/docs/verification/stage-03/evaluation/confirmation-2026-11/campaign")
+spec = json.loads((C / "prediction/score_spec.json").read_text())
+e = spec["splits"]["gate"][0]
+name = "/".join(Path(e["bundle"]).parts[-2:])
+ext = C / "prediction/extractions" / e["extraction"].rsplit("/", 1)[1]
+b = C / "capture/bundles" / name
+doc = json.loads(ext.read_text())
+print("recorded", doc["schema_version"], doc["extractor"]["version"])
+v = verify_bundle(b, doc)
+print("verify old doc:", v["verified"], [i["code"] for i in v["issues"]][:5])
+r = replay_bundle(b, None, doc)
+print("replay old doc:", r["replay"]["state"], [i["code"] for i in r["issues"]][:5])

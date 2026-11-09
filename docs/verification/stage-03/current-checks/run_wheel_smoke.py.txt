@@ -1,0 +1,21 @@
+import json,os,shutil,subprocess,sys
+from pathlib import Path
+root=Path(sys.argv[1]).resolve();out=Path(sys.argv[2]).resolve();out.mkdir(exist_ok=False)
+shutil.copytree(root/'schemas',out/'schemas')
+venv=Path('/workspace/stage03-work/wheel-venv/bin');env=dict(os.environ);env['CITERIFT_SCHEMAS']=str(out/'schemas');env.pop('PYTHONPATH',None)
+probe=subprocess.run([str(venv/'python'),'-I','-c','import citerift.wiki;print(citerift.wiki.__file__)'],cwd=out,env=env,capture_output=True,text=True)
+rows=[]
+for name,source in [('ar',root/'tests/stage03/fixtures/observed/ar-76190003'),('en',root/'tests/stage03/fixtures/observed/en-1372543632')]:
+ b=out/name;shutil.copytree(source,b)
+ for op in ['extract','verify','replay']:
+  cmd=[str(venv/'citerift-wiki'),op,'--bundle',str(b),'--out' if op=='extract' else '--extraction',str(out/(name+'.json'))]
+  p=subprocess.run(cmd,cwd=out,env=env,capture_output=True,text=True)
+  (out/(name+'-'+op+'.stdout.json')).write_text(p.stdout);(out/(name+'-'+op+'.stderr.txt')).write_text(p.stderr)
+  d=json.loads(p.stdout) if p.stdout else {}
+  rows.append({'wiki':name,'operation':op,'exit':p.returncode,'verified':d.get('verified'),'replay':d.get('replay',{}).get('state'),'status':d.get('status'),'argv':cmd})
+result={'module_probe':probe.stdout.strip(),'module_probe_exit':probe.returncode,'cwd':str(out),'external_schemas':str(out/'schemas'),'platform':os.uname().sysname,'rows':rows}
+(out/'RESULTS.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps(result,indent=2))
+assert 'site-packages' in probe.stdout and all(r['exit'] in [0,6] for r in rows)
+assert all(r['verified'] is True for r in rows if r['operation']=='verify')
+assert all(r['replay']=='reproduced' for r in rows if r['operation']=='replay')

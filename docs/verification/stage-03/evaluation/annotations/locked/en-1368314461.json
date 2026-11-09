@@ -1,0 +1,104 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1368314461,
+  "source_sha256": "c6345f43f1f83ab22a2705c0bc51b25268a7b4b6887d11267a98b32b6b311880",
+  "html_sha256": "a4a7f5adb39b5133203be8f121af5ce4fbd8d5a129a0f5662fa1f422998b1d2f",
+  "window": [
+   0,
+   1039
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:12:05Z",
+  "files_opened": [
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1368314461/source.wikitext",
+    "sha256": "c6345f43f1f83ab22a2705c0bc51b25268a7b4b6887d11267a98b32b6b311880"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1368314461/render.html",
+    "sha256": "a4a7f5adb39b5133203be8f121af5ce4fbd8d5a129a0f5662fa1f422998b1d2f"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1368314461/packet.json",
+    "sha256": "476cce6c8854b4d47c74552d66682d0c6c41e9a6c7fc60b19fab9667816a7199"
+   },
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   }
+  ],
+  "tools": "bash (cat, sha256sum, grep), python3 -I with standard library (re, json, hashlib, str.find) to locate and verify quotes, lxml to list <sup typeof=mw:Extension/ref> markers with id/data-mw, <li id=cite_note-...> items, red links and retraction vocabulary in render.html; every label decided by hand.",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 211,
+    "quote": "<ref>{{cite journal |last1=Jin"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 216,
+      "quote": "{{cite journal |last1=Jin"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 211,
+    "quote": "<ref>{{cite journal |last1=Jin"
+   },
+   "binds_to": {
+    "cp": 211,
+    "quote": "<ref>{{cite journal |last1=Jin"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 890,
+    "quote": "10.1016/j.ejps.2023.106448"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.ejps.2023.106448",
+   "notes": "doi= of {{cite journal}}"
+  },
+  {
+   "at": {
+    "cp": 923,
+    "quote": "37062422"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "37062422",
+   "notes": "pmid= of {{cite journal}}"
+  }
+ ],
+ "unresolved_notes": [
+  "{{Orphan}} maintenance template and {{reflist}} contain no citations; s2cid= is not in scope (only DOI/PMID)."
+ ]
+}

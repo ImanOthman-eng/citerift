@@ -1,0 +1,25 @@
+"""Retained real bundles: does each unit-entity issue name a unit of the right kind/template?"""
+import json
+from pathlib import Path
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+root = Path("/home/user/citerift")
+bad = []; total = 0
+for cap in sorted(root.glob("docs/verification/stage-03/**/capture.json")):
+    c = json.loads(cap.read_text())
+    if "SYNTHETIC" in ((c.get("page") or {}).get("title") or "").upper() or "/synthetic" in cap.parent.as_posix():
+        continue
+    doc = extract_bundle(cap.parent, ExtractConfig(), isolated=False)
+    units = {u["id"]: u for u in doc["units"]}
+    for i in doc["issues"]:
+        if i["code"] == "CITATION_TEMPLATE_UNSUPPORTED":
+            total += 1
+            u = units.get(i["entities"][0])
+            if u is None or u["kind"] != "unsupported_citation_template" or (u["template"] or {}).get("canonical") != i["detail"]:
+                bad.append((cap.parent.relative_to(root).as_posix(), i["code"], i["entities"], i["detail"], u and u["kind"]))
+        if i["code"] == "DUPLICATE_TEMPLATE_PARAMETER":
+            total += 1
+            u = units.get(i["entities"][0])
+            if u is None or u["template"] is None:
+                bad.append((cap.parent.relative_to(root).as_posix(), i["code"], i["entities"], i["detail"], u and u["kind"]))
+print("checked", total, "wrong", len(bad))
+for b in bad[:30]: print("  ", b)

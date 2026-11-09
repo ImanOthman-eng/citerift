@@ -1,0 +1,265 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1356437999,
+  "source_sha256": "a5b6db8df2e4253fc0005593dfc2c82690606342a8c0514216433b28fc05485d",
+  "html_sha256": "ff48ee8eafa8697652fb9431dc28abea79028e37faa6759c4070a406d19883a8",
+  "window": [
+   0,
+   1965
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-r1-1",
+  "started_at": "2026-11-03T16:26:19Z",
+  "finished_at": "2026-11-03T16:26:19Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1356437999/source.wikitext",
+    "sha256": "a5b6db8df2e4253fc0005593dfc2c82690606342a8c0514216433b28fc05485d"
+   },
+   {
+    "path": "packets/en-1356437999/render.html",
+    "sha256": "ff48ee8eafa8697652fb9431dc28abea79028e37faa6759c4070a406d19883a8"
+   },
+   {
+    "path": "packets/en-1356437999/packet.json",
+    "sha256": "(not listed in packet.json itself; read for window and hashes)"
+   }
+  ],
+  "tools": "Read/Bash; python3 -I standard library and lxml, only to search wikitext, check quote positions and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*> elements. All labels decided by hand.",
+  "unresolved": "pmc=5740445 and bibcode are not DOI/PMID; not labelled."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 377,
+    "quote": "<ref name=itis>"
+   },
+   "kind": "list_defined_note",
+   "name": "itis",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 393,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-itis-1",
+   "marker": "none",
+   "marker_text": "Disonycha semicarbonata Report. Integrated Taxonomic Information System. Retrieved 2019-09-23.",
+   "notes": "Source gives the ref as list-defined; render list item text for itis begins with the CSS block then \"Disonycha semicarbonata Report\"...",
+   "in_window": true
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 623,
+    "quote": "<ref name=gbif>"
+   },
+   "kind": "list_defined_note",
+   "name": "gbif",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 639,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-gbif-2",
+   "marker": "none",
+   "marker_text": "\"Disonycha semicarbonata\". GBIF. Retrieved 2019-09-23.",
+   "notes": "",
+   "in_window": true
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 778,
+    "quote": "<ref name=buglink>"
+   },
+   "kind": "list_defined_note",
+   "name": "buglink",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 797,
+      "quote": "{{Cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-buglink-3",
+   "marker": "none",
+   "marker_text": "\"Disonycha semicarbonata species Information\". BugGuide.net. Retrieved 2019-09-23.",
+   "notes": "",
+   "in_window": true
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1002,
+    "quote": "* {{Cite journal"
+   },
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1004,
+      "quote": "{{Cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further reading, inside {{refbegin}}. Citation template standing in a list item.",
+   "in_window": true
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 1470,
+    "quote": "* {{Cite book"
+   },
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1472,
+      "quote": "{{Cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further reading, inside {{refbegin}}.",
+   "in_window": true
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 293,
+    "quote": "<ref name=itis/>"
+   },
+   "binds_to": {
+    "cp": 377,
+    "quote": "<ref name=itis>"
+   },
+   "render_ref_id": "cite_ref-itis_1-0",
+   "notes": "Body self-closing reuse (inside the lead sentence)."
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 309,
+    "quote": "<ref name=gbif/>"
+   },
+   "binds_to": {
+    "cp": 623,
+    "quote": "<ref name=gbif>"
+   },
+   "render_ref_id": "cite_ref-gbif_2-0",
+   "notes": "Body self-closing reuse (inside the lead sentence)."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 325,
+    "quote": "<ref name=buglink/>"
+   },
+   "binds_to": {
+    "cp": 778,
+    "quote": "<ref name=buglink>"
+   },
+   "render_ref_id": "cite_ref-buglink_3-0",
+   "notes": "Body self-closing reuse (inside the lead sentence)."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 377,
+    "quote": "<ref name=itis>"
+   },
+   "binds_to": {
+    "cp": 377,
+    "quote": "<ref name=itis>"
+   },
+   "render_ref_id": null,
+   "notes": "List-defined <ref> inside {{Reflist|refs=}}; it produces no marker of its own, the marker is the body call (see the self-closing use)."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 623,
+    "quote": "<ref name=gbif>"
+   },
+   "binds_to": {
+    "cp": 623,
+    "quote": "<ref name=gbif>"
+   },
+   "render_ref_id": null,
+   "notes": "List-defined <ref> inside {{Reflist|refs=}}; it produces no marker of its own, the marker is the body call (see the self-closing use)."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 778,
+    "quote": "<ref name=buglink>"
+   },
+   "binds_to": {
+    "cp": 778,
+    "quote": "<ref name=buglink>"
+   },
+   "render_ref_id": null,
+   "notes": "List-defined <ref> inside {{Reflist|refs=}}; it produces no marker of its own, the marker is the body call (see the self-closing use)."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1359,
+    "quote": "10.3897/zookeys.720.13517"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.3897/zookeys.720.13517",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1406,
+    "quote": "29290727"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "29290727",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "pmc=5740445 and bibcode are not DOI/PMID; not labelled."
+ ]
+}

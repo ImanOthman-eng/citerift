@@ -1,0 +1,24 @@
+{
+ "article": "ar-76752816",
+ "adjudicator": "d035-adj-ar-g2",
+ "started_at": "2026-11-03T16:40:58Z",
+ "finished_at": "2026-11-03T16:43:15Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "identifier_missed",
+   "decision": "correct",
+   "reason": "Identifier occurrence is a DOI (valid syntax 10.1007/...) in the url= field of a citation template, a publisher link pointing at it, so role identifier_link stays. But the locked raw-text quote is the whole URL. Guide 3.5 lists whole-URL quoting only for a publisher URL whose path contains /doi/10.; this URL has /chapter/10.1007/..., so it falls under 'anything else: the identifier text'. The item's cp must be the first character of that identifier text (cp 21651). Ambiguous: the guide's URL row could be read as covering any publisher URL; the narrower reading is followed because its wording enumerates the /doi/ form.",
+   "corrected_label": {
+    "at": {
+     "cp": 21651,
+     "quote": "10.1007/978-981-19-5486-3_11"
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1007/978-981-19-5486-3_11",
+    "notes": "identifier text inside the publisher URL (adjudicated: quoted as identifier text, guide 3.5)"
+   }
+  }
+ ]
+}

@@ -1,0 +1,826 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1323381013,
+  "source_sha256": "dd82d953d1580ce01951ec13e198f0dba69ac97a1fdf163fd7b48cdd342a1678",
+  "html_sha256": "26fa0957df54c8ab246e667f1a2b2f40f017e7f9a937964c41611c21b72b2573",
+  "window": [
+   2949,
+   10949
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:45:36Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1323381013/packet.json",
+    "sha256": "a5edc7491a55f17a6cde0a62f716c861a3dbafbbb7a208149be8deeac2b856f0"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1323381013/source.wikitext",
+    "sha256": "dd82d953d1580ce01951ec13e198f0dba69ac97a1fdf163fd7b48cdd342a1678"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1323381013/render.html",
+    "sha256": "26fa0957df54c8ab246e667f1a2b2f40f017e7f9a937964c41611c21b72b2573"
+   }
+  ],
+  "tools": "bash (cat, ls, sha256sum, date); python3 -I with standard library (re, json, hashlib) for str/regex search of source.wikitext and position verification (text[cp:cp+len(quote)]==quote); lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-...> ids/back-links/text, class=\"new\" links. Every label decided by reading the text by hand.",
+  "unresolved": "Whether the 7 \"Publications\" list items (cp 8270 onward) are bibliography entries: not labelled as such because each item's only citation template is inside a <ref> (a footnote), and 3.4 defines bibliography entries as citations outside footnotes; their <ref>s are labelled as notes."
+ },
+ "definitions": [
+  {
+   "id": "d0",
+   "at": {
+    "cp": 2414,
+    "quote": "<ref name=\":0\">{{Cite web |title=Bryan's Ground:"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2429,
+      "quote": "{{Cite web |title=Bryan'"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts before the window; listed because its reuse <ref name=\":0\" /> at cp 6534 is in the window."
+  },
+  {
+   "id": "d1",
+   "at": {
+    "cp": 3019,
+    "quote": "<ref>{{Cite news |last=Fox |first=Robin Lane |da"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3024,
+      "quote": "{{Cite news |last=Fox |f"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3666,
+    "quote": "<ref>{{Cite news |last=Adrian |first=Higgins |da"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3671,
+      "quote": "{{Cite news |last=Adrian"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4089,
+    "quote": "<ref>{{Cite news |last=Vincent |first=Alice |dat"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4094,
+      "quote": "{{Cite news |last=Vincen"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 4723,
+    "quote": "<ref>{{Cite web |date=1993-05-07 |title=Gastropo"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4728,
+      "quote": "{{Cite web |date=1993-05"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4926,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4931,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 5486,
+    "quote": "<ref>{{Cite web |title=Bryan's Ground Garden {{!"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5491,
+      "quote": "{{Cite web |title=Bryan'"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Title contains {{!}} (pipe escape), not a citation template."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 5821,
+    "quote": "<ref>{{Cite web |date=2020-11-14 |title=10 of th"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5826,
+      "quote": "{{Cite web |date=2020-11"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 6150,
+    "quote": "<ref>{{Cite web |last=Keel |first=Toby |date=201"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6155,
+      "quote": "{{Cite web |last=Keel |f"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 6650,
+    "quote": "<ref>{{Cite book |url=https://books.google.com/b"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6655,
+      "quote": "{{Cite book |url=https:/"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 6844,
+    "quote": "<ref>{{Cite news |last=Bradley-Hole |first=Kathr"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6849,
+      "quote": "{{Cite news |last=Bradle"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 7350,
+    "quote": "<ref name=\"GardenAugust2009\">{{cite magazine |ma"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "GardenAugust2009",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7379,
+      "quote": "{{cite magazine |magazin"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-GardenAugust2009-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 7616,
+    "quote": "<ref>{{Cite web |title=Great gardening couples -"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7621,
+      "quote": "{{Cite web |title=Great "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 8035,
+    "quote": "<ref>{{Cite web |title=Jane Austen's Welsh Arcad"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8040,
+      "quote": "{{Cite web |title=Jane A"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-20",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 8370,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8375,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 8720,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8725,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-22",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d16",
+   "at": {
+    "cp": 9061,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9066,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-23",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d17",
+   "at": {
+    "cp": 9398,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9403,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-24",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d18",
+   "at": {
+    "cp": 9704,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9709,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-25",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d19",
+   "at": {
+    "cp": 10029,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10034,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-26",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  },
+  {
+   "id": "d20",
+   "at": {
+    "cp": 10350,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 10355,
+      "quote": "{{Cite book |last=Wheele"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-27",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Footnote attached to a list item in the \"Publications\" section (list of the subject's works); kind kept as note because the citation template is inside <ref>."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 3019,
+    "quote": "<ref>{{Cite news |last=Fox |first=Robin "
+   },
+   "binds_to": {
+    "cp": 3019,
+    "quote": "<ref>{{Cite news |last=Fox |first=Robin Lane |da"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3666,
+    "quote": "<ref>{{Cite news |last=Adrian |first=Hig"
+   },
+   "binds_to": {
+    "cp": 3666,
+    "quote": "<ref>{{Cite news |last=Adrian |first=Higgins |da"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 4089,
+    "quote": "<ref>{{Cite news |last=Vincent |first=Al"
+   },
+   "binds_to": {
+    "cp": 4089,
+    "quote": "<ref>{{Cite news |last=Vincent |first=Alice |dat"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 4723,
+    "quote": "<ref>{{Cite web |date=1993-05-07 |title="
+   },
+   "binds_to": {
+    "cp": 4723,
+    "quote": "<ref>{{Cite web |date=1993-05-07 |title=Gastropo"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4926,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 4926,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 5486,
+    "quote": "<ref>{{Cite web |title=Bryan's Ground Ga"
+   },
+   "binds_to": {
+    "cp": 5486,
+    "quote": "<ref>{{Cite web |title=Bryan's Ground Garden {{!"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 5821,
+    "quote": "<ref>{{Cite web |date=2020-11-14 |title="
+   },
+   "binds_to": {
+    "cp": 5821,
+    "quote": "<ref>{{Cite web |date=2020-11-14 |title=10 of th"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 6150,
+    "quote": "<ref>{{Cite web |last=Keel |first=Toby |"
+   },
+   "binds_to": {
+    "cp": 6150,
+    "quote": "<ref>{{Cite web |last=Keel |first=Toby |date=201"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 6534,
+    "quote": "<ref name=\":0\" /> while the [[BBC]] ''Ga"
+   },
+   "binds_to": {
+    "cp": 2414,
+    "quote": "<ref name=\":0\">{{Cite web |title=Bryan's Ground:"
+   },
+   "render_ref_id": "cite_ref-:0_6-1",
+   "notes": "Self-closing reuse <ref name=\":0\" />; binds to the definition at cp 2414 (before the window)."
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 6650,
+    "quote": "<ref>{{Cite book |url=https://books.goog"
+   },
+   "binds_to": {
+    "cp": 6650,
+    "quote": "<ref>{{Cite book |url=https://books.google.com/b"
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 6844,
+    "quote": "<ref>{{Cite news |last=Bradley-Hole |fir"
+   },
+   "binds_to": {
+    "cp": 6844,
+    "quote": "<ref>{{Cite news |last=Bradley-Hole |first=Kathr"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 7350,
+    "quote": "<ref name=\"GardenAugust2009\">{{cite maga"
+   },
+   "binds_to": {
+    "cp": 7350,
+    "quote": "<ref name=\"GardenAugust2009\">{{cite magazine |ma"
+   },
+   "render_ref_id": "cite_ref-GardenAugust2009_18-0",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 7616,
+    "quote": "<ref>{{Cite web |title=Great gardening c"
+   },
+   "binds_to": {
+    "cp": 7616,
+    "quote": "<ref>{{Cite web |title=Great gardening couples -"
+   },
+   "render_ref_id": "cite_ref-19",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 8035,
+    "quote": "<ref>{{Cite web |title=Jane Austen's Wel"
+   },
+   "binds_to": {
+    "cp": 8035,
+    "quote": "<ref>{{Cite web |title=Jane Austen's Welsh Arcad"
+   },
+   "render_ref_id": "cite_ref-20",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 8370,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 8370,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 8720,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 8720,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-22",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 9061,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 9061,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-23",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 9398,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 9398,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-24",
+   "notes": ""
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 9704,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 9704,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-25",
+   "notes": ""
+  },
+  {
+   "id": "u20",
+   "at": {
+    "cp": 10029,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 10029,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-26",
+   "notes": ""
+  },
+  {
+   "id": "u21",
+   "at": {
+    "cp": 10350,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=Da"
+   },
+   "binds_to": {
+    "cp": 10350,
+    "quote": "<ref>{{Cite book |last=Wheeler |first=David |url"
+   },
+   "render_ref_id": "cite_ref-27",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Window starts at cp 2949 inside the closing </ref> of the ref at cp 2652; that ref and all earlier refs (including WhosWho at cp 144 with its DOI at cp 257 and its reuse at cp 2236) start before the window and have no use or identifier inside the window, so they are not listed.",
+  "No DOI or PMID occurs inside the window.",
+  "\"Publications\" list items (cp 8270-10349) carry their citation templates only inside <ref>; not labelled as bibliography entries (see provenance.unresolved).",
+  "\"External links\" item at cp 10640 (* [https://www.hortus.co.uk/ Hortus website]) is a link, not a citation."
+ ]
+}

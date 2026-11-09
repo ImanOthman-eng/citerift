@@ -1,0 +1,27 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h2/tools')
+from build import *
+rev=1331542051; pk,t=load(rev)
+def f(s,n=0):
+    i=-1
+    for _ in range(n+1): i=t.index(s,i+1)
+    return i
+des=f('<ref name="giantlist"/>'); 
+rel=f('<ref>{{Cite web|title = Atari VCS'); g1=f('<ref name="giantlist"/>',1)
+stil=f('<ref>{{cite journal|last1=Stilphen'); alb=f('<ref name="albaugh">'); kun=f('<ref name=kunkel>')
+nas=f('<ref>{{Cite journal | last=Nasrinpour'); gl=f('<ref name="giantlist">{{cite web')
+defs=[D('d1',t,rel,'note',None,'','cite_note-2'),
+ D('d2',t,stil,'note',None,'','cite_note-3'),
+ D('d3',t,alb,'note','albaugh','','cite_note-albaugh-4'),
+ D('d4',t,kun,'note','kunkel','','cite_note-kunkel-5'),
+ D('d5',t,nas,'note',None,'','cite_note-6'),
+ D('d6',t,gl,'list_defined_note','giantlist','','cite_note-giantlist-1',notes='Defined inside <references>...</references>; first use (infobox designer field) precedes it in source order.')]
+uses=[U('u1',t,des,gl,'cite_ref-giantlist_1-0','self-closing, in infobox |designer='),
+ U('u2',t,rel,rel,'cite_ref-2'),
+ U('u3',t,g1,gl,'cite_ref-giantlist_1-1','self-closing'),
+ U('u4',t,stil,stil,'cite_ref-3'),U('u5',t,alb,alb,'cite_ref-albaugh_4-0'),
+ U('u6',t,kun,kun,'cite_ref-kunkel_5-0'),U('u7',t,nas,nas,'cite_ref-6')]
+ids=ids_in(t,nas,ref_end(t,nas))
+ids[0]['notes']='doi field inside Cite journal'
+unres=['The list-defined <ref name="giantlist"> is labelled as a definition only, not as a use: it is not a call in the text (the two calls are the self-closing refs). Rendered back-links cite_ref-giantlist_1-0 and _1-1 correspond to the two self-closing calls.',
+ 'External-links bullet items have no citation template or DOI/PMID, so are not bibliography entries.']
+write(rev,defs,uses,ids,unres,TOOLS)

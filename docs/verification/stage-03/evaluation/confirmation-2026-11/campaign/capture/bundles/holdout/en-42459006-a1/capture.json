@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 3824,
+   "body_sha256": "36181204fde677072d7e9eda21b3268fbfc62c4c6ea262ae9a4b7e399f4cc95a",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.412,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:09:11.336339Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=42459006",
+   "wire_bytes": 1945
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "0dd31f0f82acf743212be9cc428a3242b04b44afbbb6ab80e9a803e093f68f0a",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.365,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:09:21.749137Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1328575831/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 45167,
+   "body_sha256": "10bc74dd5696f1346c0d06bd15b7d4e3ba43737ab6158007ced586a6ea1553f3",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.467,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:10:00.115360Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1328575831/html",
+   "wire_bytes": 9498
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "0dd31f0f82acf743212be9cc428a3242b04b44afbbb6ab80e9a803e093f68f0a"
+ ],
+ "finished_at": "2026-11-02T19:10:00.582384Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 42459006,
+  "parent_revision_id": 1314894584,
+  "redirect_followed": null,
+  "revision_id": 1328575831,
+  "revision_timestamp": "2025-12-20T17:38:44Z",
+  "sha1": "837b217f87a269a1cb33cb90dcf1f776e37da812",
+  "size": 3269,
+  "title": "Phyllospadix japonicus",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "10bc74dd5696f1346c0d06bd15b7d4e3ba43737ab6158007ced586a6ea1553f3",
+  "bytes": 45167,
+  "checks": {
+   "document_revision_id": "1328575831",
+   "header_revision_id": "1328575831",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "42459006",
+   "render_id": "9216b4d5-d426-11f1-b260-895e84f68251",
+   "revision_sha1": "837b217f87a269a1cb33cb90dcf1f776e37da812",
+   "revision_sha1_base36": "fcwjm5ahv9epx5kyjsc2pirolz3wcuq"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1328575831",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:10:00 GMT",
+   "etag": "W/\"1328575831/9216b4d5-d426-11f1-b260-895e84f68251/view\"",
+   "last-modified": "Fri, 30 Oct 2026 05:46:26 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1328575831/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 42459006,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "ea9eb7e1cdb619e292a8760706d88187ca73510a103ed7ef52c77e2e8f976857",
+  "bytes": 3269,
+  "response_artifact": "36181204fde677072d7e9eda21b3268fbfc62c4c6ea262ae9a4b7e399f4cc95a",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=42459006"
+ },
+ "started_at": "2026-11-02T19:09:01.595861Z",
+ "status": "complete"
+}

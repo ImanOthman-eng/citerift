@@ -1,0 +1,17 @@
+Pathological SYNTHETIC inputs of the readiness reviews, run on the tree after the review fixes (this container: 4 vCPU).
+Scripts: review-d036/A/s4b_settle_end_to_end.py, s4c_settle_three_names.py, s4d_one_block.py and
+review-d036/B/perf_one_block.py, perf_one_param.py (in the evidence export). "isolated" = the extraction worker with
+its 30 s deadline. Reviewer figures at 10bf0d2 are from review/REVIEW_A_reconciliation.md (A-06) and
+review/REVIEW_B_integration.md (B-2).
+
+input                                                   | 10bf0d2 (reviewers)                     | after fixes
+A s4b: 2000 uses of one name, isolated                  | 13.8 s partial                          | 1.2 s partial (same states: 1000 abstained, 1001 matched)
+A s4c: 3 names x 2000 uses, isolated                    | 30.3 s failed EXTRACTION_DEADLINE_EXCEEDED | 5.5 s partial (3000 abstained, 3003 matched)
+A s4d: 2000 markers in one block                        | 3.4 s complete                          | 1.3 s complete (2001 matched)
+B perf_one_block: 1000 uses x 10 names, one block, isolated | 30.1 s failed EXTRACTION_DEADLINE_EXCEEDED (ec81c7f 5.2 s complete) | 8.5 s complete (10000 anchor_in_template_output, 10 name_anchor)
+B perf_one_param: 2000 uses in one parameter, isolated  | 7.8 s (ec81c7f 0.4 s)                   | 3.8 s partial (1999 abstained)
+
+The remaining cost of the last case is the pre-existing content pairing (_content_pair) of the 1999 uses the
+evidence cannot settle: under cProfile (in process) _content_pair takes 9.4 s of 12.4 s, _same_name 1.7 s. It stays
+well below the deadline. The
+slowest real bundle was 8.5 s before and after R-038 (reviewer B).

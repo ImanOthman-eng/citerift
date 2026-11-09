@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 3421,
+   "body_sha256": "e91e917fd94e92a1f95b0e9677da942c1d4adad23575ee78cbe918ffd4ea568b",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.321,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T06:09:54.644229Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5789923",
+   "wire_bytes": 1497
+  },
+  {
+   "body_bytes": 89099,
+   "body_sha256": "1de7d64d43ef54125714454525194f6a0ca68f5a6053d03a8c013c8743a33cad",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 2.286,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T06:10:04.969415Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75458531/html",
+   "wire_bytes": 14841
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-31T06:10:07.257433Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 5789923,
+  "parent_revision_id": 62907064,
+  "redirect_followed": null,
+  "revision_id": 75458531,
+  "revision_timestamp": "2026-06-14T02:38:19Z",
+  "sha1": "d9d37b25e01119435a3c64ff87e22d84ef1c672b",
+  "size": 2873,
+  "title": "ميخائيل كورتني",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "1de7d64d43ef54125714454525194f6a0ca68f5a6053d03a8c013c8743a33cad",
+  "bytes": 89099,
+  "checks": {
+   "document_revision_id": "75458531",
+   "header_revision_id": "75458531",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "5789923",
+   "render_id": "b8554a3b-d4f1-11f1-940f-0d6688a45fe3",
+   "revision_sha1": "d9d37b25e01119435a3c64ff87e22d84ef1c672b",
+   "revision_sha1_base36": "pg03fnggzrsbwj0nc837kavitb965nv"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "75458531",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Sat, 31 Oct 2026 06:10:05 GMT",
+   "etag": "W/\"75458531/b8554a3b-d4f1-11f1-940f-0d6688a45fe3/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:24:38 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75458531/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 5789923,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9a27672e1165797a6abd4046a28c1841347fcb9389dbb86919b411f3aa227595",
+  "bytes": 2873,
+  "response_artifact": "e91e917fd94e92a1f95b0e9677da942c1d4adad23575ee78cbe918ffd4ea568b",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5789923"
+ },
+ "started_at": "2026-10-31T06:09:45.156231Z",
+ "status": "complete"
+}

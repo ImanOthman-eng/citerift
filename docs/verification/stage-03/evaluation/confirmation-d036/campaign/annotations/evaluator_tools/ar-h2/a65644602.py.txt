@@ -1,0 +1,28 @@
+from lib import *
+a=A('ar-65644602')
+specs=[ # (ref opening, name, rid, li)
+ ('<ref>{{استشهاد ويب|مسار=https://www.riken.jp',None,'cite_ref-7','cite_note-7'),
+ ('<ref>{{استشهاد ويب|مسار=http://www.mcg.edu',None,'cite_ref-8','cite_note-8'),
+ ('<ref>{{استشهاد ويب|مسار=https://www.nei.nih.gov',None,'cite_ref-9','cite_note-9'),
+ ('<ref>{{استشهاد ويب|مسار=http://www.bri.ucla.edu',None,'cite_ref-10','cite_note-10'),
+ ('<ref name="Blake">','Blake','cite_ref-Blake_11-0','cite_note-Blake-11'),
+ ('<ref name="Chapin_rat">','Chapin_rat','cite_ref-Chapin_rat_12-0','cite_note-Chapin_rat-12'),
+ ('<ref name="Loeb_monkey">','Loeb_monkey','cite_ref-Loeb_monkey_13-0','cite_note-Loeb_monkey-13'),
+ ('<ref name="BrainGate">','BrainGate','cite_ref-BrainGate_14-0','cite_note-BrainGate-14'),
+ ('<ref name="roboroach">','roboroach','cite_ref-roboroach_15-0','cite_note-roboroach-15'),
+ ('<ref>{{استشهاد بدورية محكمة|الأخير1=Warwick',None,'cite_ref-16','cite_note-16'),
+ ('<ref>{{استشهاد ويب|مسار=https://news.illinois.edu',None,'cite_ref-17','cite_note-17'),
+ ('<ref>{{استشهاد بدورية محكمة|عنوان=Septal',None,'cite_ref-18','cite_note-18'),
+ ('<ref name="مولد تلقائيا1">','مولد تلقائيا1','cite_ref-مولد_تلقائيا1_19-0','cite_note-مولد_تلقائيا1-19')]
+for i,(q,nm,rid,li) in enumerate(specs):
+    r=a.L(q); n=i+1
+    a.D(f'd{n}',r,'note',name=nm,templates=[a.L('{{استشهاد ',0,r['cp'])],rid=li,
+        notes='Named ref; further uses of this name exist after the window (a self-closing <ref name="مولد تلقائيا1" /> at 13334), not labeled here.' if nm=='مولد تلقائيا1' else '')
+    a.U(f'u{n}',r,r,rid=rid)
+a.I(a.L('10.1001/archneur.60.10.1369'),'doi','primary_citation_field','10.1001/archneur.60.10.1369')
+a.I(a.L('14568806'),'pmid','primary_citation_field','14568806')
+a.I(a.L('10.1016/0005-7916(72)90029-8'),'doi','primary_citation_field','10.1016/0005-7916(72)90029-8')
+a.I(a.L('10.1177/0891988704267466'),'doi','primary_citation_field','10.1177/0891988704267466')
+a.I(a.L('15312281'),'pmid','primary_citation_field','15312281')
+a.un.append('Refs before the window (rendered notes 1-6, incl. name medscape.com) are not labeled; no use inside the window binds to them. Window ends before the second use of name "مولد تلقائيا1".')
+a.save()

@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:wiki:v1:extraction",
+  "title": "CITERIFT Wikipedia extraction document, major version 1",
+  "description": "Deterministic output of extract_bundle (SPECIFICATION.md 10-14): reference containers, uses, citation units, identifier occurrences with exact source anchors and markup roles, render reconciliation, marker observations, render-only entities, the exception ledger, issues and accounting. It describes markup and rendering only: it never states that a work is or is not retracted.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "extractor", "config", "config_digest", "capture", "status", "components", "containers", "uses", "units", "identifiers", "excluded_identifiers", "markers", "render_only", "exceptions", "issues", "accounting", "extraction_digest"],
+  "properties": {
+    "schema": {"const": "urn:citerift:schema:wiki:v1:extraction"},
+    "schema_version": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/schema_version"},
+    "extractor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "profile", "parsers", "normalizer"],
+      "properties": {
+        "name": {"const": "citerift-wiki"},
+        "version": {"type": "string"},
+        "profile": {
+          "type": "object", "additionalProperties": false, "required": ["version", "digest"],
+          "properties": {"version": {"type": "string"}, "digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}}
+        },
+        "parsers": {
+          "type": "object", "additionalProperties": false, "required": ["wikitext", "html"],
+          "properties": {"wikitext": {"type": "string"}, "html": {"type": "string"}}
+        },
+        "normalizer": {"type": "string"}
+      }
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_nodes", "max_depth", "max_refs", "max_templates", "max_candidates", "max_render_elements", "worker_memory_mib", "worker_wall_s"],
+      "properties": {
+        "max_nodes": {"type": "integer", "minimum": 1},
+        "max_depth": {"type": "integer", "minimum": 1},
+        "max_refs": {"type": "integer", "minimum": 1},
+        "max_templates": {"type": "integer", "minimum": 1},
+        "max_candidates": {"type": "integer", "minimum": 1},
+        "max_render_elements": {"type": "integer", "minimum": 1},
+        "worker_memory_mib": {"type": "integer", "minimum": 64, "maximum": 65536},
+        "worker_wall_s": {"type": "number", "exclusiveMinimum": 0, "maximum": 3600}
+      }
+    },
+    "config_digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+    "capture": {
+      "type": "object",
+      "required": ["capture_sha256"],
+      "properties": {
+        "capture_sha256": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}]},
+        "wiki": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/wiki"}]},
+        "page_id": {"type": ["integer", "null"]},
+        "title": {"type": ["string", "null"]},
+        "revision_id": {"type": ["integer", "null"]},
+        "sha1": {"type": ["string", "null"]},
+        "source_artifact": {"type": ["string", "null"]},
+        "render_artifact": {"type": ["string", "null"]},
+        "render_state": {"type": ["string", "null"]}
+      }
+    },
+    "status": {"enum": ["complete", "partial", "failed"]},
+    "components": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["state"],
+        "properties": {"state": {"enum": ["complete", "partial", "failed", "not_run", "not_requested", "rejected", "captured"]}}
+      }
+    },
+    "containers": {"type": "array", "items": {"$ref": "#/$defs/container"}},
+    "uses": {"type": "array", "items": {"$ref": "#/$defs/use"}},
+    "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},
+    "identifiers": {"type": "array", "items": {"$ref": "#/$defs/identifier"}},
+    "excluded_identifiers": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["scheme", "reason", "source"],
+        "properties": {
+          "scheme": {"enum": ["doi", "pmid"]},
+          "reason": {"type": "string", "minLength": 1},
+          "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/anchor"}
+        }
+      }
+    },
+    "markers": {"type": "array", "items": {"$ref": "#/$defs/marker"}},
+    "render_only": {
+      "type": "object", "additionalProperties": false, "required": ["uses", "identifiers", "limit_warnings"],
+      "properties": {
+        "uses": {"type": "array", "items": {"type": "object", "required": ["locator"], "properties": {"locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"}}}},
+        "identifiers": {"type": "array", "items": {"type": "object", "required": ["scheme", "normalized", "href", "locator"], "properties": {"scheme": {"enum": ["doi", "pmid"]}, "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"}}}},
+        "limit_warnings": {"type": "array", "items": {"type": "object", "required": ["warning"]}}
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["entity", "entity_type", "code", "detail"],
+        "properties": {
+          "entity": {"type": "string", "minLength": 1},
+          "entity_type": {"enum": ["source_region", "container", "use", "unit", "identifier", "render_use", "render_identifier", "marker"]},
+          "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$(?!\\n)"},
+          "detail": {"type": "string"}
+        }
+      }
+    },
+    "issues": {"type": "array", "items": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/issue"}},
+    "accounting": {
+      "type": "object",
+      "properties": {
+        "checks": {
+          "type": "array",
+          "items": {"type": "object", "additionalProperties": false, "required": ["name", "left", "right", "ok"],
+                    "properties": {"name": {"type": "string"}, "left": {"type": "integer"}, "right": {"type": "integer"}, "ok": {"type": "boolean"}}}
+        }
+      }
+    },
+    "extraction_digest": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^(ct|us|un|id)-[0-9]{5}$(?!\\n)"},
+    "container": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "layout", "group", "name", "name_raw", "group_raw", "binding_state", "source", "definitions", "use_ids", "unit_ids", "render"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "kind": {"enum": ["note", "list_defined_note", "generated_note", "bibliography_entry"]},
+        "layout": {"enum": [null, "list_item", "standalone_template", "short_footnote"]},
+        "group": {"type": "string"},
+        "name": {"type": ["string", "null"]},
+        "name_raw": {"type": ["string", "null"]},
+        "group_raw": {"type": ["string", "null"]},
+        "binding_state": {"enum": ["single_definition", "identical_definitions", "conflicting_definitions", "anonymous", "not_applicable"]},
+        "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"},
+        "definitions": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["id", "origin", "zone", "source", "body"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^ct-[0-9]{5}/d[0-9]+$(?!\\n)"},
+              "origin": {"$ref": "#/$defs/ref_origin"},
+              "zone": {"$ref": "#/$defs/zone"},
+              "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"},
+              "body": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"}
+            }
+          }
+        },
+        "use_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "unit_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "render": {
+          "type": "object", "additionalProperties": false, "required": ["state"],
+          "properties": {
+            "state": {"enum": ["not_reconciled", "matched", "unmatched", "note_missing", "conflicting_notes", "note_ambiguous"]},
+            "region_id": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "ref_origin": {"enum": ["tag", "tag_ref", "refn", "efn", "r", "sfn"]},
+    "zone": {"enum": ["prose", "list_defined", "nested", "template_param"]},
+    "use": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "container_id", "origin", "zone", "group", "name", "binding", "position", "source", "template", "render"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "container_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
+        "origin": {"$ref": "#/$defs/ref_origin"},
+        "zone": {"$ref": "#/$defs/zone"},
+        "group": {"type": "string"},
+        "name": {"type": ["string", "null"]},
+        "binding": {"enum": ["bound", "bound_conflicting", "anonymous", "empty_anonymous", "definition_missing", "unbindable_name"]},
+        "position": {"type": "integer", "minimum": 0},
+        "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"},
+        "template": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/template_ref"},
+        "render": {
+          "type": "object", "additionalProperties": false, "required": ["state"],
+          "properties": {
+            "state": {"enum": ["not_reconciled", "matched", "abstained", "source_only"]},
+            "basis": {"enum": [null, "name_anchor", "position_between_anchors", "name_in_template_output", "single_anonymous_in_template_output", "single_use_in_template_output", "unique_url_in_reference_text", "unique_identifier_in_reference_text"]},
+            "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
+            "target_note": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "container_id", "definition_id", "kind", "template", "source", "parent_unit", "duplicate_params", "identifier_ids", "render"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "container_id": {"$ref": "#/$defs/id"},
+        "definition_id": {"type": ["string", "null"]},
+        "kind": {"enum": ["citation_template", "external_data_template", "unstructured_text"]},
+        "template": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/template_ref"},
+        "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/span"},
+        "parent_unit": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
+        "duplicate_params": {"type": "array", "items": {"type": "string"}},
+        "identifier_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "render": {
+          "type": "object", "additionalProperties": false, "required": ["state"],
+          "properties": {
+            "state": {"enum": ["not_reconciled", "matched", "within_matched_template", "unmatched", "region_only", "container_unmatched", "conflicting_definitions", "duplicate_definition"]},
+            "transclusion": {"type": ["string", "null"]},
+            "template_omitted": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "identifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "scheme", "role", "role_reason", "origin", "container_id", "unit_id", "boundary", "context", "source", "decoding", "normalization", "render"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"},
+        "scheme": {"enum": ["doi", "pmid"]},
+        "role": {"enum": ["primary_citation_field", "identifier_link", "labeled_reference_text", "marker_target", "textual_mention", "unresolved"]},
+        "role_reason": {"type": "string", "minLength": 1},
+        "origin": {"enum": ["template_field", "wrapper", "url", "label_text", "plain_text"]},
+        "container_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
+        "unit_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/id"}]},
+        "boundary": {"enum": ["field", "delimited", "ambiguous_trailing_punctuation", "ambiguous_markup_or_entity", "url"]},
+        "context": {
+          "type": "object", "additionalProperties": false, "required": ["template", "param", "in_link_text"],
+          "properties": {
+            "template": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/template_ref"},
+            "param": {"type": ["string", "null"]},
+            "in_link_text": {"type": "boolean"}
+          }
+        },
+        "source": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/anchor"},
+        "decoding": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object", "additionalProperties": false, "required": ["input_steps", "structural_steps", "normalizer_input"],
+              "properties": {
+                "input_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED"]}},
+                "structural_steps": {"type": "array", "items": {"enum": ["COMMENT_REMOVED", "HTML_ENTITY_DECODED", "URL_OUTER_WHITESPACE_TRIMMED", "PROTOCOL_RELATIVE_URL_COMPLETED", "URL_QUERY_FRAGMENT_REMOVED", "PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE", "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS"]}},
+                "normalizer_input": {"type": "string"}
+              }
+            }
+          ]
+        },
+        "normalization": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["raw", "scheme", "input_form", "normalized", "transformations", "issues", "missing", "valid"],
+              "properties": {
+                "raw": {"type": "string"},
+                "scheme": {"enum": ["doi", "pmid"]},
+                "input_form": {"type": "string"},
+                "normalized": {"type": ["string", "null"]},
+                "transformations": {"type": "array", "items": {"type": "string"}},
+                "issues": {"type": "array", "items": {"type": "string"}},
+                "missing": {"type": "boolean"},
+                "valid": {"type": "boolean"}
+              }
+            }
+          ]
+        },
+        "render": {
+          "type": "object", "additionalProperties": false, "required": ["state", "witnesses"],
+          "properties": {
+            "state": {"enum": ["not_reconciled", "outside_reference_container", "not_comparable", "region_not_reconciled", "render_link_found", "render_template_omitted", "no_render_link_in_region"]},
+            "witnesses": {"type": "array", "items": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"}}
+          }
+        }
+      },
+      "allOf": [
+        {"if": {"properties": {"decoding": {"type": "null"}}}, "then": {"properties": {"normalization": {"type": "null"}}}}
+      ]
+    },
+    "marker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["container_id", "state", "reason", "region", "evidence", "source_marker_templates", "browser_visibility"],
+      "properties": {
+        "container_id": {"$ref": "#/$defs/id"},
+        "state": {"enum": ["recognized_warning_text", "ambiguous_text", "missing_template_link_only", "no_recognized_warning_in_inspected_region", "not_inspected", "unavailable"]},
+        "reason": {"type": "string"},
+        "region": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object", "additionalProperties": false, "required": ["region_id", "locator", "hidden_elements"],
+              "properties": {
+                "region_id": {"type": "string"},
+                "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
+                "hidden_elements": {"type": "integer", "minimum": 0}
+              }
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["kind", "part", "matched", "locator"],
+            "properties": {
+              "kind": {"enum": ["warning", "ambiguous", "hidden", "missing_template_link"]},
+              "part": {"enum": ["text", "cite_text", "hidden_text", "redlink", "hidden_redlink", "template_link", "hidden_template_link"]},
+              "matched": {"type": "string"},
+              "term": {"type": "string"},
+              "snippet": {"type": "string"},
+              "exclusion": {"enum": ["title_prefix", "quoted", "attached_letters", "negated", "interrupted", "spans_citation", "template_page_link"]},
+              "locator": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/locator"},
+              "hidden_basis": {"type": "string"},
+              "target": {"type": "string"},
+              "target_basis": {"enum": ["href", "title_attribute", "none"]},
+              "link": {"type": "object", "additionalProperties": false, "required": ["target", "target_basis", "red", "href"],
+                       "properties": {"target": {"type": ["string", "null"]}, "target_basis": {"enum": ["href", "title_attribute", "none"]},
+                                      "red": {"type": "boolean"}, "href": {"type": ["string", "null"]}}}
+            }
+          }
+        },
+        "source_marker_templates": {
+          "type": "array",
+          "items": {"type": "object", "additionalProperties": false, "required": ["template", "cp_start", "cp_end"],
+                    "properties": {"template": {"type": ["string", "null"]}, "cp_start": {"type": "integer"}, "cp_end": {"type": "integer"}}}
+        },
+        "browser_visibility": {"const": "not_evaluated"}
+      },
+      "allOf": [
+        {"if": {"properties": {"state": {"enum": ["recognized_warning_text", "ambiguous_text", "missing_template_link_only", "no_recognized_warning_in_inspected_region"]}}},
+         "then": {"properties": {"region": {"type": "object"}}}},
+        {"if": {"properties": {"state": {"enum": ["recognized_warning_text", "ambiguous_text", "missing_template_link_only"]}}},
+         "then": {"properties": {"evidence": {"minItems": 1}}}}
+      ]
+    }
+  }
+}

@@ -1,0 +1,170 @@
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/ar-76190003
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle tests/stage03/fixtures/observed/ar-76190003 --out /workspace/stage03-work/current-demos/ar-76190003.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d"}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/ar-76190003 --extraction /workspace/stage03-work/current-demos/ar-76190003.extraction.json
+exit 0
+  stdout: {"extraction_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d", "verified": true}
+$ uv run citerift-wiki replay --bundle tests/stage03/fixtures/observed/ar-76190003 --extraction /workspace/stage03-work/current-demos/ar-76190003.extraction.json
+exit 0
+  stdout: {"extraction_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d", "verified": true, "replay": {"new_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d", "new_status": "partial", "recorded_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/en-1372543632
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle tests/stage03/fixtures/observed/en-1372543632 --out /workspace/stage03-work/current-demos/en-1372543632.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429"}
+$ uv run citerift-wiki verify --bundle tests/stage03/fixtures/observed/en-1372543632 --extraction /workspace/stage03-work/current-demos/en-1372543632.extraction.json
+exit 0
+  stdout: {"extraction_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429", "verified": true}
+$ uv run citerift-wiki replay --bundle tests/stage03/fixtures/observed/en-1372543632 --extraction /workspace/stage03-work/current-demos/en-1372543632.extraction.json
+exit 0
+  stdout: {"extraction_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429", "verified": true, "replay": {"new_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429", "new_status": "complete", "recorded_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --out /workspace/stage03-work/current-demos/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "ffd5d37573f192c6dba07cb861455ff73368460caecccff4ee220522d7664599"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --extraction /workspace/stage03-work/current-demos/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"extraction_digest": "ffd5d37573f192c6dba07cb861455ff73368460caecccff4ee220522d7664599", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1372543632-recapture-2026-10-29 --extraction /workspace/stage03-work/current-demos/en-1372543632-recapture-2026-10-29.extraction.json
+exit 0
+  stdout: {"extraction_digest": "ffd5d37573f192c6dba07cb861455ff73368460caecccff4ee220522d7664599", "verified": true, "replay": {"new_digest": "ffd5d37573f192c6dba07cb861455ff73368460caecccff4ee220522d7664599", "new_status": "complete", "recorded_digest": "ffd5d37573f192c6dba07cb861455ff73368460caecccff4ee220522d7664599", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --out /workspace/stage03-work/current-demos/en-1381772671.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "d5c2611f55c519d5d5eef096ceb516157e89ab7e8d6b0188eefa9b29add60bbc"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --extraction /workspace/stage03-work/current-demos/en-1381772671.extraction.json
+exit 0
+  stdout: {"extraction_digest": "d5c2611f55c519d5d5eef096ceb516157e89ab7e8d6b0188eefa9b29add60bbc", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1381772671 --extraction /workspace/stage03-work/current-demos/en-1381772671.extraction.json
+exit 0
+  stdout: {"extraction_digest": "d5c2611f55c519d5d5eef096ceb516157e89ab7e8d6b0188eefa9b29add60bbc", "verified": true, "replay": {"new_digest": "d5c2611f55c519d5d5eef096ceb516157e89ab7e8d6b0188eefa9b29add60bbc", "new_status": "complete", "recorded_digest": "d5c2611f55c519d5d5eef096ceb516157e89ab7e8d6b0188eefa9b29add60bbc", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --out /workspace/stage03-work/current-demos/en-1374726997.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "df5a710fbd165a7eeedebdf9cc32c1ef4b2d403f05211931bee6c37b33e9e384"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --extraction /workspace/stage03-work/current-demos/en-1374726997.extraction.json
+exit 0
+  stdout: {"extraction_digest": "df5a710fbd165a7eeedebdf9cc32c1ef4b2d403f05211931bee6c37b33e9e384", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/demonstrations/bundles/en-1374726997 --extraction /workspace/stage03-work/current-demos/en-1374726997.extraction.json
+exit 0
+  stdout: {"extraction_digest": "df5a710fbd165a7eeedebdf9cc32c1ef4b2d403f05211931bee6c37b33e9e384", "verified": true, "replay": {"new_digest": "df5a710fbd165a7eeedebdf9cc32c1ef4b2d403f05211931bee6c37b33e9e384", "new_status": "complete", "recorded_digest": "df5a710fbd165a7eeedebdf9cc32c1ef4b2d403f05211931bee6c37b33e9e384", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --out /workspace/stage03-work/current-demos/en-81119391-a1.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305"}
+$ uv run citerift-wiki verify --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --extraction /workspace/stage03-work/current-demos/en-81119391-a1.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "verified": true}
+$ uv run citerift-wiki replay --bundle docs/verification/stage-03/evaluation/capture/bundles/holdout/en-81119391-a1 --extraction /workspace/stage03-work/current-demos/en-81119391-a1.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "verified": true, "replay": {"new_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "new_status": "partial", "recorded_digest": "2abefc3c6ed0f8869feb3eb45ba41c12a7f2ec23b7c204ebad1357f3caac6305", "state": "reproduced"}}
+$ uv run python docs/verification/stage-03/demonstrations/synthetic_f1_f4.py /workspace/stage03-work/current-demos/synthetic
+exit 0
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F1-ar-comment
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F1-ar-comment --out /workspace/stage03-work/current-demos/synthetic/F1-ar-comment.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "b3a669a1448fcfc153ac09bf91199db4f04cbaaaad115cc0df8684b97fca09a3"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F1-ar-comment --extraction /workspace/stage03-work/current-demos/synthetic/F1-ar-comment.extraction.json
+exit 0
+  stdout: {"extraction_digest": "b3a669a1448fcfc153ac09bf91199db4f04cbaaaad115cc0df8684b97fca09a3", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F1-ar-comment --extraction /workspace/stage03-work/current-demos/synthetic/F1-ar-comment.extraction.json
+exit 0
+  stdout: {"extraction_digest": "b3a669a1448fcfc153ac09bf91199db4f04cbaaaad115cc0df8684b97fca09a3", "verified": true, "replay": {"new_digest": "b3a669a1448fcfc153ac09bf91199db4f04cbaaaad115cc0df8684b97fca09a3", "new_status": "complete", "recorded_digest": "b3a669a1448fcfc153ac09bf91199db4f04cbaaaad115cc0df8684b97fca09a3", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F1-en-span
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F1-en-span --out /workspace/stage03-work/current-demos/synthetic/F1-en-span.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "2199216fc5f014bfd2a357f6fd8f3976b22693e7f0021c904891d02127742b33"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F1-en-span --extraction /workspace/stage03-work/current-demos/synthetic/F1-en-span.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2199216fc5f014bfd2a357f6fd8f3976b22693e7f0021c904891d02127742b33", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F1-en-span --extraction /workspace/stage03-work/current-demos/synthetic/F1-en-span.extraction.json
+exit 0
+  stdout: {"extraction_digest": "2199216fc5f014bfd2a357f6fd8f3976b22693e7f0021c904891d02127742b33", "verified": true, "replay": {"new_digest": "2199216fc5f014bfd2a357f6fd8f3976b22693e7f0021c904891d02127742b33", "new_status": "complete", "recorded_digest": "2199216fc5f014bfd2a357f6fd8f3976b22693e7f0021c904891d02127742b33", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template --out /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "94a026802863475434710b49e2295f74c143f19ec1805bff80caadf6bd618fa5"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template --extraction /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template.extraction.json
+exit 0
+  stdout: {"extraction_digest": "94a026802863475434710b49e2295f74c143f19ec1805bff80caadf6bd618fa5", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template --extraction /workspace/stage03-work/current-demos/synthetic/F2-ar-missing-marker-template.extraction.json
+exit 0
+  stdout: {"extraction_digest": "94a026802863475434710b49e2295f74c143f19ec1805bff80caadf6bd618fa5", "verified": true, "replay": {"new_digest": "94a026802863475434710b49e2295f74c143f19ec1805bff80caadf6bd618fa5", "new_status": "complete", "recorded_digest": "94a026802863475434710b49e2295f74c143f19ec1805bff80caadf6bd618fa5", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label --out /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "0a280aa333c7d43646a94305125b8748062bc3be8ee77df82db24a1263c44b77"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label --extraction /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label.extraction.json
+exit 0
+  stdout: {"extraction_digest": "0a280aa333c7d43646a94305125b8748062bc3be8ee77df82db24a1263c44b77", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label --extraction /workspace/stage03-work/current-demos/synthetic/F2-en-red-link-label.extraction.json
+exit 0
+  stdout: {"extraction_digest": "0a280aa333c7d43646a94305125b8748062bc3be8ee77df82db24a1263c44b77", "verified": true, "replay": {"new_digest": "0a280aa333c7d43646a94305125b8748062bc3be8ee77df82db24a1263c44b77", "new_status": "complete", "recorded_digest": "0a280aa333c7d43646a94305125b8748062bc3be8ee77df82db24a1263c44b77", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor --out /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "b27c4e5e000a960468dacba3573cea1e9690dd083788b43c16e63af25d629f5f"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor --extraction /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"extraction_digest": "b27c4e5e000a960468dacba3573cea1e9690dd083788b43c16e63af25d629f5f", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor --extraction /workspace/stage03-work/current-demos/synthetic/F3-ar-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"extraction_digest": "b27c4e5e000a960468dacba3573cea1e9690dd083788b43c16e63af25d629f5f", "verified": true, "replay": {"new_digest": "b27c4e5e000a960468dacba3573cea1e9690dd083788b43c16e63af25d629f5f", "new_status": "complete", "recorded_digest": "b27c4e5e000a960468dacba3573cea1e9690dd083788b43c16e63af25d629f5f", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor --out /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"status": "complete", "extraction_digest": "845160371403f3733c3467e095bf848932ed7623882aa415208bba2f0b231fb8"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor --extraction /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"extraction_digest": "845160371403f3733c3467e095bf848932ed7623882aa415208bba2f0b231fb8", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor --extraction /workspace/stage03-work/current-demos/synthetic/F3-en-hidden-ancestor.extraction.json
+exit 0
+  stdout: {"extraction_digest": "845160371403f3733c3467e095bf848932ed7623882aa415208bba2f0b231fb8", "verified": true, "replay": {"new_digest": "845160371403f3733c3467e095bf848932ed7623882aa415208bba2f0b231fb8", "new_status": "complete", "recorded_digest": "845160371403f3733c3467e095bf848932ed7623882aa415208bba2f0b231fb8", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse --out /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "04d545b15cbbe98bf4c5f76016e3e20072991654e05fa4abf8f751103ee281c8"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse --extraction /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse.extraction.json
+exit 0
+  stdout: {"extraction_digest": "04d545b15cbbe98bf4c5f76016e3e20072991654e05fa4abf8f751103ee281c8", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse --extraction /workspace/stage03-work/current-demos/synthetic/F4-ar-numbered-reuse.extraction.json
+exit 0
+  stdout: {"extraction_digest": "04d545b15cbbe98bf4c5f76016e3e20072991654e05fa4abf8f751103ee281c8", "verified": true, "replay": {"new_digest": "04d545b15cbbe98bf4c5f76016e3e20072991654e05fa4abf8f751103ee281c8", "new_status": "partial", "recorded_digest": "04d545b15cbbe98bf4c5f76016e3e20072991654e05fa4abf8f751103ee281c8", "state": "reproduced"}}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse
+exit 0
+  stdout: {"extraction_digest": null, "verified": true}
+$ uv run citerift-wiki extract --bundle /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse --out /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse.extraction.json
+exit 6
+  stdout: {"status": "partial", "extraction_digest": "47a59940043f03aa4e7d989fc8f05f9dc28509eaf58f29b44f15d825df871f02"}
+$ uv run citerift-wiki verify --bundle /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse --extraction /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse.extraction.json
+exit 0
+  stdout: {"extraction_digest": "47a59940043f03aa4e7d989fc8f05f9dc28509eaf58f29b44f15d825df871f02", "verified": true}
+$ uv run citerift-wiki replay --bundle /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse --extraction /workspace/stage03-work/current-demos/synthetic/F4-en-numbered-reuse.extraction.json
+exit 0
+  stdout: {"extraction_digest": "47a59940043f03aa4e7d989fc8f05f9dc28509eaf58f29b44f15d825df871f02", "verified": true, "replay": {"new_digest": "47a59940043f03aa4e7d989fc8f05f9dc28509eaf58f29b44f15d825df871f02", "new_status": "partial", "recorded_digest": "47a59940043f03aa4e7d989fc8f05f9dc28509eaf58f29b44f15d825df871f02", "state": "reproduced"}}

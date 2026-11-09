@@ -1,0 +1,15 @@
+"""Exposed run-1 Arabic bundle ar-2700573-a1 (regression only): IUCN2008 + commentary text, adjudicated unstructured=false."""
+import json
+from pathlib import Path
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+B = Path("/home/user/citerift/docs/verification/stage-03/evaluation/capture/bundles/holdout/ar-2700573-a1")
+cap = json.loads((B / "capture.json").read_text())
+text = (B / "artifacts" / cap["source"]["artifact"]).read_bytes().decode()
+doc = extract_bundle(B, ExtractConfig(), isolated=False)
+for c in doc["containers"]:
+    for d in c["definitions"]:
+        if d["source"]["cp_start"] == 1765:
+            print("definition", d["id"], "render component", doc["components"]["render"])
+            for u in doc["units"]:
+                if u["definition_id"] == d["id"]:
+                    print("  unit", u["kind"], repr(text[u["source"]["cp_start"]:u["source"]["cp_start"] + 60]))

@@ -1,0 +1,24 @@
+{
+  "article": "ar-76553307",
+  "adjudicator": "stage03-adjudicator-ar",
+  "started_at": "2026-11-02T12:27:25Z",
+  "finished_at": "2026-11-02T12:29:31Z",
+  "decisions": [
+    {
+      "item": 1,
+      "kind": "identifier_missed",
+      "decision": "correct",
+      "reason": "The occurrence itself is correctly labelled: guide 3.5 requires every DOI occurrence 'wherever it is (also in ... URLs)'. Its raw text (the DOI text, since an /article/ URL is not one of the URL forms whose whole URL is quoted) and its key are also right. The role is wrong. Guide 3.5 makes identifier_link 'a resolver/PubMed/publisher URL ... inside a reference or citation template (for example in url=), pointing at the identifier'. The DOI sits in the publisher's own article URL (iopscience.iop.org, IOP Publishing, the publisher of The Astrophysical Journal), in the مسار= (url=) parameter of the citation template, and that URL addresses the work with this DOI. textual_mention is for an identifier 'not as the reference's identifier', but here it is the same DOI the template gives in DOI= (cp 3147). The clause 'in a parameter that is not an identifier field' cannot cover url=, because identifier_link names url= as its own example. Ambiguity: the guide links 'publisher URL' to a /doi/ path only in the raw-text and key rules, not in the role definition. The locked label read that link as limiting the role. The role's own wording has no such limit, so the limit applies to the quote boundary only. This is not the archive.org case at cp 3087 (not_a_target: 'another site's URL').",
+      "corrected_label": {
+        "at": {
+          "cp": 2939,
+          "quote": "10.1088/0004-637X/741/2/68"
+        },
+        "scheme": "doi",
+        "role": "identifier_link",
+        "key": "10.1088/0004-637x/741/2/68",
+        "notes": "Adjudicated (stage03-adjudicator-ar): DOI inside the publisher URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 in the مسار= (url=) parameter of the {{استشهاد بدورية محكمة}} citation template. Role identifier_link per guide 3.5: a publisher URL inside a citation template, in url=, pointing at the identifier (the same DOI the template states in DOI= at cp 3147). Raw text is the DOI text, not the whole URL, because the URL is not one of the forms listed in the raw-text table (path is /article/, not /doi/), so 'anything else: the identifier text' applies."
+      }
+    }
+  ]
+}

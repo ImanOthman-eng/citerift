@@ -1,0 +1,18 @@
+"""SYNTHETIC: an infobox that does not display the source's |unused= parameter (its ref is never rendered) but emits
+its own Wikidata-sourced anonymous ref. The single source use is paired with the single rendered use."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from h import run, doi_link, ref_sup, note_li, references
+T = "{{Infobox settlement |unused=<ref>Census 2010 https://census.example/x</ref>}} A.\n"
+dm = '{"parts":[{"template":{"target":{"wt":"Infobox settlement"},"params":{"unused":{"wt":"<ref>Census 2010 https://census.example/x</ref>"}},"i":0}}]}'
+body = (f'<table about="#mwt5" typeof="mw:Transclusion" data-mw=\'{dm}\'><tr><td>Pop. 5'
+        + ref_sup(1, "cite_note-1", "cite_ref-1").replace('about="#mwt1"', 'about="#mwt5"')
+        + "</td></tr></table><p>A.</p>"
+        + references([note_li("cite_note-1", ["cite_ref-1"], 'Wikidata: <cite>Retracted study</cite> ' + doi_link("10.1000/wd"))]))
+d = run(T, body)
+u = d["uses"][0]
+print("use", u["id"], u["render"]["state"], u["render"].get("basis"), (u["render"].get("locator") or {}).get("element_id"))
+c = d["containers"][0]
+print("container", c["id"], c["render"]["state"], c["render"].get("region_id"))
+m = d["markers"][0]
+print("marker", m["state"], [(e["kind"], e["matched"]) for e in m["evidence"]])
+print("render-only ids", [x["normalized"] for x in d["render_only"]["identifiers"]], "issues", sorted({i["code"] for i in d["issues"]}))

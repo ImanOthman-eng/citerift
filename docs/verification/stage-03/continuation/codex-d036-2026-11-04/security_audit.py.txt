@@ -1,0 +1,39 @@
+"""Offline metadata-only review: never prints URL or credential values."""
+import hashlib,json,re,subprocess
+from datetime import datetime, timezone
+from urllib.parse import unquote
+from pathlib import Path
+
+def git(*args):
+    return subprocess.check_output(['git',*args])
+base='docs/verification/stage-03/evaluation/confirmation-d035/campaign/'
+m=json.loads(Path(base+'WITHHELD_FILES.json').read_text())
+rows=[]
+expiries=set()
+for f in m['files']:
+    p=base+f['path'];data=git('show',f["committed_in"]+':'+p)
+    assert hashlib.sha256(data).hexdigest()==f['sha256']
+    assert len(data)==f['bytes']
+    text=unquote(unquote(data.decode(errors='replace')))
+    expiries.update(re.findall(r'Expires=(\d+)',text))
+    rows.append({'path':p,'sha256':f['sha256'],'blob':git('rev-parse',f["committed_in"]+':'+p).decode().strip(),'working_copy_present':Path(p).exists(),'restorable_from_history':True})
+blobs={}
+for ref in ('HEAD','origin/main'):
+    hits=[]
+    for line in git('rev-list','--objects',ref).decode().splitlines():
+        oid=line.split(' ',1)[0]
+        if oid in {r['blob'] for r in rows}:hits.append(oid)
+    blobs[ref]=sorted(set(hits))
+assert len(blobs['HEAD'])==3 and not blobs['origin/main']
+all_hits=[]
+for line in git('cat-file','--batch-all-objects','--batch-check=%(objectname) %(objecttype)').decode().splitlines():
+ oid,kind=line.split()
+ if kind=='blob' and re.search(rb'AKIA[0-9A-Z]{16}',git('cat-file','blob',oid)):all_hits.append(oid)
+assert set(all_hits)=={r['blob'] for r in rows}
+tracked=[]
+pat=re.compile(rb'AKIA[0-9A-Z]{16}')
+for p in git('ls-files','-z').decode().split('\0'):
+    if p and pat.search(Path(p).read_bytes()): tracked.append(p)
+assert not tracked
+assert {datetime.fromtimestamp(int(t),timezone.utc).isoformat() for t in expiries} == {'2024-03-25T12:29:04+00:00'}
+print(json.dumps({'historical_expiry_utc':'2024-03-25T12:29:04+00:00','object_database_key_id_hit_blobs':all_hits,'source_revision':git('rev-parse','HEAD').decode().strip(),'withheld_files':rows,'restricted_blobs_reachable':blobs,'current_tree_key_id_match_paths':tracked,'normal_merge_would_propagate':True,'continuation_branch_inherits_restricted_history':True,'urls_followed':False,'delivery_branch_created':False},indent=2))

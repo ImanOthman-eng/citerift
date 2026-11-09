@@ -1,0 +1,24 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2/tools')
+from gen import *
+rev=1355140902; p,t=load(rev); s=sups(rev); assert len(s)==11
+iu=find(t,'<ref name=iucn>'); rdb=find(t,'<ref name=RDB>'); eph=find(t,'<ref>[[Bo Beolens')
+nrdb=find(t,'{{NRDB species')
+reps=[m.start() for m in re.finditer(r'<ref name=(iucn|RDB)/>',t)]
+assert len(reps)==8
+bib1=find(t,'*[[George Albert Boulenger'); bib2=find(t,'*{{cite journal |last1=Reinhardt'); tpl2=bib2+1
+defs=[
+ D('d1',t,iu,'note','iucn','',[],True,'cite_note-iucn-1',"Defined inside speciesbox |status_ref=. Hand-written IUCN citation (plain text, no citation template); contains a dx.doi.org URL as plain text."),
+ D('d2',t,rdb,'note','RDB','',[nrdb],False,'cite_note-RDB-2',"Body is {{NRDB species}}, a reptile-database citation wrapper; counted as a citation template (purpose is to format a citation), judgement call."),
+ D('d3',t,eph,'note',None,'',[],True,'cite_note-3',"Hand-written book citation with {{ISBN}} (not a citation template)."),
+ D('d4',t,bib2,'bibliography_entry',None,None,[tpl2],False,None,"Further reading entry: list item containing {{cite journal}}; trailing text after the template is plain text."),
+]
+uses=[U('u1',t,iu,iu,s[0]),U('u2',t,rdb,rdb,s[1]),U('u3',t,eph,eph,s[2])]
+for k,(r,rid) in enumerate(zip(reps,s[3:])):
+    nm='iucn' if t[r:r+15]=='<ref name=iucn/' else 'RDB'
+    uses.append(U(f'u{k+4}',t,r,iu if nm=='iucn' else rdb,rid,"Self-closing reuse of named ref "+nm+"; render id aligned by source order and sup data-mw name."))
+    assert (nm in rid)
+doi=find(t,'10.2305/IUCN.UK.2021-3.RLTS.T134884763A134884765.pt')
+ids=[I(t,doi,'https://dx.doi.org/10.2305/IUCN.UK.2021-3.RLTS.T134884763A134884765.pt','doi','identifier_link','10.2305/iucn.uk.2021-3.rlts.t134884763a134884765.pt',"Quote is the whole URL; the doi is its path. Written as plain-text URL (not bracketed) inside a hand-written ref; trailing period excluded from the URL and the DOI.") ] if False else []
+u0=find(t,'https://dx.doi.org/10.2305')
+ids=[I(t,u0,'https://dx.doi.org/10.2305/IUCN.UK.2021-3.RLTS.T134884763A134884765.pt','doi','identifier_link','10.2305/iucn.uk.2021-3.rlts.t134884763a134884765.pt',"Whole URL quoted; trailing sentence period not part of it. Bare URL in hand-written ref text, no citation template.")]
+finish(rev,p,t,defs,uses,ids,"Whether {{NRDB species}} counts as a citation template (included, see d2 notes). The Boulenger list item (*[[George Albert Boulenger...) has no citation template, DOI or PMID so it is not labelled a bibliography entry under 3.4. Sup order checked against names: all 11 sups align one-to-one with the 11 <ref> tags in source order.",[])

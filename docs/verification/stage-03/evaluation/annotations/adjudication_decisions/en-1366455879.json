@@ -1,0 +1,43 @@
+{
+  "article": "en-1366455879",
+  "adjudicator": "stage03-adjudicator-en",
+  "started_at": "2026-10-29T09:20:00Z",
+  "finished_at": "2026-10-29T09:25:20Z",
+  "decisions": [
+    {
+      "item": 1,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "{{cite iucn}} at cp 227 inside d1 is a citation template: its name is a 'Cite …' template and it renders as a CS1 citation (<cite class=\"citation journal cs1\">: 'Ellis, R.; Cogger, H.; Shea, G. (2017). \"Cryptoblepharus pulcher\". IUCN Red List of Threatened Species ... doi:...'). The guide lists it under templates.",
+      "corrected_label": null
+    },
+    {
+      "item": 2,
+      "kind": "template_unit_missed",
+      "decision": "confirm",
+      "reason": "{{NRDB species}} at cp 887 inside d2 is a source-specific template whose purpose is to format a citation to The Reptile Database (renders 'Cryptoblepharus pulcher at the Reptarium.cz Reptile Database. Accessed 14 January 2020.'). The guide defines citation templates by purpose ('templates whose purpose is to format a citation: Cite …, Citation, ... and similar'), and the listed names are examples. Ambiguity: it does not emit CS1 markup, but the guide's test is purpose, not CS1 output, so it stays in templates.",
+      "corrected_label": null
+    },
+    {
+      "item": 3,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "d1 cites its work through {{cite iucn}}, a citation template (see item 1). unstructured is true only when the definition 'cites something in plain text with no citation template'; this one has a citation template and no additional plain-text citation, so the locked unstructured=false is right and the engine's unstructured unit is not an item.",
+      "corrected_label": null
+    },
+    {
+      "item": 4,
+      "kind": "unstructured_unit_extra",
+      "decision": "confirm",
+      "reason": "d2's only content is {{NRDB species ...}}, a citation-formatting template (see item 2), not plain text such as a bare URL or hand-written reference. The definition therefore does not cite 'in plain text with no citation template', so unstructured=false stands.",
+      "corrected_label": null
+    },
+    {
+      "item": 5,
+      "kind": "identifier_role",
+      "decision": "confirm",
+      "reason": "10.2305/IUCN.UK.2017-3.RLTS.T109462586A109462610.en at cp 398 is the value of doi= of {{cite iucn}}, a citation template (see item 1). primary_citation_field is 'the value of an identifier field of a citation template'; 'unresolved' is only for identifier fields of a template that is NOT a citation template. The raw text is 'the value, without surrounding spaces', so the locked quote (no trailing space) is correct; key is ASCII-lower-cased.",
+      "corrected_label": null
+    }
+  ]
+}

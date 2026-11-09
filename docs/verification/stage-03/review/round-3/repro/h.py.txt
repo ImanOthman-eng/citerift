@@ -1,0 +1,32 @@
+"""Scratch harness (review R3). Synthetic inputs only, offline."""
+import sys, json, tempfile, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract, note_li, ref_sup, references, codes  # noqa
+from citerift.wiki.verify import verify_bundle  # noqa
+from citerift.wiki.schemas import *  # noqa
+
+WORK = Path("/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3/work")
+EN_TEXT = 'A.<ref name="a">Smith 2001.</ref>\n'
+AR_TEXT = 'أ.<ref name="a">سميث 2001.</ref>\n'
+_n = [0]
+
+def tmpdir():
+    return Path(tempfile.mkdtemp(dir=WORK))
+
+def note_body(inner, wrap=("", "")):
+    return ("<p>A." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + wrap[0]
+            + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], inner)]) + wrap[1])
+
+def observe(inner, wiki="en", wrap=("", ""), body=None, do_verify=True):
+    b = bundle(tmpdir(), EN_TEXT if wiki == "en" else AR_TEXT, body or note_body(inner, wrap), wiki=wiki)
+    doc = extract(b)
+    rep = verify_bundle(b, doc) if do_verify else None
+    return doc, rep, b
+
+def short(m):
+    return m["state"], [(e["kind"], e["part"], e["matched"], e.get("exclusion")) for e in m["evidence"]]
+
+def src(text, wiki="en", body=None):
+    b = bundle(tmpdir(), text, body, wiki=wiki)
+    return extract(b), b

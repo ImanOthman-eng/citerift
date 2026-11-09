@@ -1,0 +1,671 @@
+FFFFFF.F.FFFFFFFF..FFF.FFFFF.FFFFF...F                                   [100%]
+=================================== FAILURES ===================================
+_ test_a_run_the_gate_deferred_costs_nothing_and_an_unreported_run_the_worst_case _
+
+    @pytest.mark.regression
+    def test_a_run_the_gate_deferred_costs_nothing_and_an_unreported_run_the_worst_case() -> None:
+        deferred = {"event": "end", "key": "k", "run": 1, "stdout": captured("deferred", attempts=[])}
+        crashed = {"event": "end", "key": "k", "run": 2, "stdout": {"unparsed_stdout": "Traceback"}}
+>       assert cc.used([{"event": "start", "key": "k", "run": 1}, deferred]) == (0, 0)
+E       assert (6, 21037056) == (0, 0)
+E         
+E         At index 0 diff: 6 != 0
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:112: AssertionError
+____________ test_many_gate_deferrals_never_reach_a_phantom_ceiling ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_many_gate_deferrals_never0')
+
+    @pytest.mark.regression
+    def test_many_gate_deferrals_never_reach_a_phantom_ceiling(tmp_path: Path) -> None:
+        out = tmp_path / "out"
+        out.mkdir()
+        lines = []
+        for i in range(100):  # 100 earlier runs answered by the gate: no request was made
+            lines += [
+                {"event": "start", "key": f"x/en-{i}", "run": 1},
+                {"event": "end", "key": f"x/en-{i}", "run": 1, "exit": 75, "stdout": captured("deferred", attempts=[])},
+            ]
+        (out / "captures.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
+        clock, cli = Clock(), Cli([captured("complete")])
+>       assert cc.run(plan(tmp_path, ("holdout", "en", 1)), out, cli, clock, clock.sleep) == 0
+E       AssertionError: assert 2 == 0
+E        +  where 2 = <function run at 0x7f24fdc502c0>(PosixPath('/tmp/pytest-of-root/pytest-64/test_many_gate_deferrals_never0/plan.json'), PosixPath('/tmp/pytest-of-root/pytest-64/test_many_gate_deferrals_never0/out'), <test_review_r6_fixes.Cli object at 0x7f24fe051df0>, <test_review_r6_fixes.Clock object at 0x7f24fdd5a450>, sleep)
+E        +    where <function run at 0x7f24fdc502c0> = cc.run
+E        +    and   PosixPath('/tmp/pytest-of-root/pytest-64/test_many_gate_deferrals_never0/plan.json') = plan(PosixPath('/tmp/pytest-of-root/pytest-64/test_many_gate_deferrals_never0'), ('holdout', 'en', 1))
+E        +    and   sleep = <test_review_r6_fixes.Clock object at 0x7f24fdd5a450>.sleep
+
+tests/stage03/test_review_r6_fixes.py:128: AssertionError
+----------------------------- Captured stderr call -----------------------------
+ceiling: not starting holdout/en-1 (600 attempts, 2103705600 bytes)
+____________ test_the_worst_case_of_one_run_bounds_the_fetch_policy ____________
+
+    @pytest.mark.unit
+    def test_the_worst_case_of_one_run_bounds_the_fetch_policy() -> None:
+        policy = FetchPolicy()
+        assert 2 * policy.max_attempts == cc.RUN_WORST_ATTEMPTS
+>       assert 2 * policy.max_body_bytes == cc.RUN_WORST_BYTES  # one accepted body per operation
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert (2 * 33554432) == 21037056
+E        +  where 33554432 = FetchPolicy(min_interval_s=10.0, max_attempts=3, op_timeout_s=30.0, deadline_s=180.0, backoff_s=10.0, max_wire_bytes=3..._agent='CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)').max_body_bytes
+E        +  and   21037056 = cc.RUN_WORST_BYTES
+
+tests/stage03/test_review_r6_fixes.py:136: AssertionError
+_ test_a_429_with_an_unusable_retry_after_is_not_run_again[RETRY_AFTER_UNREADABLE] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_429_with_an_unusable_re0')
+problem = 'RETRY_AFTER_UNREADABLE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("problem", ["RETRY_AFTER_UNREADABLE", "RETRY_AFTER_OUT_OF_RANGE"])
+    def test_a_429_with_an_unusable_retry_after_is_not_run_again(tmp_path: Path, problem: str) -> None:
+        attempt = {"code": "HTTP_RATE_LIMITED", "retry_after_raw": "soon", "retry_after_problem": problem}
+        failed = captured("failed", attempts=[attempt], issues=[{"code": "HTTP_RATE_LIMITED", "severity": "error"}])
+        clock, cli = Clock(), Cli([failed])
+>       assert cc.run(plan(tmp_path, ("holdout", "en", 1)), tmp_path / "out", cli, clock, clock.sleep) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_review_r6_fixes.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:254: in run
+    return _run_locked(load_plan(plan_path), out, cli, clock, sleep)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:321: in _run_locked
+    code, stdout_text, stderr = cli(argv)
+                                ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_review_r6_fixes.Cli object at 0x7f24fdca7650>
+argv = ['citerift-wiki', 'capture', '--wiki', 'en', '--page-id', '1', ...]
+
+    def __call__(self, argv: list[str]) -> tuple[int, str, str]:
+        self.calls.append(argv)
+        out = Path(argv[argv.index("--out") + 1])
+        assert not out.exists(), "a bundle path was reused"
+>       answer = self.answers.pop(0)
+                 ^^^^^^^^^^^^^^^^^^^
+E       IndexError: pop from empty list
+
+tests/stage03/test_review_r6_fixes.py:66: IndexError
+----------------------------- Captured stderr call -----------------------------
+holdout/en-1: run 1 failed -> failed
+_ test_a_429_with_an_unusable_retry_after_is_not_run_again[RETRY_AFTER_OUT_OF_RANGE] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_429_with_an_unusable_re1')
+problem = 'RETRY_AFTER_OUT_OF_RANGE'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("problem", ["RETRY_AFTER_UNREADABLE", "RETRY_AFTER_OUT_OF_RANGE"])
+    def test_a_429_with_an_unusable_retry_after_is_not_run_again(tmp_path: Path, problem: str) -> None:
+        attempt = {"code": "HTTP_RATE_LIMITED", "retry_after_raw": "soon", "retry_after_problem": problem}
+        failed = captured("failed", attempts=[attempt], issues=[{"code": "HTTP_RATE_LIMITED", "severity": "error"}])
+        clock, cli = Clock(), Cli([failed])
+>       assert cc.run(plan(tmp_path, ("holdout", "en", 1)), tmp_path / "out", cli, clock, clock.sleep) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_review_r6_fixes.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:254: in run
+    return _run_locked(load_plan(plan_path), out, cli, clock, sleep)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:321: in _run_locked
+    code, stdout_text, stderr = cli(argv)
+                                ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_review_r6_fixes.Cli object at 0x7f24fdcd70b0>
+argv = ['citerift-wiki', 'capture', '--wiki', 'en', '--page-id', '1', ...]
+
+    def __call__(self, argv: list[str]) -> tuple[int, str, str]:
+        self.calls.append(argv)
+        out = Path(argv[argv.index("--out") + 1])
+        assert not out.exists(), "a bundle path was reused"
+>       answer = self.answers.pop(0)
+                 ^^^^^^^^^^^^^^^^^^^
+E       IndexError: pop from empty list
+
+tests/stage03/test_review_r6_fixes.py:66: IndexError
+----------------------------- Captured stderr call -----------------------------
+holdout/en-1: run 1 failed -> failed
+_____ test_a_torn_final_journal_line_is_kept_aside_and_the_driver_resumes ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_torn_final_journal_line0')
+
+    @pytest.mark.regression
+    def test_a_torn_final_journal_line_is_kept_aside_and_the_driver_resumes(tmp_path: Path) -> None:
+        out = tmp_path / "out"
+        out.mkdir()
+        start = json.dumps({"event": "start", "key": "holdout/en-1", "run": 1}) + "\n"
+        torn = '{"event": "end", "key": "holdout/en-1", "run": 1, "stdout": {"status": "comp'
+        (out / "captures.jsonl").write_text(start + torn)
+>       assert cc._journal(out) == [json.loads(start)]  # a reader ignores the torn line
+               ^^^^^^^^^^^^^^^^
+
+tests/stage03/test_review_r6_fixes.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:112: in _journal
+    return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
+            ^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7f24ff0e1670>
+s = '{"event": "end", "key": "holdout/en-1", "run": 1, "stdout": {"status": "comp'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+>           obj, end = self.scan_once(s, idx)
+                       ^^^^^^^^^^^^^^^^^^^^^^
+E           json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 72 (char 71)
+
+/usr/lib/python3.12/json/decoder.py:353: JSONDecodeError
+_ test_a_bundle_published_before_an_interruption_is_adopted_not_captured_again _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_bundle_published_before0')
+
+    @pytest.mark.regression
+    def test_a_bundle_published_before_an_interruption_is_adopted_not_captured_again(tmp_path: Path) -> None:
+        out, clock = tmp_path / "out", Clock()
+        published = {"status": "complete", "attempts": [{"code": None, "body_bytes": 4000}], "issues": [], "render": {}}
+        p = plan(tmp_path, ("holdout", "en", 7))
+        with pytest.raises(Killed):
+            cc.run(p, out, Cli([Killed(published)]), clock, clock.sleep)
+        again = Cli([])
+>       assert cc.run(p, out, again, clock, clock.sleep) == 0 and again.calls == []
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/stage03/test_review_r6_fixes.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:254: in run
+    return _run_locked(load_plan(plan_path), out, cli, clock, sleep)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+docs/verification/stage-03/evaluation/scripts/campaign_capture.py:321: in _run_locked
+    code, stdout_text, stderr = cli(argv)
+                                ^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_review_r6_fixes.Cli object at 0x7f24fdca7140>
+argv = ['citerift-wiki', 'capture', '--wiki', 'en', '--page-id', '7', ...]
+
+    def __call__(self, argv: list[str]) -> tuple[int, str, str]:
+        self.calls.append(argv)
+        out = Path(argv[argv.index("--out") + 1])
+        assert not out.exists(), "a bundle path was reused"
+>       answer = self.answers.pop(0)
+                 ^^^^^^^^^^^^^^^^^^^
+E       IndexError: pop from empty list
+
+tests/stage03/test_review_r6_fixes.py:66: IndexError
+_____________ test_no_run_starts_after_the_acquisition_time_limit ______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_no_run_starts_after_the_a0')
+
+    @pytest.mark.negative
+    def test_no_run_starts_after_the_acquisition_time_limit(tmp_path: Path) -> None:
+        out = tmp_path / "out"
+>       clock, cli = Clock(cc.ACQUISITION_END), Cli([])
+                           ^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'campaign_capture' has no attribute 'ACQUISITION_END'
+
+tests/stage03/test_review_r6_fixes.py:222: AttributeError
+_____ test_a_deferred_draw_request_waits_for_not_before_and_is_sent_again ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_deferred_draw_request_w0')
+
+    @pytest.mark.regression
+    def test_a_deferred_draw_request_waits_for_not_before_and_is_sent_again(tmp_path: Path) -> None:
+        clock = Clock()
+        f = Fetch([("DEFERRED_RETRY_AFTER", T0 + 120, None), (None, None, {"query": {"random": []}})])
+>       get = sel.LiveGet(tmp_path, f, clock, clock.sleep)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: LiveGet.__init__() takes 2 positional arguments but 5 were given
+
+tests/stage03/test_review_r6_fixes.py:257: TypeError
+_________ test_a_long_server_wait_stops_the_draw_before_any_selection __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_long_server_wait_stops_0')
+
+    @pytest.mark.negative
+    def test_a_long_server_wait_stops_the_draw_before_any_selection(tmp_path: Path) -> None:
+        clock = Clock()
+>       get = sel.LiveGet(tmp_path, Fetch([("DEFERRED_RETRY_AFTER", T0 + 2 * sel.DRAW_MAX_WAIT_S, None)]), clock)
+                                                                             ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'select_confirmation' has no attribute 'DRAW_MAX_WAIT_S'
+
+tests/stage03/test_review_r6_fixes.py:266: AttributeError
+___ test_a_retryable_draw_failure_is_sent_once_more_and_a_guessed_wait_never ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_retryable_draw_failure_0')
+
+    @pytest.mark.regression
+    def test_a_retryable_draw_failure_is_sent_once_more_and_a_guessed_wait_never(tmp_path: Path) -> None:
+        clock = Clock()
+        f = Fetch([("ATTEMPTS_EXHAUSTED", None, None), (None, None, {"ok": 1})])
+>       assert sel.LiveGet(tmp_path / "a", f, clock, clock.sleep)("u") == {"ok": 1}
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: LiveGet.__init__() takes 2 positional arguments but 5 were given
+
+tests/stage03/test_review_r6_fixes.py:276: TypeError
+_ test_a_draw_after_an_interrupted_one_continues_the_request_numbers_and_lists_them _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_draw_after_an_interrupt0')
+
+    @pytest.mark.regression
+    def test_a_draw_after_an_interrupted_one_continues_the_request_numbers_and_lists_them(tmp_path: Path) -> None:
+        log = tmp_path / "capture" / "captures.jsonl"
+        log.parent.mkdir(parents=True)
+        log.write_text(json.dumps({"event": "start", "key": "selection/request-0003", "run": 1}) + "\n")
+        clock = Clock()
+>       get = sel.LiveGet(tmp_path, Fetch([(None, None, {"ok": 1})]), clock, clock.sleep)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: LiveGet.__init__() takes 2 positional arguments but 5 were given
+
+tests/stage03/test_review_r6_fixes.py:291: TypeError
+_______________ test_the_reserve_step_refuses_a_pending_deferral _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_the_reserve_step_refuses_0')
+
+    @pytest.mark.negative
+    def test_the_reserve_step_refuses_a_pending_deferral(tmp_path: Path) -> None:
+        st = {f"holdout/{w}-{n}": _state("failed", codes=["PAGE_NOT_FOUND"]) for w in ("ar", "en") for n in (1, 2)}
+        st["holdout/en-2"] = _state("deferred", deferred=True, not_before=stamp(T0 + 86400))
+        with pytest.raises(SystemExit, match="unresolved"):
+>           rs.decide(_selection(), st, {}, now=T0)
+E           TypeError: decide() got an unexpected keyword argument 'now'
+
+tests/stage03/test_review_r6_fixes.py:315: TypeError
+___ test_after_a_stop_the_reserve_step_counts_what_it_has_and_names_no_block ___
+
+    @pytest.mark.regression
+    def test_after_a_stop_the_reserve_step_counts_what_it_has_and_names_no_block() -> None:
+        st = {f"holdout/{w}-1": _state("failed", codes=["PAGE_NOT_FOUND"]) for w in ("ar", "en")}
+        st["holdout/en-2"] = _state("deferred", deferred=True, not_before=stamp(T0 + 86400))
+        st["holdout/ar-2"] = {"runs": [], "final": None}  # never run before the ceiling
+>       d = rs.decide(_selection(), st, {}, stopped="ceiling.json", now=T0)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: decide() got an unexpected keyword argument 'stopped'
+
+tests/stage03/test_review_r6_fixes.py:323: TypeError
+___ test_a_planned_but_never_run_block_is_the_next_block_not_a_captured_one ____
+
+    @pytest.mark.regression
+    def test_a_planned_but_never_run_block_is_the_next_block_not_a_captured_one() -> None:
+        st = {f"holdout/{w}-{n}": _state("failed", codes=["PAGE_NOT_FOUND"]) for w in ("ar", "en") for n in (1, 2)}
+        st |= {f"reserve1/{w}-3": {"runs": [], "final": None} for w in ("ar", "en")}  # in the plan, not yet run
+>       d = rs.decide(_selection(), st, {}, now=T0)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: decide() got an unexpected keyword argument 'now'
+
+tests/stage03/test_review_r6_fixes.py:333: TypeError
+_ test_a_namespace_prefix_in_any_case_is_a_marker_call[en-{{Template:Retracted|doi=1}}] _
+
+wiki = 'en', text = '{{Template:Retracted|doi=1}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "{{Template:Retracted|doi=1}}"),
+            ("en", "{{TEMPLATE : retracted|doi=1}}"),
+            ("ar", "{{Template:Retracted|x}}"),
+            ("ar", "{{قالب:مصدر مسحوب|x}}"),
+        ],
+    )
+    def test_a_namespace_prefix_in_any_case_is_a_marker_call(wiki: str, text: str) -> None:
+>       assert wc.marker_calls(text, wiki) == [0]
+E       assert [] == [0]
+E         
+E         Right contains one more item: 0
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:397: AssertionError
+_ test_a_namespace_prefix_in_any_case_is_a_marker_call[en-{{TEMPLATE : retracted|doi=1}}] _
+
+wiki = 'en', text = '{{TEMPLATE : retracted|doi=1}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "{{Template:Retracted|doi=1}}"),
+            ("en", "{{TEMPLATE : retracted|doi=1}}"),
+            ("ar", "{{Template:Retracted|x}}"),
+            ("ar", "{{قالب:مصدر مسحوب|x}}"),
+        ],
+    )
+    def test_a_namespace_prefix_in_any_case_is_a_marker_call(wiki: str, text: str) -> None:
+>       assert wc.marker_calls(text, wiki) == [0]
+E       assert [] == [0]
+E         
+E         Right contains one more item: 0
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:397: AssertionError
+_ test_a_namespace_prefix_in_any_case_is_a_marker_call[ar-{{Template:Retracted|x}}] _
+
+wiki = 'ar', text = '{{Template:Retracted|x}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "{{Template:Retracted|doi=1}}"),
+            ("en", "{{TEMPLATE : retracted|doi=1}}"),
+            ("ar", "{{Template:Retracted|x}}"),
+            ("ar", "{{قالب:مصدر مسحوب|x}}"),
+        ],
+    )
+    def test_a_namespace_prefix_in_any_case_is_a_marker_call(wiki: str, text: str) -> None:
+>       assert wc.marker_calls(text, wiki) == [0]
+E       assert [] == [0]
+E         
+E         Right contains one more item: 0
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:397: AssertionError
+_ test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record[pwrite] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_kill_while_the_gate_rec0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f24fdca6840>
+killed_at = 'pwrite'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("killed_at", ["pwrite", "ftruncate"])
+    def test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, killed_at: str
+    ) -> None:
+        path = tmp_path / "gate"
+        path.write_text("1793600000.000 1793600100.000\n")
+        fd = os.open(path, os.O_RDWR)
+    
+        def kill(*_: Any) -> None:
+            raise Killed
+    
+        monkeypatch.setattr(fetch.os, killed_at, kill)
+        try:
+            with pytest.raises(Killed):
+>               fetch._write_record(fd, 1793600050.0, 1793600100.0)
+                ^^^^^^^^^^^^^^^^^^^
+E               AttributeError: module 'citerift.wiki.fetch' has no attribute '_write_record'
+
+tests/stage03/test_review_r6_fixes.py:418: AttributeError
+_ test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record[ftruncate] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_kill_while_the_gate_rec1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f24fdca7110>
+killed_at = 'ftruncate'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("killed_at", ["pwrite", "ftruncate"])
+    def test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch, killed_at: str
+    ) -> None:
+        path = tmp_path / "gate"
+        path.write_text("1793600000.000 1793600100.000\n")
+        fd = os.open(path, os.O_RDWR)
+    
+        def kill(*_: Any) -> None:
+            raise Killed
+    
+        monkeypatch.setattr(fetch.os, killed_at, kill)
+        try:
+            with pytest.raises(Killed):
+>               fetch._write_record(fd, 1793600050.0, 1793600100.0)
+                ^^^^^^^^^^^^^^^^^^^
+E               AttributeError: module 'citerift.wiki.fetch' has no attribute '_write_record'
+
+tests/stage03/test_review_r6_fixes.py:418: AttributeError
+______ test_a_torn_or_malformed_gate_record_imposes_the_full_interval[17] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_torn_or_malformed_gate_0')
+record = b'17'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("record", [b"17", b"1793600000.000 17936", b"1 2 3\n"])
+    def test_a_torn_or_malformed_gate_record_imposes_the_full_interval(tmp_path: Path, record: bytes) -> None:
+        path = tmp_path / "gate"
+        path.write_bytes(record)
+        fd = os.open(path, os.O_RDWR)
+        before = time.time()
+        last_end, not_before = fetch.NetworkGate._read(fd)
+        os.close(fd)
+>       assert last_end >= before and not_before >= before  # read as "an attempt just ended": the full interval
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (17.0 >= 1793639367.146866)
+
+tests/stage03/test_review_r6_fixes.py:434: AssertionError
+_ test_a_torn_or_malformed_gate_record_imposes_the_full_interval[1793600000.000 17936] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_torn_or_malformed_gate_1')
+record = b'1793600000.000 17936'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("record", [b"17", b"1793600000.000 17936", b"1 2 3\n"])
+    def test_a_torn_or_malformed_gate_record_imposes_the_full_interval(tmp_path: Path, record: bytes) -> None:
+        path = tmp_path / "gate"
+        path.write_bytes(record)
+        fd = os.open(path, os.O_RDWR)
+        before = time.time()
+        last_end, not_before = fetch.NetworkGate._read(fd)
+        os.close(fd)
+>       assert last_end >= before and not_before >= before  # read as "an attempt just ended": the full interval
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (1793600000.0 >= 1793639367.1579046)
+
+tests/stage03/test_review_r6_fixes.py:434: AssertionError
+___ test_a_torn_or_malformed_gate_record_imposes_the_full_interval[1 2 3\n] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_torn_or_malformed_gate_2')
+record = b'1 2 3\n'
+
+    @pytest.mark.negative
+    @pytest.mark.parametrize("record", [b"17", b"1793600000.000 17936", b"1 2 3\n"])
+    def test_a_torn_or_malformed_gate_record_imposes_the_full_interval(tmp_path: Path, record: bytes) -> None:
+        path = tmp_path / "gate"
+        path.write_bytes(record)
+        fd = os.open(path, os.O_RDWR)
+        before = time.time()
+        last_end, not_before = fetch.NetworkGate._read(fd)
+        os.close(fd)
+>       assert last_end >= before and not_before >= before  # read as "an attempt just ended": the full interval
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert (1.0 >= 1793639367.1687994)
+
+tests/stage03/test_review_r6_fixes.py:434: AssertionError
+_ test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001}} B{{sf|Smith|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_redirects_of_one_template0')
+wiki = 'en', text = 'A{{sfn|Smith|2001}} B{{sf|Smith|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}"),
+            ("en", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}"),
+            ("en", "A{{sfn|Smith\v|2001}} B{{sfn|Smith|2001}}"),  # Lua's %s trims \v
+        ],
+    )
+    def test_redirects_of_one_template_and_equal_link_targets_are_one_reference(
+        tmp_path: Path, wiki: str, text: str
+    ) -> None:
+>       assert short(extract(bundle(tmp_path, text, wiki=wiki))) == [("identical_definitions", 2)]
+E       AssertionError: assert [('conflictin...initions', 2)] == [('identical_definitions', 2)]
+E         
+E         At index 0 diff: ('conflicting_definitions', 2) != ('identical_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:468: AssertionError
+_ test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_redirects_of_one_template1')
+wiki = 'en', text = 'A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}"),
+            ("en", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}"),
+            ("en", "A{{sfn|Smith\v|2001}} B{{sfn|Smith|2001}}"),  # Lua's %s trims \v
+        ],
+    )
+    def test_redirects_of_one_template_and_equal_link_targets_are_one_reference(
+        tmp_path: Path, wiki: str, text: str
+    ) -> None:
+>       assert short(extract(bundle(tmp_path, text, wiki=wiki))) == [("identical_definitions", 2)]
+E       AssertionError: assert [('conflictin...initions', 2)] == [('identical_definitions', 2)]
+E         
+E         At index 0 diff: ('conflicting_definitions', 2) != ('identical_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:468: AssertionError
+_ test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_redirects_of_one_template2')
+wiki = 'en', text = 'A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}"),
+            ("en", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}"),
+            ("en", "A{{sfn|Smith\v|2001}} B{{sfn|Smith|2001}}"),  # Lua's %s trims \v
+        ],
+    )
+    def test_redirects_of_one_template_and_equal_link_targets_are_one_reference(
+        tmp_path: Path, wiki: str, text: str
+    ) -> None:
+>       assert short(extract(bundle(tmp_path, text, wiki=wiki))) == [("identical_definitions", 2)]
+E       AssertionError: assert [('conflictin...initions', 2)] == [('identical_definitions', 2)]
+E         
+E         At index 0 diff: ('conflicting_definitions', 2) != ('identical_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:468: AssertionError
+_ test_redirects_of_one_template_and_equal_link_targets_are_one_reference[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001}} \u0628{{Sf|\u0633\u0645\u064a\u062b|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_redirects_of_one_template3')
+wiki = 'ar', text = 'أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}"),
+            ("en", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}"),
+            ("en", "A{{sfn|Smith\v|2001}} B{{sfn|Smith|2001}}"),  # Lua's %s trims \v
+        ],
+    )
+    def test_redirects_of_one_template_and_equal_link_targets_are_one_reference(
+        tmp_path: Path, wiki: str, text: str
+    ) -> None:
+>       assert short(extract(bundle(tmp_path, text, wiki=wiki))) == [("identical_definitions", 2)]
+E       AssertionError: assert [('conflictin...initions', 2)] == [('identical_definitions', 2)]
+E         
+E         At index 0 diff: ('conflicting_definitions', 2) != ('identical_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:468: AssertionError
+_ test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_redirects_of_one_template4')
+wiki = 'en', text = 'A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}"),
+            ("en", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}"),
+            ("en", "A{{sfn|Smith\v|2001}} B{{sfn|Smith|2001}}"),  # Lua's %s trims \v
+        ],
+    )
+    def test_redirects_of_one_template_and_equal_link_targets_are_one_reference(
+        tmp_path: Path, wiki: str, text: str
+    ) -> None:
+>       assert short(extract(bundle(tmp_path, text, wiki=wiki))) == [("identical_definitions", 2)]
+E       AssertionError: assert [('conflictin...initions', 2)] == [('identical_definitions', 2)]
+E         
+E         At index 0 diff: ('conflicting_definitions', 2) != ('identical_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:468: AssertionError
+_____________ test_a_positional_nul_is_not_trimmed_as_lua_keeps_it _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-64/test_a_positional_nul_is_not_t0')
+
+    @pytest.mark.regression
+    def test_a_positional_nul_is_not_trimmed_as_lua_keeps_it(tmp_path: Path) -> None:
+        """RR-11: Lua's %s has no NUL, so ``Smith\\0`` and ``Smith`` are two names (two references)."""
+        doc = extract(bundle(tmp_path, "A{{sfn|Smith\0|2001}} B{{sfn|Smith|2001}}"))
+>       assert short(doc) == [("single_definition", 1), ("single_definition", 1)]
+E       AssertionError: assert [('identical_definitions', 2)] == [('single_def...finition', 1)]
+E         
+E         At index 0 diff: ('identical_definitions', 2) != ('single_definition', 1)
+E         Right contains one more item: ('single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_review_r6_fixes.py:487: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_run_the_gate_deferred_costs_nothing_and_an_unreported_run_the_worst_case
+FAILED tests/stage03/test_review_r6_fixes.py::test_many_gate_deferrals_never_reach_a_phantom_ceiling
+FAILED tests/stage03/test_review_r6_fixes.py::test_the_worst_case_of_one_run_bounds_the_fetch_policy
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_429_with_an_unusable_retry_after_is_not_run_again[RETRY_AFTER_UNREADABLE]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_429_with_an_unusable_retry_after_is_not_run_again[RETRY_AFTER_OUT_OF_RANGE]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_torn_final_journal_line_is_kept_aside_and_the_driver_resumes
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_bundle_published_before_an_interruption_is_adopted_not_captured_again
+FAILED tests/stage03/test_review_r6_fixes.py::test_no_run_starts_after_the_acquisition_time_limit
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_deferred_draw_request_waits_for_not_before_and_is_sent_again
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_long_server_wait_stops_the_draw_before_any_selection
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_retryable_draw_failure_is_sent_once_more_and_a_guessed_wait_never
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_draw_after_an_interrupted_one_continues_the_request_numbers_and_lists_them
+FAILED tests/stage03/test_review_r6_fixes.py::test_the_reserve_step_refuses_a_pending_deferral
+FAILED tests/stage03/test_review_r6_fixes.py::test_after_a_stop_the_reserve_step_counts_what_it_has_and_names_no_block
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_planned_but_never_run_block_is_the_next_block_not_a_captured_one
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_namespace_prefix_in_any_case_is_a_marker_call[en-{{Template:Retracted|doi=1}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_namespace_prefix_in_any_case_is_a_marker_call[en-{{TEMPLATE : retracted|doi=1}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_namespace_prefix_in_any_case_is_a_marker_call[ar-{{Template:Retracted|x}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record[pwrite]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_kill_while_the_gate_record_is_replaced_never_leaves_an_empty_record[ftruncate]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_torn_or_malformed_gate_record_imposes_the_full_interval[17]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_torn_or_malformed_gate_record_imposes_the_full_interval[1793600000.000 17936]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_torn_or_malformed_gate_record_imposes_the_full_interval[1 2 3\n]
+FAILED tests/stage03/test_review_r6_fixes.py::test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001}} B{{sf|Smith|2001}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_redirects_of_one_template_and_equal_link_targets_are_one_reference[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001}} \u0628{{Sf|\u0633\u0645\u064a\u062b|2001}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_redirects_of_one_template_and_equal_link_targets_are_one_reference[en-A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}]
+FAILED tests/stage03/test_review_r6_fixes.py::test_a_positional_nul_is_not_trimmed_as_lua_keeps_it
+29 failed, 9 passed in 0.86s

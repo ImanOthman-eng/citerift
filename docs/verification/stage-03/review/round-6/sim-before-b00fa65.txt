@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r6pre/simulations/stage03/campaign_driver_sim_r6.py", line 233, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r6pre/simulations/stage03/campaign_driver_sim_r6.py", line 211, in main
+    f, o = sequence(rng, Path(d))
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r6pre/simulations/stage03/campaign_driver_sim_r6.py", line 181, in sequence
+    starts = {(e["key"], e["run"]) for e in cc._journal(out) if e.get("event") == "start"}
+                                            ^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r6pre/docs/verification/stage-03/evaluation/scripts/campaign_capture.py", line 112, in _journal
+    return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()]
+            ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 25 (char 24)

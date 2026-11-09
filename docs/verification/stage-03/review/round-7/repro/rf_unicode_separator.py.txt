@@ -1,0 +1,14 @@
+"""A journal line with U+0085 / U+2028 inside a string value (json.dumps(ensure_ascii=False) writes them raw):
+str.splitlines() cuts the line and json.loads fails; the driver cannot restart."""
+import tempfile, json
+from pathlib import Path
+from drv_common import *
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+out = tmp / "out"; out.mkdir()
+for ch in (" ", "\u0085", " "):
+    d = out / f"d{ord(ch):x}"; d.mkdir()
+    cc._append(d / "captures.jsonl", {"event": "end", "key": "k", "run": 1, "stderr": "abc" + ch + "def"})
+    try:
+        print(hex(ord(ch)), "->", len(cc._journal(d)), "entries")
+    except Exception as e:
+        print(hex(ord(ch)), "-> _journal raises", type(e).__name__, e)

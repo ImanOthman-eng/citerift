@@ -1,0 +1,7 @@
+===== empty list-defined ref; group mismatch inside <references> 'A<ref name=a group=n/>\n<references group="n">\n<ref name=b/>\n<ref name=a group="m">{{cite journal|doi=10.1000/a}}</ref>\n</references>'
+status partial
+ C ct-00001 list_defined_note 'a' 'm' single_definition uses [] units ['un-00001']
+ U us-00001 tag prose 'a' 'n' definition_missing None
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ issues ['LIST_DEFINED_UNUSED', 'RECONCILIATION_UNAVAILABLE', 'REF_DEFINITION_MISSING']
+ exceptions: [('us-00001', 'REF_DEFINITION_MISSING')]

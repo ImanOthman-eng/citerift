@@ -1,0 +1,20 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h2/tools")
+from lib import A
+a=A('ar-76531212','2026-11-03T16:27:00Z')
+def df(s,nm,n,r,pre='<ref'):
+    assert a.t.startswith(pre,s)
+    at=a.L(s,40); t=a.L(a.cp("{{استشهاد",0,s),20)
+    a.D(at,"note",name=nm,templates=[t],rid=n); a.U(at,at,rid=r); return at
+df(303,None,"cite_note-2","cite_ref-2")
+j=df(665,"jpl","cite_note-jpl-3","cite_ref-jpl_3-0")
+a.U(a.L(1434,17),j,rid="cite_ref-jpl_3-1"); a.U(a.L(2003,17),j,rid="cite_ref-jpl_3-2")
+df(2454,"AAS-MB-2011","cite_note-AAS-MB-2011-4","cite_ref-AAS-MB-2011_4-0")
+i1=a.cp("10.1088/0004-637X/741/2/68"); i2=a.cp("10.1088/0004-637X/741/2/68",1); i3=a.cp("10.1088/0004-637X/741/2/68",2)
+assert (i1,i2,i3)==(2949,3097,3157)
+k="10.1088/0004-637x/741/2/68"
+a.I(a.L(i1,26),"doi","identifier_link",k,"DOI embedded in the path of the publisher URL in url= (/article/10.…, not /doi/10.…); quoted as the DOI text, since the table's whole-URL rule names only /doi/ paths. Ends at the following space.")
+a.I(a.L(i2,26),"doi","not_a_target",k,"DOI inside the path of an iopscience URL that is itself inside a web.archive.org snapshot URL (archive URL field).")
+a.I(a.L(i3,26),"doi","primary_citation_field",k,"DOI= field of the citation template.")
+a.unres.append("Ten wikidata-generated references in the rendered list (infobox), not in source; not listed (3.3).")
+a.unres.append("Uncertain only on how to quote the DOI embedded in a non-/doi/ publisher URL (first identifier); chose DOI text, role identifier_link.")
+a.write(unresolved="Quoting/role of DOI inside the /article/10.… publisher URL.")

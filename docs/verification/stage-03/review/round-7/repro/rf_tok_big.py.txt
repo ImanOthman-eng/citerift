@@ -1,0 +1,17 @@
+"""A large realistic source (the largest retained real source repeated up to ~4 MiB): time and codes, per checkout."""
+import sys, time, tempfile, json
+from pathlib import Path
+sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/tests/stage03")
+import citerift
+from wiki_support import bundle
+from citerift.wiki.extract import extract_bundle, ExtractConfig
+R = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt")
+best = max(((p.parent/"artifacts"/json.loads(p.read_text())["source"]["artifact"]) for p in (R/"docs/verification/stage-03/evaluation").rglob("capture.json") if json.loads(p.read_text()).get("source")), key=lambda q: q.stat().st_size)
+base = best.read_text(encoding="utf-8")
+reps = int(sys.argv[1])
+text = (base + "\n") * reps
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+b = bundle(tmp, text)
+t = time.time()
+doc = extract_bundle(b, ExtractConfig())
+print(citerift.__file__.split("/scratchpad/")[1][:30], f"{len(text.encode())} bytes ->", sorted({i['code'] for i in doc['issues']}), f"{time.time()-t:.1f}s")

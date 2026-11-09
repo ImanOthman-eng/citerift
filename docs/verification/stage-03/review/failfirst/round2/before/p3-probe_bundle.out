@@ -1,0 +1,8 @@
+A verify capture with duration_s=1e400: (0, {'verified': True, 'error_codes': []}, '')
+A extract: (0, {'status': 'complete', 'error_codes': {}}, '')
+B verify capture with lone surrogate in detail: (0, {'verified': True, 'error_codes': []}, '')
+C extract baseline: (0, {'status': 'complete', 'error_codes': {}}, '')
+C verify with forged doc (lone surrogate): (5, {'verified': False, 'error_codes': ['BUNDLE_SCHEMA_INVALID']}, 'verification failed: BUNDLE_SCHEMA_INVALID')
+C replay with forged doc (lone surrogate): (3, {'verified': False, 'replay': {'state': 'failed'}, 'error_codes': ['BUNDLE_SCHEMA_INVALID']}, 'replay failed: BUNDLE_SCHEMA_INVALID')
+D verify with worker_wall_s=1e400: (5, {'verified': False, 'error_codes': ['BUNDLE_SCHEMA_INVALID']}, 'verification failed: BUNDLE_SCHEMA_INVALID')
+D replay with worker_wall_s=1e400: (3, {'verified': False, 'replay': {'state': 'failed'}, 'error_codes': ['BUNDLE_SCHEMA_INVALID']}, 'replay failed: BUNDLE_SCHEMA_INVALID')

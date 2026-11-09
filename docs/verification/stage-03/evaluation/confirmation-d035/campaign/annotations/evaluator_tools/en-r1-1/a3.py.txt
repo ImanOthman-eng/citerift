@@ -1,0 +1,19 @@
+import sys;sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r1-1/tools')
+from build import *
+def b(t,L,D,U,I,UN):
+    r1=L('<ref name=Congress>');r2=L('<ref>{{Cite web | url=http://news.rutgers');r3=L('<ref>{{Cite journal | last1 = Potter')
+    D.append(dfn('d1',r1,'note','Congress','',[L('{{cite web |title= Potter')],False,'cite_note-Congress-1','"Potter, Jonathan, 1956-". Library of Congress. Retrieved 1 June 2015. data sheet (b. 6/8/56)'))
+    D.append(dfn('d2',r2,'note',None,'',[L('{{Cite web | url=http://news.rutgers')],False,'cite_note-2','"Jonathan Potter Appointed Dean of Rutgers School of Communication and Information". 26 May 2015.'))
+    D.append(dfn('d3',r3,'note',None,'',[L('{{Cite journal | last1 = Potter')],False,'cite_note-3','Potter, Jonathan (December 2010). "Contemporary discursive psychology: ..." British Journal of Social Psychology. 49 (4): 657-678. doi:10.1348/014466610X486158. PMID 20178684.'))
+    U.append(use('u1',r1,r1,'cite_ref-Congress_1-0'));U.append(use('u2',r2,r2,'cite_ref-2'));U.append(use('u3',r3,r3,'cite_ref-3'))
+    starts=[7044,7380,7707,7904,8155,8400,8639,8916]
+    for i,s in enumerate(starts):
+        assert t[s]=='*'
+        at={"cp":s,"quote":t[s:s+20]}
+        tp={"cp":s+2,"quote":t[s+2:s+14]}
+        assert t[s+2:s+4]=='{{'
+        D.append(dfn(f'd{4+i}',at,'bibliography_entry',None,'',[tp],False,None,None,'Bibliography list item with a citation template ({{cite book}} or {{citation}}); isbn only, no DOI/PMID.' if i<7 else 'Bibliography list item ({{citation}} chapter); isbn only. Starts at 8916, inside the window (ends 9446 mid-list).'))
+    I.append(ident(L('10.1348/014466610X486158'),'doi','primary_citation_field','10.1348/014466610x486158','Inside <ref> definition d3; same DOI is repeated in the Journal articles bibliography entry, which starts after the window.'))
+    I.append(ident(L('20178684'),'pmid','primary_citation_field','20178684'))
+    UN.append('Entries from the Journal articles section onwards (including "::A response to:" lines, which are bibliography entries with citation templates) start after cp 9446 and are out of the window.')
+run(1379598630,b)

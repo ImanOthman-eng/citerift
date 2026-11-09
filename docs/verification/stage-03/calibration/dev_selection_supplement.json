@@ -1,0 +1,10 @@
+{
+  "purpose": "Supplement to dev_selection.json, fixed on 2026-10-28 after the first acquisition run and before any extractor output was inspected.",
+  "reason": "Two selected titles turned out to be redirects (en 'Lancet MMR autism fraud' -> 'Wakefield MMR-autism fraud'; ar 'بطيئات المشية' -> 'بطيء الخطو'), and the Parsoid render of ar '2020 في العلوم' rev 76077251 answered 504 'upstream request timeout' after 15.4 s. The redirect pages stay in the development split as redirect cases; their targets are added. The pinned revision of the 504 article is requested once more. All revisions of these articles belong to the development split.",
+  "caps": {"articles": 16, "min_interval_s": 10, "max_attempts": 4, "max_body_bytes": 33554432},
+  "articles": [
+    {"wiki": "en", "title": "Wakefield MMR-autism fraud", "why": "redirect target of 'Lancet MMR autism fraud': retraction notice and original cited together"},
+    {"wiki": "ar", "title": "بطيء الخطو", "why": "redirect target of 'بطيئات المشية': ordinary biology citation templates (Arabic)"},
+    {"wiki": "ar", "title": "2020 في العلوم", "revision_id": 76077251, "why": "repeat of a Parsoid render that answered 504"}
+  ]
+}

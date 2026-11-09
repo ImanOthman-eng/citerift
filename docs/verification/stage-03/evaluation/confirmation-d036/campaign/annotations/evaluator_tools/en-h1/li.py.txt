@@ -1,0 +1,9 @@
+import sys,re
+from lxml import html
+d=html.parse(sys.argv[1]).getroot()
+pat=re.compile(sys.argv[2],re.I) if len(sys.argv)>2 else None
+for l in d.xpath("//li[starts-with(@id,\"cite_note\")]"):
+    for s in l.xpath(".//style"): s.drop_tree()
+    x=l.xpath('.//*[contains(@class,"mw-reference-text")]')
+    txt=' '.join((x[0] if x else l).text_content().split())
+    if pat is None or pat.search(txt): print(l.get('id'),'|',txt[:300])

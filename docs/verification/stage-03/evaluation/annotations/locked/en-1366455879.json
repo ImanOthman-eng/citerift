@@ -1,0 +1,145 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1366455879,
+  "source_sha256": "c5822f6f2389e8477f32376360f3d26ea45db9f055b44cbb6838062e601d1c04",
+  "html_sha256": "71c6546ad063f00e09ad44e87db4b7ded5863f9fc2fec93f7043dab3090022a4",
+  "window": [
+   0,
+   1227
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T09:10:12Z",
+  "finished_at": "2026-10-29T09:12:05Z",
+  "files_opened": [
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1366455879/source.wikitext",
+    "sha256": "c5822f6f2389e8477f32376360f3d26ea45db9f055b44cbb6838062e601d1c04"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1366455879/render.html",
+    "sha256": "71c6546ad063f00e09ad44e87db4b7ded5863f9fc2fec93f7043dab3090022a4"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1366455879/packet.json",
+    "sha256": "40b57419f035c749aada972540c12137794e66a03df1bf5036d7938a78917b5f"
+   },
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   }
+  ],
+  "tools": "bash (cat, sha256sum, grep), python3 -I with standard library (re, json, hashlib, str.find) to locate and verify quotes, lxml to list <sup typeof=mw:Extension/ref> markers with id/data-mw, <li id=cite_note-...> items, red links and retraction vocabulary in render.html; every label decided by hand.",
+  "unresolved": "Whether {{NRDB species}} counts as a citation template (decided yes)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 186,
+    "quote": "<ref name=\"iucn status 18 November 2021\">{{cite iucn"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn status 18 November 2021",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 227,
+      "quote": "{{cite iucn |author=Ellis"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn_status_18_November_2021-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Defined inside the status_ref= parameter of {{speciesbox}}; rendered in the infobox next to 'Least Concern (IUCN 3.1)' — 'Least Concern' is a conservation status, not an expression of concern about the cited work."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 873,
+    "quote": "<ref name=RDB>{{NRDB species"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "RDB",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 887,
+      "quote": "{{NRDB species |genus"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-RDB-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List-defined inside {{Reflist|refs=...}}. {{NRDB species}} is a source-specific template that formats a citation to the Reptile Database (rendered 'Cryptoblepharus pulcher at the Reptarium.cz Reptile Database. Accessed 14 January 2020.'), so it is treated as a citation template."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 186,
+    "quote": "<ref name=\"iucn status 18 November 2021\">{{cite iucn"
+   },
+   "binds_to": {
+    "cp": 186,
+    "quote": "<ref name=\"iucn status 18 November 2021\">{{cite iucn"
+   },
+   "render_ref_id": "cite_ref-iucn_status_18_November_2021_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 782,
+    "quote": "<ref name=\"iucn status 18 November 2021\" />"
+   },
+   "binds_to": {
+    "cp": 186,
+    "quote": "<ref name=\"iucn status 18 November 2021\">{{cite iucn"
+   },
+   "render_ref_id": "cite_ref-iucn_status_18_November_2021_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 825,
+    "quote": "<ref name=RDB/>"
+   },
+   "binds_to": {
+    "cp": 873,
+    "quote": "<ref name=RDB>{{NRDB species"
+   },
+   "render_ref_id": "cite_ref-RDB_2-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 398,
+    "quote": "10.2305/IUCN.UK.2017-3.RLTS.T109462586A109462610.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2017-3.rlts.t109462586a109462610.en",
+   "notes": "doi= of {{cite iucn}}"
+  }
+ ],
+ "unresolved_notes": [
+  "The list-defined <ref name=RDB> inside {{Reflist|refs=...}} is listed as a definition only, not as a use (it produces no in-text marker).",
+  "'Least Concern' in the rendered infobox is the IUCN status, not a warning marker."
+ ]
+}

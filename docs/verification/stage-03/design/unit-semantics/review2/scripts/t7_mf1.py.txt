@@ -1,0 +1,26 @@
+"""MF-1 v3 probes: (a) a transient peak earlier in the run makes any later exact-message SystemError a memory
+failure; (b) RLIM_INFINITY; (c) soft limit lowered below the peak after the fact."""
+import resource, sys, subprocess
+SRC = "/home/user/citerift/src"
+probe = r'''
+import resource, sys
+sys.path.insert(0, sys.argv[1])
+from citerift.wiki.worker import interpreter_memory_failure
+mode = sys.argv[2]
+limit = 128 << 20
+resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
+if mode in ("transient", "lowered"):
+    hog = []
+    try:
+        while True: hog.append(bytearray(1 << 20))
+    except MemoryError:
+        pass
+    del hog  # memory released: the process is now far below the limit
+if mode == "lowered":
+    resource.setrlimit(resource.RLIMIT_AS, (limit, limit))
+exc = SystemError("error return without exception set")
+print(mode, interpreter_memory_failure(exc))
+'''
+for mode in ("none", "transient"):
+    out = subprocess.run([sys.executable, "-I", "-c", probe, SRC, mode], capture_output=True, text=True)
+    print(out.stdout.strip(), out.stderr.strip()[-200:])

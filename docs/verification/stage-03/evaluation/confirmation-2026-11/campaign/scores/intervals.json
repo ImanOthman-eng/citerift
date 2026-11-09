@@ -1,0 +1,445 @@
+{
+ "procedure": "Interval estimates of the confirmation campaign (AMENDMENT_2026-11-02_CONFIRMATION.md section 8, \"Estimands\").\n\nUsage (from the repository root): python intervals.py SCORES_JSON CHALLENGE_JSON > intervals.json\n\nWritten after the scores existed; it computes nothing that decides a gate. The gates are those of the scores file.\n\n- Article-cluster bootstrap, 95 % percentile intervals, with the frozen scorer's own ``aggregate``, seed and number\n  of resamples (``evaluate.py``), over the per-article rows of each language and label set. The frozen\n  ``bootstrap`` covers eight ratios; this adds unit precision and recall (G5c, G5d), the key-error rate (G2), role\n  agreement (G3b) and binding accuracy (G4c), resampled the same way.\n- For the zero-tolerance gates G2 (key errors among matched target identifiers), G3a (promotions among matched\n  target identifiers) and G7 (fabricated negatives among labelled warnings), the exact one-sided 95 %\n  Clopper-Pearson upper bound of the rate for the observed count.\n- For the warning challenge, the exact two-sided 95 % Clopper-Pearson interval of sensitivity.\n",
+ "gate": {
+  "ar/locked": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 0.98,
+    "identifiers.recall": 0.9514563106796117,
+    "identifiers.key_error_rate": 0.02040816326530612,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 1.0,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 0.98125,
+    "units.recall": 0.98125,
+    "render.precision": 1.0,
+    "render.coverage": 1.0
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     0.9215686274509803,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8571428571428571,
+     0.9920634920634921
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.045454545454545456
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     1.0,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     0.9620253164556962,
+     1.0
+    ],
+    "units.recall": [
+     0.9620253164556962,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     1.0,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 2,
+     "n": 98,
+     "upper": 0.06284914151527837
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 98,
+     "upper": 0.0301061986947731
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "ar/adjudicated": {
+   "articles": 24,
+   "point": {
+    "identifiers.precision": 0.98,
+    "identifiers.recall": 0.9514563106796117,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 1.0,
+    "uses.precision": 1.0,
+    "uses.recall": 1.0,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 1.0,
+    "units.precision": 0.9875,
+    "units.recall": 0.9875,
+    "render.precision": 1.0,
+    "render.coverage": 1.0
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     0.9215686274509803,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8571428571428571,
+     0.9920634920634921
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     1.0,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     1.0,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     1.0,
+     1.0
+    ],
+    "units.precision": [
+     0.9692307692307692,
+     1.0
+    ],
+    "units.recall": [
+     0.9692307692307692,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     1.0,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 98,
+     "upper": 0.0301061986947731
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 98,
+     "upper": 0.0301061986947731
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "en/locked": {
+   "articles": 20,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 0.96,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 0.9583333333333334,
+    "uses.precision": 1.0,
+    "uses.recall": 1.0,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 0.9872611464968153,
+    "units.precision": 0.8689655172413793,
+    "units.recall": 0.9692307692307692,
+    "render.precision": 1.0,
+    "render.coverage": 1.0
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8979591836734694,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     0.8695652173913043,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     1.0,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     0.9555555555555556,
+     1.0
+    ],
+    "units.precision": [
+     0.7184466019417476,
+     0.9711538461538461
+    ],
+    "units.recall": [
+     0.91,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     1.0,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 48,
+     "upper": 0.060503409348894366
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 48,
+     "upper": 0.060503409348894366
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  },
+  "en/adjudicated": {
+   "articles": 20,
+   "point": {
+    "identifiers.precision": 1.0,
+    "identifiers.recall": 0.96,
+    "identifiers.key_error_rate": 0.0,
+    "identifiers.role_agreement": 0.9583333333333334,
+    "uses.precision": 1.0,
+    "uses.recall": 1.0,
+    "uses.binding_accuracy": 1.0,
+    "definitions.precision": 1.0,
+    "definitions.recall": 0.9872611464968153,
+    "units.precision": 0.8689655172413793,
+    "units.recall": 0.9692307692307692,
+    "render.precision": 1.0,
+    "render.coverage": 1.0
+   },
+   "bootstrap_95": {
+    "identifiers.precision": [
+     1.0,
+     1.0
+    ],
+    "identifiers.recall": [
+     0.8979591836734694,
+     1.0
+    ],
+    "identifiers.key_error_rate": [
+     0.0,
+     0.0
+    ],
+    "identifiers.role_agreement": [
+     0.8695652173913043,
+     1.0
+    ],
+    "uses.precision": [
+     1.0,
+     1.0
+    ],
+    "uses.recall": [
+     1.0,
+     1.0
+    ],
+    "uses.binding_accuracy": [
+     1.0,
+     1.0
+    ],
+    "definitions.precision": [
+     1.0,
+     1.0
+    ],
+    "definitions.recall": [
+     0.9555555555555556,
+     1.0
+    ],
+    "units.precision": [
+     0.7184466019417476,
+     0.9711538461538461
+    ],
+    "units.recall": [
+     0.91,
+     1.0
+    ],
+    "render.precision": [
+     1.0,
+     1.0
+    ],
+    "render.coverage": [
+     1.0,
+     1.0
+    ]
+   },
+   "zero_tolerance_upper_95": {
+    "G2 key errors": {
+     "count": 0,
+     "n": 48,
+     "upper": 0.060503409348894366
+    },
+    "G3a promotions": {
+     "count": 0,
+     "n": 48,
+     "upper": 0.060503409348894366
+    },
+    "G7 fabricated negatives": {
+     "count": 0,
+     "n": 0,
+     "upper": null
+    }
+   }
+  }
+ },
+ "challenge": {
+  "locked/en": {
+   "labelled_warnings": 6,
+   "detected": 6,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.5407418735600994,
+    1.0
+   ],
+   "G7_upper_95": 0.39303776899708265
+  },
+  "locked/en/concern": {
+   "labelled_warnings": 4,
+   "detected": 4,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.3976353643835253,
+    1.0
+   ],
+   "G7_upper_95": 0.5271291954984121
+  },
+  "locked/en/correction": {
+   "labelled_warnings": 0,
+   "detected": 0,
+   "fabricated_negatives": 0,
+   "sensitivity": null,
+   "sensitivity_cp_95": null,
+   "G7_upper_95": null
+  },
+  "locked/en/retraction": {
+   "labelled_warnings": 2,
+   "detected": 2,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.158113883008419,
+    1.0
+   ],
+   "G7_upper_95": 0.7763932022500211
+  },
+  "adjudicated/en": {
+   "labelled_warnings": 6,
+   "detected": 6,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.5407418735600994,
+    1.0
+   ],
+   "G7_upper_95": 0.39303776899708265
+  },
+  "adjudicated/en/concern": {
+   "labelled_warnings": 4,
+   "detected": 4,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.3976353643835253,
+    1.0
+   ],
+   "G7_upper_95": 0.5271291954984121
+  },
+  "adjudicated/en/correction": {
+   "labelled_warnings": 0,
+   "detected": 0,
+   "fabricated_negatives": 0,
+   "sensitivity": null,
+   "sensitivity_cp_95": null,
+   "G7_upper_95": null
+  },
+  "adjudicated/en/retraction": {
+   "labelled_warnings": 2,
+   "detected": 2,
+   "fabricated_negatives": 0,
+   "sensitivity": 1.0,
+   "sensitivity_cp_95": [
+    0.158113883008419,
+    1.0
+   ],
+   "G7_upper_95": 0.7763932022500211
+  }
+ }
+}

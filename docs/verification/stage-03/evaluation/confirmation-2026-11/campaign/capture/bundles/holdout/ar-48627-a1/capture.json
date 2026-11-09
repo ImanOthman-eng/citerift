@@ -1,0 +1,147 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 12604,
+   "body_sha256": "71718b9bfe1c122ca5df619e664fbca404bfb4a772b8dd0ad41fb3e796233be4",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.467,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:46:21.305326Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=48627",
+   "wire_bytes": 4575
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "b3daa6e8075a7c4146bd683d5806a5871b892d338b3c75087921e377174329d6",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.4,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:46:31.773131Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76797183/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 1966,
+   "body_sha256": "96257b98ba4f275191a48609f4425b5632e4e38feca3b2ec0d9cf6d86ffe7a6c",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/html; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.417,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "1",
+   "retry_after_s": 1.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:47:00.173241Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76797183/html",
+   "wire_bytes": 1966
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "0cabc774bd6d0416c7ce265db9cc59ff14fd618e24f9af93f6590b297e61cc81",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.38,
+   "number": 3,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:47:10.591208Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76797183/html",
+   "wire_bytes": 274
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "b3daa6e8075a7c4146bd683d5806a5871b892d338b3c75087921e377174329d6",
+  "96257b98ba4f275191a48609f4425b5632e4e38feca3b2ec0d9cf6d86ffe7a6c",
+  "0cabc774bd6d0416c7ce265db9cc59ff14fd618e24f9af93f6590b297e61cc81"
+ ],
+ "finished_at": "2026-11-02T18:47:10.971840Z",
+ "issues": [
+  {
+   "code": "ATTEMPTS_EXHAUSTED",
+   "detail": "render",
+   "entities": [],
+   "evidence": [],
+   "retryable": true,
+   "severity": "error"
+  }
+ ],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 48627,
+  "parent_revision_id": 72211665,
+  "redirect_followed": null,
+  "revision_id": 76797183,
+  "revision_timestamp": "2026-09-28T16:01:25Z",
+  "sha1": "9dea5943637e0fede05970bdad66175b3a17817e",
+  "size": 12028,
+  "title": "حمل عنقودي",
+  "wiki": "ar"
+ },
+ "render": {
+  "code": "ATTEMPTS_EXHAUSTED",
+  "not_before": "2026-11-02T18:48:00.971637Z",
+  "state": "failed",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76797183/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 48627,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "10b779f043d3be0d151a6dda42fede2b979e67c1e3b1881e2f8e410cd6db285c",
+  "bytes": 12028,
+  "response_artifact": "71718b9bfe1c122ca5df619e664fbca404bfb4a772b8dd0ad41fb3e796233be4",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=48627"
+ },
+ "started_at": "2026-11-02T18:46:11.572154Z",
+ "status": "partial"
+}

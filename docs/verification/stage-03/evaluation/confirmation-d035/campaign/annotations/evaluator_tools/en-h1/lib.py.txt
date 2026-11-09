@@ -1,0 +1,43 @@
+import json,hashlib
+B='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1'
+GUIDE='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+class A:
+    def __init__(s,d,start):
+        s.d=d; s.t=open(f'{B}/packets/{d}/source.wikitext',encoding='utf-8').read()
+        s.p=json.load(open(f'{B}/packets/{d}/packet.json')); s.w=s.p['window']
+        s.start=start; s.defs=[]; s.uses=[]; s.ids=[]; s.unres=[]
+    def L(s,cp,q):
+        q=q[:60] if len(q)>60 else q
+        assert s.t[cp:cp+len(q)]==q,(cp,q)
+        return {'cp':cp,'quote':q}
+    def at(s,q,n=0):
+        # cp of nth occurrence of q
+        i=-1
+        for _ in range(n+1):
+            i=s.t.find(q,i+1); assert i>=0,q
+        return i
+    def loc(s,q,n=0): return s.L(s.at(q,n),q)
+    def inw(s,cp): return s.w['cp_start']<=cp<s.w['cp_end']
+    def define(s,id,q,n=0,kind='note',name=None,group='',tpl=(),unstructured=False,note_id=None,marker='none',marker_text=None,notes='',cp=None):
+        cp=s.at(q,n) if cp is None else cp
+        s.defs.append({'id':id,'at':s.L(cp,q),'in_window':s.inw(cp),'kind':kind,'name':name,'group':group,
+          'templates':[{'at':s.loc(*x) if isinstance(x,tuple) else s.loc(x)} for x in tpl],
+          'unstructured':unstructured,'render_note_id':note_id,'marker':marker,'marker_text':marker_text,'notes':notes})
+        return s.defs[-1]['at']
+    def use(s,id,q,bind,n=0,rid=None,notes='',cp=None):
+        cp=s.at(q,n) if cp is None else cp
+        s.uses.append({'id':id,'at':s.L(cp,q),'binds_to':bind,'render_ref_id':rid,'notes':notes})
+    def ident(s,q,scheme,role,key,n=0,notes='',cp=None):
+        cp=s.at(q,n) if cp is None else cp
+        assert s.inw(cp),q
+        s.ids.append({'at':s.L(cp,q),'scheme':scheme,'role':role,'key':key,'notes':notes})
+    def write(s,started,files=0,unresolved=""):
+        pk=s.p
+        out={'format':'citerift-stage03-annotation-v1','article':{'wiki':pk['wiki'],'revision_id':pk['revision_id'],'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':[s.w['cp_start'],s.w['cp_end']]},
+         'provenance':{'agent':'d035-eval-en-h1','started_at':started,'finished_at':__import__('datetime').datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+          'files_opened':[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE},{'path':f'packets/{s.d}/source.wikitext','sha256':pk['source_sha256']},{'path':f'packets/{s.d}/render.html','sha256':pk['html_sha256']},{'path':f'packets/{s.d}/packet.json','sha256':hashlib.sha256(open(f'{B}/packets/{s.d}/packet.json','rb').read()).hexdigest()}],
+          'tools':'python3 -I with standard library and lxml (regex search of wikitext, listing of sup/li elements in render.html, location verification); hand labelling',
+          'unresolved':unresolved},
+         'definitions':s.defs,'uses':s.uses,'identifiers':s.ids,'unresolved_notes':s.unres}
+        json.dump(out,open(f"{B}/out/{pk['wiki']}-{pk['revision_id']}.json",'w'),ensure_ascii=False,indent=1)
+        print(s.d,len(s.defs),len(s.uses),len(s.ids))

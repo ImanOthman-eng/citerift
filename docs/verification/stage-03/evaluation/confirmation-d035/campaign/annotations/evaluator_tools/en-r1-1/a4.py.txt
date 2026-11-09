@@ -1,0 +1,18 @@
+import sys;sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r1-1/tools')
+from build import *
+def b(t,L,D,U,I,UN):
+    spec=[('<ref>{{cite court','note',None,'{{cite court','cite_note-2','cite_ref-2','Martinez v. Signature Seafoods Inc., 303 F.3d 1132 (US Court of Appeals 2002) ("Can a fish processing barge qualify as a "vessel in navigation"").'),
+     ('<ref name="Rules">','note','Rules','{{cite news','cite_note-Rules-3','cite_ref-Rules_3-0','Darby, Andrew (18 July 2009). "New rules for safe shipping may save whales". The Sydney Morning Herald.'),
+     ('<ref>{{cite report','note',None,'{{cite report','cite_note-4','cite_ref-4',"the Canberra Panel (12 January 2009). Japan's 'Scientific' Whaling Program ... (PDF) (Report). Archived from the original (PDF) on 2010-06-26."),
+     ('<ref name=bbc-2006>','note','bbc-2006','{{cite web |website=BBC','cite_note-bbc-2006-5','cite_ref-bbc-2006_5-0','"Factory fishing: facts and figures". BBC. 2006. Archived from the original on 27 February 2007.'),
+     ('<ref name=fao-2004>','note','fao-2004','{{cite web | title=The St','cite_note-fao-2004-6','cite_ref-fao-2004_6-0','"The State of World Fisheries and Aquaculture (SOFIA) 2004". FAO. 2003-06-27.'),
+     ('<ref name="nature (2003)">','note','nature (2003)','{{cite journal','cite_note-nature_(2003)-7','cite_ref-nature_(2003)_7-0','Myers, Ransom A.; Worm, Boris (2003). "Rapid worldwide depletion of predatory fish communities". Nature. 423 (6937): 280-283. doi:10.1038/nature01610.'),
+     ('<ref name="FAO (2000)">','note','FAO (2000)','{{cite book | author=Food','cite_note-FAO_(2000)-8','cite_ref-FAO_(2000)_8-0','Food and Agriculture Organization of the United Nations (2000). The State of World Fisheries and Aquaculture, 2000. FAO. ISBN 92-5-104492-9.'),
+     ('<ref>{{cite book | last1=Danson','note',None,'{{cite book | last1=Danso','cite_note-9','cite_ref-9','Danson, Ted; D\'Orso, Michael (2011). Oceana: Our Endangered Oceans and What We Can Do to Save Them. Rodale. ISBN 978-1-60529-262-5.')]
+    for i,(r,k,nm,tp,li,sup,mt) in enumerate(spec):
+        a=L(r)
+        D.append(dfn(f'd{i+1}',a,k,nm,'',[L(tp)],False,li,mt))
+        U.append(use(f'u{i+1}',a,a,sup))
+    I.append(ident(L('10.1038/nature01610'),'doi','primary_citation_field','10.1038/nature01610'))
+    UN.append('The Irish Times <ref> (cp 3896, rendered cite_note-1 / cite_ref-1) starts before the window with no use, template or identifier inside it, so it is not listed. {{citation needed}} templates are maintenance tags, not references. External-links list items are bare links without citation template or DOI/PMID, so not bibliography entries.')
+run(1380410472,b)

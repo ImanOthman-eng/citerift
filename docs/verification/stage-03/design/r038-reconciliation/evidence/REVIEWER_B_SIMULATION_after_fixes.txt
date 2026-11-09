@@ -1,0 +1,21 @@
+Reviewer B's metamorphic simulation (review-d036/B/template_order_sim.py in the evidence export; sha256 4a7bc1e3fbfa6dae9a85a587b631081cd6ba06e713bdbb18207433533aa18f1b)
+run on the tree after the review fixes, 200 articles per seed. The script prints only nonzero counts: no 'WRONG' key
+means no use was attached to a marker other than its own. At 10bf0d2 reviewer B reported, full mix seed 1: linked 906, abstained 495, WRONG 10 (review/REVIEW_B_integration.md, B-1).
+{"articles": 200, "seed": 1, "abstained": 256, "linked": 1155}
+{"articles": 200, "seed": 2, "linked": 1179, "abstained": 247}
+{"articles": 200, "seed": 3, "linked": 1087, "abstained": 237}
+{"articles": 200, "seed": 4, "linked": 1192, "abstained": 235}
+{"articles": 200, "seed": 5, "linked": 1163, "abstained": 207}
+{"articles": 200, "seed": 6, "linked": 1087, "abstained": 228}
+{"articles": 200, "seed": 7, "linked": 1197, "abstained": 255}
+{"articles": 200, "seed": 8, "abstained": 266, "linked": 1158}
+
+After the re-review fixes (R-02: a marker that no value explains blocks the name), same command:
+{"articles": 200, "seed": 1, "abstained": 656, "linked": 755}
+{"articles": 200, "seed": 2, "linked": 814, "abstained": 612}
+{"articles": 200, "seed": 3, "linked": 721, "abstained": 603}
+{"articles": 200, "seed": 4, "linked": 806, "abstained": 621}
+{"articles": 200, "seed": 5, "linked": 793, "abstained": 577}
+{"articles": 200, "seed": 6, "linked": 744, "abstained": 571}
+{"articles": 200, "seed": 7, "linked": 867, "abstained": 585}
+{"articles": 200, "seed": 8, "abstained": 681, "linked": 743}

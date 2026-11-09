@@ -1,0 +1,102 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1362991706,
+  "source_sha256": "7ea8051ef609313a7a509c83c1faeffef9b6291bc482fe265c0a05d9e2d2fe20",
+  "html_sha256": "f5e1178ed4ccfd0dfd972b37e65a33e5aec2b7abbd0ce0b448115099a56c9e5d",
+  "window": [
+   0,
+   1623
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h3",
+  "started_at": "2026-11-04T10:25:00Z",
+  "finished_at": "2026-11-04T10:26:25Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1362991706/source.wikitext",
+    "sha256": "7ea8051ef609313a7a509c83c1faeffef9b6291bc482fe265c0a05d9e2d2fe20"
+   },
+   {
+    "path": "packets/en-1362991706/render.html",
+    "sha256": "f5e1178ed4ccfd0dfd972b37e65a33e5aec2b7abbd0ce0b448115099a56c9e5d"
+   },
+   {
+    "path": "packets/en-1362991706/packet.json",
+    "sha256": "1544a79d328326dff733c847ec0564f9b04cdb1c93583466071398d49db515da"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: regex search of source for <ref, {{cite, 10., pmid; lxml listing of sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; each quote verified against source text. Roles, bindings and markers decided by reading.",
+  "unresolved": "none"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1016,
+    "quote": "<ref>{{Cite journal | pmid = 22514127 | year = 2"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1021,
+      "quote": "{{Cite journal | pmid = 22514127 | year = 2012 |"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1016,
+    "quote": "<ref>{{Cite journal | pmid = 22514127 | year = 2"
+   },
+   "binds_to": {
+    "cp": 1016,
+    "quote": "<ref>{{Cite journal | pmid = 22514127 | year = 2"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1045,
+    "quote": "22514127"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "22514127",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1395,
+    "quote": "10.1002/dta.1344"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/dta.1344",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 81370,
+   "body_sha256": "b9010c1a1597b39269ef0fc5b0fbc5d69787ebfd3c213610a7e5cf0c773ffbaf",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.332,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:54:05.109202Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9534799",
+   "wire_bytes": 11387
+  },
+  {
+   "body_bytes": 572597,
+   "body_sha256": "b36dd82533a4f656e847f6970fbf3bf2be46b3259fd68031789835fa4ad64a41",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.653,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:54:15.442099Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76937308/html",
+   "wire_bytes": 53221
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:54:16.103700Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9534799,
+  "parent_revision_id": 76842016,
+  "redirect_followed": null,
+  "revision_id": 76937308,
+  "revision_timestamp": "2026-10-10T09:43:27Z",
+  "sha1": "da1afa5e1eafdc79cb532d8dc2e3aa7590515881",
+  "size": 78363,
+  "title": "مؤشر الابتكار العالمي",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "b36dd82533a4f656e847f6970fbf3bf2be46b3259fd68031789835fa4ad64a41",
+  "bytes": 572597,
+  "checks": {
+   "document_revision_id": "76937308",
+   "header_revision_id": "76937308",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9534799",
+   "render_id": "13c301f4-d438-11f1-b4d6-09f832e9f2c9",
+   "revision_sha1": "da1afa5e1eafdc79cb532d8dc2e3aa7590515881",
+   "revision_sha1_base36": "ph6dirs4qdujzun1rw2h4g06gb7pu9t"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76937308",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:54:15 GMT",
+   "etag": "W/\"76937308/13c301f4-d438-11f1-b4d6-09f832e9f2c9/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:34:37 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76937308/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9534799,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "75ddd74d29b04c58f272905e862703c4fddb4d7bc37e2501d452ce61127e1819",
+  "bytes": 78363,
+  "response_artifact": "b9010c1a1597b39269ef0fc5b0fbc5d69787ebfd3c213610a7e5cf0c773ffbaf",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9534799"
+ },
+ "started_at": "2026-10-30T20:53:55.418754Z",
+ "status": "complete"
+}

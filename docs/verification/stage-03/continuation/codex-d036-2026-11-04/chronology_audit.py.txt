@@ -1,0 +1,23 @@
+"""Read-only chronology, locked reserve-count and acquisition-budget audit."""
+import importlib.util,json,subprocess,sys
+from pathlib import Path
+ROOT=Path.cwd();base=Path('docs/verification/stage-03/evaluation/confirmation-d036');camp=base/'campaign'
+def load(name,p):
+ s=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
+def git(*a):return subprocess.check_output(['git',*a],text=True)
+chain=['8901a59','10db8cb','0dd921b','d75bff3','86f8076','e5c1908','a37db94','5719e31','fd02b61','80000f2']
+for a,b in zip(chain,chain[1:]):subprocess.run(['git','merge-base','--is-ancestor',a,b],check=True)
+r=load('reserve',base/'scripts/reserve_step.py')
+labels=r.locked_labels([camp/'annotations/locked/initial-ar',camp/'annotations/locked/initial-en'])
+states=json.loads(git('show',f'5719e31:{camp}/capture/capture_states.json'))
+selection=json.loads((camp/'selection/SELECTION.json').read_text())
+actual=r.decide(selection,states["articles"],labels)
+expected=json.loads((camp/'reserve/step-1.json').read_text())
+
+assert actual==expected
+cc=sys.modules['campaign_capture'];journal=[json.loads(l) for l in (camp/'capture/captures.jsonl').read_text().splitlines()]
+starts=[(x['key'],x['run']) for x in journal if x['event']=='start'];ends=[(x['key'],x['run']) for x in journal if x['event']=='end'];assert starts==ends
+attempts,accepted=cc.used(journal)
+assert attempts<=500 and accepted<=314572800
+out={'chronological_commits':[git('rev-parse',c).strip() for c in chain],'reserve_decision_reproduced_exactly':True,'journal_matched_runs':len(starts),'http_attempts':attempts,'accepted_body_bytes':accepted,'ceilings':{'http_attempts':500,'accepted_body_bytes':314572800}}
+print(json.dumps(out,indent=2))

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 4327,
+   "body_sha256": "0600a44da2be84e3c9ed25a369ef6df8cdcfcc342d5ace6d705fd98fdc8224cb",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.293,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:55:08.327514Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=66266685",
+   "wire_bytes": 1935
+  },
+  {
+   "body_bytes": 67584,
+   "body_sha256": "1180d09446aee90f77eeb664fb58bcfbc304f45d7ec3e2f130a31931e18d81f2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.398,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:55:18.624808Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374633449/html",
+   "wire_bytes": 10466
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:55:19.024735Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 66266685,
+  "parent_revision_id": 1288882821,
+  "redirect_followed": null,
+  "revision_id": 1374633449,
+  "revision_timestamp": "2026-09-13T06:14:16Z",
+  "sha1": "588b0fef0941ff485ad0fae87c5f8b79bf6d60f4",
+  "size": 3728,
+  "title": "Muhammad ibn Khalid ibn Barmak",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "1180d09446aee90f77eeb664fb58bcfbc304f45d7ec3e2f130a31931e18d81f2",
+  "bytes": 67584,
+  "checks": {
+   "document_revision_id": "1374633449",
+   "header_revision_id": "1374633449",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "66266685",
+   "render_id": "cec6c56e-d487-11f1-b3c1-1d1d3b1d58c0",
+   "revision_sha1": "588b0fef0941ff485ad0fae87c5f8b79bf6d60f4",
+   "revision_sha1_base36": "accbavumaia29fipgw1c2eeiycf9bec"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1374633449",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:55:18 GMT",
+   "etag": "W/\"1374633449/cec6c56e-d487-11f1-b3c1-1d1d3b1d58c0/view\"",
+   "last-modified": "Fri, 30 Oct 2026 06:23:02 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374633449/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 66266685,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3801c271e8dfa1fa7f7ebbfc36fc739317d201779cca51b5d2babdb2c364e61a",
+  "bytes": 3728,
+  "response_artifact": "0600a44da2be84e3c9ed25a369ef6df8cdcfcc342d5ace6d705fd98fdc8224cb",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=66266685"
+ },
+ "started_at": "2026-10-30T20:54:58.956838Z",
+ "status": "complete"
+}

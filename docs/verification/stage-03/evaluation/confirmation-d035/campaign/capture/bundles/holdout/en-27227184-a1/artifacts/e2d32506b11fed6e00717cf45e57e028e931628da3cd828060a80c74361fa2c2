@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html prefix="dc: http://purl.org/dc/terms/ mw: http://mediawiki.org/rdf/" about="//en.wikipedia.org/wiki/Special:Redirect/revision/1380126417"><head prefix="mwr: //en.wikipedia.org/wiki/Special:Redirect/"><meta charset="utf-8"/><link rel="dc:replaces" resource="mwr:revision/1310515518"/><meta property="mw:revisionSHA1" content="9tss4j31aw6afnritgcy0u6mp65fcs8"/><meta property="dc:modified" content="2026-10-13T23:17:40Z"/><meta property="mw:pageNamespace" content="0"/><meta property="mw:pageId" content="27227184"/><meta property="mw:htmlVersion" content="2.8.0"/><meta property="mw:html:version" content="2.8.0"/><base href="//en.wikipedia.org/wiki/"/><link rel="dc:isVersionOf" href="//en.wikipedia.org/wiki/Disjunct_matrix"/><title>Disjunct matrix</title><meta property="mw:jsConfigVars" content='{"wgParsoidHtmlVersion":"2.8.0"}'/><meta property="mw:generalModules" content="ext.math.polyfills|ext.cite.ux-enhancements"/><meta property="mw:moduleStyles" content="ext.math.styles|ext.cite.parsoid.styles|ext.cite.styles|mediawiki.skinning.content.parsoid"/><link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=ext.math.styles%7Cext.cite.parsoid.styles%7Cext.cite.styles%7Cmediawiki.skinning.content.parsoid%7Cmediawiki.skinning.interface%7Csite.styles&amp;only=styles&amp;skin=vector"/><meta http-equiv="content-language" content="en"/><meta http-equiv="vary" content="Accept"/><meta http-equiv="x-mediawiki-render-id" content="4abcd725-c75c-11f1-bba8-0970ec2baa62"/></head><body class="mw-content-ltr sitedir-ltr ltr mw-body-content mediawiki mw-parser-output parsoid-body" lang="en" dir="ltr" data-mw-parsoid-version="0.24.0.0-alpha26" data-mw-html-version="2.8.0"><section data-mw-section-id="0" id="mwAQ"><p id="mwAg">In mathematics, a <a rel="mw:WikiLink" href="./Logical_matrix" title="Logical matrix" id="mwAw">logical matrix</a> may be described as <b id="mwBA"><i id="mwBQ">d</i>-disjunct</b> and/or <b id="mwBg"><i id="mwBw">d</i>-separable</b>. These concepts play a pivotal role in the mathematical area of non-adaptive <a rel="mw:WikiLink" href="./Group_testing" title="Group testing" id="mwCA">group testing</a>.</p>
+
+<p id="mwCQ">In the mathematical literature, <i id="mwCg">d</i>-disjunct matrices may also be called <b id="mwCw"><a rel="mw:WikiLink" href="./Superimposed_code" title="Superimposed code" id="mwDA">superimposed codes</a></b><sup about="#mwt1" class="mw-ref reference" id="cite_ref-DeBonisVaccaro2003_1-0" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"DeBonisVaccaro2003"}}'><a href="./Disjunct_matrix#cite_note-DeBonisVaccaro2003-1" id="mwDQ"><span class="mw-reflink-text" id="mwDg"><span class="cite-bracket" id="mwDw">[</span>1<span class="cite-bracket" id="mwEA">]</span></span></a></sup> or <b id="mwEQ"><i id="mwEg">d</i>-cover-free families</b>.<sup about="#mwt2" class="mw-ref reference" id="cite_ref-ErdoesEtAl1985_2-0" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ErdoesEtAl1985"}}'><a href="./Disjunct_matrix#cite_note-ErdoesEtAl1985-2" id="mwEw"><span class="mw-reflink-text" id="mwFA"><span class="cite-bracket" id="mwFQ">[</span>2<span class="cite-bracket" id="mwFg">]</span></span></a></sup></p>
+
+<p id="mwFw">According to Chen and Hwang (2006),<sup about="#mwt3" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-0" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwGA"><span class="mw-reflink-text" id="mwGQ"><span class="cite-bracket" id="mwGg">[</span>3<span class="cite-bracket" id="mwGw">]</span></span></a></sup></p>
+
+<ul id="mwHA"><li id="mwHQ">A matrix is said to be <i id="mwHg">d</i>-separable if no two sets of <i id="mwHw">d</i> columns have the same boolean sum.</li>
+<li id="mwIA">A matrix is said to be <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt4" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d}"}}' id="mwIQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mi>d</mi>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/147fdfc5e4452853cb2946348d7e2e9cdb11a6d4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.335ex; height:3.009ex;" alt="{\displaystyle {\overline {d}}}"/></span>-separable (that's <i id="mwIg">d</i> with an overline) if no two sets of <i id="mwIw">d</i>-or-fewer columns have the same boolean sum.</li>
+<li id="mwJA">A matrix is said to be <i id="mwJQ">d</i>-disjunct if no set of <i id="mwJg">d</i> columns has a boolean sum which is a superset of any other single column.</li></ul>
+
+<p id="mwJw">The following relationships are "well-known":<sup about="#mwt5" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-1" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwKA"><span class="mw-reflink-text" id="mwKQ"><span class="cite-bracket" id="mwKg">[</span>3<span class="cite-bracket" id="mwKw">]</span></span></a></sup></p>
+
+<ul id="mwLA"><li id="mwLQ">Every <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt6" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d+1}"}}' id="mwLg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d+1}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mrow>
+              <mi>d</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+            </mrow>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d+1}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/8babe2c5bf0654eccb0600bc8d035f38c9e4b327" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:5.334ex; height:3.176ex;" alt="{\displaystyle {\overline {d+1}}}"/></span>-separable matrix is also <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt7" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwLw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>-disjunct.<sup about="#mwt8" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-2" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwMA"><span class="mw-reflink-text" id="mwMQ"><span class="cite-bracket" id="mwMg">[</span>3<span class="cite-bracket" id="mwMw">]</span></span></a></sup></li>
+<li id="mwNA">Every <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt9" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwNQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>-disjunct matrix is also <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt10" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d}"}}' id="mwNg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mi>d</mi>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/147fdfc5e4452853cb2946348d7e2e9cdb11a6d4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.335ex; height:3.009ex;" alt="{\displaystyle {\overline {d}}}"/></span>-separable.<sup about="#mwt11" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-3" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwNw"><span class="mw-reflink-text" id="mwOA"><span class="cite-bracket" id="mwOQ">[</span>3<span class="cite-bracket" id="mwOg">]</span></span></a></sup></li>
+<li id="mwOw">Every <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt12" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d}"}}' id="mwPA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mi>d</mi>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/147fdfc5e4452853cb2946348d7e2e9cdb11a6d4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.335ex; height:3.009ex;" alt="{\displaystyle {\overline {d}}}"/></span>-separable matrix is also <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt13" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwPQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>-separable (by definition).</li></ul>
+
+<meta property="mw:PageProp/toc" data-mw='{"autoGenerated":true}' id="mwPg"/></section><section data-mw-section-id="1" id="mwPw"><h2 data-mw-wikitext="" id="Concrete_examples">Concrete examples</h2>
+<p id="mwQA">The following <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt14" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"6\\times 8"}}' id="mwQQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 6\times 8}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>6</mn>
+        <mo>×<!-- × --></mo>
+        <mn>8</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 6\times 8}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/08ab6fc535b560f7564aac32ca42ae7884e79adc" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.165ex; height:2.176ex;" alt="{\displaystyle 6\times 8}"/></span> matrix is 2-separable, because each pair of columns has a distinct sum. For example, the boolean sum (that is, the <a rel="mw:WikiLink" href="./Bitwise_or" title="Bitwise or" class="mw-redirect" id="mwQg">bitwise OR</a>) of the first two columns is <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt15" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"110000\\or 001100 = 111100"}}' id="mwQw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 110000\lor 001100=111100}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>110000</mn>
+        <mo>∨<!-- ∨ --></mo>
+        <mn>001100</mn>
+        <mo>=</mo>
+        <mn>111100</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 110000\lor 001100=111100}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/d40f5b213560a126438eb9b0dbf7216ab26559c9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:26.605ex; height:2.176ex;" alt="{\displaystyle 110000\lor 001100=111100}"/></span>; that sum is not attainable as the sum of any other pair of columns in the matrix.</p>
+
+<p id="mwRA">However, this matrix is not 3-separable, because the sum of columns 1, 2, and 3 (namely <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt16" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"111111"}}' id="mwRQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 111111}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>111111</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 111111}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/987d77c58b2edbc31d4bee8c35c3da7fcd0004fc" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:6.975ex; height:2.176ex;" alt="{\displaystyle 111111}"/></span>) equals the sum of columns 1, 4, and 5.</p>
+
+<p id="mwRg">This matrix is also not <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt17" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{2}"}}' id="mwRw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {2}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mn>2</mn>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {2}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ee6045dbb27502334d529ecf6afc61dce066da9c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.277ex; height:2.843ex;" alt="{\displaystyle {\overline {2}}}"/></span>-separable, because the sum of columns 1 and 8 (namely <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt18" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"110000"}}' id="mwSA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 110000}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>110000</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 110000}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/befe84297909a082c60eab63e46b1a177fcc84a9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:6.975ex; height:2.176ex;" alt="{\displaystyle 110000}"/></span>) equals the sum of column 1 alone. In fact, no matrix with an all-zero column can possibly be <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt19" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d}"}}' id="mwSQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mi>d</mi>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/147fdfc5e4452853cb2946348d7e2e9cdb11a6d4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.335ex; height:3.009ex;" alt="{\displaystyle {\overline {d}}}"/></span>-separable for any <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt20" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d\\ge 1"}}' id="mwSg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d\geq 1}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+        <mo>≥<!-- ≥ --></mo>
+        <mn>1</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d\geq 1}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/33476a779aa3e8bc64413c16f777ef15e9d78df6" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.505ex; width:5.477ex; height:2.343ex;" alt="{\displaystyle d\geq 1}"/></span>.</p>
+
+<p id="mwSw"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt21" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\n                \\quad\\left[\n\t\t\\begin{array}{cccccccc}\n                1 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\\\\n                1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 \\\\\n                0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\\\\n                0 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 0 \\\\\n                0 &amp; 0 &amp; 1 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 \\\\\n                0 &amp; 0 &amp; 1 &amp; 1 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\\\\n\t\t\\end{array}\n\t\t\\right]\n"}}' id="mwTA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \quad \left[{\begin{array}{cccccccc}1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;0\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1&amp;0\\0&amp;0&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;0\\\end{array}}\right]}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mspace width="1em"></mspace>
+        <mrow>
+          <mo>[</mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mtable columnalign="center center center center center center center center" rowspacing="4pt" columnspacing="1em">
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+          </mrow>
+          <mo>]</mo>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \quad \left[{\begin{array}{cccccccc}1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;0\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1&amp;0\\0&amp;0&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;0\\\end{array}}\right]}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/b52eef4ec1aa8425088136281be692d34d6688d7" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -9.005ex; width:31.732ex; height:19.176ex;" alt="{\displaystyle \quad \left[{\begin{array}{cccccccc}1&amp;0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;0\\1&amp;0&amp;0&amp;0&amp;0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;1&amp;0&amp;1&amp;0&amp;0\\0&amp;1&amp;0&amp;0&amp;1&amp;0&amp;1&amp;0\\0&amp;0&amp;1&amp;0&amp;1&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;1&amp;0&amp;0&amp;1&amp;0\\\end{array}}\right]}"/></span></p>
+
+<p id="mwTQ">The following <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt22" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"6\\times 4"}}' id="mwTg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 6\times 4}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>6</mn>
+        <mo>×<!-- × --></mo>
+        <mn>4</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 6\times 4}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/72947dfc50d8356f2c89a901939bc4c8d7d05303" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.165ex; height:2.176ex;" alt="{\displaystyle 6\times 4}"/></span> matrix is <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt23" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{3}"}}' id="mwTw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {3}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mn>3</mn>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {3}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/94d4d5bc734d12c201a23d104e86af5b330cf81c" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.277ex; height:2.843ex;" alt="{\displaystyle {\overline {3}}}"/></span>-separable (and thus 2-disjunct) but not 3-disjunct.</p>
+
+<p id="mwUA"><span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt24" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\n                \\quad\\left[\n\t\t\\begin{array}{cccc}\n                1 &amp; 0 &amp; 0 &amp; 1 \\\\\n                1 &amp; 0 &amp; 1 &amp; 0 \\\\\n                0 &amp; 1 &amp; 1 &amp; 0 \\\\\n                0 &amp; 1 &amp; 0 &amp; 0 \\\\\n                0 &amp; 0 &amp; 1 &amp; 0 \\\\\n                0 &amp; 0 &amp; 0 &amp; 1 \\\\\n\t\t\\end{array}\n\t\t\\right]\n"}}' id="mwUQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \quad \left[{\begin{array}{cccc}1&amp;0&amp;0&amp;1\\1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;1\\\end{array}}\right]}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mspace width="1em"></mspace>
+        <mrow>
+          <mo>[</mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mtable columnalign="center center center center" rowspacing="4pt" columnspacing="1em">
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+          </mrow>
+          <mo>]</mo>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \quad \left[{\begin{array}{cccc}1&amp;0&amp;0&amp;1\\1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;1\\\end{array}}\right]}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3e643ae8e73f6a69419d39457adc5b9d59d96316" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -9.005ex; width:17.792ex; height:19.176ex;" alt="{\displaystyle \quad \left[{\begin{array}{cccc}1&amp;0&amp;0&amp;1\\1&amp;0&amp;1&amp;0\\0&amp;1&amp;1&amp;0\\0&amp;1&amp;0&amp;0\\0&amp;0&amp;1&amp;0\\0&amp;0&amp;0&amp;1\\\end{array}}\right]}"/></span></p>
+
+<p id="mwUg">There are 15 possible ways to choose 3-or-fewer columns from this matrix, and each choice leads to a different boolean sum:</p>
+
+<table class="wikitable" id="mwUw">
+<tbody id="mwVA"><tr id="mwVQ">
+<th id="mwVg">columns</th>
+<th id="mwVw">boolean sum</th>
+<th id="mwWA"></th>
+<th id="mwWQ">columns</th>
+<th id="mwWg">boolean sum</th></tr>
+<tr id="mwWw">
+<td id="mwXA">none</td>
+<td id="mwXQ">000000</td>
+<td id="mwXg"></td>
+<td id="mwXw">2,3</td>
+<td id="mwYA">011110</td></tr>
+<tr id="mwYQ">
+<td id="mwYg">1</td>
+<td id="mwYw">110000</td>
+<td id="mwZA"></td>
+<td id="mwZQ">2,4</td>
+<td id="mwZg">101101</td></tr>
+<tr id="mwZw">
+<td id="mwaA">2</td>
+<td id="mwaQ">001100</td>
+<td id="mwag"></td>
+<td id="mwaw">3,4</td>
+<td id="mwbA">111011</td></tr>
+<tr id="mwbQ">
+<td id="mwbg">3</td>
+<td id="mwbw">011010</td>
+<td id="mwcA"></td>
+<td id="mwcQ">1,2,3</td>
+<td id="mwcg">111110</td></tr>
+<tr id="mwcw">
+<td id="mwdA">4</td>
+<td id="mwdQ">100001</td>
+<td id="mwdg"></td>
+<td id="mwdw">1,2,4</td>
+<td id="mweA">111101</td></tr>
+<tr id="mweQ">
+<td id="mweg">1,2</td>
+<td id="mwew">111100</td>
+<td id="mwfA"></td>
+<td id="mwfQ">1,3,4</td>
+<td id="mwfg">111011</td></tr>
+<tr id="mwfw">
+<td id="mwgA">1,3</td>
+<td id="mwgQ">111010</td>
+<td id="mwgg"></td>
+<td id="mwgw">2,3,4</td>
+<td id="mwhA">111111</td></tr>
+<tr id="mwhQ">
+<td id="mwhg">1,4</td>
+<td id="mwhw">110001</td>
+<td id="mwiA"></td>
+<td id="mwiQ"></td>
+<td id="mwig"></td></tr>
+</tbody></table>
+<p id="mwiw">However, the sum of columns 2, 3, and 4 (namely <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt25" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"111111"}}' id="mwjA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 111111}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>111111</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 111111}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/987d77c58b2edbc31d4bee8c35c3da7fcd0004fc" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:6.975ex; height:2.176ex;" alt="{\displaystyle 111111}"/></span>) is a superset of column 1 (namely <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt26" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"110000"}}' id="mwjQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 110000}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>110000</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 110000}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/befe84297909a082c60eab63e46b1a177fcc84a9" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:6.975ex; height:2.176ex;" alt="{\displaystyle 110000}"/></span>), which means that this matrix is not 3-disjunct.</p>
+
+</section><section data-mw-section-id="2" id="mwjg"><h2 data-mw-wikitext="" id="Application_of_d-separability_to_group_testing">Application of <i id="mwjw">d</i>-separability to group testing</h2>
+<span class="mw-empty-elt" about="#mwt27" typeof="mw:Transclusion" data-mw='{"parts":[{"template":{"target":{"wt":"main","href":"./Template:Main"},"params":{"1":{"wt":"Group testing"}},"i":0}}]}' id="mwkA"><style data-mw-deduplicate="TemplateStyles:r1368532237" typeof="mw:Extension/templatestyles" about="#mwt28" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Hatnote/styles.css"},"body":{"extsrc":""}}'>.mw-parser-output .hatnote{font-style:italic}.mw-parser-output div.hatnote{padding-left:1.6em;margin-bottom:0.5em}.mw-parser-output .hatnote i{font-style:normal}.mw-parser-output .hatnote+.mw-empty-elt+.hatnote{margin-top:-0.5em}@media print{body.ns-0 .mw-parser-output .hatnote{display:none!important}}</style></span><div role="note" class="hatnote navigation-not-searchable" about="#mwt27" id="mwkQ">Main article: <a rel="mw:WikiLink" href="./Group_testing" title="Group testing">Group testing</a></div>
+<p id="mwkg">The <a rel="mw:WikiLink" href="./Non-adaptive_group_testing" title="Non-adaptive group testing" class="mw-redirect" id="mwkw">non-adaptive group testing</a> problem postulates that we have a test which can tell us, for any set of items, whether that set contains a <i id="mwlA">defective</i> item. We are asked to come up with a series of groupings that can exactly identify all the defective items in a batch of <i id="mwlQ">n</i> total items, some <i id="mwlg">d</i> of which are defective.</p>
+
+<p id="mwlw">A <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt29" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwmA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>-separable matrix with <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt30" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwmQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> rows and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt31" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"n"}}' id="mwmg"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle n}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>n</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle n}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a601995d55609f2d9f5e233e36fbe9ea26011b3b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.395ex; height:1.676ex;" alt="{\displaystyle n}"/></span> columns concisely describes how to use <i id="mwmw">t</i> tests to find the defective items in a batch of <i id="mwnA">n</i>, where the number of defective items is known to be exactly <i id="mwnQ">d</i>.</p>
+
+<p id="mwng">A <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt32" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"d"}}' id="mwnw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle d}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>d</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle d}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e85ff03cbe0c7341af6b982e47e9f90d235c66ab" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.216ex; height:2.176ex;" alt="{\displaystyle d}"/></span>-disjunct matrix (or, more generally, any <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt33" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\overline{d}"}}' id="mwoA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle {\overline {d}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mover>
+            <mi>d</mi>
+            <mo accent="false">¯<!-- ¯ --></mo>
+          </mover>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle {\overline {d}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/147fdfc5e4452853cb2946348d7e2e9cdb11a6d4" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.335ex; height:3.009ex;" alt="{\displaystyle {\overline {d}}}"/></span>-separable matrix) with <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt34" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t"}}' id="mwoQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/65658b7b223af9e1acc877d848888ecdb4466560" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.84ex; height:2.009ex;" alt="{\displaystyle t}"/></span> rows and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt35" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"n"}}' id="mwog"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle n}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>n</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle n}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a601995d55609f2d9f5e233e36fbe9ea26011b3b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.395ex; height:1.676ex;" alt="{\displaystyle n}"/></span> columns concisely describes how to use <i id="mwow">t</i> tests to find the defective items in a batch of <i id="mwpA">n</i>, where the number of defective items is known to be no more than <i id="mwpQ">d</i>.</p>
+
+</section><section data-mw-section-id="3" id="mwpg"><h2 data-mw-wikitext="" id="Practical_concerns_and_published_results">Practical concerns and published results</h2>
+<p id="mwpw">For a given <i id="mwqA">n</i> and <i id="mwqQ">d</i>, the number of rows <i id="mwqg">t</i> in the smallest <i id="mwqw">d</i>-separable <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt36" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t\\times n"}}' id="mwrA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t\times n}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>×<!-- × --></mo>
+        <mi>n</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t\times n}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/564d4cbdafc152107c05c92e8c76b50d8941d685" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.075ex; height:2.009ex;" alt="{\displaystyle t\times n}"/></span> matrix may (according to current knowledge) be smaller than the number of rows <i id="mwrQ">t</i> in the smallest <i id="mwrg">d</i>-disjunct <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt37" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"t\\times n"}}' id="mwrw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle t\times n}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>t</mi>
+        <mo>×<!-- × --></mo>
+        <mi>n</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle t\times n}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/564d4cbdafc152107c05c92e8c76b50d8941d685" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:5.075ex; height:2.009ex;" alt="{\displaystyle t\times n}"/></span> matrix, but in <a rel="mw:WikiLink" href="./Asymptotic_analysis" title="Asymptotic analysis" id="mwsA">asymptotically</a> they are within a constant factor of each other.<sup about="#mwt38" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-4" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwsQ"><span class="mw-reflink-text" id="mwsg"><span class="cite-bracket" id="mwsw">[</span>3<span class="cite-bracket" id="mwtA">]</span></span></a></sup> Additionally, if the matrix is to be used for practical testing, some algorithm is needed that can "decode" a test result (that is, a boolean sum such as <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt39" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"111100"}}' id="mwtQ"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle 111100}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mn>111100</mn>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle 111100}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/227dbba6e754b2a30af4b851e175862145b524de" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:6.975ex; height:2.176ex;" alt="{\displaystyle 111100}"/></span>) into the indices of the defective items (that is, the unique set of columns that produce that boolean sum). For arbitrary <i id="mwtg">d</i>-disjunct matrices, <a rel="mw:WikiLink" href="./Polynomial-time" title="Polynomial-time" class="mw-redirect" id="mwtw">polynomial-time</a> decoding algorithms are known; the naïve algorithm is <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt40" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"O(nt)"}}' id="mwuA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle O(nt)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>O</mi>
+        <mo stretchy="false">(</mo>
+        <mi>n</mi>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle O(nt)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/dc2fdfea9882ba82dda67c942b400953ad26758f" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:5.817ex; height:2.843ex;" alt="{\displaystyle O(nt)}"/></span>.<sup about="#mwt41" class="mw-ref reference" id="cite_ref-Indyk2010_4-0" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"Indyk2010"}}'><a href="./Disjunct_matrix#cite_note-Indyk2010-4" id="mwuQ"><span class="mw-reflink-text" id="mwug"><span class="cite-bracket" id="mwuw">[</span>4<span class="cite-bracket" id="mwvA">]</span></span></a></sup> For arbitrary <i id="mwvQ">d</i>-separable but non-<i id="mwvg">d</i>-disjunct matrices, the best known decoding algorithms are exponential-time.<sup about="#mwt42" class="mw-ref reference" id="cite_ref-ChenHwang2006_3-5" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"ChenHwang2006"}}'><a href="./Disjunct_matrix#cite_note-ChenHwang2006-3" id="mwvw"><span class="mw-reflink-text" id="mwwA"><span class="cite-bracket" id="mwwQ">[</span>3<span class="cite-bracket" id="mwwg">]</span></span></a></sup></p>
+
+<p id="mwww">Porat and Rothschild (2008) present a deterministic <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt43" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"O(nt)"}}' id="mwxA"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle O(nt)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>O</mi>
+        <mo stretchy="false">(</mo>
+        <mi>n</mi>
+        <mi>t</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle O(nt)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/dc2fdfea9882ba82dda67c942b400953ad26758f" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:5.817ex; height:2.843ex;" alt="{\displaystyle O(nt)}"/></span>-time algorithm for constructing a <i id="mwxQ">d</i>-disjunct matrix with <i id="mwxg">n</i> columns and <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" about="#mwt44" data-mw='{"name":"math","attrs":{},"body":{"extsrc":"\\Theta(d^2\\ln n)"}}' id="mwxw"><span class="mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\displaystyle \Theta (d^{2}\ln n)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi mathvariant="normal">Θ<!-- Θ --></mi>
+        <mo stretchy="false">(</mo>
+        <msup>
+          <mi>d</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mn>2</mn>
+          </mrow>
+        </msup>
+        <mi>ln</mi>
+        <mo>⁡<!-- ⁡ --></mo>
+        <mi>n</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \Theta (d^{2}\ln n)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/2a6386c04cc8dc392ec80390cb0e4cfdbecae8d2" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:9.998ex; height:3.176ex;" alt="{\displaystyle \Theta (d^{2}\ln n)}"/></span> rows.<sup about="#mwt45" class="mw-ref reference" id="cite_ref-Porat2008_5-0" rel="dc:references" typeof="mw:Extension/ref" data-mw='{"name":"ref","attrs":{"name":"Porat2008"}}'><a href="./Disjunct_matrix#cite_note-Porat2008-5" id="mwyA"><span class="mw-reflink-text" id="mwyQ"><span class="cite-bracket" id="mwyg">[</span>5<span class="cite-bracket" id="mwyw">]</span></span></a></sup></p>
+
+</section><section data-mw-section-id="4" id="mwzA"><h2 data-mw-wikitext="" id="See_also">See also</h2>
+<ul id="mwzQ"><li id="mwzg"><a rel="mw:WikiLink" href="./Group_testing" title="Group testing" id="mwzw">Group testing</a></li>
+<li id="mw0A"><a rel="mw:WikiLink" href="./Concatenated_code" title="Concatenated code" class="mw-redirect" id="mw0Q">Concatenated code</a></li>
+<li id="mw0g"><a rel="mw:WikiLink" href="./Compressed_sensing" title="Compressed sensing" id="mw0w">Compressed sensing</a></li></ul>
+
+</section><section data-mw-section-id="5" id="mw1A"><h2 data-mw-wikitext="" id="References">References</h2>
+<div class="mw-references-wrap" typeof="mw:Extension/references" about="#mwt62" data-mw='{"name":"references","attrs":{},"body":{"html":"\n&lt;sup about=\"#mwt49\" class=\"mw-ref reference\" rel=\"dc:references\" typeof=\"mw:Extension/ref\" data-mw=&apos;{\"name\":\"ref\",\"attrs\":{\"name\":\"ChenHwang2006\"},\"body\":{\"id\":\"mw-reference-text-cite_note-ChenHwang2006-3\"}}&apos; id=\"mw1Q\">&lt;a href=\"./Disjunct_matrix#cite_note-ChenHwang2006-3\" id=\"mw1g\">&lt;span class=\"mw-reflink-text\" id=\"mw1w\">&lt;span class=\"cite-bracket\" id=\"mw2A\">[&lt;/span>3&lt;span class=\"cite-bracket\" id=\"mw2Q\">]&lt;/span>&lt;/span>&lt;/a>&lt;/sup>\n&lt;sup about=\"#mwt52\" class=\"mw-ref reference\" rel=\"dc:references\" typeof=\"mw:Extension/ref\" data-mw=&apos;{\"name\":\"ref\",\"attrs\":{\"name\":\"DeBonisVaccaro2003\"},\"body\":{\"id\":\"mw-reference-text-cite_note-DeBonisVaccaro2003-1\"}}&apos; id=\"mw2g\">&lt;a href=\"./Disjunct_matrix#cite_note-DeBonisVaccaro2003-1\" id=\"mw2w\">&lt;span class=\"mw-reflink-text\" id=\"mw3A\">&lt;span class=\"cite-bracket\" id=\"mw3Q\">[&lt;/span>1&lt;span class=\"cite-bracket\" id=\"mw3g\">]&lt;/span>&lt;/span>&lt;/a>&lt;/sup>\n&lt;sup about=\"#mwt55\" class=\"mw-ref reference\" rel=\"dc:references\" typeof=\"mw:Extension/ref\" data-mw=&apos;{\"name\":\"ref\",\"attrs\":{\"name\":\"ErdoesEtAl1985\"},\"body\":{\"id\":\"mw-reference-text-cite_note-ErdoesEtAl1985-2\"}}&apos; id=\"mw3w\">&lt;a href=\"./Disjunct_matrix#cite_note-ErdoesEtAl1985-2\" id=\"mw4A\">&lt;span class=\"mw-reflink-text\" id=\"mw4Q\">&lt;span class=\"cite-bracket\" id=\"mw4g\">[&lt;/span>2&lt;span class=\"cite-bracket\" id=\"mw4w\">]&lt;/span>&lt;/span>&lt;/a>&lt;/sup>\n&lt;sup about=\"#mwt58\" class=\"mw-ref reference\" rel=\"dc:references\" typeof=\"mw:Extension/ref\" data-mw=&apos;{\"name\":\"ref\",\"attrs\":{\"name\":\"Indyk2010\"},\"body\":{\"id\":\"mw-reference-text-cite_note-Indyk2010-4\"}}&apos; id=\"mw5A\">&lt;a href=\"./Disjunct_matrix#cite_note-Indyk2010-4\" id=\"mw5Q\">&lt;span class=\"mw-reflink-text\" id=\"mw5g\">&lt;span class=\"cite-bracket\" id=\"mw5w\">[&lt;/span>4&lt;span class=\"cite-bracket\" id=\"mw6A\">]&lt;/span>&lt;/span>&lt;/a>&lt;/sup>\n&lt;sup about=\"#mwt61\" class=\"mw-ref reference\" rel=\"dc:references\" typeof=\"mw:Extension/ref\" data-mw=&apos;{\"name\":\"ref\",\"attrs\":{\"name\":\"Porat2008\"},\"body\":{\"id\":\"mw-reference-text-cite_note-Porat2008-5\"}}&apos; id=\"mw6Q\">&lt;a href=\"./Disjunct_matrix#cite_note-Porat2008-5\" id=\"mw6g\">&lt;span class=\"mw-reflink-text\" id=\"mw6w\">&lt;span class=\"cite-bracket\" id=\"mw7A\">[&lt;/span>5&lt;span class=\"cite-bracket\" id=\"mw7Q\">]&lt;/span>&lt;/span>&lt;/a>&lt;/sup>\n"}}' id="mw7g"><ol class="mw-references references" id="mw7w"><li about="#cite_note-DeBonisVaccaro2003-1" id="cite_note-DeBonisVaccaro2003-1" data-mw-footnote-number="1"><span class="mw-cite-backlink" id="mw8A"><a href="./Disjunct_matrix#cite_ref-DeBonisVaccaro2003_1-0" rel="mw:referencedBy" id="mw8Q"><span class="mw-linkback-text" id="mw8g">↑</span></a></span> <span id="mw-reference-text-cite_note-DeBonisVaccaro2003-1" class="mw-reference-text reference-text"><style data-mw-deduplicate="TemplateStyles:r1333433106" typeof="mw:Extension/templatestyles mw:Transclusion" about="#mwt50" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal\n ","href":"./Template:Cite_journal"},"params":{"last1":{"wt":"De Bonis"},"first1":{"wt":"Annalisa"},"last2":{"wt":"Vaccaro"},"first2":{"wt":"Ugo"},"doi":{"wt":"10.1016/S0304-3975(03)00281-0"},"issue":{"wt":"1–3"},"journal":{"wt":"Theoretical Computer Science"},"mr":{"wt":"2000175"},"pages":{"wt":"223–243"},"title":{"wt":"Constructions of generalized superimposed codes with applications to group testing and conflict resolution in multiple access channels"},"volume":{"wt":"306"},"year":{"wt":"2003"}},"i":0}}]}' id="mw8w">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:"\"""\"""'""'"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url("//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url("//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url("//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url("//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#bf3c2c)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><cite id="CITEREFDe_BonisVaccaro2003" class="citation journal cs1" about="#mwt50">De Bonis, Annalisa; Vaccaro, Ugo (2003). "Constructions of generalized superimposed codes with applications to group testing and conflict resolution in multiple access channels". <i id="mw9A">Theoretical Computer Science</i>. <b id="mw9Q">306</b> (<span class="nowrap" id="mw9g">1–</span>3): <span class="nowrap" id="mw9w">223–</span>243. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect" id="mw-A">doi</a>:<a rel="mw:ExtLink nofollow" href="https://doi.org/10.1016%2FS0304-3975%2803%2900281-0" class="external text" id="mw-Q">10.1016/S0304-3975(03)00281-0</a>. <a rel="mw:WikiLink" href="./MR_(identifier)" title="MR (identifier)" class="mw-redirect" id="mw-g">MR</a><span typeof="mw:Entity" id="mw-w"> </span><a rel="mw:ExtLink nofollow" href="https://mathscinet.ams.org/mathscinet-getitem?mr=2000175" class="external text" id="mw_A">2000175</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Theoretical+Computer+Science&amp;rft.atitle=Constructions+of+generalized+superimposed+codes+with+applications+to+group+testing+and+conflict+resolution+in+multiple+access+channels&amp;rft.volume=306&amp;rft.issue=%3Cspan+class%3D%22nowrap%22%3E1%E2%80%93%3C%2Fspan%3E3&amp;rft.pages=223-243&amp;rft.date=2003&amp;rft_id=info%3Adoi%2F10.1016%2FS0304-3975%2803%2900281-0&amp;rft_id=https%3A%2F%2Fmathscinet.ams.org%2Fmathscinet-getitem%3Fmr%3D2000175%23id-name%3DMR&amp;rft.aulast=De+Bonis&amp;rft.aufirst=Annalisa&amp;rft.au=Vaccaro%2C+Ugo&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt50" id="mw_Q"></span></span></li>
+<li about="#cite_note-ErdoesEtAl1985-2" id="cite_note-ErdoesEtAl1985-2" data-mw-footnote-number="2"><span class="mw-cite-backlink" id="mw_g"><a href="./Disjunct_matrix#cite_ref-ErdoesEtAl1985_2-0" rel="mw:referencedBy" id="mw_w"><span class="mw-linkback-text" id="mwAQA">↑</span></a></span> <span id="mw-reference-text-cite_note-ErdoesEtAl1985-2" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt53" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal ","href":"./Template:Cite_journal"},"params":{"author1":{"wt":"[[Paul Erdős]]"},"author2":{"wt":"[[Péter Frankl]]"},"author3":{"wt":"[[Zoltán Füredi]]"},"title":{"wt":"Families of finite sets in which no set is covered by the union of r others"},"journal":{"wt":"[[Israel Journal of Mathematics]]"},"volume":{"wt":"51"},"issue":{"wt":"1–2"},"pages":{"wt":"79–89"},"year":{"wt":"1985"},"issn":{"wt":"0021-2172"},"doi":{"wt":"10.1007/BF02772959"},"doi-access":{"wt":"free"},"url":{"wt":"http://bsmath.hu/~p_erdos/1985-14.pdf"}},"i":0}}]}' id="mwAQE"/><cite id="CITEREFPaul_ErdősPéter_FranklZoltán_Füredi1985" class="citation journal cs1" about="#mwt53"><a rel="mw:WikiLink" href="./Paul_Erdős" title="Paul Erdős" id="mwAQI">Paul Erdős</a>; <a rel="mw:WikiLink" href="./Péter_Frankl" title="Péter Frankl" id="mwAQM">Péter Frankl</a>; <a rel="mw:WikiLink" href="./Zoltán_Füredi" title="Zoltán Füredi" id="mwAQQ">Zoltán Füredi</a> (1985). <a rel="mw:ExtLink nofollow" href="http://bsmath.hu/~p_erdos/1985-14.pdf" class="external text" id="mwAQU">"Families of finite sets in which no set is covered by the union of r others"</a> <span class="cs1-format" id="mwAQY">(PDF)</span>. <i id="mwAQc"><a rel="mw:WikiLink" href="./Israel_Journal_of_Mathematics" title="Israel Journal of Mathematics" id="mwAQg">Israel Journal of Mathematics</a></i>. <b id="mwAQk">51</b> (<span class="nowrap" id="mwAQo">1–</span>2): <span class="nowrap" id="mwAQs">79–</span>89. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect" id="mwAQw">doi</a>:<span class="id-lock-free" title="Freely accessible" id="mwAQ0"><a rel="mw:ExtLink nofollow" href="https://doi.org/10.1007%2FBF02772959" class="external text" id="mwAQ4">10.1007/BF02772959</a></span>. <a rel="mw:WikiLink" href="./ISSN_(identifier)" title="ISSN (identifier)" class="mw-redirect" id="mwAQ8">ISSN</a><span typeof="mw:Entity" id="mwARA"> </span><a rel="mw:ExtLink nofollow" href="https://search.worldcat.org/issn/0021-2172" class="external text" id="mwARE">0021-2172</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Israel+Journal+of+Mathematics&amp;rft.atitle=Families+of+finite+sets+in+which+no+set+is+covered+by+the+union+of+r+others&amp;rft.volume=51&amp;rft.issue=%3Cspan+class%3D%22nowrap%22%3E1%E2%80%93%3C%2Fspan%3E2&amp;rft.pages=79-89&amp;rft.date=1985&amp;rft_id=info%3Adoi%2F10.1007%2FBF02772959&amp;rft.issn=0021-2172&amp;rft.au=Paul+Erd%C5%91s&amp;rft.au=P%C3%A9ter+Frankl&amp;rft.au=Zolt%C3%A1n+F%C3%BCredi&amp;rft_id=http%3A%2F%2Fbsmath.hu%2F~p_erdos%2F1985-14.pdf&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt53" id="mwARI"></span></span></li>
+<li about="#cite_note-ChenHwang2006-3" id="cite_note-ChenHwang2006-3" data-mw-footnote-number="3"><span rel="mw:referencedBy" class="mw-cite-backlink" id="mwARM"><a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-0" id="mwARQ"><span class="mw-linkback-text" id="mwARU">1</span></a> <a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-1" id="mwARY"><span class="mw-linkback-text" id="mwARc">2</span></a> <a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-2" id="mwARg"><span class="mw-linkback-text" id="mwARk">3</span></a> <a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-3" id="mwARo"><span class="mw-linkback-text" id="mwARs">4</span></a> <a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-4" id="mwARw"><span class="mw-linkback-text" id="mwAR0">5</span></a> <a href="./Disjunct_matrix#cite_ref-ChenHwang2006_3-5" id="mwAR4"><span class="mw-linkback-text" id="mwAR8">6</span></a></span> <span id="mw-reference-text-cite_note-ChenHwang2006-3" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt46" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal ","href":"./Template:Cite_journal"},"params":{"author1":{"wt":"Hong-Bin Chen"},"author2":{"wt":"Frank Hwang"},"date":{"wt":"2006-12-21"},"title":{"wt":"Exploring the missing link among &apos;&apos;d&apos;&apos;-separable, &apos;&apos;{{overline|d}}&apos;&apos;-separable and &apos;&apos;d&apos;&apos;-disjunct matrices"},"journal":{"wt":"[[Discrete Applied Mathematics]]"},"volume":{"wt":"155"},"issue":{"wt":"5"},"pages":{"wt":"662–664"},"doi":{"wt":"10.1016/j.dam.2006.10.009"},"doi-access":{"wt":"free"},"citeseerx":{"wt":"10.1.1.848.5161"},"mr":{"wt":"2303978"}},"i":0}}]}' id="mwASA"/><cite id="CITEREFHong-Bin_ChenFrank_Hwang2006" class="citation journal cs1" about="#mwt46">Hong-Bin Chen; Frank Hwang (2006-12-21). <a rel="mw:ExtLink nofollow" href="https://doi.org/10.1016%2Fj.dam.2006.10.009" class="external text" id="mwASE">"Exploring the missing link among <i id="mwASI">d</i>-separable, <i id="mwASM"><span style="text-decoration:overline;" id="mwASQ">d</span></i>-separable and <i id="mwASU">d</i>-disjunct matrices"</a>. <i id="mwASY"><a rel="mw:WikiLink" href="./Discrete_Applied_Mathematics" title="Discrete Applied Mathematics" id="mwASc">Discrete Applied Mathematics</a></i>. <b id="mwASg">155</b> (5): <span class="nowrap" id="mwASk">662–</span>664. <a rel="mw:WikiLink" href="./CiteSeerX_(identifier)" title="CiteSeerX (identifier)" class="mw-redirect" id="mwASo">CiteSeerX</a><span typeof="mw:Entity" id="mwASs"> </span><span class="id-lock-free" title="Freely accessible" id="mwASw"><a rel="mw:ExtLink nofollow" href="https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.848.5161" class="external text" id="mwAS0">10.1.1.848.5161</a></span>. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect" id="mwAS4">doi</a>:<span class="id-lock-free" title="Freely accessible" id="mwAS8"><a rel="mw:ExtLink nofollow" href="https://doi.org/10.1016%2Fj.dam.2006.10.009" class="external text" id="mwATA">10.1016/j.dam.2006.10.009</a></span>. <a rel="mw:WikiLink" href="./MR_(identifier)" title="MR (identifier)" class="mw-redirect" id="mwATE">MR</a><span typeof="mw:Entity" id="mwATI"> </span><a rel="mw:ExtLink nofollow" href="https://mathscinet.ams.org/mathscinet-getitem?mr=2303978" class="external text" id="mwATM">2303978</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Discrete+Applied+Mathematics&amp;rft.atitle=Exploring+the+missing+link+among+d-separable%2C+%3Cspan+style%3D%22text-decoration%3Aoverline%3B%22%3Ed%3C%2Fspan%3E-separable+and+d-disjunct+matrices&amp;rft.volume=155&amp;rft.issue=5&amp;rft.pages=662-664&amp;rft.date=2006-12-21&amp;rft_id=https%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fsummary%3Fdoi%3D10.1.1.848.5161%23id-name%3DCiteSeerX&amp;rft_id=https%3A%2F%2Fmathscinet.ams.org%2Fmathscinet-getitem%3Fmr%3D2303978%23id-name%3DMR&amp;rft_id=info%3Adoi%2F10.1016%2Fj.dam.2006.10.009&amp;rft.au=Hong-Bin+Chen&amp;rft.au=Frank+Hwang&amp;rft_id=https%3A%2F%2Fdoi.org%2F10.1016%252Fj.dam.2006.10.009&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt46" id="mwATQ"></span><span about="#mwt46" id="mwATU"> </span><span class="cs1-visible-error citation-comment" about="#mwt46" id="mwATY"><code class="cs1-code" id="mwATc">{{<a rel="mw:WikiLink" href="./Template:Cite_journal" title="Template:Cite journal" id="mwATg">cite journal</a>}}</code>: </span><span class="cs1-visible-error citation-comment" about="#mwt46" id="mwATk">Cite uses deprecated parameter <code class="cs1-code" id="mwATo"><span typeof="mw:Entity" id="mwATs">|</span>citeseerx=</code> (<a rel="mw:WikiLink" href="./Help:CS1_errors#deprecated_params" title="Help:CS1 errors" id="mwATw">help</a>)</span><link rel="mw:PageProp/Category" href="./Category:CS1_errors:_deprecated_parameters" about="#mwt46" id="mwAT0"/></span></li>
+<li about="#cite_note-Indyk2010-4" id="cite_note-Indyk2010-4" data-mw-footnote-number="4"><span class="mw-cite-backlink" id="mwAT4"><a href="./Disjunct_matrix#cite_ref-Indyk2010_4-0" rel="mw:referencedBy" id="mwAT8"><span class="mw-linkback-text" id="mwAUA">↑</span></a></span> <span id="mw-reference-text-cite_note-Indyk2010-4" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt56" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite book ","href":"./Template:Cite_book"},"params":{"author1":{"wt":"[[Piotr Indyk]]"},"author2":{"wt":"Hung Q. Ngo"},"author3":{"wt":"Atri Rudra"},"title":{"wt":"Proceedings of the Twenty-First Annual ACM-SIAM Symposium on Discrete Algorithms"},"chapter":{"wt":"Efficiently Decodable Non-adaptive Group Testing"},"year":{"wt":"2010"},"pages":{"wt":"1126–1142"},"issn":{"wt":"1071-9040"},"hdl":{"wt":"1721.1/63167"},"doi":{"wt":"10.1137/1.9781611973075.91"},"isbn":{"wt":"978-0-89871-701-3"}},"i":0}}]}' id="mwAUE"/><cite id="CITEREFPiotr_IndykHung_Q._NgoAtri_Rudra2010" class="citation book cs1" about="#mwt56"><a rel="mw:WikiLink" href="./Piotr_Indyk" title="Piotr Indyk" id="mwAUI">Piotr Indyk</a>; Hung Q. Ngo; Atri Rudra (2010). "Efficiently Decodable Non-adaptive Group Testing". <i id="mwAUM">Proceedings of the Twenty-First Annual ACM-SIAM Symposium on Discrete Algorithms</i>. pp.<span typeof="mw:Entity" id="mwAUQ"> </span><span class="nowrap" id="mwAUU">1126–</span>1142. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect" id="mwAUY">doi</a>:<a rel="mw:ExtLink nofollow" href="https://doi.org/10.1137%2F1.9781611973075.91" class="external text" id="mwAUc">10.1137/1.9781611973075.91</a>. <a rel="mw:WikiLink" href="./Hdl_(identifier)" title="Hdl (identifier)" class="mw-redirect" id="mwAUg">hdl</a>:<a rel="mw:ExtLink nofollow" href="https://hdl.handle.net/1721.1%2F63167" class="external text" id="mwAUk">1721.1/63167</a>. <a rel="mw:WikiLink" href="./ISBN_(identifier)" title="ISBN (identifier)" class="mw-redirect" id="mwAUo">ISBN</a><span typeof="mw:Entity" id="mwAUs"> </span><a rel="mw:WikiLink" href="./Special:BookSources/978-0-89871-701-3" title="Special:BookSources/978-0-89871-701-3" id="mwAUw"><bdi id="mwAU0">978-0-89871-701-3</bdi></a>. <a rel="mw:WikiLink" href="./ISSN_(identifier)" title="ISSN (identifier)" class="mw-redirect" id="mwAU4">ISSN</a><span typeof="mw:Entity" id="mwAU8"> </span><a rel="mw:ExtLink nofollow" href="https://search.worldcat.org/issn/1071-9040" class="external text" id="mwAVA">1071-9040</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=Efficiently+Decodable+Non-adaptive+Group+Testing&amp;rft.btitle=Proceedings+of+the+Twenty-First+Annual+ACM-SIAM+Symposium+on+Discrete+Algorithms&amp;rft.pages=1126-1142&amp;rft.date=2010&amp;rft_id=info%3Ahdl%2F1721.1%2F63167&amp;rft.issn=1071-9040&amp;rft_id=info%3Adoi%2F10.1137%2F1.9781611973075.91&amp;rft.isbn=978-0-89871-701-3&amp;rft.au=Piotr+Indyk&amp;rft.au=Hung+Q.+Ngo&amp;rft.au=Atri+Rudra&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt56" id="mwAVE"></span></span></li>
+<li about="#cite_note-Porat2008-5" id="cite_note-Porat2008-5" data-mw-footnote-number="5"><span class="mw-cite-backlink" id="mwAVI"><a href="./Disjunct_matrix#cite_ref-Porat2008_5-0" rel="mw:referencedBy" id="mwAVM"><span class="mw-linkback-text" id="mwAVQ">↑</span></a></span> <span id="mw-reference-text-cite_note-Porat2008-5" class="mw-reference-text reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt59" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal ","href":"./Template:Cite_journal"},"params":{"author1":{"wt":"Ely Porat"},"author2":{"wt":"Amir Rothschild"},"title":{"wt":"Explicit Non-Adaptive Combinatorial Group Testing Schemes"},"journal":{"wt":"Proceedings of the 35th International Colloquium on Automata, Languages and Programming (ICALP)"},"pages":{"wt":"748–759"},"year":{"wt":"2008"},"arxiv":{"wt":"0712.3876"},"bibcode":{"wt":"2007arXiv0712.3876P"}},"i":0}}]}' id="mwAVU"/><cite id="CITEREFEly_PoratAmir_Rothschild2008" class="citation journal cs1" about="#mwt59">Ely Porat; Amir Rothschild (2008). "Explicit Non-Adaptive Combinatorial Group Testing Schemes". <i id="mwAVY">Proceedings of the 35th International Colloquium on Automata, Languages and Programming (ICALP)</i>: <span class="nowrap" id="mwAVc">748–</span>759. <a rel="mw:WikiLink" href="./ArXiv_(identifier)" title="ArXiv (identifier)" class="mw-redirect" id="mwAVg">arXiv</a>:<span class="id-lock-free" title="Freely accessible" id="mwAVk"><a rel="mw:ExtLink nofollow" href="https://arxiv.org/abs/0712.3876" class="external text" id="mwAVo">0712.3876</a></span>. <a rel="mw:WikiLink" href="./Bibcode_(identifier)" title="Bibcode (identifier)" class="mw-redirect" id="mwAVs">Bibcode</a>:<a rel="mw:ExtLink nofollow" href="https://ui.adsabs.harvard.edu/abs/2007arXiv0712.3876P" class="external text" id="mwAVw">2007arXiv0712.3876P</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Proceedings+of+the+35th+International+Colloquium+on+Automata%2C+Languages+and+Programming+%28ICALP%29&amp;rft.atitle=Explicit+Non-Adaptive+Combinatorial+Group+Testing+Schemes&amp;rft.pages=748-759&amp;rft.date=2008&amp;rft_id=info%3Aarxiv%2F0712.3876&amp;rft_id=info%3Abibcode%2F2007arXiv0712.3876P&amp;rft.au=Ely+Porat&amp;rft.au=Amir+Rothschild&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt59" id="mwAV0"></span></span></li>
+</ol></div>
+
+</section><section data-mw-section-id="6" id="mwAV4"><h2 data-mw-wikitext="" id="Further_reading">Further reading</h2>
+<ul id="mwAV8"><li id="mwAWA">Essential Coding Theory, <a rel="mw:ExtLink nofollow" href="https://cse.buffalo.edu/faculty/atri/courses/coding-theory/book/chapters/chap20.pdf" class="external text" id="mwAWE">Chapter 20</a></li>
+<li id="mwAWI">Dýachkov, A. G., &amp; Rykov, V. V. (1982). Bounds on the length of disjunctive codes. <i id="mwAWM">Problemy Peredachi Informatsii</i> [Problems of Information Transmission], 18(3), 7–13.</li>
+<li id="mwAWQ">Dýachkov, A. G., Rashad, A. M., &amp; Rykov, V. V. (1989). <i id="mwAWU">Superimposed distance codes. Problemy Upravlenija i Teorii Informacii</i> [Problems of Control and Information Theory], 18(4), 237–250.</li>
+<li id="mwAWY"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1333433106" about="#mwt63" typeof="mw:Extension/templatestyles mw:Transclusion" data-mw='{"name":"templatestyles","attrs":{"src":"Module:Citation/CS1/styles.css"},"body":{"extsrc":""},"parts":[{"template":{"target":{"wt":"cite journal ","href":"./Template:Cite_journal"},"params":{"last1":{"wt":"Füredi"},"first1":{"wt":"Zoltán"},"authorlink1":{"wt":"Zoltán Füredi"},"year":{"wt":"1996"},"title":{"wt":"On r-Cover-free Families"},"journal":{"wt":"[[Journal of Combinatorial Theory]]"},"series":{"wt":"Series A"},"volume":{"wt":"73"},"issue":{"wt":"1"},"pages":{"wt":"172–173"},"doi":{"wt":"10.1006/jcta.1996.0012"},"doi-access":{"wt":"free"}},"i":0}}]}' id="mwAWc"/><cite id="CITEREFFüredi1996" class="citation journal cs1" about="#mwt63"><a rel="mw:WikiLink" href="./Zoltán_Füredi" title="Zoltán Füredi">Füredi, Zoltán</a> (1996). <a rel="mw:ExtLink nofollow" href="https://doi.org/10.1006%2Fjcta.1996.0012" class="external text">"On r-Cover-free Families"</a>. <i><a rel="mw:WikiLink" href="./Journal_of_Combinatorial_Theory" title="Journal of Combinatorial Theory">Journal of Combinatorial Theory</a></i>. Series A. <b>73</b> (1): <span class="nowrap">172–</span>173. <a rel="mw:WikiLink" href="./Doi_(identifier)" title="Doi (identifier)" class="mw-redirect">doi</a>:<span class="id-lock-free" title="Freely accessible"><a rel="mw:ExtLink nofollow" href="https://doi.org/10.1006%2Fjcta.1996.0012" class="external text">10.1006/jcta.1996.0012</a></span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Journal+of+Combinatorial+Theory&amp;rft.atitle=On+r-Cover-free+Families&amp;rft.volume=73&amp;rft.issue=1&amp;rft.pages=172-173&amp;rft.date=1996&amp;rft_id=info%3Adoi%2F10.1006%2Fjcta.1996.0012&amp;rft.aulast=F%C3%BCredi&amp;rft.aufirst=Zolt%C3%A1n&amp;rft_id=https%3A%2F%2Fdoi.org%2F10.1006%252Fjcta.1996.0012&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3ADisjunct+matrix" class="Z3988" about="#mwt63" id="mwAWg"></span></li></ul>
+
+<link rel="mw:PageProp/Category" href="./Category:Combinatorics" id="mwAWk"/></section></body></html>
