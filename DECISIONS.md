@@ -846,3 +846,23 @@ G1-G11 thresholds, minimum denominators, ceilings (500 HTTP attempts, 300 MiB), 
 (2026-11-14 23:59 UTC) and stopping rules stay as frozen. The instruction authorizes completion of D-036 to
 `VERIFIED_AWAITING_OWNER_ACCEPTANCE` if every requirement passes; it authorizes no acceptance, no merge, no force
 push or history rewrite, no post-prediction repair or further campaign, and no Stage 04.
+
+## D-039 — Stage 03 maintenance A-03-001: fail-closed accepted-contract test
+- Status: accepted
+- Topic: stage-03-maintenance-contract-test-baseline
+- Date: 2026-11-09
+- Stage: 03
+- Supersedes: none
+- Evidence: docs/verification/maintenance/A-03-001/MAINTENANCE_RECORD.md; docs/verification/maintenance/A-03-001/fail_first_demo.sh; docs/verification/maintenance/A-03-001/fail_first_demo.log
+
+Owner decision D-2 on the Stage 04 Master Execution Package (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPRpb2tWYwbQwCYA5ps9aLth`, 2026-11-09T21:25:03Z): the owner authorizes a Stage 03
+maintenance transaction (D-024 mechanism) for
+`tests/stage03/test_wiki_properties.py::test_accepted_contract_schemas_are_untouched`. The test compared the
+contract schemas with `c3346d1`, reachable only through unmerged side branches, and skipped when that commit could
+not be resolved (fail-open). The owner requires the full Stage 00 accepted SHA
+`0c21182e5871f772c3a76c75a1217c7641a63bbb` as baseline, failure (not a skip) when the baseline cannot be resolved,
+drift still a failure, success in a clean clone holding only the main/Stage 04 history, a fail-first demonstration,
+the minimum Stage 03 owned change, complete maintenance validation, no change to the contract schemas and no branch
+deletion. Recorded as amendment A-03-001. Stage 03 stays `ACCEPTED_CLOSED`; its acceptance is not rewritten. Branch
+cleanup of PR #5 and the Codex branch is a separate owner decision.
