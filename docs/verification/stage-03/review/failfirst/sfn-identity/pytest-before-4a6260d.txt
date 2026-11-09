@@ -1,0 +1,287 @@
+FFFFFFFFFFFF...                                                          [100%]
+=================================== FAILURES ===================================
+_ test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_parameter_aliases_name_on0')
+wiki = 'en', text = 'A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}"),
+            ("ar", "أ{{Sfn|سميث|2001|p=5}} ب{{Sfn|سميث|2001|page=5}}"),
+            ("en", "A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}"),
+            ("en", "A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}"),
+        ],
+    )
+    def test_parameter_aliases_name_one_reference(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-2: an alias spelling of the same location argument gives the same name and the same note text."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:42: AssertionError
+_ test_parameter_aliases_name_one_reference[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001|p=5}} \u0628{{Sfn|\u0633\u0645\u064a\u062b|2001|page=5}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_parameter_aliases_name_on1')
+wiki = 'ar', text = 'أ{{Sfn|سميث|2001|p=5}} ب{{Sfn|سميث|2001|page=5}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}"),
+            ("ar", "أ{{Sfn|سميث|2001|p=5}} ب{{Sfn|سميث|2001|page=5}}"),
+            ("en", "A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}"),
+            ("en", "A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}"),
+        ],
+    )
+    def test_parameter_aliases_name_one_reference(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-2: an alias spelling of the same location argument gives the same name and the same note text."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:42: AssertionError
+_ test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_parameter_aliases_name_on2')
+wiki = 'en', text = 'A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}"),
+            ("ar", "أ{{Sfn|سميث|2001|p=5}} ب{{Sfn|سميث|2001|page=5}}"),
+            ("en", "A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}"),
+            ("en", "A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}"),
+        ],
+    )
+    def test_parameter_aliases_name_one_reference(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-2: an alias spelling of the same location argument gives the same name and the same note text."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:42: AssertionError
+_ test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_parameter_aliases_name_on3')
+wiki = 'en', text = 'A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}"),
+            ("ar", "أ{{Sfn|سميث|2001|p=5}} ب{{Sfn|سميث|2001|page=5}}"),
+            ("en", "A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}"),
+            ("en", "A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}"),
+        ],
+    )
+    def test_parameter_aliases_name_one_reference(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-2: an alias spelling of the same location argument gives the same name and the same note text."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:42: AssertionError
+_ test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_same_name_with_different_0')
+wiki = 'en', text = 'A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001|ps=؛}} ب{{Sfn|سميث|2001}}"),
+        ],
+    )
+    def test_same_name_with_different_text_is_a_conflict(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-3, S-4: the postscript, the anchor and the template variant change the note text but not its name."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "conflicting_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'confli...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'conflicting_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:60: AssertionError
+_ test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_same_name_with_different_1')
+wiki = 'en', text = 'A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001|ps=؛}} ب{{Sfn|سميث|2001}}"),
+        ],
+    )
+    def test_same_name_with_different_text_is_a_conflict(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-3, S-4: the postscript, the anchor and the template variant change the note text but not its name."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "conflicting_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'confli...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'conflicting_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:60: AssertionError
+_ test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_same_name_with_different_2')
+wiki = 'en', text = 'A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001|ps=؛}} ب{{Sfn|سميث|2001}}"),
+        ],
+    )
+    def test_same_name_with_different_text_is_a_conflict(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-3, S-4: the postscript, the anchor and the template variant change the note text but not its name."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "conflicting_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'confli...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'conflicting_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:60: AssertionError
+_ test_same_name_with_different_text_is_a_conflict[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001|ps=\u061b}} \u0628{{Sfn|\u0633\u0645\u064a\u062b|2001}}] _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_same_name_with_different_3')
+wiki = 'ar', text = 'أ{{Sfn|سميث|2001|ps=؛}} ب{{Sfn|سميث|2001}}'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        ("wiki", "text"),
+        [
+            ("en", "A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}"),
+            ("en", "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}"),
+            ("en", "A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}"),
+            ("ar", "أ{{Sfn|سميث|2001|ps=؛}} ب{{Sfn|سميث|2001}}"),
+        ],
+    )
+    def test_same_name_with_different_text_is_a_conflict(tmp_path: Path, wiki: str, text: str) -> None:
+        """S-3, S-4: the postscript, the anchor and the template variant change the note text but not its name."""
+        doc = extract(bundle(tmp_path, text, wiki=wiki))
+>       assert short(doc) == [("", "conflicting_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'confli...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'conflicting_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:60: AssertionError
+___________________ test_enwiki_group_is_the_reference_group ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_enwiki_group_is_the_refer0')
+
+    @pytest.mark.regression
+    def test_enwiki_group_is_the_reference_group(tmp_path: Path) -> None:
+        """S-1: enwiki's module passes group= to the ref; the same name in two groups is two references."""
+        doc = extract(bundle(tmp_path, "A{{sfn|Smith|2001|group=n}} B{{sfn|Smith|2001|group=n}} C{{sfn|Smith|2001}}"))
+>       assert sorted(short(doc)) == [("", "single_definition", 1), ("n", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'identi...finition', 1)] == [('', 'single...initions', 2)]
+E         
+E         At index 0 diff: ('', 'identical_definitions', 2) != ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:68: AssertionError
+______________________ test_arwiki_module_takes_no_group _______________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_arwiki_module_takes_no_gr0')
+
+    @pytest.mark.regression
+    def test_arwiki_module_takes_no_group(tmp_path: Path) -> None:
+        """S-1: arwiki's module ignores group= (its ref has a name only), so these calls are one reference."""
+        doc = extract(bundle(tmp_path, "أ{{Sfn|سميث|2001|group=n}} ب{{Sfn|سميث|2001}}", wiki="ar"))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:76: AssertionError
+_________________________ test_arwiki_has_no_at_alias __________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_arwiki_has_no_at_alias0')
+
+    @pytest.mark.regression
+    def test_arwiki_has_no_at_alias(tmp_path: Path) -> None:
+        """arwiki's module reads loc= only: at= changes neither the name nor the text there."""
+        doc = extract(bundle(tmp_path, "أ{{Sfn|سميث|2001|at=ف 2}} ب{{Sfn|سميث|2001}}", wiki="ar"))
+>       assert short(doc) == [("", "identical_definitions", 2)]
+E       AssertionError: assert [('', 'single...finition', 1)] == [('', 'identi...initions', 2)]
+E         
+E         At index 0 diff: ('', 'single_definition', 1) != ('', 'identical_definitions', 2)
+E         Left contains one more item: ('', 'single_definition', 1)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:83: AssertionError
+_________________________ test_whitespace_in_the_name __________________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-13/test_whitespace_in_the_name0')
+
+    @pytest.mark.regression
+    def test_whitespace_in_the_name(tmp_path: Path) -> None:
+        """enwiki collapses whitespace in the name (one reference, but the text differs: a conflict); arwiki keeps it
+        (two references)."""
+        en = extract(bundle(tmp_path, "A{{sfn|Smith  J|2001}} B{{sfn|Smith J|2001}}"))
+>       assert short(en) == [("", "conflicting_definitions", 2)]
+E       AssertionError: assert [('', 'identi...initions', 2)] == [('', 'confli...initions', 2)]
+E         
+E         At index 0 diff: ('', 'identical_definitions', 2) != ('', 'conflicting_definitions', 2)
+E         Use -v to get more diff
+
+tests/stage03/test_wiki_sfn_identity.py:93: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|page=5}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_parameter_aliases_name_one_reference[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001|p=5}} \u0628{{Sfn|\u0633\u0645\u064a\u062b|2001|page=5}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|pp=5-6}} B{{sfn|Smith|2001|pages=5-6}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_parameter_aliases_name_one_reference[en-A{{sfn|Smith|2001|loc=ch. 2}} B{{sfn|Smith|2001|at=ch. 2}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001|p=5}} B{{sfn|Smith|2001|p=5|ps=none}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_same_name_with_different_text_is_a_conflict[en-A{{sfn|Smith|2001|ref=x}} B{{sfn|Smith|2001}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_same_name_with_different_text_is_a_conflict[ar-\u0623{{Sfn|\u0633\u0645\u064a\u062b|2001|ps=\u061b}} \u0628{{Sfn|\u0633\u0645\u064a\u062b|2001}}]
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_enwiki_group_is_the_reference_group
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_arwiki_module_takes_no_group
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_arwiki_has_no_at_alias
+FAILED tests/stage03/test_wiki_sfn_identity.py::test_whitespace_in_the_name
+12 failed, 3 passed in 10.71s

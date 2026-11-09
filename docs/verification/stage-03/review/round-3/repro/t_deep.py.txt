@@ -1,0 +1,16 @@
+import sys, time; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+D = int(sys.argv[1]); iso = len(sys.argv) > 2
+inner = "Paper. " + "<span>" * D + "Retracted" + "</span>" * D
+b = bundle(tmpdir(), EN_TEXT, note_body(inner))
+try:
+    doc = extract(b, isolated=iso)
+    m = doc["markers"][0] if doc["markers"] else None
+    print(D, "iso" if iso else "inproc", doc["status"], [i["code"] for i in doc["issues"]][:4], m and short(m))
+    from citerift.wiki.render import read_render
+    try:
+        r = verify_bundle(b, doc); print("   verify", r["verified"])
+    except Exception as e:
+        print("   verify EXC", type(e).__name__, str(e)[:100])
+except Exception as e:
+    print(D, "EXC", type(e).__name__, str(e)[:200])

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 7796,
+   "body_sha256": "bb64b955d5980e9a3adf83d4e62dce0189711808c553a333a40348c7baffa81e",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.342,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:11:55.104170Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6663803",
+   "wire_bytes": 3803
+  },
+  {
+   "body_bytes": 63760,
+   "body_sha256": "d96916bfbc8230d125c94dd13bab7d5b4aef96fdc2552a72a563049536337012",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.401,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:12:05.450185Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374356167/html",
+   "wire_bytes": 13472
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-31T12:12:05.852383Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 6663803,
+  "parent_revision_id": 1374354629,
+  "redirect_followed": null,
+  "revision_id": 1374356167,
+  "revision_timestamp": "2026-09-11T14:28:29Z",
+  "sha1": "2539c01729dc2008e79c53c1baff838fa4c6d736",
+  "size": 7219,
+  "title": "Scientific priority",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "d96916bfbc8230d125c94dd13bab7d5b4aef96fdc2552a72a563049536337012",
+  "bytes": 63760,
+  "checks": {
+   "document_revision_id": "1374356167",
+   "header_revision_id": "1374356167",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "6663803",
+   "render_id": "1dd914b7-d420-11f1-8663-ab85e78278e6",
+   "revision_sha1": "2539c01729dc2008e79c53c1baff838fa4c6d736",
+   "revision_sha1_base36": "4cjh9hqa8o0g9k8jyafbcj6ktvxg186"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1374356167",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Sat, 31 Oct 2026 12:12:05 GMT",
+   "etag": "W/\"1374356167/1dd914b7-d420-11f1-8663-ab85e78278e6/view\"",
+   "last-modified": "Fri, 30 Oct 2026 04:18:05 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374356167/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 6663803,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "02b30efa9a8d3abc2622440d33dd243ddfd8fa78ce2105148ff74483d5cb189d",
+  "bytes": 7219,
+  "response_artifact": "bb64b955d5980e9a3adf83d4e62dce0189711808c553a333a40348c7baffa81e",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6663803"
+ },
+ "started_at": "2026-10-31T12:11:45.395140Z",
+ "status": "complete"
+}

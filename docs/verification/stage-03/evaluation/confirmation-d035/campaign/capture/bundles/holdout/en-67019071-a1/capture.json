@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 18740,
+   "body_sha256": "546e62e3f08df3590458b2e4f700b666ca09934c6b80cf868d2b5604dd888316",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.401,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:53:11.088413Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=67019071",
+   "wire_bytes": 7983
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "c86157b288d09e388852d0e8313fd5761383b1effef9b9a3bdd3a87d02e814fc",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.358,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-03T15:53:21.490184Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1332438558/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 109285,
+   "body_sha256": "302276f036e4a515b912c51b1c2677142bd7e93bd5830d2d9785c725bf07e7fa",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.43,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T15:54:00.848322Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1332438558/html",
+   "wire_bytes": 21551
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "c86157b288d09e388852d0e8313fd5761383b1effef9b9a3bdd3a87d02e814fc"
+ ],
+ "finished_at": "2026-11-03T15:54:01.280320Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 67019071,
+  "parent_revision_id": 1332393310,
+  "redirect_followed": null,
+  "revision_id": 1332438558,
+  "revision_timestamp": "2026-01-11T22:03:11Z",
+  "sha1": "b23def8c1998fc9f3dcd4fe39b62681cdfa1ada0",
+  "size": 18103,
+  "title": "Lianhua Qingwen",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "302276f036e4a515b912c51b1c2677142bd7e93bd5830d2d9785c725bf07e7fa",
+  "bytes": 109285,
+  "checks": {
+   "document_revision_id": "1332438558",
+   "header_revision_id": "1332438558",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "67019071",
+   "render_id": "1f5d4722-d72a-11f1-9e99-b7ac7d610366",
+   "revision_sha1": "b23def8c1998fc9f3dcd4fe39b62681cdfa1ada0",
+   "revision_sha1_base36": "ktjk2wyjvlns5boj2n5fmmqg7mo1h9c"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1332438558",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 15:54:01 GMT",
+   "etag": "W/\"1332438558/1f5d4722-d72a-11f1-9e99-b7ac7d610366/view\"",
+   "last-modified": "Tue, 03 Nov 2026 01:54:54 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1332438558/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 67019071,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "37f205755992201918f2d3381239bf5b3793e50da27d9bab9ca955bae74148d9",
+  "bytes": 18103,
+  "response_artifact": "546e62e3f08df3590458b2e4f700b666ca09934c6b80cf868d2b5604dd888316",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=67019071"
+ },
+ "started_at": "2026-11-03T15:53:01.455116Z",
+ "status": "complete"
+}

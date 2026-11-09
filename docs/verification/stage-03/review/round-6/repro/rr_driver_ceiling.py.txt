@@ -1,0 +1,44 @@
+"""Driver ceiling over-charge: runs deferred by the shared network gate make zero HTTP attempts but are charged
+the worst case (6 attempts, ~20 MiB). No network: the gate refuses before any transport call; the transport raises."""
+import importlib.util, json, os, shutil, sys, time
+from pathlib import Path
+from datetime import UTC, datetime
+sys.path.insert(0, "/home/user/citerift/src")
+import citerift.wiki.capture as capmod
+from citerift.wiki.fetch import NetworkGate, Fetcher
+from citerift.wiki.capture import CaptureRequest, capture_revision
+
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/driver_ceiling")
+shutil.rmtree(W, ignore_errors=True); W.mkdir(parents=True)
+gate_file = W / "gate.lock"
+# a server Retry-After recorded by an earlier process: 1 hour from now
+gate_file.write_text(f"{time.time():.3f} {time.time()+3600:.3f}\n")
+
+def boom(url, headers, timeout):
+    raise AssertionError("NETWORK USED: " + url)
+
+class F(Fetcher):
+    def __init__(self, policy, transport=None, clock=None, gate=None):
+        super().__init__(policy, boom, clock, NetworkGate(gate_file))
+capmod.Fetcher = F
+
+def fake_cli(argv):
+    i = argv.index("--page-id"); w = argv[argv.index("--wiki")+1]
+    req = CaptureRequest(w, None, int(argv[i+1]), None, False, True)
+    t0 = time.time()
+    out = capture_revision(req, out=None)
+    return 4, json.dumps({"status": out.status, "bundle": None, "capture": out.record}), ""
+
+spec = importlib.util.spec_from_file_location("cc", "/home/user/citerift/docs/verification/stage-03/evaluation/scripts/campaign_capture.py")
+cc = importlib.util.module_from_spec(spec); spec.loader.exec_module(cc)
+plan = {"campaign": "x", "articles": [{"split": "holdout", "wiki": "en", "page_id": 1000+i} for i in range(40)]}
+(W/"plan.json").write_text(json.dumps(plan))
+rc = cc.run(W/"plan.json", W/"out", cli=fake_cli, clock=time.time, sleep=lambda s: None)
+entries = cc._journal(W/"out")
+print("driver exit:", rc, "(2 = ceiling reached)")
+print("runs executed:", sum(1 for e in entries if e["event"]=="end"))
+print("real HTTP attempts in all end records:", sum(len(((e.get('stdout') or {}).get('capture') or {}).get('attempts') or []) for e in entries if e['event']=='end'))
+a, b = cc.used(entries); print("charged attempts, MiB:", a, round(b/2**20,1))
+print(json.loads((W/"out"/"ceiling.json").read_text()) if (W/"out"/"ceiling.json").exists() else None)
+first = [e for e in entries if e["event"]=="end"][0]
+print("first end record: status", first["stdout"]["status"], "codes", [i["code"] for i in first["stdout"]["capture"]["issues"]], "attempts", first["stdout"]["capture"]["attempts"])

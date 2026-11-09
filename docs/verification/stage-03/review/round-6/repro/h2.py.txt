@@ -1,0 +1,17 @@
+from h import *
+import json
+def sfn_sup(n, note, ref_id, name, params, target="sfn", about="mwt20"):
+    dm = {"name": "ref", "attrs": {"group": "", "name": name}, "body": {"id": f"mw-reference-text-{note}"},
+          "parts": [{"template": {"target": {"wt": target, "href": "./Template:Sfn"}, "params": {k: {"wt": v} for k, v in params.items()}, "i": 0}}]}
+    return (f'<sup about="#{about}" class="mw-ref reference" id="{ref_id}" rel="dc:references" typeof="mw:Transclusion mw:Extension/ref" '
+            f"data-mw='{json.dumps(dm)}'><a href=\"./SYNTHETIC#{note}\"><span class=\"mw-reflink-text\"><span class=\"cite-bracket\">[</span>{n}<span class=\"cite-bracket\">]</span></span></a></sup>")
+def show(label, text, body, wiki="en"):
+    d, _ = run(text, body, wiki)
+    print("==", label, cs(d))
+    for c in d["containers"]:
+        print("  ct", c["id"], c["layout"], c["binding_state"], "render:", c["render"]["state"], c["render"].get("region_id"))
+    for u in d["uses"]:
+        print("  use", u["id"], u["container_id"], u["render"]["state"], (u["render"].get("locator") or {}).get("element_id"))
+    for m in d["markers"]:
+        print("  marker", m["container_id"], m["state"])
+    return d

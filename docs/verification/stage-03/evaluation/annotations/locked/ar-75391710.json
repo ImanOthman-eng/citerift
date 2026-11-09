@@ -1,0 +1,521 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75391710,
+  "source_sha256": "edb00c17a3e474e81f3e2e179ae82aabcf847dd1d82c1d9b9f7bd8d59339df10",
+  "html_sha256": "af63003c06a345834b7de033f8b0c9c0c1e278cc6e54284cf674bffd053a5285",
+  "window": [
+   7095,
+   15095
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:48:45Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75391710/packet.json",
+    "sha256": "9c2182aa8d7d1b0e4ea5f50dd4194358f4fe66e7f2bf9d9d234322997585ad3c"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75391710/source.wikitext",
+    "sha256": "edb00c17a3e474e81f3e2e179ae82aabcf847dd1d82c1d9b9f7bd8d59339df10"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75391710/render.html",
+    "sha256": "af63003c06a345834b7de033f8b0c9c0c1e278cc6e54284cf674bffd053a5285"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str.find/re.finditer to locate '<ref', '{{', '10.', 'pmid', 'doi', 'دوي' etc.; lxml.html to list <sup typeof=mw:Extension/ref> (id, data-mw attrs/body) and <li id=cite_note-*> text; every location checked with text[cp:cp+len(quote)]==quote",
+  "unresolved": "Whether {{Webarchive}} / {{ردمك}} inside hand-written refs (d7, d12) count as citation templates: read as not citation templates, so those refs are unstructured with no templates. The window starts inside the unnamed WearCam ref (cp 6855, note 14); it begins before the window and has no use or identifier inside the window, so it is not listed."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 7296,
+    "quote": "<ref>Muri, Allison. The Enligh"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation of a book (Muri 2007), no citation template."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 7548,
+    "quote": "<ref>[[ودي إيفانز]], 2015. \"Po"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with a wikilink to the author (ودي إيفانز), no citation template."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 8005,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Naya"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8010,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 8538,
+    "quote": "<ref name=\"transhumanistfaq\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "transhumanistfaq",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8567,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-transhumanistfaq-18",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Contains a nested {{Ill-WD2|…}} in صحيفة=, which is an interlanguage-link template, not a citation template. Rendered note shows a CS1 maintenance message (extra punctuation), not retraction vocabulary."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 9417,
+    "quote": "<ref>{{استشهاد بويب|عنوان=What"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9422,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-19",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 9991,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عن"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9996,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-20",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 11256,
+    "quote": "<ref>Ferrando, Francesca [http"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with an external link and a {{Webarchive|…}} archive-link template; Webarchive is not a citation template, so unstructured."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 11786,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Warw"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11791,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-22",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 12188,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Borg"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12193,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-23",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 12485,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12490,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-24",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 13010,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13015,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-25",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 13402,
+    "quote": "<ref>Deborah Christie, Sarah J"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-26",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with an external link, {{ردمك|…}} (ISBN link template) and {{Webarchive|…}}; none of these is a citation template, so unstructured."
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 14561,
+    "quote": "<ref>{{استشهاد بويب |عنوان=Jou"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14566,
+      "quote": "{{استشهاد بويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-27",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Ref inside the 'روابط خارجية' section prose; an ordinary note."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 7296,
+    "quote": "<ref>Muri, Allison. The Enligh"
+   },
+   "binds_to": {
+    "cp": 7296,
+    "quote": "<ref>Muri, Allison. The Enligh"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 7548,
+    "quote": "<ref>[[ودي إيفانز]], 2015. \"Po"
+   },
+   "binds_to": {
+    "cp": 7548,
+    "quote": "<ref>[[ودي إيفانز]], 2015. \"Po"
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 8005,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Naya"
+   },
+   "binds_to": {
+    "cp": 8005,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Naya"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 8538,
+    "quote": "<ref name=\"transhumanistfaq\">"
+   },
+   "binds_to": {
+    "cp": 8538,
+    "quote": "<ref name=\"transhumanistfaq\">"
+   },
+   "render_ref_id": "cite_ref-transhumanistfaq_18-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 9417,
+    "quote": "<ref>{{استشهاد بويب|عنوان=What"
+   },
+   "binds_to": {
+    "cp": 9417,
+    "quote": "<ref>{{استشهاد بويب|عنوان=What"
+   },
+   "render_ref_id": "cite_ref-19",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 9991,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عن"
+   },
+   "binds_to": {
+    "cp": 9991,
+    "quote": "<ref>{{استشهاد بدورية محكمة|عن"
+   },
+   "render_ref_id": "cite_ref-20",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 11035,
+    "quote": "<ref name=\"transhumanistfaq\" />"
+   },
+   "binds_to": {
+    "cp": 8538,
+    "quote": "<ref name=\"transhumanistfaq\">"
+   },
+   "render_ref_id": "cite_ref-transhumanistfaq_18-1",
+   "notes": "Reuse by name of d4."
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 11256,
+    "quote": "<ref>Ferrando, Francesca [http"
+   },
+   "binds_to": {
+    "cp": 11256,
+    "quote": "<ref>Ferrando, Francesca [http"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 11786,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Warw"
+   },
+   "binds_to": {
+    "cp": 11786,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Warw"
+   },
+   "render_ref_id": "cite_ref-22",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 12188,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Borg"
+   },
+   "binds_to": {
+    "cp": 12188,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Borg"
+   },
+   "render_ref_id": "cite_ref-23",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 12485,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "binds_to": {
+    "cp": 12485,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "render_ref_id": "cite_ref-24",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 13010,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "binds_to": {
+    "cp": 13010,
+    "quote": "<ref>{{استشهاد بكتاب|مؤلف=Mast"
+   },
+   "render_ref_id": "cite_ref-25",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 13402,
+    "quote": "<ref>Deborah Christie, Sarah J"
+   },
+   "binds_to": {
+    "cp": 13402,
+    "quote": "<ref>Deborah Christie, Sarah J"
+   },
+   "render_ref_id": "cite_ref-26",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 14561,
+    "quote": "<ref>{{استشهاد بويب |عنوان=Jou"
+   },
+   "binds_to": {
+    "cp": 14561,
+    "quote": "<ref>{{استشهاد بويب |عنوان=Jou"
+   },
+   "render_ref_id": "cite_ref-27",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 10167,
+    "quote": "10.13169/prometheus.38.2.0271"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.13169/prometheus.38.2.0271",
+   "notes": "دوي= field of d6 (Evans 2022)."
+  }
+ ],
+ "unresolved_notes": []
+}

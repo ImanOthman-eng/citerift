@@ -1,0 +1,189 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1361996578,
+  "source_sha256": "70bf14c99c0f00fc3f26d53fa07c5b00eaf061c0133bb73e46940e6fe7ad009a",
+  "html_sha256": "ff2290996a0cdc1735b4cab755f96b1421d446696444605cc0a6000cd6f6e227",
+  "window": [
+   0,
+   5436
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-r1-1",
+  "started_at": "2026-11-03T02:10:28Z",
+  "finished_at": "2026-11-03T02:10:28Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1361996578/source.wikitext",
+    "sha256": "70bf14c99c0f00fc3f26d53fa07c5b00eaf061c0133bb73e46940e6fe7ad009a"
+   },
+   {
+    "path": "packets/en-1361996578/render.html",
+    "sha256": "ff2290996a0cdc1735b4cab755f96b1421d446696444605cc0a6000cd6f6e227"
+   },
+   {
+    "path": "packets/en-1361996578/packet.json",
+    "sha256": "98b53b0871194bb95547b2d041a8bae23bc6c4883308c7f971e038c18681be0f"
+   }
+  ],
+  "tools": "python3 stdlib + lxml helper snippets (regex search for refs/templates/identifiers, HTML sup/li listing, quote verification); labels decided by hand",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 252,
+    "quote": "<ref>{{Cite book"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 257,
+      "quote": "{{Cite book|"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4359,
+    "quote": "<ref name=hawksworth1991>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "hawksworth1991",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4384,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-hawksworth1991-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4817,
+    "quote": "<ref>{{cite web"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4822,
+      "quote": "{{cite web|u"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 252,
+    "quote": "<ref>{{Cite book"
+   },
+   "binds_to": {
+    "cp": 252,
+    "quote": "<ref>{{Cite book"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 4359,
+    "quote": "<ref name=hawksworth1991>"
+   },
+   "binds_to": {
+    "cp": 4359,
+    "quote": "<ref name=hawksworth1991>"
+   },
+   "render_ref_id": "cite_ref-hawksworth1991_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 4817,
+    "quote": "<ref>{{cite web"
+   },
+   "binds_to": {
+    "cp": 4817,
+    "quote": "<ref>{{cite web"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 5311,
+    "quote": "<ref name=hawksworth1991/>"
+   },
+   "binds_to": {
+    "cp": 4359,
+    "quote": "<ref name=hawksworth1991>"
+   },
+   "render_ref_id": "cite_ref-hawksworth1991_2-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 513,
+    "quote": "10.1016/b978-012509551-8/50014-3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/b978-012509551-8/50014-3",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4578,
+    "quote": "10.1016/S0953-7562(09)80810-1"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0953-7562(09)80810-1",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

@@ -1,0 +1,35 @@
+import sys, random; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from citerift.wiki.textmap import ByteMap
+random.seed(7)
+alpha = ["a", "م", "َ", "ـ", "‏", "é", "\U0001F600", "é", "ﻻ", "\n", "̀"]
+bad = 0
+for _ in range(3000):
+    t = "".join(random.choice(alpha) for _ in range(random.randint(0, 40)))
+    bm = ByteMap(t)
+    for i in range(len(t) + 1):
+        if bm.byte(i) != len(t[:i].encode()):
+            bad += 1
+print("ByteMap mismatches:", bad)
+from h import run, doi_link, ref_sup, note_li, references, bundle
+from wiki_support import slice_bytes
+T = 'نصّ\U0001F600 مَعَ تَشْكِيل.<ref name="a">{{استشهاد بدورية محكمة|عنوان=ورقةٌ ‏مُهمّة|دوي= 10.1000/أب‌ج }} دوي: 10.2000/xyz، https://doi.org/10.3000/é</ref>\n'
+body = "<p>x" + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], "x")])
+from h import _tmp
+p = bundle(_tmp, T, body, wiki="ar", name="bytes")
+from wiki_support import extract
+d = extract(p)
+from citerift.wiki.verify import verify_bundle
+for i in d["identifiers"] + d["excluded_identifiers"]:
+    sp = i.get("source", i).get("span") if isinstance(i.get("source"), dict) else i.get("span")
+    print(i.get("role", i.get("reason")), i["raw"] if "raw" in i else None, sp)
+v = verify_bundle(p, d)
+print("verified:", v["verified"], [x["code"] for x in v["issues"]][:5])
+import json
+print(json.dumps(d["identifiers"][0], ensure_ascii=False)[:1500])
+raw = (p / "artifacts").iterdir()
+for i in d["identifiers"]:
+    a = i["anchor"] if "anchor" in i else i["source"]
+    print(json.dumps(a, ensure_ascii=False)[:300])
+for i in d["identifiers"][1:]:
+    print(i["role"], repr(i["source"]["raw"]), i["boundary"], i["normalization"]["normalized"], i["normalization"]["issues"], [x["code"] for x in d["issues"] if i["id"] in x.get("entities", x.get("entity_ids", []))])
+print(sorted({x["code"] for x in d["issues"]}))

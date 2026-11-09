@@ -1,0 +1,123 @@
+{
+  "accounting": {
+    "checks": [
+      {
+        "left": 10,
+        "name": "no source span reported twice for one scheme",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 10,
+        "name": "candidates = identifiers + excluded",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 10,
+        "name": "identifiers by role sum",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 33,
+        "name": "one marker observation per container",
+        "ok": true,
+        "right": 33
+      },
+      {
+        "left": 33,
+        "name": "every unit in exactly one container",
+        "ok": true,
+        "right": 33
+      },
+      {
+        "left": 39,
+        "name": "source uses = matched + abstained + source_only",
+        "ok": true,
+        "right": 39
+      },
+      {
+        "left": 39,
+        "name": "render uses = matched + unmatched",
+        "ok": true,
+        "right": 39
+      },
+      {
+        "left": 39,
+        "name": "matched pairs are one-to-one",
+        "ok": true,
+        "right": 39
+      }
+    ],
+    "containers": {
+      "note": 33
+    },
+    "excluded_identifiers": {},
+    "identifiers_by_role": {
+      "marker_target": 4,
+      "primary_citation_field": 6
+    },
+    "identifiers_by_scheme": {
+      "doi": 5,
+      "pmid": 5
+    },
+    "identifiers_render": {
+      "render_link_found": 10
+    },
+    "markers": {
+      "ambiguous_text": 1,
+      "no_recognized_warning_in_inspected_region": 30,
+      "recognized_warning_text": 2
+    },
+    "parse_nodes": 663,
+    "render_only_identifiers": 0,
+    "render_uses": {
+      "matched": 39,
+      "total": 39,
+      "unmatched": 0
+    },
+    "source_bytes": 20444,
+    "units": {
+      "citation_template": 22,
+      "unstructured_text": 11
+    },
+    "uses": {
+      "anonymous": 28,
+      "bound": 11
+    },
+    "uses_render": {
+      "matched": 39
+    }
+  },
+  "capture": {
+    "capture_sha256": "eb8b3ffc92ee078074585059bcd2f77989e33e174b6ab5a00d3a9b4f251c99f0",
+    "page_id": 41787575,
+    "render_artifact": "4a12e078ec88d97a4b4673596fb139b12e4a79499a726c2a789f3e4c91597763",
+    "render_state": "captured",
+    "revision_id": 1372543632,
+    "sha1": "9510652efbb374fcefc0343090b110942348fc6b",
+    "source_artifact": "88da776f5847e822d9a87c456f92d22fbe6bf0cc816043ae818b91d6a40a2149",
+    "title": "Haruko Obokata",
+    "wiki": "en"
+  },
+  "components": {
+    "markers": {
+      "state": "complete"
+    },
+    "reconciliation": {
+      "state": "complete"
+    },
+    "render": {
+      "state": "complete"
+    },
+    "source": {
+      "state": "complete"
+    }
+  },
+  "exceptions": {},
+  "extraction_digest": "9f326293763b4aa387839fa0f12594069a889ba7b315216260d5922802bd5429",
+  "issues": {},
+  "out": "/workspace/stage03-work/wheel-smoke-final/en.json",
+  "status": "complete"
+}

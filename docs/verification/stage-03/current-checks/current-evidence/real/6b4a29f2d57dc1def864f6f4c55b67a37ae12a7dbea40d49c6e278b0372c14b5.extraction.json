@@ -1,0 +1,3336 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 27,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 27
+   },
+   {
+    "left": 32,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 32
+   },
+   {
+    "left": 27,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 27
+   },
+   {
+    "left": 14,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 14
+   },
+   {
+    "left": 14,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 14
+   },
+   {
+    "left": 6,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 6
+   }
+  ],
+  "containers": {
+   "bibliography_entry": 10,
+   "note": 4
+  },
+  "excluded_identifiers": {
+   "ref_attribute": 5
+  },
+  "identifiers_by_role": {
+   "marker_target": 1,
+   "primary_citation_field": 26
+  },
+  "identifiers_by_scheme": {
+   "doi": 14,
+   "pmid": 13
+  },
+  "identifiers_render": {
+   "no_render_link_in_region": 1,
+   "region_not_reconciled": 20,
+   "render_link_found": 6
+  },
+  "markers": {
+   "missing_template_link_only": 1,
+   "no_recognized_warning_in_inspected_region": 3,
+   "not_inspected": 10
+  },
+  "parse_nodes": 255,
+  "render_only_identifiers": 20,
+  "render_uses": {
+   "matched": 6,
+   "total": 6,
+   "unmatched": 0
+  },
+  "source_bytes": 7771,
+  "units": {
+   "citation_template": 14
+  },
+  "uses": {
+   "bound": 6
+  },
+  "uses_render": {
+   "matched": 6
+  }
+ },
+ "capture": {
+  "capture_sha256": "6b4a29f2d57dc1def864f6f4c55b67a37ae12a7dbea40d49c6e278b0372c14b5",
+  "page_id": 4541237,
+  "render_artifact": "e7c791b46071912d11ce3e12c1f6ec61a5e31810e48a584a37593391833deffa",
+  "render_state": "captured",
+  "revision_id": 76488293,
+  "sha1": "ea8cccc28a0dde7935000745b5e10337a2d2a6f2",
+  "source_artifact": "535ab76c9bf75d0a8e36cd4c22930a7326df56d1741a0717a504e9e78f28bcd7",
+  "title": "BCAS3",
+  "wiki": "ar"
+ },
+ "components": {
+  "markers": {
+   "state": "partial"
+  },
+  "reconciliation": {
+   "state": "partial"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 641,
+      "byte_start": 268,
+      "cp_end": 524,
+      "cp_start": 201
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 647,
+      "byte_start": 249,
+      "cp_end": 530,
+      "cp_start": 182
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "entrez",
+   "name_raw": "entrez",
+   "render": {
+    "region_id": "cite_note-entrez-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 647,
+    "byte_start": 249,
+    "cp_end": 530,
+    "cp_start": 182
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1158,
+      "byte_start": 672,
+      "cp_end": 976,
+      "cp_start": 555
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1164,
+      "byte_start": 647,
+      "cp_end": 982,
+      "cp_start": 530
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": "pmid12378525",
+   "name_raw": "pmid12378525",
+   "render": {
+    "region_id": "cite_note-pmid12378525-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1164,
+    "byte_start": 647,
+    "cp_end": 982,
+    "cp_start": 530
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002",
+    "us-00003"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1806,
+      "byte_start": 1334,
+      "cp_end": 1518,
+      "cp_start": 1106
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1812,
+      "byte_start": 1309,
+      "cp_end": 1524,
+      "cp_start": 1081
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "pmid16617102",
+   "name_raw": "pmid16617102",
+   "render": {
+    "region_id": "cite_note-pmid16617102-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1812,
+    "byte_start": 1309,
+    "cp_end": 1524,
+    "cp_start": 1081
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2834,
+      "byte_start": 2229,
+      "cp_end": 2321,
+      "cp_start": 1776
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2840,
+      "byte_start": 2203,
+      "cp_end": 2327,
+      "cp_start": 1750
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "pmid175050582",
+   "name_raw": "pmid175050582",
+   "render": {
+    "region_id": "cite_note-pmid175050582-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2840,
+    "byte_start": 2203,
+    "cp_end": 2327,
+    "cp_start": 1750
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00005",
+    "us-00006"
+   ]
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 3807,
+    "byte_start": 3385,
+    "cp_end": 3040,
+    "cp_start": 2682
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 4275,
+    "byte_start": 3808,
+    "cp_end": 3431,
+    "cp_start": 3041
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00007",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 4684,
+    "byte_start": 4276,
+    "cp_end": 3768,
+    "cp_start": 3432
+   },
+   "unit_ids": [
+    "un-00007"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00008",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 5103,
+    "byte_start": 4685,
+    "cp_end": 4116,
+    "cp_start": 3769
+   },
+   "unit_ids": [
+    "un-00008"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00009",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 5447,
+    "byte_start": 5104,
+    "cp_end": 4389,
+    "cp_start": 4117
+   },
+   "unit_ids": [
+    "un-00009"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00010",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 5851,
+    "byte_start": 5448,
+    "cp_end": 4722,
+    "cp_start": 4390
+   },
+   "unit_ids": [
+    "un-00010"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00011",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 6287,
+    "byte_start": 5852,
+    "cp_end": 5087,
+    "cp_start": 4723
+   },
+   "unit_ids": [
+    "un-00011"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00012",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 6677,
+    "byte_start": 6288,
+    "cp_end": 5406,
+    "cp_start": 5088
+   },
+   "unit_ids": [
+    "un-00012"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00013",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 7094,
+    "byte_start": 6678,
+    "cp_end": 5765,
+    "cp_start": 5407
+   },
+   "unit_ids": [
+    "un-00013"
+   ],
+   "use_ids": []
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00014",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": null,
+    "state": "unmatched"
+   },
+   "source": {
+    "byte_end": 7509,
+    "byte_start": 7095,
+    "cp_end": 6122,
+    "cp_start": 5766
+   },
+   "unit_ids": [
+    "un-00014"
+   ],
+   "use_ids": []
+  }
+ ],
+ "exceptions": [
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00005",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00006",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00007",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00008",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00009",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00010",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00011",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00012",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00013",
+   "entity_type": "marker"
+  },
+  {
+   "code": "MARKER_REGION_NOT_INSPECTED",
+   "detail": "container not matched to a rendered region",
+   "entity": "ct-00014",
+   "entity_type": "marker"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1210/me.2006-0514",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[10]/cite/a[2]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 17505058",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[10]/cite/a[4]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1016/0378-1119(94)90802-8",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[1]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 8125298",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[1]/cite/a[5]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1016/s0378-1119(97)00411-3",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[2]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 9373149",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[2]/cite/a[5]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1002/gcc.10121",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[3]/cite/a[2]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 12378525",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[3]/cite/a[4]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1073/pnas.242603899",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[4]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 12477932",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[4]/cite/a[6]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1038/ng1285",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[5]/cite/a[2]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 14702039",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[5]/cite/a[4]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1101/gr.2596504",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[6]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 15489334",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[6]/cite/a[6]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1101/gr.4039406",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[7]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 16344560",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[7]/cite/a[6]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.1073/pnas.0601989103",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[8]/cite/a[3]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 16617102",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[8]/cite/a[6]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "doi 10.4161/cc.5.13.2924",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[9]/cite/a[2]",
+   "entity_type": "render_identifier"
+  },
+  {
+   "code": "RENDER_ONLY_IDENTIFIER",
+   "detail": "pmid 16855396",
+   "entity": "render-link:/html/body/section[4]/div[1]/div/ul/li[9]/cite/a[4]",
+   "entity_type": "render_identifier"
+  }
+ ],
+ "excluded_identifiers": [
+  {
+   "reason": "ref_attribute",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 670,
+    "byte_start": 662,
+    "cp_end": 553,
+    "cp_start": 545,
+    "exact": true,
+    "raw": "12378525",
+    "raw_sha256": "fc843ce48d239891d3ed90ef8bcc697cf991cb35b221fe2664f9e29858c7bcf4"
+   }
+  },
+  {
+   "reason": "ref_attribute",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1187,
+    "byte_start": 1179,
+    "cp_end": 1005,
+    "cp_start": 997,
+    "exact": true,
+    "raw": "12378525",
+    "raw_sha256": "fc843ce48d239891d3ed90ef8bcc697cf991cb35b221fe2664f9e29858c7bcf4"
+   }
+  },
+  {
+   "reason": "ref_attribute",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1332,
+    "byte_start": 1324,
+    "cp_end": 1104,
+    "cp_start": 1096,
+    "exact": true,
+    "raw": "16617102",
+    "raw_sha256": "7fa1ffdd1781f31b3259cc9538656d1c9b787895c4c016ad46e9a95e53397432"
+   }
+  },
+  {
+   "reason": "ref_attribute",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 2227,
+    "byte_start": 2218,
+    "cp_end": 1774,
+    "cp_start": 1765,
+    "exact": true,
+    "raw": "175050582",
+    "raw_sha256": "5760d26c98fcf6a36254a53a3150aa903393fc1c4665fcab070d43cce248822f"
+   }
+  },
+  {
+   "reason": "ref_attribute",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3207,
+    "byte_start": 3198,
+    "cp_end": 2548,
+    "cp_start": 2539,
+    "exact": true,
+    "raw": "175050582",
+    "raw_sha256": "5760d26c98fcf6a36254a53a3150aa903393fc1c4665fcab070d43cce248822f"
+   }
+  }
+ ],
+ "extraction_digest": "5406f69b38ffde1f687a7329fbb21d4dfc5525d52a4a86ea94a1bb7147e7b1a9",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.0.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00002",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 12378525 ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "12378525",
+    "raw": " 12378525 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwQg",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[2]/span[2]/cite/a[4]",
+      "quote": "12378525",
+      "subtree_sha256": "15d697ed75b74a2042e73c470225de44cb1c80e29aa77c81648582a1c97e4566"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1116,
+    "byte_start": 1106,
+    "cp_end": 938,
+    "cp_start": 928,
+    "exact": true,
+    "raw": " 12378525 ",
+    "raw_sha256": "6cd087444bad937af5831f297b30aa91e5057b9ab1a087cad6c43ef6043874da"
+   },
+   "unit_id": "un-00002"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00002",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1002/gcc.10121 ",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/gcc.10121",
+    "raw": " 10.1002/gcc.10121 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwQA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[2]/span[2]/cite/a[2]",
+      "quote": "10.1002/gcc.10121",
+      "subtree_sha256": "ebe3e41519bcef685e6d37862378ace7f3589b71fb1d50a67df388c4a28768af"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1142,
+    "byte_start": 1123,
+    "cp_end": 964,
+    "cp_start": 945,
+    "exact": true,
+    "raw": " 10.1002/gcc.10121 ",
+    "raw_sha256": "f1a2b802457ac59fdbc342275ffc1a4494c8d5f3d7c2f635cef61a21b6405163"
+   },
+   "unit_id": "un-00002"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "16617102",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "16617102",
+    "raw": "16617102",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwVg",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[3]/span[2]/cite/a[7]",
+      "quote": "16617102",
+      "subtree_sha256": "70d924e482d716f44cc9b27048584aae0319e2812daa48b25b13eea8bd7afe93"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1760,
+    "byte_start": 1752,
+    "cp_end": 1472,
+    "cp_start": 1464,
+    "exact": true,
+    "raw": "16617102",
+    "raw_sha256": "7fa1ffdd1781f31b3259cc9538656d1c9b787895c4c016ad46e9a95e53397432"
+   },
+   "unit_id": "un-00003"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1073/pnas.0601989103",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1073/pnas.0601989103",
+    "raw": "10.1073/pnas.0601989103",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwUQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[3]/span[2]/cite/span[4]/a",
+      "quote": "10.1073/pnas.0601989103",
+      "subtree_sha256": "78ea382da402e55e0aae81f3ccdd90d19fad3e26bfa8c1dff22bf6c8be77efd0"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1788,
+    "byte_start": 1765,
+    "cp_end": 1500,
+    "cp_start": 1477,
+    "exact": true,
+    "raw": "10.1073/pnas.0601989103",
+    "raw_sha256": "0a379811ef214ae3f2e79052257456647766ebf5d2854b0a11c2a0aa9770f6d3"
+   },
+   "unit_id": "un-00003"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "17505058",
+    "structural_steps": []
+   },
+   "id": "id-00005",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "17505058",
+    "raw": "17505058",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwZw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[4]/span[2]/cite/a[4]",
+      "quote": "17505058",
+      "subtree_sha256": "929c08a593037f500a7ee587a9cff369f95b7a0cf7a813207f552ce3a6d4cad9"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 2609,
+    "byte_start": 2601,
+    "cp_end": 2096,
+    "cp_start": 2088,
+    "exact": true,
+    "raw": "17505058",
+    "raw_sha256": "e2a1f87358146461a0a36e9e7b752f01c89a847671867f57f3242e4830833297"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1210/me.2006-0514",
+    "structural_steps": []
+   },
+   "id": "id-00006",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1210/me.2006-0514",
+    "raw": "10.1210/me.2006-0514",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwXg",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[4]/span[2]/cite/a[1]",
+      "quote": "\"Estrogen induces expression of BCAS3, a novel estrogen receptor-alpha coactivator, through proline-, glutamic acid-, and leucine-rich protein-1 (PELP1)\"",
+      "subtree_sha256": "127c37a5ed4e7bcd9a3cefc75716e8b164887f0f2a1961f172318875e34a197c"
+     },
+     {
+      "element_id": "mwZQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[4]/span[2]/cite/span[4]/a",
+      "quote": "10.1210/me.2006-0514",
+      "subtree_sha256": "b3a0b13594cf1c54d96e1b1a1b217353a4626f414e0381d95560d102af99ad28"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2634,
+    "byte_start": 2614,
+    "cp_end": 2121,
+    "cp_start": 2101,
+    "exact": true,
+    "raw": "10.1210/me.2006-0514",
+    "raw_sha256": "693e7c60be7bfc68fcf4e80419974bbea5fa769350c5ae87b2639d43148c5736"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1210/me.2014-1149",
+    "structural_steps": []
+   },
+   "id": "id-00007",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1210/me.2014-1149",
+    "raw": "10.1210/me.2014-1149",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "no_render_link_in_region",
+    "witnesses": []
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2804,
+    "byte_start": 2784,
+    "cp_end": 2291,
+    "cp_start": 2271,
+    "exact": true,
+    "raw": "10.1210/me.2014-1149",
+    "raw_sha256": "557fda73555bcaaa24a272c217ec9e1f07a85385b6d848d5aca59832ba2a801f"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 8125298 ",
+    "structural_steps": []
+   },
+   "id": "id-00008",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "8125298",
+    "raw": " 8125298 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3770,
+    "byte_start": 3761,
+    "cp_end": 3003,
+    "cp_start": 2994,
+    "exact": true,
+    "raw": " 8125298 ",
+    "raw_sha256": "e29639d5ccda3db59e3266859463f553551c29f53efeb8b778481aef59ec19ee"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1016/0378-1119(94)90802-8  ",
+    "structural_steps": []
+   },
+   "id": "id-00009",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/0378-1119(94)90802-8",
+    "raw": "10.1016/0378-1119(94)90802-8  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 3805,
+    "byte_start": 3775,
+    "cp_end": 3038,
+    "cp_start": 3008,
+    "exact": true,
+    "raw": "10.1016/0378-1119(94)90802-8  ",
+    "raw_sha256": "5cc577cc49b45966b577a60f332a021a8cd401fed36b2e911ecee29a63737a24"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00006",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 9373149 ",
+    "structural_steps": []
+   },
+   "id": "id-00010",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "9373149",
+    "raw": " 9373149 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4204,
+    "byte_start": 4195,
+    "cp_end": 3373,
+    "cp_start": 3364,
+    "exact": true,
+    "raw": " 9373149 ",
+    "raw_sha256": "3f618f633bde52c2ea229ad1ab494fe49027616ee9fc13386dadaaf8f9967032"
+   },
+   "unit_id": "un-00006"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00006",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1016/S0378-1119(97)00411-3  ",
+    "structural_steps": []
+   },
+   "id": "id-00011",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/s0378-1119(97)00411-3",
+    "raw": "10.1016/S0378-1119(97)00411-3  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4240,
+    "byte_start": 4209,
+    "cp_end": 3409,
+    "cp_start": 3378,
+    "exact": true,
+    "raw": "10.1016/S0378-1119(97)00411-3  ",
+    "raw_sha256": "74a6a2efcae6b734dd06f7f125e7e4340902f7d647af3bd8c5bee8a0ca26aac8"
+   },
+   "unit_id": "un-00006"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00007",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 12378525 ",
+    "structural_steps": []
+   },
+   "id": "id-00012",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "12378525",
+    "raw": " 12378525 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4625,
+    "byte_start": 4615,
+    "cp_end": 3722,
+    "cp_start": 3712,
+    "exact": true,
+    "raw": " 12378525 ",
+    "raw_sha256": "6cd087444bad937af5831f297b30aa91e5057b9ab1a087cad6c43ef6043874da"
+   },
+   "unit_id": "un-00007"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00007",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1002/gcc.10121 ",
+    "structural_steps": []
+   },
+   "id": "id-00013",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/gcc.10121",
+    "raw": " 10.1002/gcc.10121 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4649,
+    "byte_start": 4630,
+    "cp_end": 3746,
+    "cp_start": 3727,
+    "exact": true,
+    "raw": " 10.1002/gcc.10121 ",
+    "raw_sha256": "f1a2b802457ac59fdbc342275ffc1a4494c8d5f3d7c2f635cef61a21b6405163"
+   },
+   "unit_id": "un-00007"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00008",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 12477932 ",
+    "structural_steps": []
+   },
+   "id": "id-00014",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "12477932",
+    "raw": " 12477932 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 5025,
+    "byte_start": 5015,
+    "cp_end": 4051,
+    "cp_start": 4041,
+    "exact": true,
+    "raw": " 12477932 ",
+    "raw_sha256": "dd6300a103bc4aaeb76d744e6aa23894d6e9bc37168278a5eb5365e6bafc93b1"
+   },
+   "unit_id": "un-00008"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00008",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1073/pnas.242603899  ",
+    "structural_steps": []
+   },
+   "id": "id-00015",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1073/pnas.242603899",
+    "raw": " 10.1073/pnas.242603899  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5055,
+    "byte_start": 5030,
+    "cp_end": 4081,
+    "cp_start": 4056,
+    "exact": true,
+    "raw": " 10.1073/pnas.242603899  ",
+    "raw_sha256": "7a60b7580f59ee93f2106aca189ce4fe238eb417b7091b3249839258e33038d9"
+   },
+   "unit_id": "un-00008"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00009",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 14702039 ",
+    "structural_steps": []
+   },
+   "id": "id-00016",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "14702039",
+    "raw": " 14702039 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 5391,
+    "byte_start": 5381,
+    "cp_end": 4346,
+    "cp_start": 4336,
+    "exact": true,
+    "raw": " 14702039 ",
+    "raw_sha256": "0f9bf5d52d88ddcfc0054f9da30b46fad155417fa78957b1881089b1f183d535"
+   },
+   "unit_id": "un-00009"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00009",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1038/ng1285 ",
+    "structural_steps": []
+   },
+   "id": "id-00017",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1038/ng1285",
+    "raw": " 10.1038/ng1285 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5412,
+    "byte_start": 5396,
+    "cp_end": 4367,
+    "cp_start": 4351,
+    "exact": true,
+    "raw": " 10.1038/ng1285 ",
+    "raw_sha256": "2e225fce847e00a337546346a563c6167a1ddb50c3c59df9fb8dbc31ec18b602"
+   },
+   "unit_id": "un-00009"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00010",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 15489334 ",
+    "structural_steps": []
+   },
+   "id": "id-00018",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "15489334",
+    "raw": " 15489334 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 5777,
+    "byte_start": 5767,
+    "cp_end": 4661,
+    "cp_start": 4651,
+    "exact": true,
+    "raw": " 15489334 ",
+    "raw_sha256": "c2626937e55ce16ba953c2eb1e2731b639d77d0c7f81d21655e4173c1179333a"
+   },
+   "unit_id": "un-00010"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00010",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1101/gr.2596504  ",
+    "structural_steps": []
+   },
+   "id": "id-00019",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1101/gr.2596504",
+    "raw": " 10.1101/gr.2596504  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5803,
+    "byte_start": 5782,
+    "cp_end": 4687,
+    "cp_start": 4666,
+    "exact": true,
+    "raw": " 10.1101/gr.2596504  ",
+    "raw_sha256": "1beb6bec00ece648237fcbcba660ed0ba02a921e6996c7fdb35f822e0f5e471c"
+   },
+   "unit_id": "un-00010"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00011",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 16344560 ",
+    "structural_steps": []
+   },
+   "id": "id-00020",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "16344560",
+    "raw": " 16344560 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 6212,
+    "byte_start": 6202,
+    "cp_end": 5025,
+    "cp_start": 5015,
+    "exact": true,
+    "raw": " 16344560 ",
+    "raw_sha256": "425188ad2fbc180577bd2106a0b00ecdc6b45b8ebe77eda511a543e4e87fc968"
+   },
+   "unit_id": "un-00011"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00011",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1101/gr.4039406  ",
+    "structural_steps": []
+   },
+   "id": "id-00021",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1101/gr.4039406",
+    "raw": " 10.1101/gr.4039406  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 6238,
+    "byte_start": 6217,
+    "cp_end": 5051,
+    "cp_start": 5030,
+    "exact": true,
+    "raw": " 10.1101/gr.4039406  ",
+    "raw_sha256": "d520f6f90ae31f98178ea294c67b8b3f2bd384e24a6d5463b6f8153fe0df90d1"
+   },
+   "unit_id": "un-00011"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00012",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 16617102 ",
+    "structural_steps": []
+   },
+   "id": "id-00022",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "16617102",
+    "raw": " 16617102 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 6597,
+    "byte_start": 6587,
+    "cp_end": 5339,
+    "cp_start": 5329,
+    "exact": true,
+    "raw": " 16617102 ",
+    "raw_sha256": "02245f5e18a38e469daece3690178da9cb23e56c816626a39f903a16e3d5b599"
+   },
+   "unit_id": "un-00012"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00012",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1073/pnas.0601989103  ",
+    "structural_steps": []
+   },
+   "id": "id-00023",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1073/pnas.0601989103",
+    "raw": " 10.1073/pnas.0601989103  ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 6628,
+    "byte_start": 6602,
+    "cp_end": 5370,
+    "cp_start": 5344,
+    "exact": true,
+    "raw": " 10.1073/pnas.0601989103  ",
+    "raw_sha256": "0b1ff0ed1a08a77d0cf861d433ee83f564ecdb87166d742c1ac62a66b95e5a8a"
+   },
+   "unit_id": "un-00012"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00013",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 16855396 ",
+    "structural_steps": []
+   },
+   "id": "id-00024",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "16855396",
+    "raw": " 16855396 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 7065,
+    "byte_start": 7055,
+    "cp_end": 5736,
+    "cp_start": 5726,
+    "exact": true,
+    "raw": " 16855396 ",
+    "raw_sha256": "f9fa1302fd35e153e463f87c10e2577d917710c44a0da1bb822955139a4646ee"
+   },
+   "unit_id": "un-00013"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00013",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "  10.4161/cc.5.13.2924",
+    "structural_steps": []
+   },
+   "id": "id-00025",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.4161/cc.5.13.2924",
+    "raw": "  10.4161/cc.5.13.2924",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 7092,
+    "byte_start": 7070,
+    "cp_end": 5763,
+    "cp_start": 5741,
+    "exact": true,
+    "raw": "  10.4161/cc.5.13.2924",
+    "raw_sha256": "ee08842aa2b74dd1419967229e9963df70f9975d6c33c992e17ef7ee6abf780e"
+   },
+   "unit_id": "un-00013"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00014",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 17505058 ",
+    "structural_steps": []
+   },
+   "id": "id-00026",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "17505058",
+    "raw": " 17505058 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 7480,
+    "byte_start": 7470,
+    "cp_end": 6093,
+    "cp_start": 6083,
+    "exact": true,
+    "raw": " 17505058 ",
+    "raw_sha256": "a69455c715d0e315d65d9f8ffb2724db0794b3c893d98ae1bc55069bbbf23968"
+   },
+   "unit_id": "un-00014"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00014",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1210/me.2006-0514 ",
+    "structural_steps": []
+   },
+   "id": "id-00027",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1210/me.2006-0514",
+    "raw": " 10.1210/me.2006-0514 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "region_not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 7507,
+    "byte_start": 7485,
+    "cp_end": 6120,
+    "cp_start": 6098,
+    "exact": true,
+    "raw": " 10.1210/me.2006-0514 ",
+    "raw_sha256": "3aa386c9343516a6bca1fbd54fe984a8d84dedc9d5a1059acaaf6b5e81be7b84"
+   },
+   "unit_id": "un-00014"
+  }
+ ],
+ "issues": [
+  {
+   "code": "DOM_ID_DUPLICATE",
+   "detail": "CITEREFGururajPengVadlamudiKumar2007",
+   "entities": [],
+   "evidence": [],
+   "retryable": false,
+   "severity": "warning"
+  }
+ ],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-entrez-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "19049c87e7fc383c64243a346f913ab8ca9306ef677b1e247699bd1adfd5f975"
+    },
+    "region_id": "cite_note-entrez-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-pmid12378525-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/div/ol/li[2]",
+     "quote": "1 2 Bärlund M، Monni O، Weaver JD، Kauraniemi P، Sauter G، Heiskanen M، Kallioniemi OP، Kallioniemi A (ديسمبر 2002). \"Cloning of BCAS3 (17q23) and BCAS4 (20q13)",
+     "subtree_sha256": "ce5c6ffdfbfadcd4573e6f5d3a99872960e99cf8cf379367b84e6e044d2ffe32"
+    },
+    "region_id": "cite_note-pmid12378525-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-pmid16617102-3",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/div/ol/li[3]",
+     "quote": "↑ Gururaj AE، Singh RR، Rayala SK، Holm C، den Hollander P، Zhang H، Balasenthil S، Talukder AH، Landberg G، Kumar R (أبريل 2006). \"MTA1, a transcriptional acti",
+     "subtree_sha256": "76a4a5c3ebfdee84d9f1f074b8aa61a98eaed6926a9ab3bb26762a0c520432f0"
+    },
+    "region_id": "cite_note-pmid16617102-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [
+    {
+     "kind": "missing_template_link",
+     "locator": {
+      "element_id": "mwaQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/div/ol/li[4]/span[2]/a",
+      "quote": "قالب:Retracted",
+      "subtree_sha256": "12ea63d7cc627e7b1b8dc20a40248cd585f7b94b4f56867f21a2257f59d2920c"
+     },
+     "matched": "قالب:Retracted",
+     "part": "redlink",
+     "target": "قالب:Retracted",
+     "target_basis": "href"
+    }
+   ],
+   "reason": "a link to a marker template that does not exist",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-pmid175050582-4",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/div/ol/li[4]",
+     "quote": "1 2 Gururaj AE، Peng S، Vadlamudi RK، Kumar R (أغسطس 2007). \"Estrogen induces expression of BCAS3, a novel estrogen receptor-alpha coactivator, through proline-",
+     "subtree_sha256": "493f2b9b86a3ded4b7d364ef8038194532c8a94b06b8201c7a4c6b5e4f207659"
+    },
+    "region_id": "cite_note-pmid175050582-4"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 2321,
+     "cp_start": 2139,
+     "template": "Retracted"
+    }
+   ],
+   "state": "missing_template_link_only"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00007",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00008",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00009",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00010",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00011",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00012",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00013",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00014",
+   "evidence": [],
+   "reason": "container not matched to a rendered region",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "not_inspected"
+  }
+ ],
+ "render_only": {
+  "identifiers": [
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1016%2F0378-1119%2894%2990802-8",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[1]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[1]/cite/a[3]",
+     "quote": "10.1016/0378-1119(94)90802-8",
+     "subtree_sha256": "b87957031bbc84881a3dfeeeaeac045f5a14a55b992221c2a2659edab0d2b9fc"
+    },
+    "normalized": "10.1016/0378-1119(94)90802-8",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/8125298",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[1]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[1]/cite/a[5]",
+     "quote": "8125298",
+     "subtree_sha256": "39693cf48d9db98a009452dd44b18e31c5c3e0a9452cdf588e4146b179ab76fa"
+    },
+    "normalized": "8125298",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1016%2FS0378-1119%2897%2900411-3",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[2]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[2]/cite/a[3]",
+     "quote": "10.1016/S0378-1119(97)00411-3",
+     "subtree_sha256": "964c35bce9ce3e3460f0be6d0a7dbdf78aa73cc24bdd2aad1628bf76bde3a09f"
+    },
+    "normalized": "10.1016/s0378-1119(97)00411-3",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/9373149",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[2]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[2]/cite/a[5]",
+     "quote": "9373149",
+     "subtree_sha256": "5c3d49c4296304fad50ae7db6bdf5946c03bafcecb7401494a7dff29ab0fb586"
+    },
+    "normalized": "9373149",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1002%2Fgcc.10121",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[3]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[3]/cite/a[2]",
+     "quote": "10.1002/gcc.10121",
+     "subtree_sha256": "2643613138c57e23c8021a8acb2e702e64962f7f686bda68a5259162a26d7ba1"
+    },
+    "normalized": "10.1002/gcc.10121",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/12378525",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[3]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[3]/cite/a[4]",
+     "quote": "12378525",
+     "subtree_sha256": "f7603e7c68844c13f20e68ef8ba25486e5209ff7840385ed5a09d89127ae65cb"
+    },
+    "normalized": "12378525",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1073%2Fpnas.242603899",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[4]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[4]/cite/a[3]",
+     "quote": "10.1073/pnas.242603899",
+     "subtree_sha256": "86f0f46c3348fc4554a4d7d697e1c3c2d456a6b66b311a920f044d85c0ed5734"
+    },
+    "normalized": "10.1073/pnas.242603899",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/12477932",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[4]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[4]/cite/a[6]",
+     "quote": "12477932",
+     "subtree_sha256": "ccd3286f5d80d58ebf516afb8e75572a664db895b86854068d1a41f772ffc948"
+    },
+    "normalized": "12477932",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1038%2Fng1285",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[5]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[5]/cite/a[2]",
+     "quote": "10.1038/ng1285",
+     "subtree_sha256": "48b3631581ea2e6e05499a735615bc1ef8dc528f81fbd6ccaf5e3ab1bf6881b8"
+    },
+    "normalized": "10.1038/ng1285",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/14702039",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[5]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[5]/cite/a[4]",
+     "quote": "14702039",
+     "subtree_sha256": "d9c3c0212128aac4e07e061f78eddd70e52bd12ec25b046b1dc0edae7cf36ecb"
+    },
+    "normalized": "14702039",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1101%2Fgr.2596504",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[6]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[6]/cite/a[3]",
+     "quote": "10.1101/gr.2596504",
+     "subtree_sha256": "fad0830d2eb0b59502f7f41a0eeae34cb838711321e74f6802fedf9b202b2af5"
+    },
+    "normalized": "10.1101/gr.2596504",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/15489334",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[6]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[6]/cite/a[6]",
+     "quote": "15489334",
+     "subtree_sha256": "a6a494d854ed78b69a4ddaa27bc309e2c2f70b089a0c2ea96b138c3c82701f5c"
+    },
+    "normalized": "15489334",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1101%2Fgr.4039406",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[7]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[7]/cite/a[3]",
+     "quote": "10.1101/gr.4039406",
+     "subtree_sha256": "2c39fc320d1e2f42ec0cd8ffe89538d452739373f086647cf96691fde6b6fcb2"
+    },
+    "normalized": "10.1101/gr.4039406",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/16344560",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[7]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[7]/cite/a[6]",
+     "quote": "16344560",
+     "subtree_sha256": "310749af64fca19056433c476279f553b6b7c3399d42fc64b768332911d486bb"
+    },
+    "normalized": "16344560",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1073%2Fpnas.0601989103",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[8]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[8]/cite/a[3]",
+     "quote": "10.1073/pnas.0601989103",
+     "subtree_sha256": "150cac7714e3822b95317e4fbd99761b072111fdc68eec69e348e4c6db771599"
+    },
+    "normalized": "10.1073/pnas.0601989103",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/16617102",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[8]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[8]/cite/a[6]",
+     "quote": "16617102",
+     "subtree_sha256": "0255c75ca84a655335fee1fe90463815fcfb1bb66b7bbf6c99518d1abaa32e44"
+    },
+    "normalized": "16617102",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.4161%2Fcc.5.13.2924",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[9]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[9]/cite/a[2]",
+     "quote": "10.4161/cc.5.13.2924",
+     "subtree_sha256": "a9dd14a307bd844dab29806ec638718da4a05b9619b716891b42bd57d2af4692"
+    },
+    "normalized": "10.4161/cc.5.13.2924",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/16855396",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[9]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[9]/cite/a[4]",
+     "quote": "16855396",
+     "subtree_sha256": "070a0278ab48f03dea84bbcfde1bbea2392af0237c8f5cfe1bbc30113bd636e5"
+    },
+    "normalized": "16855396",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   },
+   {
+    "hidden": false,
+    "href": "https://doi.org/10.1210%2Fme.2006-0514",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[10]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[10]/cite/a[2]",
+     "quote": "10.1210/me.2006-0514",
+     "subtree_sha256": "d9e01597667e6a17180b74c176da2fd57514cdb7116b7725599a5a745b4a0bd7"
+    },
+    "normalized": "10.1210/me.2006-0514",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "doi"
+   },
+   {
+    "hidden": false,
+    "href": "https://pubmed.ncbi.nlm.nih.gov/17505058",
+    "list_item": "/html/body/section[4]/div[1]/div/ul/li[10]",
+    "locator": {
+     "element_id": null,
+     "id_unique": false,
+     "path": "/html/body/section[4]/div[1]/div/ul/li[10]/cite/a[4]",
+     "quote": "17505058",
+     "subtree_sha256": "1dad74abc48197b4e4f49cf2f33e6084891bf4f3ac02a54bd2940bd4ef71df58"
+    },
+    "normalized": "17505058",
+    "note": null,
+    "region_reconciled": false,
+    "scheme": "pmid"
+   }
+  ],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.0.0",
+ "status": "partial",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt3"
+   },
+   "source": {
+    "byte_end": 641,
+    "byte_start": 268,
+    "cp_end": 524,
+    "cp_start": 201
+   },
+   "template": {
+    "canonical": "استشهاد بويب",
+    "family": "web",
+    "kind": "citation",
+    "name": "استشهاد بويب"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt6"
+   },
+   "source": {
+    "byte_end": 1158,
+    "byte_start": 672,
+    "cp_end": 976,
+    "cp_start": 555
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [
+    "id-00003",
+    "id-00004"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt10"
+   },
+   "source": {
+    "byte_end": 1806,
+    "byte_start": 1334,
+    "cp_end": 1518,
+    "cp_start": 1106
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [
+    "id-00005",
+    "id-00006"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt13"
+   },
+   "source": {
+    "byte_end": 2652,
+    "byte_start": 2229,
+    "cp_end": 2139,
+    "cp_start": 1776
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [
+    "id-00008",
+    "id-00009"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 3807,
+    "byte_start": 3386,
+    "cp_end": 3040,
+    "cp_start": 2683
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [
+    "id-00010",
+    "id-00011"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 4275,
+    "byte_start": 3809,
+    "cp_end": 3431,
+    "cp_start": 3042
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00007",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00007",
+   "identifier_ids": [
+    "id-00012",
+    "id-00013"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 4684,
+    "byte_start": 4277,
+    "cp_end": 3768,
+    "cp_start": 3433
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00008",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00008",
+   "identifier_ids": [
+    "id-00014",
+    "id-00015"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 5103,
+    "byte_start": 4686,
+    "cp_end": 4116,
+    "cp_start": 3770
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00009",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00009",
+   "identifier_ids": [
+    "id-00016",
+    "id-00017"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 5447,
+    "byte_start": 5105,
+    "cp_end": 4389,
+    "cp_start": 4118
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00010",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00010",
+   "identifier_ids": [
+    "id-00018",
+    "id-00019"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 5851,
+    "byte_start": 5449,
+    "cp_end": 4722,
+    "cp_start": 4391
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00011",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00011",
+   "identifier_ids": [
+    "id-00020",
+    "id-00021"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 6287,
+    "byte_start": 5853,
+    "cp_end": 5087,
+    "cp_start": 4724
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00012",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00012",
+   "identifier_ids": [
+    "id-00022",
+    "id-00023"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 6677,
+    "byte_start": 6289,
+    "cp_end": 5406,
+    "cp_start": 5089
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00013",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00013",
+   "identifier_ids": [
+    "id-00024",
+    "id-00025"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 7094,
+    "byte_start": 6679,
+    "cp_end": 5765,
+    "cp_start": 5408
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  },
+  {
+   "container_id": "ct-00014",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00014",
+   "identifier_ids": [
+    "id-00026",
+    "id-00027"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "container_unmatched",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 7509,
+    "byte_start": 7096,
+    "cp_end": 6122,
+    "cp_start": 5767
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "entrez",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-entrez_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "356cbd2d0a24808e0b9576d4fdf193e3469857fa1d79427a2ca6e5f3a22a603c"
+    },
+    "state": "matched",
+    "target_note": "cite_note-entrez-1"
+   },
+   "source": {
+    "byte_end": 647,
+    "byte_start": 249,
+    "cp_end": 530,
+    "cp_start": 182
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": "pmid12378525",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-pmid12378525_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[2]",
+     "quote": "[2]",
+     "subtree_sha256": "50368be31e3707d13b75d46cfaec9493a36cbd23fde37ab2f5a3f6e9d29df64a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-pmid12378525-2"
+   },
+   "source": {
+    "byte_end": 1164,
+    "byte_start": 647,
+    "cp_end": 982,
+    "cp_start": 530
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00003",
+   "name": "pmid12378525",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-pmid12378525_2-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[3]",
+     "quote": "[2]",
+     "subtree_sha256": "6482ca63d009e8f6e45d90c6b4fd72ee60cd149a33398e9bc45c681cbaf00609"
+    },
+    "state": "matched",
+    "target_note": "cite_note-pmid12378525-2"
+   },
+   "source": {
+    "byte_end": 1190,
+    "byte_start": 1164,
+    "cp_end": 1008,
+    "cp_start": 982
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00004",
+   "name": "pmid16617102",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-pmid16617102_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[1]",
+     "quote": "[3]",
+     "subtree_sha256": "9589cddf67d88d9ee24ead82b51a89db9b5ad311f40663bc9430cde9fddaa92f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-pmid16617102-3"
+   },
+   "source": {
+    "byte_end": 1812,
+    "byte_start": 1309,
+    "cp_end": 1524,
+    "cp_start": 1081
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00005",
+   "name": "pmid175050582",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-pmid175050582_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[2]",
+     "quote": "[4]",
+     "subtree_sha256": "c7263246ae8e9a653c47a65c480ef5e583af5804914e7b5dab23afc6f45dafb3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-pmid175050582-4"
+   },
+   "source": {
+    "byte_end": 2840,
+    "byte_start": 2203,
+    "cp_end": 2327,
+    "cp_start": 1750
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00006",
+   "name": "pmid175050582",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-pmid175050582_4-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[3]",
+     "quote": "[4]",
+     "subtree_sha256": "c0ba39285f78ca7d946f69ade7e516df9535647810c301d4ca3fd9c7caf3fa0d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-pmid175050582-4"
+   },
+   "source": {
+    "byte_end": 3211,
+    "byte_start": 3183,
+    "cp_end": 2552,
+    "cp_start": 2524
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

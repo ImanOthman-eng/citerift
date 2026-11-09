@@ -1,0 +1,11 @@
+import sys,re
+from lxml import html
+d=sys.argv[1]
+base='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/ar-h1/packets/'+d
+doc=html.parse(base+'/render.html').getroot()
+mx=int(sys.argv[2]) if len(sys.argv)>2 else 160
+for s in doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+    dm=s.get('data-mw') or ''
+    print('SUP',s.get('id'),dm[:mx].replace('\n',' '), '|', ''.join(s.itertext())[:20])
+for li in doc.xpath('//li[starts-with(@id,"cite_note")]'):
+    print('LI',li.get('id'),' '.join(''.join(li.itertext()).split())[:mx])

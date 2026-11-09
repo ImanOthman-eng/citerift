@@ -1,0 +1,634 @@
+FFFFFFFFFFFFFF....FFFF                                                   [100%]
+=================================== FAILURES ===================================
+_ test_warning_witness_is_bound_and_classified_from_retained_context[outside-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_0')
+variant = 'outside', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'outside')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[outside-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_1')
+variant = 'outside', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'outside')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[region-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_2')
+variant = 'region', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'region')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[region-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_3')
+variant = 'region', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'region')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[other_note-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_4')
+variant = 'other_note', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'other_note')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[other_note-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_5')
+variant = 'other_note', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'other_note')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[negated-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_6')
+variant = 'negated', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'negated')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[negated-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_7')
+variant = 'negated', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'negated')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[quoted-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_8')
+variant = 'quoted', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'quoted')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[quoted-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_9')
+variant = 'quoted', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'quoted')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[substring-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_10')
+variant = 'substring', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'substring')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[substring-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_11')
+variant = 'substring', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'substring')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[prefix-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_12')
+variant = 'prefix', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'prefix')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[prefix-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_13')
+variant = 'prefix', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'prefix')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[interrupted-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_18')
+variant = 'interrupted', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'interrupted')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[interrupted-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_19')
+variant = 'interrupted', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'interrupted')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[repeated-en] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_20')
+variant = 'repeated', wiki = 'en'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('en', 'repeated')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+_ test_warning_witness_is_bound_and_classified_from_retained_context[repeated-ar] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-0/test_warning_witness_is_bound_21')
+variant = 'repeated', wiki = 'ar'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("wiki", ["en", "ar"])
+    @pytest.mark.parametrize(
+        "variant",
+        [
+            "outside",
+            "region",
+            "other_note",
+            "negated",
+            "quoted",
+            "substring",
+            "prefix",
+            "hidden",
+            "citation",
+            "interrupted",
+            "repeated",
+        ],
+    )
+    def test_warning_witness_is_bound_and_classified_from_retained_context(tmp_path: Path, variant: str, wiki: str) -> None:
+        path, genuine, forged = probe(tmp_path, variant, wiki)
+        assert verify_bundle(path, genuine)["verified"]
+        assert replay_bundle(path, recorded=genuine)["replay"]["state"] == "reproduced"
+        assert replay_bundle(path, recorded=forged)["replay"]["state"] == "differs"
+        checked = verify_bundle(path, forged)
+>       assert not checked["verified"], (wiki, variant)
+E       AssertionError: ('ar', 'repeated')
+E       assert not True
+
+tests/stage03/test_wiki_v1_v2.py:106: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[outside-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[outside-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[region-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[region-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[other_note-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[other_note-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[negated-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[negated-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[quoted-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[quoted-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[substring-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[substring-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[prefix-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[prefix-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[interrupted-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[interrupted-ar]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[repeated-en]
+FAILED tests/stage03/test_wiki_v1_v2.py::test_warning_witness_is_bound_and_classified_from_retained_context[repeated-ar]
+18 failed, 4 passed in 15.96s

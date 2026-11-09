@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 47245,
+   "body_sha256": "e116825447baab29709581e3dad87a93785a9aa8daced4ab54a9f19423463bf6",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.423,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:30:21.678388Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1473997",
+   "wire_bytes": 16173
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "d7d8ac69dbf6d8af276744652dfcf07e00d6f842d4ff24f4251cfd7ead12260d",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.381,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-03T16:30:32.102345Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1375552426/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 321941,
+   "body_sha256": "596740a172c21ed56bb382b33c4d4d083026c2d77c6e2aee4be561ea7366f0cf",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.449,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-03T16:31:00.484097Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1375552426/html",
+   "wire_bytes": 53340
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.1.0"
+ },
+ "failure_artifacts": [
+  "d7d8ac69dbf6d8af276744652dfcf07e00d6f842d4ff24f4251cfd7ead12260d"
+ ],
+ "finished_at": "2026-11-03T16:31:00.935851Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1473997,
+  "parent_revision_id": 1372173162,
+  "redirect_followed": null,
+  "revision_id": 1375552426,
+  "revision_timestamp": "2026-09-18T14:10:07Z",
+  "sha1": "b2321cfafd568be5358b745c94d3ad0d1ee04fd3",
+  "size": 46147,
+  "title": "Liverpool Hope University",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "596740a172c21ed56bb382b33c4d4d083026c2d77c6e2aee4be561ea7366f0cf",
+  "bytes": 321941,
+  "checks": {
+   "document_revision_id": "1375552426",
+   "header_revision_id": "1375552426",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "1473997",
+   "render_id": "b683cd79-d745-11f1-8726-7979ad18a756",
+   "revision_sha1": "b2321cfafd568be5358b745c94d3ad0d1ee04fd3",
+   "revision_sha1_base36": "ktcke5kpq63q1w9fq2agsn6qseydn0z"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1375552426",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Tue, 03 Nov 2026 16:31:00 GMT",
+   "etag": "W/\"1375552426/b683cd79-d745-11f1-8726-7979ad18a756/view\"",
+   "last-modified": "Tue, 03 Nov 2026 05:05:18 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1375552426/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1473997,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "e5e925d15f96982eb832808fe93487aa6b16f51c0ea48c25d5de3aaecd0252af",
+  "bytes": 46147,
+  "response_artifact": "e116825447baab29709581e3dad87a93785a9aa8daced4ab54a9f19423463bf6",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1473997"
+ },
+ "started_at": "2026-11-03T16:30:12.024859Z",
+ "status": "complete"
+}

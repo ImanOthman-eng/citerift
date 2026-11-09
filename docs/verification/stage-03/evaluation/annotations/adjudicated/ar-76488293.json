@@ -1,0 +1,787 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76488293,
+  "source_sha256": "535ab76c9bf75d0a8e36cd4c22930a7326df56d1741a0717a504e9e78f28bcd7",
+  "html_sha256": "e7c791b46071912d11ce3e12c1f6ec61a5e31810e48a584a37593391833deffa",
+  "window": [
+   0,
+   6283
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:46:14Z",
+  "files_opened": [
+   {
+    "path": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "ar-76488293/packet.json",
+    "sha256": "443e5aabb3ee8983096a1f74863b5debc42c8509a4591c220ad470150038576b"
+   },
+   {
+    "path": "ar-76488293/source.wikitext",
+    "sha256": "535ab76c9bf75d0a8e36cd4c22930a7326df56d1741a0717a504e9e78f28bcd7"
+   },
+   {
+    "path": "ar-76488293/render.html",
+    "sha256": "e7c791b46071912d11ce3e12c1f6ec61a5e31810e48a584a37593391833deffa"
+   }
+  ],
+  "tools": "cat/sha256sum; python3 -I with re (str/regex search for <ref, {{, 10., pmid, doi, list markers) and lxml.html (listing sup[typeof~=mw:Extension/ref] ids and data-mw, li[id^=cite_note] text and red links); each label decided by reading the text; every location checked with text[cp:cp+len(quote)]==quote.",
+  "unresolved": "Bibliography entries sit inside the citations= parameter of {{PBB Further reading}} rather than directly in the page; labelled as bibliography_entry because each is a '*' list item with a citation template outside any <ref>. Ref-name digits (pmid12378525 etc.) labelled not_a_target with the digits as key. {{Retracted}} is a red link on arwiki, so d4 marker is missing_template_link_only rather than warning."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 182,
+    "quote": "<ref name=\"entrez\">{{استشهاد بويب | عنوان = E"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "entrez",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 201,
+      "quote": "{{استشهاد بويب | عنوان = Entrez Gene: BCAS3 b"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-entrez-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "NCBI Entrez Gene URL (Db=gene, gene id 54828), not a PubMed id."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 530,
+    "quote": "<ref name=\"pmid12378525\">{{استشهاد بدورية محك"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid12378525",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 555,
+      "quote": "{{استشهاد بدورية محكمة | عدة مؤلفين = Bärlund"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid12378525-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1081,
+    "quote": "<ref name=\"pmid16617102\">{{استشهاد بدورية محك"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid16617102",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1106,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=MTA1, a transcri"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid16617102-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1750,
+    "quote": "<ref name=\"pmid175050582\">{{استشهاد بدورية مح"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid175050582",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1776,
+      "quote": "{{استشهاد بدورية محكمة|عنوان=Estrogen induces"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid175050582-4",
+   "marker": "missing_template_link_only",
+   "marker_text": "قالب:Retracted",
+   "notes": "The ref also contains {{Retracted|... ''Retraction Watch''|doi=10.1210/me.2014-1149|...}} (not a citation template, so not listed in templates). On arwiki the template does not exist: the rendered footnote shows only a red link a.new titled 'قالب:Retracted' with text 'قالب:Retracted'; no retraction statement is rendered."
+  },
+  {
+   "id": "b1",
+   "at": {
+    "cp": 2682,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Maruyam"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2683,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Maruyama"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b2",
+   "at": {
+    "cp": 3041,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Suzuki "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3042,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Suzuki Y"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b3",
+   "at": {
+    "cp": 3432,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Bärlund"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3433,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Bärlund "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b4",
+   "at": {
+    "cp": 3769,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Strausb"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3770,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Strausbe"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b5",
+   "at": {
+    "cp": 4117,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Ota T, "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4118,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Ota T, S"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b6",
+   "at": {
+    "cp": 4390,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Gerhard"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4391,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Gerhard "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b7",
+   "at": {
+    "cp": 4723,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Kimura "
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4724,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Kimura K"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b8",
+   "at": {
+    "cp": 5088,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5089,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b9",
+   "at": {
+    "cp": 5407,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5408,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry."
+  },
+  {
+   "id": "b10",
+   "at": {
+    "cp": 5766,
+    "quote": "*{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5767,
+      "quote": "{{استشهاد بدورية محكمة  | عدة مؤلفين=Gururaj "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "List item inside the citations= parameter of {{PBB Further reading}} in the 'قراءة متعمقة' section; rendered as a plain list item, no retraction wording in the rendered entry. Same work as the retracted footnote pmid175050582, but this entry renders no warning."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 182,
+    "quote": "<ref name=\"entrez\">{{استشهاد بويب | عنوان = E"
+   },
+   "binds_to": {
+    "cp": 182,
+    "quote": "<ref name=\"entrez\">{{استشهاد بويب | عنوان = E"
+   },
+   "render_ref_id": "cite_ref-entrez_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 530,
+    "quote": "<ref name=\"pmid12378525\">{{استشهاد بدورية محك"
+   },
+   "binds_to": {
+    "cp": 530,
+    "quote": "<ref name=\"pmid12378525\">{{استشهاد بدورية محك"
+   },
+   "render_ref_id": "cite_ref-pmid12378525_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 982,
+    "quote": "<ref name=\"pmid12378525\"/>"
+   },
+   "binds_to": {
+    "cp": 530,
+    "quote": "<ref name=\"pmid12378525\">{{استشهاد بدورية محك"
+   },
+   "render_ref_id": "cite_ref-pmid12378525_2-1",
+   "notes": "Self-closing reuse immediately after its definition."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1081,
+    "quote": "<ref name=\"pmid16617102\">{{استشهاد بدورية محك"
+   },
+   "binds_to": {
+    "cp": 1081,
+    "quote": "<ref name=\"pmid16617102\">{{استشهاد بدورية محك"
+   },
+   "render_ref_id": "cite_ref-pmid16617102_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1750,
+    "quote": "<ref name=\"pmid175050582\">{{استشهاد بدورية مح"
+   },
+   "binds_to": {
+    "cp": 1750,
+    "quote": "<ref name=\"pmid175050582\">{{استشهاد بدورية مح"
+   },
+   "render_ref_id": "cite_ref-pmid175050582_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2524,
+    "quote": "<ref name=\"pmid175050582\" />"
+   },
+   "binds_to": {
+    "cp": 1750,
+    "quote": "<ref name=\"pmid175050582\">{{استشهاد بدورية مح"
+   },
+   "render_ref_id": "cite_ref-pmid175050582_4-1",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 545,
+    "quote": "12378525"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "12378525",
+   "notes": "Digits inside ref name=\"pmid12378525\"; not article content."
+  },
+  {
+   "at": {
+    "cp": 929,
+    "quote": "12378525"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12378525",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 946,
+    "quote": "10.1002/gcc.10121"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/gcc.10121",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 997,
+    "quote": "12378525"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "12378525",
+   "notes": "Digits inside ref name=\"pmid12378525\" of the self-closing reuse."
+  },
+  {
+   "at": {
+    "cp": 1096,
+    "quote": "16617102"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "16617102",
+   "notes": "Digits inside ref name=\"pmid16617102\"."
+  },
+  {
+   "at": {
+    "cp": 1464,
+    "quote": "16617102"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16617102",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1477,
+    "quote": "10.1073/pnas.0601989103"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.0601989103",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1765,
+    "quote": "175050582"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "175050582",
+   "notes": "Digits inside ref name=\"pmid175050582\" (looks like a mistyped 17505058 with an extra 2); key given for the digits as written."
+  },
+  {
+   "at": {
+    "cp": 2088,
+    "quote": "17505058"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17505058",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2101,
+    "quote": "10.1210/me.2006-0514"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1210/me.2006-0514",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2271,
+    "quote": "10.1210/me.2014-1149"
+   },
+   "scheme": "doi",
+   "role": "marker_target",
+   "key": "10.1210/me.2014-1149",
+   "notes": "doi= of {{Retracted}} inside the ref pmid175050582: the retraction notice DOI. The Retracted template does not exist on arwiki (red link)."
+  },
+  {
+   "at": {
+    "cp": 2539,
+    "quote": "175050582"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "175050582",
+   "notes": "Digits inside ref name=\"pmid175050582\" of the self-closing reuse; mistyped PMID as above."
+  },
+  {
+   "at": {
+    "cp": 2995,
+    "quote": "8125298"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "8125298",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3008,
+    "quote": "10.1016/0378-1119(94)90802-8"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0378-1119(94)90802-8",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3365,
+    "quote": "9373149"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "9373149",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3378,
+    "quote": "10.1016/S0378-1119(97)00411-3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0378-1119(97)00411-3",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3713,
+    "quote": "12378525"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12378525",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 3728,
+    "quote": "10.1002/gcc.10121"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1002/gcc.10121",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4042,
+    "quote": "12477932"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12477932",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4057,
+    "quote": "10.1073/pnas.242603899"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.242603899",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4337,
+    "quote": "14702039"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "14702039",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4352,
+    "quote": "10.1038/ng1285"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/ng1285",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4652,
+    "quote": "15489334"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15489334",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 4667,
+    "quote": "10.1101/gr.2596504"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1101/gr.2596504",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5016,
+    "quote": "16344560"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16344560",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5031,
+    "quote": "10.1101/gr.4039406"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1101/gr.4039406",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5330,
+    "quote": "16617102"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16617102",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5345,
+    "quote": "10.1073/pnas.0601989103"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.0601989103",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5727,
+    "quote": "16855396"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16855396",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 5743,
+    "quote": "10.4161/cc.5.13.2924"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.4161/cc.5.13.2924",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 6084,
+    "quote": "17505058"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "17505058",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 6099,
+    "quote": "10.1210/me.2006-0514"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1210/me.2006-0514",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "{{صندوق معلومات جين}} (gene infobox) renders no footnotes in this HTML (no Wikidata references found).",
+  "{{Retracted}} in ref pmid175050582 also carries a Retraction Watch URL (retractionwatch.com/2014/08/28/...) that is not rendered because the template is missing on arwiki."
+ ],
+ "adjudication": {
+  "adjudicator": "stage03-adjudicator-ar",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-ar/decisions/ar-76488293.json",
+  "changed_items": []
+ }
+}

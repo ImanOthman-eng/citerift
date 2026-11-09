@@ -1,0 +1,613 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 67036660,
+  "source_sha256": "184c3b8a3e7085eb53fe4ae77e8d7dfddfbf1c29f581c39e7506e22d6465e506",
+  "html_sha256": "86f40eb18ac7d2620d8c64558bb33699dd80258dbf3da3e3b8c8a971b8838cd3",
+  "window": [
+   7499,
+   15499
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-ar-h4",
+  "started_at": "2026-11-04T10:22:00Z",
+  "finished_at": "2026-11-04T11:00:00Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-67036660/source.wikitext",
+    "sha256": "184c3b8a3e7085eb53fe4ae77e8d7dfddfbf1c29f581c39e7506e22d6465e506"
+   },
+   {
+    "path": "packets/ar-67036660/render.html",
+    "sha256": "86f40eb18ac7d2620d8c64558bb33699dd80258dbf3da3e3b8c8a971b8838cd3"
+   },
+   {
+    "path": "packets/ar-67036660/packet.json",
+    "sha256": "8fbb024d3a97c4f97f842c71bac941446d9efb1dd885115cfe3982c354d373c7"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: regex search of source.wikitext for ref/template/doi/pmid positions; lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; str slice check of every quote. No general reference parser. Labels decided by reading.",
+  "unresolved": "The nature.com URL (https://www.nature.com/articles/s41586-020-2462-y) and its web.archive.org copy end in a Springer Nature article id that equals the DOI suffix, but do not contain the literal \"10.1038/\" text; not labelled as identifier occurrences.; Definitions at 263 (:1) and 4494 (:2) start before the window and are listed with in_window=false only as binding targets.; Pre-window refs (:0, unnamed at 2396, 3323, 5657, 6571, 6865) are not listed (their starts are before the window and nothing in the window binds to them)."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 263,
+    "quote": "<ref name=\":1\">{{استشهاد ويب"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":1",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-:1-1",
+   "marker": "none",
+   "marker_text": "1 2 3 \"من عالمة في أبحاث السرطان إلى مدربة للمهاجرين الجدد بألمانيا – DW – 2023/11/26\". dw.com. مؤرشف من الأصل في 2024-01-06. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": "Before the window; included only as binding target of the uses at 8985 and 15336. Templates not listed (start before window)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4494,
+    "quote": "<ref name=\":2\">{{استشهاد ويب"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": ":2",
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-:2-5",
+   "marker": "none",
+   "marker_text": "1 2 \"من عالمة في أبحاث السرطان إلى مدربة للمهاجرين الجدد بألمانيا.. حكاية شابة مصرية\". مهاجر نيوز. 23 نوفمبر 2023. مؤرشف من الأصل في 2024-03-09. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": "Before the window; included only as binding target of the use at 15353."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 7788,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7793,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": "\"سارة حجي: \"وفاة قريبتي بالسرطان دفعني لدخول كلية الصيدلة\"\". جريدة الأهرام. 22 يناير 2022. مؤرشف من الأصل في 2022-01-31. اطلع عليه بتاريخ 2022-01-22.",
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 8252,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8257,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": "\"الفائزة بجائزة أفضل بحث عن السرطان بألمانيا: فقدت أحد أقاربي بالمرض\". المصري اليوم. 23 أغسطس 2023. مؤرشف من الأصل في 2023-08-26. اطلع عليه بتاريخ 2023-08-23.",
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 9002,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9007,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": "تامر، سمر (26 يناير 2022). \"الفائزة بجائزة أفضل بحث عن السرطان: الاكتئاب كان عاملا أساسيا في نجاحي\". الوطن. مؤرشف من الأصل في 2022-02-15. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 9798,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 9803,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": "Ahmed, Sara Mahmoud H.; Maldera, Julieta A.; Krunic, Damir; Paiva-Silva, Gabriela O.; Pénalva, Clothilde; Teleman, Aurelio A.; Edgar, Bruce A. (2020-08). \"Fitness trade-offs incurred by ovary-to-gut steroid signalling in Drosophila\". Nature (بالإنجليزية). 584 (7821): 415–419. DOI:10.1038/s41586-020-",
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 11385,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11390,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": "\"لماذا فازت المصرية سارة حجي بجائزة أفضل بحث عن السرطان في ألمانيا؟ - بوابة الشروق\". www.shorouknews.com. Archived from the original on 2022-01-18. Retrieved 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 11839,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 11844,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": "\"بوابة روز اليوسف | د.\"سارة حجي\".. مصرية تبهر العالم باكتشاف علمي مذهل في سرطان الثدي\". بوابة روز اليوسف. 25 يناير 2022. مؤرشف من الأصل في 2022-04-15. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 12178,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12183,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": "\"أمل وقصة نجاح جديدة لسارة حجي بعد فوزها بأفضل بحث في بحوث السرطان بألمانيا\". المصري اليوم. 18 يناير 2022. مؤرشف من الأصل في 2022-01-26. اطلع عليه بتاريخ 2022-01-18.",
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 12530,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 12535,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-16",
+   "marker": "none",
+   "marker_text": "\"German University in Cairo - Sara Hegy Wins Richtzenhain German Doctoral Prize for the year 2021\". www.guc.edu.eg (بالإنجليزية). Archived from the original on 2023-11-30. Retrieved 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 13028,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13033,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-17",
+   "marker": "none",
+   "marker_text": "\"Richtzenhain Prize Awardees\". www.dkfz.de. مؤرشف من الأصل في 2023-12-05. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 13348,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13353,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-18",
+   "marker": "none",
+   "marker_text": "\"شاهد| سارة حجي مصرية تحصل على جائزة ألمانية في أبحاث السرطان\". www.albawabhnews.com. 19 ديسمبر 2021. مؤرشف من الأصل في 2024-03-09. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 13707,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 13712,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-19",
+   "marker": "none",
+   "marker_text": "\"بعد فوزها بأفضل بحث عن السرطان.. السفارة الألمانية تهنئ المصرية سارة حجي\". فيتو. 18 Jan 2022. Archived from the original on 2022-01-18. Retrieved 2024-03-09.",
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 14138,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14143,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-20",
+   "marker": "none",
+   "marker_text": "\"من منتدى شباب العالم.. العالمة المصرية سارة حجي: أسعى لنقل خبراتي لشباب مصر\". صدى البلد. مؤرشف من الأصل في 2022-01-14. اطلع عليه بتاريخ 2022-01-13.",
+   "notes": ""
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 14436,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 14441,
+      "quote": "{{استشهاد ويب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-21",
+   "marker": "none",
+   "marker_text": "\"الباحثة المصرية سارة حجي تفوز بجائزة ريشتسينهاين لأفضل بحث عن السرطان.. وسفارة ألمانيا بالقاهرة تهنئها بالفوز – درب\". 18 يناير 2022. مؤرشف من الأصل في 2022-05-17. اطلع عليه بتاريخ 2024-03-09.",
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 7788,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 7788,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 8252,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 8252,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 8985,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 263,
+    "quote": "<ref name=\":1\">{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-:1_1-1",
+   "notes": "Self-closing reuse by name; no body."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 9002,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 9002,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 9798,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "binds_to": {
+    "cp": 9798,
+    "quote": "<ref>{{استشهاد بدورية محكمة"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 11385,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 11385,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 11839,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 11839,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 12178,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 12178,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 12530,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 12530,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-16",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 13028,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 13028,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-17",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 13348,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 13348,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-18",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 13707,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 13707,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-19",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 14138,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 14138,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-20",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 14436,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "binds_to": {
+    "cp": 14436,
+    "quote": "<ref>{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-21",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 15336,
+    "quote": "<ref name=\":1\" />"
+   },
+   "binds_to": {
+    "cp": 263,
+    "quote": "<ref name=\":1\">{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-:1_1-2",
+   "notes": "Self-closing reuse by name; no body."
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 15353,
+    "quote": "<ref name=\":2\" />"
+   },
+   "binds_to": {
+    "cp": 4494,
+    "quote": "<ref name=\":2\">{{استشهاد ويب"
+   },
+   "render_ref_id": "cite_ref-:2_5-1",
+   "notes": "Self-closing reuse by name; no body."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 10273,
+    "quote": "10.1038/s41586-020-2462-y"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/s41586-020-2462-y",
+   "notes": "Value of دوي= field."
+  }
+ ],
+ "unresolved_notes": [
+  "The nature.com URL (https://www.nature.com/articles/s41586-020-2462-y) and its web.archive.org copy end in a Springer Nature article id that equals the DOI suffix, but do not contain the literal \"10.1038/\" text; not labelled as identifier occurrences.",
+  "Definitions at 263 (:1) and 4494 (:2) start before the window and are listed with in_window=false only as binding targets.",
+  "Pre-window refs (:0, unnamed at 2396, 3323, 5657, 6571, 6865) are not listed (their starts are before the window and nothing in the window binds to them)."
+ ]
+}

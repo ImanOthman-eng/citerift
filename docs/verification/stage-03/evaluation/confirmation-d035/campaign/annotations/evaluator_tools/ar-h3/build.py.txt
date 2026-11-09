@@ -1,0 +1,44 @@
+import json,re,sys,datetime
+BASE='/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h3'
+START=sys.argv[1]
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+def ctx(rev):
+    d=f'{BASE}/packets/ar-{rev}'
+    pj=json.load(open(d+'/packet.json'))
+    T=open(d+'/source.wikitext',encoding='utf8').read()
+    def L(q,nth=0,off=0,n=None):
+        p=-1
+        for _ in range(nth+1):
+            p=T.find(q,p+1)
+            assert p>=0,(rev,q,nth)
+        p+=off
+        n=n or min(60,len(q)-off)
+        return {'cp':p,'quote':T[p:p+n]}
+    return pj,T,L
+def D(i,at,kind,name,group,templates,unstr,note_id,notes='',in_window=True,marker='none',mt=None):
+    return {'id':i,'at':at,'in_window':in_window,'kind':kind,'name':name,'group':group,'templates':[{'at':t} for t in templates],'unstructured':unstr,'render_note_id':note_id,'marker':marker,'marker_text':mt,'notes':notes}
+def U(i,at,b,rid,notes=''):
+    return {'id':i,'at':at,'binds_to':b,'render_ref_id':rid,'notes':notes}
+def I(at,scheme,role,key,notes=''):
+    return {'at':at,'scheme':scheme,'role':role,'key':key,'notes':notes}
+def finish(rev,pj,T,defs,uses,ids,unres):
+    w=[pj['window']['cp_start'],pj['window']['cp_end']]
+    for x in defs+uses+ids:
+        a=x['at']; assert T[a['cp']:a['cp']+len(a['quote'])]==a['quote'],x
+        if 'binds_to' in x and x['binds_to'] not in ('missing','unclear'):
+            b=x['binds_to']; assert T[b['cp']:b['cp']+len(b['quote'])]==b['quote'],x
+        for t in x.get('templates',[]):
+            b=t['at']; assert T[b['cp']:b['cp']+len(b['quote'])]==b['quote'],x
+    for x in defs+uses+ids:
+        assert w[0]<=x['at']['cp']<w[1] or x.get('in_window') is False,x
+    files=[{'path':f'packets/ar-{rev}/{n}','sha256':pj[k]} for n,k in (('source.wikitext','source_sha256'),('render.html','html_sha256'))]
+    files.append({'path':'packets/ar-%d/packet.json'%rev,'sha256':'(not hashed separately; read for window and hashes)'})
+    files.append({'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE_SHA})
+    out={'format':'citerift-stage03-annotation-v1',
+     'article':{'wiki':'ar','revision_id':rev,'source_sha256':pj['source_sha256'],'html_sha256':pj['html_sha256'],'window':w},
+     'provenance':{'agent':'d035-eval-ar-h3','started_at':START,'finished_at':datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+       'files_opened':files,'tools':'python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote',
+       'unresolved':'; '.join(unres) if unres else 'nothing undecided beyond unresolved_notes'},
+     'definitions':defs,'uses':uses,'identifiers':ids,'unresolved_notes':list(unres)}
+    json.dump(out,open(f'{BASE}/out/ar-{rev}.json','w',encoding='utf8'),ensure_ascii=False,indent=1)
+    print(rev,len(defs),len(uses),len(ids))

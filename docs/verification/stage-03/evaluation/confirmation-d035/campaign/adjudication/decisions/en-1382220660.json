@@ -1,0 +1,57 @@
+{
+ "article": "en-1382220660",
+ "adjudicator": "d035-adj-en-g1",
+ "started_at": "2026-11-03T16:42:47Z",
+ "finished_at": "2026-11-03T16:47:00Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "marker",
+   "decision": "confirm",
+   "reason": "Locked 'none' is right; I inspected the footnote rather than rely on the engine's not_inspected state. The rendered cite_note-3 text is the quotation attribution (with the nested [2] marker) and the refn source has no retraction, withdrawal, erratum or expression-of-concern vocabulary. marker_text is left null as locked; only the marker is disputed, so I did not change it.",
+   "corrected_label": null
+  },
+  {
+   "item": 1,
+   "kind": "marker",
+   "decision": "confirm",
+   "reason": "Locked 'none' is right. The rendered cite_note-2 reads 'Cathcart & Newkirk 1899, p. 94' (a short-citation link), with no warning vocabulary in the footnote or the source.",
+   "corrected_label": null
+  },
+  {
+   "item": 2,
+   "kind": "unstructured_unit_extra",
+   "decision": "confirm",
+   "reason": "Under the guide there is no separate item for prose or an 'unstructured unit'; unstructured is a flag on the definition. The engine's unit (cp 7293) is the quotation text inside the refn definition d1 (cp 7275), which the locked label already covers, so the locked label correctly has no separate item. Ambiguous: the attribution 'According to American consul James Leander Cathcart' could be read as a plain-text citation, which would make d1 unstructured=true. I read it as an attribution, with the source cited by the nested <ref>{{harvnb}} (d2). Not relabelled, since it is not a listed item.",
+   "corrected_label": null
+  },
+  {
+   "item": 3,
+   "kind": "render_link",
+   "decision": "confirm",
+   "reason": "u17 (refn at cp 7275) binds to itself; the marker cite_ref-3 is a sup with data-mw group=nb and body id mw-reference-text-cite_note-3, whose li contains exactly the refn text. That id is unique, so the locked render_ref_id is identifiable and correct; the engine's null is the error.",
+   "corrected_label": null
+  },
+  {
+   "item": 4,
+   "kind": "render_link",
+   "decision": "confirm",
+   "reason": "u18 (nested <ref>{{harvnb|Cathcart|Newkirk|1899|p=94}}</ref> at cp 7639) binds to itself; the marker cite_ref-2 has data-mw body id mw-reference-text-cite_note-2, whose li reads 'Cathcart & Newkirk 1899, p. 94'. Unique, so the locked render_ref_id is correct; the engine's null is the error.",
+   "corrected_label": null
+  },
+  {
+   "item": 5,
+   "kind": "render_link",
+   "decision": "confirm",
+   "reason": "u15 ({{efn|name=\"names\"}} at cp 9059) is the only body-less use of 'names' in the source; its marker is cite_ref-names_17-0 (data-mw name=names, group=lower-alpha, efn part), and the only definition is the notelist one at cp 150857 (first content-bearing use of the name, out of window, binding target). The locked binds_to and render_ref_id are correct; the engine's null is the error.",
+   "corrected_label": null
+  },
+  {
+   "item": 6,
+   "kind": "render_link",
+   "decision": "confirm",
+   "reason": "u16 ({{efn|name=\"republic\"}} at cp 11614) is the only body-less use of 'republic' in the source; its marker is cite_ref-republic_18-0 (data-mw name=republic, group=lower-alpha), and the definition is the notelist one at cp 151596. Locked binding and render_ref_id are correct; the engine's null is the error.",
+   "corrected_label": null
+  }
+ ]
+}

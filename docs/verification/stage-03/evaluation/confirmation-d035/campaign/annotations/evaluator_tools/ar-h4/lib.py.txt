@@ -1,0 +1,37 @@
+import json,hashlib,sys
+G='ANNOTATION_GUIDE_v1.1.md'
+class A:
+    def __init__(s,d):
+        s.d=d; s.p=json.load(open(f'packets/{d}/packet.json'))
+        s.t=open(f'packets/{d}/source.wikitext',encoding='utf-8').read()
+        s.defs=[];s.uses=[];s.ids=[];s.un=[]
+        w=s.p['window'];s.w=(w['cp_start'],w['cp_end'])
+    def L(s,anchor,n=0,ln=None):
+        i=-1
+        for _ in range(n+1):
+            i=s.t.find(anchor,i+1); assert i>=0,(anchor,n)
+        q=anchor if ln is None else s.t[i:i+ln]
+        assert s.t[i:i+len(q)]==q
+        return {"cp":i,"quote":q[:60]}
+    def D(s,anchor,n=0,kind="note",name=None,group="",tpl=(),unstr=False,note_id=None,marker="none",mt=None,notes="",ln=None):
+        at=s.L(anchor,n,ln)
+        s.defs.append({"id":f"d{len(s.defs)+1}","at":at,"in_window":s.w[0]<=at['cp']<s.w[1],"kind":kind,"name":name,"group":group,
+          "templates":[{"at":s.L(*x) if isinstance(x,tuple) else x} for x in tpl],"unstructured":unstr,"render_note_id":note_id,"marker":marker,"marker_text":mt,"notes":notes})
+        return at
+    def U(s,anchor,n=0,bind=None,rid=None,notes="",ln=None):
+        at=s.L(anchor,n,ln)
+        s.uses.append({"id":f"u{len(s.uses)+1}","at":at,"binds_to":bind if bind is not None else at,"render_ref_id":rid,"notes":notes})
+        return at
+    def I(s,anchor,n=0,scheme="doi",role="primary_citation_field",key=None,notes="",ln=None):
+        s.ids.append({"at":s.L(anchor,n,ln),"scheme":scheme,"role":role,"key":key,"notes":notes})
+    def save(s,tools,unresolved,start):
+        import datetime
+        files=[{"path":f"packets/{s.d}/source.wikitext","sha256":s.p['source_sha256']},{"path":f"packets/{s.d}/render.html","sha256":s.p['html_sha256']},{"path":f"packets/{s.d}/packet.json","sha256":"not hashed (packet metadata)"},
+               {"path":G,"sha256":"2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"}]
+        o={"format":"citerift-stage03-annotation-v1","article":{"wiki":"ar","revision_id":s.p['revision_id'],"source_sha256":s.p['source_sha256'],"html_sha256":s.p['html_sha256'],"window":[s.w[0],s.w[1]]},
+           "provenance":{"agent":"d035-eval-ar-h4","started_at":start,"finished_at":datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),"files_opened":files,"tools":"python3 -I stdlib + lxml (listing/search snippets in tools/, label-recording helper)","unresolved":unresolved},
+           "definitions":s.defs,"uses":s.uses,"identifiers":s.ids,"unresolved_notes":s.un}
+        for x in s.defs+s.uses+s.ids:
+            pass
+        json.dump(o,open(f"out/ar-{s.p['revision_id']}.json","w",encoding='utf-8'),ensure_ascii=False,indent=1)
+        print(s.d,len(s.defs),len(s.uses),len(s.ids))

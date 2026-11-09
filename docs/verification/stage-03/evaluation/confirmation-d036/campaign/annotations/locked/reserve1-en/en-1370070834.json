@@ -1,0 +1,717 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1370070834,
+  "source_sha256": "197ea04b190ba19ec9ab6fd21777c88e40b157607c3ee6680d64a386b91e7ff8",
+  "html_sha256": "a224d9c92f04db268deaae2c54e9dfb81ac485ea5fce3bcc1fa2414478d771e2",
+  "window": [
+   32872,
+   40872
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-r1-1b",
+  "started_at": "2026-11-09T13:01:02Z",
+  "finished_at": "2026-11-09T13:03:11Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1370070834/packet.json",
+    "sha256": "4c21121f0c6968bce5b319dab6bbbcd0576fdf3687bea58cadb1f90ab2c323ae"
+   },
+   {
+    "path": "packets/en-1370070834/source.wikitext",
+    "sha256": "197ea04b190ba19ec9ab6fd21777c88e40b157607c3ee6680d64a386b91e7ff8"
+   },
+   {
+    "path": "packets/en-1370070834/render.html",
+    "sha256": "a224d9c92f04db268deaae2c54e9dfb81ac485ea5fce3bcc1fa2414478d771e2"
+   }
+  ],
+  "tools": "python3 stdlib (re, json, hashlib) and lxml run via python3 -I; helper scripts in tools/ for regex listing of <ref/sfn/cite/doi/pmid positions, HTML sup/li listing, and a builder that verifies every quote at its code-point offset. Definition/use decisions and identifier roles chosen by reading the text.",
+  "unresolved": "Nothing undecided beyond notes; sfn \"Shifting views...\" target semantics only read from rendered li."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 32007,
+    "quote": "<ref name=\"Reeves 2000 8\">{{cite book |last=Reeves |first=Ha"
+   },
+   "in_window": false,
+   "kind": "note",
+   "name": "Reeves 2000 8",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 32033,
+      "quote": "{{cite book |last=Reeves |first=Hazel |title=Gender and Deve"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Reeves_2000_8-33",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Definition starts before the window (named ref \"Reeves 2000 8\"); listed because the use at 34579 and 38320 bind to it. Citation page=8."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 33052,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33057,
+      "quote": "{{cite report |last=Razavi |first=Shahrashoub |author2=Carol"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-34",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Razavi 1995 12",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33444,
+      "quote": "{{cite report |last=Razavi |first=Shahrashoub |author2=Carol"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Razavi_1995_12-35",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 33735,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 33740,
+      "quote": "{{cite report |last=Razavi |first=Shahrashoub |author2=Carol"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-36",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 34003,
+    "quote": "<ref>{{cite book |last=Moser |first=Caroline |title=Gender P"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 34008,
+      "quote": "{{cite book |last=Moser |first=Caroline |title=Gender Planni"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-37",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 34718,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 34723,
+      "quote": "{{cite report |last=Razavi |first=Shahrashoub |author2=Carol"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-38",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 35471,
+    "quote": "<ref>{{cite book |last=Reeves |first=Hazel |title=Gender and"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 35476,
+      "quote": "{{cite book |last=Reeves |first=Hazel |title=Gender and Deve"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-39",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 35971,
+    "quote": "{{sfn|Shifting views...}} In an attempt to create gender equ"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEShifting_views...-40",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote {{sfn|Shifting views...}}: first call of footnote name \"Shifting views...\"; repeated later at 41753 (outside window) which is a use only. Target of the author-date link may not exist (single positional argument, no year); rendered li reads \"Shifting views...\". Group is \"\" (Module:Footnotes default)."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 36150,
+    "quote": "<ref>Development Assistance Committee (DAC), 1998, p.7</ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-41",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Plain-text citation without a citation template."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":4",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 36744,
+      "quote": "{{Cite journal |last1=Chung |first1=Yi |last2=Huang |first2="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:4-42",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 37997,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 38002,
+      "quote": "{{cite report |last=Razavi |first=Shahrashoub |author2=Carol"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-43",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d12",
+   "at": {
+    "cp": 38638,
+    "quote": "<ref>{{cite journal |last=Prügl |first=Elizabeth |title=''If"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 38643,
+      "quote": "{{cite journal |last=Prügl |first=Elizabeth |title=''If Lehm"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-44",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d13",
+   "at": {
+    "cp": 39219,
+    "quote": "<ref>{{Cite journal |date=2015 |title=Re-Thinking Women's Em"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 39224,
+      "quote": "{{Cite journal |date=2015 |title=Re-Thinking Women's Empower"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-45",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d14",
+   "at": {
+    "cp": 39666,
+    "quote": "<ref name=\":5\">{{Cite book |title=Gender and the Political E"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":5",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 39681,
+      "quote": "{{Cite book |title=Gender and the Political Economy of Devel"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:5-46",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d15",
+   "at": {
+    "cp": 40500,
+    "quote": "{{sfn|March|Smyth|Mukhopadhyay|1999|pp = 55}}\nThe Moser fram"
+   },
+   "in_window": true,
+   "kind": "generated_note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": false,
+   "render_note_id": "cite_note-FOOTNOTEMarchSmythMukhopadhyay199955-47",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Short footnote; name joins March, Smyth, Mukhopadhyay, 1999, pp 55. Rendered \"March, Smyth & Mukhopadhyay 1999, pp. 55.\""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 33052,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "binds_to": {
+    "cp": 33052,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "render_ref_id": "cite_ref-34",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "binds_to": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "render_ref_id": "cite_ref-Razavi_1995_12_35-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 33735,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "binds_to": {
+    "cp": 33735,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "render_ref_id": "cite_ref-36",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 34003,
+    "quote": "<ref>{{cite book |last=Moser |first=Caroline |title=Gender P"
+   },
+   "binds_to": {
+    "cp": 34003,
+    "quote": "<ref>{{cite book |last=Moser |first=Caroline |title=Gender P"
+   },
+   "render_ref_id": "cite_ref-37",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 34434,
+    "quote": "<ref name=\"Razavi 1995 12\" /> GAD focuses primarily on the g"
+   },
+   "binds_to": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "render_ref_id": "cite_ref-Razavi_1995_12_35-1",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 34579,
+    "quote": "<ref name=\"Reeves 2000 8\" /> Consequently, two major framewo"
+   },
+   "binds_to": {
+    "cp": 32007,
+    "quote": "<ref name=\"Reeves 2000 8\">{{cite book |last=Reeves |first=Ha"
+   },
+   "render_ref_id": "cite_ref-Reeves_2000_8_33-1",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 34718,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "binds_to": {
+    "cp": 34718,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "render_ref_id": "cite_ref-38",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 35095,
+    "quote": "<ref name=\"Razavi 1995 12\" /> in their relative access to re"
+   },
+   "binds_to": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "render_ref_id": "cite_ref-Razavi_1995_12_35-2",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 35379,
+    "quote": "<ref name=\"Razavi 1995 12\" /> This relative positioning tend"
+   },
+   "binds_to": {
+    "cp": 33417,
+    "quote": "<ref name=\"Razavi 1995 12\">{{cite report |last=Razavi |first"
+   },
+   "render_ref_id": "cite_ref-Razavi_1995_12_35-3",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 35471,
+    "quote": "<ref>{{cite book |last=Reeves |first=Hazel |title=Gender and"
+   },
+   "binds_to": {
+    "cp": 35471,
+    "quote": "<ref>{{cite book |last=Reeves |first=Hazel |title=Gender and"
+   },
+   "render_ref_id": "cite_ref-39",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 35971,
+    "quote": "{{sfn|Shifting views...}} In an attempt to create gender equ"
+   },
+   "binds_to": {
+    "cp": 35971,
+    "quote": "{{sfn|Shifting views...}} In an attempt to create gender equ"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEShifting_views..._40-0",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 36150,
+    "quote": "<ref>Development Assistance Committee (DAC), 1998, p.7</ref>"
+   },
+   "binds_to": {
+    "cp": 36150,
+    "quote": "<ref>Development Assistance Committee (DAC), 1998, p.7</ref>"
+   },
+   "render_ref_id": "cite_ref-41",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "binds_to": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "render_ref_id": "cite_ref-:4_42-0",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 37348,
+    "quote": "<ref name=\":4\" />). By five years of age, they begin to deve"
+   },
+   "binds_to": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "render_ref_id": "cite_ref-:4_42-1",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 37484,
+    "quote": "<ref name=\":4\" />). At that age of their life, children thin"
+   },
+   "binds_to": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "render_ref_id": "cite_ref-:4_42-2",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 37897,
+    "quote": "<ref name=\":4\" /> The role of a wife is largely interpreted "
+   },
+   "binds_to": {
+    "cp": 36729,
+    "quote": "<ref name=\":4\">{{Cite journal |last1=Chung |first1=Yi |last2"
+   },
+   "render_ref_id": "cite_ref-:4_42-3",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 37997,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "binds_to": {
+    "cp": 37997,
+    "quote": "<ref>{{cite report |last=Razavi |first=Shahrashoub |author2="
+   },
+   "render_ref_id": "cite_ref-43",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 38320,
+    "quote": "<ref name=\"Reeves 2000 8\" /> In the labor market, women tend"
+   },
+   "binds_to": {
+    "cp": 32007,
+    "quote": "<ref name=\"Reeves 2000 8\">{{cite book |last=Reeves |first=Ha"
+   },
+   "render_ref_id": "cite_ref-Reeves_2000_8_33-2",
+   "notes": ""
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 38638,
+    "quote": "<ref>{{cite journal |last=Prügl |first=Elizabeth |title=''If"
+   },
+   "binds_to": {
+    "cp": 38638,
+    "quote": "<ref>{{cite journal |last=Prügl |first=Elizabeth |title=''If"
+   },
+   "render_ref_id": "cite_ref-44",
+   "notes": ""
+  },
+  {
+   "id": "u20",
+   "at": {
+    "cp": 39219,
+    "quote": "<ref>{{Cite journal |date=2015 |title=Re-Thinking Women's Em"
+   },
+   "binds_to": {
+    "cp": 39219,
+    "quote": "<ref>{{Cite journal |date=2015 |title=Re-Thinking Women's Em"
+   },
+   "render_ref_id": "cite_ref-45",
+   "notes": ""
+  },
+  {
+   "id": "u21",
+   "at": {
+    "cp": 39666,
+    "quote": "<ref name=\":5\">{{Cite book |title=Gender and the Political E"
+   },
+   "binds_to": {
+    "cp": 39666,
+    "quote": "<ref name=\":5\">{{Cite book |title=Gender and the Political E"
+   },
+   "render_ref_id": "cite_ref-:5_46-0",
+   "notes": ""
+  },
+  {
+   "id": "u22",
+   "at": {
+    "cp": 40195,
+    "quote": "<ref name=\":5\" /> Caroline Moser developed the [[Moser Gende"
+   },
+   "binds_to": {
+    "cp": 39666,
+    "quote": "<ref name=\":5\">{{Cite book |title=Gender and the Political E"
+   },
+   "render_ref_id": "cite_ref-:5_46-1",
+   "notes": ""
+  },
+  {
+   "id": "u23",
+   "at": {
+    "cp": 40500,
+    "quote": "{{sfn|March|Smyth|Mukhopadhyay|1999|pp = 55}}\nThe Moser fram"
+   },
+   "binds_to": {
+    "cp": 40500,
+    "quote": "{{sfn|March|Smyth|Mukhopadhyay|1999|pp = 55}}\nThe Moser fram"
+   },
+   "render_ref_id": "cite_ref-FOOTNOTEMarchSmythMukhopadhyay199955_47-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 37040,
+    "quote": "10.3390/ijerph182413052"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.3390/ijerph182413052",
+   "notes": "doi= field of Cite journal in ref :4 (doi-access=free)"
+  },
+  {
+   "at": {
+    "cp": 37116,
+    "quote": "34948661"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "34948661",
+   "notes": "pmid= field of Cite journal in ref :4"
+  },
+  {
+   "at": {
+    "cp": 38898,
+    "quote": "10.1111/j.1749-5687.2011.00149.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1749-5687.2011.00149.x",
+   "notes": "doi= field of cite journal (Prügl 2012)"
+  }
+ ],
+ "unresolved_notes": [
+  "Short-footnote defs (sfn) carry no citation template; unstructured=false by choice. The Shifting views... sfn has only one positional argument, so no matching bibliography target can be named from the call itself.",
+  "Reeves 2000 8 and the Razavi/Moser unnamed refs: unnamed refs with identical-looking templates but different page= values are each their own reference, so each is a definition.",
+  "hdl= fields (hdl=10419/148819) and pmc= are not DOI/PMID and were not labelled."
+ ]
+}

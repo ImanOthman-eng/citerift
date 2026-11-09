@@ -1,0 +1,98 @@
+import json, copy, datetime, hashlib
+BASE='/home/user/stage03-adj/items/ar'
+OUT='/home/user/stage03-adj/out-ar'
+ADJ='stage03-adjudicator-ar'
+STARTED='2026-11-02T12:27:25Z'
+now=datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+R73_TPL=("Guide 3.1 defines citation templates by purpose: 'templates whose purpose is to format a citation: Cite ..., "
+ "Citation, استشهاد ..., Cite Q, and similar'. In render.html this template is the whole content of the footnote and "
+ "renders a formatted citation of one entry of a named reference work")
+R73_TAIL=(". Its only purpose is to cite that source entry, so it is a source-specific citation template ('and similar'). "
+ "The guide is ambiguous here because the template is not a generic Cite/استشهاد template and does not produce CS1 "
+ "<cite> markup, but the guide's test is purpose, not family. The alternative reading also fails on its own terms: "
+ "'unstructured' means citing 'in plain text with no citation template (bare URL, hand-written reference)', and this "
+ "footnote has no plain-text citation, only the template.")
+D1=R73_TPL+" (cite_note-1: '\"Mönckeberg arteriosclerosis\" في معجم دورلاند الطبي', linking the Dorland's entry one/000008416)"+R73_TAIL
+D2=R73_TPL+" (cite_note-2: 'synd/4064 على قاموس من سمى هذا؟', linking whonamedit.com/synd.cfm/4064.html)"+R73_TAIL
+
+a1={'article':'ar-73367172','decisions':[
+ {'item':1,'kind':'template_unit_missed','decision':'confirm','reason':'Locked d1 correctly lists {{قاموس دورلاند|...}} at cp 304 as a citation template. '+D1,'corrected_label':None},
+ {'item':2,'kind':'template_unit_missed','decision':'confirm','reason':'Locked d2 correctly lists {{من سمى هذا|synd|4064}} at cp 809 as a citation template. '+D2,'corrected_label':None},
+ {'item':3,'kind':'unstructured_unit_extra','decision':'confirm','reason':'Under the guide the content at cp 304 is not an unstructured citation, so the locked label correctly has unstructured=false for d1 and records the template instead. '+D1,'corrected_label':None},
+ {'item':4,'kind':'unstructured_unit_extra','decision':'confirm','reason':'Under the guide the content at cp 809 is not an unstructured citation, so the locked label correctly has unstructured=false for d2 and records the template instead. '+D2,'corrected_label':None},
+],'changes':[]}
+
+SFN=("Guide 3.2 states that 'identical short-footnote calls bind to the first such call', i.e. the definition MediaWiki uses "
+ "for a repeated identical {{sfn}} is the first call, whereas a content-bearing <ref> is stated to be 'its own definition'. "
+ "The guide singles out repeated identical sfn calls to bind elsewhere, so a repeated call is a use of the first call's "
+ "definition, not a definition of its own. The raw HTML agrees: every call renders a <sup> with data-mw name '{name}' and "
+ "body pointing to the single list item {note}; there is one rendered footnote, not several. The locked label already has "
+ "this call as a use bound to {first}. Ambiguity: 3.1 lists 'a short-footnote template call' among content-carrying "
+ "references, which read alone could make every call a definition. But that reading conflicts with the explicit 3.2 binding "
+ "rule, and 3.1 itself merges same-name definitions into 'one reference'. The reading that follows both sections is the "
+ "locked one: one definition at the first identical call.")
+TH=dict(name='FOOTNOTEThiollay1994',note='cite_note-FOOTNOTEThiollay1994-11',first='the first identical call {{sfn|Thiollay|1994}} at cp 5814 (locked d1, in_window false)')
+LM=dict(name='FOOTNOTELernerMindell2005',note='cite_note-FOOTNOTELernerMindell2005-16',first='the first identical call {{sfn|Lerner|Mindell|2005}} at cp 11086 (locked d4)')
+items2=[(1,9126,'u2',TH),(2,9917,'u4',TH),(3,11383,'u6',LM),(4,11547,'u7',LM),(5,12264,'u8',LM),(6,12824,'u9',LM),(7,13653,'u10',LM),(8,13723,'u11',LM),(9,13868,'u12',LM),(10,14041,'u13',LM)]
+a2={'article':'ar-75574746','decisions':[
+ {'item':n,'kind':'definition_extra','decision':'confirm','reason':f'The call at cp {cp} is identical to an earlier call (locked {u}). '+SFN.format(**k),'corrected_label':None}
+ for n,cp,u,k in items2],'changes':[]}
+
+ID3_NOTES=("Adjudicated (stage03-adjudicator-ar): DOI inside the publisher URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 "
+ "in the مسار= (url=) parameter of the {{استشهاد بدورية محكمة}} citation template. Role identifier_link per guide 3.5: a publisher URL "
+ "inside a citation template, in url=, pointing at the identifier (the same DOI the template states in DOI= at cp 3147). Raw text is "
+ "the DOI text, not the whole URL, because the URL is not one of the forms listed in the raw-text table (path is /article/, not /doi/), "
+ "so 'anything else: the identifier text' applies.")
+corr3={'at':{'cp':2939,'quote':'10.1088/0004-637X/741/2/68'},'scheme':'doi','role':'identifier_link','key':'10.1088/0004-637x/741/2/68','notes':ID3_NOTES}
+R3=("The occurrence itself is correctly labelled: guide 3.5 requires every DOI occurrence 'wherever it is (also in ... URLs)'. Its raw text "
+ "(the DOI text, since an /article/ URL is not one of the URL forms whose whole URL is quoted) and its key are also right. The role is "
+ "wrong. Guide 3.5 makes identifier_link 'a resolver/PubMed/publisher URL ... inside a reference or citation template (for example in "
+ "url=), pointing at the identifier'. The DOI sits in the publisher's own article URL (iopscience.iop.org, IOP Publishing, the "
+ "publisher of The Astrophysical Journal), in the مسار= (url=) parameter of the citation template, and that URL addresses the "
+ "work with this DOI. textual_mention is for an identifier 'not as the reference's identifier', but here it is the same DOI the "
+ "template gives in DOI= (cp 3147). The clause 'in a parameter that is not an identifier field' cannot cover url=, because "
+ "identifier_link names url= as its own example. Ambiguity: the guide links 'publisher URL' to a /doi/ path only in the raw-text "
+ "and key rules, not in the role definition. The locked label read that link as limiting the role. The role's own wording has no "
+ "such limit, so the limit applies to the quote boundary only. This is not the archive.org case at cp 3087 (not_a_target: "
+ "'another site's URL').")
+a3={'article':'ar-76553307','decisions':[
+ {'item':1,'kind':'identifier_missed','decision':'correct','reason':R3,'corrected_label':corr3}],
+ 'changes':[('identifier',2939,corr3)]}
+
+def check(doc,text):
+    bad=[]
+    def walk(o):
+        if isinstance(o,dict):
+            if 'cp' in o and 'quote' in o and isinstance(o['cp'],int):
+                if text[o['cp']:o['cp']+len(o['quote'])]!=o['quote']: bad.append(o)
+            for v in o.values(): walk(v)
+        elif isinstance(o,list):
+            for v in o: walk(v)
+    walk(doc); return bad
+
+for a in (a1,a2,a3):
+    art=a['article']
+    locked_path=f'{BASE}/{art}/locked.json'
+    raw=open(locked_path,'rb').read()
+    locked=json.loads(raw)
+    text=open(f'{BASE}/{art}/packet/source.wikitext',encoding='utf-8').read()
+    adj=copy.deepcopy(locked)
+    changed=[]
+    for typ,cp,new in a['changes']:
+        idx=[i for i,x in enumerate(adj['identifiers']) if x['at']['cp']==cp]
+        assert len(idx)==1
+        old=adj['identifiers'][idx[0]]
+        assert old['at']==new['at']
+        adj['identifiers'][idx[0]]=new
+        changed.append({'item':1,'section':'identifiers','index':idx[0],'at':new['at'],
+                        'fields_changed':{k:{'locked':old.get(k),'adjudicated':new.get(k)} for k in new if old.get(k)!=new.get(k)}})
+    adj['adjudication']={'adjudicator':ADJ,'decisions_file':f'{OUT}/decisions/{art}.json',
+                         'locked_sha256':hashlib.sha256(raw).hexdigest(),'changed_items':changed}
+    assert not check(adj,text), check(adj,text)
+    for d in a['decisions']:
+        if d['corrected_label']: assert not check(d['corrected_label'],text)
+    dec={'article':art,'adjudicator':ADJ,'started_at':STARTED,'finished_at':now,'decisions':a['decisions']}
+    json.dump(dec,open(f'{OUT}/decisions/{art}.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+    json.dump(adj,open(f'{OUT}/adjudicated/{art}.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+    print(art,len(a['decisions']),'decisions;',len(changed),'changed')

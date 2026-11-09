@@ -1,0 +1,11 @@
+{
+  "candidate_revision": "48cfeab2c093ea0e853fe2ccb2cd1d5ff87a528b",
+  "reviewed_runtime_revision": "3d91429cbad7108c169c6a45544710faf1abb14d",
+  "current_evidence_parent": "028e7eec030e0f2555300fb5a5b74e4fc8ad0a89",
+  "production_hashes": {
+    "src/citerift/wiki/verify.py": "8241f032b0b2f3935ef9f95cde86c505f0b8e3219493eb5674c35a8eac8a106c",
+    "src/citerift/wiki/extract.py": "b1ce483a3954c21a0fd798c121676418356ffdb12ef17bd747b78c909608353e",
+    "src/citerift/wiki/worker.py": "dc981b77ed3dc2d87aa3ee674dfa597c70a8754dfd796550d7cc0081181a75db"
+  },
+  "confirmation": "Runtime source and schemas match the frozen candidate and final reviewed implementation byte-for-byte (git diff --exit-code candidate -- src schemas tests pyproject.toml uv.lock passed). RF59 test change independently reviewed in review/memory-test. This is code-equivalence confirmation, not a new independent scientific review."
+}

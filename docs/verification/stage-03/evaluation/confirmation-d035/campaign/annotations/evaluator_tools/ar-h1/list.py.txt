@@ -1,0 +1,9 @@
+import sys
+from lxml import html
+d=html.parse(sys.argv[1]).getroot()
+for e in d.iter('sup'):
+    if 'mw:Extension/ref' in (e.get('typeof') or ''):
+        print('SUP',e.get('id'),e.get('data-mw'),'|',''.join(e.itertext())[:30])
+for e in d.iter('li'):
+    if (e.get('id') or '').startswith('cite_note'):
+        print('LI',e.get('id'),''.join(e.itertext())[:300].replace('\n',' '))

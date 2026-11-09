@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "3bb867d3fe36130aab85fc5f771647182cccd92d18551440c92dec139525056c",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.391,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-02T19:14:11.013355Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=43021100",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 4456,
+   "body_sha256": "aa44b34780799d0dcf01a2205723def06002364bc2d88c1a841be78d658add11",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.433,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:15:00.405005Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=43021100",
+   "wire_bytes": 2145
+  },
+  {
+   "body_bytes": 28729,
+   "body_sha256": "99fd00b5bae11a56b62e5d0312a138734582afc2d2f48c4a9914df1bfc7ccdff",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.471,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:15:10.839750Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1371897367/html",
+   "wire_bytes": 6321
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "3bb867d3fe36130aab85fc5f771647182cccd92d18551440c92dec139525056c"
+ ],
+ "finished_at": "2026-11-02T19:15:11.311378Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 43021100,
+  "parent_revision_id": 1291768451,
+  "redirect_followed": null,
+  "revision_id": 1371897367,
+  "revision_timestamp": "2026-08-29T04:43:07Z",
+  "sha1": "54575794daf7c0a4498a2d031a5e75d7e1ab6e5b",
+  "size": 3899,
+  "title": "Electrostatic–pneumatic activation",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "99fd00b5bae11a56b62e5d0312a138734582afc2d2f48c4a9914df1bfc7ccdff",
+  "bytes": 28729,
+  "checks": {
+   "document_revision_id": "1371897367",
+   "header_revision_id": "1371897367",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "43021100",
+   "render_id": "0a7204e7-cf49-11f1-a0a0-cb9a81daea5b",
+   "revision_sha1": "54575794daf7c0a4498a2d031a5e75d7e1ab6e5b",
+   "revision_sha1_base36": "9uo6h57wpy1xk0d7b9tltpgx4qqusm3"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1371897367",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:15:11 GMT",
+   "etag": "W/\"1371897367/0a7204e7-cf49-11f1-a0a0-cb9a81daea5b/view\"",
+   "last-modified": "Fri, 23 Oct 2026 20:58:32 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1371897367/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 43021100,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1e42336da7a39b066ec04382c3b1fd84a45d5c2e00e203b90a4285506c8fa716",
+  "bytes": 3899,
+  "response_artifact": "aa44b34780799d0dcf01a2205723def06002364bc2d88c1a841be78d658add11",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=43021100"
+ },
+ "started_at": "2026-11-02T19:14:01.272416Z",
+ "status": "complete"
+}

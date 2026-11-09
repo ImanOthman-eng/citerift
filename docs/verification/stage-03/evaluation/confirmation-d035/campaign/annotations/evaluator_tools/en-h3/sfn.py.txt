@@ -1,0 +1,32 @@
+import re,sys,json
+t=open('packets/en-1382220660/source.wikitext',encoding='utf-8').read()
+def call_end(i):
+    d=0;j=i
+    while j<len(t):
+        if t.startswith('{{',j): d+=1;j+=2
+        elif t.startswith('}}',j):
+            d-=1;j+=2
+            if d==0:return j
+        else:j+=1
+def name(s):
+    inner=s[2:-2]; parts=inner.split('|')
+    tn=parts[0].strip().lower()
+    pos=[];kw={}
+    for p in parts[1:]:
+        m=re.match(r'\s*([A-Za-z0-9_-]+)\s*=(.*)',p,re.S)
+        if m and not m.group(1).isdigit(): kw[m.group(1).lower()]=m.group(2).strip()
+        elif m: 
+            pos.append((int(m.group(1)),m.group(2).strip()))
+        else: pos.append((len(pos)+1,p.strip()))
+    pos=[v for k,v in sorted(pos)]
+    return tn,tuple(re.sub(r'\s+',' ',x) for x in pos[:5]),kw
+seen={}
+for m in re.finditer(r'\{\{\s*(sfn[a-z]*|harv[a-z]*)\s*\|',t,re.I):
+    e=call_end(m.start()); s=t[m.start():e]
+    tn,pos,kw=name(s)
+    if tn.startswith('harv') : print('HARV',m.start(),s[:80]);continue
+    key=(pos,kw.get('p',kw.get('page')),kw.get('pp',kw.get('pages')),kw.get('at',kw.get('loc')),kw.get('group'))
+    extra={k:v for k,v in kw.items() if k not in('p','page','pp','pages','at','loc','group')}
+    first=key not in seen
+    seen.setdefault(key,m.start())
+    print(m.start(),tn,key,'EXTRA' if extra else '',extra or '', 'FIRST' if first else 'repeat of %d'%seen[key], 'WIN' if 7094<=m.start()<15094 else '')

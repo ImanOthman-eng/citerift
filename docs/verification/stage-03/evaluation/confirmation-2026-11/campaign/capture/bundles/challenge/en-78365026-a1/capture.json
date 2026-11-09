@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 17097,
+   "body_sha256": "6c766303ef5410fcaf13e31a24fdadc8372ae9301213e735658ba6571548e1ca",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.442,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:34:10.993333Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=78365026",
+   "wire_bytes": 6493
+  },
+  {
+   "body_bytes": 154533,
+   "body_sha256": "33e8649a157a491335c7372729dc0142c98eeb03305446c4640b365e33c736c2",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.499,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T19:34:21.436444Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1329904848/html",
+   "wire_bytes": 26205
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-02T19:34:21.935796Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 78365026,
+  "parent_revision_id": 1327515918,
+  "redirect_followed": null,
+  "revision_id": 1329904848,
+  "revision_timestamp": "2025-12-28T15:00:38Z",
+  "sha1": "bda0c352c0daa5d6d337b26fe6d6164a60561bf9",
+  "size": 16319,
+  "title": "HD 50138",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "33e8649a157a491335c7372729dc0142c98eeb03305446c4640b365e33c736c2",
+  "bytes": 154533,
+  "checks": {
+   "document_revision_id": "1329904848",
+   "header_revision_id": "1329904848",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "78365026",
+   "render_id": "c9946d4b-d4dd-11f1-8b90-01150003974a",
+   "revision_sha1": "bda0c352c0daa5d6d337b26fe6d6164a60561bf9",
+   "revision_sha1_base36": "m5f9cnjgife99k3vy0z6swxqmuaxbsp"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1329904848",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 19:34:21 GMT",
+   "etag": "W/\"1329904848/c9946d4b-d4dd-11f1-8b90-01150003974a/view\"",
+   "last-modified": "Sat, 31 Oct 2026 03:28:17 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1329904848/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 78365026,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9a48eac248bb58adc55487952f19631bd808d5132033e273e1bde5e5c2c7a7e0",
+  "bytes": 16319,
+  "response_artifact": "6c766303ef5410fcaf13e31a24fdadc8372ae9301213e735658ba6571548e1ca",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=78365026"
+ },
+ "started_at": "2026-11-02T19:34:01.295014Z",
+ "status": "complete"
+}

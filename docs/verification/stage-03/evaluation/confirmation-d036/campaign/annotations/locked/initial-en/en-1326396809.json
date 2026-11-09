@@ -1,0 +1,166 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1326396809,
+  "source_sha256": "d8d6742e7d16890f4cc76eec2f13fda914ab8672f05a39f692e90e3d977d8b7f",
+  "html_sha256": "f8d8cf779245dfc251e0109970a657d361b62b97eab5f88f5eacf352525464f1",
+  "window": [
+   2284,
+   10284
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-h3",
+  "started_at": "2026-11-04T10:25:00Z",
+  "finished_at": "2026-11-04T10:26:25Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1326396809/source.wikitext",
+    "sha256": "d8d6742e7d16890f4cc76eec2f13fda914ab8672f05a39f692e90e3d977d8b7f"
+   },
+   {
+    "path": "packets/en-1326396809/render.html",
+    "sha256": "f8d8cf779245dfc251e0109970a657d361b62b97eab5f88f5eacf352525464f1"
+   },
+   {
+    "path": "packets/en-1326396809/packet.json",
+    "sha256": "3155e14d4b59e85b7af7ba17d16800e97f3d1b845cbcf69399afb0305bf2c63b"
+   }
+  ],
+  "tools": "python3 -I stdlib + lxml: regex search of source for <ref, {{cite, 10., pmid; lxml listing of sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; each quote verified against source text. Roles, bindings and markers decided by reading.",
+  "unresolved": "none"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 2586,
+    "quote": "<ref>{{cite book |last=Shene |first=Ching-Kuang "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2591,
+      "quote": "{{cite book |last=Shene |first=Ching-Kuang |date"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 3037,
+    "quote": "<ref>{{cite book |last1=Cychosz |first1=Joseph M"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3042,
+      "quote": "{{cite book |last1=Cychosz |first1=Joseph M. |la"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 3494,
+    "quote": "<ref>{{cite journal |last= Held |first=Martin |d"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3499,
+      "quote": "{{cite journal |last= Held |first=Martin |date= "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 2586,
+    "quote": "<ref>{{cite book |last=Shene |first=Ching-Kuang "
+   },
+   "binds_to": {
+    "cp": 2586,
+    "quote": "<ref>{{cite book |last=Shene |first=Ching-Kuang "
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 3037,
+    "quote": "<ref>{{cite book |last1=Cychosz |first1=Joseph M"
+   },
+   "binds_to": {
+    "cp": 3037,
+    "quote": "<ref>{{cite book |last1=Cychosz |first1=Joseph M"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 3494,
+    "quote": "<ref>{{cite journal |last= Held |first=Martin |d"
+   },
+   "binds_to": {
+    "cp": 3494,
+    "quote": "<ref>{{cite journal |last= Held |first=Martin |d"
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 3703,
+    "quote": "10.1080/10867651.1997.10487482"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1080/10867651.1997.10487482",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

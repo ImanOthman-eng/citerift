@@ -1,0 +1,139 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1314028723,
+  "source_sha256": "082452e1407a1334a8419744181e92bc0c5c9caf2352b57cb58448ef94385b18",
+  "html_sha256": "51302c9664c6703af1240520ad77a0874d8d2473d2b49b30bebe13bd22576e61",
+  "window": [
+   0,
+   2366
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:45:09Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1314028723/packet.json",
+    "sha256": "804f5ef26fdd2d2317daec144d1950826aa76a98bdc323dd8911047c0ba02e52"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1314028723/source.wikitext",
+    "sha256": "082452e1407a1334a8419744181e92bc0c5c9caf2352b57cb58448ef94385b18"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1314028723/render.html",
+    "sha256": "51302c9664c6703af1240520ad77a0874d8d2473d2b49b30bebe13bd22576e61"
+   }
+  ],
+  "tools": "bash (cat, ls, sha256sum, date); python3 -I with standard library (re, json, hashlib) for str/regex search of source.wikitext and position verification (text[cp:cp+len(quote)]==quote); lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-...> ids/back-links/text, class=\"new\" links. Every label decided by reading the text by hand.",
+  "unresolved": "Nothing left undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 678,
+    "quote": "<ref>{{cite journal |last1=  Andriamihaja |first"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 683,
+      "quote": "{{cite journal |last1=  "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1443,
+    "quote": "<ref>{{cite journal |last1=Gigant |first1=R.|las"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1448,
+      "quote": "{{cite journal |last1=Gi"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 678,
+    "quote": "<ref>{{cite journal |last1=  Andriamihaj"
+   },
+   "binds_to": {
+    "cp": 678,
+    "quote": "<ref>{{cite journal |last1=  Andriamihaja |first"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1443,
+    "quote": "<ref>{{cite journal |last1=Gigant |first"
+   },
+   "binds_to": {
+    "cp": 1443,
+    "quote": "<ref>{{cite journal |last1=Gigant |first1=R.|las"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1208,
+    "quote": "10.3390/d12120443"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.3390/d12120443",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1974,
+    "quote": "10.1016/j.sajb.2016.02.205"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.sajb.2016.02.205",
+   "notes": "Field written \"doi= 10.1016/...\" with a leading space; quote starts after the space."
+  }
+ ],
+ "unresolved_notes": []
+}

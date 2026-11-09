@@ -1,0 +1,15 @@
+{
+  "article": "ar-76531212",
+  "adjudicator": "d035-adj-ar-g1",
+  "started_at": "2026-11-03T16:40:58Z",
+  "finished_at": "2026-11-03T16:42:13Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "corrected_label": null,
+      "reason": "Confirm the locked identifier at cp 2949. The DOI 10.1088/0004-637X/741/2/68 sits in the path of a publisher URL (/article/10.…, not /doi/10.…) in the url= field of a citation template inside a <ref>. Section 3.5 gives the publisher-URL whole-URL rule only for /doi/ paths, so the raw text is the identifier text ('anything else' row). The role identifier_link fits a publisher URL in url= pointing at the identifier. The engine missing it does not make it not an occurrence. Ambiguity: the guide does not say how a non-/doi/ publisher URL is quoted; the identifier-text reading was chosen."
+    }
+  ]
+}

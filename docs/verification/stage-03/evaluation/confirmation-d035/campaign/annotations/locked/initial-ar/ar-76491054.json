@@ -1,0 +1,556 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76491054,
+  "source_sha256": "2e5c8f9eb0cdcae4aecec7d1571164a12e9c964e52adec1bfbf2868a31e157a9",
+  "html_sha256": "fe98a33870e1093a853df67e7df164fb2b1b4c2cc708f477de9be44f66437980",
+  "window": [
+   0,
+   5730
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h3",
+  "started_at": "2026-11-03T16:11:00Z",
+  "finished_at": "2026-11-03T16:12:55Z",
+  "files_opened": [
+   {
+    "path": "packets/ar-76491054/source.wikitext",
+    "sha256": "2e5c8f9eb0cdcae4aecec7d1571164a12e9c964e52adec1bfbf2868a31e157a9"
+   },
+   {
+    "path": "packets/ar-76491054/render.html",
+    "sha256": "fe98a33870e1093a853df67e7df164fb2b1b4c2cc708f477de9be44f66437980"
+   },
+   {
+    "path": "packets/ar-76491054/packet.json",
+    "sha256": "(not hashed separately; read for window and hashes)"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find location search, regex scan for ref/doi/pmid, lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; every quote verified as text[cp:cp+len]==quote",
+  "unresolved": "PBB_Further_reading citations: treated as 7 bibliography entries (list items with citation templates outside any ref); the wrapper template is a gene-box helper, so this reading is a judgement."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 179,
+    "quote": "<ref>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link plus {{Webarchive}} (archive link template, not a citation template)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 513,
+    "quote": "<ref name=\"entrez\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "entrez",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 532,
+      "quote": "{{استشهاد وي"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-entrez-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "NCBI Entrez gene URL, not a PubMed/DOI link."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 854,
+    "quote": "<ref name=\"pmid15085203\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid15085203",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 879,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid15085203-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1287,
+    "quote": "<ref name=\"pmid16444351\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "pmid16444351",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1312,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-pmid16444351-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 1860,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 1861,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 2303,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 2304,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 2928,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 2929,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 3496,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 3497,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 4012,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 4013,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 4558,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 4559,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 5053,
+    "quote": "*{{استشهاد بدورية محكمة  | مؤل"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": null,
+   "templates": [
+    {
+     "at": {
+      "cp": 5054,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 179,
+    "quote": "<ref>"
+   },
+   "binds_to": {
+    "cp": 179,
+    "quote": "<ref>"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 513,
+    "quote": "<ref name=\"entrez\">"
+   },
+   "binds_to": {
+    "cp": 513,
+    "quote": "<ref name=\"entrez\">"
+   },
+   "render_ref_id": "cite_ref-entrez_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 854,
+    "quote": "<ref name=\"pmid15085203\">"
+   },
+   "binds_to": {
+    "cp": 854,
+    "quote": "<ref name=\"pmid15085203\">"
+   },
+   "render_ref_id": "cite_ref-pmid15085203_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1287,
+    "quote": "<ref name=\"pmid16444351\">"
+   },
+   "binds_to": {
+    "cp": 1287,
+    "quote": "<ref name=\"pmid16444351\">"
+   },
+   "render_ref_id": "cite_ref-pmid16444351_4-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 869,
+    "quote": "15085203"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15085203",
+   "notes": "inside the value of ref name="
+  },
+  {
+   "at": {
+    "cp": 1230,
+    "quote": "15085203"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15085203",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1262,
+    "quote": "10.1172/JCI19617"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1172/jci19617",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1302,
+    "quote": "16444351"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "16444351",
+   "notes": "inside the value of ref name="
+  },
+  {
+   "at": {
+    "cp": 1575,
+    "quote": "16444351"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16444351",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 1591,
+    "quote": "10.1590/S0004-27302005000500009"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1590/s0004-27302005000500009",
+   "notes": ""
+  },
+  {
+   "at": {
+    "cp": 2115,
+    "quote": "11011112"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "11011112",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 2131,
+    "quote": "10.1111/j.1349-7006.2000.tb01027.x"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/j.1349-7006.2000.tb01027.x",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 2574,
+    "quote": "11318611"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "11318611",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 2589,
+    "quote": "10.1006/geno.2001.6500"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1006/geno.2001.6500",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 3171,
+    "quote": "12477932"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "12477932",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 3186,
+    "quote": "10.1073/pnas.242603899"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1073/pnas.242603899",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 3687,
+    "quote": "14702039"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "14702039",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 3702,
+    "quote": "10.1038/ng1285"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/ng1285",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 4245,
+    "quote": "15489334"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15489334",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 4260,
+    "quote": "10.1101/gr.2596504"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1101/gr.2596504",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 4745,
+    "quote": "16710414"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16710414",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 4760,
+    "quote": "10.1038/nature04727"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/nature04727",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 5280,
+    "quote": "16949643"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16949643",
+   "notes": "bibliography entry; in a bibliography list item"
+  },
+  {
+   "at": {
+    "cp": 5295,
+    "quote": "10.1016/j.humpath.2006.06.022"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.humpath.2006.06.022",
+   "notes": "bibliography entry; in a bibliography list item"
+  }
+ ],
+ "unresolved_notes": [
+  "PBB_Further_reading citations: treated as 7 bibliography entries (list items with citation templates outside any ref); the wrapper template is a gene-box helper, so this reading is a judgement."
+ ]
+}

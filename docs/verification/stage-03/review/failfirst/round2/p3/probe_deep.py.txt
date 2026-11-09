@@ -1,0 +1,20 @@
+"""Deeply nested SYNTHETIC render: extraction (worker) and verification (in-process)."""
+import shutil, sys, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import capture, parsoid, ref_sup, note_li, references, doi_link
+from citerift.wiki.extract import extract_bundle
+from citerift.wiki.verify import verify_bundle
+n = int(sys.argv[1])
+W = Path(__file__).resolve().parent / f"work_deep{n}"; shutil.rmtree(W, ignore_errors=True); W.mkdir()
+text = "Claim.<ref name=\"a\">{{cite journal |title=T |doi=10.1000/x}}</ref>\n\n== References ==\n<references />\n"
+inner = "<p>Claim." + ref_sup(1, "cite_note-a-1", "cite_ref-a_1-0", name="a") + "</p>" + references([note_li("cite_note-a-1", ["cite_ref-a_1-0"], "T " + doi_link("10.1000/x"))])
+body = "<div>" * n + inner + "</div>" * n
+out = capture(W / "b", text, parsoid(body, text))
+print("depth", n, "capture", out.status, [i.code for i in out.issues])
+t = time.monotonic(); doc = extract_bundle(W / "b")
+print("isolated extract", doc["status"], sorted({i["code"] for i in doc["issues"]})[:6], f"{time.monotonic()-t:.1f}s")
+try:
+    rep = verify_bundle(W / "b", doc); print("verify", rep["verified"], sorted({i["code"] for i in rep["issues"] if i["severity"] == "error"}))
+except Exception as e:
+    print("verify CRASH", type(e).__name__, str(e)[:100])

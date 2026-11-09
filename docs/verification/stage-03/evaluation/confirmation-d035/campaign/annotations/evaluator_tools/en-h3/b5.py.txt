@@ -1,0 +1,33 @@
+import sys,re; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h3/tools')
+from lib import *
+from lxml import html
+a=A('en-1382220660'); t=a.t
+doc=html.parse(f'{BASE}/packets/en-1382220660/render.html')
+sups=[s.get('id') for s in doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')]
+i0=sups.index('cite_ref-names_17-0')
+sid=sups[i0+2:i0+16]
+print(sid)
+# refn with nested ref
+RF=7275; NR=7639; NAMES_D=150857; REP_D=151596
+a.D(RF,'generated_note',name=None,group='nb',rid='cite_note-3',q='{{refn|group=nb|1=According',notes='Content-bearing {{refn}} in infobox flag_caption, group nb. It contains a nested <ref> (see next definition). Rendered ids found by matching data-mw/body text, not by source order: the infobox renders in a different order from the source.')
+a.D(NR,'note',name=None,group='',rid='cite_note-2',q='<ref>{{harvnb|Cathcart',notes='Unnamed <ref> nested inside the refn above; body is {{harvnb|Cathcart|Newkirk|1899|p=94}} (renders "Cathcart & Newkirk 1899, p. 94"). harvnb is a short-citation link, not a citation template and not a footnote generator itself, so unstructured=false, templates empty.')
+a.D(NAMES_D,'generated_note',name='names',group='lower-alpha',rid='cite_note-names-17',q='{{efn|name="names"|1=Other',notes='Out of window definition inside {{notelist|refs=}} (efn default group lower-alpha); first body of "names". Binding target of the efn use at 9059.')
+a.D(REP_D,'generated_note',name='republic',group='lower-alpha',rid='cite_note-republic-18',q='{{efn|name="republic"|Algerian',notes='Out of window definition inside {{notelist|refs=}}; binding target of the efn use at 11614. {{ill}} and {{sfnlink}} inside are not citation templates.')
+# sfn defs
+calls=[13011,13054,13102,13138,13183,13210,13242,13293,13318,13375,13433,13822,14309,14748]
+first={}
+for cp,r in zip(calls,sid):
+    q=re.match(r'\{\{[Ss]fn\|[^}]*\}\}',t[cp:]).group()
+    if cp==14309:
+        a.U(cp,13822,r,q=q,notes='Repeat of the same short footnote (same name; identical generated text), so use only.')
+        continue
+    a.D(cp,'generated_note',name=None,group='',rid='cite_note-'+re.sub(r'_(\d+)$',r'-\1',r[len('cite_ref-'):].rsplit('-',1)[0]),q=q,notes='Short footnote; footnote name computed per Module:Footnotes.'+(' Called again at 14309 (use only).' if cp==13822 else ''))
+    a.U(cp,cp,r,q=q)
+a.U(9059,NAMES_D,'cite_ref-names_17-0',q='{{efn|name="names"}}',notes='Empty-body efn call reusing name "names"; definition is in {{notelist|refs=}} at the end of the article.')
+a.U(11614,REP_D,'cite_ref-republic_18-0',q='{{efn|name="republic"}}',notes='Empty-body efn call reusing name "republic"; definition is in {{notelist|refs=}}.')
+a.U(RF,RF,'cite_ref-3',q='{{refn|group=nb|1=According')
+a.U(NR,NR,'cite_ref-2',q='<ref>{{harvnb|Cathcart')
+a.un=['No DOI or PMID in window. The Parsoid markers for the infobox refs are not in source order; I matched cite_ref-2/3 by their rendered text ("Cathcart & Newkirk 1899, p. 94", "According to American consul ...").',
+'The nested <ref> inside {{refn}}: its sup (cite_ref-2) is rendered inside the refn footnote text, not in the article body; counted as its own definition and use.',
+'Rendered footnote ids for sfn: copied from the Parsoid sup ids; the Koulakssis name renders as "7, 17" from source "7,17" (spacing differs, same reference).']
+a.save(None,'python3 stdlib (re, json), lxml','Nothing undecided besides notes above.')

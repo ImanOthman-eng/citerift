@@ -1,0 +1,17 @@
+import sys
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+A=Art(1360598324)
+spec=[('<ref name=antIII>','antIII','cite_note-antIII-1','cite_ref-antIII_1-0','{{cite web'),
+('<ref>{{Cite book','','cite_note-2','cite_ref-2','{{Cite book'),
+('<ref>{{cite book | page=25','','cite_note-3','cite_ref-3','{{cite book'),
+('<ref>{{Citation|last=Dumitru','','cite_note-4','cite_ref-4','{{Citation'),
+('<ref>{{cite web | access-date=February 27','','cite_note-5','cite_ref-5','{{cite web | access')]
+for s,name,rid,sid,tp in spec:
+    cp=A.at(s)
+    A.d(cp,'note',name=(name or None),group='',tpl=[cp+5+(len(name)+6-5 if False else 0)] if False else [A.at(tp,0,cp)],rid=rid)
+    A.u(cp,cp,sid)
+A.i(A.at('http://dx.doi.org/10.2307/j.ctvr43k44.46'),'http://dx.doi.org/10.2307/j.ctvr43k44.46','doi','identifier_link','10.2307/j.ctvr43k44.46','chapter-url value inside the Citation template')
+A.i(A.at('10.2307/j.ctvr43k44.46 |isbn'),'10.2307/j.ctvr43k44.46','doi','primary_citation_field','10.2307/j.ctvr43k44.46')
+A.unres.append('None. Content between onlyinclude tags contains the same text; refs are in source once.')
+A.write(None,TOOLS,'Nothing undecided.')

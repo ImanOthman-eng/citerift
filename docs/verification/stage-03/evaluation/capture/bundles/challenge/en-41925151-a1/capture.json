@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "45683e8783056973cf4c638f9a95adc1d00361cf874894063a0deff1708aacfd",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.406,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:38:21.386336Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=41925151",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 27129,
+   "body_sha256": "9988ef37684a49c9d6384bd2c0cdb8004deaf6ef6424308e216b94e5ae69dc03",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.54,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:39:00.792998Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=41925151",
+   "wire_bytes": 9776
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "27e31045fc572b19c568ddd7360609db3fe456a0c4ba6a54a3b3e447ce16fc0b",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.213,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:39:11.334187Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380422581/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 203162,
+   "body_sha256": "08a76271eb74efc2ffd789f4deadb70dc92d47256782e7727c0047f0bc95b97f",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.496,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:40:00.548266Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380422581/html",
+   "wire_bytes": 32965
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "45683e8783056973cf4c638f9a95adc1d00361cf874894063a0deff1708aacfd",
+  "27e31045fc572b19c568ddd7360609db3fe456a0c4ba6a54a3b3e447ce16fc0b"
+ ],
+ "finished_at": "2026-10-29T08:40:01.047961Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 41925151,
+  "parent_revision_id": 1374127503,
+  "redirect_followed": null,
+  "revision_id": 1380422581,
+  "revision_timestamp": "2026-10-15T16:55:57Z",
+  "sha1": "f63c7acc12a7b53786b28c15bc8dcc3b0286d5ab",
+  "size": 26268,
+  "title": "James L. Powell",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "08a76271eb74efc2ffd789f4deadb70dc92d47256782e7727c0047f0bc95b97f",
+  "bytes": 203162,
+  "checks": {
+   "document_revision_id": "1380422581",
+   "header_revision_id": "1380422581",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "41925151",
+   "render_id": "6ff32c78-d339-11f1-b092-4d628a581f23",
+   "revision_sha1": "f63c7acc12a7b53786b28c15bc8dcc3b0286d5ab",
+   "revision_sha1_base36": "srh135xg246kcigm90bsk81dxfj6yzv"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1380422581",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:40:00 GMT",
+   "etag": "W/\"1380422581/6ff32c78-d339-11f1-b092-4d628a581f23/view\"",
+   "last-modified": "Wed, 28 Oct 2026 12:59:06 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380422581/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 41925151,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "c53fe9a70f8b0ff835ac699b5f054a59dc04a7cf21672f3677fb8a0416e4594a",
+  "bytes": 26268,
+  "response_artifact": "9988ef37684a49c9d6384bd2c0cdb8004deaf6ef6424308e216b94e5ae69dc03",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=41925151"
+ },
+ "started_at": "2026-10-29T08:38:11.823686Z",
+ "status": "complete"
+}

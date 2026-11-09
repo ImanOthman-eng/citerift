@@ -1,0 +1,551 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 3,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 3,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 3,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 3
+   },
+   {
+    "left": 2,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 2
+   }
+  ],
+  "containers": {
+   "note": 2
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "identifier_link": 1,
+   "primary_citation_field": 2
+  },
+  "identifiers_by_scheme": {
+   "doi": 3
+  },
+  "markers": {
+   "unavailable": 2
+  },
+  "parse_nodes": 108,
+  "source_bytes": 1949,
+  "units": {
+   "citation_template": 2
+  },
+  "uses": {
+   "anonymous": 1,
+   "bound": 4
+  }
+ },
+ "capture": {
+  "capture_sha256": "9e0775eb01e0d8c51e042b4280a77852d1e0a35dccb9a4a7b96b8a0491123cef",
+  "page_id": 78247163,
+  "render_artifact": null,
+  "render_state": "failed",
+  "revision_id": 1292420793,
+  "sha1": "85fb958ccd080e517a3c0932b69fd6071a2fb131",
+  "source_artifact": "a476dd73ea6ace0da8e076db569b72630e09eeabdb4d0a77e9ca3cbf97e33460",
+  "title": "Rediviva albifasciata",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "not_run"
+  },
+  "reconciliation": {
+   "state": "not_run"
+  },
+  "render": {
+   "state": "failed"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 700,
+      "byte_start": 328,
+      "cp_end": 698,
+      "cp_start": 328
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 706,
+      "byte_start": 301,
+      "cp_end": 704,
+      "cp_start": 301
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "Steiner, 2002.",
+   "name_raw": "Steiner, 2002.",
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 706,
+    "byte_start": 301,
+    "cp_end": 704,
+    "cp_start": 301
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001",
+    "us-00002",
+    "us-00003",
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1765,
+      "byte_start": 1353,
+      "cp_end": 1759,
+      "cp_start": 1351
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1771,
+      "byte_start": 1348,
+      "cp_end": 1765,
+      "cp_start": 1346
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 1771,
+    "byte_start": 1348,
+    "cp_end": 1765,
+    "cp_start": 1346
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "4bc178d7d356ee9136b32e089182b4da8519eaec4f8297f87f425e189f677f7b",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.0.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1007/s00606-002-0216-y ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1007/s00606-002-0216-y",
+    "raw": "10.1007/s00606-002-0216-y ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 615,
+    "byte_start": 589,
+    "cp_end": 613,
+    "cp_start": 587,
+    "exact": true,
+    "raw": "10.1007/s00606-002-0216-y ",
+    "raw_sha256": "7e835b9605ef7402c51ccfc55832310f343da2d25aa3eab118429bc7d05a3fd4"
+   },
+   "unit_id": "un-00001"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00002",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1080/00222933.2014.939732 ",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1080/00222933.2014.939732",
+    "raw": "10.1080/00222933.2014.939732 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "not_reconciled",
+    "witnesses": []
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1689,
+    "byte_start": 1660,
+    "cp_end": 1683,
+    "cp_start": 1654,
+    "exact": true,
+    "raw": "10.1080/00222933.2014.939732 ",
+    "raw_sha256": "49adca1b3dcf288e9ae9614f9e9eb8ce1d3ab54878b4439621c2de86455fe64e"
+   },
+   "unit_id": "un-00002"
+  },
+  {
+   "boundary": "url",
+   "container_id": "ct-00002",
+   "context": {
+    "in_link_text": false,
+    "param": "url",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "https://doi.org/10.1080/00222933.2014.939732",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "doi_url",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1080/00222933.2014.939732",
+    "raw": "https://doi.org/10.1080/00222933.2014.939732",
+    "scheme": "doi",
+    "transformations": [
+     "STRIP_RESOLVER_URL"
+    ],
+    "valid": true
+   },
+   "origin": "url",
+   "render": {
+    "state": "not_reconciled",
+    "witnesses": []
+   },
+   "role": "identifier_link",
+   "role_reason": "url in citation parameter url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1738,
+    "byte_start": 1694,
+    "cp_end": 1732,
+    "cp_start": 1688,
+    "exact": true,
+    "raw": "https://doi.org/10.1080/00222933.2014.939732",
+    "raw_sha256": "2b6fa9056100766895815ec97d0edf00e4ac5eafad1f036a68a3e3ab2357e85f"
+   },
+   "unit_id": "un-00002"
+  }
+ ],
+ "issues": [
+  {
+   "code": "RECONCILIATION_UNAVAILABLE",
+   "detail": "render failed",
+   "entities": [],
+   "evidence": [],
+   "retryable": false,
+   "severity": "warning"
+  }
+ ],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "render failed",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "unavailable"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "render failed",
+   "region": null,
+   "source_marker_templates": [],
+   "state": "unavailable"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.0.0",
+ "status": "partial",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [
+    "id-00001"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 700,
+    "byte_start": 328,
+    "cp_end": 698,
+    "cp_start": 328
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [
+    "id-00002",
+    "id-00003"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 1765,
+    "byte_start": 1353,
+    "cp_end": 1759,
+    "cp_start": 1351
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "Steiner, 2002.",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 706,
+    "byte_start": 301,
+    "cp_end": 704,
+    "cp_start": 301
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00002",
+   "name": "Steiner, 2002.",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 786,
+    "byte_start": 758,
+    "cp_end": 784,
+    "cp_start": 756
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00003",
+   "name": "Steiner, 2002.",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 976,
+    "byte_start": 948,
+    "cp_end": 974,
+    "cp_start": 946
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00004",
+   "name": "Steiner, 2002.",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 1189,
+    "byte_start": 1161,
+    "cp_end": 1187,
+    "cp_start": 1159
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00005",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "state": "not_reconciled"
+   },
+   "source": {
+    "byte_end": 1771,
+    "byte_start": 1348,
+    "cp_end": 1765,
+    "cp_start": 1346
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

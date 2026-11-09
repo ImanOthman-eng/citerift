@@ -1,0 +1,149 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1292736651,
+  "source_sha256": "10423902ce8b1052b83b10a396570d11b3dea1cfe748e91e6721c37625555ad5",
+  "html_sha256": "6679f40cb45b1b5a211f24a0ec81eac7e926b62b22aa545bd4c8d758632378f0",
+  "window": [
+   0,
+   1587
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h1",
+  "started_at": "2026-11-03T01:55:00Z",
+  "finished_at": "2026-11-03T01:56:56Z",
+  "files_opened": [
+   {
+    "path": "packets/en-1292736651/source.wikitext",
+    "sha256": "10423902ce8b1052b83b10a396570d11b3dea1cfe748e91e6721c37625555ad5"
+   },
+   {
+    "path": "packets/en-1292736651/render.html",
+    "sha256": "6679f40cb45b1b5a211f24a0ec81eac7e926b62b22aa545bd4c8d758632378f0"
+   },
+   {
+    "path": "packets/en-1292736651/packet.json",
+    "sha256": "c2c1d37b260e9e075a0448be1443ffe10370111d483a301846b0664da8695655"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "Python 3 standard library str.find/slicing for locating and verifying quotes; lxml (xpath) to list sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; grep for retraction vocabulary in render.html. Labels decided by reading the text.",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 296,
+    "quote": "<ref>{{Cite web |title=CAS - Eschmeyer's"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 301,
+      "quote": "{{Cite web |title=CAS - Eschmeyer's Cata"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, cite web, no identifiers."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 731,
+    "quote": "<ref>{{Cite journal |last1=Kodeeswaran |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 736,
+      "quote": "{{Cite journal |last1=Kodeeswaran |first"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, cite journal with doi, pmid and DOI-bearing publisher URL."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 296,
+    "quote": "<ref>{{Cite web |title=CAS - Eschmeyer's"
+   },
+   "binds_to": {
+    "cp": 296,
+    "quote": "<ref>{{Cite web |title=CAS - Eschmeyer's"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 731,
+    "quote": "<ref>{{Cite journal |last1=Kodeeswaran |"
+   },
+   "binds_to": {
+    "cp": 731,
+    "quote": "<ref>{{Cite journal |last1=Kodeeswaran |"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1070,
+    "quote": "https://onlinelibrary.wiley.com/doi/10.1111/jfb.15367 |journ"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1111/jfb.15367",
+   "notes": "Publisher URL whose path contains /doi/10.…; whole URL quoted."
+  },
+  {
+   "at": {
+    "cp": 1213,
+    "quote": "10.1111/jfb.15367 |pmid=36880271 |bibcod"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1111/jfb.15367",
+   "notes": "doi= field."
+  },
+  {
+   "at": {
+    "cp": 1237,
+    "quote": "36880271 |bibcode=2023JFBio.102.1245K |i"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "36880271",
+   "notes": "pmid= field."
+  }
+ ],
+ "unresolved_notes": []
+}

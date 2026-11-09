@@ -1,0 +1,567 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1377341430,
+  "source_sha256": "6fa58fcdad9fe834e8652823e4982cb03c6da2ab863ea1a9806b1750f1082e3b",
+  "html_sha256": "66d7150705dce3a03383f4bd0150d2662bc90e14e01d9d15b7b21ba743192361",
+  "window": [
+   335,
+   8335
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-r1-1b",
+  "started_at": "2026-11-09T13:01:02Z",
+  "finished_at": "2026-11-09T13:03:39Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1377341430/packet.json",
+    "sha256": "8253acbca2e2ccc6fbeb016d81ab85a59ae8860ce50212c2f4b604b731b634bc"
+   },
+   {
+    "path": "packets/en-1377341430/source.wikitext",
+    "sha256": "6fa58fcdad9fe834e8652823e4982cb03c6da2ab863ea1a9806b1750f1082e3b"
+   },
+   {
+    "path": "packets/en-1377341430/render.html",
+    "sha256": "66d7150705dce3a03383f4bd0150d2662bc90e14e01d9d15b7b21ba743192361"
+   }
+  ],
+  "tools": "python3 stdlib (re, json, hashlib) and lxml run via python3 -I; helper scripts in tools/ for regex listing of <ref/sfn/cite/doi/pmid positions, HTML sup/li listing, and a builder that verifies every quote at its code-point offset. Definition/use decisions and identifier roles chosen by reading the text.",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 566,
+    "quote": "<ref>{{Cite web|title=Caliciviridae - Caliciviridae - Positi"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 571,
+      "quote": "{{Cite web|title=Caliciviridae - Caliciviridae - Positive-se"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 869,
+    "quote": "<ref>{{cite journal |last1=Vinjé |first1=J |last2=Estes |fir"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 874,
+      "quote": "{{cite journal |last1=Vinjé |first1=J |last2=Estes |first2=M"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1476,
+    "quote": "<ref name=\"ICTV\">{{cite web |title=ICTV Report Caliciviridae"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ICTV",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1493,
+      "quote": "{{cite web |title=ICTV Report Caliciviridae |url=http://www."
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ICTV-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1946,
+    "quote": "<ref name=ViralZone>{{cite web|title=Viral Zone|url=http://v"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ViralZone",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1966,
+      "quote": "{{cite web|title=Viral Zone|url=http://viralzone.expasy.org/"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ViralZone-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 2499,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/1057.html T"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link with label only."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 2575,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/806.html T="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare external link with label only."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 2700,
+    "quote": "<ref name= HansmanGS>{{cite book |editor= Hansman, GS| year="
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "HansmanGS",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2721,
+      "quote": "{{cite book |editor= Hansman, GS| year=2010 |title=Calicivir"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-HansmanGS-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "name written with a space after = ; name is HansmanGS. Later uses spell it name=\"HansmanGS\"."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 3362,
+    "quote": "<ref name=Yu2013>Yu G, Zhang D, Guo F, Tan M, Jiang X, Jiang"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Yu2013",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Yu2013-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written reference using the {{doi}} wrapper; no citation template."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 3833,
+    "quote": "<ref>{{cite web |title=Taxon Details: ''Caliciviridae'' |url"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3838,
+      "quote": "{{cite web |title=Taxon Details: ''Caliciviridae'' |url=http"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 4234,
+    "quote": "<ref>{{cite web|url=https://ictv.global/taxonomy|title=Virus"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4239,
+      "quote": "{{cite web|url=https://ictv.global/taxonomy|title=Virus Taxo"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d11",
+   "at": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Themes",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5673,
+      "quote": "{{Cite web|last=Themes|first=U. F. O.|date=2016-08-11|title="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Themes-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 566,
+    "quote": "<ref>{{Cite web|title=Caliciviridae - Caliciviridae - Positi"
+   },
+   "binds_to": {
+    "cp": 566,
+    "quote": "<ref>{{Cite web|title=Caliciviridae - Caliciviridae - Positi"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 869,
+    "quote": "<ref>{{cite journal |last1=Vinjé |first1=J |last2=Estes |fir"
+   },
+   "binds_to": {
+    "cp": 869,
+    "quote": "<ref>{{cite journal |last1=Vinjé |first1=J |last2=Estes |fir"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1476,
+    "quote": "<ref name=\"ICTV\">{{cite web |title=ICTV Report Caliciviridae"
+   },
+   "binds_to": {
+    "cp": 1476,
+    "quote": "<ref name=\"ICTV\">{{cite web |title=ICTV Report Caliciviridae"
+   },
+   "render_ref_id": "cite_ref-ICTV_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1930,
+    "quote": "<ref name=ICTV/><ref name=ViralZone>{{cite web|title=Viral Z"
+   },
+   "binds_to": {
+    "cp": 1476,
+    "quote": "<ref name=\"ICTV\">{{cite web |title=ICTV Report Caliciviridae"
+   },
+   "render_ref_id": "cite_ref-ICTV_3-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1946,
+    "quote": "<ref name=ViralZone>{{cite web|title=Viral Zone|url=http://v"
+   },
+   "binds_to": {
+    "cp": 1946,
+    "quote": "<ref name=ViralZone>{{cite web|title=Viral Zone|url=http://v"
+   },
+   "render_ref_id": "cite_ref-ViralZone_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2499,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/1057.html T"
+   },
+   "binds_to": {
+    "cp": 2499,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/1057.html T"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2575,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/806.html T="
+   },
+   "binds_to": {
+    "cp": 2575,
+    "quote": "<ref>[http://viralzone.expasy.org/all_by_protein/806.html T="
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 2643,
+    "quote": "<ref name=ViralZone />) with a diameter of 35–39&nbsp;nm.<re"
+   },
+   "binds_to": {
+    "cp": 1946,
+    "quote": "<ref name=ViralZone>{{cite web|title=Viral Zone|url=http://v"
+   },
+   "render_ref_id": "cite_ref-ViralZone_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 2700,
+    "quote": "<ref name= HansmanGS>{{cite book |editor= Hansman, GS| year="
+   },
+   "binds_to": {
+    "cp": 2700,
+    "quote": "<ref name= HansmanGS>{{cite book |editor= Hansman, GS| year="
+   },
+   "render_ref_id": "cite_ref-HansmanGS_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 3189,
+    "quote": "<ref name=\"HansmanGS\"/> A 2013 isolate from [[rhesus monkey]"
+   },
+   "binds_to": {
+    "cp": 2700,
+    "quote": "<ref name= HansmanGS>{{cite book |editor= Hansman, GS| year="
+   },
+   "render_ref_id": "cite_ref-HansmanGS_7-1",
+   "notes": ""
+  },
+  {
+   "id": "u11",
+   "at": {
+    "cp": 3362,
+    "quote": "<ref name=Yu2013>Yu G, Zhang D, Guo F, Tan M, Jiang X, Jiang"
+   },
+   "binds_to": {
+    "cp": 3362,
+    "quote": "<ref name=Yu2013>Yu G, Zhang D, Guo F, Tan M, Jiang X, Jiang"
+   },
+   "render_ref_id": "cite_ref-Yu2013_8-0",
+   "notes": ""
+  },
+  {
+   "id": "u12",
+   "at": {
+    "cp": 3833,
+    "quote": "<ref>{{cite web |title=Taxon Details: ''Caliciviridae'' |url"
+   },
+   "binds_to": {
+    "cp": 3833,
+    "quote": "<ref>{{cite web |title=Taxon Details: ''Caliciviridae'' |url"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u13",
+   "at": {
+    "cp": 4234,
+    "quote": "<ref>{{cite web|url=https://ictv.global/taxonomy|title=Virus"
+   },
+   "binds_to": {
+    "cp": 4234,
+    "quote": "<ref>{{cite web|url=https://ictv.global/taxonomy|title=Virus"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u14",
+   "at": {
+    "cp": 5271,
+    "quote": "<ref name=ViralZone />\n\n== History ==\nEstablishing the viral"
+   },
+   "binds_to": {
+    "cp": 1946,
+    "quote": "<ref name=ViralZone>{{cite web|title=Viral Zone|url=http://v"
+   },
+   "render_ref_id": "cite_ref-ViralZone_4-2",
+   "notes": ""
+  },
+  {
+   "id": "u15",
+   "at": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "binds_to": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "render_ref_id": "cite_ref-Themes_11-0",
+   "notes": ""
+  },
+  {
+   "id": "u16",
+   "at": {
+    "cp": 6026,
+    "quote": "<ref name=\"Themes\"/> In 1968, an outbreak at a Norwalk eleme"
+   },
+   "binds_to": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "render_ref_id": "cite_ref-Themes_11-1",
+   "notes": ""
+  },
+  {
+   "id": "u17",
+   "at": {
+    "cp": 6436,
+    "quote": "<ref name=\"Themes\"/> The classification of this one Norwalk "
+   },
+   "binds_to": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "render_ref_id": "cite_ref-Themes_11-2",
+   "notes": ""
+  },
+  {
+   "id": "u18",
+   "at": {
+    "cp": 6615,
+    "quote": "<ref name=\"Themes\"/>\n\n==Animal viruses==\n[[Rabbit hemorrhagi"
+   },
+   "binds_to": {
+    "cp": 5654,
+    "quote": "<ref name=\"Themes\">{{Cite web|last=Themes|first=U. F. O.|dat"
+   },
+   "render_ref_id": "cite_ref-Themes_11-3",
+   "notes": ""
+  },
+  {
+   "id": "u19",
+   "at": {
+    "cp": 6928,
+    "quote": "<ref name=\"HansmanGS\"/>\n\n== Uses ==\n[[Australia]] and [[New "
+   },
+   "binds_to": {
+    "cp": 2700,
+    "quote": "<ref name= HansmanGS>{{cite book |editor= Hansman, GS| year="
+   },
+   "render_ref_id": "cite_ref-HansmanGS_7-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1330,
+    "quote": "10.1099/jgv.0.001332"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1099/jgv.0.001332",
+   "notes": "doi= field"
+  },
+  {
+   "at": {
+    "cp": 1357,
+    "quote": "31573467"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "31573467",
+   "notes": "pmid= field"
+  },
+  {
+   "at": {
+    "cp": 3523,
+    "quote": "10.1371/journal.pone.0059817"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1371/journal.pone.0059817",
+   "notes": "argument of {{doi}} wrapper inside a hand-written ref"
+  }
+ ],
+ "unresolved_notes": [
+  "External links items are plain bracketed URLs without citation template or identifier; not bibliography entries."
+ ]
+}

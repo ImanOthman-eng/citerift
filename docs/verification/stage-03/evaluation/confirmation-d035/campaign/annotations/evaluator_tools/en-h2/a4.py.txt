@@ -1,0 +1,38 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h2/tools')
+from build import *
+rev=1332438558; pk,t=load(rev)
+P=[9382,9951,11238,11713,11892,12895,13300,13845,14602,15265,15680]
+for p in P: assert t[p:p+4]=='<ref'
+names={9951:'inmediahk-2022-02-22',11713:'Q95265290'}
+rid={9382:13,9951:'inmediahk-2022-02-22-14',11238:15,11713:'Q95265290-16',11892:17,12895:18,13300:19,13845:20,14602:21,15265:22,15680:23}
+sid={9382:'cite_ref-13',9951:'cite_ref-inmediahk-2022-02-22_14-0',11238:'cite_ref-15',11713:'cite_ref-Q95265290_16-0',11892:'cite_ref-17',12895:'cite_ref-18',13300:'cite_ref-19',13845:'cite_ref-20',14602:'cite_ref-21',15265:'cite_ref-22',15680:'cite_ref-23'}
+defs=[];uses=[]
+dx=t.index('<ref name=dxys-no>'); cb=t.index('<ref name=cbc1>')
+defs.append(D('d1',t,cb,'note','cbc1','','cite_note-cbc1-7',in_window=False,notes='Before the window; included as binding target.'))
+defs.append(D('d2',t,dx,'note','dxys-no','','cite_note-dxys-no-10',in_window=False,notes='Before the window; included as binding target.'))
+n=3
+for p in P:
+    nm=names.get(p); r=rid[p]
+    note=''
+    mk='none';mt=None
+    if p==11713: note='Cite Q: renders title/DOI/PMID from Wikidata; none of those identifiers is in the source.'
+    if p==11892: note='Rendered text contains "Retraction Watch" only as the publisher/work name; not a statement that the cited work is retracted.'
+    defs.append(D(f'd{n}',t,p,'note',nm,'',f'cite_note-{r}',notes=note)); n+=1
+    if p==12895 or p==12895: pass
+# fix unstructured: ref at 15680 has Cite web but url etc; all use templates
+for i,p in enumerate(P):
+    pass
+# marker text for 11892
+for d in defs:
+    if d['at']['cp']==11892:
+        d['marker']='none'; d['marker_text']='Prominent Chinese scientist failed to disclose company ties in COVID-19 clinical trial paper". Retraction Watch.'
+u=1
+for p,b,r,nt in [(9266,dx,'cite_ref-dxys-no_10-1','')]:
+    pass
+uses.append(U('u1',t,9266,dx,'cite_ref-dxys-no_10-1','reuse by name; definition before window'))
+k=2
+for p in P:
+    uses.append(U(f'u{k}',t,p,p,sid[p])); k+=1
+uses.append(U(f'u{k}',t,16101,cb,'cite_ref-cbc1_7-1','reuse by name; definition before window'))
+assert t[9266:9272]=='<ref n' and t[16101:16106]=='<ref '
+write(rev,defs,uses,[],['No DOI or PMID text occurs in the window. The Cite Q (Q95265290) renders DOI 10.1016/j.phymed.2020.153242 and PMID 32425361 from Wikidata; not in source, not listed. Prose says "forcing an erratum" but that is body text, not a footnote marker.'],TOOLS)

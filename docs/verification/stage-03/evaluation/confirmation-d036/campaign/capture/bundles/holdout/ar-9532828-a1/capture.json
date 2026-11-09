@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "28e774a7e9d661b7fbdb04f1938a2f4bc05a863ae8a1d2c0645cff8eb40b2740",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.152,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:57:10.972281Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9532828",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 21338,
+   "body_sha256": "ea1782169c6e8fe73e0e54a50089d9ea48f685583fa638e081af86bc3b6e2cd6",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.39,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T09:58:00.124985Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9532828",
+   "wire_bytes": 5373
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "3b012fe382a3d803e51c92c11a364b85f3648205f5ae2bdfcca4e936a2400fb3",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.125,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-04T09:58:10.516246Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/67036660/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 144061,
+   "body_sha256": "86f40eb18ac7d2620d8c64558bb33699dd80258dbf3da3e3b8c8a971b8838cd3",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.282,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T09:59:00.641745Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/67036660/html",
+   "wire_bytes": 22188
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "28e774a7e9d661b7fbdb04f1938a2f4bc05a863ae8a1d2c0645cff8eb40b2740",
+  "3b012fe382a3d803e51c92c11a364b85f3648205f5ae2bdfcca4e936a2400fb3"
+ ],
+ "finished_at": "2026-11-04T09:59:01.925286Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 9532828,
+  "parent_revision_id": 66352467,
+  "redirect_followed": null,
+  "revision_id": 67036660,
+  "revision_timestamp": "2024-06-01T20:10:18Z",
+  "sha1": "5724ac38833bf70083507925110c963eb0d026d9",
+  "size": 20777,
+  "title": "سارة حجي",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "86f40eb18ac7d2620d8c64558bb33699dd80258dbf3da3e3b8c8a971b8838cd3",
+  "bytes": 144061,
+  "checks": {
+   "document_revision_id": "67036660",
+   "header_revision_id": "67036660",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "9532828",
+   "render_id": "5c1661f1-d836-11f1-9ead-4f6f545e671a",
+   "revision_sha1": "5724ac38833bf70083507925110c963eb0d026d9",
+   "revision_sha1_base36": "a6gdlw1ra7lm2912lid331uwy6nc8ux"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "67036660",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 09:59:00 GMT",
+   "etag": "W/\"67036660/5c1661f1-d836-11f1-9ead-4f6f545e671a/view\"",
+   "last-modified": "Mon, 02 Nov 2026 19:55:42 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/67036660/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 9532828,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "184c3b8a3e7085eb53fe4ae77e8d7dfddfbf1c29f581c39e7506e22d6465e506",
+  "bytes": 20777,
+  "response_artifact": "ea1782169c6e8fe73e0e54a50089d9ea48f685583fa638e081af86bc3b6e2cd6",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=9532828"
+ },
+ "started_at": "2026-11-04T09:57:01.281896Z",
+ "status": "complete"
+}

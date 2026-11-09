@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:wiki:v1:capture",
+  "title": "CITERIFT Wikipedia capture record, major version 1",
+  "description": "capture.json of a Stage 03 capture bundle (SPECIFICATION.md 8): one pinned source revision of an arwiki or enwiki article and a separately identified Parsoid render of the same revision, with every request attempt. Bodies are artifacts named by SHA-256; this record names them and never embeds them.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "request", "client", "started_at", "finished_at", "status", "page", "source", "render", "attempts", "failure_artifacts", "not_before", "issues"],
+  "properties": {
+    "schema": {"const": "urn:citerift:schema:wiki:v1:capture"},
+    "schema_version": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/schema_version"},
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wiki", "title", "page_id", "revision_id", "follow_redirect", "render"],
+      "properties": {
+        "wiki": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/wiki"},
+        "title": {"type": ["string", "null"], "minLength": 1, "maxLength": 255},
+        "page_id": {"type": ["integer", "null"], "minimum": 1},
+        "revision_id": {"type": ["integer", "null"], "minimum": 1},
+        "follow_redirect": {"type": "boolean"},
+        "render": {"type": "boolean"}
+      }
+    },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "policy"],
+      "properties": {
+        "name": {"const": "citerift-wiki"},
+        "version": {"type": "string", "minLength": 1},
+        "policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["min_interval_s", "max_attempts", "op_timeout_s", "deadline_s", "backoff_s", "max_wire_bytes", "max_body_bytes", "maxlag_s", "user_agent"],
+          "properties": {
+            "min_interval_s": {"type": "number", "minimum": 0},
+            "max_attempts": {"type": "integer", "minimum": 1},
+            "op_timeout_s": {"type": "number", "exclusiveMinimum": 0},
+            "deadline_s": {"type": "number", "exclusiveMinimum": 0},
+            "backoff_s": {"type": "number", "minimum": 0},
+            "max_wire_bytes": {"type": "integer", "minimum": 1},
+            "max_body_bytes": {"type": "integer", "minimum": 1},
+            "maxlag_s": {"type": "integer", "minimum": 0},
+            "user_agent": {"type": "string", "minLength": 10}
+          }
+        }
+      }
+    },
+    "started_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+    "finished_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+    "status": {"enum": ["complete", "partial", "failed", "deferred"]},
+    "not_before": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"}]},
+    "page": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["wiki", "host", "page_id", "namespace", "title", "revision_id", "parent_revision_id", "revision_timestamp", "content_model", "sha1", "size", "is_latest", "redirect_followed"],
+          "properties": {
+            "wiki": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/wiki"},
+            "host": {"enum": ["ar.wikipedia.org", "en.wikipedia.org"]},
+            "page_id": {"type": "integer", "minimum": 1},
+            "namespace": {"const": 0},
+            "title": {"type": "string", "minLength": 1},
+            "revision_id": {"type": "integer", "minimum": 1},
+            "parent_revision_id": {"type": ["integer", "null"], "minimum": 0},
+            "revision_timestamp": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+            "content_model": {"const": "wikitext"},
+            "sha1": {"type": "string", "pattern": "^[0-9a-f]{40}$(?!\\n)"},
+            "size": {"type": "integer", "minimum": 0},
+            "is_latest": {"type": "boolean"},
+            "redirect_followed": {
+              "oneOf": [
+                {"type": "null"},
+                {"type": "object", "required": ["from", "to"], "properties": {"from": {"type": "string"}, "to": {"type": "string"}}}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "artifact", "bytes", "response_artifact"],
+          "properties": {
+            "url": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"},
+            "artifact": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+            "bytes": {"type": "integer", "minimum": 0, "maximum": 4194304},
+            "response_artifact": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}
+          }
+        }
+      ]
+    },
+    "render": {
+      "type": "object",
+      "required": ["state"],
+      "properties": {
+        "state": {"enum": ["not_requested", "captured", "rejected", "failed"]},
+        "url": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"},
+        "artifact": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"},
+        "bytes": {"type": "integer", "minimum": 0, "maximum": 16777216},
+        "headers": {"type": "object", "additionalProperties": {"type": "string"}},
+        "checks": {"type": "object"},
+        "code": {"type": ["string", "null"]},
+        "not_before": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"}]}
+      },
+      "allOf": [
+        {"if": {"properties": {"state": {"enum": ["captured", "rejected"]}}}, "then": {"required": ["url", "artifact", "bytes", "headers", "checks"]}},
+        {"if": {"properties": {"state": {"const": "failed"}}}, "then": {"required": ["url", "code"]}}
+      ]
+    },
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation", "url", "number", "started_at", "duration_s", "status", "code", "retryable", "retry_after_raw", "retry_after_s", "retry_after_problem", "wire_bytes", "body_bytes", "body_sha256", "content_type", "detail"],
+        "properties": {
+          "operation": {"enum": ["source", "render"]},
+          "url": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/https_url"},
+          "number": {"type": "integer", "minimum": 1},
+          "started_at": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"},
+          "duration_s": {"type": "number", "minimum": 0},
+          "status": {"type": ["integer", "null"]},
+          "code": {"type": ["string", "null"]},
+          "retryable": {"type": "boolean"},
+          "retry_after_raw": {"type": ["string", "null"]},
+          "retry_after_s": {"type": ["number", "null"], "minimum": 0},
+          "retry_after_problem": {"type": ["string", "null"]},
+          "wire_bytes": {"type": "integer", "minimum": 0},
+          "body_bytes": {"type": "integer", "minimum": 0},
+          "body_sha256": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}]},
+          "content_type": {"type": ["string", "null"]},
+          "detail": {"type": "string"}
+        }
+      }
+    },
+    "failure_artifacts": {"type": "array", "items": {"$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"}},
+    "issues": {"type": "array", "items": {"$ref": "urn:citerift:schema:wiki:v1:common#/$defs/issue"}}
+  }
+}

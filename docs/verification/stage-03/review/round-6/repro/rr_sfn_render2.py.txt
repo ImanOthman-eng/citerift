@@ -1,0 +1,9 @@
+from h2 import *
+note = "cite_note-FOOTNOTEABCD-1"
+li = note_li(note, ["cite_ref-FOOTNOTEABCD_1-0", "cite_ref-FOOTNOTEABCD_1-1"], "A et al. (Retracted).")
+def body(p1, p2, name="FOOTNOTEABCD"):
+    return ("<p>x" + sfn_sup(1, note, "cite_ref-FOOTNOTEABCD_1-0", name, p1) + " y" + sfn_sup(1, note, "cite_ref-FOOTNOTEABCD_1-1", name, p2, about="mwt21") + "</p>" + references([li]))
+P = lambda x: {"1": "A", "2": "B", "3": "C", "4": "D", "5": x}
+show("control: identical calls (should match)", "x{{sfn|A|B|C|D|X}} y{{sfn|A|B|C|D|X}}", body(P("X"), P("X")))
+show("P5 non-year differs: MW merges, engine splits (expect abstain, no attachment)", "x{{sfn|A|B|C|D|X}} y{{sfn|A|B|C|D|Y}}", body(P("X"), P("Y")))
+show("alias: {{sf}} vs {{sfn}} same note", "x{{sfn|A|B|C|D|2001}} y{{sf|A|B|C|D|2001}}", body(P("2001"), P("2001")))

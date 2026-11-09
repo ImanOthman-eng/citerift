@@ -1,0 +1,13 @@
+"""Installed-wheel behaviour: run the wheel's code (unzipped), with the repo's third-party deps but not the editable src."""
+import sys, os, subprocess, json
+WHEEL = "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/wheel_site"
+sys.path = [p for p in sys.path if not p.rstrip("/").endswith("citerift/src")]
+sys.path.insert(0, WHEEL)
+import citerift
+print("citerift from", citerift.__file__)
+from citerift.wiki import schemas
+try:
+    print("schema_root:", schemas.schema_root(), "exists:", schemas.schema_root().exists())
+    schemas.contracts()
+except Exception as e:
+    print("contracts() ->", type(e).__name__, e)

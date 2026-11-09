@@ -1,0 +1,118 @@
+import re,sys,json,datetime
+from lxml import html
+BASE='/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/eval-d036/en-r1-1b'
+GUIDE_SHA='2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e'
+START='2026-11-09T13:01:02Z'
+def loc(t,cp,n=60):
+    q=t[cp:cp+n]; assert t[cp:cp+len(q)]==q and len(q)>=8 or len(q)==len(t)-cp; return {'cp':cp,'quote':q}
+def build(d, idents, extra_notes=None, def_notes=None, unstructured=(), unresolved=()):
+    extra_notes=extra_notes or {}; def_notes=def_notes or {}
+    pk=json.load(open(f'{BASE}/packets/{d}/packet.json'))
+    t=open(f'{BASE}/packets/{d}/source.wikitext',encoding='utf-8').read()
+    assert len(t)==pk['source_code_points']
+    w0,w1=pk['window']['cp_start'],pk['window']['cp_end']
+    doc=html.parse(f'{BASE}/packets/{d}/render.html').getroot()
+    sups=doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')
+    items=[]
+    for m in re.finditer(r'<ref\b[^>]*?(/>|>.*?</ref>)|\{\{\s*sfnp?\s*\|[^}]*\}\}',t,re.S|re.I):
+        s=m.group(0)
+        if s.startswith('{{'):
+            items.append(dict(cp=m.start(),end=m.end(),kind='generated_note',name=None,group='',body=s,sfn=True,selfclose=False))
+        else:
+            open_tag=re.match(r'<ref\b[^>]*?(/?)>',s,re.S)
+            tag=open_tag.group(0)
+            nm=re.search(r'\bname\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s/>]+))',tag)
+            gr=re.search(r'\bgroup\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s/>]+))',tag)
+            name=next((g for g in nm.groups() if g is not None),None) if nm else None
+            group=next((g for g in gr.groups() if g is not None),'') if gr else ''
+            sc=tag.endswith('/>')
+            body='' if sc else s[len(tag):-len('</ref>')]
+            items.append(dict(cp=m.start(),end=m.end(),kind='note',name=name,group=group,body=body.strip(),sfn=False,selfclose=sc))
+    assert len(items)==len(sups),(len(items),len(sups))
+    seen={}  # key -> list of (bodies), first cp
+    for it,sup in zip(items,sups):
+        it['ref_id']=sup.get('id')
+        if it['sfn']:
+            inner=re.sub(r'\s+',' ',it['body'][2:-2]); key=('sfn',inner.lower() if False else inner)
+        elif it['name'] is not None: key=(it['name'],it['group'])
+        else: key=None
+        if key is None:
+            it['def']=True; it['bind']=it['cp']
+        else:
+            e=seen.get(key)
+            if e is None:
+                if it['selfclose']: it['def']=False; it['bind']='missing'
+                else:
+                    seen[key]=dict(first=it['cp'],bodies=[it['body']]); it['def']=True; it['bind']=it['cp']
+            else:
+                it['bind']=e['first']
+                if it['sfn'] or it['selfclose'] or it['body'] in e['bodies']: it['def']=False
+                else: it['def']=True; e['bodies'].append(it['body'])
+        # note id
+        dm=sup.get('data-mw')
+        it['note_id']=None
+        if it['def'] or True:
+            try:
+                b=json.loads(dm).get('body',{}).get('id')
+                if b: it['note_id']=b.replace('mw-reference-text-','')
+            except Exception: pass
+    # first-def note ids for repeated bodies
+    bycp={it['cp']:it for it in items}
+    defs=[];uses=[]
+    needed=set()
+    for it in items:
+        inwin = w0<=it['cp']<w1
+        if inwin:
+            uses.append({'id':None,'at':loc(t,it['cp']),'binds_to':(loc(t,it['bind']) if it['bind']!='missing' else 'missing'),
+                         'render_ref_id':it['ref_id'],'notes':extra_notes.get(it['cp'],'')})
+            if it['bind']!='missing': needed.add(it['bind'])
+            if it['def']: needed.add(it['cp'])
+    # identifiers/templates inside defs in window already included by needed
+    for cp in sorted(needed):
+        it=bycp[cp]
+        tmpl=[]
+        if not it['sfn']:
+            for m in re.finditer(r'\{\{\s*(?:cite|citation)\b',t[it['cp']:it['end']],re.I):
+                tmpl.append({'at':loc(t,it['cp']+m.start())})
+        # note id of the first definition's own sup
+        un = cp in unstructured
+        n=def_notes.get(cp,'')
+        defs.append({'id':None,'at':loc(t,cp),'in_window':w0<=cp<w1,'kind':it['kind'],'name':it['name'],'group':it['group'],
+                     'templates':tmpl,'unstructured':un,'render_note_id':it['note_id'],'marker':'none','marker_text':None,'notes':n})
+    # bibliography entries and other defs from idents spec handled by caller via extra
+    return pk,t,w0,w1,defs,uses
+def finish(d,pk,t,defs,uses,idents,unresolved,tools_note,unresolved_prov,bib=()):
+    w0,w1=pk['window']['cp_start'],pk['window']['cp_end']
+    for b in bib:
+        defs.append(b)
+    defs.sort(key=lambda x:x['at']['cp'])
+    for i,x in enumerate(defs,1): x['id']=f'd{i}'
+    uses.sort(key=lambda x:x['at']['cp'])
+    for i,x in enumerate(uses,1): x['id']=f'u{i}'
+    for x in defs+uses:
+        a=x['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+        if isinstance(x.get('binds_to'),dict): b=x['binds_to']; assert t[b['cp']:b['cp']+len(b['quote'])]==b['quote']
+        for tm in x.get('templates',[]): a=tm['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote']
+    for x in idents:
+        a=x['at']; assert t[a['cp']:a['cp']+len(a['quote'])]==a['quote'] and w0<=a['cp']<w1
+    fin=datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    out={'format':'citerift-stage03-annotation-v1',
+      'article':{'wiki':pk['wiki'],'revision_id':pk['revision_id'],'source_sha256':pk['source_sha256'],'html_sha256':pk['html_sha256'],'window':[w0,w1]},
+      'provenance':{'agent':'d036-eval-en-r1-1b','started_at':START,'finished_at':fin,
+        'files_opened':[{'path':'ANNOTATION_GUIDE_v1.1.md','sha256':GUIDE_SHA},
+                        {'path':f'packets/{d}/packet.json','sha256':None},
+                        {'path':f'packets/{d}/source.wikitext','sha256':pk['source_sha256']},
+                        {'path':f'packets/{d}/render.html','sha256':pk['html_sha256']}],
+        'tools':tools_note,'unresolved':unresolved_prov},
+      'definitions':defs,'uses':uses,'identifiers':idents,'unresolved_notes':unresolved}
+    import hashlib
+    out['provenance']['files_opened'][1]['sha256']=hashlib.sha256(open(f'{BASE}/packets/{d}/packet.json','rb').read()).hexdigest()
+    json.dump(out,open(f'{BASE}/out/{d}.json','w',encoding='utf-8'),ensure_ascii=False,indent=1)
+    print(d,'defs',len(defs),'uses',len(uses),'ids',len(idents))
+    return out
+TOOLS='python3 stdlib (re, json, hashlib) and lxml run via python3 -I; helper scripts in tools/ for regex listing of <ref/sfn/cite/doi/pmid positions, HTML sup/li listing, and a builder that verifies every quote at its code-point offset. Definition/use decisions and identifier roles chosen by reading the text.'
+def idn(t,s,scheme,role,key,notes='',nth=0,after=0):
+    i=t.find(s,after)
+    for _ in range(nth): i=t.find(s,i+1)
+    assert i>=0,s
+    return {'at':loc(t,i,min(60,len(s)) if len(s)>=8 else 60),'scheme':scheme,'role':role,'key':key,'notes':notes}

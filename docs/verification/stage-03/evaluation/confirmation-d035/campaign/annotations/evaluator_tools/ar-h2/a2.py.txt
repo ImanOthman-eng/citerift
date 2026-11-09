@@ -1,0 +1,8 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h2/tools")
+from lib import A
+a=A('ar-75502161','2026-11-03T16:14:00Z')
+for s,nm,n,r in [("<ref name=scaf>","scaf","cite_note-scaf-3","cite_ref-scaf_3-0"),("<ref>[http://www.musicvf",None,"cite_note-4","cite_ref-4"),("<ref name=franklin>","franklin","cite_note-franklin-5","cite_ref-franklin_5-0")]:
+    at=a.Ln(s); a.D(at,"note",name=nm,unstructured=True,rid=n,notes="Hand-written link plus {{Webarchive}} (not a citation template)."); a.U(at,at,rid=r)
+a.unres.append("Two wikidata-generated references in the rendered list (infobox), not in source; not listed (3.3).")
+a.unres.append("No DOI/PMID occurrences in source.")
+a.write()

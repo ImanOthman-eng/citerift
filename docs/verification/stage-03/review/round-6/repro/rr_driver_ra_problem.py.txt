@@ -1,0 +1,18 @@
+"""A 429 with an unreadable / out-of-range Retry-After ends the capture (never guess a wait), but the driver
+treats HTTP_RATE_LIMITED as retryable and re-runs it with no wait."""
+import importlib.util, json, sys, time
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/tests/stage03"); sys.path.insert(0, "/home/user/citerift/src")
+from wiki_support import response, scripted, ScriptedClock, JSON_TYPE
+from citerift.wiki.capture import CaptureRequest, capture_revision
+spec = importlib.util.spec_from_file_location("cc", "/home/user/citerift/docs/verification/stage-03/evaluation/scripts/campaign_capture.py")
+cc = importlib.util.module_from_spec(spec); spec.loader.exec_module(cc)
+for ra in ["soon", str(400*86400), "Fri, 06 Nov 2026 10:00:00 XYZ"]:
+    tr, seen = scripted([response(429, {"retry-after": ra, "content-type": JSON_TYPE}, b"{}")])
+    out = capture_revision(CaptureRequest("en", None, 123, None, False, True), transport=tr, clock=ScriptedClock())
+    stdout = {"status": out.status, "bundle": None, "capture": out.record}
+    s = cc.summarize(1, stdout)
+    att = out.record["attempts"][0]
+    rec = {"runs": [{"run": 1, **s}]}
+    print(f"Retry-After={ra!r}: status={out.status} codes={s['codes']} problem={att['retry_after_problem']} deferred={s['deferred']} requests={len(seen)}")
+    print("   driver next_step:", cc.next_step(rec, time.time()))

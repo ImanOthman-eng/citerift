@@ -1,0 +1,13 @@
+import sys,json
+from lxml import html
+d=sys.argv[1]
+doc=html.parse(f'packets/{d}/render.html').getroot()
+for s in doc.xpath('//sup[contains(@typeof,"mw:Extension/ref")]'):
+    dm=s.get('data-mw') or ''
+    try:
+        j=json.loads(dm); a=j.get('attrs'); b=(j.get('body') or {}).get('html') or (j.get('body') or {}).get('id')
+        dm=f"attrs={a} body={str(b)[:90]!r}"
+    except Exception: dm=dm[:100]
+    print('SUP',s.get('id'),s.get('typeof'),dm)
+for l in doc.xpath('//li[starts-with(@id,"cite_note")]'):
+    print('LI',l.get('id'),repr(l.text_content()[:150]))

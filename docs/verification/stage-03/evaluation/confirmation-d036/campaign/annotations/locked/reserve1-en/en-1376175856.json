@@ -1,0 +1,417 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1376175856,
+  "source_sha256": "9094b46ae25406ed9ab9967b27076ebb5c8f1408c8cbe73dc4d20c317a33897b",
+  "html_sha256": "49b78a68b1775c8989727f198a2b485553147bfaaed0954faeab95bfd52d9321",
+  "window": [
+   0,
+   6009
+  ]
+ },
+ "provenance": {
+  "agent": "d036-eval-en-r1-1b",
+  "started_at": "2026-11-09T13:01:02Z",
+  "finished_at": "2026-11-09T13:03:39Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1376175856/packet.json",
+    "sha256": "408d374defcf67ade7a626d22599ded94424f840795167f7371aeb269b311baf"
+   },
+   {
+    "path": "packets/en-1376175856/source.wikitext",
+    "sha256": "9094b46ae25406ed9ab9967b27076ebb5c8f1408c8cbe73dc4d20c317a33897b"
+   },
+   {
+    "path": "packets/en-1376175856/render.html",
+    "sha256": "49b78a68b1775c8989727f198a2b485553147bfaaed0954faeab95bfd52d9321"
+   }
+  ],
+  "tools": "python3 stdlib (re, json, hashlib) and lxml run via python3 -I; helper scripts in tools/ for regex listing of <ref/sfn/cite/doi/pmid positions, HTML sup/li listing, and a builder that verifies every quote at its code-point offset. Definition/use decisions and identifier roles chosen by reading the text.",
+  "unresolved": "Nothing undecided."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 729,
+    "quote": "<ref>{{cite web |title= CV of Prof. Dr. Dick Sandberg - NTNU"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 734,
+      "quote": "{{cite web |title= CV of Prof. Dr. Dick Sandberg - NTNU|url="
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1053,
+    "quote": "<ref>https://www.ntnu.edu/employees/dick.sandberg Prof. Dick"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1143,
+    "quote": "<ref>{{cite web | title=Sandberg, Dick (0000-0002-4526-9391)"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1148,
+      "quote": "{{cite web | title=Sandberg, Dick (0000-0002-4526-9391) | we"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "The cite web carries ref={{sfnref | Simple search| 2023}}; sfnref only builds an anchor id and is not a footnote call, so it is not listed as a use or citation template."
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 1544,
+    "quote": "<ref>{{cite web | title=Fellows | website=The International "
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1549,
+      "quote": "{{cite web | title=Fellows | website=The International Acade"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "ref={{sfnref | ...}} builds an anchor id only; not a footnote call."
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 1914,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare URL plus hand-written text. Body differs from the ref at the later tandfonline occurrence, so two separate unnamed refs."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 2198,
+    "quote": "<ref>{{cite web | title=Dick Sandberg | website=Luleå teknis"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2203,
+      "quote": "{{cite web | title=Dick Sandberg | website=Luleå tekniska un"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 3175,
+    "quote": "<ref>{{cite web | title=EVA 4.0 | website=EVA 4.0 | url=http"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3180,
+      "quote": "{{cite web | title=EVA 4.0 | website=EVA 4.0 | url=https://e"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 3785,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Bare URL plus hand-written text; differs from the earlier tandfonline ref. Unnamed, so a separate reference."
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 4411,
+    "quote": "<ref>{{citation | last=Baas | first=Jeroen | title=October 2"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4416,
+      "quote": "{{citation | last=Baas | first=Jeroen | title=October 2023 d"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 4971,
+    "quote": "<ref>{{cite book|title=Springer Handbooks|publisher=Springer"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4976,
+      "quote": "{{cite book|title=Springer Handbooks|publisher=Springer Inte"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 729,
+    "quote": "<ref>{{cite web |title= CV of Prof. Dr. Dick Sandberg - NTNU"
+   },
+   "binds_to": {
+    "cp": 729,
+    "quote": "<ref>{{cite web |title= CV of Prof. Dr. Dick Sandberg - NTNU"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1053,
+    "quote": "<ref>https://www.ntnu.edu/employees/dick.sandberg Prof. Dick"
+   },
+   "binds_to": {
+    "cp": 1053,
+    "quote": "<ref>https://www.ntnu.edu/employees/dick.sandberg Prof. Dick"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1143,
+    "quote": "<ref>{{cite web | title=Sandberg, Dick (0000-0002-4526-9391)"
+   },
+   "binds_to": {
+    "cp": 1143,
+    "quote": "<ref>{{cite web | title=Sandberg, Dick (0000-0002-4526-9391)"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1544,
+    "quote": "<ref>{{cite web | title=Fellows | website=The International "
+   },
+   "binds_to": {
+    "cp": 1544,
+    "quote": "<ref>{{cite web | title=Fellows | website=The International "
+   },
+   "render_ref_id": "cite_ref-4",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1914,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "binds_to": {
+    "cp": 1914,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "render_ref_id": "cite_ref-5",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2198,
+    "quote": "<ref>{{cite web | title=Dick Sandberg | website=Luleå teknis"
+   },
+   "binds_to": {
+    "cp": 2198,
+    "quote": "<ref>{{cite web | title=Dick Sandberg | website=Luleå teknis"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 3175,
+    "quote": "<ref>{{cite web | title=EVA 4.0 | website=EVA 4.0 | url=http"
+   },
+   "binds_to": {
+    "cp": 3175,
+    "quote": "<ref>{{cite web | title=EVA 4.0 | website=EVA 4.0 | url=http"
+   },
+   "render_ref_id": "cite_ref-7",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 3785,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "binds_to": {
+    "cp": 3785,
+    "quote": "<ref>https://www.tandfonline.com/action/journalInformation?s"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 4411,
+    "quote": "<ref>{{citation | last=Baas | first=Jeroen | title=October 2"
+   },
+   "binds_to": {
+    "cp": 4411,
+    "quote": "<ref>{{citation | last=Baas | first=Jeroen | title=October 2"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 4971,
+    "quote": "<ref>{{cite book|title=Springer Handbooks|publisher=Springer"
+   },
+   "binds_to": {
+    "cp": 4971,
+    "quote": "<ref>{{cite book|title=Springer Handbooks|publisher=Springer"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 4656,
+    "quote": "10.17632/BTCHXKTZYW.6"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.17632/btchxktzyw.6",
+   "notes": "doi= field of {{citation}}; uppercase in source, key lower-cased"
+  },
+  {
+   "at": {
+    "cp": 5200,
+    "quote": "10.1007/978-3-030-81315-4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/978-3-030-81315-4",
+   "notes": "doi= field of cite book"
+  }
+ ],
+ "unresolved_notes": [
+  "External links list items are plain links with no citation template or DOI/PMID, so not bibliography entries. {{Authority control}} may render identifiers from Wikidata; not in source.",
+  "s2cid, isbn, issn and ORCID values are not DOI/PMID and not labelled."
+ ]
+}

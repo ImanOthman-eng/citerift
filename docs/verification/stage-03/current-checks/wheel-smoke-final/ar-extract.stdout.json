@@ -1,0 +1,131 @@
+{
+  "accounting": {
+    "checks": [
+      {
+        "left": 10,
+        "name": "no source span reported twice for one scheme",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 10,
+        "name": "candidates = identifiers + excluded",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 10,
+        "name": "identifiers by role sum",
+        "ok": true,
+        "right": 10
+      },
+      {
+        "left": 32,
+        "name": "one marker observation per container",
+        "ok": true,
+        "right": 32
+      },
+      {
+        "left": 32,
+        "name": "every unit in exactly one container",
+        "ok": true,
+        "right": 32
+      },
+      {
+        "left": 39,
+        "name": "source uses = matched + abstained + source_only",
+        "ok": true,
+        "right": 39
+      },
+      {
+        "left": 38,
+        "name": "render uses = matched + unmatched",
+        "ok": true,
+        "right": 38
+      },
+      {
+        "left": 38,
+        "name": "matched pairs are one-to-one",
+        "ok": true,
+        "right": 38
+      }
+    ],
+    "containers": {
+      "note": 32
+    },
+    "excluded_identifiers": {},
+    "identifiers_by_role": {
+      "marker_target": 4,
+      "primary_citation_field": 6
+    },
+    "identifiers_by_scheme": {
+      "doi": 5,
+      "pmid": 5
+    },
+    "identifiers_render": {
+      "no_render_link_in_region": 4,
+      "render_link_found": 6
+    },
+    "markers": {
+      "ambiguous_text": 1,
+      "missing_template_link_only": 2,
+      "no_recognized_warning_in_inspected_region": 28,
+      "not_inspected": 1
+    },
+    "parse_nodes": 643,
+    "render_only_identifiers": 0,
+    "render_uses": {
+      "matched": 38,
+      "total": 38,
+      "unmatched": 0
+    },
+    "source_bytes": 28115,
+    "units": {
+      "citation_template": 22,
+      "unstructured_text": 10
+    },
+    "uses": {
+      "anonymous": 26,
+      "bound": 13
+    },
+    "uses_render": {
+      "matched": 38,
+      "source_only": 1
+    }
+  },
+  "capture": {
+    "capture_sha256": "cd0f39582e7665fc4b727fe40b4da164c4a267e80a6c3f9c0e4d32f246da4170",
+    "page_id": 10487829,
+    "render_artifact": "d4338f34ccda938322132136c91c8992ad4631fb069897a36d46990d8a86119c",
+    "render_state": "captured",
+    "revision_id": 76190003,
+    "sha1": "95dcb6116744ed41792297ea345cf51b5050a1f1",
+    "source_artifact": "e63135984e2e82de7c8f10afff8ea40afb402d66ebacc2227d9b83e4f26258c8",
+    "title": "هاروكو أوبوكاتا",
+    "wiki": "ar"
+  },
+  "components": {
+    "markers": {
+      "state": "partial"
+    },
+    "reconciliation": {
+      "state": "partial"
+    },
+    "render": {
+      "state": "complete"
+    },
+    "source": {
+      "state": "complete"
+    }
+  },
+  "exceptions": {
+    "MARKER_REGION_NOT_INSPECTED": 1,
+    "SOURCE_ONLY": 2
+  },
+  "extraction_digest": "1adc01fdffc65be541688cec99a4fd997f5cb604344e883277837ead8a187e6d",
+  "issues": {
+    "RECONCILIATION_ABSTAINED": 1
+  },
+  "out": "/workspace/stage03-work/wheel-smoke-final/ar.json",
+  "status": "partial"
+}

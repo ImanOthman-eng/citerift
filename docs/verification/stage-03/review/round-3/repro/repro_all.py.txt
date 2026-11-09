@@ -1,0 +1,25 @@
+"""Consolidated reproductions for REPORT.md (synthetic, offline)."""
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+def show(tag, wiki, inner):
+    doc, rep, b = observe(inner, wiki)
+    print(f"[{tag}] {wiki} {inner!r}\n      -> {short(doc['markers'][0])} verified={rep['verified']}")
+print("== R3-01 cross-channel split -> confident negative")
+show("R3-01", "en", 'Paper. Re<cite>tracted</cite>.')
+show("R3-01", "en", 'Paper. <cite>Smith. Expression</cite> of concern.')
+show("R3-01", "ar", 'ورقة. <cite>سميث. مس</cite>حوب.')
+print("== R3-02 neighbour in another channel ignored -> manufactured warning")
+show("R3-02", "en", 'Paper. <cite>Smith. Un</cite>retracted.')
+show("R3-02", "en", 'Paper. <cite>Smith. It was not</cite> retracted.')
+show("R3-02", "en", 'Paper. Retracted<cite>: a title. J Foo.</cite>')
+show("R3-02", "ar", 'ورقة. <cite>سميث. غير</cite>مسحوب.')
+show("R3-02", "en", 'Paper. <a rel="mw:WikiLink" href="./Template:Retracted">Un</a>retracted.')
+print("== R3-03 editor-supplied mw-cite-backlink class hides shown text")
+show("R3-03", "en", 'Paper. <span class="mw-cite-backlink">Retracted</span>.')
+show("R3-03", "ar", 'ورقة. <span class="mw-cite-backlink">مسحوب</span>.')
+print("== R3-04 <q> quotation not seen as a quotation")
+show("R3-04", "en", 'Paper. "Retracted" article.')
+show("R3-04", "en", 'Paper. <q>Retracted</q> article.')
+print("== R3-10 literal U+2029 vs U+2028")
+show("R3-10", "en", 'Paper. Expression of concern.')
+show("R3-10", "en", 'Paper. Expression of concern.')

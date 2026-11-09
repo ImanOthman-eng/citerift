@@ -1,0 +1,6 @@
+from h import *
+for t in ["A{{sfn|Smith|2001}} B{{sf|Smith|2001}}", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}", "A{{sfn|Smith|2001}} B{{Sfn|Smith|2001}}","A{{sfn|Smith|2001}} B{{Template:Sfn|Smith|2001}}", "A{{sfn|Smith|2001}} B{{sfn|Smith|2001|ignore-err=yes}}"]:
+    d,_=run(t)
+    print(repr(t), short(d), cs(d))
+for t in ["أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}"]:
+    d,_=run(t,wiki="ar"); print(repr(t), short(d), cs(d))

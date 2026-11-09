@@ -1,0 +1,24 @@
+"""Installed-wheel smoke test: the wheel's citerift.wiki from site-packages, schemas from an external copy
+(CITERIFT_SCHEMAS), relocated bundles; extract, verify and replay. usage: wheel_smoke.py <repo> <venv_bin> <out>"""
+import json, os, shutil, subprocess, sys
+from pathlib import Path
+repo, vbin, out = Path(sys.argv[1]), Path(sys.argv[2]), Path(sys.argv[3]); out.mkdir()
+shutil.copytree(repo / "schemas", out / "schemas")
+env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}; env["CITERIFT_SCHEMAS"] = str(out / "schemas")
+probe = subprocess.run([str(vbin / "python"), "-I", "-c", "import citerift.wiki;print(citerift.wiki.__file__)"], cwd=out, env=env, capture_output=True, text=True)
+cases = [("ar-observed", repo / "tests/stage03/fixtures/observed/ar-76190003"), ("en-observed", repo / "tests/stage03/fixtures/observed/en-1372543632"),
+         ("en-rf60-wiley", repo / "docs/verification/stage-03/evaluation/final/capture/bundles/holdout/en-37174434-a1")]
+rows = []
+for name, src in cases:
+    b = out / name; shutil.copytree(src, b)
+    for op in ("extract", "verify", "replay"):
+        cmd = [str(vbin / "citerift-wiki"), op, "--bundle", str(b), "--out" if op == "extract" else "--extraction", str(out / f"{name}.json")]
+        p = subprocess.run(cmd, cwd=out, env=env, capture_output=True, text=True)
+        d = json.loads(p.stdout) if p.stdout.strip().startswith("{") else {}
+        rows.append({"case": name, "op": op, "exit": p.returncode, "verified": d.get("verified"), "replay": (d.get("replay") or {}).get("state"), "status": d.get("status")})
+wiley = json.loads((out / "en-rf60-wiley.json").read_text())
+keys = sorted({(i["normalization"] or {}).get("normalized") for i in wiley["identifiers"] if "0004-5608" in json.dumps(i)})
+res = {"module": probe.stdout.strip(), "external_schemas": str(out / "schemas"), "rows": rows, "wiley_keys": keys}
+print(json.dumps(res, indent=1))
+ok = "site-packages" in probe.stdout and all(r["exit"] in (0, 6) for r in rows) and all(r["verified"] is True for r in rows if r["op"] == "verify") and all(r["replay"] == "reproduced" for r in rows if r["op"] == "replay") and keys == ["10.1111/0004-5608.00043"]
+print("SMOKE", "PASS" if ok else "FAIL"); sys.exit(0 if ok else 1)

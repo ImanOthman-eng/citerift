@@ -1,0 +1,60 @@
+import sys; sys.argv=[0,sys.argv[1]]
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/ar-h3/tools')
+from build import *
+# ---- 76491054
+rev=76491054; pj,T,L=ctx(rev)
+r1=L('<ref>[https://www.genecards',n=5)
+r2=L('<ref name="entrez">',n=19); r3=L('<ref name="pmid15085203">',n=25); r4=L('<ref name="pmid16444351">',n=25)
+tpl=lambda s,nth=0: L(s,nth,n=len(s))
+defs=[D('d1',r1,'note',None,'',[],True,'cite_note-1','Bare external link plus {{Webarchive}} (archive link template, not a citation template).'),
+ D('d2',r2,'note','entrez','',[L('{{استشهاد ويب',n=12)],False,'cite_note-entrez-2','NCBI Entrez gene URL, not a PubMed/DOI link.'),
+ D('d3',r3,'note','pmid15085203','',[L('{{استشهاد بدورية محكمة',0,n=22)],False,'cite_note-pmid15085203-3'),
+ D('d4',r4,'note','pmid16444351','',[L('{{استشهاد بدورية محكمة',1,n=22)],False,'cite_note-pmid16444351-4')]
+# bibliography entries: the 7 '*{{استشهاد بدورية محكمة' lines inside {{PBB_Further_reading|citations=
+bib=[]
+pos=T.index('{{PBB_Further_reading')
+k=0; p=pos
+while True:
+    p=T.find('\n*{{استشهاد بدورية محكمة',p)
+    if p<0: break
+    star=p+1
+    bib.append((star,star+1)); p=star
+assert len(bib)==7
+for i,(s,_) in enumerate(bib):
+    defs.append(D(f'd{5+i}',{'cp':s,'quote':T[s:s+30]},'bibliography_entry',None,None,[{'cp':s+1,'quote':T[s+1:s+23]}],False,None,
+      'Further-reading list item with a citation template, inside the |citations= argument of {{PBB_Further_reading}} (which wraps it in a references-list layout); labelled as a bibliography entry per 3.4. Not rendered as a numbered footnote.'))
+uses=[U('u1',r1,r1,'cite_ref-1'),U('u2',r2,r2,'cite_ref-entrez_2-0'),U('u3',r3,r3,'cite_ref-pmid15085203_3-0'),U('u4',r4,r4,'cite_ref-pmid16444351_4-0')]
+ids=[]
+# name values
+ids.append(I(L('name="pmid15085203"',off=10,n=8),'pmid','not_a_target','15085203','inside the value of ref name='))
+ids.append(I(L('pmid = 15085203',off=7,n=8),'pmid','primary_citation_field','15085203'))
+ids.append(I(L('doi = 10.1172/JCI19617',off=6,n=16),'doi','primary_citation_field','10.1172/jci19617'))
+ids.append(I(L('name="pmid16444351"',off=10,n=8),'pmid','not_a_target','16444351','inside the value of ref name='))
+ids.append(I(L('pmid = 16444351',off=7,n=8),'pmid','primary_citation_field','16444351'))
+ids.append(I(L('doi =10.1590/S0004-27302005000500009',off=5,n=31),'doi','primary_citation_field','10.1590/s0004-27302005000500009'))
+for pm,doi in [('11011112','10.1111/j.1349-7006.2000.tb01027.x'),('11318611','10.1006/geno.2001.6500'),('12477932','10.1073/pnas.242603899'),('14702039','10.1038/ng1285'),('15489334','10.1101/gr.2596504'),('16710414','10.1038/nature04727'),('16949643','10.1016/j.humpath.2006.06.022')]:
+    n='bibliography entry; in a bibliography list item'
+    ids.append(I(L('pmid= '+pm,off=6,n=len(pm)),'pmid','primary_citation_field',pm,n))
+    ids.append(I(L(doi),'doi','primary_citation_field',doi.lower(),n))
+finish(rev,pj,T,defs,uses,ids,['PBB_Further_reading citations: treated as 7 bibliography entries (list items with citation templates outside any ref); the wrapper template is a gene-box helper, so this reading is a judgement.'])
+# ---- 76789790
+rev=76789790; pj,T,L=ctx(rev)
+r1=L('<ref>{{استشهاد بدورية محكمة|مسار= https://www.sciencedirect',n=5)
+r2=L('<ref>{{استشهاد ويب|مسار=http://0-search',n=5)
+r3=L('<ref>[https://jognn',n=5)
+r4=L('<ref name=":0">',n=15); r4b=L('<ref name=":0" />',n=17)
+r5=L('<ref>{{استشهاد بدورية محكمة|مسار= https://www.sciencedirect.com/science/article/pii/S152695230700195X',n=5)
+defs=[D('d1',r1,'note',None,'',[L('{{استشهاد بدورية محكمة',0,n=22)],False,'cite_note-1'),
+ D('d2',r2,'note',None,'',[L('{{استشهاد ويب',n=12)],False,'cite_note-2','{{وصلة مكسورة}} renders "[وصلة مكسورة]" (dead-link notice), not a retraction marker.'),
+ D('d3',r3,'note',None,'',[],True,'cite_note-3','Bare external link plus {{Webarchive}} (not a citation template).'),
+ D('d4',r4,'note',':0','',[L('{{استشهاد بدورية محكمة',1,n=22)],False,'cite_note-:0-4'),
+ D('d5',r5,'note',None,'',[L('{{استشهاد بدورية محكمة',2,n=22)],False,'cite_note-5')]
+# r5 must start at the 3rd ref with this template
+uses=[U('u1',r1,r1,'cite_ref-1'),U('u2',r2,r2,'cite_ref-2'),U('u3',r3,r3,'cite_ref-3'),U('u4',r4,r4,'cite_ref-:0_4-0'),U('u5',r4b,r4,'cite_ref-:0_4-1','self-closing reuse'),U('u6',r5,r5,'cite_ref-5')]
+lc='https://online.liebertpub.com/doi/full/10.1089/bfm.2011.9998'
+ids=[I(L('doi=10.1016/S0031-3955(08)70026-9',off=4,n=29),'doi','primary_citation_field','10.1016/s0031-3955(08)70026-9'),
+ I(L(lc),'doi','identifier_link','10.1089/bfm.2011.9998','publisher URL with /doi/ path segment; DOI ends at the closing |'),
+ I(L('doi=10.1089/bfm.2011.9998',off=4,n=21),'doi','primary_citation_field','10.1089/bfm.2011.9998'),
+ I(L('https://web.archive.org/web/20191215020715/'+lc),'doi','not_a_target','10.1089/bfm.2011.9998','archive.org snapshot URL containing another site\'s URL'),
+ I(L('doi=10.1016/j.jmwh.2007.05.005',off=4,n=26),'doi','primary_citation_field','10.1016/j.jmwh.2007.05.005')]
+finish(rev,pj,T,defs,uses,ids,[])

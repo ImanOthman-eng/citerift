@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 6631,
+   "body_sha256": "e2928b7477cb39b690c69aab95225266830244136bbb661065eca9650236c654",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.338,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:56:10.677238Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=46210280",
+   "wire_bytes": 3079
+  },
+  {
+   "body_bytes": 48296,
+   "body_sha256": "e464f2eec39a83b02097bade10d14721557e43942cf79360be7caff54437dc77",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.363,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-30T20:56:21.016186Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1248170019/html",
+   "wire_bytes": 11223
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-30T20:56:21.379460Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 46210280,
+  "parent_revision_id": 1246273600,
+  "redirect_followed": null,
+  "revision_id": 1248170019,
+  "revision_timestamp": "2024-09-28T01:52:20Z",
+  "sha1": "99a6f9207fc8afcc3df059eaff0ece8525aca3a6",
+  "size": 6060,
+  "title": "Cretomerobius",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "e464f2eec39a83b02097bade10d14721557e43942cf79360be7caff54437dc77",
+  "bytes": 48296,
+  "checks": {
+   "document_revision_id": "1248170019",
+   "header_revision_id": "1248170019",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "46210280",
+   "render_id": "71b92105-d463-11f1-acf6-f973dafdf8cf",
+   "revision_sha1": "99a6f9207fc8afcc3df059eaff0ece8525aca3a6",
+   "revision_sha1_base36": "hy4zo9h2xkzf80fx6ymkeji8aza1twm"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1248170019",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Fri, 30 Oct 2026 20:56:21 GMT",
+   "etag": "W/\"1248170019/71b92105-d463-11f1-acf6-f973dafdf8cf/view\"",
+   "last-modified": "Fri, 30 Oct 2026 05:53:22 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1248170019/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 46210280,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "29d5e6f7b415ed658399b1ab7f945a03bf43fee80a064e2d49a6427adedf3365",
+  "bytes": 6060,
+  "response_artifact": "e2928b7477cb39b690c69aab95225266830244136bbb661065eca9650236c654",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=46210280"
+ },
+ "started_at": "2026-10-30T20:56:01.260893Z",
+ "status": "complete"
+}

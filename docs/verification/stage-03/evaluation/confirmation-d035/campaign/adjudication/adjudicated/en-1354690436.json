@@ -1,0 +1,209 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1354690436,
+  "source_sha256": "1e7dbb49ffa54c42fdc7e800543da069d3e865f714d7dca2e779c33f537789d8",
+  "html_sha256": "c8bc65fea784a58e4e9d90dd1f7b1c335915f204d2acac3176c958e2eafcc7e1",
+  "window": [
+   0,
+   3420
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-r1-1",
+  "started_at": "2026-11-03T16:26:19Z",
+  "finished_at": "2026-11-03T16:26:19Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1354690436/source.wikitext",
+    "sha256": "1e7dbb49ffa54c42fdc7e800543da069d3e865f714d7dca2e779c33f537789d8"
+   },
+   {
+    "path": "packets/en-1354690436/render.html",
+    "sha256": "c8bc65fea784a58e4e9d90dd1f7b1c335915f204d2acac3176c958e2eafcc7e1"
+   },
+   {
+    "path": "packets/en-1354690436/packet.json",
+    "sha256": "(not listed in packet.json itself; read for window and hashes)"
+   }
+  ],
+  "tools": "Read/Bash; python3 -I standard library and lxml, only to search wikitext, check quote positions and list <sup typeof=mw:Extension/ref> and <li id=cite_note-*> elements. All labels decided by hand.",
+  "unresolved": "Further reading item \"*[[species:Beat Schätti|Schätti B]] (1985)...\" is a hand-written list item with no citation template and no DOI/PMID, so under 3.4 it is not a bibliography entry; not labelled."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 107,
+    "quote": "<ref name=iucn>"
+   },
+   "kind": "note",
+   "name": "iucn",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 122,
+      "quote": "{{cite iucn"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn-1",
+   "marker": "none",
+   "marker_text": "Spawls, S.; Branch, W.R.; Malonza, P. (2022) [amended version of 2014 assessment]. \"Meizodon krameri \". IUCN Red List of Threatened Species. 2022 e.T13265429A217783846. doi:10.2305/IUCN.UK.2022-1.RLTS.T13265429A217783846.en. Retrieved 9 June 2023.",
+   "notes": "Inside the status_ref parameter of {{Speciesbox}}; written in the article source, so labelled.",
+   "in_window": true
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 872,
+    "quote": "<ref name=RDB>"
+   },
+   "kind": "note",
+   "name": "RDB",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 886,
+      "quote": "{{NRDB species"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-RDB-2",
+   "marker": "none",
+   "marker_text": "Meizodon krameri at the Reptarium.cz Reptile Database",
+   "notes": "{{NRDB species}} is a Reptile Database citation-style template (renders a link to the database entry); counted as a citation template as its purpose is to format a source link. Judgement call.",
+   "in_window": true
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1088,
+    "quote": "<ref>[[species:Bo Beolens"
+   },
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": "Beolens B, Watkins M, Grayson M (2011). The Eponym Dictionary of Reptiles. ... ISBN 978-1-4214-0135-5. (Meizodon krameri, p. 146).",
+   "notes": "Hand-written reference; {{ISBN}} is not a DOI/PMID.",
+   "in_window": true
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2055,
+    "quote": "<ref name=Spawlsetal2018>"
+   },
+   "kind": "note",
+   "name": "Spawlsetal2018",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Spawlsetal2018-4",
+   "marker": "none",
+   "marker_text": "Spawls S, Howell K, Hinkel H, Menegon M (2018). A Field Guide to East African Reptiles, Second Edition. ... ISBN 978-1-399-40481-5. (Meizodon krameri, pp. 480-481).",
+   "notes": "Hand-written reference; reused once by a self-closing tag.",
+   "in_window": true
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 107,
+    "quote": "<ref name=iucn>"
+   },
+   "binds_to": {
+    "cp": 107,
+    "quote": "<ref name=iucn>"
+   },
+   "render_ref_id": "cite_ref-iucn_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 872,
+    "quote": "<ref name=RDB>"
+   },
+   "binds_to": {
+    "cp": 872,
+    "quote": "<ref name=RDB>"
+   },
+   "render_ref_id": "cite_ref-RDB_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1088,
+    "quote": "<ref>[[species:Bo Beolens"
+   },
+   "binds_to": {
+    "cp": 1088,
+    "quote": "<ref>[[species:Bo Beolens"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2055,
+    "quote": "<ref name=Spawlsetal2018>"
+   },
+   "binds_to": {
+    "cp": 2055,
+    "quote": "<ref name=Spawlsetal2018>"
+   },
+   "render_ref_id": "cite_ref-Spawlsetal2018_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2800,
+    "quote": "<ref name=Spawlsetal2018/>"
+   },
+   "binds_to": {
+    "cp": 2055,
+    "quote": "<ref name=Spawlsetal2018>"
+   },
+   "render_ref_id": "cite_ref-Spawlsetal2018_4-1",
+   "notes": "Self-closing reuse."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 421,
+    "quote": "10.2305/IUCN.UK.2022-1.RLTS.T13265429A217783846.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2022-1.rlts.t13265429a217783846.en",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": [
+  "Further reading item \"*[[species:Beat Schätti|Schätti B]] (1985)...\" is a hand-written list item with no citation template and no DOI/PMID, so under 3.4 it is not a bibliography entry; not labelled."
+ ],
+ "adjudication": {
+  "adjudicator": "d035-adj-en-g1",
+  "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj-d035/en-g1/out/decisions/en-1354690436.json",
+  "changed_items": []
+ }
+}

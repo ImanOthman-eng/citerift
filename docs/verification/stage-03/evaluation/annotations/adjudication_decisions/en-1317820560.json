@@ -1,0 +1,15 @@
+{
+  "article": "en-1317820560",
+  "adjudicator": "stage03-adjudicator-en",
+  "started_at": "2026-10-29T09:20:00Z",
+  "finished_at": "2026-10-29T09:25:20Z",
+  "decisions": [
+    {
+      "item": 1,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "reason": "The DOI 10.1146/annurev-polisci-092514-012354 occurs inside url=https://www.annualreviews.org/content/journals/10.1146/... of {{Cite journal}} (cp 1893). 3.5 requires every DOI occurrence 'wherever it is (also in ... URLs)'. The URL row of the raw-text table covers only resolver/PubMed URLs and publisher URLs whose path contains '/doi/10.'; this path is /content/journals/, so the 'anything else' row applies and the raw text is the identifier text, as locked. Role: identifier_link is defined as 'a resolver/PubMed/publisher URL ... inside a reference or citation template (for example in url=), pointing at the identifier', which matches exactly (the more specific rule beats the generic 'parameter that is not an identifier field' of textual_mention). Key: no percent-encoding or entities; the DOI ends at the space before '|journal='; ASCII lower-casing gives the locked key.",
+      "corrected_label": null
+    }
+  ]
+}

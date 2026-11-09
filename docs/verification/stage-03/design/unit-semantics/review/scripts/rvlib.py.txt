@@ -1,0 +1,42 @@
+"""Shared helpers for the D-035 adversarial review (scratch, not part of the repository)."""
+import json, sys, tempfile
+from pathlib import Path
+REPO = Path("/home/user/citerift")
+sys.path.insert(0, str(REPO / "tests/stage03"))
+from wiki_support import bundle, extract, note_li, ref_sup, references, codes  # noqa: E402
+from test_g5c_unit_semantics import transclusion, citeref, cs1, one_note  # noqa: E402
+
+_counter = [0]
+
+def run(text, body, wiki="en", verify=False):
+    tmp = Path(tempfile.mkdtemp(prefix="rv-"))
+    _counter[0] += 1
+    path = bundle(tmp, text, body, wiki=wiki)
+    doc = extract(path)
+    if verify:
+        from citerift.wiki.verify import verify_bundle
+        return doc, path, verify_bundle(path, doc)
+    return doc
+
+def summary(doc, text):
+    out = {"status": doc.get("status"), "units": [], "issues": [], "idents": []}
+    for u in doc["units"]:
+        s = u["source"]
+        out["units"].append((u["id"], u["kind"], u["container_id"], u["definition_id"], (u.get("template") or {}).get("canonical"), text[s["cp_start"]:s["cp_end"]][:60], u.get("parent_unit")))
+    for i in doc["issues"]:
+        if i["code"] in ("UNIT_CLASSIFICATION_UNRESOLVED", "CITATION_TEMPLATE_UNSUPPORTED", "TEMPLATE_UNSUPPORTED", "DUPLICATE_TEMPLATE_PARAMETER", "UNIT_BOUNDARY_UNRESOLVED", "CO_REPORTED_IDENTIFIERS"):
+            out["issues"].append((i["code"], i["entities"], i.get("detail")))
+    for i in doc["identifiers"]:
+        out["idents"].append((i["normalization"]["normalized"], i["role"], i["unit_id"]))
+    return out
+
+def show(label, doc, text):
+    s = summary(doc, text)
+    print("==", label)
+    for k, v in s.items():
+        if isinstance(v, list):
+            print("  ", k)
+            for x in v:
+                print("     ", x)
+        else:
+            print("  ", k, v)

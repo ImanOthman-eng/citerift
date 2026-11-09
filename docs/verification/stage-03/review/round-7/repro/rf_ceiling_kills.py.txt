@@ -1,0 +1,16 @@
+"""Four driver kills (start without end, no bundle) exhaust the 300 MiB budget by worst-case charging alone."""
+import tempfile, json
+from pathlib import Path
+from drv_common import *
+tmp = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out")); out = tmp / "out"; out.mkdir()
+lines = []
+for i in range(4):
+    lines.append({"event": "start", "key": f"holdout/en-{100+i}", "run": 1, "argv": ["citerift-wiki", "capture", "--out", str(out / f"bundles/x{i}")]})
+(out / "captures.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
+print("charged after 4 kills:", cc.used(cc._journal(out)), "of", (cc.MAX_HTTP_ATTEMPTS, cc.MAX_ACCEPTED_BYTES))
+class Cli:
+    calls = 0
+    def __call__(s, a): s.calls += 1; return 0, "{}", ""
+c, cli = Clock(), Cli()
+rc = cc.run(plan(tmp, ("holdout", "en", 1)), out, cli, c, c.sleep)
+print("driver exit", rc, "CLI calls", cli.calls, "ceiling.json:", json.loads((out / "ceiling.json").read_text()) if (out/"ceiling.json").exists() else None)

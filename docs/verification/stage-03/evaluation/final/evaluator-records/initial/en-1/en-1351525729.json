@@ -1,0 +1,415 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1351525729,
+    "source_sha256": "4a74a68d147b9fa973b2bd4687966bdbd802cbc08f5518ecc03c9cc7548ace52",
+    "html_sha256": "9f4fdf31c377636d6896e9e2c5c4d8dc5c38934819fac9ac5ec8a9491208c6d7",
+    "window": [
+      0,
+      6241
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en-1",
+    "started_at": "2026-10-31T06:01:11.541059+00:00",
+    "finished_at": "2026-10-31T06:02:40.749385+00:00",
+    "files_opened": [
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1-BRIEF.md",
+        "sha256": "e6ff94e16b4640f35766bac168c9ab32edb943ecdbd0f4ed86095ea0fa0a8536"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1331825180/source.wikitext",
+        "sha256": "20f73d94446efeab60f1f3f1595d713d3c01ed3683ff198a96458e4ea611af60"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1331825180/render.html",
+        "sha256": "2696029b0c7afc6ad57e99433cbbb5a5555e323e8884faa94379ebfb06defbba"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1331825180/packet.json",
+        "sha256": "9336468fbd4fc27586e45b5918872d0d153d0c4bced8a8ad9c9a84220f62cc6c"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1374002817/source.wikitext",
+        "sha256": "d6cb615134bf76ec8c9c461f60d64f45f979c5930ce4e4aadd5832e25c5530a5"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1374002817/render.html",
+        "sha256": "3b4ec59e783565e330847d301a60edf35cd5638d6e6b590f1f27c864ce4b96d8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1374002817/packet.json",
+        "sha256": "8dc8862166f3996f3622eb85a8721bad37cc8fcf0f01ae91205f9fe8a8c56f7e"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1351525729/source.wikitext",
+        "sha256": "4a74a68d147b9fa973b2bd4687966bdbd802cbc08f5518ecc03c9cc7548ace52"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1351525729/render.html",
+        "sha256": "9f4fdf31c377636d6896e9e2c5c4d8dc5c38934819fac9ac5ec8a9491208c6d7"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1351525729/packet.json",
+        "sha256": "3f643b1fd2d6bb2b27c9ec700dceb5eebaa698c4952fb6a1974b1337cb1d7a54"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1248170019/source.wikitext",
+        "sha256": "29d5e6f7b415ed658399b1ab7f945a03bf43fee80a064e2d49a6427adedf3365"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1248170019/render.html",
+        "sha256": "e464f2eec39a83b02097bade10d14721557e43942cf79360be7caff54437dc77"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1248170019/packet.json",
+        "sha256": "3a560cb3258c49fcb3f6b5a38e3ec9461ade0a8d9a66d8a69fe5b847c0703feb"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1347534834/source.wikitext",
+        "sha256": "2b284afec3a0cb19da12fe7de51c82db9e8ba94cf0760fbedac487eceb0160e8"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1347534834/render.html",
+        "sha256": "59c0db72562bdbdf11511f6a0add3958abdca389e29fe62e93cf248c683c92ea"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/en-1/en-1347534834/packet.json",
+        "sha256": "661792f74e1f23568451ae77867957d57a99451602043f85037b88e82ead5e9d"
+      },
+      {
+        "path": "/workspace/stage03-work/final-evaluators-initial/output-en-1/tools/write_labels.py",
+        "sha256": "283ea4009d52b6fdff185108b19e18497a7db7216a1159786d00684b7dfaaee2"
+      }
+    ],
+    "tools": "ChatGPT/Codex manual annotation; functions.exec with exec_command; cat; Python -I standard library pathlib/re/hashlib/json/datetime and lxml for raw source searches, HTML element/attribute/text inspection, serialization and exact-location validation. No network, git, repository implementation, predictions, tests, other evaluator outputs, or general reference parser. started_at is the first recorded UTC timestamp, taken just after reading the brief and guide. Files_opened lists all inspected raw packets across this five-article evaluator session plus instructions and this article-specific serialization helper.",
+    "unresolved": "Publisher URL boundary interpretation in en-1351525729 is documented in identifier notes; no undecided source bindings or rendered marker identities."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 1927,
+        "quote": "<ref>{{Cite journal |last=Mora |first=George |date=1959"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1932,
+            "quote": "{{Cite journal |last=Mora |first=George |date=1959 |tit"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-1",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 2795,
+        "quote": "<ref>{{Cite journal |last=Zimin |first=Igor' V. |date=2"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2800,
+            "quote": "{{Cite journal |last=Zimin |first=Igor' V. |date=2003 |"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 3494,
+        "quote": "<ref>{{cite journal |year=1856 |title=Medical News: Hom"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3499,
+            "quote": "{{cite journal |year=1856 |title=Medical News: Homoeopa"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-3",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 3869,
+        "quote": "<ref>{{cite book |author=Gurlt, Ernst |url=https://www."
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 3874,
+            "quote": "{{cite book |author=Gurlt, Ernst |url=https://www.deuts"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 4074,
+        "quote": "<ref name=\":0\">{{cite book |author=Fischer, Marta |url="
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": ":0",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 4089,
+            "quote": "{{cite book |author=Fischer, Marta |url=https://drw.saw"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-:0-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d6",
+      "at": {
+        "cp": 4284,
+        "quote": "<ref>{{Cite book |url=http://link.springer.com/10.1007/"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 4289,
+            "quote": "{{Cite book |url=http://link.springer.com/10.1007/978-3"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-6",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d7",
+      "at": {
+        "cp": 4821,
+        "quote": "<ref>{{cite journal |author=Mlikovsky, J. |year=2010 |t"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 4826,
+            "quote": "{{cite journal |author=Mlikovsky, J. |year=2010 |title="
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-7",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 1927,
+        "quote": "<ref>{{Cite journal |last=Mora |first=George |date=1959"
+      },
+      "binds_to": {
+        "cp": 1927,
+        "quote": "<ref>{{Cite journal |last=Mora |first=George |date=1959"
+      },
+      "render_ref_id": "cite_ref-1",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 2795,
+        "quote": "<ref>{{Cite journal |last=Zimin |first=Igor' V. |date=2"
+      },
+      "binds_to": {
+        "cp": 2795,
+        "quote": "<ref>{{Cite journal |last=Zimin |first=Igor' V. |date=2"
+      },
+      "render_ref_id": "cite_ref-2",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 3494,
+        "quote": "<ref>{{cite journal |year=1856 |title=Medical News: Hom"
+      },
+      "binds_to": {
+        "cp": 3494,
+        "quote": "<ref>{{cite journal |year=1856 |title=Medical News: Hom"
+      },
+      "render_ref_id": "cite_ref-3",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 3869,
+        "quote": "<ref>{{cite book |author=Gurlt, Ernst |url=https://www."
+      },
+      "binds_to": {
+        "cp": 3869,
+        "quote": "<ref>{{cite book |author=Gurlt, Ernst |url=https://www."
+      },
+      "render_ref_id": "cite_ref-4",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 4074,
+        "quote": "<ref name=\":0\">{{cite book |author=Fischer, Marta |url="
+      },
+      "binds_to": {
+        "cp": 4074,
+        "quote": "<ref name=\":0\">{{cite book |author=Fischer, Marta |url="
+      },
+      "render_ref_id": "cite_ref-:0_5-0",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 4284,
+        "quote": "<ref>{{Cite book |url=http://link.springer.com/10.1007/"
+      },
+      "binds_to": {
+        "cp": 4284,
+        "quote": "<ref>{{Cite book |url=http://link.springer.com/10.1007/"
+      },
+      "render_ref_id": "cite_ref-6",
+      "notes": ""
+    },
+    {
+      "id": "u7",
+      "at": {
+        "cp": 4821,
+        "quote": "<ref>{{cite journal |author=Mlikovsky, J. |year=2010 |t"
+      },
+      "binds_to": {
+        "cp": 4821,
+        "quote": "<ref>{{cite journal |author=Mlikovsky, J. |year=2010 |t"
+      },
+      "render_ref_id": "cite_ref-7",
+      "notes": ""
+    },
+    {
+      "id": "u8",
+      "at": {
+        "cp": 5383,
+        "quote": "<ref name=\":0\" />\n\n== References ==\n{{Reflist}}\n\n== Ext"
+      },
+      "binds_to": {
+        "cp": 4074,
+        "quote": "<ref name=\":0\">{{cite book |author=Fischer, Marta |url="
+      },
+      "render_ref_id": "cite_ref-:0_5-1",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 2928,
+        "quote": "https://www.tandfonline.com/doi/full/10.1080/10611983.2001.11060989"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1080/10611983.2001.11060989",
+      "notes": "Publisher DOI URL in url=. Interpreted the guide publisher-URL category as including /doi/full/10. rather than only a literal /doi/10. path; suffix ends at the URL end."
+    },
+    {
+      "at": {
+        "cp": 3082,
+        "quote": "10.1080/10611983.2001.11060989"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1080/10611983.2001.11060989",
+      "notes": ""
+    },
+    {
+      "at": {
+        "cp": 4306,
+        "quote": "http://link.springer.com/10.1007/978-3-642-48590-9"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1007/978-3-642-48590-9",
+      "notes": "Publisher DOI URL in url= has a direct /10. path, not the guide example /doi/10. path. Best reading: identifier_link and whole URL raw text because the publisher URL directly identifies the same DOI as the explicit doi= field. Raw-boundary interpretation is uncertain."
+    },
+    {
+      "at": {
+        "cp": 4555,
+        "quote": "10.1007/978-3-642-48590-9"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1007/978-3-642-48590-9",
+      "notes": ""
+    }
+  ],
+  "unresolved_notes": [
+    "Guide 3.5 gives /doi/10. as the publisher-URL example. This article uses /doi/full/10. and a Springer direct /10. path. Both are annotated as whole-URL identifier_link occurrences because they directly identify the cited work; the exact raw-boundary reading is the only material uncertainty."
+  ]
+}

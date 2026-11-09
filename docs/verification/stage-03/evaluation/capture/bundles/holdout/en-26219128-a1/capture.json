@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 8552,
+   "body_sha256": "7ff830a3f5bae68b688a65819ef8b1f4dc9c8234e5dd1799ff6716347137707f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.454,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:25:11.316254Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=26219128",
+   "wire_bytes": 3474
+  },
+  {
+   "body_bytes": 81726,
+   "body_sha256": "5ea28d261f6937bbac53605c08737fae193c0dac242e71d94efc369e8e5228fe",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.522,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:25:21.771260Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1115347887/html",
+   "wire_bytes": 14850
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-29T08:25:22.294728Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 26219128,
+  "parent_revision_id": 1111967187,
+  "redirect_followed": null,
+  "revision_id": 1115347887,
+  "revision_timestamp": "2022-10-11T00:58:59Z",
+  "sha1": "fe984875ba55d43dd30a6889a56f91e49b690152",
+  "size": 7936,
+  "title": "Instrumental chemistry",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "5ea28d261f6937bbac53605c08737fae193c0dac242e71d94efc369e8e5228fe",
+  "bytes": 81726,
+  "checks": {
+   "document_revision_id": "1115347887",
+   "header_revision_id": "1115347887",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "26219128",
+   "render_id": "5b6f3672-d187-11f1-9864-9dd97b8d85c5",
+   "revision_sha1": "fe984875ba55d43dd30a6889a56f91e49b690152",
+   "revision_sha1_base36": "tqmf05sukooz2xbiuar6fo5n1irdljm"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1115347887",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:25:22 GMT",
+   "etag": "W/\"1115347887/5b6f3672-d187-11f1-9864-9dd97b8d85c5/view\"",
+   "last-modified": "Mon, 26 Oct 2026 19:44:27 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1115347887/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 26219128,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "60648db1e7bb5ceeef493610e812c0e4a8f6bcfd5d4fddd24baea3e7cff603b9",
+  "bytes": 7936,
+  "response_artifact": "7ff830a3f5bae68b688a65819ef8b1f4dc9c8234e5dd1799ff6716347137707f",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=26219128"
+ },
+ "started_at": "2026-10-29T08:25:01.683276Z",
+ "status": "complete"
+}

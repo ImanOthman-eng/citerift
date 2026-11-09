@@ -1,0 +1,112 @@
+=====  'A<ref>{{cite journal|doi=10.1000/a}} doi:10.1000/b</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi template_field primary_citation_field '10.1000/a' -> 10.1000/a field ct-00001 un-00001
+ I id-00002 doi label_text labeled_reference_text '10.1000/b' -> 10.1000/b delimited ct-00001 None
+ issues ['RECONCILIATION_UNAVAILABLE']
+{
+ "id": "id-00001",
+ "scheme": "doi",
+ "role": "primary_citation_field",
+ "role_reason": "citation parameter doi",
+ "origin": "template_field",
+ "container_id": "ct-00001",
+ "unit_id": "un-00001",
+ "boundary": "field",
+ "context": {
+  "template": {
+   "name": "cite journal",
+   "canonical": "Cite journal",
+   "kind": "citation",
+   "family": "journal"
+  },
+  "param": "doi",
+  "in_link_text": false
+ },
+ "source": {
+  "cp_start": 25,
+  "cp_end": 34,
+  "byte_start": 25,
+  "byte_end": 34,
+  "raw": "10.1000/a",
+  "raw_sha256": "0d3804423d6408c54cee2861b52818aa34763ecd6ec5f37a71ea0e2a3bf72a3d",
+  "exact": true
+ },
+ "decoding": {
+  "input_steps": [],
+  "structural_steps": [],
+  "normalizer_input": "10.1000/a"
+ },
+ "normalization": {
+  "raw": "10.1000/a",
+  "scheme": "doi",
+  "input_form": "bare",
+  "normalized": "10.1000/a",
+  "transformations": [],
+  "issues": [],
+  "missing": false,
+  "valid": true
+ },
+ "render": {
+  "state": "not_reconciled",
+  "witnesses": []
+ }
+}
+[]
+{
+ "source_bytes": 56,
+ "parse_nodes": 5,
+ "containers": {
+  "note": 1
+ },
+ "uses": {
+  "anonymous": 1
+ },
+ "units": {
+  "citation_template": 1
+ },
+ "identifiers_by_role": {
+  "primary_citation_field": 1,
+  "labeled_reference_text": 1
+ },
+ "identifiers_by_scheme": {
+  "doi": 2
+ },
+ "excluded_identifiers": {},
+ "markers": {
+  "unavailable": 1
+ },
+ "checks": [
+  {
+   "name": "no source span reported twice for one scheme",
+   "left": 2,
+   "right": 2,
+   "ok": true
+  },
+  {
+   "name": "candidates = identifiers + excluded",
+   "left": 2,
+   "right": 2,
+   "ok": true
+  },
+  {
+   "name": "identifiers by role sum",
+   "left": 2,
+   "right": 2,
+   "ok": true
+  },
+  {
+   "name": "one marker observation per container",
+   "left": 1,
+   "right": 1,
+   "ok": true
+  },
+  {
+   "name": "every unit in exactly one container",
+   "left": 1,
+   "right": 1,
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+import sys, json, os
+from pathlib import Path
+from citerift.wiki.extract import extract_bundle
+root = Path("/home/user/citerift/docs/verification/stage-03")
+seen = set()
+for cj in sorted(root.rglob("capture.json")):
+    b = cj.parent
+    try: cap = json.loads(cj.read_text())
+    except Exception: continue
+    pg = cap.get("page");
+    if not pg: continue
+    key = (pg["wiki"], pg["revision_id"])
+    if key in seen: continue
+    try:
+        txt = (b/"artifacts"/cap["source"]["artifact"]).read_text()
+    except Exception: continue
+    if "{{sfn" not in txt.lower() and "{{sfnp" not in txt.lower() and "{{harv" not in txt.lower(): continue
+    seen.add(key)
+    doc = extract_bundle(b, None, isolated=False)
+    sf = [c for c in doc["containers"] if c["layout"] == "short_footnote"]
+    print(key, b.relative_to(root), "short_footnote containers", len(sf),
+          "states", sorted({c["binding_state"] for c in sf}), "render", sorted({c["render"]["state"] for c in sf}),
+          "defs", sum(len(c["definitions"]) for c in sf), "uses", sum(len(c["use_ids"]) for c in sf))

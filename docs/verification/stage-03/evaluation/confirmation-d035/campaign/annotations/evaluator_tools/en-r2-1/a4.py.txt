@@ -1,0 +1,61 @@
+import sys; sys.path.insert(0,"/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-r2-1/tools")
+from lib import *
+import re
+a=A(1377639087); L=a.L; t=a.text
+W0,W1=a.w
+comments=[(m.start(),m.end()) for m in re.finditer(r'<!--.*?-->',t,re.S)]
+def incom(p): return any(s<=p<e for s,e in comments)
+# definitions
+d_3=L('<ref name=":3">{{cite journal')
+a.D('d1',d_3,'note',name=':3',templates=[L('{{cite journal | last1 = Thaiss | first1 = CA | last2 = Itav',after=9000)],note_id='cite_note-:3-15',notes='Starts before the window; listed as binding target for the use at ":3" in the window.')
+d_1=L('<ref name=":1">{{cite journal',after=28000)
+a.D('d2',d_1,'note',name=':1',templates=[L("{{cite journal | last1 = Ze'Evy",after=28000)],note_id='cite_note-:1-27',notes='Starts after the window; first occurrence of :1 with a body (earlier use at 19869 is self-closing, later one at 32007 is self-closing). Listed as binding target.')
+d0=L('<ref name=":0">Suez J')
+a.D('d3',d0,'note',name=':0',unstructured=True,note_id='cite_note-:0-26',notes='Hand-written citation with plain-text PMID; {{dead link}} and {{cbignore}} are maintenance templates, not citation templates. Reused (self-closing) at 27270, just after the window.')
+dV=L('<ref>Veiga P, Suez J')
+a.D('d4',dV,'note',unstructured=True,note_id='cite_note-28',notes='Hand-written citation with plain-text PMID.')
+dB=L('<ref name="BiomX">')
+a.D('d5',dB,'note',name='BiomX',templates=[L('{{cite web |title=Prof. Eran Elinav |url=https://www.biomx.com/about/')],note_id='cite_note-BiomX-29')
+dI=L('<ref name="IBD phage therapy">')
+a.D('d6',dI,'note',name='IBD phage therapy',templates=[L('{{cite journal |title=Prof. Eran Elinav |journal=Cell|year=2022')],note_id='cite_note-IBD_phage_therapy-30',notes='Body is a plain-text author list that ends with an embedded {{cite journal}} (whose own title/authors differ, a source oddity). Counted as structured since it contains a citation template.')
+dW=L('<ref>{{cite news |last1=Wadyka')
+a.D('d7',dW,'note',templates=[L('{{cite news |last1=Wadyka')],note_id='cite_note-31')
+d13=L('<ref name=:13>')
+a.D('d8',d13,'note',name=':13',templates=[L('{{cite journal | last1 = Suez | first1 = J | last2 = Zmora | first2 = N | last3 = Zilbrerman',after=23000)],note_id='cite_note-:13-32',notes='Unquoted name with colon; MediaWiki treats the name as ":13".')
+dD=L('<ref>{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran')
+a.D('d9',dD,'note',templates=[L('{{cite news |last1=Davis |first1=Nicola |title=Vaginal fluid tran')],note_id='cite_note-33')
+d15=L('<ref name=:15>')
+a.D('d10',d15,'note',name=':15',templates=[L('{{cite journal | last1 = Lev-Sagie')],note_id='cite_note-:15-34',notes='Unquoted name with colon.')
+d16=L('<ref name=:16>')
+a.D('d11',d16,'note',name=':16',templates=[L('{{cite journal | last1 = Thaiss | first1 = CA | last2 = Levy | first2 = M | last3 = Grosheva',after=25000)],note_id='cite_note-:16-35',notes='Unquoted name with colon.')
+dG=L('<ref>Grosheva I, Zheng D')
+a.D('d12',dG,'note',unstructured=True,note_id='cite_note-36',notes='Hand-written citation with plain-text PMID and a sciencedirect URL (not a DOI URL).')
+# uses
+a.U('u1',d0,d0,'cite_ref-:0_26-0')
+a.U('u2',L('<ref name=":1" />',after=19800),d_1,'cite_ref-:1_27-0','Self-closing use that precedes its definition in source order (definition at 28698, after the window).')
+a.U('u3',dV,dV,'cite_ref-28')
+a.U('u4',L('<ref name=":3" />',after=20000),d_3,'cite_ref-:3_15-1','Definition at 9787, before the window.')
+a.U('u5',dB,dB,'cite_ref-BiomX_29-0')
+a.U('u6',dI,dI,'cite_ref-IBD_phage_therapy_30-0')
+a.U('u7',dW,dW,'cite_ref-31')
+a.U('u8',d13,d13,'cite_ref-:13_32-0')
+a.U('u9',dD,dD,'cite_ref-33')
+a.U('u10',d15,d15,'cite_ref-:15_34-0')
+a.U('u11',d16,d16,'cite_ref-:16_35-0')
+a.U('u12',dG,dG,'cite_ref-36')
+# identifiers
+for m in re.finditer(r'\bPMID (\d+)|\b(pmid|doi)\s*=\s*([^\s|}]+)|(https://www\.ncbi\.nlm\.nih\.gov/pubmed/\d+)',t):
+    p=m.start(m.lastindex) if m.lastindex else m.start()
+    if m.group(1): v,sc,kind=m.group(1),'pmid','label'; p=m.start(1)
+    elif m.group(3): v,sc,kind=m.group(3),m.group(2),'field'; p=m.start(3)
+    else: v,sc,kind=m.group(4),'pmid','url'; p=m.start(4)
+    if not (W0<=p<W1): continue
+    com=incom(p)
+    if sc=='doi': key=v.lower()
+    elif kind=='url': key=v.rsplit('/',1)[1]
+    else: key=v
+    role='not_a_target' if com else {'label':'labeled_reference_text','field':'primary_citation_field','url':'identifier_link'}[kind]
+    a.I({'cp':p,'quote':v},sc,role,key,'Inside an HTML comment (commented-out reference).' if com else '')
+a.unres.append('HTML-commented references inside the window (comment 20114-20517 holding <ref name="newreview> with a malformed unclosed quote, and comment 22635-23034 holding <ref name=:14>) are not rendered; not labelled as definitions or uses. Their DOI/PMID occurrences are listed with role not_a_target.')
+a.unres.append('Reference :1 is used (self-closing) at 19869 before its only body at 28698, after the window; bound to that later definition.')
+a.write('2026-11-03T16:32:17Z',TOOLS,'Nothing blocking; judgement calls: commented-out refs excluded; hybrid IBD phage therapy ref counted as having a citation template.')

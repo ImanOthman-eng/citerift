@@ -1,0 +1,19 @@
+"""Child: tok_real.py SOURCE_PATH VARIANT -> time for C and Py tokenizers on a real source with one stray construct."""
+import sys, time
+from mwparserfromhell.parser._tokenizer import CTokenizer
+from mwparserfromhell.parser.tokenizer import Tokenizer
+path, variant = sys.argv[1], sys.argv[2]
+t = open(path, encoding="utf-8").read()
+mid = len(t) // 2
+V = {"orig": t, "pre[[": "[[" + t, "pre{{": "{{" + t, "pre{|": "{|\n" + t, "pre<ref>": "<ref>" + t, "pre[http": "[http://x " + t,
+     "pre<!--": "<!--" + t, "pre<nowiki>": "<nowiki>" + t, "pre{{{": "{{{" + t, "mid[[": t[:mid] + "[[" + t[mid:], "mid{{": t[:mid] + "{{" + t[mid:],
+     "pre<ref name=a>": "<ref name=a>" + t}
+s = V[variant]
+row = [variant, len(s)]
+res = {}
+for label, Tk in (("C", CTokenizer), ("Py", Tokenizer)):
+    a = time.time()
+    res[label] = [repr(x) for x in Tk().tokenize(s, 0, False)]
+    row.append(f"{label}={time.time()-a:.2f}s")
+row.append("SAME" if res["C"] == res["Py"] else "DIFF")
+print(*row)

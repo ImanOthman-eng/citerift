@@ -1,0 +1,22 @@
+"""Pairing source template <-> render transclusion: whitespace, case, underscores, explicit positional, order."""
+from rvlib import *
+VARIANTS = [
+ ("plain", "{{Fish db|genus=P|species=q}}", "Fish db", {"genus": "P", "species": "q"}),
+ ("spaces around names/values", "{{Fish db | genus = P | species = q }}", "Fish db ", {" genus ": " P ", " species ": " q "}),
+ ("lowercase first letter", "{{fish db|genus=P|species=q}}", "fish db", {"genus": "P", "species": "q"}),
+ ("underscore", "{{Fish_db|genus=P|species=q}}", "Fish_db", {"genus": "P", "species": "q"}),
+ ("Template: prefix", "{{Template:Fish db|genus=P|species=q}}", "Template:Fish db", {"genus": "P", "species": "q"}),
+ ("param order", "{{Fish db|species=q|genus=P}}", "Fish db", {"genus": "P", "species": "q"}),
+ ("explicit 1=", "{{Fish db|1=x}}", "Fish db", {"1": "x"}),
+ ("positional with spaces", "{{Fish db| x }}", "Fish db", {"1": " x "}),
+ ("newline layout", "{{Fish db\n|genus=P\n|species=q\n}}", "Fish db\n", {"genus": "P\n", "species": "q\n"}),
+ ("duplicate param", "{{Fish db|genus=P|genus=Q}}", "Fish db", {"genus": "Q"}),
+ ("comment in value", "{{Fish db|genus=P<!--x-->}}", "Fish db", {"genus": "P<!--x-->"}),
+ ("double space in name", "{{Fish  db|genus=P}}", "Fish  db", {"genus": "P"}),
+ ("ar name with spaces", "{{ دائرة المعارف الإسلامية |مدخل=س}}", " دائرة المعارف الإسلامية ", {"مدخل": "س"}),
+]
+for label, call, target, params in VARIANTS:
+    text = f"A<ref>{call}</ref>"
+    inner = transclusion(5, target, params, cs1("Fish db entry"))
+    doc = run(text, one_note("A", inner))
+    print(f"{label:30s} units={[u['kind'] for u in doc['units']]} unresolved={[i['detail'] for i in doc['issues'] if i['code']=='UNIT_CLASSIFICATION_UNRESOLVED']}")

@@ -1,0 +1,17 @@
+"""REAL fixtures: tag of the first element (the one carrying mw:Transclusion) of citation-template output."""
+import sys
+sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review/p2")
+from pathlib import Path
+from collections import Counter
+from citerift.wiki.render import read_render
+base = Path("/home/user/citerift/tests/stage03/fixtures/observed")
+html = {"ar": base/"ar-76190003/artifacts/d4338f34ccda938322132136c91c8992ad4631fb069897a36d46990d8a86119c",
+        "en": base/"en-1372543632/artifacts/4a12e078ec88d97a4b4673596fb139b12e4a79499a726c2a789f3e4c91597763"}
+for w, p in html.items():
+    doc, rd = read_render(p.read_bytes())
+    c = Counter()
+    for t in doc.transclusions:
+        el = rd.element_by_path(t.locator.path)
+        name = t.templates[0][0].strip() if t.templates else "?"
+        c[(name[:24], el.tag)] += 1
+    print(w, sorted(c.items(), key=lambda kv: -kv[1])[:8])

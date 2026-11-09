@@ -1,0 +1,26 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d035/en-h1/tools')
+from lib import *
+S='2026-11-03T16:30:00Z'
+a=A('en-1380794712',S)
+T=a.t
+refs=[(25326,None,35),(25773,'Bowen 2005 p. 26',36),(26311,None,37),(26799,None,38),(27422,None,39),(27645,None,40),(28209,None,41),
+(28781,'Crane 2010 p. 63',42),(29054,'Haddad Groothuis 2011 p. 57',43),(29408,'Parrish 2019 p. 65',44),(29693,'Morley 2015 p. 277',45),(29999,'Ankerberg Weldon 2019 p. 122',46),(30327,'Tsoukalas 2022 p. 37',47),
+(30834,None,48),(31508,None,49),(31813,None,50),(32266,None,51),(32792,None,52)]
+for k,(cp,nm,n) in enumerate(refs,1):
+    assert T[cp:cp+4]=='<ref'
+    gt=T.index('>',cp); tcp=T.index('{{',cp)
+    q=T[cp:gt+1+25]  # ref tag plus start of template
+    q=T[cp:cp+60]
+    tq=T[tcp:tcp+30]
+    rid=f"cite_ref-{n}" if nm is None else "cite_ref-%s_%d-0"%(nm.replace(' ','_'),n)
+    nid=f"cite_note-{n}" if nm is None else "cite_note-%s-%d"%(nm.replace(' ','_'),n)
+    notes=''
+    mk='none'
+    if cp==28209: notes='Followed by {{unreliable source?}} (a cleanup tag, not a retraction/concern marker about the work as retracted) and an HTML comment, both inside the ref.'
+    d=a.define(f'd{k}',q,cp=cp,name=nm,tpl=[],note_id=nid,marker=mk,marker_text=None,notes=notes)
+    a.defs[-1]['templates']=[{'at':a.L(tcp,tq)}]
+    a.use(f'u{k}',q,d,cp=cp,rid=rid)
+    if cp==28209:
+        a.defs[-1]['marker_text']='Hoekema, Anthony (1969) [1963], The Four Major Cults ... p. 34, ISBN 0853640947, OCLC 12735425[unreliable source?]'
+a.unres.append('No DOI or PMID occurs in this window (checked doi, 10.nnnn, pmid, pubmed, ncbi). All named refs in window are unique in the article (no earlier or later reuse by name found), so every def binds to itself. {{Mormonverse}} and {{unreliable source?}} are not citation templates.')
+a.write(S)

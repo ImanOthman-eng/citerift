@@ -1,0 +1,93 @@
+{
+ "campaign": {
+  "name": "confirmation-d036",
+  "languages": [
+   "ar",
+   "en"
+  ],
+  "warning_challenge": false,
+  "initial": {
+   "ar": 24,
+   "en": 16
+  },
+  "maximum": {
+   "ar": 48,
+   "en": 32
+  },
+  "block": 4,
+  "salt": "citerift-stage03-confirmation-d036-2026-11-04-v1",
+  "http_attempts_ceiling": 500,
+  "accepted_body_bytes_ceiling": 314572800,
+  "worst_case_per_unreported_run": {
+   "http_attempts": 6,
+   "accepted_body_bytes": 67108864
+  },
+  "acquisition_end": "2026-11-14T23:59:00+00:00",
+  "campaign_directory": "docs/verification/stage-03/evaluation/confirmation-d036/campaign",
+  "network_gate": "default (~/.cache/citerift/wiki-network.lock); no other process uses it during the campaign",
+  "secret_gate": "docs/verification/stage-03/evaluation/confirmation-d036/scripts/secret_gate.py before every git add of campaign files"
+ },
+ "authority": "owner instruction 2026-11-04 (cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7), DECISIONS.md D-036, section 8",
+ "candidate_revision": "8901a597015b7c6d6eb8464554e79b4fa1383615",
+ "candidate_trees": {
+  "src": "cda4a4b6a754fc9fa4cd00839c78192c34e56f79",
+  "schemas": "360501fccd024a9e4e74cb2e09f5b3d34e125892",
+  "note": "checked against HEAD:src, HEAD:schemas and a clean working tree immediately before the prediction run (amendment section 6, review B-7)"
+ },
+ "candidate_engine": "citerift-wiki 1.2.0, extraction schema 1.2.0",
+ "candidate_ci": "GitHub Actions ci-gate: runs 41802892829 (push) and 41802898639 (pull request #5) completed with conclusion success on this revision (2026-11-04)",
+ "reviews": [
+  "docs/verification/stage-03/design/r038-reconciliation/review/REVIEW_A_reconciliation.md (independent review A)",
+  "docs/verification/stage-03/design/r038-reconciliation/review/REVIEW_B_integration.md (independent review B)",
+  "docs/verification/stage-03/design/r038-reconciliation/review/RE_REVIEW.md (focused re-review)",
+  "docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md (dispositions of all three)"
+ ],
+ "protocol": "docs/verification/stage-03/protocol/AMENDMENT_2026-11-04_D036_CONFIRMATION.md, which keeps AMENDMENT_2026-11-03_D035_CONFIRMATION.md sections 1 and 3-8 except as its section 2 lists",
+ "files_sha256_at_candidate": {
+  "docs/verification/stage-03/protocol/FROZEN_PROTOCOL.md": "398b9cbcbcb03f42cbdcfdff5a78cea77dc2fd4806b14ee0097f35f507b5f886",
+  "docs/verification/stage-03/protocol/AMENDMENT_2026-10-29.md": "ee3b508744efbf5948a45e940f824fa5dcbd56ce5e075b55835e0ec69fc836b4",
+  "docs/verification/stage-03/protocol/AMENDMENT_2026-11-02_CONFIRMATION.md": "2db80fe3ab1ce9467caf5e708e5c81deb694ca64418d46a796252502b28bad52",
+  "docs/verification/stage-03/protocol/AMENDMENT_2026-11-03_D035_CONFIRMATION.md": "f3be10ebcb83eb8b6663c7248756cc5c4a0fce26aa76e1e99d33b0e62dfa84cf",
+  "docs/verification/stage-03/protocol/ANNOTATION_GUIDE_v1.1.md": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e",
+  "docs/verification/stage-03/protocol/scripts/evaluate.py": "095248da890ce8bfcf7b0dd4f56faaf82d3188eec4a9bcff1f956f81018c9adf",
+  "docs/verification/stage-03/protocol/scripts/evaluate_v2.py": "f91d53b1b1608e164e86985d641417974328ae18e0bc8f04b02ee67859a6d288",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/EVALUATOR_BRIEF_v1.1.md": "b9ac15b49945ba8798cbd0f7cca3433fc480ed2a89e1b87b19f33f09ff9f1a9c",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/ADJUDICATION_BRIEF_v1.1.md": "34e2fe47768b9968cd696c651143354f3906b6902151801087a72e45b2f1a2b0",
+  "docs/verification/stage-03/evaluation/scripts/campaign_capture.py": "532d21e00307673b90d3e59a798689e35eccf1332aa1c803028880d79b6d201b",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/disagreements_v2.py": "b21458ccd1392af1dc77354a47226925651dd6a94ef9225bd1b6816bb731dfb0",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/exposure_set.py": "5a556aa43163776802b190ad973af46650302a6bf3a02c644d5ffd39b641ce56",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/intervals.py": "f77e512d8d828879ee8e91823dc95e230e5f1e77ae0e92f035d86f7e6aea7e14",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/make_packets_partial.py": "e44f95d0d6abcf1063bc90013fc91fbb5a24f37a536e1ec7aaac0fcdcc36e0ae",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/reserve_step.py": "d1f4d50711c8733002af2bac13b861d668264337152c04f7ea5b8c1bf86260e7",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/run_confirmation.py": "b02e74d078d4bbd0c5ed2f9cf780e56a90a4fe3a21cc2f34095d745fb2f723c2",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/secret_gate.py": "c012914ccbd5c079e7a416317ad566ff9f993bdb28acb8894208369e9d620c8b",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/select_confirmation.py": "4f62f8ea6dcdeb4e7c354c75611827cc35c3cb65967c216434361eaa5043dcbe",
+  "docs/verification/stage-03/evaluation/confirmation-d036/scripts/warning_challenge.py": "2abeb65c3bbb9338ff5af5c15e29938d8eb9a5e0b92f2300203ce6eda136fc66",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/annotations/make_packets.py": "04678b7c5096a595b4feed27993566d95c971439f3ac3163618506b7798919bd",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/annotations/validate_labels.py": "31833f014955654a3b4ef3623ea1440a16aad77844f42b40d6c16c6404b87860",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/annotations/audit_evaluators.py": "6b669e3922ab06bd2fb1066d6cb4e6c47e28321ae7a84ee9c454d9737ae39a02",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/adjudication/make_adjudication_items.py": "08806c72ebb49359ead9464d598cc8d4aedb3921851a778a68b84cfa08157af3",
+  "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/adjudication/validate_adjudication.py": "1beb8bfd109c0db8ec1a8e6381f6e82362a7a909cca433869b2e9a55ad683185",
+  "docs/verification/stage-03/evaluation/confirmation-d035/campaign/audit/evidence_audit.py": "6bf9b9b74fd18fb0530f97d7fc8f7a614cdd31422c40ded269f9225f21300545",
+  "src/citerift/wiki/data/profile-v1.json": "57bfbfdd6759c64670891d5321b70b2c4020684fb2532f73c8b9919da5b98fa3",
+  "schemas/wiki/v1/extraction.schema.json": "78ef6667ddf0c3b8c22e2e38789583c59a676ee62e577f9cd83a0c58ec70b11c",
+  "tests/stage00/test_repository.py": "4e304fd6bb428a13ed3bd80242c2732c99587cf5d5c1e8648b4ed9fb500cddd6"
+ },
+ "frozen_at": "2026-11-04T09:04:51+00:00",
+ "exposure_set_committed": false,
+ "draw_started": false,
+ "capture_started": false,
+ "predictions_before_annotation_lock": false,
+ "models": {
+  "implementing_agent": "Claude Opus (this session)",
+  "evaluators": "Claude Sonnet, separate contexts, at most 6 articles each, working outside the repository",
+  "adjudicators": "Claude Haiku, separate contexts, working outside the repository",
+  "note": "AI labels, never human gold. No other vendor's model without a paid API."
+ },
+ "executor": "Claude Code (AI coding agent) under the direction of EVE TELOS · IM",
+ "tool_cost": "No paid service added. Token totals are not exposed to the agent; no spend figure is inferred.",
+ "protocol_sha256_at_freeze": {
+  "docs/verification/stage-03/protocol/AMENDMENT_2026-11-04_D036_CONFIRMATION.md": "2e77754794eaa00bfaaec367086f3df8d47829bec6c5010ec557b977a61391c3",
+  "note": "the amendment is committed together with this manifest (freeze commit), after the candidate revision; its hash is recorded here"
+ }
+}

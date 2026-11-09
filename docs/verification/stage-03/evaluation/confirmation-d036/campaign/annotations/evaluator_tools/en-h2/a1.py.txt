@@ -1,0 +1,22 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2/tools')
+from gen import *
+rev=1259385037; p,t=load(rev); s=sups(rev)
+r1=find(t,'<ref name=Aridibacter-famidurans>'); r2=find(t,'<ref>{{cite journal |title=Aridibacter famidurans Taxon')
+u1=find(t,'<ref name=Aridibacter-famidurans/>'); r3=find(t,'<ref>{{cite journal |last1=Parker'); r4=find(t,'<ref>{{cite journal |title=Aridibacter famidurans |website=www.uniprot'); r5=find(t,'<ref>{{cite journal |title=Details'); r6=find(t,'<ref>{{cite journal |last1=Huber')
+tp=lambda r: r+len('<ref>') if t[r+4]=='>' else find(t,'{{',r)
+defs=[
+ D('d1',t,r1,'note','Aridibacter-famidurans','',[find(t,'{{cite journal',r1)],False,'cite_note-Aridibacter-famidurans-1',"Defined inside the speciesbox |authority= parameter; reused by name later in the lead."),
+ D('d2',t,r2,'note',None,'',[find(t,'{{cite journal',r2)],False,'cite_note-2',"Inside speciesbox |type_strain=."),
+ D('d3',t,r3,'note',None,'',[find(t,'{{cite journal',r3)],False,'cite_note-3'),
+ D('d4',t,r4,'note',None,'',[find(t,'{{cite journal',r4)],False,'cite_note-4'),
+ D('d5',t,r5,'note',None,'',[find(t,'{{cite journal',r5)],False,'cite_note-5'),
+ D('d6',t,r6,'note',None,'',[find(t,'{{cite journal',r6)],False,'cite_note-6'),
+]
+uses=[U('u1',t,r1,r1,s[0]),U('u2',t,r2,r2,s[1]),U('u3',t,u1,r1,s[2],"Self-closing reuse of the named ref defined earlier in the infobox."),
+ U('u4',t,r3,r3,s[3]),U('u5',t,r4,r4,s[4]),U('u6',t,r5,r5,s[5]),U('u7',t,r6,r6,s[6])]
+assert len(s)==7
+d1=find(t,'10.1601/tx.25552'); d2=find(t,'10.1099/ijs.0.060236-0'); pm=find(t,'24573163')
+ids=[I(t,d1,'10.1601/tx.25552','doi','primary_citation_field','10.1601/tx.25552'),
+ I(t,d2,'10.1099/ijs.0.060236-0','doi','primary_citation_field','10.1099/ijs.0.060236-0'),
+ I(t,pm,'24573163','pmid','primary_citation_field','24573163')]
+finish(rev,p,t,defs,uses,ids,"None; hdl=10033/344212 is not a DOI/PMID and was not labelled.",["Reflist is bare {{Reflist}}; the Taxonbar (Wikidata) may render extra identifiers but they are not in the source."])

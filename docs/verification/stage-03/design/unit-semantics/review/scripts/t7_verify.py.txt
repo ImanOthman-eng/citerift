@@ -1,0 +1,25 @@
+"""Verify + replay + schema validation of new documents (G, H, E, wrapper-G, H with identifier)."""
+from rvlib import *
+from citerift.wiki.verify import verify_bundle, replay_bundle
+from citerift.wiki.schemas import validate
+import tempfile
+from pathlib import Path
+H = "استشهاد بهارفارد دون أقواس"
+cases = [
+ ("en", "G", "A<ref>{{Fishbase|O|b|doi=10.1000/x}}</ref>", lambda t: one_note("A", transclusion(5, "Fishbase", {"1": "O", "2": "b", "doi": "10.1000/x"}, cs1("F")))),
+ ("en", "H", "A<ref>{{NRDB species|genus=P|doi=10.1000/y}}</ref>", lambda t: one_note("A", transclusion(5, "NRDB species", {"genus": "P", "doi": "10.1000/y"}, "P"))),
+ ("en", "E", "A<ref>{{harvnb|Fox|2002}}</ref>", lambda t: one_note("A", transclusion(5, "harvnb", {"1": "Fox", "2": "2002"}, citeref("Fox2002", "Fox")))),
+ ("en", "wrapperG", "A<ref>{{small|{{cite web|url=http://e.org|title=T|doi=10.1000/z}}}}</ref>", lambda t: one_note("A", transclusion(5, "small", {"1": "{{cite web|url=http://e.org|title=T|doi=10.1000/z}}"}, cs1("T"), "small"))),
+ ("ar", "E-ar", f"أ<ref>{{{{{H}|فوكس|2002}}}}</ref>", lambda t: one_note("أ", transclusion(5, H, {"1": "فوكس", "2": "2002"}, citeref("x", "x")))),
+ ("en", "H-norender", "A<ref>{{NRDB species|genus=P}}</ref>", None),
+]
+for wiki, label, text, mk in cases:
+    path = bundle(Path(tempfile.mkdtemp()), text, mk(text) if mk else None, wiki=wiki)
+    doc = extract(path)
+    v = verify_bundle(path, doc)
+    r = replay_bundle(path, None, doc)
+    errs = validate(doc, "urn:citerift:schema:wiki:v1:extraction")
+    vr = validate(v, "urn:citerift:schema:wiki:v1:verification")
+    print(f"{label:10s} units={[u['kind'] for u in doc['units']]} verified={v['verified']} replay={r['replay']['state']} schema_errs={errs} vschema={vr} ledger={[(e['entity_type'], e['code']) for e in doc['exceptions'] if e['code'] in ('UNIT_CLASSIFICATION_UNRESOLVED','CITATION_TEMPLATE_UNSUPPORTED')]}")
+    if not v["verified"]:
+        print("   failed checks:", [c for c in v["checks"] if not c.get("ok", True)][:5], v["issues"][:5])

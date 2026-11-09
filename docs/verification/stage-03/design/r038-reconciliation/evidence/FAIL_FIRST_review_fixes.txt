@@ -1,0 +1,109 @@
+Fail-first evidence for the fixes of the D-036 readiness reviews (A-01, A-02, A-03, A-04, A-05, A-07, B-1).
+The test file of the fixes was copied into a worktree at 2a94110 (the engine before these fixes) and run there:
+  pytest -q tests/stage03/test_r038_template_output_order.py --tb=line -k "transclusion or nested or count_only or bibliography or abstention_issue or restyled or grouped"
+Every new test fails for the reason it names, except the guard test_r038_templates_of_one_transclusion_never_claim_one_marker_twice[True]
+(both candidate references shown), which the old engine already passed, and the earlier test
+test_r038_nested_template_parameters_reordered, which the -k filter also selects. The B-2 tests are in FAIL_FIRST_B2_walk_budget.txt.
+
+.FFFFF.FFFFFFF                                                           [100%]
+=================================== FAILURES ===================================
+E   AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('12345', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: ('{{val|6}}', 'matched', 'cite_ref-M_1-2')
+    assert ('matched' == 'abstained'
+      
+      - abstained
+      + matched or 'cite_ref-M_1-2' == 'cite_ref-M_1-1'
+      
+      - cite_ref-M_1-1
+      ?              ^
+      + cite_ref-M_1-2
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:691: AssertionError: ('{{val|6}}', 'matched', 'cite_ref-M_1-2')
+E   AssertionError: 12345
+    assert ('abstained', None) == ('matched', 'cite_ref-M_1-2')
+      
+      At index 0 diff: 'abstained' != 'matched'
+      Use -v to get more diff
+tests/stage03/test_r038_template_output_order.py:733: AssertionError: 12345
+E   AssertionError: assert 2 == 1
+     +  where 2 = len(['cite_ref-1', 'cite_ref-1'])
+     +  and   1 = len({'cite_ref-1'})
+     +    where {'cite_ref-1'} = set(['cite_ref-1', 'cite_ref-1'])
+tests/stage03/test_r038_template_output_order.py:793: AssertionError: assert 2 == 1
+E   AssertionError: assert ('abstained', None) == ('matched', 'cite_ref-r_1-0')
+      
+      At index 0 diff: 'abstained' != 'matched'
+      Use -v to get more diff
+tests/stage03/test_r038_template_output_order.py:810: AssertionError: assert ('abstained', None) == ('matched', 'cite_ref-r_1-0')
+E   AssertionError: ('Title{{r|a}}', 'matched', 'cite_ref-a_2-1')
+    assert ('matched' != 'matched' or 'cite_ref-a_2-1' == 'cite_ref-a_2-2'
+      
+      - cite_ref-a_2-2
+      ?              ^
+      + cite_ref-a_2-1
+      ?              ^)
+tests/stage03/test_r038_template_output_order.py:843: AssertionError: ('Title{{r|a}}', 'matched', 'cite_ref-a_2-1')
+E   AssertionError: assert ['matched'] == ['abstained']
+      
+      At index 0 diff: 'matched' != 'abstained'
+      Use -v to get more diff
+tests/stage03/test_r038_template_output_order.py:862: AssertionError: assert ['matched'] == ['abstained']
+E   AssertionError: assert (1 == 2)
+     +  where 1 = len({'about:#mwt7'})
+     +    where {'about:#mwt7'} = set(['about:#mwt7', 'about:#mwt7'])
+tests/stage03/test_r038_template_output_order.py:896: AssertionError: assert (1 == 2)
+E   AssertionError: assert ['matched', 'matched'] == ['note_ambigu...te_ambiguous']
+      
+      At index 0 diff: 'matched' != 'note_ambiguous'
+      Use -v to get more diff
+tests/stage03/test_r038_template_output_order.py:909: AssertionError: assert ['matched', 'matched'] == ['note_ambigu...te_ambiguous']
+E   AssertionError: {'code': 'RECONCILIATION_ABSTAINED', 'severity': 'warning', 'retryable': False, 'entities': ['us-00001'], ...}
+    assert False
+     +  where False = all(<generator object test_r038_an_abstention_issue_names_only_uses_that_end_abstained.<locals>.<genexpr> at 0x7f6d993c27a0>)
+tests/stage03/test_r038_template_output_order.py:931: AssertionError: {'code': 'RECONCILIATION_ABSTAINED', 'severity': 'warning', 'retryable': False, 'entities': ['us-00001'], ...}
+=========================== short test summary info ============================
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_restyled_value_never_takes_another_values_marker[values0-texts0]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_restyled_value_never_takes_another_values_marker[values1-texts1]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_restyled_value_never_takes_another_values_marker[values2-texts2]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_restyled_value_never_takes_another_values_marker[values3-texts3]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_grouped_digits_and_case_still_anchor
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_templates_of_one_transclusion_never_claim_one_marker_twice[False]
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_name_reused_across_templates_of_one_transclusion_pairs_by_evidence
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_nested_uses_of_one_name_pair_by_evidence_not_order
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_a_count_only_pair_in_template_output_needs_agreeing_text
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_bibliography_entries_of_one_list_template_get_their_own_items
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_bibliography_entries_without_their_own_item_are_ambiguous
+FAILED tests/stage03/test_r038_template_output_order.py::test_r038_an_abstention_issue_names_only_uses_that_end_abstained
+12 failed, 2 passed, 35 deselected in 0.58s

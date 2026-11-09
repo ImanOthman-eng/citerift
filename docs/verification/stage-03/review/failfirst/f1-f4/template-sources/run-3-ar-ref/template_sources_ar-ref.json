@@ -1,0 +1,54 @@
+{
+ "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)",
+ "wikis": {
+  "ar-ref": {
+   "requested": "قالب:R/ref",
+   "redirects": [
+    {
+     "from": "قالب:R/ref",
+     "to": "قالب:استشهاد متعدد/ref"
+    }
+   ],
+   "templates": [
+    {
+     "title": "قالب:استشهاد متعدد/ref",
+     "missing": false,
+     "revid": 63007181,
+     "sha1": "aa4e335f5eb14721ee178b45de124143366142cb",
+     "content": "<includeonly>{{#tag:ref||name={{{1}}}|group={{{2}}}}}{{#if:{{{3}}}|<sup class=\"reference\" style=\"white-space:nowrap;\"><nowiki>:</nowiki>{{{3}}}</sup>}}</includeonly><noinclude>\n== الاستخدام ==\n<pre>{{استشهاد متعدد/ref|name|group|page numbers}}</pre>\n\n</noinclude><noinclude>\n[[تصنيف:قوالب بأسماء أجنبية]]\n</noinclude>",
+     "content_sha256": "4c01cf2c5bb5ef8356c3f98519410a90907caf8ba29d07caebec75d5e07a1ac2"
+    }
+   ]
+  }
+ },
+ "log": [
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Csha1%7Ccontent&rvslots=main&titles=%D9%82%D8%A7%D9%84%D8%A8%3AR%2Fref&redirects=1&format=json&formatversion=2",
+   "at": "2026-10-29T14:53:35Z",
+   "status": 429,
+   "body_sha256": "4b16dc9fec1e768066df9247ea61e0826f596028354088f22119a6cae9ab8e6a",
+   "retry_after": "25"
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Csha1%7Ccontent&rvslots=main&titles=%D9%82%D8%A7%D9%84%D8%A8%3AR%2Fref&redirects=1&format=json&formatversion=2",
+   "at": "2026-10-29T14:54:00Z",
+   "status": 429,
+   "body_sha256": "bcc876ef3fc326e7be13f4312ccca60a5839f4a194d6a04c76688d17771c37a0",
+   "retry_after": "1"
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Csha1%7Ccontent&rvslots=main&titles=%D9%82%D8%A7%D9%84%D8%A8%3AR%2Fref&redirects=1&format=json&formatversion=2",
+   "at": "2026-10-29T14:54:11Z",
+   "status": 429,
+   "body_sha256": "89df7cf6b0064455b5eed48bf492d27338e9acce1640378b95867b650b0567fd",
+   "retry_after": "1"
+  },
+  {
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids%7Csha1%7Ccontent&rvslots=main&titles=%D9%82%D8%A7%D9%84%D8%A8%3AR%2Fref&redirects=1&format=json&formatversion=2",
+   "at": "2026-10-29T14:54:21Z",
+   "status": 200,
+   "body_sha256": "c68a96e5557208393e0d12e30c4027e580c0bb81523262ab1433f322c9ef4a34",
+   "retry_after": null
+  }
+ ]
+}

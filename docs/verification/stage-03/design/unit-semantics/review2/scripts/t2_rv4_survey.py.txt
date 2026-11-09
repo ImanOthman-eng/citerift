@@ -1,0 +1,81 @@
+"""RV-4 exposure on the retained bundles (exposed data, regression only).
+(1) For every unstructured_text unit of a ref definition: the deciding templates beside its own text and their
+    evidence. Such a unit is D only because the render shows every such template without citation markup or a
+    short link; with no evidence for one of them (render failed or absent, no own transclusion) it would be H.
+(2) Every in-ref deciding template with no evidence in a captured render, by name.
+(3) The same unit set re-derived with evidence=None (no render): which D units become H."""
+import json, sys, collections
+from pathlib import Path
+from citerift.wiki.bundle import open_bundle
+from citerift.wiki.profile import load_profile
+from citerift.wiki.source import scan_source
+from citerift.wiki.render import read_render
+from citerift.wiki.units import template_evidence, deciding_templates
+from citerift.wiki.model import build, outermost_in_ref
+from citerift.wiki.textmap import ByteMap
+from citerift.wiki.extract import ExtractConfig
+
+ROOT = Path("/home/user/citerift")
+profile = load_profile()
+at_risk = collections.Counter(); risk_units = 0; d_units = 0; d_units_rendered = 0
+noev = collections.Counter(); noev_beside_text = collections.Counter()
+examples = collections.defaultdict(list)
+none_change = 0; bundles = 0
+for cap in sorted(ROOT.glob("docs/verification/stage-03/**/capture.json")):
+    rel = cap.parent.relative_to(ROOT).as_posix()
+    c = json.loads(cap.read_text())
+    if "SYNTHETIC" in ((c.get("page") or {}).get("title") or "").upper() or "/synthetic" in rel:
+        continue
+    b = open_bundle(cap.parent)
+    w = profile.wikis[c["page"]["wiki"]]
+    text = b.artifact(c["source"]["artifact"], limit=4 << 20).decode()
+    scan = scan_source(text, w, profile, ExtractConfig().limits())
+    ev = None
+    if (c.get("render") or {}).get("state") == "captured":
+        try:
+            render, reader = read_render(b.artifact(c["render"]["artifact"], limit=16 << 20))
+            ev = template_evidence(scan, render, reader, w, text)
+        except Exception as e:
+            ev = None
+    bundles += 1
+    m = build(scan, w, profile, ByteMap(text), ev)
+    templates = {t.index: t for t in scan.templates}
+    own = collections.defaultdict(list)
+    for t in scan.templates:
+        if t.ref is not None and not t.excluded and outermost_in_ref(t, templates):
+            own[t.ref].append(t)
+    refs = {r.index: r for r in scan.refs}
+    dec = {t.index for t in deciding_templates(scan)}
+    if ev is not None:
+        for t in scan.templates:
+            if t.index in dec and t.ref is not None and t.index not in ev:
+                noev[t.canonical or t.raw_name.strip()] += 1
+    for u in m.units:
+        if u.kind != "unstructured_text" or u.definition_id is None:
+            continue
+        d_units += 1
+        cont = next(x for x in m.containers if x.id == u.container_id)
+        i = int(u.definition_id.rsplit("/d", 1)[1]) - 1
+        r = refs[cont.definitions[i]["_ref"]]
+        ds = [t for t in own[r.index] if t.index in dec]
+        located = r.index in scan.ref_links
+        if ds and r.index in scan.ref_text:
+            risk_units += 1
+            for t in ds:
+                nm = t.canonical or t.raw_name.strip()
+                at_risk[(nm, (ev or {}).get(t.index, "NO-EVIDENCE"))] += 1
+                if len(examples[nm]) < 2:
+                    examples[nm].append((rel.split("/")[-1], text[r.start:r.end][:140]))
+    m0 = build(scan, w, profile, ByteMap(text), None)
+    k = lambda mm: {(u.kind, u.start, u.end) for u in mm.units if u.kind == "unstructured_text"}
+    lost = k(m) - k(m0)
+    none_change += len(lost)
+print("bundles", bundles, "D units in refs", d_units)
+print("D units whose own text stands beside >=1 deciding template (D only by render evidence):", risk_units)
+print("D units that become non-D when the render is absent (evidence=None):", none_change)
+print("deciding templates beside text in D units, by (name, evidence):")
+for k, v in at_risk.most_common(): print("  ", v, k)
+print("in-ref deciding templates without evidence in a captured render (top 40):")
+for k, v in noev.most_common(40): print("  ", v, k)
+print("examples:")
+for k, v in list(examples.items())[:25]: print("  ", k, v)

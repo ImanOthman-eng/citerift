@@ -1,0 +1,179 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1366839490,
+  "source_sha256": "dd5bb00a2d98e1cca443b6de165be595e8f6c6c6576d12fb50f4ff8f5590993f",
+  "html_sha256": "45cb9d7bff73781123061da7e3668a3fd8e8bcc0889afd3e0bcd259b79935c7d",
+  "window": [
+   0,
+   1821
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-en-h1",
+  "started_at": "2026-11-03T16:15:00Z",
+  "finished_at": "2026-11-03T16:11:53Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1366839490/source.wikitext",
+    "sha256": "dd5bb00a2d98e1cca443b6de165be595e8f6c6c6576d12fb50f4ff8f5590993f"
+   },
+   {
+    "path": "packets/en-1366839490/render.html",
+    "sha256": "45cb9d7bff73781123061da7e3668a3fd8e8bcc0889afd3e0bcd259b79935c7d"
+   },
+   {
+    "path": "packets/en-1366839490/packet.json",
+    "sha256": "98f3f1349978e92566cf9ba9698b1262d289ebac7480e7aeef059f0b67e795df"
+   }
+  ],
+  "tools": "python3 -I with standard library and lxml (regex search of wikitext, listing of sup/li elements in render.html, location verification); hand labelling",
+  "unresolved": ""
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 106,
+    "quote": "<ref name=\"iucn status 18 November 2021\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "iucn status 18 November 2021",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 147,
+      "quote": "{{cite iucn "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-iucn_status_18_November_2021-1",
+   "marker": "none",
+   "marker_text": "Huckstorf, V.; Freyhof, J. (2011). Schistura susannae. IUCN Red List ...",
+   "notes": "Inside the |status_ref= parameter of {{Speciesbox}}; the ref is in source, so labelled. Rendered note id also used by the later reuse."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 481,
+    "quote": "<ref name =FB>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "FB",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 495,
+      "quote": "{{FishBase | genus"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-FB-2",
+   "marker": "none",
+   "marker_text": "Froese, Rainer; Pauly, Daniel (eds.). \"Schistura susannae\". FishBase. October 2017 version.",
+   "notes": "{{FishBase}} treated as a citation template (it renders a full citation); judgement call. Inside |authority= of {{Speciesbox}}. Space before = in name attribute."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1150,
+    "quote": "<ref name = ETYFish>"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ETYFish",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1170,
+      "quote": "{{cite web | url"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ETYFish-3",
+   "marker": "none",
+   "marker_text": "\"Order CYPRINIFORMES...\" The ETYFish Project ... Archived from the original on 3 March 2016. Retrieved 21 January 2018.",
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 106,
+    "quote": "<ref name=\"iucn status 18 November 2021\">"
+   },
+   "binds_to": {
+    "cp": 106,
+    "quote": "<ref name=\"iucn status 18 November 2021\">"
+   },
+   "render_ref_id": "cite_ref-iucn_status_18_November_2021_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 481,
+    "quote": "<ref name =FB>"
+   },
+   "binds_to": {
+    "cp": 481,
+    "quote": "<ref name =FB>"
+   },
+   "render_ref_id": "cite_ref-FB_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 974,
+    "quote": "<ref name=\"iucn status 18 November 2021\" />"
+   },
+   "binds_to": {
+    "cp": 106,
+    "quote": "<ref name=\"iucn status 18 November 2021\">"
+   },
+   "render_ref_id": "cite_ref-iucn_status_18_November_2021_1-1",
+   "notes": "self-closing reuse"
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1150,
+    "quote": "<ref name = ETYFish>"
+   },
+   "binds_to": {
+    "cp": 1150,
+    "quote": "<ref name = ETYFish>"
+   },
+   "render_ref_id": "cite_ref-ETYFish_3-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 295,
+    "quote": "10.2305/IUCN.UK.2011-1.RLTS.T187941A8639448.en"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.2305/iucn.uk.2011-1.rlts.t187941a8639448.en",
+   "notes": ""
+  }
+ ],
+ "unresolved_notes": []
+}

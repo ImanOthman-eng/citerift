@@ -1,0 +1,51 @@
+import sys,re
+sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h1/tools')
+from lib import *
+from lxml import html
+A=Art(1377880902); t=A.t
+dom=html.parse(A.dir+'render.html').getroot()
+sups=[s.get('id') for s in dom.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')]
+lis=[l.get('id') for l in dom.xpath('//li[starts-with(@id,"cite_note")]')]
+refs0=A.at('<references>')
+# list definitions
+ldef={}
+for m in re.finditer(r'<ref name="?([^">\s/]+)"?>',t[refs0:]):
+    cp=refs0+m.start(); nm=m.group(1)
+    rid=[x for x in lis if x.startswith('cite_note-'+nm+'-')]; assert len(rid)==1,nm
+    tp=re.search(r'\{\{[Cc]ite [a-z ]+',t[cp:]).start()+cp
+    ldef[nm]=(cp,rid[0],tp)
+assert len(ldef)==12,len(ldef)
+for nm,(cp,rid,tp) in ldef.items():
+    A.d(cp,'list_defined_note',name=nm,group='',tpl=[tp],rid=rid,notes='defined in <references>; '+('definition starts inside the window' if A.inwin(cp) else 'definition starts after the window; listed only as a binding target'))
+# inline refs and r-calls before <references>
+calls=[]
+for m in re.finditer(r'<ref\b[^>]*>|\{\{r\|[^}]*\}\}',t[:refs0]):
+    if A.inwin(m.start()) or m.start()<A.w[0]: calls.append((m.start(),m.group(0)))
+infobox=[c for c in calls if c[0]<A.w[0]]
+inwin=[c for c in calls if c[0]>=A.w[0]]
+print(len(infobox),len(inwin),len(sups))
+assert len(infobox)+len(inwin)==len(sups)
+sid=sups[len(infobox):]
+inl=0
+for (cp,txt),s in zip(inwin,sid):
+    if txt.startswith('{{r|'):
+        nm=txt[4:-2]; assert '|' not in nm and (nm in s)
+        A.u(cp,ldef[nm][0],s)
+    elif txt.endswith('/>'):
+        nm=re.search(r'name="([^"]+)"',txt).group(1); assert nm in s
+        A.u(cp,ldef[nm][0],s)
+    else:
+        grp='Note' if 'group=Note' in txt else ''
+        assert re.match(r'cite_ref-\d+$',s); rid='cite_note-'+s.split('-')[1]
+        end=t.index('</ref>',cp)
+        tp=[A.at('{{cite news',0,cp)] if '{{cite' in t[cp:end] else []
+        A.d(cp,'note',name=None,group=grp,tpl=tp,rid=rid,notes='inline <ref group=Note> explanatory note, no citation template' if grp else '')
+        A.u(cp,cp,s)
+# sort definitions by position, renumber
+A.defs.sort(key=lambda x:x['at']['cp'])
+for i,x in enumerate(A.defs): x['id']='d%d'%(i+1)
+# identifier scan inside window
+import re as r2
+print([ (m.start(),t[m.start():m.start()+30]) for m in r2.finditer(r'10\.\d{4}|pmid|doi',t[:A.w[1]],r2.I)])
+A.unres.append('Six {{r|...}} uses in the infobox (before the window start 1627) are not listed. The window ends at 9627 inside the StateAstronomicalInstitute list-defined ref (starts before the window, so in scope); the six refs after it (Fontanka.ru, CentralBureauForAstronomicalTelegrams, Gazeta.Ru, NASA, RIANovosti, Chandler2025) start after the window and are listed with in_window=false because in-window uses bind to them. The only DOI (Chandler2025 doi=10.3847/2515-5172/ada368) starts after the window and is not listed. {{citation needed}} is not a footnote. Infobox observatory child module and {{Authority control}} may render extra content; not in source refs.')
+A.write(None,TOOLS,'Nothing undecided.')

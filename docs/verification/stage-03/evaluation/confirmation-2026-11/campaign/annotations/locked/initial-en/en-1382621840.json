@@ -1,0 +1,416 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1382621840,
+  "source_sha256": "02eff985e05a48c5cd62fa4c4302bf39fff92a820f61e84c8bfe747fed6a9662",
+  "html_sha256": "743c5c803dd83e3f723a2ea55881d63a7835578807dcbe214c03d45edd1094cd",
+  "window": [
+   2569,
+   10569
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h2",
+  "started_at": "2026-11-03T01:58:30Z",
+  "finished_at": "2026-11-03T01:58:30Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/en-1382621840/source.wikitext",
+    "sha256": "02eff985e05a48c5cd62fa4c4302bf39fff92a820f61e84c8bfe747fed6a9662"
+   },
+   {
+    "path": "packets/en-1382621840/render.html",
+    "sha256": "743c5c803dd83e3f723a2ea55881d63a7835578807dcbe214c03d45edd1094cd"
+   },
+   {
+    "path": "packets/en-1382621840/packet.json",
+    "sha256": "cfa2c9dc4a7a7315a208baa6b720b99faaf5b2794a48ac111ab02cd0c46778fb"
+   }
+  ],
+  "tools": "python3 -I with stdlib re/json and lxml (list sup[typeof=mw:Extension/ref] and li[id^=cite_note] from render.html; regex search of source.wikitext for <ref, {{cite, doi, PMID); location verification text[cp:cp+len(quote)]==quote; build script in tools/. Labels decided by hand.",
+  "unresolved": "Window contains no DOI or PMID occurrence (checked for \"10.\", doi, pmid, pubmed); the s2cid/jstor fields in the 2001 Scientific American citation are not in scope. The <syntaxhighlight> blocks in the window hold no reference or identifier."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 53054,
+    "quote": "<ref name=\"Berners-Lee\">{{cite magazine"
+   },
+   "in_window": false,
+   "kind": "list_defined_note",
+   "name": "Berners-Lee",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 53078,
+      "quote": "{{cite magazine"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Berners-Lee-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Starts after the window (in {{Reflist|refs=}}); listed only as the binding target of the self-closing use in the window. Also used again at cp 12543 (outside the window)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 2649,
+    "quote": "<ref>{{cite news|url=https://www.bloomberg"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2654,
+      "quote": "{{cite news"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 3343,
+    "quote": "<ref>{{cite magazine |access-date=February 24, 2010"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3348,
+      "quote": "{{cite magazine"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 3764,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Plenary"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3769,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-9",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4092,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Semantic"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4097,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-10",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 4357,
+    "quote": "<ref>{{cite journal |last1=Sheth"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4362,
+      "quote": "{{cite journal"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-11",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 5279,
+    "quote": "<ref>{{cite book |last=Berners-Lee |first=Tim |author-link"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5284,
+      "quote": "{{cite book"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-12",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 5797,
+    "quote": "<ref>{{cite magazine |access-date=March 13, 2008"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5802,
+      "quote": "{{cite magazine"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-13",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d9",
+   "at": {
+    "cp": 6435,
+    "quote": "<ref>{{cite web\n | url=http://eprints.ecs"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6440,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-14",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d10",
+   "at": {
+    "cp": 7003,
+    "quote": "<ref>{{cite web\n | url=http://iswc2013"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 7008,
+      "quote": "{{cite web"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-15",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 2649,
+    "quote": "<ref>{{cite news|url=https://www.bloomberg"
+   },
+   "binds_to": {
+    "cp": 2649,
+    "quote": "<ref>{{cite news|url=https://www.bloomberg"
+   },
+   "render_ref_id": "cite_ref-6",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 2945,
+    "quote": "<ref name=\"Berners-Lee\"/>"
+   },
+   "binds_to": {
+    "cp": 53054,
+    "quote": "<ref name=\"Berners-Lee\">{{cite magazine"
+   },
+   "render_ref_id": "cite_ref-Berners-Lee_7-0",
+   "notes": "Self-closing; the body is in the later {{Reflist|refs=}} block."
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 3343,
+    "quote": "<ref>{{cite magazine |access-date=February 24, 2010"
+   },
+   "binds_to": {
+    "cp": 3343,
+    "quote": "<ref>{{cite magazine |access-date=February 24, 2010"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 3764,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Plenary"
+   },
+   "binds_to": {
+    "cp": 3764,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Plenary"
+   },
+   "render_ref_id": "cite_ref-9",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 4092,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Semantic"
+   },
+   "binds_to": {
+    "cp": 4092,
+    "quote": "<ref>{{cite web |last=Berners-Lee |first=Tim |title=Semantic"
+   },
+   "render_ref_id": "cite_ref-10",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 4357,
+    "quote": "<ref>{{cite journal |last1=Sheth"
+   },
+   "binds_to": {
+    "cp": 4357,
+    "quote": "<ref>{{cite journal |last1=Sheth"
+   },
+   "render_ref_id": "cite_ref-11",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 5279,
+    "quote": "<ref>{{cite book |last=Berners-Lee |first=Tim |author-link"
+   },
+   "binds_to": {
+    "cp": 5279,
+    "quote": "<ref>{{cite book |last=Berners-Lee |first=Tim |author-link"
+   },
+   "render_ref_id": "cite_ref-12",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 5797,
+    "quote": "<ref>{{cite magazine |access-date=March 13, 2008"
+   },
+   "binds_to": {
+    "cp": 5797,
+    "quote": "<ref>{{cite magazine |access-date=March 13, 2008"
+   },
+   "render_ref_id": "cite_ref-13",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 6435,
+    "quote": "<ref>{{cite web\n | url=http://eprints.ecs"
+   },
+   "binds_to": {
+    "cp": 6435,
+    "quote": "<ref>{{cite web\n | url=http://eprints.ecs"
+   },
+   "render_ref_id": "cite_ref-14",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 7003,
+    "quote": "<ref>{{cite web\n | url=http://iswc2013"
+   },
+   "binds_to": {
+    "cp": 7003,
+    "quote": "<ref>{{cite web\n | url=http://iswc2013"
+   },
+   "render_ref_id": "cite_ref-15",
+   "notes": ""
+  }
+ ],
+ "identifiers": [],
+ "unresolved_notes": [
+  "Window contains no DOI or PMID occurrence (checked for \"10.\", doi, pmid, pubmed); the s2cid/jstor fields in the 2001 Scientific American citation are not in scope. The <syntaxhighlight> blocks in the window hold no reference or identifier."
+ ]
+}

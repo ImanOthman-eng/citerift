@@ -1,0 +1,5 @@
+"""H reason text for definitions whose only templates are profile kinds that are never examined in the render."""
+from rvlib import *
+for text in ["A<ref>{{Retracted|doi=10.1000/x}}</ref>", "A<ref>{{efn|A note.}}</ref>\n{{notelist}}", "A<ref>{{reflist}}</ref>"]:
+    doc = run(text, one_note("A", "x"))
+    print(text, "->", [u["kind"] for u in doc["units"]], [i["detail"] for i in doc["issues"] if i["code"] == "UNIT_CLASSIFICATION_UNRESOLVED"])

@@ -1,0 +1,243 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "en",
+    "revision_id": 1317820560,
+    "source_sha256": "9d4dbce8bd160333229c266f0ce143b4176757d76057f42f03782f3f6447fa04",
+    "html_sha256": "c6aae25a06bfeb2c16341110a757163fffa2a8a768141c07e8091a67938f06dc",
+    "window": [
+      0,
+      3177
+    ]
+  },
+  "provenance": {
+    "agent": "stage03-evaluator-en",
+    "started_at": "2026-10-29T09:10:12Z",
+    "finished_at": "2026-10-29T09:12:05Z",
+    "files_opened": [
+      {
+        "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1317820560/source.wikitext",
+        "sha256": "9d4dbce8bd160333229c266f0ce143b4176757d76057f42f03782f3f6447fa04"
+      },
+      {
+        "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1317820560/render.html",
+        "sha256": "c6aae25a06bfeb2c16341110a757163fffa2a8a768141c07e8091a67938f06dc"
+      },
+      {
+        "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h2/en-1317820560/packet.json",
+        "sha256": "a5f0f443c277d1b686b6b71e146063080ae48ca5c299a1405904470ebec68a72"
+      },
+      {
+        "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+        "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+      }
+    ],
+    "tools": "bash (cat, sha256sum, grep), python3 -I with standard library (re, json, hashlib, str.find) to locate and verify quotes, lxml to list <sup typeof=mw:Extension/ref> markers with id/data-mw, <li id=cite_note-...> items, red links and retraction vocabulary in render.html; every label decided by hand.",
+    "unresolved": "Raw-text extent of the DOI inside the annualreviews.org /content/journals/ URL (identifier text chosen, whole URL possible)."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 315,
+        "quote": "<ref>\"In light of Pitkin"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-1",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Hand-written quotation with short citation 'Mathiowetz, 2016, p.5 of the PDF.'; no citation template."
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 786,
+        "quote": "<ref name=\"grimes-obit\">William Grimes"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "grimes-obit",
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-grimes-obit-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Hand-written citation with an external link to nytimes.com; no citation template."
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 1111,
+        "quote": "<ref name=\"mathiowetz-2017\">Mathiowetz 2017."
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "mathiowetz-2017",
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-mathiowetz-2017-3",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Plain-text short citation 'Mathiowetz 2017.' (points to the Further reading entry); no template."
+    },
+    {
+      "id": "d4",
+      "at": {
+        "cp": 1475,
+        "quote": "<ref name=\"mathiowetz-2016\">Mathiowetz, 2016."
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "mathiowetz-2016",
+      "group": "",
+      "templates": [],
+      "unstructured": true,
+      "render_note_id": "cite_note-mathiowetz-2016-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": "Plain-text short citation 'Mathiowetz, 2016.'; no template."
+    },
+    {
+      "id": "d5",
+      "at": {
+        "cp": 1707,
+        "quote": "<ref>{{Cite journal |last=Pitkin"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 1712,
+            "quote": "{{Cite journal |last=Pitkin"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-5",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 315,
+        "quote": "<ref>\"In light of Pitkin"
+      },
+      "binds_to": {
+        "cp": 315,
+        "quote": "<ref>\"In light of Pitkin"
+      },
+      "render_ref_id": "cite_ref-1",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 786,
+        "quote": "<ref name=\"grimes-obit\">William Grimes"
+      },
+      "binds_to": {
+        "cp": 786,
+        "quote": "<ref name=\"grimes-obit\">William Grimes"
+      },
+      "render_ref_id": "cite_ref-grimes-obit_2-0",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 1111,
+        "quote": "<ref name=\"mathiowetz-2017\">Mathiowetz 2017."
+      },
+      "binds_to": {
+        "cp": 1111,
+        "quote": "<ref name=\"mathiowetz-2017\">Mathiowetz 2017."
+      },
+      "render_ref_id": "cite_ref-mathiowetz-2017_3-0",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 1475,
+        "quote": "<ref name=\"mathiowetz-2016\">Mathiowetz, 2016."
+      },
+      "binds_to": {
+        "cp": 1475,
+        "quote": "<ref name=\"mathiowetz-2016\">Mathiowetz, 2016."
+      },
+      "render_ref_id": "cite_ref-mathiowetz-2016_4-0",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 1526,
+        "quote": "<ref name=\"grimes-obit\" />"
+      },
+      "binds_to": {
+        "cp": 786,
+        "quote": "<ref name=\"grimes-obit\">William Grimes"
+      },
+      "render_ref_id": "cite_ref-grimes-obit_2-1",
+      "notes": ""
+    },
+    {
+      "id": "u6",
+      "at": {
+        "cp": 1707,
+        "quote": "<ref>{{Cite journal |last=Pitkin"
+      },
+      "binds_to": {
+        "cp": 1707,
+        "quote": "<ref>{{Cite journal |last=Pitkin"
+      },
+      "render_ref_id": "cite_ref-5",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 1893,
+        "quote": "10.1146/annurev-polisci-092514-012354"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1146/annurev-polisci-092514-012354",
+      "notes": "Inside url=https://www.annualreviews.org/content/journals/10.1146/... of {{Cite journal}}: a publisher URL pointing at the work's DOI, but its path has /content/journals/ rather than /doi/, so per the guide's table ('anything else') the raw text quoted is the identifier text, not the whole URL. If the scorer treats any publisher URL as a URL form, the whole URL starting at cp of 'https://www.annualreviews.org' would be the raw text instead."
+    },
+    {
+      "at": {
+        "cp": 2025,
+        "quote": "10.1146/annurev-polisci-092514-012354"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1146/annurev-polisci-092514-012354",
+      "notes": "doi= of {{Cite journal}}"
+    }
+  ],
+  "unresolved_notes": [
+    "Further reading list items (Mathiowetz 2017, Young 1996, Reiner 2013, Mathiowetz 2016) are hand-written citations with no citation template and no DOI/PMID, so under guide 3.4 they are not bibliography entries and are not labelled.",
+    "Annual Reviews URL in url= embeds the DOI under /content/journals/ (not /doi/); quoted as identifier text, see the identifier's notes."
+  ],
+  "adjudication": {
+    "adjudicator": "stage03-adjudicator-en",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/adjudication/out-en/decisions/en-1317820560.json",
+    "changed_items": []
+  }
+}

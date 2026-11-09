@@ -1,0 +1,25 @@
+{
+ "article": "en-1377158630",
+ "adjudicator": "d036-adj-en-g1",
+ "started_at": "2026-11-09T13:07:00Z",
+ "finished_at": "2026-11-09T13:10:45Z",
+ "decisions": [
+  {
+   "item": 0,
+   "kind": "identifier_missed",
+   "decision": "correct",
+   "reason": "The DOI 10.1099/ijs.0.02401-0 does occur at cp 2945 (inside the url= of the d1/d4 citation, a publisher URL). But the URL is not one of the forms that 3.5 quotes whole: the publisher-URL form is only one 'whose path contains /doi/10.', and this path is /content/journal/ijsem/10.1099/... with no /doi/ segment. So the row 'anything else' applies and the raw text is the identifier text itself, at cp 3004. Role identifier_link and key are unchanged. Ambiguity: a reader could take 'URL' to cover every publisher URL; the wording with /doi/ points the other way.",
+   "corrected_label": {
+    "identifier_index": 3,
+    "at": {
+     "cp": 3004,
+     "quote": "10.1099/ijs.0.02401-0"
+    },
+    "scheme": "doi",
+    "role": "identifier_link",
+    "key": "10.1099/ijs.0.02401-0",
+    "notes": "publisher URL; the DOI is the last path segment but not under a /doi/ segment; labelled as identifier_link by best reading"
+   }
+  }
+ ]
+}

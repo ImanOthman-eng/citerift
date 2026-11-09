@@ -1,0 +1,393 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 75446331,
+  "source_sha256": "d997b83106e6b40bdcb69e66a55ecfa22d4077f9c68391d0789a63f50c039760",
+  "html_sha256": "57691b1e5a85c0439008846b1a20eec6d4ebd8a03f91c59db4d897eb436e73c3",
+  "window": [
+   982,
+   8982
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:48:06Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75446331/packet.json",
+    "sha256": "dd9a6cc62944096b6cd2e9ef3ddc06a45e40f35147fc1e28e0dffe8a714f9cca"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75446331/source.wikitext",
+    "sha256": "d997b83106e6b40bdcb69e66a55ecfa22d4077f9c68391d0789a63f50c039760"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-75446331/render.html",
+    "sha256": "57691b1e5a85c0439008846b1a20eec6d4ebd8a03f91c59db4d897eb436e73c3"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str.find/re.finditer to locate '<ref', '{{', '10.', 'pmid', 'doi' etc.; lxml.html to list <sup typeof=mw:Extension/ref> (id, data-mw attrs/body) and <li id=cite_note-*> text; every location checked with text[cp:cp+len(quote)]==quote",
+  "unresolved": "none. The unnamed ref at cp 518 (Guerin & Innes, doi at cp 794) starts before the window and has no use or identifier inside the window, so it is not listed."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 1169,
+    "quote": "<ref name=\"three\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "three",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1187,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-three-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1516,
+    "quote": "<ref>{{استشهاد بكتاب|مسار"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1521,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2493,
+    "quote": "<ref name=\"مولد تلقائيا1\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا1",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2519,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا1-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 3406,
+    "quote": "<ref name=\"مولد تلقائيا2\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "مولد تلقائيا2",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3432,
+      "quote": "{{استشهاد بكتاب"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-مولد_تلقائيا2-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 6203,
+    "quote": "<ref name=\"ten\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ten",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6219,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ten-6",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Rendered note also shows a CS1 maintenance message about the unknown parameter lastauthoramp; not retraction vocabulary."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 6944,
+    "quote": "<ref name=\":0\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": ":0",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 6959,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-:0-7",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 8078,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Muller"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 8083,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-8",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Rendered note also shows a CS1 maintenance message about the unknown parameter lastauthoramp; not retraction vocabulary."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 1169,
+    "quote": "<ref name=\"three\">"
+   },
+   "binds_to": {
+    "cp": 1169,
+    "quote": "<ref name=\"three\">"
+   },
+   "render_ref_id": "cite_ref-three_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1516,
+    "quote": "<ref>{{استشهاد بكتاب|مسار"
+   },
+   "binds_to": {
+    "cp": 1516,
+    "quote": "<ref>{{استشهاد بكتاب|مسار"
+   },
+   "render_ref_id": "cite_ref-3",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 2493,
+    "quote": "<ref name=\"مولد تلقائيا1\">"
+   },
+   "binds_to": {
+    "cp": 2493,
+    "quote": "<ref name=\"مولد تلقائيا1\">"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 3309,
+    "quote": "<ref name=\"مولد تلقائيا1\" />"
+   },
+   "binds_to": {
+    "cp": 2493,
+    "quote": "<ref name=\"مولد تلقائيا1\">"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا1_4-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 3406,
+    "quote": "<ref name=\"مولد تلقائيا2\">"
+   },
+   "binds_to": {
+    "cp": 3406,
+    "quote": "<ref name=\"مولد تلقائيا2\">"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا2_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 5162,
+    "quote": "<ref name=\"مولد تلقائيا2\" />"
+   },
+   "binds_to": {
+    "cp": 3406,
+    "quote": "<ref name=\"مولد تلقائيا2\">"
+   },
+   "render_ref_id": "cite_ref-مولد_تلقائيا2_5-1",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 6203,
+    "quote": "<ref name=\"ten\">"
+   },
+   "binds_to": {
+    "cp": 6203,
+    "quote": "<ref name=\"ten\">"
+   },
+   "render_ref_id": "cite_ref-ten_6-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 6944,
+    "quote": "<ref name=\":0\">"
+   },
+   "binds_to": {
+    "cp": 6944,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_7-0",
+   "notes": ""
+  },
+  {
+   "id": "u9",
+   "at": {
+    "cp": 8078,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Muller"
+   },
+   "binds_to": {
+    "cp": 8078,
+    "quote": "<ref>{{استشهاد بدورية محكمة|مؤلف=Muller"
+   },
+   "render_ref_id": "cite_ref-8",
+   "notes": ""
+  },
+  {
+   "id": "u10",
+   "at": {
+    "cp": 8806,
+    "quote": "<ref name=\":0\" />"
+   },
+   "binds_to": {
+    "cp": 6944,
+    "quote": "<ref name=\":0\">"
+   },
+   "render_ref_id": "cite_ref-:0_7-1",
+   "notes": "Inside a <blockquote>; still a normal ref use."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1365,
+    "quote": "10.1016/S0065-2601(08)60211-7"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/s0065-2601(08)60211-7",
+   "notes": "doi= of d1"
+  },
+  {
+   "at": {
+    "cp": 6491,
+    "quote": "10.1016/0022-1031(78)90017-3"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0022-1031(78)90017-3",
+   "notes": "doi= of d5"
+  },
+  {
+   "at": {
+    "cp": 7261,
+    "quote": "10.1037/0022-3514.77.5.1011"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1037/0022-3514.77.5.1011",
+   "notes": "doi= of d6"
+  },
+  {
+   "at": {
+    "cp": 7294,
+    "quote": "10573878"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "10573878",
+   "notes": "pmid= of d6"
+  },
+  {
+   "at": {
+    "cp": 8386,
+    "quote": "10.1016/j.jesp.2003.12.003"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.jesp.2003.12.003",
+   "notes": "doi= of d7"
+  }
+ ],
+ "unresolved_notes": []
+}

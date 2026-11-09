@@ -1,0 +1,11 @@
+import time, shutil
+from h import *
+for n, ident in ((20000, "distinct"), (20000, "same")):
+    if ident == "distinct":
+        t = " ".join("A{{sfn|Author%d|2001|p=%d}}" % (i, i) for i in range(n))
+    else:
+        t = " ".join("A{{sfn|Author|2001|p=5}}" for i in range(n))
+    d_ = OUT / f"perf_{ident}"; shutil.rmtree(d_, ignore_errors=True); d_.mkdir(parents=True)
+    p = bundle(d_, t, None, name="b")
+    t0 = time.time(); doc = extract(p, isolated=True); dt = time.time() - t0
+    print(ident, n, "calls,", len(t), "bytes: isolated extract", round(dt, 2), "s status", doc["status"], sorted(codes(doc))[:4], "containers", len(doc["containers"]))

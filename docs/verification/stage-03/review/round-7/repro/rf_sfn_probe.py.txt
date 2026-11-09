@@ -1,0 +1,29 @@
+import sys, tempfile, shutil
+from pathlib import Path
+sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt/tests/stage03")
+from wiki_support import bundle, extract, codes
+OUT = Path(tempfile.mkdtemp(dir="/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r7/out"))
+n = [0]
+def one(label, t, wiki="en", expect=""):
+    n[0] += 1
+    d = OUT / f"b{n[0]}"; d.mkdir()
+    doc = extract(bundle(d, t, None, wiki=wiki))
+    sh = [(c["binding_state"], len(c["definitions"]), len(c["use_ids"])) for c in doc["containers"] if c["layout"] == "short_footnote"]
+    print(f"{label:58s} {sh} {sorted(c for c in codes(doc) if c.startswith('REF'))}  {expect}")
+one("sfn vs sf", "A{{sfn|Smith|2001}} B{{sf|Smith|2001}}", expect="merge")
+one("sfn vs Shortened footnote", "A{{sfn|Smith|2001}} B{{Shortened footnote|Smith|2001}}", expect="merge")
+one("sfn vs sfnp", "A{{sfn|Smith|2001}} B{{sfnp|Smith|2001}}", expect="conflict")
+one("sfnp vs sfnb", "A{{sfnp|Smith|2001}} B{{Sfnb|Smith|2001}}", expect="merge")
+one("sfn vs sfnnb(redirect)", "A{{sfn|Smith|2001}} B{{sfnnb|Smith|2001}}", expect="merge")
+one("ref=a b vs a_b", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a_b}}", expect="merge")
+one("ref=a b vs a  b", "A{{sfn|Smith|2001|ref=a b}} B{{sfn|Smith|2001|ref=a  b}}", expect="merge")
+one("ref=a vs A", "A{{sfn|Smith|2001|ref=a}} B{{sfn|Smith|2001|ref=A}}", expect="conflict")
+one("ref=harv vs none", "A{{sfn|Smith|2001|ref=harv}} B{{sfn|Smith|2001}}", expect="(MW merges; engine may split)")
+one("ref=a vs ref=(blank)", "A{{sfn|Smith|2001|ref=a}} B{{sfn|Smith|2001|ref=}}", expect="conflict")
+one("Ref=a vs ref=a", "A{{sfn|Smith|2001|Ref=a}} B{{sfn|Smith|2001|ref=a}}", expect="merge?")
+one("NBSP vs space name", "A{{sfn|Smith |2001}} B{{sfn|Smith|2001}}", expect="apart")
+one("tab trailing positional", "A{{sfn|Smith\t|2001}} B{{sfn|Smith|2001}}", expect="merge")
+one("ar Sfn vs Sf", "أ{{Sfn|سميث|2001}} ب{{Sf|سميث|2001}}", "ar", expect="merge")
+one("ar Sfn vs Sfnp", "أ{{Sfn|سميث|2001}} ب{{Sfnp|سميث|2001}}", "ar", expect="conflict")
+one("ar Sfn vs Harvnp", "أ{{Sfn|سميث|2001}} ب{{Harvnp|سميث|2001}}", "ar", expect="merge (redirect)")
+one("en sfn vs en sfn ps=none vs default", "A{{sfn|Smith|2001|ps=none}} B{{sfn|Smith|2001}}", expect="conflict")

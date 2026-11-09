@@ -1,0 +1,7 @@
+# Fail-first for the before-marker text walk (found by the R-038 differential before commit)
+# The first implementation kept the ancestors of the marker as a set of id()s; lxml element proxies are made on demand, so a released proxy's id came back for another element and the walk stopped early ("Munich" instead of "Munich, Germany", at random).
+# With the id()-keyed set restored temporarily, three runs of the regression test:
+1 failed
+1 failed
+1 failed
+# With the element set (committed code): see AFTER_FIX test run.

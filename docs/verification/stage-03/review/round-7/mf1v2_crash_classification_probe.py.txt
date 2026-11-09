@@ -1,0 +1,21 @@
+"""MF-1 v2 probe: how often the first (C tokenizer) worker run crashes under a 64 MiB limit, and what the
+classified result is. SYNTHETIC input, the same as test_the_memory_limit_ends_in_a_stable_failure."""
+import collections, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "tests/stage03")
+from wiki_support import bundle
+from citerift.wiki import extract as ex
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+first = collections.Counter(); final = collections.Counter()
+orig = ex._run_worker_once
+def spy(b, c, op, *, python_tokenizer):
+    doc, crashed = orig(b, c, op, python_tokenizer=python_tokenizer)
+    if not python_tokenizer:
+        first["crashed" if crashed else ",".join(sorted(i["code"] for i in doc["issues"]))] += 1
+    return doc, crashed
+ex._run_worker_once = spy
+text = "".join(f'P{i}.<ref name="n{i}">{{{{cite journal |title=T{i} |doi=10.1234/x{i}}}}}</ref>\n' for i in range(20000))
+b = bundle(Path(tempfile.mkdtemp()), text)
+for _ in range(int(sys.argv[1]) if len(sys.argv) > 1 else 20):
+    final[",".join(sorted(i["code"] for i in extract_bundle(b, ExtractConfig(worker_memory_mib=64))["issues"]))] += 1
+print("first run (C tokenizer):", dict(first)); print("classified result:", dict(final))

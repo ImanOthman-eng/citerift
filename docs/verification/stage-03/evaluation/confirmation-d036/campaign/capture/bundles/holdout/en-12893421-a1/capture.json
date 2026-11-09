@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "12cf556f484acf14cabe8479d9ea20a3e079438785a9d0e682c2243f5894982c",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.342,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:01:10.382305Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12893421",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 2411,
+   "body_sha256": "717e0a0eaaa3eaedfa7ad13f21810913cd9744146525b6a1520f0ed40dd6e4e6",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.431,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:02:00.724848Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12893421",
+   "wire_bytes": 1240
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "9bbbb66c13db62458a7575ec72ab5418ef475950c6321878da4ef3724d6b746a",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.312,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:02:11.156310Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1348311623/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 38926,
+   "body_sha256": "f7cf0b90d5a95d41c21d4f7373dd3215b1ad77d3129b07db7164ef895370c5e0",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.384,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:03:00.469161Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1348311623/html",
+   "wire_bytes": 8331
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "12cf556f484acf14cabe8479d9ea20a3e079438785a9d0e682c2243f5894982c",
+  "9bbbb66c13db62458a7575ec72ab5418ef475950c6321878da4ef3724d6b746a"
+ ],
+ "finished_at": "2026-11-04T10:03:00.853108Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 12893421,
+  "parent_revision_id": 1315112493,
+  "redirect_followed": null,
+  "revision_id": 1348311623,
+  "revision_timestamp": "2026-04-11T23:43:48Z",
+  "sha1": "7a05df9159f352c7488de943dc3df6baab8d7391",
+  "size": 1854,
+  "title": "Lithocarpus kunstleri",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f7cf0b90d5a95d41c21d4f7373dd3215b1ad77d3129b07db7164ef895370c5e0",
+  "bytes": 38926,
+  "checks": {
+   "document_revision_id": "1348311623",
+   "header_revision_id": "1348311623",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "12893421",
+   "render_id": "0ab0585c-d48d-11f1-bd8d-29682ebb03db",
+   "revision_sha1": "7a05df9159f352c7488de943dc3df6baab8d7391",
+   "revision_sha1_base36": "e94pv8nu9lr1ef7fvvjxwugbq3mipht"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1348311623",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:03:00 GMT",
+   "etag": "W/\"1348311623/0ab0585c-d48d-11f1-bd8d-29682ebb03db/view\"",
+   "last-modified": "Fri, 30 Oct 2026 04:38:58 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1348311623/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 12893421,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "55f93b9679f5b6c4bfb36be6040278123de38e88b78326c3f05205c42ce2924a",
+  "bytes": 1854,
+  "response_artifact": "717e0a0eaaa3eaedfa7ad13f21810913cd9744146525b6a1520f0ed40dd6e4e6",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12893421"
+ },
+ "started_at": "2026-11-04T10:01:00.667677Z",
+ "status": "complete"
+}

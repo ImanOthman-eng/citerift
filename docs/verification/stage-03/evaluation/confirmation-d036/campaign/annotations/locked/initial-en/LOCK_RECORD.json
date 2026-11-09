@@ -1,0 +1,17 @@
+{
+ "batch": "initial-en",
+ "locked_at": "2026-11-04T13:51:50Z",
+ "lock_sha256": "4388190f7152a0fe030ae3db7b6b2e3184b05c8cc21c5e3882bbadb2f7faabc6",
+ "candidate_revision": "8901a597015b7c6d6eb8464554e79b4fa1383615",
+ "amendment_revision": "10db8cb9df178792c8fe797a800af1bd63af29c5",
+ "annotation_guide": "docs/verification/stage-03/protocol/ANNOTATION_GUIDE_v1.1.md (sha256 2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e)",
+ "instances": [
+  "d036-eval-en-h1",
+  "d036-eval-en-h2",
+  "d036-eval-en-h3"
+ ],
+ "evaluator_model": "Claude Sonnet",
+ "validation": "VALIDATION.json (format, quotes and window only; all valid at first submission)",
+ "interruption": "every instance stopped at 10:26 UTC on a service usage limit and was resumed at 13:48 UTC with one fixed neutral message (EVALUATOR_RUNS.md)",
+ "note": "Label files are byte copies of the instances' out/ files. Locked before any extraction of these articles; no prediction exists."
+}

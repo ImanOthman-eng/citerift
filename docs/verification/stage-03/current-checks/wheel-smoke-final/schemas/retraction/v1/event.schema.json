@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:event",
+  "title": "CITERIFT retraction event, major version 1",
+  "description": "One accepted Retraction Watch record as an event (SPECIFICATION.md 7). Semantic rules (anchor and notice consistency, bounds order) are checked by citerift.retraction.schemas.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "anchor",
+    "authors",
+    "event_id",
+    "event_type",
+    "flags",
+    "issues",
+    "journal",
+    "notice_date",
+    "notice_doi",
+    "notice_key",
+    "notice_pmid",
+    "ordinal",
+    "original_date",
+    "original_doi",
+    "original_pmid",
+    "original_year",
+    "record_id",
+    "source_label",
+    "title"
+  ],
+  "properties": {
+    "event_id": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/event_id"
+    },
+    "ordinal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "event_type": {
+      "enum": [
+        "retracted",
+        "expression_of_concern",
+        "correction",
+        "reinstated"
+      ]
+    },
+    "source_label": {
+      "enum": [
+        "Retraction",
+        "Expression of concern",
+        "Correction",
+        "Reinstatement"
+      ]
+    },
+    "record_id": {
+      "type": "string"
+    },
+    "original_doi": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+        }
+      ]
+    },
+    "original_pmid": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+        }
+      ]
+    },
+    "notice_doi": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+        }
+      ]
+    },
+    "notice_pmid": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+        }
+      ]
+    },
+    "anchor": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/anchor"
+    },
+    "notice_key": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/notice_key"
+        }
+      ]
+    },
+    "notice_date": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/temporal_evidence"
+    },
+    "original_date": {
+      "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/temporal_evidence"
+    },
+    "title": {
+      "type": "string"
+    },
+    "authors": {
+      "type": "string"
+    },
+    "journal": {
+      "type": "string"
+    },
+    "original_year": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "NOTICE_DOI_EQUALS_ORIGINAL",
+          "NOTICE_PMID_EQUALS_ORIGINAL",
+          "ORIGINAL_ANCHOR_PMID_ONLY",
+          "ORIGINAL_ANCHOR_SOURCE_RECORD_ONLY",
+          "NO_NOTICE_IDENTIFIER",
+          "NOTICE_SHARED",
+          "NOTICE_ALSO_ORIGINAL_ELSEWHERE"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+      },
+      "uniqueItems": true
+    }
+  }
+}

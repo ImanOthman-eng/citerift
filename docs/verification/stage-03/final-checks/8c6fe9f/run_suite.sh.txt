@@ -1,0 +1,5 @@
+#!/bin/bash
+# usage: run.sh <python version>
+v=$1; SP=<scratch>; R=$SP/final-8c6fe9f; cd $SP/wt$v
+{ echo "rev $(git rev-parse HEAD)"; uv sync --locked --python $v 2>&1 | tail -2; .venv/bin/python -V; git status --porcelain | wc -l; } > $R/env-$v.txt 2>&1
+.venv/bin/python -m pytest -p no:cacheprovider --citerift-report $R/test-report-$v.json > $R/pytest-$v.txt 2>&1; echo "pytest exit $?" >> $R/pytest-$v.txt

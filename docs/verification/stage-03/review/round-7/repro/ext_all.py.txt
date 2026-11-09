@@ -1,0 +1,18 @@
+"""Extract every retained real bundle with whichever citerift is first on the path; write one JSON per bundle into argv[1]."""
+import json, sys, time, hashlib
+from pathlib import Path
+import citerift
+from citerift.wiki.extract import extract_bundle, ExtractConfig
+R = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/r7wt")
+out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
+print("citerift from", citerift.__file__, flush=True)
+dirs = sorted({p.parent for p in (R/"docs/verification/stage-03/evaluation").rglob("capture.json")})
+times = {}
+for d in dirs:
+    name = hashlib.sha1(str(d.relative_to(R)).encode()).hexdigest()[:12]
+    t = time.time()
+    doc = extract_bundle(d, ExtractConfig())
+    times[str(d.relative_to(R))] = round(time.time() - t, 2)
+    (out / f"{name}.json").write_text(json.dumps(doc, sort_keys=True, ensure_ascii=False, indent=1))
+(out / "_times.json").write_text(json.dumps(times, indent=1))
+print(len(dirs), "bundles; max seconds", max(times.values()), "total", round(sum(times.values()), 1))

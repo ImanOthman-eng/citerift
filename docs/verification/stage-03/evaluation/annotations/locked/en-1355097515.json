@@ -1,0 +1,160 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1355097515,
+  "source_sha256": "4783d467987112a0e74f5c67a1a595839426bdff6603f0e7d36a873fe8161882",
+  "html_sha256": "847915401eaa3df44b89d1a5a85aa2ad0b05c2470d1473ab3c606f945fc8ff1b",
+  "window": [
+   0,
+   1488
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:45:09Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1355097515/packet.json",
+    "sha256": "37c4885c932a5259db3f831c652b96ef3bbd6bb5aec2f26adbca6895c5bdbe09"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1355097515/source.wikitext",
+    "sha256": "4783d467987112a0e74f5c67a1a595839426bdff6603f0e7d36a873fe8161882"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1355097515/render.html",
+    "sha256": "847915401eaa3df44b89d1a5a85aa2ad0b05c2470d1473ab3c606f945fc8ff1b"
+   }
+  ],
+  "tools": "bash (cat, ls, sha256sum, date); python3 -I with standard library (re, json, hashlib) for str/regex search of source.wikitext and position verification (text[cp:cp+len(quote)]==quote); lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-...> ids/back-links/text, class=\"new\" links. Every label decided by reading the text by hand.",
+  "unresolved": "Nothing left undecided. Minor judgement: the doi.org link in the hand-written Korshunova ref labelled identifier_link (URL inside a reference) rather than primary_citation_field, since there is no citation-template field."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 165,
+    "quote": "<ref>Behrens, D. W. (1987). [https://www.biodive"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Placed inside the {{Speciesbox}} authority= parameter; hand-written citation (Behrens 1987, The Veliger) with an external link to biodiversitylibrary.org; no citation template. Rendered as footnote [1]."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 606,
+    "quote": "<ref name=\"Korshunova\">Korshunova T.; Fletcher K"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Korshunova",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-Korshunova-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation with a doi.org external link; no citation template."
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1034,
+    "quote": "<ref name=ssf>Rudman, W.B. (2005 October 4) [htt"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ssf",
+   "group": "",
+   "templates": [],
+   "unstructured": true,
+   "render_note_id": "cite_note-ssf-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Hand-written citation of the Sea Slug Forum page (contains <nowiki>[In]</nowiki>); no citation template."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 165,
+    "quote": "<ref>Behrens, D. W. (1987). [https://www"
+   },
+   "binds_to": {
+    "cp": 165,
+    "quote": "<ref>Behrens, D. W. (1987). [https://www.biodive"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 606,
+    "quote": "<ref name=\"Korshunova\">Korshunova T.; Fl"
+   },
+   "binds_to": {
+    "cp": 606,
+    "quote": "<ref name=\"Korshunova\">Korshunova T.; Fletcher K"
+   },
+   "render_ref_id": "cite_ref-Korshunova_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1034,
+    "quote": "<ref name=ssf>Rudman, W.B. (2005 October"
+   },
+   "binds_to": {
+    "cp": 1034,
+    "quote": "<ref name=ssf>Rudman, W.B. (2005 October 4) [htt"
+   },
+   "render_ref_id": "cite_ref-ssf_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1303,
+    "quote": "<ref name=ssf/>"
+   },
+   "binds_to": {
+    "cp": 1034,
+    "quote": "<ref name=ssf>Rudman, W.B. (2005 October 4) [htt"
+   },
+   "render_ref_id": "cite_ref-ssf_3-1",
+   "notes": "Self-closing reuse <ref name=ssf/>."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 678,
+    "quote": "https://doi.org/10.1093/zoolinnean/zlaf057"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1093/zoolinnean/zlaf057",
+   "notes": "doi.org resolver URL as external link inside a hand-written <ref> (no citation template); it is the URL of the cited work. URL ends at the space before the link label."
+  }
+ ],
+ "unresolved_notes": [
+  "{{Speciesbox}}, {{Species list}} and {{Taxonbar}} render no reference markers beyond the four from the source (checked render.html)."
+ ]
+}

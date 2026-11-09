@@ -1,0 +1,10 @@
+from h import *
+def marker_for(note_text, wiki):
+    text = "x<ref>{{cite journal|title=T}}</ref>" if wiki == "en" else "أ<ref>{{استشهاد بدورية|عنوان=ت}}</ref>"
+    note = "cite_note-1"
+    body = "<p>x" + ref_sup(1, note, "cite_ref-1") + "</p>" + references([note_li(note, ["cite_ref-1"], note_text)])
+    d, _ = run(text, body, wiki)
+    return [m["state"] for m in d["markers"]]
+for w, s in [("en","Smith (2020). Title. Retracted."),("en","Smith. Title. RETRACTED"),("en","Smith. Title. Retr­acted"),("en","Smith. Title. Retracted​."),("en","Smith. [Retracted]"),("en","Smith. This article has been retracted by the journal."),("en","Smith. Expression of concern."),("en","Smith. retracted."),("en","Smith. R‍etracted"),
+             ("ar","سميث. عنوان. مسحوب."),("ar","سميث. عنوان. (مسحوب)"),("ar","سميث. عنوان. مُسحوب"),("ar","سميث. عنوان. مسحوبة"),("ar","سميث. عنوان. تم سحب الدراسة"),("ar","سميث. عنوان. تم سحبه"),("ar","سميث. عنوان. مســحوب"),("ar","سميث. عنوان. مسحوب‏."),("ar","سميث. عنوان. تراجع المؤلفون"),("ar","سميث. عنوان. تعبير عن قلق"),("ar","سميث. عنوان. تصحيح")]:
+    print(w, repr(s), marker_for(s, w))

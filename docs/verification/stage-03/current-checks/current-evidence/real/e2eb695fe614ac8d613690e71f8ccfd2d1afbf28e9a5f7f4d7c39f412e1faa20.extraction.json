@@ -1,0 +1,523 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 2,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 2
+   }
+  ],
+  "containers": {
+   "note": 2
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "primary_citation_field": 2
+  },
+  "identifiers_by_scheme": {
+   "doi": 2
+  },
+  "identifiers_render": {
+   "render_link_found": 2
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 2
+  },
+  "parse_nodes": 127,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 2,
+   "total": 2,
+   "unmatched": 0
+  },
+  "source_bytes": 2370,
+  "units": {
+   "citation_template": 2
+  },
+  "uses": {
+   "anonymous": 2
+  },
+  "uses_render": {
+   "matched": 2
+  }
+ },
+ "capture": {
+  "capture_sha256": "e2eb695fe614ac8d613690e71f8ccfd2d1afbf28e9a5f7f4d7c39f412e1faa20",
+  "page_id": 23588406,
+  "render_artifact": "51302c9664c6703af1240520ad77a0874d8d2473d2b49b30bebe13bd22576e61",
+  "render_state": "captured",
+  "revision_id": 1314028723,
+  "sha1": "2c1a80d474d0523467357148822609b66026adbc",
+  "source_artifact": "082452e1407a1334a8419744181e92bc0c5c9caf2352b57cb58448ef94385b18",
+  "title": "Vanilla humblotii",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1301,
+      "byte_start": 683,
+      "cp_end": 1301,
+      "cp_start": 683
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1307,
+      "byte_start": 678,
+      "cp_end": 1307,
+      "cp_start": 678
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1307,
+    "byte_start": 678,
+    "cp_end": 1307,
+    "cp_start": 678
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2051,
+      "byte_start": 1448,
+      "cp_end": 2047,
+      "cp_start": 1448
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2057,
+      "byte_start": 1443,
+      "cp_end": 2053,
+      "cp_start": 1443
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2057,
+    "byte_start": 1443,
+    "cp_end": 2053,
+    "cp_start": 1443
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "843f25d6b79b36dc71ce23049de84058ff512db32f8efac3a5ce5243f05924b1",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.0.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.3390/d12120443 ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.3390/d12120443",
+    "raw": "10.3390/d12120443 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwKg",
+      "id_unique": true,
+      "path": "/html/body/section[2]/div[3]/div/ol/li[1]/span[2]/cite/span[2]/a",
+      "quote": "10.3390/d12120443",
+      "subtree_sha256": "d9b072bc40063a924e0b939b34ce938f4f4ba44b9bf5577c0c3e78ebe53c2d1e"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1226,
+    "byte_start": 1208,
+    "cp_end": 1226,
+    "cp_start": 1208,
+    "exact": true,
+    "raw": "10.3390/d12120443 ",
+    "raw_sha256": "cafcb13e091696b922ee6abbef60ff066c98fca25043353abc43bf9556fe5a3e"
+   },
+   "unit_id": "un-00001"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00002",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1016/j.sajb.2016.02.205",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/j.sajb.2016.02.205",
+    "raw": " 10.1016/j.sajb.2016.02.205",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwMg",
+      "id_unique": true,
+      "path": "/html/body/section[2]/div[3]/div/ol/li[2]/span[2]/cite/a[1]",
+      "quote": "\"Combining pollination ecology and fine-scale spatial genetic structure analysis to unravel the reproductive strategy of an insular threatened orchid\"",
+      "subtree_sha256": "7fea99c664cb54bbe791cb6f39f42614d6bc71098b06eaaa43d956a7cba8243c"
+     },
+     {
+      "element_id": "mwOg",
+      "id_unique": true,
+      "path": "/html/body/section[2]/div[3]/div/ol/li[2]/span[2]/cite/span[2]/a",
+      "quote": "10.1016/j.sajb.2016.02.205",
+      "subtree_sha256": "ddb343cea15d881944411f965849bc2b008c990f7c2f81766baf20a7c7c2d7b0"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2004,
+    "byte_start": 1977,
+    "cp_end": 2000,
+    "cp_start": 1973,
+    "exact": true,
+    "raw": " 10.1016/j.sajb.2016.02.205",
+    "raw_sha256": "b1bf883f23d9a293bee7ddeabef9d3fa15957b4456cc8efdbefb649d461a6e51"
+   },
+   "unit_id": "un-00002"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/div[3]/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "9a6c9a91af49bc2816e3f3da284e7fd46f132b10087729b3b4f8f1fca6c1db1b"
+    },
+    "region_id": "cite_note-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-2",
+     "id_unique": true,
+     "path": "/html/body/section[2]/div[3]/div/ol/li[2]",
+     "quote": "↑ Gigant, R.; De Bruyn, A.; M’sa, T.; Viscardi, G.; Gigord, L.; Gauvin-Bialecki, A.; Pailler, T.; Humeau, L.; Grisoni, M.; Besse, P. (April 6, 2016). \"Combining",
+     "subtree_sha256": "e26649abbcb7bb4ecf3de54011fb817e5e3200000511d7169373e720570536bd"
+    },
+    "region_id": "cite_note-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.0.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [
+    "id-00001"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt4"
+   },
+   "source": {
+    "byte_end": 1301,
+    "byte_start": 683,
+    "cp_end": 1301,
+    "cp_start": 683
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt7"
+   },
+   "source": {
+    "byte_end": 2051,
+    "byte_start": 1448,
+    "cp_end": 2047,
+    "cp_start": 1448
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "f02f0b90858ae91e4b89f1cb6b49e794a2993331fc3f2d6bc7b126d95bc17cbd"
+    },
+    "state": "matched",
+    "target_note": "cite_note-1"
+   },
+   "source": {
+    "byte_end": 1307,
+    "byte_start": 678,
+    "cp_end": 1307,
+    "cp_start": 678
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[2]",
+     "quote": "[2]",
+     "subtree_sha256": "65d2e1864a76ce94cb598c2201b8beb207fb1217870d3a774096bfc471729531"
+    },
+    "state": "matched",
+    "target_note": "cite_note-2"
+   },
+   "source": {
+    "byte_end": 2057,
+    "byte_start": 1443,
+    "cp_end": 2053,
+    "cp_start": 1443
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

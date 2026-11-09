@@ -1,0 +1,220 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "ar",
+    "revision_id": 76531212,
+    "source_sha256": "4cc57d79776092a7051b74ad26fc47c7111ab021e51b374baf737b1318142756",
+    "html_sha256": "75693de3ac4bfcf95f52528f6874a1f7eb3edb7e551c47da2415ec043deba3b6",
+    "window": [
+      0,
+      3568
+    ]
+  },
+  "provenance": {
+    "agent": "d035-eval-ar-h2",
+    "started_at": "2026-11-03T16:27:00Z",
+    "finished_at": "2026-11-03T16:13:08Z",
+    "files_opened": [
+      {
+        "path": "ANNOTATION_GUIDE_v1.1.md",
+        "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+      },
+      {
+        "path": "packets/ar-76531212/packet.json",
+        "sha256": "7f5a8eb4dfc9da8c8b325871d4adde9b2f05790bb5124e6c152d571d221c13f6"
+      },
+      {
+        "path": "packets/ar-76531212/source.wikitext",
+        "sha256": "4cc57d79776092a7051b74ad26fc47c7111ab021e51b374baf737b1318142756"
+      },
+      {
+        "path": "packets/ar-76531212/render.html",
+        "sha256": "75693de3ac4bfcf95f52528f6874a1f7eb3edb7e551c47da2415ec043deba3b6"
+      }
+    ],
+    "tools": "python3 -I stdlib (str.find, re) and lxml for listing HTML elements; own helper scripts in tools/",
+    "unresolved": "Quoting/role of DOI inside the /article/10.… publisher URL."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 303,
+        "quote": "<ref>{{استشهاد ويب| مسار = https://www.m"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 308,
+            "quote": "{{استشهاد ويب| مسار "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-2",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 665,
+        "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = ht"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "jpl",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 681,
+            "quote": "{{استشهاد ويب| مسار "
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-jpl-3",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 2454,
+        "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "AAS-MB-2011",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2478,
+            "quote": "{{استشهاد بدورية محك"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-AAS-MB-2011-4",
+      "marker": "none",
+      "marker_text": null,
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 303,
+        "quote": "<ref>{{استشهاد ويب| مسار = https://www.m"
+      },
+      "binds_to": {
+        "cp": 303,
+        "quote": "<ref>{{استشهاد ويب| مسار = https://www.m"
+      },
+      "render_ref_id": "cite_ref-2",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 665,
+        "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = ht"
+      },
+      "binds_to": {
+        "cp": 665,
+        "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = ht"
+      },
+      "render_ref_id": "cite_ref-jpl_3-0",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 1434,
+        "quote": "<ref name=\"jpl\"/>"
+      },
+      "binds_to": {
+        "cp": 665,
+        "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = ht"
+      },
+      "render_ref_id": "cite_ref-jpl_3-1",
+      "notes": ""
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 2003,
+        "quote": "<ref name=\"jpl\"/>"
+      },
+      "binds_to": {
+        "cp": 665,
+        "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = ht"
+      },
+      "render_ref_id": "cite_ref-jpl_3-2",
+      "notes": ""
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 2454,
+        "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية"
+      },
+      "binds_to": {
+        "cp": 2454,
+        "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية"
+      },
+      "render_ref_id": "cite_ref-AAS-MB-2011_4-0",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 2949,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "DOI embedded in the path of the publisher URL in url= (/article/10.…, not /doi/10.…); quoted as the DOI text, since the table's whole-URL rule names only /doi/ paths. Ends at the following space."
+    },
+    {
+      "at": {
+        "cp": 3097,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "not_a_target",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "DOI inside the path of an iopscience URL that is itself inside a web.archive.org snapshot URL (archive URL field)."
+    },
+    {
+      "at": {
+        "cp": 3157,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "DOI= field of the citation template."
+    }
+  ],
+  "unresolved_notes": [
+    "Ten wikidata-generated references in the rendered list (infobox), not in source; not listed (3.3).",
+    "Uncertain only on how to quote the DOI embedded in a non-/doi/ publisher URL (first identifier); chose DOI text, role identifier_link."
+  ],
+  "adjudication": {
+    "adjudicator": "d035-adj-ar-g1",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/adj-d035/ar-g1/out/decisions/ar-76531212.json",
+    "changed_items": []
+  }
+}

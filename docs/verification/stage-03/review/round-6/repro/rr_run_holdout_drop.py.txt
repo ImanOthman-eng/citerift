@@ -1,0 +1,23 @@
+"""run_holdout.py: a captured article whose label is not in the single lock directory is silently left out of score_spec.json
+(row annotation=None). reserve_step.py, by contrast, aborts for the same situation."""
+import importlib.util, json, shutil, sys
+from pathlib import Path
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location("rh", "/home/user/citerift/docs/verification/stage-03/evaluation/scripts/run_holdout.py")
+rh = importlib.util.module_from_spec(spec); spec.loader.exec_module(rh)
+W = Path("/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/review-r6/out/scratch/rh"); shutil.rmtree(W, ignore_errors=True); W.mkdir(parents=True)
+B = Path("/home/user/citerift/docs/verification/stage-03/evaluation/capture/bundles/reserve")
+b1, b2 = B/"en-1898990-a1", B/"en-67498573-a1"
+def rev(b): return json.loads((b/"capture.json").read_text())["page"]["revision_id"]
+states = {"articles": {
+  "holdout/en-1": {"split": "holdout", "final": {"status": "complete", "bundle": str(b1)}},
+  "reserve1/en-2": {"split": "reserve1", "final": {"status": "complete", "bundle": str(b2)}}}}
+(W/"cap").mkdir(); (W/"cap"/"capture_states.json").write_text(json.dumps(states))
+(W/"ann1").mkdir()                                  # lock directory of batch 1 holds only the first article's label
+(W/"ann1"/f"en-{rev(b1)}.json").write_text("{}")
+rh._locked = lambda d: {f"en-{rev(b1)}.json": "x"}
+rh._run = lambda argv: {"argv": argv, "exit": 0, "stdout": None, "seconds": 0, "stderr": ""}
+sys.argv = ["run_holdout", str(W/"cap"), str(W/"ann1"), str(W/"out")]
+rh.main()
+print("score_spec splits:", {k: len(v) for k, v in json.loads((W/"out"/"score_spec.json").read_text())["splits"].items()})
+print("runs.json annotation fields:", [(r["article"], r.get("annotation")) for r in json.loads((W/"out"/"runs.json").read_text())])

@@ -1,0 +1,9 @@
+import sys;sys.path.insert(0,'tools')
+from lib import *
+a=A('ar-75969262')
+d1=a.D('<ref>{{استشهاد بدورية',tpl=[('{{استشهاد بدورية',)],note_id='cite_note-1')
+d2=a.D('<ref>[http://museumstudies',unstr=True,note_id='cite_note-2',notes='Bare URL link with {{Webarchive}} (archive template, not a citation template).')
+d3=a.D('<ref>{{استشهاد ويب',tpl=[('{{استشهاد ويب',)],note_id='cite_note-3')
+a.U('<ref>{{استشهاد بدورية',rid='cite_ref-1');a.U('<ref>[http://museumstudies',rid='cite_ref-2');a.U('<ref>{{استشهاد ويب',rid='cite_ref-3')
+a.I('10.2307/777856',key='10.2307/777856',notes='doi= field; jstor=777856 is not a DOI/PMID.')
+a.save('', 'none',"2026-11-03T16:13:40Z")

@@ -1,0 +1,14 @@
+import sys; sys.path.insert(0, "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/review-r3")
+from h import *
+for text in [
+  "A.{{sfn|Smith|2001}} B.{{sfn|Smith|2001|p=}}",
+  "A.{{sfn|Smith|2001}} B.{{sfn|Smith|2001<!-- c -->}}",
+  "A.{{sfn|Smith|2001}} B.{{sfn|Smith|2001|p=5|p=}}",
+  "A.{{sfn|Smith|2001}} B.{{sfn| Smith |2001}}",
+  "A.{{sfn|Smith|2001}} B.{{sfn|Smith|2001|}}",
+  'A.<ref name="a">A</ref> <ref name="a&nbsp;">B</ref> C.{{r|a }}',
+]:
+    doc, _ = src(text)
+    print(repr(text))
+    print("   containers:", [(c["id"], c["kind"], c.get("name"), c["binding_state"]) for c in doc["containers"]])
+    print("   uses:", [(u["origin"], u["name"], u["binding"], u.get("container_id")) for u in doc["uses"]])

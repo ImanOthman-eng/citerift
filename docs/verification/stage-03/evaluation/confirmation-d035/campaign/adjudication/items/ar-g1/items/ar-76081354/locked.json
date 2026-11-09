@@ -1,0 +1,380 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76081354,
+  "source_sha256": "37ad625dc8bf396afa7dbb408c2ef42d816cbe9e6eaf74919d4649d70ef52f98",
+  "html_sha256": "5b67d291c546970c4765bf1d9b91e643e051d9bf93938baed1b831cc856d16b8",
+  "window": [
+   0,
+   5921
+  ]
+ },
+ "provenance": {
+  "agent": "d035-eval-ar-h1",
+  "started_at": "2026-11-03T09:00:00Z",
+  "finished_at": "2026-11-03T10:00:00Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-76081354/packet.json",
+    "sha256": "f1e310dc6466fcfae200834f70b91a0bd3c0e65009a3f9352528ff8d74e978bf"
+   },
+   {
+    "path": "packets/ar-76081354/source.wikitext",
+    "sha256": "37ad625dc8bf396afa7dbb408c2ef42d816cbe9e6eaf74919d4649d70ef52f98"
+   },
+   {
+    "path": "packets/ar-76081354/render.html",
+    "sha256": "5b67d291c546970c4765bf1d9b91e643e051d9bf93938baed1b831cc856d16b8"
+   }
+  ],
+  "tools": "python3 -I standard library + lxml: str.find/regex to locate tokens, lxml to list sup/li elements; every location verified by slicing; all decisions by hand",
+  "unresolved": "{{ran|A..D}} calls (positions in the \"الإسهامات العلمية\" text) are anchor links to the {{rma}} entries, not footnote calls in the guide sense and produce no mw:Extension/ref marker or cite_note; not labelled as uses. mr= fields are MathSciNet ids, not DOI/PMID. All four rma entries and the 4 list-defined refs have marker none."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 3574,
+    "quote": "<ref name=\"abc\">{{استشهاد|الأخ"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "abc",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3590,
+      "quote": "{{استشهاد|الأخير1=Avis|ا"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-abc-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "inside <references> block in the references section"
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 4159,
+    "quote": "<ref name=\"d3c\">{{استشهاد|مسار"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "d3c",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4175,
+      "quote": "{{استشهاد|مسار=https://b"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-d3c-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "inside <references> block in the references section"
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 4768,
+    "quote": "<ref name=\"ora\">{{استشهاد|مسار"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "ora",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4784,
+      "quote": "{{استشهاد|مسار=https://w"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ora-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "inside <references> block in the references section"
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 5211,
+    "quote": "<ref name=\"theses\">{{استشهاد|ا"
+   },
+   "in_window": true,
+   "kind": "list_defined_note",
+   "name": "theses",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 5230,
+      "quote": "{{استشهاد|الأخير1=Sbihi|"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-theses-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "inside <references> block in the references section"
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 2286,
+    "quote": "{{استشهاد\n | الأخير = Sb"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2286,
+      "quote": "{{استشهاد\n | الأخير = Sb"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Citation template wrapped in {{rma|A|…}} (reference-note anchor target, rendered as an anchor in the \"منشورات مختارة\" section, not as a cite_note footnote); read as a standalone citation template outside footnotes, hence a bibliography entry. Best reading."
+  },
+  {
+   "id": "d6",
+   "at": {
+    "cp": 2583,
+    "quote": "{{استشهاد\n | الأخير1 = C"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2583,
+      "quote": "{{استشهاد\n | الأخير1 = C"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Citation template wrapped in {{rma|B|…}} (reference-note anchor target, rendered as an anchor in the \"منشورات مختارة\" section, not as a cite_note footnote); read as a standalone citation template outside footnotes, hence a bibliography entry. Best reading."
+  },
+  {
+   "id": "d7",
+   "at": {
+    "cp": 2894,
+    "quote": "{{استشهاد\n | الأخير1 = C"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2894,
+      "quote": "{{استشهاد\n | الأخير1 = C"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Citation template wrapped in {{rma|C|…}} (reference-note anchor target, rendered as an anchor in the \"منشورات مختارة\" section, not as a cite_note footnote); read as a standalone citation template outside footnotes, hence a bibliography entry. Best reading."
+  },
+  {
+   "id": "d8",
+   "at": {
+    "cp": 3232,
+    "quote": "{{استشهاد\n | الأخير1 = R"
+   },
+   "in_window": true,
+   "kind": "bibliography_entry",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3232,
+      "quote": "{{استشهاد\n | الأخير1 = R"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": null,
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Citation template wrapped in {{rma|D|…}} (reference-note anchor target, rendered as an anchor in the \"منشورات مختارة\" section, not as a cite_note footnote); read as a standalone citation template outside footnotes, hence a bibliography entry. Best reading."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 583,
+    "quote": "{{استشهاد متعدد|d3c}"
+   },
+   "binds_to": {
+    "cp": 4159,
+    "quote": "<ref name=\"d3c\">{{اس"
+   },
+   "render_ref_id": "cite_ref-d3c_1-0",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name d3c)"
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 991,
+    "quote": "{{استشهاد متعدد|ora}"
+   },
+   "binds_to": {
+    "cp": 4768,
+    "quote": "<ref name=\"ora\">{{اس"
+   },
+   "render_ref_id": "cite_ref-ora_2-0",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name ora)"
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1081,
+    "quote": "{{استشهاد متعدد|d3c}"
+   },
+   "binds_to": {
+    "cp": 4159,
+    "quote": "<ref name=\"d3c\">{{اس"
+   },
+   "render_ref_id": "cite_ref-d3c_1-1",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name d3c)"
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1165,
+    "quote": "{{استشهاد متعدد|thes"
+   },
+   "binds_to": {
+    "cp": 5211,
+    "quote": "<ref name=\"theses\">{"
+   },
+   "render_ref_id": "cite_ref-theses_3-0",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name theses)"
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 1316,
+    "quote": "{{استشهاد متعدد|ora}"
+   },
+   "binds_to": {
+    "cp": 4768,
+    "quote": "<ref name=\"ora\">{{اس"
+   },
+   "render_ref_id": "cite_ref-ora_2-1",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name ora)"
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 1544,
+    "quote": "{{استشهاد متعدد|ora}"
+   },
+   "binds_to": {
+    "cp": 4768,
+    "quote": "<ref name=\"ora\">{{اس"
+   },
+   "render_ref_id": "cite_ref-ora_2-2",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name ora)"
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2038,
+    "quote": "{{استشهاد متعدد|abc}"
+   },
+   "binds_to": {
+    "cp": 3574,
+    "quote": "<ref name=\"abc\">{{اس"
+   },
+   "render_ref_id": "cite_ref-abc_4-0",
+   "notes": "template {{استشهاد متعدد}} expands to a reuse of the named ref (Parsoid data-mw shows ref name abc)"
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 2340,
+    "quote": "10.1016/0012-365X(90)90287-R"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0012-365x(90)90287-r",
+   "notes": "doi= field of a citation template in rma bibliography entry"
+  },
+  {
+   "at": {
+    "cp": 2707,
+    "quote": "10.1007/BF01788536"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/bf01788536",
+   "notes": "doi= field of a citation template in rma bibliography entry"
+  },
+  {
+   "at": {
+    "cp": 3011,
+    "quote": "10.1016/0095-8956(88)90085-8"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/0095-8956(88)90085-8",
+   "notes": "doi= field of a citation template in rma bibliography entry"
+  },
+  {
+   "at": {
+    "cp": 3365,
+    "quote": "10.1007/BF01929485"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/bf01929485",
+   "notes": "doi= field of a citation template in rma bibliography entry"
+  },
+  {
+   "at": {
+    "cp": 4004,
+    "quote": "10.1007/s00373-007-0721-4"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1007/s00373-007-0721-4",
+   "notes": "doi= field of a citation template in rma bibliography entry"
+  }
+ ],
+ "unresolved_notes": [
+  "{{ran|A..D}} calls (positions in the \"الإسهامات العلمية\" text) are anchor links to the {{rma}} entries, not footnote calls in the guide sense and produce no mw:Extension/ref marker or cite_note; not labelled as uses. mr= fields are MathSciNet ids, not DOI/PMID. All four rma entries and the 4 list-defined refs have marker none."
+ ]
+}

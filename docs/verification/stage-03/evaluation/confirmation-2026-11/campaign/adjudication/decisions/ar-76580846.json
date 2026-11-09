@@ -1,0 +1,15 @@
+{
+  "article": "ar-76580846",
+  "adjudicator": "cf11-adj-ar-g2",
+  "started_at": "2026-11-03T02:18:53Z",
+  "finished_at": "2026-11-03T02:20:34Z",
+  "decisions": [
+    {
+      "item": 0,
+      "kind": "identifier_missed",
+      "decision": "confirm",
+      "reason": "The URL https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68 is the value of the مسار (url) field of a citation template (the AAS-MB-2011 reference, in window at cp 2918). Under 3.5 it is a publisher URL pointing at the identifier, so role identifier_link is right, and the raw text is the whole URL (table row 'URL'). The key is the DOI starting at '10.' and running to the end of the URL, lower-cased: 10.1088/0004-637x/741/2/68, which is a valid DOI form. AMBIGUITY: the table's publisher-URL example is written with '/doi/' in the path, and this path uses '/article/'. Read strictly, the row would give the identifier text alone and move the location to the '10.' inside the URL. I did not adopt that: the table's row head is 'URL', the '/doi/' condition is only an example, and the locked reading follows the role definition ('a publisher URL ... pointing at the identifier'). The other occurrences of this DOI (the DOI= field at cp 3161, and the archive.org URL at cp 3023 marked not_a_target) are unchanged.",
+      "corrected_label": null
+    }
+  ]
+}

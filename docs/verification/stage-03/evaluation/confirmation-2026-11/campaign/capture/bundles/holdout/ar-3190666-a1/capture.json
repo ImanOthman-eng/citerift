@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "f0012798edfc904c75dc0ba5105749bd73312c80037847b32164ceb1d98808a1",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.434,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-02T18:39:21.074318Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3190666",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 24612,
+   "body_sha256": "81afdabca5072fb2cd1e70e6888425cfae36637cef9eefaf78ad52e177c598b7",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.501,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:40:00.509074Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3190666",
+   "wire_bytes": 8201
+  },
+  {
+   "body_bytes": 127313,
+   "body_sha256": "1fc5ca7c58572c14a6ef1b42c364e7445f9c8e9ea9d3709c18edf9fc19873b13",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.242,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-02T18:40:11.010262Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76151701/html",
+   "wire_bytes": 23844
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "f0012798edfc904c75dc0ba5105749bd73312c80037847b32164ceb1d98808a1"
+ ],
+ "finished_at": "2026-11-02T18:40:12.253386Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 3190666,
+  "parent_revision_id": 75667417,
+  "redirect_followed": null,
+  "revision_id": 76151701,
+  "revision_timestamp": "2026-08-09T00:57:28Z",
+  "sha1": "73e9b359360aed0aafe8f9f49cb08c2746f2251a",
+  "size": 23994,
+  "title": "التهاب الغشاء المخاطي",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "1fc5ca7c58572c14a6ef1b42c364e7445f9c8e9ea9d3709c18edf9fc19873b13",
+  "bytes": 127313,
+  "checks": {
+   "document_revision_id": "76151701",
+   "header_revision_id": "76151701",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "3190666",
+   "render_id": "d63ad300-d6ec-11f1-9231-c39c31ef46d7",
+   "revision_sha1": "73e9b359360aed0aafe8f9f49cb08c2746f2251a",
+   "revision_sha1_base36": "djfqgenerl8bzdffd7hae4grl89zj8a"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76151701",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Mon, 02 Nov 2026 18:40:11 GMT",
+   "etag": "W/\"76151701/d63ad300-d6ec-11f1-9231-c39c31ef46d7/view\"",
+   "last-modified": "Sun, 01 Nov 2026 12:00:25 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76151701/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 3190666,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "064d9e5e29a3d79ae7fb79c8c5b43bba3d758a9409d0346f9c1b056b76fb5ede",
+  "bytes": 23994,
+  "response_artifact": "81afdabca5072fb2cd1e70e6888425cfae36637cef9eefaf78ad52e177c598b7",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3190666"
+ },
+ "started_at": "2026-11-02T18:39:11.337866Z",
+ "status": "complete"
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:retraction:v1:advisory-response",
+  "title": "Evidence Ambiguity Investigator advisory response, major version 1",
+  "description": "The only shape a model may return (SPECIFICATION.md 12.1). It has no path to a fact: no status, value or provenance keys exist.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id",
+    "cited_pointers",
+    "decision",
+    "rationale"
+  ],
+  "properties": {
+    "decision": {
+      "enum": [
+        "select",
+        "abstain"
+      ]
+    },
+    "candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^c[1-5]$(?!\\n)"
+    },
+    "cited_pointers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(/[^/~]*(~[01][^/~]*)*)+$(?!\\n)",
+        "maxLength": 200
+      },
+      "maxItems": 40,
+      "uniqueItems": true
+    },
+    "rationale": {
+      "type": "string",
+      "maxLength": 2000
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "select"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "candidate_id": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}

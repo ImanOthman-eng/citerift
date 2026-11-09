@@ -1,0 +1,5 @@
+"""Rule 2 (display text of a link -> textual_mention): external link vs wikilink display text, and wikilink target."""
+from h import run
+run('A<ref>[https://example.org/retraction-notice doi:10.1000/ext]</ref>', label="external link display (control)")
+run('A<ref>[[Retraction of Smith 2001|doi:10.1000/wl]]</ref>', label="wikilink display text")
+run('A<ref>[[doi:10.1000/iw]]</ref>', label="wikilink target (interwiki prefix doi:)")

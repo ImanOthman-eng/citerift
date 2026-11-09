@@ -1,0 +1,5 @@
+import subprocess, sys, os
+from citerift.wiki.extract import _limits
+code = "import resource; print(resource.getrlimit(resource.RLIMIT_AS), resource.getrlimit(resource.RLIMIT_CPU), __import__('os').getpgid(0)==__import__('os').getpid()); b = bytearray(200*1024*1024); print('allocated 200 MiB')"
+p = subprocess.run([sys.executable, "-I", "-c", code], capture_output=True, text=True, preexec_fn=_limits(96, 31))
+print("rc", p.returncode, p.stdout.strip(), p.stderr.strip()[-80:])

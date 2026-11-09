@@ -1,0 +1,7 @@
+import sys
+sys.path.insert(0, "/home/user/citerift/docs/verification/stage-03/protocol/scripts"); sys.path.insert(0, "/home/user/citerift/docs/verification/stage-03/evaluation/confirmation-2026-11/scripts")
+sys.dont_write_bytecode = True
+import warning_challenge as wc
+for wiki, t in [("en","{{Retracted|doi=1}}"),("en","{{Template:Retracted|doi=1}}"),("en","{{template:Retracted|doi=1}}"),("en","{{ retracted }}"),("en","{{RETRACTED|x}}"),("en","{{Retracted_paper|x}}"),
+                ("en","{{Expression of concern|x}}"),("en","{{expression_of_concern|x}}"),("ar","{{مصدر مسحوب|x}}"),("ar","{{قالب:مصدر مسحوب|x}}"),("ar","{{Template:Retracted|x}}"),("en","{{Tlx|Retracted}} <!-- {{Retracted}} -->")]:
+    print(wiki, repr(t), "->", wc.marker_calls(t, wiki))

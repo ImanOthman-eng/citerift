@@ -1,0 +1,54 @@
+===== sfn keys 'A{{sfn|Smith J|2001|p=5}} B{{sfn|SmithJ|2001|p=5}} C{{sfn|Smith|2001|p=15}} D{{sfn|Smith|20|01|p=15}}'
+status partial
+ C ct-00001 generated_note None '' identical_definitions uses ['us-00001', 'us-00002'] units []
+ C ct-00002 generated_note None '' single_definition uses ['us-00003'] units []
+ C ct-00003 generated_note None '' single_definition uses ['us-00004'] units []
+ U us-00001 sfn prose None '' anonymous ct-00001
+ U us-00002 sfn prose None '' anonymous ct-00001
+ U us-00003 sfn prose None '' anonymous ct-00002
+ U us-00004 sfn prose None '' anonymous ct-00003
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== efn unknown group 'A{{efn|group=foo|name=a|note doi:10.1000/a}} B<ref name=a group=lower-alpha/>\n{{notelist}}'
+status partial
+ C ct-00001 generated_note 'a' 'foo' single_definition uses ['us-00001'] units ['un-00001']
+ U us-00001 efn prose 'a' 'foo' bound ct-00001
+ U us-00002 tag prose 'a' 'lower-alpha' definition_missing None
+ I id-00001 doi label_text labeled_reference_text '10.1000/a' -> 10.1000/a delimited ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE', 'REF_DEFINITION_MISSING']
+===== italic/bold after DOI "A<ref>Smith. ''Title''. ''Journal'' doi:10.1000/xyz''.</ref> B<ref>'''10.1000/bold'''</ref>"
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ C ct-00002 note None '' anonymous uses ['us-00002'] units ['un-00002']
+ U us-00001 tag prose None '' anonymous ct-00001
+ U us-00002 tag prose None '' anonymous ct-00002
+ I id-00001 doi label_text labeled_reference_text "10.1000/xyz''." -> 10.1000/xyz''. ambiguous_trailing_punctuation ct-00001 un-00001
+ I id-00002 doi plain_text textual_mention "10.1000/bold'''" -> 10.1000/bold''' delimited ct-00002 un-00002
+ issues ['IDENTIFIER_BOUNDARY_AMBIGUOUS', 'RECONCILIATION_UNAVAILABLE']
+===== SICI DOI 'A<ref>Smith 1997. doi:10.1002/(SICI)1097-4636(199706)35:4&lt;401::AID-JBM1&gt;3.0.CO;2-P</ref> B<ref>{{cite journal|doi=10.1002/(SICI)1097-4636(199706)35:4<401::AID-JBM1>3.0.CO;2-P}}</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ C ct-00002 note None '' anonymous uses ['us-00002'] units ['un-00002']
+ U us-00001 tag prose None '' anonymous ct-00001
+ U us-00002 tag prose None '' anonymous ct-00002
+ I id-00001 doi label_text labeled_reference_text '10.1002/(SICI)1097-4636(199706)35:4' -> 10.1002/(sici)1097-4636(199706)35:4 delimited ct-00001 un-00001
+ I id-00002 doi template_field primary_citation_field '10.1002/(SICI)1097-4636(199706)35:4<401::AID-JBM1>3.0.CO;2-P' -> 10.1002/(sici)1097-4636(199706)35:4<401::aid-jbm1>3.0.co;2-p field ct-00002 un-00002
+ issues ['RECONCILIATION_UNAVAILABLE']
+===== overridden url 'A<ref>{{cite journal|title=T|url=https://doi.org/10.1000/old|url=https://example.org/paper}}</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi url identifier_link 'https://doi.org/10.1000/old' -> 10.1000/old url ct-00001 un-00001
+ issues ['DUPLICATE_TEMPLATE_PARAMETER', 'RECONCILIATION_UNAVAILABLE']
+===== overridden id wrapper 'A<ref>{{cite journal|title=T|id={{doi|10.1000/old}}|id=none}}</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi wrapper identifier_link '10.1000/old' -> 10.1000/old field ct-00001 un-00001
+ issues ['DUPLICATE_TEMPLATE_PARAMETER', 'RECONCILIATION_UNAVAILABLE']
+===== interwiki doi link 'A<ref>See [[doi:10.1000/182]] and [[pmid:12345]].</ref>'
+status partial
+ C ct-00001 note None '' anonymous uses ['us-00001'] units ['un-00001']
+ U us-00001 tag prose None '' anonymous ct-00001
+ I id-00001 doi label_text textual_mention '10.1000/182' -> 10.1000/182 delimited ct-00001 un-00001
+ I id-00002 pmid label_text textual_mention '12345' -> 12345 delimited ct-00001 un-00001
+ issues ['RECONCILIATION_UNAVAILABLE']

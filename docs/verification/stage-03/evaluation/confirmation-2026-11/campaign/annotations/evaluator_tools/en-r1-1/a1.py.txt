@@ -1,0 +1,15 @@
+import sys; sys.path.insert(0,'tools')
+from lib import A
+a=A('en-1345535167')
+L=a.loc
+specs=[('rod','rod','<ref name=rod>','10.1086/651226',None),('peter','peter','<ref name=peter>','10.1093/aob/mct216','24107684'),
+('vega','vega','<ref name=vega>','10.1099/ijs.0.040790-0','22407789'),('shut','shut','<ref name=shut>','10.1016/j.sajb.2010.07.023',None)]
+n=0
+for i,(nm,_,tag,doi,pm) in enumerate(specs,1):
+    r=L(tag); c=L('{{cite journal',r['cp'])
+    a.define(f'd{i}',r,'note',nm,'',[c],False,f'cite_note-{nm}-{i}')
+    a.use(f'u{i}',r,r,f'cite_ref-{nm}_{i}-0')
+    a.ident(L(doi,r['cp']),'doi','primary_citation_field',doi.lower())
+    if pm: a.ident(L(pm,r['cp']),'pmid','primary_citation_field',pm)
+a.use('u5',L('<ref name=rod/>'),L('<ref name=rod>'),'cite_ref-rod_1-1')
+a.write()

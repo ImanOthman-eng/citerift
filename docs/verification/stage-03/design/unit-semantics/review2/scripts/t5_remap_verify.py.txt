@@ -1,0 +1,62 @@
+"""Issue-entity remapping stress (RV-2), and verify/replay/schema of documents with bibliography G and H."""
+import json, random, tempfile, re, sys
+from pathlib import Path
+from rv2lib import *
+from citerift.wiki.verify import verify_bundle, replay_bundle
+from citerift.wiki.extract import extract_bundle, ExtractConfig
+
+def fits(doc, i):
+    cs = {c["id"]: c for c in doc["containers"]}; us = {u["id"]: u for u in doc["units"]}
+    code, ents = i["code"], i["entities"]
+    if code in ("REF_DEFINITIONS_CONFLICT", "REF_DEFINITIONS_DUPLICATE"):
+        m = re.search(r"name '(.*)'$", i["detail"]); return all(cs[e]["name"] == m.group(1) for e in ents)
+    if code == "LIST_DEFINED_UNUSED": return all(cs[e]["kind"] == "list_defined_note" and not cs[e]["use_ids"] for e in ents)
+    if code == "CITATION_TEMPLATE_UNSUPPORTED":
+        return all(us[e]["kind"] == "unsupported_citation_template" and us[e]["template"]["canonical"] == i["detail"] for e in ents)
+    if code == "DUPLICATE_TEMPLATE_PARAMETER": return all(",".join(us[e]["duplicate_params"]) == i["detail"] for e in ents)
+    if code == "UNIT_CLASSIFICATION_UNRESOLVED":
+        return all(e in cs and not cs[e]["unit_ids"] and (cs[e]["kind"] == "bibliography_entry") == i["detail"].startswith("bibliography") for e in ents)
+    return True
+
+P = lambda k: {"title": f"T{k}", "doi": f"10.1163/x{k}"}
+pieces = [
+  lambda k: (f"* {{{{EI2|title=T{k}|doi=10.1163/x{k}}}}}\n", "<ul><li>" + transclusion(100+k, "EI2", P(k), cs1("x")) + "</li></ul>"),
+  lambda k: (f"* {{{{EI2|title=T{k}|doi=10.1163/x{k}}}}}\n", ""),  # no transclusion -> H
+  lambda k: (f"P{k}.<ref>Smith{k}, Hand-written. Press.</ref>\n", None),
+  lambda k: (f"P{k}.<ref name=n{k%3}>Same body</ref>\n", None),
+  lambda k: (f"P{k}.<ref>{{{{Fishbase|a{k}|b|b=1}}}}</ref>\n", "FISH"),
+  lambda k: (f"P{k}.<ref>{{{{cite web|title=T|title=U{k}|url=http://e.org/{k}}}}}</ref>\n", None),
+  lambda k: (f"* Hand {k}. doi:10.1000/h{k}\n", None),
+]
+random.seed(7)
+bad = 0; total = 0
+for trial in range(25):
+    text = ""; body = ""; refs_html = []
+    nref = 0
+    for k in range(random.randint(3, 9)):
+        t, h = random.choice(pieces)(k)
+        text += t
+        if "<ref" in t:
+            nref += 1
+            inner = "x"
+            if h == "FISH":
+                inner = transclusion(200+k, "Fishbase", {"1": f"a{k}", "2": "b", "b": "1"}, cs1("fish"))
+            body += f"<p>P{k}.{ref_sup(nref, f'cite_note-{nref}', f'cite_ref-{nref}')}</p>"
+            refs_html.append(note_li(f"cite_note-{nref}", [f"cite_ref-{nref}"], inner))
+        elif h:
+            body += h
+    text += "<references>\n<ref name=unused>List defined unused</ref>\n</references>\n"
+    body += references(refs_html)
+    with tempfile.TemporaryDirectory() as d:
+        b = bundle(Path(d), text, body)
+        doc = extract(b)
+        for i in doc["issues"]:
+            if i["code"] in ("REF_DEFINITIONS_CONFLICT","REF_DEFINITIONS_DUPLICATE","LIST_DEFINED_UNUSED","CITATION_TEMPLATE_UNSUPPORTED","DUPLICATE_TEMPLATE_PARAMETER","UNIT_CLASSIFICATION_UNRESOLVED"):
+                total += 1
+                if not fits(doc, i):
+                    bad += 1; print("MISFIT", trial, i)
+        if trial < 6:
+            v = verify_bundle(b, doc)
+            r = replay_bundle(b, None, doc)
+            print("trial", trial, "verify", {k: v[k] for k in v if k in ("ok","state","verified","outcome","result")}, list(v)[:8], "replay", {k: r[k] for k in r if k in ("ok","state","reproduced","outcome","result")}, "units", [u["kind"][:5] for u in doc["units"]], "VI", [(i["code"], i.get("detail","")[:140]) for i in v["issues"]][:5], "RP", {k: r[k] for k in list(r)[:12] if k not in ("checks",)})
+print("issues checked", total, "misfit", bad)

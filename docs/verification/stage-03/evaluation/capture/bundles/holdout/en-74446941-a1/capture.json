@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 11559,
+   "body_sha256": "041298cbc2cbaf65da4ef6bfea83d84509d954c52b8ca1cdf175561821b2c716",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.502,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:24:10.930231Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=74446941",
+   "wire_bytes": 4376
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "1d883b601f708de2c102f8780eb2aa6cc192ea49d83295976afbaa68afc46a96",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.383,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-10-29T08:24:21.433121Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323381013/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 93279,
+   "body_sha256": "26fa0957df54c8ab246e667f1a2b2f40f017e7f9a937964c41611c21b72b2573",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.498,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-29T08:25:00.816570Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323381013/html",
+   "wire_bytes": 15906
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [
+  "1d883b601f708de2c102f8780eb2aa6cc192ea49d83295976afbaa68afc46a96"
+ ],
+ "finished_at": "2026-10-29T08:25:01.317122Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 74446941,
+  "parent_revision_id": 1322334766,
+  "redirect_followed": null,
+  "revision_id": 1323381013,
+  "revision_timestamp": "2025-11-21T11:21:45Z",
+  "sha1": "f501fba5f8e0f0003760ae0969ab3dc7046de744",
+  "size": 10953,
+  "title": "David Wheeler (gardener and writer)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "26fa0957df54c8ab246e667f1a2b2f40f017e7f9a937964c41611c21b72b2573",
+  "bytes": 93279,
+  "checks": {
+   "document_revision_id": "1323381013",
+   "header_revision_id": "1323381013",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "74446941",
+   "render_id": "37a0f5a2-d0d8-11f1-8601-673f12187ac0",
+   "revision_sha1": "f501fba5f8e0f0003760ae0969ab3dc7046de744",
+   "revision_sha1_base36": "smb1tjncuwfofj1wdznmkauc1dqcv9g"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1323381013",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 29 Oct 2026 08:25:01 GMT",
+   "etag": "W/\"1323381013/37a0f5a2-d0d8-11f1-8601-673f12187ac0/view\"",
+   "last-modified": "Sun, 25 Oct 2026 17:48:45 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1323381013/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 74446941,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "dd82d953d1580ce01951ec13e198f0dba69ac97a1fdf163fd7b48cdd342a1678",
+  "bytes": 10953,
+  "response_artifact": "041298cbc2cbaf65da4ef6bfea83d84509d954c52b8ca1cdf175561821b2c716",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=74446941"
+ },
+ "started_at": "2026-10-29T08:24:01.273683Z",
+ "status": "complete"
+}

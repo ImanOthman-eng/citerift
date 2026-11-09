@@ -1,0 +1,255 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1372296421,
+  "source_sha256": "20d6d4a8ae682925bf2d3d52cf7696c43196afeebfd5f908441a41fa3d6d4fee",
+  "html_sha256": "494a7ceb32e8ada32516a6dc7ccf30384bbd61329ff05d869d1b1c22b4326021",
+  "window": [
+   0,
+   3885
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-en",
+  "started_at": "2026-10-29T08:43:00Z",
+  "finished_at": "2026-10-29T08:45:09Z",
+  "files_opened": [
+   {
+    "path": "/home/user/citerift/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1372296421/packet.json",
+    "sha256": "adc64548a47aace32f1ea979c4e82f16460591ffef96936f4114f8602d976cee"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1372296421/source.wikitext",
+    "sha256": "20d6d4a8ae682925bf2d3d52cf7696c43196afeebfd5f908441a41fa3d6d4fee"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/en-h1/en-1372296421/render.html",
+    "sha256": "494a7ceb32e8ada32516a6dc7ccf30384bbd61329ff05d869d1b1c22b4326021"
+   }
+  ],
+  "tools": "bash (cat, ls, sha256sum, date); python3 -I with standard library (re, json, hashlib) for str/regex search of source.wikitext and position verification (text[cp:cp+len(quote)]==quote); lxml.html to list <sup typeof=mw:Extension/ref> ids/data-mw, <li id=cite_note-...> ids/back-links/text, class=\"new\" links. Every label decided by reading the text by hand.",
+  "unresolved": "Whether the Further reading item (no template, no DOI/PMID) should count as a bibliography entry: excluded per the literal 3.4 definition; see unresolved_notes."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 832,
+    "quote": "<ref name=\"Feminist Voices\">{{cite web |title=Ma"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Feminist Voices",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 860,
+      "quote": "{{cite web |title=Margar"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Feminist_Voices-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1261,
+    "quote": "<ref name=\"ANB\">{{cite web |last1=Harris |first1"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "ANB",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1277,
+      "quote": "{{cite web |last1=Harris"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-ANB-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 1935,
+    "quote": "<ref name=\"HathiTrust\">{{cite web |last1=Curti |"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "HathiTrust",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1958,
+      "quote": "{{cite web |last1=Curti "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-HathiTrust-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 2517,
+    "quote": "<ref name=\"Smith College Special Collections\">{{"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Smith College Special Collections",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2563,
+      "quote": "{{cite web |title=Margar"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Smith_College_Special_Collections-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 832,
+    "quote": "<ref name=\"Feminist Voices\">{{cite web |"
+   },
+   "binds_to": {
+    "cp": 832,
+    "quote": "<ref name=\"Feminist Voices\">{{cite web |title=Ma"
+   },
+   "render_ref_id": "cite_ref-Feminist_Voices_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1261,
+    "quote": "<ref name=\"ANB\">{{cite web |last1=Harris"
+   },
+   "binds_to": {
+    "cp": 1261,
+    "quote": "<ref name=\"ANB\">{{cite web |last1=Harris |first1"
+   },
+   "render_ref_id": "cite_ref-ANB_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1834,
+    "quote": "<ref name=\"ANB\"/>"
+   },
+   "binds_to": {
+    "cp": 1261,
+    "quote": "<ref name=\"ANB\">{{cite web |last1=Harris |first1"
+   },
+   "render_ref_id": "cite_ref-ANB_2-1",
+   "notes": "Self-closing reuse <ref name=\"ANB\"/>."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 1935,
+    "quote": "<ref name=\"HathiTrust\">{{cite web |last1"
+   },
+   "binds_to": {
+    "cp": 1935,
+    "quote": "<ref name=\"HathiTrust\">{{cite web |last1=Curti |"
+   },
+   "render_ref_id": "cite_ref-HathiTrust_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2443,
+    "quote": "<ref name=\"ANB\"/>"
+   },
+   "binds_to": {
+    "cp": 1261,
+    "quote": "<ref name=\"ANB\">{{cite web |last1=Harris |first1"
+   },
+   "render_ref_id": "cite_ref-ANB_2-2",
+   "notes": "Self-closing reuse <ref name=\"ANB\"/>."
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 2517,
+    "quote": "<ref name=\"Smith College Special Collect"
+   },
+   "binds_to": {
+    "cp": 2517,
+    "quote": "<ref name=\"Smith College Special Collections\">{{"
+   },
+   "render_ref_id": "cite_ref-Smith_College_Special_Collections_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 2987,
+    "quote": "<ref name=\"Smith College Special Collect"
+   },
+   "binds_to": {
+    "cp": 2517,
+    "quote": "<ref name=\"Smith College Special Collections\">{{"
+   },
+   "render_ref_id": "cite_ref-Smith_College_Special_Collections_4-1",
+   "notes": "Self-closing reuse."
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1382,
+    "quote": "https://doi.org/10.1093/anb/9780198606697.article.1400872"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1093/anb/9780198606697.article.1400872",
+   "notes": "doi.org resolver URL in the url= parameter of {{cite web}} in ref \"ANB\"."
+  },
+  {
+   "at": {
+    "cp": 1521,
+    "quote": "10.1093/anb/9780198606697.article.1400872"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1093/anb/9780198606697.article.1400872",
+   "notes": "doi= field of {{cite web}} in ref \"ANB\"."
+  }
+ ],
+ "unresolved_notes": [
+  "\"Further reading\" list item at cp 3058 (\"* [https://digitalcommons.unl.edu/... Curti, Margaret Wooster, ...] (1915).\") is a hand-written citation outside footnotes but contains no citation template and no DOI/PMID, so under guide 3.4 it is not labelled as a bibliography entry.",
+  "Infobox person (birth date / death date and age templates) and {{Authority control}} render no reference markers."
+ ]
+}

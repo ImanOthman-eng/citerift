@@ -1,0 +1,22 @@
+from h import *
+C = [
+ ("en","title with doi link","A<ref>{{cite journal|title=[https://doi.org/10.1000/t Title]|doi=10.1000/x}}</ref>"),
+ ("en","quote w/ doi url","A<ref>{{cite journal|title=T|quote=see https://doi.org/10.1000/q|doi=10.1000/x}}</ref>"),
+ ("en","retracted wraps cite","A<ref>{{Retracted|1={{cite journal|title=T|doi=10.1000/x}}}}</ref>"),
+ ("en","cite wraps retracted in title","A<ref>{{cite journal|title=T {{Retracted|doi=10.1000/n}}|doi=10.1000/x}}</ref>"),
+ ("en","Retracted paper alias","A<ref>{{Retracted paper|doi=10.1000/n}}</ref>"),
+ ("en","retraction watch link in ref","A<ref>{{cite web|url=https://retractionwatch.com/x|title=T}} See {{doi|10.1000/n}}</ref>"),
+ ("en","doi wrapper in id=","A<ref>{{cite book|title=T|id={{doi|10.1000/n}}}}</ref>"),
+ ("en","doi in archive-url","A<ref>{{cite web|url=https://example.org|archive-url=https://web.archive.org/web/2020/https://doi.org/10.1000/n|title=T}}</ref>"),
+ ("en","doi in |url= of sfn target bibliography","*{{cite journal|title=T|doi=10.1000/b}}\n"),
+ ("en","pmid wrapper in efn","A{{efn|{{PMID|123}}}}"),
+ ("en","PMC id not pmid","A<ref>{{cite journal|title=T|pmc=123|pmid=PMC123}}</ref>"),
+ ("ar","ar retracted marker","أ<ref>{{مصدر مسحوب|doi=10.1000/n}}</ref>"),
+ ("ar","ar cite doi","أ<ref>{{استشهاد بدورية|عنوان=ت|دوي=10.1000/x}}</ref>"),
+ ("ar","ar marker template wraps cite","أ<ref>{{مصدر مسحوب|{{استشهاد بدورية|دوي=10.1000/x}}}}</ref>"),
+ ("ar","ar english Retracted tpl","أ<ref>{{Retracted|doi=10.1000/n}}</ref>"),
+ ("en","trailing punct","A<ref>doi:10.1000/x.</ref>"),
+]
+for w, label, t in C:
+    d, _ = run(t, wiki=w)
+    print(f"{w} {label:38s}", [(i["scheme"], i["role"], i["normalization"].get("normalized")) for i in d["identifiers"]])

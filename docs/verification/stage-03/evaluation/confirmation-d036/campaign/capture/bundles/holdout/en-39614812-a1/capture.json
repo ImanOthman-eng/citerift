@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "8eab42567eb7fc5fbc8d67bdae5e1e3a5bf10d3ce20597aa58f627e033f761d6",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.138,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:15:10.539437Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=39614812",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 2200,
+   "body_sha256": "c523ea8431f7a5dbee91bc83713cbb625a897825d99c5c0a0c7fb61c00cb89d2",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.449,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:16:00.678604Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=39614812",
+   "wire_bytes": 1220
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "4e50392bd880571556a92b5f58401b759d2347e240889955a39b47c34eceaf1e",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.324,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-04T10:16:11.128454Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1362991706/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 106637,
+   "body_sha256": "f5e1178ed4ccfd0dfd972b37e65a33e5aec2b7abbd0ce0b448115099a56c9e5d",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.424,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-04T10:17:00.452858Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1362991706/html",
+   "wire_bytes": 18484
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "8eab42567eb7fc5fbc8d67bdae5e1e3a5bf10d3ce20597aa58f627e033f761d6",
+  "4e50392bd880571556a92b5f58401b759d2347e240889955a39b47c34eceaf1e"
+ ],
+ "finished_at": "2026-11-04T10:17:00.878586Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 39614812,
+  "parent_revision_id": 1336183484,
+  "redirect_followed": null,
+  "revision_id": 1362991706,
+  "revision_timestamp": "2026-07-07T12:24:49Z",
+  "sha1": "5be84454562ae2d6262f794d0177d991645eba18",
+  "size": 1627,
+  "title": "Dimethyltryptamine-N-oxide",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f5e1178ed4ccfd0dfd972b37e65a33e5aec2b7abbd0ce0b448115099a56c9e5d",
+  "bytes": 106637,
+  "checks": {
+   "document_revision_id": "1362991706",
+   "header_revision_id": "1362991706",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "39614812",
+   "render_id": "15430b1b-d43d-11f1-b11f-8148f6f02c26",
+   "revision_sha1": "5be84454562ae2d6262f794d0177d991645eba18",
+   "revision_sha1_base36": "aqhlcesy5oxf7v7qdrsz53buka0sw7s"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1362991706",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 04 Nov 2026 10:17:00 GMT",
+   "etag": "W/\"1362991706/15430b1b-d43d-11f1-b11f-8148f6f02c26/view\"",
+   "last-modified": "Fri, 30 Oct 2026 05:41:20 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1362991706/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 39614812,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "7ea8051ef609313a7a509c83c1faeffef9b6291bc482fe265c0a05d9e2d2fe20",
+  "bytes": 1627,
+  "response_artifact": "c523ea8431f7a5dbee91bc83713cbb625a897825d99c5c0a0c7fb61c00cb89d2",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=39614812"
+ },
+ "started_at": "2026-11-04T10:15:00.811403Z",
+ "status": "complete"
+}

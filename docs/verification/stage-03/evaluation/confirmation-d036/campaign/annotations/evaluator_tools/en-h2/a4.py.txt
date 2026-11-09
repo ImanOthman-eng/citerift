@@ -1,0 +1,10 @@
+import sys; sys.path.insert(0,'/tmp/claude-0/-home-user-citerift/a52d5c86-81c2-5300-a98c-c54b1eaf0da5/scratchpad/eval-d036/en-h2/tools')
+from gen import *
+rev=1374321138; p,t=load(rev); s=sups(rev); assert len(s)==3
+iu=find(t,'<ref name="iucn status 11 September 2026">'); w=find(t,'<ref name="WoRMS">'); u2=find(t,'<ref name="iucn status 11 September 2026" />')
+defs=[D('d1',t,iu,'note','iucn status 11 September 2026','',[find(t,'{{cite iucn',iu)],False,'cite_note-iucn_status_11_September_2026-1',"Defined in speciesbox |status_ref=; reused in |synonyms=."),
+ D('d2',t,w,'note','WoRMS','',[],True,'cite_note-WoRMS-2',"Hand-written MolluscaBase citation; contains marinespecies.org URL, no DOI/PMID.")]
+uses=[U('u1',t,iu,iu,s[0]),U('u2',t,u2,iu,s[1],"Self-closing reuse (with space before />)."),U('u3',t,w,w,s[2])]
+d=find(t,'10.2305/IUCN.UK.2026-1.RLTS.T9793A215029503.en')
+ids=[I(t,d,'10.2305/IUCN.UK.2026-1.RLTS.T9793A215029503.en','doi','primary_citation_field','10.2305/iucn.uk.2026-1.rlts.t9793a215029503.en')]
+finish(rev,p,t,defs,uses,ids,"The bulleted line '* Bank, R. A.; Neubert, E. (2017)...' has no citation template, DOI or PMID, so not labelled a bibliography entry (3.4). {{cite iucn}} has |article-number= and |volume= fields only; no other identifiers.",[])

@@ -1,0 +1,214 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 76580846,
+  "source_sha256": "d39762f5e2585e7f433bfa51efc3e6eaacc83f4da3cc60bf729762eb3008a337",
+  "html_sha256": "0fad6b70ab9310110d064d21ab0c9e2601a30fd9d1f3fbe836839a63c770b5f2",
+  "window": [
+   0,
+   3539
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-ar-h2",
+  "started_at": "2026-11-03T00:00:00Z",
+  "finished_at": "2026-11-03T01:58:42Z",
+  "files_opened": [
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   },
+   {
+    "path": "packets/ar-76580846/packet.json",
+    "sha256": "7c6fc757b83fd000a32d4fd55865bd03befb8e3357a58f5c71b0634a9f67f044"
+   },
+   {
+    "path": "packets/ar-76580846/source.wikitext",
+    "sha256": "d39762f5e2585e7f433bfa51efc3e6eaacc83f4da3cc60bf729762eb3008a337"
+   },
+   {
+    "path": "packets/ar-76580846/render.html",
+    "sha256": "0fad6b70ab9310110d064d21ab0c9e2601a30fd9d1f3fbe836839a63c770b5f2"
+   }
+  ],
+  "tools": "Python 3 standard library and lxml, run from stdin or from tools/: regex search of source.wikitext, listing of sup[typeof~mw:Extension/ref] and li[id^=cite_note] in render.html, string-slice verification of every location.",
+  "unresolved": "Rendered footnote cite_note-wikidata-... (10 markers) comes from the {{معلومات كوكب}} infobox, not the source; not labelled. \"* {{JPL small body}}\" under external links is an external-link template, not a citation template or DOI/PMID, so not a bibliography entry."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 310,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanetcenter.net"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 315,
+      "quote": "{{استشهاد ويب| مسار = https://www.minorplanetcenter.net/db_s"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 667,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd.jpl.nasa.g"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "jpl",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 683,
+      "quote": "{{استشهاد ويب| مسار = https://ssd.jpl.nasa.gov/sbdb.cgi?sstr"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-jpl-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2458,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة=en|الأخير"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "AAS-MB-2011",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2482,
+      "quote": "{{استشهاد بدورية محكمة|لغة=en|الأخير=Joseph R Masiero, A. K "
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-AAS-MB-2011-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 310,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanetcenter.net"
+   },
+   "binds_to": {
+    "cp": 310,
+    "quote": "<ref>{{استشهاد ويب| مسار = https://www.minorplanetcenter.net"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 667,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd.jpl.nasa.g"
+   },
+   "binds_to": {
+    "cp": 667,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd.jpl.nasa.g"
+   },
+   "render_ref_id": "cite_ref-jpl_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1437,
+    "quote": "<ref name=\"jpl\"/>\n\n== الخصائص المدارية ==\nيتميز مدار هذا الك"
+   },
+   "binds_to": {
+    "cp": 667,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd.jpl.nasa.g"
+   },
+   "render_ref_id": "cite_ref-jpl_3-1",
+   "notes": "Self-closing reuse."
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2007,
+    "quote": "<ref name=\"jpl\"/>\n\n== الخصائص الفيزيائية ==\nيُقدر [[قدر مطلق"
+   },
+   "binds_to": {
+    "cp": 667,
+    "quote": "<ref name=\"jpl\">{{استشهاد ويب| مسار = https://ssd.jpl.nasa.g"
+   },
+   "render_ref_id": "cite_ref-jpl_3-2",
+   "notes": "Self-closing reuse."
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2458,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة=en|الأخير"
+   },
+   "binds_to": {
+    "cp": 2458,
+    "quote": "<ref name=\"AAS-MB-2011\">{{استشهاد بدورية محكمة|لغة=en|الأخير"
+   },
+   "render_ref_id": "cite_ref-AAS-MB-2011_4-0",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 2918,
+    "quote": "https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "identifier_link",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Publisher URL (path /article/, not /doi/) in the مسار field; the DOI is the path after /article/."
+  },
+  {
+   "at": {
+    "cp": 3023,
+    "quote": "https://web.archive.org/web/20220116201153/https://iopscience.iop.org/article/10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "not_a_target",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Archive.org snapshot URL embedding the publisher URL; key given for information."
+  },
+  {
+   "at": {
+    "cp": 3161,
+    "quote": "10.1088/0004-637X/741/2/68"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1088/0004-637x/741/2/68",
+   "notes": "Value of DOI= field."
+  }
+ ],
+ "unresolved_notes": [
+  "Rendered footnote cite_note-wikidata-... (10 markers) comes from the {{معلومات كوكب}} infobox, not the source; not labelled. \"* {{JPL small body}}\" under external links is an external-link template, not a citation template or DOI/PMID, so not a bibliography entry."
+ ]
+}

@@ -1,0 +1,399 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "ar",
+  "revision_id": 62149322,
+  "source_sha256": "2aa8ae873317aefbf33e0e9724b8c01ddd296ddc930411b26986cc73a0d33b73",
+  "html_sha256": "f5395b109691f74ef1db4bb3d944c83f9b6d23f3e328dd157010e3312891a039",
+  "window": [
+   0,
+   4895
+  ]
+ },
+ "provenance": {
+  "agent": "stage03-evaluator-ar",
+  "started_at": "2026-10-29T08:42:59Z",
+  "finished_at": "2026-10-29T08:46:24Z",
+  "files_opened": [
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/docs/verification/stage-03/protocol/ANNOTATION_GUIDE.md",
+    "sha256": "a4298d4ae8cce17c8d6cd94369aeaa9f6a3c34f4786ad0081121ce3af27d6fc8"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-62149322/packet.json",
+    "sha256": "4b422bd5bca58256ed155616032e62ef5201e0c1d18ab62bd77e10602176c296"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-62149322/source.wikitext",
+    "sha256": "2aa8ae873317aefbf33e0e9724b8c01ddd296ddc930411b26986cc73a0d33b73"
+   },
+   {
+    "path": "/tmp/claude-0/-home-user-citerift/409f0083-2beb-51ac-adf3-690868743157/scratchpad/eval/packets/ar-h1/ar-62149322/render.html",
+    "sha256": "f5395b109691f74ef1db4bb3d944c83f9b6d23f3e328dd157010e3312891a039"
+   }
+  ],
+  "tools": "sha256sum; python3 -I one-off stdin snippets using str.find/re.finditer to locate '<ref', '{{', '10.', 'pmid', 'doi' etc.; lxml.html to list <sup typeof=mw:Extension/ref> (id, data-mw attrs/body) and <li id=cite_note-*> text; every location checked with text[cp:cp+len(quote)]==quote",
+  "unresolved": "none; the prose string 'تيم10. ' at cp 755 contains '10.' but is not a DOI and is not listed"
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 910,
+    "quote": "<ref name=\"Webb, C.T. 2006\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Webb, C.T. 2006",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 938,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Webb,_C.T._2006-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 1820,
+    "quote": "<ref name=\"Mesecke, N. 2005\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "Mesecke, N. 2005",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 1849,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-Mesecke,_N._2005-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d3",
+   "at": {
+    "cp": 2689,
+    "quote": "<ref name=\"PMID15359280\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "PMID15359280",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 2714,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-PMID15359280-3",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d4",
+   "at": {
+    "cp": 3394,
+    "quote": "<ref name=\"PMID15989945\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "PMID15989945",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 3419,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-PMID15989945-4",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  },
+  {
+   "id": "d5",
+   "at": {
+    "cp": 4174,
+    "quote": "<ref name=\"PMID15294910\">"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": "PMID15294910",
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 4199,
+      "quote": "{{استشهاد بدورية محكمة"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-PMID15294910-5",
+   "marker": "none",
+   "marker_text": null,
+   "notes": ""
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 910,
+    "quote": "<ref name=\"Webb, C.T. 2006\">"
+   },
+   "binds_to": {
+    "cp": 910,
+    "quote": "<ref name=\"Webb, C.T. 2006\">"
+   },
+   "render_ref_id": "cite_ref-Webb,_C.T._2006_1-0",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 1472,
+    "quote": "<ref name=\"Webb, C.T. 2006\" />"
+   },
+   "binds_to": {
+    "cp": 910,
+    "quote": "<ref name=\"Webb, C.T. 2006\">"
+   },
+   "render_ref_id": "cite_ref-Webb,_C.T._2006_1-1",
+   "notes": ""
+  },
+  {
+   "id": "u3",
+   "at": {
+    "cp": 1820,
+    "quote": "<ref name=\"Mesecke, N. 2005\">"
+   },
+   "binds_to": {
+    "cp": 1820,
+    "quote": "<ref name=\"Mesecke, N. 2005\">"
+   },
+   "render_ref_id": "cite_ref-Mesecke,_N._2005_2-0",
+   "notes": ""
+  },
+  {
+   "id": "u4",
+   "at": {
+    "cp": 2397,
+    "quote": "<ref name=\"Mesecke, N. 2005\" />"
+   },
+   "binds_to": {
+    "cp": 1820,
+    "quote": "<ref name=\"Mesecke, N. 2005\">"
+   },
+   "render_ref_id": "cite_ref-Mesecke,_N._2005_2-1",
+   "notes": ""
+  },
+  {
+   "id": "u5",
+   "at": {
+    "cp": 2689,
+    "quote": "<ref name=\"PMID15359280\">"
+   },
+   "binds_to": {
+    "cp": 2689,
+    "quote": "<ref name=\"PMID15359280\">"
+   },
+   "render_ref_id": "cite_ref-PMID15359280_3-0",
+   "notes": ""
+  },
+  {
+   "id": "u6",
+   "at": {
+    "cp": 3394,
+    "quote": "<ref name=\"PMID15989945\">"
+   },
+   "binds_to": {
+    "cp": 3394,
+    "quote": "<ref name=\"PMID15989945\">"
+   },
+   "render_ref_id": "cite_ref-PMID15989945_4-0",
+   "notes": ""
+  },
+  {
+   "id": "u7",
+   "at": {
+    "cp": 4174,
+    "quote": "<ref name=\"PMID15294910\">"
+   },
+   "binds_to": {
+    "cp": 4174,
+    "quote": "<ref name=\"PMID15294910\">"
+   },
+   "render_ref_id": "cite_ref-PMID15294910_5-0",
+   "notes": ""
+  },
+  {
+   "id": "u8",
+   "at": {
+    "cp": 4674,
+    "quote": "<ref name=\"Mesecke, N. 2005\" />"
+   },
+   "binds_to": {
+    "cp": 1820,
+    "quote": "<ref name=\"Mesecke, N. 2005\">"
+   },
+   "render_ref_id": "cite_ref-Mesecke,_N._2005_2-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 1056,
+    "quote": "16387659"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "16387659",
+   "notes": "pmid= of d1"
+  },
+  {
+   "at": {
+    "cp": 1069,
+    "quote": "10.1016/j.molcel.2005.11.010"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.molcel.2005.11.010",
+   "notes": "doi= of d1"
+  },
+  {
+   "at": {
+    "cp": 2023,
+    "quote": "15989955"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15989955",
+   "notes": "pmid= of d2"
+  },
+  {
+   "at": {
+    "cp": 2036,
+    "quote": "10.1016/j.cell.2005.04.011"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.cell.2005.04.011",
+   "notes": "doi= of d2"
+  },
+  {
+   "at": {
+    "cp": 2704,
+    "quote": "15359280"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15359280",
+   "notes": "inside the ref name= value \"PMID15359280\" of d3"
+  },
+  {
+   "at": {
+    "cp": 2940,
+    "quote": "15359280"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15359280",
+   "notes": "pmid= of d3"
+  },
+  {
+   "at": {
+    "cp": 2964,
+    "quote": "10.1038/sj.emboj.7600389"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1038/sj.emboj.7600389",
+   "notes": "doi= of d3"
+  },
+  {
+   "at": {
+    "cp": 3409,
+    "quote": "15989945"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15989945",
+   "notes": "inside the ref name= value \"PMID15989945\" of d4"
+  },
+  {
+   "at": {
+    "cp": 3528,
+    "quote": "15989945"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15989945",
+   "notes": "pmid= of d4"
+  },
+  {
+   "at": {
+    "cp": 3541,
+    "quote": "10.1016/j.cell.2005.06.019"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1016/j.cell.2005.06.019",
+   "notes": "doi= of d4"
+  },
+  {
+   "at": {
+    "cp": 4189,
+    "quote": "15294910"
+   },
+   "scheme": "pmid",
+   "role": "not_a_target",
+   "key": "15294910",
+   "notes": "inside the ref name= value \"PMID15294910\" of d5"
+  },
+  {
+   "at": {
+    "cp": 4343,
+    "quote": "15294910"
+   },
+   "scheme": "pmid",
+   "role": "primary_citation_field",
+   "key": "15294910",
+   "notes": "pmid= of d5"
+  },
+  {
+   "at": {
+    "cp": 4356,
+    "quote": "10.1074/jbc.M404878200"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.1074/jbc.m404878200",
+   "notes": "doi= of d5"
+  }
+ ],
+ "unresolved_notes": []
+}

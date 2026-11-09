@@ -1,0 +1,380 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:governance:stage-registry:1",
+  "title": "CITERIFT stage registry",
+  "description": "The single canonical machine-readable record of stage definitions, stage state and the transition history.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "project", "policy", "stages", "history"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "registry_version": {"type": "string", "pattern": "^1\\.[0-9]+\\.[0-9]+$(?!\\n)"},
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "repository", "owner"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$(?!\\n)"},
+        "owner": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["display_name", "github_login"],
+          "properties": {
+            "display_name": {"type": "string", "minLength": 1},
+            "github_login": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "single_active_engineering_stage",
+        "required_artifacts",
+        "handoff_file",
+        "handoff_required_sections",
+        "test_report_file"
+      ],
+      "description": "Owner-set rules (GOVERNANCE.md). They are fixed here, in a Stage 00 owned path, so that weakening them in the registry is a schema error and changing them here makes Stage 00 stale.",
+      "properties": {
+        "single_active_engineering_stage": {"const": true},
+        "required_artifacts": {"const": ["SPECIFICATION.md", "MATHEMATICAL_MODEL.md", "RISK_ANALYSIS.md", "SIMULATION_REPORT.md", "TEST_RESULTS.md", "CREATIVE_DIFFERENTIATION_REVIEW.md", "HANDOFF.md"]},
+        "handoff_file": {"const": "HANDOFF.md"},
+        "handoff_required_sections": {"const": ["Stage and status", "Verified completed work", "Inputs and outputs", "Test evidence", "Known limitations", "Open blockers", "Dependency versions", "Verified Git commit", "Acceptance decision", "Requirements for the next stage"]},
+        "test_report_file": {"const": "test-report.json"}
+      }
+    },
+    "stages": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/stage"}},
+    "history": {"type": "array", "items": {"$ref": "#/$defs/history_entry"}}
+  },
+  "$defs": {
+    "stage_id": {"type": "string", "pattern": "^[0-9]{2}$(?!\\n)"},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{40}$(?!\\n)"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$(?!\\n)"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$(?!\\n)"},
+    "owner_ref": {
+      "description": "Reference to the owner's own words: a project-thread message id or an https URL (for example a GitHub comment).",
+      "type": "string",
+      "pattern": "^(cmsg_[A-Za-z0-9]{10,}|https://[^\\s\\x00-\\x1f\\x7f-\\x9f\\ufeff]+)$(?!\\n)"
+    },
+    "evidence_ref": {
+      "description": "A repository-relative path or an https URL.",
+      "type": "string",
+      "pattern": "^(https://[^\\s\\x00-\\x1f\\x7f-\\x9f\\ufeff]+|[A-Za-z0-9._][A-Za-z0-9._/-]*)$(?!\\n)"
+    },
+    "relative_path": {
+      "description": "A repository-relative path: no leading '/', no '.' or '..' segment (Y-11: an absolute verification_dir crashed verification).",
+      "type": "string",
+      "pattern": "^(?![.]{1,2}(/|$))(?!.*/[.]{1,2}(/|$))[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*$(?!\\n)"
+    },
+    "path_list": {"type": "array", "items": {"$ref": "#/$defs/relative_path"}, "uniqueItems": true},
+    "status": {
+      "enum": [
+        "NOT_STARTED",
+        "AUTHORIZED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IMPLEMENTED_NOT_VERIFIED",
+        "VERIFIED_AWAITING_OWNER_ACCEPTANCE",
+        "ACCEPTED_CLOSED"
+      ]
+    },
+    "actor": {"enum": ["owner", "engineering-agent", "external-agent"]},
+    "hashed_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "maintenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "baseline_revision",
+        "candidate_revision",
+        "scope",
+        "patch_sha256",
+        "phase",
+        "supersedes",
+        "superseded_by",
+        "reports",
+        "opened_after_seq",
+        "finalized_at",
+        "finalized_after_seq"
+      ],
+      "properties": {
+        "purpose": {"type": "string", "minLength": 10},
+        "baseline_revision": {"$ref": "#/$defs/sha"},
+        "candidate_revision": {"$ref": "#/$defs/sha"},
+        "scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": {
+              "path": {"$ref": "#/$defs/relative_path"},
+              "sha256": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha256"}]}
+            }
+          }
+        },
+        "patch_sha256": {"$ref": "#/$defs/sha256"},
+        "phase": {"enum": ["pending_validation", "finalized", "superseded"]},
+        "supersedes": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"}]},
+        "superseded_by": {"oneOf": [{"type": "null"}, {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"}]},
+        "reports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "python"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"$ref": "#/$defs/sha256"},
+              "python": {"type": "string", "pattern": "^3\\.[0-9]+$(?!\\n)"}
+            }
+          }
+        },
+        "opened_after_seq": {"type": "integer", "minimum": 0},
+        "finalized_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+        "finalized_after_seq": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0}]}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "if": {"properties": {"executor": {"const": "engineering-agent"}}, "required": ["executor"]},
+      "then": {
+        "properties": {
+          "ci_required": {"const": true},
+          "required_artifacts": {
+            "const": [
+              "SPECIFICATION.md",
+              "MATHEMATICAL_MODEL.md",
+              "RISK_ANALYSIS.md",
+              "SIMULATION_REPORT.md",
+              "TEST_RESULTS.md",
+              "CREATIVE_DIFFERENTIATION_REVIEW.md",
+              "HANDOFF.md"
+            ]
+          }
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "Executors are fixed by the plan (D-010): only Stage 01 is external, so no stage can be reclassified to skip CI.",
+          "if": {"properties": {"id": {"const": "01"}}, "required": ["id"]},
+          "then": {"properties": {"executor": {"const": "external-agent"}}},
+          "else": {"properties": {"executor": {"const": "engineering-agent"}}}
+        },
+        {
+          "$comment": "Dependencies are fixed by the plan (D-010), so a stage cannot be freed from a dependency before it is verified (X-07).",
+          "properties": {"id": {"enum": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]}}
+        },
+        {"if": {"properties": {"id": {"const": "00"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": []}}}},
+        {"if": {"properties": {"id": {"const": "01"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": []}}}},
+        {"if": {"properties": {"id": {"const": "02"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},
+        {"if": {"properties": {"id": {"const": "03"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["00", "01"]}}}},
+        {"if": {"properties": {"id": {"const": "04"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["02", "03"]}}}},
+        {"if": {"properties": {"id": {"const": "05"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["04"]}}}},
+        {"if": {"properties": {"id": {"const": "06"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["05"]}}}},
+        {"if": {"properties": {"id": {"const": "07"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["06"]}}}},
+        {"if": {"properties": {"id": {"const": "08"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["07"]}}}},
+        {"if": {"properties": {"id": {"const": "09"}}, "required": ["id"]}, "then": {"properties": {"depends_on": {"const": ["08"]}}}}
+      ],
+      "required": [
+        "id",
+        "name",
+        "executor",
+        "depends_on",
+        "verification_dir",
+        "owned_paths",
+        "required_test_suites",
+        "acceptance_gates",
+        "status",
+        "authorization",
+        "implementation",
+        "verification",
+        "acceptance",
+        "blockers",
+        "amendments"
+      ],
+      "properties": {
+        "id": {"$ref": "#/$defs/stage_id"},
+        "name": {"type": "string", "minLength": 1},
+        "executor": {"enum": ["engineering-agent", "external-agent"]},
+        "depends_on": {"type": "array", "items": {"$ref": "#/$defs/stage_id"}, "uniqueItems": true},
+        "verification_dir": {"$ref": "#/$defs/relative_path"},
+        "owned_paths": {"$ref": "#/$defs/path_list"},
+        "required_artifacts": {"$ref": "#/$defs/path_list"},
+        "required_test_suites": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "ci_required": {"type": "boolean"},
+        "acceptance_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "requirement"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^[0-9]{2}-[A-Z]+$(?!\\n)"},
+              "requirement": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "status": {"$ref": "#/$defs/status"},
+        "authorization": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["owner_ref", "scope", "recorded_at"],
+              "properties": {
+                "owner_ref": {"$ref": "#/$defs/owner_ref"},
+                "scope": {"type": "string", "minLength": 1},
+                "recorded_at": {"$ref": "#/$defs/timestamp"}
+              }
+            }
+          ]
+        },
+        "implementation": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["revision", "recorded_at"],
+              "properties": {
+                "revision": {"$ref": "#/$defs/sha"},
+                "recorded_at": {"$ref": "#/$defs/timestamp"}
+              }
+            }
+          ]
+        },
+        "verification": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["revision", "recorded_at", "artifacts", "test_report", "evidence_manifest", "definition_sha256", "gates"],
+              "properties": {
+                "revision": {"$ref": "#/$defs/sha"},
+                "recorded_at": {"$ref": "#/$defs/timestamp"},
+                "artifacts": {"type": "array", "items": {"$ref": "#/$defs/hashed_file"}},
+                "test_report": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hashed_file"}]},
+                "evidence_manifest": {
+                  "description": "sha256 of every file under the stage's verification directory when it was verified.",
+                  "type": "array",
+                  "items": {"$ref": "#/$defs/hashed_file"}
+                },
+                "definition_sha256": {
+                  "description": "Hash of the stage definition and the policy the verification was checked against.",
+                  "$ref": "#/$defs/sha256"
+                },
+                "ci": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["run_url", "head_sha", "conclusion"],
+                  "properties": {
+                    "run_url": {"type": "string", "pattern": "^https://github\\.com/[^\\s\\x00-\\x1f\\x7f-\\x9f\\ufeff]+/actions/runs/[0-9]+$(?!\\n)"},
+                    "head_sha": {"$ref": "#/$defs/sha"},
+                    "conclusion": {"type": "string"}
+                  }
+                },
+                "gates": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["result", "evidence"],
+                    "properties": {
+                      "result": {"enum": ["pass", "fail", "not_verified"]},
+                      "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_ref"}}
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "acceptance": {
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["owner_ref", "accepted_revision", "recorded_at", "recorded_by", "method"],
+              "properties": {
+                "owner_ref": {"$ref": "#/$defs/owner_ref"},
+                "accepted_revision": {"$ref": "#/$defs/sha"},
+                "recorded_at": {"$ref": "#/$defs/timestamp"},
+                "recorded_by": {"$ref": "#/$defs/actor"},
+                "method": {
+                  "description": "'attested': the record cites the owner's statement; the reference is not machine-verified.",
+                  "enum": ["attested"]
+                }
+              }
+            }
+          ]
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "description", "opened_at", "resolved_at", "resolution"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^B-[0-9]{2}-[0-9]{3}$(?!\\n)"},
+              "description": {"type": "string", "minLength": 1},
+              "opened_at": {"$ref": "#/$defs/timestamp"},
+              "resolved_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+              "resolution": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1}]}
+            }
+          }
+        },
+        "amendments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "reason", "evidence", "owner_ref", "revision", "test_report", "recorded_at"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"},
+              "kind": {"enum": ["correction", "enhancement"]},
+              "reason": {"type": "string", "minLength": 10},
+              "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_ref"}},
+              "owner_ref": {"$ref": "#/$defs/owner_ref"},
+              "revision": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/sha"}]},
+              "test_report": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hashed_file"}]},
+              "recorded_at": {"$ref": "#/$defs/timestamp"},
+              "maintenance": {"$ref": "#/$defs/maintenance"}
+            }
+          }
+        },
+        "notes": {"type": "string"}
+      }
+    },
+    "history_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seq", "at", "stage", "from", "to", "actor", "recorded_by", "reason", "owner_ref"],
+      "properties": {
+        "seq": {"type": "integer", "minimum": 1},
+        "at": {"$ref": "#/$defs/timestamp"},
+        "stage": {"$ref": "#/$defs/stage_id"},
+        "from": {"$ref": "#/$defs/status"},
+        "to": {"$ref": "#/$defs/status"},
+        "actor": {"$ref": "#/$defs/actor"},
+        "recorded_by": {"$ref": "#/$defs/actor"},
+        "reason": {"type": "string", "minLength": 1},
+        "owner_ref": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/owner_ref"}]},
+        "amendment": {"type": "string", "pattern": "^A-[0-9]{2}-[0-9]{3}$(?!\\n)"}
+      }
+    }
+  }
+}

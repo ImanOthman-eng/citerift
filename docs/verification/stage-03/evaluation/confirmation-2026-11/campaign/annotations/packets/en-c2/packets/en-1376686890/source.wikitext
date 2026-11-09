@@ -1,0 +1,165 @@
+{{Short description|Constant e raised to the power of pi}}
+{{More citations needed|date=October 2022}}
+In [[mathematics]], the '''exponential of pi''' {{math|''e''{{sup|''π''}}}},<ref>{{Cite web |title=A039661 - OEIS |url=https://oeis.org/A039661 |access-date=2024-10-27 |website=oeis.org}}</ref> also called '''Gelfond's constant''',<ref>{{Cite web |last=Weisstein |first=Eric W. |title=Gelfond's Constant |url=https://mathworld.wolfram.com/GelfondsConstant.html |access-date=2024-10-27 |website=Wolfram MathWorld |language=en}}</ref> is the real number {{mvar|[[e (mathematical constant)|e]]}} raised to the power [[Pi|{{pi}}]] (i.e., the value of the [[exponential function]] at {{pi}}).
+
+Its decimal expansion is given by
+: ''{{mvar|e{{sup|π}}}}'' = {{val|23.14069263277926900572}}... {{OEIS|A039661}}.
+
+Like both {{mvar|e}} and {{pi}}, this constant is both [[irrational number|irrational]] and [[transcendental number|transcendental]]. This follows from the [[Gelfond–Schneider theorem]], which establishes {{math|''a''{{sup|''b''}}}} to be transcendental, given that {{math|''a''}} is [[Algebraic number|algebraic]] and not equal to [[0|zero]] or [[1|one]] and {{math|''b''}} is algebraic but not [[Rational number|rational]]. We have
+<math display="block">
+ e^\pi = (e^{i\pi})^{-i} = (-1)^{-i},
+</math>
+where {{mvar|i}} is the [[imaginary unit]]. Since {{math|&minus;''i''}} is algebraic but not rational, {{math|''e''{{sup|''π''}}}} is transcendental. The numbers {{pi}}, {{math|''e''{{sup|''π''}}}}, and the [[lemniscate constant]] are also known to be [[Algebraic independence|algebraically independent]] over the [[rational number]]s, as demonstrated by [[Yuri Nesterenko (mathematician)|Yuri Nesterenko]].<ref>{{cite journal |author=Nesterenko, Y. |author-link=Yuri Valentinovich Nesterenko |year=1996 |title=Modular Functions and Transcendence Problems |journal=[[Comptes rendus de l'Académie des sciences|Comptes Rendus de l'Académie des Sciences, Série I]] |volume=322 |issue=10 |pages=909–914 |zbl=0859.11047}}</ref> It is not known whether {{math|''e''{{sup|''π''}}}} is a [[Liouville number]].<ref name=":7">{{cite arXiv |eprint=math/0312440 |first=Michel |last=Waldschmidt |title=Open Diophantine Problems |date=2004-01-24}}</ref> The constant was mentioned in [[Hilbert's seventh problem]] alongside the [[Gelfond–Schneider constant]] {{math|2{{sup|{{sqrt|2}}}}}}, and the name "Gelfond's constant" stems from Soviet mathematician [[Alexander Gelfond]].<ref name="tijdeman">{{cite book |last=Tijdeman |first=Robert |author-link=Robert Tijdeman |title=Mathematical Developments Arising from Hilbert Problems |publisher=[[American Mathematical Society]] |year=1976 |isbn=0-8218-1428-1 |editor=Felix E. Browder |editor-link=Felix Browder |series=[[Proceedings of Symposia in Pure Mathematics]] |volume=XXVIII.1 |pages=241–268 |chapter=On the Gel'fond–Baker method and its applications |zbl=0341.10026}}</ref>
+
+==Occurrences==
+The constant {{math|''e''{{sup|''π''}}}} appears in relation to the [[volume]]s of [[N-sphere|hyperspheres]].
+
+[[File:hypersphere_volume_and_surface_area_graphs.svg|thumb|Graphs of volumes ({{tmath|V_n}}) and [[surface area]]s ({{tmath|S_{n-1} }}) of {{mvar|n}}-balls of radius {{math|1}}]]
+
+The volume of an ''n-sphere'' with [[radius]] {{math|''R''}} is given by
+<math display="block">
+ V_n(R) = \frac{\pi^\frac{n}{2}R^n}{\Gamma\left(\frac{n}{2} + 1\right)},
+</math>
+where {{math|Γ}} is the [[gamma function]]. Considering only unit spheres ({{math|''R'' {{=}} 1}}) yields
+<math display="block">
+ V_n(1) = \frac{\pi^\frac{n}{2}}{\Gamma\left(\frac{n}{2} + 1\right)},
+</math>
+
+Any even-dimensional 2''n''-sphere now gives
+<math display="block">
+ V_{2n}(1) = \frac{\pi^n}{\Gamma(n + 1)} = \frac{\pi^n}{n!}.
+</math>
+Summing up all even-dimensional unit sphere volumes and utilizing the [[series expansion]] of the [[exponential function]] gives<ref>{{Cite web |date=2019-05-26 |title=Sums of volumes of unit spheres |url=https://www.johndcook.com/blog/2019/05/26/sums-of-volumes-of-spheres/ |access-date=2024-10-27 |website=www.johndcook.com |language=en-US}}</ref>
+<math display="block">
+ \sum_{n=0}^\infty V_{2n}(1) = \sum_{n=0}^\infty \frac{\pi^n}{n!} = \exp(\pi) = e^\pi.
+</math>
+
+Also, if one defines {{math|''k''{{sub|0}} {{=}} {{sfrac|1|{{sqrt|2}}}}}} and
+<math display="block">
+ k_{n+1} = \frac{1 - \sqrt{1 - k_n^2}}{1 + \sqrt{1 - k_n^2}}
+</math>
+for {{math|''n'' > 0}}, then the sequence
+<math display="block">
+ (4/k_{n+1})^{2^{-n}}
+</math>
+converges rapidly to {{math|''e''{{sup|''π''}}}}.<ref>{{cite book |last1=Borwein |first1=J. |author1-link=Jonathan Borwein |url=https://archive.org/details/mathematicsbyexp00borw |title=Mathematics by Experiment: Plausible Reasoning in the 21st Century |last2=Bailey |first2=D. |publisher=A K Peters |year=2004 |isbn=1-56881-211-6 |place=Wellesley, MA |page=[https://archive.org/details/mathematicsbyexp00borw/page/n150 137] |zbl=1083.00001 |url-access=limited}}</ref>
+
+===In physics===
+The [[Q factor]] is a measure of how [[underdamped]] an oscillating system is; at large values, it is approximately equal to the number of oscillation cycles it takes for the amplitude of the oscillator to decrease by a factor of {{math|''e''{{sup|''π''}}}}, or the energy by a factor of {{math|''e''{{sup|2''π''}}}}.<ref>{{Cite book|title=Foundations of analog & digital electronic circuits|last=Anant.|first=Agarwal|date=2005|publisher=Elsevier|others=Lang, Jeffrey (Jeffrey H.)|isbn=9781558607354|location=Amsterdam|pages=647|oclc=60245509}}</ref><ref>{{cite web | title = Light and Matter | author = Benjamin Crowell | year = 2006 | url = http://www.lightandmatter.com/lm | url-status = live | archive-url = https://web.archive.org/web/20110519093054/http://lightandmatter.com/lm/ | archive-date = 2011-05-19 }}, Ch. 18</ref>
+
+In a [[water wave]], water molecules near the surface move in a circular motion as the wave propagates, attenuating exponentially with depth. At the characteristic length scale equal to {{sfrac|1|2}} the wavelength, known as the [[wave base]], the circular motion is attenuated by a factor of approximately {{math|''e''{{sup|''π''}}}} relative to the surface and is negligible at lower depths. The circular motion leaves characteristic ripples in coastal seabeds shallower than the typical wave base.<ref name="mechanics">{{cite book | title=Water wave mechanics for engineers and scientists | author=R. G. Dean | author2=R. A. Dalrymple | name-list-style=amp | year=1991 | series=Advanced Series on Ocean Engineering | volume=2 | publisher=World Scientific, Singapore | isbn=978-981-02-0420-4 }}</ref>
+
+A [[black hole]] bends light coming from behind it, producing an infinite series of lensed images corresponding to the number of times light wraps around the [[photon sphere]]. For a non-rotating black hole, the ratio of distances between successive images is asymptotically equal to {{math|''e''{{sup|−2''π''}}}}.<ref name=Sneppen>{{cite journal |last1=Sneppen |first1=Albert |title=Divergent reflections around the photon sphere of a black hole |journal=Scientific Reports |date=December 2021 |volume=11 |issue=1 |article-number=14247 |pmid=34244573| doi=10.1038/s41598-021-93595-w | doi-access=free|publisher=[[Cosmic Dawn Center]]|pmc=8270963 |bibcode=2021NatSR..1114247S }}</ref><ref>{{cite web |last1=Sutter |first1=Paul |title=Black holes warp the universe into a grotesque hall of mirrors |url=https://www.livescience.com/black-hole-mirror-copies.html |website=livescience.com |language=en |date=22 July 2021}}</ref>
+
+Blumhofer and Hutter (1997) describe a toy model of a quantum field theory with a [[Gribov ambiguity]]-like mechanism that produces multiple [[generation (particle physics)|generations]] of fermions, analogous to the real generations in the [[Standard Model]]. In the typical case, the mass ratio between successive generations is approximately {{math|''e''{{sup|''π''}}}}.<ref name=Blumhofer-Hutter-1997->
+{{cite journal
+ | first1 = A.  |last1 = Blumhofer
+ | first2 = M.  |last2 = Hutter
+ | year = 1997
+ | title = Family structure from periodic solutions of an improved gap equation
+ | journal = [[Nuclear Physics B]]
+ | volume =  484   | issue = 1   | pages = 80–96
+ | doi = 10.1016/S0550-3213(96)00644-X
+ | bibcode = 1997NuPhB.484...80B
+ }} {{erratum |doi=10.1016/S0550-3213(97)00228-9 |checked=yes}}
+</ref>
+
+==Similar or related constants==
+
+=== Ramanujan's constant ===
+The number {{math|''e''{{sup|''π''{{sqrt|163}}}}}} is known as [[Ramanujan's constant]]. Its decimal expansion is given by
+: {{math|''e''{{sup|''π''{{sqrt|163}}}}}} = {{val|262537412640768743.99999999999925007259}}... {{OEIS|A060295}},
+which turns out to be very close to the integer {{math|640320{{sup|3}} + 744}}. This is an application of [[Heegner number]]s, where 163 is the Heegner number in question. This number was discovered in 1859 by the mathematician [[Charles Hermite]].<ref>{{cite book
+  | last = Barrow
+  | first = John D
+  | title = The Constants of Nature
+  | publisher = Jonathan Cape
+  | page = 72
+  | year = 2002
+  | location = London
+  | isbn = 0-224-06135-6 }}
+</ref> In a 1975 [[April Fools' Day|April Fool]] article in ''[[Scientific American]]'' magazine,<ref>{{cite journal
+  | last = Gardner
+  | first = Martin
+  | title = Mathematical Games
+  | journal = Scientific American
+  | volume = 232
+  | issue = 4
+  | page = 127
+  | date = April 1975
+  | publisher = Scientific American, Inc | doi = 10.1038/scientificamerican0575-102
+ | bibcode = 1975SciAm.232e.102G
+ }}
+</ref> "Mathematical Games" columnist [[Martin Gardner]] made the hoax claim that the number was in fact an integer, and that the Indian mathematical genius [[Srinivasa Ramanujan]] had predicted it—hence its name. Ramanujan's constant is also a transcendental number.
+
+The coincidental closeness, to within one [[trillion]]th of the number {{math|640320{{sup|3}} + 744}} is explained by [[complex multiplication]] and the [[Q-expansion|''q''-expansion]] of the [[j-invariant]], specifically:
+<math display="block">
+ j\big((1 + \sqrt{-163})/2\big) = (-640\,320)^3
+</math>
+and
+<math display="block">
+ (-640\,320)^3 = -e^{\pi \sqrt{163}} + 744 + O\left(e^{-\pi \sqrt{163}}\right),
+</math>
+where the error term
+<math display="block">
+ O\left(e^{-\pi {\sqrt {163}}}\right) = -196\,884/e^{\pi \sqrt{163}} \approx -196\,884/(640\,320^3 + 744) \approx -0.000\,000\,000\,000\,75,
+</math>
+which explains why {{math|''e''{{sup|''π''{{sqrt|163}}}}}} is {{val|0.00000000000075}} below {{math|640320{{sup|3}} + 744}}.
+
+For more detail on this proof, consult the article on [[Heegner number]]s.
+
+=== The number {{math|''e''{{sup|''π''}} − ''π''}} ===
+The number {{math|''e''{{sup|''π''}} − ''π''}} is also very close to an integer, its decimal expansion being given by
+: {{math|''e''{{sup|''π''}} − ''π''}} = {{val|19.99909997918947576726}}... {{OEIS|A018938}}.
+
+The explanation for this seemingly remarkable coincidence was given by A.&nbsp;Doman in September 2023 and is a result of a sum related to [[Jacobi theta functions]] as follows:
+<math display="block">
+ \sum_{k=1}^\infty (8\pi k^2 - 2) e^{-\pi k^2} = 1.
+</math>
+The first term dominates, since the sum of the terms for <math>k \geq 2</math> total <math>\sim 0.0003436.</math> The sum can therefore be truncated to <math>(8\pi - 2) e^{-\pi} \approx 1,</math> where solving for <math>e^\pi</math> gives <math>e^\pi \approx 8\pi - 2.</math> Rewriting the approximation for <math>e^\pi</math> and using the approximation for <math>7\pi \approx 22</math> gives
+<math display="block">
+ e^\pi \approx \pi + 7\pi - 2 \approx \pi + 22 - 2 = \pi + 20.
+</math>
+Thus, rearranging terms gives <math>e^\pi - \pi \approx 20.</math> Ironically, the crude approximation for <math>7\pi</math> yields an additional order of magnitude of precision.<ref name="MathWorld">[[Eric Weisstein]], [http://mathworld.wolfram.com/AlmostInteger.html "Almost Integer"] at [[MathWorld]].</ref>
+
+=== The number {{math|''π''{{sup|''e''}}}} ===
+The decimal expansion of {{math|''π''{{sup|''e''}}}} is given by
+: <math>\pi^e = </math> {{val|22.45915771836104547342}}... {{OEIS|A059850}}.
+
+It is not known whether or not this number is transcendental. Note that, by [[Gelfond–Schneider theorem]], we can only infer definitively whether or not {{math|''a''{{sup|''b''}}}} is transcendental if {{mvar|a}} and {{mvar|b}} are algebraic ({{mvar|a}} and {{mvar|b}} are both considered [[complex number]]s).
+
+In the case of {{math|''e''{{sup|''π''}}}}, we are only able to prove this number transcendental due to properties of complex exponential forms and the above equivalency given to transform it into {{math|(−1){{sup|−''i''}}}}, allowing the application of Gelfond–Schneider theorem.
+
+{{math|''π''{{sup|''e''}}}} has no such equivalence, and hence, as both {{pi}} and {{mvar|e}} are transcendental, we cannot use the Gelfond–Schneider theorem to draw conclusions about the transcendence of {{math|''π''{{sup|''e''}}}}. However the currently unproven [[Schanuel's conjecture]] would imply its transcendence.<ref name=":1">{{Cite web |last=Waldschmidt |first=Michel |date=2021 |title=Schanuel's Conjecture: algebraic independence of transcendental numbers |url=https://webusers.imj-prg.fr/~michel.waldschmidt/articles/pdf/SchanuelEn.pdf}}</ref>
+
+=== The number {{math|''i''{{sup|''i''}}}} ===
+Using the [[principal value]] of the [[complex logarithm]],
+<math display="block">
+ i^i = (e^{i\pi/2})^i = e^{-\pi/2} = (e^\pi)^{-1/2}.
+</math>
+The decimal expansion of is given by
+: <math>i^i = </math> {{val|0.20787957635076190854}}... {{OEIS|A049006}}.
+
+Its transcendence follows directly from the transcendence of {{math|''e''{{sup|''π''}}}} and directly from the Gelfond–Schneider theorem.
+
+== See also ==
+* [[Transcendental number]]
+* [[Transcendental number theory]], the study of questions related to transcendental numbers
+* [[Euler's identity]]
+* [[Gelfond–Schneider constant]]
+
+==References==
+{{Reflist}}
+
+==Further reading==
+* [[Alan Baker (mathematician)|Alan Baker]] and [[Gisbert Wüstholz]], ''Logarithmic Forms and Diophantine Geometry'', New Mathematical Monographs '''9''', Cambridge University Press, 2007, {{ISBN|978-0-521-88268-2}}
+
+==External links==
+* [http://mathworld.wolfram.com/GelfondsConstant.html Gelfond's constant at ''MathWorld'']
+* [https://web.archive.org/web/20091027100754/http://www.geocities.com/timeparadox/Muntekim.htm  A new complex power tower identity for Gelfond's constant]
+* [http://mathworld.wolfram.com/AlmostInteger.html Almost Integer at ''MathWorld'']
+
+{{Irrational number}}
+
+[[Category:Mathematical constants]]
+[[Category:Real transcendental numbers]]

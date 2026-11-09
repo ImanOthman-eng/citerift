@@ -1,0 +1,147 @@
+{
+ "procedure": "Evidence-integrity audit of the D-036 confirmation campaign (AMENDMENT_2026-11-04_D036_CONFIRMATION.md, which keeps\nthe evidence audit of AMENDMENT_2026-11-03_D035_CONFIRMATION.md section 8). Changes nothing.\n\nA copy of ``../../../confirmation-d035/campaign/audit/evidence_audit.py`` with these changes only: the campaign\ndirectory; the two reserve decisions of this campaign; and check 10, which here confirms that no campaign file was\nwithheld (no ``WITHHELD_FILES.json``, no campaign ``.gitignore``) and that no tracked campaign file matches the\nsecret gate's patterns (``../../scripts/secret_gate.py``: the Stage 00 patterns plus review B-3's), instead of\nchecking withheld files on disk.\n\nUsage (from the repository root): python evidence_audit.py > EVIDENCE_AUDIT.json\n\nEach check is recomputed from the committed files and git history; the report lists every check with its result.\n\n1. Order: the draw, every capture, every lock and every reserve decision are ancestors of the prediction commit, and\n   the prediction commit is an ancestor of the first commit that holds scores and of the adjudication commit.\n2. Frozen candidate: ``src/``, ``pyproject.toml`` and ``uv.lock`` at the prediction commit equal the candidate\n   revision; the MANIFEST file hashes hold at the prediction commit and now.\n3. Locks: every lock file's entries match its label files now, and no file in a lock directory changed after its\n   lock commit.\n4. Labels: every locked label equals, byte for byte, an evaluator output named in VALIDATION.json's instance groups\n   (checked through the packets: each label's article and hashes match its packet).\n5. Packets: every packet's ``source.wikitext`` and ``render.html`` hash to ``packet.json`` and to the capture bundle\n   recorded for that article.\n6. Prediction: every extraction named in ``runs.json`` exists, is unchanged since the prediction commit, and its\n   verify and replay exits are 0; every captured gate and challenge article has exactly one extraction.\n7. Adjudication: every adjudicated label passed validation, and the JSON paths it changes are within the items its\n   decisions marked ``correct``; articles without disputed items have no adjudicated file.\n8. Ceilings: HTTP attempts and accepted bytes recomputed from the capture journal are within 500 and 300 MiB.\n9. Scores: re-running ``evaluate_v2.py score`` on the committed specs gives the committed score files byte for byte.\n10. Nothing withheld: the campaign has no ``WITHHELD_FILES.json`` and no ``.gitignore``, and no tracked campaign file\n    (decoded and percent-decoded as by the gate) matches a secret-gate pattern.\n",
+ "head": "78cef7dece00cb9e53abf6547ea0836f7ca03aac",
+ "prediction_commit": "57c4c621bfab22da231c599b0fbbaea3c5806f82",
+ "all_ok": true,
+ "checks": [
+  {
+   "check": "1 order: selection (d75bff3) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: capture journal (first) (d75bff3) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: reserve step 1 (5719e31) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: reserve step 2 (6d2ceab) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: lock initial-ar (a37db94) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: lock initial-en (a37db94) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: lock reserve1-en (40a1aa4) before prediction (57c4c62)",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: prediction before first scores",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "1 order: prediction before adjudication",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "2 frozen: src, pyproject.toml, uv.lock at prediction equal the candidate",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "2 frozen: MANIFEST hashes hold at prediction and now",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "3 lock initial-ar: 24 labels match; no change after a37db94",
+   "ok": true,
+   "detail": {
+    "mismatch": [],
+    "later_commits": []
+   }
+  },
+  {
+   "check": "3 lock initial-en: 16 labels match; no change after a37db94",
+   "ok": true,
+   "detail": {
+    "mismatch": [],
+    "later_commits": []
+   }
+  },
+  {
+   "check": "3 lock reserve1-en: 4 labels match; no change after 40a1aa4",
+   "ok": true,
+   "detail": {
+    "mismatch": [],
+    "later_commits": []
+   }
+  },
+  {
+   "check": "4 labels: every locked label names its packet's revision and hashes",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "5 packets: source and render hash to packet.json",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "5 packets: source and render are byte copies of a file in the article's capture bundle",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "6 prediction: 44 extractions present, unchanged, verify and replay exit 0",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "6 prediction: one run per captured article",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "7 adjudication: one valid adjudicated label per article with disputed items, and no other",
+   "ok": true,
+   "detail": {
+    "problems": []
+   }
+  },
+  {
+   "check": "7 adjudication: labels change only in articles with a 'correct' decision",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "8 ceilings: 208 attempts <= 500 and 7394021 bytes <= 300 MiB",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "9 scores: scores/locked.json reproduces byte for byte",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "9 scores: scores/adjudicated.json reproduces byte for byte",
+   "ok": true,
+   "detail": null
+  },
+  {
+   "check": "10 nothing withheld: no ledger or .gitignore; 697 tracked campaign files match no gate pattern",
+   "ok": true,
+   "detail": {
+    "ledger_or_gitignore": false,
+    "matching_files": []
+   }
+  }
+ ]
+}

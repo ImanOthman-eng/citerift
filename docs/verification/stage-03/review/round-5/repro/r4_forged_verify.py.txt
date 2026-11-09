@@ -1,0 +1,58 @@
+"""verify vs replay on forged documents (re-digested). Compares a forgery that uses RF-60's new step with forgeries
+that were already possible before RF-60 (no step at all / PERCENT_DECODED_ONCE). Also schema acceptance of
+step combinations that the decoder cannot produce."""
+import copy, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, "/home/user/citerift/src")
+sys.path.insert(0, "/home/user/citerift/tests/stage03")
+from wiki_support import bundle, extract  # noqa: E402
+from citerift.retraction.identifiers import normalize_doi, normalize_pmid  # noqa: E402
+from citerift.wiki.canonical import digest  # noqa: E402
+from citerift.wiki.verify import verify_bundle, replay_bundle  # noqa: E402
+from citerift.wiki import schemas  # noqa: E402
+
+def redigest(doc):
+    doc["extraction_digest"] = digest({k: v for k, v in doc.items() if k != "extraction_digest"})
+    return doc
+
+def forge(doc, iid, value, steps=None):
+    d = copy.deepcopy(doc)
+    for i in d["identifiers"]:
+        if i["id"] == iid:
+            i["decoding"]["normalizer_input"] = value
+            if steps is not None:
+                i["decoding"]["structural_steps"] = steps
+            fn = normalize_doi if i["scheme"] == "doi" else normalize_pmid
+            i["normalization"] = fn(value).to_json()
+    return redigest(d)
+
+def run(label, b, d):
+    v = verify_bundle(b, d)
+    r = replay_bundle(b, None, d)
+    vi = sorted({x["code"] for x in v.get("issues", [])})
+    print(f"{label:70} verified={v['verified']} verify_issues={vi} replay={r['replay']['state']}")
+
+with tempfile.TemporaryDirectory() as tmp:
+    for wiki in ("en", "ar"):
+        text = ("A<ref>{{cite journal|title=T|pmid=12345|url=https://onlinelibrary.wiley.com/doi/10.1111/0004-5608.00043/abstract}}"
+                "</ref> B<ref>https://onlinelibrary.wiley.com/doi/10.1002/abc.123</ref>")
+        b = bundle(Path(tmp), text, wiki=wiki, name="b" + wiki)
+        doc = extract(b)
+        ids = {i["id"]: i for i in doc["identifiers"]}
+        for i in doc["identifiers"]:
+            print("  ", wiki, i["id"], i["scheme"], i["decoding"]["normalizer_input"], i["decoding"]["structural_steps"])
+        url_id = next(k for k, i in ids.items() if "PAGE_VIEW_SEGMENT_REMOVED" in i["decoding"]["structural_steps"])
+        plain_id = next(k for k, i in ids.items() if i["scheme"] == "doi" and k != url_id)
+        pmid_id = next(k for k, i in ids.items() if i["scheme"] == "pmid")
+        run(f"[{wiki}] genuine", b, doc)
+        run(f"[{wiki}] RF-60 step kept, input -> other DOI 10.1111/evil", b, forge(doc, url_id, "10.1111/evil"))
+        run(f"[{wiki}] pre-existing: plain URL, input -> other DOI, no step", b, forge(doc, plain_id, "10.1002/evil"))
+        run(f"[{wiki}] pre-existing: claim PERCENT_DECODED_ONCE + other DOI", b,
+            forge(doc, plain_id, "10.1002/evil", ["PUBLISHER_URL_DOI_PATH", "PERCENT_DECODED_ONCE"]))
+        run(f"[{wiki}] impossible: PAGE_VIEW_SEGMENT_REMOVED alone on a plain URL", b,
+            forge(doc, plain_id, "10.1002/abc", ["PAGE_VIEW_SEGMENT_REMOVED"]))
+        run(f"[{wiki}] impossible: PAGE_VIEW_SEGMENT_REMOVED on a PMID field", b,
+            forge(doc, pmid_id, "12345", ["PAGE_VIEW_SEGMENT_REMOVED"]))
+        # schema only
+        d = forge(doc, pmid_id, "12345", ["PAGE_VIEW_SEGMENT_REMOVED", "PAGE_VIEW_SEGMENT_REMOVED"])
+        print(f"   [{wiki}] schema problems for duplicated/PMID PAGE_VIEW step:", schemas.validate(d, schemas.EXTRACTION))

@@ -1,0 +1,21 @@
+"""RF-60: _VIEW_SEGMENT ends in "$", which in Python also matches before a final "\\n". A percent-encoded line feed
+after the route word (%0A, decoded once by decode()) is then cut away together with the route, without any step
+naming it. Compare %20 / %09 (not matched) and the baseline with RF-60 disabled. Also: pre-existing homoglyph path."""
+import re, sys
+sys.path.insert(0, "/home/user/citerift/src")
+import citerift.wiki.identifiers as ident
+from citerift.wiki.identifiers import decode, decode_render_href, url_scheme
+
+H = "https://onlinelibrary.wiley.com/doi/10.1002/abc.123/abstract"
+orig = ident._DOI_SHAPE
+for label, shape in (("before", re.compile(r"(?!)")), ("after ", orig)):
+    ident._DOI_SHAPE = shape
+    for tail in ("%0A", "%0a", "%20", "%09", "%0D"):
+        g = decode("doi", "url", H + tail, ())
+        print(label, repr(tail), "in=%r key=%r valid=%s issues=%s steps=%s" % (
+            g.normalizer_input, g.normalized.normalized, g.normalized.valid, list(g.normalized.issues), list(g.steps)))
+ident._DOI_SHAPE = orig
+print("render href with %0A:", decode_render_href(H + "%0A")[1].normalized.normalized)
+print("pre-existing homoglyph path '/doı/' (dotless i) url_scheme:", url_scheme("https://example.org/doı/10.1002/abc.123"))
+g = decode("doi", "url", "https://example.org/doı/10.1002/abc.123", ())
+print("   key:", g.normalized.normalized, list(g.steps))

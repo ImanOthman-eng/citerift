@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 8862,
+   "body_sha256": "5e2b90e4bc0c7b5ddbfbf304e3f903a31e04496f1bc87400c2c55bb2a5ece487",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.255,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:45:41.089577Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1435701",
+   "wire_bytes": 3963
+  },
+  {
+   "body_bytes": 43280,
+   "body_sha256": "a7c2bbb600c50c1de84023ea4bdbe7660997c70963d673c5d0956392434eeccf",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.388,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-10-31T12:45:51.346978Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1378046764/html",
+   "wire_bytes": 10102
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.0.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-10-31T12:45:51.735236Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1435701,
+  "parent_revision_id": 1374929477,
+  "redirect_followed": null,
+  "revision_id": 1378046764,
+  "revision_timestamp": "2026-10-02T17:14:03Z",
+  "sha1": "e76cab6b0dd4f59181285cd97ff4129bb9d4d7f7",
+  "size": 8302,
+  "title": "Pecuniary externality",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "a7c2bbb600c50c1de84023ea4bdbe7660997c70963d673c5d0956392434eeccf",
+  "bytes": 43280,
+  "checks": {
+   "document_revision_id": "1378046764",
+   "header_revision_id": "1378046764",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "1435701",
+   "render_id": "c9d22209-d427-11f1-b925-3fe6ce1293b4",
+   "revision_sha1": "e76cab6b0dd4f59181285cd97ff4129bb9d4d7f7",
+   "revision_sha1_base36": "r16pvjz0jv5m4cyiibiyqgmyimg9x4n"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1378046764",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Sat, 31 Oct 2026 12:45:51 GMT",
+   "etag": "W/\"1378046764/c9d22209-d427-11f1-b925-3fe6ce1293b4/view\"",
+   "last-modified": "Fri, 30 Oct 2026 03:57:02 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1378046764/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1435701,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "a3939ef282c9cb2cca80f6a2f1354657b0a305ef8fb1885b258edc6ef1849387",
+  "bytes": 8302,
+  "response_artifact": "5e2b90e4bc0c7b5ddbfbf304e3f903a31e04496f1bc87400c2c55bb2a5ece487",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1435701"
+ },
+ "started_at": "2026-10-31T12:45:31.369149Z",
+ "status": "complete"
+}

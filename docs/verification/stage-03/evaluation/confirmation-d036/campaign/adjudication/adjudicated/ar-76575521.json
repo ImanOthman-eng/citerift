@@ -1,0 +1,219 @@
+{
+  "format": "citerift-stage03-annotation-v1",
+  "article": {
+    "wiki": "ar",
+    "revision_id": 76575521,
+    "source_sha256": "f7ea3ed061d3960154c19ef4a3c6ca189151b1fac2fb58e38c20dc73ed27d564",
+    "html_sha256": "38c8c1812f9cf30fdb1a1754455c6cd0d6430c9e373a3bdec19a1ec20fa160fb",
+    "window": [
+      0,
+      3737
+    ]
+  },
+  "provenance": {
+    "agent": "d036-eval-ar-h4",
+    "started_at": "2026-11-04T10:22:00Z",
+    "finished_at": "2026-11-04T11:00:00Z",
+    "files_opened": [
+      {
+        "path": "packets/ar-76575521/source.wikitext",
+        "sha256": "f7ea3ed061d3960154c19ef4a3c6ca189151b1fac2fb58e38c20dc73ed27d564"
+      },
+      {
+        "path": "packets/ar-76575521/render.html",
+        "sha256": "38c8c1812f9cf30fdb1a1754455c6cd0d6430c9e373a3bdec19a1ec20fa160fb"
+      },
+      {
+        "path": "packets/ar-76575521/packet.json",
+        "sha256": "09679186079666950645233b350b9a98f1e0143354eebab740b0515233ed42b4"
+      },
+      {
+        "path": "ANNOTATION_GUIDE_v1.1.md",
+        "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+      }
+    ],
+    "tools": "python3 -I standard library + lxml: regex search of source.wikitext for ref/template/doi/pmid positions; lxml listing of sup[typeof=mw:Extension/ref] and li[id^=cite_note]; str slice check of every quote. No general reference parser. Labels decided by reading.",
+    "unresolved": "Rendered HTML has ten wikidata-generated reference markers (cite_ref-wikidata-...) from {{معلومات كوكب}}; not in source, not listed (3.3). {{Mp}}, {{JPL small body}}, {{ويكي سكاي}} are not citation templates; no bibliography entry."
+  },
+  "definitions": [
+    {
+      "id": "d1",
+      "at": {
+        "cp": 341,
+        "quote": "<ref>{{استشهاد ويب"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": null,
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 346,
+            "quote": "{{استشهاد ويب"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-2",
+      "marker": "none",
+      "marker_text": "\"معلومات عن (26221) 1997 WG41 على موقع minorplanetcenter.net\". minorplanetcenter.net. مؤرشف من الأصل في 2019-12-15.",
+      "notes": ""
+    },
+    {
+      "id": "d2",
+      "at": {
+        "cp": 709,
+        "quote": "<ref name=\"jpl\">"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "jpl",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 725,
+            "quote": "{{استشهاد ويب"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-jpl-3",
+      "marker": "none",
+      "marker_text": "1 2 3 \"معلومات عن (26221) 1997 WG41 على موقع ssd.jpl.nasa.gov\". ssd.jpl.nasa.gov. مؤرشف من الأصل في 2019-12-15.",
+      "notes": "Two later self-closing <ref name=\"jpl\"/> repeat this reference: uses only."
+    },
+    {
+      "id": "d3",
+      "at": {
+        "cp": 2599,
+        "quote": "<ref name=\"AAS-MB-2011\">"
+      },
+      "in_window": true,
+      "kind": "note",
+      "name": "AAS-MB-2011",
+      "group": "",
+      "templates": [
+        {
+          "at": {
+            "cp": 2623,
+            "quote": "{{استشهاد بدورية محكمة"
+          }
+        }
+      ],
+      "unstructured": false,
+      "render_note_id": "cite_note-AAS-MB-2011-4",
+      "marker": "none",
+      "marker_text": "Joseph R Masiero, A. K Mainzer, T. Grav, J.M. Bauer, R.M. Cutri, J. Dailey,P.R.M. Eisenhardt, R.S. McMillan, T.B. Spahr, M.F. Skrutskie, D. Tholen, R.G. Walker, E.L. Wright, E. DeBaun, D. Elsbury, T. Gautier, S. Gomillion, A. Wilkins (Oct 2011). \"Main Belt Asteroids with WISE/NEOWISE. I. Preliminary",
+      "notes": ""
+    }
+  ],
+  "uses": [
+    {
+      "id": "u1",
+      "at": {
+        "cp": 341,
+        "quote": "<ref>{{استشهاد ويب"
+      },
+      "binds_to": {
+        "cp": 341,
+        "quote": "<ref>{{استشهاد ويب"
+      },
+      "render_ref_id": "cite_ref-2",
+      "notes": ""
+    },
+    {
+      "id": "u2",
+      "at": {
+        "cp": 709,
+        "quote": "<ref name=\"jpl\">"
+      },
+      "binds_to": {
+        "cp": 709,
+        "quote": "<ref name=\"jpl\">"
+      },
+      "render_ref_id": "cite_ref-jpl_3-0",
+      "notes": ""
+    },
+    {
+      "id": "u3",
+      "at": {
+        "cp": 1578,
+        "quote": "<ref name=\"jpl\"/>"
+      },
+      "binds_to": {
+        "cp": 709,
+        "quote": "<ref name=\"jpl\">"
+      },
+      "render_ref_id": "cite_ref-jpl_3-1",
+      "notes": "Reuse by name of the first definition."
+    },
+    {
+      "id": "u4",
+      "at": {
+        "cp": 2148,
+        "quote": "<ref name=\"jpl\"/>"
+      },
+      "binds_to": {
+        "cp": 709,
+        "quote": "<ref name=\"jpl\">"
+      },
+      "render_ref_id": "cite_ref-jpl_3-2",
+      "notes": "Reuse by name of the first definition."
+    },
+    {
+      "id": "u5",
+      "at": {
+        "cp": 2599,
+        "quote": "<ref name=\"AAS-MB-2011\">"
+      },
+      "binds_to": {
+        "cp": 2599,
+        "quote": "<ref name=\"AAS-MB-2011\">"
+      },
+      "render_ref_id": "cite_ref-AAS-MB-2011_4-0",
+      "notes": ""
+    }
+  ],
+  "identifiers": [
+    {
+      "at": {
+        "cp": 3094,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "identifier_link",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "Inside publisher URL https://iopscience.iop.org/article/10.1088/... (path /article/, not /doi/). Raw text taken as the identifier text itself, \"anything else\" row; the whole URL would be the alternative reading."
+    },
+    {
+      "at": {
+        "cp": 3242,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "not_a_target",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "Inside a web.archive.org snapshot URL (another site URL)."
+    },
+    {
+      "at": {
+        "cp": 3302,
+        "quote": "10.1088/0004-637X/741/2/68"
+      },
+      "scheme": "doi",
+      "role": "primary_citation_field",
+      "key": "10.1088/0004-637x/741/2/68",
+      "notes": "Field written as DOI= (upper case)."
+    }
+  ],
+  "unresolved_notes": [
+    "Rendered HTML has ten wikidata-generated reference markers (cite_ref-wikidata-...) from {{معلومات كوكب}}; not in source, not listed (3.3). {{Mp}}, {{JPL small body}}, {{ويكي سكاي}} are not citation templates; no bibliography entry."
+  ],
+  "adjudication": {
+    "adjudicator": "d036-adj-ar-g1",
+    "decisions_file": "/tmp/claude-0/-home-user-citerift/5403be09-564e-5c98-81ea-ddf89e673dd1/scratchpad/adj-d036/ar-g1/out/decisions/ar-76575521.json",
+    "changed_items": []
+  }
+}

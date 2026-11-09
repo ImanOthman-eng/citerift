@@ -1,0 +1,365 @@
+{
+  "revision": "3d91429cbad7108c169c6a45544710faf1abb14d",
+  "rows": [
+    {
+      "case": "en-outside",
+      "variant": "genuine",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "stderr": "",
+      "output": "en-outside-genuine-verify.json"
+    },
+    {
+      "case": "en-outside",
+      "variant": "genuine",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "stderr": "",
+      "output": "en-outside-genuine-replay.json"
+    },
+    {
+      "case": "en-outside",
+      "variant": "modified",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": null,
+      "stderr": "verification failed: BUNDLE_SEMANTIC_INVALID\n",
+      "output": "en-outside-modified-verify.json"
+    },
+    {
+      "case": "en-outside",
+      "variant": "modified",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-outside-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": "differs",
+      "stderr": "replay differs: REPLAY_DIFFERS\n",
+      "output": "en-outside-modified-replay.json"
+    },
+    {
+      "case": "ar-outside",
+      "variant": "genuine",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "stderr": "",
+      "output": "ar-outside-genuine-verify.json"
+    },
+    {
+      "case": "ar-outside",
+      "variant": "genuine",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "stderr": "",
+      "output": "ar-outside-genuine-replay.json"
+    },
+    {
+      "case": "ar-outside",
+      "variant": "modified",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": null,
+      "stderr": "verification failed: BUNDLE_SEMANTIC_INVALID\n",
+      "output": "ar-outside-modified-verify.json"
+    },
+    {
+      "case": "ar-outside",
+      "variant": "modified",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/ar-outside-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": "differs",
+      "stderr": "replay differs: REPLAY_DIFFERS\n",
+      "output": "ar-outside-modified-replay.json"
+    },
+    {
+      "case": "en-negated",
+      "variant": "genuine",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "stderr": "",
+      "output": "en-negated-genuine-verify.json"
+    },
+    {
+      "case": "en-negated",
+      "variant": "genuine",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "stderr": "",
+      "output": "en-negated-genuine-replay.json"
+    },
+    {
+      "case": "en-negated",
+      "variant": "modified",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": null,
+      "stderr": "verification failed: BUNDLE_SEMANTIC_INVALID\n",
+      "output": "en-negated-modified-verify.json"
+    },
+    {
+      "case": "en-negated",
+      "variant": "modified",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-negated-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": "differs",
+      "stderr": "replay differs: REPLAY_DIFFERS\n",
+      "output": "en-negated-modified-replay.json"
+    },
+    {
+      "case": "en-quoted",
+      "variant": "genuine",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "stderr": "",
+      "output": "en-quoted-genuine-verify.json"
+    },
+    {
+      "case": "en-quoted",
+      "variant": "genuine",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "stderr": "",
+      "output": "en-quoted-genuine-replay.json"
+    },
+    {
+      "case": "en-quoted",
+      "variant": "modified",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": null,
+      "stderr": "verification failed: BUNDLE_SEMANTIC_INVALID\n",
+      "output": "en-quoted-modified-verify.json"
+    },
+    {
+      "case": "en-quoted",
+      "variant": "modified",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-quoted-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": "differs",
+      "stderr": "replay differs: REPLAY_DIFFERS\n",
+      "output": "en-quoted-modified-replay.json"
+    },
+    {
+      "case": "en-substring",
+      "variant": "genuine",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": null,
+      "stderr": "",
+      "output": "en-substring-genuine-verify.json"
+    },
+    {
+      "case": "en-substring",
+      "variant": "genuine",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring-genuine.json"
+      ],
+      "exit": 0,
+      "verified": true,
+      "replay": "reproduced",
+      "stderr": "",
+      "output": "en-substring-genuine-replay.json"
+    },
+    {
+      "case": "en-substring",
+      "variant": "modified",
+      "operation": "verify",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "verify",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": null,
+      "stderr": "verification failed: BUNDLE_SEMANTIC_INVALID\n",
+      "output": "en-substring-modified-verify.json"
+    },
+    {
+      "case": "en-substring",
+      "variant": "modified",
+      "operation": "replay",
+      "argv": [
+        "/workspace/citerift/.venv/bin/citerift-wiki",
+        "replay",
+        "--bundle",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring",
+        "--extraction",
+        "/workspace/citerift/docs/verification/stage-03/review/failfirst/v1-v2/en-substring-modified.json"
+      ],
+      "exit": 5,
+      "verified": false,
+      "replay": "differs",
+      "stderr": "replay differs: REPLAY_DIFFERS\n",
+      "output": "en-substring-modified-replay.json"
+    }
+  ]
+}

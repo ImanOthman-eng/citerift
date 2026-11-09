@@ -1,0 +1,129 @@
+{
+ "format": "citerift-stage03-annotation-v1",
+ "article": {
+  "wiki": "en",
+  "revision_id": 1296237338,
+  "source_sha256": "a6133262f3d6f7bac935e8e13b87ae105f9ae573115b787e05affcc9e9705571",
+  "html_sha256": "311f8e13dd5671bf1e859e584a78305c0f832bb2e13e46d057e4aa38f8b96419",
+  "window": [
+   0,
+   941
+  ]
+ },
+ "provenance": {
+  "agent": "cf11-eval-en-h1",
+  "started_at": "2026-11-03T01:55:00Z",
+  "finished_at": "2026-11-03T01:56:56Z",
+  "files_opened": [
+   {
+    "path": "packets/en-1296237338/source.wikitext",
+    "sha256": "a6133262f3d6f7bac935e8e13b87ae105f9ae573115b787e05affcc9e9705571"
+   },
+   {
+    "path": "packets/en-1296237338/render.html",
+    "sha256": "311f8e13dd5671bf1e859e584a78305c0f832bb2e13e46d057e4aa38f8b96419"
+   },
+   {
+    "path": "packets/en-1296237338/packet.json",
+    "sha256": "add6edaed2cf1f60e2dc16b182c564ad2c01ccb6a2685288e627c5115c8af5b3"
+   },
+   {
+    "path": "ANNOTATION_GUIDE_v1.1.md",
+    "sha256": "2b40bb323c2254f8c12e40f9de39e759abae6b89aba8ffcc916b8abcb648cf2e"
+   }
+  ],
+  "tools": "Python 3 standard library str.find/slicing for locating and verifying quotes; lxml (xpath) to list sup[typeof=mw:Extension/ref] ids/data-mw and li[id^=cite_note]; grep for retraction vocabulary in render.html. Labels decided by reading the text.",
+  "unresolved": "Whether {{Fishbase}} counts as a citation template: decided yes because it renders a cs1 citation."
+ },
+ "definitions": [
+  {
+   "id": "d1",
+   "at": {
+    "cp": 319,
+    "quote": "<ref>{{cite journal|title=''Osteobrama b"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 324,
+      "quote": "{{cite journal|title=''Osteobrama bhimen"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-1",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "Unnamed ref, cite journal with doi= (doi-access=free)."
+  },
+  {
+   "id": "d2",
+   "at": {
+    "cp": 724,
+    "quote": "<ref>{{Fishbase|Osteobrama|bhimensis|mon"
+   },
+   "in_window": true,
+   "kind": "note",
+   "name": null,
+   "group": "",
+   "templates": [
+    {
+     "at": {
+      "cp": 729,
+      "quote": "{{Fishbase|Osteobrama|bhimensis|month=Ma"
+     }
+    }
+   ],
+   "unstructured": false,
+   "render_note_id": "cite_note-2",
+   "marker": "none",
+   "marker_text": null,
+   "notes": "{{Fishbase}} is treated as a citation template: Parsoid HTML shows it expands to a cs1 \"citation web\" cite element. No identifiers."
+  }
+ ],
+ "uses": [
+  {
+   "id": "u1",
+   "at": {
+    "cp": 319,
+    "quote": "<ref>{{cite journal|title=''Osteobrama b"
+   },
+   "binds_to": {
+    "cp": 319,
+    "quote": "<ref>{{cite journal|title=''Osteobrama b"
+   },
+   "render_ref_id": "cite_ref-1",
+   "notes": ""
+  },
+  {
+   "id": "u2",
+   "at": {
+    "cp": 724,
+    "quote": "<ref>{{Fishbase|Osteobrama|bhimensis|mon"
+   },
+   "binds_to": {
+    "cp": 724,
+    "quote": "<ref>{{Fishbase|Osteobrama|bhimensis|mon"
+   },
+   "render_ref_id": "cite_ref-2",
+   "notes": ""
+  }
+ ],
+ "identifiers": [
+  {
+   "at": {
+    "cp": 527,
+    "quote": "10.11609/JoTT.o2841.2078-84|author= Shri"
+   },
+   "scheme": "doi",
+   "role": "primary_citation_field",
+   "key": "10.11609/jott.o2841.2078-84",
+   "notes": "doi= field; key lower-cased."
+  }
+ ],
+ "unresolved_notes": []
+}

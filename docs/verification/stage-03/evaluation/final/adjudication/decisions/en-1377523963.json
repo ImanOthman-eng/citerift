@@ -1,0 +1,15 @@
+{
+ "article": "en-1377523963",
+ "adjudicator": "stage03-adjudicator-en",
+ "started_at": "2026-11-02T12:30:00+00:00",
+ "finished_at": "2026-11-02T12:30:04.058279+00:00",
+ "decisions": [
+  {
+   "item": 1,
+   "kind": "identifier_key",
+   "decision": "confirm",
+   "reason": "Key rule 3.5: for a publisher URL, the key is 'the DOI from the /doi/ path segment', null only 'when you cannot tell where it ends'. Here one can tell: the same hand-written bibliography entry carries {{Doi|10.1111/0004-5608.00043}}, and the trailing '/abstract' is the Wiley page-view route after the DOI, not part of the identifier. The locked key 10.1111/0004-5608.00043 is right; the engine's key including '/abstract' is not the DOI.",
+   "corrected_label": null
+  }
+ ]
+}

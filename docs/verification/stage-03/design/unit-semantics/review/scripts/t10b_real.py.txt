@@ -1,0 +1,19 @@
+"""Real retained bundles (exposed, regression only): same revision, render failed (a1) vs captured (a2)."""
+import json
+from pathlib import Path
+from citerift.wiki.extract import ExtractConfig, extract_bundle
+B = Path("/home/user/citerift/docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/capture/bundles/challenge")
+for name in ("en-906156-a1", "en-906156-a2"):
+    cap = json.loads((B / name / "capture.json").read_text())
+    text = (B / name / "artifacts" / cap["source"]["artifact"]).read_bytes().decode()
+    doc = extract_bundle(B / name, ExtractConfig(), isolated=False)
+    hits = []
+    for c in doc["containers"]:
+        for d in c["definitions"]:
+            body = text[d["body"]["cp_start"]:d["body"]["cp_end"]]
+            if body.lstrip().startswith("{{Harvnb|UKCCC H2|2018|p="):
+                ks = [u["kind"] for u in doc["units"] if u["definition_id"] == d["id"]]
+                h = [i["detail"] for i in doc["issues"] if i["code"] == "UNIT_CLASSIFICATION_UNRESOLVED" and i["entities"] == [c["id"]]]
+                hits.append((d["body"]["cp_start"], body[:45], ks, h))
+    print(name, "render:", doc["components"].get("render"))
+    for h in hits: print("   ", h)

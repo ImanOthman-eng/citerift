@@ -1,0 +1,50 @@
+import sys,re; sys.path.insert(0,'tools')
+from lib import A
+from lxml import html
+a=A('en-1373847247'); t=a.t; L=a.loc
+H=html.fromstring(open('packets/en-1373847247/render.html',encoding='utf-8').read())
+sups=[(e.get('id'),re.search(r'"name":"([^"]*)"\}?,"attrs":\{("name":"([^"]*)")?',e.get('data-mw')).group(3)) for e in H.xpath('//sup[contains(@typeof,"mw:Extension/ref")]')]
+lis=[e.get('id') for e in H.xpath('//li[starts-with(@id,"cite_note")]')]
+w0,w1=1528,9528
+def tmpls(s,e):
+    return [L(m.group(),0) if False else {"cp":m.start(),"quote":t[m.start():m.start()+14]} for m in re.finditer(r'\{\{\s*[Cc]ite [a-z]+',t[s:e]) for m in [type('M',(),{'start':lambda self,mm=m:s+mm.start(),'group':lambda self:'x'})()]]
+defs={}
+def mkdef(did,pos,name,kind,unstr,note_id,inw):
+    e=t.find('</ref>',pos); tag=t[pos:t.find('>',pos)+1]
+    loc={"cp":pos,"quote":tag}
+    tl=tmpls(pos,e)
+    a.define(did,loc,kind,name,'',[x for x in tl],unstr,note_id)
+    defs[name or pos]=loc
+# in-window main-text defs
+mkdef('d1',1939,None,'note',False,'cite_note-6',True)
+mkdef('d2',4247,None,'note',False,'cite_note-16',True)
+a.defs[-1]['notes']='Body is only a {{harvp|Danilatos|1988}} short-citation link, no citation template; not plain text, so unstructured=false.'
+mkdef('d3',9008,'LEO','note',False,'cite_note-LEO-33',True)
+# uses in window
+uses=[m for m in re.finditer(r'<ref\b[^>]*>',t) if w0<=m.start()<w1]
+names=[]
+for m in uses:
+    mm=re.search(r'name="?([^"/ >]+)"?',m.group()); names.append(mm.group(1) if mm else None)
+assert [n for _,n in sups[:len(uses)]]==names,(sups[:len(uses)],names)
+need=[]
+for n in names:
+    if n and n not in need and n not in defs: need.append(n)
+unstr={'r16','r17','r39','r24','r25','r26','r27','r29'}
+i=4
+for n in need:
+    m=re.search(r'<ref name="?%s"?>'%re.escape(n),t)
+    nid=[x for x in lis if re.fullmatch(r'cite_note-%s-\d+'%re.escape(n),x)]
+    assert len(nid)==1,n
+    mkdef(f'd{i}',m.start(),n,'list_defined_note',n in unstr,nid[0],False); i+=1
+for k,(m,n) in enumerate(zip(uses,names),1):
+    loc={"cp":m.start(),"quote":t[m.start():m.start()+len(m.group())+0][:60]}
+    if n is None: b=loc
+    else: b=defs[n]
+    a.use(f'u{k}',loc,b,sups[k-1][0])
+def pm(): pass
+a.ident(L('10.1016/j.micron.2012.06.014',9008),'doi','primary_citation_field','10.1016/j.micron.2012.06.014')
+a.ident(L('22841156',9008),'pmid','primary_citation_field','22841156')
+for d in a.defs:
+    if d['name'] in ('r12','r13') : pass
+a.un.append("Out-of-window list-defined references in <references> are listed only as binding targets. Parsoid HTML puts the body marker of 'implications' on a later main-text use (cite_ref-implications_31-2) although the only source body is in <references>; labelled by source semantics.")
+a.write()
