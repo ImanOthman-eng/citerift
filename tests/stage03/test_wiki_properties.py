@@ -242,17 +242,87 @@ def test_verification_without_schemas_fails_closed(tmp_path: Path) -> None:
     assert not report["verified"] and "SCHEMA_ROOT_UNAVAILABLE" in {i["code"] for i in report["issues"]}
 
 
-@pytest.mark.contracts
-def test_accepted_contract_schemas_are_untouched() -> None:
-    proc = subprocess.run(
-        ["git", "-C", str(ROOT), "diff", "--name-only", "c3346d1", "--", "schemas/contracts"],
+# Stage 00's accepted revision (the registry's Stage 00 verification). The contract schemas are compared with it.
+# It is an ancestor of main, so every full clone of the main history resolves it. A checkout that cannot resolve it
+# fails this protection instead of skipping it (maintenance A-03-001, owner decision of 2026-11-09).
+ACCEPTED_CONTRACT_BASELINE = "0c21182e5871f772c3a76c75a1217c7641a63bbb"
+_GIT_ENV = {**os.environ, "GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull}
+
+
+def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "--no-replace-objects", "-C", str(root), *args],
         capture_output=True,
         text=True,
+        env=_GIT_ENV,
         check=False,
+        timeout=60,
     )
-    if proc.returncode != 0:
-        pytest.skip("git history is not available in this checkout")
-    assert proc.stdout.strip() == ""
+
+
+def contract_schema_drift(root: Path, baseline: str) -> list[str]:
+    """Paths under ``schemas/contracts`` of the working tree at ``root`` that differ from the full commit SHA
+    ``baseline``: changed, deleted and untracked files. Fails the calling test, and never skips it, when the
+    baseline cannot be resolved to exactly that commit or git cannot compare."""
+    resolved = _git(root, "rev-parse", "--verify", "--quiet", "--end-of-options", f"{baseline}^{{commit}}")
+    if resolved.returncode != 0 or resolved.stdout.strip() != baseline:
+        pytest.fail(
+            f"the accepted contract baseline {baseline} cannot be resolved in {root} "
+            f"({resolved.stderr.strip() or 'not this commit'}); a clone with the full main history is required"
+        )
+    tracked = _git(root, "diff", "--name-only", "-z", "--no-renames", baseline, "--", "schemas/contracts")
+    untracked = _git(root, "ls-files", "-z", "--others", "--exclude-standard", "--", "schemas/contracts")
+    for proc in (tracked, untracked):
+        if proc.returncode != 0:
+            pytest.fail(f"git could not compare schemas/contracts with {baseline}: {proc.stderr.strip()}")
+    return sorted({p for p in (tracked.stdout + untracked.stdout).split("\0") if p})
+
+
+@pytest.mark.contracts
+def test_accepted_contract_schemas_are_untouched() -> None:
+    assert contract_schema_drift(ROOT, ACCEPTED_CONTRACT_BASELINE) == []
+
+
+def _contract_repo(tmp_path: Path) -> tuple[Path, str]:
+    repo = tmp_path / "repo"
+    (repo / "schemas/contracts/v1").mkdir(parents=True)
+    (repo / "schemas/contracts/v1/a.schema.json").write_text("{}\n", encoding="utf-8")
+    (repo / "schemas/contracts/v1/b.schema.json").write_text("{}\n", encoding="utf-8")
+    (repo / "README").write_text("outside the contracts\n", encoding="utf-8")
+    ident = ["-c", "user.name=t", "-c", "user.email=t@example.invalid", "-c", "commit.gpgsign=false"]
+    for args in (["init", "-q"], ["add", "."], [*ident, "commit", "-q", "-m", "baseline"]):
+        assert _git(repo, *args).returncode == 0
+    return repo, _git(repo, "rev-parse", "HEAD").stdout.strip()
+
+
+@pytest.mark.regression
+def test_contract_protection_fails_instead_of_skipping_without_its_baseline(tmp_path: Path) -> None:
+    # A-03-001: the protection skipped when its baseline commit was missing, so drift passed unnoticed (fail-open).
+    repo, head = _contract_repo(tmp_path)
+    for baseline in ("0" * 40, head[:7], "HEAD"):
+        with pytest.raises(pytest.fail.Exception, match="cannot be resolved"):
+            contract_schema_drift(repo, baseline)
+    plain = tmp_path / "plain"
+    plain.mkdir()
+    with pytest.raises(pytest.fail.Exception, match="cannot be resolved"):
+        contract_schema_drift(plain, head)
+
+
+@pytest.mark.regression
+def test_contract_protection_reports_every_kind_of_drift(tmp_path: Path) -> None:
+    repo, head = _contract_repo(tmp_path)
+    assert contract_schema_drift(repo, head) == []
+    (repo / "README").write_text("changed outside the contracts\n", encoding="utf-8")
+    assert contract_schema_drift(repo, head) == []
+    (repo / "schemas/contracts/v1/a.schema.json").write_text('{"changed": true}\n', encoding="utf-8")
+    (repo / "schemas/contracts/v1/b.schema.json").unlink()
+    (repo / "schemas/contracts/v2").mkdir()
+    (repo / "schemas/contracts/v2/new file.schema.json").write_text("{}\n", encoding="utf-8")
+    assert contract_schema_drift(repo, head) == [
+        "schemas/contracts/v1/a.schema.json",
+        "schemas/contracts/v1/b.schema.json",
+        "schemas/contracts/v2/new file.schema.json",
+    ]
 
 
 # --------------------------------------------------------------------------------------- boundary
