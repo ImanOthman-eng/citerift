@@ -21099,8 +21099,11 @@
             "docs/verification/maintenance/A-03-001/fail_first_demo.log"
           ],
           "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPRpb2tWYwbQwCYA5ps9aLth",
-          "revision": null,
-          "test_report": null,
+          "revision": "b0f6c2dd11d067b5a23f7e8b2c398446cc3ac8e9",
+          "test_report": {
+            "path": "docs/verification/maintenance/A-03-001/test-report-py3.12.json",
+            "sha256": "11f0b0aec1841555159458f7911c2d75836038576b3a75f28ce11a544037eacc"
+          },
           "recorded_at": "2026-11-09T21:29:29Z",
           "maintenance": {
             "purpose": "Make the accepted-contract immutability test fail closed: compare schemas/contracts with Stage 00's accepted revision 0c21182e5871f772c3a76c75a1217c7641a63bbb instead of the side-branch commit c3346d1, fail instead of skipping when the baseline cannot be resolved, and report untracked contract files",
@@ -21113,13 +21116,24 @@
               }
             ],
             "patch_sha256": "05428f893328f8abf6852c028d73d833b611dc602e6e5ec5864837a9fd64ebf3",
-            "phase": "pending_validation",
+            "phase": "finalized",
             "supersedes": null,
             "superseded_by": null,
-            "reports": [],
+            "reports": [
+              {
+                "path": "docs/verification/maintenance/A-03-001/test-report-py3.12.json",
+                "sha256": "11f0b0aec1841555159458f7911c2d75836038576b3a75f28ce11a544037eacc",
+                "python": "3.12"
+              },
+              {
+                "path": "docs/verification/maintenance/A-03-001/test-report-py3.13.json",
+                "sha256": "18ec556c5644e4c54088ed2968f68af1cab4e2b6d40e11d011328d0eb0a00690",
+                "python": "3.13"
+              }
+            ],
             "opened_after_seq": 50,
-            "finalized_at": null,
-            "finalized_after_seq": null
+            "finalized_at": "2026-11-09T21:37:41Z",
+            "finalized_after_seq": 50
           }
         }
       ]

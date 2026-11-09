@@ -55,10 +55,11 @@ or Codex side branches), plus a depth-1 clone that lacks the baseline, and runs 
 | Baseline | `b93314dfde749a7cf977744a44b70a3a0d900ef2` (Stage 03 accepted revision; unchanged) |
 | P (candidate) | `d24ea4da15c1dbd3d804904d72e3a8200657f47b` |
 | prepare | `citerift-gov maintenance prepare 03 --candidate d24ea4d… --path tests/stage03/test_wiki_properties.py --owner-ref cmsg_018VCB51nDHP6HXmLU4ea5yPRpb2tWYwbQwCYA5ps9aLth` gave A-03-001, `pending_validation`, recorded 2026-11-09T21:29:29Z, `opened_after_seq` 50, file SHA-256 `ef0eca92…67dc8`, patch digest `05428f89…4ebf3`; check: 0 errors, 1 warning (`MAINTENANCE_PENDING`) |
-| V (validated) | see section 5 |
-| Validation | complete suite on a clean single-branch clone of V, Python 3.12 and 3.13 |
-| finalize | see section 5 |
+| V (validated) | `b0f6c2dd11d067b5a23f7e8b2c398446cc3ac8e9`: registry with the pending record, DECISIONS.md D-039 and this evidence; owned content identical to P |
+| Python 3.12.3 | clean single-branch clone of the Stage 04 branch (`git clone --no-local --single-branch`; `c3346d1` absent), detached at V, `PYTHONPATH=src python -P -m pytest -q --citerift-report …`: **2053 passed**, 0 skipped, exit 0, tree clean after the run. `test-report-py3.12.json`, SHA-256 `11f0b0aec1841555159458f7911c2d75836038576b3a75f28ce11a544037eacc`; log `validation-py3.12.log` |
+| Python 3.13.18 | the same, environment built from `uv.lock` (`uv sync --locked -p 3.13`): **2053 passed**, 0 skipped, exit 0, clean. `test-report-py3.13.json`, SHA-256 `18ec556c5644e4c54088ed2968f68af1cab4e2b6d40e11d011328d0eb0a00690`; log `validation-py3.13.log` |
+| finalize | `citerift-gov maintenance finalize 03 A-03-001 --revision b0f6c2d… --report … --report …`: finalized 2026-11-09T21:37:41Z, `finalized_after_seq` 50; check afterwards: 0 errors, 0 warnings |
+| F (bookkeeping) | the commit that records the finalization, the reports, the logs and this table; no owned file changes after V |
 
-## 5. Live execution
-
-Filled in as each step completes.
+Before the change a fresh clone of the branch gave 2050 passed and 1 skipped (this test). 2053 = 2050 + the
+repaired test + two regression tests.
