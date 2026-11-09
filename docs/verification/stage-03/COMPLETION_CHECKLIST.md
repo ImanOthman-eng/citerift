@@ -108,5 +108,7 @@ permits a bounded Arabic sixteenth draw. No fresh predictions yet; no acceptance
   depends on one adjudicated correction and English G5c's interval reaches 0.929 (report section 4.1).
 - [x] Documents, RISKS.md (R-034 and R-038 closed, R-036 updated), RISK_ANALYSIS E30-E33, ATTRIBUTION for the 44
   articles.
-- [ ] Complete verification matrix, verification record, CI and the clean delivery branch: TEST_RESULTS.md section 9
-  and HANDOFF.md.
+- [x] Clean delivery branch `claude/stage03-delivery` from `main` (`b93314d`; no PR #5 history, 0 reachable blobs
+  matching the AWS key-id pattern); complete verification matrix and GitHub CI at `b93314d` (TEST_RESULTS.md section
+  9); verification record and `VERIFIED_AWAITING_OWNER_ACCEPTANCE` through `citerift-gov`. Acceptance and merge are
+  the owner's.

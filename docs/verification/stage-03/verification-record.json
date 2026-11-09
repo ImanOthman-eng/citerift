@@ -1,0 +1,115 @@
+{
+  "gates": {
+    "03-A": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/adjudicated.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/locked.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/adjudication/ADJUDICATION_VALIDATION.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/annotations/VALIDATION.json",
+        "docs/verification/stage-03/TEST_RESULTS.md"
+      ]
+    },
+    "03-B": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/prediction/runs.json",
+        "docs/verification/stage-03/final-checks/b93314d/offline-verify-replay.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/audit/EVIDENCE_AUDIT.json",
+        "tests/stage03/test_wiki_bundle_verify.py"
+      ]
+    },
+    "03-C": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/SPECIFICATION.md",
+        "tests/stage03/test_wiki_bilingual_matrix.py",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/prediction/runs.json",
+        "docs/verification/stage-03/TEST_RESULTS.md"
+      ]
+    },
+    "03-D": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/adjudicated.json",
+        "tests/stage03/test_wiki_source_extraction.py",
+        "tests/stage03/test_wiki_doi_boundaries_d1_d2.py",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md",
+        "tests/stage03/test_wiki_review_regressions.py"
+      ]
+    },
+    "03-E": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/demonstrations/DEMONSTRATIONS.md",
+        "docs/verification/stage-03/final-checks/b93314d/demos/transcript.txt",
+        "tests/stage03/test_wiki_render_ledger.py",
+        "docs/verification/stage-03/TEST_RESULTS.md"
+      ]
+    },
+    "03-F": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/adjudicated.json",
+        "tests/stage03/test_wiki_render_ledger.py",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md",
+        "docs/verification/stage-03/final-checks/b93314d/demos/demo1_ar_markers.json",
+        "tests/stage03/test_wiki_review_regressions.py"
+      ]
+    },
+    "03-G": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/adjudicated.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/scores/intervals.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/annotations/locked/reserve1-en/LOCK_RECORD.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/audit/EVIDENCE_AUDIT.json",
+        "docs/verification/stage-03/evaluation/confirmation-d036/MANIFEST.json"
+      ]
+    },
+    "03-H": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/REPORT.md",
+        "tests/stage03/test_wiki_fetch_capture.py",
+        "tests/stage03/test_wiki_cli.py",
+        "docs/verification/stage-03/evaluation/confirmation-d036/campaign/audit/EVIDENCE_AUDIT.json"
+      ]
+    },
+    "03-I": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/final-checks/b93314d/offline-verify-replay.json",
+        "docs/verification/stage-03/final-checks/b93314d/wheel-smoke.txt",
+        "docs/verification/stage-03/TEST_RESULTS.md"
+      ]
+    },
+    "03-J": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/design/r038-reconciliation/review/DISPOSITIONS.md",
+        "docs/verification/stage-03/review/REVIEW_FINDINGS.md",
+        "docs/verification/stage-03/final-checks/b93314d/protected-paths.json"
+      ]
+    },
+    "03-K": {
+      "result": "pass",
+      "evidence": [
+        "docs/verification/stage-03/TEST_RESULTS.md",
+        "docs/verification/stage-03/test-report.json",
+        "docs/verification/stage-03/evidence/test-report-py3.13.json",
+        "docs/verification/stage-03/final-checks/b93314d/pytest-3.12.txt",
+        "docs/verification/stage-03/final-checks/b93314d/pytest-3.13.txt",
+        "docs/verification/stage-03/final-checks/b93314d/governance-check.txt",
+        "docs/verification/stage-03/final-checks/b93314d/dependency-audit.txt"
+      ]
+    }
+  },
+  "ci": {
+    "run_url": "https://github.com/ImanOthman-eng/citerift/actions/runs/42624868434",
+    "head_sha": "b93314dfde749a7cf977744a44b70a3a0d900ef2",
+    "conclusion": "success"
+  }
+}

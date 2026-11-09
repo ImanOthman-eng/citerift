@@ -204,3 +204,81 @@ its handling are in `evaluation/confirmation-d035/campaign/REPORT.md` section 6.
 Engineering verification is complete at `6c499a7`. It is not scientific acceptance: Arabic G6b is unmet because of a
 verified engine defect (RISKS.md R-038; `evaluation/confirmation-d035/DECISION_RECORD.md`), so no verification
 transition is recorded.
+
+## 9. D-036 final confirmation and complete verification matrix at the delivery revision `b93314d` (owner instructions D-036 and D-038, 2026-11-09)
+
+### 9.1 Revisions
+
+| Role | Revision |
+|---|---|
+| Accepted main baseline, the only parent of the delivery revision | `94ac4f8df27383a03a810a4501ed1439bf8bcaea` |
+| D-036 candidate, frozen in `10db8cb` (`evaluation/confirmation-d036/MANIFEST.json`) | `8901a597015b7c6d6eb8464554e79b4fa1383615` |
+| Final head of the scientific record (branch `claude/project-thread-o4amfd`, continuing PR #5) | `80852e48732607129bdf7407480d417f588caf5d` |
+| Delivery revision (branch `claude/stage03-delivery`), where the matrix below was run | `b93314dfde749a7cf977744a44b70a3a0d900ef2` |
+
+`git diff 8901a59 b93314d -- src schemas pyproject.toml uv.lock tests` is empty: the engine verified here is the
+engine evaluated (`src` tree `cda4a4b6`, `schemas` tree `360501fc`). `git diff --name-only 80852e4 b93314d` lists
+only `governance/stage_registry.json` and `PROJECT_STATUS.md` (Stage 03 returned to `IN_PROGRESS` through
+`citerift-gov`, because the candidate is not an ancestor on the delivery history). After `b93314d` only this
+document, the verification record, the reports below, `HANDOFF.md`, `COMPLETION_CHECKLIST.md` and the registry change.
+
+### 9.2 Matrix
+
+The Python 3.12 suite ran in the delivery worktree at `b93314d` with an empty `git status --porcelain`
+(`run_matrix.sh.txt`); its report is `test-report.json`. The Python 3.13 suite ran in a clean detached worktree of
+`b93314d` after `uv sync --locked --python 3.13`, with the report written outside the tree (`run_suite.sh.txt`); its
+report is `evidence/test-report-py3.13.json`. A first 3.13 run in the delivery worktree also passed (2051) but
+records a dirty tree, because the 3.12 report was then an untracked file there; it is kept as
+`pytest-3.13-first-run-dirty.txt` and is not used. The other checks ran in the delivery worktree at `b93314d`.
+Reports: `final-checks/b93314d/`.
+
+| Check | Result |
+|---|---|
+| Complete suite, Python 3.12.3 (`python -P -m pytest --citerift-report`) | **2051 passed**, 0 failed or skipped, 517 s, exit 0 (`pytest-3.12.txt`) |
+| Complete suite, Python 3.13.18 (`python -P -m pytest -p no:cacheprovider --citerift-report`) | **2051 passed**, 0 failed or skipped, 484 s, exit 0 (`pytest-3.13.txt`) |
+| By suite marker (both versions) | unit 531, integration 343, negative 874, regression 614, reproducibility 14, security 388, contracts 103, simulation 83 |
+| `citerift-gov check-report` on both reports | 0 problems each (`check-report-*.txt`) |
+| `ruff check .` | All checks passed |
+| `ruff format --check .` | 387 files already formatted |
+| `mypy` | no issues in 52 source files |
+| `citerift-gov check`, `render-status --check` | 0 errors, 0 warnings; PROJECT_STATUS.md up to date |
+| `uv lock --check` | consistent |
+| `citerift.contracts.validate check-schemas` | 2 schemas checked, 0 problems |
+| Dependency audit (`uv export --locked --all-groups`, `pip-audit --strict --disable-pip --require-hashes`) | No known vulnerabilities found |
+| Protected paths against `94ac4f8` (Stage 00/02 code and tests, `.github`, governance code and schemas, `GOVERNANCE.md`, `CLAUDE.md`) | no change (`protected-paths.json`) |
+| Installed wheel (`uv build --wheel`; Python 3.12 venv with the hash-checked locked runtime dependencies; external schema copy; relocated bundles; `wheel_smoke.py.txt`, `wheel_and_sims.sh.txt`) | SMOKE PASS. The module loads from site-packages. The three earlier cases pass as before. Three D-036 bundles (`ar-10531419-a1`, partial; `en-32105383-a1`, reserve block 1, partial; `en-11579232-a1`, reserve block 1) extract, verify and replay, and **all three extractions are byte-identical** to the committed campaign predictions |
+| Offline verify and replay of every D-036 prediction (no network namespace, `unshare -n`; `offline_verify_replay.py.txt`) | 44 / 44 verified, 44 / 44 replays reproduced (`offline-verify-replay.json`) |
+| Simulations: fetch policy 5000 / 20261028; reconciliation 200 / 20261028; campaign driver 2000 / 20261028; template order 200 / 20261104 | 0 failures each; the first three **byte-identical** to the 2026-11-04 runs (`continuation/codex-d036-2026-11-04/sim-*.json`), the fourth byte-identical to `design/r038-reconciliation/simulation/template_order_sim.re-review-fixes.json` (`sims-exit.txt`) |
+| Demonstrations (`demonstrations/run_demos.sh`, offline; `demos/transcript.txt`) | 57 operations: 52 exit 0 and 5 exit 6 (`partial`), 14 replays reproduced. Every demonstration document is byte-identical to `current-checks/current-demos/` except `demo5_extractions.json`, whose digests follow the engine version. One bundle, `en-1381772671`, is now `partial` instead of `complete` (15 `RENDER_NOTE_AMBIGUOUS` warnings, entries in one shared region): the R-038 design's documented change (`design/r038-reconciliation/DESIGN.md` section 11). Its extraction and three others are byte-identical to the R-038 differential (`differential/OUTPUTS.re-review-fixes.sha256`); the two fixture extractions have the digests in `tests/stage03/fixtures/observed/expected.json` |
+
+**Test changes since the D-035 matrix `6c499a7`.** New: `tests/stage03/test_r038_template_output_order.py` and
+`tests/stage03/test_confirmation_d036_scripts.py`. Modified: `tests/stage03/fixtures/observed/expected.json`, the two
+expected extraction digests only (engine 1.2.0). No test was skipped, removed or weakened.
+
+### 9.3 Campaign evidence
+
+| Item | Result | Evidence |
+|---|---|---|
+| Gates, adjudicated labels | **Every G1-G11 gate and every minimum passes in both languages** (ar 24, en 20 articles) | `evaluation/confirmation-d036/campaign/REPORT.md` section 4 |
+| G8 verify / G10 replay | 44 / 44 exit 0 / 44 / 44 reproduced at `8901a59`; again offline at `b93314d` | `campaign/prediction/runs.json`; `final-checks/b93314d/offline-verify-replay.json` |
+| G9 acquisition | 44 / 44 recorded, each with source and render (ar 24 / 24, en 20 / 20); 2 extractions `partial` | `campaign/REPORT.md` section 4; `campaign/prediction/runs.json` |
+| G11 synthetic challenge | passes (part of the complete suite above) | `pytest-*.txt` |
+| Score reproduction | `locked.json` and `adjudicated.json` byte-identical on re-run | `campaign/audit/EVIDENCE_AUDIT.json` |
+| Evidence integrity | 25 / 25 checks pass | `campaign/audit/EVIDENCE_AUDIT.json` |
+
+### 9.4 GitHub CI
+
+| Revision | Run | Result |
+|---|---|---|
+| `b93314d` (delivery, verified revision) | push https://github.com/ImanOthman-eng/citerift/actions/runs/42624868434 | success: `verify (python 3.12)`, `verify (python 3.13)`, `ci-gate` |
+| `80852e4` (scientific record, final head) | push https://github.com/ImanOthman-eng/citerift/actions/runs/42624578687 | success |
+| `1cd45a1`, `0ebcceb` (scientific record) | runs 42623565349, 42624522677 | failure: `ruff format --check` on `campaign/audit/evidence_audit.py` (layout only), fixed in `80852e4` |
+
+The run on the commit that adds this section is given in the pull request description and the owner handoff,
+because a commit cannot contain its own CI run.
+
+### 9.5 What these results do not show
+
+They verify the engine at `8901a59` and the D-036 evidence. They are not owner acceptance. The limits of the sample
+(one vendor's AI labels, Arabic G2 decided by one adjudicated correction, English G5c's interval reaching 0.929, G7
+vacuous in this sample) are in HANDOFF.md, "Known limitations".

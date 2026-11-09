@@ -14,7 +14,7 @@ Only the owner can accept a stage or authorize one.
 | 00 | Engineering Foundation | engineering-agent | - | `ACCEPTED_CLOSED` | 0c21182e5871 | yes |
 | 01 | Independent Feasibility Investigation | external-agent | - | `ACCEPTED_CLOSED` | 85da719ac43f | yes |
 | 02 | Retraction Data Engine | engineering-agent | 00, 01 | `ACCEPTED_CLOSED` | cf060834afed | yes |
-| 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `IN_PROGRESS` | - | no |
+| 03 | Wikipedia Extraction Engine | engineering-agent | 00, 01 | `VERIFIED_AWAITING_OWNER_ACCEPTANCE` | b93314dfde74 | no |
 | 04 | Detection Engine and Vertical Slice | engineering-agent | 02, 03 | `NOT_STARTED` | - | no |
 | 05 | Citation Context and Evidence Preparation | engineering-agent | 04 | `NOT_STARTED` | - | no |
 | 06 | AI Investigation and Scientific Evaluation | engineering-agent | 05 | `NOT_STARTED` | - | no |
@@ -24,7 +24,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Next actions
 
-- Stage 03 (Wikipedia Extraction Engine): authorized work may continue (IN_PROGRESS)
+- Stage 03 (Wikipedia Extraction Engine): owner acceptance decision required; successors stay locked until then
 
 ## Open blockers
 
@@ -36,8 +36,6 @@ Only the owner can accept a stage or authorize one.
 
 ## Recent history
 
-- 2026-10-28T18:10:32Z stage 03: NOT_STARTED -> AUTHORIZED by owner (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS`). Owner's Stage 03 Execution Directive authorizes Stage 03 (Wikipedia Extraction Engine) only, ending at a verified delivery and an unmerged pull request awaiting owner acceptance; no later stage is authorized.
-- 2026-10-28T18:10:34Z stage 03: AUTHORIZED -> IN_PROGRESS by engineering-agent. Stage 03 work started under the owner's directive (cmsg_018VCB51nDHP6HXmLU4ea5yPJCa6mkaQhr3oirPxgVDQbS), retained at docs/verification/stage-03/authorization/OWNER_DIRECTIVE_2026-10-28.md. Implementation base: main 94ac4f8df27383a03a810a4501ed1439bf8bcaea (equal to the confirmed baseline).
 - 2026-10-31T12:51:07Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Stage03 implemented at frozen48cfeab; complete clean regression reports and current PR checkpoint retained. Final campaign reveals unmet Arabic denominator; adjudication and remaining delivery are in progress. No verification or acceptance claimed.
 - 2026-11-02T15:40:17Z stage 03: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yP8BNaHtTfgxhSrEp6pbWPHh`). Rework under the owner's instruction of 2026-11-02 (D-034): short-footnote semantics, DOI/PMID and Retry-After audits, adversarial review, then one prospective confirmation campaign
 - 2026-11-02T18:07:49Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. D-034 candidate frozen before the confirmation draw: sfn semantics, DOI D-1/D-2, Retry-After G-1/G-2, campaign tools, MF-1 v2, reviews R6 and R7 fixed; CI green on 3e51792
@@ -46,6 +44,8 @@ Only the owner can accept a stage or authorize one.
 - 2026-11-04T02:22:53Z stage 03: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent (owner ref `cmsg_018VCB51nDHP6HXmLU4ea5yPJGcnAZCAku5nJRxTZzFaL7`). Owner instruction of 2026-11-04 (D-036): correct R-038 fail-first, review the Stage 03 flow before validation, and run one final prospective bilingual confirmation of the frozen corrected candidate
 - 2026-11-04T09:05:12Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. D-036 candidate frozen before the confirmation draw: R-038 corrected, two independent reviews and the focused re-review fixed; CI green on 8901a59
 - 2026-11-09T13:20:44Z stage 03: IMPLEMENTED_NOT_VERIFIED -> IN_PROGRESS by engineering-agent. Clean delivery history (owner instruction 2026-11-09, cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw, D-038: a clean-history integration path that does not propagate restricted historical blobs into main). This branch starts from main with the exact tree of the scientific-record revision 80852e48732607129bdf7407480d417f588caf5d (branch claude/project-thread-o4amfd, continuing PR #5), whose src and schemas trees equal the frozen D-036 candidate 8901a597015b7c6d6eb8464554e79b4fa1383615. That candidate and the campaign commits are not ancestors here, so the implementation record is re-established on this history; no code, schema, test or evidence changes.
+- 2026-11-09T13:48:53Z stage 03: IN_PROGRESS -> IMPLEMENTED_NOT_VERIFIED by engineering-agent. Stage 03 implementation re-recorded on the clean delivery history (owner instruction 2026-11-09, cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw, D-038). b93314d carries the D-036 candidate engine 8901a59 unchanged (src tree cda4a4b6, schemas tree 360501fc) and the complete D-036 campaign record of 80852e4.
+- 2026-11-09T13:49:23Z stage 03: IMPLEMENTED_NOT_VERIFIED -> VERIFIED_AWAITING_OWNER_ACCEPTANCE by engineering-agent. D-036 final confirmation passes every gate G1-G11 and every minimum in both languages on the adjudicated labels (evaluation/confirmation-d036/campaign/REPORT.md); complete matrix at b93314d (2051 passed on Python 3.12 and 3.13, static, governance, schema, lock, dependency audit, protected paths, installed wheel, simulations, offline verify/replay 44/44; TEST_RESULTS.md section 9); GitHub CI run 42624868434 success. Owner instruction 2026-11-09 (cmsg_018VCB51nDHP6HXmLU4ea5yPKQJiBv5w48TqZw8UJbfJvw, D-038). Not owner acceptance.
 
 Decisions: [DECISIONS.md](DECISIONS.md). Risks and known defects: [RISKS.md](RISKS.md).
 Changes: [CHANGELOG.md](CHANGELOG.md). Rules: [GOVERNANCE.md](GOVERNANCE.md).

@@ -28,10 +28,13 @@ languages** on the adjudicated labels, including G5c (ar 1.000, en 0.977), G5d (
 G6b (0 false attachments in each) and G6c (1.000, 1.000). R-038 does not recur. Arabic G2 is decided by one
 adjudicated correction, and English G5c's interval reaches 0.929 (report section 4.1).
 
-**Registry state and delivery.** On this branch (the scientific record, continuing PR #5's history) Stage 03 stays
-`IMPLEMENTED_NOT_VERIFIED` at candidate `8901a59`. The verification transition is recorded on the clean delivery
-branch, whose history holds `main` and the final tree only (section "Verified Git commit"), so that a merge does not
-publish the restricted historical blobs (`security/PRESIGNED_URL_REVIEW.md`).
+**Registry state and delivery.** This is the clean delivery branch `claude/stage03-delivery`. Its first commit,
+`b93314dfde749a7cf977744a44b70a3a0d900ef2`, has `main` (`94ac4f8`) as its only parent and carries the final tree of
+the scientific record (branch `claude/project-thread-o4amfd`, continuing PR #5, at `80852e4`), so a merge does not
+publish the restricted historical blobs (`security/PRESIGNED_URL_REVIEW.md`). On this branch Stage 03 is
+`VERIFIED_AWAITING_OWNER_ACCEPTANCE` at `b93314dfde749a7cf977744a44b70a3a0d900ef2` (verification record
+`verification-record.json`; GitHub CI run 42624868434, success). On the scientific-record branch it stays
+`IMPLEMENTED_NOT_VERIFIED` at candidate `8901a59`.
 
 **Owner actions outstanding.**
 - Acceptance of Stage 03, and the choice and execution of the merge. The owner merges personally (D-019).
@@ -218,17 +221,23 @@ checkpoint's, describe their own revisions only.
 ## Verified Git commit
 
 - **Frozen evaluation candidate:** `8901a59` (D-036; `src` tree `cda4a4b6`, `schemas` tree `360501fc`). `src/`,
-  `schemas/`, `pyproject.toml` and `uv.lock` are unchanged from it to the final head of this branch and in the
-  delivery branch.
-- **Scientific record:** this branch, from `80000f2` (PR #5's head) through the campaign commits `bf7866a` to
-  `1cd45a1` and the documents. The evidence audit re-checks commit order on this history.
-- **Verified revision:** recorded on the clean delivery branch, whose first commit has `main` as its only parent and
-  whose tree equals this branch's final tree except the registry; see TEST_RESULTS.md section 9 there.
+  `schemas/`, `pyproject.toml` and `uv.lock` are unchanged from it to the scientific record's final head and to the
+  verified revision.
+- **Scientific record:** branch `claude/project-thread-o4amfd`, from `80000f2` (PR #5's head) through the campaign
+  commits `bf7866a` to `1cd45a1`, the documents (`0ebcceb`) and `80852e48732607129bdf7407480d417f588caf5d`. The
+  evidence audit re-checks commit order on that history, which this branch does not contain.
+- **Verified revision:** `b93314dfde749a7cf977744a44b70a3a0d900ef2` on `claude/stage03-delivery`. Only parent `main`
+  (`94ac4f8`); tree equal to `80852e4`'s except the registry and `PROJECT_STATUS.md` (Stage 03 returned to
+  `IN_PROGRESS` through `citerift-gov`, because `8901a59` is not an ancestor here). `src` tree `cda4a4b6`, `schemas`
+  tree `360501fc`. GitHub CI run https://github.com/ImanOthman-eng/citerift/actions/runs/42624868434: success on both
+  Python versions and `ci-gate`. Complete matrix: TEST_RESULTS.md section 9.
 
 ## Acceptance decision
 
-**Pending the owner.** Every gate passes; the executor recommends acceptance through the clean delivery branch.
-The executor records no acceptance and merges nothing.
+**Pending the owner.** Every gate passes; the executor recommends acceptance of
+`b93314dfde749a7cf977744a44b70a3a0d900ef2` through the clean delivery branch, merged with a merge commit (the
+registry cites commit SHAs). PR #5 and the scientific-record branch stay open and unmerged as the record of how the
+result was reached. The executor records no acceptance and merges nothing.
 
 ## Requirements for the next stage
 

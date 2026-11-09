@@ -1,0 +1,23 @@
+#!/bin/bash
+SP=<scratch>; R=$SP/final-b93314d; W=$R/wheel; REPO=$SP/delivery
+C6=$REPO/docs/verification/stage-03/continuation/codex-d036-2026-11-04
+mkdir -p $W; cd $REPO
+(uv build --wheel --out-dir $W/dist 2>&1 | grep -v UV_NATIVE) > $R/wheel-build.txt
+uv export --locked --format requirements-txt --no-emit-project --no-dev 2>/dev/null > $W/runtime-req.txt
+uv venv -q --python 3.12 $W/venv
+uv pip install -q --python $W/venv/bin/python --require-hashes -r $W/runtime-req.txt >> $R/wheel-build.txt 2>&1
+uv pip install -q --python $W/venv/bin/python --no-deps $W/dist/*.whl >> $R/wheel-build.txt 2>&1
+echo "install exit $?" >> $R/wheel-build.txt
+python3 -I $R/wheel_smoke.py.txt $REPO $W/venv/bin $W/smoke > $R/wheel-smoke.txt 2>&1; echo "smoke exit $?" >> $R/wheel-smoke.txt
+C=$REPO/docs/verification/stage-03/evaluation/confirmation-d036/campaign/prediction/extractions
+for p in "d036-ar-partial ar-76964105" "d036-en-reserve1-partial en-1370070834" "d036-en-reserve1 en-1377158630"; do set -- $p
+  if cmp -s $W/smoke/$1.json $C/$2.json; then echo "$1 byte-identical to prediction $2" ; else echo "$1 DIFFERS from $2"; fi; done >> $R/wheel-smoke.txt
+cd $REPO
+.venv/bin/python -P simulations/stage03/fetch_policy_sim.py 5000 20261028 > $R/sim-fetch.json 2>&1; echo "fetch exit $?" > $R/sims-exit.txt
+.venv/bin/python -P simulations/stage03/reconcile_perturbation_sim.py 200 20261028 > $R/sim-reconcile.json 2>&1; echo "reconcile exit $?" >> $R/sims-exit.txt
+.venv/bin/python -P simulations/stage03/campaign_driver_sim.py 2000 20261028 > $R/sim-driver.json 2>&1; echo "driver exit $?" >> $R/sims-exit.txt
+.venv/bin/python -P simulations/stage03/template_order_sim.py 200 20261104 > $R/sim-template-order.json 2>&1; echo "template-order exit $?" >> $R/sims-exit.txt
+for f in fetch reconcile driver; do cmp -s $R/sim-$f.json $C6/sim-$f.json && echo "sim-$f identical to the 2026-11-04 run (codex-d036-2026-11-04)" || echo "sim-$f differs from the 2026-11-04 run"; done >> $R/sims-exit.txt
+cmp -s $R/sim-template-order.json $REPO/docs/verification/stage-03/design/r038-reconciliation/simulation/template_order_sim.re-review-fixes.json && echo "sim-template-order identical to template_order_sim.re-review-fixes.json" >> $R/sims-exit.txt || echo "sim-template-order differs from template_order_sim.re-review-fixes.json" >> $R/sims-exit.txt
+echo "porcelain after wheel/sims (excluding the untracked 3.12 test report being written): $(git status --porcelain | grep -v 'docs/verification/stage-03/test-report.json' | wc -l)" >> $R/sims-exit.txt
+echo DONE >> $R/sims-exit.txt
