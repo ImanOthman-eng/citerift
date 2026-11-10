@@ -254,7 +254,7 @@ class InvestigationMemory:
                 if not read.records:
                     raise InvariantViolation("M-1", "JOURNAL_CORRUPT", "the journal holds no record", 0)
                 # Validate everything before changing anything: a CORRUPT investigation is never repaired, not even
-                # its torn tail or its temporaries (SPEC 8.6).
+                # its torn tail or its temporaries (SPEC 8.6, 10.1; D-044).
                 for rec in read.records:
                     folder.apply(rec)
                 if read.torn is not None and writable:

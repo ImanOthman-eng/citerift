@@ -557,9 +557,12 @@ Content records (observation, evidence, claim, decision, question, report, verif
 
 ### 8.6 Validity
 
-A journal is **valid** when every invariant of section 8.7 holds. On open: a final line without a newline, or that
-does not parse, or whose digest is wrong, is a **torn tail** (section 10.1); any other violation makes the
-investigation `CORRUPT` (read-only; nothing is repaired or guessed).
+A journal is **valid** when every invariant of section 8.7 holds. On open (owner decision D-044): a final line without
+the terminating newline is an incomplete physical record, a **torn tail** (section 10.1); it is the only defect
+treated as an interrupted append. A newline-terminated line is a complete physical record: if it is not valid strict
+canonical JSON, has a wrong digest or `prev`, violates the schema or an invariant, or references invalid or missing
+committed data, the investigation is `CORRUPT` (read-only; nothing is repaired, dropped or guessed), whether that line
+is the last one or not. Incomplete append ≠ integrity failure.
 
 - S-8.7 Versioning: journal format `v = 1` is the first version. A reader refuses a version it does not know
   (`JOURNAL_VERSION_UNSUPPORTED`). A later version that needs migration writes a new investigation whose
@@ -758,14 +761,20 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 1. Take the lock (`flock`, exclusive, non-blocking). If held: `INVESTIGATION_BUSY`, nothing written. The kernel
    releases the lock when the holder dies, so a stale lock cannot exist on a local file system; the lock file's
    content (process id, start time) is informational only. Network file systems are not supported (RA R4-26).
-2. Read the journal. A torn tail is preserved before anything changes: the journal is copied to
-   `journal.jsonl.torn-<k>`, the copy is verified byte-for-byte, the valid prefix is written to a temporary file,
-   verified, `fsync`ed and renamed over `journal.jsonl` (Copy → Verify → Preserve). Only the final record can be torn.
-3. Verify M-1…M-14 on the prefix. Any failure: `CORRUPT`, read-only.
-4. Fold. An attempt with `step_started` and no terminal record is closed by `step_interrupted`, or by
+2. Read the journal and identify a candidate incomplete tail: final bytes without the terminating newline (section
+   8.6). Only the final record can be torn.
+3. Validate the entire prefix (every complete record: strict canonical JSON, digest, `prev`, schema, M-1…M-14, the
+   blobs it names) before changing anything. Any failure: `CORRUPT`, read-only, and the journal, its torn tail and
+   any temporary file are left exactly as found.
+4. Only if the prefix is valid and the open is writable, remove the torn tail (Copy → Verify → Preserve): copy the
+   original journal to `journal.jsonl.torn-<k>`, verify the copy byte for byte and `fsync` the directory; write the
+   validated prefix to a temporary file, verify it, `fsync` it and rename it over `journal.jsonl`; `fsync` the
+   directory; re-read and require exactly the validated prefix. A read-only open reports the tail and changes
+   nothing. (Owner decision D-044 approved this order: never repair first and discover corruption afterwards.)
+5. Fold. An attempt with `step_started` and no terminal record is closed by `step_interrupted`, or by
    `step_failed(RETRY_BUDGET_EXHAUSTED)` when `φ + 1 = A_max` (W-6).
-5. Recompute the step keys of committed steps from the current environment (section 10.3).
-6. Continue from the first step that is not `succeeded`.
+6. Recompute the step keys of committed steps from the current environment (section 10.3).
+7. Continue from the first step that is not `succeeded`.
 
 ### 10.2 Crash and fault cases
 
@@ -775,7 +784,7 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 | Crash after blob rename, before its record | an orphan blob | ignored by the fold (reported as orphan); kept | step re-run writes the same blob (no-op) |
 | Crash after content records, before `step_succeeded` | uncommitted content | `step_interrupted`; content ignored (M-6) | step re-run; same committed content |
 | Crash after `step_succeeded`, before the next `step_started` | a committed step | nothing to repair | next step starts |
-| Torn final record | partial line | preserved copy, valid prefix (10.1) | resume from the prefix |
+| Torn final record | final bytes without a newline | prefix validated, then preserved copy and valid prefix (10.1) | resume from the prefix |
 | Bit flip inside a record or blob | digest or hash mismatch | none | `CORRUPT`; no repair |
 | Duplicate retry of a committed step | a committed step key | not run (M-14) | no duplicate |
 | Repeated invocation (`run` twice) | same `investigation_key` | resume (S-9.4) | no duplicate investigation |

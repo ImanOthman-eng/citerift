@@ -1,13 +1,15 @@
 """The journal file: one canonical JSON record per line, appended and ``fsync``ed one record at a time (S-8.3).
 
-Reading splits the file into complete records and, at most, one torn tail (SPEC 8.6, 10.1):
+Reading splits the file into complete records and, at most, one torn tail (SPEC 8.6, 10.1; owner decision D-044):
 
-- the final line is a **torn tail** when it has no newline, does not parse as a canonical record, or its digest is
-  wrong (SPEC 8.6, as specified); it was never committed;
-- any such defect on an earlier line, or any other violation, is **corruption** (the investigation is ``CORRUPT``,
-  read-only, nothing is repaired or guessed).
+- a **torn tail** is an incomplete physical record: final bytes without the terminating newline. Only that is an
+  interrupted append; it was never committed;
+- a newline-terminated line is a complete physical record. If it is not strict canonical JSON, or (checked by the
+  fold) has a wrong digest or ``prev``, violates the schema or an invariant, the investigation is ``CORRUPT``
+  (read-only; nothing is repaired, dropped or guessed), whether the line is the last one or not.
 
-``repair_torn_tail`` follows Copy → Verify → Preserve (SPEC 10.1 step 2): the whole journal is copied to
+``repair_torn_tail`` follows Copy → Verify → Preserve (SPEC 10.1), and the caller runs it only after the whole prefix
+has validated: the whole journal is copied to
 ``journal.jsonl.torn-<k>`` and verified byte for byte, the valid prefix is written to a temporary file, verified and
 ``fsync``ed, and only then renamed over ``journal.jsonl``. A complete record is never removed or rewritten.
 """
@@ -79,19 +81,15 @@ def parse_journal(data: bytes) -> JournalRead:
     pos = 0
     while pos < len(data):
         nl = data.find(b"\n", pos)
-        last = nl == -1 or nl == len(data) - 1
-        line = data[pos:] if nl == -1 else data[pos:nl]
-        if nl == -1:
+        if nl == -1:  # D-044: only an incomplete physical record (no terminating newline) is a torn tail
             return JournalRead(records, lines, len(data), TornTail(pos, len(data) - pos, "final line has no newline"))
-        value, problem = _record_problem(line)
-        if problem:
-            if last:
-                return JournalRead(records, lines, len(data), TornTail(pos, len(data) - pos, problem))
+        value, problem = _record_problem(data[pos:nl])
+        if problem:  # a complete physical record that is invalid: corruption, final line or not (D-044)
             raise InvariantViolation("M-2", "JOURNAL_CORRUPT", f"line {len(records)}: {problem}", len(records))
         if value is None:  # unreachable: no problem means a parsed object
             raise InvariantViolation("M-2", "JOURNAL_CORRUPT", "unparsed record", len(records))
         records.append(value)
-        lines.append(line)
+        lines.append(data[pos:nl])
         pos = nl + 1
     return JournalRead(records, lines, len(data), None)
 

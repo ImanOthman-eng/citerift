@@ -398,9 +398,9 @@ def _lines(root: Path, key: str) -> list[bytes]:
     ("name", "tail"),
     [
         ("truncated final line", lambda last: last[: len(last) // 2]),
-        ("invalid final JSON", lambda last: b"{not json\n"),
-        ("final line zero-filled", lambda last: b"\x00" * 40),
-        ("final record with a wrong digest (SPEC 8.6: torn)", lambda last: _flip_hex(last, b'"digest":"')),
+        ("invalid final JSON without its newline", lambda last: b"{not json"),
+        ("final line zero-filled, no newline", lambda last: b"\x00" * 40),
+        # D-044: a newline-terminated final line is a complete record; its defects are CORRUPT (tests below).
     ],
 )
 def test_torn_tail_is_preserved_and_removed(tmp_path: Path, name: str, tail: Any) -> None:
@@ -613,3 +613,125 @@ def test_journal_size_bound_is_enforced_on_append(tmp_path: Path, monkeypatch: p
         size = len(journal_bytes(m))
         monkeypatch.setattr(memory_module, "MAX_JOURNAL_BYTES", size + 10)
         refused(m, "S-8.3", "step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+
+
+# D-044: an incomplete append is a torn tail; a complete record that fails validation is CORRUPT ------------------
+
+
+def _d044_journal(tmp_path: Path) -> tuple[Path, str, list[bytes]]:
+    root, key = completed(tmp_path)
+    return root, key, _lines(root, key)
+
+
+def _store(root: Path, key: str, data: bytes) -> bytes:
+    journal_path(root, key).write_bytes(data)
+    return data
+
+
+@pytest.mark.regression
+def test_d044_r6_2_complete_final_record_with_wrong_digest_is_corrupt(tmp_path: Path) -> None:
+    """R6-2 fail-first regression (D-044 case 3): at 6fd799d this record was dropped as a torn tail."""
+    root, key, lines = _d044_journal(tmp_path)
+    data = _store(root, key, b"".join(x + b"\n" for x in lines[:-1]) + _flip_hex(lines[-1], b'"digest":"') + b"\n")
+    for writable in (False, True):
+        with pytest.raises(CorruptInvestigation) as exc:
+            InvestigationMemory.open(root, key, writable=writable, clock=Clock())
+        assert getattr(exc.value.cause, "invariant", None) == "M-2"
+        assert exc.value.cause.code == "JOURNAL_CORRUPT"
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "case",
+    [
+        "malformed JSON, newline-terminated",  # D-044 case 4
+        "non-canonical JSON, newline-terminated",  # D-044 case 4
+        "valid digest over a wrong prev",  # D-044 case 5
+        "schema violation, newline-terminated",
+        "invariant violation, newline-terminated",
+        "middle record corrupt",  # D-044 case 6
+        "zero bytes, newline-terminated",
+    ],
+)
+def test_d044_complete_defective_records_are_corrupt(tmp_path: Path, case: str) -> None:
+    root, key, lines = _d044_journal(tmp_path)
+    rs = records_of(root, key)
+    if case == "malformed JSON, newline-terminated":
+        lines[-1] = lines[-1][: len(lines[-1]) // 2]
+    elif case == "non-canonical JSON, newline-terminated":
+        lines[-1] = json.dumps(rs[-1], sort_keys=True, ensure_ascii=False).encode()  # spaces after separators
+    elif case == "valid digest over a wrong prev":
+        rs[-1]["prev"] = h("not the previous digest")
+        rs[-1]["digest"] = ids.record_digest(rs[-1])
+        lines[-1] = canon(rs[-1])
+    elif case == "schema violation, newline-terminated":
+        rs[-1]["kind"] = "no_such_kind"
+        rs[-1]["digest"] = ids.record_digest(rs[-1])
+        lines[-1] = canon(rs[-1])
+    elif case == "invariant violation, newline-terminated":
+        rs[-1]["seq"] = rs[-1]["seq"] + 1  # M-1
+        rs[-1]["digest"] = ids.record_digest(rs[-1])
+        lines[-1] = canon(rs[-1])
+    elif case == "middle record corrupt":
+        lines[10] = _flip_hex(lines[10], b'"digest":"')
+    else:
+        lines[-1] = b"\x00" * 40
+    data = _store(root, key, b"".join(x + b"\n" for x in lines))
+    for writable in (False, True):
+        with pytest.raises(CorruptInvestigation):
+            InvestigationMemory.open(root, key, writable=writable, clock=Clock())
+    assert journal_path(root, key).read_bytes() == data
+    assert not list((root / key).glob("journal.jsonl.torn-*"))
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize(
+    "case",
+    [
+        "truncated final JSON, no newline",  # D-044 case 1
+        "complete canonical record, newline missing",  # D-044 case 2
+        "one byte, no newline",
+    ],
+)
+def test_d044_incomplete_final_line_is_a_torn_tail(tmp_path: Path, case: str) -> None:
+    root, key, lines = _d044_journal(tmp_path)
+    prefix = b"".join(x + b"\n" for x in lines[:-1])
+    tail = {
+        "truncated final JSON, no newline": lines[-1][:-9],
+        "complete canonical record, newline missing": lines[-1],
+        "one byte, no newline": lines[-1][:1],
+    }[case]
+    data = _store(root, key, prefix + tail)
+    with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as ro:
+        assert ro.torn_tail is not None and ro.torn_tail.reason == "final line has no newline"
+        assert len(ro.view.records) == len(lines) - 1
+    assert journal_path(root, key).read_bytes() == data  # read-only: unchanged
+    with InvestigationMemory.open(root, key, clock=Clock()) as rw:  # D-044 case 8: recovery still works
+        assert rw.torn_copies() == ["journal.jsonl.torn-0"]
+        drive(rw)
+        assert rw.view.step_state("DETECT") == "succeeded"
+    assert journal_path(root, key).read_bytes().startswith(prefix)
+    assert (root / key / "journal.jsonl.torn-0").read_bytes() == data
+
+
+@pytest.mark.integration
+def test_d044_legitimate_complete_final_record_is_valid(tmp_path: Path) -> None:
+    """D-044 case 7."""
+    root, key, lines = _d044_journal(tmp_path)
+    with InvestigationMemory.open(root, key, clock=Clock()) as m:
+        assert m.torn_tail is None and len(m.view.records) == len(lines)
+        assert m.torn_copies() == []
+
+
+@pytest.mark.negative
+def test_d044_corrupt_prefix_before_an_incomplete_tail_is_not_mutated(tmp_path: Path) -> None:
+    """D-044 recovery order: the prefix is validated first; a corrupt prefix means no journal mutation at all."""
+    root, key, lines = _d044_journal(tmp_path)
+    lines[4] = _flip_hex(lines[4], b'"digest":"')
+    data = _store(root, key, b"".join(x + b"\n" for x in lines[:-1]) + lines[-1][:15])
+    with pytest.raises(CorruptInvestigation):
+        InvestigationMemory.open(root, key, clock=Clock())
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]

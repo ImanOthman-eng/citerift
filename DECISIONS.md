@@ -974,3 +974,33 @@ Reason vocabulary: `LOOKUP_QUERY_FAILED` (D-13) and `NOT_FOUND_IN_CHECKED_SOURCE
 cannot be established from the checked evidence); `SOURCE_TYPE_CONFLICT` renamed `RETRACTION_EVENT_TYPE_CONFLICT`
 (D-7: conflicting Stage 02 retraction-event types or effects, not a conflict of data-source type). dt-1 guards,
 precedence, classes and the frozen Step 4 oracle are unchanged by these names.
+
+## D-044 — Journal-tail integrity semantics (Step 6 review finding R6-2)
+- Status: accepted
+- Topic: stage-04-journal-tail-integrity
+- Date: 2026-11-10
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step6/STEP6_INDEPENDENT_REVIEW.md (R6-2); docs/verification/stage-04/review/step6/STEP6_D044_CLOSURE.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPEUWjPwtyadJ3r35wXrmJrf`, 2026-11-10T17:30:22Z, which
+conditionally accepted Step 6 at `6fd799db0234fb9fcef42b7a9618eafe409833f1` and authorized this corrective closure
+only). The owner accepts the R6-2 recommendation.
+
+A final journal tail is an interrupted append (a **torn tail**) only when the physical record is incomplete; in v1 the
+criterion is that the final bytes lack the terminating newline. Such a tail may be preserved and removed by Copy →
+Verify → Preserve, and only after the whole preceding prefix has independently validated. A newline-terminated final
+record is a complete physical record: if it is not valid strict canonical JSON, has a wrong digest, violates the
+schema or M-1…M-14, has an invalid `prev`, references invalid or missing committed data, or otherwise fails
+validation, the investigation is `CORRUPT` and the record is never dropped as crash recovery. Any defect in a
+non-final record is `CORRUPT`. Incomplete append ≠ integrity failure; SPEC 8.6 is made consistent with SPEC 10.2.
+
+Recovery order (the implementation's stronger behaviour, approved): read → identify a candidate incomplete tail →
+validate the entire prefix → only if it is valid, preserve the original journal → verify the preserved copy →
+publish the validated prefix → `fsync` → reopen and fold. If the prefix is corrupt, the journal is not mutated.
+
+The Step 6 resource ceilings (`MAX_RECORD_BYTES` 1 MiB, `MAX_JOURNAL_BYTES` 512 MiB) remain provisional defensive
+implementation ceilings, not justified final values, until a resource-bound argument from the Stage 04 model is
+made (at the latest in Step 7). Accepted residual limitations of Step 6: process-death (not power-loss) fault
+injection; `flock` on local POSIX file systems only; `.creating-*` leftovers reported, not deleted; a deleted lock
+file causes fail-closed refusal; the Step 6 reviewer was a separate context, not an independent reviewer.

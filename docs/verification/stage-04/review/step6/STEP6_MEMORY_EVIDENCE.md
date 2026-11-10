@@ -102,8 +102,11 @@ torn final line, after the whole journal has been preserved (section 6).
 
 ## 6. Torn tail versus CORRUPT (item 7)
 
-`parse_journal` splits the bytes into lines. The **final** line is a torn tail when it has no newline, does not parse
-as a canonical record, or (SPEC 8.6) its digest is wrong. A defective line anywhere else is `CORRUPT` (M-2). Every
+`parse_journal` splits the bytes into lines. Since owner decision D-044 (corrective closure, see
+`STEP6_D044_CLOSURE.md`), only final bytes **without the terminating newline** are a torn tail (an incomplete
+physical record). Every newline-terminated line is a complete record, and any defect in it, last line or not, is
+`CORRUPT` (M-2). Before D-044 (commit 6fd799d) a newline-terminated final line that did not parse or had a wrong
+digest was also treated as torn (review finding R6-2). Every
 record of the prefix is then folded with every invariant and every named blob verified **before anything is
 changed**. Only when the prefix is valid, and only on a writable open, is a torn tail removed:
 
@@ -116,18 +119,17 @@ A read-only open reports the torn tail (`torn_tail`) and changes nothing. A `COR
 `CorruptInvestigation` (stable code `CORRUPT`, `cause` names the violated invariant) and nothing is written, copied
 or removed, not even its torn tail or leftover temporaries (`test_corrupt_history_with_a_torn_tail_is_not_repaired`).
 
-Order relative to SPEC 10.1: SPEC 10.1 lists "preserve and remove the torn tail" (step 2) before "verify M-1…M-14"
-(step 3). Step 6 verifies first and repairs only a valid prefix, so a corrupt journal is never modified. This is
-stricter than the SPEC's ordering and agrees with S-8.6 ("nothing is repaired"); the owner may wish to align the
-SPEC 10.1 wording.
+Order: validate the whole prefix first, repair only a valid prefix, so a corrupt journal is never modified. D-044
+approved this order and SPEC 10.1 now states it.
 
 Evidence for the owner's list (all in `tests/stage04/test_memory_journal.py`):
 
 | Case | Classified as | Test |
 |---|---|---|
 | truncated final line | torn; preserved, removed, resumable | `test_torn_tail_is_preserved_and_removed[truncated final line]` |
-| invalid final JSON | torn | `…[invalid final JSON]`, `…[final line zero-filled]` |
-| final record with a wrong digest | torn (SPEC 8.6; see finding F-1 in section 9) | `…[final record with a wrong digest (SPEC 8.6: torn)]` |
+| invalid final JSON without its newline | torn | `…[invalid final JSON without its newline]`, `…[final line zero-filled, no newline]` |
+| invalid final JSON, newline-terminated | CORRUPT M-2 (D-044) | `test_d044_complete_defective_records_are_corrupt` |
+| final record with a wrong digest, newline-terminated | CORRUPT M-2 (D-044) | `test_d044_r6_2_complete_final_record_with_wrong_digest_is_corrupt` |
 | modified historical record | CORRUPT M-2, journal unchanged | `test_corruption_is_distinct_from_a_torn_tail[modified historical record]`, `test_corrupt_investigation_is_never_repaired` |
 | broken prev | CORRUPT M-2 | `…[broken prev]` |
 | wrong digest | CORRUPT M-2 | `…[wrong digest in history]` |
@@ -185,14 +187,12 @@ parity test would have caught it.
 
 ## 9. Decisions, limits and findings for the owner
 
-- **F-1 (SPEC 8.6, recommend tightening; review finding R6-2).** A newline-terminated final record whose digest is wrong is classified as
-  a torn tail, as SPEC 8.6 states. A process crash cannot produce such a line (the line is written in one `write`
-  after the record is built), so in practice it signals tampering or media corruption of the last record, which is
-  then silently dropped (preserved in `journal.jsonl.torn-<k>`). Implemented as specified; recommendation: treat a
-  complete, parseable final line with a wrong digest as `CORRUPT`. Not changed without an owner decision.
-- **F-2 (SPEC 10.1 order).** Validation precedes repair (section 6). Stricter than the SPEC text.
-- **Bounds chosen in Step 6:** record 1 MiB (`RECORD_TOO_LARGE`), journal 512 MiB. The blob bound, 256 MiB, is the
-  Stage 03 extraction bound. These two new numbers are not owner-set.
+- **F-1 (review finding R6-2): resolved by owner decision D-044.** A complete (newline-terminated) final record
+  that fails validation is now `CORRUPT`; only final bytes without the newline are a torn tail.
+- **F-2 (SPEC 10.1 order): approved by D-044.** Validation precedes repair; SPEC 10.1 updated.
+- **Provisional ceilings (D-044):** record 1 MiB (`RECORD_TOO_LARGE`) and journal 512 MiB are defensive
+  implementation ceilings, not justified final values. A resource-bound argument from the Stage 04 model is owed
+  before the Stage 04 freeze (at the latest in Step 7). The blob bound, 256 MiB, is the Stage 03 extraction bound.
 - **Not checked by Memory, left to Step 7 (controller, DETECT, VERIFY):** derivation of evidence, claim, decision and
   question ids (the SPEC gives no tags), transition legality and budgets (W-*, T-*), `not_before`, staleness
   (S-10.1), closing an open attempt on resume (W-6), and `step_failed(STORAGE_ERROR)` after a failed write.
