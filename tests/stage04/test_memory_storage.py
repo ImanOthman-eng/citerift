@@ -32,7 +32,7 @@ from citerift.investigation.errors import (
     StorageError,
 )
 from citerift.investigation.fold import Folder
-from citerift.investigation.fsutil import open_dir
+from citerift.investigation.fsutil import check_private_dir, open_dir
 from citerift.investigation.journal import read_journal
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
@@ -152,7 +152,7 @@ _PUBLISH = """
 import json, os, sys
 from citerift.investigation.blobs import BlobStore
 from citerift.investigation.canonical import canon
-from citerift.investigation.fsutil import open_dir
+from citerift.investigation.fsutil import check_private_dir, open_dir
 store = BlobStore(open_dir(sys.argv[1]))
 sys.stdin.readline()  # start together
 out = [store.put(canon({"shared": "x" * 200000, "n": 0}))]
@@ -509,26 +509,32 @@ def test_read_only_open_neither_creates_nor_rewrites_the_lock(tmp_path: Path) ->
 
 
 @pytest.mark.security
-@pytest.mark.skipif(os.geteuid() != 0, reason="changing a directory's owner needs root")
-def test_directories_owned_by_another_user_are_refused(tmp_path: Path) -> None:
-    """R6-10: the memory root, investigation directory and blobs directory must belong to this user and be private;
-    the check runs on the opened descriptor."""
+def test_directories_owned_by_another_user_or_shared_are_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """R6-10: the memory root, investigation directory and blobs directory must belong to this user and not be
+    writable by group or others; the check runs on the opened descriptor. Another owner is simulated by changing the
+    effective uid the check compares with, so the test needs no privilege."""
     mem, root = new_memory(tmp_path)
     key = mem.key
     mem.close()
-    for target, code in (
-        (root / key / "blobs", "PATH_UNSAFE"),
-        (root / key, "PATH_UNSAFE"),
-        (root, "MEMORY_ROOT_UNSAFE"),
-    ):
-        os.chown(target, 12345, -1)
+    for target in (root / key, root / key / "blobs"):
+        target.chmod(0o770)
         with pytest.raises(PathUnsafe) as exc:
             InvestigationMemory.open(root, key, clock=Clock())
-        assert exc.value.code == code, target
-        os.chown(target, 0, -1)
-    (root / key / "blobs").chmod(0o770)
-    with pytest.raises(PathUnsafe):
+        assert exc.value.code == "PATH_UNSAFE", target
+        target.chmod(0o700)
+    fd = open_dir(root / key)
+    try:
+        check_private_dir(fd, "investigation")  # this user's private directory passes
+        monkeypatch.setattr(os, "geteuid", lambda: os.stat(root).st_uid + 1)
+        with pytest.raises(PathUnsafe):
+            check_private_dir(fd, "investigation")
+    finally:
+        os.close(fd)
+    with pytest.raises(PathUnsafe) as exc:
         InvestigationMemory.open(root, key, clock=Clock())
+    assert exc.value.code == "MEMORY_ROOT_UNSAFE"
 
 
 @pytest.mark.security
