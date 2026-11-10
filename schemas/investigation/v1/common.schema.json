@@ -464,11 +464,11 @@
         "IDENTIFIER_ROLE_UNRESOLVED",
         "IDENTITY_WITNESSED",
         "LOOKUP_PARTIAL",
-        "SOURCE_TYPE_CONFLICT",
+        "RETRACTION_EVENT_TYPE_CONFLICT",
         "KEY_NAMES_SEVERAL_WORKS",
         "PMID_ROLE_COLLISION",
         "BRIDGE_ONLY_SUPPORT",
-        "STATUS_NOT_ESTABLISHED",
+        "CURRENT_EFFECT_NOT_ESTABLISHED",
         "COVERAGE_GAP_RELEVANT_ROWS",
         "LOOKUP_QUERY_FAILED",
         "CITED_IDENTIFIER_IS_NOTICE",
@@ -979,7 +979,6 @@
                 "enum": [
                   "bundle_identity",
                   "extraction_identity",
-                  "unit",
                   "index_identity",
                   "lookup_result",
                   "lookup_event"
@@ -991,6 +990,37 @@
             "properties": {
               "value": {
                 "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "description": "Owner decision D-043 (SR-03): unit evidence carries the unit span hash that Stage 04 derives from the retained Stage 03 source artifact, SHA-256(source_artifact_bytes[byte_start:byte_end]) over the half-open byte span the pointer's unit gives. Stage 03 emits the span, not this hash.",
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "unit"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "source_artifact",
+                  "unit_span_sha256"
+                ],
+                "properties": {
+                  "source_artifact": {
+                    "description": "SHA-256 of the retained Stage 03 source artifact the span indexes (the extraction's capture.source_artifact), verified before the hash is derived.",
+                    "$ref": "#/$defs/sha256"
+                  },
+                  "unit_span_sha256": {
+                    "$ref": "#/$defs/sha256"
+                  }
+                }
               }
             }
           }

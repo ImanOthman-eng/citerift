@@ -1,6 +1,7 @@
 # Stage 04 Step 5: simulation placeholders and their production codes
 
-Status: Step 5 record. Applies to `schemas/investigation/v1` (schema version 1.0.0) and decision table `dt-1`.
+Status: Step 5 record, updated at the start of Step 6 for owner decision D-043 (final v1 reason vocabulary). Applies
+to `schemas/investigation/v1` (schema version 1.0.0) and decision table `dt-1`.
 
 The Step 4 reference model (`simulations/stage04/dt1_reference.py`) decides on an abstraction of the inputs. Four of
 its reason codes are placeholders for inputs that the abstraction does not carry (SIMULATION_REPORT.md section 11).
@@ -18,7 +19,7 @@ else, to a claim that validates.
 |---|---|---|---|---|
 | `DEFINITION_UNUSED` | D-1 | abstraction label for the use-eligibility reason | reason `LIST_DEFINED_UNUSED` | SPEC 6.2, row 4 |
 | `USE_NOT_ESTABLISHED` | D-2 | abstraction label for two distinct reasons | reason `CONFLICTING_DEFINITIONS` or `NO_BOUND_USE`, whichever row of SPEC 6.2 decided `U` | SPEC 6.2, rows 1 and 5 |
-| `STAGE02_BASIS_REASONS` | D-11 | namespace of Stage 02 codes, not a code | Stage 04 reason `STATUS_NOT_ESTABLISHED` (new name), plus the Stage 02 basis reasons themselves in `upstream_reasons`, each as `{source: "stage02_projection_basis", code, evidence}` | SPEC 7.3 D-11 ("Stage 02 basis reasons kept") |
+| `STAGE02_BASIS_REASONS` | D-11 | namespace of Stage 02 codes, not a code | Stage 04 reason `CURRENT_EFFECT_NOT_ESTABLISHED` (D-043), plus the Stage 02 basis reasons themselves in `upstream_reasons`, each as `{source: "stage02_projection_basis", code, evidence}` | SPEC 7.3 D-11 ("Stage 02 basis reasons kept") |
 | `LOOKUP_UNAVAILABLE` | D-13 | the class name reused as a reason | Stage 04 reason `LOOKUP_QUERY_FAILED` (new name); the failed query's own code stays in the lookup observation, reached through the claim's supporting evidence | SPEC 7.3 D-13 ("code of the failed query"), S-6.10 |
 
 Notes:
@@ -42,7 +43,7 @@ Stage 02 projection basis reasons are an open set owned by Stage 02 and versione
   detached from its source;
 - forbid upstream reasons on rules that read no projection basis: D-1, D-2, D-3, D-4, D-6, D-8 and D-13.
 
-## 3. Stage 04 reason codes that share a Stage 02 name
+## 3. Stage 04 reason codes that share or replace a Stage 02 name
 
 The specification already names these Stage 04 reasons, and they are spelled like Stage 02 basis reasons. They are
 Stage 04 reasons with a fixed meaning in `dt-1`. They are not copies of whatever Stage 02 reported.
@@ -51,20 +52,22 @@ Stage 04 reasons with a fixed meaning in `dt-1`. They are not copies of whatever
 |---|---|---|---|
 | `COVERAGE_GAP_RELEVANT_ROWS` | D-12 | `L` is `no_record` and its projection is `uncertain` with value null | named in SPEC 7.3 |
 | `BRIDGE_ONLY_SUPPORT` | D-10 | the projection's basis reasons include `BRIDGE_ONLY_SUPPORT` | named in SPEC 7.3 |
-| `SOURCE_TYPE_CONFLICT` | D-7 | a lookup is `matched` with projection `conflicting` and value null | SPEC 7.3 names no reason for D-7; Step 5 uses this name. Terminology choice, see section 4 |
-| `NOT_FOUND_IN_CHECKED_SOURCES` | D-16 | `L` is `no_record` with value `not_found_in_checked_sources` | SPEC 7.3 names no reason for D-16 ("provenance = checked sources"); Step 5 uses this name. Terminology choice, see section 4 |
+| `RETRACTION_EVENT_TYPE_CONFLICT` | D-7 | a lookup is `matched` with projection `conflicting` and value null | SPEC 7.3 named no reason for D-7. Step 5 used the Stage 02 name `SOURCE_TYPE_CONFLICT`; D-043 renamed it, because D-7 is a conflict of retraction-event types or effects, not of data-source type |
+| `NOT_FOUND_IN_CHECKED_SOURCES` | D-16 | `L` is `no_record` with value `not_found_in_checked_sources` | SPEC 7.3 named no reason for D-16 ("provenance = checked sources"); approved by D-043 |
 
-## 4. New names introduced by Step 5 (terminology choices for owner review)
+## 4. Names fixed by Step 5 and finalized by owner decision D-043
 
 These names do not exist in the Step 3 documents. They change no class, rule, guard or precedence of `dt-1`. They
-only name a reason that the specification described in words.
+only name a reason that the specification described in words. The owner decided them in D-043 (DECISIONS.md).
 
-| Name | Rule | Replaces |
-|---|---|---|
-| `STATUS_NOT_ESTABLISHED` | D-11 | placeholder `STAGE02_BASIS_REASONS` |
-| `LOOKUP_QUERY_FAILED` | D-13 | placeholder `LOOKUP_UNAVAILABLE` used as a reason |
-| `SOURCE_TYPE_CONFLICT` (as a Stage 04 reason) | D-7 | no reason in SPEC 7.3 |
-| `NOT_FOUND_IN_CHECKED_SOURCES` (as a Stage 04 reason) | D-16 | no reason in SPEC 7.3 |
+| v1 name | Rule | Step 5 name | D-043 |
+|---|---|---|---|
+| `CURRENT_EFFECT_NOT_ESTABLISHED` | D-11 | `STATUS_NOT_ESTABLISHED` (replacing placeholder `STAGE02_BASIS_REASONS`) | renamed: the current scholarly or retraction effect cannot be established from the checked evidence |
+| `LOOKUP_QUERY_FAILED` | D-13 | same (replacing placeholder `LOOKUP_UNAVAILABLE` used as a reason) | approved |
+| `RETRACTION_EVENT_TYPE_CONFLICT` | D-7 | `SOURCE_TYPE_CONFLICT` | renamed: conflicting Stage 02 retraction-event types or effects |
+| `NOT_FOUND_IN_CHECKED_SOURCES` | D-16 | same | approved |
 
-SPEC 7.3 was updated in Step 5 to cite these names (terminology only). If the owner prefers other names, only the
-`reason` enumeration in `common.schema.json`, the claim rules in `claim.schema.json` and this table change.
+`SOURCE_TYPE_CONFLICT` remains a Stage 02 projection basis code (`src/citerift/retraction/policy.py`); it may appear in
+`upstream_reasons` with its evidence, never as a Stage 04 reason. The frozen Step 4 reference model and oracle still
+emit `SOURCE_TYPE_CONFLICT` for D-7; they are not changed, and the test that validates every reference decision maps
+that name to `RETRACTION_EVENT_TYPE_CONFLICT` the same way it maps the placeholders.

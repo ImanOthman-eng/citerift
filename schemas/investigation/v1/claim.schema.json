@@ -137,7 +137,7 @@
           "status": {"const": "conflicting"},
           "value": {"const": null},
           "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
-          "reasons": {"contains": {"const": "SOURCE_TYPE_CONFLICT"}},
+          "reasons": {"contains": {"const": "RETRACTION_EVENT_TYPE_CONFLICT"}},
           "alternatives": {
             "minItems": 2,
             "maxItems": 4,
@@ -209,7 +209,7 @@
     {
       "description": "D-11: a record exists but its current effect is not established; the Stage 02 basis reasons are kept in upstream_reasons.",
       "if": {"properties": {"rule": {"const": "D-11"}}},
-      "then": {"properties": {"class": {"const": "UNRESOLVED_STATUS"}, "reasons": {"contains": {"const": "STATUS_NOT_ESTABLISHED"}}}}
+      "then": {"properties": {"class": {"const": "UNRESOLVED_STATUS"}, "reasons": {"contains": {"const": "CURRENT_EFFECT_NOT_ESTABLISHED"}}}}
     },
     {
       "if": {"properties": {"rule": {"const": "D-12"}}},

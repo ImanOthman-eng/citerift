@@ -1,0 +1,44 @@
+# Stage 04 Step 6: traceability of the Memory invariants
+
+Status: Step 6 record (owner item 13). Each row maps a rule to the code that enforces it and to the tests that show it
+holding (positive) and failing closed (negative or fault). Test paths are under `tests/stage04/`.
+
+What JSON Schema can and cannot express: the Step 5 record schema checks the shape of one record (types, enums,
+required fields, which kinds a step may write, `root_id` null for VALIDATE and ACQUIRE records other than the bind, a conflicting claim
+with two alternatives). It cannot check anything that relates two records, a record and a file, or a record and the
+outside world: sequence, chain, references, attempts, root binding, blobs, the lock, determinism. Those rows are
+enforced only in code, and the column "schema" says "no". Where the schema does carry a rule, the fold runs the schema
+first, so a schema-level refusal is reported as `SCHEMA`, not under the invariant's id.
+
+## 1. Memory invariants (SPEC 8.7)
+
+| Id | Rule (short) | Schema | Enforced in | Positive test | Negative / fault test |
+|---|---|---|---|---|---|
+| M-1 | `seq` = 0, 1, 2…; `at` never decreases | no | `fold.Folder._apply` (seq, at); `memory.append` sets seq and clamps at | `test_memory_journal::test_create_reopen_and_fold_agree`, `test_at_never_decreases_even_if_the_clock_does` | `test_invariant_violations_in_a_stored_journal_are_corrupt` (seq jump, deleted record, earlier `at`, duplicated record) |
+| M-2 | digest correct; `prev` chains to the previous digest; genesis for seq 0 | no | `ids.record_digest`, `ids.genesis`; `fold` (digest, prev); `journal.parse_journal` (line-level) | every reopen test | `test_corruption_is_distinct_from_a_torn_tail` (modified record, broken prev, wrong digest, torn line before the end), `test_corrupt_investigation_is_never_repaired`, `test_corrupt_history_with_a_torn_tail_is_not_repaired` |
+| M-3 | a named blob exists, hashes to its name, is canonical; durable before the record | partly (digest pattern) | `blobs.BlobStore.put` (publish order), `BlobStore.verify`; `fold._blob` on observation and report records | `test_memory_storage::test_blob_publication_is_idempotent_and_leaves_no_temporary` | `test_missing_or_corrupted_blob_is_corrupt`, `test_blob_under_its_name_that_is_not_canonical_is_corrupt`, `test_blob_name_that_is_not_a_regular_file_is_corrupt`; fault points `blob.*` (`test_memory_faults`) |
+| M-4 | every referenced id is defined by an earlier committed record (or the same attempt's earlier record) | no | `fold._check_refs` (`need`) | `test_memory_journal::test_m4_m10_references_resolve_to_earlier_records_of_the_right_layer` | same test (missing ref), `test_m7_claims_and_decisions_need_committed_support`, `test_uncommitted_content_is_not_visible_to_later_attempts` |
+| M-5 | a step succeeded only with `step_succeeded` whose output blobs exist | partly (`outputs` non-empty) | `fold._apply` (outputs verified) | `drive` in every test | `test_m3_a_record_cannot_name_a_missing_blob` |
+| M-6 | content lies inside its attempt; counted only if the attempt succeeds | partly (which kinds a step may write) | `fold._apply` (open attempt, numbering), `fold._commit_pending` | `test_m6_commit_discipline` (retry commits) | `test_m6_commit_discipline` (no open attempt, wrong number, overlap, terminal of another attempt), `test_uncommitted_content_is_not_visible_to_later_attempts`, stored-journal case "a second terminal" |
+| M-7 | decision names a committed claim; claim names committed evidence; conflicting claim has ≥ 2 alternatives with evidence | partly (alternatives, `minItems`) | `fold._check_refs` (claim evidence, decision claim) | `drive` (DETECT) | `test_m7_claims_and_decisions_need_committed_support`; alternatives: Step 5 schema tests |
+| M-8 | supersession links two defined claims; successor has new evidence; at most once | partly (shape) | `fold._check_refs` (`claim_superseded`) | — (no Stage 04 step writes it, SPEC 8.5) | `test_m8_supersession_needs_new_evidence` |
+| M-9 | `root_id` null before the ACQUIRE commit, the bound root after; root matches the request; no rebind | partly (null for VALIDATE/ACQUIRE records) | `fold._check_root`, `fold._apply` (bind, mismatch, rebind); `memory.append` sets `root_id` | `test_m9_root_binding` (title is not identity) | `test_m9_root_binding` (forged id, other capture), `test_m9_records_before_the_bind_…`, stored-journal cases (forged root after and before the bind) |
+| M-10 | references point only downward | partly (field types) | `fold._check_refs` (evidence → recorded observation; layer of each `need`) | `test_m4_m10_…` | `test_m4_m10_…` (evidence over an unrecorded blob) |
+| M-11 | append only while the lock is held | no | `lock.InvestigationLock`; `memory.open` takes it; `append` needs a writable instance | `test_lock_is_released_when_the_holder_ends` | `test_second_writer_is_refused_and_lock_released_after_close`, `test_read_only_open_cannot_append`, `test_lock_file_contents_do_not_imply_ownership`, `test_an_unlinked_lock_file_does_not_admit_a_second_writer` |
+| M-12 | no value means "not retracted" | yes (enums of the claim and report schemas) | schema via `fold` | Step 5 schema tests | Step 5 schema tests (no Step 6 code: Memory stores, it does not classify) |
+| M-13 | equal committed inputs give equal `C(J)` | no | `fold.content_digest`, `canonical.canon` | `test_m13_equal_committed_inputs_give_an_equal_content_digest`, `test_canonical_output_is_identical_across_processes_…` | every fault run resumes to the reference `C(J)` (`test_crash_at_every_occurrence_of_every_boundary`) |
+| M-14 | one committed `step_succeeded` per step; no restart; ids defined once | no | `fold._apply` (`STEP_ALREADY_SUCCEEDED`), `fold._check_refs` (`fresh`) | `drive` | `test_m14_a_succeeded_step_never_restarts`, `test_m4_m10_…` (duplicate evidence id), stored-journal case "EXTRACT again"; fault runs assert one succeeded attempt per step |
+
+## 2. Other Memory rules
+
+| Rule | Schema | Enforced in | Positive test | Negative / fault test |
+|---|---|---|---|---|
+| S-4.7, S-4.8, S-8.1 creation identities (config digest, key, id, directory name) | no | `fold._check_created`, `ids.*` | `test_live_request_creation_and_derived_identities` | `test_creation_identities_are_recomputed`, `test_creation_is_idempotent_and_refuses_a_different_payload` |
+| D-042 live bound arithmetic | no | `ids.live_bound_consistent` via `fold._check_created` | `test_live_request_creation_and_derived_identities` | same (t_acq 239 999 refused) |
+| S-8.7 journal version | yes (`v` const) and code | `fold._apply` | all | stored-journal case `v = 2` |
+| SR-12 strict reader | no | `canonical.loads_record`, `loads_blob` | `test_canonical_bytes_are_sorted_compact_utf8` | `test_record_reader_refuses_non_integer_number_tokens`, `test_strict_reader_refusals`, `test_blob_reader_allows_finite_floats_only`, `test_canon_refuses_values_outside_the_model` |
+| Record and blob bounds | no | `memory.append` (1 MiB), `blobs` (256 MiB), `journal` (512 MiB read limit) | — | `test_records_with_floats_or_oversize_are_refused`, `test_oversized_blob_is_refused_without_reading_it` |
+| SPEC 8.6 torn tail versus CORRUPT | no | `journal.parse_journal`, `journal.repair_torn_tail`, `memory.open` | `test_torn_tail_is_preserved_and_removed` | `test_corruption_is_distinct_from_a_torn_tail`, `test_crash_during_torn_tail_repair` |
+| S-15.3 / MR-13 path safety | partly (absolute path pattern) | `fsutil.check_memory_root`, `open_dir`, `open_regular`, `is_hex64` | `test_no_path_is_built_from_request_text`, `test_new_files_are_private` | `test_unsafe_memory_roots_are_refused`, `test_investigation_keys_are_hex_names_only`, `test_symbolic_link_substitution_is_refused`, `test_journal_that_is_not_a_regular_file_is_corrupt`, `test_blob_name_that_is_not_a_regular_file_is_corrupt` |
+| S-15.1 no governance import | no | (structure) | — | `test_investigation_memory_does_not_import_governance` |
+| D-043 unit anchor | partly (value shape of `unit` evidence) | `anchors.unit_span_sha256`, `verify_unit_span`, `read_retained_source` | `test_ascii_span`, `test_arabic_multibyte_spans_…`, `test_same_span_identifier_parity_…`, `test_replay_recomputes_…` | `test_boundary_and_range_errors`, `test_modified_source_is_refused`, `test_span_from_another_root_or_extraction_is_refused`, `test_identifier_parity_mismatch_is_refused` |

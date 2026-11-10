@@ -1,6 +1,7 @@
 # Stage 04 Step 5: adversarial review of the investigation schemas
 
-Status: Step 5 record, retained as the owner instructed. Reviewed: `schemas/investigation/v1/` (`common`, `request`,
+Status: Step 5 record, retained as the owner instructed. Updated at the start of Step 6 only to record owner decision
+D-043 under SR-03 and SR-10. Reviewed: `schemas/investigation/v1/` (`common`, `request`,
 `journal-record`, `claim`, `report`, schema version 1.0.0) against SPECIFICATION.md, MATHEMATICAL_MODEL.md,
 DECISIONS.md D-041 and D-042, and the Step 4 reference model. Tests: `tests/stage04/test_schemas_step5.py`.
 
@@ -66,6 +67,10 @@ in JSON Schema and is assigned to Investigation Memory or VERIFY (section 3).
 - Not decided here. This changes the meaning of a child identity, so it is a new decision point (owner instruction:
   "Any required semantic change beyond D-042 must be reported as a new decision point"). SPEC 4.3 and S-12.1 were not
   edited.
+- Resolved after Step 5 by owner decision D-043: option A. The value is named `unit_span_sha256`, is derived by Stage
+  04 and is never described as a Stage 03 field. The report field `raw_sha256` was renamed `unit_span_sha256`, unit
+  evidence now carries `{source_artifact, unit_span_sha256}`, and SPEC 4.3 and S-12.1 state the derivation and its
+  checks. The derivation is implemented in Step 6.
 
 ### SR-04 Retry-After after a failed ACQUIRE attempt (D-042)
 
@@ -131,6 +136,8 @@ in JSON Schema and is assigned to Investigation Memory or VERIFY (section 3).
 ### SR-10 Simulation placeholders not promoted
 
 - None of the four Step 4 placeholders is a value of a production enumeration.
+- D-043 finalized the names: `STATUS_NOT_ESTABLISHED` became `CURRENT_EFFECT_NOT_ESTABLISHED` and the D-7 reason
+  `SOURCE_TYPE_CONFLICT` became `RETRACTION_EVENT_TYPE_CONFLICT`; the text below keeps the Step 5 wording.
 - The mapping and the new reason names are in `STEP5_PLACEHOLDER_MAPPING.md`. `STATUS_NOT_ESTABLISHED`,
   `LOOKUP_QUERY_FAILED`, and the D-7 and D-16 reason names are terminology choices for owner review.
 - Stage 02 basis reasons are kept in `upstream_reasons` with the lookup evidence that carries them, never as Stage 04

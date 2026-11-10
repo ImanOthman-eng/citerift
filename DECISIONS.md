@@ -948,3 +948,29 @@ earlier than an observed Retry-After, and Stage 03 throttling is not weakened. T
 the 30 s allowance and the retry budgets are part of the configuration identity, so a change is detectable by
 replay and staleness checks and historical investigations are never recomputed with other bounds. F-11 is
 design-unblocked, not implementation-verified until the later production and fault-injection tests pass.
+
+## D-043 — SR-03 unit anchor derived by Stage 04; final v1 reason vocabulary
+- Status: accepted
+- Topic: stage-04-sr03-unit-anchor-and-reason-vocabulary
+- Date: 2026-11-10
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step5/STEP5_SCHEMA_REVIEW.md (SR-03); docs/verification/stage-04/review/step5/STEP5_PLACEHOLDER_MAPPING.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPHFkw4RSkx4W14idXWvzLNy`, 2026-11-10T15:59:11Z, which also
+accepted Step 5 at `6111b279780825aab08953fd02b3711e7cbabd99` subject to this decision and authorized Step 6 only).
+
+SR-03, option A approved. Stage 03 is not modified and stays authoritative for a unit's source span (`cp_start`,
+`cp_end`, `byte_start`, `byte_end`). Stage 04 derives the unit anchor hash from the retained Stage 03 source artifact:
+`unit_span_sha256 = SHA256(source_artifact_bytes[byte_start:byte_end])`, a half-open interval over the exact retained
+bytes, never over normalized or reformatted text. Stage 04 verifies `0 <= byte_start <= byte_end <= len(source)`,
+that the span belongs to the same bound root and Stage 03 extraction, and the source artifact digest before deriving
+the hash; where a Stage 03 identifier anchor covers exactly the same span, its `raw_sha256` must equal the derived
+hash. A mismatch fails closed and never creates a new identity. VERIFY recomputes the hash from the retained bytes.
+The value is derived by Stage 04 and is never described as a Stage 03 field.
+
+Reason vocabulary: `LOOKUP_QUERY_FAILED` (D-13) and `NOT_FOUND_IN_CHECKED_SOURCES` (D-16) approved;
+`STATUS_NOT_ESTABLISHED` renamed `CURRENT_EFFECT_NOT_ESTABLISHED` (D-11: the current scholarly or retraction effect
+cannot be established from the checked evidence); `SOURCE_TYPE_CONFLICT` renamed `RETRACTION_EVENT_TYPE_CONFLICT`
+(D-7: conflicting Stage 02 retraction-event types or effects, not a conflict of data-source type). dt-1 guards,
+precedence, classes and the frozen Step 4 oracle are unchanged by these names.

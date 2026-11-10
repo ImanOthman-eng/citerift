@@ -181,7 +181,7 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
         base.update(
             rule="D-7",
             status="conflicting",
-            reasons=["SOURCE_TYPE_CONFLICT"],
+            reasons=["RETRACTION_EVENT_TYPE_CONFLICT"],
             alternatives=[
                 {"value": "retracted", "supporting": [h("ev-a")]},
                 {"value": "correction", "supporting": [h("ev-b")]},
@@ -198,7 +198,7 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
     elif cls == "UNRESOLVED_STATUS":
         base.update(
             rule="D-11",
-            reasons=["STATUS_NOT_ESTABLISHED"],
+            reasons=["CURRENT_EFFECT_NOT_ESTABLISHED"],
             upstream_reasons=[
                 {"source": "stage02_projection_basis", "code": "MIXED_CURRENT_EFFECT", "evidence": h("ev-lookup")}
             ],
@@ -254,7 +254,7 @@ def entry(cls: str, offset: int = 0) -> dict[str, Any]:
         "claim": c,
         "decision": {"decision_id": h("d-" + cls), "disposition": DISPOSITION[cls]},
         "question": question,
-        "unit": {"unit_id": "un-00013", "byte_start": offset, "byte_end": offset + 100, "raw_sha256": h("raw")},
+        "unit": {"unit_id": "un-00013", "byte_start": offset, "byte_end": offset + 100, "unit_span_sha256": h("span")},
         "checked_sources": copy.deepcopy(CHECKED) if cls == "NOT_FOUND_IN_CHECKED_SOURCES" else [],
     }
 
@@ -730,7 +730,7 @@ def test_one_valid_record_of_every_kind() -> None:
                 "pointer": "/units/0",
                 "kind": "unit",
                 "refs": [],
-                "value": None,
+                "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
             },
             step="NORMALIZE",
             attempt=1,
@@ -828,7 +828,7 @@ def test_scientific_content_without_bound_root_rejected(kind: str) -> None:
                 "pointer": "/units/0",
                 "kind": "unit",
                 "refs": [],
-                "value": None,
+                "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
             },
         ),
         "decision_recorded": ("DETECT", {"decision_id": h("d"), "claim_id": h("c"), "disposition": "REPORT_FINDING"}),
@@ -1176,6 +1176,51 @@ def test_simulation_placeholders_are_not_reason_codes() -> None:
     bad(c, CLAIM)
 
 
+@pytest.mark.negative
+def test_d043_reason_vocabulary() -> None:
+    """D-043: the v1 names are RETRACTION_EVENT_TYPE_CONFLICT (D-7) and CURRENT_EFFECT_NOT_ESTABLISHED (D-11); the
+    Step 5 names are not v1 reason codes. SOURCE_TYPE_CONFLICT stays a valid Stage 02 basis code in upstream_reasons."""
+    common = contracts().schemas[COMMON]["$defs"]["reason"]["enum"]
+    for new_name in ("RETRACTION_EVENT_TYPE_CONFLICT", "CURRENT_EFFECT_NOT_ESTABLISHED", "LOOKUP_QUERY_FAILED"):
+        assert new_name in common
+    for old_name in ("SOURCE_TYPE_CONFLICT", "STATUS_NOT_ESTABLISHED"):
+        assert old_name not in common
+    for cls, old_name in (
+        ("CONTRADICTION_IN_SOURCES", "SOURCE_TYPE_CONFLICT"),
+        ("UNRESOLVED_STATUS", "STATUS_NOT_ESTABLISHED"),
+    ):
+        c = claim(cls)
+        c["reasons"] = [old_name]
+        bad(c, CLAIM)
+    c = claim("UNRESOLVED_STATUS")
+    c["upstream_reasons"][0]["code"] = "SOURCE_TYPE_CONFLICT"
+    ok(c, CLAIM)
+
+
+@pytest.mark.negative
+def test_d043_unit_evidence_carries_the_stage04_span_hash() -> None:
+    """D-043 (SR-03): unit evidence holds the Stage-04-derived span hash and the source artifact it was derived from."""
+    payload = {
+        "evidence_id": h("e"),
+        "observation": h("o"),
+        "pointer": "/units/0",
+        "kind": "unit",
+        "refs": [],
+        "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
+    }
+    ok(record("evidence_recorded", payload, step="NORMALIZE", attempt=1, root_id=h("root")), RECORD)
+    for value in (None, {"unit_span_sha256": h("span")}, {"source_artifact": h("src")},
+                  {"source_artifact": h("src"), "unit_span_sha256": "0" * 63},
+                  {"source_artifact": h("src"), "unit_span_sha256": h("span"), "raw_sha256": h("span")}):  # fmt: skip
+        bad(record("evidence_recorded", {**payload, "value": value}, step="NORMALIZE", attempt=1, root_id=h("root")),
+            RECORD)  # fmt: skip
+    rep = report(["RETRACTED_WORK_CITED"])
+    ok(rep, REPORT)
+    r = copy.deepcopy(rep)
+    r["claims"][0]["unit"]["raw_sha256"] = r["claims"][0]["unit"].pop("unit_span_sha256")
+    bad(r, REPORT)
+
+
 # ----- reports and NEEDS_RESOLUTION ---------------------------------------------------------------------------------
 
 
@@ -1295,8 +1340,10 @@ def test_evidence_provenance_cannot_be_omitted() -> None:
 PLACEHOLDER = {
     "DEFINITION_UNUSED": ["LIST_DEFINED_UNUSED"],
     "USE_NOT_ESTABLISHED": ["NO_BOUND_USE"],
-    "STAGE02_BASIS_REASONS": ["STATUS_NOT_ESTABLISHED"],
+    "STAGE02_BASIS_REASONS": ["CURRENT_EFFECT_NOT_ESTABLISHED"],
     "LOOKUP_UNAVAILABLE": ["LOOKUP_QUERY_FAILED"],
+    # Not a placeholder: the frozen Step 4 model's D-7 reason, renamed for v1 by owner decision D-043.
+    "SOURCE_TYPE_CONFLICT": ["RETRACTION_EVENT_TYPE_CONFLICT"],
 }
 
 

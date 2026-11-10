@@ -1,0 +1,615 @@
+"""Step 6: journal chain, fold, Memory invariants, torn tail versus corruption (SPEC 8, 10.1, 10.2; MM 7)."""
+
+from __future__ import annotations
+
+import copy
+import json
+import os
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
+from typing import Any
+
+import pytest
+from memory_support import (
+    CAPTURE,
+    STAGE04,
+    Clock,
+    bundle_payload,
+    drive,
+    h,
+    live_request,
+    memory_root,
+    new_memory,
+    not_found_claim,
+    root_object,
+)
+
+from citerift.investigation import ids
+from citerift.investigation import journal as journal_module
+from citerift.investigation.canonical import canon
+from citerift.investigation.errors import (
+    AppendRefused,
+    BlobError,
+    CanonError,
+    CorruptInvestigation,
+    InvestigationMemoryError,
+    StorageError,
+)
+from citerift.investigation.memory import InvestigationMemory, created_payload
+
+pytestmark = pytest.mark.integration
+
+
+def journal_path(root: Path, key: str) -> Path:
+    return root / key / "journal.jsonl"
+
+
+def records_of(root: Path, key: str) -> list[dict[str, Any]]:
+    return [json.loads(line) for line in journal_path(root, key).read_bytes().splitlines()]
+
+
+def rewrite(root: Path, key: str, records: list[dict[str, Any]], *, rechain: bool = True) -> None:
+    """Write records back, recomputing seq-independent chain fields so that only the intended defect remains."""
+    out = []
+    prev = ids.genesis(key)
+    for original in records:
+        r = copy.deepcopy(original)
+        if rechain:
+            r["prev"] = prev
+            r["digest"] = ids.record_digest(r)
+            prev = r["digest"]
+        out.append(canon(r) + b"\n")
+    journal_path(root, key).write_bytes(b"".join(out))
+
+
+def reopen_error(root: Path, key: str) -> CorruptInvestigation:
+    with pytest.raises(CorruptInvestigation) as exc:
+        InvestigationMemory.open(root, key, clock=Clock())
+    return exc.value
+
+
+def completed(tmp: Path) -> tuple[Path, str]:
+    mem, root = new_memory(tmp)
+    drive(mem)
+    key = mem.key
+    mem.close()
+    return root, key
+
+
+# Creation and reopening -------------------------------------------------------------------------------------------
+
+
+def test_create_reopen_and_fold_agree(tmp_path: Path) -> None:
+    mem, root = new_memory(tmp_path)
+    drive(mem)
+    states = {s: mem.view.step_state(s) for s in mem.view.attempts}
+    digest, n, root_id = mem.view.content_digest(), len(mem.view.records), mem.view.root_id
+    mem.close()
+    with InvestigationMemory.open(root, mem.key, clock=Clock()) as again:
+        assert {s: again.view.step_state(s) for s in again.view.attempts} == states
+        assert (again.view.content_digest(), len(again.view.records), again.view.root_id) == (digest, n, root_id)
+        assert again.orphan_blobs() == []
+        assert again.torn_copies() == []
+    assert sorted(os.listdir(root / mem.key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+def test_creation_is_idempotent_and_refuses_a_different_payload(tmp_path: Path) -> None:
+    mem, root = new_memory(tmp_path)
+    key = mem.key
+    mem.close()
+    with InvestigationMemory.create(root, bundle_payload(root), clock=Clock()) as again:
+        assert again.key == key and len(again.view.records) == 1
+    other = bundle_payload(root)
+    other["request"]["index_path"] = "/data/other-index.sqlite"  # same key (paths are not identity), other payload
+    assert other["investigation_key"] == key
+    with pytest.raises(InvestigationMemoryError) as exc:
+        InvestigationMemory.create(root, other, clock=Clock())
+    assert exc.value.code == "INVESTIGATION_REQUEST_DIFFERS"
+    assert len(records_of(root, key)) == 1
+
+
+def test_live_request_creation_and_derived_identities(tmp_path: Path) -> None:
+    root = memory_root(tmp_path)
+    payload = created_payload(live_request(root), STAGE04)
+    assert payload["request_key"] == {"wiki": "ar", "revision_id": 76190003}
+    with InvestigationMemory.create(root, payload, clock=Clock()) as mem:
+        assert (
+            mem.key
+            == payload["investigation_key"]
+            == ids.investigation_key(payload["request_key"], "plan-1", ids.config_digest(payload["request"]["config"]))
+        )
+        assert payload["investigation_id"] == ids.investigation_id(mem.key)
+    bad = copy.deepcopy(payload)
+    bad["request"]["config"]["live_acquire_bound"]["t_acq_ms"] = 239_999  # D-042 arithmetic
+    bad["config_digest"] = ids.config_digest(bad["request"]["config"])
+    bad["investigation_key"] = ids.investigation_key(bad["request_key"], "plan-1", bad["config_digest"])
+    bad["investigation_id"] = ids.investigation_id(bad["investigation_key"])
+    with pytest.raises(AppendRefused) as exc:
+        InvestigationMemory.create(root, bad, clock=Clock())
+    assert exc.value.code == "CONFIG_INVALID"
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("config_digest", h("x")),
+        ("investigation_key", h("x")),
+        ("investigation_id", "00000000-0000-8000-8000-000000000000"),
+        ("request_key", {"capture_sha256": h("other")}),
+    ],
+)
+def test_creation_identities_are_recomputed(tmp_path: Path, field: str, value: Any) -> None:
+    root = memory_root(tmp_path)
+    payload = bundle_payload(root)
+    payload[field] = value
+    with pytest.raises(InvestigationMemoryError):
+        InvestigationMemory.create(root, payload, clock=Clock())
+
+
+# Append guard: each Memory invariant refuses a bad record before it is written --------------------------------------
+
+
+def journal_bytes(mem: InvestigationMemory) -> bytes:
+    """The stored journal, read through the open investigation directory (no path is needed)."""
+    fd = os.open("../journal.jsonl", os.O_RDONLY, dir_fd=mem.blobs.dir_fd)
+    try:
+        return os.read(fd, 1 << 24)
+    finally:
+        os.close(fd)
+
+
+def refused(mem: InvestigationMemory, invariant: str, kind: str, payload: Any, **kw: Any) -> None:
+    before = journal_bytes(mem)
+    with pytest.raises(AppendRefused) as exc:
+        mem.append(kind, payload, **kw)
+    assert exc.value.invariant == invariant, exc.value
+    assert journal_bytes(mem) == before  # nothing written
+
+
+@pytest.fixture
+def mem(tmp_path: Path) -> Any:
+    m, _ = new_memory(tmp_path)
+    yield m
+    m.close()
+
+
+@pytest.mark.negative
+def test_m6_commit_discipline(mem: InvestigationMemory) -> None:
+    blob = mem.put_blob({"x": 1})
+    obs = {"obs_kind": "bundle", "blob": blob, "source_ref": {"engine": "citerift.wiki", "operation": "open_bundle",
+                                                               "locator": None}}  # fmt: skip
+    refused(mem, "M-6", "observation_recorded", obs, step="ACQUIRE", attempt=1)  # no open attempt
+    refused(mem, "M-6", "step_started", {"step_key": h("v")}, step="VALIDATE", attempt=2)  # attempts count from 1
+    mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    refused(mem, "M-6", "step_started", {"step_key": h("a")}, step="ACQUIRE", attempt=1)  # overlapping attempt
+    refused(mem, "M-6", "step_failed", {"step_key": h("v"), "code": "INPUT_INVALID", "retryable": False,
+                                        "reason": "WIKI_UNSUPPORTED", "detail": None, "wall_clock": None},
+            step="VALIDATE", attempt=2)  # fmt: skip
+    mem.append("step_interrupted", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=2)
+    out = [mem.put_blob({"validated": "SYNTHETIC"})]
+    mem.append("step_succeeded", {"step_key": h("v"), "outputs": out, "root": None}, step="VALIDATE", attempt=2)
+    assert mem.view.step_state("VALIDATE") == "succeeded"
+
+
+@pytest.mark.negative
+def test_m14_a_succeeded_step_never_restarts(mem: InvestigationMemory) -> None:
+    drive(mem, ("VALIDATE",))
+    refused(mem, "M-14", "step_started", {"step_key": h("v")}, step="VALIDATE", attempt=2)
+
+
+@pytest.mark.negative
+def test_m9_root_binding(mem: InvestigationMemory) -> None:
+    drive(mem, ("VALIDATE",))
+    mem.append("step_started", {"step_key": h("a")}, step="ACQUIRE", attempt=1)
+    out = [mem.put_blob({"bundle": "SYNTHETIC"})]
+    good = root_object()
+    wrong_id = copy.deepcopy(good)
+    wrong_id["root_id"] = h("not the hash")
+    refused(mem, "M-9", "step_succeeded", {"step_key": h("a"), "outputs": out, "root": wrong_id},
+            step="ACQUIRE", attempt=1)  # fmt: skip
+    other_capture = root_object(capture=h("another capture"))  # a root that does not match the request
+    refused(mem, "M-9", "step_succeeded", {"step_key": h("a"), "outputs": out, "root": other_capture},
+            step="ACQUIRE", attempt=1)  # fmt: skip
+    title_only = copy.deepcopy(good)
+    title_only["subject"]["display"]["title"] = "Another title"  # the title is not identity: still the same root
+    mem.append("step_succeeded", {"step_key": h("a"), "outputs": out, "root": title_only}, step="ACQUIRE", attempt=1)
+    assert mem.view.root_id == good["root_id"] and mem.view.bind_seq == len(mem.view.records) - 1
+    # After the bind every record carries the root (set by Memory); the root cannot be replaced.
+    rec = mem.append("step_started", {"step_key": h("e")}, step="EXTRACT", attempt=1)
+    assert rec["root_id"] == good["root_id"]
+    assert mem.view.root_id == good["root_id"]
+
+
+@pytest.mark.negative
+def test_m9_records_before_the_bind_are_unbound_and_scientific_content_needs_the_root(
+    mem: InvestigationMemory,
+) -> None:
+    rec = mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    assert rec["root_id"] is None
+    ev = {"evidence_id": h("e"), "observation": h("o"), "pointer": "", "kind": "lookup_result", "refs": [],
+          "value": None}  # fmt: skip
+    refused(mem, "SCHEMA", "evidence_recorded", ev, step="VALIDATE", attempt=1)
+
+
+@pytest.mark.negative
+def test_m4_m10_references_resolve_to_earlier_records_of_the_right_layer(mem: InvestigationMemory) -> None:
+    drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT"))
+    mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
+    unrecorded = mem.put_blob({"never": "recorded as an observation"})
+    ev = {"evidence_id": h("e1"), "observation": unrecorded, "pointer": "", "kind": "lookup_result", "refs": [],
+          "value": None}  # fmt: skip
+    refused(mem, "M-10", "evidence_recorded", ev, step="NORMALIZE", attempt=1)
+    extraction = _extraction_blob(mem)
+    ok_ev = {**ev, "observation": extraction}
+    refused(mem, "M-4", "evidence_recorded", {**ok_ev, "refs": [h("missing")]}, step="NORMALIZE", attempt=1)
+    mem.append("evidence_recorded", ok_ev, step="NORMALIZE", attempt=1)
+    refused(mem, "M-14", "evidence_recorded", ok_ev, step="NORMALIZE", attempt=1)  # defined once
+
+
+def _extraction_blob(mem: InvestigationMemory) -> str:
+    for r in mem.view.records:
+        if r["kind"] == "observation_recorded" and r["payload"]["obs_kind"] == "extraction":
+            return str(r["payload"]["blob"])
+    raise AssertionError("no extraction observation")
+
+
+@pytest.mark.negative
+def test_m7_claims_and_decisions_need_committed_support(mem: InvestigationMemory) -> None:
+    drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP"))
+    mem.append("step_started", {"step_key": h("d")}, step="DETECT", attempt=1)
+    claim = not_found_claim(h("evidence that does not exist"))
+    refused(mem, "M-4", "claim_recorded", claim, step="DETECT", attempt=1)
+    decision = {"decision_id": h("dec"), "claim_id": h("no claim"), "disposition": "REPORT_NOT_FOUND"}
+    refused(mem, "M-4", "decision_recorded", decision, step="DETECT", attempt=1)
+
+
+@pytest.mark.negative
+def test_uncommitted_content_is_not_visible_to_later_attempts(mem: InvestigationMemory) -> None:
+    """M-6: content of an attempt that did not succeed is ignored, so a retry may define the same ids again and
+    nothing may refer to the failed attempt's ids."""
+    drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT"))
+    ext = _extraction_blob(mem)
+    ev = {"evidence_id": h("e1"), "observation": ext, "pointer": "", "kind": "lookup_result", "refs": [],
+          "value": None}  # fmt: skip
+    mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
+    mem.append("evidence_recorded", ev, step="NORMALIZE", attempt=1)
+    mem.append("step_interrupted", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
+    assert mem.view.committed.evidence == {}
+    mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=2)
+    refused(mem, "M-4", "evidence_recorded", {**ev, "evidence_id": h("e2"), "refs": [h("e1")]},
+            step="NORMALIZE", attempt=2)  # fmt: skip
+    mem.append("evidence_recorded", ev, step="NORMALIZE", attempt=2)
+    out = [mem.put_blob({"normalized": [h("e1")]})]
+    mem.append("step_succeeded", {"step_key": h("n"), "outputs": out, "root": None}, step="NORMALIZE", attempt=2)
+    assert set(mem.view.committed.evidence) == {h("e1")}
+
+
+@pytest.mark.negative
+def test_m8_supersession_needs_new_evidence(mem: InvestigationMemory) -> None:
+    drive(mem)
+    lookup_ev = next(iter(mem.view.committed.evidence))
+    old = next(iter(mem.view.committed.claims))
+    mem.append("step_started", {"step_key": h("x")}, step="ASSEMBLE", attempt=1)
+    # ASSEMBLE cannot write claims (schema), and a supersession must name a successor with new evidence.
+    bad = {"old_claim_id": old, "new_claim_id": old, "reason": "NEW_EVIDENCE", "new_evidence": [lookup_ev]}
+    refused(mem, "M-8", "claim_superseded", bad, step="ASSEMBLE", attempt=1)
+
+
+@pytest.mark.negative
+def test_m3_a_record_cannot_name_a_missing_blob(mem: InvestigationMemory) -> None:
+    mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    refused(mem, "M-5", "step_succeeded", {"step_key": h("v"), "outputs": [h("not written")], "root": None},
+            step="VALIDATE", attempt=1)  # fmt: skip
+
+
+@pytest.mark.negative
+def test_records_with_floats_or_oversize_are_refused(mem: InvestigationMemory) -> None:
+    mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    with pytest.raises(CanonError):
+        mem.append("step_failed", {"step_key": h("v"), "code": "INPUT_INVALID", "retryable": False,
+                                   "reason": "WIKI_UNSUPPORTED", "detail": None, "wall_clock": None, "x": 1.0},
+                   step="VALIDATE", attempt=1)  # fmt: skip
+    with pytest.raises(AppendRefused) as exc:
+        mem.append("step_failed", {"step_key": h("v"), "code": "INPUT_INVALID", "retryable": False,
+                                   "reason": "WIKI_UNSUPPORTED", "detail": "x" * (1024 * 1024), "wall_clock": None},
+                   step="VALIDATE", attempt=1)  # fmt: skip
+    assert exc.value.code == "RECORD_TOO_LARGE"
+
+
+def test_at_never_decreases_even_if_the_clock_does(tmp_path: Path) -> None:
+    """M-1: ``at`` is non-decreasing; a clock that goes back is clamped to the previous record's time."""
+    root = memory_root(tmp_path)
+    noon = datetime(2026, 11, 10, 12, 0, tzinfo=UTC)
+    times = iter([noon + timedelta(seconds=5), noon + timedelta(seconds=6), noon + timedelta(seconds=2)])
+    with InvestigationMemory.create(root, bundle_payload(root), clock=lambda: next(times)) as m:
+        m.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+        m.append("step_interrupted", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+        ats = [r["at"] for r in m.view.records]
+    assert ats == ["2026-11-10T12:00:05.000000Z", "2026-11-10T12:00:06.000000Z", "2026-11-10T12:00:06.000000Z"]
+
+
+@pytest.mark.negative
+def test_read_only_open_cannot_append(tmp_path: Path) -> None:
+    root, key = completed(tmp_path)
+    with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as ro:
+        with pytest.raises(InvestigationMemoryError) as exc:
+            ro.append("step_started", {"step_key": h("x")}, step="ASSEMBLE", attempt=1)
+        assert exc.value.code == "READ_ONLY"
+
+
+# Corruption on open: every invariant, found in a stored journal --------------------------------------------------
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    ("mutate", "invariant"),
+    [
+        (lambda rs: rs.__setitem__(3, {**rs[3], "seq": 9}), "M-1"),
+        (lambda rs: rs.__delitem__(3), "M-1"),
+        (lambda rs: rs.__setitem__(3, {**rs[3], "at": "2026-01-01T00:00:00Z"}), "M-1"),
+        (lambda rs: rs.__setitem__(7, {**rs[7], "root_id": h("forged")}), "M-9"),  # after the bind at seq 5
+        (lambda rs: rs.__setitem__(4, {**rs[4], "root_id": h("forged")}), "SCHEMA"),  # before the bind: null
+        (lambda rs: rs.insert(6, copy.deepcopy(rs[6])), "M-1"),
+        (lambda rs: rs.__setitem__(0, {**rs[0], "v": 2}), "S-8.7"),
+        (lambda rs: rs.append({**rs[-1], "seq": len(rs)}), "M-6"),  # a second terminal, no open attempt
+        (lambda rs: rs.append({**rs[6], "seq": len(rs), "at": rs[-1]["at"], "attempt": 2}), "M-14"),  # EXTRACT again
+    ],
+)
+def test_invariant_violations_in_a_stored_journal_are_corrupt(tmp_path: Path, mutate: Any, invariant: str) -> None:
+    root, key = completed(tmp_path)
+    rs = records_of(root, key)
+    mutate(rs)
+    rewrite(root, key, rs)
+    err = reopen_error(root, key)
+    assert getattr(err.cause, "invariant", None) == invariant, err
+
+
+@pytest.mark.negative
+def test_corrupt_investigation_is_never_repaired(tmp_path: Path) -> None:
+    root, key = completed(tmp_path)
+    rs = records_of(root, key)
+    rs[2]["payload"]["step_key"] = h("tampered")  # historical record changed, digest not recomputed
+    rewrite(root, key, rs, rechain=False)
+    before = journal_path(root, key).read_bytes()
+    err = reopen_error(root, key)
+    assert err.cause.code == "JOURNAL_CORRUPT"
+    assert journal_path(root, key).read_bytes() == before
+    assert not [n for n in os.listdir(root / key) if n.startswith("journal.jsonl.torn")]
+
+
+# Torn tail versus corruption: the owner's evidence list ------------------------------------------------------------
+
+
+def _flip_hex(line: bytes, field: bytes) -> bytes:
+    """Change the first hex digit of ``field``'s value, keeping its length."""
+    at = line.index(field) + len(field)
+    new = b"1" if line[at : at + 1] == b"0" else b"0"
+    return line[:at] + new + line[at + 1 :]
+
+
+def _lines(root: Path, key: str) -> list[bytes]:
+    """The journal's lines without their newlines."""
+    return journal_path(root, key).read_bytes().split(b"\n")[:-1]
+
+
+@pytest.mark.parametrize(
+    ("name", "tail"),
+    [
+        ("truncated final line", lambda last: last[: len(last) // 2]),
+        ("invalid final JSON", lambda last: b"{not json\n"),
+        ("final line zero-filled", lambda last: b"\x00" * 40),
+        ("final record with a wrong digest (SPEC 8.6: torn)", lambda last: _flip_hex(last, b'"digest":"')),
+    ],
+)
+def test_torn_tail_is_preserved_and_removed(tmp_path: Path, name: str, tail: Any) -> None:
+    root, key = completed(tmp_path)
+    lines = _lines(root, key)
+    good = b"".join(line + b"\n" for line in lines[:-1])
+    damaged = good + tail(lines[-1] + b"\n")
+    journal_path(root, key).write_bytes(damaged)
+    with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as ro:  # read-only: reported, unchanged
+        assert ro.torn_tail is not None
+        assert len(ro.view.records) == len(lines) - 1
+    assert journal_path(root, key).read_bytes() == damaged
+    with InvestigationMemory.open(root, key, clock=Clock()) as rw:
+        assert rw.torn_copies() == ["journal.jsonl.torn-0"]
+        assert len(rw.view.records) == len(lines) - 1
+        assert rw.view.step_state("DETECT") == "running"  # the final step_succeeded was torn: not committed
+        drive(rw)  # resume: the step re-runs and commits
+        assert rw.view.step_state("DETECT") == "succeeded"
+    assert (root / key / "journal.jsonl.torn-0").read_bytes() == damaged  # Copy → Verify → Preserve
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "case",
+    ["modified historical record", "broken prev", "wrong digest in history", "torn line before the end"],
+)
+def test_corruption_is_distinct_from_a_torn_tail(tmp_path: Path, case: str) -> None:
+    root, key = completed(tmp_path)
+    lines = _lines(root, key)
+    i = 5
+    if case == "modified historical record":
+        lines[i] = _flip_hex(lines[i], b'"step_key":"')  # still schema-valid; the digest no longer matches
+    elif case == "broken prev":
+        rs = records_of(root, key)
+        rs[i]["prev"] = h("other")
+        rs[i]["digest"] = ids.record_digest(rs[i])  # the record is self-consistent; the chain is not
+        lines[i] = canon(rs[i])
+    elif case == "wrong digest in history":
+        lines[i] = _flip_hex(lines[i], b'"digest":"')
+    else:
+        lines[i] = lines[i][:20]
+    data = b"".join(line + b"\n" for line in lines)
+    journal_path(root, key).write_bytes(data)
+    err = reopen_error(root, key)
+    assert getattr(err.cause, "invariant", None) == "M-2", err
+    assert journal_path(root, key).read_bytes() == data
+
+
+@pytest.mark.negative
+def test_missing_or_corrupted_blob_is_corrupt(tmp_path: Path) -> None:
+    root, key = completed(tmp_path)
+    blobs = sorted((root / key / "blobs").iterdir())
+    victim = blobs[0]
+    data = victim.read_bytes()
+    victim.unlink()
+    err = reopen_error(root, key)
+    assert err.cause.code == "BLOB_MISSING"
+    victim.write_bytes(data.replace(b"S", b"T", 1) if b"S" in data else data + b" ")
+    err = reopen_error(root, key)
+    assert err.cause.code == "BLOB_CORRUPT"
+    victim.write_bytes(data)
+    with InvestigationMemory.open(root, key, clock=Clock()):
+        pass
+
+
+@pytest.mark.negative
+def test_blob_under_its_name_that_is_not_canonical_is_corrupt(tmp_path: Path) -> None:
+    mem, root = new_memory(tmp_path)
+    with pytest.raises(CanonError):
+        mem.put_blob_bytes(b'{"a": 1}')
+    blob = mem.put_blob({"a": 1})
+    assert mem.put_blob({"a": 1}) == blob  # idempotent
+    mem.close()
+    path = root / mem.key / "blobs" / blob
+    path.chmod(0o644)
+    path.write_bytes(b'{"a":2}')
+    with InvestigationMemory.open(root, mem.key, clock=Clock()) as again, pytest.raises(BlobError) as exc:
+        again.put_blob({"a": 1})  # orphan blob (no record names it), so the open succeeds; the put refuses
+    assert exc.value.code == "BLOB_CORRUPT"
+    assert path.read_bytes() == b'{"a":2}'  # never overwritten
+
+
+@pytest.mark.negative
+def test_corrupt_history_with_a_torn_tail_is_not_repaired(tmp_path: Path) -> None:
+    """Validation precedes any change: a torn tail after a corrupt record is not removed, nothing is copied."""
+    root, key = completed(tmp_path)
+    lines = _lines(root, key)
+    lines[3] = _flip_hex(lines[3], b'"digest":"')
+    data = b"".join(line + b"\n" for line in lines[:-1]) + lines[-1][:10]
+    journal_path(root, key).write_bytes(data)
+    err = reopen_error(root, key)
+    assert getattr(err.cause, "invariant", None) == "M-2"
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+@pytest.mark.reproducibility
+def test_m13_equal_committed_inputs_give_an_equal_content_digest(tmp_path: Path) -> None:
+    """M-13: C(J) depends on committed content only, not on the memory root, times, or failed attempts."""
+    (tmp_path / "a").mkdir()
+    (tmp_path / "b").mkdir()
+    first, _ = new_memory(tmp_path / "a")
+    drive(first)
+    second, _ = new_memory(tmp_path / "b")
+    drive(second, ("VALIDATE", "ACQUIRE"))
+    second.append("step_started", {"step_key": h("EXTRACT")}, step="EXTRACT", attempt=1)
+    second.put_blob({"partial": "work of an attempt that never commits"})
+    second.append("step_interrupted", {"step_key": h("EXTRACT")}, step="EXTRACT", attempt=1)
+    drive(second)
+    assert first.key == second.key
+    assert first.view.content_digest() == second.view.content_digest()
+    assert len(first.view.records) != len(second.view.records)
+    first.close()
+    second.close()
+
+
+@pytest.mark.negative
+def test_failed_write_poisons_the_instance_until_reopen(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """SPEC 10.2 disk full: a failed append raises STORAGE_ERROR, commits nothing, and the instance writes no more."""
+    m, root = new_memory(tmp_path)
+    m.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+
+    def no_space(fd: int) -> None:
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(journal_module.os, "fsync", no_space)
+    with pytest.raises(StorageError) as exc:
+        m.append("step_interrupted", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    assert exc.value.code == "STORAGE_ERROR"
+    assert len(m.view.records) == 2  # the fold did not advance
+    monkeypatch.undo()
+    with pytest.raises(StorageError):
+        m.append("step_interrupted", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    with pytest.raises(StorageError):
+        m.put_blob({"x": 1})
+    m.close()
+    with InvestigationMemory.open(root, m.key, clock=Clock()) as again:
+        # The line reached the file before fsync failed; append truncated it back, so nothing was committed.
+        assert len(again.view.records) == 2
+        assert again.torn_tail is None
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize("where", ["request", "stage04"])
+def test_unsupported_schema_version_is_refused(tmp_path: Path, where: str) -> None:
+    """SR-12 / S-8.7: a version the reader does not know is refused, not interpreted."""
+    root = memory_root(tmp_path)
+    payload = bundle_payload(root)
+    payload = copy.deepcopy(payload)
+    payload[where]["schema_version"] = "2.0.0"
+    with pytest.raises(AppendRefused) as exc:
+        InvestigationMemory.create(root, payload, clock=Clock())
+    assert exc.value.invariant == "SCHEMA"
+    assert os.listdir(root) == []
+
+
+@pytest.mark.negative
+def test_an_exception_of_any_type_during_append_commits_nothing(tmp_path: Path) -> None:
+    """Review finding R6-1: an interrupt after the write and before fsync leaves no record and a poisoned instance,
+    so the next append cannot reuse the sequence number and fork the chain."""
+    from citerift.investigation import faults
+
+    m, root = new_memory(tmp_path)
+
+    def interrupt(name: str, ctx: dict[str, Any]) -> None:
+        if name == "journal.after_write":
+            raise KeyboardInterrupt
+
+    faults.install(interrupt)
+    try:
+        with pytest.raises(KeyboardInterrupt):
+            m.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    finally:
+        faults.install(None)
+    with pytest.raises(StorageError):
+        m.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
+    m.close()
+    with InvestigationMemory.open(root, m.key, clock=Clock()) as again:
+        assert len(again.view.records) == 1
+        drive(again)
+
+
+@pytest.mark.negative
+def test_records_never_alias_the_callers_objects(tmp_path: Path) -> None:
+    """Review finding R6-4: mutating a payload after append, or the record append returns, changes neither the view
+    nor C(J); created_payload copies its inputs."""
+    root = memory_root(tmp_path)
+    stage04 = dict(STAGE04)
+    payload = created_payload(bundle_payload(root)["request"], stage04, bundle_capture_sha256=CAPTURE)
+    stage04["schema_version"] = "9.9.9"
+    assert payload["stage04"]["schema_version"] == "1.0.0"
+    with InvestigationMemory.create(root, payload, clock=Clock()) as m:
+        drive(m)
+        before = m.view.content_digest()
+        mine = {"step_key": h("x")}
+        returned = m.append("step_started", mine, step="ASSEMBLE", attempt=1)
+        mine["step_key"] = h("changed")
+        returned["payload"]["step_key"] = h("changed too")
+        assert m.view.records[-1]["payload"]["step_key"] == h("x")
+        assert m.view.content_digest() == before
+
+
+@pytest.mark.negative
+def test_journal_size_bound_is_enforced_on_append(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Review finding R6-9: an append that would make the journal unreadable (over its bound) is refused."""
+    from citerift.investigation import memory as memory_module
+
+    m, _ = new_memory(tmp_path)
+    with m:
+        size = len(journal_bytes(m))
+        monkeypatch.setattr(memory_module, "MAX_JOURNAL_BYTES", size + 10)
+        refused(m, "S-8.3", "step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)

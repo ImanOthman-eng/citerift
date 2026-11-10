@@ -168,7 +168,7 @@ support (`policy.reduce`, rule 7f).
 
 | Child | Identity | Parent |
 |---|---|---|
-| Unit | `unit_ref = H(root_id, "unit", unit.id, unit.source.byte_start, unit.source.byte_end, unit.source.raw_sha256)` | root |
+| Unit | `unit_ref = H(root_id, "unit", unit.id, unit.source.byte_start, unit.source.byte_end, unit_span_sha256)` | root |
 | Identifier occurrence | `ident_ref = H(root_id, "identifier", identifier.id, source byte span, source raw_sha256)` | unit, or root when `unit_id` is null |
 | Work candidate | `cand_ref = H(unit_ref, sorted keys)` | unit |
 | Observation | SHA-256 of its canonical content (the blob digest) | root |
@@ -176,6 +176,17 @@ support (`policy.reduce`, rule 7f).
 | Claim | `claim_id = H(cand_ref, class, rule id, table version, sorted evidence ids)` | work candidate |
 | Decision | `decision_id = H(claim_id, disposition)` | claim |
 | Question | `question_id = H(claim_id, "question", kind)` | claim |
+
+Unit anchor (owner decision D-043, review finding SR-03 of Step 5). Stage 03 is authoritative for a unit's source span
+(`cp_start`, `cp_end`, `byte_start`, `byte_end`) and emits no hash for it. Stage 04 derives
+`unit_span_sha256 = SHA-256(source_artifact_bytes[byte_start:byte_end])` over the half-open byte interval of the exact
+retained Stage 03 source artifact (the extraction's `capture.source_artifact`), never over normalized or reformatted
+text. Before deriving it, Stage 04 verifies the source artifact's digest, that `0 ≤ byte_start ≤ byte_end ≤
+len(source)`, that the span lies on code-point boundaries matching `cp_start` and `cp_end`, and that the extraction
+belongs to the bound root (its `capture.capture_sha256` equals the root's). Where a Stage 03 identifier anchor covers
+exactly the same byte span, its `raw_sha256` must equal the derived hash. Any mismatch fails closed and never creates a
+new identity. VERIFY recomputes the hash from the retained bytes. Unit evidence records the hash with the source
+artifact digest.
 
 - S-4.9 Stage 03 element ids (`un-00013`) are stable for a given extraction digest; the source anchors make every
   child identity independent of them across engines, so a re-extraction that renumbers units changes child ids only
@@ -372,11 +383,11 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-4 | 2 | `σ = NONE` and `τ` true | `UNRESOLVED_IDENTIFIER` | reasons `IDENTIFIER_MALFORMED` and/or `IDENTIFIER_ROLE_UNRESOLVED` |
 | D-5 | 3 | the lookups of `c` break a Stage 02 contract visible to Stage 04 (S-6.12): some lookup in `Λ(c)` has state `invalid_query`; a lookup other than `L` has a state or projection outside F-1 to F-4, F-8 (MM 4.5); Q1(DOI) is `ambiguous_identity`; or, for `σ = PAIR`, a witness or co-naming event without matching lookup states, (`κ = INCOMPATIBLE`) ≠ (Q2 state `ambiguous_identity`), Q1(PMID) `ambiguous_identity` without a witness, or (all three available) a Q2 state other than the one F-9 implies | — (DETECT `failed_terminal`, `ADAPTER_INCONSISTENT`) | impossible for valid keys (P2, F-9); fail-closed; corrected in Step 4 (`review/step4/STEP4_SPEC_CORRECTIONS.md`, SC-2) |
 | D-6 | 4 | `σ = PAIR` and `κ = INCOMPATIBLE` | `IDENTITY_CONFLICT` | section 7.5, S-7.3; reason `IDENTITY_WITNESSED`, plus `LOOKUP_PARTIAL` when a lookup of `c` is unavailable and taint reasons when `τ` |
-| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID); reason `SOURCE_TYPE_CONFLICT` |
+| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID); reason `RETRACTION_EVENT_TYPE_CONFLICT` |
 | D-8 | 5 | `τ` | `UNRESOLVED_IDENTIFIER` | taint reasons (S-6.6) |
 | D-9 | 5 | `L.state = ambiguous_identity` and projection `uncertain` with value null | `UNRESOLVED_IDENTITY` | reason `KEY_NAMES_SEVERAL_WORKS` |
 | D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
-| D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `STATUS_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
+| D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `CURRENT_EFFECT_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
 | D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
 | D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`; the code of the failed query stays in its lookup observation |
 | D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
@@ -384,8 +395,9 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | reason `NOT_FOUND_IN_CHECKED_SOURCES`; provenance = checked sources |
 | D-17 | 10 | otherwise | — (DETECT `failed_terminal`, `DECISION_TABLE_GAP`) | unreachable on Stage 02's model (MM proposition P1); fail-closed; reached by a deciding lookup outside the Stage 02 contract |
 
-Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5; they replace the Step 4 model's
-placeholders and change no class, guard or precedence (`review/step5/STEP5_PLACEHOLDER_MAPPING.md`).
+Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5 and finalized by owner decision D-043; they
+replace the Step 4 model's placeholders and change no class, guard or precedence
+(`review/step5/STEP5_PLACEHOLDER_MAPPING.md`).
 
 Reason codes attached by D-14 (and kept on any class when they apply): `KEY_RESULTS_DIFFER` when the lookups of the keys
 of a `PAIR` candidate have different states (for example `matched` and `no_record`); `PAIR_UNCORROBORATED` when
@@ -829,7 +841,8 @@ status) stay in the Stage 04 report, which `$ref`s v1 assertions by URN (MR-05).
 ## 12. Provenance
 
 - S-12.1 Every claim's evidence chain contains: the root (`wiki`, `page_id`, `revision_id`, `capture_sha256`); the
-  extraction digest and engine identity; the unit id and source anchor (byte span, `raw_sha256`); each identifier
+  extraction digest and engine identity; the unit id and source anchor (byte span and the Stage-04-derived
+  `unit_span_sha256`, section 4.3); each identifier
   occurrence's anchor, raw text hash, decoding steps and normalization record; the index identity (S-3.2); each
   lookup's keys, state, `evidence_digest` and event ids with `row_sha256`; the coherence result for a pair; the rule id
   and table version; the reasons.
