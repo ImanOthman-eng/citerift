@@ -1,0 +1,831 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:report",
+  "title": "CITERIFT Stage 04 investigation report, version 1",
+  "description": "The Stage 04 report (SPEC 11.1): a pure function of the committed fold at ASSEMBLE. It is exported only when VERIFY passes, so only the two successful terminal states exist here: COMPLETED, or NEEDS_RESOLUTION with outcome partial (F-16). FAILED, STALE and CORRUPT investigations export no report (S-9.7); this schema has no representation for them. There is no free-text summary and no field meaning 'clean', 'safe' or 'no retracted citations' (S-7.7). Several Stage 02 events per paper stay here; v1 investigation records (schemas/contracts/v1, unchanged) are separate projections.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "investigation_key",
+    "investigation_id",
+    "root",
+    "terminal_state",
+    "outcome",
+    "claims",
+    "observations",
+    "evidence",
+    "article_summary",
+    "limitations",
+    "identities"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:report"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "investigation_key": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "investigation_id": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/investigation_uuid"
+    },
+    "root": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/root"
+    },
+    "terminal_state": {
+      "description": "The lifecycle state the investigation enters when VERIFY passes (it is FAILED otherwise, and the report is not exported). NEEDS_RESOLUTION exactly when a question is open.",
+      "enum": [
+        "COMPLETED",
+        "NEEDS_RESOLUTION"
+      ]
+    },
+    "outcome": {
+      "description": "S-9.7: partial when the extraction is partial, a claim is LOOKUP_UNAVAILABLE or a question is open; otherwise completed.",
+      "enum": [
+        "completed",
+        "partial"
+      ]
+    },
+    "claims": {
+      "description": "Ordered by unit source byte offset, then candidate key order (SPEC 11.1).",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim_entry"
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blob",
+          "obs_kind"
+        ],
+        "properties": {
+          "blob": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          },
+          "obs_kind": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/obs_kind"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "description": "Every evidence item a claim refers to (S-12.1). Completeness of each chain is a VERIFY check (S-12.2).",
+      "type": "array",
+      "items": {
+        "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence"
+      }
+    },
+    "article_summary": {
+      "description": "Counts and the works with positive claims only (S-7.7). Nothing is derived from absent claims.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claims_by_class",
+        "positive_works",
+        "snapshot_id"
+      ],
+      "properties": {
+        "claims_by_class": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/claim_class"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "positive_works": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "work",
+              "classes",
+              "claim_ids"
+            ],
+            "properties": {
+              "work": {
+                "type": "object",
+                "additionalProperties": false,
+                "minProperties": 1,
+                "properties": {
+                  "doi": {
+                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+                  },
+                  "pmid": {
+                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+                  }
+                }
+              },
+              "classes": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "RETRACTED_WORK_CITED",
+                    "CONCERN_CITED",
+                    "CORRECTION_CITED",
+                    "REINSTATED_WORK_CITED"
+                  ]
+                }
+              },
+              "claim_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                }
+              }
+            }
+          }
+        },
+        "snapshot_id": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
+        }
+      }
+    },
+    "limitations": {
+      "description": "Stable limitation codes. A closed list, so that no limitation can state a global negative.",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "CHECKED_SOURCES_ONLY",
+          "EXTRACTION_PARTIAL",
+          "LOOKUP_UNAVAILABLE_FOR_SOME_CANDIDATES",
+          "OPEN_QUESTIONS",
+          "MARKERS_NOT_INTERPRETED",
+          "OBSERVATION_ROLE_IDENTIFIERS_NOT_DECIDED",
+          "UNSTRUCTURED_TEXT_AS_STAGE03_DEFINES"
+        ]
+      },
+      "contains": {
+        "const": "CHECKED_SOURCES_ONLY"
+      }
+    },
+    "identities": {
+      "description": "The input identity vector (SPEC 10.3) that replay and staleness compare, including the effective configuration with the D-042 live-ACQUIRE bound.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_key",
+        "extraction",
+        "index",
+        "stage04",
+        "config",
+        "config_digest"
+      ],
+      "properties": {
+        "request_key": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/request_key"
+        },
+        "extraction": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/extraction_identity"
+        },
+        "index": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/index_identity"
+        },
+        "stage04": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/stage04_identity"
+        },
+        "config": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/config"
+        },
+        "config_digest": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "description": "D-042: the live bound is part of the identity of a live-capture investigation and absent for a retained bundle.",
+          "if": {
+            "properties": {
+              "request_key": {
+                "required": [
+                  "wiki",
+                  "revision_id"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "config": {
+                "properties": {
+                  "live_acquire_bound": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "config": {
+                "properties": {
+                  "live_acquire_bound": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "description": "F-16: NEEDS_RESOLUTION is never represented as COMPLETED. An identity conflict or source contradiction routes to resolution and opens a question (W-8).",
+      "if": {
+        "properties": {
+          "claims": {
+            "contains": {
+              "properties": {
+                "question": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "terminal_state": {
+            "const": "NEEDS_RESOLUTION"
+          },
+          "outcome": {
+            "const": "partial"
+          },
+          "limitations": {
+            "contains": {
+              "const": "OPEN_QUESTIONS"
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "terminal_state": {
+            "const": "COMPLETED"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "claims": {
+            "contains": {
+              "properties": {
+                "claim": {
+                  "properties": {
+                    "class": {
+                      "const": "LOOKUP_UNAVAILABLE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "const": "partial"
+          },
+          "limitations": {
+            "contains": {
+              "const": "LOOKUP_UNAVAILABLE_FOR_SOME_CANDIDATES"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "identities": {
+            "properties": {
+              "extraction": {
+                "properties": {
+                  "status": {
+                    "const": "partial"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "outcome": {
+            "const": "partial"
+          },
+          "limitations": {
+            "contains": {
+              "const": "EXTRACTION_PARTIAL"
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "S-9.7 is an equivalence: outcome is partial exactly when the extraction is partial, a claim is LOOKUP_UNAVAILABLE or a question is open. With items 0 to 2 this rules out a partial outcome without a cause.",
+      "if": {
+        "properties": {
+          "outcome": {
+            "const": "partial"
+          }
+        },
+        "required": [
+          "outcome"
+        ]
+      },
+      "then": {
+        "anyOf": [
+          {
+            "properties": {
+              "identities": {
+                "properties": {
+                  "extraction": {
+                    "properties": {
+                      "status": {
+                        "const": "partial"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "identities"
+            ]
+          },
+          {
+            "properties": {
+              "claims": {
+                "contains": {
+                  "properties": {
+                    "claim": {
+                      "properties": {
+                        "class": {
+                          "const": "LOOKUP_UNAVAILABLE"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "claims"
+            ]
+          },
+          {
+            "properties": {
+              "claims": {
+                "contains": {
+                  "properties": {
+                    "question": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "claims"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "description": "The OPEN_QUESTIONS limitation appears only when a question is open.",
+      "if": {
+        "properties": {
+          "limitations": {
+            "contains": {
+              "const": "OPEN_QUESTIONS"
+            }
+          }
+        },
+        "required": [
+          "limitations"
+        ]
+      },
+      "then": {
+        "properties": {
+          "claims": {
+            "contains": {
+              "properties": {
+                "question": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "claims"
+        ]
+      }
+    },
+    {
+      "description": "This limitation appears only when a claim is LOOKUP_UNAVAILABLE.",
+      "if": {
+        "properties": {
+          "limitations": {
+            "contains": {
+              "const": "LOOKUP_UNAVAILABLE_FOR_SOME_CANDIDATES"
+            }
+          }
+        },
+        "required": [
+          "limitations"
+        ]
+      },
+      "then": {
+        "properties": {
+          "claims": {
+            "contains": {
+              "properties": {
+                "claim": {
+                  "properties": {
+                    "class": {
+                      "const": "LOOKUP_UNAVAILABLE"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "claims"
+        ]
+      }
+    },
+    {
+      "description": "This limitation appears only when the extraction is partial.",
+      "if": {
+        "properties": {
+          "limitations": {
+            "contains": {
+              "const": "EXTRACTION_PARTIAL"
+            }
+          }
+        },
+        "required": [
+          "limitations"
+        ]
+      },
+      "then": {
+        "properties": {
+          "identities": {
+            "properties": {
+              "extraction": {
+                "properties": {
+                  "status": {
+                    "const": "partial"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "identities"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "claim_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim",
+        "decision",
+        "question",
+        "unit",
+        "checked_sources"
+      ],
+      "properties": {
+        "claim": {
+          "$ref": "urn:citerift:schema:investigation:v1:claim"
+        },
+        "decision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision_id",
+            "disposition"
+          ],
+          "properties": {
+            "decision_id": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            },
+            "disposition": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/disposition"
+            }
+          }
+        },
+        "question": {
+          "description": "The open question of a routed claim (S-7.6); null otherwise.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "question_id",
+                "kind"
+              ],
+              "properties": {
+                "question_id": {
+                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                },
+                "kind": {
+                  "enum": [
+                    "identity_conflict",
+                    "source_conflict"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "unit": {
+          "description": "The Stage 03 unit and its source anchor (S-12.1). Stage 03 units carry a byte span; raw_sha256 is the SHA-256 of those source bytes (review finding SR-03).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "unit_id",
+            "byte_start",
+            "byte_end",
+            "raw_sha256"
+          ],
+          "properties": {
+            "unit_id": {
+              "$ref": "urn:citerift:schema:wiki:v1:extraction#/$defs/id"
+            },
+            "byte_start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "byte_end": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "raw_sha256": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            }
+          }
+        },
+        "checked_sources": {
+          "description": "The sources the deciding lookup checked (Stage 02 lookup result). Required for NOT_FOUND_IN_CHECKED_SOURCES, so that the report says which sources were checked (CP-6).",
+          "$ref": "urn:citerift:schema:retraction:v1:lookup-result#/properties/checked_sources"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "enum": [
+                      "RETRACTED_WORK_CITED",
+                      "CONCERN_CITED",
+                      "CORRECTION_CITED",
+                      "REINSTATED_WORK_CITED"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "REPORT_FINDING"
+                  }
+                }
+              },
+              "question": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "const": "NOT_FOUND_IN_CHECKED_SOURCES"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "REPORT_NOT_FOUND"
+                  }
+                }
+              },
+              "question": {
+                "type": "null"
+              },
+              "checked_sources": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "const": "IDENTITY_CONFLICT"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "ROUTE_NEEDS_RESOLUTION"
+                  }
+                }
+              },
+              "question": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "identity_conflict"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "const": "CONTRADICTION_IN_SOURCES"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "ROUTE_NEEDS_RESOLUTION"
+                  }
+                }
+              },
+              "question": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "const": "source_conflict"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "enum": [
+                      "UNRESOLVED_IDENTITY",
+                      "UNRESOLVED_IDENTIFIER",
+                      "UNRESOLVED_STATUS",
+                      "NOTICE_CITED"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "ABSTAIN"
+                  }
+                }
+              },
+              "question": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "const": "LOOKUP_UNAVAILABLE"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "ABSTAIN_UNAVAILABLE"
+                  }
+                }
+              },
+              "question": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "claim": {
+                "properties": {
+                  "class": {
+                    "enum": [
+                      "UNUSED_DEFINITION",
+                      "UNRESOLVED_USE",
+                      "NO_IDENTIFIER"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "disposition": {
+                    "const": "OUT_OF_SCOPE"
+                  }
+                }
+              },
+              "question": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

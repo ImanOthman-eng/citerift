@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:request",
+  "title": "CITERIFT Stage 04 investigation request, version 1",
+  "description": "A request for one pinned Wikipedia article revision (SPEC 4.1, 5.1; owner decision D-4). Two forms: a pinned live capture (wiki and revision id; ACQUIRE captures through Stage 03) and a retained Stage 03 bundle. A request naming only a title or only a page id is refused (S-4.3, REVISION_NOT_PINNED). The request is the input identity fixed at creation; the authoritative root is bound later, by the committed ACQUIRE (S-4.4, F-15). Existence and safety of the paths are checked by VALIDATE (SPEC 5.1), not by this schema.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "mode", "subject", "index_path", "memory_root", "config"],
+  "properties": {
+    "schema": {"const": "urn:citerift:schema:investigation:v1:request"},
+    "schema_version": {"description": "Unknown versions fail closed.", "const": "1.0.0"},
+    "mode": {"enum": ["live_capture", "retained_bundle"]},
+    "subject": {"type": "object", "required": ["type"], "properties": {"type": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/subject_type"}}},
+    "index_path": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/absolute_path"},
+    "memory_root": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/absolute_path"},
+    "config": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/config"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"mode": {"const": "live_capture"}}, "required": ["mode"]},
+      "then": {
+        "properties": {
+          "subject": {
+            "description": "A pinned revision: wiki and revision id. No title, no page id.",
+            "additionalProperties": false,
+            "required": ["type", "wiki", "revision_id"],
+            "properties": {
+              "type": true,
+              "wiki": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/wiki"},
+              "revision_id": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/positive_id"}
+            }
+          },
+          "config": {
+            "description": "D-042: a live capture carries its Stage 03 fetch policy digest and the live-ACQUIRE wall-clock bound.",
+            "properties": {
+              "fetch_policy_sha256": {"type": "string"},
+              "live_acquire_bound": {"type": "object"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"mode": {"const": "retained_bundle"}}, "required": ["mode"]},
+      "then": {
+        "properties": {
+          "subject": {
+            "description": "A retained Stage 03 bundle; its capture.json pins the revision, and its SHA-256 is the request key.",
+            "additionalProperties": false,
+            "required": ["type", "bundle_path"],
+            "properties": {
+              "type": true,
+              "bundle_path": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/absolute_path"}
+            }
+          },
+          "config": {
+            "description": "A retained bundle uses no network and no live-ACQUIRE timer (D-042).",
+            "properties": {
+              "fetch_policy_sha256": {"type": "null"},
+              "live_acquire_bound": {"type": "null"}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

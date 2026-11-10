@@ -80,7 +80,9 @@ stable code (SPEC section 9.3), written `fail(CODE)`.
 
 ### 3.2 Investigation key
 
-- Domain: request keys `ρ ∈ {⟨wiki, revision_id⟩, ⟨capture_sha256⟩}`, plan version `π`, configuration digest `γ`.
+- Domain: request keys `ρ ∈ {⟨wiki, revision_id⟩, ⟨capture_sha256⟩}`, plan version `π`, configuration digest `γ`
+  (the SHA-256 of the canonical effective configuration: plan version, `A_max`, `F_max`, the Stage 03 fetch policy
+  digest and the live-ACQUIRE bound of owner decision D-042, the last two null for a bundle request).
 - Codomain: `Hex64`.
 - Rule: `key(ρ, π, γ) = H("citerift-investigation/1", ρ, π, γ)`; the directory name is `key`, the v1 id is
   `uuid(key)` (2.3).
@@ -437,7 +439,7 @@ before the ACQUIRE commit (review finding F-09).
 |---|---|---|---|
 | T-CREATE | `investigation_created` | empty journal | `λ = CREATED` |
 | T-START | `step_started(s, 1)` | `λ ∈ {CREATED, RUNNING}`; `s` `pending` with no previous attempt; every earlier step `succeeded`; no open attempt | `s` `running` |
-| T-RESTART | `step_started(s, a + 1)` | `s` `failed_retryable`, or `s` `deferred` and `j.at ≥ not_before`, or `s` `pending` after `step_interrupted`; no open attempt | `s` `running` |
+| T-RESTART | `step_started(s, a + 1)` | `s` `failed_retryable` (for ACQUIRE also `j.at ≥ not_before` when the failed attempt recorded one, owner decision D-042), or `s` `deferred` and `j.at ≥ not_before`, or `s` `pending` after `step_interrupted`; no open attempt | `s` `running` |
 | T-CONTENT | content record of `s`, attempt `a` | `s` `running` in attempt `a`; layer order (M-10) and references resolve (M-4) | content added, uncommitted |
 | T-SUCCEED | `step_succeeded(s, a)` | `s` `running` in `a`; output blobs durable; step checks pass | `s` `succeeded`; content of `a` committed |
 | T-FAIL-R | `step_failed(s, a, retryable)` | `s` `running`; code retryable for `s`; `φ(s) + 1 < A_max` | `s` `failed_retryable` |
@@ -452,7 +454,12 @@ before the ACQUIRE commit (review finding F-09).
   most `A_max` attempts, ACQUIRE of a capture request `A_max + F_max` (Step 4 correction SC-5) (T-FAIL-R,
   T-INTERRUPT and T-DEFER each raise `φ` or `f`, and each is refused at its budget), each attempt has a bounded number of content records (bounded by the units, keys and candidates of one
   extraction), so every investigation reaches a terminal state or stops in `BLOCKED` waiting for `not_before` after
-  finitely many records (no infinite retry); **TR-5** no non-terminal state is a dead end: in every reachable
+  finitely many records (no infinite retry). Time is bounded separately for the only step with network access: each
+  live ACQUIRE attempt runs in a child process under the parent-owned wall-clock bound `T_acq = deadline_s +
+  op_timeout_s + 30 s` (owner decision D-042), so the live-ACQUIRE child execution budget is at most
+  `(A_max + F_max) · T_acq` (2,160 s with the Stage 03 defaults). That is not an upper bound on the investigation's
+  wall-clock time, which also needs the kill and reap overhead, the waits up to `not_before` and the other steps'
+  bounded work; **TR-5** no non-terminal state is a dead end: in every reachable
   non-terminal `Σ` some rule applies (in `BLOCKED` for a record whose `at ≥ not_before`; after an interruption through
   T-INTERRUPT or T-FAIL-T).
 - Precedence: none needed (TR-1).

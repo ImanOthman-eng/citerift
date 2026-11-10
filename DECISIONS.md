@@ -921,3 +921,30 @@ BLOCKED, NEEDS_RESOLUTION, COMPLETED, FAILED, STALE, CORRUPT, with no duplicated
 terminal for Stage 04 with outcome partial, keeps its open questions and conflicting evidence, is never shown as
 COMPLETED and never yields a false positive or false negative from the conflict; later stages may extend resolution
 through versioned evolution. No Stage 05 work and no claim that Stage 04 is implemented or verified.
+
+## D-042 — F-11 resolved: hard wall-clock bound around each live ACQUIRE attempt
+- Status: accepted
+- Topic: stage-04-f11-live-acquire-bound
+- Date: 2026-11-10
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step5/STEP5_OWNER_DECISION_D042.md; docs/verification/stage-04/SIMULATION_REPORT.md
+
+Owner decision on the Step 4 result BLOCKED ON F-11 (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPAewpJuzMjqkzvVZfNQHxDy`, 2026-11-10T11:28:37Z, which also accepted Step 4 at `244c4b6`
+and authorized Step 5 only). APPROVED WITH CONDITIONS: Stage 04 imposes a hard wall-clock bound around the entire live
+ACQUIRE invocation at the Stage 04 boundary, without modifying the accepted Stage 03 transport;
+`T_acq = FetchPolicy.deadline_s + FetchPolicy.op_timeout_s + 30 s` (240 s with the accepted defaults), a
+controller/integration safety bound, not a scientific threshold. The timer covers the whole child-process live ACQUIRE
+operation and starts immediately before the child is launched; a retained-bundle ACQUIRE does not use it. Live ACQUIRE
+runs in a dedicated child process session owned by the parent, which ensures at the deadline that it cannot continue
+network work; kill and reap latency outside the budget is measured or separately bounded, so 9 × 240 = 2160 s is the
+maximum live-ACQUIRE child execution budget, not the investigation's whole wall-clock bound. A hard timeout is the
+stable failure code `ACQUIRE_WALL_CLOCK_EXCEEDED`; nothing from a killed attempt is authoritative (no root binding,
+successful bundle, scientific evidence, claim, decision or `step_succeeded`). The code may be retryable and counted in
+φ only if that cannot shorten an observed Retry-After; Step 8 must prove that Stage 03 persists Retry-After before a
+kill or that Stage 04 preserves `not_before`, otherwise the failure is terminal or deferred; CITERIFT never retries
+earlier than an observed Retry-After, and Stage 03 throttling is not weakened. The effective bound, the fetch timeouts,
+the 30 s allowance and the retry budgets are part of the configuration identity, so a change is detectable by
+replay and staleness checks and historical investigations are never recomputed with other bounds. F-11 is
+design-unblocked, not implementation-verified until the later production and fault-injection tests pass.

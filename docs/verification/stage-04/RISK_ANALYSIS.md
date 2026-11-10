@@ -186,14 +186,24 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
 
 ### R4-13 Infinite retry and unbounded waiting
 
-- Cause: a step that keeps failing, a deferral that keeps coming back, a process that keeps crashing in one step, or
-  a controller that sleeps until `not_before`.
+- Cause: a step that keeps failing, a deferral that keeps coming back, a process that keeps crashing in one step, a
+  controller that sleeps until `not_before`, or a live ACQUIRE attempt that hangs below every Stage 03 timeout
+  (review finding F-11); and, introduced by the fix, a killed ACQUIRE attempt whose retry would start before a
+  Retry-After the attempt observed.
 - Detection: state-space enumeration of the controller (Step 4, plan 12.2); budget tests; MM TR-4, TR-5.
 - Prevention: `A_max = 3` failed or interrupted attempts and `F_max = 6` deferrals per step (SPEC 9.2); a crash loop
   ends `RETRY_BUDGET_EXHAUSTED`; a deferral ends the run in `BLOCKED` without sleeping; Stage 03 keeps its own bounded
-  network retries (MR-14).
+  network retries (MR-14); each live ACQUIRE attempt runs in a child process under a parent-owned wall-clock bound
+  `T_acq = deadline_s + op_timeout_s + 30 s` (owner decision D-042) and ends `ACQUIRE_WALL_CLOCK_EXCEEDED` with no
+  authoritative output; an ACQUIRE failure records `not_before` and T-RESTART refuses an earlier attempt; the bound is
+  part of the configuration digest. Step 5 represents all of this in the schemas (`journal-record`, `common#config`);
+  it is not implemented yet.
 - Residual: an operator can resume a `BLOCKED` investigation repeatedly; each resume before `not_before` writes
-  nothing.
+  nothing. F-11 is design-unblocked, not implementation-verified: the child-process timer, the graceful stop, the
+  kill and reap latency and the slow-body plus Retry-After case are tested in step 8 of the plan; until then whether
+  `ACQUIRE_WALL_CLOCK_EXCEEDED` is retryable stays open (D-042: retryable only if no retry can precede an observed
+  Retry-After, otherwise terminal or deferred). `9 × T_acq` (2,160 s) bounds the live-ACQUIRE child execution only,
+  not the whole investigation.
 - Gate and invariant: 04-E, 04-G; W-4; MM TR-4, TR-5.
 - Blocks verification: **blocks** if any reachable state has no bound.
 

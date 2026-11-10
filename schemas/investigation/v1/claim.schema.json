@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:claim",
+  "title": "CITERIFT Stage 04 claim, version 1",
+  "description": "One dt-1 claim about one work candidate (SPEC 7.2, 7.3, 8.3; MM 5.2, 6). Status, value, rule and the reasons a rule always attaches are functions of the class and are enforced here. Facts that need other records (evidence resolution EV-1, EV-2, claim id derivation, one claim per candidate) are checked by Investigation Memory and VERIFY. No field, class or value means 'not retracted' (S-7.5, M-12).",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id", "cand_ref", "candidate", "class", "rule", "table_version", "status", "value",
+    "alternatives", "reasons", "upstream_reasons", "supporting", "contradicting"
+  ],
+  "properties": {
+    "claim_id": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"},
+    "cand_ref": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"},
+    "candidate": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/candidate"},
+    "class": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/claim_class"},
+    "rule": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/rule"},
+    "table_version": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/table_version"},
+    "status": {
+      "description": "v1 epistemic status (SPEC 7.2); null for the three out-of-scope classes, which are observations.",
+      "enum": ["verified_fact", "uncertain", "conflicting", "unavailable", null]
+    },
+    "value": {
+      "description": "A positive value, not_found_in_checked_sources, or null. There is no negative value.",
+      "enum": ["retracted", "expression_of_concern", "correction", "reinstated", "not_found_in_checked_sources", null]
+    },
+    "alternatives": {
+      "description": "For conflicting claims only: at least two alternatives, each with its own supporting evidence (v1 rule, CO-1, M-7).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value", "supporting"],
+        "properties": {
+          "value": true,
+          "supporting": {"allOf": [{"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"}, {"minItems": 1}]}
+        }
+      }
+    },
+    "reasons": {"type": "array", "items": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/reason"}, "uniqueItems": true},
+    "upstream_reasons": {"type": "array", "items": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/upstream_reason"}, "uniqueItems": true},
+    "supporting": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"},
+    "contradicting": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"}
+  },
+  "$defs": {
+    "identity_alternative": {
+      "description": "One side of an identity conflict: the work identity reached through one key of the pair (S-7.3). It holds identifiers, never a retraction value.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reached_by", "work"],
+      "properties": {
+        "reached_by": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/key"},
+        "work": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["doi", "pmid"],
+          "properties": {
+            "doi": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"}]},
+            "pmid": {"oneOf": [{"type": "null"}, {"$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"}]}
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "description": "Positive findings (D-14): verified fact from a matched deciding lookup, value of the class, with support.",
+      "if": {"properties": {"class": {"enum": ["RETRACTED_WORK_CITED", "CONCERN_CITED", "CORRECTION_CITED", "REINSTATED_WORK_CITED"]}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-14"},
+          "status": {"const": "verified_fact"},
+          "supporting": {"minItems": 1},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}}
+        }
+      }
+    },
+    {"if": {"properties": {"class": {"const": "RETRACTED_WORK_CITED"}}}, "then": {"properties": {"value": {"const": "retracted"}}}},
+    {"if": {"properties": {"class": {"const": "CONCERN_CITED"}}}, "then": {"properties": {"value": {"const": "expression_of_concern"}}}},
+    {"if": {"properties": {"class": {"const": "CORRECTION_CITED"}}}, "then": {"properties": {"value": {"const": "correction"}}}},
+    {"if": {"properties": {"class": {"const": "REINSTATED_WORK_CITED"}}}, "then": {"properties": {"value": {"const": "reinstated"}}}},
+    {
+      "description": "D-16 and MM P5: not found only for a keyed, untainted candidate whose lookups were all available.",
+      "if": {"properties": {"class": {"const": "NOT_FOUND_IN_CHECKED_SOURCES"}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-16"},
+          "status": {"const": "uncertain"},
+          "value": {"const": "not_found_in_checked_sources"},
+          "supporting": {"minItems": 1},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
+          "reasons": {"contains": {"const": "NOT_FOUND_IN_CHECKED_SOURCES"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"class": {"const": "NOTICE_CITED"}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-15"},
+          "status": {"const": "uncertain"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
+          "reasons": {"contains": {"const": "CITED_IDENTIFIER_IS_NOTICE"}}
+        }
+      }
+    },
+    {
+      "description": "Gate 04-D, S-7.3: identity conflict of a PAIR; no scientific value; the two alternatives are the identities reached by the DOI and by the PMID.",
+      "if": {"properties": {"class": {"const": "IDENTITY_CONFLICT"}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-6"},
+          "status": {"const": "conflicting"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"const": "PAIR"}, "coherence": {"const": "INCOMPATIBLE"}}},
+          "reasons": {"contains": {"const": "IDENTITY_WITNESSED"}},
+          "alternatives": {
+            "minItems": 2,
+            "maxItems": 2,
+            "prefixItems": [
+              {"properties": {"value": {"allOf": [{"$ref": "#/$defs/identity_alternative"}, {"properties": {"reached_by": {"properties": {"scheme": {"const": "doi"}}}}}]}}},
+              {"properties": {"value": {"allOf": [{"$ref": "#/$defs/identity_alternative"}, {"properties": {"reached_by": {"properties": {"scheme": {"const": "pmid"}}}}}]}}}
+            ]
+          },
+          "upstream_reasons": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "description": "D-7: the checked sources disagree on the event type; alternatives are the disagreeing types.",
+      "if": {"properties": {"class": {"const": "CONTRADICTION_IN_SOURCES"}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-7"},
+          "status": {"const": "conflicting"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
+          "reasons": {"contains": {"const": "SOURCE_TYPE_CONFLICT"}},
+          "alternatives": {
+            "minItems": 2,
+            "maxItems": 4,
+            "items": {"properties": {"value": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/positive_value"}}}
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"not": {"const": "conflicting"}}}},
+      "then": {"properties": {"alternatives": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"class": {"const": "UNRESOLVED_IDENTITY"}}},
+      "then": {
+        "properties": {
+          "rule": {"enum": ["D-9", "D-10"]},
+          "status": {"const": "uncertain"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}}
+        }
+      }
+    },
+    {
+      "description": "D-9 is reachable only for a PMID-only candidate: an ambiguous DOI-only query or an ambiguous pair query without conflict is caught by D-5 first (Step 4 result).",
+      "if": {"properties": {"rule": {"const": "D-9"}}},
+      "then": {"properties": {"class": {"const": "UNRESOLVED_IDENTITY"}, "candidate": {"properties": {"shape": {"const": "PMID"}}}, "reasons": {"contains": {"const": "KEY_NAMES_SEVERAL_WORKS"}}}}
+    },
+    {
+      "if": {"properties": {"rule": {"const": "D-10"}}},
+      "then": {"properties": {"class": {"const": "UNRESOLVED_IDENTITY"}, "reasons": {"contains": {"enum": ["PMID_ROLE_COLLISION", "BRIDGE_ONLY_SUPPORT"]}}}}
+    },
+    {
+      "if": {"properties": {"class": {"const": "UNRESOLVED_IDENTIFIER"}}},
+      "then": {"properties": {"rule": {"enum": ["D-4", "D-8"]}, "status": {"const": "uncertain"}, "value": {"const": null}}}
+    },
+    {
+      "description": "D-4: no key, tainted by a malformed or unresolved-role identifier (an unconfirmed identifier is a key).",
+      "if": {"properties": {"rule": {"const": "D-4"}}},
+      "then": {
+        "properties": {
+          "class": {"const": "UNRESOLVED_IDENTIFIER"},
+          "candidate": {"properties": {"shape": {"const": "NONE"}}},
+          "reasons": {"contains": {"enum": ["IDENTIFIER_MALFORMED", "IDENTIFIER_ROLE_UNRESOLVED"]}, "not": {"contains": {"const": "IDENTIFIER_UNCONFIRMED"}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"rule": {"const": "D-8"}}},
+      "then": {
+        "properties": {
+          "class": {"const": "UNRESOLVED_IDENTIFIER"},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
+          "reasons": {"contains": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/taint_reason"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"class": {"const": "UNRESOLVED_STATUS"}}},
+      "then": {
+        "properties": {
+          "rule": {"enum": ["D-11", "D-12"]},
+          "status": {"const": "uncertain"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}}
+        }
+      }
+    },
+    {
+      "description": "D-11: a record exists but its current effect is not established; the Stage 02 basis reasons are kept in upstream_reasons.",
+      "if": {"properties": {"rule": {"const": "D-11"}}},
+      "then": {"properties": {"class": {"const": "UNRESOLVED_STATUS"}, "reasons": {"contains": {"const": "STATUS_NOT_ESTABLISHED"}}}}
+    },
+    {
+      "if": {"properties": {"rule": {"const": "D-12"}}},
+      "then": {"properties": {"class": {"const": "UNRESOLVED_STATUS"}, "reasons": {"contains": {"const": "COVERAGE_GAP_RELEVANT_ROWS"}}}}
+    },
+    {
+      "if": {"properties": {"class": {"const": "LOOKUP_UNAVAILABLE"}}},
+      "then": {
+        "properties": {
+          "rule": {"const": "D-13"},
+          "status": {"const": "unavailable"},
+          "value": {"const": null},
+          "candidate": {"properties": {"shape": {"enum": ["DOI", "PMID", "PAIR"]}}},
+          "reasons": {"contains": {"const": "LOOKUP_QUERY_FAILED"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"class": {"const": "UNUSED_DEFINITION"}}},
+      "then": {"properties": {"rule": {"const": "D-1"}, "status": {"const": null}, "value": {"const": null}, "reasons": {"contains": {"const": "LIST_DEFINED_UNUSED"}}}}
+    },
+    {
+      "if": {"properties": {"class": {"const": "UNRESOLVED_USE"}}},
+      "then": {"properties": {"rule": {"const": "D-2"}, "status": {"const": null}, "value": {"const": null}, "reasons": {"contains": {"enum": ["CONFLICTING_DEFINITIONS", "NO_BOUND_USE"]}}}}
+    },
+    {
+      "if": {"properties": {"class": {"const": "NO_IDENTIFIER"}}},
+      "then": {"properties": {"rule": {"const": "D-3"}, "status": {"const": null}, "value": {"const": null}, "candidate": {"properties": {"shape": {"const": "NONE"}}}}}
+    },
+    {
+      "description": "Taint reasons only on the rules that read taint and come before or at D-8 (D-4, D-6, D-8).",
+      "if": {"properties": {"reasons": {"contains": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/taint_reason"}}}},
+      "then": {"properties": {"rule": {"enum": ["D-4", "D-6", "D-8"]}}}
+    },
+    {
+      "description": "LOOKUP_PARTIAL marks an identity conflict decided while a lookup was unavailable (MM 5.3).",
+      "if": {"properties": {"reasons": {"contains": {"const": "LOOKUP_PARTIAL"}}}},
+      "then": {"properties": {"class": {"const": "IDENTITY_CONFLICT"}}}
+    },
+    {
+      "description": "kappa = UNDETERMINED exactly when PAIR_UNCORROBORATED is attached (MM 5.3).",
+      "if": {"properties": {"candidate": {"properties": {"coherence": {"const": "UNDETERMINED"}}}}},
+      "then": {"properties": {"reasons": {"contains": {"const": "PAIR_UNCORROBORATED"}}}},
+      "else": {"properties": {"reasons": {"not": {"contains": {"const": "PAIR_UNCORROBORATED"}}}}}
+    },
+    {
+      "description": "KEY_RESULTS_DIFFER compares the key lookups of a PAIR; CO_REPORTED_MULTIPLE marks single-key candidates of a unit with several keys of one scheme (S-6.5).",
+      "if": {"properties": {"reasons": {"contains": {"const": "KEY_RESULTS_DIFFER"}}}},
+      "then": {"properties": {"candidate": {"properties": {"shape": {"const": "PAIR"}}}}}
+    },
+    {
+      "if": {"properties": {"reasons": {"contains": {"const": "CO_REPORTED_MULTIPLE"}}}},
+      "then": {"properties": {"candidate": {"properties": {"shape": {"enum": ["DOI", "PMID"]}}}}}
+    },
+    {
+      "description": "Stage 02 basis reasons are kept only for claims decided from a Stage 02 projection.",
+      "if": {"properties": {"rule": {"enum": ["D-1", "D-2", "D-3", "D-4", "D-6", "D-8", "D-13"]}}},
+      "then": {"properties": {"upstream_reasons": {"maxItems": 0}}}
+    }
+  ]
+}

@@ -154,6 +154,12 @@ support (`policy.reduce`, rule 7f).
 
 - S-4.7 `investigation_key = H("citerift-investigation/1", request_key, plan_version, config_digest)`, where
   `request_key` is `{wiki, revision_id}` for a capture request or `{capture_sha256}` for a bundle request.
+  `config_digest` is the SHA-256 of the canonical effective configuration
+  (`urn:citerift:schema:investigation:v1:common#/$defs/config`): plan version, the budgets `A_max` and `F_max`, the
+  Stage 03 fetch policy digest and the live-ACQUIRE bound (`deadline_s`, `op_timeout_s`, the 30 s allowance and
+  `T_acq`), both null for a bundle request (owner decision D-042). A change of any of them is a different
+  investigation key and a different step key (S-9.3); a historical investigation is never recomputed under another
+  bound.
 - S-4.8 The investigation directory is named by the hexadecimal `investigation_key`. The v1 `investigation_id` is a
   UUID derived deterministically from it (MM section 2.3). Running the same request twice addresses the same
   investigation (idempotency, section 9.6).
@@ -185,6 +191,12 @@ the Stage 03 fetch policy reference and no detection parameter (there is none to
 existing regular file; memory root an existing directory outside the repository working tree (MR-13). Each failure
 has a code: `INPUT_INVALID` with reasons `WIKI_UNSUPPORTED`, `REVISION_NOT_PINNED`, `BUNDLE_UNREADABLE`,
 `INDEX_PATH_INVALID`, `MEMORY_ROOT_UNSAFE`.
+
+The request schema is `urn:citerift:schema:investigation:v1:request` (Step 5). It has two forms, discriminated by
+`mode`: `live_capture` (`subject = {type, wiki, revision_id}`, with the fetch policy digest and the live-ACQUIRE bound
+in `config`) and `retained_bundle` (`subject = {type, bundle_path}`, with both null). A title or page id is not a
+field of either form, so a request that names only a title or only a page id does not validate (S-4.3). The request
+and its `request_key` are the input identity fixed at creation; the root is bound later by ACQUIRE (S-4.4).
 
 ### 5.2 Outputs
 
@@ -354,23 +366,26 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | O-1 | 1 | an input identity changed since it was recorded (section 10.3) | — (lifecycle `STALE`) | DETECT does not run; no claim |
 | O-2 | 1 | the extraction status is `failed`, or EXTRACT did not commit | — (lifecycle `FAILED`) | no claim, no negative |
 | O-3 | 1 | the index cannot be opened, or LOOKUP did not commit | — (lifecycle `FAILED`) | no claim, no negative |
-| D-1 | 2 | `U = UNUSED` | `UNUSED_DEFINITION` | lookups kept as observations |
-| D-2 | 2 | `U = USE_NOT_ESTABLISHED` | `UNRESOLVED_USE` | lookups kept; reason from section 6.2 |
+| D-1 | 2 | `U = UNUSED` | `UNUSED_DEFINITION` | lookups kept as observations; reason `LIST_DEFINED_UNUSED` |
+| D-2 | 2 | `U = USE_NOT_ESTABLISHED` | `UNRESOLVED_USE` | lookups kept; reason from section 6.2 (`CONFLICTING_DEFINITIONS` or `NO_BOUND_USE`) |
 | D-3 | 2 | `σ = NONE` and `τ` false | `NO_IDENTIFIER` | |
 | D-4 | 2 | `σ = NONE` and `τ` true | `UNRESOLVED_IDENTIFIER` | reasons `IDENTIFIER_MALFORMED` and/or `IDENTIFIER_ROLE_UNRESOLVED` |
 | D-5 | 3 | the lookups of `c` break a Stage 02 contract visible to Stage 04 (S-6.12): some lookup in `Λ(c)` has state `invalid_query`; a lookup other than `L` has a state or projection outside F-1 to F-4, F-8 (MM 4.5); Q1(DOI) is `ambiguous_identity`; or, for `σ = PAIR`, a witness or co-naming event without matching lookup states, (`κ = INCOMPATIBLE`) ≠ (Q2 state `ambiguous_identity`), Q1(PMID) `ambiguous_identity` without a witness, or (all three available) a Q2 state other than the one F-9 implies | — (DETECT `failed_terminal`, `ADAPTER_INCONSISTENT`) | impossible for valid keys (P2, F-9); fail-closed; corrected in Step 4 (`review/step4/STEP4_SPEC_CORRECTIONS.md`, SC-2) |
 | D-6 | 4 | `σ = PAIR` and `κ = INCOMPATIBLE` | `IDENTITY_CONFLICT` | section 7.5, S-7.3; reason `IDENTITY_WITNESSED`, plus `LOOKUP_PARTIAL` when a lookup of `c` is unavailable and taint reasons when `τ` |
-| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID) |
+| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID); reason `SOURCE_TYPE_CONFLICT` |
 | D-8 | 5 | `τ` | `UNRESOLVED_IDENTIFIER` | taint reasons (S-6.6) |
 | D-9 | 5 | `L.state = ambiguous_identity` and projection `uncertain` with value null | `UNRESOLVED_IDENTITY` | reason `KEY_NAMES_SEVERAL_WORKS` |
 | D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
-| D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | Stage 02 basis reasons kept |
+| D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `STATUS_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
 | D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
-| D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | code of the failed query |
+| D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`; the code of the failed query stays in its lookup observation |
 | D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
 | D-15 | 8 | `L.state = notice_only` and projection `uncertain` with value null | `NOTICE_CITED` | reason `CITED_IDENTIFIER_IS_NOTICE`; never an attachment to the retracted work |
-| D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | provenance = checked sources |
+| D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | reason `NOT_FOUND_IN_CHECKED_SOURCES`; provenance = checked sources |
 | D-17 | 10 | otherwise | — (DETECT `failed_terminal`, `DECISION_TABLE_GAP`) | unreachable on Stage 02's model (MM proposition P1); fail-closed; reached by a deciding lookup outside the Stage 02 contract |
+
+Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5; they replace the Step 4 model's
+placeholders and change no class, guard or precedence (`review/step5/STEP5_PLACEHOLDER_MAPPING.md`).
 
 Reason codes attached by D-14 (and kept on any class when they apply): `KEY_RESULTS_DIFFER` when the lookups of the keys
 of a `PAIR` candidate have different states (for example `matched` and `no_record`); `PAIR_UNCORROBORATED` when
@@ -482,7 +497,7 @@ Each claim gets exactly one decision:
 | `kind` | one of section 8.3 |
 | `step`, `attempt` | the step and attempt number for execution and content records; null otherwise |
 | `at` | UTC timestamp; excluded from every content digest |
-| `root_id` | null before the root is bound; afterwards the bound root |
+| `root_id` | null before the root is bound; the `step_succeeded` record of ACQUIRE carries the root it binds, and every later record the bound root; every other ACQUIRE record (including a failed or killed attempt) and every VALIDATE record carries null |
 | `payload` | kind-specific; references blobs by digest |
 | `digest` | SHA-256 of the canonical record without `digest` |
 
@@ -491,7 +506,7 @@ Each claim gets exactly one decision:
 | Layer | Kinds | Payload |
 |---|---|---|
 | Lifecycle | `investigation_created` | request, `request_key`, plan version, config digest, engine identities |
-| Execution | `step_started`, `step_succeeded`, `step_failed`, `step_deferred`, `step_interrupted`, `stale_detected` | step key; for `step_succeeded` the output digests (and for ACQUIRE the bound root); for `step_failed` `{code, retryable, detail}`; for `step_deferred` `{code, not_before}`; for `stale_detected` `{changed, recorded, current}` (section 10.3) |
+| Execution | `step_started`, `step_succeeded`, `step_failed`, `step_deferred`, `step_interrupted`, `stale_detected` | step key; for `step_succeeded` the output digests (and for ACQUIRE the bound root); for `step_failed` `{code, retryable, reason, detail, wall_clock}` and, for ACQUIRE, `not_before` (the Retry-After instant the attempt observed, or null; `wall_clock` is non-null only for `ACQUIRE_WALL_CLOCK_EXCEEDED`, owner decision D-042); for `step_deferred` `{code, not_before}`; for `stale_detected` `{changed, recorded, current}` (section 10.3) |
 | Observation | `observation_recorded` | `{obs_kind ∈ {bundle, extraction, index_identity, lookup}, blob, source_ref}` |
 | Evidence | `evidence_recorded` | `{evidence_id, observation, pointer, kind, refs}` (keys, identifier statuses, coherence results) |
 | Claim | `claim_recorded` | `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, supporting, contradicting}` |
@@ -500,6 +515,14 @@ Each claim gets exactly one decision:
 | Report | `report_recorded` | `{report blob, v1 projection blobs}` |
 | History | `claim_superseded` | `{old_claim_id, new_claim_id, reason, new_evidence}` |
 | Verification | `verification_recorded` | `{result, checks}` |
+
+The exact payload of each kind is fixed by `urn:citerift:schema:investigation:v1:journal-record` (Step 5). The schema
+spells out what this table states in words: `investigation_created` adds `investigation_id` and `migrated_from`
+(S-8.7); evidence adds the typed `value` read at its pointer; a claim adds its `candidate`, `table_version` and
+`upstream_reasons` (Stage 02 basis reasons with their evidence); `verification_recorded` adds the content digest
+`C(J)` (section 11.1). Invariants the schema cannot express (M-1 to M-8, M-10, M-11, M-13, M-14, the transition rules
+and the derivation of every id) are checked by Investigation Memory and VERIFY
+(`review/step5/STEP5_SCHEMA_REVIEW.md`).
 
 Content records (observation, evidence, claim, decision, question, report, verification) are written only between
 `step_started` and `step_succeeded` of their step and attempt. They are **committed** if and only if that attempt has a
@@ -583,7 +606,7 @@ function of the journal (MM section 7.2); there is no other step state.
 | `running` | `step_failed(retryable = false)` | `failed_terminal` | Stage 03 returned `deferred` and `f = F_max` (code `DEFERRAL_BUDGET_EXHAUSTED`) | step closed |
 | `running` | `step_interrupted` | `pending` | written on resume for an attempt with no terminal record (process died) and `φ + 1 < A_max` | attempt closed, uncommitted content ignored |
 | `running` | `step_failed(retryable = false)` | `failed_terminal` | written on resume for an attempt with no terminal record and `φ + 1 = A_max` (code `RETRY_BUDGET_EXHAUSTED`) | step closed; a step that keeps killing the process ends |
-| `failed_retryable` | `step_started(a + 1)` | `running` | lifecycle `RUNNING` | new attempt |
+| `failed_retryable` | `step_started(a + 1)` | `running` | lifecycle `RUNNING`; for ACQUIRE, the record's `at` ≥ the failed attempt's `not_before` when it recorded one (owner decision D-042) | new attempt |
 | `pending` (after `step_interrupted`) | `step_started(a + 1)` | `running` | lifecycle `RUNNING` | new attempt |
 | `deferred` | `step_started(a + 1)` | `running` | the record's `at` ≥ `not_before` (checkable from the journal alone) | new attempt |
 
@@ -600,12 +623,29 @@ except ACQUIRE of a capture request, which has at most `A_max + F_max` (= 9: two
 one final); the exhaustive controller model of Step 4 reaches these maxima and no more (correction SC-5). These are operational budgets, not decision thresholds: they bound work (no infinite
 retry, RA R4-13) and never change a claim. Both are fixed in `plan-1`; changing them is a plan version change.
 
+Live-ACQUIRE wall-clock bound (owner decision D-042, review finding F-11). Each ACQUIRE attempt of a capture request
+runs as a dedicated child process (its own session) whose deadline the parent owns. The parent starts the timer
+immediately before it launches the child, so the bound covers process start-up, DNS, connection, transfer, Stage 03's
+own retries, bundle publication and the local completion path. `T_acq = deadline_s + op_timeout_s + 30 s` (240 s with
+the Stage 03 defaults); it is a controller safety bound, not a scientific threshold. The child is asked to stop
+gracefully within `T_acq` and is then killed and reaped; kill and reap latency are measured or bounded separately. An
+attempt that exceeds `T_acq` ends `step_failed(ACQUIRE_WALL_CLOCK_EXCEEDED)` with `root_id = null` and
+`wall_clock = {t_acq_ms, elapsed_ms}`; none of its output is authoritative: it binds no root, commits no bundle as
+evidence, commits no evidence, claim, decision or question, and leaves no `step_succeeded` record. It is retryable
+and counted in `φ` only if a retry can never start before a Retry-After instant the attempt observed (Stage 03
+persists it before the kill, or Stage 04 records it as `not_before`); otherwise it is terminal or deferred. This is
+proven in step 8 of the plan; the schema leaves the code's retryability open. The bound never weakens Stage 03's
+throttling and the Stage 03 transport is not changed. A retained-bundle ACQUIRE uses no network and no timer.
+`9 × T_acq` (2,160 s with the defaults) is the maximum live-ACQUIRE child execution budget of one investigation; it
+is not the investigation's wall-clock upper bound, which also needs the termination and reap overhead and the other
+steps' bounded work.
+
 ### 9.3 Step outcomes by step
 
 | Step | Succeeds when | Retryable codes | Deferral | Terminal codes |
 |---|---|---|---|---|
 | VALIDATE | request valid | none | no | `INPUT_INVALID` |
-| ACQUIRE | bundle opens and `verify_bundle` passes; identity checks S-4.6 pass; capture status `complete` or `partial` | Stage 03 network codes after its own retries: `HTTP_TIMEOUT`, `HTTP_CONNECTION_FAILED`, `HTTP_SERVER_ERROR`, `HTTP_UNAVAILABLE`, `HTTP_RATE_LIMITED`, `API_RATELIMITED`, `API_MAXLAG`, `ATTEMPTS_EXHAUSTED`, `NETWORK_GATE_BUSY` | `DEFERRED_RETRY_AFTER` | `REVISION_NOT_FOUND`, `PAGE_MISSING`, `REVISION_TEXT_HIDDEN`, `BUNDLE_*`, `ROOT_IDENTITY_MISMATCH`, other Stage 03 codes |
+| ACQUIRE | bundle opens and `verify_bundle` passes; identity checks S-4.6 pass; capture status `complete` or `partial` | Stage 03 network codes after its own retries: `HTTP_TIMEOUT`, `HTTP_CONNECTION_FAILED`, `HTTP_SERVER_ERROR`, `HTTP_UNAVAILABLE`, `HTTP_RATE_LIMITED`, `API_RATELIMITED`, `API_MAXLAG`, `ATTEMPTS_EXHAUSTED`, `NETWORK_GATE_BUSY`; `ACQUIRE_WALL_CLOCK_EXCEEDED` only under the Retry-After condition of D-042 (section 9.2), otherwise terminal | `DEFERRED_RETRY_AFTER` | `REVISION_NOT_FOUND`, `PAGE_MISSING`, `REVISION_TEXT_HIDDEN`, `BUNDLE_*`, `ROOT_IDENTITY_MISMATCH`, other Stage 03 codes |
 | EXTRACT | document `status ∈ {complete, partial}` and schema-valid; capture fields equal the root | `EXTRACTION_DEADLINE_EXCEEDED`, `EXTRACTION_MEMORY_EXCEEDED`, `EXTRACTION_WORKER_FAILED` | no | `EXTRACTION_FAILED` (document `failed`), `ROOT_IDENTITY_MISMATCH` |
 | NORMALIZE | always for a valid document | none | no | `NORMALIZE_INVALID` (a defect) |
 | LOOKUP | index opens and its identity is recorded; every key queried (a raising query records `unavailable`, S-6.10) | none | no | Stage 02 `IndexUnavailable` codes: `INDEX_MISSING`, `INDEX_CORRUPT`, `INDEX_FORMAT_MISMATCH` (`store.py`, `query.py`) |
@@ -738,7 +778,9 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 The **input identity vector** of an investigation: the request key; the bound root (`capture_sha256` and the
 revision identity); the extraction engine identity (extractor version, profile digest, normalizer, `config_digest`);
 the index identity (S-3.2); the Stage 04 identities (engine version, decision table version `dt-1`, plan version
-`plan-1`, Stage 04 schema versions).
+`plan-1`, Stage 04 schema versions); the configuration and its digest (S-4.7), including the live-ACQUIRE bound
+(owner decision D-042). The report records every component (`identities`), and `stale_detected` names the changed
+ones.
 
 - S-10.1 On resume, each committed step's key is recomputed from the current identities. If any differs from the
   recorded key, the investigation is `STALE`: no committed output is reused, nothing is re-run in it, and a new
@@ -761,13 +803,19 @@ the index identity (S-3.2); the Stage 04 identities (engine version, decision ta
 
 ## 11. Report and projections
 
-### 11.1 Stage 04 report (`schemas/investigation/v1/report`, written in step 5 of the plan)
+### 11.1 Stage 04 report (`urn:citerift:schema:investigation:v1:report`, written in step 5 of the plan)
 
-`{schema, schema_version, investigation_key, investigation_id, root, outcome, claims[], decisions[], questions[],
-observations_summary, article_summary, limitations[], identities}`. Claims are ordered by unit source byte offset,
-then candidate key order. Each claim carries its rule id, reasons and evidence chain (section 12). The report is a pure
-function of the committed fold at ASSEMBLE. It holds neither the lifecycle state (decided only after VERIFY) nor the
-content digest `C(J)`, which covers the report and is recorded by VERIFY in `verification_recorded` (MM section 7.3).
+`{schema, schema_version, investigation_key, investigation_id, root, terminal_state, outcome, claims[],
+observations[], evidence[], article_summary, limitations[], identities}`. Each entry of `claims[]` holds the claim, its
+decision, its question (or null), its unit anchor and, for a not-found claim, the checked sources; decisions and
+questions are therefore embedded per claim instead of in separate arrays. Claims are ordered by unit source byte
+offset, then candidate key order. Each claim carries its rule id, reasons and evidence chain (section 12). The report
+is a pure function of the committed fold at ASSEMBLE. `terminal_state` is the lifecycle state that the investigation
+enters if VERIFY passes (`NEEDS_RESOLUTION` when a question is open, otherwise `COMPLETED`, S-9.7); it is computed from
+the fold, and a report is exported only after VERIFY passed, so an exported report never states a state the
+investigation did not reach. `FAILED`, `STALE` and `CORRUPT` investigations export no report. The report does not
+hold the content digest `C(J)`, which covers the report and is recorded by VERIFY in `verification_recorded` (MM
+section 7.3).
 
 ### 11.2 v1 projections
 
@@ -872,7 +920,7 @@ each requirement is met, or where it moved.
 | MR-10 | S-9.7, S-7.5 | outcome rule; a failed step never produces a negative |
 | MR-11 to MR-13 | 8, 10 | append-only journal, resume, memory outside the repository |
 | MR-14 | 3.1, 9.2 | Stage 03 rate limiter and Retry-After; `F_max` |
-| MR-15 | 9.2 | bounded by `A_max`, `F_max` and Stage 03 timeouts; `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state (a deviation; review finding F-11) |
+| MR-15 | 9.2 | bounded by `A_max`, `F_max`, Stage 03 timeouts and the live-ACQUIRE wall-clock bound `T_acq` of owner decision D-042 (review finding F-11, design-unblocked, not yet implementation-verified); `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state |
 | MR-16 | — | cancellation is Stage 07 (plan 6) |
 | MR-17 | 9.3 | stable codes |
 | MR-17a, MR-17b | 3.1, 7.3 | HTTP 200 error bodies are Stage 03's (`fetch.py`); only a committed `no_record` gives `NOT_FOUND_IN_CHECKED_SOURCES` |

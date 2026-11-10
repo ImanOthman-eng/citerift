@@ -1,0 +1,1868 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:journal-record",
+  "title": "CITERIFT Stage 04 Investigation Memory journal record, format 1",
+  "description": "One line of journal.jsonl (SPEC 8.2, 8.3; MM 7). Each kind has its own payload. The schema enforces what one record can show: the kind's layer, the step it belongs to, attempt bounds, root binding (S-4.4, M-9, F-15) and the D-042 failure form. Properties that relate records (seq without gaps, prev = previous digest, digest correctness, commit discipline, references to earlier records, transition legality) are checked by Investigation Memory and the append guard (M-1 to M-14, MM 8), not here.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "seq",
+    "prev",
+    "kind",
+    "step",
+    "attempt",
+    "at",
+    "root_id",
+    "payload",
+    "digest"
+  ],
+  "properties": {
+    "v": {
+      "description": "Journal format version; a reader refuses any other (JOURNAL_VERSION_UNSUPPORTED, S-8.7).",
+      "const": 1
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "prev": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "kind": {
+      "enum": [
+        "investigation_created",
+        "step_started",
+        "step_succeeded",
+        "step_failed",
+        "step_deferred",
+        "step_interrupted",
+        "stale_detected",
+        "observation_recorded",
+        "evidence_recorded",
+        "claim_recorded",
+        "decision_recorded",
+        "question_opened",
+        "question_closed",
+        "report_recorded",
+        "claim_superseded",
+        "verification_recorded"
+      ]
+    },
+    "step": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/step"
+        }
+      ]
+    },
+    "attempt": {
+      "description": "At most A_max = 3, or A_max + F_max = 9 for ACQUIRE (SPEC 9.2).",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        }
+      ]
+    },
+    "at": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/utc_timestamp"
+    },
+    "root_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        }
+      ]
+    },
+    "payload": {
+      "type": "object"
+    },
+    "digest": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    }
+  },
+  "allOf": [
+    {
+      "description": "The genesis record is investigation_created at seq 0, and only it.",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "investigation_created"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "Lifecycle and staleness records belong to no step or attempt.",
+      "if": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "investigation_created",
+              "stale_detected"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "type": "null"
+          },
+          "attempt": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "step": {
+            "type": "string"
+          },
+          "attempt": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "step": {
+            "enum": [
+              "VALIDATE",
+              "EXTRACT",
+              "NORMALIZE",
+              "LOOKUP",
+              "DETECT",
+              "ASSEMBLE",
+              "VERIFY"
+            ]
+          }
+        },
+        "required": [
+          "step"
+        ]
+      },
+      "then": {
+        "properties": {
+          "attempt": {
+            "maximum": 3
+          }
+        }
+      }
+    },
+    {
+      "description": "Root binding (S-4.4, M-9, F-15): records before the committed ACQUIRE carry root_id = null and stay attributable to the request key; the step_succeeded of ACQUIRE binds the root and carries it, and every record of a later step carries it.",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "investigation_created"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_id": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "step": {
+            "const": "VALIDATE"
+          }
+        },
+        "required": [
+          "step"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_id": {
+            "type": "null"
+          },
+          "kind": {
+            "enum": [
+              "step_started",
+              "step_succeeded",
+              "step_failed",
+              "step_interrupted"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "step": {
+            "const": "ACQUIRE"
+          }
+        },
+        "required": [
+          "step"
+        ]
+      },
+      "then": {
+        "if": {
+          "properties": {
+            "kind": {
+              "const": "step_succeeded"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "root_id": {
+              "type": "string"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "root_id": {
+              "type": "null"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "step": {
+            "enum": [
+              "EXTRACT",
+              "NORMALIZE",
+              "LOOKUP",
+              "DETECT",
+              "ASSEMBLE",
+              "VERIFY"
+            ]
+          }
+        },
+        "required": [
+          "step"
+        ]
+      },
+      "then": {
+        "properties": {
+          "root_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "description": "Deferral is a Stage 03 capture outcome: ACQUIRE only.",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "step_deferred"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "const": "ACQUIRE"
+          }
+        }
+      }
+    },
+    {
+      "description": "Content records are written by the step that owns their layer (SPEC 8.3, 9.1).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "observation_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "enum": [
+              "ACQUIRE",
+              "EXTRACT",
+              "LOOKUP"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "step": {
+                  "const": "ACQUIRE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "payload": {
+                  "properties": {
+                    "obs_kind": {
+                      "const": "bundle"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "step": {
+                  "const": "EXTRACT"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "payload": {
+                  "properties": {
+                    "obs_kind": {
+                      "const": "extraction"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "step": {
+                  "const": "LOOKUP"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "payload": {
+                  "properties": {
+                    "obs_kind": {
+                      "enum": [
+                        "index_identity",
+                        "lookup"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "evidence_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "enum": [
+              "NORMALIZE",
+              "DETECT"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "claim_recorded",
+              "decision_recorded",
+              "question_opened"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "const": "DETECT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "report_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "const": "ASSEMBLE"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "verification_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "const": "VERIFY"
+          }
+        }
+      }
+    },
+    {
+      "description": "Defined for later stages; Stage 04 never writes them (S-7.6, S-8.6). They need a bound root.",
+      "if": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "question_closed",
+              "claim_superseded"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "step": {
+            "enum": [
+              "EXTRACT",
+              "NORMALIZE",
+              "LOOKUP",
+              "DETECT",
+              "ASSEMBLE",
+              "VERIFY"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "investigation_created"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/investigation_created"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "step_started",
+              "step_interrupted"
+            ]
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/step_key_only"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "step_succeeded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/step_succeeded_record"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "step_failed"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "$ref": "#/$defs/step_failed_record"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "step_deferred"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/step_deferred"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "stale_detected"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/stale_detected"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "observation_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/observation_recorded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "evidence_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "claim_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "urn:citerift:schema:investigation:v1:claim"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "decision_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/decision_recorded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "question_opened"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/question_opened"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "question_closed"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/question_closed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "report_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/report_recorded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "claim_superseded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/claim_superseded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "verification_recorded"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/verification_recorded"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "investigation_created": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request",
+        "request_key",
+        "investigation_key",
+        "investigation_id",
+        "config_digest",
+        "stage04",
+        "migrated_from"
+      ],
+      "properties": {
+        "request": {
+          "$ref": "urn:citerift:schema:investigation:v1:request"
+        },
+        "request_key": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/request_key"
+        },
+        "investigation_key": {
+          "$ref": "#/$defs/sha"
+        },
+        "investigation_id": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/investigation_uuid"
+        },
+        "config_digest": {
+          "$ref": "#/$defs/sha"
+        },
+        "stage04": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/stage04_identity"
+        },
+        "migrated_from": {
+          "description": "Last digest of a source journal when this investigation migrates one (S-8.7); null otherwise.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "description": "The request key has the request's form.",
+          "if": {
+            "properties": {
+              "request": {
+                "properties": {
+                  "mode": {
+                    "const": "live_capture"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "request_key": {
+                "required": [
+                  "wiki",
+                  "revision_id"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "request_key": {
+                "required": [
+                  "capture_sha256"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "step_key_only": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_key"
+      ],
+      "properties": {
+        "step_key": {
+          "$ref": "#/$defs/sha"
+        }
+      }
+    },
+    "step_succeeded_record": {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "step_key",
+            "outputs",
+            "root"
+          ],
+          "properties": {
+            "step_key": {
+              "$ref": "#/$defs/sha"
+            },
+            "outputs": {
+              "description": "Digests of the output blobs (M-5).",
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/sha"
+              },
+              "uniqueItems": true
+            },
+            "root": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/root"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "step": {
+            "const": "ACQUIRE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "root": {
+                "type": "object"
+              },
+              "outputs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "payload": {
+            "properties": {
+              "root": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    "step_failed_record": {
+      "properties": {
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "step_key",
+            "code",
+            "retryable",
+            "reason",
+            "detail",
+            "wall_clock"
+          ],
+          "properties": {
+            "step_key": {
+              "$ref": "#/$defs/sha"
+            },
+            "code": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/code"
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "reason": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/code"
+                }
+              ]
+            },
+            "detail": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 4096
+            },
+            "not_before": {
+              "description": "ACQUIRE only: the Retry-After instant the attempt observed, or null. A new attempt never starts before it (D-042; SPEC 9.2 T-RESTART).",
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/utc_timestamp"
+                }
+              ]
+            },
+            "wall_clock": {
+              "description": "D-042: present exactly for ACQUIRE_WALL_CLOCK_EXCEEDED; the bound the parent enforced and the elapsed child time.",
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "t_acq_ms",
+                    "elapsed_ms"
+                  ],
+                  "properties": {
+                    "t_acq_ms": {
+                      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/positive_id"
+                    },
+                    "elapsed_ms": {
+                      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/positive_id"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "DEFERRAL_BUDGET_EXHAUSTED"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "retryable": {
+                    "const": false
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "code": {
+                    "const": "ACQUIRE_WALL_CLOCK_EXCEEDED"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "wall_clock": {
+                    "type": "object"
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "wall_clock": {
+                    "type": "null"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "code": {
+                    "const": "INPUT_INVALID"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "enum": [
+                      "WIKI_UNSUPPORTED",
+                      "REVISION_NOT_PINNED",
+                      "BUNDLE_UNREADABLE",
+                      "INDEX_PATH_INVALID",
+                      "MEMORY_ROOT_UNSAFE"
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "code": {
+                    "const": "VERIFY_FAILED"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "ACQUIRE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "required": [
+                  "not_before"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "not_before": false,
+                  "code": {
+                    "not": {
+                      "enum": [
+                        "ACQUIRE_WALL_CLOCK_EXCEEDED",
+                        "DEFERRAL_BUDGET_EXHAUSTED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Only ACQUIRE (network) and EXTRACT (worker resource limits) have retryable codes (SPEC 9.3).",
+          "if": {
+            "properties": {
+              "step": {
+                "enum": [
+                  "VALIDATE",
+                  "NORMALIZE",
+                  "LOOKUP",
+                  "DETECT",
+                  "ASSEMBLE",
+                  "VERIFY"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "retryable": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "EXTRACT"
+              },
+              "payload": {
+                "properties": {
+                  "retryable": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "EXTRACTION_DEADLINE_EXCEEDED",
+                      "EXTRACTION_MEMORY_EXCEEDED",
+                      "EXTRACTION_WORKER_FAILED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "ACQUIRE retryable codes: Stage 03 network codes after its own retries, and ACQUIRE_WALL_CLOCK_EXCEEDED, whose retryability the schema leaves open (D-042 Retry-After safety).",
+          "if": {
+            "properties": {
+              "step": {
+                "const": "ACQUIRE"
+              },
+              "payload": {
+                "properties": {
+                  "retryable": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "HTTP_TIMEOUT",
+                      "HTTP_CONNECTION_FAILED",
+                      "HTTP_SERVER_ERROR",
+                      "HTTP_UNAVAILABLE",
+                      "HTTP_RATE_LIMITED",
+                      "API_RATELIMITED",
+                      "API_MAXLAG",
+                      "ATTEMPTS_EXHAUSTED",
+                      "NETWORK_GATE_BUSY",
+                      "ACQUIRE_WALL_CLOCK_EXCEEDED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "Terminal codes per step (SPEC 9.3, 10.2, MM 2.1). ACQUIRE also passes any other Stage 03 code through.",
+          "if": {
+            "properties": {
+              "step": {
+                "const": "VALIDATE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "INPUT_INVALID",
+                      "SUBJECT_TYPE_UNSUPPORTED",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "EXTRACT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "EXTRACTION_DEADLINE_EXCEEDED",
+                      "EXTRACTION_MEMORY_EXCEEDED",
+                      "EXTRACTION_WORKER_FAILED",
+                      "EXTRACTION_FAILED",
+                      "ROOT_IDENTITY_MISMATCH",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "NORMALIZE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "NORMALIZE_INVALID",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "LOOKUP"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "INDEX_MISSING",
+                      "INDEX_CORRUPT",
+                      "INDEX_FORMAT_MISMATCH",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "DETECT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "ADAPTER_INCONSISTENT",
+                      "DECISION_TABLE_GAP",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "ASSEMBLE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "REPORT_INVALID",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "step": {
+                "const": "VERIFY"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "VERIFY_FAILED",
+                      "RETRY_BUDGET_EXHAUSTED",
+                      "STORAGE_ERROR",
+                      "CANON_INVALID"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "step_deferred": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_key",
+        "code",
+        "not_before"
+      ],
+      "properties": {
+        "step_key": {
+          "$ref": "#/$defs/sha"
+        },
+        "code": {
+          "const": "DEFERRED_RETRY_AFTER"
+        },
+        "not_before": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/utc_timestamp"
+        }
+      }
+    },
+    "stale_detected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changed",
+        "recorded",
+        "current"
+      ],
+      "properties": {
+        "changed": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/identity_name"
+          }
+        },
+        "recorded": {
+          "description": "Digest of each recorded identity component (SPEC 10.3).",
+          "type": "object",
+          "propertyNames": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/identity_name"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/sha"
+          }
+        },
+        "current": {
+          "description": "Digest of each current component. A component that cannot be computed is a failure with the engine's code, never staleness (MM 10.2), so it has no entry here.",
+          "type": "object",
+          "propertyNames": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/identity_name"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/sha"
+          }
+        }
+      }
+    },
+    "observation_recorded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obs_kind",
+        "blob",
+        "source_ref"
+      ],
+      "properties": {
+        "obs_kind": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/obs_kind"
+        },
+        "blob": {
+          "$ref": "#/$defs/sha"
+        },
+        "source_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "engine",
+            "operation",
+            "locator"
+          ],
+          "properties": {
+            "engine": {
+              "enum": [
+                "citerift.wiki",
+                "citerift.retraction"
+              ]
+            },
+            "operation": {
+              "enum": [
+                "open_bundle",
+                "capture_revision",
+                "extract_bundle",
+                "index_identity",
+                "gather"
+              ]
+            },
+            "locator": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 4096
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "obs_kind": {
+                "const": "bundle"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_ref": {
+                "properties": {
+                  "engine": {
+                    "const": "citerift.wiki"
+                  },
+                  "operation": {
+                    "enum": [
+                      "open_bundle",
+                      "capture_revision"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "obs_kind": {
+                "const": "extraction"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_ref": {
+                "properties": {
+                  "engine": {
+                    "const": "citerift.wiki"
+                  },
+                  "operation": {
+                    "const": "extract_bundle"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "obs_kind": {
+                "const": "index_identity"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_ref": {
+                "properties": {
+                  "engine": {
+                    "const": "citerift.retraction"
+                  },
+                  "operation": {
+                    "const": "index_identity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "obs_kind": {
+                "const": "lookup"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_ref": {
+                "properties": {
+                  "engine": {
+                    "const": "citerift.retraction"
+                  },
+                  "operation": {
+                    "const": "gather"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decision_recorded": {
+      "description": "The disposition is the function disp(class) of SPEC 7.6; it is checked against the claim by Investigation Memory (the report schema checks it where both are embedded).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_id",
+        "claim_id",
+        "disposition"
+      ],
+      "properties": {
+        "decision_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "claim_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "disposition": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/disposition"
+        }
+      }
+    },
+    "question_kind": {
+      "enum": [
+        "identity_conflict",
+        "source_conflict"
+      ]
+    },
+    "question_opened": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "claim_id",
+        "kind"
+      ],
+      "properties": {
+        "question_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "claim_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "kind": {
+          "$ref": "#/$defs/question_kind"
+        }
+      }
+    },
+    "question_closed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question_id",
+        "claim_id",
+        "kind",
+        "evidence"
+      ],
+      "properties": {
+        "question_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "claim_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "kind": {
+          "$ref": "#/$defs/question_kind"
+        },
+        "evidence": {
+          "description": "New evidence that closes the question (S-7.6).",
+          "allOf": [
+            {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        }
+      }
+    },
+    "report_recorded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report",
+        "projections"
+      ],
+      "properties": {
+        "report": {
+          "description": "Digest of the report blob (urn:citerift:schema:investigation:v1:report).",
+          "$ref": "#/$defs/sha"
+        },
+        "projections": {
+          "description": "Digests of the v1 investigation records (schemas/contracts/v1, unchanged), one per work with a positive claim.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sha"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "claim_superseded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "old_claim_id",
+        "new_claim_id",
+        "reason",
+        "new_evidence"
+      ],
+      "properties": {
+        "old_claim_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "new_claim_id": {
+          "$ref": "#/$defs/sha"
+        },
+        "reason": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/code"
+        },
+        "new_evidence": {
+          "allOf": [
+            {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        }
+      }
+    },
+    "verification_recorded": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "checks",
+        "content_digest"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "passed",
+            "failed"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "check",
+              "passed"
+            ],
+            "properties": {
+              "check": {
+                "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/code"
+              },
+              "passed": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "content_digest": {
+          "description": "C(J) (MM 7.3), recorded when verification passed.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha"
+            }
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "result": {
+            "const": "passed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "content_digest": {
+            "type": "string"
+          },
+          "checks": {
+            "items": {
+              "properties": {
+                "passed": {
+                  "const": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "content_digest": {
+            "type": "null"
+          },
+          "checks": {
+            "contains": {
+              "properties": {
+                "passed": {
+                  "const": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

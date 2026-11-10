@@ -1,0 +1,1023 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:common",
+  "title": "CITERIFT Stage 04 shared definitions, version 1",
+  "description": "Identities, configuration, vocabularies and evidence shared by the Stage 04 request, journal-record, claim and report schemas (docs/verification/stage-04/SPECIFICATION.md, MATHEMATICAL_MODEL.md). Accepted upstream definitions are reused by $ref and never copied or changed. Every hash is a lowercase SHA-256; every number is an integer (MM 2.1).",
+  "x-citerift-version": "1.0.0",
+  "$defs": {
+    "sha256": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
+    },
+    "utc_timestamp": {
+      "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/utc_timestamp"
+    },
+    "code": {
+      "description": "A stable upper-case code (same form as the Stage 02 codes).",
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$(?!\\n)",
+      "maxLength": 80
+    },
+    "positive_id": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "wiki": {
+      "$ref": "urn:citerift:schema:wiki:v1:common#/$defs/wiki"
+    },
+    "absolute_path": {
+      "description": "An absolute POSIX path without control characters (SPEC 15, S-15.3). Paths are request inputs only and never part of an identity.",
+      "type": "string",
+      "pattern": "^/[^\\x00-\\x1f\\x7f]*$(?!\\n)",
+      "maxLength": 4096
+    },
+    "investigation_uuid": {
+      "$ref": "urn:citerift:schema:contracts:v1:investigation#/properties/investigation_id"
+    },
+    "json_pointer": {
+      "description": "RFC 6901 JSON pointer into an observation blob.",
+      "type": "string",
+      "pattern": "^(/([^~/]|~[01])*)*$(?!\\n)",
+      "maxLength": 4096
+    },
+    "step": {
+      "enum": [
+        "VALIDATE",
+        "ACQUIRE",
+        "EXTRACT",
+        "NORMALIZE",
+        "LOOKUP",
+        "DETECT",
+        "ASSEMBLE",
+        "VERIFY"
+      ]
+    },
+    "plan_version": {
+      "description": "Plan plan-1 (SPEC 9.1). Another plan is a new schema version.",
+      "const": "plan-1"
+    },
+    "table_version": {
+      "description": "Decision table dt-1 (SPEC 7.3).",
+      "const": "dt-1"
+    },
+    "subject_type": {
+      "description": "Open, versioned enumeration of investigation subjects (S-4.5). Version 1 knows one type; any other value fails validation (SUBJECT_TYPE_UNSUPPORTED) instead of being guessed.",
+      "enum": [
+        "wikipedia_article_revision"
+      ]
+    },
+    "revision_identity": {
+      "description": "Identity of a wikipedia_article_revision root (S-4.1, MM 3.1). The title is never part of it.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wiki",
+        "page_id",
+        "revision_id",
+        "capture_sha256"
+      ],
+      "properties": {
+        "wiki": {
+          "$ref": "#/$defs/wiki"
+        },
+        "page_id": {
+          "$ref": "#/$defs/positive_id"
+        },
+        "revision_id": {
+          "$ref": "#/$defs/positive_id"
+        },
+        "capture_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "identity",
+        "display"
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/subject_type"
+        },
+        "identity": {
+          "$ref": "#/$defs/revision_identity"
+        },
+        "display": {
+          "description": "Display metadata, outside the root hash (RT-1).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "revision_sha1"
+          ],
+          "properties": {
+            "title": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "revision_sha1": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{40}$(?!\\n)"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "root": {
+      "description": "The authoritative article-revision root, bound once by the committed ACQUIRE (S-4.4, F-15). root_id = H(\"citerift-investigation-root/1\", type, identity) is checked by Investigation Memory, not by this schema.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_id",
+        "subject"
+      ],
+      "properties": {
+        "root_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "subject": {
+          "$ref": "#/$defs/subject"
+        }
+      }
+    },
+    "request_key": {
+      "description": "The request identity fixed at creation (S-4.7, F-15): {wiki, revision_id} for a live-capture request, {capture_sha256} for a retained-bundle request, exactly as SPEC S-4.7 names them (no added discriminator, so the hashed form is the specified one). The two forms have disjoint required fields and no additional properties, so exactly one branch can match. It is not the root: the root also names the snapshot that ACQUIRE commits.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "wiki",
+            "revision_id"
+          ],
+          "properties": {
+            "wiki": {
+              "$ref": "#/$defs/wiki"
+            },
+            "revision_id": {
+              "$ref": "#/$defs/positive_id"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "capture_sha256"
+          ],
+          "properties": {
+            "capture_sha256": {
+              "$ref": "#/$defs/sha256"
+            }
+          }
+        }
+      ]
+    },
+    "budgets": {
+      "description": "Operational budgets of plan-1 (SPEC 9.2). They bound work and never change a claim; a change is a new plan version.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a_max",
+        "f_max"
+      ],
+      "properties": {
+        "a_max": {
+          "const": 3
+        },
+        "f_max": {
+          "const": 6
+        }
+      }
+    },
+    "live_acquire_bound": {
+      "description": "Owner decision D-042 (F-11): hard wall-clock bound of one live ACQUIRE child execution, T_acq = deadline + op_timeout + 30 s, in integer milliseconds. A controller/integration safety bound, not a decision threshold. t_acq_ms = deadline_ms + op_timeout_ms + safety_allowance_ms is checked by the configuration builder, not by this schema.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deadline_ms",
+        "op_timeout_ms",
+        "safety_allowance_ms",
+        "t_acq_ms"
+      ],
+      "properties": {
+        "deadline_ms": {
+          "$ref": "#/$defs/positive_id"
+        },
+        "op_timeout_ms": {
+          "$ref": "#/$defs/positive_id"
+        },
+        "safety_allowance_ms": {
+          "description": "Fixed by D-042 at 30 s.",
+          "const": 30000
+        },
+        "t_acq_ms": {
+          "$ref": "#/$defs/positive_id"
+        }
+      }
+    },
+    "config": {
+      "description": "The effective Stage 04 configuration. Its canonical digest (config_digest) enters the investigation key (S-4.7) and the input identity vector (SPEC 10.3), so a change of plan, budgets, fetch policy or live-ACQUIRE bound is detectable (D-042). It holds no detection parameter: there is none (S-1.2).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_version",
+        "budgets",
+        "fetch_policy_sha256",
+        "live_acquire_bound"
+      ],
+      "properties": {
+        "plan_version": {
+          "$ref": "#/$defs/plan_version"
+        },
+        "budgets": {
+          "$ref": "#/$defs/budgets"
+        },
+        "fetch_policy_sha256": {
+          "description": "SHA-256 of the canonical Stage 03 FetchPolicy.to_json() used for a live capture; null for a retained bundle.",
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sha256"
+            }
+          ]
+        },
+        "live_acquire_bound": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/live_acquire_bound"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "description": "The live bound and the fetch policy go together: both for a live capture, neither for a retained bundle.",
+          "oneOf": [
+            {
+              "properties": {
+                "fetch_policy_sha256": {
+                  "type": "null"
+                },
+                "live_acquire_bound": {
+                  "type": "null"
+                }
+              }
+            },
+            {
+              "properties": {
+                "fetch_policy_sha256": {
+                  "type": "string"
+                },
+                "live_acquire_bound": {
+                  "type": "object"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "stage04_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_version",
+        "table_version",
+        "plan_version",
+        "schema_version"
+      ],
+      "properties": {
+        "engine_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$(?!\\n)",
+          "maxLength": 40
+        },
+        "table_version": {
+          "$ref": "#/$defs/table_version"
+        },
+        "plan_version": {
+          "$ref": "#/$defs/plan_version"
+        },
+        "schema_version": {
+          "const": "1.0.0"
+        }
+      }
+    },
+    "index_identity": {
+      "description": "Stage 02 index identity recorded per LOOKUP attempt (S-3.2).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_id",
+        "policy_version",
+        "lookup_schema_version",
+        "index_sha256"
+      ],
+      "properties": {
+        "snapshot_id": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
+        },
+        "policy_version": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/projection/properties/basis/properties/policy_version"
+        },
+        "lookup_schema_version": {
+          "$ref": "urn:citerift:schema:retraction:v1:lookup-result#/properties/schema_version"
+        },
+        "index_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "extraction_identity": {
+      "description": "Stage 03 extraction engine identity and the committed document's digests (SPEC 10.3). Only complete and partial documents pass EXTRACT.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extractor",
+        "config_digest",
+        "extraction_digest",
+        "status"
+      ],
+      "properties": {
+        "extractor": {
+          "$ref": "urn:citerift:schema:wiki:v1:extraction#/properties/extractor"
+        },
+        "config_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "extraction_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial"
+          ]
+        }
+      }
+    },
+    "identity_name": {
+      "description": "Names of the components of the input identity vector (SPEC 10.3), used by stale_detected.",
+      "enum": [
+        "request_key",
+        "root",
+        "extraction",
+        "index",
+        "stage04",
+        "config"
+      ]
+    },
+    "claim_class": {
+      "description": "The fifteen classes of dt-1 (SPEC 7.2). There is no class meaning 'not retracted', 'clean' or any other global negative (S-7.5).",
+      "enum": [
+        "RETRACTED_WORK_CITED",
+        "CONCERN_CITED",
+        "CORRECTION_CITED",
+        "REINSTATED_WORK_CITED",
+        "NOT_FOUND_IN_CHECKED_SOURCES",
+        "NOTICE_CITED",
+        "IDENTITY_CONFLICT",
+        "CONTRADICTION_IN_SOURCES",
+        "UNRESOLVED_IDENTITY",
+        "UNRESOLVED_IDENTIFIER",
+        "UNRESOLVED_STATUS",
+        "LOOKUP_UNAVAILABLE",
+        "UNUSED_DEFINITION",
+        "UNRESOLVED_USE",
+        "NO_IDENTIFIER"
+      ]
+    },
+    "positive_value": {
+      "enum": [
+        "retracted",
+        "expression_of_concern",
+        "correction",
+        "reinstated"
+      ]
+    },
+    "rule": {
+      "description": "Rules that produce a claim. D-5 and D-17 end DETECT with a failure and produce none.",
+      "enum": [
+        "D-1",
+        "D-2",
+        "D-3",
+        "D-4",
+        "D-6",
+        "D-7",
+        "D-8",
+        "D-9",
+        "D-10",
+        "D-11",
+        "D-12",
+        "D-13",
+        "D-14",
+        "D-15",
+        "D-16"
+      ]
+    },
+    "disposition": {
+      "enum": [
+        "REPORT_FINDING",
+        "REPORT_NOT_FOUND",
+        "ROUTE_NEEDS_RESOLUTION",
+        "ABSTAIN",
+        "ABSTAIN_UNAVAILABLE",
+        "OUT_OF_SCOPE"
+      ]
+    },
+    "taint_reason": {
+      "enum": [
+        "IDENTIFIER_UNCONFIRMED",
+        "IDENTIFIER_MALFORMED",
+        "IDENTIFIER_ROLE_UNRESOLVED"
+      ]
+    },
+    "reason": {
+      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons.",
+      "enum": [
+        "LIST_DEFINED_UNUSED",
+        "CONFLICTING_DEFINITIONS",
+        "NO_BOUND_USE",
+        "IDENTIFIER_UNCONFIRMED",
+        "IDENTIFIER_MALFORMED",
+        "IDENTIFIER_ROLE_UNRESOLVED",
+        "IDENTITY_WITNESSED",
+        "LOOKUP_PARTIAL",
+        "SOURCE_TYPE_CONFLICT",
+        "KEY_NAMES_SEVERAL_WORKS",
+        "PMID_ROLE_COLLISION",
+        "BRIDGE_ONLY_SUPPORT",
+        "STATUS_NOT_ESTABLISHED",
+        "COVERAGE_GAP_RELEVANT_ROWS",
+        "LOOKUP_QUERY_FAILED",
+        "CITED_IDENTIFIER_IS_NOTICE",
+        "NOT_FOUND_IN_CHECKED_SOURCES",
+        "KEY_RESULTS_DIFFER",
+        "PAIR_UNCORROBORATED",
+        "CO_REPORTED_MULTIPLE"
+      ]
+    },
+    "coherence": {
+      "description": "kappa of SPEC 6.5 / MM 5.3; null for shapes other than PAIR.",
+      "enum": [
+        "INCOMPATIBLE",
+        "NOT_DETERMINED",
+        "COHERENT",
+        "UNDETERMINED",
+        null
+      ]
+    },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheme",
+        "normalized"
+      ],
+      "properties": {
+        "scheme": {
+          "enum": [
+            "doi",
+            "pmid"
+          ]
+        },
+        "normalized": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scheme": {
+                "const": "doi"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "normalized": {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scheme": {
+                "const": "pmid"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "normalized": {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "doi_key_obj": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/key"
+        },
+        {
+          "properties": {
+            "scheme": {
+              "const": "doi"
+            }
+          }
+        }
+      ]
+    },
+    "pmid_key_obj": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/key"
+        },
+        {
+          "properties": {
+            "scheme": {
+              "const": "pmid"
+            }
+          }
+        }
+      ]
+    },
+    "candidate": {
+      "description": "The work candidate a claim decides (SPEC 6.3, MM 4.4).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "shape",
+        "keys",
+        "coherence"
+      ],
+      "properties": {
+        "shape": {
+          "enum": [
+            "NONE",
+            "DOI",
+            "PMID",
+            "PAIR"
+          ]
+        },
+        "keys": {
+          "type": "array",
+          "maxItems": 2
+        },
+        "coherence": {
+          "$ref": "#/$defs/coherence"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "NONE"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "keys": {
+                "maxItems": 0
+              },
+              "coherence": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "DOI"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "keys": {
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/doi_key_obj"
+                  }
+                ]
+              },
+              "coherence": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "PMID"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "keys": {
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/pmid_key_obj"
+                  }
+                ]
+              },
+              "coherence": {
+                "const": null
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "PAIR"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "keys": {
+                "minItems": 2,
+                "maxItems": 2,
+                "prefixItems": [
+                  {
+                    "$ref": "#/$defs/doi_key_obj"
+                  },
+                  {
+                    "$ref": "#/$defs/pmid_key_obj"
+                  }
+                ]
+              },
+              "coherence": {
+                "enum": [
+                  "INCOMPATIBLE",
+                  "NOT_DETERMINED",
+                  "COHERENT",
+                  "UNDETERMINED"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sha256"
+      },
+      "uniqueItems": true
+    },
+    "obs_kind": {
+      "enum": [
+        "bundle",
+        "extraction",
+        "index_identity",
+        "lookup"
+      ]
+    },
+    "evidence_kind": {
+      "description": "What an evidence item states (SPEC 8.3). Evidence never copies a value without its pointer into an observation (S-8.5).",
+      "enum": [
+        "bundle_identity",
+        "extraction_identity",
+        "unit",
+        "use_eligibility",
+        "identifier_occurrence",
+        "work_candidate",
+        "index_identity",
+        "lookup_result",
+        "lookup_event",
+        "coherence"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "observation",
+        "pointer",
+        "kind",
+        "refs",
+        "value"
+      ],
+      "properties": {
+        "evidence_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "observation": {
+          "description": "Digest of the observation blob the pointer resolves in.",
+          "$ref": "#/$defs/sha256"
+        },
+        "pointer": {
+          "$ref": "#/$defs/json_pointer"
+        },
+        "kind": {
+          "$ref": "#/$defs/evidence_kind"
+        },
+        "refs": {
+          "description": "Earlier evidence this item is derived with (downward references only, S-8.4).",
+          "$ref": "#/$defs/evidence_ids"
+        },
+        "value": {
+          "description": "The normalized fact for derived kinds; null when the pointed value is the fact."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "use_eligibility"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "eligibility",
+                  "reason"
+                ],
+                "properties": {
+                  "eligibility": {
+                    "enum": [
+                      "CITED",
+                      "UNUSED",
+                      "USE_NOT_ESTABLISHED"
+                    ]
+                  },
+                  "reason": {
+                    "enum": [
+                      null,
+                      "LIST_DEFINED_UNUSED",
+                      "CONFLICTING_DEFINITIONS",
+                      "NO_BOUND_USE"
+                    ]
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "eligibility": {
+                          "const": "CITED"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "reason": {
+                          "const": null
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "eligibility": {
+                          "const": "UNUSED"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "reason": {
+                          "const": "LIST_DEFINED_UNUSED"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "eligibility": {
+                          "const": "USE_NOT_ESTABLISHED"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "reason": {
+                          "enum": [
+                            "CONFLICTING_DEFINITIONS",
+                            "NO_BOUND_USE"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "identifier_occurrence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "key"
+                ],
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "CONFIRMED",
+                      "UNCONFIRMED",
+                      "MALFORMED",
+                      "OBSERVATION_ROLE"
+                    ]
+                  },
+                  "key": {
+                    "oneOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "$ref": "#/$defs/key"
+                      }
+                    ]
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "const": "MALFORMED"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "key": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "if": {
+                      "properties": {
+                        "status": {
+                          "enum": [
+                            "CONFIRMED",
+                            "UNCONFIRMED"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "key": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "work_candidate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/candidate"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "coherence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "enum": [
+                  "INCOMPATIBLE",
+                  "NOT_DETERMINED",
+                  "COHERENT",
+                  "UNDETERMINED"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "bundle_identity",
+                  "extraction_identity",
+                  "unit",
+                  "index_identity",
+                  "lookup_result",
+                  "lookup_event"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "upstream_reason": {
+      "description": "A Stage 02 projection basis reason kept with its provenance. Stage 02 codes are an open set owned by Stage 02 (policy version), so they are not enumerated here and are never Stage 04 reason codes.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "code",
+        "evidence"
+      ],
+      "properties": {
+        "source": {
+          "const": "stage02_projection_basis"
+        },
+        "code": {
+          "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/code"
+        },
+        "evidence": {
+          "description": "Evidence id of the lookup result whose basis carries the code.",
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}
