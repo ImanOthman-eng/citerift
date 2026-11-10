@@ -1,0 +1,102 @@
+{
+  "tests": [
+    "tests/stage04/test_controller_adversarial.py",
+    "tests/stage04/test_controller_crash.py",
+    "tests/stage04/test_controller_differential.py",
+    "tests/stage04/test_controller_guard.py",
+    "tests/stage04/test_controller_resolution_stale.py",
+    "tests/stage04/test_controller_run.py"
+  ],
+  "mutants": 10,
+  "detected": 10,
+  "rows": [
+    {
+      "id": "CONTROL",
+      "what": "unmutated copy",
+      "exit": 0,
+      "detected": false,
+      "first_failure": "",
+      "summary": "173 passed in 80.35s (0:01:20)"
+    },
+    {
+      "id": "MS-1",
+      "what": "restart a succeeded step (the guard permits it)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_guard.py::test_transition_matrix",
+      "summary": "1 failed, 81 passed in 58.38s"
+    },
+    {
+      "id": "MS-2",
+      "what": "reset the retry count (only the last attempt counts)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_adapter_exception_fails_closed[VALIDATE]",
+      "summary": "1 failed in 0.27s"
+    },
+    {
+      "id": "MS-3",
+      "what": "ignore not_before (schedule and guard)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_explanations_say_why",
+      "summary": "1 failed, 42 passed in 5.92s"
+    },
+    {
+      "id": "MS-4",
+      "what": "allow step k + 1 before step k",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_differential.py::test_differential_random_walks[retained]",
+      "summary": "1 failed, 74 passed in 38.49s"
+    },
+    {
+      "id": "MS-5",
+      "what": "allow continuing after a terminal lifecycle",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_stale_investigation_is_terminal_for_every_later_run",
+      "summary": "1 failed, 41 passed in 5.27s"
+    },
+    {
+      "id": "MS-6",
+      "what": "turn NEEDS_RESOLUTION into COMPLETED",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_crash.py::test_crash_at_every_occurrence_of_every_controller_boundary",
+      "summary": "61 passed, 1 error in 7.38s"
+    },
+    {
+      "id": "MS-7",
+      "what": "drop the open question (not derived and not required)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_crash.py::test_crash_at_every_occurrence_of_every_controller_boundary",
+      "summary": "61 passed, 1 error in 7.63s"
+    },
+    {
+      "id": "MS-8",
+      "what": "repeat a committed step (the schedule offers it again)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_adapter_exception_fails_closed[ASSEMBLE]",
+      "summary": "1 failed, 6 passed in 1.33s"
+    },
+    {
+      "id": "MS-9",
+      "what": "ignore a changed key (no staleness)",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_stale_investigation_is_terminal_for_every_later_run",
+      "summary": "1 failed, 41 passed in 5.21s"
+    },
+    {
+      "id": "MS-10",
+      "what": "treat an adapter exception as success",
+      "exit": 1,
+      "detected": true,
+      "first_failure": "tests/stage04/test_controller_adversarial.py::test_adapter_exception_fails_closed[VALIDATE]",
+      "summary": "1 failed in 0.30s"
+    }
+  ]
+}

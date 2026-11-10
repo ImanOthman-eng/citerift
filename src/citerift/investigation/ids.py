@@ -1,7 +1,9 @@
 """Identities that Investigation Memory derives and checks (SPEC 4.1, 4.2, 8.2; MM 2 and 3).
 
-Child ids of SPEC 4.3 (evidence, claim, decision, question) are computed by the steps that write them and checked by
-VERIFY (Step 7 onward); Memory checks that they are defined once and resolve (M-4, M-7, M-10).
+Child ids of SPEC 4.3 and MM 3.3 (evidence, claim, decision, question) are values of ``H`` with distinct tags over the
+parent id and the child's anchor or content, never over ``seq``, attempt or time (CH-1). The Workflow Controller
+(Step 7) derives decision and question ids itself and checks evidence and claim ids before it commits a step; Memory
+checks that every id is defined once and resolves (M-4, M-7, M-10). Step keys (S-9.3, MM 10.1) are derived here too.
 """
 
 from __future__ import annotations
@@ -13,6 +15,12 @@ from citerift.investigation.canonical import H, canon, sha256_hex, uuid_from_key
 GENESIS_TAG = "citerift-journal-genesis/1"
 INVESTIGATION_TAG = "citerift-investigation/1"
 ROOT_TAG = "citerift-investigation-root/1"
+EVIDENCE_TAG = "citerift-evidence/1"
+CLAIM_TAG = "citerift-claim/1"
+DECISION_TAG = "citerift-decision/1"
+QUESTION_TAG = "citerift-question/1"
+STEP_TAG = "citerift-step/1"
+IDENTITY_TAG = "citerift-identity/1"
 SAFETY_ALLOWANCE_MS = 30_000  # owner decision D-042
 
 
@@ -65,3 +73,41 @@ def live_bound_consistent(config: dict[str, Any]) -> bool:
         )
     except (KeyError, TypeError):
         return False
+
+
+# Child identities (SPEC 4.3, MM 3.3; Step 7) -----------------------------------------------------------------------
+
+
+def evidence_id(observation: str, pointer: str) -> str:
+    """``H(observation digest, JSON pointer)``: the evidence a pointer selects in one observation."""
+    return H(EVIDENCE_TAG, observation, pointer)
+
+
+def claim_id(cand_ref: str, claim_class: str, rule: str, table_version: str, evidence: list[str]) -> str:
+    """``H(cand_ref, class, rule id, table version, sorted evidence ids)``."""
+    return H(CLAIM_TAG, cand_ref, claim_class, rule, table_version, sorted(set(evidence)))
+
+
+def decision_id(claim: str, disposition: str) -> str:
+    """``H(claim_id, disposition)``: one decision per claim (SPEC 7.6)."""
+    return H(DECISION_TAG, claim, disposition)
+
+
+def question_id(claim: str, kind: str) -> str:
+    """``H(claim_id, "question", kind)`` (SPEC 4.3, S-7.6)."""
+    return H(QUESTION_TAG, claim, "question", kind)
+
+
+def identity_digest(name: str, value: Any) -> str:
+    """Digest of one component of the input identity vector (SPEC 10.3), as ``stale_detected`` records it."""
+    return H(IDENTITY_TAG, name, value)
+
+
+def step_key(
+    step: str, plan_version: str, dependencies: list[list[Any]], identities: dict[str, str], cfg_digest: str
+) -> str:
+    """``K(s) = H("citerift-step/1", s, plan version, out(dep(s)), id_s, config digest)`` (S-9.3, MM 10.1).
+
+    ``dependencies`` is ``[[step, [output digests]], ...]`` of the committed steps ``s`` reads, in plan order;
+    ``identities`` maps each identity component ``s`` depends on to its ``identity_digest``."""
+    return H(STEP_TAG, step, plan_version, dependencies, identities, cfg_digest)

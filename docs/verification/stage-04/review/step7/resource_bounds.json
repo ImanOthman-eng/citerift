@@ -1,0 +1,115 @@
+{
+  "limits": {
+    "MAX_RECORD_BYTES": 1048576,
+    "MAX_JOURNAL_BYTES": 536870912,
+    "MAX_BLOB_BYTES": 268435456
+  },
+  "bounded_record_kinds_max_bytes": {
+    "investigation_created": {
+      "bytes": 50257,
+      "fraction_of_limit": 0.0479
+    },
+    "step_started": {
+      "bytes": 371,
+      "fraction_of_limit": 0.0004
+    },
+    "step_interrupted": {
+      "bytes": 375,
+      "fraction_of_limit": 0.0004
+    },
+    "step_deferred": {
+      "bytes": 445,
+      "fraction_of_limit": 0.0004
+    },
+    "step_failed": {
+      "bytes": 25221,
+      "fraction_of_limit": 0.0241
+    },
+    "stale_detected": {
+      "bytes": 1379,
+      "fraction_of_limit": 0.0013
+    },
+    "observation_recorded": {
+      "bytes": 25112,
+      "fraction_of_limit": 0.0239
+    },
+    "decision_recorded": {
+      "bytes": 557,
+      "fraction_of_limit": 0.0005
+    },
+    "question_opened": {
+      "bytes": 543,
+      "fraction_of_limit": 0.0005
+    },
+    "step_succeeded (1 output)": {
+      "bytes": 7041,
+      "per_more_output": 67
+    },
+    "verification_recorded (1 check)": {
+      "bytes": 567,
+      "per_more_check": 91
+    }
+  },
+  "upstream": {
+    "stage03": {
+      "max_refs": 20000,
+      "max_candidates": 50000,
+      "max_nodes": 400000,
+      "MAX_OUTPUT_BYTES (extraction document, canonical)": 268435456,
+      "MAX_EXTRACTION_BYTES (verify)": 268435456,
+      "MAX_CAPTURE_JSON": 4194304,
+      "MAX_ARTIFACT": 67108864,
+      "MAX_SOURCE_BYTES": 4194304,
+      "MAX_RENDER_BYTES": 16777216
+    },
+    "stage02": {
+      "ROW_LIMIT": 2000000,
+      "FIELD_LIMIT": 1048576,
+      "MAX_PAGE (relevance listing; gather events are not paged)": 100
+    },
+    "controller": {
+      "A_max": 3,
+      "F_max": 6,
+      "attempts_retained": 24,
+      "attempts_live": 30
+    }
+  },
+  "derived": {
+    "count_bounds_per_run": {
+      "units": 20000,
+      "identifier_occurrences (all roles)": 50000,
+      "identifiers_per_unit (no per-unit cap)": 50000,
+      "distinct_keys": 50000,
+      "lookup_operations Q1 + Q2 + index identity": 70001,
+      "work_candidates": 70000,
+      "claims (one per candidate)": 70000,
+      "decisions (one per claim)": 70000,
+      "open_questions (at most one per claim)": 70000,
+      "lookup_events_per_key (Stage 02 ROW_LIMIT only)": 2000000,
+      "attempts retained / live": [
+        24,
+        30
+      ],
+      "deferrals": 6,
+      "execution_records": 62,
+      "report_records": 1,
+      "verification_recorded (exactly one, by VERIFY: W-7)": 1
+    },
+    "content_record_floor_bytes (measured)": 565,
+    "execution_records_max": 62,
+    "execution_bytes_max": 1564896,
+    "claim_evidence_ids_lower_bound": 50005,
+    "claim_record_bytes_lower_bound": 3350335,
+    "claim_record_lower_bound_over_limit": true,
+    "claim_record_bytes_with_one_key_at_ROW_LIMIT_events": 137350335,
+    "report_projection_list_bytes_worst_case": 3350000,
+    "report_record_over_limit": true,
+    "content_records_per_run_lower_bound (caps only, events excluded)": 220001,
+    "journal_bytes_lower_bound (A_max runs, events excluded)": 374466591,
+    "journal_lower_bound_over_limit": false,
+    "journal_bytes_with_one_key_at_ROW_LIMIT_events": 3764466591,
+    "journal_with_events_over_limit": true,
+    "lookup_blob_bytes_lower_bound_one_key_at_ROW_LIMIT_events (one digest per event)": 134000000,
+    "lookup_blob_over_limit_at_one_digest_per_event": false
+  }
+}
