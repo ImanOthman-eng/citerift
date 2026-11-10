@@ -803,10 +803,12 @@ def test_d044_final_bytes_no_append_can_produce_are_corrupt(tmp_path: Path, case
         "copy of an earlier record": lines[-3],
     }[case]
     data = _store(root, key, b"".join(x + b"\n" for x in lines[:-1]) + tail)
+    # A valid record that is not the next one is refused by the fold's next-record check (D-046), as M-1.
+    expected = "SEQUENCE_BROKEN" if case == "copy of an earlier record" else "JOURNAL_CORRUPT"
     for writable in (False, True):
         with pytest.raises(CorruptInvestigation) as exc:
             InvestigationMemory.open(root, key, writable=writable, clock=Clock())
-        assert exc.value.cause.code == "JOURNAL_CORRUPT"
+        assert exc.value.cause.code == expected
     assert journal_path(root, key).read_bytes() == data
     assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
 
@@ -843,3 +845,67 @@ def test_d044_interrupted_append_with_zero_filled_bytes_is_a_torn_tail(tmp_path:
         drive(rw)
         assert rw.view.step_state("DETECT") == "succeeded"
     assert (root / key / "journal.jsonl.torn-0").read_bytes() == data
+
+
+# D-046: a complete record without its newline is a torn tail only if it is a fully valid next record -------------
+
+
+def _unterminated_candidate(root: Path, key: str, at: int, change: Any) -> bytes:
+    """Keep records before ``at``; append record ``at``, changed, with a recomputed digest and no newline.
+
+    ``seq`` and ``prev`` stay those of the next record, and the digest is correct, so only full next-record
+    validation (schema with JSON token types, kind, step legality, root binding, references, blobs) can refuse it."""
+    lines = _lines(root, key)
+    rec = records_of(root, key)[at]
+    change(rec)
+    rec["digest"] = ids.record_digest(rec)
+    return _store(root, key, b"".join(x + b"\n" for x in lines[:at]) + canon(rec))
+
+
+def _set(field: str, value: Any) -> Any:
+    return lambda rec: rec.__setitem__(field, value)
+
+
+def _set_payload(field: str, value: Any) -> Any:
+    return lambda rec: rec["payload"].__setitem__(field, value)
+
+
+@pytest.mark.regression
+@pytest.mark.parametrize(
+    ("at", "change"),
+    [
+        pytest.param(1, _set("seq", True), id="seq true where 1 is expected"),  # True == 1 in Python, not in JSON
+        pytest.param(20, _set("v", True), id="journal version true"),
+        pytest.param(20, _set("attempt", True), id="attempt true"),
+        pytest.param(20, _set("kind", "no_such_kind"), id="unknown record kind"),
+        pytest.param(20, _set("at", "2026-11-10T12:00:00.000000Z"), id="time earlier than the previous record"),
+        pytest.param(20, _set("attempt", 2), id="terminal record of an attempt that is not open"),
+        pytest.param(20, _set("root_id", h("another root")), id="root that is not the bound root"),
+        pytest.param(19, _set_payload("claim_id", h("no such claim")), id="decision naming an undefined claim"),
+        pytest.param(20, _set_payload("outputs", [h("no such blob")]), id="success naming a missing blob"),
+    ],
+)
+def test_d046_complete_unterminated_record_must_be_a_valid_next_record(tmp_path: Path, at: int, change: Any) -> None:
+    """D-046: complete, canonical, correctly hashed, next ``seq`` and ``prev``, but not a legal next record: CORRUPT."""
+    root, key = completed(tmp_path)
+    data = _unterminated_candidate(root, key, at, change)
+    for writable in (False, True):
+        with pytest.raises(CorruptInvestigation):
+            InvestigationMemory.open(root, key, writable=writable, clock=Clock())
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize("at", [1, 5, 19, 20])
+def test_d046_valid_next_record_without_its_newline_stays_a_torn_tail(tmp_path: Path, at: int) -> None:
+    """D-046 positive control: the unchanged next record, only its newline missing, is torn and recovered."""
+    root, key = completed(tmp_path)
+    data = _unterminated_candidate(root, key, at, lambda rec: None)
+    with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as ro:
+        assert ro.torn_tail is not None and len(ro.view.records) == at
+    assert journal_path(root, key).read_bytes() == data
+    with InvestigationMemory.open(root, key, clock=Clock()) as rw:
+        assert rw.torn_copies() == ["journal.jsonl.torn-0"]
+        drive(rw)
+        assert rw.view.step_state("DETECT") == "succeeded"

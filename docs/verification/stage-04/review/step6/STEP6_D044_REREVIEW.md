@@ -45,16 +45,16 @@ is a focused re-review of one change. It is **not** the formal Stage 12 independ
 D-044 states the v1 criterion as "the final bytes lack the terminating newline". The re-review showed that, read
 literally, it lets a writable open drop a committed record (D44-R2), which D-044 itself forbids ("a complete record is
 never dropped as crash recovery"). The fix keeps D-044's intent and only moves cases from "torn" to `CORRUPT`; it adds
-no recovery. **This is a refinement of the owner's stated criterion and needs the owner's confirmation.** If the owner
-prefers the literal criterion, reverting is the `_tail_problem` call in `parse_journal` and its tests.
+no recovery. It refines the owner's stated criterion; the owner confirmed it at `9c72852` (message
+`cmsg_018VCB51nDHP6HXmLU4ea5yP6hByFwsEfpUhzKebsUsPBb`, recorded with D-046) and it is not to be reverted.
 
 Final bytes without a newline are `CORRUPT` when (SPEC 8.6, `journal._tail_problem`):
 
 - they are longer than one append (`MAX_RECORD_BYTES + 1`);
 - their first byte is neither `{` nor zero;
 - the bytes before the first zero byte hold a complete JSON value followed by anything other than zero bytes;
-- that complete value is not the valid next record (strict canonical JSON, correct digest, `seq` equal to the number of
-  records, `prev` equal to the last record's digest).
+- that complete value is not a fully valid next record. At `9c72852` this was a hand-written check (strict canonical
+  JSON, digest, `seq`, `prev`); D-046 replaced it with the fold's append check (section "D-046" below).
 
 They remain a torn tail (preserved, never read as authority) when they are all zero, start with zero bytes, are an
 incomplete JSON fragment starting with `{`, or are the valid next record, possibly followed by zero bytes.
@@ -89,6 +89,40 @@ Each new test was run before its fix.
    or invariant) is still classified torn, and `seq` compares equal when written as `true`. An append cannot produce
    such a record (the fold checks every record before it is written); producing one needs deliberate forgery with a
    recomputed digest, which the hash chain does not defend against without an external anchor (Step 6 limit R6-12).
-   Not changed: a schema and invariant check on the tail would duplicate the fold for a case outside the crash model.
+   Not changed at `9c72852`. The owner then decided this gap as D-046 (below).
+
+## D-046: a complete unterminated record must pass full next-record validation
+
+Owner decision D-046 (message `cmsg_018VCB51nDHP6HXmLU4ea5yP6hByFwsEfpUhzKebsUsPBb`, 2026-11-10T19:23:48Z): if the final
+bytes hold one complete JSON value, it is a torn tail only if it would be a fully valid next journal record under the
+same authoritative validation an append passes, its newline aside; otherwise `CORRUPT`.
+
+Mechanism (one source of truth): `journal._tail_problem` keeps only the physical checks and the line check every
+complete record passes (`_record_problem`: size, strict canonical JSON, digest). When the tail is one complete record
+it returns it in `TornTail.record`. `memory.open`, after folding the whole prefix, runs `folder.check(record)`:
+`Folder.check` is `Folder._apply(..., mutate=False)`, the same function `InvestigationMemory.append` calls on every
+record before writing it and `Folder.apply` runs on every committed record. It checks the schema (JSON Schema token
+types: `true` is not an integer), version, kind, `seq`, `prev`, `at`, step and attempt legality, root binding,
+references and layers, named blobs and the M-invariants. Any failure raises, and the open reports `CORRUPT` before
+any repair. The hand-written `seq`/`prev` comparison of `9c72852` was removed, so no second approximation of the fold
+exists.
+
+Fail-first, against the `9c72852` source with the new tests: `test_d046_complete_unterminated_record_must_be_a_valid_next_record`
+failed in all 9 cases with `DID NOT RAISE CorruptInvestigation` (the record was taken as a torn tail and, on a
+writable open, removed): `seq` `true` where 1 is expected, journal version `true`, attempt `true`, unknown record
+kind, time earlier than the previous record, terminal record of an attempt that is not open, a root that is not the
+bound root, a decision naming an undefined claim, a success naming a missing blob. Each candidate had a correct digest,
+the next `seq` and the expected `prev`. The 4 positive controls passed. After the change: 13 passed.
+
+Positive controls kept: the unchanged next record without its newline is torn and recovered (records 1, 5, 19 and 20,
+`test_d046_valid_next_record_without_its_newline_stays_a_torn_tail`); incomplete prefixes and the zero-filled cases of
+D44-R2 stay torn; newline-terminated corruption stays `CORRUPT`; a corrupt prefix before an incomplete tail causes no
+mutation; the interrupted-append cut sweep recovers 626 of 626 trials. The R2b case "copy of an earlier record" is now
+refused by the fold (`SEQUENCE_BROKEN`, M-1) rather than by the removed hand-written check.
+
+Security boundary, unchanged: this is not tamper protection. Whoever can rewrite the journal and recompute the
+unkeyed hash chain is not detected without an external anchor (limit R6-12). D-046 only stops a detectable invalid
+complete record from being discarded because its newline is missing; it moves cases toward `CORRUPT` and adds no
+recovery.
 
 Reviewer probe scripts were kept outside the repository (session scratch), as in the Step 6 review.

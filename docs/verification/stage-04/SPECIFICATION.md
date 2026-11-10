@@ -564,10 +564,17 @@ them: an append writes the valid next record line (an object, at most `MAX_RECOR
 write, so a crash leaves a prefix of those bytes, possibly with zero-filled blocks anywhere. Final bytes without a
 newline are `CORRUPT` when they are longer than one append (`MAX_RECORD_BYTES + 1`), when their first byte is
 neither `{` nor zero, when they hold a complete JSON value followed by anything other than zero bytes (for example a
-committed record whose newline byte is damaged), or when that complete value is not the valid next record (strict
-canonical JSON, correct digest, next `seq`, `prev` equal to the last record's digest). A fragment whose content
-cannot be checked (an incomplete record, or bytes after a zero-filled block) remains a torn tail; it is preserved and
-never read as authority (D-044 focused re-review, findings D44-R2, D44-R2a, D44-R2b). A newline-terminated line is a complete physical record: if it is not valid strict
+committed record whose newline byte is damaged), or when that complete value is not a fully valid next record. A
+complete value without its newline is validated as the proposed next record by the same check every append passes
+before it is written (the fold's check, without changing state): strict canonical JSON and digest, then the exact
+record schema with JSON token types (a boolean never satisfies an integer field, although `true == 1` in Python),
+journal version, record kind, `seq`, `prev`, `at`, step and attempt legality, root binding, references and their
+layers, the existence and integrity of named blobs, and every M-invariant the fold enforces (owner decision D-046).
+Any failure is `CORRUPT`. A fragment whose content cannot be checked (an incomplete record, or bytes after a
+zero-filled block) remains a torn tail; it is preserved and never read as authority (D-044 focused re-review,
+findings D44-R2, D44-R2a, D44-R2b; D-046). D-046 only moves cases toward `CORRUPT`; it adds no recovery, and it is
+not tamper protection: whoever can rewrite the journal and recompute the unkeyed hash chain is not detected without
+an external anchor (limit R6-12). A newline-terminated line is a complete physical record: if it is not valid strict
 canonical JSON, has a wrong digest or `prev`, violates the schema or an invariant, or references invalid or missing
 committed data, the investigation is `CORRUPT` (read-only; nothing is repaired, dropped or guessed), whether that line
 is the last one or not. Incomplete append ≠ integrity failure.
@@ -771,7 +778,8 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
    content (process id, start time) is informational only. Network file systems are not supported (RA R4-26).
 2. Read the journal and identify a candidate incomplete tail: final bytes without the terminating newline that an
    interrupted append could have left (section 8.6); other final bytes without a newline are `CORRUPT`. Only the
-   final record can be torn.
+   final record can be torn. If the candidate holds one complete record, it is checked as the next record after
+   step 3, with the append check (D-046); any failure is `CORRUPT` and nothing is changed.
 3. Validate the entire prefix (every complete record: strict canonical JSON, digest, `prev`, schema, M-1…M-14, the
    blobs it names) before changing anything. Any failure: `CORRUPT`, read-only, and the journal, its torn tail,
    the blobs and any temporary file are left exactly as found. The only write before this point is the lock file's
@@ -798,6 +806,7 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 | Torn final record | final bytes without a newline | prefix validated, then preserved copy and valid prefix (10.1) | resume from the prefix |
 | Bit flip inside a record or blob | digest or hash mismatch | none | `CORRUPT`; no repair |
 | Damaged final newline, or final bytes no append can leave | a complete value followed by other bytes, a complete value that is not the valid next record, final bytes longer than one append, or a first byte that is neither `{` nor zero (8.6) | none | `CORRUPT`; no repair (D44-R2) |
+| Complete record without its newline that is not a legal next record | correct digest, `seq` and `prev`, but the append check refuses it (schema or token type, kind, step, root, reference, blob, invariant) | none | `CORRUPT`; no repair (D-046) |
 | Duplicate retry of a committed step | a committed step key | not run (M-14) | no duplicate |
 | Repeated invocation (`run` twice) | same `investigation_key` | resume (S-9.4) | no duplicate investigation |
 | Two processes at once | lock held by the first | second gets `INVESTIGATION_BUSY` | no interleaving |

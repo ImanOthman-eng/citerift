@@ -1033,3 +1033,30 @@ No Stage 00 notes capability is added now (`src/citerift/governance`, `schemas/g
 unchanged). Dated notes with a `NOTE_PREDATES_STATE` warning remain a non-blocking governance-hardening candidate, to
 be reconsidered only if more stale-note cases appear, several stages begin using mutable current-state notes, or the
 final release review finds automated stale-note detection materially useful.
+
+## D-046 — A complete unterminated journal record must pass full next-record validation
+- Status: accepted
+- Topic: stage-04-complete-tail-record-validation
+- Date: 2026-11-10
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step6/STEP6_D044_REREVIEW.md (sections "The narrowed torn-tail rule" and "D-046")
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP6hByFwsEfpUhzKebsUsPBb`, 2026-11-10T19:23:48Z). The owner
+confirms the D44-R2, D44-R2a and D44-R2b narrowing of the torn-tail rule at
+`9c72852a2193e972f5a73b6b09a2c8a4c7a93855` and directs that it not be reverted.
+
+A final fragment without its terminating newline that holds one complete JSON value is a recoverable torn tail only if
+that value would be a fully valid next journal record under the same authoritative validation an append passes,
+apart from the missing newline: strict canonical JSON, exact record schema with JSON token types (a boolean never
+satisfies an integer field), digest, next `seq`, `prev`, journal version, record kind, step and attempt legality, root
+binding, reference and layer legality, the existence and integrity of named blobs, and the M-invariants and state
+rules Memory enforces. Otherwise the investigation is `CORRUPT` and the record is not removed. Incomplete or
+uncheckable fragments compatible with one interrupted append (a prefix of the next record, possibly with zero-filled
+blocks) remain candidate torn tails and are preserved before removal.
+
+One source of truth: the complete tail record is validated by `Folder.check`, the fold check every append passes
+before it is written; no second, hand-written approximation is kept. D-046 refines D-044 and D44-R2 toward fail-closed
+behaviour only and does not broaden recovery. It is not cryptographic tamper protection: an actor able to rewrite the
+journal and recompute the unkeyed hash chain is not detected without an external anchor. D-045 is accepted and
+complete. The record and journal ceilings remain provisional; their derivation is owed in Step 7.

@@ -6,7 +6,9 @@ Reading splits the file into complete records and, at most, one torn tail (SPEC 
   append could have left (a prefix of one record line and its newline, possibly with zero-filled blocks;
   ``_tail_problem``). Only that is an interrupted append; it was never committed. Final bytes without a newline that
   no append can leave (longer than one append, not starting a record, a complete value followed by other bytes, or a
-  complete value that is not the valid next record) are ``CORRUPT`` (re-review findings D44-R2, D44-R2a, D44-R2b);
+  complete value that is not the valid next record) are ``CORRUPT`` (re-review findings D44-R2, D44-R2a, D44-R2b).
+  A complete record without its newline is torn only if the fold accepts it as the next record, with the same
+  ``Folder.check`` that every append passes (owner decision D-046; checked in ``memory.open``);
 - a newline-terminated line is a complete physical record. If it is not strict canonical JSON or has a wrong digest
   (both checked here), or (checked by the fold) has a wrong ``prev``, violates the schema or an invariant, or names a
   missing blob, the investigation is ``CORRUPT`` (read-only; nothing is repaired, dropped or guessed), whether the
@@ -25,7 +27,7 @@ import json
 import os
 import secrets
 import stat
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from citerift.investigation import faults
@@ -51,11 +53,16 @@ _DECODER = json.JSONDecoder()  # structure only: is the final fragment one compl
 
 @dataclass(frozen=True)
 class TornTail:
-    """An uncommitted final line: ``offset`` is where the valid prefix ends; ``reason`` says why it is torn."""
+    """An uncommitted final line: ``offset`` is where the valid prefix ends; ``reason`` says why it is torn.
+
+    ``record`` is set when the final bytes hold one complete record (strict canonical JSON, correct digest). Such a
+    tail is torn only if that record is a fully valid next record; the caller checks it with the fold that checks
+    every append (``Folder.check``), after the prefix, and treats any failure as ``CORRUPT`` (D-046)."""
 
     offset: int
     length: int
     reason: str
+    record: dict[str, Any] | None = field(default=None, compare=False)
 
 
 @dataclass(frozen=True)
@@ -66,38 +73,40 @@ class JournalRead:
     torn: TornTail | None
 
 
-def _tail_problem(tail: bytes, records: list[dict[str, Any]]) -> str:
-    """Why final bytes without a newline cannot be an interrupted append; ``""`` if they can (D-044; D44-R2).
+def _tail_problem(tail: bytes) -> tuple[str, dict[str, Any] | None]:
+    """Classify final bytes without a newline (D-044; D44-R2; D-046).
+
+    Returns ``(problem, record)``. ``problem`` is non-empty when no interrupted append can have left the bytes;
+    ``record`` is the complete record they hold, if any, which the caller must still validate as the next record.
 
     An append writes one valid next record line (an object, so ``{`` … ``}``, at most ``MAX_RECORD_BYTES``) and its
     newline in one write. A crash leaves a prefix of those bytes, and blocks that never reached the disk may read back
     as zero bytes anywhere in it. So the final bytes are corruption, not a torn tail, when they are longer than that
     write, when their first byte is neither ``{`` nor zero, when they hold a complete JSON value followed by anything
-    other than zero bytes, or when that complete value is not the valid next record. Fragments whose content cannot be
-    checked (a prefix of a record, or bytes after a zero-filled block) remain torn tails; they are preserved, never
-    read as authority."""
+    other than zero bytes, or when that complete value is not a record line (``_record_problem``, the check every
+    complete line passes). Whether a complete record is a legal *next* record is not decided here: the fold decides
+    it, with the same check as an append (D-046). Fragments whose content cannot be checked (a prefix of a record, or
+    bytes after a zero-filled block) remain torn tails; they are preserved, never read as authority."""
     if len(tail) > MAX_RECORD_BYTES + 1:
-        return f"final bytes without a newline are longer than one append ({len(tail)} > {MAX_RECORD_BYTES + 1})"
+        return f"final bytes without a newline are longer than one append ({len(tail)} > {MAX_RECORD_BYTES + 1})", None
     if tail[:1] not in (b"{", b"\x00"):
-        return "final bytes without a newline cannot start a record"
+        return "final bytes without a newline cannot start a record", None
     head, _, rest = tail.partition(b"\x00")
     if not head:  # the start is zero-filled: what follows cannot be checked
-        return ""
+        return "", None
     text = head.decode("utf-8", errors="replace")
     try:
         _complete, end = _DECODER.raw_decode(text)
     except ValueError:
-        return ""  # an incomplete record: the interrupted append
+        return "", None  # an incomplete record: the interrupted append
     except RecursionError:
-        return "final bytes without a newline nest deeper than any record"
+        return "final bytes without a newline nest deeper than any record", None
     if end != len(text) or rest.strip(b"\x00"):
-        return "final bytes without a newline hold a complete value followed by other bytes"
+        return "final bytes without a newline hold a complete value followed by other bytes", None
     value, problem = _record_problem(head)
     if problem or value is None:
-        return f"final bytes without a newline hold a complete value that is not a valid record: {problem}"
-    if value.get("seq") != len(records) or (records and value.get("prev") != records[-1].get("digest")):
-        return "final bytes without a newline hold a complete record that does not follow the journal"
-    return ""  # the valid next record whose newline was never written: not committed (D-044 case 2)
+        return f"final bytes without a newline hold a complete value that is not a valid record: {problem}", None
+    return "", value  # D-046: torn only if the fold accepts it as the next record
 
 
 def _record_problem(line: bytes) -> tuple[dict[str, Any] | None, str]:
@@ -122,10 +131,11 @@ def parse_journal(data: bytes) -> JournalRead:
     while pos < len(data):
         nl = data.find(b"\n", pos)
         if nl == -1:  # D-044: only an incomplete physical record (no terminating newline) can be a torn tail
-            tail_problem = _tail_problem(data[pos:], records)
+            tail_problem, complete = _tail_problem(data[pos:])
             if tail_problem:  # D44-R2: bytes no interrupted append can leave are corruption
                 raise InvariantViolation("M-2", "JOURNAL_CORRUPT", f"line {len(records)}: {tail_problem}", len(records))
-            return JournalRead(records, lines, len(data), TornTail(pos, len(data) - pos, "final line has no newline"))
+            torn = TornTail(pos, len(data) - pos, "final line has no newline", complete)
+            return JournalRead(records, lines, len(data), torn)
         value, problem = _record_problem(data[pos:nl])
         if problem:  # a complete physical record that is invalid: corruption, final line or not (D-044)
             raise InvariantViolation("M-2", "JOURNAL_CORRUPT", f"line {len(records)}: {problem}", len(records))

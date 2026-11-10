@@ -257,6 +257,10 @@ class InvestigationMemory:
                 # its torn tail or its temporaries (SPEC 8.6, 10.1; D-044).
                 for rec in read.records:
                     folder.apply(rec)
+                if read.torn is not None and read.torn.record is not None:
+                    # D-046: a complete record without its newline is a torn append only if it is a fully valid next
+                    # record, decided by the same check every append passes before it is written. Otherwise CORRUPT.
+                    folder.check(read.torn.record)
                 if read.torn is not None and writable:
                     remove_stale_journal_temporaries(inv_fd)
                     repair_torn_tail(inv_fd, read, raw)
