@@ -160,3 +160,6 @@ phrase matching, which would be fragile.
 
 Owner decision needed: (a) apply the one-time correction above (replace or delete the note), (b) authorize the Stage
 00 capability and tests instead, or (c) both.
+
+Resolved by owner decision D-045 (2026-11-10): option (a), one-time correction with the owner's own replacement text
+(not the draft above); no Stage 00 capability. Record: `docs/audits/governance-2026-11-10-d045/README.md`.

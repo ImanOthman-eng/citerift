@@ -32,7 +32,7 @@ Only the owner can accept a stage or authorize one.
 
 ## Stage notes
 
-- Stage 01: Executed by a separate external agent. The owner reports the investigation was reported externally; its handoff has not been supplied to this repository and none of its findings are accepted. The exact evidence file set is fixed when the owner delivers the handoff.
+- Stage 01: Executed by a separate external agent. The Stage 01 handoff and supporting evidence are retained under docs/verification/stage-01/, verified at revision 85da719ac43fc46170310b225c9190b63a046df8 and accepted by the owner on 2026-10-27. This current-state note supersedes the earlier pre-handoff note recorded before Stage 01 evidence and acceptance were available.
 
 ## Recent history
 

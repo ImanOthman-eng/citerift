@@ -1004,3 +1004,32 @@ implementation ceilings, not justified final values, until a resource-bound argu
 made (at the latest in Step 7). Accepted residual limitations of Step 6: process-death (not power-loss) fault
 injection; `flock` on local POSIX file systems only; `.creating-*` leftovers reported, not deleted; a deleted lock
 file causes fail-closed refusal; the Step 6 reviewer was a separate context, not an independent reviewer.
+
+## D-045 — Stage 01 stale current-state note correction (one-time, owner-authorized)
+- Status: accepted
+- Topic: governance-stage01-note-correction
+- Date: 2026-11-10
+- Stage: 01 (metadata only)
+- Supersedes: none
+- Evidence: docs/audits/governance-2026-11-10-d045/README.md; docs/audits/governance-2026-11-10-d045/verify_d045_registry_diff.py; docs/verification/stage-04/review/step6/STEP6_D044_CLOSURE.md §7
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWUXdMpviEn4TgnzgKGQCtK`, 2026-11-10T18:25:11Z): a one-time
+owner-authorized correction of current metadata. The registry already records Stage 01 as `ACCEPTED_CLOSED` at
+`85da719ac43fc46170310b225c9190b63a046df8`, with `HANDOFF.md` and the evidence manifest retained, gates 01-A to 01-G
+passed and the owner's acceptance of 2026-10-27. The Stage 01 `notes` value, written on 2026-10-25 before the handoff
+existed, said the handoff had not been supplied; it was stale.
+
+Only Stage 01's current `notes` value is replaced, with the owner's text verbatim, and `PROJECT_STATUS.md` is
+regenerated with `citerift-gov render-status --write`. The note is kept, not deleted. Because no `citerift-gov` command
+writes `notes`, the registry was edited by one exact string replacement, and a field-by-field comparison proves that
+no other registry value changed.
+
+This is not a reopening of Stage 01, not a scientific re-evaluation, not a new acceptance, not an amendment to Stage 01
+findings and not authorization to change historical records. The Stage 01 authorization text (which correctly said on
+2026-10-25 that no findings were accepted), revisions, gates, acceptance record, evidence manifest, history and
+blockers are unchanged.
+
+No Stage 00 notes capability is added now (`src/citerift/governance`, `schemas/governance` and `tests/stage00` are
+unchanged). Dated notes with a `NOTE_PREDATES_STATE` warning remain a non-blocking governance-hardening candidate, to
+be reconsidered only if more stale-note cases appear, several stages begin using mutable current-state notes, or the
+final release review finds automated stale-note detection materially useful.
