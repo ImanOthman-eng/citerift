@@ -55,5 +55,6 @@ R6-8 and R6-12 fixed (by script); R6-9, R6-10 and R6-11 fixed (by reading the co
 - INFO: the depth rule counts leaves as levels; the docstring now says so.
 
 Its verdict on the re-check: VERIFIED, with R6-2 open pending the owner's decision. The owner then decided R6-2 as
-D-044 and it was fixed in the corrective closure (`STEP6_D044_CLOSURE.md`); that fix was not re-reviewed by the
-reviewer context.
+D-044 and it was fixed in the corrective closure (`STEP6_D044_CLOSURE.md`). On the owner's instruction of
+2026-11-10 (D-045 message) a fresh reviewer context then re-reviewed the D-044 change only; its findings D44-R1 to
+D44-R6 and their dispositions are in `STEP6_D044_REREVIEW.md`.

@@ -559,7 +559,15 @@ Content records (observation, evidence, claim, decision, question, report, verif
 
 A journal is **valid** when every invariant of section 8.7 holds. On open (owner decision D-044): a final line without
 the terminating newline is an incomplete physical record, a **torn tail** (section 10.1); it is the only defect
-treated as an interrupted append. A newline-terminated line is a complete physical record: if it is not valid strict
+treated as an interrupted append. Such final bytes are a torn tail only if an interrupted append could have left
+them: an append writes the valid next record line (an object, at most `MAX_RECORD_BYTES`) and its newline in one
+write, so a crash leaves a prefix of those bytes, possibly with zero-filled blocks anywhere. Final bytes without a
+newline are `CORRUPT` when they are longer than one append (`MAX_RECORD_BYTES + 1`), when their first byte is
+neither `{` nor zero, when they hold a complete JSON value followed by anything other than zero bytes (for example a
+committed record whose newline byte is damaged), or when that complete value is not the valid next record (strict
+canonical JSON, correct digest, next `seq`, `prev` equal to the last record's digest). A fragment whose content
+cannot be checked (an incomplete record, or bytes after a zero-filled block) remains a torn tail; it is preserved and
+never read as authority (D-044 focused re-review, findings D44-R2, D44-R2a, D44-R2b). A newline-terminated line is a complete physical record: if it is not valid strict
 canonical JSON, has a wrong digest or `prev`, violates the schema or an invariant, or references invalid or missing
 committed data, the investigation is `CORRUPT` (read-only; nothing is repaired, dropped or guessed), whether that line
 is the last one or not. Incomplete append ≠ integrity failure.
@@ -761,11 +769,14 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 1. Take the lock (`flock`, exclusive, non-blocking). If held: `INVESTIGATION_BUSY`, nothing written. The kernel
    releases the lock when the holder dies, so a stale lock cannot exist on a local file system; the lock file's
    content (process id, start time) is informational only. Network file systems are not supported (RA R4-26).
-2. Read the journal and identify a candidate incomplete tail: final bytes without the terminating newline (section
-   8.6). Only the final record can be torn.
+2. Read the journal and identify a candidate incomplete tail: final bytes without the terminating newline that an
+   interrupted append could have left (section 8.6); other final bytes without a newline are `CORRUPT`. Only the
+   final record can be torn.
 3. Validate the entire prefix (every complete record: strict canonical JSON, digest, `prev`, schema, M-1…M-14, the
-   blobs it names) before changing anything. Any failure: `CORRUPT`, read-only, and the journal, its torn tail and
-   any temporary file are left exactly as found.
+   blobs it names) before changing anything. Any failure: `CORRUPT`, read-only, and the journal, its torn tail,
+   the blobs and any temporary file are left exactly as found. The only write before this point is the lock file's
+   informational content, rewritten when a writable open takes the lock in step 1 (finding D44-R3); a read-only
+   open writes nothing.
 4. Only if the prefix is valid and the open is writable, remove the torn tail (Copy → Verify → Preserve): copy the
    original journal to `journal.jsonl.torn-<k>`, verify the copy byte for byte and `fsync` the directory; write the
    validated prefix to a temporary file, verify it, `fsync` it and rename it over `journal.jsonl`; `fsync` the
@@ -786,6 +797,7 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 | Crash after `step_succeeded`, before the next `step_started` | a committed step | nothing to repair | next step starts |
 | Torn final record | final bytes without a newline | prefix validated, then preserved copy and valid prefix (10.1) | resume from the prefix |
 | Bit flip inside a record or blob | digest or hash mismatch | none | `CORRUPT`; no repair |
+| Damaged final newline, or final bytes no append can leave | a complete value followed by other bytes, a complete value that is not the valid next record, final bytes longer than one append, or a first byte that is neither `{` nor zero (8.6) | none | `CORRUPT`; no repair (D44-R2) |
 | Duplicate retry of a committed step | a committed step key | not run (M-14) | no duplicate |
 | Repeated invocation (`run` twice) | same `investigation_key` | resume (S-9.4) | no duplicate investigation |
 | Two processes at once | lock held by the first | second gets `INVESTIGATION_BUSY` | no interleaving |

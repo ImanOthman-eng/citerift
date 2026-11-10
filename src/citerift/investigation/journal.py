@@ -2,11 +2,15 @@
 
 Reading splits the file into complete records and, at most, one torn tail (SPEC 8.6, 10.1; owner decision D-044):
 
-- a **torn tail** is an incomplete physical record: final bytes without the terminating newline. Only that is an
-  interrupted append; it was never committed;
-- a newline-terminated line is a complete physical record. If it is not strict canonical JSON, or (checked by the
-  fold) has a wrong digest or ``prev``, violates the schema or an invariant, the investigation is ``CORRUPT``
-  (read-only; nothing is repaired, dropped or guessed), whether the line is the last one or not.
+- a **torn tail** is an incomplete physical record: final bytes without the terminating newline that an interrupted
+  append could have left (a prefix of one record line and its newline, possibly with zero-filled blocks;
+  ``_tail_problem``). Only that is an interrupted append; it was never committed. Final bytes without a newline that
+  no append can leave (longer than one append, not starting a record, a complete value followed by other bytes, or a
+  complete value that is not the valid next record) are ``CORRUPT`` (re-review findings D44-R2, D44-R2a, D44-R2b);
+- a newline-terminated line is a complete physical record. If it is not strict canonical JSON or has a wrong digest
+  (both checked here), or (checked by the fold) has a wrong ``prev``, violates the schema or an invariant, or names a
+  missing blob, the investigation is ``CORRUPT`` (read-only; nothing is repaired, dropped or guessed), whether the
+  line is the last one or not.
 
 ``repair_torn_tail`` follows Copy → Verify → Preserve (SPEC 10.1), and the caller runs it only after the whole prefix
 has validated: the whole journal is copied to
@@ -17,6 +21,7 @@ has validated: the whole journal is copied to
 from __future__ import annotations
 
 import contextlib
+import json
 import os
 import secrets
 import stat
@@ -41,6 +46,7 @@ JOURNAL = "journal.jsonl"
 TORN_PREFIX = "journal.jsonl.torn-"
 MAX_RECORD_BYTES = 1024 * 1024
 MAX_JOURNAL_BYTES = 512 * 1024 * 1024
+_DECODER = json.JSONDecoder()  # structure only: is the final fragment one complete JSON value? (D44-R2)
 
 
 @dataclass(frozen=True)
@@ -58,6 +64,40 @@ class JournalRead:
     lines: list[bytes]  # the raw bytes of each complete record, newline excluded
     size: int
     torn: TornTail | None
+
+
+def _tail_problem(tail: bytes, records: list[dict[str, Any]]) -> str:
+    """Why final bytes without a newline cannot be an interrupted append; ``""`` if they can (D-044; D44-R2).
+
+    An append writes one valid next record line (an object, so ``{`` … ``}``, at most ``MAX_RECORD_BYTES``) and its
+    newline in one write. A crash leaves a prefix of those bytes, and blocks that never reached the disk may read back
+    as zero bytes anywhere in it. So the final bytes are corruption, not a torn tail, when they are longer than that
+    write, when their first byte is neither ``{`` nor zero, when they hold a complete JSON value followed by anything
+    other than zero bytes, or when that complete value is not the valid next record. Fragments whose content cannot be
+    checked (a prefix of a record, or bytes after a zero-filled block) remain torn tails; they are preserved, never
+    read as authority."""
+    if len(tail) > MAX_RECORD_BYTES + 1:
+        return f"final bytes without a newline are longer than one append ({len(tail)} > {MAX_RECORD_BYTES + 1})"
+    if tail[:1] not in (b"{", b"\x00"):
+        return "final bytes without a newline cannot start a record"
+    head, _, rest = tail.partition(b"\x00")
+    if not head:  # the start is zero-filled: what follows cannot be checked
+        return ""
+    text = head.decode("utf-8", errors="replace")
+    try:
+        _complete, end = _DECODER.raw_decode(text)
+    except ValueError:
+        return ""  # an incomplete record: the interrupted append
+    except RecursionError:
+        return "final bytes without a newline nest deeper than any record"
+    if end != len(text) or rest.strip(b"\x00"):
+        return "final bytes without a newline hold a complete value followed by other bytes"
+    value, problem = _record_problem(head)
+    if problem or value is None:
+        return f"final bytes without a newline hold a complete value that is not a valid record: {problem}"
+    if value.get("seq") != len(records) or (records and value.get("prev") != records[-1].get("digest")):
+        return "final bytes without a newline hold a complete record that does not follow the journal"
+    return ""  # the valid next record whose newline was never written: not committed (D-044 case 2)
 
 
 def _record_problem(line: bytes) -> tuple[dict[str, Any] | None, str]:
@@ -81,7 +121,10 @@ def parse_journal(data: bytes) -> JournalRead:
     pos = 0
     while pos < len(data):
         nl = data.find(b"\n", pos)
-        if nl == -1:  # D-044: only an incomplete physical record (no terminating newline) is a torn tail
+        if nl == -1:  # D-044: only an incomplete physical record (no terminating newline) can be a torn tail
+            tail_problem = _tail_problem(data[pos:], records)
+            if tail_problem:  # D44-R2: bytes no interrupted append can leave are corruption
+                raise InvariantViolation("M-2", "JOURNAL_CORRUPT", f"line {len(records)}: {tail_problem}", len(records))
             return JournalRead(records, lines, len(data), TornTail(pos, len(data) - pos, "final line has no newline"))
         value, problem = _record_problem(data[pos:nl])
         if problem:  # a complete physical record that is invalid: corruption, final line or not (D-044)

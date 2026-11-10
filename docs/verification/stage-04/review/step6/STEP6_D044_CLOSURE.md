@@ -69,8 +69,10 @@ any change; that order is unchanged and now specified.
 - 8.6 Validity: only an incomplete physical record (no terminating newline) is a torn tail; a complete record that
   fails validation is `CORRUPT`, final or not.
 - 10.1: steps renumbered so the order reads: take the lock; read and identify a candidate incomplete tail; validate the
-  entire prefix (any failure: `CORRUPT`, nothing changed); only then, on a writable open, Copy → Verify → Preserve,
-  `fsync`, re-read; fold; recompute step keys; continue.
+  entire prefix (any failure: `CORRUPT`; the journal, blobs and temporaries are unchanged, and only the lock file's
+  informational content is rewritten by a writable open, see re-review finding D44-R3); only then, on a writable
+  open, Copy → Verify → Preserve, `fsync`, re-read; fold; recompute step keys; continue. The focused re-review
+  narrowed the candidate tail further (finding D44-R2): `STEP6_D044_REREVIEW.md`.
 - 10.2: the "Torn final record" row names "final bytes without a newline" and "prefix validated, then …".
 - `DECISIONS.md`: D-044.
 

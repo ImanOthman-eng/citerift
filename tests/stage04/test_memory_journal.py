@@ -735,3 +735,111 @@ def test_d044_corrupt_prefix_before_an_incomplete_tail_is_not_mutated(tmp_path: 
         InvestigationMemory.open(root, key, clock=Clock())
     assert journal_path(root, key).read_bytes() == data
     assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+# D-044 focused re-review (findings D44-R1, D44-R2) ------------------------------------------------------------------
+
+
+@pytest.mark.negative
+def test_d044_fold_only_prefix_defect_before_an_incomplete_tail_is_not_mutated(tmp_path: Path) -> None:
+    """D44-R1: the prefix is folded (schema, invariants, blobs) before any repair, not only parsed.
+
+    Every line is intact, so ``parse_journal`` accepts the prefix; only the fold sees the missing blob. A repair run
+    before the fold would preserve, rewrite and clean up here; the required order leaves every name and byte in place.
+    The lock file is the one exception: taking the lock writes its informational content (SPEC 10.1 step 1)."""
+    root, key, lines = _d044_journal(tmp_path)
+    inv = root / key
+    data = _store(root, key, b"".join(x + b"\n" for x in lines[:-1]) + lines[-1][:9])
+    victim = sorted((inv / "blobs").iterdir())[0]
+    victim.unlink()
+    (inv / ".journal.tmp-deadbeefdeadbeef").write_bytes(b"stale")
+    listing = sorted(os.listdir(inv))
+    blobs = sorted(os.listdir(inv / "blobs"))
+    for writable in (False, True):
+        with pytest.raises(CorruptInvestigation) as exc:
+            InvestigationMemory.open(root, key, writable=writable, clock=Clock())
+        assert exc.value.cause.code == "BLOB_MISSING"
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(inv)) == listing  # the stale temporary is still there; no torn-* copy
+    assert sorted(os.listdir(inv / "blobs")) == blobs
+    assert (inv / ".journal.tmp-deadbeefdeadbeef").read_bytes() == b"stale"
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "case",
+    [
+        "complete record, newline damaged",  # 0x0A -> 0x0B: a committed record, not an interrupted append
+        "complete record followed by another byte",
+        "complete record, newline replaced and a fragment follows",
+        "tail longer than any append",
+        "tail that cannot start a record",
+        "garbage with a zero byte inside",  # D44-R2b
+        "complete record, a zero byte, then other bytes",  # D44-R2b
+        "complete value that is not a record",  # D44-R2b
+        "complete record with a wrong digest",  # D44-R2b
+        "copy of an earlier record",  # D44-R2b: valid, but not the next record
+    ],
+)
+def test_d044_final_bytes_no_append_can_produce_are_corrupt(tmp_path: Path, case: str) -> None:
+    """D44-R2: final bytes without a newline are a torn tail only if an interrupted append could have written them.
+
+    An append writes one record line (at most ``MAX_RECORD_BYTES``, starting with ``{``) and its newline in one write,
+    so an interrupted append leaves a prefix of that line, possibly followed by zero bytes. Final bytes that hold a
+    complete record followed by anything but zero bytes, that exceed a record line, or that cannot start one were
+    never an append in progress: the journal is CORRUPT and nothing is dropped."""
+    root, key, lines = _d044_journal(tmp_path)
+    last = lines[-1]
+    tail = {
+        "complete record, newline damaged": last + b"\x0b",
+        "complete record followed by another byte": last + b"}",
+        "complete record, newline replaced and a fragment follows": last + b" " + last[:20],
+        "tail longer than any append": b"{" + b"a" * (journal_module.MAX_RECORD_BYTES + 1),  # > line + newline
+        "tail that cannot start a record": b"\r",
+        "garbage with a zero byte inside": b"garbage\x00x",
+        "complete record, a zero byte, then other bytes": last + b"\x00junk",
+        "complete value that is not a record": b'{"a":1}',
+        "complete record with a wrong digest": _flip_hex(last, b'"digest":"'),
+        "copy of an earlier record": lines[-3],
+    }[case]
+    data = _store(root, key, b"".join(x + b"\n" for x in lines[:-1]) + tail)
+    for writable in (False, True):
+        with pytest.raises(CorruptInvestigation) as exc:
+            InvestigationMemory.open(root, key, writable=writable, clock=Clock())
+        assert exc.value.cause.code == "JOURNAL_CORRUPT"
+    assert journal_path(root, key).read_bytes() == data
+    assert sorted(os.listdir(root / key)) == ["blobs", "journal.jsonl", "lock"]
+
+
+@pytest.mark.integration
+@pytest.mark.parametrize(
+    "case",
+    [
+        "prefix of the final record, then zero bytes",
+        "complete final record, then zero bytes instead of its newline",
+        "zero bytes, then the rest of the final record",
+        "prefix of the final record with zeroed bytes inside",
+        "a whole maximal append zero-filled",  # D44-R2a: a line of MAX_RECORD_BYTES and its newline, all zeroed
+    ],
+)
+def test_d044_interrupted_append_with_zero_filled_bytes_is_a_torn_tail(tmp_path: Path, case: str) -> None:
+    """D44-R2 counterpart: what a crash can leave of an append (a prefix, with zero-filled blocks) stays a torn tail."""
+    root, key, lines = _d044_journal(tmp_path)
+    last = lines[-1]
+    prefix = b"".join(x + b"\n" for x in lines[:-1])
+    tail = {
+        "prefix of the final record, then zero bytes": last[:30] + b"\x00" * 50,
+        "complete final record, then zero bytes instead of its newline": last + b"\x00",
+        "zero bytes, then the rest of the final record": b"\x00" * 30 + last[30:-5],
+        "prefix of the final record with zeroed bytes inside": last[:10] + b"\x00" * 20 + last[30:-5],
+        "a whole maximal append zero-filled": b"\x00" * (journal_module.MAX_RECORD_BYTES + 1),
+    }[case]
+    data = _store(root, key, prefix + tail)
+    with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as ro:
+        assert ro.torn_tail is not None and len(ro.view.records) == len(lines) - 1
+    assert journal_path(root, key).read_bytes() == data
+    with InvestigationMemory.open(root, key, clock=Clock()) as rw:
+        assert rw.torn_copies() == ["journal.jsonl.torn-0"]
+        drive(rw)
+        assert rw.view.step_state("DETECT") == "succeeded"
+    assert (root / key / "journal.jsonl.torn-0").read_bytes() == data
