@@ -1,0 +1,182 @@
+{
+ "baseline_controller_violations": {},
+ "baseline_decision_violations": {},
+ "domain": "full mutant domain",
+ "mutants": {
+  "MC-1": {
+   "caught_by": {
+    "FORBIDDEN_REFUSED": 125568,
+    "TERMINAL_REFUSES_ALL": 6352
+   },
+   "description": "append guard permits an edge out of succeeded (restart)",
+   "detected": true
+  },
+  "MC-2": {
+   "caught_by": {
+    "EMITTED_RECORD_LEGAL": 9842,
+    "NO_ESCAPE_FROM_TERMINAL_STEP": 9842,
+    "ROOT_IMMUTABLE": 2218,
+    "STATE_SPACE_FINITE": 4
+   },
+   "description": "a committed step is rerun by the controller",
+   "detected": true
+  },
+  "MC-3": {
+   "caught_by": {
+    "COUNTERS_MONOTONE": 11840,
+    "STATE_SPACE_FINITE": 4
+   },
+   "description": "retry counter reset when an attempt starts",
+   "detected": true
+  },
+  "MC-4": {
+   "caught_by": {
+    "CONFLICT_NEVER_COMPLETED": 96
+   },
+   "description": "NEEDS_RESOLUTION reported as COMPLETED",
+   "detected": true
+  },
+  "MC-5": {
+   "caught_by": {
+    "EMITTED_RECORD_LEGAL": 27952,
+    "RETRY_BUDGET": 184524,
+    "STATE_SPACE_FINITE": 4
+   },
+   "description": "retry budget off by one in the guard and the controller",
+   "detected": true
+  },
+  "MC-6": {
+   "caught_by": {
+    "DEFERRAL_BUDGET": 23564,
+    "EMITTED_RECORD_LEGAL": 1204,
+    "STATE_SPACE_FINITE": 2
+   },
+   "description": "deferral budget off by one (a seventh deferral is allowed)",
+   "detected": true
+  },
+  "MC-7": {
+   "caught_by": {
+    "FORBIDDEN_REFUSED": 5928,
+    "TERMINAL_REFUSES_ALL": 5832
+   },
+   "description": "root-binding rule M-9 removed from the guard",
+   "detected": true
+  },
+  "MC-8": {
+   "caught_by": {
+    "RETAINED_RESUME_CONVERGES": 2
+   },
+   "description": "retained bundle re-acquired as a new capture on each attempt (F-09)",
+   "detected": true
+  },
+  "MD-1": {
+   "caught_by": {
+    "DETERMINISM": 240,
+    "FAILURE_CONTAINMENT": 1952,
+    "FAIL_CLOSED_INVALID": 928,
+    "IDENTITY_DOMINANCE": 928,
+    "MONOTONE_GUARDS": 3104,
+    "NO_FINDING_UNDER_CONFLICT": 928,
+    "UNKNOWN_PRESERVATION": 3008
+   },
+   "description": "swap identity-conflict (D-6) and positive (D-14) precedence",
+   "detected": true
+  },
+  "MD-10": {
+   "caught_by": {
+    "DETERMINISM": 8,
+    "FAIL_CLOSED_INVALID": 8,
+    "POSITIVE_FROM_DECIDING": 8,
+    "UNKNOWN_PRESERVATION": 8
+   },
+   "description": "positive guard reads only the status, not the contract value",
+   "detected": true
+  },
+  "MD-11": {
+   "caught_by": {
+    "DETERMINISM": 14912,
+    "FAIL_CLOSED_INVALID": 1416,
+    "NOTICE_SEPARATION": 8
+   },
+   "description": "D-5 as written in Step 3 (invalid_query and the P2 disagreement only)",
+   "detected": true
+  },
+  "MD-2": {
+   "caught_by": {
+    "TOTAL": 46
+   },
+   "description": "remove the catch-all fail-closed rule D-17",
+   "detected": true
+  },
+  "MD-3": {
+   "caught_by": {
+    "DETERMINISM": 4,
+    "FAILURE_CONTAINMENT": 240,
+    "IDENTITY_DOMINANCE": 2188,
+    "MONOTONE_GUARDS": 240,
+    "P1_VALID_NO_FAILURE": 4402,
+    "P5_NOT_FOUND_CONDITIONS": 48,
+    "STRENGTHEN_UNAVAILABLE": 476
+   },
+   "description": "hide lookup-unavailable as no-record (adapter maps unavailable to no_record)",
+   "detected": true
+  },
+  "MD-4": {
+   "caught_by": {
+    "NO_NEGATIVE": 8
+   },
+   "description": "treat no-record as 'not retracted' (value of D-16)",
+   "detected": true
+  },
+  "MD-5": {
+   "caught_by": {
+    "DETERMINISM": 28,
+    "IDENTITY_DOMINANCE": 5086
+   },
+   "description": "plan draft order: operational failure (D-13) before identity conflict (D-6)",
+   "detected": true
+  },
+  "MD-6": {
+   "caught_by": {
+    "DETERMINISM": 15424,
+    "FAIL_CLOSED_INVALID": 1746,
+    "MONOTONE_GUARDS": 330,
+    "NOTICE_SEPARATION": 8,
+    "P5_NOT_FOUND_CONDITIONS": 66
+   },
+   "description": "remove the adapter-consistency rule D-5",
+   "detected": true
+  },
+  "MD-7": {
+   "caught_by": {
+    "NOTICE_SEPARATION": 10,
+    "POSITIVE_FROM_DECIDING": 9
+   },
+   "description": "count a notice as the retracted work",
+   "detected": true
+  },
+  "MD-8": {
+   "caught_by": {
+    "DETERMINISM": 960,
+    "FAIL_CLOSED_INVALID": 1464,
+    "IDENTITY_DOMINANCE": 11222,
+    "MONOTONE_GUARDS": 1444,
+    "NO_FINDING_UNDER_CONFLICT": 1444,
+    "P1_VALID_NO_FAILURE": 1143
+   },
+   "description": "coherence ignores the pair query's witness (w2)",
+   "detected": true
+  },
+  "MD-9": {
+   "caught_by": {
+    "DETERMINISM": 896,
+    "MONOTONE_GUARDS": 140,
+    "P5_NOT_FOUND_CONDITIONS": 28
+   },
+   "description": "ignore identifier taint",
+   "detected": true
+  }
+ },
+ "mutants_detected": 19,
+ "mutants_injected": 19
+}

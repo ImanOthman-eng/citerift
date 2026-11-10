@@ -1,0 +1,130 @@
+{
+ "conclusion": {
+  "controller": "bounded: attempts, records and cycles are finite in every scenario of the exhaustive model (no record is appended inside any cycle); max attempts {'retained_bundle': {'ACQUIRE': 3, 'ASSEMBLE': 3, 'DETECT': 3, 'EXTRACT': 3, 'LOOKUP': 3, 'NORMALIZE': 3, 'VALIDATE': 3, 'VERIFY': 3}, 'live_capture': {'ACQUIRE': 9, 'ASSEMBLE': 3, 'DETECT': 3, 'EXTRACT': 3, 'LOOKUP': 3, 'NORMALIZE': 3, 'VALIDATE': 3, 'VERIFY': 3}}",
+  "evidence": [
+   "slow_header_drip",
+   "endless_100_continue"
+  ],
+  "f11_result": "BLOCKED ON F-11",
+  "live_capture_path": "NOT bounded by the configured limits",
+  "recommendation": "Before Step 7, bound each live ACQUIRE attempt at the Stage 04 boundary, without changing Stage 03: run the capture in a child process in its own session and kill the session after T_acq = deadline_s + op_timeout_s + 30 s (240 s with the configured values); record the kill as a retryable ACQUIRE failure ACQUIRE_WALL_CLOCK_EXCEEDED counted in phi. Then live ACQUIRE <= (A_max + F_max) x T_acq = 9 x 240 = 2160 s and the investigation's operational bound is that plus the retained-path terms. An investigation-level total budget is then a derived constant, not a separate timer. Owner decision.",
+  "retained_bundle_path": "bounded under assumptions E-1 to E-5: 720.0 s of isolated-worker time plus finite local work"
+ },
+ "experiments": {
+  "endless_100_continue": {
+   "elapsed_s": 6.0,
+   "outcome": "status 200, body b'ok'",
+   "server": "a '100 Continue' interim response every 0.5 s for 6 s",
+   "timeout_s": 1.0
+  },
+  "slow_header_drip": {
+   "elapsed_s": 6.01,
+   "outcome": "status 200, body b'ok'",
+   "server": "status line, then one header byte every 0.5 s for 6 s",
+   "timeout_s": 1.0
+  },
+  "transport": "citerift.wiki.fetch.urllib_transport (the default transport of Stage 03 live captures)"
+ },
+ "symbolic": {
+  "assumptions": {
+   "E-1": "local file reads of regular files and SQLite reads of an immutable file complete (no FIFO or device substituted after Stage 03's lstat checks)",
+   "E-2": "write, fsync and rename on the local file system complete (network file systems are not supported, SPEC 10.1, RA R4-26)",
+   "E-3": "the isolated worker creates no process outside its session, so killing the session group closes its pipes and communicate() returns",
+   "E-4": "the process is not suspended (SIGSTOP) or starved; wall-clock bounds are bounds on the controller's own waiting",
+   "E-5": "BLOCKED is not a wait inside the controller: the process exits and a later invocation resumes; the calendar time until not_before is set by the server's Retry-After and the operator, and is not part of the operational bound"
+  },
+  "attempts": {
+   "acquire_live": 9,
+   "formula": "ACQUIRE (capture): A + F; ACQUIRE (retained bundle) and every other step: A",
+   "live_total": 30,
+   "retained_total": 24
+  },
+  "execution_records": {
+   "formula": "1 (created) + 2 per attempt (start, close) + 1 (stale_detected, at most once)",
+   "live": 62,
+   "retained": 50
+  },
+  "isolated_worker_s": {
+   "ACQUIRE retained (A attempts x verify_bundle markers)": 180.0,
+   "EXTRACT (A attempts x extract_bundle)": 180.0,
+   "VERIFY (A attempts x (verify_bundle + replay_bundle))": 360.0,
+   "per_call": 60.0
+  },
+  "live_capture_design_s": {
+   "ACQUIRE live (A + F attempts)": 1620.0,
+   "assumes": "the response head (status line and headers) and TLS handshake arrive within op_timeout; DNS resolution ends within the OS resolver limits",
+   "per_attempt_designed": 180.0
+  },
+  "local_work": [
+   {
+    "bound": "O(1)",
+    "step": "VALIDATE",
+    "work": "a fixed number of stat calls and string checks"
+   },
+   {
+    "bound": "O(bundle bytes), bytes capped by Stage 03",
+    "step": "ACQUIRE (retained)",
+    "work": "open_bundle reads capture.json <= 4 MiB; artifacts <= 64 MiB each, named in capture.json; SHA-256 over those bytes"
+   },
+   {
+    "bound": "O(document size)",
+    "step": "EXTRACT",
+    "work": "parent side: read the worker's JSON output"
+   },
+   {
+    "bound": "O(units + identifiers), units <= max_refs = 20000, identifiers <= max_candidates = 50000",
+    "step": "NORMALIZE",
+    "work": "one pass over units, containers and identifier occurrences"
+   },
+   {
+    "bound": "O(K x (events per key + Q)), Q = quarantined rows + invalid identifiers of the pinned index (a constant of the index)",
+    "step": "LOOKUP",
+    "work": "K <= distinct keys + pairs queries on an immutable read-only SQLite index; each gather runs indexed selects and, for matched and no_record, a relevance scan of the quarantine table and of invalid identifiers"
+   },
+   {
+    "bound": "O(candidates)",
+    "step": "DETECT",
+    "work": "17 guards per candidate"
+   },
+   {
+    "bound": "O(claims)",
+    "step": "ASSEMBLE",
+    "work": "one pass over claims; schema validation"
+   },
+   {
+    "bound": "O(journal records + the above)",
+    "step": "VERIFY (in memory)",
+    "work": "re-run NORMALIZE, DETECT, ASSEMBLE; re-check the chain"
+   },
+   {
+    "bound": "assumption E-2",
+    "step": "journal and blobs",
+    "work": "append, fsync, rename on a local file system"
+   },
+   {
+    "bound": "returns at once (busy or held)",
+    "step": "investigation lock",
+    "work": "flock LOCK_EX | LOCK_NB"
+   }
+  ],
+  "parameters": {
+   "A_max": 3,
+   "F_max": 6,
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts_per_request": 3,
+   "max_candidates": 50000,
+   "max_nodes": 400000,
+   "max_refs": 20000,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "steps": 8,
+   "worker_memory_mib": 1024,
+   "worker_wall_s": 30.0
+  },
+  "retained_bound_s": {
+   "isolated_workers": 720.0,
+   "plus": "finite local work L (below) and kill/reap latency per worker call"
+  }
+ }
+}

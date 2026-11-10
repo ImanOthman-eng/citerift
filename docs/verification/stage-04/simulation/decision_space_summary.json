@@ -1,0 +1,1160 @@
+{
+ "cases": 12632448,
+ "cases_invalid": 12387564,
+ "cases_per_shape": {
+  "DOI": 24576,
+  "NONE": 384,
+  "PAIR": 12582912,
+  "PMID": 24576
+ },
+ "cases_valid": 244884,
+ "classes_valid": {
+  "CONCERN_CITED": 364,
+  "CONTRADICTION_IN_SOURCES": 21584,
+  "CORRECTION_CITED": 364,
+  "IDENTITY_CONFLICT": 16040,
+  "LOOKUP_UNAVAILABLE": 660,
+  "NOTICE_CITED": 9,
+  "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+  "NO_IDENTIFIER": 1,
+  "REINSTATED_WORK_CITED": 364,
+  "RETRACTED_WORK_CITED": 364,
+  "UNRESOLVED_IDENTIFIER": 38503,
+  "UNRESOLVED_IDENTITY": 2935,
+  "UNRESOLVED_STATUS": 432,
+  "UNRESOLVED_USE": 81628,
+  "UNUSED_DEFINITION": 81628
+ },
+ "deep": true,
+ "dimensions": {
+  "DOI only": {
+   "cases": 24576,
+   "kinds_invalid": {
+    "abstain": 154,
+    "failure": 7750,
+    "out_of_scope": 15808
+   },
+   "kinds_valid": {
+    "abstain": 244,
+    "abstain_unavailable": 2,
+    "needs_resolution": 32,
+    "not_found": 2,
+    "out_of_scope": 576,
+    "positive": 8
+   },
+   "rules_invalid": {
+    "D-1": 7904,
+    "D-17": 22,
+    "D-2": 7904,
+    "D-5": 7728,
+    "D-8": 154
+   },
+   "rules_valid": {
+    "D-1": 288,
+    "D-10": 14,
+    "D-11": 2,
+    "D-12": 2,
+    "D-13": 2,
+    "D-14": 8,
+    "D-15": 2,
+    "D-16": 2,
+    "D-2": 288,
+    "D-7": 32,
+    "D-8": 224
+   },
+   "valid": 864
+  },
+  "DOI+PMID coherent (kappa COHERENT)": {
+   "cases": 738048,
+   "kinds_invalid": {
+    "abstain": 6048,
+    "failure": 213952,
+    "needs_resolution": 2496,
+    "out_of_scope": 444992
+   },
+   "kinds_valid": {
+    "abstain": 14256,
+    "abstain_unavailable": 144,
+    "needs_resolution": 8544,
+    "out_of_scope": 47040,
+    "positive": 576
+   },
+   "rules_invalid": {
+    "D-1": 222496,
+    "D-17": 864,
+    "D-2": 222496,
+    "D-5": 213088,
+    "D-7": 2496,
+    "D-8": 6048
+   },
+   "rules_valid": {
+    "D-1": 23520,
+    "D-10": 1008,
+    "D-11": 144,
+    "D-13": 144,
+    "D-14": 576,
+    "D-2": 23520,
+    "D-7": 8544,
+    "D-8": 13104
+   },
+   "valid": 70560
+  },
+  "DOI+PMID incompatible (kappa INCOMPATIBLE)": {
+   "cases": 11010048,
+   "kinds_invalid": {
+    "failure": 3622968,
+    "needs_resolution": 31008,
+    "out_of_scope": 7307952
+   },
+   "kinds_valid": {
+    "needs_resolution": 16040,
+    "out_of_scope": 32080
+   },
+   "rules_invalid": {
+    "D-1": 3653976,
+    "D-2": 3653976,
+    "D-5": 3622968,
+    "D-6": 31008
+   },
+   "rules_valid": {
+    "D-1": 16040,
+    "D-2": 16040,
+    "D-6": 16040
+   },
+   "valid": 48120
+  },
+  "DOI+PMID not determined (kappa NOT_DETERMINED)": {
+   "cases": 96768,
+   "kinds_invalid": {
+    "abstain": 5321,
+    "abstain_unavailable": 703,
+    "failure": 17640,
+    "needs_resolution": 896,
+    "out_of_scope": 49120
+   },
+   "kinds_valid": {
+    "abstain": 5569,
+    "abstain_unavailable": 287,
+    "needs_resolution": 1840,
+    "out_of_scope": 15392
+   },
+   "rules_invalid": {
+    "D-1": 24560,
+    "D-12": 50,
+    "D-13": 703,
+    "D-2": 24560,
+    "D-5": 17640,
+    "D-7": 896,
+    "D-8": 5271
+   },
+   "rules_valid": {
+    "D-1": 7696,
+    "D-10": 385,
+    "D-11": 55,
+    "D-12": 5,
+    "D-13": 287,
+    "D-2": 7696,
+    "D-7": 1840,
+    "D-8": 5124
+   },
+   "valid": 23088
+  },
+  "DOI+PMID uncorroborated (kappa UNDETERMINED)": {
+   "cases": 738048,
+   "kinds_invalid": {
+    "abstain": 9191,
+    "failure": 199977,
+    "needs_resolution": 3072,
+    "out_of_scope": 424480
+   },
+   "kinds_valid": {
+    "abstain": 21547,
+    "abstain_unavailable": 225,
+    "needs_resolution": 11136,
+    "not_found": 4,
+    "out_of_scope": 67552,
+    "positive": 864
+   },
+   "rules_invalid": {
+    "D-1": 212240,
+    "D-17": 1313,
+    "D-2": 212240,
+    "D-5": 198664,
+    "D-7": 3072,
+    "D-8": 9191
+   },
+   "rules_valid": {
+    "D-1": 33776,
+    "D-10": 1512,
+    "D-11": 216,
+    "D-12": 4,
+    "D-13": 225,
+    "D-14": 864,
+    "D-15": 5,
+    "D-16": 4,
+    "D-2": 33776,
+    "D-7": 11136,
+    "D-8": 19810
+   },
+   "valid": 101328
+  },
+  "PMID only": {
+   "cases": 24576,
+   "kinds_invalid": {
+    "abstain": 168,
+    "failure": 7720,
+    "out_of_scope": 15776
+   },
+   "kinds_valid": {
+    "abstain": 260,
+    "abstain_unavailable": 2,
+    "needs_resolution": 32,
+    "not_found": 2,
+    "out_of_scope": 608,
+    "positive": 8
+   },
+   "rules_invalid": {
+    "D-1": 7888,
+    "D-17": 24,
+    "D-2": 7888,
+    "D-5": 7696,
+    "D-8": 168
+   },
+   "rules_valid": {
+    "D-1": 304,
+    "D-10": 14,
+    "D-11": 2,
+    "D-12": 2,
+    "D-13": 2,
+    "D-14": 8,
+    "D-15": 2,
+    "D-16": 2,
+    "D-2": 304,
+    "D-7": 32,
+    "D-8": 238,
+    "D-9": 2
+   },
+   "valid": 912
+  },
+  "PMID role collision (deciding)": {
+   "cases": 2763264,
+   "kinds_invalid": {
+    "failure": 887432,
+    "needs_resolution": 3248,
+    "out_of_scope": 1781360
+   },
+   "kinds_valid": {
+    "abstain": 20112,
+    "needs_resolution": 10296,
+    "out_of_scope": 60816
+   },
+   "rules_invalid": {
+    "D-1": 890680,
+    "D-2": 890680,
+    "D-5": 887432,
+    "D-6": 3248
+   },
+   "rules_valid": {
+    "D-1": 30408,
+    "D-10": 2514,
+    "D-2": 30408,
+    "D-7": 10296,
+    "D-8": 17598
+   },
+   "valid": 91224
+  },
+  "adapter inconsistency (invalid input)": {
+   "cases": 12387564,
+   "kinds_invalid": {
+    "abstain": 20991,
+    "abstain_unavailable": 703,
+    "failure": 4070007,
+    "needs_resolution": 37472,
+    "out_of_scope": 8258391
+   },
+   "kinds_valid": {},
+   "rules_invalid": {
+    "D-1": 4129188,
+    "D-12": 50,
+    "D-13": 703,
+    "D-17": 2223,
+    "D-2": 4129188,
+    "D-3": 15,
+    "D-4": 109,
+    "D-5": 4067784,
+    "D-6": 31008,
+    "D-7": 6464,
+    "D-8": 20832
+   },
+   "rules_valid": {},
+   "valid": 0
+  },
+  "eligibility UNUSED": {
+   "cases": 4210816,
+   "kinds_invalid": {
+    "out_of_scope": 4129188
+   },
+   "kinds_valid": {
+    "out_of_scope": 81628
+   },
+   "rules_invalid": {
+    "D-1": 4129188
+   },
+   "rules_valid": {
+    "D-1": 81628
+   },
+   "valid": 81628
+  },
+  "eligibility USE_NOT_ESTABLISHED": {
+   "cases": 4210816,
+   "kinds_invalid": {
+    "out_of_scope": 4129188
+   },
+   "kinds_valid": {
+    "out_of_scope": 81628
+   },
+   "rules_invalid": {
+    "D-2": 4129188
+   },
+   "rules_valid": {
+    "D-2": 81628
+   },
+   "valid": 81628
+  },
+  "identifier malformed (taint)": {
+   "cases": 6316224,
+   "kinds_invalid": {
+    "abstain": 11966,
+    "failure": 2033892,
+    "needs_resolution": 18736,
+    "out_of_scope": 4129188
+   },
+   "kinds_valid": {
+    "abstain": 22002,
+    "needs_resolution": 18812,
+    "out_of_scope": 81628
+   },
+   "rules_invalid": {
+    "D-1": 2064594,
+    "D-2": 2064594,
+    "D-4": 62,
+    "D-5": 2033892,
+    "D-6": 15504,
+    "D-7": 3232,
+    "D-8": 11904
+   },
+   "rules_valid": {
+    "D-1": 40814,
+    "D-2": 40814,
+    "D-4": 2,
+    "D-6": 8020,
+    "D-7": 10792,
+    "D-8": 22000
+   },
+   "valid": 122442
+  },
+  "identifier role unresolved (taint)": {
+   "cases": 6316224,
+   "kinds_invalid": {
+    "abstain": 11966,
+    "failure": 2033892,
+    "needs_resolution": 18736,
+    "out_of_scope": 4129188
+   },
+   "kinds_valid": {
+    "abstain": 22002,
+    "needs_resolution": 18812,
+    "out_of_scope": 81628
+   },
+   "rules_invalid": {
+    "D-1": 2064594,
+    "D-2": 2064594,
+    "D-4": 62,
+    "D-5": 2033892,
+    "D-6": 15504,
+    "D-7": 3232,
+    "D-8": 11904
+   },
+   "rules_valid": {
+    "D-1": 40814,
+    "D-2": 40814,
+    "D-4": 2,
+    "D-6": 8020,
+    "D-7": 10792,
+    "D-8": 22000
+   },
+   "valid": 122442
+  },
+  "identifier unconfirmed (taint)": {
+   "cases": 6316224,
+   "kinds_invalid": {
+    "abstain": 11968,
+    "failure": 2033892,
+    "needs_resolution": 18736,
+    "out_of_scope": 4129192
+   },
+   "kinds_valid": {
+    "abstain": 22000,
+    "needs_resolution": 18812,
+    "out_of_scope": 81624
+   },
+   "rules_invalid": {
+    "D-1": 2064596,
+    "D-2": 2064596,
+    "D-4": 64,
+    "D-5": 2033892,
+    "D-6": 15504,
+    "D-7": 3232,
+    "D-8": 11904
+   },
+   "rules_valid": {
+    "D-1": 40812,
+    "D-2": 40812,
+    "D-6": 8020,
+    "D-7": 10792,
+    "D-8": 22000
+   },
+   "valid": 122436
+  },
+  "lookup ambiguous identity (deciding)": {
+   "cases": 789504,
+   "kinds_invalid": {
+    "abstain": 14,
+    "failure": 240098,
+    "needs_resolution": 14768,
+    "out_of_scope": 509760
+   },
+   "kinds_valid": {
+    "abstain": 16,
+    "needs_resolution": 8272,
+    "out_of_scope": 16576
+   },
+   "rules_invalid": {
+    "D-1": 254880,
+    "D-17": 2,
+    "D-2": 254880,
+    "D-5": 240096,
+    "D-6": 14768,
+    "D-8": 14
+   },
+   "rules_valid": {
+    "D-1": 8288,
+    "D-2": 8288,
+    "D-6": 8272,
+    "D-8": 14,
+    "D-9": 2
+   },
+   "valid": 24864
+  },
+  "lookup invalid query (any)": {
+   "cases": 1144704,
+   "kinds_invalid": {
+    "failure": 381568,
+    "out_of_scope": 763136
+   },
+   "kinds_valid": {},
+   "rules_invalid": {
+    "D-1": 381568,
+    "D-2": 381568,
+    "D-5": 381568
+   },
+   "rules_valid": {},
+   "valid": 0
+  },
+  "lookup matched (deciding)": {
+   "cases": 7895040,
+   "kinds_invalid": {
+    "abstain": 17598,
+    "abstain_unavailable": 330,
+    "failure": 2537704,
+    "needs_resolution": 15232,
+    "out_of_scope": 5141728
+   },
+   "kinds_valid": {
+    "abstain": 38548,
+    "abstain_unavailable": 220,
+    "needs_resolution": 20592,
+    "out_of_scope": 121632,
+    "positive": 1456
+   },
+   "rules_invalid": {
+    "D-1": 2570864,
+    "D-13": 330,
+    "D-17": 2184,
+    "D-2": 2570864,
+    "D-5": 2535520,
+    "D-6": 9280,
+    "D-7": 5952,
+    "D-8": 17598
+   },
+   "rules_valid": {
+    "D-1": 60816,
+    "D-10": 2933,
+    "D-11": 419,
+    "D-13": 220,
+    "D-14": 1456,
+    "D-2": 60816,
+    "D-7": 20592,
+    "D-8": 35196
+   },
+   "valid": 182448
+  },
+  "lookup no record (deciding)": {
+   "cases": 1973760,
+   "kinds_invalid": {
+    "abstain": 2073,
+    "abstain_unavailable": 215,
+    "failure": 652784,
+    "needs_resolution": 2640,
+    "out_of_scope": 1315424
+   },
+   "kinds_valid": {
+    "abstain": 195,
+    "abstain_unavailable": 5,
+    "not_found": 8,
+    "out_of_scope": 416
+   },
+   "rules_invalid": {
+    "D-1": 657712,
+    "D-12": 50,
+    "D-13": 215,
+    "D-17": 24,
+    "D-2": 657712,
+    "D-5": 652760,
+    "D-6": 2320,
+    "D-7": 320,
+    "D-8": 2023
+   },
+   "rules_valid": {
+    "D-1": 208,
+    "D-12": 13,
+    "D-13": 5,
+    "D-16": 8,
+    "D-2": 208,
+    "D-8": 182
+   },
+   "valid": 624
+  },
+  "lookup notice only (deciding)": {
+   "cases": 789504,
+   "kinds_invalid": {
+    "abstain": 784,
+    "abstain_unavailable": 103,
+    "failure": 261097,
+    "needs_resolution": 1056,
+    "out_of_scope": 526080
+   },
+   "kinds_valid": {
+    "abstain": 121,
+    "abstain_unavailable": 7,
+    "out_of_scope": 256
+   },
+   "rules_invalid": {
+    "D-1": 263040,
+    "D-13": 103,
+    "D-17": 9,
+    "D-2": 263040,
+    "D-5": 261088,
+    "D-6": 928,
+    "D-7": 128,
+    "D-8": 784
+   },
+   "rules_valid": {
+    "D-1": 128,
+    "D-13": 7,
+    "D-15": 9,
+    "D-2": 128,
+    "D-8": 112
+   },
+   "valid": 384
+  },
+  "lookup unavailable (any)": {
+   "cases": 1144704,
+   "kinds_invalid": {
+    "abstain": 5321,
+    "abstain_unavailable": 703,
+    "failure": 337096,
+    "needs_resolution": 18216,
+    "out_of_scope": 722672
+   },
+   "kinds_valid": {
+    "abstain": 8180,
+    "abstain_unavailable": 660,
+    "needs_resolution": 11392,
+    "out_of_scope": 40464
+   },
+   "rules_invalid": {
+    "D-1": 361336,
+    "D-12": 50,
+    "D-13": 703,
+    "D-2": 361336,
+    "D-5": 337096,
+    "D-6": 17320,
+    "D-7": 896,
+    "D-8": 5271
+   },
+   "rules_valid": {
+    "D-1": 20232,
+    "D-10": 385,
+    "D-11": 55,
+    "D-12": 5,
+    "D-13": 660,
+    "D-2": 20232,
+    "D-6": 8624,
+    "D-7": 2768,
+    "D-8": 7735
+   },
+   "valid": 60696
+  },
+  "lookup unknown state (any)": {
+   "cases": 1144704,
+   "kinds_invalid": {
+    "abstain": 413,
+    "abstain_unavailable": 55,
+    "failure": 380572,
+    "needs_resolution": 528,
+    "out_of_scope": 763136
+   },
+   "kinds_valid": {},
+   "rules_invalid": {
+    "D-1": 381568,
+    "D-13": 55,
+    "D-17": 4,
+    "D-2": 381568,
+    "D-5": 380568,
+    "D-6": 464,
+    "D-7": 64,
+    "D-8": 413
+   },
+   "rules_valid": {},
+   "valid": 0
+  },
+  "multiple co-reported identifiers": {
+   "cases": 24576,
+   "kinds_invalid": {
+    "abstain": 161,
+    "failure": 7735,
+    "out_of_scope": 15792
+   },
+   "kinds_valid": {
+    "abstain": 252,
+    "abstain_unavailable": 2,
+    "needs_resolution": 32,
+    "not_found": 2,
+    "out_of_scope": 592,
+    "positive": 8
+   },
+   "rules_invalid": {
+    "D-1": 7896,
+    "D-17": 23,
+    "D-2": 7896,
+    "D-5": 7712,
+    "D-8": 161
+   },
+   "rules_valid": {
+    "D-1": 296,
+    "D-10": 14,
+    "D-11": 2,
+    "D-12": 2,
+    "D-13": 2,
+    "D-14": 8,
+    "D-15": 2,
+    "D-16": 2,
+    "D-2": 296,
+    "D-7": 32,
+    "D-8": 231,
+    "D-9": 1
+   },
+   "valid": 888
+  },
+  "no identifier (NONE)": {
+   "cases": 384,
+   "kinds_invalid": {
+    "abstain": 109,
+    "out_of_scope": 263
+   },
+   "kinds_valid": {
+    "abstain": 3,
+    "out_of_scope": 9
+   },
+   "rules_invalid": {
+    "D-1": 124,
+    "D-2": 124,
+    "D-3": 15,
+    "D-4": 109
+   },
+   "rules_valid": {
+    "D-1": 4,
+    "D-2": 4,
+    "D-3": 1,
+    "D-4": 3
+   },
+   "valid": 12
+  },
+  "outcome conflicting source evidence (any)": {
+   "cases": 3222144,
+   "kinds_invalid": {
+    "abstain": 441,
+    "abstain_unavailable": 55,
+    "failure": 1034224,
+    "needs_resolution": 13936,
+    "out_of_scope": 2097312
+   },
+   "kinds_valid": {
+    "needs_resolution": 25392,
+    "out_of_scope": 50784
+   },
+   "rules_invalid": {
+    "D-1": 1048656,
+    "D-13": 55,
+    "D-17": 8,
+    "D-2": 1048656,
+    "D-5": 1034216,
+    "D-6": 7472,
+    "D-7": 6464,
+    "D-8": 441
+   },
+   "rules_valid": {
+    "D-1": 25392,
+    "D-2": 25392,
+    "D-6": 3808,
+    "D-7": 21584
+   },
+   "valid": 76176
+  },
+  "outcome correction": {
+   "cases": 789504,
+   "kinds_invalid": {
+    "failure": 253552,
+    "needs_resolution": 928,
+    "out_of_scope": 508960
+   },
+   "kinds_valid": {
+    "abstain": 6285,
+    "abstain_unavailable": 55,
+    "needs_resolution": 1984,
+    "out_of_scope": 17376,
+    "positive": 364
+   },
+   "rules_invalid": {
+    "D-1": 254480,
+    "D-2": 254480,
+    "D-5": 253552,
+    "D-6": 928
+   },
+   "rules_valid": {
+    "D-1": 8688,
+    "D-10": 419,
+    "D-13": 55,
+    "D-14": 364,
+    "D-2": 8688,
+    "D-7": 1984,
+    "D-8": 5866
+   },
+   "valid": 26064
+  },
+  "outcome coverage gap": {
+   "cases": 394752,
+   "kinds_invalid": {
+    "abstain": 400,
+    "failure": 130552,
+    "needs_resolution": 528,
+    "out_of_scope": 262960
+   },
+   "kinds_valid": {
+    "abstain": 104,
+    "out_of_scope": 208
+   },
+   "rules_invalid": {
+    "D-1": 131480,
+    "D-12": 50,
+    "D-2": 131480,
+    "D-5": 130552,
+    "D-6": 464,
+    "D-7": 64,
+    "D-8": 350
+   },
+   "rules_valid": {
+    "D-1": 104,
+    "D-12": 13,
+    "D-2": 104,
+    "D-8": 91
+   },
+   "valid": 312
+  },
+  "outcome expression of concern": {
+   "cases": 789504,
+   "kinds_invalid": {
+    "failure": 253552,
+    "needs_resolution": 928,
+    "out_of_scope": 508960
+   },
+   "kinds_valid": {
+    "abstain": 6285,
+    "abstain_unavailable": 55,
+    "needs_resolution": 1984,
+    "out_of_scope": 17376,
+    "positive": 364
+   },
+   "rules_invalid": {
+    "D-1": 254480,
+    "D-2": 254480,
+    "D-5": 253552,
+    "D-6": 928
+   },
+   "rules_valid": {
+    "D-1": 8688,
+    "D-10": 419,
+    "D-13": 55,
+    "D-14": 364,
+    "D-2": 8688,
+    "D-7": 1984,
+    "D-8": 5866
+   },
+   "valid": 26064
+  },
+  "outcome reinstatement": {
+   "cases": 789504,
+   "kinds_invalid": {
+    "failure": 253552,
+    "needs_resolution": 928,
+    "out_of_scope": 508960
+   },
+   "kinds_valid": {
+    "abstain": 6285,
+    "abstain_unavailable": 55,
+    "needs_resolution": 1984,
+    "out_of_scope": 17376,
+    "positive": 364
+   },
+   "rules_invalid": {
+    "D-1": 254480,
+    "D-2": 254480,
+    "D-5": 253552,
+    "D-6": 928
+   },
+   "rules_valid": {
+    "D-1": 8688,
+    "D-10": 419,
+    "D-13": 55,
+    "D-14": 364,
+    "D-2": 8688,
+    "D-7": 1984,
+    "D-8": 5866
+   },
+   "valid": 26064
+  },
+  "outcome unresolved status": {
+   "cases": 1579008,
+   "kinds_invalid": {
+    "failure": 507104,
+    "needs_resolution": 1856,
+    "out_of_scope": 1017920
+   },
+   "kinds_valid": {
+    "abstain": 13408,
+    "needs_resolution": 3968,
+    "out_of_scope": 34752
+   },
+   "rules_invalid": {
+    "D-1": 508960,
+    "D-2": 508960,
+    "D-5": 507104,
+    "D-6": 1856
+   },
+   "rules_valid": {
+    "D-1": 17376,
+    "D-10": 1257,
+    "D-11": 419,
+    "D-2": 17376,
+    "D-7": 3968,
+    "D-8": 11732
+   },
+   "valid": 52128
+  },
+  "outcome verified retraction": {
+   "cases": 1973760,
+   "kinds_invalid": {
+    "abstain": 903,
+    "abstain_unavailable": 110,
+    "failure": 634715,
+    "needs_resolution": 13504,
+    "out_of_scope": 1298464
+   },
+   "kinds_valid": {
+    "abstain": 6285,
+    "abstain_unavailable": 55,
+    "needs_resolution": 1984,
+    "out_of_scope": 17376,
+    "positive": 364
+   },
+   "rules_invalid": {
+    "D-1": 649232,
+    "D-13": 110,
+    "D-17": 19,
+    "D-2": 649232,
+    "D-5": 634696,
+    "D-6": 13376,
+    "D-7": 128,
+    "D-8": 903
+   },
+   "rules_valid": {
+    "D-1": 8688,
+    "D-10": 419,
+    "D-13": 55,
+    "D-14": 364,
+    "D-2": 8688,
+    "D-7": 1984,
+    "D-8": 5866
+   },
+   "valid": 26064
+  }
+ },
+ "distinct_decisions": 363,
+ "elapsed_s": 588.2,
+ "invalid_reasons": {
+  "INVALID_QUERY_FOR_VALID_KEY": 1144704,
+  "PROJECTION_OUTSIDE_CONTRACT": 9529344,
+  "SIGNATURE_UNREACHABLE": 11826288,
+  "STATE_UNREACHABLE": 4608,
+  "UNCONFIRMED_WITHOUT_KEY": 192,
+  "WITNESS_WITHOUT_PAIR": 46440
+ },
+ "kinds_invalid": {
+  "abstain": 20991,
+  "abstain_unavailable": 703,
+  "failure": 4070007,
+  "needs_resolution": 37472,
+  "out_of_scope": 8258391
+ },
+ "kinds_valid": {
+  "abstain": 41879,
+  "abstain_unavailable": 660,
+  "needs_resolution": 37624,
+  "not_found": 8,
+  "out_of_scope": 163257,
+  "positive": 1456
+ },
+ "model_digest": "7cdf2e1cd1548892791895285797496b4631ce58f61e6f5aa8795b344ff07811",
+ "model_version": "dt1-reference/1",
+ "oracle": {
+  "cases": 12632448,
+  "cases_per_shape": {
+   "DOI": 24576,
+   "NONE": 384,
+   "PAIR": 12582912,
+   "PMID": 24576
+  },
+  "distinct_decisions": 363,
+  "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and iter_chunk(); the value indexes dt1_decisions.json 'decisions'",
+  "files": {
+   "dt1_decisions.json": "0b6ae9ba67fcef6cc6fd137738fc6ca42ed82f8bbade0bc3f5701bb4b081fd66",
+   "dt1_table.u16le.gz": "9a117ef9161f03b0b66978b074d33de170668135d60f6f587ce70084d826ab91"
+  },
+  "model_digest": "7cdf2e1cd1548892791895285797496b4631ce58f61e6f5aa8795b344ff07811",
+  "model_version": "dt1-reference/1",
+  "oracle_version": "dt1-oracle/1",
+  "table_raw_sha256": "f27978582234e57e4c1ac47b6db8d3daad5824960f9f400d3d51a9648bcc3ae7",
+  "table_version": "dt-1"
+ },
+ "properties": {
+  "AB2_REASONS": {
+   "checked": 4209336,
+   "examples": [],
+   "statement": "every abstention, needs-resolution and failure carries at least one reason code (AB-2)",
+   "violations": 0
+  },
+  "DETERMINISM": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "deciding an equal case built from fresh objects gives an identical decision, and the first-true rule equals the minimum-index true guard",
+   "violations": 0
+  },
+  "FAILURE_CONTAINMENT": {
+   "checked": 5214711,
+   "examples": [],
+   "statement": "an unavailable lookup never yields a finding or not-found; kind failure only from D-5/D-17",
+   "violations": 0
+  },
+  "FAIL_CLOSED_INVALID": {
+   "checked": 12387564,
+   "examples": [],
+   "statement": "no invalid case yields a positive finding or NOT_FOUND_IN_CHECKED_SOURCES",
+   "violations": 0
+  },
+  "IDENTITY_DOMINANCE": {
+   "checked": 3670016,
+   "examples": [],
+   "statement": "a cited PAIR candidate with kappa = INCOMPATIBLE is IDENTITY_CONFLICT whatever its projections, taint and availability (P3 a, gate 04-D); an invalid one may instead fail DETECT (D-5), never anything else",
+   "violations": 0
+  },
+  "MONOTONE_GUARDS": {
+   "checked": 12495312,
+   "examples": [],
+   "statement": "when a monotone guard (D-5 invalid_query, D-6, D-7, D-8, D-13) holds, the result is no finding and no not-found (MM P4)",
+   "violations": 0
+  },
+  "NOTICE_SEPARATION": {
+   "checked": 789609,
+   "examples": [],
+   "statement": "a notice_only deciding lookup never yields a finding or not-found; NOTICE_CITED has no value; a positive PAIR finding beside a notice_only key lookup carries KEY_RESULTS_DIFFER",
+   "violations": 0
+  },
+  "NO_FINDING_UNDER_CONFLICT": {
+   "checked": 11010048,
+   "examples": [],
+   "statement": "no case with kappa = INCOMPATIBLE yields a positive finding or not-found",
+   "violations": 0
+  },
+  "NO_NEGATIVE": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "every value is a positive value, not_found_in_checked_sources or null; no class, value or reason means 'not retracted' (S-7.5, M-12)",
+   "violations": 0
+  },
+  "P1_VALID_NO_FAILURE": {
+   "checked": 244884,
+   "examples": [],
+   "statement": "no valid case reaches D-5 or D-17 (MM P1; D-17 unreachable on Stage 02's model)",
+   "violations": 0
+  },
+  "P2_VALID": {
+   "checked": 182496,
+   "examples": [],
+   "statement": "on valid PAIR cases with all three lookups available, kappa = INCOMPATIBLE iff Q2 is ambiguous_identity (MM P2)",
+   "violations": 0
+  },
+  "P5_NOT_FOUND_CONDITIONS": {
+   "checked": 8,
+   "examples": [],
+   "statement": "NOT_FOUND_IN_CHECKED_SOURCES implies cited, keyed, untainted, every lookup available, none invalid, deciding lookup no_record with value not_found_in_checked_sources (MM P5)",
+   "violations": 0
+  },
+  "POSITIVE_FROM_DECIDING": {
+   "checked": 1456,
+   "examples": [],
+   "statement": "a positive class is reached only from a matched deciding lookup with a verified_fact projection of the same value",
+   "violations": 0
+  },
+  "STATUS_CONSISTENCY": {
+   "checked": 8562441,
+   "examples": [],
+   "statement": "status, value and disposition are the functions of the class in SPEC 7.2 and 7.6",
+   "violations": 0
+  },
+  "STRENGTHEN_TAINT": {
+   "checked": 18948672,
+   "examples": [],
+   "statement": "adding a taint reason never moves a case to a later tier and never creates a finding",
+   "violations": 0
+  },
+  "STRENGTHEN_UNAVAILABLE": {
+   "checked": 36616704,
+   "examples": [],
+   "statement": "making any lookup unavailable never creates a finding or not-found",
+   "violations": 0
+  },
+  "STRENGTHEN_WITNESS": {
+   "checked": 18874368,
+   "examples": [],
+   "statement": "adding a witness bit (wd, wp, w2) never creates a finding; between valid cases it never moves a case to a later tier",
+   "violations": 0
+  },
+  "TAINT_CLASS_INDEPENDENCE": {
+   "checked": 12,
+   "examples": [],
+   "statement": "rule and class do not depend on which taint reasons are present, only on whether one is (checked across chunks)",
+   "violations": 0
+  },
+  "TOTAL": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "every case is decided by exactly one rule of D-1..D-17 (no case falls through the table)",
+   "violations": 0
+  },
+  "UNKNOWN_PRESERVATION": {
+   "checked": 9474048,
+   "examples": [],
+   "statement": "a deciding lookup outside the contract, or with an uncertain, ambiguous, gap or conflicting projection, never yields a finding or not-found",
+   "violations": 0
+  }
+ },
+ "rules_by_shape_valid": {
+  "D-10|DOI": 14,
+  "D-10|PAIR": 2905,
+  "D-10|PMID": 14,
+  "D-11|DOI": 2,
+  "D-11|PAIR": 415,
+  "D-11|PMID": 2,
+  "D-12|DOI": 2,
+  "D-12|PAIR": 9,
+  "D-12|PMID": 2,
+  "D-13|DOI": 2,
+  "D-13|PAIR": 656,
+  "D-13|PMID": 2,
+  "D-14|DOI": 8,
+  "D-14|PAIR": 1440,
+  "D-14|PMID": 8,
+  "D-15|DOI": 2,
+  "D-15|PAIR": 5,
+  "D-15|PMID": 2,
+  "D-16|DOI": 2,
+  "D-16|PAIR": 4,
+  "D-16|PMID": 2,
+  "D-1|DOI": 288,
+  "D-1|NONE": 4,
+  "D-1|PAIR": 81032,
+  "D-1|PMID": 304,
+  "D-2|DOI": 288,
+  "D-2|NONE": 4,
+  "D-2|PAIR": 81032,
+  "D-2|PMID": 304,
+  "D-3|NONE": 1,
+  "D-4|NONE": 3,
+  "D-6|PAIR": 16040,
+  "D-7|DOI": 32,
+  "D-7|PAIR": 21520,
+  "D-7|PMID": 32,
+  "D-8|DOI": 224,
+  "D-8|PAIR": 38038,
+  "D-8|PMID": 238,
+  "D-9|PMID": 2
+ },
+ "rules_invalid": {
+  "D-1": 4129188,
+  "D-12": 50,
+  "D-13": 703,
+  "D-17": 2223,
+  "D-2": 4129188,
+  "D-3": 15,
+  "D-4": 109,
+  "D-5": 4067784,
+  "D-6": 31008,
+  "D-7": 6464,
+  "D-8": 20832
+ },
+ "rules_valid": {
+  "D-1": 81628,
+  "D-10": 2933,
+  "D-11": 419,
+  "D-12": 13,
+  "D-13": 660,
+  "D-14": 1456,
+  "D-15": 9,
+  "D-16": 8,
+  "D-2": 81628,
+  "D-3": 1,
+  "D-4": 3,
+  "D-6": 16040,
+  "D-7": 21584,
+  "D-8": 38500,
+  "D-9": 2
+ },
+ "table_version": "dt-1",
+ "valid_per_shape": {
+  "DOI": 864,
+  "NONE": 12,
+  "PAIR": 243096,
+  "PMID": 912
+ }
+}

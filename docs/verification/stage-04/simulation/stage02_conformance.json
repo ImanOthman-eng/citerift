@@ -1,0 +1,8870 @@
+{
+ "summary": {
+  "abstract_values_seen": [
+   [
+    "ambiguous_identity",
+    "unc:ambiguous",
+    false
+   ],
+   [
+    "matched",
+    "vf:retracted",
+    false
+   ],
+   [
+    "no_record",
+    "unc:not_found",
+    false
+   ],
+   [
+    "notice_only",
+    "unc:notice",
+    false
+   ]
+  ],
+  "classes_seen": [
+   "IDENTITY_CONFLICT",
+   "NOTICE_CITED",
+   "NOT_FOUND_IN_CHECKED_SOURCES",
+   "RETRACTED_WORK_CITED"
+  ],
+  "distinct_signatures_model_all_available": 24,
+  "distinct_signatures_seen": 24,
+  "elapsed_s": 3.5,
+  "problems": [],
+  "rules_seen": [
+   "D-14",
+   "D-15",
+   "D-16",
+   "D-6"
+  ],
+  "signatures_equal": true,
+  "stage02_case_probes": {
+   "cases_run": 44,
+   "cases_skipped": [
+    "P08",
+    "P08b",
+    "P26",
+    "P27",
+    "P28",
+    "P29",
+    "P31",
+    "T01",
+    "T02",
+    "T03",
+    "T14",
+    "T15",
+    "T16"
+   ],
+   "outside_contract": [],
+   "values_seen": {
+    "ambiguous_identity|unc:ambiguous|False": [
+     "P15",
+     "P16"
+    ],
+    "invalid_query|none|False": [
+     "P32"
+    ],
+    "matched|conf|False": [
+     "P20"
+    ],
+    "matched|unc:bridge_only|False": [
+     "P33",
+     "T05",
+     "T06"
+    ],
+    "matched|unc|False": [
+     "P04",
+     "P07",
+     "P09",
+     "X-reinstatement-alone",
+     "X-retraction-then-reinstatement"
+    ],
+    "matched|vf:correction|False": [
+     "P03",
+     "P34"
+    ],
+    "matched|vf:expression_of_concern|False": [
+     "P02"
+    ],
+    "matched|vf:retracted|False": [
+     "P01",
+     "P05",
+     "P06",
+     "P10",
+     "P11",
+     "P17",
+     "P18",
+     "P19",
+     "P21",
+     "P22",
+     "P23",
+     "P24",
+     "P35",
+     "T04",
+     "T07",
+     "T08",
+     "T09",
+     "T10",
+     "T11",
+     "X-collision-doi"
+    ],
+    "matched|vf:retracted|True": [
+     "X-collision-pmid"
+    ],
+    "no_record|unc:gap|False": [
+     "P14",
+     "P25",
+     "P36"
+    ],
+    "no_record|unc:not_found|False": [
+     "P13",
+     "P30",
+     "T13"
+    ],
+    "notice_only|unc:notice|False": [
+     "P12",
+     "T12"
+    ]
+   }
+  },
+  "worlds": 192,
+  "worlds_with_problems": 0
+ },
+ "worlds": [
+  {
+   "decision": {
+    "class": "NOT_FOUND_IN_CHECKED_SOURCES",
+    "reasons": [
+     "NOT_FOUND_IN_CHECKED_SOURCES",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-16"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "no_record",
+    "no_record",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "NOTICE_CITED",
+    "reasons": [
+     "CITED_IDENTIFIER_IS_NOTICE",
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-15"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "notice_only",
+    "notice_only",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "NOTICE_CITED",
+    "reasons": [
+     "CITED_IDENTIFIER_IS_NOTICE",
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-15"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "no_record",
+    "notice_only",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "NOTICE_CITED",
+    "reasons": [
+     "CITED_IDENTIFIER_IS_NOTICE",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-15"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "notice_only",
+    "notice_only",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "no_record",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "notice_only",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "KEY_RESULTS_DIFFER",
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [
+     "PAIR_UNCORROBORATED"
+    ],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "no_record",
+     "unc:not_found",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "no_record",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "notice_only",
+     "unc:notice",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "notice_only",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    false
+   ],
+   "world": {
+    "coname": false,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": false,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "RETRACTED_WORK_CITED",
+    "reasons": [],
+    "rule": "D-14"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "matched",
+    false,
+    false,
+    false,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    false,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": false,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": false,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "matched",
+    "ambiguous_identity",
+    true,
+    false,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 0
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 1
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": false,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": false,
+    "p_null": true,
+    "p_other": 2
+   }
+  },
+  {
+   "decision": {
+    "class": "IDENTITY_CONFLICT",
+    "reasons": [
+     "IDENTITY_WITNESSED",
+     "KEY_RESULTS_DIFFER"
+    ],
+    "rule": "D-6"
+   },
+   "lookups": [
+    [
+     "matched",
+     "vf:retracted",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ],
+    [
+     "ambiguous_identity",
+     "unc:ambiguous",
+     false
+    ]
+   ],
+   "problems": [],
+   "signature": [
+    "matched",
+    "ambiguous_identity",
+    "ambiguous_identity",
+    true,
+    true,
+    true,
+    true
+   ],
+   "world": {
+    "coname": true,
+    "d_null": true,
+    "d_other": true,
+    "nd": true,
+    "np": true,
+    "p_null": true,
+    "p_other": 2
+   }
+  }
+ ]
+}

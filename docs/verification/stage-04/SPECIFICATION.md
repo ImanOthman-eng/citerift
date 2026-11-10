@@ -137,7 +137,12 @@ support (`policy.reduce`, rule 7f).
   is done with Stage 03 (`citerift-wiki capture`) before an investigation is created.
 - S-4.4 The root is bound exactly once, by the successful ACQUIRE commit (section 9.2). After binding it never
   changes; every later content record carries `root_id`. A resume or replay that would bind a different root is
-  `STALE` (section 10.3).
+  `STALE` (section 10.3). Before the bind, records carry `root_id = null` and are attributable to the request key:
+  `investigation_created` holds `request_key`, the investigation directory and the journal genesis derive from
+  `investigation_key` (S-4.7, S-8.1, 8.2), and no evidence, claim, decision or question record of any step may precede
+  the bind (M-9). A capture made by a later ACQUIRE attempt of the same investigation (after a failed or interrupted
+  attempt that committed nothing) binds the root once; a different capture after the bind is never bound in place
+  (owner decision F-15, DECISIONS.md D-041).
 - S-4.5 `type` is an open, versioned enumeration. Stage 04 readers accept only `wikipedia_article_revision` and
   refuse any other type with `SUBJECT_TYPE_UNSUPPORTED` instead of guessing. A later stage may add a type; the meaning
   of Stage 04 records does not change.
@@ -274,7 +279,11 @@ available (state other than `unavailable`):
 
 - S-6.12 Agreement: when Q1(d), Q1(p) and Q2 are all available, `κ = INCOMPATIBLE` if and only if Q2 is
   `ambiguous_identity`. A disagreement is a terminal DETECT failure `ADAPTER_INCONSISTENT`, never a silent choice (MM
-  proposition P2 proves the two definitions equal on Stage 02's data model, so a disagreement means a defect).
+  proposition P2 proves the two definitions equal on Stage 02's data model, so a disagreement means a defect). The
+  same failure covers every other inconsistency between the lookups of one candidate that Stage 02 cannot produce
+  (rule D-5, MM F-8 and F-9): a non-deciding lookup outside the contract, an ambiguous DOI-only query, a witness or a
+  co-naming event in a lookup whose state cannot hold one, an ambiguous Q1(PMID) without a witness, and a Q2 state
+  other than the one implied by the two single-key states (Step 4 correction SC-2).
 - S-6.13 Stage 02 and Stage 03 are not changed to hide an identity conflict. If evidence shows that an upstream
   correction is genuinely required, it is reported to the owner as a decision; Stage 04 does not work around it.
 
@@ -349,24 +358,28 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-2 | 2 | `U = USE_NOT_ESTABLISHED` | `UNRESOLVED_USE` | lookups kept; reason from section 6.2 |
 | D-3 | 2 | `σ = NONE` and `τ` false | `NO_IDENTIFIER` | |
 | D-4 | 2 | `σ = NONE` and `τ` true | `UNRESOLVED_IDENTIFIER` | reasons `IDENTIFIER_MALFORMED` and/or `IDENTIFIER_ROLE_UNRESOLVED` |
-| D-5 | 3 | some lookup in `Λ(c)` has state `invalid_query`; or `σ = PAIR`, Q1(d), Q1(p) and Q2 are available, and (`κ = INCOMPATIBLE`) ≠ (Q2 state `ambiguous_identity`) | — (DETECT `failed_terminal`, `ADAPTER_INCONSISTENT`) | impossible for valid keys (P2); fail-closed |
-| D-6 | 4 | `σ = PAIR` and `κ = INCOMPATIBLE` | `IDENTITY_CONFLICT` | section 7.5, S-7.3; reasons `LOOKUP_PARTIAL` when a lookup of `c` is unavailable, taint reasons when `τ` |
-| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID) |
+| D-5 | 3 | the lookups of `c` break a Stage 02 contract visible to Stage 04 (S-6.12): some lookup in `Λ(c)` has state `invalid_query`; a lookup other than `L` has a state or projection outside F-1 to F-4, F-8 (MM 4.5); Q1(DOI) is `ambiguous_identity`; or, for `σ = PAIR`, a witness or co-naming event without matching lookup states, (`κ = INCOMPATIBLE`) ≠ (Q2 state `ambiguous_identity`), Q1(PMID) `ambiguous_identity` without a witness, or (all three available) a Q2 state other than the one F-9 implies | — (DETECT `failed_terminal`, `ADAPTER_INCONSISTENT`) | impossible for valid keys (P2, F-9); fail-closed; corrected in Step 4 (`review/step4/STEP4_SPEC_CORRECTIONS.md`, SC-2) |
+| D-6 | 4 | `σ = PAIR` and `κ = INCOMPATIBLE` | `IDENTITY_CONFLICT` | section 7.5, S-7.3; reason `IDENTITY_WITNESSED`, plus `LOOKUP_PARTIAL` when a lookup of `c` is unavailable and taint reasons when `τ` |
+| D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID) |
 | D-8 | 5 | `τ` | `UNRESOLVED_IDENTIFIER` | taint reasons (S-6.6) |
-| D-9 | 5 | `L.state = ambiguous_identity` | `UNRESOLVED_IDENTITY` | reason `KEY_NAMES_SEVERAL_WORKS` |
-| D-10 | 5 | `L.state = matched` and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
-| D-11 | 5 | `L.state = matched` and projection status `uncertain` | `UNRESOLVED_STATUS` | Stage 02 basis reasons kept |
-| D-12 | 5 | `L.state = no_record` and projection value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
+| D-9 | 5 | `L.state = ambiguous_identity` and projection `uncertain` with value null | `UNRESOLVED_IDENTITY` | reason `KEY_NAMES_SEVERAL_WORKS` |
+| D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
+| D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | Stage 02 basis reasons kept |
+| D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
 | D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | code of the failed query |
-| D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
-| D-15 | 8 | `L.state = notice_only` | `NOTICE_CITED` | never an attachment to the retracted work |
-| D-16 | 9 | `L.state = no_record` and projection value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | provenance = checked sources |
-| D-17 | 10 | otherwise | — (DETECT `failed_terminal`, `DECISION_TABLE_GAP`) | unreachable on Stage 02's model (MM proposition P1); fail-closed |
+| D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
+| D-15 | 8 | `L.state = notice_only` and projection `uncertain` with value null | `NOTICE_CITED` | reason `CITED_IDENTIFIER_IS_NOTICE`; never an attachment to the retracted work |
+| D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | provenance = checked sources |
+| D-17 | 10 | otherwise | — (DETECT `failed_terminal`, `DECISION_TABLE_GAP`) | unreachable on Stage 02's model (MM proposition P1); fail-closed; reached by a deciding lookup outside the Stage 02 contract |
 
 Reason codes attached by D-14 (and kept on any class when they apply): `KEY_RESULTS_DIFFER` when the lookups of the keys
 of a `PAIR` candidate have different states (for example `matched` and `no_record`); `PAIR_UNCORROBORATED` when
 `κ = UNDETERMINED`; `CO_REPORTED_MULTIPLE` from S-6.5. These reasons never change the class; they are reported and
 evaluated (gate 04-I).
+
+Every guard that reads a projection names the exact contract form (status and value) it accepts; a projection outside
+the forms of MM 4.5 (F-2 to F-4, F-8) never satisfies such a guard and therefore reaches D-5 (a lookup other than `L`)
+or D-17 (the deciding lookup `L`), never a finding (Step 4 correction SC-1).
 
 A rule that ends DETECT (`D-5`, `D-17`) stops the whole step: no claim of the investigation is committed, because a
 defect in one candidate means the table or an adapter cannot be trusted for any (S-9.3).
@@ -386,7 +399,7 @@ defect in one candidate means the table or an adapter cannot be trusted for any 
 | lookup ambiguous | D-6 (pair), D-9 (single key) |
 | retracted work | D-14 → `RETRACTED_WORK_CITED` |
 | retraction notice | D-15 → `NOTICE_CITED`; a notice DOI paired with the original's PMID is a witness of incompatibility → D-6 |
-| expression of concern / flagged record | D-14 → `CONCERN_CITED`, `CORRECTION_CITED`, `REINSTATED_WORK_CITED`; D-11 when the effect is mixed or unlinked; flags are carried as reasons |
+| expression of concern / flagged record | D-14 → `CONCERN_CITED`, `CORRECTION_CITED`, `REINSTATED_WORK_CITED`; D-11 when the effect is mixed or unlinked; flags are carried as reasons. `REINSTATED_WORK_CITED` is unreachable through S-6.8 and S-6.9: Stage 02 states the value `reinstated` only with supersession links, which have no source in Stage 02 data and which Stage 04 never passes (`policy.py`, Step 4 finding S4-04); the rule stays for a later versioned source |
 | marker target | S-6.7: observation only, never a candidate |
 | multiple candidate records | several events of one work: Stage 02 reduces them (D-7, D-11, D-14); several works for one key: D-9; several keys in one unit: S-6.5 |
 | conflicting source evidence | D-7 |
@@ -582,8 +595,9 @@ Forbidden (refused by the append guard, MM section 8): any transition out of `su
 `φ` is the number of attempts of the step that ended in `step_failed(retryable = true)` or `step_interrupted`, and `f`
 the number that ended in `step_deferred`. `A_max = 3`: a step is abandoned at its third failed or interrupted
 attempt, so a transient failure gets two retries. `F_max = 6`: a step is abandoned when Stage 03 defers it a seventh
-time; 6 is the Stage 01 brief's bound on attempts per request (MR-14). A step therefore has at most
-`A_max + F_max + 1` attempts. These are operational budgets, not decision thresholds: they bound work (no infinite
+time; 6 is the Stage 01 brief's bound on attempts per request (MR-14). A step therefore has at most `A_max` attempts,
+except ACQUIRE of a capture request, which has at most `A_max + F_max` (= 9: two failed or interrupted, six deferred and
+one final); the exhaustive controller model of Step 4 reaches these maxima and no more (correction SC-5). These are operational budgets, not decision thresholds: they bound work (no infinite
 retry, RA R4-13) and never change a claim. Both are fixed in `plan-1`; changing them is a plan version change.
 
 ### 9.3 Step outcomes by step
@@ -677,7 +691,7 @@ projections validate; the content digest `C(J)` is recorded.
 | W-1 | The controller holds no state that is not a function of the journal; after any crash, `fold(J)` is the whole controller state |
 | W-2 | The step and lifecycle states of `fold(J)` form a legal path of the tables of sections 9.2 and 9.4 |
 | W-3 | Steps start in plan order; at most one attempt is open at a time |
-| W-4 | Per step, attempts ending in failure or interruption `≤ A_max` and deferrals `≤ F_max`, so at most `A_max + F_max + 1` attempts |
+| W-4 | Per step, attempts ending in failure or interruption `≤ A_max` and deferrals `≤ F_max`, so at most `A_max` attempts, and `A_max + F_max` for ACQUIRE of a capture request |
 | W-5 | A terminal lifecycle state is final: no record is appended after the record that made the lifecycle terminal |
 | W-6 | A `step_started` without a terminal record is closed on resume, before anything else is appended, by `step_interrupted` (or by `step_failed(RETRY_BUDGET_EXHAUSTED)` when the budget is spent) |
 | W-7 | `COMPLETED` and `NEEDS_RESOLUTION` imply the completion predicate (S-9.6) |

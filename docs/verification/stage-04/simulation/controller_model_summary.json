@@ -1,0 +1,926 @@
+{
+ "a_max": 3,
+ "f_max": 6,
+ "quotient_checks": [
+  {
+   "a_max": 2,
+   "f_max": 1,
+   "runs": [
+    {
+     "conflict": false,
+     "full_states": 25534,
+     "live": false,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 1354
+    },
+    {
+     "conflict": true,
+     "full_states": 25534,
+     "live": false,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 1354
+    },
+    {
+     "conflict": false,
+     "full_states": 51138,
+     "live": true,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 2114
+    },
+    {
+     "conflict": true,
+     "full_states": 51138,
+     "live": true,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 2114
+    }
+   ],
+   "sound": true
+  },
+  {
+   "a_max": 2,
+   "f_max": 2,
+   "runs": [
+    {
+     "conflict": false,
+     "full_states": 25534,
+     "live": false,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 1354
+    },
+    {
+     "conflict": true,
+     "full_states": 25534,
+     "live": false,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 1354
+    },
+    {
+     "conflict": false,
+     "full_states": 76714,
+     "live": true,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 2860
+    },
+    {
+     "conflict": true,
+     "full_states": 76714,
+     "live": true,
+     "peaks_equal": true,
+     "projection_equal": true,
+     "property_verdicts_equal": true,
+     "quotient_states": 2860
+    }
+   ],
+   "sound": true
+  }
+ ],
+ "scenarios": [
+  {
+   "completed_capture_ids": [
+    0
+   ],
+   "completed_content_identities": 1,
+   "forbidden_by_category": {
+    "any_record_after_terminal": 139748,
+    "content_before_root_bound": 1694,
+    "content_outside_open_attempt": 21514,
+    "out_of_failed_terminal": 3840,
+    "out_of_succeeded": 142896,
+    "pending_to_succeeded_or_failed": 55212,
+    "second_open_attempt": 4914,
+    "second_step_succeeded": 23816,
+    "start_before_previous_succeeded": 25086,
+    "start_while_another_running": 34398,
+    "wrong_attempt_number": 46304
+   },
+   "lifecycle_states_reached": {
+    "COMPLETED": 12,
+    "CORRUPT": 968,
+    "CREATED": 8,
+    "FAILED": 320,
+    "None": 4,
+    "RUNNING": 1456,
+    "STALE": 126
+   },
+   "max_attempts_per_step": {
+    "ACQUIRE": 3,
+    "ASSEMBLE": 3,
+    "DETECT": 3,
+    "EXTRACT": 3,
+    "LOOKUP": 3,
+    "NORMALIZE": 3,
+    "VALIDATE": 3,
+    "VERIFY": 3
+   },
+   "max_records_on_any_path": 70,
+   "nontrivial_sccs": 368,
+   "properties": {
+    "COMPLETED_ALL_SUCCEEDED": {
+     "checked": 12,
+     "examples": [],
+     "violations": 0
+    },
+    "CONFLICT_NEVER_COMPLETED": {
+     "checked": 12,
+     "examples": [],
+     "violations": 0
+    },
+    "COUNTERS_MONOTONE": {
+     "checked": 7063,
+     "examples": [],
+     "violations": 0
+    },
+    "DEFERRAL_BUDGET": {
+     "checked": 23152,
+     "examples": [],
+     "violations": 0
+    },
+    "DUPLICATE_INVOCATION_IDEMPOTENT": {
+     "checked": 2160,
+     "examples": [],
+     "violations": 0
+    },
+    "EMITTED_RECORD_LEGAL": {
+     "checked": 935,
+     "examples": [],
+     "violations": 0
+    },
+    "FORBIDDEN_REFUSED": {
+     "checked": 283612,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_CONTENT_BEFORE_ROOT": {
+     "checked": 108,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_LIFECYCLE": {
+     "checked": 1655,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_STEP": {
+     "checked": 29406,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_RECORD_IN_ANY_CYCLE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RECOVERY_FIRST": {
+     "checked": 234,
+     "examples": [],
+     "violations": 0
+    },
+    "RETAINED_RESUME_CONVERGES": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RETRY_BUDGET": {
+     "checked": 23152,
+     "examples": [],
+     "violations": 0
+    },
+    "ROOT_IMMUTABLE": {
+     "checked": 6474,
+     "examples": [],
+     "violations": 0
+    },
+    "STATE_SPACE_FINITE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REACHABLE_FROM_EVERY_STATE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REFUSES_ALL": {
+     "checked": 1426,
+     "examples": [],
+     "violations": 0
+    }
+   },
+   "proposals_checked": 283612,
+   "proposals_legal": 3994,
+   "proposals_refused": 279618,
+   "rules_used": {
+    "T-CONTENT": 114,
+    "T-CREATE": 2,
+    "T-FAIL-R": 24,
+    "T-FAIL-T": 324,
+    "T-INTERRUPT": 156,
+    "T-RESTART": 92,
+    "T-STALE": 63,
+    "T-START": 40,
+    "T-SUCCEED": 120
+   },
+   "sccs": 2388,
+   "scenario": {
+    "detect_opens_question": false,
+    "request": "retained_bundle"
+   },
+   "states": 2894,
+   "step_states_reached": [
+    "ACQUIRE:failed_terminal",
+    "ACQUIRE:pending",
+    "ACQUIRE:running",
+    "ACQUIRE:succeeded",
+    "ASSEMBLE:failed_terminal",
+    "ASSEMBLE:pending",
+    "ASSEMBLE:running",
+    "ASSEMBLE:succeeded",
+    "DETECT:failed_terminal",
+    "DETECT:pending",
+    "DETECT:running",
+    "DETECT:succeeded",
+    "EXTRACT:failed_retryable",
+    "EXTRACT:failed_terminal",
+    "EXTRACT:pending",
+    "EXTRACT:running",
+    "EXTRACT:succeeded",
+    "LOOKUP:failed_terminal",
+    "LOOKUP:pending",
+    "LOOKUP:running",
+    "LOOKUP:succeeded",
+    "NORMALIZE:failed_terminal",
+    "NORMALIZE:pending",
+    "NORMALIZE:running",
+    "NORMALIZE:succeeded",
+    "VALIDATE:failed_terminal",
+    "VALIDATE:pending",
+    "VALIDATE:running",
+    "VALIDATE:succeeded",
+    "VERIFY:failed_terminal",
+    "VERIFY:pending",
+    "VERIFY:running",
+    "VERIFY:succeeded"
+   ],
+   "terminal_by_lifecycle": {
+    "COMPLETED": 12,
+    "CORRUPT": 968,
+    "FAILED": 320,
+    "STALE": 126
+   },
+   "terminal_states": 1426,
+   "transitions": 7063,
+   "transitions_appending_a_record": 935
+  },
+  {
+   "completed_capture_ids": [
+    0
+   ],
+   "completed_content_identities": 1,
+   "forbidden_by_category": {
+    "any_record_after_terminal": 139748,
+    "content_before_root_bound": 1694,
+    "content_outside_open_attempt": 21514,
+    "out_of_failed_terminal": 3840,
+    "out_of_succeeded": 142896,
+    "pending_to_succeeded_or_failed": 55212,
+    "second_open_attempt": 4914,
+    "second_step_succeeded": 23816,
+    "start_before_previous_succeeded": 25086,
+    "start_while_another_running": 34398,
+    "wrong_attempt_number": 46304
+   },
+   "lifecycle_states_reached": {
+    "CORRUPT": 968,
+    "CREATED": 8,
+    "FAILED": 320,
+    "NEEDS_RESOLUTION": 12,
+    "None": 4,
+    "RUNNING": 1456,
+    "STALE": 126
+   },
+   "max_attempts_per_step": {
+    "ACQUIRE": 3,
+    "ASSEMBLE": 3,
+    "DETECT": 3,
+    "EXTRACT": 3,
+    "LOOKUP": 3,
+    "NORMALIZE": 3,
+    "VALIDATE": 3,
+    "VERIFY": 3
+   },
+   "max_records_on_any_path": 70,
+   "nontrivial_sccs": 368,
+   "properties": {
+    "CONFLICT_NEVER_COMPLETED": {
+     "checked": 864,
+     "examples": [],
+     "violations": 0
+    },
+    "COUNTERS_MONOTONE": {
+     "checked": 7063,
+     "examples": [],
+     "violations": 0
+    },
+    "DEFERRAL_BUDGET": {
+     "checked": 23152,
+     "examples": [],
+     "violations": 0
+    },
+    "DUPLICATE_INVOCATION_IDEMPOTENT": {
+     "checked": 2160,
+     "examples": [],
+     "violations": 0
+    },
+    "EMITTED_RECORD_LEGAL": {
+     "checked": 935,
+     "examples": [],
+     "violations": 0
+    },
+    "FORBIDDEN_REFUSED": {
+     "checked": 283612,
+     "examples": [],
+     "violations": 0
+    },
+    "NEEDS_RESOLUTION_PARTIAL": {
+     "checked": 12,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_CONTENT_BEFORE_ROOT": {
+     "checked": 108,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_LIFECYCLE": {
+     "checked": 1655,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_STEP": {
+     "checked": 29406,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_RECORD_IN_ANY_CYCLE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RECOVERY_FIRST": {
+     "checked": 234,
+     "examples": [],
+     "violations": 0
+    },
+    "RETAINED_RESUME_CONVERGES": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RETRY_BUDGET": {
+     "checked": 23152,
+     "examples": [],
+     "violations": 0
+    },
+    "ROOT_IMMUTABLE": {
+     "checked": 6474,
+     "examples": [],
+     "violations": 0
+    },
+    "STATE_SPACE_FINITE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REACHABLE_FROM_EVERY_STATE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REFUSES_ALL": {
+     "checked": 1426,
+     "examples": [],
+     "violations": 0
+    }
+   },
+   "proposals_checked": 283612,
+   "proposals_legal": 3994,
+   "proposals_refused": 279618,
+   "rules_used": {
+    "T-CONTENT": 114,
+    "T-CREATE": 2,
+    "T-FAIL-R": 24,
+    "T-FAIL-T": 324,
+    "T-INTERRUPT": 156,
+    "T-RESTART": 92,
+    "T-STALE": 63,
+    "T-START": 40,
+    "T-SUCCEED": 120
+   },
+   "sccs": 2388,
+   "scenario": {
+    "detect_opens_question": true,
+    "request": "retained_bundle"
+   },
+   "states": 2894,
+   "step_states_reached": [
+    "ACQUIRE:failed_terminal",
+    "ACQUIRE:pending",
+    "ACQUIRE:running",
+    "ACQUIRE:succeeded",
+    "ASSEMBLE:failed_terminal",
+    "ASSEMBLE:pending",
+    "ASSEMBLE:running",
+    "ASSEMBLE:succeeded",
+    "DETECT:failed_terminal",
+    "DETECT:pending",
+    "DETECT:running",
+    "DETECT:succeeded",
+    "EXTRACT:failed_retryable",
+    "EXTRACT:failed_terminal",
+    "EXTRACT:pending",
+    "EXTRACT:running",
+    "EXTRACT:succeeded",
+    "LOOKUP:failed_terminal",
+    "LOOKUP:pending",
+    "LOOKUP:running",
+    "LOOKUP:succeeded",
+    "NORMALIZE:failed_terminal",
+    "NORMALIZE:pending",
+    "NORMALIZE:running",
+    "NORMALIZE:succeeded",
+    "VALIDATE:failed_terminal",
+    "VALIDATE:pending",
+    "VALIDATE:running",
+    "VALIDATE:succeeded",
+    "VERIFY:failed_terminal",
+    "VERIFY:pending",
+    "VERIFY:running",
+    "VERIFY:succeeded"
+   ],
+   "terminal_by_lifecycle": {
+    "CORRUPT": 968,
+    "FAILED": 320,
+    "NEEDS_RESOLUTION": 12,
+    "STALE": 126
+   },
+   "terminal_states": 1426,
+   "transitions": 7063,
+   "transitions_appending_a_record": 935
+  },
+  {
+   "completed_capture_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "completed_content_identities": 9,
+   "forbidden_by_category": {
+    "any_record_after_terminal": 463148,
+    "content_before_root_bound": 11970,
+    "content_outside_open_attempt": 72162,
+    "out_of_failed_terminal": 11904,
+    "out_of_succeeded": 442896,
+    "pending_to_succeeded_or_failed": 199860,
+    "second_open_attempt": 15498,
+    "second_step_succeeded": 73816,
+    "start_before_previous_succeeded": 92370,
+    "start_while_another_running": 108486,
+    "wrong_attempt_number": 154656
+   },
+   "lifecycle_states_reached": {
+    "BLOCKED": 288,
+    "COMPLETED": 36,
+    "CORRUPT": 3208,
+    "CREATED": 8,
+    "FAILED": 992,
+    "None": 4,
+    "RUNNING": 4640,
+    "STALE": 490
+   },
+   "max_attempts_per_step": {
+    "ACQUIRE": 9,
+    "ASSEMBLE": 3,
+    "DETECT": 3,
+    "EXTRACT": 3,
+    "LOOKUP": 3,
+    "NORMALIZE": 3,
+    "VALIDATE": 3,
+    "VERIFY": 3
+   },
+   "max_records_on_any_path": 88,
+   "nontrivial_sccs": 1236,
+   "properties": {
+    "BLOCKED_ONLY_WHEN_DEFERRED": {
+     "checked": 288,
+     "examples": [],
+     "violations": 0
+    },
+    "COMPLETED_ALL_SUCCEEDED": {
+     "checked": 36,
+     "examples": [],
+     "violations": 0
+    },
+    "CONFLICT_NEVER_COMPLETED": {
+     "checked": 36,
+     "examples": [],
+     "violations": 0
+    },
+    "COUNTERS_MONOTONE": {
+     "checked": 23933,
+     "examples": [],
+     "violations": 0
+    },
+    "DEFERRAL_BUDGET": {
+     "checked": 77328,
+     "examples": [],
+     "violations": 0
+    },
+    "DUPLICATE_INVOCATION_IDEMPOTENT": {
+     "checked": 7196,
+     "examples": [],
+     "violations": 0
+    },
+    "EMITTED_RECORD_LEGAL": {
+     "checked": 3197,
+     "examples": [],
+     "violations": 0
+    },
+    "FORBIDDEN_REFUSED": {
+     "checked": 947268,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_CONTENT_BEFORE_ROOT": {
+     "checked": 324,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_LIFECYCLE": {
+     "checked": 5485,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_STEP": {
+     "checked": 91498,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_RECORD_IN_ANY_CYCLE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RECOVERY_FIRST": {
+     "checked": 738,
+     "examples": [],
+     "violations": 0
+    },
+    "RETRY_BUDGET": {
+     "checked": 77328,
+     "examples": [],
+     "violations": 0
+    },
+    "ROOT_IMMUTABLE": {
+     "checked": 19422,
+     "examples": [],
+     "violations": 0
+    },
+    "STATE_SPACE_FINITE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REACHABLE_FROM_EVERY_STATE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REFUSES_ALL": {
+     "checked": 4726,
+     "examples": [],
+     "violations": 0
+    }
+   },
+   "proposals_checked": 947268,
+   "proposals_legal": 13534,
+   "proposals_refused": 933734,
+   "rules_used": {
+    "T-CONTENT": 366,
+    "T-CREATE": 2,
+    "T-DEFER": 72,
+    "T-FAIL-R": 128,
+    "T-FAIL-T": 1060,
+    "T-INTERRUPT": 492,
+    "T-RESTART": 348,
+    "T-STALE": 245,
+    "T-START": 112,
+    "T-SUCCEED": 372
+   },
+   "sccs": 7928,
+   "scenario": {
+    "detect_opens_question": false,
+    "request": "live_capture"
+   },
+   "states": 9666,
+   "step_states_reached": [
+    "ACQUIRE:deferred",
+    "ACQUIRE:failed_retryable",
+    "ACQUIRE:failed_terminal",
+    "ACQUIRE:pending",
+    "ACQUIRE:running",
+    "ACQUIRE:succeeded",
+    "ASSEMBLE:failed_terminal",
+    "ASSEMBLE:pending",
+    "ASSEMBLE:running",
+    "ASSEMBLE:succeeded",
+    "DETECT:failed_terminal",
+    "DETECT:pending",
+    "DETECT:running",
+    "DETECT:succeeded",
+    "EXTRACT:failed_retryable",
+    "EXTRACT:failed_terminal",
+    "EXTRACT:pending",
+    "EXTRACT:running",
+    "EXTRACT:succeeded",
+    "LOOKUP:failed_terminal",
+    "LOOKUP:pending",
+    "LOOKUP:running",
+    "LOOKUP:succeeded",
+    "NORMALIZE:failed_terminal",
+    "NORMALIZE:pending",
+    "NORMALIZE:running",
+    "NORMALIZE:succeeded",
+    "VALIDATE:failed_terminal",
+    "VALIDATE:pending",
+    "VALIDATE:running",
+    "VALIDATE:succeeded",
+    "VERIFY:failed_terminal",
+    "VERIFY:pending",
+    "VERIFY:running",
+    "VERIFY:succeeded"
+   ],
+   "terminal_by_lifecycle": {
+    "COMPLETED": 36,
+    "CORRUPT": 3208,
+    "FAILED": 992,
+    "STALE": 490
+   },
+   "terminal_states": 4726,
+   "transitions": 23933,
+   "transitions_appending_a_record": 3197
+  },
+  {
+   "completed_capture_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "completed_content_identities": 9,
+   "forbidden_by_category": {
+    "any_record_after_terminal": 463148,
+    "content_before_root_bound": 11970,
+    "content_outside_open_attempt": 72162,
+    "out_of_failed_terminal": 11904,
+    "out_of_succeeded": 442896,
+    "pending_to_succeeded_or_failed": 199860,
+    "second_open_attempt": 15498,
+    "second_step_succeeded": 73816,
+    "start_before_previous_succeeded": 92370,
+    "start_while_another_running": 108486,
+    "wrong_attempt_number": 154656
+   },
+   "lifecycle_states_reached": {
+    "BLOCKED": 288,
+    "CORRUPT": 3208,
+    "CREATED": 8,
+    "FAILED": 992,
+    "NEEDS_RESOLUTION": 36,
+    "None": 4,
+    "RUNNING": 4640,
+    "STALE": 490
+   },
+   "max_attempts_per_step": {
+    "ACQUIRE": 9,
+    "ASSEMBLE": 3,
+    "DETECT": 3,
+    "EXTRACT": 3,
+    "LOOKUP": 3,
+    "NORMALIZE": 3,
+    "VALIDATE": 3,
+    "VERIFY": 3
+   },
+   "max_records_on_any_path": 88,
+   "nontrivial_sccs": 1236,
+   "properties": {
+    "BLOCKED_ONLY_WHEN_DEFERRED": {
+     "checked": 288,
+     "examples": [],
+     "violations": 0
+    },
+    "CONFLICT_NEVER_COMPLETED": {
+     "checked": 2592,
+     "examples": [],
+     "violations": 0
+    },
+    "COUNTERS_MONOTONE": {
+     "checked": 23933,
+     "examples": [],
+     "violations": 0
+    },
+    "DEFERRAL_BUDGET": {
+     "checked": 77328,
+     "examples": [],
+     "violations": 0
+    },
+    "DUPLICATE_INVOCATION_IDEMPOTENT": {
+     "checked": 7196,
+     "examples": [],
+     "violations": 0
+    },
+    "EMITTED_RECORD_LEGAL": {
+     "checked": 3197,
+     "examples": [],
+     "violations": 0
+    },
+    "FORBIDDEN_REFUSED": {
+     "checked": 947268,
+     "examples": [],
+     "violations": 0
+    },
+    "NEEDS_RESOLUTION_PARTIAL": {
+     "checked": 36,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_CONTENT_BEFORE_ROOT": {
+     "checked": 324,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_LIFECYCLE": {
+     "checked": 5485,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_ESCAPE_FROM_TERMINAL_STEP": {
+     "checked": 91498,
+     "examples": [],
+     "violations": 0
+    },
+    "NO_RECORD_IN_ANY_CYCLE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "RECOVERY_FIRST": {
+     "checked": 738,
+     "examples": [],
+     "violations": 0
+    },
+    "RETRY_BUDGET": {
+     "checked": 77328,
+     "examples": [],
+     "violations": 0
+    },
+    "ROOT_IMMUTABLE": {
+     "checked": 19422,
+     "examples": [],
+     "violations": 0
+    },
+    "STATE_SPACE_FINITE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REACHABLE_FROM_EVERY_STATE": {
+     "checked": 1,
+     "examples": [],
+     "violations": 0
+    },
+    "TERMINAL_REFUSES_ALL": {
+     "checked": 4726,
+     "examples": [],
+     "violations": 0
+    }
+   },
+   "proposals_checked": 947268,
+   "proposals_legal": 13534,
+   "proposals_refused": 933734,
+   "rules_used": {
+    "T-CONTENT": 366,
+    "T-CREATE": 2,
+    "T-DEFER": 72,
+    "T-FAIL-R": 128,
+    "T-FAIL-T": 1060,
+    "T-INTERRUPT": 492,
+    "T-RESTART": 348,
+    "T-STALE": 245,
+    "T-START": 112,
+    "T-SUCCEED": 372
+   },
+   "sccs": 7928,
+   "scenario": {
+    "detect_opens_question": true,
+    "request": "live_capture"
+   },
+   "states": 9666,
+   "step_states_reached": [
+    "ACQUIRE:deferred",
+    "ACQUIRE:failed_retryable",
+    "ACQUIRE:failed_terminal",
+    "ACQUIRE:pending",
+    "ACQUIRE:running",
+    "ACQUIRE:succeeded",
+    "ASSEMBLE:failed_terminal",
+    "ASSEMBLE:pending",
+    "ASSEMBLE:running",
+    "ASSEMBLE:succeeded",
+    "DETECT:failed_terminal",
+    "DETECT:pending",
+    "DETECT:running",
+    "DETECT:succeeded",
+    "EXTRACT:failed_retryable",
+    "EXTRACT:failed_terminal",
+    "EXTRACT:pending",
+    "EXTRACT:running",
+    "EXTRACT:succeeded",
+    "LOOKUP:failed_terminal",
+    "LOOKUP:pending",
+    "LOOKUP:running",
+    "LOOKUP:succeeded",
+    "NORMALIZE:failed_terminal",
+    "NORMALIZE:pending",
+    "NORMALIZE:running",
+    "NORMALIZE:succeeded",
+    "VALIDATE:failed_terminal",
+    "VALIDATE:pending",
+    "VALIDATE:running",
+    "VALIDATE:succeeded",
+    "VERIFY:failed_terminal",
+    "VERIFY:pending",
+    "VERIFY:running",
+    "VERIFY:succeeded"
+   ],
+   "terminal_by_lifecycle": {
+    "CORRUPT": 3208,
+    "FAILED": 992,
+    "NEEDS_RESOLUTION": 36,
+    "STALE": 490
+   },
+   "terminal_states": 4726,
+   "transitions": 23933,
+   "transitions_appending_a_record": 3197
+  }
+ ],
+ "total_states": 25120,
+ "total_transitions": 61992,
+ "violations": {
+  "BLOCKED_ONLY_WHEN_DEFERRED": 0,
+  "COMPLETED_ALL_SUCCEEDED": 0,
+  "CONFLICT_NEVER_COMPLETED": 0,
+  "COUNTERS_MONOTONE": 0,
+  "DEFERRAL_BUDGET": 0,
+  "DUPLICATE_INVOCATION_IDEMPOTENT": 0,
+  "EMITTED_RECORD_LEGAL": 0,
+  "FORBIDDEN_REFUSED": 0,
+  "NEEDS_RESOLUTION_PARTIAL": 0,
+  "NO_CONTENT_BEFORE_ROOT": 0,
+  "NO_ESCAPE_FROM_TERMINAL_LIFECYCLE": 0,
+  "NO_ESCAPE_FROM_TERMINAL_STEP": 0,
+  "NO_RECORD_IN_ANY_CYCLE": 0,
+  "RECOVERY_FIRST": 0,
+  "RETAINED_RESUME_CONVERGES": 0,
+  "RETRY_BUDGET": 0,
+  "ROOT_IMMUTABLE": 0,
+  "STATE_SPACE_FINITE": 0,
+  "TERMINAL_REACHABLE_FROM_EVERY_STATE": 0,
+  "TERMINAL_REFUSES_ALL": 0
+ }
+}

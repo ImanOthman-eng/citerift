@@ -1,0 +1,20 @@
+{
+ "cases": 12632448,
+ "cases_per_shape": {
+  "DOI": 24576,
+  "NONE": 384,
+  "PAIR": 12582912,
+  "PMID": 24576
+ },
+ "distinct_decisions": 363,
+ "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and iter_chunk(); the value indexes dt1_decisions.json 'decisions'",
+ "files": {
+  "dt1_decisions.json": "0b6ae9ba67fcef6cc6fd137738fc6ca42ed82f8bbade0bc3f5701bb4b081fd66",
+  "dt1_table.u16le.gz": "9a117ef9161f03b0b66978b074d33de170668135d60f6f587ce70084d826ab91"
+ },
+ "model_digest": "7cdf2e1cd1548892791895285797496b4631ce58f61e6f5aa8795b344ff07811",
+ "model_version": "dt1-reference/1",
+ "oracle_version": "dt1-oracle/1",
+ "table_raw_sha256": "f27978582234e57e4c1ac47b6db8d3daad5824960f9f400d3d51a9648bcc3ae7",
+ "table_version": "dt-1"
+}

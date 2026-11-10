@@ -170,6 +170,18 @@ an interrupted-and-resumed run and an uninterrupted run assign equal ids to equa
     `O_d ∪ O_p` as direct events. When `compat(d, p)`, its direct events are `O_d` (labelled `doi`) and, only when
     `O_d = ∅`, `O_p` (labelled `pmid`).
   - **F-7** `_events` builds new event objects for every query, so labels set by one query never reach another.
+  - **F-8** A `notice_only` or `ambiguous_identity` result has the projection `uncertain` with value null; a `matched`
+    result may carry a `PMID_ROLE_COLLISION` issue (`_finish`) and, with status `uncertain` or `conflicting`, the
+    basis reason `BRIDGE_ONLY_SUPPORT` (`policy.reduce`); `conflicting` has value null. A `verified_fact` value
+    `reinstated` needs supersession links (`policy._reduce`), which `gather` receives only as an argument that Stage
+    04 never passes.
+  - **F-9** For a pair query of valid keys, `st(Q2)` is a function of `st(Q1(d))`, `st(Q1(p))` and `compat(d, p)`:
+    `ambiguous_identity` iff `¬compat`; otherwise `matched` iff `st(Q1(d)) = matched` or
+    `st(Q1(p)) ∈ {matched, ambiguous_identity}`; otherwise `notice_only` iff one of them is `notice_only`; otherwise
+    `no_record`. A DOI-only query is never `ambiguous_identity`; a PMID-only query is `ambiguous_identity` only when
+    `O_p` names two or more DOIs, and then `O_p` holds a witness.
+  - F-1 to F-9 were checked in Step 4 against the real `gather` on all 192 abstract index worlds of
+    `simulations/stage04/stage02_abstraction.py` and on the frozen Stage 02 cases (`SIMULATION_REPORT.md`).
 - Invariants: `ℓ` is a function of `(q, ix)` (MR-21); the index is read-only.
 - Failure: an index that cannot be opened is `fail(c)` for the LOOKUP step with Stage 02's code
   `c ∈ {INDEX_MISSING, INDEX_CORRUPT, INDEX_FORMAT_MISMATCH}` (SPEC 9.3), never a lookup result.
@@ -212,23 +224,31 @@ For a candidate `c` of unit `u`: `ξ(c) = ⟨E(u), σ(c), τ(u), Λ(c), κ(c), L
 | D-2 | `E = USE_NOT_ESTABLISHED` | `UNRESOLVED_USE` |
 | D-3 | `σ = NONE ∧ ¬τ` | `NO_IDENTIFIER` |
 | D-4 | `σ = NONE ∧ τ` | `UNRESOLVED_IDENTIFIER` |
-| D-5 | `∃ℓ ∈ Λ: st(ℓ) = invalid_query` ∨ `(σ = PAIR ∧ all of Λ available ∧ (κ = INCOMPATIBLE) ≠ (st(Q2) = ambiguous_identity))` | `fail(ADAPTER_INCONSISTENT)` |
+| D-5 | `∃ℓ ∈ Λ: st(ℓ) = invalid_query` ∨ `∃ℓ ∈ Λ ∖ {L}: ℓ ∉ Contract` ∨ `st(Q1(DOI)) = ambiguous_identity` ∨ `(σ = PAIR ∧ ¬pairok(Λ))` | `fail(ADAPTER_INCONSISTENT)` |
 | D-6 | `σ = PAIR ∧ κ = INCOMPATIBLE` | `IDENTITY_CONFLICT` |
-| D-7 | `∃ℓ ∈ Λ: st(ℓ) = matched ∧ ps(ℓ) = conflicting` | `CONTRADICTION_IN_SOURCES` |
+| D-7 | `∃ℓ ∈ Λ: st(ℓ) = matched ∧ ps(ℓ) = conflicting ∧ pv(ℓ) = null` | `CONTRADICTION_IN_SOURCES` |
 | D-8 | `τ` | `UNRESOLVED_IDENTIFIER` |
-| D-9 | `st(L) = ambiguous_identity` | `UNRESOLVED_IDENTITY` |
-| D-10 | `st(L) = matched ∧ (collision(L) ∨ BRIDGE_ONLY_SUPPORT ∈ br(L))` | `UNRESOLVED_IDENTITY` |
-| D-11 | `st(L) = matched ∧ ps(L) = uncertain` | `UNRESOLVED_STATUS` |
-| D-12 | `st(L) = no_record ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
+| D-9 | `st(L) = ambiguous_identity ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_IDENTITY` |
+| D-10 | `st(L) = matched ∧ L ∈ Contract ∧ (collision(L) ∨ BRIDGE_ONLY_SUPPORT ∈ br(L))` | `UNRESOLVED_IDENTITY` |
+| D-11 | `st(L) = matched ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
+| D-12 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
 | D-13 | `∃ℓ ∈ Λ: st(ℓ) = unavailable` | `LOOKUP_UNAVAILABLE` |
-| D-14 | `st(L) = matched ∧ ps(L) = verified_fact` | `pos(pv(L))` |
-| D-15 | `st(L) = notice_only` | `NOTICE_CITED` |
-| D-16 | `st(L) = no_record ∧ pv(L) = not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` |
+| D-14 | `st(L) = matched ∧ ps(L) = verified_fact ∧ pv(L) ∈ dom(pos)` | `pos(pv(L))` |
+| D-15 | `st(L) = notice_only ∧ ps(L) = uncertain ∧ pv(L) = null` | `NOTICE_CITED` |
+| D-16 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` |
 | D-17 | true | `fail(DECISION_TABLE_GAP)` |
 
   where `collision(L)` holds when `L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, and
   `pos(retracted) = RETRACTED_WORK_CITED`, `pos(expression_of_concern) = CONCERN_CITED`,
-  `pos(correction) = CORRECTION_CITED`, `pos(reinstated) = REINSTATED_WORK_CITED`.
+  `pos(correction) = CORRECTION_CITED`, `pos(reinstated) = REINSTATED_WORK_CITED` (so `dom(pos)` is the four values
+  of F-4). `Contract` is the set of lookup results whose state and projection are among the forms of F-1 to F-4 and
+  F-8 (`unavailable` included). `pairok(Λ)` holds when every witness and co-naming event sits in a lookup whose state
+  can hold it (a witness of `Q1(d)` needs `matched`, of `Q1(p)` needs `matched` or `ambiguous_identity`, of `Q2`
+  needs `ambiguous_identity`, and a co-naming event needs an available `Q1` that is `matched` or
+  `ambiguous_identity`), `Q1(p)` is `ambiguous_identity` only with a witness, `Q2` is `ambiguous_identity` exactly when
+  it holds a witness, and, when all three are available, `st(Q2)` is the state F-9 implies (which includes P2). The
+  exact forms in D-7 to D-16 make every malformed projection fall through: to D-5 for a lookup other than `L`, to
+  D-17 for `L` (Step 4 corrections SC-1 and SC-2, `review/step4/STEP4_SPEC_CORRECTIONS.md`).
 - Invariants: `δ` is a function of `ξ(c)` only (no hidden input, no randomness, no clock); the set of reason codes
   attached to a claim is a function of `ξ(c)` (SPEC 7.3).
 - Precedence: the row order; the tiers of SPEC 7.1.
@@ -301,7 +321,10 @@ some rule D-1 to D-16 holds.
 before D-17 unless an earlier rule fired. ∎
 
 P1 depends on F-1 to F-4. If Stage 02 ever violates them, D-17 fails closed; the reference model of Step 4 enumerates
-the abstract input domain to check that the implementation matches the table.
+the abstract input domain to check that the implementation matches the table. Step 4 result: over the 12,632,448
+abstract inputs of `simulations/stage04/decision_space.py`, no input that Stage 02 and Stage 03 can produce reaches
+D-5 or D-17, and no input they cannot produce yields a positive class or `NOT_FOUND_IN_CHECKED_SOURCES`
+(`SIMULATION_REPORT.md`).
 
 **Proposition P3 (identity conflict is preserved).** If `σ(c) = PAIR`, `E(u) = CITED`, D-5 does not hold and
 `κ(c) = INCOMPATIBLE`, then (a) `δ(c) = IDENTITY_CONFLICT` whatever the projections of `Λ(c)` are; (b) no claim of
@@ -426,8 +449,8 @@ before the ACQUIRE commit (review finding F-09).
 - Invariants: **TR-1** for each `(Σ, j)` at most one rule applies (the requires-columns are disjoint on `kind`, and for
   `step_started` on the attempt number and prior state); **TR-2** no rule leaves `succeeded` or `failed_terminal`;
   **TR-3** no rule applies when `λ` is terminal (W-5); **TR-4** the number of records is bounded: each step has at
-  most `A_max + F_max + 1` attempts (T-FAIL-R, T-INTERRUPT and T-DEFER each raise `φ` or `f`, and each is refused at
-  its budget), each attempt has a bounded number of content records (bounded by the units, keys and candidates of one
+  most `A_max` attempts, ACQUIRE of a capture request `A_max + F_max` (Step 4 correction SC-5) (T-FAIL-R,
+  T-INTERRUPT and T-DEFER each raise `φ` or `f`, and each is refused at its budget), each attempt has a bounded number of content records (bounded by the units, keys and candidates of one
   extraction), so every investigation reaches a terminal state or stops in `BLOCKED` waiting for `not_before` after
   finitely many records (no infinite retry); **TR-5** no non-terminal state is a dead end: in every reachable
   non-terminal `Σ` some rule applies (in `BLOCKED` for a record whose `at ≥ not_before`; after an interruption through

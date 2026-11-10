@@ -894,3 +894,30 @@ the DOI and PMID of one citation resolve to incompatible works, Stage 04 enters 
 emits no positive or negative detection from the pair, keeps both identities with provenance, routes the case to
 needs-resolution and preserves it on replay, at the Stage 04 boundary without changing Stages 02 or 03 to hide it.
 No Stage 05 work and no claim that Stage 04 is implemented or verified.
+
+## D-041 — Stage 04 Step 3 findings decided by the owner: F-01, F-11 (with condition), F-15, F-16
+- Status: accepted
+- Topic: stage-04-step3-findings-decisions
+- Date: 2026-11-10
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step4/STEP4_OWNER_DECISIONS.md; docs/verification/stage-04/review/step3/STEP3_ADVERSARIAL_REVIEW.md
+
+Owner decisions on the open Step 3 decision points (owner message
+`cmsg_018VCB51nDHP6HXmLU4ea5yPFigUhaer7vUNd5ng3Rh6qw`, 2026-11-10T09:48:45Z, which also accepted Step 3 at
+`fb39ede` and authorized Step 4 only). F-01 APPROVED: the 2026-11-10 per-citation precedence (identity contradiction >
+unresolved evidence > operational lookup failure > positive finding > notice / not-found outcome) replaces the plan's
+draft; investigation-level preconditions may end or block an investigation before a citation-level decision exists;
+an operational lookup failure must never hide an already-witnessed identity contradiction. F-11 APPROVED WITH
+CONDITION: no separate investigation-level wall-clock timer for now, provided Step 4 formally demonstrates a finite
+operational bound on every reachable execution path and derives the worst case symbolically; if Step 4 finds an
+unbounded cycle, a path without a derivable bound or a local operation that can wait indefinitely, it stops at that
+finding and recommends a wall-clock budget before Step 7; no timer for appearance only. F-15 APPROVED: the request
+key and investigation identity are fixed at creation; the article-revision root is bound only when ACQUIRE succeeds;
+pre-ACQUIRE records may carry a null root and stay attributable to the request key; no citation evidence, scientific
+claim or final decision before the root is bound; the bound root is immutable; a later different capture means
+staleness or a new investigation, never silent replacement. F-16 APPROVED: the lifecycle is CREATED, RUNNING,
+BLOCKED, NEEDS_RESOLUTION, COMPLETED, FAILED, STALE, CORRUPT, with no duplicated derived states; NEEDS_RESOLUTION is
+terminal for Stage 04 with outcome partial, keeps its open questions and conflicting evidence, is never shown as
+COMPLETED and never yields a false positive or false negative from the conflict; later stages may extend resolution
+through versioned evolution. No Stage 05 work and no claim that Stage 04 is implemented or verified.
