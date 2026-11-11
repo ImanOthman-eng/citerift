@@ -34,7 +34,7 @@ SCENARIOS: dict[str, tuple[tuple[str, str], ...]] = {
     "identity conflict": (("IDENTITY_CONFLICT", "c1"),),
     "source contradiction beside a finding": (("CONTRADICTION_IN_SOURCES", "c1"), ("RETRACTED_WORK_CITED", "c2")),
     "lookup unavailable": (("LOOKUP_UNAVAILABLE", "c1"),),
-    "every positive class": (
+    "unsupported synthetic class (DETECT fails terminally)": (
         ("RETRACTED_WORK_CITED", "c1"),
         ("CONCERN_CITED", "c2"),
         ("CORRECTION_CITED", "c3"),

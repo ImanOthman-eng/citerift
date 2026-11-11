@@ -766,7 +766,9 @@ BASELINE_64E7ACA = {
     "identity conflict": "ac2f0e1643f2b29d107490a4b2ec66764bcc287a736ba1e305f7d8a24457c37b",
     "source contradiction beside a finding": "64bf58a5f910cb8943fda8390bc78504a85517fb89e6fa14e9110f738a187e0b",
     "lookup unavailable": "b0df2b0193c46c06c78e712d0323b231f1ab632685b28295f5bb0368f61afff7",
-    "every positive class": "3bd6e925d55854e2ce4a3e457bd6219a300986d0e39bbf201811bc12e02519f0",
+    "unsupported synthetic class (DETECT fails terminally)": (
+        "3bd6e925d55854e2ce4a3e457bd6219a300986d0e39bbf201811bc12e02519f0"
+    ),
 }
 
 

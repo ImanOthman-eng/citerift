@@ -244,7 +244,7 @@ jsonschema was not optimized and no duplicate validation was removed.
 and on this tree (format 3), and reduces each journal to its logical view: every committed evidence item (from its
 record before, from its batch after), every claim, decision, question and observation, the lifecycle and the
 outcome. The report blob is excluded: at `64e7aca` the fake ASSEMBLE wrote a placeholder; its structure is checked
-by the D-054 tests. All five digests are equal (`equivalence_64e7aca.json`, `equivalence_after.json`), and the test
+by the D-054 tests. The five scenarios cover a completed run with a positive finding, two `NEEDS_RESOLUTION` runs (identity conflict, source contradiction), a partial run (lookup unavailable) and a run whose DETECT fails terminally (the synthetic DETECT supports only some classes, so the fifth scenario exercises the failure path, in both trees). All five digests are equal (`equivalence_64e7aca.json`, `equivalence_after.json`), and the test
 `test_logical_content_equals_the_accepted_baseline` pins the baseline digests. Candidates, evidence, dt-1,
 precedence, dispositions, `NEEDS_RESOLUTION`, claim identity, the D-048 lookup and the Stage 03 extraction are not
 changed; the Step 4 oracle is untouched (its tests pass unchanged).
@@ -255,7 +255,7 @@ changed; the Step 4 oracle is untouched (its tests pass unchanged).
 | identity conflict | `ac2f0e1643f2b29d107490a4b2ec66764bcc287a736ba1e305f7d8a24457c37b` |
 | source contradiction beside a finding | `64bf58a5f910cb8943fda8390bc78504a85517fb89e6fa14e9110f738a187e0b` |
 | lookup unavailable | `b0df2b0193c46c06c78e712d0323b231f1ab632685b28295f5bb0368f61afff7` |
-| every positive class | `3bd6e925d55854e2ce4a3e457bd6219a300986d0e39bbf201811bc12e02519f0` |
+| unsupported synthetic class (DETECT fails terminally) | `3bd6e925d55854e2ce4a3e457bd6219a300986d0e39bbf201811bc12e02519f0` |
 
 ## 10. Schema and format versions
 
