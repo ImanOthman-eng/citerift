@@ -49,6 +49,52 @@ class QueryError(ValueError):
         self.code = code
 
 
+class EvidenceBudgetExceeded(QueryError):
+    """``Index.gather_bounded``: the index rows one lookup reads would exceed its byte budget. Raised before those
+    rows are read; there is no partial result (maintenance A-02-001, owner decision D-048)."""
+
+    def __init__(self, budget: int, needed: int):
+        super().__init__(
+            "EVIDENCE_BUDGET_EXCEEDED", f"the lookup needs at least {needed} bytes; the budget is {budget}"
+        )
+        self.budget = budget
+        self.needed = needed
+
+
+def _stored_bytes(columns: tuple[str, ...] | list[str], prefix: str = "") -> str:
+    """SQL for the stored size in bytes of one row's columns (a NULL counts 0, a number its text form)."""
+    return " + ".join(f"IFNULL(LENGTH(CAST({prefix}{c} AS BLOB)), 0)" for c in columns)
+
+
+def _listed_bytes(hit: dict[str, Any]) -> int:
+    """The canonical size of a relevance hit; ``gather_bounded`` charges it before the hit is kept."""
+    return len(canonical(hit).encode("utf-8"))
+
+
+_EVENT_BYTES = _stored_bytes(EVENT_COLUMNS, "e.") + " + IFNULL(LENGTH(CAST(r.row_sha256 AS BLOB)), 0)"
+_CR_BYTES = _stored_bytes(CR_COLUMNS)
+_ATTEMPT_BYTES = _stored_bytes(("url", "retrieved_at", "payload_sha256"))
+
+
+@dataclass
+class _Budget:
+    """The byte budget of one bounded lookup: the stored bytes of every row a query will read are summed by SQLite
+    first, and the query runs only if the running total stays within ``limit``; a relevance hit is charged its
+    canonical size before it is kept."""
+
+    limit: int
+    used: int = 0
+
+    def charge(self, conn: sqlite3.Connection, sql: str, params: tuple[Any, ...]) -> None:
+        (size,) = conn.execute(sql, params).fetchone()
+        self.add(int(size))
+
+    def add(self, size: int) -> None:
+        self.used += size
+        if self.used > self.limit:
+            raise EvidenceBudgetExceeded(self.limit, self.used)
+
+
 @dataclass
 class Evidence:
     """Everything a lookup gathered, before projection and paging."""
@@ -85,6 +131,8 @@ def normalize_query(doi: str | None, pmid: str | None) -> tuple[dict[str, Any], 
 
 class Index:
     """An opened, read-only index with its snapshot metadata."""
+
+    _budget: _Budget | None = None  # set only while ``gather_bounded`` runs
 
     def __init__(self, path: Path):
         self.path = path
@@ -128,6 +176,12 @@ class Index:
         }
 
     def _events(self, where: str, params: tuple[Any, ...]) -> list[dict[str, Any]]:
+        if self._budget is not None:
+            self._budget.charge(
+                self.conn,
+                f"SELECT TOTAL({_EVENT_BYTES}) FROM event e JOIN raw_record r ON r.ordinal = e.ordinal WHERE {where}",  # noqa: S608
+                params,
+            )
         columns = ", ".join(f"e.{c}" for c in EVENT_COLUMNS)
         sql = f"SELECT {columns}, r.row_sha256 FROM event e JOIN raw_record r ON r.ordinal = e.ordinal WHERE {where}"  # noqa: S608
         out = []
@@ -149,6 +203,13 @@ class Index:
     def crossref_relations(self, original_dois: list[str]) -> list[dict[str, Any]]:
         out: list[dict[str, Any]] = []
         for d in sorted(set(original_dois)):
+            if self._budget is not None:
+                self._budget.charge(
+                    self.conn,
+                    f"SELECT TOTAL({_CR_BYTES}) FROM cr_assertion "  # noqa: S608
+                    "WHERE predicate = 'update_relation' AND original_doi = ?",
+                    (d,),
+                )
             rows = self.conn.execute(
                 f"SELECT {', '.join(CR_COLUMNS)} FROM cr_assertion "  # noqa: S608
                 "WHERE predicate = 'update_relation' AND original_doi = ? ORDER BY assertion_id",
@@ -160,6 +221,12 @@ class Index:
     def crossref_sources(self, dois: list[str]) -> list[dict[str, Any]]:
         out = []
         for d in sorted(set(dois)):
+            if self._budget is not None:
+                self._budget.charge(
+                    self.conn,
+                    f"SELECT TOTAL({_ATTEMPT_BYTES}) FROM cr_attempt WHERE work_doi = ? AND outcome = 'ok'",  # noqa: S608
+                    (d,),
+                )
             for url, retrieved_at, sha in self.conn.execute(
                 "SELECT url, retrieved_at, payload_sha256 FROM cr_attempt WHERE work_doi = ? AND outcome = 'ok'",
                 (d,),
@@ -197,12 +264,20 @@ class Index:
                 else [(f, None) for f in fields]
             )
             if any(concerns(f, scheme) for f, scheme in candidates):
+                if self._budget is not None:
+                    self._budget.add(_listed_bytes({"code": "RELEVANT_QUARANTINE", "ordinal": ordinal}))
                 hits.append({"code": "RELEVANT_QUARANTINE", "ordinal": ordinal})
         for ordinal, column, scheme, raw in self.conn.execute(
             "SELECT ordinal, column_name, scheme, raw FROM ident WHERE norm IS NULL AND missing = 0 "
             "ORDER BY ordinal, id"
         ):
             if concerns(raw, scheme):
+                if self._budget is not None:
+                    self._budget.add(
+                        _listed_bytes(
+                            {"code": "RELEVANT_INVALID_IDENTIFIER", "ordinal": ordinal, "column": column, "raw": raw}
+                        )
+                    )
                 hits.append({"code": "RELEVANT_INVALID_IDENTIFIER", "ordinal": ordinal, "column": column, "raw": raw})
         return hits
 
@@ -315,6 +390,33 @@ class Index:
             ev.checked_sources += self.crossref_sources([d] if d else [])
         self._finish(ev, supersessions)
         return ev
+
+    def gather_bounded(
+        self,
+        doi: str | None = None,
+        pmid: str | None = None,
+        *,
+        budget_bytes: int,
+        supersessions: tuple[tuple[str, str], ...] = (),
+    ) -> Evidence:
+        """``gather`` within a byte budget (maintenance A-02-001, owner decision D-048).
+
+        Before each query of the lookup reads event, Crossref relation or Crossref attempt rows, SQLite sums the
+        stored bytes of exactly the rows it would read; a relevance hit (a quarantined record or an invalid identifier
+        that may concern the key) is charged its canonical size before it is kept. If the running total would exceed
+        ``budget_bytes`` the lookup raises ``EvidenceBudgetExceeded`` without reading those rows or keeping that hit,
+        so nothing beyond the budget is materialized and no truncated result is ever returned. Within the budget the
+        result is that of ``gather``: the same code runs, with only these charges added. The relevance scan itself
+        streams the quarantine and the invalid identifiers one row at a time, as ``gather`` does."""
+        if not isinstance(budget_bytes, int) or isinstance(budget_bytes, bool) or budget_bytes < 0:
+            raise QueryError("BUDGET_INVALID", "the budget is a non-negative integer number of bytes")
+        if self._budget is not None:
+            raise QueryError("BUDGET_ACTIVE", "a bounded lookup is already running on this index")
+        self._budget = _Budget(budget_bytes)
+        try:
+            return self.gather(doi, pmid, supersessions=supersessions)
+        finally:
+            self._budget = None
 
     def _notice_hit(self, e: dict[str, Any]) -> dict[str, Any]:
         return {
