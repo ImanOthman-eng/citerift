@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:evidence-batch",
+  "title": "CITERIFT Stage 04 evidence batch, version 1",
+  "description": "Owner decision D-053: a content-addressed, immutable blob of complete Stage 04 evidence items, committed by one evidence_batch_recorded journal record. The items of one attempt are in the deterministic dependency order of SPEC 8.8 (every reference precedes the item that names it; among the items ready at a point, the smallest evidence id comes first) and are cut into batches by the byte ceiling of SPEC 8.8. Evidence ids are unique and follow D-051. Order, ids, references and boundaries are checked by Investigation Memory on append and on open; a missing or corrupt batch is corruption, never an empty batch.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "order",
+    "items"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:evidence-batch"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "order": {
+      "description": "The ordering rule the items follow (SPEC 8.8).",
+      "const": "dependency-topological/evidence-id/1"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence"
+      }
+    }
+  }
+}

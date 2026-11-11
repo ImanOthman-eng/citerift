@@ -29,7 +29,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from citerift.investigation import faults, ids, workflow
+from citerift.investigation import batches, faults, ids, workflow
 from citerift.investigation.adapters import (
     ContentRecord,
     Deferred,
@@ -72,6 +72,7 @@ POINTS = (
     "controller.after_start",  # step_started durable, adapter not called
     "controller.after_adapter",  # adapter returned, nothing of its result written
     "controller.after_blobs",  # the result's blobs published, no content record written
+    "controller.after_batch",  # one evidence_batch_recorded durable (context: index), D-053
     "controller.after_content",  # one content record durable (context: index), terminal record not written
     "controller.after_terminal",  # the attempt's terminal record durable, before the next start
 )
@@ -386,12 +387,19 @@ class WorkflowController:
             content_digest=f.content_digest(),
             read_blob=read_blob,
             now=self._clock(),
+            investigation={k: workflow.created(f)[k] for k in ("investigation_key", "investigation_id")},
         )
 
     # Results -------------------------------------------------------------------------------------------------------
 
     def _succeed(self, step: str, attempt: int, key: str, digests: Mapping[str, str], r: Succeeded) -> None:
         records = _content(step, r)
+        items = [p for kind, p in records if kind == workflow.EVIDENCE]
+        records = [(kind, p) for kind, p in records if kind != workflow.EVIDENCE]
+        try:  # D-053: the attempt's evidence in its canonical batches (SPEC 8.8)
+            evidence = batches.evidence_batches(items, lambda ref: self.view.evidence_batch(ref) is not None)
+        except (batches.BatchError, KeyError, TypeError, CanonError) as exc:
+            raise _Defect(f"the evidence cannot be batched: {exc}") from exc
         if (r.root is not None) != (step == "ACQUIRE"):
             raise _Defect("only ACQUIRE binds a root, and it must")
         if not isinstance(r.outputs, tuple) or not all(isinstance(d, str) for d in r.outputs):
@@ -399,6 +407,7 @@ class WorkflowController:
         try:
             for blob in r.blobs:
                 self._mem.put_blob(blob)
+            batch_digests = [self._mem.put_blob(b) for b in evidence]
         except CanonError as exc:
             raise _Defect(f"a blob is not canonical JSON: {exc}") from exc
         except BlobError as exc:
@@ -411,6 +420,9 @@ class WorkflowController:
         for d in r.outputs:
             if not self._mem.blobs.exists(d):
                 raise _Defect(f"output {d[:80]!r} is not a published blob")
+        for index, payload in enumerate(batches.batch_records(batch_digests, evidence)):
+            self._content_append("evidence_batch_recorded", payload, step, attempt)
+            faults.point("controller.after_batch", step=step, attempt=attempt, index=index)
         for index, (kind, payload) in enumerate(records):
             self._content_append(kind, payload, step, attempt)
             faults.point("controller.after_content", step=step, attempt=attempt, index=index)

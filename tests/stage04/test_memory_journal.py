@@ -14,6 +14,7 @@ from memory_support import (
     CAPTURE,
     STAGE04,
     Clock,
+    append_evidence,
     bundle_payload,
     drive,
     h,
@@ -24,7 +25,7 @@ from memory_support import (
     root_object,
 )
 
-from citerift.investigation import ids
+from citerift.investigation import batches, ids
 from citerift.investigation import journal as journal_module
 from citerift.investigation.canonical import canon
 from citerift.investigation.errors import (
@@ -228,9 +229,7 @@ def test_m9_records_before_the_bind_are_unbound_and_scientific_content_needs_the
 ) -> None:
     rec = mem.append("step_started", {"step_key": h("v")}, step="VALIDATE", attempt=1)
     assert rec["root_id"] is None
-    ev = {"evidence_id": h("e"), "observation": h("o"), "pointer": "", "kind": "lookup_result", "refs": [],
-          "value": None}  # fmt: skip
-    refused(mem, "SCHEMA", "evidence_recorded", ev, step="VALIDATE", attempt=1)
+    refused(mem, "SCHEMA", "evidence_batch_recorded", batch_payload(mem, [_ev(h("o"))]), step="VALIDATE", attempt=1)
 
 
 @pytest.mark.negative
@@ -238,14 +237,25 @@ def test_m4_m10_references_resolve_to_earlier_records_of_the_right_layer(mem: In
     drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT"))
     mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
     unrecorded = mem.put_blob({"never": "recorded as an observation"})
-    ev = {"evidence_id": h("e1"), "observation": unrecorded, "pointer": "", "kind": "lookup_result", "refs": [],
-          "value": None}  # fmt: skip
-    refused(mem, "M-10", "evidence_recorded", ev, step="NORMALIZE", attempt=1)
+    refused(mem, "M-10", "evidence_batch_recorded", batch_payload(mem, [_ev(unrecorded)]), step="NORMALIZE", attempt=1)
     extraction = _extraction_blob(mem)
-    ok_ev = {**ev, "observation": extraction}
-    refused(mem, "M-4", "evidence_recorded", {**ok_ev, "refs": [h("missing")]}, step="NORMALIZE", attempt=1)
-    mem.append("evidence_recorded", ok_ev, step="NORMALIZE", attempt=1)
-    refused(mem, "M-14", "evidence_recorded", ok_ev, step="NORMALIZE", attempt=1)  # defined once
+    ok_ev = _ev(extraction)
+    dangling = batch_payload(mem, [{**ok_ev, "refs": [h("missing")]}])
+    refused(mem, "M-4", "evidence_batch_recorded", dangling, step="NORMALIZE", attempt=1)
+    mem.append("evidence_batch_recorded", batch_payload(mem, [ok_ev], total=2), step="NORMALIZE", attempt=1)
+    again = batch_payload(mem, [ok_ev, _ev(extraction, "/x")], index=1, total=2)
+    refused(mem, "M-14", "evidence_batch_recorded", again, step="NORMALIZE", attempt=1)  # defined once
+
+
+def _ev(obs: str, pointer: str = "", refs: list[str] | None = None) -> dict[str, Any]:
+    return {"evidence_id": ids.evidence_id(obs, pointer, "lookup_result"), "observation": obs, "pointer": pointer,
+            "kind": "lookup_result", "refs": refs or [], "value": None}  # fmt: skip
+
+
+def batch_payload(mem: InvestigationMemory, items: list[dict[str, Any]], index: int = 0, total: int = 1) -> Any:
+    """A batch record payload over ``items`` as given (no reordering): for refusal tests."""
+    digest = mem.put_blob(batches.evidence_batch(items))
+    return {"batch": digest, "batch_index": index, "batch_total": total, "evidence_count": len(items)}
 
 
 def _extraction_blob(mem: InvestigationMemory) -> str:
@@ -271,19 +281,18 @@ def test_uncommitted_content_is_not_visible_to_later_attempts(mem: Investigation
     nothing may refer to the failed attempt's ids."""
     drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT"))
     ext = _extraction_blob(mem)
-    ev = {"evidence_id": h("e1"), "observation": ext, "pointer": "", "kind": "lookup_result", "refs": [],
-          "value": None}  # fmt: skip
+    ev = _ev(ext)
     mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
-    mem.append("evidence_recorded", ev, step="NORMALIZE", attempt=1)
+    append_evidence(mem, [ev], "NORMALIZE", 1)
     mem.append("step_interrupted", {"step_key": h("n")}, step="NORMALIZE", attempt=1)
     assert mem.view.committed.evidence == {}
     mem.append("step_started", {"step_key": h("n")}, step="NORMALIZE", attempt=2)
-    refused(mem, "M-4", "evidence_recorded", {**ev, "evidence_id": h("e2"), "refs": [h("e1")]},
-            step="NORMALIZE", attempt=2)  # fmt: skip
-    mem.append("evidence_recorded", ev, step="NORMALIZE", attempt=2)
-    out = [mem.put_blob({"normalized": [h("e1")]})]
+    child = _ev(ext, "/child", [ev["evidence_id"]])
+    refused(mem, "M-4", "evidence_batch_recorded", batch_payload(mem, [child]), step="NORMALIZE", attempt=2)
+    append_evidence(mem, [ev], "NORMALIZE", 2)  # the same batch again: the failed attempt's record is not a definition
+    out = [mem.put_blob({"normalized": [ev["evidence_id"]]})]
     mem.append("step_succeeded", {"step_key": h("n"), "outputs": out, "root": None}, step="NORMALIZE", attempt=2)
-    assert set(mem.view.committed.evidence) == {h("e1")}
+    assert set(mem.view.committed.evidence) == {ev["evidence_id"]}
 
 
 @pytest.mark.negative
@@ -352,7 +361,7 @@ def test_read_only_open_cannot_append(tmp_path: Path) -> None:
         (lambda rs: rs.__setitem__(7, {**rs[7], "root_id": h("forged")}), "M-9"),  # after the bind at seq 5
         (lambda rs: rs.__setitem__(4, {**rs[4], "root_id": h("forged")}), "SCHEMA"),  # before the bind: null
         (lambda rs: rs.insert(6, copy.deepcopy(rs[6])), "M-1"),
-        (lambda rs: rs.__setitem__(0, {**rs[0], "v": 3}), "S-8.7"),
+        (lambda rs: rs.__setitem__(0, {**rs[0], "v": 2}), "S-8.7"),  # format 2 (D-047) is refused (D-053)
         (lambda rs: rs.append({**rs[-1], "seq": len(rs)}), "M-6"),  # a second terminal, no open attempt
         (lambda rs: rs.append({**rs[6], "seq": len(rs), "at": rs[-1]["at"], "attempt": 2}), "M-14"),  # EXTRACT again
     ],
@@ -875,14 +884,16 @@ def _set_payload(field: str, value: Any) -> Any:
     ("at", "change"),
     [
         pytest.param(1, _set("seq", True), id="seq true where 1 is expected"),  # True == 1 in Python, not in JSON
-        pytest.param(20, _set("v", True), id="journal version true"),
-        pytest.param(20, _set("attempt", True), id="attempt true"),
-        pytest.param(20, _set("kind", "no_such_kind"), id="unknown record kind"),
-        pytest.param(20, _set("at", "2026-11-10T12:00:00.000000Z"), id="time earlier than the previous record"),
-        pytest.param(20, _set("attempt", 2), id="terminal record of an attempt that is not open"),
-        pytest.param(20, _set("root_id", h("another root")), id="root that is not the bound root"),
-        pytest.param(19, _set_payload("claim_id", h("no such claim")), id="decision naming an undefined claim"),
-        pytest.param(20, _set_payload("outputs", [h("no such blob")]), id="success naming a missing blob"),
+        pytest.param(19, _set("v", True), id="journal version true"),
+        pytest.param(19, _set("attempt", True), id="attempt true"),
+        pytest.param(19, _set("kind", "no_such_kind"), id="unknown record kind"),
+        pytest.param(19, _set("at", "2026-11-10T12:00:00.000000Z"), id="time earlier than the previous record"),
+        pytest.param(19, _set("attempt", 2), id="terminal record of an attempt that is not open"),
+        pytest.param(19, _set("root_id", h("another root")), id="root that is not the bound root"),
+        pytest.param(18, _set_payload("claim_id", h("no such claim")), id="decision naming an undefined claim"),
+        pytest.param(19, _set_payload("outputs", [h("no such blob")]), id="success naming a missing blob"),
+        pytest.param(16, _set_payload("batch", h("no such batch")), id="evidence batch naming a missing blob"),
+        pytest.param(16, _set_payload("evidence_count", 2), id="evidence batch with a wrong item count"),
     ],
 )
 def test_d046_complete_unterminated_record_must_be_a_valid_next_record(tmp_path: Path, at: int, change: Any) -> None:
@@ -897,7 +908,7 @@ def test_d046_complete_unterminated_record_must_be_a_valid_next_record(tmp_path:
 
 
 @pytest.mark.integration
-@pytest.mark.parametrize("at", [1, 5, 19, 20])
+@pytest.mark.parametrize("at", [1, 5, 16, 18, 19])
 def test_d046_valid_next_record_without_its_newline_stays_a_torn_tail(tmp_path: Path, at: int) -> None:
     """D-046 positive control: the unchanged next record, only its newline missing, is torn and recovered."""
     root, key = completed(tmp_path)

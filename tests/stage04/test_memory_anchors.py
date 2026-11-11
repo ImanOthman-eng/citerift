@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from memory_support import STAGE04, SUBJECT, Clock, bundle_request, drive, h, memory_root
+from memory_support import STAGE04, SUBJECT, Clock, append_evidence, bundle_request, drive, h, memory_root
 
 from citerift.investigation import ids
 from citerift.investigation.anchors import SourceArtifact, read_retained_source, unit_span_sha256, verify_unit_span
@@ -220,7 +220,8 @@ def test_replay_recomputes_the_recorded_unit_anchor(tmp_path: Path, ar: dict[str
         drive_value = {"source_artifact": ar["capture"]["source_artifact"], "unit_span_sha256": recorded}
         _record_unit(mem, ar, drive_value)
     with InvestigationMemory.open(root, key, writable=False, clock=Clock()) as again:
-        ev = next(e for e in again.view.committed.evidence.values() if e["kind"] == "unit")
+        items = [again.view.evidence_item(eid) for eid in again.view.committed.evidence]
+        ev = next(e for e in items if e is not None and e["kind"] == "unit")
         assert ev["value"] == drive_value
         verify_unit_span(
             ev["value"]["unit_span_sha256"],
@@ -263,10 +264,10 @@ def _record_unit(mem: InvestigationMemory, doc: dict[str, Any], value: dict[str,
                        step=step, attempt=n)  # fmt: skip
             extraction = blob
         if step == "NORMALIZE":
-            ev_id = ids.record_digest({"o": extraction, "p": "/units/1", "k": "unit"})
+            ev_id = ids.evidence_id(extraction, "/units/1", "unit")
             ev = {"evidence_id": ev_id, "observation": extraction, "pointer": "/units/1", "kind": "unit", "refs": [],
                   "value": value}  # fmt: skip
-            mem.append("evidence_recorded", ev, step=step, attempt=n)
+            append_evidence(mem, [ev], step, n)
         mem.append("step_succeeded", {"step_key": h(step), "outputs": [blob], "root": root if step == "ACQUIRE"
                                       else None}, step=step, attempt=n)  # fmt: skip
 

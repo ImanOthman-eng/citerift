@@ -25,9 +25,11 @@ from controller_support import (
     create,
     digest,
     evidence,
+    evidence_items,
     journal,
     ok_result,
     run_once,
+    synthetic_report,
 )
 from memory_support import bundle_request, h
 
@@ -40,7 +42,7 @@ from citerift.investigation.fold import STEPS
 from citerift.investigation.journal import JOURNAL_FORMAT, MAX_RECORD_BYTES
 from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES, LIMIT_CODE, bounded_gather
 from citerift.investigation.memory import InvestigationMemory
-from citerift.investigation.schemas import problems
+from citerift.investigation.schemas import EVIDENCE_BATCH, problems
 from citerift.investigation.workflow import EXTRACT_RETRYABLE
 
 REPO = Path(__file__).resolve().parents[2]
@@ -62,13 +64,13 @@ def _run(tmp: Path, script: dict[tuple[str, int], Any]) -> tuple[Path, str, Any]
 
 @pytest.fixture
 def evidence_schema_skipped(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
-    """Skip the per-record JSON Schema validation of ``evidence_recorded`` records only (about 4 ms each), so tens of
-    thousands of them fit a test run. Every other record, every Memory invariant (M-1 to M-14) and every set check
-    still runs, on append and on reopen. The schema of the evidence record is covered by the Step 5 contract tests."""
+    """Skip the JSON Schema validation of evidence batches only (D-053), so tens of thousands of items fit a test run.
+    Every other record, every Memory invariant (M-1 to M-14), every per-item check of a batch and every set check
+    still runs, on append and on reopen. The batch schema is covered by the contract tests."""
     real = fold.problems
 
     def problems_except_evidence(value: Any, schema_id: str) -> list[str]:
-        if isinstance(value, dict) and value.get("kind") == "evidence_recorded":
+        if schema_id == EVIDENCE_BATCH:
             return []
         return real(value, schema_id)
 
@@ -99,12 +101,12 @@ def test_d051_two_kinds_at_one_pointer_coexist(tmp_path: Path) -> None:
         )
         assert unit["evidence_id"] != occ["evidence_id"]
         out = {"normalized": [unit["evidence_id"], occ["evidence_id"]]}
-        recs = (ContentRecord("evidence_recorded", unit), ContentRecord("evidence_recorded", occ))
+        recs = (ContentRecord("evidence", unit), ContentRecord("evidence", occ))
         return Succeeded(records=recs, blobs=(out,), outputs=(digest(out),))
 
     root, key, st = _run(tmp_path, {("NORMALIZE", 1): normalize})
     assert st.lifecycle == "COMPLETED"
-    kinds = {r["payload"]["kind"] for r in journal(root, key) if r["kind"] == "evidence_recorded"}
+    kinds = {e["kind"] for e in evidence_items(root, key)}
     assert {"unit", "identifier_occurrence"} <= kinds
 
 
@@ -117,7 +119,7 @@ def test_d051_same_kind_at_one_pointer_is_one_item_and_a_repeat_is_refused(tmp_p
 
     def normalize(req: StepRequest) -> StepResult:
         out = {"normalized": [a["evidence_id"]]}
-        recs = (ContentRecord("evidence_recorded", a), ContentRecord("evidence_recorded", b))
+        recs = (ContentRecord("evidence", a), ContentRecord("evidence", b))
         return Succeeded(records=recs, blobs=(out,), outputs=(digest(out),))
 
     root, key, st = _run(tmp_path, {("NORMALIZE", 1): normalize})
@@ -169,7 +171,7 @@ def test_d047_projection_set_of_50000_is_canonical_and_valid() -> None:
 def _detect_with(evs: list[dict[str, Any]], set_value: dict[str, Any], claim: dict[str, Any]) -> Any:
     def detect(req: StepRequest) -> StepResult:
         out = {"claims": [claim["claim_id"]]}
-        recs = (*(ContentRecord("evidence_recorded", e) for e in evs), ContentRecord("claim_recorded", claim))
+        recs = (*(ContentRecord("evidence", e) for e in evs), ContentRecord("claim_recorded", claim))
         return Succeeded(records=recs, blobs=(set_value, out), outputs=(digest(out),))
 
     return detect
@@ -245,11 +247,12 @@ def _assemble_with(n: int) -> Any:
     def assemble(req: StepRequest) -> StepResult:
         projections = [{"projection": i} for i in range(n)]
         value = sets.projection_set(digest(p) for p in projections)
-        report = {"report": "SYNTHETIC", "projections": n}
+        chunks: list[Any] = []  # the D-054 report manifest and its chunks (the report itself is not under test)
+        report = synthetic_report(req.committed, req.root, req.investigation, req.request, req.live, chunks)
         rec = ContentRecord(
             "report_recorded", {"report": digest(report), "projection_set": digest(value), "projection_count": n}
         )
-        return Succeeded(records=(rec,), blobs=(report, value, *projections), outputs=(digest(report),))
+        return Succeeded(records=(rec,), blobs=(*chunks, report, value, *projections), outputs=(digest(report),))
 
     return assemble
 
@@ -374,14 +377,16 @@ def test_d047_a_set_damaged_after_commit_makes_the_investigation_corrupt(
 
 
 @pytest.mark.negative
-def test_d047_a_format_1_journal_is_refused_not_migrated(tmp_path: Path) -> None:
-    """JOURNAL_FORMAT is 2 (D-047): a Step 6/7 journal (format 1) is refused with JOURNAL_VERSION_UNSUPPORTED."""
-    assert JOURNAL_FORMAT == 2
+@pytest.mark.parametrize("old", [1, 2])
+def test_d047_an_earlier_format_journal_is_refused_not_migrated(tmp_path: Path, old: int) -> None:
+    """JOURNAL_FORMAT is 3 (D-053; 2 was D-047/D-051, 1 the Step 6/7 format, none released): a journal of an earlier
+    format is refused with JOURNAL_VERSION_UNSUPPORTED, never migrated."""
+    assert JOURNAL_FORMAT == 3
     root, key, _ = _run(tmp_path, {})
     path = root / key / "journal.jsonl"
     lines = path.read_bytes().splitlines()
     first = json.loads(lines[0])
-    first["v"] = 1
+    first["v"] = old
     first["digest"] = ids.record_digest({k: v for k, v in first.items() if k != "digest"})
     path.chmod(0o600)
     path.write_bytes(canon(first) + b"\n")

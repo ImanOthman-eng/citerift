@@ -26,6 +26,8 @@ CLAIM = PREFIX + "claim"
 REPORT = PREFIX + "report"
 EVIDENCE_SET = PREFIX + "evidence-set"
 PROJECTION_SET = PREFIX + "projection-set"
+EVIDENCE_BATCH = PREFIX + "evidence-batch"
+REPORT_CHUNK = PREFIX + "report-chunk"
 DIRS = ("contracts", "wiki", "retraction", "investigation")
 
 

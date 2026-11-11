@@ -15,6 +15,10 @@ Discrepancies are classified (``classify``); the test fails on any discrepancy o
   which the model enforces in ``successors`` instead (recovery is the only move from such a state).
 * ``SUCCESS_FLAG`` (abstraction): the model's ``step_succeeded`` carries a flag "opens a question"; in production
   that is a property of the step's content, so only the flag matching the scenario's DETECT content is compared.
+* ``BATCH_SERIES_CLOSED`` (spec, owner decision D-053): the model's "content" is any number of content records in
+  an open attempt; in production NORMALIZE's and DETECT's evidence is one series of batch records numbered
+  ``batch_index`` of ``batch_total`` (SPEC 8.8), so once an attempt has written its content, a further batch record is
+  refused (S-8.8 ``BATCH_SEQUENCE``). Checked by ``test_batch_series_closed_is_the_batch_sequence_rule``.
 
 Input changes are applied only once a step has committed (see ``test_input_change_before_any_commit``): before
 that, the model's sticky ``env_changed`` flag makes a later resume STALE, while SPEC S-10.1 defines staleness by the
@@ -41,15 +45,17 @@ from controller_support import (
     Env,
     Plan,
     StepClock,
+    append_content,
     digest,
     env_for,
     evidence,
     lookup_evidence,
     ok_result,
+    synthetic_report,
 )
 from memory_support import bundle_payload, memory_root, root_object
 
-from citerift.investigation import sets, workflow
+from citerift.investigation import batches, sets, workflow
 from citerift.investigation.controller import _content, open_controller, run_investigation
 from citerift.investigation.errors import Busy, CorruptInvestigation, InvariantViolation
 from citerift.investigation.fold import STEPS
@@ -75,7 +81,6 @@ TERMINAL_CODE = {
     "VERIFY": ("VERIFY_FAILED", "CHECK_FAILED"),
 }
 RETRYABLE_CODE = {"ACQUIRE": "HTTP_TIMEOUT", "EXTRACT": "EXTRACTION_WORKER_FAILED"}
-REPORT = {"report": "PROBE"}
 PROJECTIONS = sets.projection_set([])
 
 
@@ -110,7 +115,7 @@ class Prod:
             payload = bundle_payload(self.root)
         self.key = str(payload["investigation_key"])
         with InvestigationMemory.create(self.root, payload, clock=self.clock) as mem:
-            for b in (BUNDLE, EXTRACTION, LOOKUP, REPORT, PROJECTIONS):  # probe records name these blobs
+            for b in (BUNDLE, EXTRACTION, LOOKUP, PROJECTIONS):  # probe records name these blobs
                 mem.put_blob(b)
 
     def open(self) -> None:
@@ -153,8 +158,7 @@ class Prod:
         a, r = self.attempt, self._result()
         for b in r.blobs:
             self.mem.put_blob(b)  # type: ignore[union-attr]
-        for kind, payload in _content(a["step"], r):
-            self.ctl._append(kind, payload, a["step"], a["attempt"])
+        append_content(self.ctl, a["step"], a["attempt"], _content(a["step"], r))
 
     def succeed(self) -> None:
         a, r = self.attempt, self._result()
@@ -268,20 +272,55 @@ class Prod:
             return "observation_recorded", obs("extraction", EXTRACTION, "extract_bundle")
         if step == "LOOKUP":
             return "observation_recorded", obs("lookup", LOOKUP, "gather")
-        if step == "NORMALIZE":
-            return "evidence_recorded", evidence(
-                "unit", digest(EXTRACTION), "/probe", [], {"source_artifact": "a" * 64, "unit_span_sha256": "b" * 64}
-            )
-        if step == "DETECT":
-            e = lookup_evidence()[0]
-            return "evidence_recorded", {
-                **e,
-                "pointer": "/probe",
-                "evidence_id": evidence("lookup_result", e["observation"], "/probe", [], None)["evidence_id"],
+        if step in ("NORMALIZE", "DETECT"):
+            if step == "NORMALIZE":
+                item = evidence(
+                    "unit",
+                    digest(EXTRACTION),
+                    "/probe",
+                    [],
+                    {"source_artifact": "a" * 64, "unit_span_sha256": "b" * 64},
+                )
+            else:
+                e = lookup_evidence()[0]
+                item = {
+                    **e,
+                    "pointer": "/probe",
+                    "evidence_id": evidence("lookup_result", e["observation"], "/probe", [], None)["evidence_id"],
+                }
+            # D-053: content of these steps is a batch record; the probe publishes its one-item batch (an orphan blob
+            # unless the record is written) and takes the next index of the attempt's series.
+            batch = batches.evidence_batch([item])
+            d = self.mem.put_blob(batch)  # type: ignore[union-attr]
+            pending = self.ctl.view.pending
+            index = len(pending.batches)
+            total = pending.batch_total if pending.batch_total is not None else index + 1
+            return "evidence_batch_recorded", {
+                "batch": d,
+                "batch_index": index,
+                "batch_total": total,
+                "evidence_count": 1,
             }
         if step == "ASSEMBLE":
+            # D-054: Memory proves the report graph against the fold, so the probe publishes a true manifest of the
+            # committed content (and its chunks) before proposing the record.
+            f = self.ctl.view
+            if f.root_id is None:  # no root is bound: the record is illegal on both sides whatever it names
+                return "report_recorded", {
+                    "report": digest(PROJECTIONS),
+                    "projection_set": digest(PROJECTIONS),
+                    "projection_count": 0,
+                }
+            created = workflow.created(f)
+            chunks: list[Any] = []
+            ids_ = {k: created[k] for k in ("investigation_key", "investigation_id")}
+            manifest = synthetic_report(
+                f.committed_content(), f.root, ids_, created["request"], workflow.is_live(f), chunks
+            )
+            for blob in (*chunks, manifest, PROJECTIONS):
+                self.mem.put_blob(blob)  # type: ignore[union-attr]
             return "report_recorded", {
-                "report": digest(REPORT),
+                "report": digest(manifest),
                 "projection_set": digest(PROJECTIONS),
                 "projection_count": 0,
             }
@@ -313,6 +352,14 @@ def classify(rec: Any, s: Any, model_rule: str | None, prod_rule: str | None, co
             return "W6_STRICTER"
     if kind == "step_succeeded" and detail != (conflict and C.STEPS[i] == "DETECT"):
         return "SUCCESS_FLAG"
+    if (
+        kind == "content"
+        and C.STEPS[i] in ("NORMALIZE", "DETECT")
+        and s.steps[i].content
+        and model_rule == "T-CONTENT"
+        and prod_rule is None
+    ):
+        return "BATCH_SERIES_CLOSED"
     return None
 
 
@@ -522,7 +569,7 @@ def test_differential_random_walks(tmp_path: Path, live: bool, conflict: bool) -
         labels.update(walked)
         ends[walked[-1]] += 1
     assert stats["compared_states"] > 0 and stats["proposals"] > 0
-    assert set(found) <= {"W6_STRICTER", "SUCCESS_FLAG"}
+    assert set(found) <= {"W6_STRICTER", "SUCCESS_FLAG", "BATCH_SERIES_CLOSED"}
     print({"scenario": (live, conflict), **stats, "classified": dict(found), "labels": dict(labels)})
 
 
@@ -536,7 +583,7 @@ def test_differential_at_the_budget_boundaries(tmp_path: Path) -> None:
         base = tmp_path / str(seed)
         base.mkdir()
         labels.update(walk(base, True, False, 9000 + seed, stats, found, BOUNDARY_WEIGHT))
-    assert set(found) <= {"W6_STRICTER", "SUCCESS_FLAG"}
+    assert set(found) <= {"W6_STRICTER", "SUCCESS_FLAG", "BATCH_SERIES_CLOSED"}
     assert stats["max_f"] == workflow.F_MAX and stats["max_phi"] == workflow.A_MAX - 1
     assert stats["max_attempts"] == workflow.A_MAX + workflow.F_MAX
     print({"scenario": "budget boundaries", **stats, "classified": dict(found), "labels": dict(labels)})
@@ -591,3 +638,30 @@ def test_w6_stricter_is_the_only_orphan_discrepancy(tmp_path: Path) -> None:
     # Model-legal continuations of the dead attempt: content, terminal and retryable failure, deferral. (Success needs
     # content first and the deferral budget needs six deferrals, so the model refuses those too.)
     assert found == {"W6_STRICTER": 4}
+
+
+def test_batch_series_closed_is_the_batch_sequence_rule(tmp_path: Path) -> None:
+    """``BATCH_SERIES_CLOSED`` is exactly S-8.8 BATCH_SEQUENCE: before an attempt's content both sides accept a batch
+    record; after it, production refuses a further batch by that rule and no other."""
+    prod = Prod(tmp_path, False, False)
+    prod.create()
+    prod.open()
+    try:
+        for step in ("VALIDATE", "ACQUIRE", "EXTRACT"):
+            prod.start(step)
+            if step != "VALIDATE":
+                prod.write_content()
+            prod.succeed()
+        i = STEPS.index("NORMALIZE")
+        prod.start("NORMALIZE")
+        assert prod.legal(("content", i, None), False) == "T-CONTENT"
+        prod.write_content()
+        assert prod.legal(("content", i, None), False) is None
+        proposal = prod._proposal("content", i, None)
+        assert proposal is not None
+        assert workflow.guard(proposal, prod.ctl.view, orphan=False) == "T-CONTENT"
+        with pytest.raises(InvariantViolation) as exc:
+            prod.ctl.view.check(prod._full(proposal))
+        assert (exc.value.invariant, exc.value.code) == ("S-8.8", "BATCH_SEQUENCE")
+    finally:
+        prod.close()

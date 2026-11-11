@@ -150,6 +150,7 @@ def test_crash_at_every_occurrence_of_every_controller_boundary(reference: Refer
         "controller.after_start",
         "controller.after_adapter",
         "controller.after_blobs",
+        "controller.after_batch",
         "controller.after_content",
     }
 

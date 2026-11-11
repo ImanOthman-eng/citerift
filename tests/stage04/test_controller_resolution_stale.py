@@ -16,6 +16,7 @@ from controller_support import (
     Plan,
     Session,
     StepClock,
+    append_content,
     create,
     env_for,
     journal,
@@ -69,7 +70,8 @@ def test_conflict_routes_to_needs_resolution(tmp_path: Path, cls: str, qkind: st
     f = _fold(root, key)
     with InvestigationMemory.open(root, key, writable=False) as mem:
         named = sets.set_ids(json.loads(mem.blobs.get(claims[0]["evidence_set"])))
-    assert named and named <= set(f.committed.evidence)
+        committed = set(mem.view.committed.evidence)  # the id index is rebuilt from the journal and its batches
+    assert named and named <= committed
     assert _payloads(root, key, "decision_recorded") == [
         {
             "decision_id": ids.decision_id(cid, "ROUTE_NEEDS_RESOLUTION"),
@@ -174,8 +176,7 @@ def test_guard_refuses_detect_content_that_breaks_w8(tmp_path: Path, change: str
         else:
             q = ids.question_id(cid, "identity_conflict")
             content.append(("question_opened", {"question_id": q, "claim_id": cid, "kind": "identity_conflict"}))
-        for kk, p in content:
-            ctl._append(kk, p, "DETECT", 1)
+        append_content(ctl, "DETECT", 1, content)
         man = ctl._mem.put_blob(workflow.manifest(ctl.view, "DETECT", k, digests))
         with pytest.raises(workflow.WorkflowRefused) as exc:
             ctl._append("step_succeeded", {"step_key": k, "outputs": [man], "root": None}, "DETECT", 1)

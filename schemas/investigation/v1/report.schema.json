@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:report",
-  "title": "CITERIFT Stage 04 investigation report, version 2",
-  "description": "The Stage 04 report (SPEC 11.1): a pure function of the committed fold at ASSEMBLE. It is exported only when VERIFY passes, so only the two successful terminal states exist here: COMPLETED, or NEEDS_RESOLUTION with outcome partial (F-16). FAILED, STALE and CORRUPT investigations export no report (S-9.7); this schema has no representation for them. There is no free-text summary and no field meaning 'clean', 'safe' or 'no retracted citations' (S-7.7). Several Stage 02 events per paper stay here; v1 investigation records (schemas/contracts/v1, unchanged) are separate projections.",
-  "x-citerift-version": "2.0.0",
+  "title": "CITERIFT Stage 04 investigation report manifest, version 3",
+  "description": "The Stage 04 report (SPEC 11.1): a pure function of the committed fold at ASSEMBLE. It is exported only when VERIFY passes, so only the two successful terminal states exist here: COMPLETED, or NEEDS_RESOLUTION with outcome partial (F-16). FAILED, STALE and CORRUPT investigations export no report (S-9.7); this schema has no representation for them. There is no free-text summary and no field meaning 'clean', 'safe' or 'no retracted citations' (S-7.7). Several Stage 02 events per paper stay here; v1 investigation records (schemas/contracts/v1, unchanged) are separate projections. Version 3 (owner decision D-054) is a manifest graph: this small object names its claims, observations and positive works by ordered content-addressed chunks and its evidence by the committed evidence batches. The durable report is the whole graph; Investigation Memory checks every node on append and on open and VERIFY proves it, so no part can be silently omitted. Versions 1 and 2 were never released and are not migrated.",
+  "x-citerift-version": "3.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,12 +14,10 @@
     "root",
     "terminal_state",
     "outcome",
-    "claims",
-    "observations",
-    "evidence",
     "article_summary",
     "limitations",
-    "identities"
+    "identities",
+    "components"
   ],
   "properties": {
     "schema": {
@@ -27,7 +25,7 @@
     },
     "schema_version": {
       "description": "Unknown versions fail closed.",
-      "const": "2.0.0"
+      "const": "3.0.0"
     },
     "investigation_key": {
       "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
@@ -52,46 +50,13 @@
         "partial"
       ]
     },
-    "claims": {
-      "description": "Ordered by unit source byte offset, then candidate key order (SPEC 11.1).",
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/claim_entry"
-      }
-    },
-    "observations": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "blob",
-          "obs_kind"
-        ],
-        "properties": {
-          "blob": {
-            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
-          },
-          "obs_kind": {
-            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/obs_kind"
-          }
-        }
-      }
-    },
-    "evidence": {
-      "description": "Every evidence item a claim refers to (S-12.1). Completeness of each chain is a VERIFY check (S-12.2).",
-      "type": "array",
-      "items": {
-        "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence"
-      }
-    },
     "article_summary": {
-      "description": "Counts and the works with positive claims only (S-7.7). Nothing is derived from absent claims.",
+      "description": "Counts only (S-7.7). Nothing is derived from absent claims. claims_by_class and open_questions are functions of the claims component and are checked against it.",
       "type": "object",
       "additionalProperties": false,
       "required": [
         "claims_by_class",
-        "positive_works",
+        "open_questions",
         "snapshot_id"
       ],
       "properties": {
@@ -105,53 +70,10 @@
             "minimum": 1
           }
         },
-        "positive_works": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "work",
-              "classes",
-              "claim_ids"
-            ],
-            "properties": {
-              "work": {
-                "type": "object",
-                "additionalProperties": false,
-                "minProperties": 1,
-                "properties": {
-                  "doi": {
-                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
-                  },
-                  "pmid": {
-                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
-                  }
-                }
-              },
-              "classes": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
-                  "enum": [
-                    "RETRACTED_WORK_CITED",
-                    "CONCERN_CITED",
-                    "CORRECTION_CITED",
-                    "REINSTATED_WORK_CITED"
-                  ]
-                }
-              },
-              "claim_ids": {
-                "type": "array",
-                "minItems": 1,
-                "uniqueItems": true,
-                "items": {
-                  "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
-                }
-              }
-            }
-          }
+        "open_questions": {
+          "description": "The number of claim entries that carry an open question (S-7.6).",
+          "type": "integer",
+          "minimum": 0
         },
         "snapshot_id": {
           "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/snapshot_id"
@@ -246,19 +168,192 @@
           }
         }
       ]
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claims",
+        "observations",
+        "positive_works",
+        "evidence"
+      ],
+      "properties": {
+        "claims": {
+          "description": "The claim entries (SPEC 11.1): each holds the claim, its decision, its question or null, its unit anchor and its checked sources. Ordered by unit source byte offset, then the canonical encoding of the candidate keys, then claim id: ordered content-addressed report chunks (urn:citerift:schema:investigation:v1:report-chunk, part claims), each with its item count. Chunks are cut by the byte ceiling of SPEC 8.8 and hold the items in the order named here.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "order",
+            "count",
+            "chunks"
+          ],
+          "properties": {
+            "order": {
+              "const": "unit-byte-start/candidate-keys/claim-id/1"
+            },
+            "count": {
+              "description": "The total number of items; equals the sum of the chunk counts.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "chunks": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "chunk",
+                  "count"
+                ],
+                "properties": {
+                  "chunk": {
+                    "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "observations": {
+          "description": "The committed observations, in journal commit order: ordered content-addressed report chunks (urn:citerift:schema:investigation:v1:report-chunk, part observations), each with its item count. Chunks are cut by the byte ceiling of SPEC 8.8 and hold the items in the order named here.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "order",
+            "count",
+            "chunks"
+          ],
+          "properties": {
+            "order": {
+              "const": "commit/1"
+            },
+            "count": {
+              "description": "The total number of items; equals the sum of the chunk counts.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "chunks": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "chunk",
+                  "count"
+                ],
+                "properties": {
+                  "chunk": {
+                    "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "positive_works": {
+          "description": "The works with positive claims (S-7.7), ordered by the canonical encoding of work: ordered content-addressed report chunks (urn:citerift:schema:investigation:v1:report-chunk, part positive_works), each with its item count. Chunks are cut by the byte ceiling of SPEC 8.8 and hold the items in the order named here.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "order",
+            "count",
+            "chunks"
+          ],
+          "properties": {
+            "order": {
+              "const": "work/1"
+            },
+            "count": {
+              "description": "The total number of items; equals the sum of the chunk counts.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "chunks": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "chunk",
+                  "count"
+                ],
+                "properties": {
+                  "chunk": {
+                    "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "evidence": {
+          "description": "The investigation's committed evidence (S-12.1), by reference to its committed evidence batches (owner decision D-053), in commit order; nothing is copied (D-054). Each claim names its own evidence by its evidence set (D-047).",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "order",
+            "count",
+            "batches"
+          ],
+          "properties": {
+            "order": {
+              "const": "commit/evidence-batch/1"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "batches": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "batch",
+                  "count"
+                ],
+                "properties": {
+                  "batch": {
+                    "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+                  },
+                  "count": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "allOf": [
     {
-      "description": "F-16: NEEDS_RESOLUTION is never represented as COMPLETED. An identity conflict or source contradiction routes to resolution and opens a question (W-8).",
+      "description": "F-16: NEEDS_RESOLUTION is never represented as COMPLETED. An identity conflict or source contradiction routes to resolution and opens a question (W-8). (D-054: a question is open exactly when article_summary.open_questions is at least 1.)",
       "if": {
         "properties": {
-          "claims": {
-            "contains": {
-              "properties": {
-                "question": {
-                  "type": "object"
-                }
+          "article_summary": {
+            "properties": {
+              "open_questions": {
+                "minimum": 1
               }
             }
           }
@@ -290,16 +385,12 @@
     {
       "if": {
         "properties": {
-          "claims": {
-            "contains": {
-              "properties": {
-                "claim": {
-                  "properties": {
-                    "class": {
-                      "const": "LOOKUP_UNAVAILABLE"
-                    }
-                  }
-                }
+          "article_summary": {
+            "properties": {
+              "claims_by_class": {
+                "required": [
+                  "LOOKUP_UNAVAILABLE"
+                ]
               }
             }
           }
@@ -381,39 +472,27 @@
           },
           {
             "properties": {
-              "claims": {
-                "contains": {
-                  "properties": {
-                    "claim": {
-                      "properties": {
-                        "class": {
-                          "const": "LOOKUP_UNAVAILABLE"
-                        }
-                      }
-                    }
+              "article_summary": {
+                "properties": {
+                  "claims_by_class": {
+                    "required": [
+                      "LOOKUP_UNAVAILABLE"
+                    ]
                   }
                 }
               }
-            },
-            "required": [
-              "claims"
-            ]
+            }
           },
           {
             "properties": {
-              "claims": {
-                "contains": {
-                  "properties": {
-                    "question": {
-                      "type": "object"
-                    }
+              "article_summary": {
+                "properties": {
+                  "open_questions": {
+                    "minimum": 1
                   }
                 }
               }
-            },
-            "required": [
-              "claims"
-            ]
+            }
           }
         ]
       }
@@ -434,19 +513,14 @@
       },
       "then": {
         "properties": {
-          "claims": {
-            "contains": {
-              "properties": {
-                "question": {
-                  "type": "object"
-                }
+          "article_summary": {
+            "properties": {
+              "open_questions": {
+                "minimum": 1
               }
             }
           }
-        },
-        "required": [
-          "claims"
-        ]
+        }
       }
     },
     {
@@ -465,23 +539,16 @@
       },
       "then": {
         "properties": {
-          "claims": {
-            "contains": {
-              "properties": {
-                "claim": {
-                  "properties": {
-                    "class": {
-                      "const": "LOOKUP_UNAVAILABLE"
-                    }
-                  }
-                }
+          "article_summary": {
+            "properties": {
+              "claims_by_class": {
+                "required": [
+                  "LOOKUP_UNAVAILABLE"
+                ]
               }
             }
           }
-        },
-        "required": [
-          "claims"
-        ]
+        }
       }
     },
     {
@@ -826,6 +893,69 @@
           }
         }
       ]
+    },
+    "observation_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blob",
+        "obs_kind"
+      ],
+      "properties": {
+        "blob": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        },
+        "obs_kind": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/obs_kind"
+        }
+      },
+      "description": "A committed observation, in journal commit order."
+    },
+    "positive_work": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "work",
+        "classes",
+        "claim_ids"
+      ],
+      "properties": {
+        "work": {
+          "type": "object",
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "doi": {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+            },
+            "pmid": {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+            }
+          }
+        },
+        "classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "RETRACTED_WORK_CITED",
+              "CONCERN_CITED",
+              "CORRECTION_CITED",
+              "REINSTATED_WORK_CITED"
+            ]
+          }
+        },
+        "claim_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          }
+        }
+      },
+      "description": "One distinct work (Stage 02 identity anchor) with at least one positive claim (S-7.7), with the classes and ids of those claims. Works are ordered by the canonical encoding of work."
     }
   }
 }

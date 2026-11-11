@@ -522,7 +522,7 @@ Each claim gets exactly one decision:
 
 | Field | Rule |
 |---|---|
-| `v` | journal format version, `1` |
+| `v` | journal format version, `3` (S-8.7) |
 | `seq` | 0, 1, 2, … without gaps |
 | `prev` | `digest` of record `seq − 1`; for `seq = 0` the constant `H("citerift-journal-genesis/1", investigation_key)` |
 | `kind` | one of section 8.3 |
@@ -539,22 +539,23 @@ Each claim gets exactly one decision:
 | Lifecycle | `investigation_created` | request, `request_key`, plan version, config digest, engine identities |
 | Execution | `step_started`, `step_succeeded`, `step_failed`, `step_deferred`, `step_interrupted`, `stale_detected` | step key; for `step_succeeded` the output digests (and for ACQUIRE the bound root); for `step_failed` `{code, retryable, reason, detail, wall_clock}` and, for ACQUIRE, `not_before` (the Retry-After instant the attempt observed, or null; `wall_clock` is non-null only for `ACQUIRE_WALL_CLOCK_EXCEEDED`, owner decision D-042); for `step_deferred` `{code, not_before}`; for `stale_detected` `{changed, recorded, current}` (section 10.3) |
 | Observation | `observation_recorded` | `{obs_kind ∈ {bundle, extraction, index_identity, lookup}, blob, source_ref}` |
-| Evidence | `evidence_recorded` | `{evidence_id, observation, pointer, kind, refs}` (keys, identifier statuses, coherence results) |
+| Evidence | `evidence_batch_recorded` | `{batch, batch_index, batch_total, evidence_count}`: one evidence batch blob (section 8.8, D-053) holding complete evidence items `{evidence_id, observation, pointer, kind, refs, value}` (keys, identifier statuses, coherence results) |
 | Claim | `claim_recorded` | `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, evidence_set, supporting_count, contradicting_count}` (the lists are in the evidence-set blob, D-047) |
 | Decision | `decision_recorded` | `{decision_id, claim_id, disposition}` |
 | Question | `question_opened`, `question_closed` | `{question_id, claim_id, kind}`; close adds `{evidence}` |
-| Report | `report_recorded` | `{report, projection_set, projection_count}`: the report blob and a content-addressed projection set listing the v1 projection blobs (D-047) |
+| Report | `report_recorded` | `{report, projection_set, projection_count}`: the report manifest blob (section 11.1, D-054) and a content-addressed projection set listing the v1 projection blobs (D-047) |
 | History | `claim_superseded` | `{old_claim_id, new_claim_id, reason, new_evidence}` |
 | Verification | `verification_recorded` | `{result, checks}` |
 
 The exact payload of each kind is fixed by `urn:citerift:schema:investigation:v1:journal-record` (Step 5). The schema
 spells out what this table states in words: `investigation_created` adds `investigation_id` and `migrated_from`
-(S-8.7); evidence adds the typed `value` read at its pointer; a claim adds its `candidate`, `table_version` and
+(S-8.7); an evidence item adds the typed `value` read at its pointer; a claim adds its `candidate`, `table_version` and
 `upstream_reasons` (Stage 02 basis reasons with their evidence); `verification_recorded` adds the content digest
 `C(J)` (section 11.1). Every list a record holds has a schema bound (`maxItems`), so no record grows with the article
-(Step 7 closure, `review/step7/closure/storage_bounds.json`: the largest record of any kind is 50,297 bytes, 4.8 % of
-the 1 MiB record limit); the collections that do grow (a claim's evidence, a report's projections) are sets (D-047),
-checked on append and on open: a missing or corrupt set is corruption, never an empty set. Invariants the schema
+(`review/step7/d053/bounds.json`: the largest record of any kind is 50,297 bytes, 4.8 % of the 1 MiB record limit);
+the collections that do grow (a claim's evidence, a report's projections) are sets (D-047), the evidence itself is in
+batches (D-053) and the report's collections are in chunks (D-054), all checked on append and on open: a missing or
+corrupt set, batch or chunk is corruption, never an empty one. Invariants the schema
 cannot express (M-1 to M-8, M-10, M-11, M-13, M-14, the transition rules
 and the derivation of every id) are checked by Investigation Memory and VERIFY
 (`review/step5/STEP5_SCHEMA_REVIEW.md`).
@@ -602,8 +603,10 @@ canonical JSON, has a wrong digest or `prev`, violates the schema or an invarian
 committed data, the investigation is `CORRUPT` (read-only; nothing is repaired, dropped or guessed), whether that line
 is the last one or not. Incomplete append ≠ integrity failure.
 
-- S-8.7 Versioning: journal format `v = 1` is the first version. A reader refuses a version it does not know
-  (`JOURNAL_VERSION_UNSUPPORTED`). A later version that needs migration writes a new investigation whose
+- S-8.7 Versioning: journal format `v = 1` is the first version, `v = 2` the format of D-047 and D-051 (evidence
+  and projection sets, the kind-bound evidence id), and `v = 3` the current format of D-053 and D-054 (evidence
+  batches, report manifest). None was released, so no migration exists: a reader refuses every version but the
+  current one (`JOURNAL_VERSION_UNSUPPORTED`). A later version that needs migration writes a new investigation whose
   `investigation_created` cites the source journal's last digest; no journal is rewritten in place.
 
 ### 8.7 Memory invariants
@@ -624,6 +627,46 @@ is the last one or not. Incomplete append ≠ integrity failure.
 | M-12 | no negative value | no claim, decision or report value means "not retracted"; `uncertain`, `unavailable` and `not_found_in_checked_sources` never become a finding |
 | M-13 | determinism | equal committed inputs (section 10.2) give an equal content digest `C(J)` (MM section 7.3) |
 | M-14 | duplicate suppression | at most one committed `step_succeeded` per step; a step whose key is committed is not started again |
+
+### 8.8 Evidence batches and bulk parts (owner decision D-053)
+
+The journal is the audit log, the commit log and the state-machine history; it is not the bulk store. Evidence items
+are committed in **evidence batches**, and the large collections of the report in **report chunks** (section 11.1).
+Both are content-addressed blobs (S-8.2) cut by one rule.
+
+- S-8.8 Evidence batches follow rules (a) to (f); a violation cites S-8.8.
+  - (a) **Batch blob** (`urn:citerift:schema:investigation:v1:evidence-batch` 1.0.0):
+    `{schema, schema_version, order, items}` with `order = "dependency-topological/evidence-id/1"` and `items` a
+    non-empty list of complete evidence items (`common#/$defs/evidence`). A batch is immutable; its name is its SHA-256.
+  - (b) **Batch record** `evidence_batch_recorded`: `{batch, batch_index, batch_total, evidence_count}`, closed
+    (`additionalProperties: false`). The batch records of one attempt form one **series** `0 … batch_total − 1`,
+    appended in index order, all with the same `batch_total`; the controller writes the series before the attempt's
+    other content, and a claim can only name evidence already defined (M-4). The series is complete before
+    `step_succeeded`. An incomplete series, a gap, a repeated index, a changed `batch_total` or a batch record after a
+    complete series is `BATCH_SEQUENCE` (refused on append, `CORRUPT` on open); a batch digest recorded twice is
+    `DUPLICATE_ID` (M-14).
+  - (c) **Order.** The items of one attempt form a graph by their `refs`. A reference outside the attempt must name
+    committed evidence; a reference inside it is an edge. The order is Kahn's topological order in which, at every
+    point, the ready item with the smallest evidence id comes next. It does not depend on the order the items were
+    produced in, and every reference precedes the item that names it, also across batch boundaries. A duplicate id
+    (`DUPLICATE_ID`), a dangling reference (`DANGLING_REFERENCE`) or a cycle (`DEPENDENCY_CYCLE`) is refused, and the
+    attempt is `ADAPTER_INCONSISTENT` (D-049).
+  - (d) **Boundaries.** Items are taken in that order; a part closes before the next item would make its canonical
+    encoding exceed `MAX_PART_BYTES` = 8 MiB. A part always holds at least one item, so an item larger than the ceiling
+    forms a part of its own (it still has to fit `MAX_BLOB_BYTES`). The ceiling is derived in
+    `review/step7/d053/part_ceiling.py` from the largest legal item, `MAX_BLOB_BYTES`, the envelope, the measured parse
+    and validation memory, the record count and measured commit and open time; it is a constant of journal format 3.
+  - (e) **Checks** on append and on open (Investigation Memory): the batch exists, is intact and schema-valid
+    (`EVIDENCE_BATCH_INVALID`, M-3); every id follows D-051 (`EVIDENCE_ID_INVALID`, CH-1) and is new (M-14); every
+    item's observation is recorded (M-10) and every reference is defined earlier in the batch, earlier in the series
+    or by committed evidence (M-4); `evidence_count` equals the item
+    count. At `step_succeeded` the series is complete and its items are in the canonical order with the canonical
+    boundaries, recomputed from the items' ids, references and sizes (`BATCH_NOT_CANONICAL`). So a journal can hold
+    only the one canonical representation of its content.
+  - (f) **Commit.** Batches of an attempt are authoritative only when that attempt has `step_succeeded` (M-6). The
+    batches of a failed or interrupted attempt stay as harmless orphans (their blobs may exist; nothing refers to them
+    as committed). The fold keeps an index from each committed evidence id to its batch and position; it is rebuilt from
+    the journal and the blobs on every open and is never a second store.
 
 ## 9. Investigation Workflow Controller
 
@@ -883,19 +926,38 @@ ones.
 
 ## 11. Report and projections
 
-### 11.1 Stage 04 report (`urn:citerift:schema:investigation:v1:report`, written in step 5 of the plan)
+### 11.1 Stage 04 report (`urn:citerift:schema:investigation:v1:report` 3.0.0, owner decision D-054)
 
-`{schema, schema_version, investigation_key, investigation_id, root, terminal_state, outcome, claims[],
-observations[], evidence[], article_summary, limitations[], identities}`. Each entry of `claims[]` holds the claim, its
-decision, its question (or null), its unit anchor and, for a not-found claim, the checked sources; decisions and
-questions are therefore embedded per claim instead of in separate arrays. Claims are ordered by unit source byte
-offset, then candidate key order. Each claim carries its rule id, reasons and evidence chain (section 12). The report
+The report is a **manifest graph**. The blob that `report_recorded` names is a small versioned manifest:
+`{schema, schema_version, investigation_key, investigation_id, root, terminal_state, outcome, article_summary,
+limitations[], identities, components}`. `article_summary` holds `claims_by_class`, `open_questions` and the
+`snapshot_id`. `components` holds, for each large collection, its ordering rule, its total count and the ordered list
+of its chunks `{chunk, count}`:
+
+| Component | Content | Order (`order`) |
+|---|---|---|
+| `claims` | one entry per current committed claim: the claim, its decision, its open question (or null), its unit anchor and, for a not-found claim, the checked sources | unit source byte offset, then candidate key order (canonical encoding of the candidate's keys), then claim id (`unit-byte-start/candidate-keys/claim-id/1`) |
+| `observations` | `{obs_kind, blob}` of every committed observation | commit order (`commit/1`) |
+| `positive_works` | per work with a positive claim: the work, its classes and claim ids | canonical encoding of the work (`work/1`) |
+| `evidence` | the committed evidence batches `{batch, count}`; the report does not copy evidence | commit order (`commit/evidence-batch/1`) |
+
+A chunk is a blob `urn:citerift:schema:investigation:v1:report-chunk` 1.0.0 `{schema, schema_version, part, items}`,
+cut by the boundary rule of S-8.8 (d). The evidence of the report is the committed batches themselves, named by digest:
+no evidence item is duplicated (no semantic need was found; `review/step7/d053/D053_D054_CLOSURE.md`). Decisions and
+questions are embedded per claim. Each claim carries its rule id, reasons and evidence chain (section 12). The report
 is a pure function of the committed fold at ASSEMBLE. `terminal_state` is the lifecycle state that the investigation
 enters if VERIFY passes (`NEEDS_RESOLUTION` when a question is open, otherwise `COMPLETED`, S-9.7); it is computed from
 the fold, and a report is exported only after VERIFY passed, so an exported report never states a state the
 investigation did not reach. `FAILED`, `STALE` and `CORRUPT` investigations export no report. The report does not
 hold the content digest `C(J)`, which covers the report and is recorded by VERIFY in `verification_recorded` (MM
 section 7.3).
+
+The durable report is the whole graph. On `report_recorded` and on every open, Investigation Memory proves the graph
+on its own (every chunk present, intact, schema-valid, of its part, listed once, counted correctly, cut canonically,
+in canonical order; the summary counts and positive works agree with the claims) and against the committed fold (the
+current committed claims with their decisions and open questions, the committed observations in commit order, the
+committed evidence batches in commit order, the investigation and the bound root). Any failure is `REPORT_INVALID`
+(M-3): a missing or corrupt chunk is corruption, never an empty part.
 
 ### 11.2 v1 projections
 

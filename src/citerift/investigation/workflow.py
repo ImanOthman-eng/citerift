@@ -55,20 +55,24 @@ EXTRACT_RETRYABLE = frozenset(
 )
 
 # SPEC 8.3, 9.1 and the record schema: the content kinds each step writes. DETECT's decisions and questions are
-# derived by the controller from its claims (SPEC 7.6, 7.7); an adapter supplies evidence and claims only.
+# derived by the controller from its claims (SPEC 7.6, 7.7). Evidence is committed in batches (D-053, SPEC 8.8).
 CONTENT_KINDS: dict[str, frozenset[str]] = {
     "VALIDATE": frozenset(),
     "ACQUIRE": frozenset({"observation_recorded"}),
     "EXTRACT": frozenset({"observation_recorded"}),
-    "NORMALIZE": frozenset({"evidence_recorded"}),
+    "NORMALIZE": frozenset({"evidence_batch_recorded"}),
     "LOOKUP": frozenset({"observation_recorded"}),
-    "DETECT": frozenset({"evidence_recorded", "claim_recorded", "decision_recorded", "question_opened"}),
+    "DETECT": frozenset({"evidence_batch_recorded", "claim_recorded", "decision_recorded", "question_opened"}),
     "ASSEMBLE": frozenset({"report_recorded"}),
     "VERIFY": frozenset({"verification_recorded"}),
 }
+# What an adapter supplies (adapters.ContentRecord kinds). ``EVIDENCE`` is one evidence item; the controller orders
+# the attempt's items, cuts them into batches and commits each batch (D-053). An adapter never supplies a batch.
+EVIDENCE = "evidence"
 ADAPTER_CONTENT_KINDS: dict[str, frozenset[str]] = {
     **CONTENT_KINDS,
-    "DETECT": frozenset({"evidence_recorded", "claim_recorded"}),
+    "NORMALIZE": frozenset({EVIDENCE}),
+    "DETECT": frozenset({EVIDENCE, "claim_recorded"}),
 }
 
 # SPEC 7.2 and 7.6.
@@ -312,23 +316,12 @@ def _guard_success(rec: Mapping[str, Any], f: Folder, step: str, seq: int) -> No
             raise _refuse("W-7", "VERIFY succeeds only with one passed verification", seq)
         if ver[0]["content_digest"] != f.content_digest():
             raise _refuse("W-7", "the verified content digest is not C(J)", seq)
-    problem = evidence_problem(content)
-    if problem:
-        raise _refuse("CH-1", problem, seq)
+    # CH-1 (evidence ids are H(observation, pointer, kind)) is checked by Investigation Memory for every item of
+    # every evidence batch, on append and on open (D-053).
     if step == "DETECT":
         problem = detect_problem(content)
         if problem:
             raise _refuse("W-8", problem, seq)
-
-
-def evidence_problem(content: list[dict[str, Any]]) -> str:
-    """SPEC 4.3, CH-1: every evidence id is ``H(observation, pointer, kind)`` (D-051); ``""`` when it holds."""
-    for r in content:
-        if r["kind"] == "evidence_recorded":
-            p = r["payload"]
-            if p["evidence_id"] != ids.evidence_id(p["observation"], p["pointer"], p["kind"]):
-                return f"evidence {p['evidence_id']} is not H(observation, pointer, kind)"
-    return ""
 
 
 def detect_problem(content: list[dict[str, Any]]) -> str:

@@ -33,7 +33,7 @@ from controller_support import (
 )
 from memory_support import root_object
 
-from citerift.investigation import workflow
+from citerift.investigation import batches, workflow
 from citerift.investigation.adapters import Deferred, Failed
 from citerift.investigation.controller import WorkflowController, run_investigation
 from citerift.investigation.fold import STEPS, Folder
@@ -305,6 +305,17 @@ def _forge(
                 mem.put_blob(payload)
                 continue
             mem.append(kind, payload, step=step, attempt=attempt)
+
+
+def _batched(
+    items: list[dict[str, Any]], step: str, attempt: int
+) -> list[tuple[str, dict[str, Any], str | None, int | None]]:
+    """Forge entries that commit ``items`` (no references outside them) as canonical evidence batches (D-053)."""
+    evidence = batches.evidence_batches(items, lambda ref: False)
+    digests = [digest(b) for b in evidence]
+    out: list[tuple[str, dict[str, Any], str | None, int | None]] = [("blob", b, None, None) for b in evidence]
+    out += [("evidence_batch_recorded", r, step, attempt) for r in batches.batch_records(digests, evidence)]
+    return out
 
 
 def _assert_corrupt(root: Path, key: str, clock: StepClock, rule: str) -> None:
@@ -615,7 +626,7 @@ def test_w8_conflict_claim_without_its_question_is_corrupt(tmp_path: Path) -> No
             ("blob", out, None, None),
             ("blob", evidence_set, None, None),
             ("step_started", {"step_key": k}, "DETECT", 1),
-            *[("evidence_recorded", e, "DETECT", 1) for e in evs],
+            *_batched(evs, "DETECT", 1),
             ("claim_recorded", c, "DETECT", 1),
             ("decision_recorded", decision, "DETECT", 1),
             ("step_succeeded", {"step_key": k, "outputs": [digest(out)], "root": None}, "DETECT", 1),

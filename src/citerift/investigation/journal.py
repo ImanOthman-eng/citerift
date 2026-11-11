@@ -46,7 +46,7 @@ from citerift.investigation.ids import record_digest
 
 JOURNAL = "journal.jsonl"
 TORN_PREFIX = "journal.jsonl.torn-"
-JOURNAL_FORMAT = 2  # the record field ``v`` (S-8.7); format 2 since the Step 7 closure (D-047 to D-051)
+JOURNAL_FORMAT = 3  # the record field ``v`` (S-8.7): 2 since D-047 to D-051, 3 since D-053/D-054 (evidence batches)
 MAX_RECORD_BYTES = 1024 * 1024
 MAX_JOURNAL_BYTES = 512 * 1024 * 1024
 _DECODER = json.JSONDecoder()  # structure only: is the final fragment one complete JSON value? (D44-R2)

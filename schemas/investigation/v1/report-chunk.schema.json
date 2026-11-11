@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:report-chunk",
+  "title": "CITERIFT Stage 04 report chunk, version 1",
+  "description": "Owner decision D-054: a content-addressed, immutable part of one collection of a report manifest (urn:citerift:schema:investigation:v1:report, version 3). The manifest lists the chunks of each collection in order with their item counts; the items of a collection are cut into chunks by the byte ceiling of SPEC 8.8 in the order the manifest names. A missing, corrupt, repeated or miscounted chunk is corruption, never an empty part.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "part",
+    "items"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:report-chunk"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "part": {
+      "enum": [
+        "claims",
+        "observations",
+        "positive_works"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "part": {
+            "const": "claims"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:report#/$defs/claim_entry"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "part": {
+            "const": "observations"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:report#/$defs/observation_entry"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "part": {
+            "const": "positive_works"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:report#/$defs/positive_work"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

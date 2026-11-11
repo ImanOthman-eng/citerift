@@ -22,6 +22,7 @@ from jsonschema import Draft202012Validator
 
 from citerift.contracts.formats import FORMAT_CHECKER
 from citerift.contracts.validate import ContractSet, load_contracts
+from citerift.investigation import report as report_mod
 
 pytestmark = pytest.mark.contracts
 
@@ -31,6 +32,7 @@ SIM = ROOT / "simulations" / "stage04"
 P = "urn:citerift:schema:investigation:v1:"
 REQUEST, RECORD, CLAIM, REPORT, COMMON = P + "request", P + "journal-record", P + "claim", P + "report", P + "common"
 EVIDENCE_SET, PROJECTION_SET = P + "evidence-set", P + "projection-set"
+EVIDENCE_BATCH, REPORT_CHUNK = P + "evidence-batch", P + "report-chunk"
 
 # Digest of each accepted upstream schema directory; Step 5 must not change them (owner exit criterion 8).
 ACCEPTED_DIRS = ("contracts", "wiki", "retraction")
@@ -51,7 +53,59 @@ def _validator(schema_id: str) -> Draft202012Validator:
 
 
 def errors(instance: Any, schema_id: str) -> list[str]:
+    if schema_id == REPORT and isinstance(instance, dict) and "components" not in instance:
+        return report_errors(instance)
     return sorted(f"{list(e.absolute_path)}: {e.message[:200]}" for e in _validator(schema_id).iter_errors(instance))
+
+
+def split(logical: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    """The D-054 manifest graph of a logical report (the version 2 shape the cases below are written in): the claims,
+    observations and positive works in chunks in the order given (not re-sorted, so an order defect stays), the
+    evidence in one batch, every other field copied. Returns the manifest and the blobs by digest."""
+    blobs: dict[str, Any] = {}
+
+    def publish(value: Any) -> str:
+        d = hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode())
+        blobs[d.hexdigest()] = value
+        return d.hexdigest()
+
+    rest = {k: v for k, v in logical.items() if k not in ("claims", "observations", "evidence", "article_summary")}
+    summary = {k: v for k, v in logical.get("article_summary", {}).items() if k != "positive_works"}
+    claims = logical.get("claims", [])
+    summary["open_questions"] = sum(1 for e in claims if isinstance(e, dict) and e.get("question") is not None)
+    collections = {
+        "claims": claims,
+        "observations": logical.get("observations", []),
+        "positive_works": logical.get("article_summary", {}).get("positive_works", []),
+    }
+    components: dict[str, Any] = {}
+    for part, items in collections.items():
+        listed = [{"chunk": publish(c), "count": len(c["items"])} for c in report_mod.chunks(part, items)]
+        components[part] = {"order": report_mod.ORDERS[part], "count": len(items), "chunks": listed}
+    ev = logical.get("evidence", [])
+    batch = [{"batch": publish(evidence_batch(ev)), "count": len(ev)}] if ev else []
+    components["evidence"] = {"order": report_mod.EVIDENCE_ORDER, "count": len(ev), "batches": batch}
+    manifest = {**rest, "article_summary": summary, "components": components}
+    return manifest, blobs
+
+
+def report_errors(logical: dict[str, Any]) -> list[str]:
+    """A logical report is valid when its manifest graph is: the manifest schema, every chunk and the evidence batch
+    schema, and every graph check of ``report.graph_problem``."""
+    manifest, blobs = split(logical)
+    found = errors(manifest, REPORT)
+    for b in manifest["components"]["evidence"]["batches"]:
+        found += errors(blobs[b["batch"]], EVIDENCE_BATCH)
+    if found:
+        return found
+
+    def read(digest: str) -> Any:
+        if digest not in blobs:
+            raise ValueError(f"blob {digest} is missing")
+        return blobs[digest]
+
+    problem = report_mod.graph_problem(manifest, read)
+    return [problem] if problem else []
 
 
 def ok(instance: Any, schema_id: str) -> None:
@@ -315,7 +369,7 @@ def report(classes: list[str], live: bool = False, extraction_status: str = "com
     positives = [e["claim"]["claim_id"] for e in entries if e["claim"]["class"] in CLASSES[:4]]
     return {
         "schema": REPORT,
-        "schema_version": "2.0.0",
+        "schema_version": "3.0.0",  # the logical shape of the version 3 report; split() makes its manifest (D-054)
         "investigation_key": h("key"),
         "investigation_id": "0b1e2c3d-4e5f-8a6b-9c7d-0e1f2a3b4c5d",
         "root": root(),
@@ -336,7 +390,13 @@ def report(classes: list[str], live: bool = False, extraction_status: str = "com
         "article_summary": {
             "claims_by_class": counts,
             "positive_works": (
-                [{"work": {"doi": "10.1038/nature12968"}, "classes": ["RETRACTED_WORK_CITED"], "claim_ids": positives}]
+                [
+                    {
+                        "work": {"doi": "10.1038/nature12968"},
+                        "classes": sorted({c for c in classes if c in CLASSES[:4]}),
+                        "claim_ids": sorted(positives),
+                    }
+                ]
                 if positives
                 else []
             ),
@@ -347,10 +407,16 @@ def report(classes: list[str], live: bool = False, extraction_status: str = "com
     }
 
 
+def evidence_batch(items: list[dict[str, Any]]) -> dict[str, Any]:
+    """A D-053 evidence batch (SPEC 8.8) of ``items``."""
+    return {"schema": EVIDENCE_BATCH, "schema_version": "1.0.0", "order": "dependency-topological/evidence-id/1",
+            "items": items}  # fmt: skip
+
+
 def record(kind: str, payload: dict[str, Any], *, step: str | None, attempt: int | None, root_id: str | None,
            seq: int = 5) -> dict[str, Any]:  # fmt: skip
     return {
-        "v": 2,
+        "v": 3,
         "seq": 0 if kind == "investigation_created" else seq,
         "prev": h("prev"),
         "kind": kind,
@@ -418,7 +484,7 @@ RECORD_KINDS = [
     "step_interrupted",
     "stale_detected",
     "observation_recorded",
-    "evidence_recorded",
+    "evidence_batch_recorded",
     "claim_recorded",
     "decision_recorded",
     "question_opened",
@@ -435,12 +501,16 @@ RECORD_KINDS = [
 def test_schemas_are_valid_2020_12_and_versioned() -> None:
     cs = contracts()
     mine = {sid: s for sid, s in cs.schemas.items() if sid.startswith(P)}
-    assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT, EVIDENCE_SET, PROJECTION_SET}
+    assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT, EVIDENCE_SET, PROJECTION_SET, EVIDENCE_BATCH,
+                         REPORT_CHUNK}  # fmt: skip
     assert [p for p in cs.meta_problems() if p.path.startswith(P)] == []
     for sid, s in mine.items():
         assert s["$schema"] == "https://json-schema.org/draft/2020-12/schema", sid
-        # Step 7 closure (D-047, D-048, D-051): the five Step 5 schemas are version 2; the two sets are new.
-        assert s["x-citerift-version"] == ("1.0.0" if sid in (EVIDENCE_SET, PROJECTION_SET) else "2.0.0"), sid
+        # Step 7 closure (D-047, D-048, D-051): the Step 5 schemas are version 2 and the two sets are new; D-053 makes
+        # the journal record format 3 and adds the evidence batch.
+        expected = {RECORD: "3.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
+                    EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0"}  # fmt: skip
+        assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 
 
@@ -547,7 +617,10 @@ def test_unknown_subject_type_rejected() -> None:
 @pytest.mark.parametrize("schema_id", [REQUEST, REPORT])
 def test_unknown_schema_version_rejected(schema_id: str) -> None:
     doc = live_request() if schema_id == REQUEST else report(["RETRACTED_WORK_CITED"])
-    for version in ("1.0.0", "2.0.1", "3.0.0", "2.0", 2):
+    current = "3.0.0" if schema_id == REPORT else "2.0.0"  # D-054 made the report version 3
+    for version in ("1.0.0", "2.0.0", "2.0.1", "3.0.0", "3.0.1", "2.0", 2):
+        if version == current:
+            continue
         d = copy.deepcopy(doc)
         d["schema_version"] = version
         bad(d, schema_id)
@@ -558,7 +631,7 @@ def test_unknown_schema_version_rejected(schema_id: str) -> None:
 
 @pytest.mark.negative
 def test_unknown_journal_format_rejected() -> None:
-    for v in (0, 1, 3, "2"):
+    for v in (0, 1, 2, 4, "3"):
         r = created()
         r["v"] = v
         bad(r, RECORD)
@@ -729,16 +802,9 @@ def test_one_valid_record_of_every_kind() -> None:
             attempt=1,
             root_id=rid,
         ),
-        "evidence_recorded": record(
-            "evidence_recorded",
-            {
-                "evidence_id": h("e"),
-                "observation": h("o"),
-                "pointer": "/units/0",
-                "kind": "unit",
-                "refs": [],
-                "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
-            },
+        "evidence_batch_recorded": record(
+            "evidence_batch_recorded",
+            {"batch": h("b"), "batch_index": 0, "batch_total": 1, "evidence_count": 1},
             step="NORMALIZE",
             attempt=1,
             root_id=rid,
@@ -821,7 +887,7 @@ def test_unbound_root_allowed_only_before_acquire_commit() -> None:
     "kind",
     [
         "claim_recorded",
-        "evidence_recorded",
+        "evidence_batch_recorded",
         "decision_recorded",
         "question_opened",
         "report_recorded",
@@ -831,16 +897,9 @@ def test_unbound_root_allowed_only_before_acquire_commit() -> None:
 def test_scientific_content_without_bound_root_rejected(kind: str) -> None:
     payloads: dict[str, tuple[str, dict[str, Any]]] = {
         "claim_recorded": ("DETECT", claim()),
-        "evidence_recorded": (
+        "evidence_batch_recorded": (
             "NORMALIZE",
-            {
-                "evidence_id": h("e"),
-                "observation": h("o"),
-                "pointer": "/units/0",
-                "kind": "unit",
-                "refs": [],
-                "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
-            },
+            {"batch": h("b"), "batch_index": 0, "batch_total": 1, "evidence_count": 1},
         ),
         "decision_recorded": ("DETECT", {"decision_id": h("d"), "claim_id": h("c"), "disposition": "REPORT_FINDING"}),
         "question_opened": ("DETECT", {"question_id": h("q"), "claim_id": h("c"), "kind": "identity_conflict"}),
@@ -1235,12 +1294,11 @@ def test_d043_unit_evidence_carries_the_stage04_span_hash() -> None:
         "refs": [],
         "value": {"source_artifact": h("src"), "unit_span_sha256": h("span")},
     }
-    ok(record("evidence_recorded", payload, step="NORMALIZE", attempt=1, root_id=h("root")), RECORD)
+    ok(evidence_batch([payload]), EVIDENCE_BATCH)
     for value in (None, {"unit_span_sha256": h("span")}, {"source_artifact": h("src")},
                   {"source_artifact": h("src"), "unit_span_sha256": "0" * 63},
                   {"source_artifact": h("src"), "unit_span_sha256": h("span"), "raw_sha256": h("span")}):  # fmt: skip
-        bad(record("evidence_recorded", {**payload, "value": value}, step="NORMALIZE", attempt=1, root_id=h("root")),
-            RECORD)  # fmt: skip
+        bad(evidence_batch([{**payload, "value": value}]), EVIDENCE_BATCH)
     rep = report(["RETRACTED_WORK_CITED"])
     ok(rep, REPORT)
     r = copy.deepcopy(rep)

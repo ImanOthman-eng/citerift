@@ -32,6 +32,7 @@ class StepRequest:
     content_digest: str  # C(J) of the committed content (MM 7.3), which VERIFY records
     read_blob: Callable[[str], Any]  # the parsed JSON of a published blob
     now: datetime
+    investigation: Mapping[str, str]  # investigation_key and investigation_id, which the report names (D-054)
 
 
 @dataclass(frozen=True)

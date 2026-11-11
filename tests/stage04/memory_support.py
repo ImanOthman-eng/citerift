@@ -14,7 +14,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from citerift.investigation import ids, sets
+from citerift.investigation import batches, ids, sets
 from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
@@ -123,7 +123,6 @@ def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str
     if step == "NORMALIZE":
         ext = mem.put_blob({"units": [{"id": "un-00001"}], "ratio": 0.5})  # same bytes: idempotent
         unit = _evidence("unit", ext, "/units/0", [], {"source_artifact": h("src"), "unit_span_sha256": h("span")})
-        mem.append("evidence_recorded", unit, step=step, attempt=attempt)
         occ = _evidence(
             "identifier_occurrence",
             ext,
@@ -131,7 +130,7 @@ def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str
             [unit["evidence_id"]],
             {"status": "CONFIRMED", "key": {"scheme": "doi", "normalized": "10.1000/xyz"}},
         )
-        mem.append("evidence_recorded", occ, step=step, attempt=attempt)
+        append_evidence(mem, [unit, occ], step, attempt)
         return [mem.put_blob({"normalized": [unit["evidence_id"], occ["evidence_id"]]})]
     if step == "LOOKUP":
         blob = mem.put_blob({"lookup": "SYNTHETIC", "state": "no_record"})
@@ -143,7 +142,7 @@ def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str
     # DETECT: a not-found claim with its decision.
     # Evidence over the committed LOOKUP observation (the same bytes give the same digest), then the claim.
     ev = _evidence("lookup_result", mem.put_blob({"lookup": "SYNTHETIC", "state": "no_record"}), "", [], None)
-    mem.append("evidence_recorded", ev, step=step, attempt=attempt)
+    append_evidence(mem, [ev], step, attempt)
     claim = not_found_claim(mem, ev["evidence_id"])
     mem.append("claim_recorded", claim, step=step, attempt=attempt)
     decision = {"decision_id": h("decision"), "claim_id": claim["claim_id"], "disposition": "REPORT_NOT_FOUND"}
@@ -156,9 +155,21 @@ def _obs(kind: str, blob: str, operation: str) -> dict[str, Any]:
     return {"obs_kind": kind, "blob": blob, "source_ref": {"engine": engine, "operation": operation, "locator": None}}
 
 
+def append_evidence(
+    mem: InvestigationMemory, items: list[dict[str, Any]], step: str, attempt: int
+) -> list[dict[str, Any]]:
+    """Commit evidence items as the controller does (D-053): canonical batches, published, then one record each."""
+    found = batches.evidence_batches(items, lambda ref: mem.view.evidence_batch(ref) is not None)
+    digests = [mem.put_blob(b) for b in found]
+    return [
+        mem.append("evidence_batch_recorded", p, step=step, attempt=attempt)
+        for p in batches.batch_records(digests, found)
+    ]
+
+
 def _evidence(kind: str, obs: str, pointer: str, refs: list[str], value: Any) -> dict[str, Any]:
     return {
-        "evidence_id": ids.record_digest({"o": obs, "p": pointer, "k": kind}),
+        "evidence_id": ids.evidence_id(obs, pointer, kind),
         "observation": obs,
         "pointer": pointer,
         "kind": kind,

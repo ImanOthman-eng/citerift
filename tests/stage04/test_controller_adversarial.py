@@ -31,6 +31,7 @@ from memory_support import root_object
 
 from citerift.investigation import ids, workflow
 from citerift.investigation.adapters import ContentRecord, Deferred, Failed, StepRequest, StepResult, Succeeded
+from citerift.investigation.canonical import canon
 from citerift.investigation.controller import ADAPTER_INCONSISTENT, DEFECT_CODE, StorageExhausted, run_investigation
 from citerift.investigation.fold import STEPS
 
@@ -128,7 +129,7 @@ BAD: list[Any] = [
     ),
     pytest.param(
         "NORMALIZE",
-        lambda r: Succeeded(records=(ContentRecord("evidence_recorded", []),)),
+        lambda r: Succeeded(records=(ContentRecord("evidence", []),)),
         "ADAPTER_INCONSISTENT",
         id="payload-not-an-object",
     ),  # type: ignore[arg-type]
@@ -181,7 +182,7 @@ BAD: list[Any] = [
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(
-            records=(ContentRecord("evidence_recorded", {**r.records[1].payload}),), blobs=r.blobs, outputs=r.outputs
+            records=(ContentRecord("evidence", {**r.records[1].payload}),), blobs=r.blobs, outputs=r.outputs
         ),
         "ADAPTER_INCONSISTENT",
         id="dangling-evidence-reference",
@@ -412,24 +413,49 @@ def test_copy_of_request_is_independent(tmp_path: Path) -> None:
 # Size limits are storage failures, not adapter defects (Step 7 resource-bound review) --------------------------------
 
 
-@pytest.mark.parametrize("step", ["NORMALIZE", "DETECT"])
+@pytest.mark.negative
 def test_record_over_the_size_limit_fails_the_step_with_storage_error(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, step: str
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     from citerift.investigation import memory as memory_module
 
     def big(req: StepRequest) -> StepResult:
         r = ok_result(req, (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),))
         assert isinstance(r, Succeeded)
-        first = r.records[0]
-        pointer = "/" + "x" * 4095  # the longest JSON pointer the schema allows
-        payload = {**first.payload, "pointer": pointer}
-        monkeypatch.setattr(memory_module, "MAX_RECORD_BYTES", 4000)  # smaller than this record, larger than the rest
-        return Succeeded(records=(ContentRecord(first.kind, payload), *r.records[1:]), blobs=r.blobs, outputs=r.outputs)
+        claim = next(c for c in r.records if c.kind == "claim_recorded")
+        size = len(canon(claim.payload))
+        # Smaller than the claim record, larger than every other record of the attempt (batch records are compact).
+        monkeypatch.setattr(memory_module, "MAX_RECORD_BYTES", size + 100)
+        return r
 
-    root, key, _, st = _run(tmp_path, {(step, 1): big})
+    root, key, _, st = _run(tmp_path, {("DETECT", 1): big})
     assert st.lifecycle == "FAILED"
-    assert _failures(root, key) == [(step, "STORAGE_ERROR", "RECORD_TOO_LARGE")]
+    assert _failures(root, key) == [("DETECT", "STORAGE_ERROR", "RECORD_TOO_LARGE")]
+
+
+@pytest.mark.regression
+def test_evidence_item_size_does_not_reach_the_journal(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """D-053: an evidence item is stored in its batch blob; the record that commits it has the same size whatever the
+    item's size. A 4 KiB pointer (the longest the schema allows) commits under a 4,000-byte record limit."""
+    from citerift.investigation import memory as memory_module
+
+    def big(req: StepRequest) -> StepResult:
+        r = ok_result(req, (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),))
+        assert isinstance(r, Succeeded)
+        unit = dict(r.records[0].payload)
+        pointer = "/" + "x" * 4095
+        unit.update(pointer=pointer, evidence_id=ids.evidence_id(unit["observation"], pointer, unit["kind"]))
+        occ = dict(r.records[1].payload)
+        occ["refs"] = [unit["evidence_id"]]
+        occ["evidence_id"] = ids.evidence_id(occ["observation"], occ["pointer"], occ["kind"])
+        monkeypatch.setattr(memory_module, "MAX_RECORD_BYTES", 4000)
+        recs = (ContentRecord("evidence", unit), ContentRecord("evidence", occ))
+        return Succeeded(records=recs, blobs=r.blobs, outputs=r.outputs)
+
+    root, key, _, st = _run(tmp_path, {("NORMALIZE", 1): big})
+    assert st.lifecycle == "COMPLETED"
+    recs = [r for r in journal(root, key) if r["kind"] == "evidence_batch_recorded" and r["step"] == "NORMALIZE"]
+    assert len(recs) == 1 and recs[0]["payload"]["evidence_count"] == 2 and len(canon(recs[0])) < 1024
 
 
 def test_blob_over_the_size_limit_fails_the_step_with_storage_error(
@@ -449,21 +475,14 @@ def test_blob_over_the_size_limit_fails_the_step_with_storage_error(
 
 
 def _fill_journal(room: int, monkeypatch: pytest.MonkeyPatch, where: list[Path]) -> Any:
-    """A NORMALIZE adapter that leaves ``room`` bytes in the journal and then returns a 4.7 kB evidence record."""
+    """A DETECT adapter that leaves ``room`` bytes in the journal and returns its ordinary result: an evidence batch
+    record (about 480 bytes), a claim record (about 940 bytes) and the derived decision."""
     from citerift.investigation import memory as memory_module
 
     def full(req: StepRequest) -> StepResult:
         r = ok_result(req, (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),))
-        assert isinstance(r, Succeeded)
         monkeypatch.setattr(memory_module, "MAX_JOURNAL_BYTES", where[0].stat().st_size + room)
-        pointer = "/" + "x" * 4095
-        first = r.records[0]
-        payload = {
-            **first.payload,
-            "pointer": pointer,
-            "evidence_id": ids.evidence_id(first.payload["observation"], pointer, first.payload["kind"]),
-        }
-        return Succeeded(records=(ContentRecord(first.kind, payload), *r.records[1:]), blobs=r.blobs, outputs=r.outputs)
+        return r
 
     return full
 
@@ -476,12 +495,12 @@ def test_journal_limit_with_room_for_the_failure_fails_the_step_with_storage_err
     st = run_once(
         root,
         key,
-        Plan({("NORMALIZE", 1): _fill_journal(2000, monkeypatch, [root / key / "journal.jsonl"])}),
+        Plan({("DETECT", 1): _fill_journal(1200, monkeypatch, [root / key / "journal.jsonl"])}),
         Env(),
         clock,
     )
     assert st.lifecycle == "FAILED"
-    assert _failures(root, key) == [("NORMALIZE", "STORAGE_ERROR", "JOURNAL_TOO_LARGE")]
+    assert _failures(root, key) == [("DETECT", "STORAGE_ERROR", "JOURNAL_TOO_LARGE")]
 
 
 def test_journal_limit_without_room_for_the_failure_stops_and_writes_nothing(
@@ -496,10 +515,10 @@ def test_journal_limit_without_room_for_the_failure_stops_and_writes_nothing(
     root, key = create(tmp_path, clock=clock)
     path = root / key / "journal.jsonl"
     with pytest.raises(StorageExhausted) as info:
-        run_once(root, key, Plan({("NORMALIZE", 1): _fill_journal(300, monkeypatch, [path])}), Env(), clock)
-    assert (info.value.kind, info.value.step, info.value.limit) == ("step_failed", "NORMALIZE", "JOURNAL_TOO_LARGE")
+        run_once(root, key, Plan({("DETECT", 1): _fill_journal(300, monkeypatch, [path])}), Env(), clock)
+    assert (info.value.kind, info.value.step, info.value.limit) == ("step_failed", "DETECT", "JOURNAL_TOO_LARGE")
     before = raw_records(root, key)
-    assert (before[-1]["kind"], before[-1]["step"], before[-1]["attempt"]) == ("step_started", "NORMALIZE", 1)
+    assert (before[-1]["kind"], before[-1]["step"], before[-1]["attempt"]) == ("step_started", "DETECT", 1)
     with pytest.raises(StorageExhausted) as again:
         run_once(root, key, Plan(), Env(), clock)
     assert again.value.kind == "step_interrupted"

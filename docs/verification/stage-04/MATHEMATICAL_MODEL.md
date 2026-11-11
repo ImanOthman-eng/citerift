@@ -436,6 +436,41 @@ produce different bytes (its `capture.json` records fetch times), hence another 
 injection of gate 04-E therefore uses a retained bundle or a deterministic transport and clock for crash points
 before the ACQUIRE commit (review finding F-09).
 
+### 7.4 Evidence batches and the report graph (owner decisions D-053, D-054)
+
+- Domain: the evidence items `X` that one attempt produces, each `x = ⟨id, refs, …⟩` with canonical size
+  `s(x) = |canon(x)|`; the set `K` of committed evidence ids; the ceiling `c = MAX_PART_BYTES` (SPEC 8.8 (d)); the
+  envelope `e` = the canonical size of a part with no items.
+- Graph: `G(X) = (X, {(y, x) : y.id ∈ x.refs, y ∈ X})`. `X` is **admissible** when ids are unique, every
+  `r ∈ x.refs` is in `ids(X) ∪ K`, and `G(X)` is acyclic.
+- Order `π(X)`: Kahn's algorithm on `G(X)` with the ready set a min-heap on `id`. Rule: repeatedly remove the ready
+  item of smallest id. `π` is defined iff `X` is admissible; otherwise the attempt is refused (`DUPLICATE_ID`,
+  `DANGLING_REFERENCE`, `DEPENDENCY_CYCLE`).
+- Boundaries `β(s₁ … sₙ)`: greedy; the current part has size `σ = e + Σ sᵢ + (k − 1)` for its `k` items; item `i`
+  joins it iff `k = 0` or `σ + sᵢ + 1 ≤ c`; otherwise the part closes and item `i` opens the next one.
+- Batches `B(X) = ⟨batch(π(X)[β-part j]) : j⟩`, each a content-addressed blob; the journal holds one record per batch
+  `⟨H(batch), j, |B(X)|, |items|⟩`.
+- Invariants. **EB-1** (determinism) `B(X)` depends on `X` as a set, never on production order: `π` is the unique
+  lexicographically-least topological order and `β` is a function of the sizes in that order. **EB-2** (references
+  first) for every `x` and `y.id ∈ x.refs` with `y ∈ X`, `y` precedes `x` in `π(X)`, hence in an earlier or the same
+  batch. **EB-3** (one item always fits) every part is non-empty; a part with `s(x) + e > c` holds `x` alone and is
+  bounded by `MAX_BLOB_BYTES` only. **EB-4** (count) every closed part has `σ > c − E − 1` with `E = max s(x)`, and
+  each item adds at most `2 s(x)` to `σ − e`, so `|B(X)| ≤ ⌈2 Σ s(x) / (c − E − e)⌉ + 1`. **EB-5** (uniqueness)
+  Memory recomputes `π` and `β` from the committed `⟨id, refs, s⟩` at `step_succeeded` and refuses any other
+  representation (`BATCH_NOT_CANONICAL`), so equal content has exactly one journal representation.
+- Content digest. `content(j)` of a batch record is `⟨kind, step, ⟨H(batch), j, n, m⟩⟩`; by EB-1 and the
+  content-addressing of `H`, equal item sets give equal batch records, so CD-C1 and Proposition P6 hold unchanged. A
+  format-3 `C(J)` differs from the format-2 `C(J)` of the same investigation because the representation differs; the
+  logical content (the item set, claims, decisions, questions and observations) is equal
+  (`review/step7/d053/equivalence.py`).
+- Report graph. The manifest `M` names chunks `⟨k₁ … k_m⟩` per part with counts; the items of a part are the
+  concatenation of its chunks' items, which must be in the part's canonical order (strictly increasing key, so
+  without repetition) and cut by `β`. `M` is **sound** for a fold `Σ` when the claims part equals the current
+  committed claims of `Σ` with their decisions and open questions, the observations part equals the committed
+  observations in commit order, and the evidence part equals the committed batch records in commit order. Memory
+  checks soundness on `report_recorded` and on open; an unsound or incomplete graph is `REPORT_INVALID`.
+- Failure: a missing or corrupt batch or chunk is a violation (`CORRUPT` on open), never an empty part.
+
 ## 8. Workflow transition function
 
 - Domain: pairs `(Σ, j)` of a fold state and a proposed record.

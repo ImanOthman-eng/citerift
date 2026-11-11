@@ -1166,3 +1166,45 @@ journal prefix that the checkpoint covers. It is not called a signature, authent
 never written into the same journal or memory directory and is not added to the ASSEMBLE report; it is delivered on
 stdout or to a user-selected file outside the memory root, and the verifier compares a supplied checkpoint with the
 journal. No cryptographic dependency is added. R6-12 stays a recorded limitation.
+
+## D-053 — Evidence batches: the journal commits evidence in content-addressed batches
+- Status: accepted
+- Topic: stage-04-evidence-batches
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/d053/D053_D054_CLOSURE.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPT7kaAY3dV5Ewo8KzF3bTe8`, 2026-11-11T10:31:40Z), choosing
+the evidence-batch answer to OD-J of the Step 7 closure. No article-size cap is imposed to make the journal fit, and
+Step 8 is not started. The journal stays the audit, commit and state log. Evidence is committed in deterministic,
+content-addressed, immutable evidence-batch blobs, each named by one `evidence_batch_recorded` record with a compact
+closed payload. A batch holds complete, schema-valid items with D-051 ids and valid references, with no loss and no
+duplicate; a missing or corrupt batch fails closed. Items are in topological order over their dependency graph with
+the evidence id as tie-break; a cycle or a missing reference fails. The batch size is not guessed: a byte ceiling is
+derived from the maximum item size, `MAX_BLOB_BYTES`, encoding overhead, parse and validation memory, the record
+count and measured write and open performance; one legal item always fits; boundaries are deterministic and tested
+at N−1, N and N+1. The fold supports id existence, id to batch, M-3, M-4, M-7, evidence sets, replay, corruption
+detection and commit discipline, with no second mutable database (any index is rebuildable). Batches of a failed
+attempt are not authoritative; only `step_succeeded` commits them. D-047 evidence sets stay. Versions advance without
+migration: journal format 1 is the original, 2 is D-047/D-051, 3 is batches; none was released. Stage 00 contracts
+and Stage 03 schemas are unchanged. The 512 MiB journal limit is proven from first principles with headroom or
+returned as a new owner decision; it is not raised. Scientific behavior is unchanged and proven equal before and
+after on a fixture; the Step 4 oracle stays frozen.
+
+## D-054 — The report is a manifest graph of content-addressed chunks
+- Status: accepted
+- Topic: stage-04-report-manifest-chunks
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/d053/D053_D054_CLOSURE.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPT7kaAY3dV5Ewo8KzF3bTe8`, 2026-11-11T10:31:40Z), choosing
+the chunked-report answer to OD-R of the Step 7 closure. The report blob is a small versioned manifest: schema and
+version, investigation and root identity, terminal state, outcome, article summary, limitations, identities and
+configuration, counts, and ordered references to its components. Claims are stored in deterministic
+content-addressed chunks whose ordered digests and total count are in the manifest. The evidence of the report reuses
+the committed evidence batches by digest; it is duplicated only with a proven and documented semantic need. The
+D-047 projection set stays. The durable report is the whole manifest graph: VERIFY proves every node, and nothing is
+silently omitted.

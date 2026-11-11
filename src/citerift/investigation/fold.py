@@ -11,7 +11,7 @@ places with the same code:
 What Memory checks (the parts of M-1 to M-14 that belong to Memory; the transition rules T-* and W-1 to W-8 are the
 Workflow Controller's, Step 7):
 
-- schema of every record (``urn:citerift:schema:investigation:v1:journal-record``) and journal version ``v = 1``;
+- schema of every record (``urn:citerift:schema:investigation:v1:journal-record``) and journal version ``v = 3``;
 - M-1 ``seq`` without gaps, ``at`` never decreasing; M-2 ``prev`` chain and ``digest``;
 - the creation identities: genesis, ``config_digest``, ``request_key``, ``investigation_key``, ``investigation_id``
   and the D-042 bound arithmetic (S-4.7, MM 2.3, 3.2);
@@ -23,6 +23,13 @@ Workflow Controller's, Step 7):
   report's projections are content-addressed sets (owner decision D-047, ``sets.py``): the set blob must exist, be
   valid, agree with the record, and every id it names must resolve; a missing or corrupt set is a violation, never an
   empty set;
+- evidence batches (owner decision D-053, SPEC 8.8): evidence is committed in content-addressed batches, one
+  ``evidence_batch_recorded`` record each. Every batch must exist, be canonical and schema-valid (M-3), hold the
+  count its record states, and every item must have the D-051 id (CH-1), name a recorded observation (M-10), refer
+  only to evidence defined before it (M-4) and be defined once (M-14). When the attempt ends ``step_succeeded``, its
+  batches must be numbered 0..total-1 and be exactly the canonical batches of its items (dependency order, byte
+  ceiling, ``batches.py``). The batches of an attempt become authoritative only then; the evidence index (id to batch)
+  is rebuilt from the journal and the blobs on every open and is never stored;
 - M-8: a supersession links two claims and the successor has evidence the old claim did not have;
 - M-9: ``root_id`` is null until the ACQUIRE ``step_succeeded``, which binds exactly the root its payload holds,
   whose id is recomputed from the subject identity and must match the request; every later record carries it;
@@ -39,17 +46,17 @@ from datetime import datetime
 from typing import Any
 
 from citerift.contracts.formats import parse_utc_timestamp
-from citerift.investigation import ids, sets
+from citerift.investigation import batches, ids, report, sets
 from citerift.investigation.canonical import H
 from citerift.investigation.errors import BlobError, CanonError, InvariantViolation
 from citerift.investigation.journal import JOURNAL_FORMAT
-from citerift.investigation.schemas import RECORD, problems
+from citerift.investigation.schemas import EVIDENCE_BATCH, RECORD, problems
 
 STEPS = ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT", "ASSEMBLE", "VERIFY")
 TERMINAL = {"step_succeeded", "step_failed", "step_deferred", "step_interrupted"}
 CONTENT_LAYER = {
     "observation_recorded": "observation",
-    "evidence_recorded": "evidence",
+    "evidence_batch_recorded": "evidence",
     "claim_recorded": "claim",
     "decision_recorded": "decision",
     "question_opened": "question",
@@ -79,12 +86,19 @@ class Attempt:
 
 @dataclass
 class _Defs:
-    """Ids defined by content records: by layer."""
+    """Ids defined by content records: by layer. ``evidence`` maps an evidence id to the batch that holds it (D-053);
+    ``batches`` are the batch digests in commit order, and ``items`` the (id, refs, canonical size) of the open
+    attempt's evidence in batch order, kept only until the attempt ends (its canonical form is checked then)."""
 
     observations: set[str] = field(default_factory=set)
-    evidence: dict[str, dict[str, Any]] = field(default_factory=dict)
+    observation_list: list[dict[str, str]] = field(default_factory=list)  # {blob, obs_kind} in commit order
+    evidence: dict[str, str] = field(default_factory=dict)
+    batches: list[str] = field(default_factory=list)
+    batch_counts: list[int] = field(default_factory=list)
+    batch_total: int | None = None
+    items: list[tuple[str, tuple[str, ...], int]] = field(default_factory=list)
     claims: dict[str, dict[str, Any]] = field(default_factory=dict)
-    decisions: set[str] = field(default_factory=set)
+    decisions: dict[str, dict[str, str]] = field(default_factory=dict)  # id -> {claim_id, disposition}
     questions: dict[str, dict[str, Any]] = field(default_factory=dict)  # id -> {claim_id, kind, open}
     superseded: dict[str, str] = field(default_factory=dict)
 
@@ -124,8 +138,17 @@ class Folder:
     def _has_observation(self, digest: str) -> bool:
         return digest in self.committed.observations or digest in self.pending.observations
 
-    def _evidence(self, eid: str) -> dict[str, Any] | None:
+    def evidence_batch(self, eid: str) -> str | None:
+        """The digest of the batch that holds evidence ``eid``, committed or in the open attempt."""
         return self.committed.evidence.get(eid) or self.pending.evidence.get(eid)
+
+    def evidence_item(self, eid: str) -> dict[str, Any] | None:
+        """The evidence item ``eid`` read from its batch; None when it is not defined or this fold reads no blobs."""
+        digest = self.evidence_batch(eid)
+        if digest is None or self.blob_read is None:
+            return None
+        found = [i for i in self.blob_read(digest)["items"] if i["evidence_id"] == eid]
+        return found[0] if found else None
 
     def _claim(self, cid: str) -> dict[str, Any] | None:
         return self.committed.claims.get(cid) or self.pending.claims.get(cid)
@@ -214,10 +237,97 @@ class Folder:
         if not ok:
             raise _violation("M-9", "ROOT_IDENTITY_MISMATCH", "the bound root does not match the request", seq)
 
-    def _check_refs(self, rec: dict[str, Any], seq: int) -> None:
+    def _check_batch(self, p: dict[str, Any], seq: int) -> list[tuple[str, tuple[str, ...], int]] | None:
+        """D-053: one evidence batch record against everything before it; returns (id, refs, size) of its items, or
+        None when this fold reads no blobs (a replay over validated records)."""
+        d = self.pending
+        if p["batch_index"] != len(d.batches):
+            raise _violation("S-8.8", "BATCH_SEQUENCE", f"batch_index {p['batch_index']} where {len(d.batches)}", seq)
+        if p["batch_index"] >= p["batch_total"] or (d.batch_total is not None and p["batch_total"] != d.batch_total):
+            raise _violation("S-8.8", "BATCH_SEQUENCE", f"batch_total {p['batch_total']} is inconsistent", seq)
+        if p["batch"] in d.batches or p["batch"] in self.committed.batches:
+            raise _violation("M-14", "DUPLICATE_ID", f"batch {p['batch']} is already recorded", seq)
+        value = self._read_set(p["batch"], seq)
+        if value is None:
+            return None
+        found = problems(value, EVIDENCE_BATCH)
+        if found:
+            raise _violation("M-3", "EVIDENCE_BATCH_INVALID", f"batch {p['batch']}: " + "; ".join(found[:3]), seq)
+        items = value["items"]
+        if len(items) != p["evidence_count"]:
+            raise _violation("M-3", "EVIDENCE_BATCH_INVALID", "evidence_count is not the number of items", seq)
+        local: set[str] = set()
+        out = []
+        for item in items:
+            eid = item["evidence_id"]
+            if eid != ids.evidence_id(item["observation"], item["pointer"], item["kind"]):
+                raise _violation(
+                    "CH-1", "EVIDENCE_ID_INVALID", f"evidence {eid} is not H(observation, pointer, kind)", seq
+                )
+            if not self._has_observation(item["observation"]):
+                raise _violation("M-10", "DANGLING_REFERENCE", f"observation {item['observation']} not recorded", seq)
+            for r in item["refs"]:
+                if r not in local and not self._defined("evidence", r):
+                    raise _violation("M-4", "DANGLING_REFERENCE", f"evidence ref {r} is not earlier evidence", seq)
+            if eid in local or self._defined("evidence", eid):
+                raise _violation("M-14", "DUPLICATE_ID", f"evidence {eid} is already defined", seq)
+            local.add(eid)
+            out.append((eid, tuple(item["refs"]), batches.item_bytes(item)))
+        return out
+
+    def _check_attempt_batches(self, seq: int) -> None:
+        """D-053 at ``step_succeeded``: the attempt's batches are complete and are exactly the canonical batches of its
+        items (dependency order with the evidence-id tie-break, then the byte ceiling)."""
+        d = self.pending
+        if not d.batches:
+            return
+        if len(d.batches) != d.batch_total:
+            raise _violation("S-8.8", "BATCH_SEQUENCE", f"{len(d.batches)} of {d.batch_total} batches recorded", seq)
+        if self.blob_read is None:
+            return
+        attempt = {eid for eid, _, _ in d.items}
+        nodes = [{"evidence_id": eid, "refs": list(refs)} for eid, refs, _ in d.items]
+        try:
+            order = [n["evidence_id"] for n in batches.dependency_order(nodes, lambda r: r not in attempt)]
+        except batches.BatchError as exc:  # unreachable after the per-batch checks; kept fail-closed
+            raise _violation("S-8.8", exc.code, exc.detail, seq) from exc
+        if order != [eid for eid, _, _ in d.items]:
+            raise _violation(
+                "S-8.8", "BATCH_NOT_CANONICAL", "the evidence is not in the canonical dependency order", seq
+            )
+        counts = batches.boundaries([size for _, _, size in d.items], batches.BATCH_ENVELOPE)
+        if counts != d.batch_counts:
+            raise _violation("S-8.8", "BATCH_NOT_CANONICAL", "the batch boundaries are not the canonical ones", seq)
+
+    def _check_report(self, digest: str, seq: int) -> None:
+        """D-054: the report manifest and every chunk it names, against the committed fold (``report.py``)."""
+        manifest = self._read_set(digest, seq)
+        if manifest is None:
+            return
+        read = self.blob_read
+        if read is None or self.created is None:  # the manifest was read, so neither can be None
+            raise _violation("M-3", "REPORT_INVALID", "the report cannot be checked without its investigation", seq)
+        c = self.committed
+        problem = report.fold_problem(
+            manifest,
+            read,
+            investigation=self.created,
+            root=self.root,
+            claims={cid: v for cid, v in c.claims.items() if cid not in c.superseded},
+            decisions=c.decisions,
+            questions=c.questions,
+            observations=c.observation_list,
+            evidence=list(zip(c.batches, c.batch_counts, strict=True)),
+        )
+        if problem:
+            raise _violation("M-3", "REPORT_INVALID", f"report {digest}: {problem}", seq)
+
+    def _check_refs(self, rec: dict[str, Any], seq: int) -> Any:
         kind, p = rec["kind"], rec["payload"]
 
         def need(layer: str, ident: str, what: str) -> None:
+            if layer == "evidence" and self.blob_read is None:
+                return  # a replay over validated records reads no batch, so it knows no evidence id (D-053)
             if not self._defined(layer, ident):
                 raise _violation("M-4", "DANGLING_REFERENCE", f"{what} {ident} is not an earlier {layer}", seq)
 
@@ -227,12 +337,8 @@ class Folder:
 
         if kind == "observation_recorded":
             self._blob(p["blob"], seq, "M-3")
-        elif kind == "evidence_recorded":
-            if not self._has_observation(p["observation"]):
-                raise _violation("M-10", "DANGLING_REFERENCE", f"observation {p['observation']} not recorded", seq)
-            for r in p["refs"]:
-                need("evidence", r, "evidence ref")
-            fresh("evidence", p["evidence_id"])
+        elif kind == "evidence_batch_recorded":
+            return self._check_batch(p, seq)
         elif kind == "claim_recorded":
             self._blob(p["evidence_set"], seq, "M-3")
             for e in sorted(self._evidence_set(p, seq) or ()):
@@ -264,6 +370,7 @@ class Folder:
                     raise _violation("M-3", "PROJECTION_SET_INVALID", problem, seq)
                 for d in value["projections"]:
                     self._blob(d, seq, "M-3")
+            self._check_report(p["report"], seq)
         elif kind == "claim_superseded":
             old, new = self._claim(p["old_claim_id"]), self._claim(p["new_claim_id"])
             if old is None or new is None:
@@ -277,16 +384,22 @@ class Folder:
                     "M-8", "SUPERSESSION_INVALID", "new_evidence must be new evidence of the successor", seq
                 )
 
-    def _define(self, rec: dict[str, Any]) -> None:
+    def _define(self, rec: dict[str, Any], checked: Any) -> None:
         kind, p, d = rec["kind"], rec["payload"], self.pending
         if kind == "observation_recorded":
             d.observations.add(p["blob"])
-        elif kind == "evidence_recorded":
-            d.evidence[p["evidence_id"]] = p
+            d.observation_list.append({"blob": p["blob"], "obs_kind": p["obs_kind"]})
+        elif kind == "evidence_batch_recorded":
+            d.batches.append(p["batch"])
+            d.batch_counts.append(p["evidence_count"])
+            d.batch_total = p["batch_total"]
+            for eid, refs, size in checked or ():
+                d.evidence[eid] = p["batch"]
+                d.items.append((eid, refs, size))
         elif kind == "claim_recorded":
             d.claims[p["claim_id"]] = p
         elif kind == "decision_recorded":
-            d.decisions.add(p["decision_id"])
+            d.decisions[p["decision_id"]] = {"claim_id": p["claim_id"], "disposition": p["disposition"]}
         elif kind == "question_opened":
             d.questions[p["question_id"]] = {"claim_id": p["claim_id"], "kind": p["kind"], "open": True}
         elif kind == "question_closed":
@@ -298,9 +411,12 @@ class Folder:
     def _commit_pending(self) -> None:
         c, d = self.committed, self.pending
         c.observations |= d.observations
+        c.observation_list.extend(d.observation_list)
         c.evidence.update(d.evidence)
+        c.batches.extend(d.batches)
+        c.batch_counts.extend(d.batch_counts)
         c.claims.update(d.claims)
-        c.decisions |= d.decisions
+        c.decisions.update(d.decisions)
         c.questions.update(d.questions)
         c.superseded.update(d.superseded)
         self.pending = _Defs()
@@ -363,9 +479,9 @@ class Folder:
                 raise _violation(
                     "M-6", "OUTSIDE_ATTEMPT", f"{kind} for {step} attempt {attempt} has no open attempt", seq
                 )
-        if kind in CONTENT_LAYER:
-            self._check_refs(rec, seq)
+        checked = self._check_refs(rec, seq) if kind in CONTENT_LAYER else None
         if kind == "step_succeeded":
+            self._check_attempt_batches(seq)
             for out in rec["payload"]["outputs"]:
                 self._blob(out, seq, "M-5")
         if not mutate:
@@ -384,7 +500,7 @@ class Folder:
             self.attempts[step].append(a)
             self.open = a
         elif kind in CONTENT_LAYER and self.open is not None:
-            self._define(rec)
+            self._define(rec, checked)
             self.open.content.append(seq)
         elif kind in TERMINAL and self.open is not None:
             self.open.end_seq, self.open.end_kind = seq, kind
@@ -454,6 +570,8 @@ class Folder:
             p = r["payload"]
             if r["kind"] == "observation_recorded":
                 out.add(p["blob"])
+            elif r["kind"] == "evidence_batch_recorded":
+                out.add(p["batch"])
             elif r["kind"] == "claim_recorded":
                 out.add(p["evidence_set"])
             elif r["kind"] == "report_recorded":
