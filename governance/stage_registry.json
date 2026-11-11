@@ -2607,7 +2607,43 @@
           "resolution": "Resolved by Stage 00 maintenance A-00-002 (owner directive cmsg_018VCB51nDHP6HXmLU4ea5yPWhxzhgqKQDanXYzuxvEBsT): candidate 8b1db57, validated 627cc9d (Python 3.12.3 and 3.13.17: 1,093 passed each, clean, complete), finalized 4bf0255; CI green on both Python versions: push run 40637490981, pull request run 40637496253"
         }
       ],
-      "amendments": []
+      "amendments": [
+        {
+          "id": "A-02-001",
+          "kind": "enhancement",
+          "reason": "A cap applied after the accepted Index.gather() bounds nothing: gather() reads every row of a key (up to ROW_LIMIT) before returning. gather() stays unchanged; additions only.",
+          "evidence": [
+            "docs/verification/maintenance/A-02-001/MAINTENANCE_RECORD.md"
+          ],
+          "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3",
+          "revision": null,
+          "test_report": null,
+          "recorded_at": "2026-11-11T08:25:58Z",
+          "maintenance": {
+            "purpose": "Byte-bounded Stage 02 lookup (Index.gather_bounded) so that the Stage 04 lookup evidence budget is enforced before rows are materialized (owner decision D-048)",
+            "baseline_revision": "cf060834afedfa4a82712ca247ad2fc2b2fa9665",
+            "candidate_revision": "b052a72b1de05c1130556a8b43e016f37b6d980f",
+            "scope": [
+              {
+                "path": "src/citerift/retraction/query.py",
+                "sha256": "08154e78b1de97dc6557859c90ce2946e3109cf60f9e43157eaa3cbd4002250e"
+              },
+              {
+                "path": "tests/stage02/test_rde_gather_bounded.py",
+                "sha256": "d30a077482372459a63183714473704c6882391848daa2f51bbe0bd6b8a0b255"
+              }
+            ],
+            "patch_sha256": "db8f3c2e500847a3785fe7cc31c82a2c9966562df158d9cae5932f1284d4a67a",
+            "phase": "pending_validation",
+            "supersedes": null,
+            "superseded_by": null,
+            "reports": [],
+            "opened_after_seq": 50,
+            "finalized_at": null,
+            "finalized_after_seq": null
+          }
+        }
+      ]
     },
     {
       "id": "03",
