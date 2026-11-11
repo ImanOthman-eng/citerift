@@ -1,0 +1,290 @@
+{
+  "decision": "D-055 (owner message cmsg_018VCB51nDHP6HXmLU4ea5yP7cfPWf5UN6kmKGbSHoPG1n)",
+  "journal_format": 4,
+  "report_version": "3.0.0",
+  "limits": {
+    "MAX_RECORD_BYTES": 1048576,
+    "MAX_JOURNAL_BYTES": 536870912,
+    "MAX_BLOB_BYTES": 268435456,
+    "MAX_PART_BYTES": 8388608
+  },
+  "record_kinds_max_bytes": {
+    "investigation_created": {
+      "bytes": 50297,
+      "fraction_of_limit": 0.048
+    },
+    "step_started": {
+      "bytes": 371,
+      "fraction_of_limit": 0.0004
+    },
+    "step_interrupted": {
+      "bytes": 375,
+      "fraction_of_limit": 0.0004
+    },
+    "step_deferred": {
+      "bytes": 445,
+      "fraction_of_limit": 0.0004
+    },
+    "step_failed": {
+      "bytes": 25221,
+      "fraction_of_limit": 0.0241
+    },
+    "step_succeeded (ACQUIRE, 16 outputs, root)": {
+      "bytes": 8046,
+      "fraction_of_limit": 0.0077
+    },
+    "stale_detected": {
+      "bytes": 1379,
+      "fraction_of_limit": 0.0013
+    },
+    "question_closed (64 ids)": {
+      "bytes": 4844,
+      "fraction_of_limit": 0.0046
+    },
+    "claim_superseded (64 ids)": {
+      "bytes": 4919,
+      "fraction_of_limit": 0.0047
+    },
+    "report_recorded": {
+      "bytes": 555,
+      "fraction_of_limit": 0.0005
+    },
+    "verification_recorded (64 checks)": {
+      "bytes": 7324,
+      "fraction_of_limit": 0.007
+    },
+    "observation_recorded (index_identity)": {
+      "bytes": 25128,
+      "fraction_of_limit": 0.024
+    },
+    "observation_recorded (bundle)": {
+      "bytes": 25055,
+      "fraction_of_limit": 0.0239
+    },
+    "observation_recorded (extraction)": {
+      "bytes": 25119,
+      "fraction_of_limit": 0.024
+    },
+    "evidence_batch_recorded": {
+      "bytes": 536,
+      "fraction_of_limit": 0.0005
+    },
+    "lookup_batch_recorded": {
+      "bytes": 531,
+      "fraction_of_limit": 0.0005
+    },
+    "candidate_result_batch_recorded": {
+      "bytes": 541,
+      "fraction_of_limit": 0.0005
+    }
+  },
+  "largest_record_bytes": 50297,
+  "record_limit_proven": true,
+  "journal": {
+    "limit": 536870912,
+    "stage03_caps": {
+      "units (max_refs)": 20000,
+      "identifier occurrences (max_candidates)": 50000,
+      "candidates": 70000
+    },
+    "A_max": 3,
+    "F_max": 6,
+    "max_part_bytes": 8388608,
+    "largest_record_bytes_with_newline": {
+      "investigation_created": 50298,
+      "step_started": 372,
+      "step_interrupted": 376,
+      "step_deferred": 446,
+      "step_failed": 25222,
+      "step_succeeded": 8047,
+      "stale_detected": 1380,
+      "question_closed": 4845,
+      "claim_superseded": 4920,
+      "report_recorded": 556,
+      "verification_recorded": 7325,
+      "observation_recorded": 25129,
+      "evidence_batch_recorded": 537,
+      "lookup_batch_recorded": 532,
+      "candidate_result_batch_recorded": 542
+    },
+    "fixed_records_bytes": {
+      "investigation_created": 50298,
+      "execution records of every attempt (deferrals, interruptions, failures included)": 779100,
+      "stale_detected": 1380,
+      "ACQUIRE bundle, EXTRACT extraction, LOOKUP index-identity observations (every attempt)": 376935,
+      "report_recorded (every ASSEMBLE attempt)": 1668,
+      "verification_recorded (every VERIFY attempt)": 21975,
+      "question_closed, claim_superseded": 0
+    },
+    "fixed_total_bytes": 1231356,
+    "entries_per_run": {
+      "evidence item": 510000,
+      "lookup reference": 70000,
+      "candidate result": 70000
+    },
+    "entry_bytes": {
+      "typical": {
+        "evidence item": 380,
+        "lookup reference": 227,
+        "candidate result": 936
+      },
+      "maximal": {
+        "evidence item": 27477,
+        "lookup reference": 24751,
+        "candidate result": 48987
+      }
+    },
+    "typical": {
+      "batch_records_one_attempt_each_step": {
+        "evidence item": {
+          "entries": 510000,
+          "entry_bytes": 193800000,
+          "batch_records": 49,
+          "record_bytes": 26313
+        },
+        "lookup reference": {
+          "entries": 70000,
+          "entry_bytes": 15890000,
+          "batch_records": 5,
+          "record_bytes": 2660
+        },
+        "candidate result": {
+          "entries": 70000,
+          "entry_bytes": 65520000,
+          "batch_records": 17,
+          "record_bytes": 9214
+        }
+      },
+      "content_bytes_one_attempt_each_step": 38187,
+      "journal_bytes": 1345917,
+      "fraction_of_limit": 0.00251,
+      "headroom_factor": 398.9,
+      "proven_within_limit": true
+    },
+    "maximal": {
+      "batch_records_one_attempt_each_step": {
+        "evidence item": {
+          "entries": 510000,
+          "entry_bytes": 14013270000,
+          "batch_records": 3355,
+          "record_bytes": 1801635
+        },
+        "lookup reference": {
+          "entries": 70000,
+          "entry_bytes": 1732570000,
+          "batch_records": 416,
+          "record_bytes": 221312
+        },
+        "candidate result": {
+          "entries": 70000,
+          "entry_bytes": 3429090000,
+          "batch_records": 824,
+          "record_bytes": 446608
+        }
+      },
+      "content_bytes_one_attempt_each_step": 2469555,
+      "journal_bytes": 8640021,
+      "fraction_of_limit": 0.01609,
+      "headroom_factor": 62.1,
+      "proven_within_limit": true
+    },
+    "format_3_per_candidate_records_one_attempt (0097a93, for comparison)": {
+      "records": 280001,
+      "note": "format 3 wrote one record per lookup observation, claim, decision and question: about 280,000 records per attempt at the caps (../d053/bounds.json); format 4 writes the batch records above"
+    }
+  },
+  "journal_limit_proven": true,
+  "blobs": {
+    "Stage 03 extraction (byte-for-byte, no wrapper)": {
+      "bound_bytes": 268435456,
+      "why": "Stage 03 refuses a worker output over MAX_OUTPUT_BYTES; the worker writes canonical_bytes, the same encoding as Stage 04 canon (sort_keys, compact separators, UTF-8, no ASCII escaping), so the blob is the worker's output byte for byte. Equal to the limit: no headroom, never over it.",
+      "within_limit": true,
+      "fraction_of_limit": 1.0
+    },
+    "ACQUIRE observation (bundle)": {
+      "bound_bytes": 125894656,
+      "why": "Conditional on the Step 8 representation: the capture document plus at most the bundle's source (<= 4 MiB) and render (<= 16 MiB), each embedded as a JSON string (<= 6 bytes per input byte). The capture document is not bounded by its schema (attempts, issues, failure_artifacts have no maxItems); measured 3,796 to 5,235 bytes on retained bundles; 64 KiB is allowed. Over the limit is BLOB_TOO_LARGE, a STORAGE_ERROR (fail closed). Step 8 design condition.",
+      "within_limit": true,
+      "fraction_of_limit": 0.469
+    },
+    "LOOKUP observation (D-048)": {
+      "bound_bytes": 102311086,
+      "why": "D-048 budget, lookup_budget.json",
+      "within_limit": true,
+      "fraction_of_limit": 0.3811
+    },
+    "evidence batch": {
+      "bound_bytes": 8388608,
+      "why": "SPEC 8.8: a batch is cut at MAX_PART_BYTES; the largest legal item fits one",
+      "within_limit": true,
+      "fraction_of_limit": 0.0312
+    },
+    "evidence set (one claim)": {
+      "bound_bytes": 34170256,
+      "why": "at most every evidence id of the run",
+      "within_limit": true,
+      "fraction_of_limit": 0.1273
+    },
+    "projection set": {
+      "bound_bytes": 4690256,
+      "why": "at most one per candidate",
+      "within_limit": true,
+      "fraction_of_limit": 0.0175
+    },
+    "report claim chunk": {
+      "bound_bytes": 102364169,
+      "why": "cut at MAX_PART_BYTES; an entry larger than that is a chunk of its own, and an entry is at most a maximal claim, its decision, question and anchor, and the checked sources of one lookup observation",
+      "within_limit": true,
+      "fraction_of_limit": 0.3813
+    },
+    "report observations chunk": {
+      "bound_bytes": 8388608,
+      "why": "entries are about 110 bytes",
+      "within_limit": true,
+      "fraction_of_limit": 0.0312
+    },
+    "report positive-works chunk": {
+      "bound_bytes": 8388608,
+      "why": "a work lists at most every claim id",
+      "within_limit": true,
+      "fraction_of_limit": 0.0312
+    },
+    "report manifest": {
+      "bound_bytes": 21445115,
+      "why": "fixed fields (< 64 KiB with identities) plus one reference per chunk and per evidence batch",
+      "within_limit": true,
+      "fraction_of_limit": 0.0799
+    },
+    "step output manifests (workflow.manifest) and VALIDATE output": {
+      "bound_bytes": 65536,
+      "why": "fixed shape",
+      "within_limit": true,
+      "fraction_of_limit": 0.0002
+    },
+    "LOOKUP batch (D-055)": {
+      "bound_bytes": 8388608,
+      "why": "SPEC 8.9 / 8.8 (d): a batch is cut at MAX_PART_BYTES; one maximal entry fits a batch of its own",
+      "within_limit": true,
+      "fraction_of_limit": 0.0312
+    },
+    "DETECT candidate-result batch (D-055)": {
+      "bound_bytes": 8388608,
+      "why": "SPEC 8.9 / 8.8 (d): a batch is cut at MAX_PART_BYTES; one maximal entry fits a batch of its own",
+      "within_limit": true,
+      "fraction_of_limit": 0.0312
+    }
+  },
+  "blob_limit_proven_except_ACQUIRE_observation": true,
+  "ACQUIRE_observation": "conditional on the Step 8 representation (IF-7, see its row)",
+  "total_storage": {
+    "mathematical_worst_case_bytes": 50217110424506,
+    "mathematical_worst_case_note": "every attempt of every step at every cap with every blob at its bound: every lookup at the D-048 budget, every claim naming every evidence id, every claim entry carrying a maximal lookup's checked sources. Not reachable by a real article and index; no global cap is imposed (owner D-053/D-054). Disk exhaustion is a STORAGE_ERROR, never a silent truncation.",
+    "operational_bound_bytes": 3794312324,
+    "operational_note": "one committed run at the Stage 03 caps with typical item sizes, lookups of the pinned index's common shape (no record or one event), evidence sets of tens of ids, claim entries of about 1.5 kB; blobs are content-addressed, so a repeated attempt with equal content adds nothing.",
+    "pinned_index_observation": "The largest lookup observation the pinned index gives for any key is recorded by the D-048 derivation (closure/lookup_budget.json); every observation is within the configured budget by construction, and over it the lookup is LOOKUP_EVIDENCE_LIMIT_EXCEEDED, not a blob.",
+    "d055_batch_blobs": {
+      "maximal_bytes_per_attempt": 5161660000,
+      "typical_bytes_per_run": 81410000
+    }
+  }
+}

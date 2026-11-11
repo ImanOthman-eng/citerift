@@ -33,6 +33,7 @@ P = "urn:citerift:schema:investigation:v1:"
 REQUEST, RECORD, CLAIM, REPORT, COMMON = P + "request", P + "journal-record", P + "claim", P + "report", P + "common"
 EVIDENCE_SET, PROJECTION_SET = P + "evidence-set", P + "projection-set"
 EVIDENCE_BATCH, REPORT_CHUNK = P + "evidence-batch", P + "report-chunk"
+LOOKUP_BATCH, CANDIDATE_BATCH = P + "lookup-batch", P + "candidate-result-batch"
 
 # Digest of each accepted upstream schema directory; Step 5 must not change them (owner exit criterion 8).
 ACCEPTED_DIRS = ("contracts", "wiki", "retraction")
@@ -416,7 +417,7 @@ def evidence_batch(items: list[dict[str, Any]]) -> dict[str, Any]:
 def record(kind: str, payload: dict[str, Any], *, step: str | None, attempt: int | None, root_id: str | None,
            seq: int = 5) -> dict[str, Any]:  # fmt: skip
     return {
-        "v": 3,
+        "v": 4,
         "seq": 0 if kind == "investigation_created" else seq,
         "prev": h("prev"),
         "kind": kind,
@@ -471,8 +472,44 @@ def acquire_failed(code: str = "ACQUIRE_WALL_CLOCK_EXCEEDED", retryable: bool = 
     return record("step_failed", payload, step="ACQUIRE", attempt=1, root_id=None)
 
 
-def claim_record(cls: str = "RETRACTED_WORK_CITED", root_id: str | None = None) -> dict[str, Any]:
-    return record("claim_recorded", claim(cls), step="DETECT", attempt=1, root_id=root_id or h("root"))
+QUESTION_KIND = {"IDENTITY_CONFLICT": "identity_conflict", "CONTRADICTION_IN_SOURCES": "source_conflict"}
+
+
+def candidate_entry(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
+    """One D-055 DETECT candidate entry: the claim, its decision and the question it opens (or null)."""
+    c = claim(cls)
+    q = None
+    if cls in QUESTION_KIND:
+        q = {"question_id": h("q-" + cls), "claim_id": c["claim_id"], "kind": QUESTION_KIND[cls]}
+    decision = {"decision_id": h("d-" + cls), "claim_id": c["claim_id"], "disposition": DISPOSITION[cls]}
+    return {"claim": c, "decision": decision, "question": q}
+
+
+def candidate_batch(entries: list[dict[str, Any]]) -> dict[str, Any]:
+    """A D-055 DETECT candidate-result batch (SPEC 8.9)."""
+    return {"schema": CANDIDATE_BATCH, "schema_version": "1.0.0", "order": "candidate-ref/claim-id/1",
+            "entries": entries}  # fmt: skip
+
+
+def claim_batch(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
+    """The claim of class ``cls`` as D-055 stores it: inside a candidate-result batch blob (validated as one)."""
+    return candidate_batch([candidate_entry(cls)])
+
+
+LOOKUP_OBS = {
+    "obs_kind": "lookup",
+    "blob": h("lookup"),
+    "source_ref": {"engine": "citerift.retraction", "operation": "gather", "locator": "doi:10.1/x"},
+}
+
+
+def lookup_batch(entries: list[dict[str, Any]]) -> dict[str, Any]:
+    """A D-055 LOOKUP batch (SPEC 8.9)."""
+    return {"schema": LOOKUP_BATCH, "schema_version": "1.0.0", "order": "observation-blob/entry/1",
+            "entries": entries}  # fmt: skip
+
+
+ENTRY_BATCH_PAYLOAD = {"batch": h("b"), "batch_index": 0, "batch_total": 1, "entry_count": 1}
 
 
 RECORD_KINDS = [
@@ -485,9 +522,8 @@ RECORD_KINDS = [
     "stale_detected",
     "observation_recorded",
     "evidence_batch_recorded",
-    "claim_recorded",
-    "decision_recorded",
-    "question_opened",
+    "lookup_batch_recorded",
+    "candidate_result_batch_recorded",
     "question_closed",
     "report_recorded",
     "claim_superseded",
@@ -502,14 +538,16 @@ def test_schemas_are_valid_2020_12_and_versioned() -> None:
     cs = contracts()
     mine = {sid: s for sid, s in cs.schemas.items() if sid.startswith(P)}
     assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT, EVIDENCE_SET, PROJECTION_SET, EVIDENCE_BATCH,
-                         REPORT_CHUNK}  # fmt: skip
+                         REPORT_CHUNK, LOOKUP_BATCH, CANDIDATE_BATCH}  # fmt: skip
     assert [p for p in cs.meta_problems() if p.path.startswith(P)] == []
     for sid, s in mine.items():
         assert s["$schema"] == "https://json-schema.org/draft/2020-12/schema", sid
         # Step 7 closure (D-047, D-048, D-051): the Step 5 schemas are version 2 and the two sets are new; D-053 makes
-        # the journal record format 3 and adds the evidence batch.
-        expected = {RECORD: "3.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
-                    EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0"}  # fmt: skip
+        # the journal record format 3 and adds the evidence batch; D-055 makes it format 4 and adds the LOOKUP and
+        # DETECT candidate batches.
+        expected = {RECORD: "4.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
+                    EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0", LOOKUP_BATCH: "1.0.0",
+                    CANDIDATE_BATCH: "1.0.0"}  # fmt: skip
         assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 
@@ -631,7 +669,7 @@ def test_unknown_schema_version_rejected(schema_id: str) -> None:
 
 @pytest.mark.negative
 def test_unknown_journal_format_rejected() -> None:
-    for v in (0, 1, 2, 4, "3"):
+    for v in (0, 1, 2, 3, 5, "4"):
         r = created()
         r["v"] = v
         bad(r, RECORD)
@@ -718,7 +756,8 @@ def test_valid_records() -> None:
     ok(acquire_succeeded(), RECORD)
     ok(acquire_failed(), RECORD)
     for cls in CLASSES:
-        ok(claim_record(cls), RECORD)
+        ok(claim_batch(cls), CANDIDATE_BATCH)
+    ok(lookup_batch([LOOKUP_OBS, LOOKUP_OBS]), LOOKUP_BATCH)  # two candidates may share one lookup
     ok(record("step_started", {"step_key": h("k")}, step="VALIDATE", attempt=1, root_id=None), RECORD)
     ok(record("step_started", {"step_key": h("k")}, step="ACQUIRE", attempt=9, root_id=None), RECORD)
     ok(
@@ -809,20 +848,11 @@ def test_one_valid_record_of_every_kind() -> None:
             attempt=1,
             root_id=rid,
         ),
-        "claim_recorded": claim_record(),
-        "decision_recorded": record(
-            "decision_recorded",
-            {"decision_id": h("d"), "claim_id": h("c"), "disposition": "ROUTE_NEEDS_RESOLUTION"},
-            step="DETECT",
-            attempt=1,
-            root_id=rid,
+        "lookup_batch_recorded": record(
+            "lookup_batch_recorded", ENTRY_BATCH_PAYLOAD, step="LOOKUP", attempt=1, root_id=rid
         ),
-        "question_opened": record(
-            "question_opened",
-            {"question_id": h("q"), "claim_id": h("c"), "kind": "source_conflict"},
-            step="DETECT",
-            attempt=1,
-            root_id=rid,
+        "candidate_result_batch_recorded": record(
+            "candidate_result_batch_recorded", ENTRY_BATCH_PAYLOAD, step="DETECT", attempt=1, root_id=rid
         ),
         "question_closed": record(
             "question_closed",
@@ -886,23 +916,21 @@ def test_unbound_root_allowed_only_before_acquire_commit() -> None:
 @pytest.mark.parametrize(
     "kind",
     [
-        "claim_recorded",
         "evidence_batch_recorded",
-        "decision_recorded",
-        "question_opened",
+        "lookup_batch_recorded",
+        "candidate_result_batch_recorded",
         "report_recorded",
         "verification_recorded",
     ],
 )
 def test_scientific_content_without_bound_root_rejected(kind: str) -> None:
     payloads: dict[str, tuple[str, dict[str, Any]]] = {
-        "claim_recorded": ("DETECT", claim()),
+        "lookup_batch_recorded": ("LOOKUP", ENTRY_BATCH_PAYLOAD),
+        "candidate_result_batch_recorded": ("DETECT", ENTRY_BATCH_PAYLOAD),
         "evidence_batch_recorded": (
             "NORMALIZE",
             {"batch": h("b"), "batch_index": 0, "batch_total": 1, "evidence_count": 1},
         ),
-        "decision_recorded": ("DETECT", {"decision_id": h("d"), "claim_id": h("c"), "disposition": "REPORT_FINDING"}),
-        "question_opened": ("DETECT", {"question_id": h("q"), "claim_id": h("c"), "kind": "identity_conflict"}),
         "report_recorded": ("ASSEMBLE", {"report": h("r"), "projection_set": h("p"), "projection_count": 0}),
         "verification_recorded": (
             "VERIFY",
@@ -931,9 +959,9 @@ def test_malformed_digest_inside_payloads_rejected() -> None:
     r = acquire_succeeded()
     r["payload"]["root"]["subject"]["identity"]["capture_sha256"] = "XYZ"
     bad(r, RECORD)
-    r = claim_record()
-    r["payload"]["evidence_set"] = "not-a-digest"
-    bad(r, RECORD)
+    r = claim_batch()
+    r["entries"][0]["claim"]["evidence_set"] = "not-a-digest"
+    bad(r, CANDIDATE_BATCH)
     r = bundle_request()
     r["config"] = live_config()
     r["mode"] = "live_capture"
@@ -976,17 +1004,27 @@ def test_journal_sequencing_shape() -> None:
 
 @pytest.mark.negative
 def test_content_records_belong_to_their_step() -> None:
-    bad(record("claim_recorded", claim(), step="LOOKUP", attempt=1, root_id=h("root")), RECORD)
+    for kind, step in (("candidate_result_batch_recorded", "LOOKUP"), ("lookup_batch_recorded", "DETECT")):
+        bad(record(kind, ENTRY_BATCH_PAYLOAD, step=step, attempt=1, root_id=h("root")), RECORD)
     obs = {
         "obs_kind": "lookup",
         "blob": h("b"),
         "source_ref": {"engine": "citerift.retraction", "operation": "gather", "locator": None},
     }
-    ok(record("observation_recorded", obs, step="LOOKUP", attempt=1, root_id=h("root")), RECORD)
-    bad(record("observation_recorded", obs, step="EXTRACT", attempt=1, root_id=h("root")), RECORD)
+    # D-055: a lookup observation is committed only inside a LOOKUP batch, never as its own record.
+    bad(record("observation_recorded", obs, step="LOOKUP", attempt=1, root_id=h("root")), RECORD)
+    ok(lookup_batch([obs]), LOOKUP_BATCH)
+    identity = {
+        "obs_kind": "index_identity",
+        "blob": h("b"),
+        "source_ref": {"engine": "citerift.retraction", "operation": "index_identity", "locator": None},
+    }
+    ok(record("observation_recorded", identity, step="LOOKUP", attempt=1, root_id=h("root")), RECORD)
+    bad(record("observation_recorded", identity, step="EXTRACT", attempt=1, root_id=h("root")), RECORD)
+    bad(lookup_batch([identity]), LOOKUP_BATCH)  # only lookup observations are batched
     obs2 = copy.deepcopy(obs)
     obs2["source_ref"]["engine"] = "citerift.wiki"
-    bad(record("observation_recorded", obs2, step="LOOKUP", attempt=1, root_id=h("root")), RECORD)
+    bad(lookup_batch([obs2]), LOOKUP_BATCH)
     deferred = {"step_key": h("k"), "code": "DEFERRED_RETRY_AFTER", "not_before": "2026-11-10T13:00:00Z"}
     bad(record("step_deferred", deferred, step="EXTRACT", attempt=1, root_id=h("root")), RECORD)
 
@@ -996,12 +1034,27 @@ def test_payload_must_match_kind() -> None:
     r = acquire_failed()
     r["kind"] = "step_succeeded"
     bad(r, RECORD)
-    r = claim_record()
-    r["payload"] = {"anything": True}
+    r = record("candidate_result_batch_recorded", {"anything": True}, step="DETECT", attempt=1, root_id=h("root"))
     bad(r, RECORD)
-    r = claim_record()
-    r["payload"]["extra"] = 1
+    r = record("lookup_batch_recorded", {**ENTRY_BATCH_PAYLOAD, "extra": 1}, step="LOOKUP", attempt=1,
+               root_id=h("root"))  # fmt: skip
     bad(r, RECORD)
+    r = claim_batch()
+    r["entries"][0]["claim"]["extra"] = 1
+    bad(r, CANDIDATE_BATCH)
+    r = claim_batch()
+    r["entries"][0]["extra"] = 1
+    bad(r, CANDIDATE_BATCH)
+    r = claim_batch()
+    del r["entries"][0]["question"]  # an entry names its question, null when the claim opens none
+    bad(r, CANDIDATE_BATCH)
+    bad(candidate_batch([]), CANDIDATE_BATCH)
+    bad(lookup_batch([]), LOOKUP_BATCH)
+    for doc, sid in ((claim_batch(), CANDIDATE_BATCH), (lookup_batch([LOOKUP_OBS]), LOOKUP_BATCH)):
+        for field, value in (("schema_version", "2.0.0"), ("order", "anything"), ("schema", RECORD)):
+            d = copy.deepcopy(doc)
+            d[field] = value
+            bad(d, sid)
 
 
 # ----- D-042 representation -----------------------------------------------------------------------------------------

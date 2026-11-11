@@ -258,6 +258,12 @@ def batch_payload(mem: InvestigationMemory, items: list[dict[str, Any]], index: 
     return {"batch": digest, "batch_index": index, "batch_total": total, "evidence_count": len(items)}
 
 
+def candidate_payload(mem: InvestigationMemory, entries: list[dict[str, Any]], index: int = 0, total: int = 1) -> Any:
+    """A DETECT candidate-result batch record payload over ``entries`` as given (no reordering): for refusal tests."""
+    digest = mem.put_blob(batches.candidate_batch(entries))
+    return {"batch": digest, "batch_index": index, "batch_total": total, "entry_count": len(entries)}
+
+
 def _extraction_blob(mem: InvestigationMemory) -> str:
     for r in mem.view.records:
         if r["kind"] == "observation_recorded" and r["payload"]["obs_kind"] == "extraction":
@@ -270,9 +276,13 @@ def test_m7_claims_and_decisions_need_committed_support(mem: InvestigationMemory
     drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP"))
     mem.append("step_started", {"step_key": h("d")}, step="DETECT", attempt=1)
     claim = not_found_claim(mem, h("evidence that does not exist"))
-    refused(mem, "M-4", "claim_recorded", claim, step="DETECT", attempt=1)
-    decision = {"decision_id": h("dec"), "claim_id": h("no claim"), "disposition": "REPORT_NOT_FOUND"}
-    refused(mem, "M-4", "decision_recorded", decision, step="DETECT", attempt=1)
+    decision = {"decision_id": h("dec"), "claim_id": claim["claim_id"], "disposition": "REPORT_NOT_FOUND"}
+    entry = {"claim": claim, "decision": decision, "question": None}
+    refused(mem, "M-4", "candidate_result_batch_recorded", candidate_payload(mem, [entry]), step="DETECT", attempt=1)
+    # D-055: a decision inside a candidate entry must name the entry's own claim.
+    other = {**decision, "claim_id": h("no claim")}
+    bad = {"claim": claim, "decision": other, "question": None}
+    refused(mem, "M-7", "candidate_result_batch_recorded", candidate_payload(mem, [bad]), step="DETECT", attempt=1)
 
 
 @pytest.mark.negative
@@ -884,14 +894,18 @@ def _set_payload(field: str, value: Any) -> Any:
     ("at", "change"),
     [
         pytest.param(1, _set("seq", True), id="seq true where 1 is expected"),  # True == 1 in Python, not in JSON
-        pytest.param(19, _set("v", True), id="journal version true"),
-        pytest.param(19, _set("attempt", True), id="attempt true"),
-        pytest.param(19, _set("kind", "no_such_kind"), id="unknown record kind"),
-        pytest.param(19, _set("at", "2026-11-10T12:00:00.000000Z"), id="time earlier than the previous record"),
-        pytest.param(19, _set("attempt", 2), id="terminal record of an attempt that is not open"),
-        pytest.param(19, _set("root_id", h("another root")), id="root that is not the bound root"),
-        pytest.param(18, _set_payload("claim_id", h("no such claim")), id="decision naming an undefined claim"),
-        pytest.param(19, _set_payload("outputs", [h("no such blob")]), id="success naming a missing blob"),
+        pytest.param(18, _set("v", True), id="journal version true"),
+        pytest.param(18, _set("attempt", True), id="attempt true"),
+        pytest.param(18, _set("kind", "no_such_kind"), id="unknown record kind"),
+        pytest.param(18, _set("at", "2026-11-10T12:00:00.000000Z"), id="time earlier than the previous record"),
+        pytest.param(18, _set("attempt", 2), id="terminal record of an attempt that is not open"),
+        pytest.param(18, _set("root_id", h("another root")), id="root that is not the bound root"),
+        pytest.param(18, _set_payload("outputs", [h("no such blob")]), id="success naming a missing blob"),
+        pytest.param(17, _set_payload("batch", h("no such batch")), id="candidate batch naming a missing blob"),
+        pytest.param(17, _set_payload("entry_count", 2), id="candidate batch with a wrong entry count"),
+        pytest.param(17, _set_payload("batch_index", 1), id="candidate batch with a wrong batch index"),
+        pytest.param(13, _set_payload("batch", h("no such batch")), id="lookup batch naming a missing blob"),
+        pytest.param(13, _set_payload("batch_total", 0), id="lookup batch with a wrong batch total"),
         pytest.param(16, _set_payload("batch", h("no such batch")), id="evidence batch naming a missing blob"),
         pytest.param(16, _set_payload("evidence_count", 2), id="evidence batch with a wrong item count"),
     ],
@@ -908,7 +922,7 @@ def test_d046_complete_unterminated_record_must_be_a_valid_next_record(tmp_path:
 
 
 @pytest.mark.integration
-@pytest.mark.parametrize("at", [1, 5, 16, 18, 19])
+@pytest.mark.parametrize("at", [1, 5, 13, 16, 17, 18])
 def test_d046_valid_next_record_without_its_newline_stays_a_torn_tail(tmp_path: Path, at: int) -> None:
     """D-046 positive control: the unchanged next record, only its newline missing, is torn and recovered."""
     root, key = completed(tmp_path)

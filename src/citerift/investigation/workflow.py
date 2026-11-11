@@ -61,16 +61,19 @@ CONTENT_KINDS: dict[str, frozenset[str]] = {
     "ACQUIRE": frozenset({"observation_recorded"}),
     "EXTRACT": frozenset({"observation_recorded"}),
     "NORMALIZE": frozenset({"evidence_batch_recorded"}),
-    "LOOKUP": frozenset({"observation_recorded"}),
-    "DETECT": frozenset({"evidence_batch_recorded", "claim_recorded", "decision_recorded", "question_opened"}),
+    "LOOKUP": frozenset({"observation_recorded", "lookup_batch_recorded"}),
+    "DETECT": frozenset({"evidence_batch_recorded", "candidate_result_batch_recorded"}),
     "ASSEMBLE": frozenset({"report_recorded"}),
     "VERIFY": frozenset({"verification_recorded"}),
 }
 # What an adapter supplies (adapters.ContentRecord kinds). ``EVIDENCE`` is one evidence item; the controller orders
-# the attempt's items, cuts them into batches and commits each batch (D-053). An adapter never supplies a batch.
+# the attempt's items, cuts them into batches and commits each batch (D-053). LOOKUP supplies its observations and
+# DETECT its claims one by one; the controller commits lookup observations and candidate results (claim, derived
+# decision and question) in step-local batches (D-055). An adapter never supplies a batch.
 EVIDENCE = "evidence"
 ADAPTER_CONTENT_KINDS: dict[str, frozenset[str]] = {
     **CONTENT_KINDS,
+    "LOOKUP": frozenset({"observation_recorded"}),
     "NORMALIZE": frozenset({EVIDENCE}),
     "DETECT": frozenset({EVIDENCE, "claim_recorded"}),
 }
@@ -295,12 +298,15 @@ def _guard_start(rec: Mapping[str, Any], f: Folder, sv: StepView, index: int, lc
 
 
 def _attempt_records(f: Folder) -> list[dict[str, Any]]:
-    return [f.records[i] for i in f.open.content] if f.open is not None else []
+    """The logical content of the open attempt: D-055 batches stand for the records they hold."""
+    return f.attempt_content()
 
 
 def _guard_success(rec: Mapping[str, Any], f: Folder, step: str, seq: int) -> None:
     if f.open is None:
         raise _refuse("M-6", "step_succeeded without an open attempt", seq)
+    if f.unexpanded:
+        raise _refuse("M-3", "a D-055 batch was folded without its content: the attempt cannot be judged", seq)
     content = _attempt_records(f)
     if step != "VALIDATE" and not content:
         raise _refuse("T-SUCCEED", f"{step} commits no content", seq)
@@ -405,7 +411,7 @@ def check_journal(view: Folder) -> None:
     """Replay every record of a folded journal through ``guard``; raises ``WorkflowCorrupt`` at the first record no
     rule permits. Process boundaries are not in the journal, so ``orphan`` is unknown here (W-6 is enforced when
     records are appended)."""
-    replay = Folder(None, expected_key=view.expected_key)
+    replay = Folder(None, expected_key=view.expected_key, source=view)
     for rec in view.records:
         try:
             guard(rec, replay, orphan=None)

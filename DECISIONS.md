@@ -1208,3 +1208,31 @@ content-addressed chunks whose ordered digests and total count are in the manife
 the committed evidence batches by digest; it is duplicated only with a proven and documented semantic need. The
 D-047 projection set stays. The durable report is the whole manifest graph: VERIFY proves every node, and nothing is
 silently omitted.
+
+## D-055 — Per-candidate journal records are committed in step-local batches
+- Status: accepted
+- Topic: stage-04-candidate-batches
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/d055/D055_CLOSURE.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP7cfPWf5UN6kmKGbSHoPG1n`, 2026-11-11T16:48:14Z), answering
+OD-J2 of the D-053/D-054 closure: the remaining per-candidate journal records are batched. The journal no longer
+keeps one record per candidate; the 512 MiB journal limit is not raised and no article-size cap is imposed. Baseline
+`0097a9329d728e8260d48dc79a53a6be5f9c4fa9` with CI run 313 as the green baseline. Batching is step-local: a batch
+never crosses a workflow step or an attempt, and LOOKUP and DETECT stay independently authoritative. LOOKUP commits
+its lookup observation references in deterministic LOOKUP batches of compact references and metadata (the lookup
+observation blobs stay separate blobs, never inlined). DETECT commits each candidate's claim, decision and optional
+question as one entry of a DETECT candidate-result batch; this is storage only (candidates are never merged; dt-1 and
+W-8 are unchanged). A batch belongs to one step and one attempt and is authoritative only at `step_succeeded`; blobs
+of a failed or interrupted attempt may remain but are never committed. The order is the canonical candidate order,
+independent of adapter order and in conflict with neither the report order nor dt-1 identity. The D-053 primitive and
+ceiling are reused; the ceiling is re-derived only if the candidate entry maximum requires it, by the same method, and
+one legal entry always fits. The fold exposes the same logical objects (lookup observations, claims, decisions,
+questions, relationships, committed order) and callers consume the logical fold; any index is disposable. W-8 stays
+fully enforced; the dt-1 and Step 4 differential checks run unchanged and the oracle stays frozen. The D-054 report
+consumes the logical fold with no duplicate store. The journal bound is recomputed from the actual format-4 records as
+an executable, retained bound. The version advances (journal format 4) without migration; formats 1 to 3 are
+development-only. IF-7 (the Stage 03 capture schema has unbounded attempts, issues and failure_artifacts) stays a
+Step 8 condition. Step 8 is not authorized.

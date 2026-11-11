@@ -1,0 +1,231 @@
+{
+  "decision": "D-055 (owner message cmsg_018VCB51nDHP6HXmLU4ea5yP7cfPWf5UN6kmKGbSHoPG1n)",
+  "machine": {
+    "python": "3.12.3",
+    "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39"
+  },
+  "d053_selected_bytes": 8388608,
+  "rule_1_largest_entry": {
+    "evidence_item_E_max (D-053)": 27477,
+    "lookup_reference_max": 24751,
+    "candidate_result_bytes": {
+      "IDENTITY_CONFLICT": 9436,
+      "UNRESOLVED_STATUS": 42432,
+      "sum of field maxima (not a valid entry)": 48987
+    },
+    "candidate_result_valid_max": 42432,
+    "envelopes": {
+      "evidence": 147,
+      "lookup": 135,
+      "candidate": 145
+    },
+    "lower_bound_bytes": 49132
+  },
+  "rule_2_blob_limit": {
+    "MAX_BLOB_BYTES": 268435456
+  },
+  "rule_3_measured_costs": {
+    "candidate_results_per_attempt": 20000,
+    "repeats": 3,
+    "tolerance": 0.1,
+    "best_commit_s": 72.7265,
+    "best_open_s": 35.3078,
+    "rows": [
+      {
+        "ceiling_bytes": 32768,
+        "batches": 582,
+        "entry_bytes": 18813808,
+        "commit_s_median": 80.5517,
+        "open_s_median": 38.3473,
+        "commit_s_runs": [
+          77.1926,
+          80.5517,
+          81.544
+        ],
+        "open_s_runs": [
+          38.3473,
+          38.774,
+          38.2711
+        ]
+      },
+      {
+        "ceiling_bytes": 131072,
+        "batches": 144,
+        "entry_bytes": 18750736,
+        "commit_s_median": 73.4782,
+        "open_s_median": 35.493,
+        "commit_s_runs": [
+          78.0451,
+          73.4782,
+          71.7992
+        ],
+        "open_s_runs": [
+          36.0006,
+          35.3456,
+          35.493
+        ]
+      },
+      {
+        "ceiling_bytes": 524288,
+        "batches": 36,
+        "entry_bytes": 18735184,
+        "commit_s_median": 73.8381,
+        "open_s_median": 35.6695,
+        "commit_s_runs": [
+          73.8381,
+          71.912,
+          74.7256
+        ],
+        "open_s_runs": [
+          36.2999,
+          35.6695,
+          35.5068
+        ]
+      },
+      {
+        "ceiling_bytes": 1048576,
+        "batches": 18,
+        "entry_bytes": 18732592,
+        "commit_s_median": 73.0183,
+        "open_s_median": 35.3078,
+        "commit_s_runs": [
+          73.0183,
+          72.3834,
+          73.6394
+        ],
+        "open_s_runs": [
+          35.0027,
+          35.7807,
+          35.3078
+        ]
+      },
+      {
+        "ceiling_bytes": 2097152,
+        "batches": 9,
+        "entry_bytes": 18731296,
+        "commit_s_median": 73.3934,
+        "open_s_median": 35.8132,
+        "commit_s_runs": [
+          74.2603,
+          72.3028,
+          73.3934
+        ],
+        "open_s_runs": [
+          35.8132,
+          36.0028,
+          35.0042
+        ]
+      },
+      {
+        "ceiling_bytes": 4194304,
+        "batches": 5,
+        "entry_bytes": 18730720,
+        "commit_s_median": 72.7265,
+        "open_s_median": 35.8463,
+        "commit_s_runs": [
+          72.7265,
+          72.5093,
+          73.0594
+        ],
+        "open_s_runs": [
+          35.8463,
+          35.4931,
+          36.6906
+        ]
+      },
+      {
+        "ceiling_bytes": 8388608,
+        "batches": 3,
+        "entry_bytes": 18730432,
+        "commit_s_median": 73.7345,
+        "open_s_median": 35.7358,
+        "commit_s_runs": [
+          73.7345,
+          73.9949,
+          72.3727
+        ],
+        "open_s_runs": [
+          35.3632,
+          35.9597,
+          35.7358
+        ]
+      },
+      {
+        "ceiling_bytes": 16777216,
+        "batches": 2,
+        "entry_bytes": 18730288,
+        "commit_s_median": 74.6313,
+        "open_s_median": 35.3813,
+        "commit_s_runs": [
+          76.0892,
+          73.9221,
+          74.6313
+        ],
+        "open_s_runs": [
+          36.1346,
+          35.2731,
+          35.3813
+        ]
+      }
+    ],
+    "evidence_rows": "../d053/part_ceiling.json rule_3_measured_costs (unchanged code path)"
+  },
+  "rule_4_memory_per_batch": {
+    "typical entries": [
+      {
+        "batch_bytes": 8388049,
+        "entries": 9697,
+        "peak_bytes": 33581305,
+        "peak_over_batch": 4.0
+      },
+      {
+        "batch_bytes": 33554359,
+        "entries": 38791,
+        "peak_bytes": 134298829,
+        "peak_over_batch": 4.0
+      }
+    ],
+    "maximal valid entries": [
+      {
+        "batch_bytes": 8359445,
+        "entries": 197,
+        "peak_bytes": 51501330,
+        "peak_over_batch": 6.16
+      },
+      {
+        "batch_bytes": 33522214,
+        "entries": 790,
+        "peak_bytes": 206518589,
+        "peak_over_batch": 6.16
+      }
+    ]
+  },
+  "rule_5_record_count": {
+    "entries_per_run_at_caps": {
+      "evidence items": 510000,
+      "lookup references": 70000,
+      "candidate results": 70000
+    },
+    "entry_bytes_max": {
+      "evidence items": 27477,
+      "lookup references": 24751,
+      "candidate results": 48987
+    },
+    "largest_batch_record_bytes": {
+      "evidence items": 537,
+      "lookup references": 532,
+      "candidate results": 542
+    },
+    "A_max": 3,
+    "record_share": 0.01,
+    "budget_bytes": 5368709.12,
+    "smallest_power_of_two_within_budget": 8388608,
+    "batch_record_bytes_at_selected": 3687387
+  },
+  "selected_bytes": 8388608,
+  "admissible_ceilings": [
+    8388608,
+    16777216
+  ],
+  "changed_from_d053": false
+}

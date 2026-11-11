@@ -1,8 +1,12 @@
-"""Deterministic ordering and chunking of bulk Stage 04 collections (owner decisions D-053 and D-054; SPEC 8.8).
+"""Deterministic ordering and chunking of bulk Stage 04 collections (owner decisions D-053, D-054, D-055; SPEC 8.8,
+8.9).
 
 The journal is the audit log, commit log and state-machine history; it is not the bulk store. Evidence items are
-committed in content-addressed **evidence batches** (one ``evidence_batch_recorded`` record per batch), and the large
-collections of a report are content-addressed **report chunks** named by a small report manifest (``report.py``).
+committed in content-addressed **evidence batches** (one ``evidence_batch_recorded`` record per batch), the lookup
+observation references of LOOKUP and the candidate results of DETECT in content-addressed **candidate batches**
+(``lookup_batch_recorded``, ``candidate_result_batch_recorded``; D-055), and the large collections of a report are
+content-addressed **report chunks** named by a small report manifest (``report.py``). Every batch belongs to one step
+and one attempt.
 
 Two rules make the representation a function of the content alone, so that equal content always gives equal blobs:
 
@@ -14,9 +18,15 @@ Two rules make the representation a function of the content alone, so that equal
 - **Boundaries** (``boundaries``). Items are taken in that order and a part closes before the next item would make its
   canonical encoding exceed ``MAX_PART_BYTES``. A part always holds at least one item, so an item larger than the
   ceiling forms a part of its own; it still has to fit ``MAX_BLOB_BYTES``. The ceiling is derived in
-  ``docs/verification/stage-04/review/step7/d053/`` (``part_ceiling.py``); it is a constant of journal format 3.
+  ``docs/verification/stage-04/review/step7/d053/`` (``part_ceiling.py``) and re-derived with LOOKUP and DETECT
+  entries in ``.../step7/d055/`` (D-055); it is a constant of journal formats 3 and 4.
 
-Investigation Memory checks both rules when a batch or a report is committed and when the journal is opened
+- **Order of candidate entries** (D-055, ``LOOKUP_ORDER``, ``CANDIDATE_ORDER``). A LOOKUP entry (one lookup observation
+  reference) is ordered by the digest of its observation blob, then its canonical encoding; a DETECT entry (one
+  candidate's claim, decision and question) by the candidate's ``cand_ref``, then its ``claim_id``. Both keys are
+  functions of the entry, so the order does not depend on the order the adapter supplied.
+
+Investigation Memory checks these rules when a batch or a report is committed and when the journal is opened
 (``fold.py``), so a journal can only hold the one canonical representation of its content.
 """
 
@@ -27,10 +37,12 @@ from collections.abc import Callable, Iterable, Mapping
 from typing import Any
 
 from citerift.investigation.canonical import canon
-from citerift.investigation.schemas import EVIDENCE_BATCH
+from citerift.investigation.schemas import CANDIDATE_BATCH, EVIDENCE_BATCH, LOOKUP_BATCH
 
 BATCH_VERSION = "1.0.0"
 ORDER = "dependency-topological/evidence-id/1"
+LOOKUP_ORDER = "observation-blob/entry/1"
+CANDIDATE_ORDER = "candidate-ref/claim-id/1"
 # Derived in docs/verification/stage-04/review/step7/d053/part_ceiling.py (part_ceiling.json): the smallest power of two
 # that holds the largest legal item, keeps the batch records of the worst legal investigation within 1 % of the journal
 # limit, and costs no measurable commit or open time over larger ceilings. A test pins it to that record.
@@ -136,4 +148,54 @@ def batch_records(digests: list[str], batches: list[dict[str, Any]]) -> list[dic
     return [
         {"batch": d, "batch_index": i, "batch_total": total, "evidence_count": len(b["items"])}
         for i, (d, b) in enumerate(zip(digests, batches, strict=True))
+    ]
+
+
+# D-055: step-local candidate batches ---------------------------------------------------------------------------------
+
+
+def lookup_batch(entries: list[Any]) -> dict[str, Any]:
+    return {"schema": LOOKUP_BATCH, "schema_version": BATCH_VERSION, "order": LOOKUP_ORDER, "entries": entries}
+
+
+def candidate_batch(entries: list[Any]) -> dict[str, Any]:
+    return {"schema": CANDIDATE_BATCH, "schema_version": BATCH_VERSION, "order": CANDIDATE_ORDER, "entries": entries}
+
+
+LOOKUP_ENVELOPE = len(canon(lookup_batch([])))
+CANDIDATE_ENVELOPE = len(canon(candidate_batch([])))
+
+
+def lookup_key(entry: Mapping[str, Any]) -> tuple[str, bytes]:
+    """SPEC 8.9: the observation blob digest, then the entry's canonical encoding (a total order on entries)."""
+    return (entry["blob"], canon(entry))
+
+
+def candidate_key(entry: Mapping[str, Any]) -> tuple[str, str]:
+    """SPEC 8.9: the work candidate (``cand_ref``, the dt-1 candidate identity), then the claim id."""
+    return (entry["claim"]["cand_ref"], entry["claim"]["claim_id"])
+
+
+def ordered_parts(
+    entries: Iterable[Mapping[str, Any]],
+    key: Callable[[Mapping[str, Any]], Any],
+    make: Callable[[list[Any]], dict[str, Any]],
+    limit: int | None = None,
+) -> list[dict[str, Any]]:
+    """The canonical batches of one attempt's entries of one kind: sorted by ``key``, then cut by the byte ceiling."""
+    ordered = sorted((dict(e) for e in entries), key=key)
+    counts = boundaries([item_bytes(e) for e in ordered], len(canon(make([]))), limit)
+    out, at = [], 0
+    for n in counts:
+        out.append(make(ordered[at : at + n]))
+        at += n
+    return out
+
+
+def entry_records(digests: list[str], parts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """The ``lookup_batch_recorded`` / ``candidate_result_batch_recorded`` payloads of an attempt's batches."""
+    total = len(parts)
+    return [
+        {"batch": d, "batch_index": i, "batch_total": total, "entry_count": len(b["entries"])}
+        for i, (d, b) in enumerate(zip(digests, parts, strict=True))
     ]

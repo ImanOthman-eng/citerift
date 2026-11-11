@@ -19,13 +19,14 @@ from controller_support import (
     append_content,
     create,
     env_for,
+    h,
     journal,
     run_once,
 )
 
 from citerift.investigation import ids, sets, workflow
 from citerift.investigation.adapters import StepRequest, StepResult
-from citerift.investigation.errors import InvestigationMemoryError
+from citerift.investigation.errors import AppendRefused, InvestigationMemoryError
 from citerift.investigation.fold import STEPS, Folder
 from citerift.investigation.memory import InvestigationMemory
 
@@ -41,14 +42,18 @@ def _stop(req: StepRequest) -> StepResult:
 
 
 def _payloads(root: Path, key: str, kind: str) -> list[dict[str, Any]]:
-    return [r["payload"] for r in journal(root, key) if r["kind"] == kind]
+    """The payloads of the committed logical records of ``kind`` (D-055: claims, decisions and questions are read
+    from the DETECT candidate-result batches through the fold)."""
+    if kind not in ("claim_recorded", "decision_recorded", "question_opened"):
+        return [r["payload"] for r in journal(root, key) if r["kind"] == kind]
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        return [r["payload"] for r in mem.view.committed_content() if r["kind"] == kind]
 
 
 def _fold(root: Path, key: str) -> Folder:
-    f = Folder(None)
-    for r in journal(root, key):
-        f.apply(r)
-    return f
+    """The validated fold of the stored journal (it reads the batches, so it holds the logical content)."""
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        return mem.view
 
 
 # Needs-resolution (W-8, S-7.6) --------------------------------------------------------------------------------------
@@ -139,9 +144,21 @@ def test_unknown_claim_class_is_a_decision_table_gap(tmp_path: Path) -> None:
 
 
 @pytest.mark.negative
-@pytest.mark.parametrize("change", ["drop-question", "drop-decision", "wrong-disposition", "question-on-not-found"])
-def test_guard_refuses_detect_content_that_breaks_w8(tmp_path: Path, change: str) -> None:
-    """Forged DETECT content (not what the controller derives) is refused when the step would succeed."""
+@pytest.mark.parametrize(
+    ("change", "rule"),
+    [
+        ("drop-question", "W-8"),
+        ("wrong-disposition", "W-8"),
+        ("question-on-not-found", "W-8"),
+        ("drop-decision", "M-3"),
+        ("decision-for-another-claim", "M-7"),
+        ("question-for-another-claim", "M-7"),
+    ],
+)
+def test_guard_refuses_detect_content_that_breaks_w8(tmp_path: Path, change: str, rule: str) -> None:
+    """Forged DETECT content (not what the controller derives) is refused: a candidate entry that W-8 forbids when the
+    step would succeed, and an entry Investigation Memory cannot store at all (D-055: an entry binds one claim, its
+    decision and its question; a claim without a decision, or a decision or question of another claim, is refused)."""
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
     cls = "NOT_FOUND_IN_CHECKED_SOURCES" if change == "question-on-not-found" else "IDENTITY_CONFLICT"
@@ -158,25 +175,35 @@ def test_guard_refuses_detect_content_that_breaks_w8(tmp_path: Path, change: str
         res = ok_result(req, ((cls, "c1"),))
         for blob in res.blobs:  # type: ignore[union-attr]
             ctl._mem.put_blob(blob)  # the evidence sets the claims name (D-047)
-        from citerift.investigation.controller import _content
+        from citerift.investigation.controller import _content, _entries
 
         content = _content("DETECT", res)  # type: ignore[arg-type]
-        cid = next(p["claim_id"] for kk, p in content if kk == "claim_recorded")
+        _, entries, _ = _entries("DETECT", content)
+        (entry,) = entries
+        cid = entry["claim"]["claim_id"]
         if change == "drop-question":
-            content = [(kk, p) for kk, p in content if kk != "question_opened"]
+            entry["question"] = None
         elif change == "drop-decision":
-            content = [(kk, p) for kk, p in content if kk != "decision_recorded"]
+            del entry["decision"]
         elif change == "wrong-disposition":
-            content = [
-                (kk, {**p, "disposition": "REPORT_FINDING", "decision_id": ids.decision_id(cid, "REPORT_FINDING")})
-                if kk == "decision_recorded"
-                else (kk, p)
-                for kk, p in content
-            ]
+            entry["decision"] = {
+                **entry["decision"],
+                "disposition": "REPORT_FINDING",
+                "decision_id": ids.decision_id(cid, "REPORT_FINDING"),
+            }
+        elif change == "decision-for-another-claim":
+            entry["decision"] = {**entry["decision"], "claim_id": h("another claim")}
+        elif change == "question-for-another-claim":
+            entry["question"] = {**entry["question"], "claim_id": h("another claim")}
         else:
             q = ids.question_id(cid, "identity_conflict")
-            content.append(("question_opened", {"question_id": q, "claim_id": cid, "kind": "identity_conflict"}))
-        append_content(ctl, "DETECT", 1, content)
+            entry["question"] = {"question_id": q, "claim_id": cid, "kind": "identity_conflict"}
+        if rule != "W-8":
+            with pytest.raises(AppendRefused) as refused:
+                append_content(ctl, "DETECT", 1, content, entries=[entry])
+            assert refused.value.invariant == rule
+            return
+        append_content(ctl, "DETECT", 1, content, entries=[entry])
         man = ctl._mem.put_blob(workflow.manifest(ctl.view, "DETECT", k, digests))
         with pytest.raises(workflow.WorkflowRefused) as exc:
             ctl._append("step_succeeded", {"step_key": k, "outputs": [man], "root": None}, "DETECT", 1)

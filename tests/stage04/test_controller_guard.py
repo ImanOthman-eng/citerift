@@ -55,10 +55,14 @@ RULES = (
 )
 
 
-def _rules(records: list[dict[str, Any]]) -> list[str]:
-    f = Folder(None)
+def _rules(root: Path, key: str) -> list[str]:
+    """The transition rule of each stored record, replayed as ``check_journal`` does (D-055: the replay takes the
+    logical content of the batches from the validated fold)."""
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        view = mem.view
+    f = Folder(None, expected_key=view.expected_key, source=view)
     out = []
-    for r in records:
+    for r in view.records:
         out.append(workflow.guard(r, f, orphan=None))
         f.apply(r)
     return out
@@ -270,7 +274,7 @@ def test_every_transition_rule_is_used_by_controller_runs(tmp_path: Path) -> Non
             st = run_once(root, key, Plan(script), env_for(live), clock)
             if st.next.action == "wait" and st.next.not_before:
                 clock.t = st.next.not_before
-        used.update(_rules(journal(root, key)))
+        used.update(_rules(root, key))
     # An interruption and a staleness record.
     base = tmp_path / "x"
     base.mkdir()
@@ -288,7 +292,7 @@ def test_every_transition_rule_is_used_by_controller_runs(tmp_path: Path) -> Non
     env = Env()
     env.values["config"]["extra"] = 1
     assert run_once(root, key, Plan(), env, clock).lifecycle == "STALE"
-    used.update(_rules(journal(root, key)))
+    used.update(_rules(root, key))
     assert set(used) == set(RULES), sorted(set(RULES) - set(used))
 
 
@@ -315,6 +319,17 @@ def _batched(
     digests = [digest(b) for b in evidence]
     out: list[tuple[str, dict[str, Any], str | None, int | None]] = [("blob", b, None, None) for b in evidence]
     out += [("evidence_batch_recorded", r, step, attempt) for r in batches.batch_records(digests, evidence)]
+    return out
+
+
+def _candidates(
+    entries: list[dict[str, Any]], step: str, attempt: int
+) -> list[tuple[str, dict[str, Any], str | None, int | None]]:
+    """Forge entries that commit DETECT candidate results as canonical candidate-result batches (D-055)."""
+    parts = batches.ordered_parts(entries, batches.candidate_key, batches.candidate_batch)
+    digests = [digest(b) for b in parts]
+    out: list[tuple[str, dict[str, Any], str | None, int | None]] = [("blob", b, None, None) for b in parts]
+    out += [("candidate_result_batch_recorded", r, step, attempt) for r in batches.entry_records(digests, parts)]
     return out
 
 
@@ -627,8 +642,7 @@ def test_w8_conflict_claim_without_its_question_is_corrupt(tmp_path: Path) -> No
             ("blob", evidence_set, None, None),
             ("step_started", {"step_key": k}, "DETECT", 1),
             *_batched(evs, "DETECT", 1),
-            ("claim_recorded", c, "DETECT", 1),
-            ("decision_recorded", decision, "DETECT", 1),
+            *_candidates([{"claim": c, "decision": decision, "question": None}], "DETECT", 1),
             ("step_succeeded", {"step_key": k, "outputs": [digest(out)], "root": None}, "DETECT", 1),
         ],
     )

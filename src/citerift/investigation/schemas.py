@@ -28,6 +28,8 @@ EVIDENCE_SET = PREFIX + "evidence-set"
 PROJECTION_SET = PREFIX + "projection-set"
 EVIDENCE_BATCH = PREFIX + "evidence-batch"
 REPORT_CHUNK = PREFIX + "report-chunk"
+LOOKUP_BATCH = PREFIX + "lookup-batch"
+CANDIDATE_BATCH = PREFIX + "candidate-result-batch"
 DIRS = ("contracts", "wiki", "retraction", "investigation")
 
 

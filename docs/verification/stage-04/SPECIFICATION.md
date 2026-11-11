@@ -522,7 +522,7 @@ Each claim gets exactly one decision:
 
 | Field | Rule |
 |---|---|
-| `v` | journal format version, `3` (S-8.7) |
+| `v` | journal format version, `4` (S-8.7) |
 | `seq` | 0, 1, 2, … without gaps |
 | `prev` | `digest` of record `seq − 1`; for `seq = 0` the constant `H("citerift-journal-genesis/1", investigation_key)` |
 | `kind` | one of section 8.3 |
@@ -538,24 +538,32 @@ Each claim gets exactly one decision:
 |---|---|---|
 | Lifecycle | `investigation_created` | request, `request_key`, plan version, config digest, engine identities |
 | Execution | `step_started`, `step_succeeded`, `step_failed`, `step_deferred`, `step_interrupted`, `stale_detected` | step key; for `step_succeeded` the output digests (and for ACQUIRE the bound root); for `step_failed` `{code, retryable, reason, detail, wall_clock}` and, for ACQUIRE, `not_before` (the Retry-After instant the attempt observed, or null; `wall_clock` is non-null only for `ACQUIRE_WALL_CLOCK_EXCEEDED`, owner decision D-042); for `step_deferred` `{code, not_before}`; for `stale_detected` `{changed, recorded, current}` (section 10.3) |
-| Observation | `observation_recorded` | `{obs_kind ∈ {bundle, extraction, index_identity, lookup}, blob, source_ref}` |
+| Observation | `observation_recorded`, `lookup_batch_recorded` | `observation_recorded`: `{obs_kind ∈ {bundle, extraction, index_identity}, blob, source_ref}`. A lookup observation `{obs_kind = lookup, blob, source_ref}` is never a record of its own: it is an entry of a LOOKUP batch, committed by `lookup_batch_recorded` `{batch, batch_index, batch_total, entry_count}` (section 8.9, D-055); the lookup observation blob stays its own blob |
 | Evidence | `evidence_batch_recorded` | `{batch, batch_index, batch_total, evidence_count}`: one evidence batch blob (section 8.8, D-053) holding complete evidence items `{evidence_id, observation, pointer, kind, refs, value}` (keys, identifier statuses, coherence results) |
-| Claim | `claim_recorded` | `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, evidence_set, supporting_count, contradicting_count}` (the lists are in the evidence-set blob, D-047) |
-| Decision | `decision_recorded` | `{decision_id, claim_id, disposition}` |
-| Question | `question_opened`, `question_closed` | `{question_id, claim_id, kind}`; close adds `{evidence}` |
+| Claim, decision, opened question | `candidate_result_batch_recorded` | `{batch, batch_index, batch_total, entry_count}`: one DETECT candidate-result batch (section 8.9, D-055) whose entries are `{claim, decision, question}`, one per work candidate: the claim `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, evidence_set, supporting_count, contradicting_count}` (the lists are in the evidence-set blob, D-047), its decision `{decision_id, claim_id, disposition}` and the question it opens `{question_id, claim_id, kind}` or null |
+| Question (closed) | `question_closed` | `{question_id, claim_id, kind, evidence}` |
 | Report | `report_recorded` | `{report, projection_set, projection_count}`: the report manifest blob (section 11.1, D-054) and a content-addressed projection set listing the v1 projection blobs (D-047) |
 | History | `claim_superseded` | `{old_claim_id, new_claim_id, reason, new_evidence}` |
 | Verification | `verification_recorded` | `{result, checks}` |
+
+**Logical records** (D-055). The fold exposes every entry of a LOOKUP or DETECT batch as the record it stands for,
+with the batch record's step and attempt: a lookup observation as `observation_recorded` (`obs_kind = lookup`), and a
+candidate result as `claim_recorded`, `decision_recorded` and, when the entry has one, `question_opened`, in the
+entry order of section 8.9. Callers (W-8, the report, VERIFY, the controller's step requests) consume this logical
+fold; `claim_recorded`, `decision_recorded` and `question_opened` are logical kinds, not journal kinds, and their
+payloads are exactly those of journal format 3. The content digest `C(J)` (MM 7.3) covers the stored records, which
+bind their entries through the batch digests.
 
 The exact payload of each kind is fixed by `urn:citerift:schema:investigation:v1:journal-record` (Step 5). The schema
 spells out what this table states in words: `investigation_created` adds `investigation_id` and `migrated_from`
 (S-8.7); an evidence item adds the typed `value` read at its pointer; a claim adds its `candidate`, `table_version` and
 `upstream_reasons` (Stage 02 basis reasons with their evidence); `verification_recorded` adds the content digest
 `C(J)` (section 11.1). Every list a record holds has a schema bound (`maxItems`), so no record grows with the article
-(`review/step7/d053/bounds.json`: the largest record of any kind is 50,297 bytes, 4.8 % of the 1 MiB record limit);
-the collections that do grow (a claim's evidence, a report's projections) are sets (D-047), the evidence itself is in
-batches (D-053) and the report's collections are in chunks (D-054), all checked on append and on open: a missing or
-corrupt set, batch or chunk is corruption, never an empty one. Invariants the schema
+(`review/step7/d055/bounds.json`: the largest record of any format-4 kind is 50,297 bytes, 4.8 % of the 1 MiB record
+limit); the collections that do grow (a claim's evidence, a report's projections) are sets (D-047), the evidence
+itself is in batches (D-053), the lookup observation references and the candidate results are in batches (D-055) and
+the report's collections are in chunks (D-054), all checked on append and on open: a missing or corrupt set, batch or
+chunk is corruption, never an empty one. Invariants the schema
 cannot express (M-1 to M-8, M-10, M-11, M-13, M-14, the transition rules
 and the derivation of every id) are checked by Investigation Memory and VERIFY
 (`review/step5/STEP5_SCHEMA_REVIEW.md`).
@@ -604,9 +612,10 @@ committed data, the investigation is `CORRUPT` (read-only; nothing is repaired, 
 is the last one or not. Incomplete append ≠ integrity failure.
 
 - S-8.7 Versioning: journal format `v = 1` is the first version, `v = 2` the format of D-047 and D-051 (evidence
-  and projection sets, the kind-bound evidence id), and `v = 3` the current format of D-053 and D-054 (evidence
-  batches, report manifest). None was released, so no migration exists: a reader refuses every version but the
-  current one (`JOURNAL_VERSION_UNSUPPORTED`). A later version that needs migration writes a new investigation whose
+  and projection sets, the kind-bound evidence id), `v = 3` the format of D-053 and D-054 (evidence batches, report
+  manifest), and `v = 4` the current format of D-055 (LOOKUP and DETECT candidate-result batches). Formats 1 to 3 were
+  development formats and none was released, so no migration exists: a reader refuses every version but the current
+  one (`JOURNAL_VERSION_UNSUPPORTED`). A later version that needs migration writes a new investigation whose
   `investigation_created` cites the source journal's last digest; no journal is rewritten in place.
 
 ### 8.7 Memory invariants
@@ -655,7 +664,9 @@ Both are content-addressed blobs (S-8.2) cut by one rule.
     encoding exceed `MAX_PART_BYTES` = 8 MiB. A part always holds at least one item, so an item larger than the ceiling
     forms a part of its own (it still has to fit `MAX_BLOB_BYTES`). The ceiling is derived in
     `review/step7/d053/part_ceiling.py` from the largest legal item, `MAX_BLOB_BYTES`, the envelope, the measured parse
-    and validation memory, the record count and measured commit and open time; it is a constant of journal format 3.
+    and validation memory, the record count and measured commit and open time; it is a constant of journal formats 3
+    and 4. D-055 re-checked it with the LOOKUP and DETECT entries by the same method (`review/step7/d055/part_ceiling.py`)
+    and it holds unchanged; the same ceiling cuts the batches of section 8.9.
   - (e) **Checks** on append and on open (Investigation Memory): the batch exists, is intact and schema-valid
     (`EVIDENCE_BATCH_INVALID`, M-3); every id follows D-051 (`EVIDENCE_ID_INVALID`, CH-1) and is new (M-14); every
     item's observation is recorded (M-10) and every reference is defined earlier in the batch, earlier in the series
@@ -667,6 +678,57 @@ Both are content-addressed blobs (S-8.2) cut by one rule.
     batches of a failed or interrupted attempt stay as harmless orphans (their blobs may exist; nothing refers to them
     as committed). The fold keeps an index from each committed evidence id to its batch and position; it is rebuilt from
     the journal and the blobs on every open and is never a second store.
+
+### 8.9 LOOKUP and DETECT candidate-result batches (owner decision D-055)
+
+The per-candidate content is committed in step-local batches, like the evidence (section 8.8): LOOKUP's lookup
+observation references in **LOOKUP batches**, and DETECT's claim, decision and optional question of each work
+candidate in **DETECT candidate-result batches**. Batching is storage only: an entry is exactly one candidate's
+records, candidates are never merged, and dt-1, the decision table and W-8 are unchanged.
+
+- S-8.9 LOOKUP and candidate-result batches follow rules (a) to (f); a violation cites S-8.9.
+  - (a) **Batch blobs.** A LOOKUP batch (`urn:citerift:schema:investigation:v1:lookup-batch` 1.0.0) is
+    `{schema, schema_version, order, entries}` with `order = "observation-blob/entry/1"` and `entries` a non-empty
+    list of lookup observation payloads `{obs_kind = lookup, blob, source_ref}` (engine `citerift.retraction`,
+    operation `gather`): compact references and metadata only; the lookup observation stays its own blob and is never
+    inlined. A candidate-result batch (`urn:citerift:schema:investigation:v1:candidate-result-batch` 1.0.0) has
+    `order = "candidate-ref/claim-id/1"` and `entries` a non-empty list of `{claim, decision, question}`: the claim
+    (`claim` schema), its decision and the question the claim opens, or null. Both are immutable and named by their
+    SHA-256.
+  - (b) **Batch records.** `lookup_batch_recorded` (LOOKUP only) and `candidate_result_batch_recorded` (DETECT only),
+    each `{batch, batch_index, batch_total, entry_count}`, closed. The record schema binds each kind to its step, and a
+    record belongs to the open attempt (M-6), so a batch belongs to exactly one step and one attempt and never crosses
+    either. The batch records of one kind in one attempt form one series `0 … batch_total − 1`, in index order, with
+    one `batch_total`, complete before `step_succeeded`; otherwise `BATCH_SEQUENCE`. A batch digest recorded twice in a
+    series, or one that is already committed, is `DUPLICATE_ID` (M-14). The controller publishes every blob, then
+    writes the evidence batches (claims name evidence, M-4), then the step's entry series, then its other records.
+  - (c) **Order.** LOOKUP entries are sorted by (lookup observation blob digest, canonical encoding of the entry),
+    non-decreasing: two candidates may share one lookup, and each reference is kept. Candidate results are sorted by
+    (`cand_ref`, `claim_id`), strictly increasing: one entry per candidate result. The order is a function of the set
+    of entries, so the same set in any adapter order gives the same order, boundaries and digests. It changes no
+    identity (claim, decision and question ids are those of dt-1 over unchanged payloads) and no report order (the
+    report orders its claim entries by its own key, section 11.1).
+  - (d) **Boundaries.** The rule of S-8.8 (d), with the same primitive and the same `MAX_PART_BYTES`, applied with the
+    batch kind's envelope: a batch closes before the next entry would make its canonical encoding exceed the ceiling,
+    and an entry larger than the ceiling forms a batch of its own (one legal entry always fits; D-055 re-check in
+    `review/step7/d055/part_ceiling.py`).
+  - (e) **Checks** on append and on open (Investigation Memory): the batch exists, is intact and schema-valid
+    (`LOOKUP_BATCH_INVALID` or `CANDIDATE_BATCH_INVALID`, M-3) and `entry_count` equals its entries. Every LOOKUP
+    entry names an existing lookup observation blob (M-3). In every candidate result the decision and the question
+    name the entry's claim (`CANDIDATE_ENTRY_INVALID`, M-7); the claim's evidence set exists, is valid and names only
+    committed or earlier evidence (M-3, M-4, M-7); the claim, decision and question ids are new (`DUPLICATE_ID`,
+    M-14). At `step_succeeded` each series is complete and its entries are in the canonical order with the canonical
+    boundaries, recomputed from the entries (`BATCH_NOT_CANONICAL`). W-8 then runs, unchanged, over the logical
+    content of the attempt (section 9.9): two claims for one candidate, a decision or question without its claim, a
+    wrong disposition, a conflict beside a positive or negative result, a missing or an extra question and a
+    duplicate candidate result are all refused. A fold that holds a batch record but cannot read its entries (no blob
+    access and no validated fold to take them from) is refused by the workflow guard: it never judges content it
+    cannot see.
+  - (f) **Commit.** A batch is authoritative only when its attempt has `step_succeeded` (M-6). Blobs of a failed or
+    interrupted attempt may remain but are never committed and nothing refers to them as committed; a retry that
+    derives the same entries publishes the same content-addressed blob and commits it by its own record, and the
+    earlier attempt's record never counts. The logical records (section 8.3) are rebuilt from the journal and the
+    blobs on every open; any index over them is disposable, never a second store.
 
 ## 9. Investigation Workflow Controller
 

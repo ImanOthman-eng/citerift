@@ -18,7 +18,8 @@ Discrepancies are classified (``classify``); the test fails on any discrepancy o
 * ``BATCH_SERIES_CLOSED`` (spec, owner decision D-053): the model's "content" is any number of content records in
   an open attempt; in production NORMALIZE's and DETECT's evidence is one series of batch records numbered
   ``batch_index`` of ``batch_total`` (SPEC 8.8), so once an attempt has written its content, a further batch record is
-  refused (S-8.8 ``BATCH_SEQUENCE``). Checked by ``test_batch_series_closed_is_the_batch_sequence_rule``.
+  refused (S-8.8 ``BATCH_SEQUENCE``). D-055 does the same for LOOKUP's lookup references (S-8.9 ``BATCH_SEQUENCE``).
+  Checked by ``test_batch_series_closed_is_the_batch_sequence_rule``.
 
 Input changes are applied only once a step has committed (see ``test_input_change_before_any_commit``): before
 that, the model's sticky ``env_changed`` flag makes a later resume STALE, while SPEC S-10.1 defines staleness by the
@@ -271,7 +272,15 @@ class Prod:
         if step == "EXTRACT":
             return "observation_recorded", obs("extraction", EXTRACTION, "extract_bundle")
         if step == "LOOKUP":
-            return "observation_recorded", obs("lookup", LOOKUP, "gather")
+            # D-055: a lookup reference is committed in a LOOKUP batch; the probe publishes a one-entry batch (an
+            # orphan blob unless the record is written) and takes the next index of the attempt's series.
+            series = self.ctl.view.pending.series.get("lookup_batch_recorded")
+            index = len(series.digests) if series is not None else 0
+            total = series.total if series is not None and series.total is not None else index + 1
+            entry = obs("lookup", LOOKUP, "gather")
+            entry["source_ref"]["locator"] = f"probe-{index:06d}"
+            d = self.mem.put_blob(batches.lookup_batch([entry]))  # type: ignore[union-attr]
+            return "lookup_batch_recorded", {"batch": d, "batch_index": index, "batch_total": total, "entry_count": 1}
         if step in ("NORMALIZE", "DETECT"):
             if step == "NORMALIZE":
                 item = evidence(
@@ -354,7 +363,7 @@ def classify(rec: Any, s: Any, model_rule: str | None, prod_rule: str | None, co
         return "SUCCESS_FLAG"
     if (
         kind == "content"
-        and C.STEPS[i] in ("NORMALIZE", "DETECT")
+        and C.STEPS[i] in ("NORMALIZE", "LOOKUP", "DETECT")
         and s.steps[i].content
         and model_rule == "T-CONTENT"
         and prod_rule is None
@@ -640,20 +649,22 @@ def test_w6_stricter_is_the_only_orphan_discrepancy(tmp_path: Path) -> None:
     assert found == {"W6_STRICTER": 4}
 
 
-def test_batch_series_closed_is_the_batch_sequence_rule(tmp_path: Path) -> None:
-    """``BATCH_SERIES_CLOSED`` is exactly S-8.8 BATCH_SEQUENCE: before an attempt's content both sides accept a batch
-    record; after it, production refuses a further batch by that rule and no other."""
+@pytest.mark.parametrize(("step", "rule"), [("NORMALIZE", "S-8.8"), ("LOOKUP", "S-8.9")])
+def test_batch_series_closed_is_the_batch_sequence_rule(tmp_path: Path, step: str, rule: str) -> None:
+    """``BATCH_SERIES_CLOSED`` is exactly BATCH_SEQUENCE (S-8.8 for evidence, S-8.9 for LOOKUP references): before an
+    attempt's content both sides accept a batch record; after it, production refuses a further batch by that rule and
+    no other."""
     prod = Prod(tmp_path, False, False)
     prod.create()
     prod.open()
     try:
-        for step in ("VALIDATE", "ACQUIRE", "EXTRACT"):
-            prod.start(step)
-            if step != "VALIDATE":
+        for done in STEPS[: STEPS.index(step)]:
+            prod.start(done)
+            if done != "VALIDATE":
                 prod.write_content()
             prod.succeed()
-        i = STEPS.index("NORMALIZE")
-        prod.start("NORMALIZE")
+        i = STEPS.index(step)
+        prod.start(step)
         assert prod.legal(("content", i, None), False) == "T-CONTENT"
         prod.write_content()
         assert prod.legal(("content", i, None), False) is None
@@ -662,6 +673,6 @@ def test_batch_series_closed_is_the_batch_sequence_rule(tmp_path: Path) -> None:
         assert workflow.guard(proposal, prod.ctl.view, orphan=False) == "T-CONTENT"
         with pytest.raises(InvariantViolation) as exc:
             prod.ctl.view.check(prod._full(proposal))
-        assert (exc.value.invariant, exc.value.code) == ("S-8.8", "BATCH_SEQUENCE")
+        assert (exc.value.invariant, exc.value.code) == (rule, "BATCH_SEQUENCE")
     finally:
         prod.close()

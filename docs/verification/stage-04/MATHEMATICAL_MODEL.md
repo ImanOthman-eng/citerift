@@ -471,6 +471,42 @@ before the ACQUIRE commit (review finding F-09).
   checks soundness on `report_recorded` and on open; an unsound or incomplete graph is `REPORT_INVALID`.
 - Failure: a missing or corrupt batch or chunk is a violation (`CORRUPT` on open), never an empty part.
 
+### 7.5 LOOKUP and DETECT candidate-result batches (owner decision D-055)
+
+- Domain: the entries `Y` of one batch kind that one attempt produces: LOOKUP references `y = ⟨blob, source_ref⟩`
+  (a multiset: two candidates may share one lookup) or DETECT candidate results `y = ⟨claim, decision, question⟩`
+  (a set); the ceiling `c` and the kind's envelope `e` as in 7.4.
+- Key and order. LOOKUP: `κ(y) = ⟨y.blob, canon(y)⟩`, `π(Y)` = the entries sorted by `κ`, non-decreasing. DETECT:
+  `κ(y) = ⟨y.claim.cand_ref, y.claim.claim_id⟩`, `π(Y)` sorted by `κ`, strictly increasing (equal keys are refused:
+  equal `claim_id` is `DUPLICATE_ID`). Boundaries `β` exactly as 7.4. Batches `B(Y) = ⟨batch(π(Y)[β-part j]) : j⟩`,
+  one record per batch `⟨H(batch), j, |B(Y)|, |entries|⟩`.
+- Expansion. `ε(B(Y))` maps every LOOKUP entry to the logical record `⟨observation_recorded, step, y⟩` and every
+  candidate result to `⟨claim_recorded, step, claim⟩, ⟨decision_recorded, step, decision⟩` and, if `question ≠ null`,
+  `⟨question_opened, step, question⟩`, in the order of `π(Y)`. The logical fold is the committed records with every
+  batch record replaced by `ε` of its batch; W-8 (`detect_problem`), the report soundness check (7.4) and VERIFY are
+  functions of the logical fold.
+- Invariants. **CB-1** (determinism) `B(Y)` depends only on `Y` as a multiset or set: `π` is a sort by a total key
+  and `β` a function of the sizes in that order, so every adapter order gives the same batches and digests. **CB-2**
+  (storage only) `ε` is injective on entries and preserves every payload: the logical fold of a format-4 journal has
+  exactly the claims, decisions, questions and lookup observations of the format-3 journal of the same
+  investigation, as multisets (the commit order of lookup observations becomes `π`). **CB-3** (one entry always
+  fits) as EB-3. **CB-4** (count) as EB-4 with `E` the largest entry of the kind: `|B(Y)| ≤ ⌈2 Σ s(y) / (c − E − e)⌉
+  + 1`. **CB-5** (uniqueness) Memory recomputes `π` and `β` from the committed entries at `step_succeeded` and refuses
+  any other representation (`BATCH_NOT_CANONICAL`). **CB-6** (locality) a batch record is valid only in its kind's
+  step (the record schema) and in the open attempt (M-6), so no batch crosses a step or an attempt.
+- Entry checks. For a candidate result, `decision.claim_id = question.claim_id = claim.claim_id`
+  (`CANDIDATE_ENTRY_INVALID`, M-7), and the claim's evidence set resolves to committed or earlier evidence (M-4).
+- Content digest. `content(j)` of a batch record is `⟨kind, step, ⟨H(batch), j, n, m⟩⟩`; by CB-1 equal entry sets give
+  equal records, so CD-C1 and Proposition P6 hold unchanged. A format-4 `C(J)` differs from the format-3 `C(J)` of the
+  same investigation because the representation differs; the logical content is equal by CB-2
+  (`review/step7/d055/equivalence.py`, eight scenarios).
+- Journal bound. With `A_max` content copies per step, the format-4 journal of a run at the Stage 03 caps is the
+  fixed records plus `A_max` times the batch records of CB-4 and EB-4 over all evidence items, lookup references and
+  candidate results; at maximal sizes it is 8,640,021 bytes, 1.6 % of `MAX_JOURNAL_BYTES`
+  (`review/step7/d055/bounds.py`).
+- Failure: a missing, corrupt, non-canonical or inconsistent batch is a violation (`CORRUPT` on open), never an empty
+  batch.
+
 ## 8. Workflow transition function
 
 - Domain: pairs `(Σ, j)` of a fold state and a proposed record.

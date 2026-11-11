@@ -420,17 +420,17 @@ def test_record_over_the_size_limit_fails_the_step_with_storage_error(
     from citerift.investigation import memory as memory_module
 
     def big(req: StepRequest) -> StepResult:
-        r = ok_result(req, (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),))
+        r = ok_result(req, ())
         assert isinstance(r, Succeeded)
-        claim = next(c for c in r.records if c.kind == "claim_recorded")
-        size = len(canon(claim.payload))
-        # Smaller than the claim record, larger than every other record of the attempt (batch records are compact).
-        monkeypatch.setattr(memory_module, "MAX_RECORD_BYTES", size + 100)
+        # D-055 moved the claim (the largest adapter-derived record before) into a blob. ACQUIRE's step_succeeded
+        # carries the root object (898 bytes here): the limit refuses it and still admits every other record of the
+        # attempt and the step_failed that ends it (516 bytes).
+        monkeypatch.setattr(memory_module, "MAX_RECORD_BYTES", 890)
         return r
 
-    root, key, _, st = _run(tmp_path, {("DETECT", 1): big})
+    root, key, _, st = _run(tmp_path, {("ACQUIRE", 1): big})
     assert st.lifecycle == "FAILED"
-    assert _failures(root, key) == [("DETECT", "STORAGE_ERROR", "RECORD_TOO_LARGE")]
+    assert _failures(root, key) == [("ACQUIRE", "STORAGE_ERROR", "RECORD_TOO_LARGE")]
 
 
 @pytest.mark.regression
@@ -474,13 +474,15 @@ def test_blob_over_the_size_limit_fails_the_step_with_storage_error(
     assert _failures(root, key) == [("LOOKUP", "STORAGE_ERROR", "BLOB_TOO_LARGE")]
 
 
-def _fill_journal(room: int, monkeypatch: pytest.MonkeyPatch, where: list[Path]) -> Any:
-    """A DETECT adapter that leaves ``room`` bytes in the journal and returns its ordinary result: an evidence batch
-    record (about 480 bytes), a claim record (about 940 bytes) and the derived decision."""
+def _fill_journal(room: int, monkeypatch: pytest.MonkeyPatch, where: list[Path], step: str = "DETECT") -> Any:
+    """An adapter that leaves ``room`` bytes in the journal and returns its ordinary result. DETECT writes an evidence
+    batch record and a candidate-result batch record (about 480 bytes each, D-055); ACQUIRE writes its bundle
+    observation (about 460 bytes), then a step_succeeded that carries the root (about 900 bytes)."""
     from citerift.investigation import memory as memory_module
 
     def full(req: StepRequest) -> StepResult:
-        r = ok_result(req, (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),))
+        classes = (("NOT_FOUND_IN_CHECKED_SOURCES", "cand"),) if step == "DETECT" else ()
+        r = ok_result(req, classes)
         monkeypatch.setattr(memory_module, "MAX_JOURNAL_BYTES", where[0].stat().st_size + room)
         return r
 
@@ -492,15 +494,16 @@ def test_journal_limit_with_room_for_the_failure_fails_the_step_with_storage_err
 ) -> None:
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
+    # Room for the observation (462 bytes) and the step_failed (544 bytes), not for the step_succeeded (898 bytes).
     st = run_once(
         root,
         key,
-        Plan({("DETECT", 1): _fill_journal(1200, monkeypatch, [root / key / "journal.jsonl"])}),
+        Plan({("ACQUIRE", 1): _fill_journal(1200, monkeypatch, [root / key / "journal.jsonl"], "ACQUIRE")}),
         Env(),
         clock,
     )
     assert st.lifecycle == "FAILED"
-    assert _failures(root, key) == [("DETECT", "STORAGE_ERROR", "JOURNAL_TOO_LARGE")]
+    assert _failures(root, key) == [("ACQUIRE", "STORAGE_ERROR", "JOURNAL_TOO_LARGE")]
 
 
 def test_journal_limit_without_room_for_the_failure_stops_and_writes_nothing(

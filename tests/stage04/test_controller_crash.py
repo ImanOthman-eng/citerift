@@ -31,6 +31,7 @@ from citerift.investigation import faults, workflow
 from citerift.investigation.adapters import Failed
 from citerift.investigation.controller import POINTS
 from citerift.investigation.fold import STEPS, Folder
+from citerift.investigation.memory import InvestigationMemory
 
 pytestmark = pytest.mark.simulation
 
@@ -38,18 +39,16 @@ CRASH = 77
 CLASSES = (("IDENTITY_CONFLICT", "c1"), ("NOT_FOUND_IN_CHECKED_SOURCES", "c2"))
 
 
-def _committed(records: list[dict[str, Any]]) -> list[Any]:
-    f = Folder(None)
-    for r in records:
-        f.apply(r)
-    return [[r["kind"], r["step"], r["payload"]] for r in f.committed_content()]
+def _fold(root: Path, key: str) -> Folder:
+    """The validated fold of the stored journal: it reads the D-055 batches, so it holds the logical content."""
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        return mem.view
 
 
-def _fold(records: list[dict[str, Any]]) -> Folder:
-    f = Folder(None)
-    for r in records:
-        f.apply(r)
-    return f
+def _committed(root: Path, key: str) -> list[Any]:
+    """The committed logical content (D-055: claims, decisions, questions and lookup references as the fold exposes
+    them from the batches)."""
+    return [[r["kind"], r["step"], r["payload"]] for r in _fold(root, key).committed_content()]
 
 
 class Reference:
@@ -64,7 +63,7 @@ class Reference:
             faults.install(None)
         assert st.lifecycle == "NEEDS_RESOLUTION"
         self.records = journal(root, key)
-        self.content = _committed(self.records)
+        self.content = _committed(root, key)
         self.seen = seen
 
 
@@ -98,7 +97,7 @@ def _child(root: Path, key: str, plan: Plan, point: str | None, occurrence: int,
 
 def _resume_and_check(ref: Reference, root: Path, key: str, label: str) -> dict[str, Any]:
     before = journal(root, key)  # reopens: a CORRUPT journal would raise here
-    f = _fold(before)
+    f = _fold(root, key)
     workflow.check_journal(f)
     open_attempt = (f.open.step, f.open.number) if f.open is not None else None
     phi_before = {s: workflow.step_view(f, s).phi for s in STEPS}
@@ -114,14 +113,14 @@ def _resume_and_check(ref: Reference, root: Path, key: str, label: str) -> dict[
     if open_attempt is not None:
         first = after[len(before)]
         assert (first["kind"], first["step"], first["attempt"]) == ("step_interrupted", *open_attempt), label
-        g = _fold(after)
+        g = _fold(root, key)
         assert workflow.step_view(g, open_attempt[0]).phi == phi_before[open_attempt[0]] + 1, label
         # The interrupted attempt's content records are not in the committed view.
         interrupted = next(a for a in g.attempts[open_attempt[0]] if a.number == open_attempt[1])
         assert not set(interrupted.content) & set(g.committed_seqs), label
     assert not {s for s, _ in plan.calls} & succeeded_before, label  # no succeeded step repeats
     assert Counter(r["step"] for r in after if r["kind"] == "step_succeeded") == dict.fromkeys(STEPS, 1), label
-    assert _committed(after) == ref.content, label  # same committed content as the uninterrupted run
+    assert _committed(root, key) == ref.content, label  # same committed content as the uninterrupted run
     return {"label": label, "open": open_attempt, "appended": len(after) - len(before)}
 
 
@@ -151,6 +150,7 @@ def test_crash_at_every_occurrence_of_every_controller_boundary(reference: Refer
         "controller.after_adapter",
         "controller.after_blobs",
         "controller.after_batch",
+        "controller.after_entry_batch",
         "controller.after_content",
     }
 

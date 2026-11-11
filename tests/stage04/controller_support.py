@@ -430,17 +430,40 @@ def journal(root: Path, key: str) -> list[dict[str, Any]]:
         return copy.deepcopy(mem.view.records)
 
 
-def append_content(ctl: WorkflowController, step: str, attempt: int, content: list[tuple[str, dict[str, Any]]]) -> None:
+def append_content(
+    ctl: WorkflowController,
+    step: str,
+    attempt: int,
+    content: list[tuple[str, dict[str, Any]]],
+    entries: list[dict[str, Any]] | None = None,
+) -> None:
     """Append an attempt's content as the controller's ``_succeed`` does (through its guard): the evidence items in
-    canonical batches first (D-053), each batch published, then the other records in their order."""
+    canonical batches first (D-053), each batch published, then the step's entry batches (D-055: LOOKUP references,
+    DETECT candidate results), then the other records in their order. ``entries`` replaces the DETECT candidate
+    entries derived from ``content`` (a forgery the controller would never build)."""
+    from citerift.investigation.controller import _entries
+
     items = [p for kind, p in content if kind == workflow.EVIDENCE]
     found = batches.evidence_batches(items, lambda ref: ctl.view.evidence_batch(ref) is not None)
     digests = [ctl._mem.put_blob(b) for b in found]
     for payload in batches.batch_records(digests, found):
         ctl._append("evidence_batch_recorded", payload, step, attempt)
-    for kind, p in content:
-        if kind != workflow.EVIDENCE:
-            ctl._append(kind, p, step, attempt)
+    rest = [(kind, p) for kind, p in content if kind != workflow.EVIDENCE]
+    if entries is None:
+        entry_kind, entries, rest = _entries(step, rest)
+    else:
+        entry_kind = "candidate_result_batch_recorded"
+        rest = [(k, p) for k, p in rest if k not in ("claim_recorded", "decision_recorded", "question_opened")]
+    if entry_kind is not None and entries:
+        if entry_kind == "lookup_batch_recorded":
+            parts = batches.ordered_parts(entries, batches.lookup_key, batches.lookup_batch)
+        else:
+            parts = batches.ordered_parts(entries, batches.candidate_key, batches.candidate_batch)
+        part_digests = [ctl._mem.put_blob(b) for b in parts]
+        for payload in batches.entry_records(part_digests, parts):
+            ctl._append(entry_kind, payload, step, attempt)
+    for kind, p in rest:
+        ctl._append(kind, p, step, attempt)
 
 
 def evidence_items(root: Path, key: str) -> list[dict[str, Any]]:

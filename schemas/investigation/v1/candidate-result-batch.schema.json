@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:candidate-result-batch",
+  "title": "CITERIFT Stage 04 DETECT candidate-result batch, version 1",
+  "description": "Owner decision D-055: a content-addressed, immutable blob of the candidate results of one DETECT attempt, committed by one candidate_result_batch_recorded journal record. Each entry binds the records of one work candidate: its claim, the decision on that claim and the question the claim opens (null when it opens none). Batching is storage only: an entry never merges two candidates, and the claim, decision and question keep exactly the payloads the claim_recorded, decision_recorded and question_opened records held before. Entries are in the order of SPEC 8.9 (cand_ref, then claim_id) and cut by the byte ceiling of SPEC 8.8 (d). Investigation Memory checks the entries on append and on open and W-8 checks them at step_succeeded; a missing or corrupt batch is corruption, never an empty batch.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "order",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:candidate-result-batch"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "order": {
+      "description": "The ordering rule the entries follow (SPEC 8.9).",
+      "const": "candidate-ref/claim-id/1"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim",
+          "decision",
+          "question"
+        ],
+        "properties": {
+          "claim": {
+            "$ref": "urn:citerift:schema:investigation:v1:claim"
+          },
+          "decision": {
+            "$ref": "urn:citerift:schema:investigation:v1:journal-record#/$defs/decision_recorded"
+          },
+          "question": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:investigation:v1:journal-record#/$defs/question_opened"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -73,6 +73,7 @@ POINTS = (
     "controller.after_adapter",  # adapter returned, nothing of its result written
     "controller.after_blobs",  # the result's blobs published, no content record written
     "controller.after_batch",  # one evidence_batch_recorded durable (context: index), D-053
+    "controller.after_entry_batch",  # one D-055 batch record durable (context: kind, index)
     "controller.after_content",  # one content record durable (context: index), terminal record not written
     "controller.after_terminal",  # the attempt's terminal record durable, before the next start
 )
@@ -400,6 +401,16 @@ class WorkflowController:
             evidence = batches.evidence_batches(items, lambda ref: self.view.evidence_batch(ref) is not None)
         except (batches.BatchError, KeyError, TypeError, CanonError) as exc:
             raise _Defect(f"the evidence cannot be batched: {exc}") from exc
+        entry_kind, entries, records = _entries(step, records)
+        try:  # D-055: the attempt's lookup observations or candidate results in canonical batches (SPEC 8.9)
+            if entry_kind == "lookup_batch_recorded":
+                parts = batches.ordered_parts(entries, batches.lookup_key, batches.lookup_batch)
+            elif entry_kind == "candidate_result_batch_recorded":
+                parts = batches.ordered_parts(entries, batches.candidate_key, batches.candidate_batch)
+            else:
+                parts = []
+        except (KeyError, TypeError, CanonError) as exc:
+            raise _Defect(f"the {step} results cannot be batched: {exc}") from exc
         if (r.root is not None) != (step == "ACQUIRE"):
             raise _Defect("only ACQUIRE binds a root, and it must")
         if not isinstance(r.outputs, tuple) or not all(isinstance(d, str) for d in r.outputs):
@@ -408,6 +419,7 @@ class WorkflowController:
             for blob in r.blobs:
                 self._mem.put_blob(blob)
             batch_digests = [self._mem.put_blob(b) for b in evidence]
+            part_digests = [self._mem.put_blob(b) for b in parts]
         except CanonError as exc:
             raise _Defect(f"a blob is not canonical JSON: {exc}") from exc
         except BlobError as exc:
@@ -423,6 +435,9 @@ class WorkflowController:
         for index, payload in enumerate(batches.batch_records(batch_digests, evidence)):
             self._content_append("evidence_batch_recorded", payload, step, attempt)
             faults.point("controller.after_batch", step=step, attempt=attempt, index=index)
+        for index, payload in enumerate(batches.entry_records(part_digests, parts)):
+            self._content_append(entry_kind, payload, step, attempt)  # type: ignore[arg-type]
+            faults.point("controller.after_entry_batch", step=step, attempt=attempt, kind=entry_kind, index=index)
         for index, (kind, payload) in enumerate(records):
             self._content_append(kind, payload, step, attempt)
             faults.point("controller.after_content", step=step, attempt=attempt, index=index)
@@ -612,6 +627,34 @@ def _content(step: str, r: Succeeded) -> list[tuple[str, dict[str, Any]]]:
                 ("question_opened", {"question_id": ids.question_id(cid, qkind), "claim_id": cid, "kind": qkind})
             )
     return out + derived
+
+
+def _entries(
+    step: str, records: list[tuple[str, dict[str, Any]]]
+) -> tuple[str | None, list[dict[str, Any]], list[tuple[str, dict[str, Any]]]]:
+    """D-055: split a result's logical records into the entries of the step's batches and the records written on
+    their own. LOOKUP: every lookup observation reference is an entry (the observation stays its own blob). DETECT:
+    each claim with the decision and the question derived for it is one entry (one candidate result)."""
+    if step == "LOOKUP":
+        entries = [p for kind, p in records if kind == "observation_recorded" and p.get("obs_kind") == "lookup"]
+        rest = [(k, p) for k, p in records if not (k == "observation_recorded" and p.get("obs_kind") == "lookup")]
+        return "lookup_batch_recorded", entries, rest
+    if step != "DETECT":
+        return None, [], records
+    decisions: dict[Any, dict[str, Any]] = {}
+    questions: dict[Any, dict[str, Any]] = {}
+    for kind, p in records:
+        if kind == "decision_recorded":
+            decisions[p["claim_id"]] = p
+        elif kind == "question_opened":
+            questions[p["claim_id"]] = p
+    entries = [
+        {"claim": p, "decision": decisions[p.get("claim_id")], "question": questions.get(p.get("claim_id"))}
+        for kind, p in records
+        if kind == "claim_recorded"
+    ]
+    rest = [(k, p) for k, p in records if k not in ("claim_recorded", "decision_recorded", "question_opened")]
+    return "candidate_result_batch_recorded", entries, rest
 
 
 # Opening and running an investigation --------------------------------------------------------------------------------

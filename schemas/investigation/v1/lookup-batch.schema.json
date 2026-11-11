@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:lookup-batch",
+  "title": "CITERIFT Stage 04 LOOKUP batch, version 1",
+  "description": "Owner decision D-055: a content-addressed, immutable blob of the lookup observation references of one LOOKUP attempt, committed by one lookup_batch_recorded journal record. An entry is exactly the compact payload a lookup observation record held before (obs_kind, the digest of the lookup observation blob, source_ref); the lookup observation itself stays its own content-addressed blob and is never inlined. Entries are in the order of SPEC 8.9 (observation blob digest, then the canonical encoding of the entry) and cut by the byte ceiling of SPEC 8.8 (d). Order, references and boundaries are checked by Investigation Memory on append and on open; a missing or corrupt batch is corruption, never an empty batch.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "order",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:lookup-batch"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "order": {
+      "description": "The ordering rule the entries follow (SPEC 8.9).",
+      "const": "observation-blob/entry/1"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "allOf": [
+          {
+            "$ref": "urn:citerift:schema:investigation:v1:journal-record#/$defs/observation_recorded"
+          },
+          {
+            "properties": {
+              "obs_kind": {
+                "const": "lookup"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

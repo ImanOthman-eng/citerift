@@ -177,6 +177,12 @@ def _detect_with(evs: list[dict[str, Any]], set_value: dict[str, Any], claim: di
     return detect
 
 
+def _logical(root: Path, key: str) -> list[dict[str, Any]]:
+    """The committed logical content (D-055: claims are read from the candidate-result batches through the fold)."""
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        return mem.view.committed_content()
+
+
 def _lookup_evidence(n: int) -> list[dict[str, Any]]:
     obs = digest(LOOKUP)
     return [evidence("lookup_result", obs, f"/results/{i}", [], None) for i in range(n)]
@@ -206,12 +212,13 @@ def test_d047_claim_over_50000_evidence_ids_commits_replays_and_keeps_no_inline_
     claim = _bind(claim, value)
     root, key, st = _run(tmp_path, {("DETECT", 1): _detect_with(evs, value, claim)})
     assert st.lifecycle == "COMPLETED"
-    recs = journal(root, key)
-    rec = next(r for r in recs if r["kind"] == "claim_recorded")
+    rec = next(r for r in _logical(root, key) if r["kind"] == "claim_recorded")
     assert set(rec["payload"]) >= {"evidence_set", "supporting_count", "contradicting_count"}
     assert not {"supporting", "contradicting"} & set(rec["payload"])  # no second inline copy
     assert rec["payload"]["supporting_count"] == 50_000
-    assert len(canon(rec)) < 4096
+    assert len(canon(rec["payload"])) < 4096
+    stored_rec = next(r for r in journal(root, key) if r["kind"] == "candidate_result_batch_recorded")
+    assert len(canon(stored_rec)) < 4096  # D-055: the journal holds the compact batch record
     stored = (root / key / "blobs" / rec["payload"]["evidence_set"]).read_bytes()
     assert stored == canon(value) and len(stored) > MAX_RECORD_BYTES
     # claim_id binds the exact set: a different set gives a different id.
@@ -238,9 +245,9 @@ def test_d047_large_conflict_alternatives(tmp_path: Path) -> None:
     assert len(canon(value)) > MAX_RECORD_BYTES
     root, key, st = _run(tmp_path, {("DETECT", 1): _detect_with(evs, value, claim)})
     assert st.lifecycle == "NEEDS_RESOLUTION"
-    rec = next(r for r in journal(root, key) if r["kind"] == "claim_recorded")
+    rec = next(r for r in _logical(root, key) if r["kind"] == "claim_recorded")
     assert [x["supporting_count"] for x in rec["payload"]["alternatives"]] == [9000, 9000]
-    assert len(canon(rec)) < 4096
+    assert len(canon(rec["payload"])) < 4096
 
 
 def _assemble_with(n: int) -> Any:
@@ -362,7 +369,7 @@ def test_d047_a_set_damaged_after_commit_makes_the_investigation_corrupt(
     root, key, st = _run(tmp_path, {})
     assert st.lifecycle == "COMPLETED"
     kind = "claim_recorded" if which == "evidence_set" else "report_recorded"
-    d = next(r for r in journal(root, key) if r["kind"] == kind)["payload"][which]
+    d = next(r for r in _logical(root, key) if r["kind"] == kind)["payload"][which]
     blob = root / key / "blobs" / d
     blob.chmod(0o600)
     if damage == "delete":
@@ -377,11 +384,11 @@ def test_d047_a_set_damaged_after_commit_makes_the_investigation_corrupt(
 
 
 @pytest.mark.negative
-@pytest.mark.parametrize("old", [1, 2])
+@pytest.mark.parametrize("old", [1, 2, 3])
 def test_d047_an_earlier_format_journal_is_refused_not_migrated(tmp_path: Path, old: int) -> None:
-    """JOURNAL_FORMAT is 3 (D-053; 2 was D-047/D-051, 1 the Step 6/7 format, none released): a journal of an earlier
-    format is refused with JOURNAL_VERSION_UNSUPPORTED, never migrated."""
-    assert JOURNAL_FORMAT == 3
+    """JOURNAL_FORMAT is 4 (D-055; 3 was D-053, 2 D-047/D-051, 1 the Step 6/7 format, none released): a journal of an
+    earlier format is refused with JOURNAL_VERSION_UNSUPPORTED, never migrated."""
+    assert JOURNAL_FORMAT == 4
     root, key, _ = _run(tmp_path, {})
     path = root / key / "journal.jsonl"
     lines = path.read_bytes().splitlines()

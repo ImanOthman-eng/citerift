@@ -135,18 +135,15 @@ def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str
     if step == "LOOKUP":
         blob = mem.put_blob({"lookup": "SYNTHETIC", "state": "no_record"})
         src = {"engine": "citerift.retraction", "operation": "gather", "locator": "doi:10.1000/xyz"}
-        mem.append(
-            "observation_recorded", {"obs_kind": "lookup", "blob": blob, "source_ref": src}, step=step, attempt=attempt
-        )
+        append_lookups(mem, [{"obs_kind": "lookup", "blob": blob, "source_ref": src}], step, attempt)
         return [blob]
     # DETECT: a not-found claim with its decision.
     # Evidence over the committed LOOKUP observation (the same bytes give the same digest), then the claim.
     ev = _evidence("lookup_result", mem.put_blob({"lookup": "SYNTHETIC", "state": "no_record"}), "", [], None)
     append_evidence(mem, [ev], step, attempt)
     claim = not_found_claim(mem, ev["evidence_id"])
-    mem.append("claim_recorded", claim, step=step, attempt=attempt)
     decision = {"decision_id": h("decision"), "claim_id": claim["claim_id"], "disposition": "REPORT_NOT_FOUND"}
-    mem.append("decision_recorded", decision, step=step, attempt=attempt)
+    append_candidates(mem, [{"claim": claim, "decision": decision, "question": None}], step, attempt)
     return [mem.put_blob({"claims": [claim["claim_id"]]})]
 
 
@@ -164,6 +161,31 @@ def append_evidence(
     return [
         mem.append("evidence_batch_recorded", p, step=step, attempt=attempt)
         for p in batches.batch_records(digests, found)
+    ]
+
+
+def append_lookups(
+    mem: InvestigationMemory, entries: list[dict[str, Any]], step: str, attempt: int
+) -> list[dict[str, Any]]:
+    """Commit lookup observation references as the controller does (D-055): canonical LOOKUP batches."""
+    found = batches.ordered_parts(entries, batches.lookup_key, batches.lookup_batch)
+    digests = [mem.put_blob(b) for b in found]
+    return [
+        mem.append("lookup_batch_recorded", p, step=step, attempt=attempt)
+        for p in batches.entry_records(digests, found)
+    ]
+
+
+def append_candidates(
+    mem: InvestigationMemory, entries: list[dict[str, Any]], step: str, attempt: int
+) -> list[dict[str, Any]]:
+    """Commit candidate results (claim, decision, question) as the controller does (D-055): canonical DETECT
+    candidate-result batches."""
+    found = batches.ordered_parts(entries, batches.candidate_key, batches.candidate_batch)
+    digests = [mem.put_blob(b) for b in found]
+    return [
+        mem.append("candidate_result_batch_recorded", p, step=step, attempt=attempt)
+        for p in batches.entry_records(digests, found)
     ]
 
 
