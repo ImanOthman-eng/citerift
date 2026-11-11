@@ -49,7 +49,7 @@ from controller_support import (
 )
 from memory_support import bundle_payload, memory_root, root_object
 
-from citerift.investigation import workflow
+from citerift.investigation import sets, workflow
 from citerift.investigation.controller import _content, open_controller, run_investigation
 from citerift.investigation.errors import Busy, CorruptInvestigation, InvariantViolation
 from citerift.investigation.fold import STEPS
@@ -76,6 +76,7 @@ TERMINAL_CODE = {
 }
 RETRYABLE_CODE = {"ACQUIRE": "HTTP_TIMEOUT", "EXTRACT": "EXTRACTION_WORKER_FAILED"}
 REPORT = {"report": "PROBE"}
+PROJECTIONS = sets.projection_set([])
 
 
 def test_reference_model_is_the_frozen_one() -> None:
@@ -109,7 +110,7 @@ class Prod:
             payload = bundle_payload(self.root)
         self.key = str(payload["investigation_key"])
         with InvestigationMemory.create(self.root, payload, clock=self.clock) as mem:
-            for b in (BUNDLE, EXTRACTION, LOOKUP, REPORT):  # probe records name these blobs
+            for b in (BUNDLE, EXTRACTION, LOOKUP, REPORT, PROJECTIONS):  # probe records name these blobs
                 mem.put_blob(b)
 
     def open(self) -> None:
@@ -279,7 +280,11 @@ class Prod:
                 "evidence_id": evidence("lookup_result", e["observation"], "/probe", [], None)["evidence_id"],
             }
         if step == "ASSEMBLE":
-            return "report_recorded", {"report": digest(REPORT), "projections": []}
+            return "report_recorded", {
+                "report": digest(REPORT),
+                "projection_set": digest(PROJECTIONS),
+                "projection_count": 0,
+            }
         return "verification_recorded", {
             "result": "passed",
             "checks": [{"check": "PROBE", "passed": True}],

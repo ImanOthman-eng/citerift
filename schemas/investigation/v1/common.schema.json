@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:investigation:v1:common",
   "title": "CITERIFT Stage 04 shared definitions, version 1",
   "description": "Identities, configuration, vocabularies and evidence shared by the Stage 04 request, journal-record, claim and report schemas (docs/verification/stage-04/SPECIFICATION.md, MATHEMATICAL_MODEL.md). Accepted upstream definitions are reused by $ref and never copied or changed. Every hash is a lowercase SHA-256; every number is an integer (MM 2.1).",
-  "x-citerift-version": "1.0.0",
+  "x-citerift-version": "2.0.0",
   "$defs": {
     "sha256": {
       "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
@@ -232,14 +232,15 @@
       }
     },
     "config": {
-      "description": "The effective Stage 04 configuration. Its canonical digest (config_digest) enters the investigation key (S-4.7) and the input identity vector (SPEC 10.3), so a change of plan, budgets, fetch policy or live-ACQUIRE bound is detectable (D-042). It holds no detection parameter: there is none (S-1.2).",
+      "description": "The effective Stage 04 configuration. Its canonical digest (config_digest) enters the investigation key (S-4.7) and the input identity vector (SPEC 10.3), so a change of plan, budgets, fetch policy, live-ACQUIRE bound or lookup evidence budget is detectable (D-042, D-048). It holds no detection parameter: there is none (S-1.2).",
       "type": "object",
       "additionalProperties": false,
       "required": [
         "plan_version",
         "budgets",
         "fetch_policy_sha256",
-        "live_acquire_bound"
+        "live_acquire_bound",
+        "lookup_evidence_budget_bytes"
       ],
       "properties": {
         "plan_version": {
@@ -268,6 +269,12 @@
               "$ref": "#/$defs/live_acquire_bound"
             }
           ]
+        },
+        "lookup_evidence_budget_bytes": {
+          "description": "Owner decision D-048: the most stored index bytes one Stage 02 lookup may read (Index.gather_bounded). A lookup that needs more is not run; the candidate's lookup is unavailable with LOOKUP_EVIDENCE_LIMIT_EXCEEDED. Derived in STEP7_CLOSURE.md; part of config_digest.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16777216
         }
       },
       "allOf": [
@@ -320,7 +327,7 @@
           "$ref": "#/$defs/plan_version"
         },
         "schema_version": {
-          "const": "1.0.0"
+          "const": "2.0.0"
         }
       }
     },
@@ -454,7 +461,7 @@
       ]
     },
     "reason": {
-      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons.",
+      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons. LOOKUP_EVIDENCE_LIMIT_EXCEEDED: owner decision D-048 (version 2.0.0).",
       "enum": [
         "LIST_DEFINED_UNUSED",
         "CONFLICTING_DEFINITIONS",
@@ -471,6 +478,7 @@
         "CURRENT_EFFECT_NOT_ESTABLISHED",
         "COVERAGE_GAP_RELEVANT_ROWS",
         "LOOKUP_QUERY_FAILED",
+        "LOOKUP_EVIDENCE_LIMIT_EXCEEDED",
         "CITED_IDENTIFIER_IS_NOTICE",
         "NOT_FOUND_IN_CHECKED_SOURCES",
         "KEY_RESULTS_DIFFER",
@@ -745,6 +753,7 @@
       ],
       "properties": {
         "evidence_id": {
+          "description": "H(\"citerift-evidence/1\", observation, pointer, kind) (SPEC 4.3, owner decision D-051): two kinds of evidence at one pointer are two items.",
           "$ref": "#/$defs/sha256"
         },
         "observation": {
@@ -758,8 +767,15 @@
           "$ref": "#/$defs/evidence_kind"
         },
         "refs": {
-          "description": "Earlier evidence this item is derived with (downward references only, S-8.4).",
-          "$ref": "#/$defs/evidence_ids"
+          "description": "The direct derivation parents of this item (downward references only, S-8.4), never a data-dependent list: a claim's full evidence chain is its evidence set (owner decision D-047). At most 8 (STEP7_CLOSURE.md, record bounds).",
+          "allOf": [
+            {
+              "$ref": "#/$defs/evidence_ids"
+            },
+            {
+              "maxItems": 8
+            }
+          ]
         },
         "value": {
           "description": "The normalized fact for derived kinds; null when the pointed value is the fact."

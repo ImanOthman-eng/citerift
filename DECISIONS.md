@@ -1060,3 +1060,109 @@ before it is written; no second, hand-written approximation is kept. D-046 refin
 behaviour only and does not broaden recovery. It is not cryptographic tamper protection: an actor able to rewrite the
 journal and recompute the unkeyed hash chain is not detected without an external anchor. D-045 is accepted and
 complete. The record and journal ceilings remain provisional; their derivation is owed in Step 7.
+
+## D-047 — RB-1: high-cardinality collections leave the journal record as content-addressed blobs
+- Status: accepted
+- Topic: stage-04-record-collections-as-blobs
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_CLOSURE.md (sections D-047 and the bound tables)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z), which
+also accepts Step 7 at `ab0ce66edafab7a7720649892386aa58795b9b91` for its Workflow Controller and orders this narrow
+corrective closure before Step 8. RB-1 is approved. The 1 MiB record defect is not solved by raising
+`MAX_RECORD_BYTES`: the journal is an audit and commit log, not a bulk-data container. A claim's evidence (supporting
+ids, contradicting ids and the evidence supporting each conflict alternative) becomes a versioned, schema-validated,
+content-addressed evidence-set blob with deterministic order, unique ids and no truncation. Its digest is part of the
+claim identity, so `claim_id` binds the exact set content and no inline copy is kept. VERIFY must prove that every
+referenced evidence id exists and is valid; a missing or corrupt set is corruption or failure, never an empty set.
+`report_recorded.projections` becomes a content-addressed projection set with a digest, a count and a deterministic
+order; the report stays a blob. Every Stage 04 journal payload is reviewed so that no collection scaling with Stage 03
+units or candidates, Stage 02 events, or article-wide claims or projections makes one record grow without a
+defensible bound. The existing blob architecture is used; no generic database layer is added.
+
+## D-048 — RB-2: lookup evidence budget enforced before Stage 02 materializes a result
+- Status: accepted
+- Topic: stage-04-bounded-lookup-before-materialization
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_CLOSURE.md (section D-048); docs/verification/maintenance/A-02-001/MAINTENANCE_RECORD.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z). RB-2 is
+approved in principle with a stronger requirement: the budget is enforced before Stage 02 materializes an unbounded
+result; a cap applied after the current `Index.gather()` is rejected. The smallest backward-compatible bounded query
+facility is added to Stage 02: `Index.gather()` is unchanged; within the budget the bounded result is identical to
+`gather()`; over it, the query stops before materializing beyond the bound and never returns a truncated result as
+complete. The Stage 02 change goes through the accepted-stage governance mechanism with fail-first evidence, the exact
+owned-file patch, proof that `gather()` is unchanged, this authorization and the full accepted-stage validation. Over
+budget is all-or-nothing: no positive finding and no `NOT_FOUND_IN_CHECKED_SOURCES` from it; the affected candidate
+is unavailable (candidate-level `LOOKUP_UNAVAILABLE`), with the reason `LOOKUP_EVIDENCE_LIMIT_EXCEEDED`. The bound is
+derived from the Stage 02 event representation, serialized size, the post-D-047 storage model and the query's memory
+needs, with the pinned index as a sanity check only; it is part of the Stage 04 configuration and so of
+`config_digest`. If no defensible default can be derived, the evidence is returned instead.
+
+## D-049 — IA-11: ADAPTER_INCONSISTENT is a terminal code of every step
+- Status: accepted
+- Topic: stage-04-adapter-inconsistent-every-step
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_CLOSURE.md (section D-049)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z).
+`ADAPTER_INCONSISTENT` is a stable, terminal, non-retryable code available to every step. It records an adapter that
+raises an ordinary exception, returns the wrong result type, supplies illegal content, violates the protocol or
+returns structurally contradictory metadata. It is not used for genuine domain failures, which keep their codes, and
+it stays distinct from scientific uncertainty. Such a defect is recorded terminally and is never left open for W-6
+recovery or retry exhaustion.
+
+## D-050 — IA-4: mapping of a failed Stage 03 extraction document
+- Status: accepted
+- Topic: stage-04-stage03-failed-document-mapping
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_CLOSURE.md (section D-050)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z). For a
+Stage 03 extraction document with `status = "failed"`: a worker code `EXTRACTION_DEADLINE_EXCEEDED`,
+`EXTRACTION_MEMORY_EXCEEDED` or `EXTRACTION_WORKER_FAILED` maps to the same Stage 04 code with the approved
+retryability; any other valid Stage 03 code maps to `EXTRACTION_FAILED`, non-retryable, with the Stage 03 code as the
+reason and the failed document kept as evidence where safe; a missing or malformed code, or a document that
+contradicts the Stage 03 schema, is `ADAPTER_INCONSISTENT`. A worker failure is never guessed. Every accepted Stage 03
+failure family is tested.
+
+## D-051 — IA-6: the evidence id binds the evidence kind
+- Status: accepted
+- Topic: stage-04-evidence-id-binds-kind
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_CLOSURE.md (section D-051)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z).
+`evidence_id = H(observation, pointer, evidence_kind)` with the existing evidence domain tag. The same observation,
+pointer and kind give the same id; a different kind gives a different id. Pointer text stays canonical; there is no
+random component, and replay gives the same id. SPEC, the mathematical model, `ids.py`, the workflow evidence checks,
+schemas and descriptions, tests, traceability and the Step 7 fixtures are updated. The frozen Step 4 oracle is not
+altered unless it encodes the derivation; otherwise its digest is shown unchanged. No released records exist, so no
+migration is needed; the identity change is documented.
+
+## D-052 — TA-1: external journal checkpoint, design recorded now, implemented later
+- Status: accepted
+- Topic: stage-04-external-journal-checkpoint
+- Date: 2026-11-11
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step7/closure/STEP7_D052_CHECKPOINT_DESIGN.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3`, 2026-11-11T07:04:33Z). The design
+is recorded now and implemented later with the CLI and report work. An optional external checkpoint holds the
+investigation key, the final journal `seq`, the final journal digest and a format version. The only claim it supports:
+given a checkpoint retained outside the investigation memory, a verifier can detect rewriting or truncation of the
+journal prefix that the checkpoint covers. It is not called a signature, authentication or non-repudiation. It is
+never written into the same journal or memory directory and is not added to the ASSEMBLE report; it is delivered on
+stdout or to a user-selected file outside the memory root, and the verifier compares a supplied checkpoint with the
+journal. No cryptographic dependency is added. R6-12 stays a recorded limitation.

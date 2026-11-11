@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:evidence-set",
+  "title": "CITERIFT Stage 04 claim evidence set, version 1",
+  "description": "The evidence of one claim (owner decision D-047): a content-addressed blob named by claim_recorded.evidence_set. Every list is sorted ascending and holds unique evidence ids; nothing is truncated. The order and the agreement with the claim (list counts, alternative count, upstream reason evidence) are checked by Investigation Memory on append and on open; every id must name evidence committed earlier (M-4, M-7). A missing or corrupt set is corruption, never an empty set.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "supporting",
+    "contradicting",
+    "alternatives"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:evidence-set"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "supporting": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
+    },
+    "contradicting": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
+    },
+    "alternatives": {
+      "description": "List i supports the claim's alternative i.",
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "allOf": [
+          {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
+          },
+          {
+            "minItems": 1
+          }
+        ]
+      }
+    }
+  }
+}

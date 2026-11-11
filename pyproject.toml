@@ -41,7 +41,12 @@ xfail_strict = true
 line-length = 120
 target-version = "py312"
 # Audit and review reproduction scripts are kept byte-for-byte as recorded evidence.
-extend-exclude = ["docs/audits", "docs/verification/stage-00/review"]
+extend-exclude = [
+    "docs/audits",
+    "docs/verification/stage-00/review",
+    # Run on the Step 7 tree before the closure fix; kept as run (its output is fail_first_before.log).
+    "docs/verification/stage-04/review/step7/closure/fail_first_before.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "PL"]

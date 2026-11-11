@@ -6,6 +6,7 @@ SPEC 7.6, 7.7, 9.4, 9.6, 10.3; MM 3.3, 10. SYNTHETIC fake adapters (``controller
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 from typing import Any
 
@@ -21,10 +22,11 @@ from controller_support import (
     run_once,
 )
 
-from citerift.investigation import ids, workflow
+from citerift.investigation import ids, sets, workflow
 from citerift.investigation.adapters import StepRequest, StepResult
 from citerift.investigation.errors import InvestigationMemoryError
 from citerift.investigation.fold import STEPS, Folder
+from citerift.investigation.memory import InvestigationMemory
 
 pytestmark = pytest.mark.integration
 
@@ -65,7 +67,8 @@ def test_conflict_routes_to_needs_resolution(tmp_path: Path, cls: str, qkind: st
     cid = claims[0]["claim_id"]
     # The conflicting evidence is retained: every evidence id the claim names is committed.
     f = _fold(root, key)
-    named = set(claims[0]["supporting"]) | {e for a in claims[0]["alternatives"] for e in a["supporting"]}
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        named = sets.set_ids(json.loads(mem.blobs.get(claims[0]["evidence_set"])))
     assert named and named <= set(f.committed.evidence)
     assert _payloads(root, key, "decision_recorded") == [
         {
@@ -151,6 +154,8 @@ def test_guard_refuses_detect_content_that_breaks_w8(tmp_path: Path, change: str
         ctl._append("step_started", {"step_key": k}, "DETECT", 1)
         req = ctl._request("DETECT", 1, k)
         res = ok_result(req, ((cls, "c1"),))
+        for blob in res.blobs:  # type: ignore[union-attr]
+            ctl._mem.put_blob(blob)  # the evidence sets the claims name (D-047)
         from citerift.investigation.controller import _content
 
         content = _content("DETECT", res)  # type: ignore[arg-type]
@@ -341,12 +346,12 @@ def test_step_keys_ignore_titles_and_depend_on_inputs(tmp_path: Path) -> None:
 def test_child_id_tags_are_distinct() -> None:
     x = "6" * 64
     values = {
-        ids.evidence_id(x, "/a"),
-        ids.claim_id(x, "IDENTITY_CONFLICT", "D-6", "dt-1", [x]),
+        ids.evidence_id(x, "/a", "unit"),
+        ids.claim_id(x, "IDENTITY_CONFLICT", "D-6", "dt-1", x),
         ids.decision_id(x, "ROUTE_NEEDS_RESOLUTION"),
         ids.question_id(x, "identity_conflict"),
         ids.identity_digest("config", x),
         ids.step_key("VALIDATE", "plan-1", [], {}, x),
     }
     assert len(values) == 6
-    assert ids.claim_id(x, "C", "D-1", "dt-1", [x, x]) == ids.claim_id(x, "C", "D-1", "dt-1", [x])  # a set
+    assert ids.claim_id(x, "C", "D-1", "dt-1", x) != ids.claim_id(x, "C", "D-1", "dt-1", "7" * 64)  # binds the set

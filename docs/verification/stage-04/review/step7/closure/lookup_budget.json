@@ -1,0 +1,726 @@
+{
+  "escaping": {
+    "control_characters_kept_in_text": true,
+    "two_byte_escapes_kept_in_doi": true
+  },
+  "shapes": {
+    "doi_match_with_secondary_pmid/empty": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 0,
+        "needed": 99166,
+        "observation_bytes": 122114,
+        "gather_peak": 586152,
+        "encode_peak": 251190,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 0,
+        "needed": 397568,
+        "observation_bytes": 485665,
+        "gather_peak": 2238227,
+        "encode_peak": 982124,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.2183,
+      "intercept_bytes": 1297,
+      "gather_peak_per_needed_byte": 5.63,
+      "encode_peak_per_needed_byte": 2.47
+    },
+    "doi_match_with_secondary_pmid/escaped": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 0,
+        "needed": 127966,
+        "observation_bytes": 237314,
+        "gather_peak": 603050,
+        "encode_peak": 478510,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 0,
+        "needed": 512768,
+        "observation_bytes": 946465,
+        "gather_peak": 2427123,
+        "encode_peak": 1900644,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.8429,
+      "intercept_bytes": 1486,
+      "gather_peak_per_needed_byte": 4.733,
+      "encode_peak_per_needed_byte": 3.707
+    },
+    "doi_match_with_secondary_pmid/escaped_long": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 0,
+        "needed": 1942366,
+        "observation_bytes": 7494914,
+        "gather_peak": 2447578,
+        "encode_peak": 14993710,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 0,
+        "needed": 7770368,
+        "observation_bytes": 29976865,
+        "gather_peak": 9684651,
+        "encode_peak": 59961500,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 3.8576,
+      "intercept_bytes": 2093,
+      "gather_peak_per_needed_byte": 1.246,
+      "encode_peak_per_needed_byte": 7.717
+    },
+    "pmid_match_bridged_doi/empty": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 1,
+        "needed": 97516,
+        "observation_bytes": 120348,
+        "gather_peak": 653127,
+        "encode_peak": 243874,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 1,
+        "needed": 390968,
+        "observation_bytes": 478499,
+        "gather_peak": 2663214,
+        "encode_peak": 964008,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.2205,
+      "intercept_bytes": 1332,
+      "gather_peak_per_needed_byte": 6.812,
+      "encode_peak_per_needed_byte": 2.466
+    },
+    "pmid_match_bridged_doi/escaped": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 1,
+        "needed": 126316,
+        "observation_bytes": 235548,
+        "gather_peak": 700377,
+        "encode_peak": 474274,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 1,
+        "needed": 506168,
+        "observation_bytes": 939299,
+        "gather_peak": 2852214,
+        "encode_peak": 1885608,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.8527,
+      "intercept_bytes": 1523,
+      "gather_peak_per_needed_byte": 5.635,
+      "encode_peak_per_needed_byte": 3.725
+    },
+    "pmid_match_bridged_doi/escaped_long": {
+      "at_50": {
+        "rows": 100,
+        "state": "matched",
+        "events": 100,
+        "issues": 1,
+        "needed": 1940716,
+        "observation_bytes": 7493148,
+        "gather_peak": 2545377,
+        "encode_peak": 14989474,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "matched",
+        "events": 400,
+        "issues": 1,
+        "needed": 7763768,
+        "observation_bytes": 29969699,
+        "gather_peak": 10109814,
+        "encode_peak": 59946464,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 3.8599,
+      "intercept_bytes": 2127,
+      "gather_peak_per_needed_byte": 1.302,
+      "encode_peak_per_needed_byte": 7.721
+    },
+    "notice_only/empty": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 33512,
+        "observation_bytes": 59795,
+        "gather_peak": 246400,
+        "encode_peak": 120768,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 134564,
+        "observation_bytes": 236797,
+        "gather_peak": 1022330,
+        "encode_peak": 475132,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.7516,
+      "intercept_bytes": 1096,
+      "gather_peak_per_needed_byte": 7.597,
+      "encode_peak_per_needed_byte": 3.531
+    },
+    "notice_only/escaped": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 43112,
+        "observation_bytes": 117395,
+        "gather_peak": 262150,
+        "encode_peak": 235968,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 172964,
+        "observation_bytes": 467197,
+        "gather_peak": 1085330,
+        "encode_peak": 935932,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 2.6939,
+      "intercept_bytes": 1258,
+      "gather_peak_per_needed_byte": 6.275,
+      "encode_peak_per_needed_byte": 5.411
+    },
+    "notice_only/escaped_long": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 647912,
+        "observation_bytes": 3746195,
+        "gather_peak": 866950,
+        "encode_peak": 7493568,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 2592164,
+        "observation_bytes": 14982397,
+        "gather_peak": 3504530,
+        "encode_peak": 29966332,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 5.7792,
+      "intercept_bytes": 1788,
+      "gather_peak_per_needed_byte": 1.352,
+      "encode_peak_per_needed_byte": 11.56
+    },
+    "ambiguous_pair/empty": {
+      "at_50": {
+        "rows": 100,
+        "state": "ambiguous_identity",
+        "events": 100,
+        "issues": 0,
+        "needed": 64984,
+        "observation_bytes": 101387,
+        "gather_peak": 467389,
+        "encode_peak": 204312,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "ambiguous_identity",
+        "events": 400,
+        "issues": 0,
+        "needed": 260584,
+        "observation_bytes": 402437,
+        "gather_peak": 1919669,
+        "encode_peak": 806412,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.5391,
+      "intercept_bytes": 1369,
+      "gather_peak_per_needed_byte": 7.367,
+      "encode_peak_per_needed_byte": 3.095
+    },
+    "ambiguous_pair/escaped": {
+      "at_50": {
+        "rows": 100,
+        "state": "ambiguous_identity",
+        "events": 100,
+        "issues": 0,
+        "needed": 84184,
+        "observation_bytes": 216587,
+        "gather_peak": 498889,
+        "encode_peak": 434712,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "ambiguous_identity",
+        "events": 400,
+        "issues": 0,
+        "needed": 337384,
+        "observation_bytes": 863237,
+        "gather_peak": 2126557,
+        "encode_peak": 1753660,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 2.5539,
+      "intercept_bytes": 1589,
+      "gather_peak_per_needed_byte": 6.303,
+      "encode_peak_per_needed_byte": 5.198
+    },
+    "ambiguous_pair/escaped_long": {
+      "at_50": {
+        "rows": 100,
+        "state": "ambiguous_identity",
+        "events": 100,
+        "issues": 0,
+        "needed": 1293784,
+        "observation_bytes": 7474187,
+        "gather_peak": 1729289,
+        "encode_peak": 14949912,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "ambiguous_identity",
+        "events": 400,
+        "issues": 0,
+        "needed": 5175784,
+        "observation_bytes": 29893637,
+        "gather_peak": 6884069,
+        "encode_peak": 59788812,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 5.7752,
+      "intercept_bytes": 2284,
+      "gather_peak_per_needed_byte": 1.33,
+      "encode_peak_per_needed_byte": 11.552
+    },
+    "pmid_role_collision/empty": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 65964,
+        "observation_bytes": 70196,
+        "gather_peak": 418981,
+        "encode_peak": 141986,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 264368,
+        "observation_bytes": 277199,
+        "gather_peak": 1707680,
+        "encode_peak": 559288,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.0433,
+      "intercept_bytes": 1373,
+      "gather_peak_per_needed_byte": 6.459,
+      "encode_peak_per_needed_byte": 2.116
+    },
+    "pmid_role_collision/escaped": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 85164,
+        "observation_bytes": 127796,
+        "gather_peak": 450481,
+        "encode_peak": 257186,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 341168,
+        "observation_bytes": 507599,
+        "gather_peak": 1833680,
+        "encode_peak": 1020088,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.4836,
+      "intercept_bytes": 1448,
+      "gather_peak_per_needed_byte": 5.375,
+      "encode_peak_per_needed_byte": 2.99
+    },
+    "pmid_role_collision/escaped_long": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 1294764,
+        "observation_bytes": 3756596,
+        "gather_peak": 1660081,
+        "encode_peak": 7514786,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 5179568,
+        "observation_bytes": 15022799,
+        "gather_peak": 6672080,
+        "encode_peak": 30050488,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 2.9001,
+      "intercept_bytes": 1690,
+      "gather_peak_per_needed_byte": 1.288,
+      "encode_peak_per_needed_byte": 5.802
+    },
+    "long_doi_notice_only/empty": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 132612,
+        "observation_bytes": 410809,
+        "gather_peak": 346490,
+        "encode_peak": 822796,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 530964,
+        "observation_bytes": 1628961,
+        "gather_peak": 1419720,
+        "encode_peak": 3259460,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 3.058,
+      "intercept_bytes": 5284,
+      "gather_peak_per_needed_byte": 2.674,
+      "encode_peak_per_needed_byte": 6.139
+    },
+    "long_doi_notice_only/escaped": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 142212,
+        "observation_bytes": 468409,
+        "gather_peak": 372640,
+        "encode_peak": 937996,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 569364,
+        "observation_bytes": 1859361,
+        "gather_peak": 1523120,
+        "encode_peak": 3720316,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 3.2563,
+      "intercept_bytes": 5318,
+      "gather_peak_per_needed_byte": 2.675,
+      "encode_peak_per_needed_byte": 6.534
+    },
+    "long_doi_notice_only/escaped_long": {
+      "at_50": {
+        "rows": 50,
+        "state": "notice_only",
+        "events": 50,
+        "issues": 0,
+        "needed": 747012,
+        "observation_bytes": 4097209,
+        "gather_peak": 977440,
+        "encode_peak": 8195596,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "notice_only",
+        "events": 200,
+        "issues": 0,
+        "needed": 2988564,
+        "observation_bytes": 16374561,
+        "gather_peak": 3901920,
+        "encode_peak": 32750660,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 5.4772,
+      "intercept_bytes": 5700,
+      "gather_peak_per_needed_byte": 1.306,
+      "encode_peak_per_needed_byte": 10.959
+    },
+    "long_doi_match_with_collision/empty": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 164964,
+        "observation_bytes": 173260,
+        "gather_peak": 518971,
+        "encode_peak": 348114,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 660368,
+        "observation_bytes": 677563,
+        "gather_peak": 2104670,
+        "encode_peak": 1360016,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.018,
+      "intercept_bytes": 5333,
+      "gather_peak_per_needed_byte": 3.187,
+      "encode_peak_per_needed_byte": 2.059
+    },
+    "long_doi_match_with_collision/escaped": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 184164,
+        "observation_bytes": 230860,
+        "gather_peak": 550471,
+        "encode_peak": 463314,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 737168,
+        "observation_bytes": 907963,
+        "gather_peak": 2230670,
+        "encode_peak": 1820816,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 1.2244,
+      "intercept_bytes": 5368,
+      "gather_peak_per_needed_byte": 3.026,
+      "encode_peak_per_needed_byte": 2.47
+    },
+    "long_doi_match_with_collision/escaped_long": {
+      "at_50": {
+        "rows": 50,
+        "state": "matched",
+        "events": 50,
+        "issues": 1,
+        "needed": 1393764,
+        "observation_bytes": 3859660,
+        "gather_peak": 1760071,
+        "encode_peak": 7720914,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 200,
+        "state": "matched",
+        "events": 200,
+        "issues": 1,
+        "needed": 5575568,
+        "observation_bytes": 15423163,
+        "gather_peak": 7069070,
+        "encode_peak": 30851216,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": 2.7652,
+      "intercept_bytes": 5631,
+      "gather_peak_per_needed_byte": 1.268,
+      "encode_peak_per_needed_byte": 5.533
+    },
+    "no_record_with_relevance_hits/empty": {
+      "at_50": {
+        "rows": 100,
+        "state": "no_record",
+        "events": 0,
+        "issues": 100,
+        "needed": 7382,
+        "observation_bytes": 8532,
+        "gather_peak": 14945,
+        "encode_peak": 18370,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "no_record",
+        "events": 0,
+        "issues": 101,
+        "needed": 29982,
+        "observation_bytes": 5607,
+        "gather_peak": 94569,
+        "encode_peak": 11904,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": -0.1294,
+      "intercept_bytes": 9487,
+      "gather_peak_per_needed_byte": 3.154,
+      "encode_peak_per_needed_byte": 0.397
+    },
+    "no_record_with_relevance_hits/escaped": {
+      "at_50": {
+        "rows": 100,
+        "state": "no_record",
+        "events": 0,
+        "issues": 100,
+        "needed": 26532,
+        "observation_bytes": 27682,
+        "gather_peak": 20448,
+        "encode_peak": 56670,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "no_record",
+        "events": 0,
+        "issues": 101,
+        "needed": 106582,
+        "observation_bytes": 5607,
+        "gather_peak": 109524,
+        "encode_peak": 11904,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": -0.2758,
+      "intercept_bytes": 34999,
+      "gather_peak_per_needed_byte": 1.028,
+      "encode_peak_per_needed_byte": 0.112
+    },
+    "no_record_with_relevance_hits/escaped_long": {
+      "at_50": {
+        "rows": 100,
+        "state": "no_record",
+        "events": 0,
+        "issues": 100,
+        "needed": 1236132,
+        "observation_bytes": 1237282,
+        "gather_peak": 361152,
+        "encode_peak": 2475870,
+        "same_as_gather": true
+      },
+      "at_200": {
+        "rows": 400,
+        "state": "no_record",
+        "events": 0,
+        "issues": 101,
+        "needed": 4944982,
+        "observation_bytes": 5607,
+        "gather_peak": 1055028,
+        "encode_peak": 11904,
+        "same_as_gather": true
+      },
+      "rho_observation_bytes_per_needed_byte": -0.3321,
+      "intercept_bytes": 1647790,
+      "gather_peak_per_needed_byte": 0.213,
+      "encode_peak_per_needed_byte": 0.002
+    }
+  },
+  "rho_max": 5.7792,
+  "rho_bound (analytic, >= rho_max)": 6.0,
+  "intercept_max_bytes": 1647790,
+  "MAX_BLOB_BYTES": 268435456,
+  "budget_max_from_blob_limit": 44464611,
+  "budget_max_from_blob_limit_mib": 42.405,
+  "selected_budget": 16777216,
+  "selected_budget_mib": 16.0,
+  "selected_fits_blob_limit": true,
+  "worst_observation_at_selected_bytes": 102311086,
+  "blob_margin_at_selected": 2.62,
+  "query_memory": {
+    "gather_peak_per_needed_byte_max": 7.597,
+    "gather_peak_at_selected_bytes": 127456510,
+    "encode_peak_per_needed_byte_max": 11.56,
+    "encode_peak_at_selected_bytes": 193944617
+  },
+  "at_default_budget": {
+    "rows": 16966,
+    "needed": 16941574,
+    "needed_over_default": true,
+    "refused_at_default": true,
+    "events_at_needed": 16966,
+    "observation_bytes_at_needed": 20617009,
+    "within_rho_bound": true,
+    "fits_blob_limit": true
+  },
+  "pinned": {
+    "index": "rw-2f116e9ffed718e6.sqlite",
+    "snapshot_id": "rw-2f116e9ffed718e6",
+    "event_rows": 73356,
+    "event_row_stored_bytes_min_max": [
+      721,
+      2563
+    ],
+    "lookups_measured": 207247,
+    "seconds": 41.8,
+    "largest_lookup": {
+      "needed": 656378,
+      "doi": "10.1093/ecco-jcc/jjab227",
+      "pmid": "35073579",
+      "events": 281,
+      "observation_bytes": 401846
+    }
+  },
+  "headroom_selected_over_pinned_max": 25.56
+}

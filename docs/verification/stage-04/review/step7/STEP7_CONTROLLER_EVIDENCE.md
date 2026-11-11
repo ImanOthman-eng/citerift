@@ -1,5 +1,11 @@
 # Stage 04 Step 7: Investigation Workflow Controller, evidence
 
+> **Closure note (2026-11-11).** This record describes the controller as accepted at `ab0ce66` and is kept as
+> written. Owner decision D-049 replaced the `AdapterDefect` behaviour described below: a defective adapter result now
+> ends the attempt as terminal `ADAPTER_INCONSISTENT` in every step, and nothing is left open for W-6. D-050 adds the
+> mapping of failed Stage 03 documents, and D-051 adds the evidence kind to the evidence id. See
+> `closure/STEP7_CLOSURE.md`.
+
 Baseline is `7ad1e14` (Step 6 accepted). This step covers the Workflow Controller over deterministic fake adapters
 only. There is no real Stage 02 or Stage 03 adapter, no Detection Engine, no report assembly and no CLI. The frozen
 Step 4 model (`simulations/stage04/`) and Investigation Memory (`memory.py`, `fold.py`, `journal`/`blobs`) are not

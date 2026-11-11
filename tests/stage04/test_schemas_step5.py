@@ -30,6 +30,7 @@ SCHEMAS = ROOT / "schemas"
 SIM = ROOT / "simulations" / "stage04"
 P = "urn:citerift:schema:investigation:v1:"
 REQUEST, RECORD, CLAIM, REPORT, COMMON = P + "request", P + "journal-record", P + "claim", P + "report", P + "common"
+EVIDENCE_SET, PROJECTION_SET = P + "evidence-set", P + "projection-set"
 
 # Digest of each accepted upstream schema directory; Step 5 must not change them (owner exit criterion 8).
 ACCEPTED_DIRS = ("contracts", "wiki", "retraction")
@@ -76,6 +77,7 @@ def live_config() -> dict[str, Any]:
         "budgets": {"a_max": 3, "f_max": 6},
         "fetch_policy_sha256": h("fetch-policy"),
         "live_acquire_bound": dict(LIVE_BOUND),
+        "lookup_evidence_budget_bytes": 16 * 1024 * 1024,
     }
 
 
@@ -85,13 +87,14 @@ def bundle_config() -> dict[str, Any]:
         "budgets": {"a_max": 3, "f_max": 6},
         "fetch_policy_sha256": None,
         "live_acquire_bound": None,
+        "lookup_evidence_budget_bytes": 16 * 1024 * 1024,
     }
 
 
 def live_request() -> dict[str, Any]:
     return {
         "schema": REQUEST,
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "mode": "live_capture",
         "subject": {"type": "wikipedia_article_revision", "wiki": "ar", "revision_id": 76190003},
         "index_path": "/data/rw/index.sqlite",
@@ -103,7 +106,7 @@ def live_request() -> dict[str, Any]:
 def bundle_request() -> dict[str, Any]:
     return {
         "schema": REQUEST,
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "mode": "retained_bundle",
         "subject": {"type": "wikipedia_article_revision", "bundle_path": "/data/bundles/ar-76190003"},
         "index_path": "/data/rw/index.sqlite",
@@ -141,8 +144,9 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
         "alternatives": [],
         "reasons": [],
         "upstream_reasons": [],
-        "supporting": [h("ev-lookup")],
-        "contradicting": [],
+        "evidence_set": h("set-" + cls),
+        "supporting_count": 1,
+        "contradicting_count": 0,
     }
     pos = {
         "RETRACTED_WORK_CITED": "retracted",
@@ -168,14 +172,14 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
             alternatives=[
                 {
                     "value": {"reached_by": dict(DOI), "work": {"doi": "10.1038/nature12969", "pmid": "24476891"}},
-                    "supporting": [h("ev-q1d")],
+                    "supporting_count": 1,
                 },
                 {
                     "value": {"reached_by": dict(PMID), "work": {"doi": "10.1000/other", "pmid": "24476881"}},
-                    "supporting": [h("ev-q1p")],
+                    "supporting_count": 1,
                 },
             ],
-            supporting=[h("ev-q2"), h("ev-coherence")],
+            supporting_count=2,
         )
     elif cls == "CONTRADICTION_IN_SOURCES":
         base.update(
@@ -183,8 +187,8 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
             status="conflicting",
             reasons=["RETRACTION_EVENT_TYPE_CONFLICT"],
             alternatives=[
-                {"value": "retracted", "supporting": [h("ev-a")]},
-                {"value": "correction", "supporting": [h("ev-b")]},
+                {"value": "retracted", "supporting_count": 1},
+                {"value": "correction", "supporting_count": 1},
             ],
         )
     elif cls == "UNRESOLVED_IDENTITY":
@@ -210,7 +214,9 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
     elif cls == "UNRESOLVED_USE":
         base.update(rule="D-2", status=None, reasons=["NO_BOUND_USE"])
     elif cls == "NO_IDENTIFIER":
-        base.update(rule="D-3", status=None, candidate={"shape": "NONE", "keys": [], "coherence": None}, supporting=[])
+        base.update(
+            rule="D-3", status=None, candidate={"shape": "NONE", "keys": [], "coherence": None}, supporting_count=0
+        )
     return base
 
 
@@ -284,7 +290,7 @@ def identities(live: bool = False, extraction_status: str = "complete") -> dict[
             "engine_version": "0.1.0",
             "table_version": "dt-1",
             "plan_version": "plan-1",
-            "schema_version": "1.0.0",
+            "schema_version": "2.0.0",
         },
         "config": live_config() if live else bundle_config(),
         "config_digest": h("config"),
@@ -309,7 +315,7 @@ def report(classes: list[str], live: bool = False, extraction_status: str = "com
     positives = [e["claim"]["claim_id"] for e in entries if e["claim"]["class"] in CLASSES[:4]]
     return {
         "schema": REPORT,
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "investigation_key": h("key"),
         "investigation_id": "0b1e2c3d-4e5f-8a6b-9c7d-0e1f2a3b4c5d",
         "root": root(),
@@ -344,7 +350,7 @@ def report(classes: list[str], live: bool = False, extraction_status: str = "com
 def record(kind: str, payload: dict[str, Any], *, step: str | None, attempt: int | None, root_id: str | None,
            seq: int = 5) -> dict[str, Any]:  # fmt: skip
     return {
-        "v": 1,
+        "v": 2,
         "seq": 0 if kind == "investigation_created" else seq,
         "prev": h("prev"),
         "kind": kind,
@@ -370,7 +376,7 @@ def created() -> dict[str, Any]:
                 "engine_version": "0.1.0",
                 "table_version": "dt-1",
                 "plan_version": "plan-1",
-                "schema_version": "1.0.0",
+                "schema_version": "2.0.0",
             },
             "migrated_from": None,
         },
@@ -429,11 +435,12 @@ RECORD_KINDS = [
 def test_schemas_are_valid_2020_12_and_versioned() -> None:
     cs = contracts()
     mine = {sid: s for sid, s in cs.schemas.items() if sid.startswith(P)}
-    assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT}
+    assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT, EVIDENCE_SET, PROJECTION_SET}
     assert [p for p in cs.meta_problems() if p.path.startswith(P)] == []
     for sid, s in mine.items():
         assert s["$schema"] == "https://json-schema.org/draft/2020-12/schema", sid
-        assert s["x-citerift-version"] == "1.0.0", sid
+        # Step 7 closure (D-047, D-048, D-051): the five Step 5 schemas are version 2; the two sets are new.
+        assert s["x-citerift-version"] == ("1.0.0" if sid in (EVIDENCE_SET, PROJECTION_SET) else "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 
 
@@ -540,7 +547,7 @@ def test_unknown_subject_type_rejected() -> None:
 @pytest.mark.parametrize("schema_id", [REQUEST, REPORT])
 def test_unknown_schema_version_rejected(schema_id: str) -> None:
     doc = live_request() if schema_id == REQUEST else report(["RETRACTED_WORK_CITED"])
-    for version in ("1.0.1", "2.0.0", "1.0", 1):
+    for version in ("1.0.0", "2.0.1", "3.0.0", "2.0", 2):
         d = copy.deepcopy(doc)
         d["schema_version"] = version
         bad(d, schema_id)
@@ -551,7 +558,7 @@ def test_unknown_schema_version_rejected(schema_id: str) -> None:
 
 @pytest.mark.negative
 def test_unknown_journal_format_rejected() -> None:
-    for v in (0, 2, "1"):
+    for v in (0, 1, 3, "2"):
         r = created()
         r["v"] = v
         bad(r, RECORD)
@@ -759,7 +766,11 @@ def test_one_valid_record_of_every_kind() -> None:
             root_id=rid,
         ),
         "report_recorded": record(
-            "report_recorded", {"report": h("r"), "projections": [h("p")]}, step="ASSEMBLE", attempt=1, root_id=rid
+            "report_recorded",
+            {"report": h("r"), "projection_set": h("p"), "projection_count": 1},
+            step="ASSEMBLE",
+            attempt=1,
+            root_id=rid,
         ),
         "claim_superseded": record(
             "claim_superseded",
@@ -833,7 +844,7 @@ def test_scientific_content_without_bound_root_rejected(kind: str) -> None:
         ),
         "decision_recorded": ("DETECT", {"decision_id": h("d"), "claim_id": h("c"), "disposition": "REPORT_FINDING"}),
         "question_opened": ("DETECT", {"question_id": h("q"), "claim_id": h("c"), "kind": "identity_conflict"}),
-        "report_recorded": ("ASSEMBLE", {"report": h("r"), "projections": []}),
+        "report_recorded": ("ASSEMBLE", {"report": h("r"), "projection_set": h("p"), "projection_count": 0}),
         "verification_recorded": (
             "VERIFY",
             {"result": "passed", "checks": [{"check": "M_INVARIANTS", "passed": True}], "content_digest": h("C")},
@@ -862,7 +873,7 @@ def test_malformed_digest_inside_payloads_rejected() -> None:
     r["payload"]["root"]["subject"]["identity"]["capture_sha256"] = "XYZ"
     bad(r, RECORD)
     r = claim_record()
-    r["payload"]["supporting"] = ["not-a-digest"]
+    r["payload"]["evidence_set"] = "not-a-digest"
     bad(r, RECORD)
     r = bundle_request()
     r["config"] = live_config()
@@ -1091,7 +1102,7 @@ def test_identity_conflict_shape() -> None:
     c["alternatives"] = c["alternatives"][:1]
     bad(c, CLAIM)
     c = claim("IDENTITY_CONFLICT")
-    c["alternatives"][1]["supporting"] = []
+    c["alternatives"][1]["supporting_count"] = 0
     bad(c, CLAIM)
     c = claim("IDENTITY_CONFLICT")
     c["reasons"] = ["KEY_RESULTS_DIFFER"]
@@ -1140,7 +1151,7 @@ def test_no_global_negative_is_representable() -> None:
         ("RETRACTED_WORK_CITED", "value", "correction"),
         ("RETRACTED_WORK_CITED", "status", "uncertain"),
         ("RETRACTED_WORK_CITED", "rule", "D-16"),
-        ("RETRACTED_WORK_CITED", "supporting", []),
+        ("RETRACTED_WORK_CITED", "supporting_count", 0),
         ("NOT_FOUND_IN_CHECKED_SOURCES", "status", "verified_fact"),
         ("NOT_FOUND_IN_CHECKED_SOURCES", "reasons", ["NOT_FOUND_IN_CHECKED_SOURCES", "IDENTIFIER_UNCONFIRMED"]),
         ("NOT_FOUND_IN_CHECKED_SOURCES", "reasons", ["NOT_FOUND_IN_CHECKED_SOURCES", "LOOKUP_PARTIAL"]),
@@ -1195,6 +1206,22 @@ def test_d043_reason_vocabulary() -> None:
     c = claim("UNRESOLVED_STATUS")
     c["upstream_reasons"][0]["code"] = "SOURCE_TYPE_CONFLICT"
     ok(c, CLAIM)
+
+
+@pytest.mark.negative
+def test_d048_lookup_evidence_limit_reason_belongs_to_lookup_unavailable_only() -> None:
+    """D-048: an over-budget lookup makes the candidate LOOKUP_UNAVAILABLE with the reason
+    LOOKUP_EVIDENCE_LIMIT_EXCEEDED (besides LOOKUP_QUERY_FAILED); no other class carries that reason."""
+    assert "LOOKUP_EVIDENCE_LIMIT_EXCEEDED" in contracts().schemas[COMMON]["$defs"]["reason"]["enum"]
+    c = claim("LOOKUP_UNAVAILABLE")
+    c["reasons"] = ["LOOKUP_QUERY_FAILED", "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"]
+    ok(c, CLAIM)
+    c["reasons"] = ["LOOKUP_EVIDENCE_LIMIT_EXCEEDED"]
+    bad(c, CLAIM)  # LOOKUP_QUERY_FAILED stays required (STEP5_PLACEHOLDER_MAPPING.md)
+    for cls in ("UNRESOLVED_STATUS", "NOT_FOUND_IN_CHECKED_SOURCES", "RETRACTED_WORK_CITED"):
+        c = claim(cls)
+        c["reasons"] = [*c["reasons"], "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"]
+        bad(c, CLAIM)
 
 
 @pytest.mark.negative
@@ -1330,9 +1357,10 @@ def test_evidence_provenance_cannot_be_omitted() -> None:
     r = copy.deepcopy(rep)
     r["evidence"][0]["value"] = "retracted"
     bad(r, REPORT)
-    c = claim()
-    del c["supporting"]
-    bad(c, CLAIM)
+    for field in ("evidence_set", "supporting_count", "contradicting_count"):
+        c = claim()
+        del c[field]
+        bad(c, CLAIM)
 
 
 # ----- the schemas agree with the frozen Step 4 reference model -----------------------------------------------------
@@ -1371,7 +1399,7 @@ def _claim_of(case: Any, dec: dict[str, Any], R: Any) -> dict[str, Any]:
         status=dec["status"],
         value=dec["value"],
         reasons=sorted(set(reasons)),
-        supporting=[h("ev")] if case.shape != "NONE" else [],
+        supporting_count=1 if case.shape != "NONE" else 0,
         alternatives=[],
     )
     if dec["rule"] == "D-11":

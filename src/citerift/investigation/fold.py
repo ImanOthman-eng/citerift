@@ -19,7 +19,10 @@ Workflow Controller's, Step 7):
 - M-6 commit discipline: one open attempt at a time; content and terminal records belong to the open attempt;
   attempt numbers count up from 1; content counts only when its attempt ends ``step_succeeded``;
 - M-4, M-7, M-10: every id a content record refers to is defined by an earlier record of the right layer that is
-  committed, or earlier in the same attempt; ids are defined once in the committed view;
+  committed, or earlier in the same attempt; ids are defined once in the committed view. A claim's evidence and a
+  report's projections are content-addressed sets (owner decision D-047, ``sets.py``): the set blob must exist, be
+  valid, agree with the record, and every id it names must resolve; a missing or corrupt set is a violation, never an
+  empty set;
 - M-8: a supersession links two claims and the successor has evidence the old claim did not have;
 - M-9: ``root_id`` is null until the ACQUIRE ``step_succeeded``, which binds exactly the root its payload holds,
   whose id is recomputed from the subject identity and must match the request; every later record carries it;
@@ -36,9 +39,10 @@ from datetime import datetime
 from typing import Any
 
 from citerift.contracts.formats import parse_utc_timestamp
-from citerift.investigation import ids
+from citerift.investigation import ids, sets
 from citerift.investigation.canonical import H
-from citerift.investigation.errors import BlobError, InvariantViolation
+from citerift.investigation.errors import BlobError, CanonError, InvariantViolation
+from citerift.investigation.journal import JOURNAL_FORMAT
 from citerift.investigation.schemas import RECORD, problems
 
 STEPS = ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT", "ASSEMBLE", "VERIFY")
@@ -59,6 +63,7 @@ DIGEST_LAYERS = {"observation", "evidence", "claim", "decision", "question", "re
 CONTENT_TAG = "citerift-investigation-content/1"
 
 BlobCheck = Callable[[str], None]
+BlobRead = Callable[[str], Any]  # the parsed canonical JSON of a verified blob
 
 
 @dataclass
@@ -88,18 +93,16 @@ def _violation(invariant: str, code: str, detail: str, seq: int | None) -> Invar
     return InvariantViolation(invariant, code, detail, seq)
 
 
-def _claim_evidence(claim: dict[str, Any]) -> set[str]:
-    out = set(claim.get("supporting") or []) | set(claim.get("contradicting") or [])
-    for alt in claim.get("alternatives") or []:
-        out |= set(alt.get("supporting") or [])
-    for up in claim.get("upstream_reasons") or []:
-        out.add(up["evidence"])
-    return out
-
-
 class Folder:
-    def __init__(self, blob_check: BlobCheck | None, *, expected_key: str | None = None) -> None:
+    """``blob_check`` verifies that a named blob exists and is intact; ``blob_read`` returns its parsed content (the
+    evidence and projection sets). Both are None for a replay over records Memory has already validated (the
+    workflow check), which then checks no blob and resolves no set."""
+
+    def __init__(
+        self, blob_check: BlobCheck | None, *, expected_key: str | None = None, blob_read: BlobRead | None = None
+    ) -> None:
         self.blob_check = blob_check
+        self.blob_read = blob_read
         self.expected_key = expected_key
         self.records: list[dict[str, Any]] = []
         self.created: dict[str, Any] | None = None
@@ -149,6 +152,25 @@ class Folder:
             self.blob_check(digest)
         except BlobError as exc:
             raise _violation(invariant, exc.code, f"blob {digest}: {exc.detail}", seq) from exc
+
+    def _read_set(self, digest: str, seq: int) -> Any:
+        """The parsed set blob, or None when this fold reads no blobs. A missing or corrupt set is a violation."""
+        if self.blob_read is None:
+            return None
+        try:
+            return self.blob_read(digest)
+        except (BlobError, CanonError) as exc:
+            raise _violation("M-3", exc.code, f"set {digest}: {exc}", seq) from exc
+
+    def _evidence_set(self, claim: dict[str, Any], seq: int) -> set[str] | None:
+        """D-047: the evidence ids of a claim, from its validated evidence set; None when this fold reads no blobs."""
+        value = self._read_set(claim["evidence_set"], seq)
+        if value is None:
+            return None
+        problem = sets.evidence_set_problem(value) or sets.claim_set_problem(claim, value)
+        if problem:
+            raise _violation("M-7", "EVIDENCE_SET_INVALID", f"claim {claim['claim_id']}: {problem}", seq)
+        return sets.set_ids(value)
 
     def _check_created(self, rec: dict[str, Any], seq: int) -> str:
         p = rec["payload"]
@@ -212,7 +234,8 @@ class Folder:
                 need("evidence", r, "evidence ref")
             fresh("evidence", p["evidence_id"])
         elif kind == "claim_recorded":
-            for e in sorted(_claim_evidence(p)):
+            self._blob(p["evidence_set"], seq, "M-3")
+            for e in sorted(self._evidence_set(p, seq) or ()):
                 need("evidence", e, "claim evidence")
             fresh("claim", p["claim_id"])
         elif kind == "decision_recorded":
@@ -231,8 +254,16 @@ class Folder:
                 need("evidence", e, "closing evidence")
         elif kind == "report_recorded":
             self._blob(p["report"], seq, "M-3")
-            for d in p["projections"]:
-                self._blob(d, seq, "M-3")
+            self._blob(p["projection_set"], seq, "M-3")
+            value = self._read_set(p["projection_set"], seq)
+            if value is not None:
+                problem = sets.projection_set_problem(value)
+                if not problem and p["projection_count"] != len(value["projections"]):
+                    problem = "projection_count is not the number of projections in the set"
+                if problem:
+                    raise _violation("M-3", "PROJECTION_SET_INVALID", problem, seq)
+                for d in value["projections"]:
+                    self._blob(d, seq, "M-3")
         elif kind == "claim_superseded":
             old, new = self._claim(p["old_claim_id"]), self._claim(p["new_claim_id"])
             if old is None or new is None:
@@ -240,7 +271,8 @@ class Folder:
             if p["old_claim_id"] in self.committed.superseded or p["old_claim_id"] in self.pending.superseded:
                 raise _violation("M-8", "DUPLICATE_ID", "claim already superseded", seq)
             added = set(p["new_evidence"])
-            if not added <= _claim_evidence(new) or added & _claim_evidence(old):
+            new_ev, old_ev = self._evidence_set(new, seq), self._evidence_set(old, seq)
+            if new_ev is not None and old_ev is not None and (not added <= new_ev or added & old_ev):
                 raise _violation(
                     "M-8", "SUPERSESSION_INVALID", "new_evidence must be new evidence of the successor", seq
                 )
@@ -286,7 +318,7 @@ class Folder:
         seq = len(self.records)
         if not isinstance(rec, dict):
             raise _violation("S-8.2", "JOURNAL_CORRUPT", "record is not an object", seq)
-        if rec.get("v") != 1:
+        if rec.get("v") != JOURNAL_FORMAT or isinstance(rec.get("v"), bool):
             raise _violation("S-8.7", "JOURNAL_VERSION_UNSUPPORTED", f"journal version {rec.get('v')!r}", seq)
         found = problems(rec, RECORD)
         if found:
@@ -422,9 +454,22 @@ class Folder:
             p = r["payload"]
             if r["kind"] == "observation_recorded":
                 out.add(p["blob"])
+            elif r["kind"] == "claim_recorded":
+                out.add(p["evidence_set"])
             elif r["kind"] == "report_recorded":
-                out.add(p["report"])
-                out.update(p["projections"])
+                out.update((p["report"], p["projection_set"]))
+                out.update(self._projections(p["projection_set"]))
             elif r["kind"] == "step_succeeded":
                 out.update(p["outputs"])
         return out
+
+    def _projections(self, digest: str) -> list[str]:
+        """The projection digests of a set, for ``referenced_blobs``; empty when the set cannot be read here."""
+        if self.blob_read is None:
+            return []
+        try:
+            value = self.blob_read(digest)
+        except (BlobError, CanonError):
+            return []
+        found = value.get("projections") if isinstance(value, dict) else None
+        return [d for d in found if isinstance(d, str)] if isinstance(found, list) else []

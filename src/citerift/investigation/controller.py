@@ -11,11 +11,12 @@ result → blobs published → content records appended → ``step_succeeded``, 
 record passes ``workflow.guard`` and then Memory's own checks before it is written. The controller never sleeps: a
 step that may restart only later leaves the run with action ``wait`` (SPEC 9.2).
 
-Adapter defects. SPEC 9.3 and the record schema give a terminal code for a defective result only in some steps
-(``DEFECT_CODE``). In VALIDATE, EXTRACT and LOOKUP no schema-legal code exists, so the controller writes nothing,
-raises ``AdapterDefect`` and leaves the attempt open: the next resume closes it as interrupted, and the retry budget
-ends it with ``RETRY_BUDGET_EXHAUSTED`` (SPEC 10.2, "otherwise the process exits and resume treats it as a crash").
-This is recorded as an owner decision point in the Step 7 evidence.
+Adapter defects (owner decision D-049). An adapter that raises an ordinary exception, returns something other than a
+``StepResult``, supplies content that the guard or Memory refuses, violates the protocol or returns contradictory
+metadata ends its attempt at once with the terminal, non-retryable code ``ADAPTER_INCONSISTENT``, which every step has.
+Nothing is left open for W-6 or the retry budget. A genuine domain failure that the adapter reports (``Failed``) keeps
+its own code, and a size limit keeps ``STORAGE_ERROR`` (SPEC 10.2). Only a process death or a ``BaseException`` leaves
+an attempt open.
 """
 
 from __future__ import annotations
@@ -60,6 +61,7 @@ from citerift.investigation.workflow import (
     WorkflowRefused,
     WorkflowState,
 )
+from citerift.wiki.issues import CATALOG as WIKI_CODES
 
 Clock = Callable[[], datetime]
 IdentitySource = Callable[[Mapping[str, Any] | None], Mapping[str, Any]]  # bound root identity -> components
@@ -74,28 +76,19 @@ POINTS = (
     "controller.after_terminal",  # the attempt's terminal record durable, before the next start
 )
 
-# SPEC 9.3 and the record schema: the terminal code of a defective adapter result, where one exists.
-DEFECT_CODE: dict[str, tuple[str, str | None]] = {
-    "ACQUIRE": ("ADAPTER_INCONSISTENT", None),  # ACQUIRE passes other codes through
-    "NORMALIZE": ("NORMALIZE_INVALID", None),
-    "DETECT": ("ADAPTER_INCONSISTENT", None),
-    "ASSEMBLE": ("REPORT_INVALID", None),
-    "VERIFY": ("VERIFY_FAILED", "ADAPTER_INCONSISTENT"),
-}
+# D-049: the terminal code of a defective adapter result, the same in every step.
+ADAPTER_INCONSISTENT = "ADAPTER_INCONSISTENT"
+DEFECT_CODE: dict[str, tuple[str, str | None]] = dict.fromkeys(STEPS, (ADAPTER_INCONSISTENT, None))
 CONTROLLER_CODES = frozenset({RETRY_BUDGET_EXHAUSTED, DEFERRAL_BUDGET_EXHAUSTED})
+# SPEC 9.3: ACQUIRE ends with a Stage 03 code or one of these. The record schema cannot enumerate the Stage 03 codes,
+# so the controller checks them (D-049: any other code is an illegal result, ADAPTER_INCONSISTENT).
+ACQUIRE_STAGE04_CODES = frozenset(
+    {"ROOT_IDENTITY_MISMATCH", WALL_CLOCK, ADAPTER_INCONSISTENT, "STORAGE_ERROR", "CANON_INVALID"}
+)
 CAPACITY = frozenset({"RECORD_TOO_LARGE", "JOURNAL_TOO_LARGE", "BLOB_TOO_LARGE"})  # Memory's size refusals
 MAX_DETAIL = 4096
 # Upper bound on the actions of one run: every attempt the budgets allow, plus recovery and staleness.
 MAX_ACTIONS = (len(STEPS) - 1) * A_MAX + (A_MAX + F_MAX) + 2
-
-
-class AdapterDefect(InvestigationMemoryError):
-    """An adapter raised or returned a result the controller refuses, in a step with no schema-legal defect code.
-    The attempt is left open; the next resume closes it (W-6)."""
-
-    def __init__(self, step: str, detail: str) -> None:
-        super().__init__("ADAPTER_DEFECT", f"{step}: {detail}")
-        self.step = step
 
 
 class StorageExhausted(InvestigationMemoryError):
@@ -434,7 +427,7 @@ class WorkflowController:
         try:
             self._append("step_succeeded", payload, step, attempt)
         except WorkflowRefused as exc:  # W-7, W-8, CH-1 over what the adapter supplied
-            raise _Defect(str(exc), _rule_code(step, exc.rule)) from exc
+            raise _Defect(str(exc)) from exc
         except AppendRefused as exc:
             if exc.invariant == "M-9":
                 raise _Defect(str(exc), ("ROOT_IDENTITY_MISMATCH", None)) from exc
@@ -455,12 +448,18 @@ class WorkflowController:
         sv = workflow.step_view(self.view, step)
         if not isinstance(r.code, str) or r.code in CONTROLLER_CODES:
             raise _Defect(f"adapter failure code {r.code!r} is not an engine code")
+        if step == "ACQUIRE" and r.code not in WIKI_CODES and r.code not in ACQUIRE_STAGE04_CODES:
+            raise _Defect(
+                f"ACQUIRE failure code {r.code[:80]!r} is neither a Stage 03 code nor a Stage 04 ACQUIRE code"
+            )
         if r.not_before is not None and (step != "ACQUIRE" or not _aware(r.not_before)):
             raise _Defect("not_before belongs to ACQUIRE only and must be a UTC instant")
         if (r.wall_clock is not None) != (r.code == WALL_CLOCK) or (r.code == WALL_CLOCK and not live):
             raise _Defect("wall_clock goes with ACQUIRE_WALL_CLOCK_EXCEEDED of a live capture, and only with it")
         if not r.retry_after_known and r.code != WALL_CLOCK:
             raise _Defect("only a killed live capture cannot tell whether it observed a Retry-After instant")
+        if r.evidence is not None and step != "EXTRACT":
+            raise _Defect("only EXTRACT keeps a failed upstream document as evidence")
         wall = {"t_acq_ms": r.wall_clock.t_acq_ms, "elapsed_ms": r.wall_clock.elapsed_ms} if r.wall_clock else None
         code, reason, detail, retryable = r.code, r.reason, r.detail, False
         if workflow.retryable_code(step, code, live) and r.retry_after_known:
@@ -469,11 +468,29 @@ class WorkflowController:
             else:  # W-4: the budget is spent; the original code becomes the reason
                 code, reason, wall = RETRY_BUDGET_EXHAUSTED, r.code, None
                 detail = f"{r.code}: {r.detail or ''}"[:MAX_DETAIL]
+        if r.evidence is not None:
+            detail = self._keep_failed_document(step, attempt, r.evidence, detail)
         payload = self._failure_payload(step, key, code, retryable, reason, detail, r.not_before, wall)
         try:
             self._append("step_failed", payload, step, attempt)
         except (WorkflowRefused, AppendRefused) as exc:
             raise _Defect(f"failure {r.code} refused: {exc}") from exc
+
+    def _keep_failed_document(self, step: str, attempt: int, document: Any, detail: str | None) -> str | None:
+        """D-050: the failed Stage 03 document stays in the journal as an observation of the failing attempt (never
+        committed). Where it cannot be kept safely (not canonical JSON, or a storage limit), the failure is still
+        recorded, and its detail says the document was not kept."""
+        try:
+            blob = self._mem.put_blob(document)
+        except (CanonError, BlobError, StorageError) as exc:
+            return _detail(f"{detail or ''} [failed document not kept: {exc}]".strip())
+        obs = {
+            "obs_kind": "extraction",
+            "blob": blob,
+            "source_ref": {"engine": "citerift.wiki", "operation": "extract_bundle", "locator": None},
+        }
+        self._content_append("observation_recorded", obs, step, attempt)
+        return detail
 
     def _defer(self, step: str, attempt: int, key: str, r: Deferred) -> None:
         if not (step == "ACQUIRE" and workflow.is_live(self.view)):
@@ -505,10 +522,8 @@ class WorkflowController:
             raise _Defect(f"deferral budget failure refused: {exc}") from exc
 
     def _defect(self, step: str, attempt: int, key: str, defect: _Defect) -> None:
-        code = defect.code or DEFECT_CODE.get(step)
-        if code is None:
-            self._broken = True  # no schema-legal code: the attempt stays open for W-6 (module docstring)
-            raise AdapterDefect(step, defect.detail)
+        """D-049: a defective result ends the attempt terminally, never left open for W-6."""
+        code = defect.code or DEFECT_CODE[step]
         payload = self._failure_payload(step, key, code[0], False, code[1], _detail(defect.detail), None, None)
         self._append("step_failed", payload, step, attempt)
         faults.point("controller.after_terminal", step=step, attempt=attempt)
@@ -551,12 +566,6 @@ def _aware(value: Any) -> bool:
         return 1000 <= value.astimezone(UTC).year <= 9999
     except (OverflowError, ValueError):
         return False
-
-
-def _rule_code(step: str, rule: str) -> tuple[str, str | None] | None:
-    if step == "DETECT" and rule == "W-8":
-        return ("ADAPTER_INCONSISTENT", None)
-    return DEFECT_CODE.get(step)
 
 
 def _content(step: str, r: Succeeded) -> list[tuple[str, dict[str, Any]]]:
@@ -639,8 +648,7 @@ def run_investigation(
     repository: Path | None = None,
 ) -> RunResult:
     """Open, resume and run one investigation (S-9.4); a busy, corrupt or terminal investigation is reported and not
-    changed. ``AdapterDefect`` and ``StorageExhausted`` propagate after the investigation is closed (the attempt stays
-    open for W-6)."""
+    changed. ``StorageExhausted`` propagates after the investigation is closed (the attempt stays open for W-6)."""
     try:
         mem, ctl = open_controller(memory_root, key, adapters, identities, clock=clock, repository=repository)
     except Busy as exc:

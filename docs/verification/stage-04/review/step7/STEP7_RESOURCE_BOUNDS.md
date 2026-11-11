@@ -1,5 +1,9 @@
 # Stage 04 Step 7: resource-bound derivation (owner Step 7 item 17)
 
+> **Closure note (2026-11-11).** This is the Step 7 derivation at `ab0ce66`, kept as written. Its owner decisions RB-1
+> and RB-2 became D-047 and D-048. The re-derivation after them, and the current status of the three limits, are in
+> `closure/STEP7_CLOSURE.md` section 3 (`closure/storage_bounds.py`).
+
 Script: `resource_bounds.py` (this folder). Output: `resource_bounds.json`. Every number below is printed by that
 script; the upstream caps are imported from the accepted Stage 02 and Stage 03 code, not copied by hand, and every
 maximal record is validated against `urn:citerift:schema:investigation:v1:journal-record` before it is measured.

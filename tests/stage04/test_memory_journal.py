@@ -259,7 +259,7 @@ def _extraction_blob(mem: InvestigationMemory) -> str:
 def test_m7_claims_and_decisions_need_committed_support(mem: InvestigationMemory) -> None:
     drive(mem, ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP"))
     mem.append("step_started", {"step_key": h("d")}, step="DETECT", attempt=1)
-    claim = not_found_claim(h("evidence that does not exist"))
+    claim = not_found_claim(mem, h("evidence that does not exist"))
     refused(mem, "M-4", "claim_recorded", claim, step="DETECT", attempt=1)
     decision = {"decision_id": h("dec"), "claim_id": h("no claim"), "disposition": "REPORT_NOT_FOUND"}
     refused(mem, "M-4", "decision_recorded", decision, step="DETECT", attempt=1)
@@ -352,7 +352,7 @@ def test_read_only_open_cannot_append(tmp_path: Path) -> None:
         (lambda rs: rs.__setitem__(7, {**rs[7], "root_id": h("forged")}), "M-9"),  # after the bind at seq 5
         (lambda rs: rs.__setitem__(4, {**rs[4], "root_id": h("forged")}), "SCHEMA"),  # before the bind: null
         (lambda rs: rs.insert(6, copy.deepcopy(rs[6])), "M-1"),
-        (lambda rs: rs.__setitem__(0, {**rs[0], "v": 2}), "S-8.7"),
+        (lambda rs: rs.__setitem__(0, {**rs[0], "v": 3}), "S-8.7"),
         (lambda rs: rs.append({**rs[-1], "seq": len(rs)}), "M-6"),  # a second terminal, no open attempt
         (lambda rs: rs.append({**rs[6], "seq": len(rs), "at": rs[-1]["at"], "attempt": 2}), "M-14"),  # EXTRACT again
     ],
@@ -550,7 +550,7 @@ def test_unsupported_schema_version_is_refused(tmp_path: Path, where: str) -> No
     root = memory_root(tmp_path)
     payload = bundle_payload(root)
     payload = copy.deepcopy(payload)
-    payload[where]["schema_version"] = "2.0.0"
+    payload[where]["schema_version"] = "3.0.0"
     with pytest.raises(AppendRefused) as exc:
         InvestigationMemory.create(root, payload, clock=Clock())
     assert exc.value.invariant == "SCHEMA"
@@ -591,7 +591,7 @@ def test_records_never_alias_the_callers_objects(tmp_path: Path) -> None:
     stage04 = dict(STAGE04)
     payload = created_payload(bundle_payload(root)["request"], stage04, bundle_capture_sha256=CAPTURE)
     stage04["schema_version"] = "9.9.9"
-    assert payload["stage04"]["schema_version"] == "1.0.0"
+    assert payload["stage04"]["schema_version"] == "2.0.0"
     with InvestigationMemory.create(root, payload, clock=Clock()) as m:
         drive(m)
         before = m.view.content_digest()

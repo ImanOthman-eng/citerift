@@ -24,6 +24,8 @@ REQUEST = PREFIX + "request"
 RECORD = PREFIX + "journal-record"
 CLAIM = PREFIX + "claim"
 REPORT = PREFIX + "report"
+EVIDENCE_SET = PREFIX + "evidence-set"
+PROJECTION_SET = PREFIX + "projection-set"
 DIRS = ("contracts", "wiki", "retraction", "investigation")
 
 

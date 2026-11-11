@@ -593,14 +593,14 @@ def test_w7_positive_completed_has_a_passed_verification_of_cj(tmp_path: Path) -
 
 @pytest.mark.negative
 def test_w8_conflict_claim_without_its_question_is_corrupt(tmp_path: Path) -> None:
-    from controller_support import claim, lookup_evidence
+    from controller_support import claim_and_set, lookup_evidence
 
     from citerift.investigation import ids
 
     root, key, clock = _until(tmp_path, "LOOKUP")
     k = _key(root, key, clock, "DETECT")
     evs = lookup_evidence()
-    c = claim("IDENTITY_CONFLICT", [e["evidence_id"] for e in evs])
+    c, evidence_set = claim_and_set("IDENTITY_CONFLICT", [e["evidence_id"] for e in evs])
     decision = {
         "decision_id": ids.decision_id(c["claim_id"], "ROUTE_NEEDS_RESOLUTION"),
         "claim_id": c["claim_id"],
@@ -613,6 +613,7 @@ def test_w8_conflict_claim_without_its_question_is_corrupt(tmp_path: Path) -> No
         clock,
         [
             ("blob", out, None, None),
+            ("blob", evidence_set, None, None),
             ("step_started", {"step_key": k}, "DETECT", 1),
             *[("evidence_recorded", e, "DETECT", 1) for e in evs],
             ("claim_recorded", c, "DETECT", 1),
@@ -629,7 +630,7 @@ def test_corrupt_journal_with_a_torn_tail_is_not_repaired(tmp_path: Path) -> Non
     root, key, clock = _until(tmp_path, "ACQUIRE")
     _forge(root, key, clock, [("step_started", {"step_key": "8" * 64}, "NORMALIZE", 1)])
     with open(root / key / "journal.jsonl", "ab") as fh:
-        fh.write(b'{"v":1,"seq')  # an interrupted append
+        fh.write(b'{"v":2,"seq')  # an interrupted append
         os.fsync(fh.fileno())
     _assert_corrupt(root, key, clock, "W-3")
     assert not [p for p in (root / key).iterdir() if ".torn-" in p.name]

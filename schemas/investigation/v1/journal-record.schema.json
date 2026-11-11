@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:journal-record",
-  "title": "CITERIFT Stage 04 Investigation Memory journal record, format 1",
+  "title": "CITERIFT Stage 04 Investigation Memory journal record, format 2",
   "description": "One line of journal.jsonl (SPEC 8.2, 8.3; MM 7). Each kind has its own payload. The schema enforces what one record can show: the kind's layer, the step it belongs to, attempt bounds, root binding (S-4.4, M-9, F-15) and the D-042 failure form. Properties that relate records (seq without gaps, prev = previous digest, digest correctness, commit discipline, references to earlier records, transition legality) are checked by Investigation Memory and the append guard (M-1 to M-14, MM 8), not here.",
-  "x-citerift-version": "1.0.0",
+  "x-citerift-version": "2.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,8 +20,8 @@
   ],
   "properties": {
     "v": {
-      "description": "Journal format version; a reader refuses any other (JOURNAL_VERSION_UNSUPPORTED, S-8.7).",
-      "const": 1
+      "description": "Journal format version; a reader refuses any other (JOURNAL_VERSION_UNSUPPORTED, S-8.7). Format 2 (Step 7 closure, D-047 to D-051) replaced format 1, of which no released record exists.",
+      "const": 2
     },
     "seq": {
       "type": "integer",
@@ -906,12 +906,13 @@
               "$ref": "#/$defs/sha"
             },
             "outputs": {
-              "description": "Digests of the output blobs (M-5).",
+              "description": "Digests of the output blobs (M-5); the controller's step manifest is the last. At most 16: a step whose results are many blobs names them through an output blob, never one by one here (STEP7_CLOSURE.md, record bounds).",
               "type": "array",
               "items": {
                 "$ref": "#/$defs/sha"
               },
-              "uniqueItems": true
+              "uniqueItems": true,
+              "maxItems": 16
             },
             "root": {
               "oneOf": [
@@ -1254,7 +1255,7 @@
           }
         },
         {
-          "description": "Terminal codes per step (SPEC 9.3, 10.2, MM 2.1). ACQUIRE also passes any other Stage 03 code through.",
+          "description": "Terminal codes per step (SPEC 9.3, 10.2, MM 2.1). ADAPTER_INCONSISTENT is a terminal code of every step (owner decision D-049). ACQUIRE also passes any other Stage 03 code through.",
           "if": {
             "properties": {
               "step": {
@@ -1270,6 +1271,7 @@
                     "enum": [
                       "INPUT_INVALID",
                       "SUBJECT_TYPE_UNSUPPORTED",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1299,6 +1301,7 @@
                       "EXTRACTION_WORKER_FAILED",
                       "EXTRACTION_FAILED",
                       "ROOT_IDENTITY_MISMATCH",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1324,6 +1327,7 @@
                   "code": {
                     "enum": [
                       "NORMALIZE_INVALID",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1351,6 +1355,7 @@
                       "INDEX_MISSING",
                       "INDEX_CORRUPT",
                       "INDEX_FORMAT_MISMATCH",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1402,6 +1407,7 @@
                   "code": {
                     "enum": [
                       "REPORT_INVALID",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1427,6 +1433,7 @@
                   "code": {
                     "enum": [
                       "VERIFY_FAILED",
+                      "ADAPTER_INCONSISTENT",
                       "RETRY_BUDGET_EXHAUSTED",
                       "STORAGE_ERROR",
                       "CANON_INVALID"
@@ -1712,13 +1719,14 @@
           "$ref": "#/$defs/question_kind"
         },
         "evidence": {
-          "description": "New evidence that closes the question (S-7.6).",
+          "description": "New evidence that closes the question (S-7.6). Stage 04 never writes this kind; at most 64 ids keep every record kind within the record limit (Step 7 closure, record bounds): a later stage that needs more names an evidence set (owner decision D-047).",
           "allOf": [
             {
               "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
             },
             {
-              "minItems": 1
+              "minItems": 1,
+              "maxItems": 64
             }
           ]
         }
@@ -1729,20 +1737,22 @@
       "additionalProperties": false,
       "required": [
         "report",
-        "projections"
+        "projection_set",
+        "projection_count"
       ],
       "properties": {
         "report": {
           "description": "Digest of the report blob (urn:citerift:schema:investigation:v1:report).",
           "$ref": "#/$defs/sha"
         },
-        "projections": {
-          "description": "Digests of the v1 investigation records (schemas/contracts/v1, unchanged), one per work with a positive claim.",
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/sha"
-          },
-          "uniqueItems": true
+        "projection_set": {
+          "description": "Digest of the projection-set blob (urn:citerift:schema:investigation:v1:projection-set, owner decision D-047).",
+          "$ref": "#/$defs/sha"
+        },
+        "projection_count": {
+          "description": "The number of projections in the set.",
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -1766,12 +1776,14 @@
           "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/code"
         },
         "new_evidence": {
+          "description": "Evidence of the successor that the old claim did not have (S-8.6). Stage 04 never writes this kind; at most 64 ids keep every record kind within the record limit (Step 7 closure, record bounds): a later stage that needs more names an evidence set (owner decision D-047).",
           "allOf": [
             {
               "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/evidence_ids"
             },
             {
-              "minItems": 1
+              "minItems": 1,
+              "maxItems": 64
             }
           ]
         }
@@ -1810,7 +1822,9 @@
                 "type": "boolean"
               }
             }
-          }
+          },
+          "maxItems": 64,
+          "description": "One check per SPEC 9.7 check kind, never one per claim; at most 64."
         },
         "content_digest": {
           "description": "C(J) (MM 7.3), recorded when verification passed.",

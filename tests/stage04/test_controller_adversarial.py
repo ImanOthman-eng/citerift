@@ -31,8 +31,7 @@ from memory_support import root_object
 
 from citerift.investigation import ids, workflow
 from citerift.investigation.adapters import ContentRecord, Deferred, Failed, StepRequest, StepResult, Succeeded
-from citerift.investigation.controller import DEFECT_CODE, AdapterDefect, StorageExhausted, run_investigation
-from citerift.investigation.errors import InvestigationMemoryError
+from citerift.investigation.controller import ADAPTER_INCONSISTENT, DEFECT_CODE, StorageExhausted, run_investigation
 from citerift.investigation.fold import STEPS
 
 pytestmark = pytest.mark.negative
@@ -49,10 +48,7 @@ def _failures(root: Path, key: str) -> list[tuple[str, str, str | None]]:
 def _run(tmp_path: Path, script: dict[tuple[str, int], Any], live: bool = False) -> tuple[Path, str, StepClock, Any]:
     clock = StepClock()
     root, key = create(tmp_path, live=live, clock=clock)
-    try:
-        st = run_once(root, key, Plan(script), env_for(live), clock)
-    except AdapterDefect as exc:
-        st = exc
+    st = run_once(root, key, Plan(script), env_for(live), clock)
     return root, key, clock, st
 
 
@@ -61,36 +57,30 @@ def _run(tmp_path: Path, script: dict[tuple[str, int], Any], live: bool = False)
 
 @pytest.mark.parametrize("step", STEPS)
 def test_adapter_exception_fails_closed(tmp_path: Path, step: str) -> None:
+    """D-049: an exception ends the attempt at once with the terminal ADAPTER_INCONSISTENT in every step; it is never
+    left open for W-6 and never retried."""
     root, key, clock, st = _run(tmp_path, {(step, 1): "raise"})
-    if step in DEFECT_CODE:
-        code, reason = DEFECT_CODE[step]
-        assert st.lifecycle == "FAILED"
-        assert _failures(root, key) == [(step, code, reason)]
-        return
-    # No schema-legal defect code: nothing written, the attempt stays open, the next resume closes it (W-6).
-    assert isinstance(st, AdapterDefect) and st.step == step
-    last = journal(root, key)[-1]
-    assert (last["kind"], last["step"], last["attempt"]) == ("step_started", step, 1)
-    for _ in range(2):  # the same defect twice more ends the step by the retry budget
-        with pytest.raises(AdapterDefect):
-            run_once(root, key, Plan({(step, a): "raise" for a in (1, 2, 3)}), Env(), clock)
-    st = run_once(root, key, Plan(), Env(), clock)
     assert st.lifecycle == "FAILED"
-    assert _failures(root, key) == [(step, "RETRY_BUDGET_EXHAUSTED", "STEP_INTERRUPTED")]
-    kinds = [r["kind"] for r in journal(root, key) if r["step"] == step]
-    assert kinds.count("step_interrupted") == 2 and kinds.count("step_started") == 3
+    assert DEFECT_CODE[step] == (ADAPTER_INCONSISTENT, None)
+    assert _failures(root, key) == [(step, ADAPTER_INCONSISTENT, None)]
+    recs = [r for r in journal(root, key) if r["step"] == step]
+    assert [r["kind"] for r in recs if r["kind"] in ("step_started", "step_interrupted")] == ["step_started"]
+    assert [r["payload"]["retryable"] for r in recs if r["kind"] == "step_failed"] == [False]
+    plan = Plan()
+    assert run_once(root, key, plan, env_for(False), clock).lifecycle == "FAILED"
+    assert plan.calls == []
 
 
-def test_controller_is_unusable_after_an_unrecorded_defect(tmp_path: Path) -> None:
+def test_controller_stays_usable_after_a_recorded_defect(tmp_path: Path) -> None:
+    """D-049: a defect is recorded, so the controller is not left broken; the investigation is terminal."""
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
     with Session(root, key, Plan({("VALIDATE", 1): "raise"}), Env(), clock) as ctl:
-        with pytest.raises(AdapterDefect):
-            ctl.step()
-        for call in (ctl.step, ctl.run, ctl.recover, ctl.check_stale):
-            with pytest.raises(InvestigationMemoryError) as exc:
-                call()
-            assert exc.value.code == "CONTROLLER_UNUSABLE"
+        ctl.step()
+        assert ctl.state().lifecycle == "FAILED"
+        assert ctl.step().action == "terminal"
+        assert ctl.check_stale() is None
+    assert _failures(root, key) == [("VALIDATE", ADAPTER_INCONSISTENT, None)]
 
 
 def test_base_exception_in_an_adapter_leaves_the_attempt_open(tmp_path: Path) -> None:
@@ -119,15 +109,15 @@ def _with(step: str, change: Any) -> Any:
 
 
 BAD: list[Any] = [
-    pytest.param("NORMALIZE", lambda r: None, "NORMALIZE_INVALID", id="none-instead-of-result"),
-    pytest.param("NORMALIZE", lambda r: {"ok": True}, "NORMALIZE_INVALID", id="dict-instead-of-result"),
+    pytest.param("NORMALIZE", lambda r: None, "ADAPTER_INCONSISTENT", id="none-instead-of-result"),
+    pytest.param("NORMALIZE", lambda r: {"ok": True}, "ADAPTER_INCONSISTENT", id="dict-instead-of-result"),
     pytest.param(
-        "NORMALIZE", lambda r: Succeeded(records=list(r.records)), "NORMALIZE_INVALID", id="records-not-a-tuple"
+        "NORMALIZE", lambda r: Succeeded(records=list(r.records)), "ADAPTER_INCONSISTENT", id="records-not-a-tuple"
     ),  # type: ignore[arg-type]
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=(ContentRecord("claim_recorded", {}),)),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="kind-of-another-step",
     ),
     pytest.param(
@@ -139,31 +129,31 @@ BAD: list[Any] = [
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=(ContentRecord("evidence_recorded", []),)),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="payload-not-an-object",
     ),  # type: ignore[arg-type]
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=r.records, blobs=(float("nan"),), outputs=r.outputs),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="blob-not-canonical",
     ),
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=r.records, outputs=("a" * 64,)),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="output-not-published",
     ),
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=r.records, outputs=("../x",)),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="output-not-a-digest",
     ),
     pytest.param(
         "NORMALIZE",
         lambda r: Succeeded(records=r.records, blobs=r.blobs, outputs=r.outputs, root=root_object()),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="root-outside-acquire",
     ),
     pytest.param(
@@ -185,7 +175,7 @@ BAD: list[Any] = [
             blobs=r.blobs,
             outputs=r.outputs,
         ),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="evidence-id-not-derived",
     ),
     pytest.param(
@@ -193,13 +183,13 @@ BAD: list[Any] = [
         lambda r: Succeeded(
             records=(ContentRecord("evidence_recorded", {**r.records[1].payload}),), blobs=r.blobs, outputs=r.outputs
         ),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="dangling-evidence-reference",
     ),
     pytest.param(
         "ASSEMBLE",
         lambda r: Succeeded(blobs=r.blobs, outputs=r.outputs),
-        "REPORT_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="assemble-without-report",
     ),
     pytest.param(
@@ -212,7 +202,7 @@ BAD: list[Any] = [
                 ),
             )
         ),
-        "VERIFY_FAILED",
+        "ADAPTER_INCONSISTENT",
         id="verify-succeeds-with-failed-verification",
     ),
     pytest.param(
@@ -225,15 +215,15 @@ BAD: list[Any] = [
                 ),
             )
         ),
-        "VERIFY_FAILED",
+        "ADAPTER_INCONSISTENT",
         id="verify-of-another-content-digest",
     ),
-    pytest.param("NORMALIZE", lambda r: Failed("HTTP_TIMEOUT"), "NORMALIZE_INVALID", id="code-not-allowed-for-step"),
-    pytest.param("NORMALIZE", lambda r: Failed("lower case"), "NORMALIZE_INVALID", id="code-malformed"),
+    pytest.param("NORMALIZE", lambda r: Failed("HTTP_TIMEOUT"), "ADAPTER_INCONSISTENT", id="code-not-allowed-for-step"),
+    pytest.param("NORMALIZE", lambda r: Failed("lower case"), "ADAPTER_INCONSISTENT", id="code-malformed"),
     pytest.param(
         "NORMALIZE",
         lambda r: Failed("NORMALIZE_INVALID", not_before=datetime(2030, 1, 1).astimezone()),
-        "NORMALIZE_INVALID",
+        "ADAPTER_INCONSISTENT",
         id="not-before-outside-acquire",
     ),
     pytest.param(
@@ -277,10 +267,12 @@ def test_live_acquire_root_of_another_revision_is_refused(tmp_path: Path) -> Non
         pytest.param(lambda r: Succeeded(records=(ContentRecord("claim_recorded", {}),)), id="wrong-kind"),
     ],
 )
-def test_malformed_result_in_a_step_without_defect_code_is_left_for_recovery(tmp_path: Path, change: Any) -> None:
+def test_malformed_extract_result_is_terminal_adapter_inconsistent(tmp_path: Path, change: Any) -> None:
+    """D-049: EXTRACT had no defect code before (the attempt was left open); now it ends terminally too."""
     root, key, _, st = _run(tmp_path, {("EXTRACT", 1): _with("EXTRACT", change)})
-    assert isinstance(st, AdapterDefect)
-    assert journal(root, key)[-1]["kind"] in ("step_started", "observation_recorded")
+    assert st.lifecycle == "FAILED"
+    assert _failures(root, key) == [("EXTRACT", ADAPTER_INCONSISTENT, None)]
+    assert journal(root, key)[-1]["kind"] == "step_failed"
 
 
 def test_naive_datetime_is_refused(tmp_path: Path) -> None:
@@ -348,8 +340,7 @@ def test_second_invocation_while_running_is_busy_and_writes_nothing(tmp_path: Pa
 def test_corrupt_memory_is_reported_and_not_changed(tmp_path: Path, where: str) -> None:
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
-    with pytest.raises(AdapterDefect):
-        run_once(root, key, Plan({("EXTRACT", 1): "raise"}), Env(), clock)
+    assert run_once(root, key, Plan({("EXTRACT", 1): "raise"}), Env(), clock).lifecycle == "FAILED"
     inv = root / key
     if where == "record":
         data = bytearray((inv / "journal.jsonl").read_bytes())
@@ -369,8 +360,9 @@ def test_corrupt_memory_is_reported_and_not_changed(tmp_path: Path, where: str) 
 def test_stale_investigation_is_terminal_for_every_later_run(tmp_path: Path) -> None:
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
-    with pytest.raises(AdapterDefect):
-        run_once(root, key, Plan({("LOOKUP", 1): "raise"}), Env(), clock)
+    with Session(root, key, Plan(), Env(), clock) as ctl:  # stop after NORMALIZE, before LOOKUP starts
+        while ctl.view.step_state("NORMALIZE") != "succeeded":
+            ctl.step()
     env = Env()
     env.values["stage04"]["engine_version"] = "0.2.0"
     assert run_once(root, key, Plan(), env, clock).lifecycle == "STALE"
@@ -469,7 +461,7 @@ def _fill_journal(room: int, monkeypatch: pytest.MonkeyPatch, where: list[Path])
         payload = {
             **first.payload,
             "pointer": pointer,
-            "evidence_id": ids.evidence_id(first.payload["observation"], pointer),
+            "evidence_id": ids.evidence_id(first.payload["observation"], pointer, first.payload["kind"]),
         }
         return Succeeded(records=(ContentRecord(first.kind, payload), *r.records[1:]), blobs=r.blobs, outputs=r.outputs)
 

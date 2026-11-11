@@ -157,7 +157,9 @@ support (`policy.reduce`, rule 7f).
   `config_digest` is the SHA-256 of the canonical effective configuration
   (`urn:citerift:schema:investigation:v1:common#/$defs/config`): plan version, the budgets `A_max` and `F_max`, the
   Stage 03 fetch policy digest and the live-ACQUIRE bound (`deadline_s`, `op_timeout_s`, the 30 s allowance and
-  `T_acq`), both null for a bundle request (owner decision D-042). A change of any of them is a different
+  `T_acq`), both null for a bundle request (owner decision D-042), and the lookup evidence budget
+  `lookup_evidence_budget_bytes` (owner decision D-048, default 16 MiB, at most 16 MiB; derivation in
+  `review/step7/closure/STEP7_CLOSURE.md`). A change of any of them is a different
   investigation key and a different step key (S-9.3); a historical investigation is never recomputed under another
   bound.
 - S-4.8 The investigation directory is named by the hexadecimal `investigation_key`. The v1 `investigation_id` is a
@@ -172,8 +174,8 @@ support (`policy.reduce`, rule 7f).
 | Identifier occurrence | `ident_ref = H(root_id, "identifier", identifier.id, source byte span, source raw_sha256)` | unit, or root when `unit_id` is null |
 | Work candidate | `cand_ref = H(unit_ref, sorted keys)` | unit |
 | Observation | SHA-256 of its canonical content (the blob digest) | root |
-| Evidence | `evidence_id = H(observation digest, JSON pointer)` | observation |
-| Claim | `claim_id = H(cand_ref, class, rule id, table version, sorted evidence ids)` | work candidate |
+| Evidence | `evidence_id = H(observation digest, JSON pointer, evidence kind)` (owner decision D-051) | observation |
+| Claim | `claim_id = H(cand_ref, class, rule id, table version, evidence-set digest)` (owner decision D-047) | work candidate |
 | Decision | `decision_id = H(claim_id, disposition)` | claim |
 | Question | `question_id = H(claim_id, "question", kind)` | claim |
 
@@ -187,6 +189,15 @@ belongs to the bound root (its `capture.capture_sha256` equals the root's). Wher
 exactly the same byte span, its `raw_sha256` must equal the derived hash. Any mismatch fails closed and never creates a
 new identity. VERIFY recomputes the hash from the retained bytes. Unit evidence records the hash with the source
 artifact digest.
+
+Evidence kind (owner decision D-051). Two kinds of evidence at one pointer of one observation (for example a unit and
+an identifier occurrence at `/units/0`) are two evidence items with two ids; the same kind at the same pointer is the
+same item. Evidence set (owner decision D-047). A claim's supporting ids, contradicting ids and the ids supporting
+each conflict alternative are one content-addressed blob (`urn:citerift:schema:investigation:v1:evidence-set`): each
+list sorted ascending, ids unique, nothing truncated, so a set has one canonical form and one digest. The claim
+record names the set by digest and carries only the list lengths; `claim_id` binds the digest, so it binds the exact
+set content. The identity change of Step 7 closure applies to no released record (none exist), so there is no
+migration; a format-1 journal is refused (S-8.7).
 
 - S-4.9 Stage 03 element ids (`un-00013`) are stable for a given extraction digest; the source anchors make every
   child identity independent of them across engines, so a re-extraction that renumbers units changes child ids only
@@ -281,6 +292,14 @@ Each candidate-role identifier occurrence of a unit gets a status:
 - S-6.10 A query that raises (database error) records a lookup observation with state `unavailable` and the error
   code; the LOOKUP step still commits (section 9.2). An index that cannot be opened fails the step with Stage 02's
   code (`INDEX_MISSING`, `INDEX_CORRUPT` or `INDEX_FORMAT_MISMATCH`).
+- S-6.10a Every query runs within the lookup evidence budget `B = lookup_evidence_budget_bytes` (owner decision
+  D-048) through Stage 02 `Index.gather_bounded` (maintenance A-02-001): Stage 02 sums the stored bytes of the rows a
+  query would read, and charges each relevance hit, before reading them; over `B` the whole lookup is refused and
+  nothing is truncated. The lookup observation then has state `unavailable`, no events and the issue
+  `LOOKUP_EVIDENCE_LIMIT_EXCEEDED` with the budget and the bytes needed; under dt-1 it is an unavailable lookup like
+  any other (D-13), so it can never yield a positive finding or `NOT_FOUND_IN_CHECKED_SOURCES`. A candidate decided by
+  D-13 because of such a lookup carries the reason `LOOKUP_EVIDENCE_LIMIT_EXCEEDED` besides `LOOKUP_QUERY_FAILED`
+  (the claim schema allows that reason with class `LOOKUP_UNAVAILABLE` only).
 - S-6.11 The **deciding lookup** `L(c)` of a candidate is Q2 for `PAIR` and Q1 of its key otherwise.
 
 ### 6.5 Cross-identifier coherence (gate 04-D, owner requirement)
@@ -389,7 +408,7 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
 | D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `CURRENT_EFFECT_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
 | D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
-| D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`; the code of the failed query stays in its lookup observation |
+| D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`, and also `LOOKUP_EVIDENCE_LIMIT_EXCEEDED` when an unavailable lookup was refused by the lookup evidence budget (S-6.10a, owner decision D-048); the code of the failed query stays in its lookup observation |
 | D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
 | D-15 | 8 | `L.state = notice_only` and projection `uncertain` with value null | `NOTICE_CITED` | reason `CITED_IDENTIFIER_IS_NOTICE`; never an attachment to the retracted work |
 | D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | reason `NOT_FOUND_IN_CHECKED_SOURCES`; provenance = checked sources |
@@ -521,10 +540,10 @@ Each claim gets exactly one decision:
 | Execution | `step_started`, `step_succeeded`, `step_failed`, `step_deferred`, `step_interrupted`, `stale_detected` | step key; for `step_succeeded` the output digests (and for ACQUIRE the bound root); for `step_failed` `{code, retryable, reason, detail, wall_clock}` and, for ACQUIRE, `not_before` (the Retry-After instant the attempt observed, or null; `wall_clock` is non-null only for `ACQUIRE_WALL_CLOCK_EXCEEDED`, owner decision D-042); for `step_deferred` `{code, not_before}`; for `stale_detected` `{changed, recorded, current}` (section 10.3) |
 | Observation | `observation_recorded` | `{obs_kind ∈ {bundle, extraction, index_identity, lookup}, blob, source_ref}` |
 | Evidence | `evidence_recorded` | `{evidence_id, observation, pointer, kind, refs}` (keys, identifier statuses, coherence results) |
-| Claim | `claim_recorded` | `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, supporting, contradicting}` |
+| Claim | `claim_recorded` | `{claim_id, cand_ref, class, status, value, alternatives, rule, reasons, evidence_set, supporting_count, contradicting_count}` (the lists are in the evidence-set blob, D-047) |
 | Decision | `decision_recorded` | `{decision_id, claim_id, disposition}` |
 | Question | `question_opened`, `question_closed` | `{question_id, claim_id, kind}`; close adds `{evidence}` |
-| Report | `report_recorded` | `{report blob, v1 projection blobs}` |
+| Report | `report_recorded` | `{report, projection_set, projection_count}`: the report blob and a content-addressed projection set listing the v1 projection blobs (D-047) |
 | History | `claim_superseded` | `{old_claim_id, new_claim_id, reason, new_evidence}` |
 | Verification | `verification_recorded` | `{result, checks}` |
 
@@ -532,7 +551,11 @@ The exact payload of each kind is fixed by `urn:citerift:schema:investigation:v1
 spells out what this table states in words: `investigation_created` adds `investigation_id` and `migrated_from`
 (S-8.7); evidence adds the typed `value` read at its pointer; a claim adds its `candidate`, `table_version` and
 `upstream_reasons` (Stage 02 basis reasons with their evidence); `verification_recorded` adds the content digest
-`C(J)` (section 11.1). Invariants the schema cannot express (M-1 to M-8, M-10, M-11, M-13, M-14, the transition rules
+`C(J)` (section 11.1). Every list a record holds has a schema bound (`maxItems`), so no record grows with the article
+(Step 7 closure, `review/step7/closure/storage_bounds.json`: the largest record of any kind is 50,297 bytes, 4.8 % of
+the 1 MiB record limit); the collections that do grow (a claim's evidence, a report's projections) are sets (D-047),
+checked on append and on open: a missing or corrupt set is corruption, never an empty set. Invariants the schema
+cannot express (M-1 to M-8, M-10, M-11, M-13, M-14, the transition rules
 and the derivation of every id) are checked by Investigation Memory and VERIFY
 (`review/step5/STEP5_SCHEMA_REVIEW.md`).
 
@@ -686,6 +709,21 @@ steps' bounded work.
 A deterministic step that fails because of its inputs would fail again on the same inputs, so it has no retryable
 codes (a retry would repeat the result). The only retryable codes are network failures in ACQUIRE and resource limits
 of the isolated Stage 03 worker in EXTRACT, which depend on the machine and not on the inputs.
+
+Adapter defects (owner decision D-049). Besides the codes above, every step has the terminal, non-retryable code
+`ADAPTER_INCONSISTENT`: the adapter raised an ordinary exception, returned something that is not a `StepResult`,
+supplied content the step may not write or Memory refuses, broke the protocol (a code that is not the step's, a
+controller code, `not_before` or `wall_clock` or failed-document evidence where they do not belong) or returned
+contradictory metadata. For ACQUIRE, whose record schema cannot enumerate the Stage 03 codes, the controller accepts
+only a Stage 03 code (`citerift.wiki.issues.CATALOG`) or `ROOT_IDENTITY_MISMATCH`, `ACQUIRE_WALL_CLOCK_EXCEEDED`,
+`ADAPTER_INCONSISTENT`, `STORAGE_ERROR`, `CANON_INVALID`. A defect is recorded at once as `step_failed`; it is never
+left open for W-6 recovery or the retry budget. Domain failures keep their codes, and a size refusal stays
+`STORAGE_ERROR`. EXTRACT maps a failed Stage 03 document by owner decision D-050 (`extraction.extraction_failure`): a
+worker code `EXTRACTION_DEADLINE_EXCEEDED`, `EXTRACTION_MEMORY_EXCEEDED` or `EXTRACTION_WORKER_FAILED` is that code
+(retryable as above); any other valid Stage 03 code is `EXTRACTION_FAILED` with the Stage 03 code as the reason; a
+document that contradicts the Stage 03 schema, has no determinable code, a code Stage 03 does not define, or a worker
+code outside a failed worker component is `ADAPTER_INCONSISTENT`. The failed document is kept as an (uncommitted)
+extraction observation of the failing attempt.
 
 ### 9.4 Lifecycle
 

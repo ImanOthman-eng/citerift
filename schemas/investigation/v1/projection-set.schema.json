@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:projection-set",
+  "title": "CITERIFT Stage 04 projection set, version 1",
+  "description": "The v1 projections of one report (owner decision D-047, SPEC 11.2): a content-addressed blob named by report_recorded.projection_set. The digests are sorted ascending and unique; report_recorded.projection_count equals their number; every digest names a published blob. Checked by Investigation Memory.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "projections"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:projection-set"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "projections": {
+      "description": "Digests of the v1 investigation records (schemas/contracts/v1, unchanged), one per work with a positive claim.",
+      "type": "array",
+      "items": {
+        "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+      },
+      "uniqueItems": true
+    }
+  }
+}

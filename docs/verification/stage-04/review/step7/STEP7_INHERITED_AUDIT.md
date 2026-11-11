@@ -1,5 +1,10 @@
 # Stage 04 Step 7: inherited baseline audit (owner Step 7 items 18 and 19)
 
+> **Closure note (2026-11-11).** This audit is the evidence of Step 7 as accepted at `ab0ce66` and is kept as
+> written. Owner decisions D-047 to D-052 closed IA-1 (D-047), IA-2 (D-048, maintenance A-02-001), IA-4 (D-050),
+> IA-6 (D-051), IA-11 (D-049) and TA-1 (D-052, design only). Current state and traceability:
+> `closure/STEP7_CLOSURE.md`.
+
 Building the controller showed some things about Stages 00–03 and about Stage 04's own accepted Steps 3–6. This
 document records them.
 

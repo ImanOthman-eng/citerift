@@ -196,9 +196,13 @@ its state is not `unavailable`.
 
 - Domain: committed observations `Obs` (blobs) and JSON pointers into them.
 - Codomain: evidence items `ev = ⟨evidence_id, obs, pointer, kind, refs⟩` with
-  `evidence_id = H("citerift-evidence/1", obs, pointer)`.
-- Rule: the evidence relation `supports ⊆ Evidence × Claims` holds when the claim lists the evidence id in
-  `supporting` or in an alternative; `contradicts` likewise for `contradicting`.
+  `evidence_id = H("citerift-evidence/1", obs, pointer, kind)` (owner decision D-051: two kinds at one pointer are
+  two items; the same kind at the same pointer is the same item).
+- Evidence set (owner decision D-047): `S(claim) = ⟨sup, con, alt_1, …, alt_k⟩`, each a strictly ascending list of
+  evidence ids (so unique and canonical), stored as one content-addressed blob `ES = H_blob(canon(S))`; the claim
+  record holds `ES`, `|sup|`, `|con|` and `|alt_i|`.
+- Rule: the evidence relation `supports ⊆ Evidence × Claims` holds when the claim's evidence set lists the evidence id
+  in `sup` or in an `alt_i`; `contradicts` likewise for `con`.
 - Invariants: **EV-1** every evidence item resolves: `pointer` names a value inside the blob `obs`; **EV-2** a claim
   never carries a value that is not the value at the pointer of one of its supporting evidence items, or a constant of
   the decision table (class, rule id, reason code).
@@ -335,7 +339,8 @@ gives the same `claim_id`.
 
 *Proof.* (a) D-1 to D-4 do not hold (`E = CITED`, `σ ≠ NONE`), D-5 does not hold by assumption, and D-6 holds. (b) By
 CD-1 `c` is the only candidate of `u`, and `δ` gives it exactly one class. (c) `claim_id = H(cand_ref, class, rule id,
-table version, sorted evidence ids)`; all arguments are functions of committed observations (CH-1) and `δ` is a pure
+table version, ES)` with `ES` the digest of the canonical evidence set (D-047), itself a function of the evidence ids;
+all arguments are functions of committed observations (CH-1) and `δ` is a pure
 function of `ξ(c)`. ∎
 
 **Proposition P4 (monotone abstention-first precedence).** Call a guard *monotone* when it stays true if identifier
@@ -361,12 +366,15 @@ committed (O-3). ∎
 
 ## 6. Claims, decisions and questions
 
-- Claim: `claim(c) = ⟨claim_id, cand_ref, class, status(class), value, alternatives, rule, reasons, supporting,
-  contradicting⟩` with `value = pv(L(c))` for positive classes and `NOT_FOUND_IN_CHECKED_SOURCES`, null otherwise.
+- Claim: `claim(c) = ⟨claim_id, cand_ref, class, status(class), value, alternatives, rule, reasons, ES, |sup|,
+  |con|⟩` (the lists are in the evidence set `S(claim)` named by `ES`, section 4.6) with `value = pv(L(c))` for positive classes and `NOT_FOUND_IN_CHECKED_SOURCES`, null otherwise.
 - Decision: exactly one per claim, `decision_id = H(claim_id, disp(class))`.
 - Question: exactly one per claim with `disp = ROUTE_NEEDS_RESOLUTION`, `question_id = H(claim_id, "question", kind)`.
 - Invariants: **CL-1** one claim per candidate; **CL-2** one decision per claim; **CL-3** questions exactly for routed
-  claims; **CL-4** every supporting evidence id of a claim resolves (EV-1).
+  claims; **CL-4** every supporting evidence id of a claim resolves (EV-1); **CL-5** (D-047) the set `ES` exists, is
+  a valid evidence set, its list lengths equal the claim's counts and every id in it is an earlier evidence item: a
+  missing or invalid set is a violation (M-3, M-7), never an empty set; `claim_id` is a function of `ES`, so a
+  different set is a different claim.
 - Failure: violation of CL-1 to CL-4 is `fail(VERIFY_FAILED)`.
 
 ## 7. Journal, fold and state reconstruction

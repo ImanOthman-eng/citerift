@@ -14,11 +14,12 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from citerift.investigation import ids
+from citerift.investigation import ids, sets
+from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
 SUBJECT = "wikipedia_article_revision"
-STAGE04 = {"engine_version": "0.1.0", "table_version": "dt-1", "plan_version": "plan-1", "schema_version": "1.0.0"}
+STAGE04 = {"engine_version": "0.1.0", "table_version": "dt-1", "plan_version": "plan-1", "schema_version": "2.0.0"}
 CAPTURE = hashlib.sha256(b"SYNTHETIC capture.json").hexdigest()
 
 
@@ -47,7 +48,7 @@ def memory_root(tmp: Path) -> Path:
 def bundle_request(root: Path) -> dict[str, Any]:
     return {
         "schema": "urn:citerift:schema:investigation:v1:request",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "mode": "retained_bundle",
         "subject": {"type": SUBJECT, "bundle_path": "/data/bundles/b1"},
         "index_path": "/data/index.sqlite",
@@ -57,6 +58,7 @@ def bundle_request(root: Path) -> dict[str, Any]:
             "budgets": {"a_max": 3, "f_max": 6},
             "fetch_policy_sha256": None,
             "live_acquire_bound": None,
+            "lookup_evidence_budget_bytes": DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES,
         },
     }
 
@@ -64,7 +66,7 @@ def bundle_request(root: Path) -> dict[str, Any]:
 def live_request(root: Path) -> dict[str, Any]:
     return {
         "schema": "urn:citerift:schema:investigation:v1:request",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "mode": "live_capture",
         "subject": {"type": SUBJECT, "wiki": "ar", "revision_id": 76190003},
         "index_path": "/data/index.sqlite",
@@ -79,6 +81,7 @@ def live_request(root: Path) -> dict[str, Any]:
                 "safety_allowance_ms": 30_000,
                 "t_acq_ms": 240_000,
             },
+            "lookup_evidence_budget_bytes": DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES,
         },
     }
 
@@ -141,7 +144,7 @@ def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str
     # Evidence over the committed LOOKUP observation (the same bytes give the same digest), then the claim.
     ev = _evidence("lookup_result", mem.put_blob({"lookup": "SYNTHETIC", "state": "no_record"}), "", [], None)
     mem.append("evidence_recorded", ev, step=step, attempt=attempt)
-    claim = not_found_claim(ev["evidence_id"])
+    claim = not_found_claim(mem, ev["evidence_id"])
     mem.append("claim_recorded", claim, step=step, attempt=attempt)
     decision = {"decision_id": h("decision"), "claim_id": claim["claim_id"], "disposition": "REPORT_NOT_FOUND"}
     mem.append("decision_recorded", decision, step=step, attempt=attempt)
@@ -164,7 +167,9 @@ def _evidence(kind: str, obs: str, pointer: str, refs: list[str], value: Any) ->
     }
 
 
-def not_found_claim(evidence_id: str) -> dict[str, Any]:
+def not_found_claim(mem: InvestigationMemory, evidence_id: str) -> dict[str, Any]:
+    """A not-found claim whose evidence set (published here) names ``evidence_id`` (D-047)."""
+    evidence_set = mem.put_blob(sets.evidence_set([evidence_id]))
     return {
         "claim_id": h("claim-" + evidence_id),
         "cand_ref": h("cand"),
@@ -181,8 +186,9 @@ def not_found_claim(evidence_id: str) -> dict[str, Any]:
         "alternatives": [],
         "reasons": ["NOT_FOUND_IN_CHECKED_SOURCES"],
         "upstream_reasons": [],
-        "supporting": [evidence_id],
-        "contradicting": [],
+        "evidence_set": evidence_set,
+        "supporting_count": 1,
+        "contradicting_count": 0,
     }
 
 

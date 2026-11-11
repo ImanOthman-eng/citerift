@@ -78,14 +78,16 @@ def live_bound_consistent(config: dict[str, Any]) -> bool:
 # Child identities (SPEC 4.3, MM 3.3; Step 7) -----------------------------------------------------------------------
 
 
-def evidence_id(observation: str, pointer: str) -> str:
-    """``H(observation digest, JSON pointer)``: the evidence a pointer selects in one observation."""
-    return H(EVIDENCE_TAG, observation, pointer)
+def evidence_id(observation: str, pointer: str, kind: str) -> str:
+    """``H(observation digest, JSON pointer, evidence kind)`` (owner decision D-051): what one kind of evidence states
+    about the value a pointer selects in one observation. Two kinds at one pointer are two evidence items."""
+    return H(EVIDENCE_TAG, observation, pointer, kind)
 
 
-def claim_id(cand_ref: str, claim_class: str, rule: str, table_version: str, evidence: list[str]) -> str:
-    """``H(cand_ref, class, rule id, table version, sorted evidence ids)``."""
-    return H(CLAIM_TAG, cand_ref, claim_class, rule, table_version, sorted(set(evidence)))
+def claim_id(cand_ref: str, claim_class: str, rule: str, table_version: str, evidence_set: str) -> str:
+    """``H(cand_ref, class, rule id, table version, evidence-set digest)`` (owner decision D-047): the claim binds the
+    exact content of its evidence set (supporting, contradicting and per-alternative ids, ``sets.py``)."""
+    return H(CLAIM_TAG, cand_ref, claim_class, rule, table_version, evidence_set)
 
 
 def decision_id(claim: str, disposition: str) -> str:

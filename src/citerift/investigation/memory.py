@@ -31,7 +31,7 @@ from typing import Any
 
 from citerift.investigation import faults, ids
 from citerift.investigation.blobs import BlobStore
-from citerift.investigation.canonical import canon
+from citerift.investigation.canonical import canon, loads_blob
 from citerift.investigation.errors import (
     AppendRefused,
     CorruptInvestigation,
@@ -53,6 +53,7 @@ from citerift.investigation.fsutil import (
 )
 from citerift.investigation.journal import (
     JOURNAL,
+    JOURNAL_FORMAT,
     MAX_JOURNAL_BYTES,
     MAX_RECORD_BYTES,
     TORN_PREFIX,
@@ -112,7 +113,7 @@ def _record(
     seq: int, prev: str, kind: str, step: str | None, attempt: int | None, at: str, root_id: str | None, payload: Any
 ) -> dict[str, Any]:
     rec = {
-        "v": 1,
+        "v": JOURNAL_FORMAT,
         "seq": seq,
         "prev": prev,
         "kind": kind,
@@ -250,7 +251,7 @@ class InvestigationMemory:
                 read, raw = _read(inv_fd)
                 found = read  # what was found on disk; ``torn_tail`` reports it even after a repair
                 store = BlobStore(blobs_fd)
-                folder = Folder(store.verify, expected_key=key)
+                folder = Folder(store.verify, expected_key=key, blob_read=lambda d: loads_blob(store.get(d)))
                 if not read.records:
                     raise InvariantViolation("M-1", "JOURNAL_CORRUPT", "the journal holds no record", 0)
                 # Validate everything before changing anything: a CORRUPT investigation is never repaired, not even

@@ -67,7 +67,9 @@ class Failed:
     from SPEC 9.3 and the budgets (SPEC 9.2).
 
     ``not_before`` (ACQUIRE only) is a Retry-After instant the attempt observed. ``retry_after_known`` is false when
-    the attempt cannot tell whether it observed one (a killed live capture, D-042): such a failure is never retried."""
+    the attempt cannot tell whether it observed one (a killed live capture, D-042): such a failure is never retried.
+    ``evidence`` (EXTRACT only) is the failed Stage 03 document, kept as an uncommitted observation of the failing
+    attempt (owner decision D-050, ``extraction.extraction_failure``)."""
 
     code: str
     reason: str | None = None
@@ -75,6 +77,7 @@ class Failed:
     not_before: datetime | None = None
     wall_clock: WallClock | None = None
     retry_after_known: bool = True
+    evidence: Any = None
 
 
 @dataclass(frozen=True)

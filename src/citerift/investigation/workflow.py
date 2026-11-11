@@ -322,12 +322,12 @@ def _guard_success(rec: Mapping[str, Any], f: Folder, step: str, seq: int) -> No
 
 
 def evidence_problem(content: list[dict[str, Any]]) -> str:
-    """SPEC 4.3, CH-1: every evidence id is ``H(observation, pointer)``; ``""`` when it holds."""
+    """SPEC 4.3, CH-1: every evidence id is ``H(observation, pointer, kind)`` (D-051); ``""`` when it holds."""
     for r in content:
         if r["kind"] == "evidence_recorded":
             p = r["payload"]
-            if p["evidence_id"] != ids.evidence_id(p["observation"], p["pointer"]):
-                return f"evidence {p['evidence_id']} is not H(observation, pointer)"
+            if p["evidence_id"] != ids.evidence_id(p["observation"], p["pointer"], p["kind"]):
+                return f"evidence {p['evidence_id']} is not H(observation, pointer, kind)"
     return ""
 
 
@@ -350,9 +350,8 @@ def detect_problem(content: list[dict[str, Any]]) -> str:
     decided_cands: dict[str, list[str]] = {}
     for c in claims:
         cls, cid = c["class"], c["claim_id"]
-        evidence = sorted(_claim_evidence(c))
-        if cid != ids.claim_id(c["cand_ref"], cls, c["rule"], c["table_version"], evidence):
-            return f"claim {cid} is not H(cand_ref, class, rule, table version, evidence)"
+        if cid != ids.claim_id(c["cand_ref"], cls, c["rule"], c["table_version"], c["evidence_set"]):
+            return f"claim {cid} is not H(cand_ref, class, rule, table version, evidence set)"
         want = DISPOSITION.get(cls)
         got = by_claim.get(cid, [])
         if want is None or len(got) != 1 or got[0]["disposition"] != want:
@@ -374,15 +373,6 @@ def detect_problem(content: list[dict[str, Any]]) -> str:
         if len(classes) > 1:  # SPEC 7.1: the first rule whose guard holds decides the one class of a candidate
             return f"candidate {cand} has {len(classes)} claims ({', '.join(sorted(classes))})"
     return ""
-
-
-def _claim_evidence(claim: Mapping[str, Any]) -> set[str]:
-    out = set(claim.get("supporting") or []) | set(claim.get("contradicting") or [])
-    for alt in claim.get("alternatives") or []:
-        out |= set(alt.get("supporting") or [])
-    for up in claim.get("upstream_reasons") or []:
-        out.add(up["evidence"])
-    return out
 
 
 def _guard_failure(

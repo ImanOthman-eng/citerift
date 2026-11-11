@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:report",
-  "title": "CITERIFT Stage 04 investigation report, version 1",
+  "title": "CITERIFT Stage 04 investigation report, version 2",
   "description": "The Stage 04 report (SPEC 11.1): a pure function of the committed fold at ASSEMBLE. It is exported only when VERIFY passes, so only the two successful terminal states exist here: COMPLETED, or NEEDS_RESOLUTION with outcome partial (F-16). FAILED, STALE and CORRUPT investigations export no report (S-9.7); this schema has no representation for them. There is no free-text summary and no field meaning 'clean', 'safe' or 'no retracted citations' (S-7.7). Several Stage 02 events per paper stay here; v1 investigation records (schemas/contracts/v1, unchanged) are separate projections.",
-  "x-citerift-version": "1.0.0",
+  "x-citerift-version": "2.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -27,7 +27,7 @@
     },
     "schema_version": {
       "description": "Unknown versions fail closed.",
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "investigation_key": {
       "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"

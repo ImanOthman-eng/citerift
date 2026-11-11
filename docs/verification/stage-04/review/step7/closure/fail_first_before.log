@@ -1,0 +1,10 @@
+D-051 same id for kinds unit and use_eligibility: True
+D-051 run: FAILED [('NORMALIZE', 'NORMALIZE_INVALID', None, 'evidence_recorded refused: DUPLICATE_ID: M-14 at seq 11: evidence 3d0d799c828b84c4aaf99709')]
+D-047 claim with 16000 supporting ids: FAILED [('DETECT', 'STORAGE_ERROR', 'RECORD_TOO_LARGE', 'claim_recorded refused: RECORD_TOO_LARGE: S-8.3 at seq 21: 1072796 bytes')]
+D-047 claim with 50000 supporting ids: FAILED [('DETECT', 'STORAGE_ERROR', 'RECORD_TOO_LARGE', 'claim_recorded refused: RECORD_TOO_LARGE: S-8.3 at seq 21: 3350796 bytes')]
+D-047 report with 50000 projections: FAILED [('ASSEMBLE', 'STORAGE_ERROR', 'RECORD_TOO_LARGE', 'report_recorded refused: RECORD_TOO_LARGE: S-8.3 at seq 25: 3350437 bytes')]
+D-049 VALIDATE raising three times: ['AdapterDefect; last record step_started VALIDATE 1', 'AdapterDefect; last record step_started VALIDATE 2', 'AdapterDefect; last record step_started VALIDATE 3', 'FAILED'] [('VALIDATE', 'RETRY_BUDGET_EXHAUSTED', 'STEP_INTERRUPTED', "the attempt's process died")]
+D-049 EXTRACT raising three times: ['AdapterDefect; last record step_started EXTRACT 1', 'AdapterDefect; last record step_started EXTRACT 2', 'AdapterDefect; last record step_started EXTRACT 3', 'FAILED'] [('EXTRACT', 'RETRY_BUDGET_EXHAUSTED', 'STEP_INTERRUPTED', "the attempt's process died")]
+D-049 LOOKUP raising three times: ['AdapterDefect; last record step_started LOOKUP 1', 'AdapterDefect; last record step_started LOOKUP 2', 'AdapterDefect; last record step_started LOOKUP 3', 'FAILED'] [('LOOKUP', 'RETRY_BUDGET_EXHAUSTED', 'STEP_INTERRUPTED', "the attempt's process died")]
+D-048 key with 200 events: rows materialized 200, events returned 200, kept after a cap of 100 100, traced peak 1062618 bytes
+D-048 key with 2000 events: rows materialized 2000, events returned 2000, kept after a cap of 100 100, traced peak 10396316 bytes

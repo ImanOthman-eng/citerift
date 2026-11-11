@@ -17,7 +17,7 @@ from typing import Any
 
 from memory_support import CAPTURE, STAGE04, bundle_payload, h, live_request, memory_root, root_object
 
-from citerift.investigation import ids
+from citerift.investigation import ids, sets
 from citerift.investigation.adapters import ContentRecord, Deferred, Failed, StepRequest, StepResult, Succeeded
 from citerift.investigation.canonical import canon, sha256_hex
 from citerift.investigation.controller import MonotoneClock, WorkflowController, open_controller
@@ -84,7 +84,7 @@ def _obs(kind: str, blob: str, operation: str) -> dict[str, Any]:
 
 def evidence(kind: str, obs: str, pointer: str, refs: list[str], value: Any) -> dict[str, Any]:
     return {
-        "evidence_id": ids.evidence_id(obs, pointer),
+        "evidence_id": ids.evidence_id(obs, pointer, kind),
         "observation": obs,
         "pointer": pointer,
         "kind": kind,
@@ -99,7 +99,14 @@ def lookup_evidence() -> list[dict[str, Any]]:
 
 
 def claim(cls: str, ev: list[str], cand: str = "cand") -> dict[str, Any]:
-    """A schema-valid claim of ``cls`` over the evidence ids ``ev`` (four needed for the conflict classes)."""
+    """A schema-valid claim of ``cls`` over the evidence ids ``ev`` (four needed for the conflict classes). Its
+    evidence set (D-047) is ``evidence_set_of(claim)``; the DETECT fake publishes it."""
+    claim_, _ = claim_and_set(cls, ev, cand)
+    return claim_
+
+
+def claim_and_set(cls: str, ev: list[str], cand: str = "cand") -> tuple[dict[str, Any], dict[str, Any]]:
+    """The claim of ``claim`` and the evidence-set blob value it names."""
     base: dict[str, Any] = {
         "cand_ref": h(cand),
         "candidate": {"shape": "DOI", "keys": [dict(DOI)], "coherence": None},
@@ -155,9 +162,17 @@ def claim(cls: str, ev: list[str], cand: str = "cand") -> dict[str, Any]:
         base.update(rule="D-13", status="unavailable", value=None, reasons=["LOOKUP_QUERY_FAILED"])
     elif cls != "RETRACTED_WORK_CITED":
         raise ValueError(cls)
-    every = set(base["supporting"]) | {e for a in base["alternatives"] for e in a["supporting"]}
-    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-1", sorted(every))
-    return base
+    value = sets.evidence_set(
+        base.pop("supporting"), base.pop("contradicting"), [a["supporting"] for a in base["alternatives"]]
+    )
+    base["alternatives"] = [
+        {"value": a["value"], "supporting_count": len(a["supporting"])} for a in base["alternatives"]
+    ]
+    base["evidence_set"] = digest(value)
+    base["supporting_count"] = len(value["supporting"])
+    base["contradicting_count"] = len(value["contradicting"])
+    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-1", base["evidence_set"])
+    return base, value
 
 
 def ok_result(req: StepRequest, classes: tuple[tuple[str, str], ...]) -> StepResult:
@@ -198,15 +213,19 @@ def ok_result(req: StepRequest, classes: tuple[tuple[str, str], ...]) -> StepRes
     if step == "DETECT":
         evs = lookup_evidence()
         ev_ids = [e["evidence_id"] for e in evs]
-        claims = [claim(cls, ev_ids, cand) for cls, cand in classes]
+        pairs = [claim_and_set(cls, ev_ids, cand) for cls, cand in classes]
+        claims = [c for c, _ in pairs]
         recs = [ContentRecord("evidence_recorded", e) for e in evs]
         recs += [ContentRecord("claim_recorded", c) for c in claims]
         out = {"claims": [c["claim_id"] for c in claims]}
-        return Succeeded(records=tuple(recs), blobs=(out,), outputs=(digest(out),))
+        return Succeeded(records=tuple(recs), blobs=(*(v for _, v in pairs), out), outputs=(digest(out),))
     if step == "ASSEMBLE":
         report = {"report": "SYNTHETIC", "claims": sorted(c["payload"].get("claim_id", "") for c in req.committed)}
-        rec = ContentRecord("report_recorded", {"report": digest(report), "projections": []})
-        return Succeeded(records=(rec,), blobs=(report,), outputs=(digest(report),))
+        projections = sets.projection_set([])
+        rec = ContentRecord(
+            "report_recorded", {"report": digest(report), "projection_set": digest(projections), "projection_count": 0}
+        )
+        return Succeeded(records=(rec,), blobs=(report, projections), outputs=(digest(report),))
     ver = {
         "result": "passed",
         "checks": [{"check": "W_INVARIANTS", "passed": True}],
