@@ -2616,8 +2616,11 @@
             "docs/verification/maintenance/A-02-001/MAINTENANCE_RECORD.md"
           ],
           "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3",
-          "revision": null,
-          "test_report": null,
+          "revision": "0f5ec757d5f5c44bfeee69a3315cc62d0abcb3be",
+          "test_report": {
+            "path": "docs/verification/maintenance/A-02-001/test-report-py3.12.json",
+            "sha256": "eb19db0e94aff05598b121a68253064dc5c995139897ab887f8bc70056f2d365"
+          },
           "recorded_at": "2026-11-11T08:25:58Z",
           "maintenance": {
             "purpose": "Byte-bounded Stage 02 lookup (Index.gather_bounded) so that the Stage 04 lookup evidence budget is enforced before rows are materialized (owner decision D-048)",
@@ -2634,13 +2637,24 @@
               }
             ],
             "patch_sha256": "db8f3c2e500847a3785fe7cc31c82a2c9966562df158d9cae5932f1284d4a67a",
-            "phase": "pending_validation",
+            "phase": "finalized",
             "supersedes": null,
             "superseded_by": null,
-            "reports": [],
+            "reports": [
+              {
+                "path": "docs/verification/maintenance/A-02-001/test-report-py3.12.json",
+                "sha256": "eb19db0e94aff05598b121a68253064dc5c995139897ab887f8bc70056f2d365",
+                "python": "3.12"
+              },
+              {
+                "path": "docs/verification/maintenance/A-02-001/test-report-py3.13.json",
+                "sha256": "d51844050d26dd17410de21c8b8620a8a587655f4bfe774635d5a4aef8807572",
+                "python": "3.13"
+              }
+            ],
             "opened_after_seq": 50,
-            "finalized_at": null,
-            "finalized_after_seq": null
+            "finalized_at": "2026-11-11T08:55:48Z",
+            "finalized_after_seq": 50
           }
         }
       ]

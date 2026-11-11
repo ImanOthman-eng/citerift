@@ -67,4 +67,13 @@ section 1.
 | P (candidate) | `b052a72b1de05c1130556a8b43e016f37b6d980f`: the two owned files only |
 | prepare | `citerift-gov maintenance prepare 02 --candidate b052a72… --path src/citerift/retraction/query.py --path tests/stage02/test_rde_gather_bounded.py --owner-ref cmsg_018VCB51nDHP6HXmLU4ea5yP4dn3r7aj9NgLkPeaJaD5L3 --purpose … --reason … --evidence docs/verification/maintenance/A-02-001/MAINTENANCE_RECORD.md` gave A-02-001, `pending_validation`, recorded 2026-11-11T08:25:58Z, `opened_after_seq` 50, patch digest `db8f3c2e…4a67a`; check: 0 errors, 1 warning (`MAINTENANCE_PENDING`) |
 | Stage 04 work | `906308ea9aa4b8fcd09a7735dc1a793d6b83011e` (Stage 04 Step 7 closure, which uses `gather_bounded`); no Stage 02 owned file |
-| V (validated) | the commit that adds the pending registry record and this file; owned content identical to P |
+| V (validated) | `0f5ec757d5f5c44bfeee69a3315cc62d0abcb3be`: registry with the pending record, this file and the fail-first evidence; owned content identical to P |
+| Python 3.12.3 | clean single-branch clone of the Stage 04 branch (`git clone --no-local --single-branch`), detached at V, `PYTHONPATH=src python -P -m pytest -q -p no:cacheprovider --citerift-report …`: **2775 passed**, 0 skipped, exit 0, tree clean after the run (14 min 24 s). `test-report-py3.12.json`, SHA-256 `eb19db0e94aff05598b121a68253064dc5c995139897ab887f8bc70056f2d365`; log `validation-py3.12.log` |
+| Python 3.13.18 | the same, environment built from `uv.lock` (`uv sync --locked -p 3.13`): **2775 passed**, 0 skipped, exit 0, clean (14 min 6 s). `test-report-py3.13.json`, SHA-256 `d51844050d26dd17410de21c8b8620a8a587655f4bfe774635d5a4aef8807572`; log `validation-py3.13.log` |
+| Suites (each report) | unit 563, integration 515, negative 1269, regression 656, reproducibility 16, security 412, contracts 240, simulation 229 (a test may carry several markers) |
+| finalize | `citerift-gov maintenance finalize 02 A-02-001 --revision 0f5ec75… --report …py3.12.json --report …py3.13.json`: finalized 2026-11-11T08:55:48Z, `finalized_after_seq` 50; check afterwards: 0 errors, 0 warnings; `render-status --check`: up to date |
+| F (bookkeeping) | the commit that records the finalization, the reports, the logs and this table; no owned file changes after V |
+
+The validation suite includes the Stage 04 closure tests (906308e), which exercise `gather_bounded` through
+`citerift.investigation.lookup`. The accepted Stage 02 suite (`tests/stage02`) passes unchanged alongside the new
+module.
