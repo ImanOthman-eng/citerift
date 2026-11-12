@@ -302,7 +302,11 @@ Python 3.12.3, x86_64, 4 CPUs. Milliseconds; per step = adapter plus commit. DET
   14.5–15 min, under the 18-min stop line. The pushed CI run is the measurement: **run 316 at `165c224`, green**:
   3.12 test step 8 min 37 s (job 8 min 52 s), 3.13 test step 13 min 17 s (job 13 min 41 s), `ci-gate` success. The
   baseline's slow job was 3.12 and this run's is 3.13: runner speed differs between jobs by about 5 minutes, so the
-  budget is judged on the slower job, **13 min 41 s of 20** (under the 18-min line).
+  budget is judged on the slower job. **Run 317 at `7dd1772`** (same code, closure text only), green: 3.12 test step
+  14 min 57 s (job 15 min 17 s), 3.13 test step 12 min 43 s (job 13 min 7 s). Slowest job over both runs: **15 min
+  17 s of 20**, under the 18-min line; against the baseline's slow job (13 min 52 s) Step 8 costs about 1.4 min on a
+  slow runner. **[inference]** The remaining margin to 18 min is about 2.7 min, so Step 9 should not add more than
+  about 2 min of CI test time without a runtime review.
 - **Final local runs at `165c224`**, 3.12 and 3.13 at the same time on one 4-vCPU machine: **2,978 passed, 0 skipped**
   on each (3.12.3: 15 min 7 s; 3.13.18: 14 min 29 s); `check-report` 0 problems for both on the clean tree.
 
@@ -381,7 +385,7 @@ No assertion was removed or loosened beyond these substitutions.
 | 32 | Step 3 consistency checker | PASS (0 failed). |
 | 33 | citerift-gov check | PASS, 0 errors, 0 warnings. |
 | 34 | render-status --check | PASS. |
-| 35 | GitHub CI green within budget | PASS. Run 316 green; slowest job 13 min 41 s of 20. |
+| 35 | GitHub CI green within budget | PASS. Runs 316 and 317 green; slowest job 15 min 17 s of 20 (under 18). |
 
 ## 19. Unresolved owner decisions
 
