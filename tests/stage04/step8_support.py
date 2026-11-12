@@ -9,9 +9,9 @@ attributed; no synthetic row).
 ``synthetic_detector`` is NOT dt-1, has no coherence function and decides nothing scientific: it is a fixed test
 mapping (labeled SYNTHETIC in its identity) that lets the Step 8 boundary, ASSEMBLE and VERIFY run end to end before
 Step 9 supplies the detector. On an untainted keyed candidate's deciding lookup: ``matched``/``exact``/``retracted``
-gives ``RETRACTED_WORK_CITED``; a single key's ``no_record`` gives ``NOT_FOUND_IN_CHECKED_SOURCES`` and its
-``unavailable`` gives ``LOOKUP_UNAVAILABLE``; a pair's ``ambiguous_identity`` gives ``IDENTITY_CONFLICT``. Every other
-candidate gets no claim. The coherence values it writes are test values, not kappa.
+gives ``RETRACTED_WORK_CITED``; a single key's ``no_record`` gives ``NOT_FOUND_IN_CHECKED_SOURCES``; an
+``unavailable`` lookup (single key or pair) gives ``LOOKUP_UNAVAILABLE``; a pair's ``ambiguous_identity`` gives
+``IDENTITY_CONFLICT``. Every other candidate gets no claim. The coherence values it writes are test values, not kappa.
 """
 
 from __future__ import annotations
@@ -19,6 +19,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import socket
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -27,7 +28,7 @@ from citerift.investigation import ids, sets
 from citerift.investigation.adapters.detect import DetectInput, Detection
 from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration
 from citerift.investigation.canonical import canon, sha256_hex
-from citerift.investigation.controller import RunResult, run_investigation
+from citerift.investigation.controller import RunResult, open_controller, run_investigation
 from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 from citerift.retraction.source import load_receipt, parse_receipt
@@ -104,16 +105,18 @@ def run(root: Path, payload: Mapping[str, Any], integration: Integration) -> Run
 
 
 def committed(root: Path, payload: Mapping[str, Any]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """The committed logical records and, by digest, every blob they reference (read-only)."""
+    """The committed logical records and, by digest, every blob they reference, parsed when it is JSON; its exact
+    bytes are under ``"bytes:" + digest`` (read-only)."""
     with InvestigationMemory.open(root, payload["investigation_key"], writable=False) as mem:
         recs = [copy.deepcopy(r) for r in mem.view.logical]
-        blobs = {}
+        blobs: dict[str, Any] = {}
         for d in mem.view.referenced_blobs():
             data = mem.blobs.get(d)
             try:
                 blobs[d] = json.loads(data)
             except ValueError:
                 blobs[d] = data
+            blobs["bytes:" + d] = data
     return recs, blobs
 
 
@@ -166,9 +169,11 @@ def synthetic_detector(inp: DetectInput) -> Detection:
         elif state == "no_record" and not pair:
             cls, rule, st, value = "NOT_FOUND_IN_CHECKED_SOURCES", "D-16", "uncertain", "not_found_in_checked_sources"
             reasons, supporting = ["NOT_FOUND_IN_CHECKED_SOURCES"], [ev(obs, "/result/lookup_state")]
-        elif state == "unavailable" and not pair:
+        elif state == "unavailable":
             cls, rule, st, value, reasons = "LOOKUP_UNAVAILABLE", "D-13", "unavailable", None, ["LOOKUP_QUERY_FAILED"]
-            supporting = [ev(obs, "/result/lookup_state")]
+            if any(i.get("code") == "LOOKUP_EVIDENCE_LIMIT_EXCEEDED" for i in result["issues"]):
+                reasons.append("LOOKUP_EVIDENCE_LIMIT_EXCEEDED")  # S-6.10a
+            supporting, coherence = [ev(obs, "/result/lookup_state")], "NOT_DETERMINED" if pair else None
         elif state == "ambiguous_identity" and pair:
             cls, rule, st, value = "IDENTITY_CONFLICT", "D-6", "conflicting", None
             reasons, coherence = ["IDENTITY_WITNESSED", "KEY_RESULTS_DIFFER"], "INCOMPATIBLE"
@@ -206,3 +211,40 @@ def synthetic_detector(inp: DetectInput) -> Detection:
 
 
 TEST_INTEGRATION = Integration(detector=synthetic_detector)
+
+
+def run_until(root: Path, payload: Mapping[str, Any], integration: Integration, step: str) -> None:
+    """Run the investigation one action at a time until ``step`` has committed, then close it (a partial run)."""
+    mem, ctl = open_controller(
+        root, payload["investigation_key"], integration.adapters(), integration.environment(payload)
+    )
+    with mem:
+        ctl.recover()
+        for _ in range(64):
+            if ctl.view.step_state(step) == "succeeded":
+                return
+            ctl.step()
+    raise AssertionError(f"{step} did not commit")
+
+
+class NoNetwork:
+    """Refuse every socket connection and name lookup in this process, and count the attempts."""
+
+    def __init__(self, monkeypatch: Any) -> None:
+        self.attempts: list[str] = []
+
+        def refuse(name: str) -> Any:
+            def _refuse(*args: Any, **kwargs: Any) -> Any:
+                self.attempts.append(name)
+                raise OSError(f"network refused in this test ({name})")
+
+            return _refuse
+
+        monkeypatch.setattr(socket.socket, "connect", refuse("connect"))
+        monkeypatch.setattr(socket.socket, "connect_ex", refuse("connect_ex"))
+        monkeypatch.setattr(socket, "create_connection", refuse("create_connection"))
+        monkeypatch.setattr(socket, "getaddrinfo", refuse("getaddrinfo"))
+
+
+def open_bundle_capture(bundle: Path) -> str:
+    return open_bundle(bundle).capture_sha256
