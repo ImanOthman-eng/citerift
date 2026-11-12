@@ -299,7 +299,12 @@ Python 3.12.3, x86_64, 4 CPUs. Milliseconds; per step = adapter plus commit. DET
   11.8 s.
 - **GitHub CI baseline** (run 315, `b43fa03`): test step 13 min 29 s on 3.12 (job 13 min 52 s), 8 min 45 s on 3.13
   (job 9 min 14 s); limit 20 min. **[inference]** Step 8 adds about 1 min of test time, so 3.12 is projected near
-  14.5–15 min, under the 18-min stop line. The pushed CI run is the measurement: RESULT-CI.
+  14.5–15 min, under the 18-min stop line. The pushed CI run is the measurement: **run 316 at `165c224`, green**:
+  3.12 test step 8 min 37 s (job 8 min 52 s), 3.13 test step 13 min 17 s (job 13 min 41 s), `ci-gate` success. The
+  baseline's slow job was 3.12 and this run's is 3.13: runner speed differs between jobs by about 5 minutes, so the
+  budget is judged on the slower job, **13 min 41 s of 20** (under the 18-min line).
+- **Final local runs at `165c224`**, 3.12 and 3.13 at the same time on one 4-vCPU machine: **2,978 passed, 0 skipped**
+  on each (3.12.3: 15 min 7 s; 3.13.18: 14 min 29 s); `check-report` 0 problems for both on the clean tree.
 
 ## 16. Inherited-baseline audit (item 19)
 
@@ -368,15 +373,15 @@ No assertion was removed or loosened beyond these substitutions.
 | 24 | Step 4 oracle unchanged | PASS. `git diff b43fa03 -- simulations/ docs/verification/stage-04/simulation tests/stage04/test_simulation_step4.py` empty; MANIFEST SHA-256 `411050772807cfbc…3e27735`. |
 | 25 | Inherited-baseline audit retained | PASS. Section 16. |
 | 26 | No Step 9 semantics | PASS. No dt-1, κ or precedence; the SYNTHETIC detector is test-only and labeled. |
-| 27 | Full tests on 3.12 and 3.13 | RESULT-PY |
-| 28 | Zero required skips | RESULT-SKIPS |
+| 27 | Full tests on 3.12 and 3.13 | PASS. 2,978 passed on 3.12.3 and on 3.13.18, locally and in CI run 316. |
+| 28 | Zero required skips | PASS. 0 skipped; `check-report` 0 problems (local, both versions; CI step 14). |
 | 29 | ruff / format / mypy | PASS (mypy: 86 source files, no issues). |
-| 30 | pip-audit --strict | RESULT-AUDIT |
+| 30 | pip-audit --strict | PASS. "No known vulnerabilities found" (locked export, `--require-hashes`); no dependency change. |
 | 31 | Schema checks | PASS. `check-schemas` 0 problems; the 5 new schemas are tested in `test_schemas_step5.py`. |
 | 32 | Step 3 consistency checker | PASS (0 failed). |
 | 33 | citerift-gov check | PASS, 0 errors, 0 warnings. |
 | 34 | render-status --check | PASS. |
-| 35 | GitHub CI green within budget | RESULT-CI |
+| 35 | GitHub CI green within budget | PASS. Run 316 green; slowest job 13 min 41 s of 20. |
 
 ## 19. Unresolved owner decisions
 
