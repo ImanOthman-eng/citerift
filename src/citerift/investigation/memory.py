@@ -251,7 +251,12 @@ class InvestigationMemory:
                 read, raw = _read(inv_fd)
                 found = read  # what was found on disk; ``torn_tail`` reports it even after a repair
                 store = BlobStore(blobs_fd)
-                folder = Folder(store.verify, expected_key=key, blob_read=lambda d: loads_blob(store.get(d)))
+                folder = Folder(
+                    store.verify,
+                    expected_key=key,
+                    blob_read=lambda d: loads_blob(store.get(d)),
+                    raw_check=store.verify_raw,
+                )
                 if not read.records:
                     raise InvariantViolation("M-1", "JOURNAL_CORRUPT", "the journal holds no record", 0)
                 # Validate everything before changing anything: a CORRUPT investigation is never repaired, not even
@@ -305,6 +310,12 @@ class InvestigationMemory:
     def put_blob_bytes(self, data: bytes) -> str:
         self._writable()
         return self.blobs.put(data)
+
+    def put_raw_blob(self, data: bytes) -> str:
+        """Publish exact retained bytes (a Stage 03 ``capture.json`` or artifact, IF-7) as a raw blob; returns its
+        digest. Only a bundle observation manifest may name it, and must precede any record naming the manifest."""
+        self._writable()
+        return self.blobs.put_raw(data)
 
     def append(self, kind: str, payload: Any, *, step: str | None = None, attempt: int | None = None) -> dict[str, Any]:
         """Append one record after checking it against every Memory invariant; returns the written record.

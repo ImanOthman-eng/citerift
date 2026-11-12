@@ -41,6 +41,8 @@ from typing import Any
 import pytest
 from controller_support import (
     BUNDLE,
+    BUNDLE_RAW,
+    BUNDLE_SET,
     EXTRACTION,
     LOOKUP,
     Env,
@@ -116,7 +118,9 @@ class Prod:
             payload = bundle_payload(self.root)
         self.key = str(payload["investigation_key"])
         with InvestigationMemory.create(self.root, payload, clock=self.clock) as mem:
-            for b in (BUNDLE, EXTRACTION, LOOKUP, PROJECTIONS):  # probe records name these blobs
+            for raw in BUNDLE_RAW:  # the IF-7 manifest names the retained bytes (Step 8)
+                mem.put_raw_blob(raw)
+            for b in (BUNDLE_SET, BUNDLE, EXTRACTION, LOOKUP, PROJECTIONS):  # probe records name these blobs
                 mem.put_blob(b)
 
     def open(self) -> None:
@@ -157,12 +161,16 @@ class Prod:
 
     def write_content(self) -> None:
         a, r = self.attempt, self._result()
+        for raw in r.raw_blobs:
+            self.mem.put_raw_blob(raw)  # type: ignore[union-attr]
         for b in r.blobs:
             self.mem.put_blob(b)  # type: ignore[union-attr]
         append_content(self.ctl, a["step"], a["attempt"], _content(a["step"], r))
 
     def succeed(self) -> None:
         a, r = self.attempt, self._result()
+        for raw in r.raw_blobs:
+            self.mem.put_raw_blob(raw)  # type: ignore[union-attr]
         for b in r.blobs:
             self.mem.put_blob(b)  # type: ignore[union-attr]
         man = self.mem.put_blob(workflow.manifest(self.ctl.view, a["step"], a["key"], a["digests"]))  # type: ignore[union-attr]

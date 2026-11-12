@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:candidate-inputs",
+  "title": "CITERIFT Stage 04 NORMALIZE candidate inputs, version 1",
+  "description": "Step 8: the output blob of a committed NORMALIZE (SPEC 9.1 row 4): the typed inputs of LOOKUP and of the Step 9 detector, derived from the committed Stage 03 extraction only. Units carry their D-043 anchor identity (unit_ref), use eligibility (SPEC 6.2) and taint reasons (S-6.6); candidates carry shape, keys and flags (S-6.5) and the D-051 evidence ids of the facts they come from; observation keys are the valid keys of observation-role identifiers and of identifiers outside every unit (S-6.7); queries are the Q1 and Q2 lookups LOOKUP must make (S-6.8, S-6.9). It holds no decision-table value: no coherence, no class, no disposition (those are DETECT, Step 9). Every list is bounded by the Stage 03 caps (20,000 units, 50,000 identifier occurrences).",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "root_id",
+    "bundle",
+    "extraction",
+    "identity_evidence",
+    "units",
+    "candidates",
+    "observation_keys",
+    "queries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:candidate-inputs"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "root_id": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "bundle": {
+      "description": "The committed bundle observation (ACQUIRE manifest) digest.",
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "extraction": {
+      "description": "The committed extraction observation digest.",
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "identity_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle_identity",
+        "extraction_identity"
+      ],
+      "properties": {
+        "bundle_identity": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        },
+        "extraction_identity": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        }
+      }
+    },
+    "units": {
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "unit_id",
+          "pointer",
+          "unit_ref",
+          "eligibility",
+          "reason",
+          "taint",
+          "evidence",
+          "occurrences"
+        ],
+        "properties": {
+          "unit_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "pointer": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/json_pointer"
+          },
+          "unit_ref": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          },
+          "eligibility": {
+            "enum": [
+              "CITED",
+              "UNUSED",
+              "USE_NOT_ESTABLISHED"
+            ]
+          },
+          "reason": {
+            "enum": [
+              null,
+              "LIST_DEFINED_UNUSED",
+              "CONFLICTING_DEFINITIONS",
+              "NO_BOUND_USE"
+            ]
+          },
+          "taint": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 3,
+            "items": {
+              "enum": [
+                "IDENTIFIER_UNCONFIRMED",
+                "IDENTIFIER_MALFORMED",
+                "IDENTIFIER_ROLE_UNRESOLVED"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "unit",
+              "use_eligibility"
+            ],
+            "properties": {
+              "unit": {
+                "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+              },
+              "use_eligibility": {
+                "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+              }
+            }
+          },
+          "occurrences": {
+            "description": "identifier_occurrence evidence ids of every identifier of the unit, in Stage 03 order.",
+            "type": "array",
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            },
+            "maxItems": 50000
+          }
+        }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "maxItems": 70000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cand_ref",
+          "unit_id",
+          "unit_ref",
+          "shape",
+          "keys",
+          "flags",
+          "taint",
+          "key_evidence"
+        ],
+        "properties": {
+          "cand_ref": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          },
+          "unit_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "unit_ref": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          },
+          "shape": {
+            "enum": [
+              "NONE",
+              "DOI",
+              "PMID",
+              "PAIR"
+            ]
+          },
+          "keys": {
+            "type": "array",
+            "maxItems": 2,
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/key"
+            }
+          },
+          "flags": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 2,
+            "items": {
+              "enum": [
+                "CO_REPORTED_MULTIPLE",
+                "PAIRING_NOT_DETERMINED"
+              ]
+            }
+          },
+          "taint": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 3,
+            "items": {
+              "enum": [
+                "IDENTIFIER_UNCONFIRMED",
+                "IDENTIFIER_MALFORMED",
+                "IDENTIFIER_ROLE_UNRESOLVED"
+              ]
+            }
+          },
+          "key_evidence": {
+            "description": "identifier_occurrence evidence ids of the candidate-role occurrences of the candidate's keys in its unit.",
+            "type": "array",
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            },
+            "maxItems": 50000
+          }
+        }
+      }
+    },
+    "observation_keys": {
+      "type": "array",
+      "maxItems": 50000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "evidence"
+        ],
+        "properties": {
+          "key": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/key"
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            },
+            "maxItems": 50000
+          }
+        }
+      }
+    },
+    "queries": {
+      "description": "Distinct lookups, sorted: Q1 of every key (candidate and observation keys), Q2 of every PAIR candidate.",
+      "type": "array",
+      "maxItems": 120000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "doi",
+          "pmid"
+        ],
+        "properties": {
+          "doi": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+              }
+            ]
+          },
+          "pmid": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+              }
+            ]
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "doi": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "properties": {
+              "pmid": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

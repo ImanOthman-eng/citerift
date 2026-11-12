@@ -15,7 +15,16 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-from memory_support import CAPTURE, STAGE04, bundle_payload, h, live_request, memory_root, root_object
+from memory_support import (
+    CAPTURE,
+    STAGE04,
+    bundle_payload,
+    h,
+    live_request,
+    memory_root,
+    root_object,
+    synthetic_bundle,
+)
 
 from citerift.investigation import batches, ids, report, sets, workflow
 from citerift.investigation.adapters import ContentRecord, Deferred, Failed, StepRequest, StepResult, Succeeded
@@ -70,7 +79,7 @@ class Env:
 
 # Content of each step -------------------------------------------------------------------------------------------
 
-BUNDLE = {"bundle": "SYNTHETIC", "capture_sha256": CAPTURE}
+BUNDLE, BUNDLE_SET, BUNDLE_RAW = synthetic_bundle()  # an IF-7 manifest over SYNTHETIC raw blobs (Step 8)
 EXTRACTION = {"units": [{"id": "un-00001", "identifiers": [{"doi": "10.1000/xyz"}]}], "status": "complete"}
 LOOKUP = {"lookup": "SYNTHETIC", "state": "no_record", "results": [{"a": 1}, {"b": 2}, {"c": 3}, {"d": 4}]}
 DOI = {"scheme": "doi", "normalized": "10.1000/xyz"}
@@ -184,7 +193,8 @@ def ok_result(req: StepRequest, classes: tuple[tuple[str, str], ...]) -> StepRes
     if step == "ACQUIRE":
         return Succeeded(
             records=(ContentRecord("observation_recorded", _obs("bundle", digest(BUNDLE), "open_bundle")),),
-            blobs=(BUNDLE,),
+            blobs=(BUNDLE_SET, BUNDLE),
+            raw_blobs=BUNDLE_RAW,
             outputs=(digest(BUNDLE),),
             root=root_object(),
         )

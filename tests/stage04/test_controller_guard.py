@@ -20,6 +20,8 @@ from typing import Any
 import pytest
 from controller_support import (
     BUNDLE,
+    BUNDLE_RAW,
+    BUNDLE_SET,
     Env,
     Plan,
     Session,
@@ -213,6 +215,9 @@ def _state(tmp_path: Path, name: str) -> Folder:
             k = workflow.step_key(ctl.view, "ACQUIRE", ctl.current_digests())
             ctl._append("step_started", {"step_key": k}, "ACQUIRE", 1)
             if name == "running_with_content":
+                for raw in BUNDLE_RAW:
+                    ctl._mem.put_raw_blob(raw)
+                ctl._mem.put_blob(BUNDLE_SET)
                 ctl._mem.put_blob(BUNDLE)
                 ctl._append("observation_recorded", OBS, "ACQUIRE", 1)
             if name == "running":

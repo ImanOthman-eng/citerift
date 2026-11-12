@@ -56,7 +56,7 @@ from datetime import datetime
 from typing import Any
 
 from citerift.contracts.formats import parse_utc_timestamp
-from citerift.investigation import batches, ids, report, sets
+from citerift.investigation import batches, ids, report, retained, sets
 from citerift.investigation.canonical import H
 from citerift.investigation.errors import BlobError, CanonError, InvariantViolation
 from citerift.investigation.journal import JOURNAL_FORMAT
@@ -97,6 +97,7 @@ CONTENT_TAG = "citerift-investigation-content/1"
 
 BlobCheck = Callable[[str], None]
 BlobRead = Callable[[str], Any]  # the parsed canonical JSON of a verified blob
+RawCheck = Callable[[str, int], None]  # a raw retained blob exists, has this size and hashes to its name (IF-7)
 
 
 @dataclass
@@ -160,9 +161,11 @@ class Folder:
         expected_key: str | None = None,
         blob_read: BlobRead | None = None,
         source: Folder | None = None,
+        raw_check: RawCheck | None = None,
     ) -> None:
         self.blob_check = blob_check
         self.blob_read = blob_read
+        self.raw_check = raw_check
         self.source = source
         self.expansions: dict[int, list[dict[str, Any]]] = {}  # seq of a D-055 batch record -> its logical records
         self.logical: list[dict[str, Any]] = []  # committed logical content in commit order
@@ -225,6 +228,25 @@ class Folder:
             self.blob_check(digest)
         except BlobError as exc:
             raise _violation(invariant, exc.code, f"blob {digest}: {exc.detail}", seq) from exc
+
+    def _check_bundle(self, digest: str, seq: int) -> None:
+        """IF-7 (Step 8): a bundle observation is a valid manifest whose artifact set and raw blobs (the exact Stage 03
+        ``capture.json`` and every listed artifact) all exist with their stated sizes and hash to their names."""
+        if self.blob_read is None or self.raw_check is None:
+            return
+        manifest = self._read_set(digest, seq)
+        problem = retained.manifest_problem(manifest)
+        if problem is None:
+            self._blob(manifest["artifact_set"]["blob"], seq, "M-3")
+            value = self._read_set(manifest["artifact_set"]["blob"], seq)
+            problem = retained.set_problem(value, manifest)
+        if problem is not None:
+            raise _violation("M-3", "BUNDLE_OBSERVATION_INVALID", f"bundle observation {digest}: {problem}", seq)
+        for raw, size in retained.raw_references(manifest, value):
+            try:
+                self.raw_check(raw, size)
+            except BlobError as exc:
+                raise _violation("M-3", exc.code, f"retained blob {raw}: {exc.detail}", seq) from exc
 
     def _read_set(self, digest: str, seq: int) -> Any:
         """The parsed set blob, or None when this fold reads no blobs. A missing or corrupt set is a violation."""
@@ -467,6 +489,8 @@ class Folder:
 
         if kind == "observation_recorded":
             self._blob(p["blob"], seq, "M-3")
+            if p["obs_kind"] == "bundle":
+                self._check_bundle(p["blob"], seq)
         elif kind == "evidence_batch_recorded":
             return self._check_batch(p, seq)
         elif kind in ENTRY_BATCHES:
@@ -720,6 +744,8 @@ class Folder:
             p = r["payload"]
             if r["kind"] == "observation_recorded":
                 out.add(p["blob"])
+                if p["obs_kind"] == "bundle":
+                    out.update(self._retained(p["blob"]))
             elif r["kind"] in ("evidence_batch_recorded", *ENTRY_BATCHES):
                 out.add(p["batch"])
             elif r["kind"] == "report_recorded":
@@ -734,6 +760,22 @@ class Folder:
                 elif lr["kind"] == "claim_recorded":
                     out.add(lr["payload"]["evidence_set"])
         return out
+
+    def _retained(self, digest: str) -> list[str]:
+        """The artifact set and raw blobs a bundle observation names (IF-7); empty when they cannot be read here."""
+        if self.blob_read is None:
+            return []
+        try:
+            manifest = self.blob_read(digest)
+            if retained.manifest_problem(manifest) is not None:
+                return []
+            value = self.blob_read(manifest["artifact_set"]["blob"])
+            if retained.set_problem(value, manifest) is not None:
+                value = None
+        except (BlobError, CanonError):
+            return []
+        out = [manifest["artifact_set"]["blob"]]
+        return out + [d for d, _ in retained.raw_references(manifest, value)]
 
     def _projections(self, digest: str) -> list[str]:
         """The projection digests of a set, for ``referenced_blobs``; empty when the set cannot be read here."""

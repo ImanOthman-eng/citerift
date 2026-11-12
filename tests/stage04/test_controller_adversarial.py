@@ -159,13 +159,19 @@ BAD: list[Any] = [
     ),
     pytest.param(
         "ACQUIRE",
-        lambda r: Succeeded(records=r.records, blobs=r.blobs, outputs=r.outputs),
+        lambda r: Succeeded(records=r.records, blobs=r.blobs, outputs=r.outputs, raw_blobs=r.raw_blobs),
         "ADAPTER_INCONSISTENT",
         id="acquire-without-root",
     ),
     pytest.param(
         "ACQUIRE",
-        lambda r: Succeeded(records=r.records, blobs=r.blobs, outputs=r.outputs, root=root_object(capture="f" * 64)),
+        lambda r: Succeeded(
+            records=r.records,
+            blobs=r.blobs,
+            outputs=r.outputs,
+            root=root_object(capture="f" * 64),
+            raw_blobs=r.raw_blobs,
+        ),
         "ROOT_IDENTITY_MISMATCH",
         id="acquire-root-of-another-capture",
     ),
@@ -253,7 +259,9 @@ def test_live_acquire_root_of_another_revision_is_refused(tmp_path: Path) -> Non
     def other(req: StepRequest) -> StepResult:
         r = ok_result(req, ())
         assert isinstance(r, Succeeded)
-        return Succeeded(records=r.records, blobs=r.blobs, outputs=r.outputs, root=root_object(revision=1))
+        return Succeeded(
+            records=r.records, blobs=r.blobs, outputs=r.outputs, root=root_object(revision=1), raw_blobs=r.raw_blobs
+        )
 
     root, key, _, st = _run(tmp_path, {("ACQUIRE", 1): other}, live=True)
     assert st.lifecycle == "FAILED" and _failures(root, key) == [("ACQUIRE", "ROOT_IDENTITY_MISMATCH", None)]
@@ -310,7 +318,12 @@ def test_idempotent_blobs_and_repeated_outputs(tmp_path: Path) -> None:
     def repeat(req: StepRequest) -> StepResult:
         r = ok_result(req, ())
         assert isinstance(r, Succeeded)
-        return Succeeded(records=r.records, blobs=(*r.blobs, EXTRACTION, BUNDLE), outputs=(*r.outputs, *r.outputs))
+        return Succeeded(
+            records=r.records,
+            blobs=(*r.blobs, EXTRACTION, BUNDLE),
+            outputs=(*r.outputs, *r.outputs),
+            raw_blobs=r.raw_blobs,
+        )
 
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
@@ -546,7 +559,9 @@ def test_non_canonical_content_is_a_defect_of_the_step_not_a_crash(tmp_path: Pat
         assert isinstance(r, Succeeded)
         first = r.records[0]
         bad = ContentRecord(first.kind, {**first.payload, "extra_float": 1.5})
-        return Succeeded(records=(bad, *r.records[1:]), blobs=r.blobs, outputs=r.outputs, root=r.root)
+        return Succeeded(
+            records=(bad, *r.records[1:]), blobs=r.blobs, outputs=r.outputs, root=r.root, raw_blobs=r.raw_blobs
+        )
 
     root, key, _, st = _run(tmp_path, {(step, 1): floaty})
     assert st.lifecycle == "FAILED"

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:lookup-observation",
+  "title": "CITERIFT Stage 04 lookup observation, version 1",
+  "description": "Step 8: one Stage 02 lookup of LOOKUP (obs_kind lookup), made only through Index.gather_bounded within the configured lookup evidence budget (D-048, A-02-001). result is exactly Stage 02 render(evidence, snapshot_id, page_size=MAX_PAGE); events is the complete list of the lookup's events in Stage 02's public form (S-3.1: paging is never relied on), so event_count equals result.total_event_count. A lookup over the budget is unavailable with no events and the issue LOOKUP_EVIDENCE_LIMIT_EXCEEDED; a query that raised is unavailable with its error code (S-6.10). Nothing is truncated: events is bounded by the budget, not by a cut.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "query",
+    "index",
+    "budget_bytes",
+    "result",
+    "events",
+    "event_count"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:lookup-observation"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "doi",
+        "pmid"
+      ],
+      "properties": {
+        "doi": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+            }
+          ]
+        },
+        "pmid": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+            }
+          ]
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "doi": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "properties": {
+            "pmid": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "index": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/index_identity"
+    },
+    "budget_bytes": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/config/properties/lookup_evidence_budget_bytes"
+    },
+    "result": {
+      "$ref": "urn:citerift:schema:retraction:v1:lookup-result"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "urn:citerift:schema:retraction:v1:lookup-result#/properties/events/items"
+      }
+    },
+    "event_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    }
+  }
+}

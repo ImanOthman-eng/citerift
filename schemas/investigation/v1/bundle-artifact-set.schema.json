@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:bundle-artifact-set",
+  "title": "CITERIFT Stage 04 retained bundle artifact set, version 1",
+  "description": "Step 8, IF-7: the artifacts of one Stage 03 capture bundle that Investigation Memory retains as raw blobs: exactly the set capture.json lists (source text, source API answer, render HTML, failure bodies), because Stage 03 verify_capture reads and hashes every listed artifact and refuses an unlisted one. Entries are sorted by digest and unique, so the set has one canonical form. Each artifact is at most 32 MiB, the limit verify_capture reads with.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "artifacts"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:bundle-artifact-set"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 65539,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sha256",
+          "bytes",
+          "roles"
+        ],
+        "properties": {
+          "sha256": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 33554432
+          },
+          "roles": {
+            "description": "Where capture.json lists the artifact, sorted and unique.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 4,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "failure",
+                "render",
+                "source",
+                "source_response"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

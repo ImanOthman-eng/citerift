@@ -30,6 +30,11 @@ EVIDENCE_BATCH = PREFIX + "evidence-batch"
 REPORT_CHUNK = PREFIX + "report-chunk"
 LOOKUP_BATCH = PREFIX + "lookup-batch"
 CANDIDATE_BATCH = PREFIX + "candidate-result-batch"
+BUNDLE_OBSERVATION = PREFIX + "bundle-observation"
+BUNDLE_ARTIFACT_SET = PREFIX + "bundle-artifact-set"
+CANDIDATE_INPUTS = PREFIX + "candidate-inputs"
+LOOKUP_OBSERVATION = PREFIX + "lookup-observation"
+LOOKUP_PLAN = PREFIX + "lookup-plan"
 DIRS = ("contracts", "wiki", "retraction", "investigation")
 
 
@@ -62,4 +67,16 @@ def _validator(schema_id: str) -> Any:
 def problems(instance: Any, schema_id: str) -> list[str]:
     """Schema problems as ``/path: message`` lines in path order; empty when valid."""
     errors = sorted(_validator(schema_id).iter_errors(instance), key=lambda e: [str(p) for p in e.absolute_path])
+    return ["/" + "/".join(str(p) for p in e.absolute_path) + ": " + e.message[:300] for e in errors]
+
+
+@cache
+def _ref_validator(ref: str) -> Any:
+    cs = contracts()
+    return Draft202012Validator({"$ref": ref}, registry=cs.registry, format_checker=FORMAT_CHECKER)
+
+
+def ref_problems(instance: Any, ref: str) -> list[str]:
+    """Schema problems of ``instance`` against one definition, named by an absolute reference (``urn:...#/$defs/x``)."""
+    errors = sorted(_ref_validator(ref).iter_errors(instance), key=lambda e: [str(p) for p in e.absolute_path])
     return ["/" + "/".join(str(p) for p in e.absolute_path) + ": " + e.message[:300] for e in errors]

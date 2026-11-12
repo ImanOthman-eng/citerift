@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:bundle-observation",
+  "title": "CITERIFT Stage 04 ACQUIRE bundle observation, version 1",
+  "description": "Step 8, inherited finding IF-7: the closed, bounded manifest that a committed ACQUIRE records as its bundle observation (obs_kind bundle). It never embeds the Stage 03 capture document or any artifact body: the exact capture.json bytes and every artifact capture.json lists are retained in Investigation Memory as raw content-addressed blobs, named here by digest with their sizes (the capture document's digest is the Stage 03 capture_sha256, the root's capture identity). The variable-length list of retained artifacts is its own canonical blob (bundle-artifact-set). Every field has a schema bound, so the manifest has a fixed maximum size (review/step8/if7_bound.json). Investigation Memory verifies the manifest, the set and every raw blob by hash and size on append and on open; a missing or corrupt one is corruption.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "engine",
+    "capture",
+    "status",
+    "identity",
+    "display",
+    "source",
+    "render",
+    "failure_artifact_count",
+    "artifact_set"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:bundle-observation"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "engine": {
+      "description": "The engine whose verified bundle this is.",
+      "const": "citerift.wiki"
+    },
+    "capture": {
+      "description": "The exact Stage 03 capture.json bytes, retained as a raw blob. open_bundle refuses a capture.json over 4 MiB (citerift.wiki.bundle.MAX_CAPTURE_JSON), so that is its bound.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blob",
+        "bytes",
+        "schema_version"
+      ],
+      "properties": {
+        "blob": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 4194304
+        },
+        "schema_version": {
+          "description": "The Stage 03 capture schema version the bundle states.",
+          "type": "string",
+          "pattern": "^[0-9]{1,4}\\.[0-9]{1,4}\\.[0-9]{1,4}$(?!\\n)"
+        }
+      }
+    },
+    "status": {
+      "description": "Stage 03 capture status. Only a verified complete or partial capture is committed (SPEC 9.3).",
+      "enum": [
+        "complete",
+        "partial"
+      ]
+    },
+    "identity": {
+      "description": "The subject identity the root binds (S-4.1, F-15); capture_sha256 equals capture.blob.",
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/revision_identity"
+    },
+    "display": {
+      "description": "Display metadata outside the root identity (RT-1).",
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/subject/properties/display"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "bytes",
+        "response_artifact"
+      ],
+      "properties": {
+        "artifact": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4194304
+        },
+        "response_artifact": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        }
+      }
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "artifact"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "not_requested",
+            "captured",
+            "rejected",
+            "failed"
+          ]
+        },
+        "artifact": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+            }
+          ]
+        }
+      }
+    },
+    "failure_artifact_count": {
+      "description": "The number of failure_artifacts capture.json lists (retained, in the artifact set).",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "artifact_set": {
+      "description": "The canonical bundle-artifact-set blob: every artifact capture.json lists, each retained as a raw blob.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "blob",
+        "count",
+        "bytes"
+      ],
+      "properties": {
+        "blob": {
+          "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65539
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}

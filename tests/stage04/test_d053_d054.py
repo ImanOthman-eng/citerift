@@ -37,7 +37,7 @@ from controller_support import (
     ok_result,
     run_once,
 )
-from memory_support import append_evidence, drive, h, new_memory
+from memory_support import append_evidence, drive, h, new_memory, with_legacy_bundle
 
 from citerift.investigation import batches, faults, ids, report
 from citerift.investigation.adapters import ContentRecord, StepRequest, StepResult, Succeeded
@@ -783,4 +783,5 @@ def test_logical_content_equals_the_accepted_baseline(name: str) -> None:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     got = module.logical_view(ROOT, module.SCENARIOS[name])
-    assert got["digest"] == BASELINE_64E7ACA[name], got["counts"]
+    # Step 8 (IF-7) replaced the SYNTHETIC bundle observation; everything else equals the baseline.
+    assert with_legacy_bundle(got["view"], module._canon) == BASELINE_64E7ACA[name], got["counts"]

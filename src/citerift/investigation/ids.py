@@ -21,6 +21,8 @@ DECISION_TAG = "citerift-decision/1"
 QUESTION_TAG = "citerift-question/1"
 STEP_TAG = "citerift-step/1"
 IDENTITY_TAG = "citerift-identity/1"
+UNIT_REF_TAG = "citerift-unit-ref/1"
+CANDIDATE_REF_TAG = "citerift-candidate-ref/1"
 SAFETY_ALLOWANCE_MS = 30_000  # owner decision D-042
 
 
@@ -82,6 +84,17 @@ def evidence_id(observation: str, pointer: str, kind: str) -> str:
     """``H(observation digest, JSON pointer, evidence kind)`` (owner decision D-051): what one kind of evidence states
     about the value a pointer selects in one observation. Two kinds at one pointer are two evidence items."""
     return H(EVIDENCE_TAG, observation, pointer, kind)
+
+
+def unit_ref(root: str, unit_id: str, byte_start: int, byte_end: int, unit_span_sha256: str) -> str:
+    """``unit_ref = H(root_id, "unit", unit.id, byte_start, byte_end, unit_span_sha256)`` (SPEC 4.3): the unit's
+    identity is anchored in the D-043 span hash of the retained source bytes, not only in the Stage 03 element id."""
+    return H(UNIT_REF_TAG, root, "unit", unit_id, byte_start, byte_end, unit_span_sha256)
+
+
+def cand_ref(unit: str, keys: list[dict[str, str]]) -> str:
+    """``cand_ref = H(unit_ref, sorted keys)`` (SPEC 4.3): keys as ``[scheme, normalized]`` pairs in ascending order."""
+    return H(CANDIDATE_REF_TAG, unit, sorted([k["scheme"], k["normalized"]] for k in keys))
 
 
 def claim_id(cand_ref: str, claim_class: str, rule: str, table_version: str, evidence_set: str) -> str:

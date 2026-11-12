@@ -17,9 +17,11 @@ import pytest
 from memory_support import STAGE04, SUBJECT, Clock, append_evidence, bundle_request, drive, h, memory_root
 
 from citerift.investigation import ids
+from citerift.investigation.adapters.acquire import bundle_observation
 from citerift.investigation.anchors import SourceArtifact, read_retained_source, unit_span_sha256, verify_unit_span
 from citerift.investigation.errors import SpanError
 from citerift.investigation.memory import InvestigationMemory, created_payload
+from citerift.wiki.bundle import open_bundle
 from citerift.wiki.extract import extract_bundle
 
 OBSERVED = Path(__file__).resolve().parents[1] / "stage03" / "fixtures" / "observed"
@@ -254,7 +256,13 @@ def _record_unit(mem: InvestigationMemory, doc: dict[str, Any], value: dict[str,
     for step, n in (("ACQUIRE", 1), ("EXTRACT", 1), ("NORMALIZE", 1)):
         mem.append("step_started", {"step_key": h(step)}, step=step, attempt=n)
         blob = mem.put_blob({"step": step, "capture_sha256": cap["capture_sha256"]})
-        if step == "ACQUIRE":
+        if step == "ACQUIRE":  # the IF-7 manifest over the bundle's retained bytes (Step 8)
+            kept = bundle_observation(open_bundle(AR))
+            for data in kept.raw:
+                mem.put_raw_blob(data)
+            mem.put_blob(kept.artifact_set)
+            blob = mem.put_blob(kept.manifest)
+            assert kept.root == root
             src = {"engine": "citerift.wiki", "operation": "open_bundle", "locator": None}
             mem.append("observation_recorded", {"obs_kind": "bundle", "blob": blob, "source_ref": src}, step=step,
                        attempt=n)  # fmt: skip

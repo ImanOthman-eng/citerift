@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 
 import pytest
-from memory_support import Clock, bundle_payload, drive, h, memory_root, new_memory
+from memory_support import Clock, bundle_payload, drive, h, memory_root, new_memory, verify_blob
 
 from citerift.investigation import blobs as blobs_module
 from citerift.investigation.blobs import MAX_BLOB_BYTES, BlobStore
@@ -217,7 +217,7 @@ def test_lockless_readers_never_see_partial_data(tmp_path: Path) -> None:
     try:
         while writer.poll() is None or reads < 3:
             for name in store.names():
-                store.verify(name)  # complete and canonical, or absent
+                verify_blob(store, name)  # complete and canonical (or a raw blob of its size), or absent
             read = read_journal(inv_fd)
             folder = Folder(None, expected_key=key)
             for rec in read.records:

@@ -37,7 +37,7 @@ from controller_support import (
     ok_result,
     run_once,
 )
-from memory_support import append_candidates, append_evidence, drive, h, new_memory, not_found_claim
+from memory_support import append_candidates, append_evidence, drive, h, new_memory, not_found_claim, with_legacy_bundle
 
 from citerift.investigation import batches, faults, ids, workflow
 from citerift.investigation.adapters import ContentRecord, StepRequest, StepResult, Succeeded
@@ -846,7 +846,8 @@ def test_logical_content_equals_the_format_3_baseline(name: str) -> None:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     got = module.logical_view(name)
-    assert got["digest"] == BASELINE_0097A93[name], got["counts"]
+    # Step 8 (IF-7) replaced the SYNTHETIC bundle observation; everything else equals the baseline.
+    assert with_legacy_bundle(got["view"], module._canon) == BASELINE_0097A93[name], got["counts"]
 
 
 # The journal bound of format 4 is executable and retained (owner D-055) --------------------------------------------

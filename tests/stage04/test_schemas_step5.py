@@ -531,6 +531,11 @@ RECORD_KINDS = [
 ]
 
 
+# The Step 8 integration blobs (the bundle observation and artifact set of IF-7, the NORMALIZE and LOOKUP outputs).
+STEP8 = {P + n for n in ("bundle-observation", "bundle-artifact-set", "candidate-inputs", "lookup-observation",
+                         "lookup-plan")}  # fmt: skip
+
+
 # ----- schema set -----------------------------------------------------------------------------------------------------
 
 
@@ -538,16 +543,16 @@ def test_schemas_are_valid_2020_12_and_versioned() -> None:
     cs = contracts()
     mine = {sid: s for sid, s in cs.schemas.items() if sid.startswith(P)}
     assert set(mine) == {COMMON, REQUEST, RECORD, CLAIM, REPORT, EVIDENCE_SET, PROJECTION_SET, EVIDENCE_BATCH,
-                         REPORT_CHUNK, LOOKUP_BATCH, CANDIDATE_BATCH}  # fmt: skip
+                         REPORT_CHUNK, LOOKUP_BATCH, CANDIDATE_BATCH, *STEP8}  # fmt: skip
     assert [p for p in cs.meta_problems() if p.path.startswith(P)] == []
     for sid, s in mine.items():
         assert s["$schema"] == "https://json-schema.org/draft/2020-12/schema", sid
         # Step 7 closure (D-047, D-048, D-051): the Step 5 schemas are version 2 and the two sets are new; D-053 makes
         # the journal record format 3 and adds the evidence batch; D-055 makes it format 4 and adds the LOOKUP and
-        # DETECT candidate batches.
+        # DETECT candidate batches. Step 8 adds the five integration blobs (IF-7 and the adapter outputs).
         expected = {RECORD: "4.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
                     EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0", LOOKUP_BATCH: "1.0.0",
-                    CANDIDATE_BATCH: "1.0.0"}  # fmt: skip
+                    CANDIDATE_BATCH: "1.0.0", **dict.fromkeys(STEP8, "1.0.0")}  # fmt: skip
         assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 

@@ -5,8 +5,11 @@ It never writes to Investigation Memory: the controller validates the result, pu
 content records and the terminal record, and so keeps every workflow rule in one place (SPEC S-9.1). An adapter
 receives a ``StepRequest`` that holds copies of what it may read; nothing in it lets the adapter change the journal.
 
-Step 7 provides only this protocol and deterministic fake adapters (in the tests). The Stage 02 and Stage 03
-adapters are Step 8.
+Step 7 provided this protocol and deterministic fake adapters (in the tests). Step 8 adds the production adapters
+that call the accepted Stage 02 and Stage 03 engines, as modules of this package (SPEC 3): ``validate``, ``acquire``
+(retained bundles), ``supervise`` and ``live`` (live capture under the D-042 bound), ``extract``, ``normalize``,
+``lookup``, ``detect`` (the thin boundary to the Step 9 detector), ``assemble``, ``verify`` and ``environment`` (the
+input identity source of SPEC 10.3). ``plan.adapters`` wires them.
 """
 
 from __future__ import annotations
@@ -26,11 +29,14 @@ class StepRequest:
     step_key: str
     live: bool  # a live-capture request (only then has ACQUIRE network codes and deferral)
     request: Mapping[str, Any]
+    request_key: Mapping[str, Any]  # the request key fixed at creation (S-4.7): {capture_sha256} or {wiki, revision_id}
     root: Mapping[str, Any] | None  # the bound root, None before ACQUIRE commits
     inputs: Mapping[str, tuple[str, ...]]  # committed output blob digests of every succeeded step
-    committed: tuple[Mapping[str, Any], ...]  # the committed content records (copies), in journal order
+    committed: tuple[Mapping[str, Any], ...]  # the committed logical content records (copies), in journal order
+    stored: tuple[Mapping[str, Any], ...]  # the committed content records as stored (batch records unexpanded)
     content_digest: str  # C(J) of the committed content (MM 7.3), which VERIFY records
     read_blob: Callable[[str], Any]  # the parsed JSON of a published blob
+    read_bytes: Callable[[str], bytes]  # the verified bytes of a published blob, raw blobs included (IF-7)
     now: datetime
     investigation: Mapping[str, str]  # investigation_key and investigation_id, which the report names (D-054)
 
@@ -45,13 +51,16 @@ class ContentRecord:
 
 @dataclass(frozen=True)
 class Succeeded:
-    """The step completed. ``blobs`` are JSON values to publish before any record names them (M-3); ``outputs`` are
-    the step's output blob digests (published here or already committed); ``root`` only for ACQUIRE."""
+    """The step completed. ``blobs`` are JSON values to publish before any record names them (M-3); ``raw_blobs``
+    are exact bytes to retain as raw blobs (ACQUIRE only: the Stage 03 ``capture.json`` and its artifacts, IF-7),
+    published before ``blobs``; ``outputs`` are the step's output blob digests (published here or already
+    committed); ``root`` only for ACQUIRE."""
 
     records: tuple[ContentRecord, ...] = ()
     blobs: tuple[Any, ...] = ()
     outputs: tuple[str, ...] = ()
     root: Mapping[str, Any] | None = None
+    raw_blobs: tuple[bytes, ...] = ()
 
 
 @dataclass(frozen=True)

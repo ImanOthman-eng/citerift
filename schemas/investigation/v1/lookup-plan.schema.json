@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:citerift:schema:investigation:v1:lookup-plan",
+  "title": "CITERIFT Stage 04 LOOKUP output, version 1",
+  "description": "Step 8: the output blob of a committed LOOKUP: the index identity observation and, for every query of the committed candidate inputs (in their order), the lookup observation that answers it. It is how DETECT and VERIFY find the lookups of a candidate without reading the batches' order.",
+  "x-citerift-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "candidate_inputs",
+    "index_identity",
+    "lookups"
+  ],
+  "properties": {
+    "schema": {
+      "const": "urn:citerift:schema:investigation:v1:lookup-plan"
+    },
+    "schema_version": {
+      "description": "Unknown versions fail closed.",
+      "const": "1.0.0"
+    },
+    "candidate_inputs": {
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "index_identity": {
+      "description": "The digest of the index identity observation blob.",
+      "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+    },
+    "lookups": {
+      "type": "array",
+      "maxItems": 120000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "query",
+          "observation"
+        ],
+        "properties": {
+          "query": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "doi",
+              "pmid"
+            ],
+            "properties": {
+              "doi": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/doi_key"
+                  }
+                ]
+              },
+              "pmid": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "urn:citerift:schema:retraction:v1:common#/$defs/pmid_key"
+                  }
+                ]
+              }
+            },
+            "anyOf": [
+              {
+                "properties": {
+                  "doi": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "pmid": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "observation": {
+            "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
+          }
+        }
+      }
+    }
+  }
+}

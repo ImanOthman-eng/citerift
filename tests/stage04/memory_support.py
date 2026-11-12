@@ -8,6 +8,7 @@ continues with the first step that has not succeeded, so a crash at any point ca
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import os
 from datetime import UTC, datetime, timedelta
@@ -15,12 +16,16 @@ from pathlib import Path
 from typing import Any
 
 from citerift.investigation import batches, ids, sets
+from citerift.investigation.canonical import canon
 from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
 SUBJECT = "wikipedia_article_revision"
 STAGE04 = {"engine_version": "0.1.0", "table_version": "dt-1", "plan_version": "plan-1", "schema_version": "2.0.0"}
-CAPTURE = hashlib.sha256(b"SYNTHETIC capture.json").hexdigest()
+CAPTURE_BYTES = b"SYNTHETIC capture.json"
+CAPTURE = hashlib.sha256(CAPTURE_BYTES).hexdigest()
+SOURCE_BYTES = b"SYNTHETIC source text"
+RESPONSE_BYTES = b"SYNTHETIC source answer"
 
 
 def h(text: str) -> str:
@@ -108,12 +113,85 @@ def new_memory(tmp: Path) -> tuple[InvestigationMemory, Path]:
 STEPS = ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT")
 
 
+def synthetic_bundle() -> tuple[dict[str, Any], dict[str, Any], tuple[bytes, ...]]:
+    """A SYNTHETIC IF-7 bundle observation (Step 8): the manifest, its artifact set and the raw bytes they name. The
+    capture bytes hash to ``CAPTURE``, so the manifest's identity is the request's and the root's."""
+    src, resp = (hashlib.sha256(b).hexdigest() for b in (SOURCE_BYTES, RESPONSE_BYTES))
+    arts = sorted(
+        [
+            {"sha256": src, "bytes": len(SOURCE_BYTES), "roles": ["source"]},
+            {"sha256": resp, "bytes": len(RESPONSE_BYTES), "roles": ["source_response"]},
+        ],
+        key=lambda a: a["sha256"],
+    )
+    artifact_set = {
+        "schema": "urn:citerift:schema:investigation:v1:bundle-artifact-set",
+        "schema_version": "1.0.0",
+        "artifacts": arts,
+    }
+    obj = root_object()
+    manifest = {
+        "schema": "urn:citerift:schema:investigation:v1:bundle-observation",
+        "schema_version": "1.0.0",
+        "engine": "citerift.wiki",
+        "capture": {"blob": CAPTURE, "bytes": len(CAPTURE_BYTES), "schema_version": "1.0.0"},
+        "status": "complete",
+        "identity": obj["subject"]["identity"],
+        "display": obj["subject"]["display"],
+        "source": {"artifact": src, "bytes": len(SOURCE_BYTES), "response_artifact": resp},
+        "render": {"state": "not_requested", "artifact": None},
+        "failure_artifact_count": 0,
+        "artifact_set": {
+            "blob": hashlib.sha256(canon(artifact_set)).hexdigest(),
+            "count": 2,
+            "bytes": len(SOURCE_BYTES) + len(RESPONSE_BYTES),
+        },
+    }
+    return manifest, artifact_set, (CAPTURE_BYTES, SOURCE_BYTES, RESPONSE_BYTES)
+
+
+# The raw blobs of the SYNTHETIC bundle by digest, with their sizes: a raw blob is not canonical JSON (IF-7).
+RAW_SIZES = {hashlib.sha256(b).hexdigest(): len(b) for b in synthetic_bundle()[2]}
+
+
+def verify_blob(store: Any, name: str) -> None:
+    """M-3 for any blob of the SYNTHETIC workload: a raw blob by hash and size, any other as canonical JSON."""
+    if name in RAW_SIZES:
+        store.verify_raw(name, RAW_SIZES[name])
+    else:
+        store.verify(name)
+
+
+# The SYNTHETIC ACQUIRE observation blob before Step 8 (IF-7): the equivalence baselines of D-053 and D-055 name it.
+LEGACY_BUNDLE_OBSERVATION = hashlib.sha256(canon({"bundle": "SYNTHETIC", "capture_sha256": CAPTURE})).hexdigest()
+
+
+def with_legacy_bundle(view: dict[str, Any], canon_text: Any) -> str:
+    """The digest of a logical view with its one bundle observation renamed to the pre-Step-8 SYNTHETIC blob. Step 8
+    (IF-7) deliberately replaced that synthetic observation by a manifest over raw blobs; everything else must equal
+    the recorded baselines, and this substitution is the only one made."""
+    out = copy.deepcopy(view)
+    bundles = [o for o in out["observations"] if o["obs_kind"] == "bundle"]
+    assert len(bundles) == 1 and bundles[0]["blob"] == hashlib.sha256(canon(synthetic_bundle()[0])).hexdigest()
+    bundles[0]["blob"] = LEGACY_BUNDLE_OBSERVATION
+    return hashlib.sha256(canon_text(out).encode()).hexdigest()
+
+
+def put_synthetic_bundle(mem: InvestigationMemory) -> str:
+    """Publish the SYNTHETIC bundle's raw blobs and set; return the manifest digest."""
+    manifest, artifact_set, raw = synthetic_bundle()
+    for data in raw:
+        mem.put_raw_blob(data)
+    mem.put_blob(artifact_set)
+    return mem.put_blob(manifest)
+
+
 def _step_content(mem: InvestigationMemory, step: str, attempt: int) -> list[str]:
     """Write the step's blobs and content records; return its output blob digests."""
     if step == "VALIDATE":
         return [mem.put_blob({"validated": "SYNTHETIC"})]
     if step == "ACQUIRE":
-        blob = mem.put_blob({"bundle": "SYNTHETIC", "capture_sha256": CAPTURE})
+        blob = put_synthetic_bundle(mem)
         mem.append("observation_recorded", _obs("bundle", blob, "open_bundle"), step=step, attempt=attempt)
         return [blob]
     if step == "EXTRACT":

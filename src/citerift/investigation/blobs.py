@@ -1,6 +1,9 @@
 """Content-addressed blob store: ``blobs/<sha256>`` (SPEC S-8.2, M-3; owner Step 6 item 5).
 
-A blob is canonical JSON named by the SHA-256 of its bytes. Publication:
+A blob is canonical JSON named by the SHA-256 of its bytes, or, for the exact bytes of a retained Stage 03 capture
+(``capture.json`` and its artifacts, Step 8 IF-7), a *raw* blob: the same content addressing and publication, without
+the canonical-JSON requirement. A raw blob is named only from a bundle observation manifest, which states its size, so
+Memory checks it by hash and size (``verify_raw``) and never parses it. Publication:
 
 1. create a temporary file in ``blobs/`` (``O_CREAT | O_EXCL | O_NOFOLLOW``);
 2. write, then ``fsync``;
@@ -20,6 +23,7 @@ import contextlib
 import os
 import secrets
 import stat
+from collections.abc import Callable
 
 from citerift.investigation import faults
 from citerift.investigation.canonical import loads_blob, sha256_hex
@@ -80,6 +84,12 @@ class BlobStore:
         except CanonError as exc:
             raise BlobError("BLOB_CORRUPT", f"{digest}: {exc.detail}") from exc
 
+    def verify_raw(self, digest: str, size: int) -> None:
+        """M-3 for a raw blob (IF-7): it exists, is a regular file of ``size`` bytes and hashes to its name."""
+        data = self.get(digest, limit=max(size, 0))
+        if len(data) != size:
+            raise BlobError("BLOB_CORRUPT", f"{digest} has {len(data)} bytes, not the {size} its manifest states")
+
     def exists(self, digest: str) -> bool:
         return is_hex64(digest) and lstat_at(digest, self.dir_fd) is not None
 
@@ -90,9 +100,20 @@ class BlobStore:
         if len(data) > MAX_BLOB_BYTES:
             raise BlobError("BLOB_TOO_LARGE", f"{len(data)} bytes")
         loads_blob(data)  # CanonError unless canonical JSON
+        return self._publish(data, self.verify)
+
+    def put_raw(self, data: bytes) -> str:
+        """Publish exact bytes of any content as a raw blob (IF-7); return their digest. Idempotent for equal bytes."""
+        if not isinstance(data, bytes):
+            raise BlobError("BLOB_CORRUPT", f"a raw blob is bytes, not {type(data).__name__}")
+        if len(data) > MAX_BLOB_BYTES:
+            raise BlobError("BLOB_TOO_LARGE", f"{len(data)} bytes")
+        return self._publish(data, lambda d: self.verify_raw(d, len(data)))
+
+    def _publish(self, data: bytes, check: Callable[[str], None]) -> str:
         digest = sha256_hex(data)
         if self.exists(digest):
-            self.verify(digest)
+            check(digest)
             # The name may come from a put whose directory fsync failed or never ran: make it durable again before
             # any record may name it (M-3 order; review finding R6-3).
             try:
@@ -123,7 +144,7 @@ class BlobStore:
             try:
                 os.link(tmp, digest, src_dir_fd=self.dir_fd, dst_dir_fd=self.dir_fd, follow_symlinks=False)
             except FileExistsError:
-                self.verify(digest)  # a concurrent publisher won; equal bytes, or corruption reported
+                check(digest)  # a concurrent publisher won; equal bytes, or corruption reported
             faults.point("blob.after_link")
             os.unlink(tmp, dir_fd=self.dir_fd)
             fsync_dir(self.dir_fd)

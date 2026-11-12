@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from memory_support import STEPS, Clock, bundle_payload, drive, memory_root
+from memory_support import STEPS, Clock, bundle_payload, drive, memory_root, verify_blob
 
 from citerift.investigation import faults
 from citerift.investigation.memory import InvestigationMemory
@@ -132,7 +132,7 @@ def _check_after_crash(ref: Reference, root: Path, point: str, occurrence: int, 
         if point == "journal.during_append":
             assert torn == ["journal.jsonl.torn-0"] and mem.torn_tail is not None
         for name in mem.view.referenced_blobs():
-            mem.blobs.verify(name)
+            verify_blob(mem.blobs, name)
         orphans = mem.orphan_blobs()
         assert set(mem.blobs.names()) <= ref.blobs, "a blob the uninterrupted run never wrote"
         assert mem.blobs.temporaries() == []

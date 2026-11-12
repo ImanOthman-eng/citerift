@@ -376,17 +376,23 @@ class WorkflowController:
         def read_blob(digest: str) -> Any:
             return json.loads(blobs.get(digest))
 
+        def read_bytes(digest: str) -> bytes:
+            return blobs.get(digest)
+
         return StepRequest(
             step=step,
             attempt=attempt,
             step_key=key,
             live=workflow.is_live(f),
             request=copy.deepcopy(request),
+            request_key=copy.deepcopy(workflow.created(f)["request_key"]),
             root=copy.deepcopy(f.root),
             inputs=inputs,
             committed=tuple(copy.deepcopy(f.committed_content())),
+            stored=tuple(copy.deepcopy(f.committed_records())),
             content_digest=f.content_digest(),
             read_blob=read_blob,
+            read_bytes=read_bytes,
             now=self._clock(),
             investigation={k: workflow.created(f)[k] for k in ("investigation_key", "investigation_id")},
         )
@@ -415,7 +421,13 @@ class WorkflowController:
             raise _Defect("only ACQUIRE binds a root, and it must")
         if not isinstance(r.outputs, tuple) or not all(isinstance(d, str) for d in r.outputs):
             raise _Defect("outputs is not a tuple of digests")
+        if not isinstance(r.raw_blobs, tuple) or not all(isinstance(b, bytes) for b in r.raw_blobs):
+            raise _Defect("raw_blobs is not a tuple of bytes")
+        if r.raw_blobs and step != "ACQUIRE":
+            raise _Defect("only ACQUIRE retains raw upstream bytes (IF-7)")
         try:
+            for data in r.raw_blobs:  # the retained bytes first: the manifest that names them follows (M-3)
+                self._mem.put_raw_blob(data)
             for blob in r.blobs:
                 self._mem.put_blob(blob)
             batch_digests = [self._mem.put_blob(b) for b in evidence]
