@@ -1236,3 +1236,49 @@ consumes the logical fold with no duplicate store. The journal bound is recomput
 an executable, retained bound. The version advances (journal format 4) without migration; formats 1 to 3 are
 development-only. IF-7 (the Stage 03 capture schema has unbounded attempts, issues and failure_artifacts) stays a
 Step 8 condition. Step 8 is not authorized.
+
+## D-056 — Live ACQUIRE has no graceful-stop period
+- Status: accepted
+- Topic: stage-04-live-acquire-no-graceful-stop
+- Date: 2026-11-12
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step8/STEP8_CLOSURE.md
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3QUKzTGVBuK7bcRu4jArpU`, 2026-11-12T14:58:09Z), approving
+OD-S8-1 of the Step 8 closure; the same message accepted Step 8 technically at
+`7e16bdefa6191de23948b54616636ba08f10c9c4`. At the exact `T_acq` deadline the Stage 04 parent (1) immediately
+stops/freezes the supervised child tree, (2) kills the attributable child process tree, (3) reaps the direct child and
+(4) performs the bounded cleanup and survivor check. There is no SIGTERM or graceful-stop interval before the hard
+kill and no grace period after `T_acq`. Normative reason: `T_acq` is the maximum child execution budget; a grace
+interval after it would extend that budget and one inside it would shorten the capture execution budget. The
+Retry-After information that may affect retry safety is captured durably and independently as response headers
+arrive, so no graceful shutdown is needed to preserve it. Kill, reap and cleanup overhead stays outside the child
+execution budget and continues to be reported separately. SPEC 9.2 is corrected to this behaviour; the formula
+`T_acq = deadline_s + op_timeout_s + 30 s` and the implementation are unchanged. The documented limitation stays: an
+adversarial descendant that escapes both the process session and the parent relationship through an unsupported
+double-fork/`setsid` pattern is outside the current attribution model; production Stage 03 capture starts no
+subprocess. With that explicit platform and process-model limitation, F-11 is recorded as IMPLEMENTATION_VERIFIED.
+
+## D-057 — The lookup evidence budget is investigation identity
+- Status: accepted
+- Topic: stage-04-lookup-budget-identity
+- Date: 2026-11-12
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step8/STEP8_CLOSURE.md; tests/stage04/test_step8_resume_stale.py
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3QUKzTGVBuK7bcRu4jArpU`, 2026-11-12T14:58:09Z), approving
+the D-048 behaviour reported in the Step 8 closure. `lookup_evidence_budget_bytes` is part of the effective request
+configuration, therefore of `config_digest`, which is part of `investigation_key`; changing the budget creates a
+different investigation and does not make the historical investigation STALE. STALE means that an already-created
+investigation is resumed against an external or input identity that changed underneath the same investigation
+identity (capture digest, Stage 03 extraction/profile identity, Stage 02 index snapshot, Stage 02 policy identity,
+Stage 04 schema/engine identity where the investigation key is unchanged). A configuration change that participates
+in `config_digest` defines a different requested computation; the original investigation stays valid under its
+original configuration and is never recomputed in place. This applies to every configuration field S-4.7 already
+defines as investigation identity, including `A_max`, `F_max`, the fetch-policy digest, the D-042 live-ACQUIRE bound,
+`lookup_evidence_budget_bytes`, and the plan version included separately in the key. S-4.7 is not altered, the
+budget is not removed from `config_digest`, and no special case forces STALE. With D-056 and D-057 recorded, Step 8 is
+accepted and closed. Step 9 is not authorized; the D-051 evidence-pointer collision in multi-candidate units is a
+mandatory Step 9 input (Step 8 closure, section 19).

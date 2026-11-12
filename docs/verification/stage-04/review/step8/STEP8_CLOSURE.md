@@ -5,6 +5,10 @@ Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yP3N7KPNwX5cW1HPdZKPNpQP` (2026-11
 Step 9 is not started: there is no decision table, no κ, no dt-1 change, no CLI, no report delivery, no holdout and no
 evaluation in this step.
 
+**Status (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3QUKzTGVBuK7bcRu4jArpU`, 2026-11-12T14:58:09Z): Step 8 accepted
+technically at `7e16bdefa6191de23948b54616636ba08f10c9c4`; OD-S8-1 approved as D-056 and the lookup-budget identity
+rule approved as D-057 (section 19). With both recorded, Step 8 is accepted and closed. Step 9 is not authorized.**
+
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
 
@@ -116,13 +120,17 @@ steps' bounded work (SPEC 9.2).
 session nor a parent link; only cgroups could attribute it. The child runs only Stage 03 capture code, which starts
 no process. `/proc` and `PR_SET_PDEATHSIG` are Linux facilities; without them the child refuses to run.
 
-**[owner] OD-S8-1, graceful stop.** SPEC 9.2 says the child "is asked to stop gracefully within `T_acq` and is then
-killed and reaped". The implementation sends no SIGTERM: at `T_acq` it freezes and kills the tree. Reasons: nothing
+**OD-S8-1, graceful stop — resolved by owner decision D-056.** SPEC 9.2 said the child "is asked to stop gracefully
+within `T_acq` and is then killed and reaped". The implementation sends no SIGTERM: at `T_acq` it freezes and kills
+the tree. Reasons: nothing
 the child produces after the deadline may count (G-4); the only state that must survive a kill, the Retry-After
 side channel, is fsynced as each response's headers arrive, so a graceful flush has nothing to save; a grace period
 inside `T_acq` would shorten the capture budget, and one after it would extend the bound. The owner's Step 8 item 4
-("kill the whole tree, reap, and measure kill/reap separately") is met. Proposed: correct the SPEC sentence to "is
-then stopped (SIGSTOP), killed and reaped, with no grace period". Not edited without the owner's decision.
+("kill the whole tree, reap, and measure kill/reap separately") is met. D-056 approved this and SPEC 9.2 now reads:
+"At `T_acq` the parent immediately freezes (stops) the attributable child process tree, kills it and reaps the direct
+child. No graceful-stop interval is used, neither inside `T_acq` (which would shorten the capture execution budget)
+nor after it (which would extend it) (owner decision D-056). Kill, reap and cleanup latency are measured or bounded
+separately and are not part of the child execution budget." The formula and the implementation are unchanged.
 
 ## 5. Retry-After proof and F-11 (item 5)
 
@@ -151,10 +159,13 @@ then stopped (SIGSTOP), killed and reaped, with no grace period". Not edited wit
 
 Stage 04 never shortens an observed Retry-After: the only instants it uses are the ones the server sent, maximised.
 
-**F-11 status: IMPLEMENTATION-VERIFIED** for the bound, the kill and reap, their measurement, the non-authoritative
-timeout and the Retry-After retryability, on the synthetic-network child (`tests/stage04/live_fake_child.py`, which
-runs the production `live_child.main` with only the transport replaced). Conditions stated: OD-S8-1 (graceful stop
-wording) and the double-fork limit of section 4. No real network request was made by any test.
+**F-11 status: IMPLEMENTATION_VERIFIED** (recorded by owner decision D-056) for the bound, the kill and reap, their
+measurement, the non-authoritative timeout and the Retry-After retryability, on the synthetic-network child
+(`tests/stage04/live_fake_child.py`, which runs the production `live_child.main` with only the transport replaced).
+Explicit platform and process-model limitation: an adversarial descendant that escapes both the process session and
+the parent relationship (a double fork with `setsid` after its parent exited) is outside the attribution model;
+production Stage 03 capture starts no subprocess; `/proc` and `PR_SET_PDEATHSIG` are Linux facilities. No real
+network request was made by any test.
 
 ## 6. EXTRACT and D-050 (item 6)
 
@@ -254,7 +265,7 @@ schema's enum values (`index_identity`, `gather`); no schema change.
 | Stage 02 lookup policy version | `["index"]` |
 | Stage 04 schema version / decision-table version | `["stage04"]` |
 | Stage 04 integration schema versions | `["stage04"]` |
-| Bounded-lookup budget | **another investigation**, not STALE: the budget is part of the request's configuration and so of the investigation key (D-048 design). Stated as a deviation from the letter of item 18. |
+| Lookup evidence budget | Not a STALE transition (owner decision D-057): a changed lookup evidence budget resolves to a different investigation key; the original investigation remains unchanged. [verified, `test_a_changed_lookup_budget_is_another_investigation`: same request and budget → same `config_digest` and key; another budget → another `config_digest` and key; the first journal's bytes are unchanged after the second investigation runs and the first is resumed; neither has a `stale_detected` record.] |
 
 ## 14. Only ACQUIRE uses the network (items 15, 17 criteria)
 
@@ -354,10 +365,10 @@ No assertion was removed or loosened beyond these substitutions.
 | 1 | IF-7 resolved by a bounded representation | PASS. Section 2, `if7_bound.json`. |
 | 2 | Retained Stage 03 bundle integration real | PASS. Sections 3, 12. |
 | 3 | Bundle-path removal does not break replay | PASS. `test_removing_the_bundle_after_acquire_changes_nothing`. |
-| 4 | Live ACQUIRE isolated under D-042 | PASS, with OD-S8-1 (no graceful stop). Section 4. |
+| 4 | Live ACQUIRE isolated under D-042 | PASS; no graceful-stop interval (D-056). Section 4. |
 | 5 | Kill/reap measured and tested | PASS. Supervisor tests; `step8_perf.json`. |
 | 6 | Retry-After safety proven | PASS. Section 5 table. |
-| 7 | F-11 implementation-verified | PASS (conditions: OD-S8-1, double-fork limit). |
+| 7 | F-11 implementation-verified | PASS: IMPLEMENTATION_VERIFIED (D-056), with the double-fork/`setsid` attribution limit. |
 | 8 | Real EXTRACT works | PASS. All three design bundles. |
 | 9 | D-050 on real Stage 03 documents | PASS. Real `LIMIT_OCCURRENCES` → `EXTRACTION_FAILED`; real worker `EXTRACTION_DEADLINE_EXCEEDED` → retryable, same code. Every Stage 03 catalog code is mapped (B-11). |
 | 10 | D-043 on real source bytes | PASS. Section 7. |
@@ -370,7 +381,7 @@ No assertion was removed or loosened beyond these substitutions.
 | 17 | Only ACQUIRE can use the network | PASS, with the Stage 03 worker limit (section 14). |
 | 18 | Retained mode works with sockets blocked | PASS. 0 network attempts. |
 | 19 | Crash/resume repeats no completed work | PASS. Section 13. |
-| 20 | Upstream identity changes give STALE | PASS for capture, extraction config, profile, index, policy, Stage 04 schema/plan; the lookup budget makes a new investigation (owner question). |
+| 20 | Upstream identity changes give STALE | PASS for capture, extraction config, profile, index, policy, Stage 04 schema/plan. A changed lookup evidence budget resolves to a different investigation key; the original investigation remains unchanged, so it is not a STALE transition (D-057). |
 | 21 | VERIFY records the D-054 check | PASS. `D054_REPORT_GRAPH` among 14 named checks. |
 | 22 | Batching controller-owned | PASS. Adapters return individual records; `D053_EVIDENCE_BATCHES`, `D055_ENTRY_BATCHES`. |
 | 23 | Record/journal/blob bounds valid | PASS. ACQUIRE record 176 B; blobs ≤ 32 MiB artifacts and 9.9 MB set under 256 MiB; D-055 bound tests pass. |
@@ -387,8 +398,16 @@ No assertion was removed or loosened beyond these substitutions.
 | 34 | render-status --check | PASS. |
 | 35 | GitHub CI green within budget | PASS. Runs 316 and 317 green; slowest job 15 min 17 s of 20 (under 18). |
 
-## 19. Unresolved owner decisions
+## 19. Owner decisions and carry-forward
 
-- **OD-S8-1** (section 4): SPEC 9.2 "asked to stop gracefully" versus the implemented stop-kill-reap with no grace.
-- **Item 18 budget** (section 13): a changed lookup budget makes another investigation, not STALE. Confirm, or ask for
-  a different identity rule (that would be a D-048 change).
+- **D-056** (OD-S8-1): no graceful-stop interval; SPEC 9.2 corrected (section 4); F-11 IMPLEMENTATION_VERIFIED with
+  the stated limitation (section 5).
+- **D-057**: the lookup evidence budget is investigation identity; a changed budget is a different investigation,
+  never STALE (section 13). SPEC S-10.1 states this; S-4.7 is unchanged.
+- **Mandatory Step 9 input (owner, same message): B-8, the D-051 evidence-pointer collision in multi-candidate
+  units.** Before the production decision table is frozen, Step 9 must determine whether `H(observation, pointer,
+  evidence_kind)` is sufficient when one observation pointer can legitimately support more than one
+  candidate-specific semantic fact; it must not silently merge distinct candidate evidence. Required: reproduce the
+  collision fail-first; decide whether candidate identity, a sub-pointer or context must take part in evidence
+  identity; keep replay deterministic; document any identity change before the Stage 04 freeze; test real
+  multi-candidate units. This is a forward item; D-051 is not changed in Step 8.

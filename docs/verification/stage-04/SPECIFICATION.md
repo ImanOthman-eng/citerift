@@ -785,8 +785,11 @@ Live-ACQUIRE wall-clock bound (owner decision D-042, review finding F-11). Each 
 runs as a dedicated child process (its own session) whose deadline the parent owns. The parent starts the timer
 immediately before it launches the child, so the bound covers process start-up, DNS, connection, transfer, Stage 03's
 own retries, bundle publication and the local completion path. `T_acq = deadline_s + op_timeout_s + 30 s` (240 s with
-the Stage 03 defaults); it is a controller safety bound, not a scientific threshold. The child is asked to stop
-gracefully within `T_acq` and is then killed and reaped; kill and reap latency are measured or bounded separately. An
+the Stage 03 defaults); it is a controller safety bound, not a scientific threshold. At `T_acq` the parent
+immediately freezes (stops) the attributable child process tree, kills it and reaps the direct child. No
+graceful-stop interval is used, neither inside `T_acq` (which would shorten the capture execution budget) nor after it
+(which would extend it) (owner decision D-056). Kill, reap and cleanup latency are measured or bounded separately and
+are not part of the child execution budget. An
 attempt that exceeds `T_acq` ends `step_failed(ACQUIRE_WALL_CLOCK_EXCEEDED)` with `root_id = null` and
 `wall_clock = {t_acq_ms, elapsed_ms}`; none of its output is authoritative: it binds no root, commits no bundle as
 evidence, commits no evidence, claim, decision or question, and leaves no `step_succeeded` record. It is retryable
@@ -970,7 +973,9 @@ ones.
 - S-10.1 On resume, each committed step's key is recomputed from the current identities. If any differs from the
   recorded key, the investigation is `STALE`: no committed output is reused, nothing is re-run in it, and a new
   investigation (new key when the config or plan changes; otherwise the operator moves the stale directory aside)
-  must be created. Stale evidence is never mixed with fresh evidence.
+  must be created. Stale evidence is never mixed with fresh evidence. A changed configuration field of S-4.7 (for
+  example the lookup evidence budget) resolves to a different investigation key; the original investigation remains
+  unchanged, so it is not a STALE transition (owner decision D-057).
 - S-10.2 A retained bundle whose content no longer hashes to its recorded `capture_sha256` is `CORRUPT` input
   (ACQUIRE terminal `BUNDLE_DIGEST_MISMATCH`), not `STALE`.
 
@@ -1125,7 +1130,7 @@ each requirement is met, or where it moved.
 | MR-10 | S-9.7, S-7.5 | outcome rule; a failed step never produces a negative |
 | MR-11 to MR-13 | 8, 10 | append-only journal, resume, memory outside the repository |
 | MR-14 | 3.1, 9.2 | Stage 03 rate limiter and Retry-After; `F_max` |
-| MR-15 | 9.2 | bounded by `A_max`, `F_max`, Stage 03 timeouts and the live-ACQUIRE wall-clock bound `T_acq` of owner decision D-042 (review finding F-11, implementation-verified in Step 8, `review/step8/STEP8_CLOSURE.md` section 5, pending owner acceptance); `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state |
+| MR-15 | 9.2 | bounded by `A_max`, `F_max`, Stage 03 timeouts and the live-ACQUIRE wall-clock bound `T_acq` of owner decision D-042 (review finding F-11, IMPLEMENTATION_VERIFIED by owner decision D-056, with the process-attribution limitation recorded there); `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state |
 | MR-16 | — | cancellation is Stage 07 (plan 6) |
 | MR-17 | 9.3 | stable codes |
 | MR-17a, MR-17b | 3.1, 7.3 | HTTP 200 error bodies are Stage 03's (`fetch.py`); only a committed `no_record` gives `NOT_FOUND_IN_CHECKED_SOURCES` |

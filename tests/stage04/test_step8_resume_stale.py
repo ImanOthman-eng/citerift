@@ -32,7 +32,7 @@ from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration
 from citerift.investigation.adapters.verify import CHECKS, make_verify
 from citerift.investigation.canonical import loads_blob
 from citerift.investigation.controller import run_investigation
-from citerift.investigation.memory import InvestigationMemory
+from citerift.investigation.memory import InvestigationMemory, created_payload
 from citerift.investigation.schemas import BUNDLE_OBSERVATION, LOOKUP_PLAN
 from citerift.retraction import policy
 from citerift.wiki.extract import ExtractConfig
@@ -188,11 +188,28 @@ def test_a_changed_lookup_policy_is_stale(tmp_path: Path, index: Path, monkeypat
 
 
 def test_a_changed_lookup_budget_is_another_investigation(tmp_path: Path, index: Path) -> None:
-    """The budget is configuration: part of config_digest, so of the investigation key (D-048), never a silent reuse."""
+    """Owner decision D-057: the lookup evidence budget is configuration, so part of config_digest and of the
+    investigation key. The same request with the same budget is the same investigation; another budget is another
+    investigation, never a STALE transition of the first: the first journal is not touched and neither is STALE."""
     root = S8.memory_root(tmp_path)
-    a = S8.create(root, S8.request(S8.AR_OBOKATA, index, root))
+    req_a = S8.request(S8.AR_OBOKATA, index, root)
+    capture = S8.open_bundle_capture(S8.AR_OBOKATA)
+    again = created_payload(
+        S8.request(S8.AR_OBOKATA, index, root), dict(STAGE04_IDENTITY), bundle_capture_sha256=capture
+    )
+    a = S8.create(root, req_a)
+    assert (again["config_digest"], again["investigation_key"]) == (a["config_digest"], a["investigation_key"])
+    assert S8.run(root, a, S8.TEST_INTEGRATION).status == "NEEDS_RESOLUTION"
+    journal_a = root / a["investigation_key"] / "journal.jsonl"
+    before = journal_a.read_bytes()
     b = S8.create(root, S8.request(S8.AR_OBOKATA, index, root, budget=1024))
-    assert a["investigation_key"] != b["investigation_key"]
+    assert b["config_digest"] != a["config_digest"] and b["investigation_key"] != a["investigation_key"]
+    assert S8.run(root, b, S8.TEST_INTEGRATION).status != "STALE"
+    assert S8.run(root, a, S8.TEST_INTEGRATION).status == "NEEDS_RESOLUTION"  # resumed after the other exists
+    assert journal_a.read_bytes() == before
+    for payload in (a, b):
+        with InvestigationMemory.open(root, payload["investigation_key"], writable=False) as mem:
+            assert [r for r in mem.view.records if r["kind"] == "stale_detected"] == []
 
 
 @pytest.mark.parametrize(

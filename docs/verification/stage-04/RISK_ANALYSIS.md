@@ -199,11 +199,13 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   part of the configuration digest. Step 5 represents all of this in the schemas (`journal-record`, `common#config`);
   Step 8 implements it (`investigation/adapters/live.py`, `supervise.py`, `live_child.py`).
 - Residual: an operator can resume a `BLOCKED` investigation repeatedly; each resume before `not_before` writes
-  nothing. F-11 is implementation-verified in Step 8 (`review/step8/STEP8_CLOSURE.md` section 5, pending owner
-  acceptance): the child-process timer, the kill and reap latency and the slow-body plus Retry-After case are tested;
+  nothing. F-11 is IMPLEMENTATION_VERIFIED (owner decision D-056; `review/step8/STEP8_CLOSURE.md` section 5): the
+  child-process timer, the kill and reap latency and the slow-body plus Retry-After case are tested;
   `ACQUIRE_WALL_CLOCK_EXCEEDED` is retryable only when every observed Retry-After is known, with `not_before` at the
-  latest instant, and terminal otherwise (D-042). The graceful stop of SPEC 9.2 is not implemented (owner question
-  OD-S8-1). A descendant that double-forks and calls `setsid` after its parent exited escapes the `/proc` tree read. `9 × T_acq` (2,160 s) bounds the live-ACQUIRE child execution only,
+  latest instant, and terminal otherwise (D-042). There is no graceful-stop interval (D-056). Limitation: an
+  adversarial descendant that escapes both the process session and the parent relationship (a double fork with
+  `setsid` after its parent exited) is outside the attribution model; production Stage 03 capture starts no
+  subprocess. `9 × T_acq` (2,160 s) bounds the live-ACQUIRE child execution only,
   not the whole investigation.
 - Gate and invariant: 04-E, 04-G; W-4; MM TR-4, TR-5.
 - Blocks verification: **blocks** if any reachable state has no bound.
