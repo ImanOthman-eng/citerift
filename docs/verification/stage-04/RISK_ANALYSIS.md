@@ -197,12 +197,13 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   `T_acq = deadline_s + op_timeout_s + 30 s` (owner decision D-042) and ends `ACQUIRE_WALL_CLOCK_EXCEEDED` with no
   authoritative output; an ACQUIRE failure records `not_before` and T-RESTART refuses an earlier attempt; the bound is
   part of the configuration digest. Step 5 represents all of this in the schemas (`journal-record`, `common#config`);
-  it is not implemented yet.
+  Step 8 implements it (`investigation/adapters/live.py`, `supervise.py`, `live_child.py`).
 - Residual: an operator can resume a `BLOCKED` investigation repeatedly; each resume before `not_before` writes
-  nothing. F-11 is design-unblocked, not implementation-verified: the child-process timer, the graceful stop, the
-  kill and reap latency and the slow-body plus Retry-After case are tested in step 8 of the plan; until then whether
-  `ACQUIRE_WALL_CLOCK_EXCEEDED` is retryable stays open (D-042: retryable only if no retry can precede an observed
-  Retry-After, otherwise terminal or deferred). `9 × T_acq` (2,160 s) bounds the live-ACQUIRE child execution only,
+  nothing. F-11 is implementation-verified in Step 8 (`review/step8/STEP8_CLOSURE.md` section 5, pending owner
+  acceptance): the child-process timer, the kill and reap latency and the slow-body plus Retry-After case are tested;
+  `ACQUIRE_WALL_CLOCK_EXCEEDED` is retryable only when every observed Retry-After is known, with `not_before` at the
+  latest instant, and terminal otherwise (D-042). The graceful stop of SPEC 9.2 is not implemented (owner question
+  OD-S8-1). A descendant that double-forks and calls `setsid` after its parent exited escapes the `/proc` tree read. `9 × T_acq` (2,160 s) bounds the live-ACQUIRE child execution only,
   not the whole investigation.
 - Gate and invariant: 04-E, 04-G; W-4; MM TR-4, TR-5.
 - Blocks verification: **blocks** if any reachable state has no bound.

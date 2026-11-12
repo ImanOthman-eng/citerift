@@ -18,7 +18,8 @@ are already in the repository.
 **Baseline to beat (owner's words):** "subprocess + setsid/start_new_session + killpg + wait/reap".
 
 **Result: no dependency is adopted.** The stdlib/POSIX baseline is the implementation.
-- None of the candidates gives a stronger process-tree guarantee than a session kill plus a child subreaper.
+- None of the candidates gives a stronger process-tree guarantee than a session kill plus a `/proc` read of the
+  session and of the child's descendants (section 4; the subreaper of the first draft was dropped, see there).
 - psutil, the strongest technical candidate, finds descendants by walking parent links. That walk loses a
   double-forked orphan, which a session kill does not.
 - Pebble fails the licence gate (LGPL).
@@ -161,48 +162,52 @@ Common to every candidate: none needs network access to run, and none is in `uv.
 
 ## 4. The adopted baseline (stdlib/POSIX, owned by CITERIFT)
 
-1. **Session.** `subprocess.Popen([sys.executable, "-I", "-m", <child module>], start_new_session=True, close_fds=True,
-   stdin=DEVNULL)`. The child calls `setsid` before `exec`, so it leads a new session and process group whose id
-   equals its pid.
-2. **Parent death (G-5).** The child sets `prctl(PR_SET_PDEATHSIG, SIGKILL)` first. It then checks `getppid()`
-   against the pid of the parent that launched it, because the parent may have died before the `prctl` call. If the
-   parent is gone, the child exits before touching the network.
-3. **Subreaper (G-2, G-3).** The supervising process sets `prctl(PR_SET_CHILD_SUBREAPER, 1)`. Orphaned descendants
-   are then re-parented to the supervisor instead of init, so the supervisor can reap them. `PR_SET_CHILD_SUBREAPER`
-   is a process attribute, so the supervisor's own process is marked for its lifetime.
-   - **Inference:** this is harmless here. The Stage 04 controller has no other children that it could
-     accidentally reap: the Stage 03 extraction worker is created and reaped inside `extract_bundle`, by the same
-     `waitpid` on its own pid.
-4. **Deadline (G-1).** The parent takes `t0 = monotonic()` immediately before `Popen` and waits with
-   `wait(timeout=T_acq − elapsed)`.
-5. **Termination (G-2).**
-   - At the deadline, the parent sends `killpg(pgid, SIGKILL)` **before** reaping the leader. The leader's zombie keeps
-     the process-group id reserved, so the signal cannot reach a process that reused the id.
-   - SIGKILL is sent without a SIGTERM grace period: nothing produced after the deadline may count (G-4), so a
-     cooperative shutdown has no value.
-   - The parent then reaps the leader with `wait()`, and any re-parented orphans with `waitpid(-1, WNOHANG)` against
-     the session. It then scans `/proc/*/stat` for any process still in the session; a non-empty result is a
-     supervision failure (fail closed).
-6. **Measurements.** `kill_ms` (the `killpg` call), `reap_ms` (leader `wait`) and `sweep_ms` (orphan reap and session
-   scan) are recorded separately from the wall clock of the attempt.
-7. **Output (G-4).**
-   - The child writes into a private directory that the parent created. The parent looks at it only after the child
-     exited normally inside the deadline.
-   - After a timeout the directory is deleted without being read, except for the Retry-After side-channel described in
-     the Step 8 design. That side channel is advisory input to the retry decision and never a bundle.
-8. **Testability (G-6).** `T_acq` is a constructor parameter of the supervisor. Production derives it from the
-   Investigation config (`deadline_s + op_timeout_s + 30 s`, in `config_digest`). Tests pass sub-second values and run
-   the child against a fake transport.
+Revised when the code was written (`src/citerift/investigation/adapters/supervise.py`, `live.py`, `live_child.py`).
+The first draft of this section made the controller process a child subreaper and reaped orphans with
+`waitpid(-1, WNOHANG)`. That was dropped before any code used it: `waitpid(-1)` can take the exit status of any other
+child of the controller (a `subprocess.Popen` elsewhere in the same process would then lose its own status), and the
+subreaper attribute would stay on the controller for its whole life. The implementation reaps only its own child.
+
+1. **Session.** `subprocess.Popen([sys.executable, "-I", "-m", "citerift.investigation.adapters.live_child", WORKDIR,
+   PARENT_PID], start_new_session=True, close_fds=True, stdin=DEVNULL)`, output to files in the private work
+   directory (never to pipes the parent would have to drain). The child leads a new session and process group whose
+   id equals its pid.
+2. **Parent death (G-5).** The child's first action is `prctl(PR_SET_PDEATHSIG, SIGKILL)` (through `ctypes`); it then
+   checks `getppid()` against the pid it was given, because the parent may have died before the call. If either
+   fails, the child exits before any request (fail closed).
+3. **Deadline (G-1).** The parent takes `t0 = monotonic()` immediately before `Popen` and waits with
+   `wait(timeout=T_acq - elapsed)`.
+4. **Termination at the deadline (G-2).**
+   - `killpg(pgid, SIGSTOP)` freezes the group, so no member forks or exits while the tree is read.
+   - `/proc/*/stat` is read for every process in the child's session and every descendant of the child by parent
+     links. The parent-link walk also finds a descendant that left the session with `setsid` while its parent was
+     alive.
+   - Each of them receives `SIGKILL`, and the group receives `killpg(pgid, SIGKILL)`, **before** the leader is reaped:
+     the leader's zombie keeps the group id reserved, so the signal cannot reach a process that reused it.
+   - No SIGTERM grace: nothing produced after the deadline may count (G-4).
+5. **Reaping (G-3).** The parent reaps the leader, its only child, with `Popen.wait()`. It never calls
+   `waitpid(-1)`. The killed descendants are re-parented to init, which reaps them; the parent sweeps until each is
+   gone or a zombie (bounded, 5 s), and checks that no process of the session is left. A survivor is a supervision
+   failure: the attempt is `ADAPTER_INCONSISTENT`, never a capture.
+6. **Normal exit.** A child that exits inside the bound is swept the same way. Anything it left in its session is
+   killed and reported, and the attempt is `ADAPTER_INCONSISTENT` (an unexpected process is never accepted).
+7. **Measurements.** `kill_ms` (SIGSTOP, tree read and SIGKILL), `reap_ms` (the leader's `wait`) and `sweep_ms` are
+   measured separately from the attempt's elapsed time (`Supervised`).
+8. **Output (G-4).** The parent reads `WORKDIR/result.json` and the bundle only after the child exited inside the
+   bound. After a kill it reads only the Retry-After side channel, which decides retryability and is never evidence.
+   The work directory is deleted except for that side channel, which stays (per investigation) until a capture
+   succeeds, so that a later attempt never starts before an instant an earlier attempt saw.
+9. **Testability (G-6).** `T_acq` and the child argv are parameters of `make_live_acquire`. Production derives
+   `T_acq` from the request (`live_acquire_bound.t_acq_ms`, which must equal the fetch policy's D-042 bound) and runs
+   the production child module. The tests pass 1.5 s and a child that wraps the same `live_child.main` with a fake
+   transport.
 
 **Limits stated plainly.**
-- A descendant that calls `setsid` itself leaves the child's session, so `killpg` does not reach it.
-- Because the supervisor is a subreaper, such a descendant is still re-parented to the supervisor when its parent
-  dies, and the orphan sweep reaps it only after it exits. A live process outside the session is detected only if it
-  is a direct child of the supervisor (`waitpid` does not reap a running process).
-- **Mitigation:** the live ACQUIRE child runs only Stage 03 capture code, which creates no subprocesses. The sweep
-  records every pid that is still a child of the supervisor after the kill. Any such pid gets its own `kill`, is
-  reaped and is reported. This covers the descendants that matter (network-capable code started by the child) as far
-  as POSIX allows without cgroups.
+- A descendant that double-forks and calls `setsid` after its intermediate parent has exited has neither the session
+  id nor a parent link to the child. `/proc` cannot attribute it to the attempt; only cgroups could. The live ACQUIRE
+  child runs only Stage 03 capture code, which starts no process. A test shows that a descendant inside the session
+  and one that called `setsid` while its parent lived are both killed (`test_step8_live.py`).
+- `PR_SET_PDEATHSIG` and `/proc` are Linux facilities (G-7). Without them the child refuses to run (fail closed).
 
 ## 5. Baseline probe (2026-11-12, this container)
 
@@ -220,11 +225,13 @@ final []                                                # no member of the sessi
 
 - **Result:** `killpg` reached the re-parented grandchild that a parent-link walk would have missed, and the
   subreaper let the supervisor reap it.
-- The Step 8 supervisor tests repeat this under pytest and assert the empty session scan. They are recorded in the
-  Step 8 evidence.
+- The implementation keeps the session kill and drops the subreaper (section 4): the killed orphans are reaped by
+  init, and the supervisor's sweep waits until they are gone. The Step 8 supervisor tests
+  (`tests/stage04/test_step8_live.py`) assert an empty session and no surviving descendant, including one that
+  called `setsid`.
 
 ## 6. Decision
 
-- **Adopted:** the stdlib/POSIX baseline (`subprocess`, `os.killpg`, `os.waitpid`, `prctl` through `ctypes`, and a
-  `/proc` session scan).
+- **Adopted:** the stdlib/POSIX baseline (`subprocess`, `os.killpg`, `Popen.wait` on the child only,
+  `prctl(PR_SET_PDEATHSIG)` through `ctypes` in the child, and a `/proc` read of the session and the descendants).
 - **Dependencies:** none added. `pyproject.toml` and `uv.lock` are unchanged by this decision.

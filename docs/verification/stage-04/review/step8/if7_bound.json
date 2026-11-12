@@ -1,0 +1,36 @@
+{
+  "artifact_set": {
+    "blob_limit_bytes": 268435456,
+    "count_derivation": "failure_artifacts: capture.json is at most 4194304 bytes and each listed digest takes at least 67 bytes, so at most 62601 (< 65536 in the schema); plus source, source_response and render: 65539",
+    "entry_bytes": 150,
+    "max_count": 65539,
+    "schema_shape_valid": true,
+    "within_blob_limit": true,
+    "worst_case_bytes": 9896497
+  },
+  "journal_record": {
+    "note": "the record names the manifest by digest; nothing in it grows with the bundle",
+    "payload_bytes": 176,
+    "record_limit_bytes": 1048576
+  },
+  "manifest": {
+    "problems": [],
+    "schema_valid": true,
+    "unbounded_lists": 0,
+    "worst_case_bytes": 5076
+  },
+  "raw_blobs": {
+    "capture_json_limit_bytes": 4194304,
+    "per_artifact_limit_bytes": 33554432,
+    "schema_bound_total_bytes": 2199128113152,
+    "stage03_practical_note": "Stage 03 keeps a failure body only when it is at most MAX_FAILURE_BODY bytes, one per failed attempt, and makes at most max_attempts=3 attempts for each of its two operations under the default policy",
+    "stage03_practical_parts": {
+      "capture_json": 4194304,
+      "failure_bodies": 393216,
+      "render_html": 33554432,
+      "source_response": 33554432,
+      "source_text": 4194304
+    },
+    "stage03_practical_total_bytes": 75890688
+  }
+}

@@ -8,6 +8,7 @@ the in-process network is refused and the refusals are counted.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import sqlite3
@@ -17,11 +18,13 @@ from typing import Any
 import pytest
 import step8_support as S8
 
+from citerift.investigation import retained
 from citerift.investigation.adapters import Failed, StepRequest
 from citerift.investigation.adapters.acquire import retained_acquire
 from citerift.investigation.adapters.plan import Integration
 from citerift.investigation.anchors import SourceArtifact, unit_span_sha256
 from citerift.investigation.controller import run_investigation
+from citerift.investigation.memory import InvestigationMemory
 from citerift.investigation.schemas import (
     BUNDLE_OBSERVATION,
     CANDIDATE_INPUTS,
@@ -30,6 +33,7 @@ from citerift.investigation.schemas import (
     problems,
 )
 from citerift.retraction.query import Index
+from citerift.wiki import verify as stage03_verify
 from citerift.wiki.extract import ExtractConfig
 
 pytestmark = pytest.mark.integration
@@ -175,6 +179,7 @@ def test_d043_unit_anchors_on_real_arabic_and_english_bytes(name: str, request: 
     case: Case = request.getfixturevalue(name)
     manifest = case.blob(BUNDLE_OBSERVATION)
     source = SourceArtifact(case.blobs["bytes:" + manifest["source"]["artifact"]], manifest["source"]["artifact"])
+    assert hashlib.sha256(source.data).hexdigest() == manifest["source"]["artifact"]  # the source digest first
     [ext] = [case.blobs[o["blob"]] for o in case.kind("observation_recorded") if o["obs_kind"] == "extraction"]
     units = [
         i for b in case.kind("evidence_batch_recorded") for i in case.blobs[b["batch"]]["items"] if i["kind"] == "unit"
@@ -197,6 +202,8 @@ def test_d043_unit_anchors_on_real_arabic_and_english_bytes(name: str, request: 
             identifiers=same,
         )
         assert u["value"]["unit_span_sha256"] == again
+        # the D-043 formula computed independently: SHA256(source_bytes[byte_start:byte_end])
+        assert again == hashlib.sha256(source.data[span["byte_start"] : span["byte_end"]]).hexdigest()
         source.data[span["byte_start"] : span["byte_end"]].decode("utf-8")  # a real UTF-8 span of the retained bytes
         non_ascii += any(b > 127 for b in source.data[span["byte_start"] : span["byte_end"]])
     assert non_ascii > 0 if name == "ar" else True
@@ -215,6 +222,59 @@ def test_extraction_failure_maps_by_d050(tmp_path: Path, index: Path, offline: A
     t = case.result.explanation["terminated_by"]
     assert (t["step"], t["code"], t["reason"]) == ("EXTRACT", "EXTRACTION_FAILED", "LIMIT_OCCURRENCES")
     assert case.kind("claim_recorded") == []
+
+
+def test_a_real_stage03_worker_deadline_keeps_its_retryable_code(tmp_path: Path, index: Path, offline: Any) -> None:
+    """D-050: a real Stage 03 worker failure (the isolated worker's wall limit, here 1 ms) keeps its own code and is
+    retryable; the third attempt exhausts A_max with the code as the reason; nothing downstream runs, no claim."""
+    case = _run(
+        tmp_path,
+        S8.AR_OBOKATA,
+        index,
+        Integration(extract_config=ExtractConfig(worker_wall_s=0.001), detector=S8.synthetic_detector),
+    )
+    with InvestigationMemory.open(case.root, case.payload["investigation_key"], writable=False) as mem:
+        failed = [r["payload"] for r in mem.view.records if r["kind"] == "step_failed" and r["step"] == "EXTRACT"]
+    *retried, last = failed
+    assert [(f["code"], f["retryable"]) for f in retried] == [("EXTRACTION_DEADLINE_EXCEEDED", True)] * 2
+    assert (last["code"], last["reason"], last["retryable"]) == (
+        "RETRY_BUDGET_EXHAUSTED",
+        "EXTRACTION_DEADLINE_EXCEEDED",
+        False,
+    )
+    assert case.result.status == "FAILED" and case.kind("claim_recorded") == []
+
+
+def test_a_format_mismatched_index_fails_lookup_with_no_claim(tmp_path: Path, offline: Any) -> None:
+    """Stage 02 unavailable: an SQLite file that is not a Stage 02 index fails LOOKUP with Stage 02's own code."""
+    other = tmp_path / "other.sqlite"
+    db = sqlite3.connect(other)
+    db.execute("CREATE TABLE t (x)")
+    db.commit()
+    db.close()
+    case = _run(tmp_path / "run", S8.AR_OBOKATA, other)
+    t = case.result.explanation["terminated_by"]
+    assert (t["step"], t["code"]) == ("LOOKUP", "INDEX_FORMAT_MISMATCH")
+    assert case.kind("claim_recorded") == []
+
+
+def test_a_missing_index_is_refused_or_stale_never_a_negative(tmp_path: Path, index: Path, offline: Any) -> None:
+    """Stage 02 unavailable: a missing index is refused by VALIDATE; an index that disappears before LOOKUP (nothing
+    committed depends on it yet, so it is not STALE) fails LOOKUP with Stage 02's INDEX_MISSING. No claim either way.
+    (An index that changes after LOOKUP committed is STALE: ``test_step8_resume_stale``.)"""
+    absent = _run(tmp_path / "a", S8.AR_OBOKATA, tmp_path / "absent.sqlite")
+    t = absent.result.explanation["terminated_by"]
+    assert (t["step"], t["code"]) == ("VALIDATE", "INPUT_INVALID")
+    path = tmp_path / "index.sqlite"
+    shutil.copyfile(index, path)
+    root = S8.memory_root(tmp_path / "b")
+    payload = S8.create(root, S8.request(S8.AR_OBOKATA, path, root))
+    S8.run_until(root, payload, S8.TEST_INTEGRATION, "NORMALIZE")
+    path.unlink()
+    gone = Case(root, payload, S8.run(root, payload, S8.TEST_INTEGRATION))
+    t = gone.result.explanation["terminated_by"]
+    assert gone.result.status == "FAILED" and (t["step"], t["code"]) == ("LOOKUP", "INDEX_MISSING")
+    assert gone.kind("claim_recorded") == []
 
 
 def test_lookup_overflow_is_unavailable_all_or_nothing(tmp_path: Path, index: Path, offline: Any) -> None:
@@ -328,3 +388,12 @@ def test_adapter_returns_never_write_memory(tmp_path: Path, index: Path) -> None
     result = retained_acquire(StepRequest(**fields))  # type: ignore[arg-type]
     assert not isinstance(result, Failed)
     assert sorted(p.name for p in root.iterdir()) == before
+
+
+@pytest.mark.parametrize("bundle", [S8.AR_OBOKATA, S8.EN_OBOKATA, S8.EN_MMR], ids=lambda p: p.name)
+def test_retained_artifacts_are_exactly_what_stage03_verification_reads(bundle: Path) -> None:
+    """IF-7 relies on Stage 04 retaining exactly the artifacts Stage 03 ``verify_capture`` lists. That function is
+    private to Stage 03, so ``retained.listed_artifacts`` re-derives it; this pins the two to each other."""
+    capture = json.loads((bundle / "capture.json").read_bytes())
+    assert set(retained.listed_artifacts(capture)) == stage03_verify._listed_artifacts(capture)
+    assert set(retained.listed_artifacts(capture)) == {p.name for p in (bundle / "artifacts").iterdir()}

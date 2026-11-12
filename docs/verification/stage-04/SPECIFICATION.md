@@ -1125,7 +1125,7 @@ each requirement is met, or where it moved.
 | MR-10 | S-9.7, S-7.5 | outcome rule; a failed step never produces a negative |
 | MR-11 to MR-13 | 8, 10 | append-only journal, resume, memory outside the repository |
 | MR-14 | 3.1, 9.2 | Stage 03 rate limiter and Retry-After; `F_max` |
-| MR-15 | 9.2 | bounded by `A_max`, `F_max`, Stage 03 timeouts and the live-ACQUIRE wall-clock bound `T_acq` of owner decision D-042 (review finding F-11, design-unblocked, not yet implementation-verified); `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state |
+| MR-15 | 9.2 | bounded by `A_max`, `F_max`, Stage 03 timeouts and the live-ACQUIRE wall-clock bound `T_acq` of owner decision D-042 (review finding F-11, implementation-verified in Step 8, `review/step8/STEP8_CLOSURE.md` section 5, pending owner acceptance); `BLOCKED` ends the run without waiting. There is no per-investigation wall-clock timer and no `timed_out` step state |
 | MR-16 | — | cancellation is Stage 07 (plan 6) |
 | MR-17 | 9.3 | stable codes |
 | MR-17a, MR-17b | 3.1, 7.3 | HTTP 200 error bodies are Stage 03's (`fetch.py`); only a committed `no_record` gives `NOT_FOUND_IN_CHECKED_SOURCES` |

@@ -25,6 +25,7 @@ import pytest
 import step8_support as S8
 
 from citerift.investigation.adapters import Failed, StepRequest, Succeeded
+from citerift.investigation.adapters import extract as extract_module
 from citerift.investigation.adapters import plan as plan_module
 from citerift.investigation.adapters.detect import DetectInput, Detection
 from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration
@@ -35,6 +36,7 @@ from citerift.investigation.memory import InvestigationMemory
 from citerift.investigation.schemas import BUNDLE_OBSERVATION, LOOKUP_PLAN
 from citerift.retraction import policy
 from citerift.wiki.extract import ExtractConfig
+from citerift.wiki.profile import load_profile
 
 pytestmark = pytest.mark.integration
 
@@ -57,16 +59,19 @@ def _attempts(root: Path, payload: dict[str, Any]) -> dict[str, int]:
         return {s: len(a) for s, a in mem.view.attempts.items()}
 
 
-def _claim_ids(root: Path, payload: dict[str, Any]) -> set[str]:
+def _content(root: Path, payload: dict[str, Any]) -> tuple[set[str], str]:
+    """The claim ids and ``C(J)`` (MM 7.3: the committed content, without execution data) of an investigation."""
     recs, _ = S8.committed(root, payload)
-    return {r["payload"]["claim_id"] for r in recs if r["kind"] == "claim_recorded"}
+    with InvestigationMemory.open(root, payload["investigation_key"], writable=False) as mem:
+        digest = mem.view.content_digest()
+    return {r["payload"]["claim_id"] for r in recs if r["kind"] == "claim_recorded"}, digest
 
 
 @pytest.fixture(scope="module")
-def reference(tmp_path_factory: pytest.TempPathFactory, index: Path) -> set[str]:
+def reference(tmp_path_factory: pytest.TempPathFactory, index: Path) -> tuple[set[str], str]:
     root, payload = _start(tmp_path_factory.mktemp("ref"), S8.AR_OBOKATA, index)
     assert S8.run(root, payload, S8.TEST_INTEGRATION).status == "NEEDS_RESOLUTION"
-    return _claim_ids(root, payload)
+    return _content(root, payload)
 
 
 # Crash and resume (item 17) ---------------------------------------------------------------------------------------
@@ -93,7 +98,7 @@ sys.exit(3)
 
 @pytest.mark.parametrize("step", ["ACQUIRE", "EXTRACT", "LOOKUP", "DETECT", "VERIFY"])
 def test_process_death_inside_a_step_resumes_without_repeating_committed_steps(
-    tmp_path: Path, index: Path, reference: set[str], step: str
+    tmp_path: Path, index: Path, reference: tuple[set[str], str], step: str
 ) -> None:
     root = S8.memory_root(tmp_path)
     child = subprocess.run(
@@ -111,7 +116,7 @@ def test_process_death_inside_a_step_resumes_without_repeating_committed_steps(
     order = ["VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT", "ASSEMBLE", "VERIFY"]
     for s in order:
         assert attempts[s] == (2 if s == step else 1), (s, attempts)
-    assert _claim_ids(root, payload) == reference
+    assert _content(root, payload) == reference  # the same claims and the same committed content C(J)
 
 
 # STALE (item 18) -------------------------------------------------------------------------------------------------
@@ -149,6 +154,16 @@ def test_a_changed_extraction_configuration_is_stale(tmp_path: Path, index: Path
     S8.run_until(root, payload, S8.TEST_INTEGRATION, "NORMALIZE")
     other = Integration(extract_config=ExtractConfig(max_refs=19_999), detector=S8.synthetic_detector)
     assert S8.run(root, payload, other).status == "STALE"
+    assert _stale_changed(root, payload) == ["extraction"]
+
+
+def test_a_changed_stage03_profile_is_stale(tmp_path: Path, index: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The Stage 03 profile is part of the extraction identity (SPEC 10.3): another profile digest is STALE."""
+    root, payload = _start(tmp_path, S8.AR_OBOKATA, index)
+    S8.run_until(root, payload, S8.TEST_INTEGRATION, "NORMALIZE")
+    other = dataclasses.replace(load_profile(), digest="0" * 64)
+    monkeypatch.setattr(extract_module, "load_profile", lambda: other)
+    assert S8.run(root, payload, S8.TEST_INTEGRATION).status == "STALE"
     assert _stale_changed(root, payload) == ["extraction"]
 
 
