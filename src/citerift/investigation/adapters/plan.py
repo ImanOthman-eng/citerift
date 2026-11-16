@@ -2,7 +2,8 @@
 
 ``Integration`` wires one adapter per step to the accepted engines: Stage 03 for ACQUIRE (retained or live), EXTRACT
 and VERIFY's capture check; Stage 02 for LOOKUP; and the Stage 04 transforms for VALIDATE, NORMALIZE, ASSEMBLE and
-VERIFY. DETECT is the thin boundary around a detector that Step 9 supplies (``detector=None`` until then).
+VERIFY. DETECT is the thin boundary around the production detector of Step 9 (``adapters.detector.dt1_detector``,
+the default); ``detector=None`` makes DETECT fail with ``DECISION_TABLE_GAP``.
 
 ``Integration.environment`` is the controller's identity source: the request key fixed at creation; the bound root
 (for a retained bundle whose path still exists, the capture digest found there, so a replaced bundle is STALE; when
@@ -25,6 +26,7 @@ from citerift.investigation.adapters import StepAdapter, StepRequest, StepResult
 from citerift.investigation.adapters.acquire import retained_acquire
 from citerift.investigation.adapters.assemble import make_assemble
 from citerift.investigation.adapters.detect import Detector, make_detect
+from citerift.investigation.adapters.detector import dt1_detector
 from citerift.investigation.adapters.extract import extraction_identity, make_extract
 from citerift.investigation.adapters.lookup import Opener, environment_identity, make_lookup
 from citerift.investigation.adapters.normalize import normalize
@@ -59,7 +61,7 @@ class Integration:
     retained-bundle investigation never calls it."""
 
     extract_config: ExtractConfig = field(default_factory=ExtractConfig)
-    detector: Detector | None = None
+    detector: Detector | None = dt1_detector
     live: StepAdapter | None = None
     index_opener: Opener = Index
     stage04: Mapping[str, Any] = field(default_factory=lambda: dict(STAGE04_IDENTITY))

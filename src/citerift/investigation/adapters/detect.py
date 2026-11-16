@@ -1,13 +1,15 @@
-"""DETECT: the thin integration boundary around a detector supplied later (Step 8; the detector is Step 9).
+"""DETECT: the thin integration boundary around a detector (Step 8; the production detector is Step 9).
 
-Step 8 does not implement the decision table dt-1 or the coherence function κ (SPEC 6.5, 7.3): the owner's Step 8
-instruction keeps both for Step 9. This module only connects the committed NORMALIZE and LOOKUP outputs to a
+The decision table dt-1 and the coherence function κ (SPEC 6.5, 7.3) are ``citerift.investigation.dt1``, and the
+production detector that builds claims and evidence from them is ``adapters.detector.dt1_detector`` (Step 9). This
+module only connects the committed NORMALIZE and LOOKUP outputs to a
 ``Detector`` and returns what the detector decides as individual logical records (evidence items, claims and the
 evidence-set blobs the claims name). The controller derives decisions and questions (SPEC 7.6, 7.7) and owns all
 batching (D-053, D-055); the boundary never builds a batch.
 
 With no detector supplied, DETECT fails terminally with ``DECISION_TABLE_GAP`` and says why: nothing is decided, and
-no claim is fabricated.
+no claim is fabricated. A detector that reaches D-5 or D-17 raises ``DetectFailure``: DETECT then fails terminally with
+that code (``ADAPTER_INCONSISTENT`` or ``DECISION_TABLE_GAP``) and commits no claim (SPEC 7.3).
 """
 
 from __future__ import annotations
@@ -21,8 +23,18 @@ from citerift.investigation.adapters.lookup import committed_inputs
 from citerift.investigation.canonical import canon, sha256_hex
 from citerift.investigation.schemas import CANDIDATE_INPUTS, LOOKUP_PLAN, problems
 
-NO_DETECTOR = "no detector is supplied: the decision table dt-1 and the coherence function are Step 9"
+NO_DETECTOR = "no detector is supplied: DETECT decides nothing without the decision table dt-1"
 OUTPUT_TAG = "citerift-detect-output/1"
+
+
+class DetectFailure(Exception):
+    """A terminal DETECT failure decided by the table (D-5 ``ADAPTER_INCONSISTENT``, D-17 ``DECISION_TABLE_GAP``)
+    or by a defect of the committed inputs the detector reads (``ADAPTER_INCONSISTENT``)."""
+
+    def __init__(self, code: str, detail: str) -> None:
+        super().__init__(f"{code}: {detail}")
+        self.code = code
+        self.detail = detail[:1000]
 
 
 @dataclass(frozen=True)
@@ -70,12 +82,15 @@ def detect_input(req: StepRequest) -> DetectInput:
 
 
 def make_detect(detector: Detector | None) -> Callable[[StepRequest], StepResult]:
-    """The DETECT adapter around ``detector`` (None until Step 9 supplies one)."""
+    """The DETECT adapter around ``detector`` (None: DETECT fails with ``DECISION_TABLE_GAP``)."""
 
     def detect(req: StepRequest) -> StepResult:
         if detector is None:
             return Failed("DECISION_TABLE_GAP", detail=NO_DETECTOR)
-        out = detector(detect_input(req))
+        try:
+            out = detector(detect_input(req))
+        except DetectFailure as exc:
+            return Failed(exc.code, detail=exc.detail)
         records = [ContentRecord("evidence", dict(e)) for e in out.evidence]
         records += [ContentRecord("claim_recorded", dict(c)) for c, _ in out.claims]
         output = {
