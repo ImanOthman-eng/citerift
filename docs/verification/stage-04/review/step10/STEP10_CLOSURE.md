@@ -5,8 +5,10 @@ Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPSW7jXkQV4o696BLytWfZux` (2026-11
 vertical-slice acceptance campaign, no Step 12 freeze, no evaluation, holdout, pre-registration, annotation or scoring,
 no Stage 05+ work, no dt-1 change and no change to the frozen Step 4 oracle.
 
-**Status: VERIFIED — AWAITING OWNER ACCEPTANCE.** All 47 exit criteria pass (section 15) at `9643fdc` (CI run 326
-green).
+**Status (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPLPtkdbcpueYbnRk1ixuLdX`, 2026-11-16T19:19:28Z): Step 10 accepted
+at `c74a937487d83d793029858c6a671df628bae6f5` ("Stage 10 at: c74a937… is accepted"; the message continues with the
+Step 11 authorization, so it refers to Stage 04 Step 10). Step 10 is ACCEPTED AND CLOSED.** All 47 exit criteria pass
+(section 15) at `9643fdc` (CI run 326 green); CI run 327 at `c74a937` is green (section 12).
 
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
@@ -352,6 +354,13 @@ literature in this step.
   CI runners vary by minutes between jobs; Step 10 adds about 2.5 minutes of test time on a local machine, and the CI
   jobs did not grow by that much in this one run, so the margin should be judged over further runs. No `.github/`
   change and no timeout change.
+- **GitHub CI run 327 at `c74a937` (closure record only, no code change): green**, recorded at acceptance. 3.12: job
+  17:04:27Z to 17:21:14Z, **16 min 47 s**; test step 17:04:44Z to 17:21:07Z, **16 min 23 s**. 3.13: job 11 min 24 s,
+  test step 10 min 59 s. **Slowest job 16 min 47 s: about 1 min 13 s under the 18-min decision boundary.** The same
+  test code took 11 min 51 s on 3.12 in run 326, so the 4.5-minute difference is runner variance [inference], but the
+  margin left is what Step 11 must plan against (owner, Step 11 instruction, item 23). (The thread report of
+  2026-11-16 gave 16 min 44 s and 1 min 16 s, measured from step timestamps; the job timestamps above are the
+  figures the owner quoted.)
 - CI run 325 at `74d93e7` failed in static analysis on one unused test variable (ruff RUF059), before any test ran;
   fixed in `9643fdc` (test file only).
 
@@ -423,9 +432,9 @@ groups): no known vulnerabilities; `uv lock --check` passed. GitHub CI run 326: 
 | 44 | frozen Step 4 oracle unchanged | PASS. `git diff 7ed2148 -- simulations/` empty; manifest test passes. |
 | 45 | citerift-gov check 0/0 | PASS. |
 | 46 | render-status --check passes | PASS. |
-| 47 | GitHub CI green within the runtime boundary | PASS. Run 326; slowest job 12 min 13 s. |
+| 47 | GitHub CI green within the runtime boundary | PASS. Run 326; slowest job 12 min 13 s. Run 327 at `c74a937`: green, slowest job 16 min 47 s. |
 
 ## 16. Owner decisions
 
-None is required to accept Step 10. Open for later steps, not blocking: [owner] I-2 (`workflow.outcome` and the
+None was required to accept Step 10; the owner accepted it at `c74a937` without a new decision (status line). Open for later steps, not blocking: [owner] I-2 (`workflow.outcome` and the
 extraction status) and I-4 (projection-set schema description) at Step 12; I-3 with A-6 (engine version) at Step 12.
