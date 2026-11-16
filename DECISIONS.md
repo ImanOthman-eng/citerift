@@ -1282,3 +1282,70 @@ defines as investigation identity, including `A_max`, `F_max`, the fetch-policy 
 budget is not removed from `config_digest`, and no special case forces STALE. With D-056 and D-057 recorded, Step 8 is
 accepted and closed. Step 9 is not authorized; the D-051 evidence-pointer collision in multi-candidate units is a
 mandatory Step 9 input (Step 8 closure, section 19).
+
+## D-058 — A notice DOI with the original's PMID and no incompatibility witness
+- Status: accepted
+- Topic: stage-04-notice-doi-original-pmid-no-witness
+- Date: 2026-11-16
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step9/STEP9_CLOSURE.md; tests/stage04/test_step9_detector.py
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWCTdWnihKu3hUi9BD1ZLbN`, 2026-11-16T13:41:40Z), approving
+option (a) of OD-S9-1 of the Step 9 closure; the same message accepted Step 9 at
+`4886546c4922291fd8289c03a86435299a3da897` and the production implementation at
+`846cb81b90d71355daf2d466cd58e8e54cc1692b`. The current dt-1 semantics and the frozen Step 4 model are kept. For a
+`PAIR` whose Q1(DOI) is `notice_only`, whose PMID independently resolves to the retracted original (Q1(PMID) and/or the
+deciding Q2 support the original as retracted), and where Retraction Watch records no original DOI that would create an
+explicit incompatibility witness, κ stays `UNDETERMINED`, not `INCOMPATIBLE`, and the result may be
+`RETRACTED_WORK_CITED` under D-14 with the existing reasons `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED`. Rationale:
+the positive finding is supported by the cited original's PMID; it does not treat the notice DOI itself as the original
+work. `IDENTITY_CONFLICT` is not inferred merely from the absence of the original DOI in the checked source. If an
+actual incompatibility witness exists (the definition in SPEC section 6.5; the owner message and the Step 9 closure cite
+it as "S-6.10", a mislabel: S-6.10 is the unavailable-lookup rule), D-6 takes precedence and the result is
+`IDENTITY_CONFLICT`; a DOI-only notice remains D-15 `NOTICE_CITED`. The inaccurate summary sentence of SPEC 7.4 (and the
+same sentence in RISK_ANALYSIS R4) is corrected: this is a specification-summary correction, not a dt-1 change. dt-1,
+the table version, the Step 4 model, the oracle manifest and the production detector are unchanged. A regression test
+pins the distinction.
+
+## D-059 — VS-5: PMID_ROLE_COLLISION is carried in the evidence
+- Status: accepted
+- Topic: stage-04-vs5-collision-carried-in-evidence
+- Date: 2026-11-16
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step9/STEP9_CLOSURE.md; tests/stage04/test_step9_real.py
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWCTdWnihKu3hUi9BD1ZLbN`, 2026-11-16T13:41:40Z), approving
+option (a) of OD-S9-2. For VS-5, "`PMID_ROLE_COLLISION` carried" is satisfied when the collision remains present and
+resolvable in the committed claim evidence and provenance chain. It is not required to be a claim reason unless the
+collision participates in the rule that actually determines the class. D-10 continues to use `PMID_ROLE_COLLISION`
+when its exact guard applies; a D-14 claim may retain the collision in evidence without a non-deciding
+`PMID_ROLE_COLLISION` reason; dt-1 reason semantics, the model and the oracle are unchanged. Rationale: evidence and
+provenance answer what was observed; reason codes answer why this rule and class were selected; the two are not
+conflated. At the Step 11 vertical-slice acceptance, VS-5 must be verified explicitly to expose the retained collision
+in its evidence chain even when D-14 is the deciding rule. The VS-5 evidence note is clarified; its class-selection
+rule is unchanged.
+
+## D-060 — The B-8 resolution preserves D-051
+- Status: accepted
+- Topic: stage-04-b8-pointer-placement-preserves-d051
+- Date: 2026-11-16
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step9/STEP9_CLOSURE.md; tests/stage04/test_step9_b8.py
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWCTdWnihKu3hUi9BD1ZLbN`, 2026-11-16T13:41:40Z),
+acknowledging and accepting the Step 9 B-8 resolution. D-051 remains `evidence_id = H(observation, pointer,
+evidence_kind)`; no candidate id is added to the hash. The normative correction is the semantic placement of
+candidate-scoped evidence: distinct candidate-specific facts must be assigned distinct canonical pointers; the Step 9
+injectivity proof (MM 4.6) establishes that the selected `work_candidate` pointer is distinct across distinct
+candidates; equivalent replay produces the same pointer and evidence id; truly identical evidence may still
+deduplicate. The production `_Items` collision guard is mandatory defence in depth: if one evidence id would represent
+two different logical evidence objects, DETECT fails closed with `ADAPTER_INCONSISTENT`. This is an accepted
+refinement of pointer-selection semantics, not a change to the D-051 identity function; no schema or version
+migration is required. With D-058, D-059 and D-060 recorded, Stage 04 Step 9 is accepted and closed. Carried forward
+unchanged: the MM EV-2 wording refinement (audit A-5) to the Step 12 freeze review; the engine-version bump (A-6) to
+the Step 12 freeze; the absent real-data classes stay disclosed as coverage limitations; the prior-art primary-source
+review to gate 04-J; the VS-5 evidence-level collision assertion to Step 11. Step 10 is not started (owner: "Do not
+start Step 10 yet").

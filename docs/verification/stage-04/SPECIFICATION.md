@@ -198,7 +198,7 @@ candidate's key evidence), or at the unit (`/units/i`) for a `NONE` candidate, a
 the candidate's Q2 lookup observation. The candidates of one unit have disjoint keys and an occurrence belongs to one
 unit, so two distinct candidates never share such a pointer (two `CO_REPORTED_MULTIPLE` candidates at the unit's
 pointer would have shared one id with two values); D-051 is unchanged, and a detector that would give one id two
-different items fails DETECT with `ADAPTER_INCONSISTENT` (`review/step9/STEP9_CLOSURE.md`, B-8). Evidence set (owner
+different items fails DETECT with `ADAPTER_INCONSISTENT` (`review/step9/STEP9_CLOSURE.md`, B-8; owner decision D-060). Evidence set (owner
 decision D-047). A claim's supporting ids, contradicting ids and the ids supporting
 each conflict alternative are one content-addressed blob (`urn:citerift:schema:investigation:v1:evidence-set`): each
 list sorted ascending, ids unique, nothing truncated, so a set has one canonical form and one digest. The claim
@@ -451,7 +451,7 @@ defect in one candidate means the table or an adapter cannot be trusted for any 
 | lookup unavailable | O-3 (index), D-13 (query) |
 | lookup ambiguous | D-6 (pair), D-9 (single key) |
 | retracted work | D-14 → `RETRACTED_WORK_CITED` |
-| retraction notice | D-15 → `NOTICE_CITED`; a notice DOI paired with the original's PMID is a witness of incompatibility → D-6 |
+| retraction notice | D-15 → `NOTICE_CITED` (a DOI-only notice); a notice DOI paired with the original's PMID produces D-6 only when the checked evidence supplies an incompatibility witness as defined in section 6.5. When no such witness exists because the original DOI is not recorded, the pair follows the ordinary coherence and decision-table rules; a verified retracted result may reach D-14 with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED` (owner decision D-058) |
 | expression of concern / flagged record | D-14 → `CONCERN_CITED`, `CORRECTION_CITED`, `REINSTATED_WORK_CITED`; D-11 when the effect is mixed or unlinked; flags are carried as reasons. `REINSTATED_WORK_CITED` is unreachable through S-6.8 and S-6.9: Stage 02 states the value `reinstated` only with supersession links, which have no source in Stage 02 data and which Stage 04 never passes (`policy.py`, Step 4 finding S4-04); the rule stays for a later versioned source |
 | marker target | S-6.7: observation only, never a candidate |
 | multiple candidate records | several events of one work: Stage 02 reduces them (D-7, D-11, D-14); several works for one key: D-9; several keys in one unit: S-6.5 |
@@ -1070,7 +1070,7 @@ attributed Retraction Watch field subset; the full pinned index run is retained 
 | VS-2 | Haruko Obokata, ar 76190003 | `nature12968` `RETRACTED_WORK_CITED`; `nature12969` + PMID 24476881 `IDENTITY_CONFLICT`, question open, lifecycle `NEEDS_RESOLUTION`, preserved by replay |
 | VS-3 | Obokata en 1372543632; GFAJ-1 en 1374726997 | retracted originals found; notice citations separate |
 | VS-4 | an expression-of-concern case from the retained set | `CONCERN_CITED`, never retracted |
-| VS-5 | BCAS3, ar 76488293 | `PMID_ROLE_COLLISION` carried; class by D-10 or D-14 as the evidence decides |
+| VS-5 | BCAS3, ar 76488293 | `PMID_ROLE_COLLISION` carried: present and resolvable in the committed claim evidence and provenance chain, and a claim reason only when the collision takes part in the deciding rule (owner decision D-059); class by D-10 or D-14 as the evidence decides |
 | VS-6 | a retained article with only `no_record` keys | `NOT_FOUND_IN_CHECKED_SOURCES` only; summary per S-7.7 |
 | VS-7 | corrupted bundle; invalid request; schema-invalid extraction input | `FAILED` with the code; no claim |
 | VS-8 | index missing; index of another format; injected 429 then deferral | `FAILED` or `BLOCKED` with the code; no claim, no negative |

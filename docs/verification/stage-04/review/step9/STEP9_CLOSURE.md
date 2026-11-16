@@ -5,8 +5,11 @@ Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yP5ifnawj9aWmi7tWi8poxsz` (2026-11
 CLI, no report delivery, no new projection, no vertical-slice acceptance, no Step 12 freeze, no pre-registration, no
 holdout, no annotation and no evaluation in this step. The frozen evaluation and holdout plan is unchanged.
 
-**Status: all 37 exit criteria pass (section 16) at `846cb81` (CI run 322 green). Step 9 awaits the owner's
-acceptance; two owner decisions are open (OD-S9-1, OD-S9-2, section 17). Step 10 is not authorized.**
+**Status (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWCTdWnihKu3hUi9BD1ZLbN`, 2026-11-16T13:41:40Z): Step 9 accepted
+at `4886546c4922291fd8289c03a86435299a3da897`, the production implementation accepted at
+`846cb81b90d71355daf2d466cd58e8e54cc1692b`. OD-S9-1 approved as D-058, OD-S9-2 approved as D-059, the B-8 resolution
+accepted as D-060 (section 17). With the three recorded, Step 9 is ACCEPTED AND CLOSED. Step 10 is not started (owner:
+"Do not start Step 10 yet").** All 37 exit criteria pass (section 16) at `846cb81` (CI run 322 green).
 
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
@@ -59,7 +62,7 @@ function of the pair's lookups, so equal pointers carry equal values. In additio
 - **No id, schema or version change.** `ids.py`, `normalize.py`, the schemas, VERIFY and the evidence-set format are
   unchanged; D-051 (`H(observation, pointer, kind)`) is unchanged. SPEC 4.3 and MM 4.6 now state where DETECT puts the
   candidate-scoped kinds and why they are injective. Because the identity function is unchanged, no new owner-level
-  design correction is recorded. [owner] The owner may still want to acknowledge this reading of D-051 (section 17).
+  design correction is recorded; the owner accepted this resolution as D-060 (section 17).
 - **Step 4 oracle manifest unchanged**: the oracle holds no evidence identity; MANIFEST SHA-256
   `411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735`, 12,632,448 cases
   [verified, `test_the_step4_oracle_manifest_is_unchanged`; `git diff 8b623cd -- simulations/` is empty].
@@ -307,7 +310,7 @@ uv.lock docs/verification/stage-00 … stage-03` is empty].
 | A-1 | Stage 02 `_finish` reports `PMID_ROLE_COLLISION` for any events flagged `NOTICE_PMID_EQUALS_ORIGINAL`, whatever the lookup's state and whichever key matched the event. | Stage 02 property, correct. | D-10 reads only L and only an event matched by PMID (SPEC D-10); the issue stays in the `/result` evidence of every lookup. |
 | A-2 | Planning probe: "BCAS3: `PMID_ROLE_COLLISION` on the cited original". True of Q1(PMID); in Q2 the named event (a correction, ev-0056322) is matched by DOI. | Planning text, accurate but incomplete. | D-14 as specified; VS-5's "carried" is open (section 17, OD-S9-2). Real regression added. |
 | A-3 | The retained Stage 03 holdout bundle `en-614753-a1` keeps 1 of the artifacts its `capture.json` names (only the failure artifact). | Inherited Stage 03 retention fact. | ACQUIRE fails `BUNDLE_ARTIFACT_MISSING`; nothing is decided; no Stage 03 change. |
-| A-4 | SPEC 7.4 "a notice DOI paired with the original's PMID is a witness of incompatibility → D-6" holds only when Retraction Watch records the original's DOI (the witness definition S-6.10 needs `original_doi ≠ d`). Otherwise κ is `UNDETERMINED` and D-14 gives `RETRACTED_WORK_CITED` with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED` (review F2). | Stage 04 SPEC inconsistency (summary row vs formal rule); the frozen model and production agree with the formal rule. | Not changed: a dt-1 semantics change is the owner's (section 17, OD-S9-1). Not observed in the dev data (`KEY_RESULTS_DIFFER` occurs once, on Obokata). |
+| A-4 | SPEC 7.4 "a notice DOI paired with the original's PMID is a witness of incompatibility → D-6" holds only when Retraction Watch records the original's DOI (the witness definition, SPEC 6.5, needs a recorded other identifier). Otherwise κ is `UNDETERMINED` and D-14 gives `RETRACTED_WORK_CITED` with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED` (review F2). | Stage 04 SPEC inconsistency (summary row vs formal rule); the frozen model and production agree with the formal rule. | Not changed: a dt-1 semantics change is the owner's (section 17, OD-S9-1). Not observed in the dev data (`KEY_RESULTS_DIFFER` occurs once, on Obokata). |
 | A-5 | MM EV-2 says the claimed value is "the value at the supporting pointer"; the supporting pointer is `/result/projection/retraction_status` (an object holding `value`), and the coherence item is at `/query` with κ as its derived value (review F7). | Stage 04 MM wording. | Items carry derived values, as NORMALIZE's do; the tests read `status["value"]`. Wording left for the Step 12 freeze review (section 17). |
 | A-6 | `STAGE04_IDENTITY` names `engine_version` (package version) and `table_version: dt-1`; the detector identity is recorded in the DETECT output. A detector change without a version change shows as a DETECT replay mismatch at VERIFY, not as `STALE`. | Stage 04 design property. | Forward item for the Step 12 freeze (bump the engine version at freeze). |
 | A-7 | Step 8 integration tests still run the SYNTHETIC test detector. | Step 8 design (they test the adapters). | Kept; the production detector runs on the same bundles in the Step 9 tests. |
@@ -403,29 +406,32 @@ no clock, randomness, network or model.
 
 ## 17. Owner decisions and carry-forward
 
-**Open owner decisions (Step 9 did not decide them):**
+Recorded in `DECISIONS.md` from owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPWCTdWnihKu3hUi9BD1ZLbN` (the acceptance
+closure; no dt-1, table version, Step 4 model, oracle manifest or production detector change):
 
-- **OD-S9-1 (review F2, audit A-4).** A citation pairing a retraction notice's DOI with the original's PMID, when
-  Retraction Watch records no DOI for the original: Q1(DOI) is `notice_only`, Q1(PMID) and Q2 are `matched`
-  `retracted`, there is no witness (S-6.10 needs `original_doi ≠ d`), so dt-1 gives `RETRACTED_WORK_CITED` with
-  `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED`. SPEC 7.4's summary row says such a pair is a witness → D-6.
-  Options: (a) keep dt-1 and the frozen model, and correct the SPEC 7.4 row to "when Retraction Watch records the
-  original's DOI; otherwise D-14 with `KEY_RESULTS_DIFFER`"; (b) make a `notice_only` Q1 in a PAIR an abstention
-  (a dt-1 change: model, oracle and differential change, a new table version). **Recommendation: (a)**, because the
-  PMID does name the retracted original and the claim already flags that the keys disagree; not observed in the 232
-  revisions.
-- **OD-S9-2 (review F3, VS-5).** "`PMID_ROLE_COLLISION` carried" for BCAS3: today it is carried in the claim's
-  evidence (the `/result` items of all three lookups), not as a reason, because D-10 reads only L's PMID-matched
-  events and no other rule names the code. Options: (a) evidence-level carrying satisfies VS-5; (b) add a
-  non-deciding reason for a collision on any lookup of the candidate (a dt-1 reason change: model and oracle
-  reasons). **Recommendation: (a)**, to be confirmed at the vertical-slice acceptance (not Step 9).
-- **B-8 acknowledgement.** D-051 is unchanged; the resolution is where DETECT places the candidate-scoped evidence
-  (section 2). No owner decision is recorded for it; the owner may want to acknowledge the reading.
+- **D-058 (OD-S9-1, option (a)).** A notice DOI paired with the original's PMID, with no incompatibility witness
+  because Retraction Watch records no original DOI, keeps κ `UNDETERMINED`; a PMID-supported verified retraction may
+  reach D-14 `RETRACTED_WORK_CITED` with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED`. A real witness gives D-6; a
+  DOI-only notice stays D-15. SPEC 7.4's summary row and the matching RISK_ANALYSIS R4 sentence are corrected (a
+  summary correction only). Pinned by `test_d058_notice_doi_with_the_original_pmid` (real Stage 02 code, SYNTHETIC
+  rows: no witness → D-14 with both reasons and κ `UNDETERMINED`; a recorded other original DOI → D-6; the notice DOI
+  alone → D-15). Reference note: the owner message and this closure first cited the witness definition as "S-6.10";
+  the definition is the "witness of incompatibility" of SPEC section 6.5 (S-6.10 is the unavailable-lookup rule), and
+  the corrected texts cite section 6.5.
+- **D-059 (OD-S9-2, option (a)).** For VS-5, "`PMID_ROLE_COLLISION` carried" means present and resolvable in the
+  committed claim evidence and provenance chain; a reason only when the collision takes part in the deciding rule.
+  SPEC 14 VS-5 note clarified; its class-selection rule unchanged. Step 11 must assert the collision in the VS-5
+  evidence chain when D-14 decides (`test_bcas3_role_collision_is_carried_and_d14_decides` already does so on the
+  Step 9 subset).
+- **D-060.** The B-8 resolution is accepted: D-051 stays `H(observation, pointer, evidence_kind)`; distinct
+  candidate-specific facts get distinct canonical pointers (injectivity proof, MM 4.6); replay gives the same pointer
+  and id; identical evidence deduplicates; the `_Items` collision guard is mandatory defence in depth. No schema or
+  version migration. SPEC 4.3 cites D-060.
 
-**Carried forward (not Step 9 scope):** bump the engine version at the Step 12 freeze so a detector change is a
-`STALE` input, not only a replay mismatch (A-6); state EV-2 for derived values in MM 4.6 (A-5); the absent real
-classes (section 9) stay untested on real data until a source provides them; the prior-art primary-page check goes to
-the 04-J creative review (section 12).
+**Carried forward unchanged (owner, same message):** the MM EV-2 wording refinement (A-5) to the Step 12 freeze
+review; the engine-version bump (A-6) to the Step 12 freeze, so a detector change is a `STALE` input and not only a
+replay mismatch; the absent real-data classes (section 9) stay disclosed as coverage limitations; the prior-art
+primary-source review (section 12) to gate 04-J; the VS-5 evidence-level collision assertion to Step 11.
 
 ## 18. Changes to existing files (disclosed)
 
@@ -436,5 +442,7 @@ the 04-J creative review (section 12).
 - `docs/verification/stage-04/scripts/step8_rw_subset.py`: a `--bundle` option (repeatable) and a `selection` field in
   the manifest; the default run reproduces the Step 8 fixture CSV byte for byte [verified]. The Step 8 fixture is
   unchanged.
-- SPEC 4.3 and MM 4.6: the B-8 paragraphs (section 2). No other SPEC, MM or RA text changed.
+- SPEC 4.3 and MM 4.6: the B-8 paragraphs (section 2). Acceptance closure: SPEC 7.4 notice row (D-058), SPEC 14
+  VS-5 note (D-059), SPEC 4.3 cites D-060, RISK_ANALYSIS R4 prevention sentence (D-058). No other SPEC, MM or RA text
+  changed.
 No Stage 00–03 file, no schema, no `.github/` file and no governance code is changed.

@@ -9,7 +9,7 @@ Fail-first: under D-051 (``H(observation, pointer, kind)``) a ``work_candidate``
 gives both candidates one evidence id although their facts (keys) differ, so a detector would either refuse the
 second item (duplicate id) or silently keep one fact for two candidates. The production detector places it at the
 first occurrence of the candidate's keys (``adapters.detector`` module docstring), which names one candidate only;
-D-051 itself is unchanged, and an id that would name two different items fails DETECT closed.
+D-051 itself is unchanged, and an id that would name two different items fails DETECT closed (owner decision D-060).
 """
 
 from __future__ import annotations

@@ -279,6 +279,71 @@ def test_an_unavailable_q1_side_carries_the_witness_field_even_beside_q2_events(
     assert any(p.endswith("/original_doi") for p in pointers) and any(p.count("/") == 2 for p in pointers)
 
 
+def _real_stage02_claim(tmp: Path, rows: list[dict[str, str]], shape: str) -> dict[str, Any]:
+    """Real Stage 02 index and real LOOKUP observations over SYNTHETIC rows, decided by the production detector."""
+    import sys
+
+    from citerift.investigation.adapters import lookup as LK
+    from citerift.retraction.query import Index
+
+    stage02 = str(Path(__file__).resolve().parents[1] / "stage02")
+    sys.path.insert(0, stage02)
+    try:
+        import rde_support as RDE
+    finally:
+        sys.path.remove(stage02)
+    nr = ("no_record", "unc:not_found", False)
+    case = {
+        "DOI": R.Case("CITED", "DOI", frozenset(), d=nr),
+        "PAIR": R.Case("CITED", "PAIR", frozenset(), False, nr, nr, nr),
+    }[shape]
+    inp, blobs = S9.concretize(case)
+    with Index(RDE.build_rows(tmp, [RDE.row(**r) for r in rows])) as ix:
+        ident = LK.index_identity(ix, "0" * 64)
+        for entry in inp.lookup_plan["lookups"]:
+            obs = LK.observe(ix, ident, entry["query"]["doi"], entry["query"]["pmid"], 16 * 1024 * 1024)
+            digest = sha256_hex(canon(obs))
+            blobs[digest] = obs
+            entry["observation"] = digest
+    return dict(dt1_detector(inp).claims[0][0])
+
+
+def _notice_row(original_doi: str) -> dict[str, str]:
+    """One retraction whose notice DOI is the cited DOI ``S9.D`` and whose original PMID is the cited PMID ``S9.P``."""
+    return {
+        "Record ID": "1",
+        "RetractionNature": "Retraction",
+        "OriginalPaperDOI": original_doi,
+        "OriginalPaperPubMedID": S9.P,
+        "RetractionPubMedID": "",
+        "RetractionDOI": S9.D,
+    }
+
+
+def test_d058_notice_doi_with_the_original_pmid(tmp_path: Path) -> None:
+    """Owner decision D-058, pinned on real Stage 02 code with SYNTHETIC rows. A citation pairs a retraction notice's
+    DOI with the original's PMID. (1) Retraction Watch records no original DOI: no incompatibility witness, κ stays
+    UNDETERMINED, and the PMID-supported positive is D-14 RETRACTED_WORK_CITED with KEY_RESULTS_DIFFER and
+    PAIR_UNCORROBORATED. (2) Retraction Watch records another original DOI: a witness exists and D-6 IDENTITY_CONFLICT
+    takes precedence. (3) The notice DOI alone is D-15 NOTICE_CITED."""
+    no_witness = _real_stage02_claim(tmp_path / "a", [_notice_row("")], "PAIR")
+    assert (no_witness["rule"], no_witness["class"], no_witness["value"]) == (
+        "D-14",
+        "RETRACTED_WORK_CITED",
+        "retracted",
+    )
+    assert no_witness["candidate"]["coherence"] == "UNDETERMINED"
+    assert {"KEY_RESULTS_DIFFER", "PAIR_UNCORROBORATED"} <= set(no_witness["reasons"])
+    witness = _real_stage02_claim(tmp_path / "b", [_notice_row("10.5555/syn.original")], "PAIR")
+    assert (witness["rule"], witness["class"], witness["candidate"]["coherence"]) == (
+        "D-6",
+        "IDENTITY_CONFLICT",
+        "INCOMPATIBLE",
+    )
+    notice = _real_stage02_claim(tmp_path / "c", [_notice_row("")], "DOI")
+    assert (notice["rule"], notice["class"], notice["value"]) == ("D-15", "NOTICE_CITED", None)
+
+
 def test_identity_conflict_outranks_unavailable_and_contradiction() -> None:
     """Owner item 5: an available witness is never hidden by an unavailable lookup or a contradiction."""
     for case in (

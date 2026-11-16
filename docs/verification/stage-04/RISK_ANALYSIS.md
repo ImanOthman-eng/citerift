@@ -77,8 +77,10 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   `primary_citation_field`, Stage 03 RISK_ANALYSIS R1) counted as a citation of the retracted work.
 - Detection: VS-1 (Lancet notice), VS-3; NC-04 (AT-03); holdout hazard count.
 - Prevention: Stage 02 matches originals and notices separately (`notice_only`); D-15 gives `NOTICE_CITED`, an
-  abstention for the work, never a positive; a notice key paired with the original's key is a witness of
-  incompatibility (D-6).
+  abstention for the work, never a positive; a notice DOI paired with the original's PMID gives D-6 only when the
+  checked evidence supplies an incompatibility witness (SPEC 6.5); without one (the original DOI not recorded) the pair
+  follows the ordinary rules and a verified retracted original may reach D-14 with `KEY_RESULTS_DIFFER` and
+  `PAIR_UNCORROBORATED`, supported by the PMID, not by the notice DOI (owner decision D-058).
 - Residual: a notice that Retraction Watch does not record as a notice (an unindexed notice DOI) gives `no_record`, so
   the citation is `NOT_FOUND_IN_CHECKED_SOURCES`, not a false positive. A Stage 02 record whose notice and original
   share one PMID is carried as `PMID_ROLE_COLLISION` (D-10).

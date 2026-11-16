@@ -298,7 +298,8 @@ def test_bcas3_role_collision_is_carried_and_d14_decides(tmp_path: Path, index9:
     """VS-5 (ar 76488293). Stage 02 reports PMID_ROLE_COLLISION on all three lookups of the cited original; in the
     deciding pair lookup the named event is matched by DOI, so D-10 (a collision naming a PMID-matched event) does not
     hold and D-14 decides. The collision is carried in the claim's evidence: the PMID lookup's result, whose issue
-    names a PMID-matched event, is a supporting item."""
+    names a PMID-matched event, is a supporting item. Owner decision D-059: that is what "carried" means for VS-5; a
+    non-deciding collision is not a claim reason."""
     run = Run(tmp_path, AR_BCAS3, index9)
     assert run.result.status == "COMPLETED"
     _verified(run)
