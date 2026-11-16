@@ -430,7 +430,7 @@ def test_every_offline_command_opens_no_socket(en: T.Inv, tmp_path: Path) -> Non
 
 
 def test_show_counts_committed_claims_and_prints_no_blob_content(ar: T.Inv) -> None:
-    code, value = T.run_json("show", *_key_args(ar))
+    _, value = T.run_json("show", *_key_args(ar))
     res = value["result"]
     assert res["claims_by_class"] == res["report"]["claims_by_class"]
     assert res["open_questions"] == 1 and res["report"]["open_questions"] == 1
