@@ -998,6 +998,12 @@ ones.
 - S-10.5 Replay preserves contradictions: an `IDENTITY_CONFLICT` claim is reproduced with the same claim id; replay
   never resolves, upgrades or drops a claim.
 
+Step 11 (implementation, `citerift.investigation.operations`): `verify` classifies an identity change the way
+`replay` does. When the Stage 04 identity (engine, schema or table version) changed, the read-only checks that
+re-run Stage 04 code (`NORMALIZE_REPLAY`, `DETECT_REPLAY`, `ASSEMBLE_REPLAY`, `V1_PROJECTIONS`) may fail because
+the code changed; with `stage04` named among the changed identities those failures are `stale` (exit 11), not
+`verify_failed`. Every other failed check of a verified lifecycle stays `verify_failed`.
+
 ## 11. Report and projections
 
 ### 11.1 Stage 04 report (`urn:citerift:schema:investigation:v1:report` 3.0.0, owner decision D-054)

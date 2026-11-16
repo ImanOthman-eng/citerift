@@ -95,6 +95,9 @@ LIFECYCLE_STATUS = {
     "RUNNING": "incomplete",
 }
 VERIFIED = ("COMPLETED", "NEEDS_RESOLUTION")
+# VERIFY checks that re-run Stage 04 code (NORMALIZE, dt-1, ASSEMBLE, the v1 mapping) under the current Stage 04
+# identity.
+STAGE04_REDERIVED = ("NORMALIZE_REPLAY", "DETECT_REPLAY", "ASSEMBLE_REPLAY", "V1_PROJECTIONS")
 MAX_REQUEST_BYTES = 1 << 20
 STATEMENT = d052.STATEMENT
 
@@ -499,9 +502,13 @@ def _verify(
 
     def describes_state(c: Mapping[str, Any]) -> bool:
         # Only a not-yet-verified lifecycle explains a missing verification, and only changed identities (stale)
-        # explain a step key that no longer holds; every other failed check is a failed verification.
+        # explain a step key that no longer holds; every other failed check is a failed verification. A check that
+        # re-runs Stage 04 code under the current Stage 04 identity cannot reproduce content committed under another
+        # one: when that identity changed, its failure is the staleness (Step 11, VS-10), as ``replay`` reports it.
         if c["check"] == "COMMITTED_VERIFICATION":
             return not verified
+        if c["check"] in STAGE04_REDERIVED:
+            return stale is not None and "stage04" in stale["changed"]
         return c["check"] == "INPUT_IDENTITIES_CURRENT" and stale is not None
 
     if any(not c["passed"] and not describes_state(c) for c in checks):

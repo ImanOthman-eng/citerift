@@ -1,0 +1,92 @@
+{
+ "bundle": "docs/verification/stage-03/demonstrations/bundles/en-1381772671",
+ "index_bytes": 278769664,
+ "median": {
+  "file_sha256_s": 1.922,
+  "import_s": 0.165,
+  "memory_open_s": 0.572,
+  "process_wall_s": 6.371,
+  "run_s": 6.106,
+  "schema_s": 2.739,
+  "show_s": 0.592,
+  "unaccounted_s": 1.454
+ },
+ "note": "file_sha256_s and schema_s are disjoint; memory_open_s and show_s include schema validation and overlap schema_s; unaccounted_s = run_s - file_sha256_s - schema_s",
+ "samples": [
+  {
+   "exit_code": 6,
+   "file_sha256_calls": 10,
+   "file_sha256_s": 1.951,
+   "import_s": 0.16,
+   "memory_open_calls": 4,
+   "memory_open_s": 0.603,
+   "process_wall_s": 6.517,
+   "run_s": 6.276,
+   "schema_calls": 939,
+   "schema_s": 2.823,
+   "show_calls": 1,
+   "show_s": 0.622,
+   "unaccounted_s": 1.502
+  },
+  {
+   "exit_code": 6,
+   "file_sha256_calls": 10,
+   "file_sha256_s": 1.922,
+   "import_s": 0.191,
+   "memory_open_calls": 4,
+   "memory_open_s": 0.548,
+   "process_wall_s": 6.371,
+   "run_s": 6.106,
+   "schema_calls": 939,
+   "schema_s": 2.722,
+   "show_calls": 1,
+   "show_s": 0.567,
+   "unaccounted_s": 1.462
+  },
+  {
+   "exit_code": 6,
+   "file_sha256_calls": 10,
+   "file_sha256_s": 1.863,
+   "import_s": 0.153,
+   "memory_open_calls": 4,
+   "memory_open_s": 0.554,
+   "process_wall_s": 6.193,
+   "run_s": 5.965,
+   "schema_calls": 939,
+   "schema_s": 2.695,
+   "show_calls": 1,
+   "show_s": 0.572,
+   "unaccounted_s": 1.407
+  },
+  {
+   "exit_code": 6,
+   "file_sha256_calls": 10,
+   "file_sha256_s": 1.92,
+   "import_s": 0.165,
+   "memory_open_calls": 4,
+   "memory_open_s": 0.572,
+   "process_wall_s": 6.321,
+   "run_s": 6.08,
+   "schema_calls": 939,
+   "schema_s": 2.739,
+   "show_calls": 1,
+   "show_s": 0.592,
+   "unaccounted_s": 1.421
+  },
+  {
+   "exit_code": 6,
+   "file_sha256_calls": 10,
+   "file_sha256_s": 1.922,
+   "import_s": 0.169,
+   "memory_open_calls": 4,
+   "memory_open_s": 0.582,
+   "process_wall_s": 6.386,
+   "run_s": 6.139,
+   "schema_calls": 939,
+   "schema_s": 2.763,
+   "show_calls": 1,
+   "show_s": 0.599,
+   "unaccounted_s": 1.454
+  }
+ ]
+}

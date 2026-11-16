@@ -1,0 +1,106 @@
+{
+  "assessments": [],
+  "citations": [
+    {
+      "article": {
+        "language": "en",
+        "page_id": 69149,
+        "revision_id": 1381772671,
+        "revision_timestamp": "2026-10-24T18:35:10Z",
+        "title": "MMR vaccine"
+      },
+      "citation_id": "en:1381772671:un-00048:88dd5dc441e98d19",
+      "identifiers": {
+        "doi": "10.1016/s0140-6736(97)11096-0",
+        "pmid": "9500320"
+      },
+      "provenance": [
+        {
+          "content_sha256": "1546e494bdcab54364e02a29bece4cd5cc1661c40db1b586a17487696d111582",
+          "locator": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1381772671",
+          "retrieved_at": "2026-10-29T09:26:11.900283Z",
+          "source_id": "wikimedia-api",
+          "source_version": "revision_id=1381772671;sha1=6d3db470fbb390ea2d80297e496a1ebf925a2d33"
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-16T20:01:55.123133Z",
+  "events": [
+    {
+      "at": "2004-03-06T00:00:00Z",
+      "description": "Retraction Watch records Correction (event type correction; event ev-0056297; record 17269; row sha256 22ad12625927f8030311b09a80bf03da8d1d31086ae7dab20a37fc18316354c8). Notice date as reported: 2004-03-06 (raw '3/6/2004 0:00'; precision day; convention flags: MIDNIGHT_NOT_INSTANT). The source states a calendar day, not an instant: 00:00:00Z marks the day only.",
+      "kind": "correction",
+      "provenance": [
+        {
+          "content_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ]
+    },
+    {
+      "at": "2010-02-06T00:00:00Z",
+      "description": "Retraction Watch records Retraction (event type retracted; event ev-0069409; record 4036; row sha256 2b4e4385348a4e8087cf479e79464b8d33e4c4885345dce9aa4821bb38d259d1). Notice date as reported: 2010-02-06 (raw '2/6/2010 0:00'; precision day; convention flags: MIDNIGHT_NOT_INSTANT). The source states a calendar day, not an instant: 00:00:00Z marks the day only.",
+      "kind": "retracted",
+      "provenance": [
+        {
+          "content_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ]
+    }
+  ],
+  "investigation_id": "41794c9d-f70f-8a5f-8121-2cc9e6c9e263",
+  "limitations": [
+    "CHECKED_SOURCES_ONLY: Only the checked sources were searched; a citation without a record in them is reported only as not found in the checked sources.",
+    "SNAPSHOT_COVERAGE: Results reflect the Retraction Watch snapshot rw-2f116e9ffed718e6; records added to the source after that snapshot are not covered.",
+    "EXTRACTION_PARTIAL: The Stage 03 extraction of this revision is partial; citations it could not extract were not checked.",
+    "NOTICE_CITATIONS: 1 citation(s) cite a notice identifier; no status of the work the notice concerns is attached to them.",
+    "OUT_OF_SCOPE_UNITS: 52 extracted unit(s) are outside detection scope (no DOI or PMID in a candidate role, or a definition not shown in the revision).",
+    "MARKERS_NOT_INTERPRETED: On-page markers such as retraction warnings are recorded but not interpreted.",
+    "OBSERVATION_ROLE_IDENTIFIERS_NOT_DECIDED: Identifiers in observation roles are recorded but not decided.",
+    "V1_ONE_RECORD_PER_WORK: v1 holds one paper per record: the article-revision investigation is split into one record per positive work, each with the Stage 04 investigation id.",
+    "V1_CLASSES_PER_WORK: Stage 04 claim classes, rules, reasons and evidence chains of this work are in the Stage 04 report, not in v1.",
+    "V1_EVENT_DATE_IS_A_DAY: v1 events need an instant; Stage 02 notice dates are calendar days, so 00:00:00Z marks only the day (stated in each event's description)."
+  ],
+  "schema_version": "1.0.1",
+  "status": "partial",
+  "subject_paper": {
+    "identifiers": {
+      "doi": "10.1016/s0140-6736(97)11096-0",
+      "pmid": "9500320"
+    },
+    "retraction_date": {
+      "provenance": [
+        {
+          "content_sha256": "2b4e4385348a4e8087cf479e79464b8d33e4c4885345dce9aa4821bb38d259d1",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=69409",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "2010-02-06"
+    },
+    "retraction_status": {
+      "provenance": [
+        {
+          "content_sha256": "2b4e4385348a4e8087cf479e79464b8d33e4c4885345dce9aa4821bb38d259d1",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=69409",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "retracted"
+    }
+  }
+}

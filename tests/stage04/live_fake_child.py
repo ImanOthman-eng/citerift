@@ -53,6 +53,9 @@ def transport(url: str, headers: dict[str, str], timeout: float) -> RawResponse:
         time.sleep(3600)
     if MODE.startswith("retry_after:"):  # headers seen (and the side channel written), then the body never ends
         return RawResponse(429, {"retry-after": MODE.split(":", 1)[1], "content-type": "text/plain"}, _hang())
+    if MODE.startswith("throttled:"):  # a complete 429 with Retry-After: Stage 03 itself defers (Step 11, VS-8)
+        hdrs = {"retry-after": MODE.split(":", 1)[1], "content-type": "text/plain"}
+        return RawResponse(429, hdrs, iter([b"SYNTHETIC: too many requests"]))
     if MODE == "spawn":
         _spawn_descendants()
         time.sleep(3600)
