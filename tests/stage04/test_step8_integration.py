@@ -106,7 +106,8 @@ def test_obokata_ar_keeps_the_identity_conflict_open(ar: Case, offline: Any) -> 
     assert conflict["class"] == "IDENTITY_CONFLICT"
     assert [q["claim_id"] for q in ar.kind("question_opened")] == [conflict["claim_id"]]
     [verification] = ar.kind("verification_recorded")
-    assert verification["result"] == "passed" and len(verification["checks"]) == 14
+    # 14 checks of Step 8, plus V1_PROJECTIONS from Step 10.
+    assert verification["result"] == "passed" and len(verification["checks"]) == 15
     assert offline.attempts == []
 
 

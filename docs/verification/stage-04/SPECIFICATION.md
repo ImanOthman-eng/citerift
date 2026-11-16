@@ -1042,6 +1042,14 @@ Stage 02 events; `status` from S-9.7; `limitations` from the report; `created_at
 content digest); `investigation_id` from S-4.8. Several retraction events per paper (which v1 cannot hold in one
 status) stay in the Stage 04 report, which `$ref`s v1 assertions by URN (MR-05). `schemas/contracts` is not changed.
 
+Step 10 (implementation, `citerift.investigation.projections`): the work is the Stage 02 identity anchor
+(`result.identity.anchor`) of the deciding lookup (S-6.11) of each positive claim; two anchors are two works even when
+they share an identifier. The blob a projection set names is the record without `created_at` (the *body*): the
+projection digests and the projection-set digest are then functions of the committed content alone, and `created_at`
+(the `at` of `investigation_created`) is added when the record is exported. The revision sha1, which v1's `article`
+has no field for, is carried in the citation provenance (`source_version` `revision_id=…;sha1=…`). Each record lists
+its lossy points as limitation codes (`V1_…`; `review/step10/STEP10_CLOSURE.md`, section 5).
+
 ## 12. Provenance
 
 - S-12.1 Every claim's evidence chain contains: the root (`wiki`, `page_id`, `revision_id`, `capture_sha256`); the
@@ -1058,6 +1066,13 @@ status) stay in the Stage 04 report, which `$ref`s v1 assertions by URN (MR-05).
 `citerift-investigate run | resume | replay | verify | show`. Exit codes distinguish completed, needs-resolution,
 partial, blocked, failed, stale, corrupt and busy. `run` and `resume` never print a negative statement; `show` prints
 the lifecycle, step states and the next legal transition (S-9.2).
+
+Step 10 (implementation, `citerift.investigation.cli`): also `export` (the export directory of a verified
+investigation, written outside the memory root) and `checkpoint` (a D-052 external journal checkpoint); one exit-code
+table for every subcommand (`operations.EXIT`: 0 completed, 1 internal, 2 usage, 3 invalid, 4 not found, 5
+verification failed, 6 partial, 8 blocked, 9 failed, 10 needs resolution, 11 stale, 12 corrupt, 13 busy, 14
+incomplete); `--format text` or `json`. The only statement made for a checkpoint is: "A checkpoint retained outside
+Investigation Memory can detect rewriting or truncation of the journal prefix it covers."
 
 ## 14. Vertical-slice contract (gate 04-A)
 

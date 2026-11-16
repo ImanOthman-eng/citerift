@@ -20,7 +20,11 @@ there. It re-derives what can be re-derived from committed content alone, offlin
   the committed outputs (SPEC 9.7);
 - ``COMPLETION_INVARIANTS``: every earlier step committed, one report, one decision per current claim with the
   disposition of its class, every conflict routed with an open question (W-7, W-8);
-- ``D054_REPORT_GRAPH``: the report manifest graph is complete and equals the committed fold (D-054).
+- ``D054_REPORT_GRAPH``: the report manifest graph is complete and equals the committed fold (D-054);
+- ``V1_PROJECTIONS`` (Step 10): the projection set names exactly the v1 projection bodies ASSEMBLE gives again from
+  committed content, one per positive work of the report, each valid against the unchanged v1 contract.
+
+``ASSEMBLE_REPLAY`` compares the report digest and, from Step 10, the projection-set digest too.
 
 Any failing check makes the step fail with ``VERIFY_FAILED`` and the first failing check's code as its reason; no
 verification record is written then.
@@ -32,7 +36,7 @@ import dataclasses
 from collections.abc import Callable, Mapping
 from typing import Any
 
-from citerift.investigation import batches, ids, report, sets
+from citerift.investigation import batches, ids, projections, report, sets
 from citerift.investigation.adapters import ContentRecord, Failed, StepRequest, StepResult, Succeeded
 from citerift.investigation.adapters.acquire import SUBJECT_TYPE, committed_manifest, reconstruct
 from citerift.investigation.adapters.assemble import committed_evidence, make_assemble
@@ -60,12 +64,18 @@ CHECKS = (
     "ASSEMBLE_REPLAY",
     "COMPLETION_INVARIANTS",
     "D054_REPORT_GRAPH",
+    "V1_PROJECTIONS",
 )
 EARLIER = ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT", "ASSEMBLE")
 
 
 class CheckFailed(Exception):
     pass
+
+
+def _is_body(blob: Any) -> bool:
+    """A v1 projection body among ASSEMBLE's blobs (the only blobs with ``subject_paper``)."""
+    return isinstance(blob, dict) and "subject_paper" in blob and "schema" not in blob
 
 
 def resolve(value: Any, pointer: str) -> Any:
@@ -106,6 +116,7 @@ class _Verifier:
             for r in self.recs
             if r["kind"] == "claim_recorded" and r["payload"]["claim_id"] not in superseded
         }
+        self._again: Succeeded | None = None
 
     # Checks -------------------------------------------------------------------------------------------------------
 
@@ -290,10 +301,46 @@ class _Verifier:
         if not committed:
             raise CheckFailed("DETECT re-run gives another output")
 
+    def _assembled(self) -> Succeeded:
+        if self._again is None:
+            again = make_assemble(self.stage04)(self._replay_request("ASSEMBLE"))
+            if not isinstance(again, Succeeded):
+                raise CheckFailed(f"ASSEMBLE re-run from committed content did not succeed: {again}")
+            self._again = again
+        return self._again
+
+    def _report_record(self) -> dict[str, Any]:
+        return dict(next(r for r in self.recs if r["kind"] == "report_recorded")["payload"])
+
     def assemble_replay(self) -> None:
-        again = make_assemble(self.stage04)(self._replay_request("ASSEMBLE"))
-        if not isinstance(again, Succeeded) or again.outputs[0] not in _outputs(self.req, "ASSEMBLE"):
+        again = self._assembled()
+        if again.outputs[0] not in _outputs(self.req, "ASSEMBLE"):
             raise CheckFailed("ASSEMBLE re-run from committed content gives another report")
+        rec = self._report_record()
+        payload = dict(again.records[0].payload)
+        if payload != rec:
+            raise CheckFailed("ASSEMBLE re-run from committed content gives another projection set")
+
+    def v1_projections(self) -> None:
+        rec = self._report_record()
+        value = self.req.read_blob(rec["projection_set"])
+        found = sets.projection_set_problem(value)
+        if found or rec["projection_count"] != len(value["projections"]):
+            raise CheckFailed(f"projection set: {found or 'count'}")
+        manifest = self.req.read_blob(rec["report"])
+        works = manifest["components"]["positive_works"]["count"]
+        if len(value["projections"]) != works:
+            raise CheckFailed(f"{len(value['projections'])} projections for {works} positive works")
+        expected = {projections.digest(b) for b in self._assembled().blobs if _is_body(b)}
+        if set(value["projections"]) != expected:
+            raise CheckFailed("the projection set is not the projections of the committed fold")
+        for d in value["projections"]:
+            body = self.req.read_blob(d)
+            if projections.digest(body) != d:
+                raise CheckFailed(f"projection {d} is not the blob it names")
+            problem = projections.body_problems(body)
+            if problem:
+                raise CheckFailed(f"projection {d}: {problem[0]}")
 
     def completion_invariants(self) -> None:
         missing = [s for s in EARLIER if not _outputs(self.req, s)]

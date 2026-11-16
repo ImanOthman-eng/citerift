@@ -5,17 +5,27 @@ What Step 8 adds is that every value the fold alone cannot give is read from com
 synthetic: the unit anchor of each claim (from the committed candidate inputs, the unit evidence and the extraction),
 the checked sources of a ``NOT_FOUND_IN_CHECKED_SOURCES`` claim (from its deciding lookup, S-6.11), the extraction
 identity (from the committed extraction), the index identity (from the committed index identity observation), the
-request key and the configuration. The v1 projections are Step 10: the projection set is empty.
+request key and the configuration.
+
+Step 10 (production ASSEMBLE): the positive works are grouped by the Stage 02 identity anchor of each positive claim's
+deciding lookup (SPEC 11.1, 11.2: one entry per distinct Stage 02 work, never merged because one identifier matches),
+and the projection set names one v1 projection body per positive work (``citerift.investigation.projections``), each
+valid against the unchanged v1 contract. ASSEMBLE reads committed content only: the fold's records and the blobs they
+name (lookup observations, the extraction, the bundle manifest and the retained ``capture.json``). It never queries
+Stage 02, re-runs Stage 03, uses the network, changes a claim, resolves a question or infers a missing claim. A
+projection that cannot be formed or does not validate fails the step closed with ``REPORT_INVALID``.
 """
 
 from __future__ import annotations
 
 import copy
+import json
 from collections.abc import Callable, Mapping
 from typing import Any
 
-from citerift.investigation import ids, report, sets
-from citerift.investigation.adapters import ContentRecord, StepRequest, StepResult, Succeeded
+from citerift.investigation import explanations, ids, projections, report, sets
+from citerift.investigation.adapters import ContentRecord, Failed, StepRequest, StepResult, Succeeded
+from citerift.investigation.adapters.acquire import committed_manifest
 from citerift.investigation.adapters.detect import committed_plan
 from citerift.investigation.adapters.lookup import committed_inputs
 from citerift.investigation.adapters.normalize import committed_extraction
@@ -99,13 +109,6 @@ def make_assemble(stage04: Mapping[str, Any]) -> Callable[[StepRequest], StepRes
                     "checked_sources": checked,
                 }
             )
-        works: dict[bytes, dict[str, Any]] = {}
-        for c in claims:
-            if c["class"] in report.POSITIVE:
-                work = {k["scheme"]: k["normalized"] for k in c["candidate"]["keys"]}
-                w = works.setdefault(canon(work), {"work": work, "classes": [], "claim_ids": []})
-                w["classes"] = sorted({*w["classes"], c["class"]})
-                w["claim_ids"] = sorted([*w["claim_ids"], c["claim_id"]])
         observations = [
             {"blob": r["payload"]["blob"], "obs_kind": r["payload"]["obs_kind"]}
             for r in recs
@@ -152,19 +155,59 @@ def make_assemble(stage04: Mapping[str, Any]) -> Callable[[StepRequest], StepRes
                 "config_digest": ids.config_digest(config),
             },
         }
+        entries.sort(key=report.claim_key)
+        statements = explanations.limitations(
+            {
+                "limitations": limitations,
+                "article_summary": {"snapshot_id": header["snapshot_id"], "open_questions": len(questions)},
+                "identities": {"config": config},
+            },
+            [e["claim"] for e in entries],
+        )
+
+        def deciding(claim: Mapping[str, Any]) -> Mapping[str, Any]:
+            q = deciding_query(candidates[claim["cand_ref"]])
+            if q is None or canon(q) not in lookups:
+                raise projections.ProjectionError(f"claim {claim['claim_id']} has no committed deciding lookup")
+            obs: Mapping[str, Any] = req.read_blob(lookups[canon(q)])
+            return obs
+
+        manifest_ = committed_manifest(req)
+        capture = json.loads(req.read_bytes(manifest_["capture"]["blob"]))
+        try:
+            works, bodies = projections.build_bodies(
+                entries,
+                deciding,
+                investigation_id=req.investigation["investigation_id"],
+                root=req.root,
+                capture=capture,
+                source_artifact=manifest_["source"]["artifact"],
+                outcome=header["outcome"],
+                limitations=statements,
+            )
+        except projections.ProjectionError as exc:
+            return Failed("REPORT_INVALID", reason="V1_PROJECTION", detail=str(exc)[:1000])
+        for i, body in enumerate(bodies):
+            found = projections.body_problems(body)
+            if found:
+                return Failed("REPORT_INVALID", reason="V1_PROJECTION", detail=f"projection {i}: {found[0]}"[:1000])
         blobs: list[Any] = []
 
         def publish(blob: Any) -> str:
             blobs.append(blob)
             return sha256_hex(canon(blob))
 
-        manifest = report.build(header, entries, observations, works.values(), batches_, publish)
-        projections = sets.projection_set([])
+        manifest = report.build(header, entries, observations, works, batches_, publish)
+        projection_set = sets.projection_set(projections.digest(b) for b in bodies)
         digest = sha256_hex(canon(manifest))
-        rec = {"report": digest, "projection_set": sha256_hex(canon(projections)), "projection_count": 0}
+        rec = {
+            "report": digest,
+            "projection_set": sha256_hex(canon(projection_set)),
+            "projection_count": len(bodies),
+        }
         return Succeeded(
             records=(ContentRecord("report_recorded", rec),),
-            blobs=(*blobs, manifest, projections),
+            blobs=(*blobs, *bodies, manifest, projection_set),
             outputs=(digest,),
         )
 
