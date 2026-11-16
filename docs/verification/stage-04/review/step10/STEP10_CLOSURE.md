@@ -5,7 +5,8 @@ Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yPSW7jXkQV4o696BLytWfZux` (2026-11
 vertical-slice acceptance campaign, no Step 12 freeze, no evaluation, holdout, pre-registration, annotation or scoring,
 no Stage 05+ work, no dt-1 change and no change to the frozen Step 4 oracle.
 
-**Status: VERIFIED — AWAITING OWNER ACCEPTANCE** once the final runs and CI in section 14 are recorded.
+**Status: VERIFIED — AWAITING OWNER ACCEPTANCE.** All 47 exit criteria pass (section 15) at `9643fdc` (CI run 326
+green).
 
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
@@ -339,7 +340,20 @@ literature in this step.
 
 ## 12. Runtime (item 35)
 
-Filled from the final runs (section 14).
+- **Step 10 tests alone** (4 modules, 144 tests): **2 min 27 s** locally (Python 3.12, 4 vCPU). Slowest: the report
+  module's five real investigations (fixture setup 10.2 s), `test_read_only_commands_write_nothing` 4.2 s, the MMR
+  fixture 4.1 s, `test_replay_reproduces_offline` 4.0 s. The 45 corruption cases each run `verify`, `export` and
+  `replay` on a copy (about 1 s each).
+- **Full suite locally**, clean tree at `9643fdc`, 3.12 and 3.13 run at the same time: **3,180 passed, 0 skipped**
+  on each; 14 min 28 s and 14 min 15 s (Step 9: 3,035 tests, 11 min 54 s and 11 min 28 s). The slowest tests are
+  all pre-existing (`test_d047_report_with_50000_projections` 34.4 s, the Stage 00 differential simulations 26 s).
+- **GitHub CI run 326 at `9643fdc`: green.** 3.12: test step 11 min 51 s, job 12 min 13 s; 3.13: test step 10 min
+  46 s, job 11 min 18 s. **Slowest job 12 min 13 s, under the 18-min boundary** (Step 9: 12 min 11 s). [inference]
+  CI runners vary by minutes between jobs; Step 10 adds about 2.5 minutes of test time on a local machine, and the CI
+  jobs did not grow by that much in this one run, so the margin should be judged over further runs. No `.github/`
+  change and no timeout change.
+- CI run 325 at `74d93e7` failed in static analysis on one unused test variable (ruff RUF059), before any test ran;
+  fixed in `9643fdc` (test file only).
 
 ## 13. Files
 
@@ -353,8 +367,65 @@ replay), `pyproject.toml` (console script), `SPECIFICATION.md` (narrow Step 10 n
 
 ## 14. Verification and CI
 
-Filled from the final runs.
+At `9643fdc`, clean tree [verified]: `pytest` 3,180 passed, 0 skipped on 3.12 and on 3.13, `check-report` 0
+problems for both; `ruff check .` passed; `ruff format --check .` 535 files formatted; `mypy` no issues in 95 source
+files; `citerift-gov check` 0 errors, 0 warnings; `render-status --check` up to date; `check-schemas` 0 problems;
+the Step 3 checker PASS (0 failed); `pip-audit --strict --disable-pip --require-hashes` over the CI export (all
+groups): no known vulnerabilities; `uv lock --check` passed. GitHub CI run 326: green (`ci-gate` success).
 
 ## 15. Exit criteria (item 37)
 
-Filled after the final runs.
+| # | Criterion | Result |
+|---|---|---|
+| 1 | production ASSEMBLE exists | PASS. `adapters/assemble.py` (section 2). |
+| 2 | report manifest graph produced from the committed fold | PASS. D-054 graph; Memory re-proves it on append and open. |
+| 3 | report ordering deterministic | PASS. `claim_key`, `work_key`, commit order; reversed in-memory orders give the same output. |
+| 4 | report chunking deterministic | PASS. Accepted D-053/D-054 boundary rule, unchanged. |
+| 5 | evidence batches reused, not duplicated | PASS. `evidence` lists committed batches; no item copied. |
+| 6 | positive works correct and deduplicated | PASS. Stage 02 anchor grouping (I-1 fixed); VS-3, VS-5 and SYNTHETIC tests. |
+| 7 | article summary obeys S-7.7 | PASS. Counts, open questions, snapshot; scoped not-found sentence only. |
+| 8 | limitations deterministic | PASS. Fixed codes and templates over stored codes and claim counts. |
+| 9 | fixed explanation templates exist | PASS. `explanations.py`. |
+| 10 | explanations do not strengthen meaning | PASS. Mandatory sentences and forbidden-word tests. |
+| 11 | v1 projections validate against contracts 1.0.1 | PASS. Every body and exported record validates; schemas/contracts unchanged. |
+| 12 | one projection per distinct positive work | PASS. Set count = positive works; V1_PROJECTIONS check. |
+| 13 | non-positive classes create no projection | PASS. Notice, conflict, not found, unavailable tested. |
+| 14 | projection-set identity deterministic | PASS. Independent runs, reordering, chunking, replay. |
+| 15 | report graph corruption fails closed | PASS. 45 cases (section 8). |
+| 16 | export only after VERIFY success | PASS. Gate under one lock; refused for every other state. |
+| 17 | run works | PASS. Section 6. |
+| 18 | resume works | PASS. CREATED to COMPLETED offline; BLOCKED reported without waiting. |
+| 19 | replay works read-only | PASS. Reproduced, differs, stale; files unchanged. |
+| 20 | verify works | PASS. 19 named checks (20 with a checkpoint). |
+| 21 | show works read-only | PASS. Files unchanged; next transition with its rule. |
+| 22 | human-readable output works | PASS. Text and JSON carry the same status. |
+| 23 | machine-readable JSON works | PASS. One documented shape, checked in every CLI test. |
+| 24 | exit-code mapping explicit and tested | PASS. Every code produced by a real command. |
+| 25 | busy/blocked/stale/corrupt distinguishable | PASS. 13, 8, 11, 12. |
+| 26 | D-052 checkpoint export works | PASS. Standard output or a file outside the memory root. |
+| 27 | checkpoint verification detects prefix rewrite/truncation | PASS. With recomputed chains (section 7). |
+| 28 | checkpoint limitations documented | PASS. Exact statement; no security wording; both-replaced limit stated. |
+| 29 | path/export safety passes | PASS. Section 5. |
+| 30 | offline commands make zero network attempts | PASS. Socket refusal counters are zero. |
+| 31 | deterministic replay reproduces digests | PASS. Report and projection-set digests. |
+| 32 | D-058/D-059/D-060 intact | PASS. Section 9; Step 9 tests pass unchanged. |
+| 33 | inherited-baseline audit retained | PASS. Section 10 (I-1 to I-6). |
+| 34 | originality review retained | PASS. Section 11. |
+| 35 | no Step 11 acceptance work begun | PASS. No campaign, no evaluation; only design bundles in tests. |
+| 36 | full tests pass on 3.12 and 3.13 | PASS. 3,180 each. |
+| 37 | zero required skips | PASS. 0 skipped; check-report 0 problems. |
+| 38 | ruff passes | PASS. |
+| 39 | format check passes | PASS. |
+| 40 | mypy passes | PASS. |
+| 41 | pip-audit --strict clean | PASS. |
+| 42 | schema checks pass | PASS. |
+| 43 | Step 3 checker passes | PASS. |
+| 44 | frozen Step 4 oracle unchanged | PASS. `git diff 7ed2148 -- simulations/` empty; manifest test passes. |
+| 45 | citerift-gov check 0/0 | PASS. |
+| 46 | render-status --check passes | PASS. |
+| 47 | GitHub CI green within the runtime boundary | PASS. Run 326; slowest job 12 min 13 s. |
+
+## 16. Owner decisions
+
+None is required to accept Step 10. Open for later steps, not blocking: [owner] I-2 (`workflow.outcome` and the
+extraction status) and I-4 (projection-set schema description) at Step 12; I-3 with A-6 (engine version) at Step 12.
