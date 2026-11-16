@@ -5,6 +5,9 @@ Owner instruction `cmsg_018VCB51nDHP6HXmLU4ea5yP5ifnawj9aWmi7tWi8poxsz` (2026-11
 CLI, no report delivery, no new projection, no vertical-slice acceptance, no Step 12 freeze, no pre-registration, no
 holdout, no annotation and no evaluation in this step. The frozen evaluation and holdout plan is unchanged.
 
+**Status: all 37 exit criteria pass (section 16) at `846cb81` (CI run 322 green). Step 9 awaits the owner's
+acceptance; two owner decisions are open (OD-S9-1, OD-S9-2, section 17). Step 10 is not authorized.**
+
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
 
@@ -346,9 +349,15 @@ no clock, randomness, network or model.
   `test_d047_report_with_50000_projections` 37.3 s, the two Stage 00 differential simulations 24.4 s and 23.6 s,
   `test_d047_claim_over_50000_evidence_ids…` 23.2 s, `test_crash_at_every_occurrence_of_every_controller_boundary`
   17.3 s; the slowest Step 9 item is the MMR fixture, 4.2 s.
-- **GitHub CI**: CI_PENDING
+- **Final local runs at `846cb81`** (clean tree), 3.12.3 and 3.13.18 at the same time: **3,035 passed, 0 skipped** on
+  each (11 min 54 s and 11 min 28 s); `check-report` 0 problems for both.
+- **GitHub CI run 322 at `846cb81`: green** (`ci-gate` success). 3.12: test step 9 min 52 s, job 10 min 15 s; 3.13:
+  test step 11 min 51 s, job 12 min 11 s. **Slowest job 12 min 11 s of 20, under the 18-min stop line** (Step 8's
+  slowest observed: 15 min 17 s; runner speed varies between jobs by minutes, so the budget is judged on the slower
+  job). [inference] The local full suite is about 3 minutes faster than at Step 8 on the same kind of machine,
+  although Step 9 adds 57 tests; the machines are not identical, so no cause is claimed.
 - Other runs: valid differential 34–45 s (4 workers); invalid domain 1,253 s; mutation runner with the differential
-  885 s (control plus 15 mutants); development measurements 725–755 s.
+  885 s and, re-run on the committed code `846cb81`, 938 s (control plus 15 mutants, same result); development measurements 725–755 s.
 
 ## 16. Exit criteria (item 26)
 
@@ -380,8 +389,8 @@ no clock, randomness, network or model.
 | 24 | Audit | PASS. Section 13. |
 | 25 | Reviewer findings resolved | PASS. F1, F4, F5, F6, F8 fixed; F2, F3 owner decisions; F7 forward. |
 | 26 | Oracle frozen | PASS. `git diff 8b623cd -- simulations/` empty; MANIFEST digest pinned and checked. |
-| 27 | 3.12 and 3.13 pass | PASS locally (3,035 each); CI: CI_PENDING |
-| 28 | Zero skips | PASS locally (0 skipped); `check-report` on the committed tree: CI_PENDING |
+| 27 | 3.12 and 3.13 pass | PASS. 3,035 passed on 3.12.3 and on 3.13.18, locally at `846cb81` and in CI run 322. |
+| 28 | Zero skips | PASS. 0 skipped; `check-report` 0 problems (local, both versions, clean tree; CI step 14). |
 | 29 | ruff | PASS. |
 | 30 | format | PASS (521 files). |
 | 31 | mypy | PASS (88 source files, no issues). |
@@ -390,7 +399,7 @@ no clock, randomness, network or model.
 | 34 | Step 3 checker | PASS (0 failed). |
 | 35 | gov check 0/0 | PASS. 0 errors, 0 warnings. |
 | 36 | render-status | PASS (`PROJECT_STATUS.md is up to date`). |
-| 37 | CI green within the runtime boundary | CI_PENDING |
+| 37 | CI green within the runtime boundary | PASS. Run 322 green; slowest job 12 min 11 s (under 18). |
 
 ## 17. Owner decisions and carry-forward
 

@@ -2,15 +2,15 @@
   "control": {
     "tests/stage04/test_step9_detector.py": {
       "exit": 0,
-      "tail": "40 passed in 4.33s"
+      "tail": "40 passed in 4.48s"
     },
     "tests/stage04/test_step9_b8.py": {
       "exit": 0,
-      "tail": "6 passed in 3.03s"
+      "tail": "6 passed in 17.78s"
     },
     "tests/stage04/test_step9_real.py": {
       "exit": 0,
-      "tail": "11 passed in 12.54s"
+      "tail": "11 passed in 27.53s"
     },
     "differential": {
       "exit": 0,
@@ -18,7 +18,7 @@
         "valid": 244884
       }
     },
-    "seconds": 56.4,
+    "seconds": 86.0,
     "passed": true
   },
   "mutants": 15,
@@ -29,15 +29,15 @@
     "M01 D-14 before identity conflict": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "5 failed, 35 passed in 3.62s"
+        "tail": "5 failed, 35 passed in 3.52s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.92s"
+        "tail": "6 passed in 2.94s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "1 failed, 10 passed in 12.95s"
+        "tail": "1 failed, 10 passed in 13.17s"
       },
       "differential": {
         "exit": 1,
@@ -46,7 +46,7 @@
           "valid_mismatch": 33296
         }
       },
-      "seconds": 54.8,
+      "seconds": 56.1,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py",
@@ -57,15 +57,15 @@
     "M02 D-13 after positive": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "4 failed, 36 passed in 4.13s"
+        "tail": "4 failed, 36 passed in 3.95s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.78s"
+        "tail": "6 passed in 2.95s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 13.20s"
+        "tail": "11 passed in 13.43s"
       },
       "differential": {
         "exit": 1,
@@ -74,7 +74,7 @@
           "valid_mismatch": 220
         }
       },
-      "seconds": 56.4,
+      "seconds": 58.6,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "differential"
@@ -84,15 +84,15 @@
     "M03 remove D-6": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "10 failed, 30 passed in 3.69s"
+        "tail": "10 failed, 30 passed in 3.84s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.97s"
+        "tail": "6 passed in 3.20s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "3 failed, 8 passed in 11.25s"
+        "tail": "3 failed, 8 passed in 12.04s"
       },
       "differential": {
         "exit": 1,
@@ -101,7 +101,7 @@
           "valid_mismatch": 16040
         }
       },
-      "seconds": 54.0,
+      "seconds": 55.4,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py",
@@ -112,15 +112,15 @@
     "M04 remove D-17": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "3 failed, 37 passed in 4.30s"
+        "tail": "3 failed, 37 passed in 4.22s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.95s"
+        "tail": "6 passed in 3.07s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 13.12s"
+        "tail": "11 passed in 13.40s"
       },
       "differential": {
         "exit": 0,
@@ -128,7 +128,7 @@
           "valid": 244884
         }
       },
-      "seconds": 57.0,
+      "seconds": 59.8,
       "caught_by": [
         "tests/stage04/test_step9_detector.py"
       ],
@@ -137,15 +137,15 @@
     "M05 notice becomes positive": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "2 failed, 38 passed in 3.68s"
+        "tail": "2 failed, 38 passed in 4.06s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 3.01s"
+        "tail": "6 passed in 3.46s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "2 failed, 9 passed in 10.89s"
+        "tail": "2 failed, 9 passed in 12.52s"
       },
       "differential": {
         "exit": 1,
@@ -154,7 +154,7 @@
           "valid_mismatch": 9
         }
       },
-      "seconds": 54.2,
+      "seconds": 58.6,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py",
@@ -165,15 +165,15 @@
     "M06 no-record becomes retracted": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "2 failed, 38 passed in 3.67s"
+        "tail": "2 failed, 38 passed in 3.84s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 1,
-        "tail": "2 failed, 4 passed in 1.64s"
+        "tail": "2 failed, 4 passed in 1.58s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "8 failed, 3 passed in 6.88s"
+        "tail": "8 failed, 3 passed in 7.81s"
       },
       "differential": {
         "exit": 1,
@@ -182,7 +182,7 @@
           "valid_mismatch": 8
         }
       },
-      "seconds": 48.8,
+      "seconds": 52.1,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_b8.py",
@@ -194,15 +194,15 @@
     "M07 unavailable becomes no-record": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "10 failed, 30 passed in 3.73s"
+        "tail": "10 failed, 30 passed in 3.72s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.98s"
+        "tail": "6 passed in 3.26s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 13.00s"
+        "tail": "11 passed in 14.27s"
       },
       "differential": {
         "exit": 1,
@@ -211,7 +211,7 @@
           "valid_mismatch": 28912
         }
       },
-      "seconds": 57.1,
+      "seconds": 57.9,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "differential"
@@ -221,15 +221,15 @@
     "M08 ignore taint": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "3 failed, 37 passed in 3.81s"
+        "tail": "3 failed, 37 passed in 3.73s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 3.01s"
+        "tail": "6 passed in 3.00s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "1 failed, 10 passed in 14.15s"
+        "tail": "1 failed, 10 passed in 13.19s"
       },
       "differential": {
         "exit": 1,
@@ -238,7 +238,7 @@
           "valid_mismatch": 38500
         }
       },
-      "seconds": 58.7,
+      "seconds": 56.9,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py",
@@ -249,15 +249,15 @@
     "M09 ignore bridge-only": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "3 failed, 37 passed in 3.62s"
+        "tail": "3 failed, 37 passed in 3.41s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.99s"
+        "tail": "6 passed in 3.17s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 12.83s"
+        "tail": "11 passed in 13.89s"
       },
       "differential": {
         "exit": 1,
@@ -266,7 +266,7 @@
           "valid_mismatch": 419
         }
       },
-      "seconds": 54.8,
+      "seconds": 56.7,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "differential"
@@ -276,15 +276,15 @@
     "M10 allow an ambiguous DOI-only query": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "1 failed, 39 passed in 4.17s"
+        "tail": "1 failed, 39 passed in 4.16s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.94s"
+        "tail": "6 passed in 2.93s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 12.73s"
+        "tail": "11 passed in 13.60s"
       },
       "differential": {
         "exit": 0,
@@ -292,7 +292,7 @@
           "valid": 244884
         }
       },
-      "seconds": 55.3,
+      "seconds": 57.5,
       "caught_by": [
         "tests/stage04/test_step9_detector.py"
       ],
@@ -301,15 +301,15 @@
     "M11 ignore the kappa/Q2 disagreement": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "2 failed, 38 passed in 4.16s"
+        "tail": "2 failed, 38 passed in 4.52s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.84s"
+        "tail": "6 passed in 3.05s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "1 failed, 10 passed in 13.89s"
+        "tail": "1 failed, 10 passed in 14.28s"
       },
       "differential": {
         "exit": 0,
@@ -317,7 +317,7 @@
           "valid": 244884
         }
       },
-      "seconds": 57.0,
+      "seconds": 58.6,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py"
@@ -327,15 +327,15 @@
     "M12 NEEDS_RESOLUTION becomes normal completion": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "2 failed, 38 passed in 4.35s"
+        "tail": "2 failed, 38 passed in 4.44s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 3.03s"
+        "tail": "6 passed in 2.90s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 1,
-        "tail": "1 failed, 10 passed in 12.08s"
+        "tail": "1 failed, 10 passed in 11.83s"
       },
       "differential": {
         "exit": 1,
@@ -344,7 +344,7 @@
           "valid_mismatch": 37624
         }
       },
-      "seconds": 55.2,
+      "seconds": 55.4,
       "caught_by": [
         "tests/stage04/test_step9_detector.py",
         "tests/stage04/test_step9_real.py",
@@ -355,15 +355,15 @@
     "M13 collapse the two B-8 candidate evidence items": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 0,
-        "tail": "40 passed in 4.11s"
+        "tail": "40 passed in 4.20s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 1,
-        "tail": "2 failed, 4 passed in 1.32s"
+        "tail": "2 failed, 4 passed in 1.35s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 12.83s"
+        "tail": "11 passed in 13.08s"
       },
       "differential": {
         "exit": 0,
@@ -371,7 +371,7 @@
           "valid": 244884
         }
       },
-      "seconds": 54.3,
+      "seconds": 54.8,
       "caught_by": [
         "tests/stage04/test_step9_b8.py"
       ],
@@ -380,15 +380,15 @@
     "X01 D-7 alternatives from conflict groups only": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "1 failed, 39 passed in 4.44s"
+        "tail": "1 failed, 39 passed in 4.33s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.97s"
+        "tail": "6 passed in 2.98s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 12.97s"
+        "tail": "11 passed in 13.01s"
       },
       "differential": {
         "exit": 0,
@@ -396,7 +396,7 @@
           "valid": 244884
         }
       },
-      "seconds": 55.9,
+      "seconds": 56.9,
       "caught_by": [
         "tests/stage04/test_step9_detector.py"
       ],
@@ -405,15 +405,15 @@
     "X02 NOT_FOUND without checked sources": {
       "tests/stage04/test_step9_detector.py": {
         "exit": 1,
-        "tail": "1 failed, 39 passed in 4.24s"
+        "tail": "1 failed, 39 passed in 4.18s"
       },
       "tests/stage04/test_step9_b8.py": {
         "exit": 0,
-        "tail": "6 passed in 2.86s"
+        "tail": "6 passed in 2.91s"
       },
       "tests/stage04/test_step9_real.py": {
         "exit": 0,
-        "tail": "11 passed in 12.51s"
+        "tail": "11 passed in 13.51s"
       },
       "differential": {
         "exit": 0,
@@ -421,7 +421,7 @@
           "valid": 244884
         }
       },
-      "seconds": 54.7,
+      "seconds": 56.7,
       "caught_by": [
         "tests/stage04/test_step9_detector.py"
       ],
