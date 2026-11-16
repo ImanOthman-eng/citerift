@@ -122,6 +122,25 @@ def one(tmp: Path, bundle: Path, index: Path) -> dict[str, Any]:
         if any(states.get(q) in FOUND for q in unit_keys.get(unit, set()) | obs_keys.get(unit, set())):
             naive["all_unit_keys"][label] += 1
     out["naive_flagged_units_by_engine_class"] = {k: dict(v) for k, v in naive.items()}
+    # Occurrence level (the planning probe's unit of count, STAGE04_MASTER_EXECUTION_PACKAGE.md 2.3): every valid
+    # identifier occurrence of the extraction, any role, with its Q1 lookup state and, when matched, the value.
+    values = {
+        canon(e["query"]).decode(): (
+            ((blobs[e["observation"]]["result"].get("projection") or {}).get("retraction_status") or {}).get("value")
+        )
+        for e in plan["lookups"]
+    }
+    occ: Counter[str] = Counter()
+    for ident in ext["identifiers"]:
+        norm = ident.get("normalization") or {}
+        if not (norm.get("valid") and norm.get("normalized")):
+            continue
+        q = canon({"doi": None, "pmid": None, ident["scheme"]: norm["normalized"]}).decode()
+        state = states.get(q, "not_looked_up")
+        if state == "matched":
+            state = f"matched:{values.get(q)}"
+        occ[f"{ident.get('role')}|{state}"] += 1
+    out["occurrences_by_role_and_q1_state"] = dict(sorted(occ.items()))
     return out
 
 
@@ -157,12 +176,20 @@ def main() -> int:
             "upstream_reasons",
             "lookup_states",
             "terminated_by",
+            "occurrences_by_role_and_q1_state",
         )
     }
     naive: dict[str, Counter[str]] = {"candidate_keys": Counter(), "all_unit_keys": Counter()}
     for row in out["revisions"].values():
         totals["lifecycle"][row["lifecycle"]] += 1
-        for k in ("claims_by_class", "claims_by_rule", "reasons", "upstream_reasons", "lookup_states"):
+        for k in (
+            "claims_by_class",
+            "claims_by_rule",
+            "reasons",
+            "upstream_reasons",
+            "lookup_states",
+            "occurrences_by_role_and_q1_state",
+        ):
             totals[k].update(row.get(k) or {})
         if "terminated_by" in row:
             totals["terminated_by"][f"{row['terminated_by']['step']}:{row['terminated_by']['code']}"] += 1

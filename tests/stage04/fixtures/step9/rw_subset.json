@@ -1,0 +1,849 @@
+{
+  "attribution": "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 120 records; other columns left empty. Cited as the source requests; not a redistribution of the dataset.",
+  "bundles": {
+    "docs/verification/stage-03/evaluation/capture/bundles/challenge/ar-311750-a1": {
+      "doi": [
+        "10.1002/14651858.cd000219.pub4",
+        "10.1002/14651858.cd000243.pub2",
+        "10.1002/14651858.cd000243.pub3",
+        "10.1002/14651858.cd000243.pub4",
+        "10.1002/14651858.cd004975.pub3",
+        "10.1038/ajg.2016.563",
+        "10.1136/bmj.d2392"
+      ],
+      "pmid": [
+        "21540258",
+        "24338106",
+        "24515610",
+        "26099233",
+        "28071659"
+      ]
+    },
+    "docs/verification/stage-03/evaluation/capture/bundles/challenge/ar-4541237-a1": {
+      "doi": [
+        "10.1002/gcc.10121",
+        "10.1016/0378-1119(94)90802-8",
+        "10.1016/s0378-1119(97)00411-3",
+        "10.1038/ng1285",
+        "10.1073/pnas.0601989103",
+        "10.1073/pnas.242603899",
+        "10.1101/gr.2596504",
+        "10.1101/gr.4039406",
+        "10.1210/me.2006-0514",
+        "10.1210/me.2014-1149",
+        "10.4161/cc.5.13.2924"
+      ],
+      "pmid": [
+        "12378525",
+        "12477932",
+        "14702039",
+        "15489334",
+        "16344560",
+        "16617102",
+        "16855396",
+        "17505058",
+        "8125298",
+        "9373149"
+      ]
+    },
+    "docs/verification/stage-03/evaluation/confirmation-2026-11/campaign/capture/bundles/challenge/en-65547507-a1": {
+      "doi": [
+        "10.1038/nature12352",
+        "10.1038/s41598-020-66738-8",
+        "10.1111/1469-0691.12023",
+        "10.1111/1469-0691.12032",
+        "10.1128/cmr.00014-14",
+        "10.1186/s40168-018-0485-5",
+        "10.1371/journal.pone.0223543",
+        "10.1371/journal.pone.0278361",
+        "10.3389/fmicb.2019.02891"
+      ],
+      "pmid": [
+        "23033984",
+        "23148445",
+        "23851394",
+        "25567229",
+        "29793532",
+        "31634343",
+        "31921067",
+        "32541790",
+        "36512561"
+      ]
+    }
+  },
+  "disagreements": [],
+  "fixture": "rw_subset.csv",
+  "fixture_bytes": 1818,
+  "fixture_fields": [
+    "Record ID",
+    "Title",
+    "Journal",
+    "Publisher",
+    "RetractionDate",
+    "RetractionDOI",
+    "RetractionPubMedID",
+    "OriginalPaperDate",
+    "OriginalPaperDOI",
+    "OriginalPaperPubMedID",
+    "RetractionNature"
+  ],
+  "fixture_records": 6,
+  "fixture_sha256": "7ce7fafa052054c81274b1d3cbb7879e614fc20a31d469f49e8e776f6a2374f9",
+  "method": "Write the attributed Retraction Watch subset fixture of Stage 04 Step 8 (owner Step 8 item 10).  Method. The pinned snapshot (receipt ``rw-a987928``) is checked byte for byte. Each vertical-slice bundle named in SPECIFICATION.md S-7.4 / VS-1..VS-3 (all previously exposed design cases, none a Stage 03 evaluation or holdout bundle) is extracted offline with the accepted Stage 03 extractor, and its valid DOI and PMID keys are collected. Every key is queried alone (Q1), and every DOI x PMID pair of one bundle is queried together (Q2, a superset of the pairs NORMALIZE forms), on an index built from the full snapshot, through the Stage 04 bounded lookup (``Index.gather_bounded``, 16 MiB). The fixture keeps the Record IDs of every event any of those queries returns (the bridge closure is the engine's own), with the same selected fields as the Stage 02 fixture; other columns are left empty (Step 9: ``--bundle`` names other previously exposed bundles instead). The script then builds an index from the fixture alone and checks that every query gives the same state, status, value, dates, event identities and record ids as on the full index. Disagreements are written to the manifest and fail the run. No synthetic row is added.",
+  "outcomes_sha256": "19a8e813664918d58ebcfd5d034b4194f672f6fb4b28952f4645839ce2dca628",
+  "q1_with_records": [
+    {
+      "date_status": "verified_fact",
+      "date_value": "2015-10-16",
+      "doi": "10.1002/14651858.cd000243.pub2",
+      "event_types": [
+        "retracted"
+      ],
+      "events": 1,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [],
+      "pmid": null,
+      "record_ids": [
+        "31899"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "retracted"
+    },
+    {
+      "date_status": "verified_fact",
+      "date_value": "2015-10-16",
+      "doi": "10.1002/14651858.cd000243.pub3",
+      "event_types": [
+        "retracted"
+      ],
+      "events": 1,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [],
+      "pmid": null,
+      "record_ids": [
+        "31898"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "retracted"
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": "10.1002/14651858.cd000243.pub4",
+      "event_types": [
+        "retracted",
+        "retracted",
+        "retracted"
+      ],
+      "events": 3,
+      "identity": "none",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [
+        "31898",
+        "31899",
+        "31900"
+      ],
+      "pmid": null,
+      "record_ids": [
+        "31898",
+        "31899",
+        "31900"
+      ],
+      "role": "notice",
+      "state": "notice_only",
+      "status": "uncertain",
+      "value": null
+    },
+    {
+      "date_status": "uncertain",
+      "date_value": "2014-07-01",
+      "doi": "10.1210/me.2006-0514",
+      "event_types": [
+        "correction",
+        "retracted"
+      ],
+      "events": 2,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [
+        "PMID_ROLE_COLLISION"
+      ],
+      "notice_hit_record_ids": [],
+      "pmid": null,
+      "record_ids": [
+        "17243",
+        "17244"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "retracted"
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": "10.1210/me.2014-1149",
+      "event_types": [
+        "retracted"
+      ],
+      "events": 1,
+      "identity": "none",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [
+        "17243"
+      ],
+      "pmid": null,
+      "record_ids": [
+        "17243"
+      ],
+      "role": "notice",
+      "state": "notice_only",
+      "status": "uncertain",
+      "value": null
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": "10.1371/journal.pone.0223543",
+      "event_types": [
+        "expression_of_concern"
+      ],
+      "events": 1,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [],
+      "pmid": null,
+      "record_ids": [
+        "45473"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "expression_of_concern"
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": "10.1371/journal.pone.0278361",
+      "event_types": [
+        "expression_of_concern"
+      ],
+      "events": 1,
+      "identity": "none",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [
+        "45473"
+      ],
+      "pmid": null,
+      "record_ids": [
+        "45473"
+      ],
+      "role": "notice",
+      "state": "notice_only",
+      "status": "uncertain",
+      "value": null
+    },
+    {
+      "date_status": "uncertain",
+      "date_value": "2014-07-01",
+      "doi": null,
+      "event_types": [
+        "correction",
+        "retracted"
+      ],
+      "events": 2,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [
+        "PMID_ROLE_COLLISION"
+      ],
+      "notice_hit_record_ids": [],
+      "pmid": "17505058",
+      "record_ids": [
+        "17243",
+        "17244"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "retracted"
+    },
+    {
+      "date_status": "verified_fact",
+      "date_value": "2015-10-16",
+      "doi": null,
+      "event_types": [
+        "retracted"
+      ],
+      "events": 1,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [],
+      "pmid": "24515610",
+      "record_ids": [
+        "31898"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "retracted"
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": null,
+      "event_types": [
+        "expression_of_concern"
+      ],
+      "events": 1,
+      "identity": "exact",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [],
+      "pmid": "31634343",
+      "record_ids": [
+        "45473"
+      ],
+      "role": "original",
+      "state": "matched",
+      "status": "verified_fact",
+      "value": "expression_of_concern"
+    },
+    {
+      "date_status": null,
+      "date_value": null,
+      "doi": null,
+      "event_types": [
+        "expression_of_concern"
+      ],
+      "events": 1,
+      "identity": "none",
+      "issue_record_ids": [],
+      "issues": [],
+      "notice_hit_record_ids": [
+        "45473"
+      ],
+      "pmid": "36512561",
+      "record_ids": [
+        "45473"
+      ],
+      "role": "notice",
+      "state": "notice_only",
+      "status": "uncertain",
+      "value": null
+    }
+  ],
+  "q2_with_records": [
+    [
+      "10.1002/14651858.cd000219.pub4",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub2",
+      "21540258",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub2",
+      "24338106",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub2",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub2",
+      "26099233",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub2",
+      "28071659",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub3",
+      "21540258",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub3",
+      "24338106",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub3",
+      "24515610",
+      "matched",
+      "exact"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub3",
+      "26099233",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub3",
+      "28071659",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub4",
+      "21540258",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub4",
+      "24338106",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub4",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub4",
+      "26099233",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1002/14651858.cd000243.pub4",
+      "28071659",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1002/14651858.cd004975.pub3",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1002/gcc.10121",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1016/0378-1119(94)90802-8",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1016/s0378-1119(97)00411-3",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1038/ajg.2016.563",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1038/nature12352",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1038/nature12352",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1038/ng1285",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1038/s41598-020-66738-8",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1038/s41598-020-66738-8",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1073/pnas.0601989103",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1073/pnas.242603899",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1101/gr.2596504",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1101/gr.4039406",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1111/1469-0691.12023",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1111/1469-0691.12023",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1111/1469-0691.12032",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1111/1469-0691.12032",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1128/cmr.00014-14",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1128/cmr.00014-14",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1136/bmj.d2392",
+      "24515610",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1186/s40168-018-0485-5",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1186/s40168-018-0485-5",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "12378525",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "12477932",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "14702039",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "15489334",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "16344560",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "16617102",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "16855396",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "17505058",
+      "matched",
+      "exact"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "8125298",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2006-0514",
+      "9373149",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "12378525",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "12477932",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "14702039",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "15489334",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "16344560",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "16617102",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "16855396",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "8125298",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1210/me.2014-1149",
+      "9373149",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "23033984",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "23148445",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "23851394",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "25567229",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "29793532",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "31634343",
+      "matched",
+      "exact"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "31921067",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "32541790",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0223543",
+      "36512561",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "23033984",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "23148445",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "23851394",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "25567229",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "29793532",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "31921067",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "32541790",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.1371/journal.pone.0278361",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.3389/fmicb.2019.02891",
+      "31634343",
+      "ambiguous_identity",
+      "ambiguous"
+    ],
+    [
+      "10.3389/fmicb.2019.02891",
+      "36512561",
+      "notice_only",
+      "none"
+    ],
+    [
+      "10.4161/cc.5.13.2924",
+      "17505058",
+      "ambiguous_identity",
+      "ambiguous"
+    ]
+  ],
+  "queries": 277,
+  "query_states": {
+    "ambiguous_identity": 49,
+    "matched": 10,
+    "no_record": 186,
+    "notice_only": 32
+  },
+  "selection": "named with --bundle (Step 9): previously exposed design bundles (owner decision D-5), which may be retained Stage 03 challenge bundles; the method's bundle sentence describes the Step 8 default only",
+  "source": {
+    "bytes": 68076023,
+    "commit": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4",
+    "path": "retraction_watch.csv",
+    "repository": "https://gitlab.com/crossref/retraction-watch-data",
+    "sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+    "url": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv"
+  },
+  "subset_equals_full_index": true,
+  "synthetic_rows": 0
+}

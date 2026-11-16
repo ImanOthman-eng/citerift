@@ -1,0 +1,7816 @@
+{
+  "cases_compared": {
+    "invalid": 12387564,
+    "invalid_mismatch": 26384,
+    "valid": 244884
+  },
+  "compared_fields": [
+    "rule",
+    "class",
+    "status",
+    "value",
+    "disposition",
+    "question",
+    "reasons",
+    "failure"
+  ],
+  "mismatches_by_kind": {
+    "INVALID_QUERY_FOR_VALID_KEY+PROJECTION_OUTSIDE_CONTRACT+SIGNATURE_UNREACHABLE | oracle D-1 | production D-1": 192,
+    "INVALID_QUERY_FOR_VALID_KEY+PROJECTION_OUTSIDE_CONTRACT+SIGNATURE_UNREACHABLE | oracle D-2 | production D-2": 192,
+    "INVALID_QUERY_FOR_VALID_KEY+SIGNATURE_UNREACHABLE | oracle D-1 | production D-1": 296,
+    "INVALID_QUERY_FOR_VALID_KEY+SIGNATURE_UNREACHABLE | oracle D-2 | production D-2": 296,
+    "PROJECTION_OUTSIDE_CONTRACT+SIGNATURE_UNREACHABLE | oracle D-1 | production D-1": 4608,
+    "PROJECTION_OUTSIDE_CONTRACT+SIGNATURE_UNREACHABLE | oracle D-2 | production D-2": 4608,
+    "PROJECTION_OUTSIDE_CONTRACT+STATE_UNREACHABLE+WITNESS_WITHOUT_PAIR | oracle D-5 | production D-17": 12,
+    "PROJECTION_OUTSIDE_CONTRACT+STATE_UNREACHABLE+WITNESS_WITHOUT_PAIR | oracle D-5 | production D-8": 84,
+    "PROJECTION_OUTSIDE_CONTRACT+WITNESS_WITHOUT_PAIR | oracle D-5 | production D-17": 438,
+    "PROJECTION_OUTSIDE_CONTRACT+WITNESS_WITHOUT_PAIR | oracle D-5 | production D-8": 3066,
+    "SIGNATURE_UNREACHABLE | oracle D-1 | production D-1": 2592,
+    "SIGNATURE_UNREACHABLE | oracle D-2 | production D-2": 2592,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-10": 420,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-11": 60,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-12": 12,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-13": 20,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-14": 240,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-15": 12,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-16": 12,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-7": 960,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-8": 5642,
+    "WITNESS_WITHOUT_PAIR | oracle D-5 | production D-9": 30
+  },
+  "mismatches_listed": [
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "RETRACTED_WORK_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "retracted"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "CONCERN_CITED",
+        "disposition": "REPORT_FINDING",
+        "question": null,
+        "reasons": [],
+        "rule": "D-14",
+        "status": "verified_fact",
+        "value": "expression_of_concern"
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTITY",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "PMID_ROLE_COLLISION"
+        ],
+        "rule": "D-10",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:retracted",
+          true
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        false,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          false
+        ],
+        null,
+        null,
+        true,
+        true,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        false,
+        true,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        false
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    },
+    {
+      "case": [
+        "CITED",
+        "DOI",
+        [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        false,
+        [
+          "matched",
+          "vf:expression_of_concern",
+          true
+        ],
+        null,
+        null,
+        false,
+        true,
+        false,
+        true
+      ],
+      "invalid_reasons": [
+        "WITNESS_WITHOUT_PAIR"
+      ],
+      "oracle": {
+        "failure": "ADAPTER_INCONSISTENT",
+        "rule": "D-5"
+      },
+      "production": {
+        "class": "UNRESOLVED_IDENTIFIER",
+        "disposition": "ABSTAIN",
+        "question": null,
+        "reasons": [
+          "IDENTIFIER_ROLE_UNRESOLVED",
+          "IDENTIFIER_UNCONFIRMED"
+        ],
+        "rule": "D-8",
+        "status": "uncertain",
+        "value": null
+      }
+    }
+  ],
+  "model_version": "dt1-reference/1",
+  "oracle_manifest_sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735",
+  "oracle_version": "dt1-oracle/1",
+  "rules_by_domain": {
+    "invalid:D-1": 4129188,
+    "invalid:D-12": 50,
+    "invalid:D-13": 703,
+    "invalid:D-17": 2223,
+    "invalid:D-2": 4129188,
+    "invalid:D-3": 15,
+    "invalid:D-4": 109,
+    "invalid:D-5": 4067784,
+    "invalid:D-6": 31008,
+    "invalid:D-7": 6464,
+    "invalid:D-8": 20832,
+    "valid:D-1": 81628,
+    "valid:D-10": 2933,
+    "valid:D-11": 419,
+    "valid:D-12": 13,
+    "valid:D-13": 660,
+    "valid:D-14": 1456,
+    "valid:D-15": 9,
+    "valid:D-16": 8,
+    "valid:D-2": 81628,
+    "valid:D-3": 1,
+    "valid:D-4": 3,
+    "valid:D-6": 16040,
+    "valid:D-7": 21584,
+    "valid:D-8": 38500,
+    "valid:D-9": 2
+  },
+  "seconds": 1253.1,
+  "table_version": "dt-1"
+}

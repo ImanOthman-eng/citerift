@@ -44,6 +44,7 @@ import dt1_reference as R  # noqa: E402
 D, P = "10.5555/syn.d", "9000001"
 OTHER_PMID, OTHER_DOI = "9000002", "10.5555/syn.other"
 LABEL = "SYNTHETIC (Step 9 test input; not Retraction Watch data)"
+CHECKED_SOURCE = {"source_id": "retraction-watch", "locator": "https://example.invalid/synthetic/rw", "synthetic": True}
 INDEX = {
     "snapshot_id": "rw-synthetic",
     "policy_version": "citerift-rde-policy/1.3.0",
@@ -136,6 +137,11 @@ def observation(query: dict[str, str | None], lk: R.Lookup, extra: list[dict[str
                 "assertions": [f"{a['event_id']}/event_type", f"{b['event_id']}/event_type"],
             }
         ]
+        # Stage 02 (policy.project) states one alternative per type, sorted, with the provenance of its assertions.
+        proj["retraction_status"]["alternatives"] = [
+            {"value": "expression_of_concern", "provenance": []},
+            {"value": "retracted", "provenance": []},
+        ]
     issues: list[dict[str, Any]] = []
     if collision:
         if role == "p":
@@ -153,7 +159,7 @@ def observation(query: dict[str, str | None], lk: R.Lookup, extra: list[dict[str
         "query": query,
         "index": INDEX,
         "budget_bytes": 16777216,
-        "result": {"lookup_state": state, "projection": proj, "issues": issues},
+        "result": {"lookup_state": state, "projection": proj, "issues": issues, "checked_sources": [CHECKED_SOURCE]},
         "events": events,
         "event_count": len(events),
     }

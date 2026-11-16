@@ -63,12 +63,20 @@ def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
     present = isinstance(status, Mapping)
     basis = (proj.get("basis") or {}) if isinstance(proj, Mapping) else {}
     by_id = {e.event_id: e for e in events}
-    groups: dict[str, set[str]] = {}
+    # D-7 alternatives: Stage 02's own alternatives of a conflicting status (one per asserted type, with provenance),
+    # in Stage 02's order, each with the Retraction Watch events of its type that the basis conflict groups name. A
+    # conflict-group assertion that is no event (a Crossref assertion, ``cr-...``) has no event item; its value is
+    # supported by the alternative itself, whose provenance names the deposit. An event type outside the alternatives
+    # is kept last so the detector can refuse it.
+    stated = status.get("alternatives") if isinstance(status, Mapping) else None
+    values = [str(a.get("value")) for a in (stated or ()) if isinstance(a, Mapping)]
+    groups: dict[str, set[str]] = {v: set() for v in values}
     for g in basis.get("conflict_groups") or ():
         for assertion in g.get("assertions") or ():
-            eid = str(assertion).rsplit("/", 1)[0]
-            e = by_id.get(eid)
-            groups.setdefault(str(e.event_type) if e is not None else "", set()).add(eid)
+            e = by_id.get(str(assertion).rsplit("/", 1)[0])
+            if e is not None:
+                groups.setdefault(str(e.event_type), set()).add(e.event_id)
+    order = values + sorted(set(groups) - set(values))
     issues = res.get("issues") or ()
     collision = sorted(
         {
@@ -85,7 +93,7 @@ def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
         status=status.get("status") if present else None,  # type: ignore[union-attr]
         value=status.get("value") if present else None,  # type: ignore[union-attr]
         basis_reasons=tuple(str(r) for r in basis.get("reasons") or ()),
-        conflict_groups=tuple((t, tuple(sorted(e))) for t, e in sorted(groups.items())),
+        conflict_groups=tuple((t, tuple(sorted(groups[t]))) for t in order),
         collision=tuple(collision),
         budget_refused=any(isinstance(i, Mapping) and i.get("code") == LIMIT_CODE for i in issues),
         events=events,
@@ -228,6 +236,19 @@ class _Run:
             raise DetectFailure(out.failure, detail)
         if out.cls is None:
             raise AssertionError("a class rule without a class")
+        if out.rule == "D-16":
+            # NOT_FOUND is scoped to the sources checked (SPEC D-16, provenance = checked sources): a no_record
+            # answer that names no checked source is outside the Stage 02 contract (independent review F4).
+            res = self.blobs[obs_of[str(view.deciding_role)]]["result"]
+            checked = res.get("checked_sources")
+            if not (
+                isinstance(checked, list)
+                and checked
+                and all(isinstance(s, Mapping) and isinstance(s.get("source_id"), str) for s in checked)
+            ):
+                raise DetectFailure(
+                    dt1.ADAPTER_INCONSISTENT, f"candidate {cand['cand_ref']}: NOT_FOUND names no checked source"
+                )
 
         key_ev: list[str] = list(cand["key_evidence"])
         first_occ: dict[tuple[str, str], str] = {}
@@ -306,7 +327,8 @@ class _Run:
         first_occ: Mapping[tuple[str, str], str],
     ) -> list[tuple[Any, set[str]]]:
         """S-7.3: the work reached by the DOI and the work reached by the PMID, each with its Q1 lookup, its events and
-        the key's occurrences; a side whose Q1 is unavailable is supported by the witness events' identifier field."""
+        the key's occurrences; a side whose Q1 is unavailable is supported by the witness events' identifier field
+        (S-7.3) and, when Q2 is available, by Q2's events reached by that key."""
         alts: list[tuple[Any, set[str]]] = []
         q2 = c.lookup(dt1.Q2)
         for scheme, role, key in (("doi", dt1.Q1_DOI, c.doi), ("pmid", dt1.Q1_PMID, c.pmid)):
@@ -327,7 +349,7 @@ class _Run:
             work = {scheme: key, other: next(iter(names)) if len(names) == 1 else None}
             support = {self.result_ev(obs_of[role]), first_occ[(scheme, key)]}
             support.update(self.event_ev(obs_of[str(src)], e.position) for e in mine)
-            if (lk is None or not lk.available) and not mine:
+            if lk is None or not lk.available:  # S-7.3: always the witness field, Q2's events only beside it
                 support.update(self.field_ev(obs_of[r], k, f"original_{scheme}") for r, k in out.witnesses)
             alts.append(({"reached_by": {"scheme": scheme, "normalized": key}, "work": work}, support))
         return alts
@@ -335,15 +357,27 @@ class _Run:
     def type_alternatives(
         self, c: dt1.Candidate, obs_of: Mapping[str, str], out: dt1.Outcome
     ) -> list[tuple[Any, set[str]]]:
-        """D-7: one alternative per event type of the conflict groups of the first conflicting lookup."""
+        """D-7: one alternative per Stage 02 alternative of the first conflicting lookup (SPEC 7.3, "alternatives from
+        Stage 02"), supported by that alternative's item and the events of its type the conflict groups name."""
         role = str(out.conflict_role)
-        view = self.views[obs_of[role]]
+        obs = obs_of[role]
+        view = self.views[obs]
+        stated = (self.blobs[obs]["result"]["projection"]["retraction_status"].get("alternatives")) or []
         position = {e.event_id: e.position for e in view.events}
         alts = []
-        for etype, eids in view.conflict_groups:
-            if etype not in dt1.POSITIVE or not eids:
-                raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"a conflict group names type {etype!r}")
-            alts.append((etype, {self.event_ev(obs_of[role], position[e]) for e in eids}))
+        for i, (value, eids) in enumerate(view.conflict_groups):
+            if value not in dt1.POSITIVE or i >= len(stated):
+                raise DetectFailure(
+                    dt1.ADAPTER_INCONSISTENT, f"a conflict names type {value!r} outside the alternatives"
+                )
+            item = self.items.add(
+                "lookup_result",
+                obs,
+                f"/result/projection/retraction_status/alternatives/{i}",
+                [self.projection_ev(obs)],
+                None,
+            )
+            alts.append((value, {item, *(self.event_ev(obs, position[e]) for e in eids)}))
         if len(alts) < 2:
             raise DetectFailure(dt1.ADAPTER_INCONSISTENT, "a conflicting projection with fewer than two event types")
         return alts

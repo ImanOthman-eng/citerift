@@ -45,10 +45,14 @@ from citerift.investigation.adapters.detector import candidate_view, lookup_role
 from citerift.investigation.canonical import canon  # noqa: E402
 from citerift.investigation.workflow import CONFLICT, DISPOSITION  # noqa: E402
 
+# The frozen Step 4 oracle (D-041): its MANIFEST digest is pinned here, not only printed (independent review F6).
+ORACLE_MANIFEST_SHA256 = "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735"
 QUESTION = {"IDENTITY_CONFLICT": "identity_conflict", "CONTRADICTION_IN_SOURCES": "source_conflict"}
 
 
 def oracle() -> tuple[array, list[dict[str, Any]], dict[str, Any]]:
+    if hashlib.sha256((ORACLE / "MANIFEST.json").read_bytes()).hexdigest() != ORACLE_MANIFEST_SHA256:
+        raise SystemExit("the oracle MANIFEST is not the frozen Step 4 one")
     manifest = json.loads((ORACLE / "MANIFEST.json").read_text(encoding="utf-8"))
     for name, digest in manifest["files"].items():
         if hashlib.sha256((ORACLE / name).read_bytes()).hexdigest() != digest:
@@ -114,6 +118,7 @@ def run_chunk(args: tuple[int, bool]) -> dict[str, Any]:
     base = offsets()[index]
     counts: Counter[str] = Counter()
     rules: Counter[str] = Counter()
+    kinds: Counter[str] = Counter()
     mismatches: list[dict[str, Any]] = []
     for i, case in enumerate(DS.iter_chunk(shape, use, t)):
         valid = A.valid(case)
@@ -126,11 +131,13 @@ def run_chunk(args: tuple[int, bool]) -> dict[str, Any]:
         rules[f"{domain}:{ref['rule']}"] += 1
         if got != ref:
             counts[f"{domain}_mismatch"] += 1
+            why = "+".join(sorted(A.invalid_reasons(case))) or "valid"
+            kinds[f"{why} | oracle {ref['rule']} | production {got['rule']}"] += 1
             if len(mismatches) < 50:
                 mismatches.append(
                     {"case": case.key(), "invalid_reasons": A.invalid_reasons(case), "oracle": ref, "production": got}
                 )
-    return {"counts": counts, "rules": rules, "mismatches": mismatches}
+    return {"counts": counts, "rules": rules, "kinds": kinds, "mismatches": mismatches}
 
 
 _ORACLE: dict[str, tuple[array, list[dict[str, Any]], dict[str, Any]]] = {}
@@ -150,12 +157,14 @@ def main() -> int:
     t0 = time.perf_counter()
     counts: Counter[str] = Counter()
     rules: Counter[str] = Counter()
+    kinds: Counter[str] = Counter()
     mismatches: list[dict[str, Any]] = []
     jobs = [(i, args.all) for i in range(len(DS.chunks()))]
     with ProcessPoolExecutor(args.workers, initializer=_init) as pool:
         for r in pool.map(run_chunk, jobs):
             counts.update(r["counts"])
             rules.update(r["rules"])
+            kinds.update(r["kinds"])
             mismatches += r["mismatches"][: max(0, 200 - len(mismatches))]
     out = {
         "oracle_manifest_sha256": hashlib.sha256((ORACLE / "MANIFEST.json").read_bytes()).hexdigest(),
@@ -164,6 +173,7 @@ def main() -> int:
         "table_version": dt1.TABLE_VERSION,
         "cases_compared": dict(sorted(counts.items())),
         "rules_by_domain": dict(sorted(rules.items())),
+        "mismatches_by_kind": dict(sorted(kinds.items())),
         "mismatches_listed": mismatches,
         "seconds": round(time.perf_counter() - t0, 1),
         "compared_fields": ["rule", "class", "status", "value", "disposition", "question", "reasons", "failure"],

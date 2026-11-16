@@ -205,12 +205,78 @@ def test_identity_conflict_with_an_unavailable_q1_uses_the_witness_field() -> No
 
 
 def test_contradiction_in_sources_has_type_alternatives() -> None:
-    claim, value_set, _ = detect(single("DOI", lk("matched", "conf")))
+    claim, value_set, evidence = detect(single("DOI", lk("matched", "conf")))
     assert claim["class"] == "CONTRADICTION_IN_SOURCES" and claim["rule"] == "D-7"
-    assert [len(a) for a in value_set["alternatives"]] == [1, 1]
+    # each alternative: Stage 02's alternative item and the event of its type
+    assert [len(a) for a in value_set["alternatives"]] == [2, 2]
+    for i, ids in enumerate(value_set["alternatives"]):
+        pointers = sorted(evidence[e]["pointer"] for e in ids)
+        assert pointers[0].startswith("/events/")
+        assert pointers[1] == f"/result/projection/retraction_status/alternatives/{i}"
     assert [a["value"] for a in claim["alternatives"]] == ["expression_of_concern", "retracted"]
     assert CONFLICT[claim["class"]] == "source_conflict" and DISPOSITION[claim["class"]] == "ROUTE_NEEDS_RESOLUTION"
     assert [u["code"] for u in claim["upstream_reasons"]] == ["SOURCE_TYPE_CONFLICT"]
+
+
+def test_a_crossref_assertion_in_a_conflict_is_an_alternative_not_a_failure(tmp_path: Path) -> None:
+    """Independent review finding F1. Real Stage 02 code, SYNTHETIC rows: a Retraction Watch expression of concern and
+    a publisher's Crossref deposit typing the same notice as a retraction give a conflicting status whose conflict
+    group holds a Crossref assertion (``cr-...``), not an event. D-7 takes Stage 02's alternatives: the Crossref value
+    is supported by its alternative item (whose provenance names the deposit), the Retraction Watch value by its item
+    and its event. Before the fix DETECT failed the whole investigation with ADAPTER_INCONSISTENT."""
+    import sys
+
+    from citerift.investigation.adapters import lookup as LK
+    from citerift.retraction.query import Index
+
+    stage02 = str(Path(__file__).resolve().parents[1] / "stage02")
+    sys.path.insert(0, stage02)
+    try:
+        import rde_support as RDE
+    finally:
+        sys.path.remove(stage02)
+    rows = [
+        RDE.row(
+            **{
+                "Record ID": "1",
+                "RetractionNature": "Expression of concern",
+                "RetractionDate": "7/2/2019 0:00",
+                "OriginalPaperDOI": S9.D,
+                "RetractionDOI": "10.5555/n",
+            }
+        )
+    ]
+    deposit = [{"original": S9.D, "updated_by": [{"DOI": "10.5555/n", "type": "retraction", "source": "publisher"}]}]
+    with Index(RDE.build_rows(tmp_path, rows, deposit)) as ix:
+        obs = LK.observe(ix, LK.index_identity(ix, "0" * 64), S9.D, None, 16 * 1024 * 1024)
+    groups = obs["result"]["projection"]["basis"]["conflict_groups"]
+    assert any(str(a).startswith("cr-") for g in groups for a in g["assertions"])
+    inp, blobs = S9.concretize(R.Case("CITED", "DOI", frozenset(), d=("matched", "conf", False)))
+    digest = sha256_hex(canon(obs))
+    blobs[digest] = obs
+    inp.lookup_plan["lookups"][0]["observation"] = digest
+    out = dt1_detector(inp)
+    claim, value_set = out.claims[0]
+    evidence = {e["evidence_id"]: e for e in out.evidence}
+    assert (claim["class"], claim["rule"], claim["status"]) == ("CONTRADICTION_IN_SOURCES", "D-7", "conflicting")
+    assert [a["value"] for a in claim["alternatives"]] == ["expression_of_concern", "retracted"]
+    kinds = [sorted(evidence[e]["pointer"] for e in ids) for ids in value_set["alternatives"]]
+    assert kinds == [
+        ["/events/0", "/result/projection/retraction_status/alternatives/0"],
+        ["/result/projection/retraction_status/alternatives/1"],
+    ]
+    assert obs["result"]["projection"]["retraction_status"]["alternatives"][1]["provenance"][0]["source_id"] == (
+        "crossref"
+    )
+
+
+def test_an_unavailable_q1_side_carries_the_witness_field_even_beside_q2_events() -> None:
+    """S-7.3 read literally (review finding F5): with Q1(DOI) unavailable and Q2 available, the DOI side holds Q2's
+    DOI-reached events and the witness event's identifier field."""
+    claim, value_set, evidence = detect(pair(UN, M, AMB, wp=True, w2=True))
+    assert claim["class"] == "IDENTITY_CONFLICT" and "LOOKUP_PARTIAL" in claim["reasons"]
+    pointers = {evidence[i]["pointer"] for i in value_set["alternatives"][0] if i in evidence}
+    assert any(p.endswith("/original_doi") for p in pointers) and any(p.count("/") == 2 for p in pointers)
 
 
 def test_identity_conflict_outranks_unavailable_and_contradiction() -> None:
@@ -276,6 +342,16 @@ def test_not_found_needs_a_valid_no_record_lookup_with_checked_sources() -> None
     pointers = {evidence[i]["pointer"] for i in value_set["supporting"] if i in evidence}
     assert {"/result", "/result/projection/retraction_status"} <= pointers
     assert DISPOSITION[claim["class"]] == "REPORT_NOT_FOUND"
+    # the same answer naming no checked source is outside the contract: DETECT fails closed (review finding F4)
+    for checked in (None, []):
+        inp, blobs = S9.concretize(single("DOI", NR))
+        obs = blobs[inp.lookup_plan["lookups"][0]["observation"]]
+        obs["result"]["checked_sources"] = checked
+        digest = sha256_hex(canon(obs))
+        blobs[digest] = obs
+        inp.lookup_plan["lookups"][0]["observation"] = digest
+        with pytest.raises(DetectFailure, match="NOT_FOUND names no checked source"):
+            dt1_detector(inp)
 
 
 def test_a_notice_is_never_positive() -> None:

@@ -7,8 +7,9 @@ Every key is queried alone (Q1), and every DOI x PMID pair of one bundle is quer
 pairs NORMALIZE forms), on an index built from the full snapshot, through the Stage 04 bounded lookup
 (``Index.gather_bounded``, 16 MiB). The fixture keeps the Record IDs of every event any of those queries returns
 (the bridge closure is the engine's own), with the same selected fields as the Stage 02 fixture; other columns are
-left empty. The script then builds an index from the fixture alone and checks that every query gives the same
-state, status, value, dates, event identities and record ids as on the full index. Disagreements are written to the
+left empty (Step 9: ``--bundle`` names other previously exposed bundles instead). The script then builds an index
+from the fixture alone and checks that every query gives the same state, status, value, dates, event identities and
+record ids as on the full index. Disagreements are written to the
 manifest and fail the run. No synthetic row is added.
 
 Run (the CSV is the pinned snapshot; the index is built from it by ``citerift.retraction.store.build``):
@@ -118,14 +119,21 @@ def main() -> int:
     ap.add_argument("--index", type=Path, required=True)
     ap.add_argument("--out-csv", type=Path, required=True)
     ap.add_argument("--out-manifest", type=Path, required=True)
+    ap.add_argument(
+        "--bundle",
+        action="append",
+        default=None,
+        help="a bundle (repository-relative) to cover instead of the four VS bundles; repeatable (Step 9 fixture)",
+    )
     args = ap.parse_args()
+    bundles = tuple(args.bundle) if args.bundle else BUNDLES
     receipt = load_receipt()
     check = check_bytes(args.csv, receipt)
     if check.sha256 != receipt.expected_sha256:
         sys.stderr.write("the CSV is not the pinned snapshot\n")
         return 1
 
-    per_bundle = {rel: bundle_keys(rel) for rel in BUNDLES}
+    per_bundle = {rel: bundle_keys(rel) for rel in bundles}
     all_queries = sorted(
         {q for keys in per_bundle.values() for q in queries(keys)}, key=lambda q: (str(q[0]), str(q[1]))
     )
@@ -205,7 +213,13 @@ def main() -> int:
         },
         "synthetic_rows": 0,
         "method": __doc__.split("Run (")[0].strip().replace("\n", " "),
-        "bundles": {rel: per_bundle[rel] for rel in BUNDLES},
+        "bundles": {rel: per_bundle[rel] for rel in bundles},
+        "selection": (
+            "named with --bundle (Step 9): previously exposed design bundles (owner decision D-5), which may be "
+            "retained Stage 03 challenge bundles; the method's bundle sentence describes the Step 8 default only"
+            if args.bundle
+            else "the VS bundles (Step 8 default)"
+        ),
         "queries": len(all_queries),
         "query_states": dict(sorted(states.items())),
         "q1_with_records": single,

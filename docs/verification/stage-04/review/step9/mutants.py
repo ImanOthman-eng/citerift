@@ -8,7 +8,11 @@ Step 9 suites run against it:
   variants, guards), ``tests/stage04/test_step9_b8.py`` and ``tests/stage04/test_step9_real.py`` (real bundles);
 - with ``--differential``, the differential against the frozen oracle on the 244,884 valid cases as well.
 
-A mutant is **caught** when at least one of them fails. Writes ``mutants.json`` beside itself.
+The copy mirrors the repository layout the package resolves at run time (``src/`` beside ``schemas/``, a symbolic
+link to the repository's): without it every suite fails for a reason unrelated to the mutation. A **control** run of
+the unmutated copy goes first and must pass every suite (and the differential, when asked); otherwise the runner stops
+and reports nothing as caught. A mutant is **caught** when at least one suite fails on it while the control passes.
+Writes ``mutants.json`` beside itself.
 
 Run: ``uv run python docs/verification/stage-04/review/step9/mutants.py [--differential]``
 """
@@ -73,7 +77,13 @@ MUTANTS: dict[str, list[tuple[str, str, str]]] = {
     "M13 collapse the two B-8 candidate evidence items": [
         (DET, 'pointer = self.occurrence[key_ev[0]][0] if key_ev else unit["pointer"]', 'pointer = unit["pointer"]')
     ],
+    # Beyond the owner's thirteen: the two independent-review findings fixed in Step 9 (F1, F4).
+    "X01 D-7 alternatives from conflict groups only": [
+        (DET, "if value not in dt1.POSITIVE or i >= len(stated):", "if value not in dt1.POSITIVE or not eids:")
+    ],
+    "X02 NOT_FOUND without checked sources": [(DET, 'if out.rule == "D-16":', "if False:")],
 }
+CONTROL = "M00 control (no mutation)"
 SUITES = (
     "tests/stage04/test_step9_detector.py",
     "tests/stage04/test_step9_b8.py",
@@ -102,13 +112,16 @@ def main() -> int:
     ap.add_argument("--only", default=None, help="run the mutants whose name starts with this")
     args = ap.parse_args()
     results = {}
-    for name, changes in MUTANTS.items():
-        if args.only and not name.startswith(args.only):
+    control: dict[str, object] = {}
+    plan: dict[str, list[tuple[str, str, str]]] = {CONTROL: [], **MUTANTS}
+    for name, changes in plan.items():
+        if args.only and name != CONTROL and not name.startswith(args.only):
             continue
         t0 = time.perf_counter()
         with tempfile.TemporaryDirectory() as d:
             src = Path(d) / "src"
             shutil.copytree(REPO / "src", src, ignore=shutil.ignore_patterns("__pycache__"))
+            (Path(d) / "schemas").symlink_to(REPO / "schemas", target_is_directory=True)
             mutate(src, changes)
             probe, _ = run(
                 [
@@ -141,12 +154,26 @@ def main() -> int:
                 row["differential"] = {"exit": code, "cases": diff["cases_compared"] if diff else out[-300:]}
                 if code != 0:
                     failed.append("differential")
+        row["seconds"] = round(time.perf_counter() - t0, 1)
+        if name == CONTROL:
+            row["passed"] = not failed
+            control = row
+            print(name, "PASSED" if not failed else "FAILED", failed, flush=True)
+            if failed:
+                raise SystemExit("the unmutated control fails: no mutant result would mean anything")
+            continue
         row["caught_by"] = failed
         row["caught"] = bool(failed)
-        row["seconds"] = round(time.perf_counter() - t0, 1)
         results[name] = row
         print(name, "CAUGHT" if failed else "SURVIVED", failed, flush=True)
-    summary = {"mutants": len(results), "caught": sum(1 for r in results.values() if r["caught"]), "results": results}
+    summary = {
+        "control": control,
+        "mutants": len(results),
+        "caught": sum(1 for r in results.values() if r["caught"]),
+        "owner_mutants": sum(1 for n in results if n.startswith("M")),
+        "owner_mutants_caught": sum(1 for n, r in results.items() if n.startswith("M") and r["caught"]),
+        "results": results,
+    }
     if not args.only:
         (Path(__file__).parent / "mutants.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     print(summary["caught"], "of", summary["mutants"], "caught")
