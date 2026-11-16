@@ -144,6 +144,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--all", action="store_true", help="also run the invalid cases")
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--out", type=Path, default=None, help="write the result here instead of beside this script")
     args = ap.parse_args()
     _, _, manifest = oracle()
     t0 = time.perf_counter()
@@ -168,7 +169,8 @@ def main() -> int:
         "compared_fields": ["rule", "class", "status", "value", "disposition", "question", "reasons", "failure"],
     }
     name = "differential_all.json" if args.all else "differential.json"
-    (Path(__file__).parent / name).write_text(json.dumps(out, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    target = args.out or Path(__file__).parent / name
+    target.write_text(json.dumps(out, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(out["cases_compared"]), out["seconds"], "s")
     return 0 if not counts.get("valid_mismatch") else 1
 

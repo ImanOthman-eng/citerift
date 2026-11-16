@@ -198,6 +198,14 @@ its state is not `unavailable`.
 - Codomain: evidence items `ev = ⟨evidence_id, obs, pointer, kind, refs⟩` with
   `evidence_id = H("citerift-evidence/1", obs, pointer, kind)` (owner decision D-051: two kinds at one pointer are
   two items; the same kind at the same pointer is the same item).
+- Candidate-scoped evidence (Step 9, B-8). For a candidate `c` of unit `u` with key occurrences `O(c)` (the
+  candidate-role occurrences of `keys(c)` in `u`, indexed by their position `j` in the extraction), the `work_candidate`
+  pointer is `π(c) = /identifiers/min O(c)` when `keys(c) ≠ ∅` and `/units/i(u)` otherwise. *Injectivity:* for
+  distinct candidates `c ≠ c'` of one extraction, `π(c) ≠ π(c')`. If `u(c) ≠ u(c')`, the occurrence sets are disjoint
+  (an occurrence has one `unit_id`) and unit pointers differ. If `u(c) = u(c')`, both are keyed (a `NONE` candidate is
+  alone in its unit, S-6.5) and S-6.5 gives them disjoint key sets, so `O(c) ∩ O(c') = ∅`. Hence the `work_candidate`
+  ids of distinct candidates differ, and the same candidate always gets the same id (replay). A `coherence` item is at
+  `/query` of `Q2(c)`, a function of the pair `(d, p)` and of its lookups, so equal pointers carry equal values.
 - Evidence set (owner decision D-047): `S(claim) = ⟨sup, con, alt_1, …, alt_k⟩`, each a strictly ascending list of
   evidence ids (so unique and canonical), stored as one content-addressed blob `ES = H_blob(canon(S))`; the claim
   record holds `ES`, `|sup|`, `|con|` and `|alt_i|`.

@@ -192,7 +192,13 @@ artifact digest.
 
 Evidence kind (owner decision D-051). Two kinds of evidence at one pointer of one observation (for example a unit and
 an identifier occurrence at `/units/0`) are two evidence items with two ids; the same kind at the same pointer is the
-same item. Evidence set (owner decision D-047). A claim's supporting ids, contradicting ids and the ids supporting
+same item. Where DETECT puts the candidate-scoped kinds (Step 9, finding B-8 of Step 8): a `work_candidate` item is
+at the first identifier occurrence of the candidate's keys in the extraction (`/identifiers/j`), or at the unit
+(`/units/i`) for a `NONE` candidate, and a `coherence` item at `/query` of the candidate's Q2 lookup observation. The
+candidates of one unit have disjoint keys and an occurrence belongs to one unit, so two distinct candidates never
+share such a pointer (two `CO_REPORTED_MULTIPLE` candidates at the unit's pointer would have shared one id with two
+values); D-051 is unchanged, and a detector that would give one id two different items fails DETECT with
+`ADAPTER_INCONSISTENT` (`review/step9/STEP9_CLOSURE.md`, B-8). Evidence set (owner decision D-047). A claim's supporting ids, contradicting ids and the ids supporting
 each conflict alternative are one content-addressed blob (`urn:citerift:schema:investigation:v1:evidence-set`): each
 list sorted ascending, ids unique, nothing truncated, so a set has one canonical form and one digest. The claim
 record names the set by digest and carries only the list lengths; `claim_id` binds the digest, so it binds the exact
