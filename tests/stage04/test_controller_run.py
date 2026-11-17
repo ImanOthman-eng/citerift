@@ -22,6 +22,7 @@ from controller_support import (
     journal,
     kinds,
     monotone,
+    report_outcome,
     run_once,
 )
 
@@ -49,7 +50,7 @@ def test_happy_path_runs_the_fixed_plan_in_order(tmp_path: Path, live: bool) -> 
     root, key = create(tmp_path, live=live, clock=clock)
     plan = Plan()
     st = run_once(root, key, plan, env_for(live), clock)
-    assert st.lifecycle == "COMPLETED" and st.outcome == "completed"
+    assert st.lifecycle == "COMPLETED" and report_outcome(root, key) == "completed"
     assert [s for s, _ in plan.calls] == list(STEPS)  # each step once, in plan order, no optional step
     recs = journal(root, key)
     started = [r["step"] for r in recs if r["kind"] == "step_started"]

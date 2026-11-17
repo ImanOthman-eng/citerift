@@ -39,6 +39,9 @@ class StepRequest:
     read_bytes: Callable[[str], bytes]  # the verified bytes of a published blob, raw blobs included (IF-7)
     now: datetime
     investigation: Mapping[str, str]  # investigation_key and investigation_id, which the report names (D-054)
+    # The input identity values the step was keyed with (SPEC 10.3), so an adapter can bind what it observes to the
+    # key (LOOKUP: the verified index identity must equal the keyed one, D-062). None outside the controller.
+    identities: Mapping[str, Any] | None = None
 
 
 @dataclass(frozen=True)

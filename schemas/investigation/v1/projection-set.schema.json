@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:projection-set",
   "title": "CITERIFT Stage 04 projection set, version 1",
-  "description": "The v1 projections of one report (owner decision D-047, SPEC 11.2): a content-addressed blob named by report_recorded.projection_set. The digests are sorted ascending and unique; report_recorded.projection_count equals their number; every digest names a published blob. Checked by Investigation Memory.",
+  "description": "The stored v1 projection bodies of one report (owner decision D-047, SPEC 11.2): a content-addressed blob named by report_recorded.projection_set. The digests are sorted ascending and unique; report_recorded.projection_count equals their number; every digest names a published blob. Checked by Investigation Memory.",
   "x-citerift-version": "1.0.0",
   "type": "object",
   "additionalProperties": false,
@@ -20,7 +20,7 @@
       "const": "1.0.0"
     },
     "projections": {
-      "description": "Digests of the v1 investigation records (schemas/contracts/v1, unchanged), one per work with a positive claim.",
+      "description": "SHA-256 digests of the stored v1 projection bodies, one per distinct work (Stage 02 identity anchor) with a positive claim. A body is a v1 investigation record (schemas/contracts/v1, unchanged) without created_at; each digest is the SHA-256 of the canonical encoding of the body blob it names. created_at (the at of investigation_created) is added only when a record is exported (SPEC 11.2), so an exported record does not hash to its digest; the export names each record file by this body digest.",
       "type": "array",
       "items": {
         "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"

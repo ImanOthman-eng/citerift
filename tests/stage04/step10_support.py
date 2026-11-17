@@ -3,7 +3,9 @@ driven in process, and journal forgeries that recompute the hash chain (and, whe
 content digest), as an adversary with write access to the memory root could.
 
 Bundles and indexes are those of the Step 8 and Step 9 tests (previously exposed design cases, SPEC S-7.4; owner
-decision D-5): no Stage 03 evaluation or holdout bundle, and no live capture. Every socket is refused while an
+decision D-5): no Stage 04 holdout and no live capture. Stage 03 challenge, reserve and holdout bundles (some with
+locked Stage 03 labels) are reused here as design-exposed Stage 04 development data and are listed in the Stage 04
+exposure manifest (Step 12, E-11). Every socket is refused while an
 investigation runs (``step8_support.NoNetwork``).
 """
 
@@ -22,7 +24,7 @@ import pytest
 import step8_support as S8
 from test_step9_real import AR_BCAS3, AR_COCHRANE, EN_CONCERN, _build_step9_index
 
-from citerift.investigation import cli, ids
+from citerift.investigation import cli, ids, workflow
 from citerift.investigation import operations as ops
 from citerift.investigation.canonical import canon, loads_record, sha256_hex
 from citerift.investigation.errors import CorruptInvestigation
@@ -153,12 +155,24 @@ def forge_report(
     try:
         with InvestigationMemory.open(root, key, writable=False) as mem:
             digest = mem.view.content_digest()
+            f = mem.view
+            # VERIFY's step key reads ASSEMBLE's outputs: re-derive it and its manifest, so the forged journal is
+            # consistent everywhere a forger can make it so (Step 12, B-07: every command checks every committed
+            # step manifest) and only the re-derivation of the report can refuse it.
+            ends = [r for r in recs[verify_at:] if r["kind"] == "step_succeeded" and r["step"] == "VERIFY"]
+            old_manifest = json.loads((root / key / "blobs" / ends[-1]["payload"]["outputs"][-1]).read_bytes())
+            step_key = workflow.step_key(f, "VERIFY", old_manifest["identities"])
+            new_manifest = publish(workflow.manifest(f, "VERIFY", step_key, old_manifest["identities"]))
     except CorruptInvestigation:
         rewrite(root, key, recs)
         return False
     for r in recs[verify_at:]:
         if r["kind"] == "verification_recorded":
             r["payload"]["content_digest"] = digest
+        if r.get("step") == "VERIFY" and "step_key" in r["payload"]:
+            r["payload"]["step_key"] = step_key
+        if r["kind"] == "step_succeeded" and r["step"] == "VERIFY":
+            r["payload"]["outputs"] = [*r["payload"]["outputs"][:-1], new_manifest]
     rewrite(root, key, recs)
     return True
 

@@ -22,6 +22,10 @@ session, or a killed descendant, that is still alive after the sweep is a surviv
 supervision failure (fail closed). A child that exits on its own is swept the same way: anything it left in its
 session is killed, and it is a supervision failure too.
 
+On a normal exit the leader is detected without being reaped (``pidfd`` poll, or ``waitid`` with ``WNOWAIT``), so
+its zombie still reserves its pid, session id and group id while the session is read and killed; it is reaped only
+after that (Step 12, B-10/SD-03).
+
 Limit (stated in the review): a descendant that double-forks and calls ``setsid`` after its intermediate parent has
 exited has neither the session nor a parent link to the child, so ``/proc`` cannot attribute it without cgroups. The
 live ACQUIRE child runs only Stage 03 capture code, which starts no process.
@@ -31,6 +35,7 @@ from __future__ import annotations
 
 import contextlib
 import os
+import select
 import signal
 import subprocess
 import time
@@ -148,23 +153,49 @@ def supervise(
             close_fds=True,
         )
         try:
-            returncode: int | None = proc.wait(timeout=max(0.0, t_acq_s - (clock() - t0)))
+            exited = _exited_unreaped(proc.pid, t0 + t_acq_s, clock)
             elapsed = clock() - t0
-        except subprocess.TimeoutExpired:
-            returncode, elapsed = None, clock() - t0
         except BaseException:
             _terminate(proc, clock)
             raise
-    if returncode is not None:
+    if exited:
         start = clock()
         left = {p: s for p, s in tree(proc.pid).items() if p != proc.pid}
         _kill(left)
+        with contextlib.suppress(ProcessLookupError, PermissionError):
+            os.killpg(proc.pid, signal.SIGKILL)  # the unreaped leader still reserves the group id
+        returncode = proc.wait()  # now reaped
         survivors = _sweep(left, proc.pid, clock)
         return Supervised(
             returncode, False, int(elapsed * 1000), None, None, (clock() - start) * 1000, tuple(left), survivors
         )
     killed, kill_ms, reap_ms, sweep_ms, survivors = _terminate(proc, clock)
     return Supervised(None, True, int(elapsed * 1000), kill_ms, reap_ms, sweep_ms, killed, survivors)
+
+
+def _exited_unreaped(pid: int, deadline: float, clock: Callable[[], float]) -> bool:
+    """Whether the child exited before ``deadline`` (``clock`` time), leaving it unreaped (a zombie) either way."""
+    try:
+        fd = os.pidfd_open(pid)
+    except (AttributeError, OSError):
+        fd = None
+    if fd is not None:
+        try:
+            poller = select.poll()
+            poller.register(fd, select.POLLIN)
+            while True:
+                left = deadline - clock()
+                if left <= 0:
+                    return False
+                if poller.poll(max(1, min(int(left * 1000), 1000))):
+                    return True
+        finally:
+            os.close(fd)
+    while clock() < deadline:  # no pidfd: poll without reaping
+        if os.waitid(os.P_PID, pid, os.WEXITED | os.WNOHANG | os.WNOWAIT) is not None:
+            return True
+        time.sleep(POLL_S)
+    return False
 
 
 def _terminate(

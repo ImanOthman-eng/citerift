@@ -378,7 +378,7 @@ def test_stale_investigation_is_terminal_for_every_later_run(tmp_path: Path) -> 
         while ctl.view.step_state("NORMALIZE") != "succeeded":
             ctl.step()
     env = Env()
-    env.values["stage04"]["engine_version"] = "0.2.0"
+    env.values["stage04"]["engine_version"] = "9.9.9"  # any other engine version
     assert run_once(root, key, Plan(), env, clock).lifecycle == "STALE"
     before = journal(root, key)
     for e in (Env(), env):
@@ -604,7 +604,12 @@ def test_disk_full_while_publishing_a_blob_is_storage_error(tmp_path: Path, monk
 def test_adapter_output_equal_to_the_step_manifest_is_refused(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """F3: the manifest is the controller's last output; an adapter cannot place it elsewhere."""
     fixed = {"manifest": "forged"}
-    monkeypatch.setattr(workflow, "manifest", lambda *a, **k: dict(fixed))
+    real = workflow.manifest
+    # Only NORMALIZE's manifest is the forged value: since Step 12 (B-07) the staleness rule checks every committed
+    # step manifest, so a forged VALIDATE manifest would already be refused as corruption before NORMALIZE starts.
+    monkeypatch.setattr(
+        workflow, "manifest", lambda f, step, *a, **k: dict(fixed) if step == "NORMALIZE" else real(f, step, *a, **k)
+    )
 
     def sneaky(req: StepRequest) -> StepResult:
         r = ok_result(req, ())

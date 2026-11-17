@@ -67,6 +67,15 @@ def chunks(part: str, items: list[Any]) -> list[dict[str, Any]]:
     return out
 
 
+def outcome(extraction_status: str, *, open_questions: bool, lookup_unavailable: bool) -> str:
+    """S-9.7, the one outcome rule (Step 12, I-2): ``partial`` when the extraction is partial, a lookup was
+    unavailable (a ``LOOKUP_UNAVAILABLE`` claim) or a question is open; ``completed`` otherwise. Every outcome a user
+    sees (report, ``show``, ``verify``, ``replay``, export and exit codes) is the one ASSEMBLE recorded with it."""
+    if extraction_status not in ("complete", "partial"):
+        raise ValueError(f"extraction status {extraction_status!r}")
+    return "partial" if extraction_status == "partial" or open_questions or lookup_unavailable else "completed"
+
+
 def build(
     header: Mapping[str, Any],
     claims: Iterable[Mapping[str, Any]],
@@ -161,6 +170,8 @@ def _walk(manifest: Mapping[str, Any], read: Read) -> dict[str, Any]:
             raise _Bad("claims are not in the canonical order (unit offset, candidate keys, claim id)")
         last = key
         c = e["claim"]
+        if c["claim_id"] in claims:  # Step 12, B-08: exactly the committed claims, each once
+            raise _Bad(f"claim {c['claim_id']} is listed twice")
         claims[c["claim_id"]] = {"claim": c, "decision": e["decision"], "question": e["question"]}
         by_class[c["class"]] = by_class.get(c["class"], 0) + 1
         questions += e["question"] is not None

@@ -24,7 +24,9 @@ timestamp; ``body_problems`` checks it with a fixed timestamp and ``record_probl
   claim's assertion is identical; when they agree on status and value but differ in provenance, that value with the
   union of their provenance; otherwise ``uncertain`` with value null and a reason (never ``conflicting``: different
   lookups of one work are not sources that disagree);
-- ``subject_paper.retraction_date``: the deciding assertion when identical across contributing claims, else omitted;
+- ``subject_paper.retraction_date``: the deciding assertion when every contributing claim states the same date; omitted
+  with no lossy point when none states one (a work that is not retracted has no retraction date); omitted with
+  ``V1_DATE_NOT_UNIFORM`` when they state different dates or only some state one (Step 12, UF-01);
 - ``citations``: one per contributing claim (its unit), in report claim order (``report.claim_key``, whatever the
   order of ``entries``), with the revision's language, title,
   page id, revision id and timestamp; the cited keys as identifiers; provenance names the Stage 03 capture (API URL,
@@ -33,7 +35,9 @@ timestamp; ``body_problems`` checks it with a fixed timestamp and ``record_probl
   event type (CP-2), dated by Stage 02's notice date when its effective precision is a day; ordered by time, then
   event id;
 - ``status``: the report outcome (S-9.7): ``completed`` or ``partial``;
-- ``limitations``: the report's limitation statements, then the work's own lossy points, as ``CODE: text``;
+- ``limitations``: the report's limitation statements, then the work's own lossy points, as ``CODE: text``; the
+  report's statements are about the whole article revision (``V1_ARTICLE_LEVEL_STATEMENTS``), and the v1 events do not
+  state how each event was linked to the work (``V1_EVENT_LINKS_NOT_STATED``; Step 12, UF-08, UF-09);
 - ``assessments``: empty (Stage 06); ``synthetic``: true only when a checked source of the work says so.
 """
 
@@ -63,12 +67,16 @@ LOSSY = {
     "not v1 events; they stay in the Stage 04 report.",
     "V1_STATUS_NOT_UNIFORM": "the contributing claims of this work have different Stage 02 statuses; v1 states "
     "uncertain and the Stage 04 report keeps each claim.",
-    "V1_DATE_NOT_UNIFORM": "the contributing claims of this work have different Stage 02 retraction dates; v1 states "
-    "none and the Stage 04 report keeps each.",
+    "V1_DATE_NOT_UNIFORM": "the contributing claims of this work state different Stage 02 retraction dates, or only "
+    "some state one; v1 states none and the Stage 04 report keeps each.",
     "V1_SECOND_IDENTIFIER_NOT_UNIQUE": "the Stage 02 events of this work state more than one {scheme}; v1 holds only "
     "the anchor identifier.",
     "V1_CLASSES_PER_WORK": "Stage 04 claim classes, rules, reasons and evidence chains of this work are in the "
     "Stage 04 report, not in v1.",
+    "V1_ARTICLE_LEVEL_STATEMENTS": "the report limitations above describe the whole article revision, not only this "
+    "work; they are repeated in each of its v1 records.",
+    "V1_EVENT_LINKS_NOT_STATED": "v1 events do not say how each event was linked to this work (Stage 02 matched_by and "
+    "linked_via); the Stage 04 report keeps them.",
 }
 
 
@@ -184,6 +192,8 @@ def build_bodies(
         classes = sorted({e["claim"]["class"] for e, _ in members})
         positive.append({"work": dict(work), "classes": classes, "claim_ids": claim_ids})
         lossy: list[str] = ["V1_ONE_RECORD_PER_WORK", "V1_CLASSES_PER_WORK"]
+        if limitations:
+            lossy.append("V1_ARTICLE_LEVEL_STATEMENTS")
         scheme, value = next(iter(work.items()))
         other = "pmid" if scheme == "doi" else "doi"
         events: dict[tuple[str, str], tuple[Mapping[str, Any], list[dict[str, Any]]]] = {}
@@ -215,7 +225,7 @@ def build_bodies(
         dates = [obs["result"]["projection"].get("retraction_date") for _, obs in members]
         if all(d is not None and canon(d) == canon(dates[0]) for d in dates):
             paper["retraction_date"] = copy.deepcopy(dates[0])
-        else:
+        elif any(d is not None for d in dates):
             lossy.append("V1_DATE_NOT_UNIFORM")
         v1_events = []
         omitted = 0
@@ -226,7 +236,7 @@ def build_bodies(
             else:
                 v1_events.append((mapped["at"], ev["event_id"], mapped))
         if v1_events:
-            lossy.append("V1_EVENT_DATE_IS_A_DAY")
+            lossy += ["V1_EVENT_DATE_IS_A_DAY", "V1_EVENT_LINKS_NOT_STATED"]
         if omitted:
             lossy.append("V1_EVENTS_WITHOUT_DAY_OMITTED")
         citations = []

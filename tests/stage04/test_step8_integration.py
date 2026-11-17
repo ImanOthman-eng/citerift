@@ -30,6 +30,7 @@ from citerift.investigation.schemas import (
     CANDIDATE_INPUTS,
     LOOKUP_OBSERVATION,
     LOOKUP_PLAN,
+    REPORT,
     problems,
 )
 from citerift.retraction.query import Index
@@ -99,7 +100,7 @@ def test_obokata_ar_keeps_the_identity_conflict_open(ar: Case, offline: Any) -> 
     """VS-2 shape: the coherent pair is a positive finding, the nature12969 / PMID 24476881 pair is a conflict whose
     question stays open, and the investigation ends NEEDS_RESOLUTION after VERIFY passes on real content."""
     assert ar.result.status == "NEEDS_RESOLUTION"
-    assert ar.result.explanation["outcome"] == "partial"
+    assert ar.blob(REPORT)["outcome"] == "partial"
     claims = ar.claims()
     assert claims[("10.1038/nature12968", "24476887")]["class"] == "RETRACTED_WORK_CITED"
     conflict = claims[("10.1038/nature12969", "24476881")]
@@ -289,7 +290,7 @@ def test_lookup_overflow_is_unavailable_all_or_nothing(tmp_path: Path, index: Pa
     claims = case.claims()
     assert claims[("10.1016/s0140-6736(97)11096-0", "9500320")]["class"] == "LOOKUP_UNAVAILABLE"
     assert "RETRACTED_WORK_CITED" not in {c["class"] for c in claims.values()}
-    assert case.result.status == "COMPLETED" and case.result.explanation["outcome"] == "partial"
+    assert case.result.status == "COMPLETED" and case.blob(REPORT)["outcome"] == "partial"
 
 
 def test_corrupt_index_fails_lookup_with_the_stage02_code(tmp_path: Path, index: Path, offline: Any) -> None:

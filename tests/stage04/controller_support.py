@@ -9,6 +9,7 @@ whose outcome for an attempt is scripted: ``ok`` (default), a ``Failed`` or ``De
 from __future__ import annotations
 
 import copy
+import json
 import os
 from collections.abc import Callable, Mapping
 from datetime import UTC, datetime, timedelta
@@ -63,7 +64,7 @@ class Env:
         self.values: dict[str, Any] = {
             "request_key": {"capture_sha256": CAPTURE},
             "extraction": {"extractor": "SYNTHETIC-1", "profile": h("profile"), "normalizer": "n-1"},
-            "index": {"index_sha256": h("index"), "format": "1"},
+            "index": {"artifact_digest": h("index"), "format": "1"},
             "stage04": dict(STAGE04),
             "config": {"plan_version": "plan-1", "budgets": {"a_max": 3, "f_max": 6}},
         }
@@ -345,7 +346,9 @@ def synthetic_report(
                 "snapshot_id": SNAPSHOT,
                 "policy_version": "citerift-rde-policy/1.2.0",
                 "lookup_schema_version": "1.0.0",
-                "index_sha256": h("index"),
+                "artifact_digest": h("index"),
+                "semantic_digest": h("index-semantic"),
+                "export_lines": 13,
             },
             "stage04": {**STAGE04},
             "config": copy.deepcopy(dict(request["config"])),
@@ -433,6 +436,15 @@ class Session:
 def run_once(root: Path, key: str, plan: Plan, env: Env, clock: StepClock) -> Any:
     with Session(root, key, plan, env, clock) as ctl:
         return ctl.run()
+
+
+def report_outcome(root: Path, key: str) -> str | None:
+    """The outcome the committed report states (S-9.7; the one outcome since Step 12, I-2), or None without a report."""
+    with InvestigationMemory.open(root, key, writable=False) as mem:
+        for rec in mem.view.committed_content():
+            if rec["kind"] == "report_recorded":
+                return str(json.loads(mem.blobs.get(rec["payload"]["report"]))["outcome"])
+    return None
 
 
 def journal(root: Path, key: str) -> list[dict[str, Any]]:

@@ -751,6 +751,7 @@ class Folder:
             elif r["kind"] == "report_recorded":
                 out.update((p["report"], p["projection_set"]))
                 out.update(self._projections(p["projection_set"]))
+                out.update(self._report_chunks(p["report"]))
             elif r["kind"] == "step_succeeded":
                 out.update(p["outputs"])
         for logical in self.expansions.values():
@@ -776,6 +777,22 @@ class Folder:
             return []
         out = [manifest["artifact_set"]["blob"]]
         return out + [d for d, _ in retained.raw_references(manifest, value)]
+
+    def _report_chunks(self, digest: str) -> list[str]:
+        """The chunk digests a D-054 report manifest names (Step 12, B-09); empty when it cannot be read here."""
+        if self.blob_read is None:
+            return []
+        try:
+            value = self.blob_read(digest)
+        except (BlobError, CanonError):
+            return []
+        parts = value.get("components") if isinstance(value, dict) else None
+        out: list[str] = []
+        for comp in parts.values() if isinstance(parts, dict) else ():
+            for ref in comp.get("chunks", []) if isinstance(comp, dict) else ():
+                if isinstance(ref, dict) and isinstance(ref.get("chunk"), str):
+                    out.append(ref["chunk"])
+        return out
 
     def _projections(self, digest: str) -> list[str]:
         """The projection digests of a set, for ``referenced_blobs``; empty when the set cannot be read here."""

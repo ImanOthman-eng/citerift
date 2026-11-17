@@ -21,6 +21,7 @@ from controller_support import (
     env_for,
     h,
     journal,
+    report_outcome,
     run_once,
 )
 
@@ -67,7 +68,8 @@ def test_conflict_routes_to_needs_resolution(tmp_path: Path, cls: str, qkind: st
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
     st = run_once(root, key, Plan(classes=((cls, "c1"),)), Env(), clock)
-    assert st.lifecycle == "NEEDS_RESOLUTION" and st.outcome == "partial" and st.next.action == "terminal"
+    assert st.lifecycle == "NEEDS_RESOLUTION" and st.next.action == "terminal"
+    assert report_outcome(root, key) == "partial"
     claims = _payloads(root, key, "claim_recorded")
     assert [c["class"] for c in claims] == [cls]
     cid = claims[0]["claim_id"]
@@ -122,7 +124,7 @@ def test_lookup_unavailable_completes_with_outcome_partial(tmp_path: Path) -> No
     clock = StepClock()
     root, key = create(tmp_path, clock=clock)
     st = run_once(root, key, Plan(classes=(("LOOKUP_UNAVAILABLE", "c1"),)), Env(), clock)
-    assert (st.lifecycle, st.outcome) == ("COMPLETED", "partial")
+    assert (st.lifecycle, report_outcome(root, key)) == ("COMPLETED", "partial")
 
 
 def test_unknown_claim_class_is_a_decision_table_gap(tmp_path: Path) -> None:
@@ -228,7 +230,7 @@ CHANGES: dict[str, tuple[str, Any]] = {
     "Stage 03 extractor": ("extraction", lambda e: e.values["extraction"].__setitem__("extractor", "SYNTHETIC-2")),
     "Stage 03 profile": ("extraction", lambda e: e.values["extraction"].__setitem__("profile", "2" * 64)),
     "Stage 03 config": ("extraction", lambda e: e.values["extraction"].__setitem__("normalizer", "n-2")),
-    "Stage 02 index": ("index", lambda e: e.values["index"].__setitem__("index_sha256", "3" * 64)),
+    "Stage 02 index": ("index", lambda e: e.values["index"].__setitem__("artifact_digest", "3" * 64)),
     "Stage 04 schema version": ("stage04", lambda e: e.values["stage04"].__setitem__("schema_version", "1.0.1")),
     "decision table version": ("stage04", lambda e: e.values["stage04"].__setitem__("table_version", "dt-2")),
     "effective config": ("config", lambda e: e.values["config"].__setitem__("extra", True)),
@@ -282,7 +284,7 @@ def test_identity_change_in_the_middle_of_a_run_stops_it(tmp_path: Path) -> None
     def changes_index(req: StepRequest) -> StepResult:
         from controller_support import ok_result
 
-        env.values["index"]["index_sha256"] = "4" * 64  # the index is rebuilt while LOOKUP's output is committed
+        env.values["index"]["artifact_digest"] = "4" * 64  # the index is rebuilt while LOOKUP's output is committed
         return ok_result(req, ())
 
     plan = Plan({("NORMALIZE", 1): "ok", ("LOOKUP", 1): changes_index})

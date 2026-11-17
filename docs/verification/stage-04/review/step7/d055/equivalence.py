@@ -123,11 +123,14 @@ def logical_view(name: str) -> dict[str, Any]:
             ]
             evidence: dict[str, Any] = {}
             claims, decisions, questions, observations, lookups = [], [], [], [], []
+            outcome = None
             for rec in f.committed_content():
                 kind, p = rec["kind"], rec["payload"]
                 if kind == "evidence_batch_recorded":
                     for item in json.loads(mem.blobs.get(p["batch"]))["items"]:
                         evidence[item["evidence_id"]] = item
+                elif kind == "report_recorded":  # Step 12 (I-2): the outcome is the report's
+                    outcome = json.loads(mem.blobs.get(p["report"]))["outcome"]
                 elif kind == "claim_recorded":
                     claims.append(p)
                 elif kind == "decision_recorded":
@@ -140,7 +143,7 @@ def logical_view(name: str) -> dict[str, Any]:
                     observations.append(p)
     view = {
         "lifecycle": st.lifecycle,
-        "outcome": st.outcome,
+        "outcome": outcome,
         "failures": failure,
         "evidence": [evidence[k] for k in sorted(evidence)],
         "claims": sorted(claims, key=_canon),

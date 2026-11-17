@@ -21,7 +21,7 @@ from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
 SUBJECT = "wikipedia_article_revision"
-STAGE04 = {"engine_version": "0.1.0", "table_version": "dt-1", "plan_version": "plan-1", "schema_version": "2.0.0"}
+STAGE04 = {"engine_version": "0.2.0", "table_version": "dt-1", "plan_version": "plan-1", "schema_version": "3.0.0"}
 CAPTURE_BYTES = b"SYNTHETIC capture.json"
 CAPTURE = hashlib.sha256(CAPTURE_BYTES).hexdigest()
 SOURCE_BYTES = b"SYNTHETIC source text"

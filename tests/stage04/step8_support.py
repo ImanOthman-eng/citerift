@@ -19,6 +19,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import shutil
 import socket
 from collections.abc import Mapping
 from pathlib import Path
@@ -32,13 +33,14 @@ from citerift.investigation.controller import RunResult, open_controller, run_in
 from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 from citerift.retraction.source import load_receipt, parse_receipt
-from citerift.retraction.store import build
+from citerift.retraction.store import build, manifest_path_for
 from citerift.wiki.bundle import open_bundle
 
 REPO = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "step8"
 RW_MANIFEST = json.loads((FIXTURES / "rw_subset.json").read_text(encoding="utf-8"))
 RW_DATA = (FIXTURES / "rw_subset.csv").read_bytes()
+RW_FEWER = b"\n".join(RW_DATA.rstrip(b"\r\n").split(b"\n")[:-1]) + b"\n"  # the subset without its last record
 
 AR_OBOKATA = REPO / "tests/stage03/fixtures/observed/ar-76190003"  # VS-2
 EN_OBOKATA = REPO / "tests/stage03/fixtures/observed/en-1372543632"  # VS-3
@@ -47,20 +49,28 @@ SUBJECT = "wikipedia_article_revision"
 DETECTOR_IDENTITY = "SYNTHETIC-test-detector/1 (not dt-1)"
 
 
-def build_index(tmp: Path) -> Path:
-    """The Stage 02 index of the attributed subset (the receipt is the pinned one, re-pointed at the subset)."""
+def build_index(tmp: Path, data: bytes | None = None) -> Path:
+    """The Stage 02 index of the attributed subset (the receipt is the pinned one, re-pointed at the subset), or of
+    ``data`` (``RW_FEWER``: a canonically different index, Step 12 D-062 tests)."""
+    data = RW_DATA if data is None else data
     tmp.mkdir(parents=True, exist_ok=True)
     path = tmp / RW_MANIFEST["fixture"]
-    path.write_bytes(RW_DATA)
+    path.write_bytes(data)
     fields = load_receipt().to_json()
     fields.update(
         path=RW_MANIFEST["fixture"],
-        expected_bytes=len(RW_DATA),
-        expected_sha256=hashlib.sha256(RW_DATA).hexdigest(),
-        git_blob_sha1=hashlib.sha1(f"blob {len(RW_DATA)}\0".encode() + RW_DATA, usedforsecurity=False).hexdigest(),
+        expected_bytes=len(data),
+        expected_sha256=hashlib.sha256(data).hexdigest(),
+        git_blob_sha1=hashlib.sha1(f"blob {len(data)}\0".encode() + data, usedforsecurity=False).hexdigest(),
         attribution=RW_MANIFEST["attribution"],
     )
     return build(path, parse_receipt(fields), tmp / "index").index_path
+
+
+def replace_index(index: Path, other: Path) -> None:
+    """Put ``other`` (and its build manifest) at ``index``'s path."""
+    shutil.copyfile(other, index)
+    shutil.copyfile(manifest_path_for(other), manifest_path_for(index))
 
 
 def memory_root(tmp: Path) -> Path:

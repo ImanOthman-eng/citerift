@@ -120,8 +120,15 @@ support (`policy.reduce`, rule 7f).
 - S-3.1 The Stage 02 adapter records, for every query, the full `Evidence` events (event id, `row_sha256`,
   `matched_by`, `linked_via`, `original_doi`, `original_pmid`, `event_type`, `flags`), the rendered result, the
   projection and the `evidence_digest`. Paging is never relied on.
-- S-3.2 Index identity is recorded once per LOOKUP attempt: `snapshot_id`, `policy_version`, lookup-result schema
-  version, and the SHA-256 of the index file.
+- S-3.2 Index identity is recorded once per LOOKUP attempt (owner decision D-062, Step 12): `snapshot_id`,
+  `policy_version`, lookup-result schema version and the Stage 02 canonical `artifact_digest`, with `semantic_digest`
+  and `export_lines` as consistency metadata. It is accepted only after Stage 02's own checks prove it from the content
+  (integrity and structure, digests recomputed and compared with the stored metadata, every derived table recomputed,
+  the build manifest beside the index); the SQLite file bytes are not part of it, so a byte-different but canonically
+  equal rebuild is the same input. The file's stat fingerprint and SHA-256 remain an operational guard only: the file
+  must not change during one LOOKUP attempt. A verified identity may be reused within one process while the file's
+  stat fingerprint (device, inode, size, `mtime_ns`, `ctime_ns`) is unchanged; never across processes. Recorded paths
+  are operational locators (`--index`, `--bundle`); they enter no scientific digest (Step 12, A11-6).
 
 ## 4. Root and child identities (owner decision D-4)
 
@@ -378,7 +385,7 @@ order used here; the mapping of every plan rule is in `review/step3/STEP3_ADVERS
 | `UNRESOLVED_IDENTITY` | abstention: one key names several works, the supporting PMID may name the notice, or the only support is bridged | `uncertain` | null |
 | `UNRESOLVED_IDENTIFIER` | abstention: an identifier of the unit is unconfirmed, malformed or of unresolved role | `uncertain` | null |
 | `CONTRADICTION_IN_SOURCES` | contradiction in the checked sources | `conflicting` | null, alternatives from Stage 02 |
-| `UNRESOLVED_STATUS` | abstention: a record exists but its current effect is not established, or relevant rows are quarantined | `uncertain` | null |
+| `UNRESOLVED_STATUS` | abstention: a record exists but its current effect is not established, or no record matched while relevant rows of the checked sources (quarantined rows or invalid identifiers) could not be checked (D-12; Step 12, A-01) | `uncertain` | null |
 | `LOOKUP_UNAVAILABLE` | operational failure for this candidate | `unavailable` | null |
 | `UNUSED_DEFINITION` | out of detection scope: not shown in the revision | none (observation) | — |
 | `UNRESOLVED_USE` | out of detection scope: which definition is shown is not established | none (observation) | — |
@@ -984,7 +991,10 @@ ones.
   example the lookup evidence budget) resolves to a different investigation key; the original investigation remains
   unchanged, so it is not a STALE transition (owner decision D-057).
 - S-10.2 A retained bundle whose content no longer hashes to its recorded `capture_sha256` is `CORRUPT` input
-  (ACQUIRE terminal `BUNDLE_DIGEST_MISMATCH`), not `STALE`.
+  (ACQUIRE terminal `BUNDLE_DIGEST_MISMATCH`), not `STALE`. This applies when ACQUIRE reads it. After ACQUIRE has
+  committed the root, Memory holds the retained bytes; a different or unreadable capture at the recorded path is a
+  changed root identity (`STALE`), and a missing path changes nothing (Step 12, B-11). An input identity that cannot
+  be established now (a missing or unverifiable index) is refused with its code and is never `STALE` (MM 10.2).
 
 ### 10.4 Replay
 
@@ -1166,7 +1176,7 @@ each requirement is met, or where it moved.
 | MR-23 | 12 | provenance chain |
 | MR-24 | 15 | Stage 04 stores no user data; Stage 03 captures do not request the editor (`rvprop` has no `user`, `capture.py`) |
 | MR-25 | 14 | CI uses the attributed field subset; the full Retraction Watch file is never committed |
-| CP-1 | S-3.1, S-3.2 | snapshot id, file hash, event id and row hash per event |
+| CP-1 | S-3.1, S-3.2 | snapshot id, canonical `artifact_digest` (D-062), event id and row hash per event |
 | CP-2 | 7.2, 11.2 | four event types map one-to-one; all events kept |
 | CP-3 | D-6, D-15 | notices never counted as the work |
 | CP-4 | S-4.1, S-6.1 | candidates only from the pinned revision's wikitext |

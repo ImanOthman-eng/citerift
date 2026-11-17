@@ -58,8 +58,9 @@ _FINDING = {
 
 CLAIM_TEMPLATES = {
     "finding": (
-        "The checked sources record {event} for the work this citation identifies. This states what the checked "
-        "sources record about the cited work; it says nothing about the claim the citation supports."
+        "The checked sources record {event} for the work they reach through this citation's identifiers. This "
+        "states what the checked sources record about the cited work; it says nothing about the claim the citation "
+        "supports."
     ),
     "not_found": NOT_FOUND_SENTENCE + " Checked sources: {sources}.",
     "notice": NOTICE_SENTENCE + " No status of that work is attached to this citation.",
@@ -74,6 +75,12 @@ CLAIM_TEMPLATES = {
     "unresolved_status": (
         "A record exists in the checked sources, but its current effect is not established; no finding is stated for "
         "this citation."
+    ),
+    # D-12: the deciding lookup found no record, but rows that may concern the identifier could not be checked.
+    "unresolved_coverage": (
+        "No record in the checked sources matched this citation, but rows of the checked sources that may concern its "
+        "identifiers could not be checked (quarantined rows or invalid identifiers); no finding is stated for this "
+        "citation."
     ),
     "unavailable": UNAVAILABLE_SENTENCE,
     "out_of_scope": "Out of detection scope: {scope}",
@@ -99,14 +106,15 @@ REASON_TEXT = {
     "PMID_ROLE_COLLISION": "the PMID may name the notice rather than the work",
     "BRIDGE_ONLY_SUPPORT": "the only support links the identifiers indirectly",
     "CURRENT_EFFECT_NOT_ESTABLISHED": "the current effect of the recorded events is not established",
-    "COVERAGE_GAP_RELEVANT_ROWS": "relevant rows of the checked sources are quarantined",
+    "COVERAGE_GAP_RELEVANT_ROWS": "rows of the checked sources that may concern this identifier are quarantined or "
+    "carry invalid identifiers",
     "LOOKUP_QUERY_FAILED": "the lookup query failed",
     "LOOKUP_EVIDENCE_LIMIT_EXCEEDED": "the lookup was refused by the configured lookup evidence budget",
     "CITED_IDENTIFIER_IS_NOTICE": "the cited identifier is a notice identifier",
     "NOT_FOUND_IN_CHECKED_SOURCES": "the lookup returned no record in the checked sources",
     "KEY_RESULTS_DIFFER": "the lookups of the DOI and of the PMID gave different results",
     "PAIR_UNCORROBORATED": "the checked sources do not name the DOI and the PMID together",
-    "CO_REPORTED_MULTIPLE": "the citation names more than one work",
+    "CO_REPORTED_MULTIPLE": "the citation reports more than one identifier of one scheme; each is checked separately",
 }
 
 
@@ -130,7 +138,8 @@ def claim_explanation(entry: Mapping[str, Any]) -> dict[str, Any]:
     claim = entry["claim"]
     cls = claim["class"]
     kind = KIND[cls]
-    text = CLAIM_TEMPLATES[kind].format(
+    template = "unresolved_coverage" if cls == "UNRESOLVED_STATUS" and claim["rule"] == "D-12" else kind
+    text = CLAIM_TEMPLATES[template].format(
         event=_FINDING.get(cls, ""),
         sources=_sources(entry["checked_sources"]),
         alternatives=_alternatives(claim["alternatives"]),
@@ -174,24 +183,26 @@ LIMITATION_TEMPLATES = {
     "after that snapshot are not covered.",
     "EXTRACTION_PARTIAL": "The Stage 03 extraction of this revision is partial; citations it could not extract were "
     "not checked.",
-    "LOOKUP_UNAVAILABLE_FOR_SOME_CANDIDATES": "For {lookup_unavailable} citation(s) the lookup was unavailable; no "
-    "result is stated for them.",
+    "LOOKUP_UNAVAILABLE_FOR_SOME_CANDIDATES": "For {lookup_unavailable} candidate identifier(s) the lookup was "
+    "unavailable; no result is stated for them.",
     "LOOKUP_EVIDENCE_BUDGET_REFUSED": "{budget_refused} lookup result(s) were refused by the configured lookup "
     "evidence budget of {budget} bytes; no result is stated for them.",
-    "IDENTITY_CONFLICTS": "{identity_conflict} citation(s) have identifiers that conflict and require resolution.",
-    "SOURCE_CONTRADICTIONS": "For {source_contradiction} citation(s) the checked sources disagree; the disagreement "
-    "requires resolution.",
-    "UNRESOLVED_IDENTITY": "{unresolved_identity} citation(s) have an unresolved work identity; no finding is stated "
+    "IDENTITY_CONFLICTS": "{identity_conflict} candidate identifier(s) have identifiers that conflict and require "
+    "resolution.",
+    "SOURCE_CONTRADICTIONS": "For {source_contradiction} candidate identifier(s) the checked sources disagree; the "
+    "disagreement requires resolution.",
+    "UNRESOLVED_IDENTITY": "{unresolved_identity} candidate identifier(s) have an unresolved work identity; no finding "
+    "is stated for them.",
+    "UNRESOLVED_IDENTIFIER": "{unresolved_identifier} candidate identifier(s) are unresolved; no finding is stated "
     "for them.",
-    "UNRESOLVED_IDENTIFIER": "{unresolved_identifier} citation(s) have an unresolved identifier; no finding is stated "
-    "for them.",
-    "UNRESOLVED_STATUS": "For {unresolved_status} citation(s) a record exists but its current effect is not "
-    "established; no finding is stated for them.",
-    "NOTICE_CITATIONS": "{notice} citation(s) cite a notice identifier; no status of the work the notice concerns is "
-    "attached to them.",
+    "UNRESOLVED_STATUS": "For {unresolved_status} candidate identifier(s) the current effect of a record, or the "
+    "coverage of the checked sources (quarantined rows or invalid identifiers), is not established; no finding is "
+    "stated for them.",
+    "NOTICE_CITATIONS": "{notice} candidate identifier(s) are notice identifiers; no status of the work the notice "
+    "concerns is attached to them.",
     "OPEN_QUESTIONS": "{open_questions} question(s) are open and need resolution outside Stage 04.",
-    "OUT_OF_SCOPE_UNITS": "{out_of_scope} extracted unit(s) are outside detection scope (no DOI or PMID in a candidate "
-    "role, or a definition not shown in the revision).",
+    "OUT_OF_SCOPE_UNITS": "{out_of_scope} candidate(s) are outside detection scope (no DOI or PMID in a candidate "
+    "role, a definition not shown in the revision, or a use of a definition that is not established).",
     "MARKERS_NOT_INTERPRETED": "On-page markers such as retraction warnings are recorded but not interpreted.",
     "OBSERVATION_ROLE_IDENTIFIERS_NOT_DECIDED": "Identifiers in observation roles are recorded but not decided.",
     "UNSTRUCTURED_TEXT_AS_STAGE03_DEFINES": "Unstructured citations are read only as Stage 03 defines them.",
@@ -269,7 +280,7 @@ def summary_statement(manifest: Mapping[str, Any], positive_work_count: int) -> 
     if in_scope and set(in_scope) == {"NOT_FOUND_IN_CHECKED_SOURCES"}:
         n = in_scope["NOT_FOUND_IN_CHECKED_SOURCES"]
         text += (
-            f" For the {n} identified citation(s) listed, no matching record was found in the checked sources "
+            f" For the {n} candidate identifier(s) listed, no matching record was found in the checked sources "
             f"(snapshot {s['snapshot_id']})."
         )
     return text

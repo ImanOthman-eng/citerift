@@ -60,9 +60,13 @@ class InvestigationLock:
             fd = os.open(LOCK, flags | O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK, 0o600, dir_fd=inv_fd)
         except OSError as exc:
             raise PathUnsafe("PATH_UNSAFE", f"lock file: {exc.strerror}") from exc
-        if not stat.S_ISREG(os.fstat(fd).st_mode):
+        st = os.fstat(fd)
+        if not stat.S_ISREG(st.st_mode):
             os.close(fd)
             raise PathUnsafe("PATH_UNSAFE", "lock is not a regular file")
+        if st.st_nlink != 1:  # Step 12, SD-06: a writable open would rewrite every hard link's file
+            os.close(fd)
+            raise PathUnsafe("PATH_UNSAFE", f"lock has {st.st_nlink} hard links")
         os.set_blocking(fd, True)
         return fd
 

@@ -49,7 +49,9 @@ INDEX = {
     "snapshot_id": "rw-synthetic",
     "policy_version": "citerift-rde-policy/1.3.0",
     "lookup_schema_version": "1.1.0",
-    "index_sha256": "0" * 64,
+    "artifact_digest": "0" * 64,
+    "semantic_digest": "1" * 64,
+    "export_lines": 1,
 }
 REASON_OF_USE = {"CITED": None, "UNUSED": "LIST_DEFINED_UNUSED", "USE_NOT_ESTABLISHED": "NO_BOUND_USE"}
 

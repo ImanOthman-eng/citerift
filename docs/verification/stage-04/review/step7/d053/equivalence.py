@@ -60,6 +60,7 @@ def logical_view(tree: Path, classes: tuple[tuple[str, str], ...]) -> dict[str, 
             f = mem.view
             evidence: dict[str, Any] = {}
             claims, decisions, questions, observations = [], [], [], []
+            outcome = None
             for rec in f.committed_content():
                 kind, p = rec["kind"], rec["payload"]
                 if kind == "evidence_recorded":  # format 2
@@ -67,6 +68,8 @@ def logical_view(tree: Path, classes: tuple[tuple[str, str], ...]) -> dict[str, 
                 elif kind == "evidence_batch_recorded":  # format 3 (D-053)
                     for item in json.loads(mem.blobs.get(p["batch"]))["items"]:
                         evidence[item["evidence_id"]] = item
+                elif kind == "report_recorded":  # Step 12 (I-2): the outcome is the report's
+                    outcome = json.loads(mem.blobs.get(p["report"]))["outcome"]
                 elif kind == "claim_recorded":
                     claims.append(p)
                 elif kind == "decision_recorded":
@@ -77,7 +80,7 @@ def logical_view(tree: Path, classes: tuple[tuple[str, str], ...]) -> dict[str, 
                     observations.append({"obs_kind": p["obs_kind"], "blob": p["blob"]})
     view = {
         "lifecycle": st.lifecycle,
-        "outcome": st.outcome,
+        "outcome": outcome,
         "evidence": [evidence[k] for k in sorted(evidence)],
         "claims": sorted(claims, key=_canon),
         "decisions": sorted(decisions, key=_canon),

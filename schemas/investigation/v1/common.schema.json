@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:investigation:v1:common",
   "title": "CITERIFT Stage 04 shared definitions, version 1",
   "description": "Identities, configuration, vocabularies and evidence shared by the Stage 04 request, journal-record, claim and report schemas (docs/verification/stage-04/SPECIFICATION.md, MATHEMATICAL_MODEL.md). Accepted upstream definitions are reused by $ref and never copied or changed. Every hash is a lowercase SHA-256; every number is an integer (MM 2.1).",
-  "x-citerift-version": "2.0.0",
+  "x-citerift-version": "3.0.0",
   "$defs": {
     "sha256": {
       "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
@@ -327,19 +327,21 @@
           "$ref": "#/$defs/plan_version"
         },
         "schema_version": {
-          "const": "2.0.0"
+          "const": "3.0.0"
         }
       }
     },
     "index_identity": {
-      "description": "Stage 02 index identity recorded per LOOKUP attempt (S-3.2).",
+      "description": "Stage 02 index identity recorded per LOOKUP attempt (S-3.2), owner decision D-062: the canonical Stage 02 content identity, accepted only after Stage 02's own checks recompute it from the index content. artifact_digest is the scientific identity; semantic_digest and export_lines are consistency metadata. The SQLite file bytes are never part of it.",
       "type": "object",
       "additionalProperties": false,
       "required": [
         "snapshot_id",
         "policy_version",
         "lookup_schema_version",
-        "index_sha256"
+        "artifact_digest",
+        "semantic_digest",
+        "export_lines"
       ],
       "properties": {
         "snapshot_id": {
@@ -351,8 +353,15 @@
         "lookup_schema_version": {
           "$ref": "urn:citerift:schema:retraction:v1:lookup-result#/properties/schema_version"
         },
-        "index_sha256": {
+        "artifact_digest": {
           "$ref": "#/$defs/sha256"
+        },
+        "semantic_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "export_lines": {
+          "type": "integer",
+          "minimum": 1
         }
       }
     },

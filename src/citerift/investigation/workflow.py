@@ -444,7 +444,6 @@ class WorkflowState:
     steps: tuple[StepView, ...]
     open_questions: tuple[str, ...]
     next: NextAction
-    outcome: str | None  # "completed" or "partial" when COMPLETED or NEEDS_RESOLUTION (S-9.7), else None
     root_id: str | None
 
     def step(self, name: str) -> StepView:
@@ -485,16 +484,6 @@ def next_action(f: Folder, now: datetime) -> NextAction:
     return NextAction("terminal", None, None, "W-5", "every step succeeded")  # unreachable: lifecycle is terminal
 
 
-def outcome(f: Folder) -> str | None:
-    """S-9.7 from what the fold holds: ``partial`` with an open question or a LOOKUP_UNAVAILABLE claim. (The
-    extraction status also makes the outcome partial; it is read from the extraction from Step 8 on.)"""
-    if f.lifecycle() not in ("COMPLETED", "NEEDS_RESOLUTION"):
-        return None
-    if f.open_questions() or any(c["class"] == "LOOKUP_UNAVAILABLE" for c in f.committed.claims.values()):
-        return "partial"
-    return "completed"
-
-
 def derive(f: Folder, now: datetime) -> WorkflowState:
     """The whole controller state, from the fold and the time (W-1)."""
     return WorkflowState(
@@ -502,7 +491,6 @@ def derive(f: Folder, now: datetime) -> WorkflowState:
         steps=tuple(step_view(f, s) for s in STEPS),
         open_questions=tuple(f.open_questions()),
         next=next_action(f, now),
-        outcome=outcome(f),
         root_id=f.root_id,
     )
 
@@ -525,7 +513,6 @@ def explain(f: Folder, now: datetime) -> dict[str, Any]:
             for s in st.steps
         },
         "open_questions": list(st.open_questions),
-        "outcome": st.outcome,
     }
     if st.lifecycle in ("FAILED", "STALE", "NEEDS_RESOLUTION", "COMPLETED"):
         out["terminated_by"] = _terminating_record(f)

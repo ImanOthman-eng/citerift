@@ -139,7 +139,7 @@ def test_vs8_retry_after_is_blocked_and_nothing_starts_before_not_before(
     tmp_path: Path, index: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     live = make_live_acquire(FetchPolicy(), child=FAKE_CHILD, workroot=tmp_path / "acquire")
-    monkeypatch.setattr(ops, "integration_for", lambda request: Integration(live=live))
+    monkeypatch.setattr(ops, "integration_for", lambda request, locators=None: Integration(live=live))
     monkeypatch.setenv("CITERIFT_WIKI_NETWORK_LOCK", str(tmp_path / "gate.lock"))  # not the host-wide gate file
     monkeypatch.setenv("CITERIFT_FAKE_BUNDLE", str(S8.AR_OBOKATA))
     monkeypatch.setenv("CITERIFT_FAKE_MODE", "throttled:600")  # SYNTHETIC 429; longer than the Stage 03 deadline
@@ -210,9 +210,11 @@ def test_vs10_verify_and_replay_name_each_changed_identity(
 
     bundle, idx = tmp_path / "bundle", tmp_path / "index.sqlite"
     shutil.copytree(S8.EN_OBOKATA, bundle)
-    shutil.copyfile(index, idx)
+    S8.replace_index(idx, index)  # the index with its build manifest (D-062: a missing manifest is refused)
     root = S8.memory_root(tmp_path / "m")
-    key = _run(bundle, idx, root)[1]["result"]["investigation_key"]
+    code, out = _run(bundle, idx, root)
+    assert code == 0
+    key = out["result"]["investigation_key"]
     journal = (root / key / "journal.jsonl").read_bytes()
     profile = extract.load_profile
 
@@ -232,10 +234,15 @@ def test_vs10_verify_and_replay_name_each_changed_identity(
     with monkeypatch.context() as mp:
         mp.setattr(extract, "load_profile", lambda: dataclasses.replace(profile(), digest="0" * 64))
         check("extraction")
+    # Step 12, D-062: the index identity is its canonical Stage 02 content. Other bytes of the same content are the
+    # same index (reproduced); another canonical content is the change.
     with open(idx, "ab") as f:
         f.write(b"\0" * 4096)
+    with T.offline():
+        assert T.run_json("replay", *_args(root, key))[1]["result"]["result"] == "reproduced"
+    S8.replace_index(idx, S8.build_index(tmp_path / "other", S8.RW_FEWER))
     check("index")
-    shutil.copyfile(index, idx)
+    S8.replace_index(idx, index)
     with monkeypatch.context() as mp:
         mp.setattr(plan_module, "STAGE04_IDENTITY", {**plan_module.STAGE04_IDENTITY, "schema_version": "2.0.1"})
         check("stage04")
@@ -243,8 +250,9 @@ def test_vs10_verify_and_replay_name_each_changed_identity(
 
 
 def test_i2_partial_extraction_is_partial_in_every_user_visible_output(mmr: T.Inv, tmp_path: Path) -> None:
-    """Step 10 finding I-2: ``workflow.outcome`` does not read the extraction status; the outputs a user sees do (run
-    and ``verify`` status: ``test_step10_cli.test_exit_6_partial``; here ``show``, the export and its v1 records)."""
+    """Step 10 finding I-2, closed in Step 12: the one outcome (``report.outcome``, recorded by ASSEMBLE) reads the
+    extraction status, and every output a user sees carries it (run and ``verify`` status:
+    ``test_step10_cli.test_exit_6_partial``; here ``show``, the export and its v1 records)."""
     assert mmr.code == 6 and mmr.out["status"] == "partial" and mmr.out["report"]["outcome"] == "partial"
     with ops.opened(mmr.root, mmr.key) as mem:
         extraction = next(

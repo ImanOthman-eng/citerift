@@ -416,17 +416,21 @@ def test_new_files_are_private(tmp_path: Path) -> None:
 
 @pytest.mark.contracts
 def test_investigation_memory_does_not_import_governance() -> None:
-    """S-15.1: no module of the investigation package imports citerift.governance."""
+    """S-15.1: no module of the investigation package (subpackages included; Step 12, SD-05) imports
+    citerift.governance, in either import form."""
     offenders = []
-    for path in sorted(SRC.glob("*.py")):
+    paths = sorted(SRC.rglob("*.py"))
+    assert SRC / "adapters" / "lookup.py" in paths
+    for path in paths:
         tree = ast.parse(path.read_text(), str(path))
         for node in ast.walk(tree):
             names: list[str] = []
             if isinstance(node, ast.Import):
                 names = [a.name for a in node.names]
             elif isinstance(node, ast.ImportFrom):
-                names = [node.module or ""]
-            offenders += [f"{path.name}: {n}" for n in names if n.startswith("citerift.governance")]
+                module = node.module or ""
+                names = [module, *(f"{module}.{a.name}" for a in node.names)]
+            offenders += [f"{path.relative_to(SRC)}: {n}" for n in names if n.startswith("citerift.governance")]
     assert offenders == []
 
 

@@ -151,7 +151,7 @@ def parse_journal(data: bytes) -> JournalRead:
 def read_journal(inv_fd: int) -> JournalRead:
     """Read ``journal.jsonl`` of an investigation directory without taking the lock (a consistent prefix only)."""
     try:
-        fd = open_regular(JOURNAL, inv_fd)
+        fd = open_regular(JOURNAL, inv_fd, single_link=True)
     except PathUnsafe as exc:
         raise InvariantViolation("M-2", "JOURNAL_CORRUPT", exc.detail) from exc
     try:
@@ -164,7 +164,7 @@ def read_journal(inv_fd: int) -> JournalRead:
 
 
 def open_for_append(inv_fd: int) -> int:
-    return open_regular(JOURNAL, inv_fd, os.O_WRONLY | os.O_APPEND)
+    return open_regular(JOURNAL, inv_fd, os.O_WRONLY | os.O_APPEND, single_link=True)
 
 
 def append_line(fd: int, line: bytes) -> None:

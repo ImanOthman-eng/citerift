@@ -149,7 +149,9 @@ an interrupted-and-resumed run and an uninterrupted run assign equal ids to equa
 ### 4.5 Stage 02 lookup result
 
 - Domain: a query `q = ⟨d?, p?⟩` of valid keys, and one opened index `ix` with identity
-  `id(ix) = ⟨snapshot_id, policy_version, lookup schema version, file SHA-256⟩`.
+  `id(ix) = ⟨snapshot_id, policy_version, lookup schema version, artifact_digest⟩` (owner decision D-062, Step 12:
+  the Stage 02 canonical content digest, accepted only when Stage 02's checks recompute it from the content;
+  `semantic_digest` and `export_lines` are carried as consistency metadata; the file bytes are not part of it).
 - Codomain: lookup results `ℓ = ⟨state, events, issues, projection, evidence_digest⟩` with
   `state ∈ S₂ = {matched, notice_only, ambiguous_identity, no_record, invalid_query, unavailable}`.
 - Rule: `ℓ = render(gather(d, p))` with all events recorded (SPEC S-3.1); a raised database error gives
@@ -160,7 +162,7 @@ an interrupted-and-resumed run and an uninterrupted run assign equal ids to equa
     (`policy.reduce`; `checked_sources` is never empty for a `gather` result, so the `NO_SOURCE_IN_VIEW` branch is
     not reached).
   - **F-3** For `no_record`, the projection is `uncertain` with value `not_found_in_checked_sources`, or with value
-    null when relevant quarantined rows exist (`COVERAGE_GAP_RELEVANT_ROWS`).
+    null when relevant quarantined rows or invalid identifiers exist (`COVERAGE_GAP_RELEVANT_ROWS`; Step 12, A-01).
   - **F-4** A `verified_fact` value is one of `retracted`, `expression_of_concern`, `correction`, `reinstated` (the
     store's `event_type` CHECK constraint in `store.py` and the Crossref `TYPE_MAP` in `corroboration.py`).
   - **F-5** The direct events of the result (`linked_via` null) with `matched_by = doi` are exactly the index events
@@ -211,9 +213,40 @@ its state is not `unavailable`.
   record holds `ES`, `|sup|`, `|con|` and `|alt_i|`.
 - Rule: the evidence relation `supports ⊆ Evidence × Claims` holds when the claim's evidence set lists the evidence id
   in `sup` or in an `alt_i`; `contradicts` likewise for `con`.
-- Invariants: **EV-1** every evidence item resolves: `pointer` names a value inside the blob `obs`; **EV-2** a claim
-  never carries a value that is not the value at the pointer of one of its supporting evidence items, or a constant of
-  the decision table (class, rule id, reason code).
+- Invariants: **EV-1** every evidence item resolves: `pointer` names a value inside the blob `obs`.
+- EV-2 (Step 12: Reviewer A's wording, `review/step12/reviews/REVIEW_A.md` section 3, adopted as written; it
+  replaces the literal Step 3 sentence, audit A-5, without broadening what a claim may assert):
+
+  **EV-2** (claim values are justified by the claim's own evidence). Let `S(claim) = ⟨sup, con, alt_1, …, alt_k⟩`. Every
+  field of a claim is exactly one of:
+  (a) a constant of dt-1: class, rule id, table version, reason codes, upstream-reason `source`; or a function of the
+  class alone: `status`, and `value` for every class whose value is null;
+  (b) a derived identity or count: `cand_ref` (SPEC 4.3), `evidence_set = H_blob(canon(S))`, `claim_id`,
+  `supporting_count = |sup|`, `contradicting_count = |con|`, `alternatives[i].supporting_count = |alt_i|`;
+  (c) a value read from committed evidence. There is an item `ev` in `sup` (in `alt_i` for alternative `i`) such that
+  the claimed value is either
+    (c1) a component, at a fixed relative path, of the value that `ev.pointer` selects in `ev.obs`, or
+    (c2) the value recorded by `ev`, where that value is a fixed pure function of the observations named by `ev` and by
+    the items in its `refs` closure (all of them earlier committed evidence).
+
+  In particular:
+  - `value` (positive classes and `NOT_FOUND_IN_CHECKED_SOURCES`) is `/value` under the `lookup_result` item at
+    `/result/projection/retraction_status` of `L(c)`.
+  - Each `upstream_reasons[j].code` is an element of `/projection/basis/reasons` under its `evidence`, the
+    `lookup_result` item at `/result` of that lookup.
+  - A D-7 alternative's value is `/value` under its `lookup_result` item at
+    `/result/projection/retraction_status/alternatives/i`.
+  - `candidate` is the value of the `work_candidate` item. Its keys are the `(scheme, normalization.normalized)` of its
+    `identifier_occurrence` refs. Its `coherence` is the value of the `coherence` item (κ of MM 5.3 over the three
+    lookup observations its refs name), or null for shapes other than PAIR.
+  - A D-6 alternative's `reached_by` and `work[scheme]` are the key of an `identifier_occurrence` item in `alt_i`.
+    `work[other]` is the single non-null `original_<other>` of the `lookup_event` items `/events/k` in `alt_i`, and null
+    when there are none or several.
+
+  No non-constant claim value is taken from content outside `S(claim)` and the refs closure of its items. No value is
+  inferred from the absence of evidence except κ ∈ {UNDETERMINED, NOT_DETERMINED} (MM 5.3, a predicate over the whole
+  lookup observations named by the coherence item's refs) and the null of `work[other]`. Supporting items that hold no
+  claimed value (for example witness fields or index identity) are allowed; they justify the class, not a value.
 - Failure: an unresolvable pointer is `fail(NORMALIZE_INVALID)` or `fail(VERIFY_FAILED)`, depending on the step that
   finds it.
 
@@ -583,9 +616,12 @@ VERIFY; `CREATED → RUNNING` is the effect of T-START on VALIDATE; `BLOCKED →
 - Invariants: **ST-1** stale input is never reused (SPEC S-10.1); **ST-2** a stale investigation keeps every record,
   so the earlier evidence stays readable as history.
 - Precedence: a bundle whose bytes do not hash to its recorded digest is `CORRUPT` input (`BUNDLE_DIGEST_MISMATCH`),
-  checked before `stale`.
-- Failure: an identity that cannot be computed (for example an unreadable index) is a failure with the engine's code
-  (for the index, `INDEX_MISSING`, `INDEX_CORRUPT` or `INDEX_FORMAT_MISMATCH`), not `stale` and not "unchanged".
+  checked before `stale` when ACQUIRE reads it; after the root is bound, a different capture at the recorded path is a
+  changed root identity and so `stale` (Step 12, B-11).
+- Failure: an identity that cannot be computed (for example an unreadable index, or one whose content does not prove
+  its canonical identity, D-062) is a failure with the engine's code (for the index, `INDEX_MISSING`, `INDEX_CORRUPT`
+  or `INDEX_FORMAT_MISMATCH`), not `stale` and not "unchanged". Since Step 12 (B-02) this is enforced where a changed
+  identity of a committed step is found: the command is refused with that code (exit 3) and nothing is written.
 
 ### 10.3 Replay equivalence
 

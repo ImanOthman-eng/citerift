@@ -246,6 +246,10 @@ class _Verifier:
         for entry in self.plan["lookups"]:
             if self.req.read_blob(entry["observation"])["index"] != ident:
                 raise CheckFailed("a lookup observation names another index")
+        # The identity the lookups observed is the one LOOKUP was keyed with (D-062, Step 12 B-01).
+        keyed = self.req.read_blob(_outputs(self.req, "LOOKUP")[-1]).get("identities", {}).get("index")
+        if keyed != ids.identity_digest("index", ident):
+            raise CheckFailed("the lookups' index identity is not the identity LOOKUP was keyed with")
 
     def bounded_lookup_provenance(self) -> None:
         budget = self.req.request["config"]["lookup_evidence_budget_bytes"]
@@ -294,9 +298,19 @@ class _Verifier:
         again = make_detect(self.detector)(self._replay_request("DETECT"))
         if not isinstance(again, Succeeded):
             raise CheckFailed("DETECT re-run did not succeed")
-        claims = {dict(r.payload)["claim_id"] for r in again.records if r.kind == "claim_recorded"}
-        if claims != set(self.claims):
+        claims = {dict(r.payload)["claim_id"]: dict(r.payload) for r in again.records if r.kind == "claim_recorded"}
+        if set(claims) != set(self.claims):
             raise CheckFailed("DETECT re-run gives other claims")
+        # Claim and evidence ids do not bind every value (reasons, coherence, alternatives, evidence values), so the
+        # re-run must give the committed claims and evidence items in full, not only their ids (Step 12, A-02).
+        for claim_id, payload in claims.items():
+            if canon(payload) != canon(self.claims[claim_id]):
+                raise CheckFailed(f"DETECT re-run gives claim {claim_id} with other content")
+        for rec in again.records:
+            if rec.kind == "evidence":
+                item = dict(rec.payload)
+                if self.evidence.get(item["evidence_id"]) != item:
+                    raise CheckFailed(f"DETECT re-run gives evidence {item['evidence_id']} that is not committed")
         committed = [d for d in _outputs(self.req, "DETECT") if d in again.outputs]
         if not committed:
             raise CheckFailed("DETECT re-run gives another output")

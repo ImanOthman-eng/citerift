@@ -10,7 +10,8 @@ synthetic detector.
   wait. A terminal investigation is reported and not run again (S-9.4).
 - ``resume`` runs an existing investigation from its journal and blobs: the controller closes an interrupted attempt
   (W-6), checks staleness (S-10.1) and runs only the next legal step; it never repeats a succeeded step and never
-  sleeps (a step that may restart only later leaves the investigation ``BLOCKED`` with its ``not_before``).
+  sleeps (a step that may restart only later is reported ``blocked`` with its ``not_before``, whether its lifecycle is
+  BLOCKED, a Stage 03 deferral, or RUNNING after a retryable failure that recorded a ``not_before``; A11-5).
 - ``show`` is read-only and diagnostic: identities, lifecycle, report outcome, step states and attempts, the terminal
   record, counts, and the next legal transition with the rule that permits it (S-9.2). It prints no blob content.
 - ``verify`` is read-only and runs no step: it opens the journal (Memory invariants and the D-054 report graph), checks
@@ -30,6 +31,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 from collections.abc import Callable, Iterator, Mapping
 from contextlib import contextmanager
 from datetime import UTC, datetime
@@ -44,9 +46,9 @@ from citerift.investigation.adapters import StepRequest
 from citerift.investigation.adapters.acquire import committed_manifest, reconstruct
 from citerift.investigation.adapters.live import bound_for, make_live_acquire, policy_digest
 from citerift.investigation.adapters.normalize import committed_extraction
-from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration
+from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration, located
 from citerift.investigation.adapters.verify import CheckFailed, _Verifier
-from citerift.investigation.controller import run_investigation
+from citerift.investigation.controller import IdentityUnavailable, checked_manifest, run_investigation, staleness
 from citerift.investigation.errors import (
     Busy,
     CorruptInvestigation,
@@ -77,13 +79,17 @@ EXIT = {
     "not_found": 4,  # no investigation with that key under the memory root
     "verify_failed": 5,  # a verification check failed, a replay differs, or a checkpoint does not match
     "partial": 6,  # COMPLETED with outcome partial (partial extraction or an unavailable lookup)
-    "blocked": 8,  # BLOCKED: a step may restart only at or after not_before
+    # no step may start before not_before: lifecycle BLOCKED (a Stage 03 deferral), or CREATED/RUNNING whose next legal
+    # action is to wait (a retryable failure that recorded a not_before; A11-5). Nothing waits or sleeps.
+    "blocked": 8,
     "failed": 9,  # FAILED: a step failed terminally
     "needs_resolution": 10,  # NEEDS_RESOLUTION: verified, with at least one open question
-    "stale": 11,  # STALE, or an input identity differs from the recorded one
+    # STALE, or (verify, replay, export, and show of a non-terminal investigation) an input identity differs from the
+    # recorded one; run and resume of a terminal investigation do not re-check identities (I-5)
+    "stale": 11,
     "corrupt": 12,  # CORRUPT: the journal, a blob or the report graph is invalid
     "busy": 13,  # another process holds the investigation lock
-    "incomplete": 14,  # CREATED or RUNNING: not terminal and not blocked (for example after a crash, before resume)
+    "incomplete": 14,  # CREATED or RUNNING and a step may start now (for example after a crash, before resume)
 }
 LIFECYCLE_STATUS = {
     "NEEDS_RESOLUTION": "needs_resolution",
@@ -103,10 +109,22 @@ STATEMENT = d052.STATEMENT
 
 
 def status_of(lifecycle: str, outcome: str | None) -> str:
-    """The status word of an investigation state (``EXIT`` key)."""
+    """The status word of an investigation state (``EXIT`` key). COMPLETED needs the report outcome (fails closed)."""
     if lifecycle == "COMPLETED":
-        return "completed" if outcome == "completed" else "partial"
+        if outcome not in ("completed", "partial"):
+            raise ValueError(f"COMPLETED with report outcome {outcome!r}")
+        return outcome
     return LIFECYCLE_STATUS[lifecycle]
+
+
+def state_status(f: Folder, outcome: str | None, now: datetime | None = None) -> str:
+    """The user-facing status of an investigation now (A11-5): ``blocked`` whenever no step may start before a
+    ``not_before`` (lifecycle BLOCKED, or CREATED/RUNNING whose next legal action is ``wait``); otherwise
+    ``status_of``. The lifecycle itself is unchanged and stays in every result."""
+    lifecycle = f.lifecycle()
+    if lifecycle in ("CREATED", "RUNNING") and workflow.next_action(f, now or datetime.now(UTC)).action == "wait":
+        return "blocked"
+    return status_of(lifecycle, outcome)
 
 
 # Requests ----------------------------------------------------------------------------------------------------------
@@ -187,9 +205,9 @@ def check_request(request: Mapping[str, Any]) -> None:
         raise OperationError("invalid", "MEMORY_ROOT_UNSAFE", "the memory root must be an absolute path")
 
 
-def integration_for(request: Mapping[str, Any]) -> Integration:
+def integration_for(request: Mapping[str, Any], locators: Mapping[str, str] | None = None) -> Integration:
     live = make_live_acquire(FetchPolicy()) if request["mode"] == "live_capture" else None
-    return Integration(live=live)
+    return Integration(live=live, locators=dict(locators or {}))
 
 
 def created_for(request: Mapping[str, Any]) -> dict[str, Any]:
@@ -221,6 +239,8 @@ def opened(memory_root: Path, key: str) -> Iterator[InvestigationMemory]:
     except PathUnsafe as exc:
         if exc.code == "MEMORY_ROOT_UNSAFE":
             raise OperationError("invalid", exc.code, exc.detail) from exc
+        if _exists(memory_root, key):  # present but unsafe (a symlink, a wrong mode, a missing lock): not absent
+            raise OperationError("corrupt", "INVESTIGATION_UNSAFE", exc.detail) from exc
         raise OperationError("not_found", "INVESTIGATION_NOT_FOUND", exc.detail) from exc
     except FileNotFoundError as exc:
         raise OperationError("not_found", "INVESTIGATION_NOT_FOUND", f"no investigation {key}") from exc
@@ -236,6 +256,15 @@ def opened(memory_root: Path, key: str) -> Iterator[InvestigationMemory]:
         mem.close()
 
 
+def _exists(memory_root: Path, key: str) -> bool:
+    """Whether anything is at the investigation's directory entry (not followed)."""
+    try:
+        os.lstat(Path(memory_root) / key)
+    except OSError:
+        return False
+    return True
+
+
 def _outputs(f: Folder, step: str) -> tuple[str, ...]:
     ends = [a.end_seq for a in f.attempts[step] if a.end_kind == "step_succeeded"]
     if not ends or ends[-1] is None:
@@ -243,9 +272,10 @@ def _outputs(f: Folder, step: str) -> tuple[str, ...]:
     return tuple(f.records[ends[-1]]["payload"]["outputs"])
 
 
-def readonly_request(mem: InvestigationMemory, step: str) -> StepRequest:
+def readonly_request(mem: InvestigationMemory, step: str, locators: Mapping[str, str] | None = None) -> StepRequest:
     """The request VERIFY was given, rebuilt from a read-only open: the committed content without the verification
-    record, so the VERIFY checks can be re-run on a verified investigation."""
+    record, so the VERIFY checks can be re-run on a verified investigation. ``locators`` replace the recorded paths
+    for this process only."""
     f = mem.view
     created = workflow.created(f)
     blobs = mem.blobs
@@ -254,7 +284,7 @@ def readonly_request(mem: InvestigationMemory, step: str) -> StepRequest:
         attempt=1,
         step_key="0" * 64,
         live=workflow.is_live(f),
-        request=copy.deepcopy(created["request"]),
+        request=located(created["request"], locators or {}),
         request_key=copy.deepcopy(created["request_key"]),
         root=copy.deepcopy(f.root),
         inputs={s: _outputs(f, s) for s in STEPS if f.step_state(s) == "succeeded"},
@@ -284,43 +314,45 @@ def claim_entries(mem: InvestigationMemory, manifest: Mapping[str, Any]) -> Iter
 
 
 def stale_identities(mem: InvestigationMemory, integration: Integration) -> dict[str, Any] | None:
-    """S-10.1 without writing: the committed steps whose key differs under the current input identities, and the
-    identity components that changed; None when every committed step key still holds. A step key that differs
-    while no identity changed is not staleness: ``CheckFailed`` (``STEP_KEY_MISMATCH``)."""
+    """S-10.1 without writing, by the controller's own rule (``controller.staleness``): the committed steps whose key
+    differs under the current input identities, and the identity components that changed; None when every committed
+    step key still holds. A step key or manifest that does not derive from the committed inputs is a corrupt journal
+    (``corrupt``, exit 12, as ``resume`` reports it); an input identity a committed step depends on that cannot be
+    established now (an unavailable or unverifiable index) is refused with the engine's code (``invalid``, exit 3),
+    never reported as staleness (MM 10.2)."""
     f = mem.view
     created = workflow.created(f)
     root = f.root
     values = integration.environment(created)(copy.deepcopy(root["subject"]["identity"]) if root else None)
     digests = workflow.identity_digests(values)
-    committed = [s for s in STEPS if f.step_state(s) == "succeeded"]
-    recorded_keys = {}
-    for s in committed:
-        ends = [a.end_seq for a in f.attempts[s] if a.end_kind == "step_succeeded"]
-        recorded_keys[s] = f.records[ends[-1]]["payload"]["step_key"]  # type: ignore[index]
-    changed_steps = [s for s in committed if workflow.step_key(f, s, digests) != recorded_keys[s]]
-    if not changed_steps:
+    try:
+        payload = staleness(f, lambda s: checked_manifest(f, mem.blobs.get, s), digests, values)
+    except WorkflowCorrupt as exc:
+        raise OperationError("corrupt", "INVESTIGATION_CORRUPT", str(exc)) from exc
+    except IdentityUnavailable as exc:
+        raise OperationError(
+            "invalid", exc.unavailable_code, f"{exc.name}: the input cannot be established now; nothing was changed"
+        ) from exc
+    if payload is None:
         return None
-    recorded: dict[str, str] = {}
-    for s in committed:
-        manifest = json.loads(mem.blobs.get(_outputs(f, s)[-1]))
-        for name, digest in manifest["identities"].items():
-            if name not in recorded or (recorded[name] == digests[name] and digest != digests[name]):
-                recorded[name] = digest
-    changed = sorted(n for n, d in recorded.items() if digests[n] != d)
-    if not changed:
-        # A recorded step key that the committed inputs do not derive, while no input identity changed: the journal
-        # is inconsistent, not stale.
-        raise CheckFailed(
-            f"STEP_KEY_MISMATCH: the recorded step keys of {changed_steps} do not derive from the "
-            "committed inputs, and no input identity changed"
-        )
-    return {"changed": changed, "steps": changed_steps}
+    committed = [s for s in STEPS if f.step_state(s) == "succeeded"]
+    steps = [
+        s for s in committed if workflow.step_key(f, s, digests) != checked_manifest(f, mem.blobs.get, s)["step_key"]
+    ]
+    return {"changed": payload["changed"], "steps": steps}
 
 
 # Show ------------------------------------------------------------------------------------------------------------
 
 
-def show(memory_root: Path, key: str, *, explain_claims: bool = False) -> tuple[dict[str, Any], int]:
+def show(
+    memory_root: Path, key: str, *, explain_claims: bool = False, integration: Integration | None = None
+) -> tuple[dict[str, Any], int]:
+    """Read-only diagnostics. For a non-terminal investigation the input identities are re-checked by the controller's
+    own staleness rule, so the next transition shown is the one ``resume`` would take (UF-03): a changed input is
+    shown as ``stale`` (T-STALE) before ``resume`` makes the investigation STALE; an input that cannot be established
+    now is shown as ``refused`` with its code."""
+    integ = integration or Integration()
     with opened(memory_root, key) as mem:
         f = mem.view
         created = workflow.created(f)
@@ -337,18 +369,35 @@ def show(memory_root: Path, key: str, *, explain_claims: bool = False) -> tuple[
                     "not_before": _iso(sv.not_before),
                 }
             )
+        nxt = dict(ex["next"])
+        nxt["not_before"] = _iso(workflow.next_action(f, now).not_before)
         out: dict[str, Any] = {
             "investigation_key": created["investigation_key"],
             "investigation_id": created["investigation_id"],
             "lifecycle": ex["lifecycle"],
             "steps": steps,
-            "next": ex["next"],
+            "next": nxt,
             "terminated_by": ex.get("terminated_by"),
             "open_questions": len(f.open_questions()),
             "claims_by_class": committed_claim_counts(f),
             "journal_records": len(f.records),
             "report": None,
         }
+        stale = None
+        if ex["lifecycle"] in ("CREATED", "RUNNING", "BLOCKED") and f.open is None:
+            try:
+                stale = stale_identities(mem, integ)
+            except OperationError as exc:
+                if exc.status != "invalid":
+                    raise
+                out["next"] = {"action": "refused", "rule": "MM 10.2", "code": exc.code, "detail": exc.detail}
+            if stale is not None:
+                out["next"] = {
+                    "action": "stale",
+                    "rule": "T-STALE",
+                    "reason": "an input identity a committed step depends on changed; resume records stale_detected",
+                    "changed": stale["changed"],
+                }
         rep = report_of(mem)
         outcome = None
         if rep is not None:
@@ -370,7 +419,7 @@ def show(memory_root: Path, key: str, *, explain_claims: bool = False) -> tuple[
             }
             if explain_claims:
                 out["report"]["claims"] = [explanations.claim_explanation(e) for e in entries]
-        status = status_of(ex["lifecycle"], outcome)
+        status = "stale" if stale is not None else state_status(f, outcome, now)
         out["status"] = status
         return out, EXIT[status]
 
@@ -393,19 +442,32 @@ def _iso(at: datetime | None) -> str | None:
 # Run and resume --------------------------------------------------------------------------------------------------
 
 
-def _after(memory_root: Path, key: str, detail: str) -> tuple[dict[str, Any], int]:
-    out, code = show(memory_root, key)
+def _after(memory_root: Path, key: str, detail: str, integration: Integration) -> tuple[dict[str, Any], int]:
+    out, code = show(memory_root, key, integration=integration)
     if detail:
         out["detail"] = detail
     return out, code
 
 
 def run(request: Mapping[str, Any]) -> tuple[dict[str, Any], int]:
+    """Create the investigation of a request, or reopen the one its key names when the creation payload is the same.
+    An existing investigation is compared read-only and then driven through ``open_controller`` (a read-only check of
+    the journal before any writable open, D-044), so a workflow-corrupt journal is never repaired here (B-05)."""
     check_request(request)
     payload = created_for(request)
     root = Path(request["memory_root"])
+    key = payload["investigation_key"]
     try:
-        InvestigationMemory.create(root, payload).close()
+        if _exists(root, key):
+            with opened(root, key) as mem:
+                if mem.view.created != payload:
+                    raise OperationError(
+                        "invalid",
+                        "INVESTIGATION_REQUEST_DIFFERS",
+                        f"{key} exists with another creation payload; nothing was changed",
+                    )
+        else:
+            InvestigationMemory.create(root, payload).close()
     except Busy as exc:
         raise OperationError("busy", "INVESTIGATION_BUSY", str(exc)) from exc
     except CorruptInvestigation as exc:
@@ -419,20 +481,25 @@ def run(request: Mapping[str, Any]) -> tuple[dict[str, Any], int]:
     return _drive(root, payload, integration_for(request))
 
 
-def resume(memory_root: Path, key: str) -> tuple[dict[str, Any], int]:
+def resume(memory_root: Path, key: str, *, locators: Mapping[str, str] | None = None) -> tuple[dict[str, Any], int]:
     with opened(memory_root, key) as mem:
         created = copy.deepcopy(workflow.created(mem.view))
-    return _drive(memory_root, created, integration_for(created["request"]))
+    return _drive(memory_root, created, integration_for(created["request"], locators))
 
 
 def _drive(root: Path, created: Mapping[str, Any], integration: Integration) -> tuple[dict[str, Any], int]:
     key = created["investigation_key"]
-    result = run_investigation(root, key, integration.adapters(), integration.environment(created))
+    try:
+        result = run_investigation(root, key, integration.adapters(), integration.environment(created))
+    except IdentityUnavailable as exc:  # MM 10.2: a failure with the engine's code, never staleness; nothing written
+        raise OperationError(
+            "invalid", exc.unavailable_code, f"{exc.name}: the input cannot be established now; nothing was changed"
+        ) from exc
     if result.status == "INVESTIGATION_BUSY":
         raise OperationError("busy", "INVESTIGATION_BUSY", result.detail)
     if result.status == "CORRUPT":
         raise OperationError("corrupt", "INVESTIGATION_CORRUPT", result.detail)
-    return _after(root, key, result.detail)
+    return _after(root, key, result.detail, integration)
 
 
 # Verify ----------------------------------------------------------------------------------------------------------
@@ -441,6 +508,8 @@ def _drive(root: Path, created: Mapping[str, Any], integration: Integration) -> 
 def _check(name: str, fn: Callable[[], Any]) -> dict[str, Any]:
     try:
         fn()
+    except OperationError:  # corrupt, or an input that cannot be established: the command's result, not a check's
+        raise
     except Exception as exc:  # a failing check is that check failing (fail closed)
         return {"check": name, "passed": False, "detail": f"{type(exc).__name__}: {exc}"[:500]}
     return {"check": name, "passed": True, "detail": None}
@@ -481,7 +550,7 @@ def _verify(
 
     checks.append(_check("COMMITTED_VERIFICATION", committed_verification))
     if verified:
-        verifier = _Verifier(readonly_request(mem, "VERIFY"), integ.detector, integ.stage04)
+        verifier = _Verifier(readonly_request(mem, "VERIFY", integ.locators), integ.detector, integ.stage04)
         checks += verifier.run()
     stale = None
 
@@ -516,9 +585,9 @@ def _verify(
     elif lifecycle == "STALE" or stale is not None:
         result, code = "stale", EXIT["stale"]
     elif verified:
-        result, code = "passed", EXIT[status_of(lifecycle, outcome)]
-    else:
-        result, code = "failed", EXIT[status_of(lifecycle, outcome)]
+        result, code = "passed", EXIT[state_status(f, outcome)]
+    else:  # not yet verified (or FAILED): not a failed verification (UF-04); the exit code names the state
+        result, code = "not_verified", EXIT[state_status(f, outcome)]
     out = {
         "result": result,
         "lifecycle": lifecycle,
@@ -548,16 +617,12 @@ def replay(memory_root: Path, key: str, *, integration: Integration | None = Non
             return {**base, "result": "stale", "changed": _recorded_stale(f)}, EXIT["stale"]
         if lifecycle not in VERIFIED or rep is None:
             raise OperationError(
-                status_of(lifecycle, outcome), "NOT_REPLAYABLE", f"lifecycle {lifecycle}: no verified report to replay"
+                state_status(f, outcome), "NOT_REPLAYABLE", f"lifecycle {lifecycle}: no verified report to replay"
             )
-        try:
-            stale = stale_identities(mem, integ)
-        except CheckFailed as exc:
-            keys = {"component": "step_keys", "detail": str(exc)[:500]}
-            return {**base, "result": "differs", "first_difference": keys, "outcome": outcome}, EXIT["verify_failed"]
+        stale = stale_identities(mem, integ)  # one staleness rule (I-3): corrupt and refused are raised, not checks
         if stale is not None:
             return {**base, "result": "stale", "changed": stale["changed"]}, EXIT["stale"]
-        req = readonly_request(mem, "VERIFY")
+        req = readonly_request(mem, "VERIFY", integ.locators)
         verifier = _Verifier(req, integ.detector, integ.stage04)
         payload, manifest = rep
         first = _first_difference(req, verifier, payload, manifest)
@@ -574,7 +639,7 @@ def replay(memory_root: Path, key: str, *, integration: Integration | None = Non
             "identity_conflicts": sorted(c["claim_id"] for c in claims if c["class"] == "IDENTITY_CONFLICT"),
             "outcome": outcome,
         }
-        return out, EXIT["verify_failed"] if first else EXIT[status_of(lifecycle, outcome)]
+        return out, EXIT["verify_failed"] if first else EXIT[state_status(f, outcome)]
 
 
 def _recorded_stale(f: Folder) -> list[str]:
@@ -644,18 +709,18 @@ def export(
             lifecycle, outcome = result["lifecycle"], result["outcome"]
             if result["result"] != "passed":
                 if result["result"] == "stale":
-                    status = "stale"
-                elif lifecycle in VERIFIED:
-                    status = "verify_failed"
+                    status, why = "stale", "an input identity changed"
+                elif result["result"] == "failed":
+                    status, why = "verify_failed", "verification failed"
                 else:
-                    status = status_of(lifecycle, outcome)
-                raise OperationError(status, "EXPORT_REFUSED", f"verification {result['result']}: nothing exported")
+                    status, why = state_status(mem.view, outcome), f"lifecycle {lifecycle} is not verified"
+                raise OperationError(status, "EXPORT_REFUSED", f"{why}; nothing exported")
             written = exporter.write(mem, out, memory_root)
     except OperationError as exc:
         if exc.code in ("INVESTIGATION_BUSY", "INVESTIGATION_CORRUPT"):
             raise OperationError(exc.status, "EXPORT_REFUSED", f"{exc.code}: {exc.detail}") from exc
         raise
-    return {"exported": str(out), **written}, EXIT[status_of(lifecycle, outcome)]
+    return {"exported": str(out), **written}, EXIT[status_of(lifecycle, outcome)]  # passed: COMPLETED or NR
 
 
 def checkpoint(memory_root: Path, key: str, out: Path | None, *, overwrite: bool = False) -> tuple[dict[str, Any], int]:
@@ -663,10 +728,9 @@ def checkpoint(memory_root: Path, key: str, out: Path | None, *, overwrite: bool
         d052.check_target(out, memory_root, overwrite=overwrite)
     with opened(memory_root, key) as mem:
         value = d052.make(mem.key, mem.view.records)
-        lifecycle = mem.view.lifecycle()
         rep = report_of(mem)
-        outcome = rep[1]["outcome"] if rep is not None else None
+        status = state_status(mem.view, rep[1]["outcome"] if rep is not None else None)
     if out is not None:
         d052.write(out, d052.encode(value), memory_root, overwrite=overwrite)
     result = {"checkpoint": value, "written": str(out) if out is not None else None, "statement": STATEMENT}
-    return result, EXIT[status_of(lifecycle, outcome)]
+    return result, EXIT[status]

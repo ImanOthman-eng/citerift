@@ -16,10 +16,15 @@ Run (from the repository root; about 15 minutes, of which about 3.5 wait for a R
     uv run python docs/verification/stage-04/evidence/vertical-slice/run_vertical_slice.py \\
         --csv <retraction_watch.csv of the pinned snapshot> --work <empty scratch directory>
 
-Writes ``results/`` beside itself: ``vertical_slice.json`` (every case, check, digest, exit code, timing and network
-count), and per successful case the minimal retained evidence (journal, export manifest, report manifest, projection
-set, v1 records); Investigation Memory directories and blobs stay in the scratch directory (they are rebuilt from
-the bundle and the pinned snapshot).
+Step 12 (D-062) reruns it as the freeze reference with ``--results <dir>`` (``../../freeze/vertical-slice``); the
+Step 11 ``results/`` stay as historical engineering evidence. VS-10 then also shows that other index bytes with the
+same canonical Stage 02 content are not a change, that another canonical content is STALE, and that an index whose
+content does not prove its stored identity is refused (exit 3), never STALE.
+
+Writes ``results/`` beside itself (or the ``--results`` directory): ``vertical_slice.json`` (every case, check,
+digest, exit code, timing and network count), and per successful case the minimal retained evidence (journal, export
+manifest, report manifest, projection set, v1 records); Investigation Memory directories and blobs stay in the
+scratch directory (they are rebuilt from the bundle and the pinned snapshot).
 """
 
 # ruff: noqa: PLC0415  (citerift modules are imported where a check needs them, after the index is built)
@@ -45,7 +50,7 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[4]
 ENTRY = HERE / "vs_entry.py"
-RESULTS = HERE / "results"
+RESULTS = HERE / "results"  # replaced by --results
 PY = sys.executable
 
 S03 = "docs/verification/stage-03"
@@ -147,7 +152,6 @@ def blob(root: Path, key: str, digest: str) -> Any:
 
 
 def view(root: Path, key: str) -> dict[str, Any]:
-    from citerift.investigation import workflow
     from citerift.investigation.memory import InvestigationMemory
 
     with InvestigationMemory.open(root, key, writable=False) as mem:
@@ -156,7 +160,6 @@ def view(root: Path, key: str) -> dict[str, Any]:
             "logical": json.loads(json.dumps(f.logical)),
             "lifecycle": f.lifecycle(),
             "content_digest": f.content_digest(),
-            "workflow_outcome": workflow.outcome(f),
             "open_questions": f.open_questions(),
         }
 
@@ -475,7 +478,6 @@ def run_case(r: Run, name: str, bundle: Path, index: Path, repeats: int) -> dict
         cli_status=run.out["status"],
         lifecycle=s["view"]["lifecycle"],
         report_outcome=s["manifest"]["outcome"] if s["manifest"] else None,
-        workflow_outcome=s["view"]["workflow_outcome"],
         extraction_status=s["extraction"]["status"] if s["extraction"] else None,
         identities={
             "request_key": created["request_key"],
@@ -1041,8 +1043,15 @@ def vs10(r: Run, index: Path) -> dict[str, Any]:
     lookup budget is another investigation key, never STALE of the first."""
     bundle = r.work / "bundles" / "vs10"
     shutil.copytree(REPO / CASES["VS-2"]["bundle"], bundle)
+    from citerift.retraction.store import manifest_path_for
+
     idx = r.work / "vs10-index.sqlite"
-    shutil.copyfile(index, idx)
+
+    def put_index(src: Path) -> None:  # the index with its build manifest (D-062: a missing manifest refuses)
+        shutil.copyfile(src, idx)
+        shutil.copyfile(manifest_path_for(src), manifest_path_for(idx))
+
+    put_index(index)
     root = r.memory_root("vs10")
     run = r.cli("VS-10 run", "run", "--bundle", bundle, "--index", idx, "--memory-root", root)
     key = run.out["result"]["investigation_key"]
@@ -1079,12 +1088,40 @@ def vs10(r: Run, index: Path) -> dict[str, Any]:
     shutil.rmtree(bundle)
     shutil.move(saved, bundle)
     probe("Stage 03 profile identity", {"VS_PROFILE_DIGEST": "0" * 64})
+    sys.path.insert(0, str(REPO / "tests" / "stage04"))
+    import step8_support
+
+    put_index(step8_support.build_index(r.work / "vs10-other-snapshot"))  # another canonical Stage 02 content
+    probe("Stage 02 index: another canonical content (artifact_digest)")
+    put_index(index)
     with open(idx, "ab") as f:
         f.write(b"\0" * 4096)
-    probe("Stage 02 index bytes")
-    shutil.copyfile(index, idx)
-    probe("Stage 04 schema version", {"VS_STAGE04": json.dumps({"schema_version": "2.0.1"})})
-    probe("Stage 04 engine version", {"VS_STAGE04": json.dumps({"engine_version": "0.1.1"})})
+    rp = r.cli("VS-10 replay, index bytes changed, canonical content equal", "replay", *karg)
+    out["index_bytes_only"] = {
+        "exit_code": rp.code,
+        "result": rp.out["result"].get("result") if isinstance(rp.out, dict) and "result" in rp.out else None,
+        "journal_unchanged": (root / key / "journal.jsonl").read_bytes() == j0,
+    }
+    put_index(index)
+    db = sqlite3.connect(idx)
+    db.execute("UPDATE meta SET value = ? WHERE key = 'artifact_digest'", ("0" * 64,))
+    db.commit()
+    db.close()
+    refused = []
+    for command in ("replay", "verify"):
+        c = r.cli(f"VS-10 {command}, index metadata forged", command, *karg)
+        refused.append(
+            {
+                "command": command,
+                "exit_code": c.code,
+                "error": c.out.get("error") if isinstance(c.out, dict) else None,
+                "journal_unchanged": (root / key / "journal.jsonl").read_bytes() == j0,
+            }
+        )
+    out["index_unverifiable"] = refused
+    put_index(index)
+    probe("Stage 04 schema version", {"VS_STAGE04": json.dumps({"schema_version": "3.0.1"})})
+    probe("Stage 04 engine version", {"VS_STAGE04": json.dumps({"engine_version": "0.2.1"})})
     restored = r.cli("VS-10 replay restored", "replay", *karg)
     out["restored"] = {"exit_code": restored.code, "result": restored.out["result"]["result"]}
     other_root = root  # the same memory root: another key beside the first
@@ -1135,7 +1172,11 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--repeats", type=int, default=5)
     ap.add_argument("--no-live-wait", action="store_true")
     ap.add_argument("--only", nargs="*", default=None)
+    ap.add_argument("--results", type=Path, default=None, help="where to write the results (default: results/)")
     args = ap.parse_args(argv)
+    global RESULTS  # noqa: PLW0603 - one run writes one results directory
+    if args.results is not None:
+        RESULTS = args.results.resolve()
     work = args.work.resolve()
     work.mkdir(parents=True, exist_ok=True)
     if any(work.iterdir()):
@@ -1155,8 +1196,8 @@ def main(argv: list[str]) -> int:
     else:
         index, index_info = build_index(args.csv.resolve(), work)
     results: dict[str, Any] = {
-        "label": "Stage 04 Step 11 vertical slice: development evidence on design-exposed inputs (D-5); "
-        "not an evaluation",
+        "label": "Stage 04 vertical slice (Step 11 method; Step 12 rerun after D-062 as the freeze reference): "
+        "development evidence on design-exposed inputs (D-5); not an evaluation",
         "generated_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "python": sys.version.split()[0],
         "machine": f"{os.uname().machine}, {os.cpu_count()} CPUs",
@@ -1278,6 +1319,13 @@ def main(argv: list[str]) -> int:
                 for m in v10["mutations"]
             },
             "replay never writes the journal": all(m["journal_unchanged"] for m in v10["mutations"]),
+            "D-062: other index bytes, same canonical content: reproduced, not stale": v10["index_bytes_only"]["result"]
+            == "reproduced"
+            and v10["index_bytes_only"]["journal_unchanged"],
+            "D-062: forged index metadata: refused (exit 3, INDEX_CORRUPT), never stale, nothing written": all(
+                x["exit_code"] == 3 and (x["error"] or {}).get("code") == "INDEX_CORRUPT" and x["journal_unchanged"]
+                for x in v10["index_unverifiable"]
+            ),
             "restored inputs: reproduced again": v10["restored"]["result"] == "reproduced",
             "D-057: another budget is another key; the first is not STALE": v10["d057"]["keys_differ"]
             and v10["d057"]["first_replay"] == "reproduced"
@@ -1293,7 +1341,6 @@ def main(argv: list[str]) -> int:
         {
             "case": n,
             "extraction_status": c["extraction_status"],
-            "workflow_outcome": c["workflow_outcome"],
             "report_outcome": c["report_outcome"],
             "v1_statuses": sorted({v["status"] for v in c.get("v1_records", [])}),
             "cli_status": c["cli_status"],

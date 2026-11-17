@@ -5,30 +5,33 @@ and VERIFY's capture check; Stage 02 for LOOKUP; and the Stage 04 transforms for
 VERIFY. DETECT is the thin boundary around the production detector of Step 9 (``adapters.detector.dt1_detector``,
 the default); ``detector=None`` makes DETECT fail with ``DECISION_TABLE_GAP``.
 
-``Integration.environment`` is the controller's identity source: the request key fixed at creation; the bound root
-(for a retained bundle whose path still exists, the capture digest found there, so a replaced bundle is STALE; when
-the path is gone, the root Memory holds, because the result never depends on that path); the Stage 03 extraction
-identity (extractor, profile, parsers, configuration digest); the Stage 02 index identity (snapshot, policy, lookup
-schema version, file SHA-256); the Stage 04 engine identity with the Step 8 integration schema versions; and the
-effective configuration.
+``Integration.environment`` is the controller's identity source: the request key fixed at creation; the bound root (for
+a retained bundle whose path still exists, the capture digest found there, so a replaced bundle is STALE; when the path
+is gone, the root Memory holds, because the result never depends on that path); the Stage 03 extraction identity
+(extractor, profile, parsers, configuration digest); the Stage 02 index identity (D-062: snapshot, policy, lookup schema
+version and the verified canonical ``artifact_digest``, with ``semantic_digest`` and ``export_lines``; never the SQLite
+file bytes); the Stage 04 engine identity with the Step 8 integration schema versions; and the effective configuration.
+One ``IndexVerifier`` per ``Integration`` reuses a verified index identity within the process while the file's stat
+fingerprint is unchanged (D-062); it is never persisted or shared between processes.
 """
 
 from __future__ import annotations
 
 import copy
+import dataclasses
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-import citerift
+from citerift.investigation import __version__ as ENGINE_VERSION
 from citerift.investigation.adapters import StepAdapter, StepRequest, StepResult
 from citerift.investigation.adapters.acquire import retained_acquire
 from citerift.investigation.adapters.assemble import make_assemble
 from citerift.investigation.adapters.detect import Detector, make_detect
 from citerift.investigation.adapters.detector import dt1_detector
 from citerift.investigation.adapters.extract import extraction_identity, make_extract
-from citerift.investigation.adapters.lookup import Opener, environment_identity, make_lookup
+from citerift.investigation.adapters.lookup import IndexVerifier, Opener, environment_identity, make_lookup
 from citerift.investigation.adapters.normalize import normalize
 from citerift.investigation.adapters.validate import validate
 from citerift.investigation.adapters.verify import make_verify
@@ -37,18 +40,22 @@ from citerift.retraction.query import Index
 from citerift.wiki.bundle import BundleError, open_bundle
 from citerift.wiki.extract import ExtractConfig
 
+# The Stage 04 engine identity (A-6, Step 12): ``engine_version`` is the Stage 04 package's own version
+# (``citerift.investigation.__version__``), bumped whenever engine semantics change, so a changed engine is a changed
+# input (STALE), not only a replay mismatch; ``schema_version`` is the version of the Stage 04 schema set (3.0.0 since
+# D-062 changed the index identity).
 STAGE04_IDENTITY = {
-    "engine_version": citerift.__version__,
+    "engine_version": ENGINE_VERSION,
     "table_version": "dt-1",
     "plan_version": PLAN_VERSION,
-    "schema_version": "2.0.0",
+    "schema_version": "3.0.0",
 }
 # The Step 8 blob schemas the adapters write; a change of any is a change of the Stage 04 identity (STALE).
 INTEGRATION_SCHEMAS = {
     "bundle-observation": "1.0.0",
     "bundle-artifact-set": "1.0.0",
     "candidate-inputs": "1.0.0",
-    "lookup-observation": "1.0.0",
+    "lookup-observation": "2.0.0",
     "lookup-plan": "1.0.0",
 }
 
@@ -65,6 +72,10 @@ class Integration:
     live: StepAdapter | None = None
     index_opener: Opener = Index
     stage04: Mapping[str, Any] = field(default_factory=lambda: dict(STAGE04_IDENTITY))
+    index_verifier: IndexVerifier = field(default_factory=IndexVerifier)
+    # Operational locators that replace the recorded paths for this process only (C-04, A11-6): the index or the
+    # retained bundle at another location. They never enter any identity; the content decides staleness.
+    locators: Mapping[str, str] = field(default_factory=dict)
 
     def adapters(self) -> dict[str, StepAdapter]:
         def acquire(req: StepRequest) -> StepResult:
@@ -74,20 +85,31 @@ class Integration:
                 return self.live(req)
             return retained_acquire(req)
 
-        return {
+        adapters: dict[str, StepAdapter] = {
             "VALIDATE": validate,
             "ACQUIRE": acquire,
             "EXTRACT": make_extract(self.extract_config),
             "NORMALIZE": normalize,
-            "LOOKUP": make_lookup(self.index_opener),
+            "LOOKUP": make_lookup(self.index_opener, self.index_verifier),
             "DETECT": make_detect(self.detector),
             "ASSEMBLE": make_assemble(self.stage04),
             "VERIFY": make_verify(self.detector, self.stage04),
         }
+        if not self.locators:
+            return adapters
+        locators = dict(self.locators)
+
+        def at_locators(adapter: StepAdapter) -> StepAdapter:
+            def run(req: StepRequest) -> StepResult:
+                return adapter(dataclasses.replace(req, request=located(req.request, locators)))
+
+            return run
+
+        return {step: at_locators(a) for step, a in adapters.items()}
 
     def environment(self, created: Mapping[str, Any]) -> IdentitySource:
         """The identity source for the investigation whose ``investigation_created`` payload is ``created``."""
-        request = copy.deepcopy(dict(created["request"]))
+        request = located(created["request"], self.locators)
         request_key = copy.deepcopy(dict(created["request_key"]))
 
         def current(root: Mapping[str, Any] | None) -> Mapping[str, Any]:
@@ -95,12 +117,23 @@ class Integration:
                 "request_key": copy.deepcopy(request_key),
                 "root": root_identity(request, root),
                 "extraction": extraction_identity(self.extract_config),
-                "index": environment_identity(Path(request["index_path"])),
+                "index": environment_identity(Path(request["index_path"]), self.index_verifier),
                 "stage04": {**copy.deepcopy(dict(self.stage04)), "integration": dict(INTEGRATION_SCHEMAS)},
                 "config": copy.deepcopy(request["config"]),
             }
 
         return current
+
+
+def located(request: Mapping[str, Any], locators: Mapping[str, str]) -> dict[str, Any]:
+    """The request with the process's operational locators applied (``index_path``, ``bundle_path``). The committed
+    request is never changed; only where this process reads the inputs from."""
+    out = copy.deepcopy(dict(request))
+    if "index_path" in locators:
+        out["index_path"] = locators["index_path"]
+    if "bundle_path" in locators and out.get("mode") == "retained_bundle":
+        out["subject"] = {**out["subject"], "bundle_path": locators["bundle_path"]}
+    return out
 
 
 def root_identity(request: Mapping[str, Any], root: Mapping[str, Any] | None) -> Mapping[str, Any] | None:

@@ -138,7 +138,7 @@ def make_assemble(stage04: Mapping[str, Any]) -> Callable[[StepRequest], StepRes
             **req.investigation,
             "root": copy.deepcopy(dict(req.root)),
             "terminal_state": "NEEDS_RESOLUTION" if open_q else "COMPLETED",
-            "outcome": "partial" if open_q or unavailable or doc["status"] == "partial" else "completed",
+            "outcome": report.outcome(doc["status"], open_questions=open_q, lookup_unavailable=unavailable),
             "limitations": limitations,
             "snapshot_id": index_identity["snapshot_id"],
             "identities": {

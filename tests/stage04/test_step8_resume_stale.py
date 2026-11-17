@@ -13,7 +13,6 @@ Real bundles and the attributed Retraction Watch subset index; DETECT is the SYN
 from __future__ import annotations
 
 import dataclasses
-import os
 import shutil
 import subprocess
 import sys
@@ -168,13 +167,14 @@ def test_a_changed_stage03_profile_is_stale(tmp_path: Path, index: Path, monkeyp
 
 
 def test_a_replaced_index_is_stale(tmp_path: Path, index: Path) -> None:
-    path = tmp_path / "index.sqlite"
-    shutil.copyfile(index, path)
+    """D-062: another canonical Stage 02 identity at the path (a build of other data) is STALE; other bytes of the
+    same content are not (``test_step12_d062``)."""
+    path = tmp_path / "idx" / index.name
+    path.parent.mkdir()
+    S8.replace_index(path, index)
     root, payload = _start(tmp_path / "m", S8.AR_OBOKATA, path)
     S8.run_until(root, payload, S8.TEST_INTEGRATION, "LOOKUP")
-    with open(path, "r+b") as f:  # same file, other bytes: the recorded SHA-256 no longer holds
-        f.seek(0, os.SEEK_END)
-        f.write(b"\0" * 4096)
+    S8.replace_index(path, S8.build_index(tmp_path / "other", S8.RW_FEWER))
     assert S8.run(root, payload, S8.TEST_INTEGRATION).status == "STALE"
     assert _stale_changed(root, payload) == ["index"]
 

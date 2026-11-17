@@ -339,13 +339,15 @@ def identities(live: bool = False, extraction_status: str = "complete") -> dict[
             "snapshot_id": "rw-0123456789abcdef",
             "policy_version": "citerift-rde-policy/1.2.0",
             "lookup_schema_version": "1.0.0",
-            "index_sha256": h("index"),
+            "artifact_digest": h("index"),
+            "semantic_digest": h("index-semantic"),
+            "export_lines": 13,
         },
         "stage04": {
-            "engine_version": "0.1.0",
+            "engine_version": "0.2.0",
             "table_version": "dt-1",
             "plan_version": "plan-1",
-            "schema_version": "2.0.0",
+            "schema_version": "3.0.0",
         },
         "config": live_config() if live else bundle_config(),
         "config_digest": h("config"),
@@ -440,10 +442,10 @@ def created() -> dict[str, Any]:
             "investigation_id": "0b1e2c3d-4e5f-8a6b-9c7d-0e1f2a3b4c5d",
             "config_digest": h("config"),
             "stage04": {
-                "engine_version": "0.1.0",
+                "engine_version": "0.2.0",
                 "table_version": "dt-1",
                 "plan_version": "plan-1",
-                "schema_version": "2.0.0",
+                "schema_version": "3.0.0",
             },
             "migrated_from": None,
         },
@@ -552,7 +554,9 @@ def test_schemas_are_valid_2020_12_and_versioned() -> None:
         # DETECT candidate batches. Step 8 adds the five integration blobs (IF-7 and the adapter outputs).
         expected = {RECORD: "4.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
                     EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0", LOOKUP_BATCH: "1.0.0",
-                    CANDIDATE_BATCH: "1.0.0", **dict.fromkeys(STEP8, "1.0.0")}  # fmt: skip
+                    CANDIDATE_BATCH: "1.0.0", **dict.fromkeys(STEP8, "1.0.0"),
+                    # Step 12 (D-062): the canonical index identity (common 3, lookup observation 2).
+                    COMMON: "3.0.0", P + "lookup-observation": "2.0.0"}  # fmt: skip
         assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 
@@ -1165,7 +1169,14 @@ def test_stale_and_config_identity_fields_retained() -> None:
         r = copy.deepcopy(rep)
         del r["identities"]["extraction"][field]
         bad(r, REPORT)
-    for field in ("snapshot_id", "policy_version", "lookup_schema_version", "index_sha256"):
+    for field in (
+        "snapshot_id",
+        "policy_version",
+        "lookup_schema_version",
+        "artifact_digest",
+        "semantic_digest",
+        "export_lines",
+    ):
         r = copy.deepcopy(rep)
         del r["identities"]["index"][field]
         bad(r, REPORT)

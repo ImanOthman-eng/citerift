@@ -401,9 +401,8 @@ def _compare(s: Any, prod: Prod, live: bool, conflict: bool, stats: Counter[str]
         stats["max_f"] = max(stats["max_f"], sv.f)
         stats["max_attempts"] = max(stats["max_attempts"], sv.attempts)
     assert bool(f.open_questions()) == s.question
-    out = workflow.outcome(f)
-    if lc in ("COMPLETED", "NEEDS_RESOLUTION"):
-        assert out == ("partial" if s.question else "completed")
+    # Step 12 (I-2): the outcome is the report's (report.outcome), not a fold quantity; the model's open question is
+    # compared just above.
     stats["compared_states"] += 1
 
 

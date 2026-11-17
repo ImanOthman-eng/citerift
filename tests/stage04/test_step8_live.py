@@ -211,6 +211,50 @@ def test_an_unreadable_or_out_of_range_retry_after_is_unknown(
     assert isinstance(result, Failed) and result.retry_after_known is False and result.not_before is None
 
 
+def test_b04_a_normal_exit_after_an_unreadable_retry_after_is_terminal(
+    env: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Step 12, B-04: Stage 03 answers a complete 429 whose Retry-After cannot be read and the child exits normally.
+    The attempt is never recorded as retryable (a retry could be early): it fails terminally with that detail."""
+    result = acquire(env, "throttled:soon", monkeypatch)(step_request(env))
+    assert isinstance(result, Failed) and result.code == "ADAPTER_INCONSISTENT"
+    assert result.detail is not None and result.detail.startswith("RETRY_AFTER_UNREADABLE")
+    assert result.not_before is None
+
+
+@pytest.mark.parametrize("unsafe", ["group_readable", "symlink"])
+def test_sd01_an_unsafe_work_root_is_refused_before_any_child(
+    env: Path, monkeypatch: pytest.MonkeyPatch, unsafe: str
+) -> None:
+    """Step 12, SD-01: the work root is used only when it is a real directory of this user with no group or other
+    access; otherwise ACQUIRE fails closed and no child starts."""
+    root = env / "acquire"
+    if unsafe == "group_readable":
+        root.mkdir(mode=0o750)
+        root.chmod(0o750)
+    else:
+        target = _private(env / "real-acquire")
+        root.symlink_to(target, target_is_directory=True)
+    result = acquire(env, "replay", monkeypatch)(step_request(env))
+    assert isinstance(result, Failed) and result.code == "ADAPTER_INCONSISTENT"
+    assert result.detail is not None and result.detail.startswith("unsafe ACQUIRE work directory")
+    assert not (env / "child.pid").exists()
+
+
+def test_sd01_the_default_work_root_is_in_the_memory_root(env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Step 12, SD-01/B-03: by default the kept side channel lives in ``.acquire`` of the request's memory root, not
+    in a shared temporary directory."""
+    monkeypatch.setenv("CITERIFT_FAKE_MODE", "throttled:60")
+    root = _private(env / "memory")
+    req = step_request(env)
+    req.request["memory_root"] = str(root)
+    result = make_live_acquire(POLICY, child=FAKE, t_acq_ms=T_ACQ_MS)(req)
+    assert not isinstance(result, Succeeded)
+    base = root / ".acquire" / ("0" * 64)
+    assert [p.name for p in base.iterdir()] and all((p / "network.jsonl").is_file() for p in base.iterdir())
+    assert (os.stat(root / ".acquire").st_mode & 0o777) == 0o700
+
+
 def _lines(path: Path, *entries: dict[str, Any], torn: bytes = b"") -> Path:
     path.write_bytes(b"".join(json.dumps(e).encode() + b"\n" for e in entries) + torn)
     return path
@@ -233,10 +277,18 @@ def test_side_channel_never_shortens_and_treats_a_torn_line_as_unknown(tmp_path:
     assert side_channel(tmp_path / "missing") == (True, None)
 
 
+def _private(path: Path) -> Path:
+    """``path`` and its missing parents, each mode 0700 (the work root is refused otherwise; Step 12, SD-01)."""
+    for d in reversed([path, *path.parents]):
+        if not d.exists():
+            d.mkdir(mode=0o700)
+            d.chmod(0o700)
+    return path
+
+
 def test_a_later_attempt_defers_to_an_earlier_attempts_retry_after(env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """An attempt whose failure was never recorded (its controller died) still holds back the next attempt."""
-    base = env / "acquire" / ("0" * 64) / "attempt-1-x"
-    base.mkdir(parents=True)
+    base = _private(env / "acquire" / ("0" * 64) / "attempt-1-x")
     t = time.time()
     _lines(
         base / "network.jsonl",
@@ -251,8 +303,7 @@ def test_a_later_attempt_defers_to_an_earlier_attempts_retry_after(env: Path, mo
 
 
 def test_a_later_attempt_after_an_unknown_one_fails(env: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    base = env / "acquire" / ("0" * 64) / "attempt-1-x"
-    base.mkdir(parents=True)
+    base = _private(env / "acquire" / ("0" * 64) / "attempt-1-x")
     _lines(base / "network.jsonl", {"event": "request", "url": "u", "at": time.time()})
     result = acquire(env, "replay", monkeypatch)(step_request(env, attempt=2))
     assert isinstance(result, Failed) and result.code == "ADAPTER_INCONSISTENT"

@@ -120,7 +120,7 @@ def _created() -> dict[str, Any]:
             "engine_version": "9" * 13 + "." + "9" * 13 + "." + "9" * 12,
             "table_version": "dt-1",
             "plan_version": "plan-1",
-            "schema_version": "2.0.0",
+            "schema_version": "3.0.0",  # Step 12 (D-062): Stage 04 schemas 3.0.0; same length
         },
         "migrated_from": None,
     }

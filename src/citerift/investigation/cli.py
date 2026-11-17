@@ -8,10 +8,15 @@ run            ``--request FILE`` | ``--bundle DIR`` | ``--wiki {ar,en} --revisi
                investigation the request keys or reopens it, and runs it until it is terminal or must wait.
 resume         ``--memory-root DIR --key KEY``: runs an existing investigation from its journal.
 replay         ``--memory-root DIR --key KEY``: read-only, offline; reproduced, differs or stale (SPEC 10.4).
-verify         ``--memory-root DIR --key KEY [--checkpoint FILE]``: read-only named checks; passed, failed, corrupt,
-               busy or stale; with a D-052 checkpoint, also compares it with the journal.
+verify         ``--memory-root DIR --key KEY [--checkpoint FILE]``: read-only named checks; passed, failed,
+               not_verified, corrupt, busy or stale; with a D-052 checkpoint, also compares it with the journal.
 show           ``--memory-root DIR --key KEY [--claims]``: read-only diagnostics and the next legal transition.
 export         ``--memory-root DIR --key KEY --out DIR``: the export directory of a verified investigation.
+
+``resume``, ``replay``, ``verify``, ``show`` and ``export`` also take ``--index FILE`` and ``--bundle DIR``: where this
+process reads the Stage 02 index (with its build manifest beside it) and the retained bundle when they moved
+(Step 12, C-04, A11-6). They are operational locators only: the journal keeps the recorded paths, and the inputs are
+still identified by content (D-062), so another content at the new place is STALE as it would be at the old one.
 checkpoint     ``--memory-root DIR --key KEY [--out FILE [--overwrite]]``: a D-052 checkpoint, on stdout or to FILE
                outside the memory root.
 =============  ======================================================================================================
@@ -28,20 +33,28 @@ code  status            meaning
 4     not_found         no investigation with that key under the memory root
 5     verify_failed     a verification check failed, a replay differs, or a checkpoint does not match
 6     partial           COMPLETED with outcome partial
-8     blocked           BLOCKED: a step may restart only at or after ``not_before`` (nothing waits or sleeps)
+8     blocked           no step may start before ``not_before``: BLOCKED, or CREATED/RUNNING whose next action is to
+                        wait (A11-5); nothing waits or sleeps
 9     failed            FAILED: a step failed terminally
 10    needs_resolution  NEEDS_RESOLUTION: verified, with an open question
-11    stale             STALE, or an input identity differs from the recorded one
+11    stale             STALE, or (``verify``, ``replay``, ``export``, and ``show`` of a non-terminal investigation) an
+                        input identity differs from the recorded one
 12    corrupt           CORRUPT: the journal, a blob or the report graph is invalid
 13    busy              another process holds the investigation lock
-14    incomplete        CREATED or RUNNING (for example after a crash, before ``resume``)
+14    incomplete        CREATED or RUNNING and a step may start now (for example after a crash, before ``resume``)
 ====  ================  ==============================================================================================
 
 When a command succeeds, its exit code is the investigation's status. An exit code never carries a claim class.
+``run`` and ``resume`` of a terminal investigation report it and do not re-check its input identities (I-5); ``verify``
+and ``replay`` do. An input that cannot be established now (a missing or unverifiable index) is refused with its code
+(exit 3) and nothing is written; it is never reported as a change (MM 10.2).
 
 JSON output (stable shape): ``{"command", "status", "exit_code", "result"}`` on success and ``{"command", "status",
-"exit_code", "error": {"code", "detail"}}`` otherwise, on stdout; diagnostics go to stderr. Text output is for people
-and is never a scientific identity. Files are written only by ``export`` and ``checkpoint``, to the path given.
+"exit_code", "error": {"code", "detail"}}`` otherwise (usage and internal errors included when ``--format json`` was
+given), on stdout; diagnostics go to stderr. Two exceptions: ``checkpoint`` without ``--out`` writes the checkpoint
+itself, and ``verify`` of a busy or corrupt investigation is a ``result`` with ``result`` busy or corrupt. Text output
+is for people and is never a scientific identity. Files are written only by ``export`` and ``checkpoint``, to the path
+given.
 """
 
 from __future__ import annotations
@@ -49,11 +62,13 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Any
 
 from citerift.investigation import checkpoint as d052
 from citerift.investigation import operations as ops
+from citerift.investigation.adapters.plan import Integration
 from citerift.investigation.fsutil import is_hex64
 from citerift.investigation.outputs import OperationError
 
@@ -90,8 +105,24 @@ def _common(p: argparse.ArgumentParser, *, key: bool = True) -> None:
         p.add_argument("--key", type=_key, required=True)
 
 
+def _exit_table() -> str:
+    doc = __doc__ or ""
+    start = doc.index("Exit codes")
+    return doc[start : doc.index("JSON output")].rstrip()
+
+
+def _locators(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--index", type=Path, help="read the Stage 02 index from here (its manifest beside it)")
+    p.add_argument("--bundle", type=Path, help="read the retained Stage 03 bundle from here")
+
+
 def parser() -> argparse.ArgumentParser:
-    p = _Parser(prog=PROG, description="CITERIFT Stage 04 investigations of one pinned Wikipedia article revision")
+    p = _Parser(
+        prog=PROG,
+        description="CITERIFT Stage 04 investigations of one pinned Wikipedia article revision",
+        epilog=_exit_table(),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     sub = p.add_subparsers(dest="command", required=True, parser_class=_Parser)
     r = sub.add_parser("run", help="create or reopen the investigation of a request and run it")
     _common(r, key=False)
@@ -110,13 +141,16 @@ def parser() -> argparse.ArgumentParser:
     ):
         c = sub.add_parser(name, help=text)
         _common(c)
+        _locators(c)
         if name == "show":
             c.add_argument("--claims", action="store_true", help="also print each claim's explanation")
     v = sub.add_parser("verify", help="named verification checks, read-only")
     _common(v)
+    _locators(v)
     v.add_argument("--checkpoint", type=Path, help="a D-052 checkpoint to compare with the journal")
     e = sub.add_parser("export", help="write the export directory of a verified investigation")
     _common(e)
+    _locators(e)
     e.add_argument("--out", type=Path, required=True, help="a new directory outside the memory root")
     k = sub.add_parser("checkpoint", help="write a D-052 external journal checkpoint")
     _common(k)
@@ -146,16 +180,25 @@ def dispatch(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     if args.command == "run":
         return ops.run(_request(args))
     root = args.memory_root.absolute()
+    locators = {
+        name: str(value.absolute())
+        for name, value in (
+            ("index_path", getattr(args, "index", None)),
+            ("bundle_path", getattr(args, "bundle", None)),
+        )
+        if value is not None
+    }
     if args.command == "resume":
-        return ops.resume(root, args.key)
+        return ops.resume(root, args.key, locators=locators)
+    integration = Integration(locators=locators)
     if args.command == "replay":
-        return ops.replay(root, args.key)
+        return ops.replay(root, args.key, integration=integration)
     if args.command == "verify":
-        return ops.verify(root, args.key, checkpoint=args.checkpoint)
+        return ops.verify(root, args.key, checkpoint=args.checkpoint, integration=integration)
     if args.command == "show":
-        return ops.show(root, args.key, explain_claims=args.claims)
+        return ops.show(root, args.key, explain_claims=args.claims, integration=integration)
     if args.command == "export":
-        return ops.export(root, args.key, args.out.absolute())
+        return ops.export(root, args.key, args.out.absolute(), integration=integration)
     return ops.checkpoint(root, args.key, args.out.absolute() if args.out else None, overwrite=args.overwrite)
 
 
@@ -164,10 +207,22 @@ STATUS_OF_CODE = {code: status for status, code in ops.EXIT.items()}
 
 def _text(command: str, status: str, code: int, result: dict[str, Any]) -> str:
     lines = [f"{command}: {status} (exit {code})"]
-    for k in ("investigation_key", "investigation_id", "lifecycle", "result", "first_difference", "exported"):
+    for k in (
+        "investigation_key",
+        "investigation_id",
+        "lifecycle",
+        "result",
+        "changed",
+        "code",
+        "detail",
+        "first_difference",
+        "exported",
+    ):
         if result.get(k) is not None:
             v = result[k]
-            lines.append(f"{k}: {json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v}")
+            lines.append(f"{k}: {json.dumps(v, ensure_ascii=False) if isinstance(v, (dict, list)) else v}")
+    if isinstance(result.get("stale"), dict):
+        lines.append(f"changed: {json.dumps(result['stale']['changed'])}")
     if result.get("claims_by_class"):
         lines.append("claims: " + ", ".join(f"{k} {v}" for k, v in result["claims_by_class"].items()))
     if "steps" in result:
@@ -176,7 +231,11 @@ def _text(command: str, status: str, code: int, result: dict[str, Any]) -> str:
             lines.append(f"  {s['step']:<9} {s['state']:<16} attempts {s['attempts']}{nb}")
     nxt = result.get("next")
     if nxt:
-        lines.append(f"next: {nxt['action']} {nxt['step'] or ''} (rule {nxt['rule']}): {nxt['reason']}".rstrip())
+        what = " ".join(str(x) for x in (nxt["action"], nxt.get("step")) if x)
+        why = nxt.get("reason") or f"{nxt.get('code')}: {nxt.get('detail')}"
+        lines.append(f"next: {what} (rule {nxt['rule']}): {why}")
+        if nxt.get("changed"):
+            lines.append(f"changed: {json.dumps(nxt['changed'])}")
     if result.get("terminated_by"):
         lines.append(f"terminated by: {json.dumps(result['terminated_by'], ensure_ascii=False)}")
     rep = result.get("report")
@@ -194,14 +253,33 @@ def _text(command: str, status: str, code: int, result: dict[str, Any]) -> str:
         lines.append(json.dumps(cp, sort_keys=True) if "format" in cp else f"checkpoint: {cp.get('result')}")
     if result.get("statement"):
         lines.append(result["statement"])
-    return "\n".join(lines) + "\n"
+    return "\n".join(_printable(line) for line in lines) + "\n"
+
+
+def _printable(line: str) -> str:
+    """Text output only (SD-09): control and bidirectional formatting characters are shown escaped."""
+    return "".join(c if c == "\t" or unicodedata.category(c) not in ("Cc", "Cf") else f"\\u{ord(c):04x}" for c in line)
+
+
+def _json_error(command: str | None, status: str, code: str, detail: str) -> None:
+    out = {
+        "command": command,
+        "status": status,
+        "exit_code": ops.EXIT[status],
+        "error": {"code": code, "detail": detail},
+    }
+    sys.stdout.write(json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
 
 
 def main(argv: list[str] | None = None) -> int:
+    raw = list(sys.argv[1:] if argv is None else argv)
     try:
         args = parser().parse_args(argv)
     except SystemExit as exc:
-        return int(exc.code) if isinstance(exc.code, int) else ops.EXIT["usage"]
+        code = int(exc.code) if isinstance(exc.code, int) else ops.EXIT["usage"]
+        if code == ops.EXIT["usage"] and _wants_json(raw):  # UF-05: the JSON envelope for a usage error too
+            _json_error(raw[0] if raw and not raw[0].startswith("-") else None, "usage", "USAGE", "see standard error")
+        return code
     fmt = getattr(args, "format", "text")
     try:
         result, code = dispatch(args)
@@ -215,6 +293,8 @@ def main(argv: list[str] | None = None) -> int:
         return code
     except Exception as exc:  # a defect: report it, export nothing
         _err(f"{PROG} {args.command}: internal error: {type(exc).__name__}: {exc}")
+        if fmt == "json":
+            _json_error(args.command, "internal", "INTERNAL", f"{type(exc).__name__}: {exc}"[:500])
         return ops.EXIT["internal"]
     status = STATUS_OF_CODE[code]
     if args.command == "checkpoint" and args.out is None:
@@ -227,6 +307,10 @@ def main(argv: list[str] | None = None) -> int:
     else:
         sys.stdout.write(_text(args.command, status, code, result))
     return code
+
+
+def _wants_json(raw: list[str]) -> bool:
+    return any(a == "--format=json" or (a == "--format" and raw[i + 1 : i + 2] == ["json"]) for i, a in enumerate(raw))
 
 
 if __name__ == "__main__":

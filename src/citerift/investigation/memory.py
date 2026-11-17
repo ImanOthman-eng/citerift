@@ -394,7 +394,7 @@ class InvestigationMemory:
 
 def _read(inv_fd: int) -> tuple[JournalRead, bytes]:
     try:
-        fd = open_regular(JOURNAL, inv_fd)
+        fd = open_regular(JOURNAL, inv_fd, single_link=True)
     except PathUnsafe as exc:
         raise InvariantViolation("M-2", "JOURNAL_CORRUPT", exc.detail) from exc
     try:

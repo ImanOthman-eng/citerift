@@ -44,8 +44,9 @@ def lstat_at(name: str, dir_fd: int) -> os.stat_result | None:
         return None
 
 
-def open_regular(name: str, dir_fd: int, flags: int = os.O_RDONLY) -> int:
-    """Open an existing regular file relative to ``dir_fd``; symbolic links and other file types are refused.
+def open_regular(name: str, dir_fd: int, flags: int = os.O_RDONLY, *, single_link: bool = False) -> int:
+    """Open an existing regular file relative to ``dir_fd``; symbolic links and other file types are refused, and with
+    ``single_link`` a file with another hard link (the journal and the lock, Step 12 SD-06).
 
     The open is non-blocking, so a FIFO or device swapped in for the file cannot block the caller; the type is then
     checked on the descriptor itself (no check-then-open race) and blocking mode restored for the regular file."""
@@ -53,9 +54,13 @@ def open_regular(name: str, dir_fd: int, flags: int = os.O_RDONLY) -> int:
         fd = os.open(name, flags | O_NOFOLLOW | O_CLOEXEC | O_NONBLOCK, dir_fd=dir_fd)
     except OSError as exc:
         raise PathUnsafe("PATH_UNSAFE", f"{name}: cannot open as a regular file ({exc.strerror})") from exc
-    if not stat.S_ISREG(os.fstat(fd).st_mode):
+    st = os.fstat(fd)
+    if not stat.S_ISREG(st.st_mode):
         os.close(fd)
         raise PathUnsafe("PATH_UNSAFE", f"{name} is not a regular file")
+    if single_link and st.st_nlink != 1:
+        os.close(fd)
+        raise PathUnsafe("PATH_UNSAFE", f"{name} has {st.st_nlink} hard links")
     os.set_blocking(fd, True)
     return fd
 

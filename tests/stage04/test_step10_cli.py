@@ -235,7 +235,7 @@ def test_exit_8_blocked_is_reported_without_waiting(
 ) -> None:
     later = datetime.now(UTC) + timedelta(hours=1)
     fake = _Deferring(later)
-    monkeypatch.setattr(ops, "integration_for", lambda request: Integration(live=fake))
+    monkeypatch.setattr(ops, "integration_for", lambda request, locators=None: Integration(live=fake))
     root = S8.memory_root(tmp_path)
     with T.offline():
         code, value = T.run_json("run", "--wiki", "en", "--revision", "1372543632", "--index", index,
@@ -265,7 +265,7 @@ def test_exit_9_failed(tmp_path: Path) -> None:
     assert (t["step"], t["code"], t["reason"]) == ("VALIDATE", "INPUT_INVALID", "INDEX_PATH_INVALID")
     key = value["result"]["investigation_key"]
     code, out = T.run_json("verify", "--memory-root", root, "--key", key)
-    assert code == 9 and out["result"]["result"] == "failed"
+    assert code == 9 and out["result"]["result"] == "not_verified"  # Step 12 UF-04: not a failed verification
     code, out = T.run_json("export", "--memory-root", root, "--key", key, "--out", tmp_path / "x")
     assert code == 9 and out["error"]["code"] == "EXPORT_REFUSED" and not (tmp_path / "x").exists()
     code, out = T.run_json("replay", "--memory-root", root, "--key", key)
@@ -285,8 +285,7 @@ def test_exit_11_stale_after_the_index_changed(tmp_path: Path) -> None:
     index = S8.build_index(tmp_path / "rw")
     inv = T.Inv(tmp_path / "inv", S8.EN_OBOKATA, index)
     assert inv.code == 0
-    with open(index, "ab") as f:
-        f.write(b"\0")
+    S8.replace_index(index, S8.build_index(tmp_path / "other", S8.RW_FEWER))  # another canonical identity (D-062)
     code, value = T.run_json("verify", *_key_args(inv))
     assert code == 11 and value["result"]["result"] == "stale" and value["result"]["stale"]["changed"] == ["index"]
     code, value = T.run_json("replay", *_key_args(inv))
@@ -327,7 +326,7 @@ def test_exit_14_incomplete(tmp_path: Path, index: Path) -> None:
     assert code == 14 and value["result"]["lifecycle"] == "CREATED"
     assert value["result"]["next"]["rule"] == "T-START"
     code, value = T.run_json("verify", "--memory-root", root, "--key", key)
-    assert code == 14 and value["result"]["result"] == "failed"
+    assert code == 14 and value["result"]["result"] == "not_verified"  # Step 12 UF-04
     code, value = T.run_json("export", "--memory-root", root, "--key", key, "--out", tmp_path / "x")
     assert code == 14 and not (tmp_path / "x").exists()
     with T.offline():  # resume runs it to its end, offline

@@ -48,7 +48,7 @@ def validate(req: StepRequest) -> StepResult:
         except OSError as exc:
             return _bad("BUNDLE_UNREADABLE", str(exc.strerror))
     try:
-        st = os.stat(request["index_path"], follow_symlinks=False)
+        st = os.stat(request["index_path"])  # a symlink to a regular file is accepted, as Stage 02 opens it (C-09)
     except OSError as exc:
         return _bad("INDEX_PATH_INVALID", f"{request['index_path']}: {exc.strerror}")
     if not stat.S_ISREG(st.st_mode):
@@ -57,5 +57,9 @@ def validate(req: StepRequest) -> StepResult:
         check_memory_root(Path(request["memory_root"]))
     except PathUnsafe as exc:
         return _bad("MEMORY_ROOT_UNSAFE", exc.detail)
-    out = {"validated": request}
+    # The output names the logical request only: the local paths are operational locators and stay out of every step
+    # key and output, so the same request at other paths gives the same step keys (Step 12, A11-6 / C-06).
+    logical = {k: v for k, v in request.items() if k not in ("index_path", "memory_root")}
+    logical["subject"] = {k: v for k, v in request["subject"].items() if k != "bundle_path"}
+    out = {"validated": logical}
     return Succeeded(blobs=(out,), outputs=(sha256_hex(canon(out)),))

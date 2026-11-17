@@ -17,6 +17,10 @@
 5. keeps only the side channel of the attempt (in a per-investigation directory) until a capture succeeds, so a
    later attempt never starts before a Retry-After instant an earlier one saw, even when the controller died with
    the child: it defers to that instant, and an earlier attempt whose Retry-After is unknown fails it terminally.
+   The work root is ``.acquire`` inside the memory root by default (durable like the journal, private to that memory
+   root), validated before use (a real directory owned by this user with no group or other access) and the kept side
+   channel is fsynced with its directories (Step 12, SD-01, SD-02, B-03). A child that exits normally after a
+   response whose Retry-After it could not read fails terminally (``RETRY_AFTER_UNREADABLE``; B-04).
 
 The 240 s bound covers one attempt's child process. It is not the investigation's bound: ``9 x T_acq`` is the most
 child time one investigation can spend in live ACQUIRE (SPEC 9.2), before termination overhead and the other steps.
@@ -30,6 +34,7 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import stat
 import sys
 import tempfile
 from collections.abc import Sequence
@@ -47,6 +52,8 @@ from citerift.wiki.fetch import FetchPolicy, parse_retry_after
 from citerift.wiki.issues import CATALOG
 
 CHILD_MODULE = "citerift.investigation.adapters.live_child"
+WORK_DIR = ".acquire"  # in the memory root; never an investigation key (64 hex digits)
+RETRY_AFTER_UNREADABLE = "RETRY_AFTER_UNREADABLE: a response's Retry-After could not be read; a retry could be early"
 
 
 def policy_digest(policy: FetchPolicy) -> str:
@@ -133,6 +140,38 @@ def _keep_side_channel(work: Path) -> None:
     for entry in work.iterdir():
         if entry.name != "network.jsonl":
             shutil.rmtree(entry) if entry.is_dir() and not entry.is_symlink() else entry.unlink()
+    for path in (work / "network.jsonl", work, work.parent):
+        _fsync(path)
+
+
+def _fsync(path: Path) -> None:
+    try:
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    except FileNotFoundError:
+        return
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def private_dir(path: Path) -> str | None:
+    """Create ``path`` (mode 0700) when absent; None when it is a real directory owned by this user with no group or
+    other access, else why it is unsafe (never followed through a symbolic link)."""
+    try:
+        os.mkdir(path, 0o700)
+    except FileExistsError:
+        pass
+    except OSError as exc:
+        return f"{path.name}: {exc.strerror}"
+    st = os.lstat(path)
+    if stat.S_ISLNK(st.st_mode) or not stat.S_ISDIR(st.st_mode):
+        return f"{path.name} is not a real directory"
+    if st.st_uid != os.geteuid():
+        return f"{path.name} is not owned by this user"
+    if st.st_mode & 0o077:
+        return f"{path.name} is accessible to group or others"
+    return None
 
 
 def make_live_acquire(
@@ -142,11 +181,10 @@ def make_live_acquire(
     t_acq_ms: int | None = None,
     workroot: Path | None = None,
 ) -> Any:
-    """The live ACQUIRE adapter. ``workroot`` holds one private directory per investigation (default: a per-user
-    directory under the system temporary directory). ``child`` (an argv prefix to which ``WORKDIR PARENT_PID`` is
-    appended) and ``t_acq_ms`` replace the production child and the configured bound only in tests (G-6)."""
+    """The live ACQUIRE adapter. ``workroot`` holds one private directory per investigation (default: ``.acquire``
+    in the request's memory root). ``child`` (an argv prefix to which ``WORKDIR PARENT_PID`` is appended) and
+    ``t_acq_ms`` replace the production child and the configured bound only in tests (G-6)."""
     argv = list(child) if child is not None else [sys.executable, "-I", "-m", CHILD_MODULE]
-    root = workroot if workroot is not None else Path(tempfile.gettempdir()) / f"citerift-acquire-{os.getuid()}"
 
     def live_acquire(req: StepRequest) -> StepResult:
         cfg = req.request["config"]
@@ -157,10 +195,12 @@ def make_live_acquire(
         if bound != bound_for(policy):
             return Failed(ADAPTER_INCONSISTENT, detail="the request's D-042 bound is not this fetch policy's")
         limit = t_acq_ms if t_acq_ms is not None else int(bound["t_acq_ms"])
+        root = workroot if workroot is not None else Path(req.request["memory_root"]) / WORK_DIR
         base = root / req.investigation["investigation_key"]
-        os.makedirs(base, mode=0o700, exist_ok=True)
-        os.chmod(root, 0o700)
-        os.chmod(base, 0o700)
+        for d in (root, base):
+            unsafe = private_dir(d)
+            if unsafe is not None:
+                return Failed(ADAPTER_INCONSISTENT, detail=f"unsafe ACQUIRE work directory: {unsafe}"[:1000])
         known, earlier = earlier_attempts(base, req.attempt)
         if not known:
             return Failed(
@@ -190,6 +230,11 @@ def make_live_acquire(
     return live_acquire
 
 
+def status_failed(result: dict[str, Any]) -> bool:
+    """A child result that is not a capture (deferred or failed)."""
+    return not (result.get("status") in ("complete", "partial") and result.get("bundle"))
+
+
 def _outcome(run: Supervised, work: Path, limit: int, req: StepRequest) -> StepResult:
     known, not_before = side_channel(work / "network.jsonl")
     if run.timed_out:
@@ -212,6 +257,8 @@ def _outcome(run: Supervised, work: Path, limit: int, req: StepRequest) -> StepR
         result = json.loads((work / "result.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return Failed(ADAPTER_INCONSISTENT, detail=f"the capture child exited {run.returncode} without a result")
+    if status_failed(result) and not known:  # B-04: never a retry that could be early
+        return Failed(ADAPTER_INCONSISTENT, detail=RETRY_AFTER_UNREADABLE)
     stated = _parse_at(result.get("not_before"))
     latest = max((t for t in (stated, not_before) if t is not None), default=None)
     status = result.get("status")

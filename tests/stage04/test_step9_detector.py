@@ -24,6 +24,7 @@ from citerift.investigation.adapters.detector import dt1_detector
 from citerift.investigation.canonical import canon, sha256_hex
 from citerift.investigation.schemas import CLAIM, COMMON, problems, ref_problems
 from citerift.investigation.workflow import CONFLICT, DISPOSITION
+from citerift.retraction.export import compute_digests
 
 pytestmark = pytest.mark.unit
 
@@ -248,7 +249,7 @@ def test_a_crossref_assertion_in_a_conflict_is_an_alternative_not_a_failure(tmp_
     ]
     deposit = [{"original": S9.D, "updated_by": [{"DOI": "10.5555/n", "type": "retraction", "source": "publisher"}]}]
     with Index(RDE.build_rows(tmp_path, rows, deposit)) as ix:
-        obs = LK.observe(ix, LK.index_identity(ix, "0" * 64), S9.D, None, 16 * 1024 * 1024)
+        obs = LK.observe(ix, LK.index_identity(ix, compute_digests(ix.conn)), S9.D, None, 16 * 1024 * 1024)
     groups = obs["result"]["projection"]["basis"]["conflict_groups"]
     assert any(str(a).startswith("cr-") for g in groups for a in g["assertions"])
     inp, blobs = S9.concretize(R.Case("CITED", "DOI", frozenset(), d=("matched", "conf", False)))
@@ -299,7 +300,7 @@ def _real_stage02_claim(tmp: Path, rows: list[dict[str, str]], shape: str) -> di
     }[shape]
     inp, blobs = S9.concretize(case)
     with Index(RDE.build_rows(tmp, [RDE.row(**r) for r in rows])) as ix:
-        ident = LK.index_identity(ix, "0" * 64)
+        ident = LK.index_identity(ix, compute_digests(ix.conn))
         for entry in inp.lookup_plan["lookups"]:
             obs = LK.observe(ix, ident, entry["query"]["doi"], entry["query"]["pmid"], 16 * 1024 * 1024)
             digest = sha256_hex(canon(obs))

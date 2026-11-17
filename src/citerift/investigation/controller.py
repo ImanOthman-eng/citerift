@@ -226,38 +226,29 @@ class WorkflowController:
         )
         return self._append("step_failed", payload, step, number, orphan=True)
 
-    def current_digests(self) -> dict[str, str]:
-        """The input identity vector now (SPEC 10.3). The environment sees the bound root's identity only, never its
+    def current_values(self) -> dict[str, Any]:
+        """The input identity values now (SPEC 10.3). The environment sees the bound root's identity only, never its
         display title, so no key depends on a title (owner Step 7 item 16)."""
         root = self.view.root
-        values = self._identities(copy.deepcopy(root["subject"]["identity"]) if root is not None else None)
-        return workflow.identity_digests(values)
+        return dict(self._identities(copy.deepcopy(root["subject"]["identity"]) if root is not None else None))
 
-    def stale_payload(self, digests: Mapping[str, str]) -> dict[str, Any] | None:
+    def current_digests(self) -> dict[str, str]:
+        """The digests of the input identity vector now (SPEC 10.3)."""
+        return workflow.identity_digests(self.current_values())
+
+    def stale_payload(
+        self, digests: Mapping[str, str], values: Mapping[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         """S-10.1: recompute every committed step's key; the ``stale_detected`` payload if one differs, else None."""
-        f = self.view
-        committed = [s for s in STEPS if f.step_state(s) == "succeeded"]
-        changed_steps = [s for s in committed if workflow.step_key(f, s, digests) != self._recorded_key(s)]
-        if not changed_steps:
-            return None
-        # Per component, the digest a committed step recorded; where steps recorded different digests (an identity
-        # changed between steps of one process), the first that differs from now, so ``changed`` names it.
-        recorded: dict[str, str] = {}
-        for s in committed:
-            for name, digest in self._manifest(s)["identities"].items():
-                if name not in recorded or (recorded[name] == digests[name] and digest != digests[name]):
-                    recorded[name] = digest
-        changed = sorted(n for n, d in recorded.items() if digests[n] != d)
-        if not changed:
-            raise WorkflowCorrupt(WorkflowRefused("S-10.1", f"step keys of {changed_steps} differ, no identity does"))
-        return {"changed": changed, "recorded": recorded, "current": dict(digests)}
+        return staleness(self.view, self._manifest, digests, values)
 
     def check_stale(self) -> dict[str, Any] | None:
         self._usable()
         lc = self.view.lifecycle()
         if lc not in ("RUNNING", "BLOCKED") or self.view.open is not None:
             return None
-        payload = self.stale_payload(self.current_digests())
+        values = self.current_values()
+        payload = self.stale_payload(workflow.identity_digests(values), values)
         if payload is None:
             return None
         return self._append("stale_detected", payload, None, None)
@@ -273,38 +264,7 @@ class WorkflowController:
 
     def _manifest(self, step: str) -> dict[str, Any]:
         """The manifest of a committed step (its last output), checked against the recorded step key."""
-        rec = self._succeeded_record(step)
-        outputs = rec["payload"]["outputs"]
-        bad = WorkflowCorrupt(WorkflowRefused("S-9.3", f"{step} has no valid step manifest", rec["seq"]))
-        if not outputs:
-            raise bad
-        try:
-            m = json.loads(self._mem.blobs.get(outputs[-1]))
-        except (InvestigationMemoryError, ValueError) as exc:
-            raise bad from exc
-        f = self.view
-        c = workflow.created(f)
-        try:
-            ok = (
-                m["manifest"] == workflow.MANIFEST_TAG
-                and m["step"] == step
-                and m["step_key"] == rec["payload"]["step_key"]
-                and m["dependencies"] == workflow.dependencies(f, step)
-                and sorted(m["identities"]) == sorted(workflow.STEP_IDENTITIES[step])
-                and ids.step_key(
-                    step,
-                    c["request"]["config"]["plan_version"],
-                    m["dependencies"],
-                    m["identities"],
-                    c["config_digest"],
-                )
-                == m["step_key"]
-            )
-        except (KeyError, TypeError) as exc:
-            raise bad from exc
-        if not ok:
-            raise bad
-        return dict(m)
+        return checked_manifest(self.view, self._mem.blobs.get, step)
 
     # Running -------------------------------------------------------------------------------------------------------
 
@@ -331,8 +291,9 @@ class WorkflowController:
         return action
 
     def _attempt(self, step: str, attempt: int) -> None:
-        digests = self.current_digests()
-        if self.stale_payload(digests) is not None:  # an identity changed during the run: stop, reuse nothing
+        values = self.current_values()
+        digests = workflow.identity_digests(values)
+        if self.stale_payload(digests, values) is not None:  # an identity changed during the run: stop, reuse nothing
             self.check_stale()
             return
         f = self.view
@@ -341,7 +302,7 @@ class WorkflowController:
         self._append("step_started", {"step_key": key}, step, attempt)
         self._own.add((step, attempt))
         faults.point("controller.after_start", step=step, attempt=attempt)
-        request = self._request(step, attempt, key)
+        request = self._request(step, attempt, key, values)
         try:
             result = self._adapters[step](request)
         except Exception as exc:
@@ -365,7 +326,7 @@ class WorkflowController:
             return
         faults.point("controller.after_terminal", step=step, attempt=attempt)
 
-    def _request(self, step: str, attempt: int, key: str) -> StepRequest:
+    def _request(self, step: str, attempt: int, key: str, values: Mapping[str, Any] | None = None) -> StepRequest:
         f = self.view
         request = workflow.created(f)["request"]
         inputs = {
@@ -395,6 +356,7 @@ class WorkflowController:
             read_bytes=read_bytes,
             now=self._clock(),
             investigation={k: workflow.created(f)[k] for k in ("investigation_key", "investigation_id")},
+            identities=copy.deepcopy(dict(values)) if values is not None else None,
         )
 
     # Results -------------------------------------------------------------------------------------------------------
@@ -681,6 +643,89 @@ class RunResult:
     state: WorkflowState | None
     explanation: dict[str, Any] | None
     detail: str = ""
+
+
+def checked_manifest(f: Folder, read: Callable[[str], bytes], step: str) -> dict[str, Any]:
+    """The manifest of a committed step (its last output), checked against the recorded step key (S-9.3);
+    ``WorkflowCorrupt`` when it is missing, unreadable or does not derive the recorded key."""
+    ends = [a.end_seq for a in f.attempts[step] if a.end_kind == "step_succeeded"]
+    if not ends or ends[-1] is None:
+        raise WorkflowRefused("M-14", f"{step} has not succeeded", len(f.records))
+    rec = f.records[ends[-1]]
+    outputs = rec["payload"]["outputs"]
+    bad = WorkflowCorrupt(WorkflowRefused("S-9.3", f"{step} has no valid step manifest", rec["seq"]))
+    if not outputs:
+        raise bad
+    try:
+        m = json.loads(read(outputs[-1]))
+    except (InvestigationMemoryError, ValueError) as exc:
+        raise bad from exc
+    c = workflow.created(f)
+    try:
+        ok = (
+            m["manifest"] == workflow.MANIFEST_TAG
+            and m["step"] == step
+            and m["step_key"] == rec["payload"]["step_key"]
+            and m["dependencies"] == workflow.dependencies(f, step)
+            and sorted(m["identities"]) == sorted(workflow.STEP_IDENTITIES[step])
+            and ids.step_key(
+                step,
+                c["request"]["config"]["plan_version"],
+                m["dependencies"],
+                m["identities"],
+                c["config_digest"],
+            )
+            == m["step_key"]
+        )
+    except (KeyError, TypeError) as exc:
+        raise bad from exc
+    if not ok:
+        raise bad
+    return dict(m)
+
+
+class IdentityUnavailable(InvestigationMemoryError):
+    """An input identity a committed step depends on cannot be established now (MM 10.2): a failure with the engine's
+    code (for the index ``INDEX_MISSING``, ``INDEX_CORRUPT`` or ``INDEX_FORMAT_MISMATCH``), never staleness. Nothing is
+    written; restoring the input lets the investigation continue."""
+
+    def __init__(self, name: str, code: str) -> None:
+        super().__init__("IDENTITY_UNAVAILABLE", f"the {name} identity cannot be established now: {code}")
+        self.name = name
+        self.unavailable_code = code
+
+
+def staleness(
+    f: Folder,
+    manifest_of: Callable[[str], Mapping[str, Any]],
+    digests: Mapping[str, str],
+    values: Mapping[str, Any] | None = None,
+) -> dict[str, Any] | None:
+    """S-10.1, the one staleness rule (controller, ``show``, ``verify``, ``replay``): recompute every committed step's
+    key; None when all hold, else the ``stale_detected`` payload naming the changed identities. ``manifest_of`` returns
+    a committed step's checked manifest (S-9.3) and raises ``WorkflowCorrupt`` for an invalid one. A step key that
+    differs while no identity does is a corrupt journal (``WorkflowCorrupt``). A changed identity whose current value is
+    unavailable (``values[name]`` carries ``unavailable``) is ``IdentityUnavailable``, not staleness (MM 10.2)."""
+    committed = [s for s in STEPS if f.step_state(s) == "succeeded"]
+    manifests = {s: manifest_of(s) for s in committed}
+    changed_steps = [s for s in committed if workflow.step_key(f, s, digests) != manifests[s]["step_key"]]
+    if not changed_steps:
+        return None
+    # Per component, the digest a committed step recorded; where steps recorded different digests (an identity
+    # changed between steps of one process), the first that differs from now, so ``changed`` names it.
+    recorded: dict[str, str] = {}
+    for s in committed:
+        for name, digest in manifests[s]["identities"].items():
+            if name not in recorded or (recorded[name] == digests[name] and digest != digests[name]):
+                recorded[name] = digest
+    changed = sorted(n for n, d in recorded.items() if digests[n] != d)
+    if not changed:
+        raise WorkflowCorrupt(WorkflowRefused("S-10.1", f"step keys of {changed_steps} differ, no identity does"))
+    for name in changed:
+        value = (values or {}).get(name)
+        if isinstance(value, Mapping) and "unavailable" in value:
+            raise IdentityUnavailable(name, str(value["unavailable"]))
+    return {"changed": changed, "recorded": recorded, "current": dict(digests)}
 
 
 def open_controller(

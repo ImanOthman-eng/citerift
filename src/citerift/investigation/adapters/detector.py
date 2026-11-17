@@ -34,8 +34,10 @@ from citerift.investigation import dt1, ids, sets
 from citerift.investigation.adapters.detect import DetectFailure, DetectInput, Detection
 from citerift.investigation.canonical import canon, sha256_hex
 
-DETECTOR_IDENTITY = "citerift-dt1-detector/1 (dt-1)"
+# Version 2 (Step 12, A-03): the occurrences of a tainted unit support every claim that carries a taint reason.
+DETECTOR_IDENTITY = "citerift-dt1-detector/2 (dt-1)"
 LIMIT_CODE = "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"
+TAINT_REASONS = frozenset({"IDENTIFIER_UNCONFIRMED", "IDENTIFIER_MALFORMED", "IDENTIFIER_ROLE_UNRESOLVED"})
 
 
 def _events(obs: Mapping[str, Any]) -> tuple[dt1.Event, ...]:
@@ -274,7 +276,9 @@ class _Run:
         supporting.add(self.items.add("work_candidate", self.extraction, pointer, refs, candidate))
 
         rule = out.rule
-        if rule in ("D-4", "D-8"):
+        if rule in ("D-4", "D-8") or TAINT_REASONS.intersection(out.reasons):
+            # Every taint reason has its chain (S-12.1): the unit's occurrences, malformed or unresolved ones included,
+            # support any claim that carries one (D-4, D-8, and D-6 on a tainted unit; Step 12, A-03).
             supporting.update(unit["occurrences"])
         if view.shape != "NONE" and rule not in ("D-1", "D-2"):
             supporting.add(self.index_ev)
