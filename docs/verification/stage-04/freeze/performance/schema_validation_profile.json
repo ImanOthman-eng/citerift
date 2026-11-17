@@ -1,0 +1,131 @@
+{
+ "by_schema": [
+  {
+   "calls": 6,
+   "first_s": 0.1044,
+   "later_mean_s": 0.1203,
+   "schema": "urn:citerift:schema:investigation:v1:evidence-batch",
+   "total_s": 0.706
+  },
+  {
+   "calls": 12,
+   "first_s": 0.1294,
+   "later_mean_s": 0.044,
+   "schema": "urn:citerift:schema:investigation:v1:report-chunk",
+   "total_s": 0.6133
+  },
+  {
+   "calls": 226,
+   "first_s": 0.005,
+   "later_mean_s": 0.0027,
+   "schema": "urn:citerift:schema:investigation:v1:lookup-observation",
+   "total_s": 0.6059
+  },
+  {
+   "calls": 3,
+   "first_s": 0.1935,
+   "later_mean_s": 0.1462,
+   "schema": "urn:citerift:schema:wiki:v1:extraction",
+   "total_s": 0.4858
+  },
+  {
+   "calls": 3,
+   "first_s": 0.1731,
+   "later_mean_s": 0.115,
+   "schema": "urn:citerift:schema:investigation:v1:candidate-result-batch",
+   "total_s": 0.403
+  },
+  {
+   "calls": 5,
+   "first_s": 0.0739,
+   "later_mean_s": 0.0632,
+   "schema": "urn:citerift:schema:investigation:v1:candidate-inputs",
+   "total_s": 0.3266
+  },
+  {
+   "calls": 108,
+   "first_s": 0.003,
+   "later_mean_s": 0.0011,
+   "schema": "urn:citerift:schema:investigation:v1:journal-record",
+   "total_s": 0.1216
+  },
+  {
+   "calls": 380,
+   "first_s": 0.0002,
+   "later_mean_s": 0.0003,
+   "schema": "urn:citerift:schema:investigation:v1:evidence-set",
+   "total_s": 0.1032
+  },
+  {
+   "calls": 3,
+   "first_s": 0.0239,
+   "later_mean_s": 0.0215,
+   "schema": "urn:citerift:schema:investigation:v1:lookup-batch",
+   "total_s": 0.0668
+  },
+  {
+   "calls": 2,
+   "first_s": 0.023,
+   "later_mean_s": 0.0216,
+   "schema": "urn:citerift:schema:investigation:v1:lookup-plan",
+   "total_s": 0.0446
+  },
+  {
+   "calls": 160,
+   "first_s": 0.0003,
+   "later_mean_s": 0.0001,
+   "schema": "urn:citerift:schema:investigation:v1:common#/$defs/key",
+   "total_s": 0.0179
+  },
+  {
+   "calls": 4,
+   "first_s": 0.0022,
+   "later_mean_s": 0.0021,
+   "schema": "urn:citerift:schema:investigation:v1:report",
+   "total_s": 0.0084
+  },
+  {
+   "calls": 10,
+   "first_s": 0.0008,
+   "later_mean_s": 0.0006,
+   "schema": "urn:citerift:schema:investigation:v1:bundle-observation",
+   "total_s": 0.0063
+  },
+  {
+   "calls": 6,
+   "first_s": 0.0004,
+   "later_mean_s": 0.0004,
+   "schema": "urn:citerift:schema:investigation:v1:bundle-artifact-set",
+   "total_s": 0.0022
+  },
+  {
+   "calls": 2,
+   "first_s": 0.0007,
+   "later_mean_s": 0.0004,
+   "schema": "urn:citerift:schema:investigation:v1:request",
+   "total_s": 0.0012
+  },
+  {
+   "calls": 5,
+   "first_s": 0.0001,
+   "later_mean_s": 0.0001,
+   "schema": "urn:citerift:schema:investigation:v1:projection-set",
+   "total_s": 0.0005
+  },
+  {
+   "calls": 1,
+   "first_s": 0.0004,
+   "later_mean_s": null,
+   "schema": "urn:citerift:schema:investigation:v1:common#/$defs/index_identity",
+   "total_s": 0.0004
+  }
+ ],
+ "calls": 936,
+ "exit_code": 6,
+ "first_call_excess_s": 0.195,
+ "first_calls_s": 0.734,
+ "note": "first_call_excess_s estimates construction and lazy initialisation: the first call of each schema minus that schema's later mean (schemas with one call count fully)",
+ "run_s": 31.799,
+ "validation_s": 3.514,
+ "validator_lookups_s": 0.0078
+}

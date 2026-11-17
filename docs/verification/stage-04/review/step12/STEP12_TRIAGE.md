@@ -81,7 +81,7 @@ by a test named in section 3; the commit is the Step 12 corrections commit unles
 
 | Id | Severity | Class | Disposition |
 |---|---|---|---|
-| E-01 no committed canonical exposure list | MEDIUM | 4 | **Fixed**: committed, hashed article-level exposure manifest (`freeze/exposure/`), built by E's rule; 257 bundle directories recorded (the plan's 255 has no retained derivation; Step 9 A-8 corrected). |
+| E-01 no committed canonical exposure list | MEDIUM | 4 | **Fixed**: committed, hashed article-level exposure manifest (`freeze/exposure/`), built by E's rule from every tracked file at the freeze (all 257 tracked Stage 03 capture bundles, 232 distinct articles; 298 articles in all, 9 known only by title). The plan's figure of 255 bundles has no retained derivation; the Step 9 A-8 statement is corrected in the freeze report. |
 | E-02 Stage 03 exposure set undefined / committed file outdated | MEDIUM | 8 | The manifest recomputes the Stage 03 rule at the freeze commit (separate `listed` block, digest recorded); adoption of the wiki-agnostic tier is a Step 13 pre-registration choice. |
 | E-03 exposed articles without bundle / without page id | LOW | 5 | Included in the manifest (`S03-ATTEMPTED`, title-keyed records). |
 | E-04 documents name different exclusion sets | LOW | 4 | The manifest is the union; the freeze report states the one rule. |

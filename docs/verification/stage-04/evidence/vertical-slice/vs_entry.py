@@ -115,10 +115,11 @@ def _live(mode: str) -> None:
     child = [sys.executable, "-I", str(REPO / "tests" / "stage04" / "live_fake_child.py")]
     work = Path(os.environ["VS_WORKROOT"])
 
-    def integration_for(request: Any) -> Integration:
+    def integration_for(request: Any, locators: Any = None) -> Integration:  # the signature of ops.integration_for
+        located = dict(locators or {})
         if request["mode"] != "live_capture":
-            return Integration(live=None)
-        return Integration(live=make_live_acquire(FetchPolicy(), child=child, workroot=work))
+            return Integration(live=None, locators=located)
+        return Integration(live=make_live_acquire(FetchPolicy(), child=child, workroot=work), locators=located)
 
     ops.integration_for = integration_for
 
