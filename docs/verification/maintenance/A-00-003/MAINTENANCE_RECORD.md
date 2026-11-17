@@ -42,4 +42,19 @@ Python 3.12 + 3.13 matrix.
 
 ## 4. Transaction record
 
-Filled in after validation.
+| Step | Record |
+|---|---|
+| Baseline | `0c21182e5871f772c3a76c75a1217c7641a63bbb` (Stage 00 accepted revision; unchanged) |
+| P (candidate) | `0c643e66ec68aee8f9d5430e90b9baf4d4ae3fb4`: `.github/workflows/ci.yml` only (one line). Against A-00-002's candidate `8b1db57`, every other Stage 00 owned path is identical (`git diff 8b1db57 0c643e6 -- <owned paths except .github/workflows>` is empty) |
+| Scope | The mechanism compares the owned content with the accepted baseline (`_patch_problems`: "baseline plus exactly the declared patch", and the baseline must be the accepted revision), so a second transaction on Stage 00 declares the cumulative patch. A first `prepare` declaring only `ci.yml` was refused (`MAINTENANCE_PATCH_MISMATCH` for the eight A-00-002 files). The declared scope is therefore the eight A-00-002 files at their finalized content, unchanged, plus `ci.yml` (9 files, patch digest `b7389cbc45a0c1d2eec77fd97d56895972af681d3da3b313d1e5ebc2f926aeba`). No governance code was changed. |
+| prepare | `citerift-gov maintenance prepare 00 --candidate 0c643e6… --path <9 files> --owner-ref cmsg_018VCB51nDHP6HXmLU4ea5yPQBMQAvkyRYvCrNmrZM88n8 …` gave A-00-003, `pending_validation`, recorded 2026-11-17T18:47:51Z; check: 0 errors, 1 warning (`MAINTENANCE_PENDING`) |
+| V (validated) | `47bdbe2c025e8091567b58bc5608b17bc998819b`: the registry with the pending record, D-065 and this file; owned content identical to P |
+| Python 3.12.3 | clean single-branch clone (`git clone --no-local --single-branch`), detached at V, environment from `uv.lock` (`uv sync --locked -p 3.12`), `PYTHONPATH=src python -P -m pytest -q -p no:cacheprovider --citerift-report …` (`validate.sh`): **3248 passed**, 0 skipped, exit 0, tree clean after the run (20 min 37 s). `test-report-py3.12.json`, SHA-256 `2e8439bc005191695defd726b4a065b5995f7185ae767d6911ecb1578ef39c34`; log `validation-py3.12.log` |
+| Python 3.13.18 | the same, `uv sync --locked -p 3.13`: **3248 passed**, 0 skipped, exit 0, clean (18 min 54 s). `test-report-py3.13.json`, SHA-256 `0ac97cc7eb40c84e33594e2b6d76c2a2cfd595aefd182e3515339eb62f44ee1e`; log `validation-py3.13.log` |
+| Suites (each report) | unit 632, integration 821, negative 1336, regression 663, reproducibility 30, security 412, contracts 242, simulation 245 (a test may carry several markers) |
+| check-report | both reports: 0 problems at V |
+| finalize | `citerift-gov maintenance finalize 00 A-00-003 --revision 47bdbe2… --report …py3.12.json --report …py3.13.json`: finalized 2026-11-17T19:28:51Z; check afterwards: 0 errors, 0 warnings; `render-status --check`: up to date |
+| F (bookkeeping) | the commit that records the finalization, the reports, the logs, `validate.sh` and this table; no owned file changes after V |
+
+The local wall times are this container's (4 vCPU, the two runs one after the other); they are not CI timings. The CI
+run on F is the green-run requirement of OD-S12-2.

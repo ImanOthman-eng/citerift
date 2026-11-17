@@ -1363,8 +1363,11 @@
             "docs/verification/maintenance/A-00-003/MAINTENANCE_RECORD.md"
           ],
           "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPQBMQAvkyRYvCrNmrZM88n8",
-          "revision": null,
-          "test_report": null,
+          "revision": "47bdbe2c025e8091567b58bc5608b17bc998819b",
+          "test_report": {
+            "path": "docs/verification/maintenance/A-00-003/test-report-py3.12.json",
+            "sha256": "2e8439bc005191695defd726b4a065b5995f7185ae767d6911ecb1578ef39c34"
+          },
           "recorded_at": "2026-11-17T18:47:51Z",
           "maintenance": {
             "purpose": "Raise the CI verify job timeout from 20 to 30 minutes (owner decision OD-S12-2); tests, matrix and steps unchanged. The declared scope is cumulative from the accepted baseline, as the mechanism requires: the eight files of A-00-002 at their finalized content, unchanged, plus .github/workflows/ci.yml",
@@ -1409,13 +1412,24 @@
               }
             ],
             "patch_sha256": "b7389cbc45a0c1d2eec77fd97d56895972af681d3da3b313d1e5ebc2f926aeba",
-            "phase": "pending_validation",
+            "phase": "finalized",
             "supersedes": null,
             "superseded_by": null,
-            "reports": [],
+            "reports": [
+              {
+                "path": "docs/verification/maintenance/A-00-003/test-report-py3.12.json",
+                "sha256": "2e8439bc005191695defd726b4a065b5995f7185ae767d6911ecb1578ef39c34",
+                "python": "3.12"
+              },
+              {
+                "path": "docs/verification/maintenance/A-00-003/test-report-py3.13.json",
+                "sha256": "0ac97cc7eb40c84e33594e2b6d76c2a2cfd595aefd182e3515339eb62f44ee1e",
+                "python": "3.13"
+              }
+            ],
             "opened_after_seq": 50,
-            "finalized_at": null,
-            "finalized_after_seq": null
+            "finalized_at": "2026-11-17T19:28:51Z",
+            "finalized_after_seq": 50
           }
         }
       ],
