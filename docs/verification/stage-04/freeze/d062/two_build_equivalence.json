@@ -3,32 +3,7 @@
   "A": {
    "file": "rw-2f116e9ffed718e6.sqlite",
    "file_bytes": 278769664,
-   "file_sha256": "4705a26624a81f461dd596ac1c13f6fcaaced35fbae0d8c48d93542b85babc4f",
-   "identity": {
-    "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
-    "export_lines": 147152,
-    "lookup_schema_version": "1.1.0",
-    "policy_version": "citerift-rde-policy/1.3.0",
-    "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
-    "snapshot_id": "rw-2f116e9ffed718e6"
-   },
-   "identity_s": 29.3,
-   "identity_scope": "LOOKUP-read checks (D-062)",
-   "manifest_sha256": "30b2ac504c3cb6f022e8381e013780a10f1eb7c9e6d341cbc6eecbb48e117eb6",
-   "stage02_verify": {
-    "digests": {
-     "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
-     "export_lines": "147152",
-     "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88"
-    },
-    "problems": [],
-    "seconds": 83.3
-   }
-  },
-  "B": {
-   "file": "rw-2f116e9ffed718e6.sqlite",
-   "file_bytes": 278769664,
-   "file_sha256": "e00d6b57957dfe2ad5ff384e889757fdfdcd485de48c1c2717e7b2f4e8c4722a",
+   "file_sha256": "cd9d12567a3ccd5e4385ad6645b2c0411c33b29456278fd835e8d7f9f303ec70",
    "identity": {
     "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
     "export_lines": 147152,
@@ -38,8 +13,8 @@
     "snapshot_id": "rw-2f116e9ffed718e6"
    },
    "identity_s": 23.6,
-   "identity_scope": "LOOKUP-read checks (D-062)",
-   "manifest_sha256": "87f97a07c43e248a08a80991028ec373205c14ab9a2f16c056c21794ae29dc0e",
+   "identity_scope": "D-062 identity-verification profile (verify_index_identity, OD-S12-1)",
+   "manifest_sha256": "2a25412c34778b66227249c2cf7e1482f5a46fce1b8a69eec870c816b385b3f8",
    "stage02_verify": {
     "digests": {
      "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
@@ -47,7 +22,32 @@
      "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88"
     },
     "problems": [],
-    "seconds": 84.2
+    "seconds": 80.1
+   }
+  },
+  "B": {
+   "file": "rw-2f116e9ffed718e6.sqlite",
+   "file_bytes": 278769664,
+   "file_sha256": "2ffec44f694793700d28d9713a6d19b02c75efe913973ace22f36fc0791740d8",
+   "identity": {
+    "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+    "export_lines": 147152,
+    "lookup_schema_version": "1.1.0",
+    "policy_version": "citerift-rde-policy/1.3.0",
+    "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+    "snapshot_id": "rw-2f116e9ffed718e6"
+   },
+   "identity_s": 24.4,
+   "identity_scope": "D-062 identity-verification profile (verify_index_identity, OD-S12-1)",
+   "manifest_sha256": "ce3db3d4c1fa5261ba22e253573d87d6db41e1d56467f16fbb91a6f96a96c2ea",
+   "stage02_verify": {
+    "digests": {
+     "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+     "export_lines": "147152",
+     "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88"
+    },
+    "problems": [],
+    "seconds": 81.1
    }
   }
  },
@@ -2641,8 +2641,8 @@
  },
  "csv_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
  "failed_checks": [],
- "generated_at": "2026-11-17T14:38:16Z",
+ "generated_at": "2026-11-17T22:43:24Z",
  "label": "Stage 04 Step 12 D-062 equivalent-rebuild proof on design-exposed inputs (D-5); not an evaluation",
  "python": "3.12.3",
- "seconds": 1389.1
+ "seconds": 1266.4
 }

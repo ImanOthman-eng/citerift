@@ -1,0 +1,93 @@
+{
+  "assessments": [],
+  "citations": [
+    {
+      "article": {
+        "language": "en",
+        "page_id": 41787575,
+        "revision_id": 1372543632,
+        "revision_timestamp": "2026-09-01T04:41:51Z",
+        "title": "Haruko Obokata"
+      },
+      "citation_id": "en:1372543632:un-00012:8ba64a559d856967",
+      "identifiers": {
+        "doi": "10.1038/nature12968",
+        "pmid": "24476887"
+      },
+      "provenance": [
+        {
+          "content_sha256": "88da776f5847e822d9a87c456f92d22fbe6bf0cc816043ae818b91d6a40a2149",
+          "locator": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&revids=1372543632",
+          "retrieved_at": "2026-10-28T18:00:10.000000Z",
+          "source_id": "wikimedia-api",
+          "source_version": "revision_id=1372543632;sha1=9510652efbb374fcefc0343090b110942348fc6b"
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-17T21:37:52.489148Z",
+  "events": [
+    {
+      "at": "2014-07-02T00:00:00Z",
+      "description": "Retraction Watch records Retraction (event type retracted; event ev-0071321; record 2081; row sha256 af15b784f4ff714fd9a93f9e4ec396bcc100b0c84c004f0a1aeb3a2b38675699). Notice date as reported: 2014-07-02 (raw '7/2/2014 0:00'; precision day; convention flags: MIDNIGHT_NOT_INSTANT). The source states a calendar day, not an instant: 00:00:00Z marks the day only.",
+      "kind": "retracted",
+      "provenance": [
+        {
+          "content_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ]
+    }
+  ],
+  "investigation_id": "84956936-3053-8859-85e3-956eb002724e",
+  "limitations": [
+    "CHECKED_SOURCES_ONLY: Only the checked sources were searched; a citation without a record in them is reported only as not found in the checked sources.",
+    "SNAPSHOT_COVERAGE: Results reflect the Retraction Watch snapshot rw-2f116e9ffed718e6; records added to the source after that snapshot are not covered.",
+    "OUT_OF_SCOPE_UNITS: 30 candidate(s) are outside detection scope (no DOI or PMID in a candidate role, a definition not shown in the revision, or a use of a definition that is not established).",
+    "MARKERS_NOT_INTERPRETED: On-page markers such as retraction warnings are recorded but not interpreted.",
+    "OBSERVATION_ROLE_IDENTIFIERS_NOT_DECIDED: Identifiers in observation roles are recorded but not decided.",
+    "UNSTRUCTURED_TEXT_AS_STAGE03_DEFINES: Unstructured citations are read only as Stage 03 defines them.",
+    "V1_ONE_RECORD_PER_WORK: v1 holds one paper per record: the article-revision investigation is split into one record per positive work, each with the Stage 04 investigation id.",
+    "V1_CLASSES_PER_WORK: Stage 04 claim classes, rules, reasons and evidence chains of this work are in the Stage 04 report, not in v1.",
+    "V1_ARTICLE_LEVEL_STATEMENTS: the report limitations above describe the whole article revision, not only this work; they are repeated in each of its v1 records.",
+    "V1_EVENT_DATE_IS_A_DAY: v1 events need an instant; Stage 02 notice dates are calendar days, so 00:00:00Z marks only the day (stated in each event's description).",
+    "V1_EVENT_LINKS_NOT_STATED: v1 events do not say how each event was linked to this work (Stage 02 matched_by and linked_via); the Stage 04 report keeps them."
+  ],
+  "schema_version": "1.0.1",
+  "status": "completed",
+  "subject_paper": {
+    "identifiers": {
+      "doi": "10.1038/nature12968",
+      "pmid": "24476887"
+    },
+    "retraction_date": {
+      "provenance": [
+        {
+          "content_sha256": "af15b784f4ff714fd9a93f9e4ec396bcc100b0c84c004f0a1aeb3a2b38675699",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=71321",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "2014-07-02"
+    },
+    "retraction_status": {
+      "provenance": [
+        {
+          "content_sha256": "af15b784f4ff714fd9a93f9e4ec396bcc100b0c84c004f0a1aeb3a2b38675699",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=71321",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "retracted"
+    }
+  }
+}

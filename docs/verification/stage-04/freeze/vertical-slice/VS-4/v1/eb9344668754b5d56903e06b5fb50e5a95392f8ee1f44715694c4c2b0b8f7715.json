@@ -1,0 +1,78 @@
+{
+  "assessments": [],
+  "citations": [
+    {
+      "article": {
+        "language": "en",
+        "page_id": 65547507,
+        "revision_id": 1360148888,
+        "revision_timestamp": "2026-06-19T15:14:17Z",
+        "title": "Culturomics (microbiology)"
+      },
+      "citation_id": "en:1360148888:un-00006:a412262c7c7096c2",
+      "identifiers": {
+        "doi": "10.1371/journal.pone.0223543",
+        "pmid": "31634343"
+      },
+      "provenance": [
+        {
+          "content_sha256": "e39160c901e18b5e3d0325265ff1f70a76c459ff0094c0441a138f4d2ea18d9a",
+          "locator": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=65547507",
+          "retrieved_at": "2026-11-02T19:31:01.073516Z",
+          "source_id": "wikimedia-api",
+          "source_version": "revision_id=1360148888;sha1=29428b48c8e7cbc514e86731b27c70d2d5ce3c6e"
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-11-17T21:48:25.375681Z",
+  "events": [
+    {
+      "at": "2022-12-13T00:00:00Z",
+      "description": "Retraction Watch records Expression of concern (event type expression_of_concern; event ev-0028236; record 45473; row sha256 56ada584677351b783a8fb1934738d5aec93b77f7bcee931075e78f258e0d964). Notice date as reported: 2022-12-13 (raw '12/13/2022 0:00'; precision day; convention flags: MIDNIGHT_NOT_INSTANT). The source states a calendar day, not an instant: 00:00:00Z marks the day only.",
+      "kind": "expression_of_concern",
+      "provenance": [
+        {
+          "content_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ]
+    }
+  ],
+  "investigation_id": "4783bdc6-be49-871f-a998-61fd203db670",
+  "limitations": [
+    "CHECKED_SOURCES_ONLY: Only the checked sources were searched; a citation without a record in them is reported only as not found in the checked sources.",
+    "SNAPSHOT_COVERAGE: Results reflect the Retraction Watch snapshot rw-2f116e9ffed718e6; records added to the source after that snapshot are not covered.",
+    "MARKERS_NOT_INTERPRETED: On-page markers such as retraction warnings are recorded but not interpreted.",
+    "OBSERVATION_ROLE_IDENTIFIERS_NOT_DECIDED: Identifiers in observation roles are recorded but not decided.",
+    "V1_ONE_RECORD_PER_WORK: v1 holds one paper per record: the article-revision investigation is split into one record per positive work, each with the Stage 04 investigation id.",
+    "V1_CLASSES_PER_WORK: Stage 04 claim classes, rules, reasons and evidence chains of this work are in the Stage 04 report, not in v1.",
+    "V1_ARTICLE_LEVEL_STATEMENTS: the report limitations above describe the whole article revision, not only this work; they are repeated in each of its v1 records.",
+    "V1_EVENT_DATE_IS_A_DAY: v1 events need an instant; Stage 02 notice dates are calendar days, so 00:00:00Z marks only the day (stated in each event's description).",
+    "V1_EVENT_LINKS_NOT_STATED: v1 events do not say how each event was linked to this work (Stage 02 matched_by and linked_via); the Stage 04 report keeps them."
+  ],
+  "schema_version": "1.0.1",
+  "status": "completed",
+  "subject_paper": {
+    "identifiers": {
+      "doi": "10.1371/journal.pone.0223543",
+      "pmid": "31634343"
+    },
+    "retraction_status": {
+      "provenance": [
+        {
+          "content_sha256": "56ada584677351b783a8fb1934738d5aec93b77f7bcee931075e78f258e0d964",
+          "locator": "https://gitlab.com/crossref/retraction-watch-data/-/blob/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv#record=28236",
+          "retrieved_at": "2026-10-27T20:20:13Z",
+          "source_id": "retraction-watch",
+          "source_version": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4"
+        }
+      ],
+      "status": "verified_fact",
+      "value": "expression_of_concern"
+    }
+  }
+}
