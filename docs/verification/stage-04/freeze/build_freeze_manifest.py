@@ -6,11 +6,12 @@ Run from the repository root after the freeze evidence is in place:
 
 Reads only tracked repository files and the retained freeze evidence beside this script, and writes
 ``FREEZE_MANIFEST.json`` (indented, keys sorted) beside itself. The manifest digest is the SHA-256 of the canonical
-encoding of the manifest (``citerift.investigation.canonical.canon``: sorted keys, no insignificant whitespace,
-UTF-8); it is printed and recorded in ``FREEZE_REPORT.md``, never inside the manifest itself.
+encoding of the manifest (``citerift.investigation.canonical.canon`` with ``allow_float=True``, since the manifest holds
+measured times: sorted keys, no insignificant whitespace, UTF-8); it is printed and recorded in ``FREEZE_REPORT.md``,
+never inside the manifest itself.
 
 Two-record mechanism (section 22): this manifest is part of the freeze-content commit, so it cannot name that
-commit or its tree. It names its parent (the corrections commit the evidence was produced from) and the digest of
+commit or its tree. It names its parent commit, the code revision the evidence was produced from and the digest of
 every frozen file; the attestation commit that follows names the content commit, its tree and the CI run on it.
 """
 
@@ -36,6 +37,7 @@ EVIDENCE = {
     "d062_tamper_differential": f"{S04}/freeze/d062/tamper_differential.json",
     "vertical_slice": f"{S04}/freeze/vertical-slice/vertical_slice.json",
     "performance_breakdown": f"{S04}/freeze/performance/perf_breakdown.json",
+    "verification_components": f"{S04}/freeze/performance/verification_components.json",
     "validation": f"{S04}/freeze/VALIDATION.json",
     "triage": f"{S04}/review/step12/STEP12_TRIAGE.md",
     "prior_art_04j": f"{S04}/review/step12/PRIOR_ART_04J.md",
@@ -154,6 +156,8 @@ def build() -> dict[str, Any]:
             "cases": sorted(vs.get("cases", {})),
         },
         "d062_failed_checks": d062["failed_checks"],
+        "d062_tamper_discrepancies": validation["d062"]["tamper_discrepancies"],
+        "code_revision_of_the_evidence": validation["code_revision"],
         "performance": validation["performance"],
         "performance_breakdown_median": perf["median"],
         "tests": validation["tests"],
@@ -167,7 +171,7 @@ def main() -> int:
     manifest = build()
     text = json.dumps(manifest, indent=1, sort_keys=True, ensure_ascii=False) + "\n"
     (HERE / "FREEZE_MANIFEST.json").write_text(text, encoding="utf-8")
-    print(hashlib.sha256(canon(json.loads(text))).hexdigest())
+    print(hashlib.sha256(canon(json.loads(text), allow_float=True)).hexdigest())
     return 0
 
 

@@ -1,0 +1,229 @@
+{
+ "ci_runtime": {
+  "finding": "Runs over 18 minutes alternate between the Python versions on the same code (run 336: 3.13 slow, 3.12 fast; run 337: 3.12 slow, 3.13 fast). In run 337 the untouched Stage 00-03 test files ran a median 1.46x slower on 3.12 than in run 335 and the Stage 04 files 1.44x; Python 3.13 per-file times equal run 334 (median 1.00x). Recorded as GitHub-hosted runner variance under OD-S12-2; no required job reached 30 minutes.",
+  "policy": "OD-S12-2 (D-065)",
+  "runs": [
+   {
+    "commit": "9499c49",
+    "py312_tests": "10m16s",
+    "py313_tests": "11m29s",
+    "result": "success",
+    "run": 332
+   },
+   {
+    "commit": "75e7b26",
+    "py312_tests": "19m53s",
+    "py313_tests": "17m07s",
+    "result": "cancelled (20 min)",
+    "run": 333
+   },
+   {
+    "commit": "00c2d6c",
+    "py312_tests": "19m40s",
+    "py313_tests": "11m28s",
+    "result": "cancelled (20 min)",
+    "run": 334
+   },
+   {
+    "commit": "91c70af",
+    "py312_tests": "13m59s",
+    "py313_tests": "10m06s",
+    "result": "success",
+    "run": 335
+   },
+   {
+    "commit": "c23e5dc",
+    "py312_tests": "12m32s",
+    "py313_tests": "18m03s",
+    "result": "success",
+    "run": 336
+   },
+   {
+    "commit": "3eec84f",
+    "py312_tests": "19m34s",
+    "py313_tests": "11m30s",
+    "result": "success",
+    "run": 337
+   }
+  ]
+ },
+ "code_revision": "3eec84f63467192407934dda2de544338a5d9140",
+ "d062": {
+  "operational_tests": "5 passed, 18 deselected in 0.92s",
+  "tamper_cases": 21,
+  "tamper_discrepancies": [],
+  "tamper_rejected_only_by_profile": [],
+  "two_build_failed_checks": []
+ },
+ "label": "Stage 04 Step 12 validation summary (freeze); measured, not an evaluation",
+ "performance": {
+  "breakdown_median_s": {
+   "file_sha256_s": 0.451,
+   "import_s": 0.261,
+   "index_verify_s": 24.243,
+   "memory_open_s": 0.711,
+   "process_wall_s": 30.54,
+   "run_s": 30.117,
+   "schema_s": 3.455,
+   "show_s": 0.739,
+   "stage02_digests_s": 5.891,
+   "unaccounted_s": 1.944
+  },
+  "cause": "the D-062 identity-verification profile of D-064 runs in every process that reaches LOOKUP (no cross-process reuse, OD-S12-1)",
+  "max_run_p95_s": 30.464,
+  "status": "NOT_MET",
+  "table": [
+   {
+    "case": "VS-1",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.16,
+    "run_median_s": 30.23,
+    "run_p95_s": 30.464,
+    "step11_run_p95_s": 6.572
+   },
+   {
+    "case": "VS-2",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.3,
+    "run_median_s": 26.437,
+    "run_p95_s": 27.633,
+    "step11_run_p95_s": 3.746
+   },
+   {
+    "case": "VS-3a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.034,
+    "run_median_s": 26.132,
+    "run_p95_s": 26.37,
+    "step11_run_p95_s": 3.775
+   },
+   {
+    "case": "VS-3b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.83,
+    "run_median_s": 28.193,
+    "run_p95_s": 29.268,
+    "step11_run_p95_s": 5.39
+   },
+   {
+    "case": "VS-4",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.651,
+    "run_median_s": 26.171,
+    "run_p95_s": 26.297,
+    "step11_run_p95_s": 3.338
+   },
+   {
+    "case": "VS-5",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.242,
+    "run_median_s": 25.598,
+    "run_p95_s": 26.31,
+    "step11_run_p95_s": 3.717
+   },
+   {
+    "case": "VS-6a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.241,
+    "run_median_s": 24.812,
+    "run_p95_s": 25.522,
+    "step11_run_p95_s": 2.94
+   },
+   {
+    "case": "VS-6b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.158,
+    "run_median_s": 24.899,
+    "run_p95_s": 25.977,
+    "step11_run_p95_s": 3.02
+   }
+  ],
+  "target": "warm retained investigation <= 5 s p95 (D-061, unchanged)",
+  "verification_components_median_s": {
+   "compute_digests": 6.203,
+   "derivation_problems": 15.393,
+   "file read + SHA-256 (I/O floor of one full pass)": 0.236,
+   "manifest_problems": 0.0,
+   "scan event JOIN raw_record (digests: event lines)": 0.376,
+   "scan event ORDER BY event_id (derivation compare)": 0.22,
+   "scan ident (derivation)": 0.408,
+   "scan raw_record (digests: record lines)": 0.133,
+   "scan raw_record SELECT * (derivation)": 0.134,
+   "scan title_token (derivation compare)": 0.298,
+   "structural: PRAGMA foreign_key_check": 2.623,
+   "structural: PRAGMA integrity_check": 0.88,
+   "structural_problems (all of the above + invariants)": 3.532,
+   "whole_profile (identity_verification_problems)": 25.325
+  }
+ },
+ "tests": {
+  "ci": {
+   "clean_tree": true,
+   "conclusion": "success",
+   "jobs": {
+    "ci-gate": {
+     "conclusion": "success"
+    },
+    "verify (python 3.12)": {
+     "check_report": "0 problems",
+     "job": "19 min 56 s",
+     "passed": 3249,
+     "pytest_reported": "1173.38 s",
+     "python": "3.12.3",
+     "test_step": "19 min 34 s"
+    },
+    "verify (python 3.13)": {
+     "check_report": "0 problems",
+     "job": "11 min 53 s",
+     "passed": 3249,
+     "pytest_reported": "689.21 s",
+     "python": "3.13.14",
+     "test_step": "11 min 30 s"
+    }
+   },
+   "pip_audit_strict": "no known vulnerabilities",
+   "run_id": 44179654515,
+   "run_number": 337
+  },
+  "code_revision": "3eec84f63467192407934dda2de544338a5d9140",
+  "local": {
+   "failed": 0,
+   "note": "full suite in this 4-vCPU container, before the evidence runs",
+   "passed": 3249,
+   "python": "3.12.3",
+   "skipped": 0,
+   "wall": "18 min 48 s"
+  }
+ },
+ "vertical_slice": {
+  "cases": [
+   "VS-1",
+   "VS-2",
+   "VS-3a",
+   "VS-3b",
+   "VS-4",
+   "VS-5",
+   "VS-6a",
+   "VS-6b"
+  ],
+  "extras": [
+   "VS-7",
+   "VS-8",
+   "VS-9",
+   "VS-10",
+   "checkpoint",
+   "I-2"
+  ],
+  "failed_checks": {},
+  "machine": "x86_64, 4 CPUs",
+  "python": "3.12.3"
+ }
+}

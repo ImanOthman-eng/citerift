@@ -48,7 +48,7 @@ by a test named in section 3; the commit is the Step 12 corrections commit unles
 | Id | Severity | Class | Disposition |
 |---|---|---|---|
 | C-01 scientific identity bound to the SQLite file SHA-256 | HIGH | 1 | **Fixed: D-062** (section 2). |
-| C-02 Stage 02 verify per process vs ≤ 5 s | HIGH | 3 → owner decision | Owner decision requested (card of 2026-11-17); see section 2.3. Not a correctness defect: whichever scope is chosen, no unverified identity is accepted. |
+| C-02 Stage 02 verify per process vs ≤ 5 s | HIGH | 3 → owner decision | **Resolved by the owner**: OD-S12-1 (D-064) chose the D-062 identity-verification profile `verify_index_identity`; the differential tamper proof found no discrepancy; see section 2.3. Not a correctness defect: no unverified identity is accepted. The ≤ 5 s target stays NOT_MET (D-061), reported as a frozen limitation. |
 | C-03 `artifact_digest` alone does not prove what LOOKUP reads | HIGH (design requirement) | 4 | **Met by design**: the verification always runs `integrity_check`, structure, digests recomputed vs meta, the full derivation recompute and the manifest check; the tamper suite includes the reviewer's T3a, T7 and T8. |
 | C-04 byte-identical index at another path is STALE; no override | MEDIUM | 1 | **Fixed**: identity no longer depends on the file; `resume`, `replay`, `verify`, `show` and `export` accept `--index` (and `--bundle`) as operational locators for the process. |
 | C-05 mutation guard omits `ctime_ns` | LOW | 2 | **Fixed**: guard and reuse key use (dev, ino, size, mtime_ns, ctime_ns). |
