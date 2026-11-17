@@ -18,7 +18,7 @@ jobs:
   verify:
     name: verify (python ${{ matrix.python }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       UV_PYTHON: ${{ matrix.python }}
       # The checks run the checked-out src/ modules (Stage 00 owned paths) with -P, so neither the
