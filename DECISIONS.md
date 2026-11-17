@@ -1434,3 +1434,32 @@ D-061, D-062 and D-063 recorded, Stage 04 Step 11 is accepted and closed. Mandat
 D-061); A11-5 (two user-visible not_before representations); A11-6 (absolute scratch paths in development journals);
 the MM EV-2 wording; the primary-source prior-art review for gate 04-J. Step 12 is not started (owner: "Do not start
 Step 12 yet").
+
+## D-065 — CI verify job timeout 30 minutes; 18 minutes is diagnostic (OD-S12-2)
+- Status: accepted
+- Topic: ci-verify-job-timeout-30-minutes
+- Date: 2026-11-17
+- Stage: 00
+- Supersedes: none
+- Evidence: docs/verification/maintenance/A-00-003/MAINTENANCE_RECORD.md
+
+Owner decision OD-S12-2 (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPQBMQAvkyRYvCrNmrZM88n8`, 2026-11-17T18:45:34Z),
+answering the Stage 04 Step 12 runtime stop after two consecutive Python 3.12 CI jobs (runs 333 and 334) were cancelled
+at the 20-minute limit. Approved: the `timeout-minutes` of the existing `verify` matrix job in
+`.github/workflows/ci.yml` changes from 20 to 30; no other `.github/` change is authorized. Not changed: the tests,
+their assertions, coverage, the Python 3.12 + 3.13 matrix (no version skipped), the suite (not sharded), and product
+code (not optimized for runner variance). The owner's reading of the evidence: the 3.12 slowdown is spread across
+untouched Stage 00 to 03 tests, Python 3.13 is essentially unchanged from the pre-Step-12 baseline and the new Step 12
+tests add about 21 s on 3.13, so it is GitHub-hosted runner-speed variance, not a Step 12 regression. Runtime policy
+from now on: 18 minutes is a diagnostic threshold, not a correctness gate (a job over it is recorded and investigated,
+and is not blocking solely for that when a runner-wide slowdown is demonstrated); 30 minutes is the hard infrastructure
+timeout, and a required job that reaches it stops the work for an owner decision before further CI changes. The work
+also stops on evidence of a code-induced runtime regression (both Python versions regress materially after a change,
+the slowdown localizes to new or modified tests or code, or comparable runners show sustained growth attributable to
+Step 12); slow runs are not classified as runner noise automatically. This decision does not change D-061, the
+retained ≤ 5 s p95 target (still rerun and reported honestly before freeze), the Step 12 performance work, the
+D-062/D-064 verification semantics, test completeness, the zero-skip requirement or the full Python matrix. The change
+is committed as a narrow Stage 00 maintenance (A-00-003) before Step 12 continues, and a green complete CI run (both
+Python versions, check-report, clean tree, pip-audit --strict, ci-gate) is required before Step 12 proceeds to freeze.
+The same message keeps the D-064 work unchanged and accepts the 21-case differential proof with zero discrepancies as
+evidence for `verify_index_identity`.
