@@ -132,7 +132,46 @@ results.
 Measured on the accepted full index (278,769,664 bytes): Stage 02 `verify` 72–83 s per process, of which the
 JSON-Schema re-check of every stored event (`event_problems`) is about 50 s; the checks that cover everything LOOKUP
 reads (integrity and structure, digests recomputed, full derivation recompute, build manifest) about 18 s. The
-choice was put to the owner; `adapters/lookup.FULL_STAGE02_VERIFY` selects it.
+choice was put to the owner, who chose the second as the D-062 identity-verification profile (OD-S12-1, recorded as
+D-064): `adapters/lookup.verify_index_identity`, which also checks the Stage 02 format and policy. Stage 02's complete
+`verify` stays the certification and is unchanged.
+
+Differential tamper proof required by OD-S12-1 (`../../freeze/d062/tamper_differential.py` and `.json`): 21 cases on a
+real Stage 02 index with its manifest, each checked by complete `verify` and by the profile. Both accept the untampered
+control, a genuinely different consistent artifact (another canonical identity, so STALE) and a byte flip that lands in
+unallocated page space (recorded from `dbstat`; identity unchanged). Both reject the other 18. No case is rejected by
+complete `verify` alone: every schema-invalid event also breaks the derivation equality (the event table must equal the
+events derived from the raw records), so the per-event JSON-Schema re-check found no tampering the profile missed. The
+operational cases (inode replacement, size-preserving change after reuse, change after reuse, replacement during
+LOOKUP, failures not reused) run as the named `test_step12_d062.py` tests and pass.
+
+Component profile required by OD-S12-1 (`../../freeze/performance/verification_components.py` and `.json`; accepted
+full index, 278,769,664 bytes, 73,356 records; warm single process, 5 repeats, medians). The "about 18 s" above was
+the first estimate; the measured profile is **25.3 s**, the same as the `index_verify` median of the post-D-062
+`perf_breakdown` (25.4 s):
+
+| Component | Median |
+|---|---|
+| `derivation_problems` (re-derive every record and derived table, compare) | 15.4 s |
+| `compute_digests` (canonical export lines, SHA-256, semantic digest) | 6.2 s |
+| `structural_problems` (of which `PRAGMA foreign_key_check` 2.6 s, `integrity_check` 0.9 s) | 3.5 s |
+| format, policy, manifest | < 0.01 s |
+
+Read passes over the file: `raw_record` is read three times (digest record lines, the digest event join, the
+derivation) and the file once more by `integrity_check`. Measured bare scans: one full file read with SHA-256 0.24 s;
+`raw_record` scan 0.13 s; the event join 0.38 s; `ident` 0.41 s; `event` 0.22 s; `title_token` 0.30 s. The repeated
+reads therefore cost well under 1 s in total: the profile is CPU-bound in Python, not I/O-bound. `cProfile` attributes
+the time to work each check needs on its own: re-deriving records (`ingest.dispose`, identifier and date
+normalization), building the derived tables (`derive_tables`, title tokenization), and canonical JSON encoding (1.32
+million `canonical` calls: the export lines that are hashed and the derived rows that are compared). The overlap that a
+single shared pass could remove is the duplicate scans and the repeated `json.loads` of each record's stored fields
+(about 1–1.5 s together, an upper bound from the scans and the profile); hashing the export and re-deriving the tables
+are different computations and would both remain, so a shared pass would still leave about 23–24 s, far above 5 s. It
+would also require changing accepted Stage 02 functions (`compute_digests`, `derivation_problems`; a Stage 02
+maintenance needing an owner decision) or re-implementing them in Stage 04, which would stop the profile being Stage
+02's own checks. No such change is made; no check is removed. `foreign_key_check` (2.6 s) is a SQLite algorithmic
+cost of the accepted Stage 02 schema and is also left unchanged. The ≤ 5 s p95 target stays NOT_MET (D-061), with this
+profile as the measured cause.
 
 ## 3. Tests
 

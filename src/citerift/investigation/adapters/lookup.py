@@ -4,11 +4,12 @@ The index is opened once per attempt with Stage 02 ``Index(Path)``; an index tha
 Stage 02's code (``INDEX_MISSING``, ``INDEX_CORRUPT``, ``INDEX_FORMAT_MISMATCH``). Its identity is the canonical Stage
 02 content identity of owner decision D-062: snapshot id, policy version, lookup-result schema version and the Stage 02
 ``artifact_digest`` recomputed from the index content, with ``semantic_digest`` and ``export_lines`` as consistency
-metadata. The identity is accepted only after Stage 02's own checks prove that the content matches it
-(``verify_index``); the raw SQLite bytes are never part of it, so a byte-different but canonically equal rebuild is the
-same input. The identity is recorded once per attempt, as the index identity observation. Every query of the committed
-candidate inputs (Q1 per key, Q2 per pair) runs through ``citerift.investigation.lookup.bounded_gather``, that is
-``Index.gather_bounded`` with ``config.lookup_evidence_budget_bytes``, and never through the unbounded ``gather``:
+metadata. The identity is accepted only after the D-062 identity-verification profile (``verify_index_identity``, owner
+decision OD-S12-1), built from Stage 02's own checks, proves that the content matches it; the raw SQLite bytes are never
+part of it, so a byte-different but canonically equal rebuild is the same input. The identity is recorded once per
+attempt, as the index identity observation. Every query of the committed candidate inputs (Q1 per key, Q2 per pair) runs
+through ``citerift.investigation.lookup.bounded_gather``, that is ``Index.gather_bounded`` with
+``config.lookup_evidence_budget_bytes``, and never through the unbounded ``gather``:
 
 - within the budget the observation holds Stage 02's rendered result and every event, unpaged;
 - over the budget it is ``unavailable`` with no events and ``LOOKUP_EVIDENCE_LIMIT_EXCEEDED`` (all or nothing);
@@ -40,7 +41,9 @@ from citerift.investigation.schemas import CANDIDATE_INPUTS, LOOKUP_OBSERVATION,
 from citerift.retraction import export, policy
 from citerift.retraction.query import MAX_PAGE, Evidence, Index, QueryError, normalize_query, public_event, render
 from citerift.retraction.store import (
+    APPLICATION_ID,
     DIGEST_KEYS,
+    INDEX_FORMAT,
     SCHEMA_VERSION,
     IndexUnavailable,
     manifest_path_for,
@@ -50,10 +53,6 @@ from citerift.retraction.store import (
 # Version 2 (D-062): the observation's index identity is the canonical Stage 02 content identity.
 SCHEMA_VERSION_OBS = "2.0.0"
 SCHEMA_VERSION_PLAN = "1.0.0"
-# D-062 verification scope (owner decision pending, see STEP12_TRIAGE.md): True runs Stage 02's complete ``verify``,
-# including the JSON-Schema re-check of every stored event; False runs every Stage 02 check that covers what LOOKUP
-# reads (integrity and structure, digests recomputed and compared, derivation recomputed, build manifest).
-FULL_STAGE02_VERIFY = False
 # The record schema's source_ref operations (common.schema.json): the bounded call is Stage 02's ``gather`` operation
 # with a byte budget (``Index.gather_bounded``); the budget is in every lookup observation (``budget_bytes``).
 INDEX_REF = {"engine": "citerift.retraction", "operation": "index_identity", "locator": None}
@@ -87,21 +86,32 @@ class IndexNotVerified(Exception):
         self.detail = detail
 
 
-def verification_problems(index: Index, *, full: bool = FULL_STAGE02_VERIFY) -> tuple[list[str], dict[str, str]]:
-    """Stage 02's own checks over the open index (D-062), and the digests recomputed from its content.
+def identity_verification_problems(index: Index) -> tuple[list[str], dict[str, str]]:
+    """The D-062 identity-verification profile (owner decision OD-S12-1): Stage 02's own checks of everything LOOKUP
+    and the canonical identity depend on, over the open index, and the digests recomputed from its content.
 
-    Always: ``PRAGMA integrity_check``, foreign keys and the accounting invariants (``structural_problems``); the
-    canonical digests recomputed from the content (``compute_digests``) and compared with the stored metadata; the build
-    manifest published beside the index (``manifest_problems``; a missing manifest is a problem); every derived table
-    recomputed from the raw records (``derivation_problems``). With ``full``, Stage 02's complete ``verify``, which adds
-    the JSON-Schema check of every stored event."""
+    - Stage 02 format and policy compatibility (``application_id``, ``user_version``, ``meta.policy_version``; also
+      refused by Stage 02 ``Index`` on open);
+    - ``PRAGMA integrity_check``, foreign keys and the accounting invariants (``structural_problems``);
+    - ``artifact_digest``, ``semantic_digest`` and ``export_lines`` recomputed from the content (``compute_digests``)
+      and compared with the stored metadata;
+    - the build manifest published beside the index (``manifest_problems``; a missing manifest is a problem);
+    - every derived table recomputed from the raw records and compared with the stored one (``derivation_problems``).
+
+    This is not Stage 02's complete ``verify``: that certification of the artifact also re-validates every stored event
+    against the event JSON Schema, and it stays Stage 02's (run in the Step 12 evidence, not in every Stage 04 process).
+    The differential tamper evidence is ``docs/verification/stage-04/freeze/d062/tamper_differential.py``."""
     conn = index.conn
     manifest_path = manifest_path_for(index.path)
-    if full:
-        report = export.verify(conn, manifest_path=manifest_path)
-        return [str(p) for p in report["problems"]], dict(report["digests"])
-    problems = structural_problems(conn)
+    problems = []
+    app = conn.execute("PRAGMA application_id").fetchone()[0]
+    ver = conn.execute("PRAGMA user_version").fetchone()[0]
+    if app != APPLICATION_ID or ver != INDEX_FORMAT:
+        problems.append(f"FORMAT_MISMATCH: application_id {app:#x}, user_version {ver}")
     meta = dict(conn.execute("SELECT key, value FROM meta").fetchall())
+    if meta.get("policy_version") != policy.POLICY_VERSION:
+        problems.append(f"POLICY_MISMATCH: {meta.get('policy_version')!r}")
+    problems += structural_problems(conn)
     digests = export.compute_digests(conn)
     for key in DIGEST_KEYS:
         if meta.get(key) != digests[key]:
@@ -115,11 +125,12 @@ def verification_problems(index: Index, *, full: bool = FULL_STAGE02_VERIFY) -> 
     return problems, digests
 
 
-def verify_index(index: Index, *, full: bool = FULL_STAGE02_VERIFY) -> dict[str, Any]:
-    """The canonical Stage 02 identity of an open index, accepted only when Stage 02's checks find no problem (D-062);
-    ``IndexNotVerified`` (``INDEX_CORRUPT``) otherwise. Metadata alone is never trusted: the digests are recomputed."""
+def verify_index_identity(index: Index) -> dict[str, Any]:
+    """The canonical Stage 02 identity of an open index, accepted only when the D-062 identity-verification profile
+    (``identity_verification_problems``) finds no problem; ``IndexNotVerified`` (``INDEX_CORRUPT``) otherwise. Metadata
+    alone is never trusted: the digests are recomputed."""
     try:
-        problems, digests = verification_problems(index, full=full)
+        problems, digests = identity_verification_problems(index)
     except (sqlite3.Error, KeyError, ValueError, TypeError) as exc:
         raise IndexNotVerified("INDEX_CORRUPT", f"verification raised {type(exc).__name__}: {exc}"[:1000]) from None
     if problems:
@@ -152,7 +163,6 @@ class IndexVerifier:
     ``enabled=False`` every call verifies, which must give the same identities (cache-disabled equivalence)."""
 
     enabled: bool = True
-    full: bool = FULL_STAGE02_VERIFY
     verifications: int = 0
     _entries: dict[tuple[str, Fingerprint], dict[str, Any]] = field(default_factory=dict, repr=False)
 
@@ -188,7 +198,7 @@ class IndexVerifier:
 
     def _verify(self, index: Index) -> dict[str, Any]:
         self.verifications += 1
-        return verify_index(index, full=self.full)
+        return verify_index_identity(index)
 
 
 def _current_versions(ident: dict[str, Any]) -> dict[str, Any]:

@@ -33,6 +33,7 @@ BASELINE = "65c30bde697dced5f1698fb3db46707b939cc0c7"
 ORACLE = "simulations/stage04/oracle/MANIFEST.json"
 EVIDENCE = {
     "d062_two_build_equivalence": f"{S04}/freeze/d062/two_build_equivalence.json",
+    "d062_tamper_differential": f"{S04}/freeze/d062/tamper_differential.json",
     "vertical_slice": f"{S04}/freeze/vertical-slice/vertical_slice.json",
     "performance_breakdown": f"{S04}/freeze/performance/perf_breakdown.json",
     "validation": f"{S04}/freeze/VALIDATION.json",
@@ -58,10 +59,11 @@ SEMANTICS = {
 LIMITATIONS = [
     "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET); see the "
     "performance section of FREEZE_REPORT.md for the residual cases and bottlenecks.",
-    "D-062 verification scope: each process verifies the index with Stage 02's checks of everything LOOKUP reads "
-    "(integrity and structure, digests recomputed against the metadata, build manifest, full derivation recompute); "
-    "Stage 02's JSON-Schema re-check of every stored event runs only in Stage 02 verify (FULL_STAGE02_VERIFY=False), "
-    "pending the owner's decision on card C-02.",
+    "D-062 verification scope (D-064, owner decision OD-S12-1): each process runs the D-062 identity-verification "
+    "profile (verify_index_identity: format and policy, integrity and structure, digests recomputed against the "
+    "metadata, build manifest, full derivation recompute); Stage 02's per-event JSON-Schema pass runs only in Stage "
+    "02's complete verify (the certification, run in the Step 12 evidence); in the differential tamper evidence no "
+    "case is rejected by that pass alone.",
     "F-11: a descendant that leaves the session by double fork or setsid is attributed and killed only while it is "
     "found in the scan; the bound is per attempt, not per investigation.",
     "The external checkpoint (D-052) detects divergence from a recorded state; it is not authentication or a "
@@ -136,7 +138,7 @@ def build() -> dict[str, Any]:
             "definition": "snapshot_id, policy_version, lookup_schema_version, artifact_digest (scientific); "
             "semantic_digest, export_lines (consistency); verified by Stage 02 checks before use (D-062)",
             "digest_keys": list(lookup.DIGEST_KEYS),
-            "full_stage02_verify": lookup.FULL_STAGE02_VERIFY,
+            "verification_profile": "verify_index_identity (OD-S12-1)",
             "accepted_snapshot": d062["builds"]["A"]["identity"],
             "csv_sha256": d062["csv_sha256"],
         },

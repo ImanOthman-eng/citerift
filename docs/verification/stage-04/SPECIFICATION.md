@@ -122,10 +122,12 @@ support (`policy.reduce`, rule 7f).
   projection and the `evidence_digest`. Paging is never relied on.
 - S-3.2 Index identity is recorded once per LOOKUP attempt (owner decision D-062, Step 12): `snapshot_id`,
   `policy_version`, lookup-result schema version and the Stage 02 canonical `artifact_digest`, with `semantic_digest`
-  and `export_lines` as consistency metadata. It is accepted only after Stage 02's own checks prove it from the content
-  (integrity and structure, digests recomputed and compared with the stored metadata, every derived table recomputed,
-  the build manifest beside the index); the SQLite file bytes are not part of it, so a byte-different but canonically
-  equal rebuild is the same input. The file's stat fingerprint and SHA-256 remain an operational guard only: the file
+  and `export_lines` as consistency metadata. It is accepted only after the D-062 identity-verification profile
+  `verify_index_identity` (owner decision D-064, OD-S12-1), built from Stage 02's own checks, proves it from the content
+  (Stage 02 format and policy, integrity and structure, digests recomputed and compared with the stored metadata and the
+  build manifest beside the index, every derived table recomputed); it omits only Stage 02's per-event JSON-Schema
+  re-check, which stays in Stage 02's complete `verify` (the certification). The SQLite file bytes are not part of the
+  identity, so a byte-different but canonically equal rebuild is the same input. The file's stat fingerprint and SHA-256 remain an operational guard only: the file
   must not change during one LOOKUP attempt. A verified identity may be reused within one process while the file's
   stat fingerprint (device, inode, size, `mtime_ns`, `ctime_ns`) is unchanged; never across processes. Recorded paths
   are operational locators (`--index`, `--bundle`); they enter no scientific digest (Step 12, A11-6).

@@ -3,9 +3,9 @@
 The accepted Stage 02 snapshot is built twice, independently, by Stage 02 ``build`` from the pinned Retraction Watch
 CSV (receipt ``a987928``; the CSV's SHA-256 is checked against the receipt). For each build this records the file's
 SHA-256 and size (expected to be allowed to differ) and its canonical Stage 02 identity, established two ways: by the
-Stage 04 verification LOOKUP uses (``adapters.lookup.verify_index`` with the configured scope) and by Stage 02's
-complete ``verify`` (every check, including the JSON-Schema check of every stored event). The identities must be
-equal before the builds are called equivalent.
+Stage 04 D-062 identity-verification profile LOOKUP uses (``adapters.lookup.verify_index_identity``, OD-S12-1) and by
+Stage 02's complete ``verify`` (every check, including the JSON-Schema check of every stored event). The identities
+must be equal before the builds are called equivalent.
 
 Then fresh Stage 04 investigations of the design-exposed vertical-slice bundles (SPEC S-7.4, D-5; no holdout, no
 evaluation frame) run through the production operations against each build, in two memory roots, and the script
@@ -96,7 +96,7 @@ def describe(index: Path) -> dict[str, Any]:
         "file_bytes": index.stat().st_size,
         "manifest_sha256": sha256_file(manifest_path_for(index)),
         "identity": lookup_identity,
-        "identity_scope": "full Stage 02 verify" if lookup.FULL_STAGE02_VERIFY else "LOOKUP-read checks (D-062)",
+        "identity_scope": "D-062 identity-verification profile (verify_index_identity, OD-S12-1)",
         "identity_s": round(t1 - t0, 1),
         "stage02_verify": {
             "problems": [str(p) for p in full["problems"]][:20],

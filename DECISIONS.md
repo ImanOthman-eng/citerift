@@ -1435,6 +1435,37 @@ D-061); A11-5 (two user-visible not_before representations); A11-6 (absolute scr
 the MM EV-2 wording; the primary-source prior-art review for gate 04-J. Step 12 is not started (owner: "Do not start
 Step 12 yet").
 
+## D-064 — The D-062 identity-verification profile (OD-S12-1)
+- Status: accepted
+- Topic: stage-04-d062-identity-verification-profile
+- Date: 2026-11-17
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step12/STEP12_TRIAGE.md (C-02, section 2.3); docs/verification/stage-04/freeze/d062/tamper_differential.json
+
+Owner decision OD-S12-1 (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPX6tov3HkhvFC2ppixAiwyL`, 2026-11-17T16:57:39Z),
+resolving Step 12 finding C-02 (the verification scope of D-062). Approved: each Stage 04 process verifies the Stage 02
+index with the profile that covers everything LOOKUP reads, not Stage 02's complete `verify()`; the approximately
+18-second profile is the baseline; the cross-process trust-by-file-hash option is rejected. Stage 02's complete
+`verify()` remains the authoritative certification of the artifact, and its semantics are not changed. The profile
+carries an explicit Stage 04 name, `verify_index_identity`, and is never described as "full Stage 02 verify". It
+includes: SQLite integrity and structural checks; Stage 02 format and policy compatibility; recomputation of
+`artifact_digest`, `semantic_digest` and `export_lines` and comparison with the stored metadata and with the published
+build manifest; full re-derivation of the derived tables with equality to the stored tables; construction of the
+canonical identity; and the before/after LOOKUP mutation guard. It may omit only the full per-event JSON-Schema
+re-validation pass. Mandatory before acceptance of the profile: a differential tamper proof running both complete
+`verify()` and the profile on the tamper corpus (queryable event, raw record and derived-table mutation, malformed event
+JSON, schema-invalid event type or value, forged `artifact_digest` and `semantic_digest`, manifest mismatch, metadata
+and content mismatch, inode replacement, size-preserving mutation, replacement during LOOKUP); for every corruption
+that can affect LOOKUP or the canonical identity the profile must fail closed, and a case that only complete `verify()`
+rejects and that can affect LOOKUP, provenance or the canonical identity stops the work before freeze. Complete
+`verify()` is run on both rebuilt indexes, on the final freeze artifact and on tamper controls where needed. The
+performance target is not marked PASS. After D-062 correctness is closed, Step 12 profiles the verification by
+component, identifies redundant passes over the index, determines whether digests, derivation and structural
+verification can share one read pass without weakening any check, and then profiles JSON-Schema validation; the
+event-validator cost must not be attributed to validator construction without measurement. Optimize passes, not checks:
+no validation may be removed solely to reach the 5-second target.
+
 ## D-065 — CI verify job timeout 30 minutes; 18 minutes is diagnostic (OD-S12-2)
 - Status: accepted
 - Topic: ci-verify-job-timeout-30-minutes

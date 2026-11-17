@@ -117,7 +117,16 @@ def test_the_identity_is_the_canonical_stage02_identity(builds: tuple[Path, Path
 
 def test_two_independent_builds_have_one_identity(builds: tuple[Path, Path]) -> None:
     assert identity(builds[0]) == identity(builds[1])
-    assert identity(builds[0], full=True) == identity(builds[1], full=True)
+    full = []
+    for b in builds:  # Stage 02's complete verify (with the event JSON-Schema pass) agrees on both builds
+        with Index(b) as ix:
+            report = export.verify(ix.conn, manifest_path=manifest_path_for(b))
+        assert report["ok"], report["problems"]
+        full.append(dict(report["digests"]))
+    assert full[0] == full[1]
+    assert {k: identity(builds[0])[k] for k in ("artifact_digest", "semantic_digest")} == {
+        k: full[0][k] for k in ("artifact_digest", "semantic_digest")
+    }
 
 
 def test_a_byte_different_equal_index_has_the_same_identity(tmp_path: Path, builds: tuple[Path, Path]) -> None:

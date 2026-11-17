@@ -150,7 +150,8 @@ an interrupted-and-resumed run and an uninterrupted run assign equal ids to equa
 
 - Domain: a query `q = ⟨d?, p?⟩` of valid keys, and one opened index `ix` with identity
   `id(ix) = ⟨snapshot_id, policy_version, lookup schema version, artifact_digest⟩` (owner decision D-062, Step 12:
-  the Stage 02 canonical content digest, accepted only when Stage 02's checks recompute it from the content;
+  the Stage 02 canonical content digest, accepted only when Stage 02's checks recompute it from the content, through
+  the profile `verify_index_identity` of D-064;
   `semantic_digest` and `export_lines` are carried as consistency metadata; the file bytes are not part of it).
 - Codomain: lookup results `ℓ = ⟨state, events, issues, projection, evidence_digest⟩` with
   `state ∈ S₂ = {matched, notice_only, ambiguous_identity, no_record, invalid_query, unavailable}`.

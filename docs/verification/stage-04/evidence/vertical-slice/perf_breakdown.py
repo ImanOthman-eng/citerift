@@ -10,8 +10,8 @@ Each sample is a fresh process in a network namespace with no interface (``unsha
 - ``memory_open``: ``InvestigationMemory.open`` (the journal is re-read and re-proved: M-1..M-14, D-054);
 - ``show``: the read-only ``show`` the command prints after the run;
 - ``index_verify`` (Step 12, D-062): the verification of the index's canonical Stage 02 identity
-  (``lookup.verify_index``, called once per process by the process-local reuse), and ``stage02_digests`` within it
-  (``export.compute_digests``).
+  (``lookup.verify_index_identity``, called once per process by the process-local reuse), and ``stage02_digests``
+  within it (``export.compute_digests``).
 
 Nothing is changed in what runs; the timers only add a clock read around the wrapped calls. A sample's
 ``unaccounted`` is ``run`` minus ``file_sha256``, ``index_verify`` and ``schema`` (``memory_open`` and ``show``
@@ -76,7 +76,7 @@ def child(argv: list[str]) -> int:
     from citerift.retraction import export
 
     lookup.file_sha256 = timed("file_sha256", lookup.file_sha256)
-    lookup.verify_index = timed("index_verify", lookup.verify_index)
+    lookup.verify_index_identity = timed("index_verify", lookup.verify_index_identity)
     export.compute_digests = timed("stage02_digests", export.compute_digests)
     v, rv = schemas._validator, schemas._ref_validator
     schemas._validator = lambda sid: _TimedValidator(v(sid))  # type: ignore[assignment]
