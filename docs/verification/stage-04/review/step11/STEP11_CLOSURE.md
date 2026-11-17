@@ -6,9 +6,13 @@ Step 10 acceptance and CI run 327 are recorded in `../step10/STEP10_CLOSURE.md` 
 this step). Step 12 is not started: no freeze, no engine-version change, no evaluation, holdout, pre-registration,
 annotation or scoring, no Stage 05+ work, no dt-1 change, no change to the frozen Step 4 oracle.
 
-**Status: VERIFIED — AWAITING OWNER ACCEPTANCE** (section 15). Two items need an owner decision and do not block the
-vertical-slice contract: the warm-investigation performance target is not met for two of eight cases (section 9) and
-the investigation digests are bound to the exact Stage 02 index file (section 11, A11-3).
+**Status (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3qrWZMdMRxJ3hF99iSrL1H`, 2026-11-17T02:07:18Z): Step 11
+accepted at `099dc1988b5131093e0aa884e3263fb4dbfa1978` ("Stage 11 at: 099dc19… is accepted"; the message concerns
+Stage 04 Step 11), the production vertical slice VS-1 to VS-10 accepted, CI run 329 accepted as the current green
+evidence. Owner decisions D-061 (performance target NOT_MET at Step 11), D-062 (index identity from the Stage 02
+canonical content identity, implemented in Step 12) and D-063 (invalid requests refused before an investigation
+exists) are recorded in `DECISIONS.md`. Step 11 is ACCEPTED AND CLOSED. Step 12 is not started.** All 37 exit
+criteria pass (section 15); the ≤ 5 s p95 warm-investigation target is **NOT_MET** (section 9, D-061).
 
 Labels: **[verified]** measured or tested here, with the file named; **[inference]** derived, not measured;
 **[limit]** a stated limitation; **[owner]** needs an owner decision.
@@ -149,10 +153,10 @@ extraction document → EXTRACT `ADAPTER_INCONSISTENT`. Each: lifecycle FAILED, 
 step, code and reason, no claim (so no NOT_FOUND), no report, export refused (exit 9, nothing written). (d) An invalid
 revision request (revision id 0) and (e) a schema-invalid request (unknown property): exit 3 `REQUEST_INVALID`
 (machine-readable error), refused **before any investigation exists**, so there is no lifecycle, no journal and
-nothing to export. [owner, interpretation] The instruction asks for "lifecycle FAILED" for an invalid revision
-request; the accepted Step 10 CLI refuses such a request at the boundary (exit 3, nothing created), which is
-stronger than a FAILED investigation. A revision that does not match its bundle (VS-7b) is the case that reaches
-FAILED. Not changed.
+nothing to export. This behaviour is accepted by owner decision D-063 (S-4.3: an invalid or unpinned request is
+refused before an investigation is created; no FAILED investigation is manufactured for it). A valid, pinned request
+whose retained input turns out corrupt or inconsistent (VS-7a to c) ends FAILED with its stable code. The SPEC section
+14 VS-7 row now distinguishes the two.
 
 **VS-8 (unavailable, blocked).** Missing index → VALIDATE `INPUT_INVALID` / `INDEX_PATH_INVALID`; a SQLite file of
 another format → LOOKUP `INDEX_FORMAT_MISMATCH`. Both FAILED (exit 9), no claim, no negative statement, export
@@ -268,7 +272,9 @@ Per case, 5 repeated fresh runs on the full index (4 vCPU, Python 3.12.3), secon
 | VS-6b | 3.02 | 2.68 | 0.01 | 0.02 | 0.15 | 0.03 | 0.45 | 0.05 | 0.03 | 0.31 | 0.92 |
 
 **Target "warm investigation of a retained bundle ≤ 5 s p95" (master package): met for 6 of 8 cases, not met for
-VS-1 (6.57 s) and VS-3b (5.39 s).** The gate is not claimed as passed.
+VS-1 (6.57 s) and VS-3b (5.39 s).** Recorded as **NOT_MET at Step 11** (owner decision D-061): not PASS, not
+redefined, measurements retained. It is not a Step 11 exit criterion; Step 12 must investigate safe improvements
+(D-061 priority order) and rerun this benchmark before freeze.
 
 Diagnosis (`perf_breakdown.py`, VS-1, 5 samples, medians) [verified, `results/perf_breakdown.json`]: the command's
 `run` takes 6.11 s, of which
@@ -282,11 +288,10 @@ Diagnosis (`perf_breakdown.py`, VS-1, 5 samples, medians) [verified, `results/pe
 - import 0.17 s.
 
 Cost grows with the number of citations (VS-1 95 claims, VS-3b 62; the 2.9 to 3.8 s cases have 1 to 33). Both
-large costs are integrity checks, and no validation was weakened. [owner] Options, none applied: (a) accept the
-measured times as the Step 11 result and revisit the target at Step 12; (b) a narrow change that keeps every check
-but hashes the index once per process while its `stat` (size, mtime_ns, ctime_ns, inode) is unchanged; (c) both
-(b) and a cache of compiled schema validators if profiling shows compilation in the 2.7 s. Each of (b) and (c) is a
-Stage 04 change that would need its own evidence.
+large costs are integrity checks, and no validation was weakened. No performance change is made in Step 11
+(D-061). Step 12 order: (1) remove redundant Stage 02 index-identity work as part of D-062; (2) profile JSON Schema
+validation; (3) cache compiled validators only if construction or initialization overhead is material. No check may
+be removed, no scientific result may depend on a cache, and any cache must be disposable and reconstructible.
 
 Replay p95 0.9 to 2.3 s. Journal and memory size per article: 14.7 KB journal, at most 1.73 MB in total (target
 ≤ 10 MiB) [verified].
@@ -322,8 +327,8 @@ script (about 10 minutes). No test removed or weakened; no timeout and no `.gith
 |---|---|---|---|
 | A11-1 | `verify` gave `verify_failed` (5) for a Stage 04 identity change while `replay` gave `stale` (11) | Step 10 delivery defect (category 2), stale semantics mismatch | Fixed narrowly in `operations._verify`; SPEC note; CI test (section 5) |
 | A11-2 | The Stage 03 network gate keeps its state in one host-wide file by default (`~/.cache/citerift/wiki-network.lock`). A SYNTHETIC 429 with Retry-After in one test run is persisted there and made a later run defer to the earlier instant | Test-fixture defect in the new Step 11 test and runner (category 1); the host-wide gate is accepted Stage 03 design (one request in flight per host) | The Step 11 test and the runner set `CITERIFT_WIKI_NETWORK_LOCK` to their own file, as the Step 8 tests already do. Stage 03 not changed |
-| A11-3 | Two builds of the Stage 02 index from the same pinned CSV are not byte-identical (the file SHA-256 differs; Stage 02 RISK E10 accepts this). Stage 04 binds the index identity to the file SHA-256 (S-10.1, A-1), and that identity enters evidence, claim ids, the report and C(J). A rebuild therefore gives other claim ids, report digests and C(J), and `replay` of an existing investigation against a rebuilt index says `stale` [`index`] [verified: two builds, `f6bd5e6e…` and `011a0284…`; replay 11 stale `index`]. Classes, claims by class, projection-set digests and investigation keys are the same across builds | Specification interaction (category 7), not a contradiction: both rules hold as written | Not changed. The recorded digests reproduce only with the index file whose SHA-256 is recorded (not committed: 279 MB). [owner] for Step 12: keep the exact index file as a release artifact, or define the Stage 04 index identity by a reproducible Stage 02 content digest (an architecture change) |
-| A11-4 | Warm investigation above 5 s p95 for VS-1 and VS-3b | Performance, not a defect | Diagnosed (section 9); [owner] |
+| A11-3 | Two builds of the Stage 02 index from the same pinned CSV are not byte-identical (the file SHA-256 differs; Stage 02 RISK E10 accepts this). Stage 04 binds the index identity to the file SHA-256 (S-10.1, A-1), and that identity enters evidence, claim ids, the report and C(J). A rebuild therefore gives other claim ids, report digests and C(J), and `replay` of an existing investigation against a rebuilt index says `stale` [`index`] [verified: two builds, `f6bd5e6e…` and `011a0284…`; replay 11 stale `index`]. Classes, claims by class, projection-set digests and investigation keys are the same across builds | Specification interaction (category 7), not a contradiction: both rules hold as written | Not changed in Step 11. Resolved directionally by owner decision D-062: the Stage 04 scientific index identity will use the Stage 02 canonical content identity (`snapshot_id`, `policy_version`, lookup schema version, verified `artifact_digest`), with the file hash kept only as an operational integrity guard; implemented and tested (equivalent rebuilds, tamper cases) in Step 12. The Step 8 to 11 journals stay historical engineering evidence |
+| A11-4 | Warm investigation above 5 s p95 for VS-1 and VS-3b | Performance, not a defect | Diagnosed (section 9); NOT_MET at Step 11, carried to Step 12 (D-061) |
 | A11-5 | Two user-visible forms of "wait until not_before": a Stage 03 deferral gives BLOCKED (exit 8); a D-042 kill after Retry-After headers were seen gives a retryable `step_failed` with `not_before`, lifecycle RUNNING with next action `wait` (exit 14) (`test_step8_live.py`) | Accepted Step 7/8 semantics (deferred vs retryable failure) | Not changed; both refuse to start early and export nothing. Step 12 review item |
 | A11-6 | The retained journals record the request with absolute local paths (bundle, index, memory root) | Accepted request schema; the journal bytes are authoritative and are not rewritten | Not changed; the paths name scratch directories only |
 
@@ -378,7 +383,7 @@ files hold identifiers, digests and Stage 04 records, not captured page text.
 | 5 | VS-4 passes | PASS. 16 checks; CONCERN_CITED, never RETRACTED, no retraction wording. |
 | 6 | VS-5 passes incl. D-059 evidence-level collision proof | PASS. Collision in 3 committed lookups and in each deciding evidence set; D-14; not a reason. |
 | 7 | VS-6 passes with scoped NOT_FOUND wording only | PASS. Two articles; forbidden phrases absent. |
-| 8 | VS-7 failure cases pass | PASS. 7a–c FAILED (exit 9) with stable codes; 7d–e refused (exit 3, nothing created) [owner, interpretation, section 3]. |
+| 8 | VS-7 failure cases pass | PASS. 7a–c FAILED (exit 9) with stable codes; 7d–e refused (exit 3, nothing created), accepted by D-063. |
 | 9 | VS-8 unavailable/blocked cases pass | PASS. Missing and foreign index FAILED; Retry-After BLOCKED, no early start, no sleep, no export, restart after not_before. |
 | 10 | VS-9 identical C(J) | PASS. Three kill points; same C(J), report, projection set, claims. |
 | 11 | VS-10 reproduced/stale | PASS. Five mutations name their identity in replay and verify; D-057 holds. |
@@ -421,11 +426,14 @@ New: `docs/verification/stage-04/evidence/vertical-slice/{run_vertical_slice,vs_
 
 ## 17. Owner decisions
 
-None was taken in this step. Open:
+Recorded at acceptance (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3qrWZMdMRxJ3hF99iSrL1H`, `DECISIONS.md`):
 
-1. [owner] Performance target (section 9, A11-4): accept the measured times for Step 11, or authorize a narrow
-   optimization (options b, c).
-2. [owner] Index identity and reproducibility (A11-3), for Step 12.
-3. [owner, interpretation] VS-7 "invalid revision request": refused at the boundary (exit 3, nothing created) rather
-   than a FAILED investigation (section 3).
-4. Carried, not blocking: I-2 (Step 12), I-3 with A-6 (Step 12), I-4 (Step 12), A11-5 (Step 12).
+- **D-061**: the Step 11 performance result is accepted; the ≤ 5 s p95 target is NOT_MET at Step 11 and carried to
+  Step 12 (A11-4).
+- **D-062**: the Stage 04 index identity must use the Stage 02 canonical content identity, not SQLite file bytes;
+  implemented in Step 12 (A11-3).
+- **D-063**: invalid requests are refused before an investigation exists (exit 3); the SPEC VS-7 row is corrected.
+
+No code is changed for D-062 or for performance in the acceptance closure. Mandatory Step 12 inputs: I-2; I-3 with
+A-6; I-4; A11-3 (D-062); A11-4 (D-061); A11-5; A11-6; the MM EV-2 wording; the primary-source prior-art review for
+gate 04-J. Step 12 is not started.

@@ -1349,3 +1349,88 @@ unchanged: the MM EV-2 wording refinement (audit A-5) to the Step 12 freeze revi
 the Step 12 freeze; the absent real-data classes stay disclosed as coverage limitations; the prior-art primary-source
 review to gate 04-J; the VS-5 evidence-level collision assertion to Step 11. Step 10 is not started (owner: "Do not
 start Step 10 yet").
+
+## D-061 — Step 11 performance: accepted, the ≤ 5 s p95 target NOT_MET
+- Status: accepted
+- Topic: stage-04-step11-performance-target-not-met
+- Date: 2026-11-17
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step11/STEP11_CLOSURE.md; docs/verification/stage-04/evidence/vertical-slice/results/perf_breakdown.json
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3qrWZMdMRxJ3hF99iSrL1H`, 2026-11-17T02:07:18Z); the same
+message accepts Step 11 at `099dc1988b5131093e0aa884e3263fb4dbfa1978`, the production vertical slice VS-1 to VS-10 and
+CI run 329 as the current green evidence. The Step 11 vertical slice is accepted although VS-1 (6.57 s p95) and VS-3b
+(5.39 s p95) exceed the planning benchmark "warm retained investigation ≤ 5 s p95". The benchmark is part of the
+retained performance verification strategy but is not a Step 11 vertical-slice exit criterion. The target is recorded
+as NOT_MET at Step 11: it is not marked PASS, not weakened or redefined, the measurements are not deleted and the excess
+is not called runner noise. The scientific and functional vertical-slice results remain accepted. Carried to Step 12,
+which must investigate safe performance improvements before freeze, in this order: (1) eliminate redundant Stage 02
+index-identity work as part of D-062; (2) then profile JSON Schema validation; (3) cache compiled validators only if
+measured construction or initialization overhead is material. No validation check may be removed; no scientific result
+may depend on caching; any cache must be disposable and reconstructible. After the Step 12 fixes the retained warm
+benchmark is rerun; if the target is still not met after safe improvements, the residual limitation is reported
+honestly at freeze rather than weakening correctness.
+
+## D-062 — Stage 04 index identity uses the Stage 02 canonical content identity
+- Status: accepted
+- Topic: stage-04-index-identity-canonical-stage02
+- Date: 2026-11-17
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step11/STEP11_CLOSURE.md (A11-3)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3qrWZMdMRxJ3hF99iSrL1H`, 2026-11-17T02:07:18Z), resolving
+Step 11 finding A11-3 directionally now, for implementation in Step 12. The exact SQLite file is not required as a
+permanent release artifact merely to reproduce Stage 04 claim and report digests: Stage 02 explicitly allows
+non-byte-identical SQLite builds and already defines canonical reproducible digests (`artifact_digest`,
+`semantic_digest`, `export_lines`), which its build replacement rule treats, not raw SQLite bytes, as the equality test
+for an equivalent build; Stage 04 currently binds scientific identity at the wrong layer by using the raw file SHA-256.
+Required Step 12 design: the authoritative Stage 04 Stage 02 identity is based on the canonical Stage 02 artifact,
+including at minimum `snapshot_id`, `policy_version`, the lookup-result/schema version and the Stage 02 canonical
+`artifact_digest`, with `semantic_digest` and `export_lines` retained as consistency/provenance metadata where
+appropriate (the exact field shape is a Step 12 detail). The raw SQLite byte hash must not determine scientific claim or
+report identity. Scientific/content identity (which evidence/queryable Stage 02 artifact this is; it must survive a
+byte-different but canonically identical rebuild) is separated from the operational file-integrity guard (whether the
+concrete file changed while Stage 04 used it; a raw file SHA-256 and/or stat tuple may still be used transiently for
+it), which must not make scientifically equivalent rebuilt indexes produce different lookup-observation identities,
+evidence ids, claim ids, report digests or C(J). Integrity: an `artifact_digest` string read from mutable SQLite
+metadata is not simply trusted; before Stage 04 accepts a canonical identity, Stage 02's existing verification and
+digest machinery (`verify`, `compute_digests`, derivation and manifest checks) proves the current index content
+corresponds to it. The verified result may be reused once per process/invocation while a strong filesystem fingerprint
+is unchanged; the reuse key must detect ordinary replacement or modification and is invalidated if the file identity
+or stat changes; validation results are not cached across processes; the before/after LOOKUP mutation guard is not
+weakened. Equivalent-rebuild requirement: the accepted snapshot is built independently at least twice; with identical
+canonical artifact identity, Stage 04 must show the same Stage 02 scientific identity, no STALE solely from differing
+SQLite bytes, and the same lookup observations, evidence ids, claim ids, report digest, projection-set digest and C(J);
+a genuinely different canonical `artifact_digest` still makes an existing investigation STALE. Tamper tests at least:
+queryable row modified, event modified, derived table modified, stored canonical digest forged with content unchanged or
+mismatched, manifest mismatch, file replaced during LOOKUP; none may pass as the recorded canonical artifact. This
+changes Stage 04 pre-freeze identity semantics; the Stage 04 schema/engine identity is handled consistently in Step 12.
+No migration is required for the development-only Step 8 to 11 journals, which remain retained historical engineering
+evidence; fresh post-freeze investigations become authoritative for evaluation. No code is changed for D-062 in the
+Step 11 closure.
+
+## D-063 — Invalid requests are refused before an investigation exists
+- Status: accepted
+- Topic: stage-04-invalid-request-refused-not-failed
+- Date: 2026-11-17
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step11/STEP11_CLOSURE.md (VS-7); docs/verification/stage-04/SPECIFICATION.md (S-4.3, section 14)
+
+Owner decision (owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP3qrWZMdMRxJ3hF99iSrL1H`, 2026-11-17T02:07:18Z). The current
+VS-7 behaviour is accepted. A request that fails the Stage 04 request boundary, including an unpinned or invalid
+revision request, is refused by the command line with exit status 3 (invalid): no Investigation Memory, no journal, no
+lifecycle. This is consistent with SPEC S-4.3 (an invalid or unpinned subject request is refused before an
+investigation is created). No FAILED investigation is manufactured for an input that was never a valid investigation
+request. A syntactically valid, pinned request that creates an investigation and later discovers an input defect may
+end FAILED with its stable failure code: for example a corrupt bundle, a requested revision that differs from the
+captured or bundle revision discovered during ACQUIRE, or a schema-invalid Stage 03 result. The SPEC section 14 VS-7 row
+is clarified to distinguish the two (a vertical-slice wording correction, not a controller semantic change). With
+D-061, D-062 and D-063 recorded, Stage 04 Step 11 is accepted and closed. Mandatory Step 12 inputs: I-2 (internal
+`workflow.outcome()` disagrees on partial extraction); I-3 with A-6 (engine identity/version freeze); I-4
+(projection-set schema wording); A11-3 (implement D-062); A11-4 (safe performance optimization and benchmark rerun,
+D-061); A11-5 (two user-visible not_before representations); A11-6 (absolute scratch paths in development journals);
+the MM EV-2 wording; the primary-source prior-art review for gate 04-J. Step 12 is not started (owner: "Do not start
+Step 12 yet").

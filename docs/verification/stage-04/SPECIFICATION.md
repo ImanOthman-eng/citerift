@@ -1093,7 +1093,7 @@ attributed Retraction Watch field subset; the full pinned index run is retained 
 | VS-4 | an expression-of-concern case from the retained set | `CONCERN_CITED`, never retracted |
 | VS-5 | BCAS3, ar 76488293 | `PMID_ROLE_COLLISION` carried: present and resolvable in the committed claim evidence and provenance chain, and a claim reason only when the collision takes part in the deciding rule (owner decision D-059); class by D-10 or D-14 as the evidence decides |
 | VS-6 | a retained article with only `no_record` keys | `NOT_FOUND_IN_CHECKED_SOURCES` only; summary per S-7.7 |
-| VS-7 | corrupted bundle; invalid request; schema-invalid extraction input | `FAILED` with the code; no claim |
+| VS-7 | invalid or unpinned request; a valid request whose retained input is corrupt or inconsistent (corrupted bundle, captured revision differing from the request, schema-invalid extraction input) | invalid request: refused before an investigation exists (S-4.3), exit 3, no Memory, no journal, no lifecycle; valid request with a bad input: `FAILED` with the stable code, exit 9; no claim in either case (owner decision D-063) |
 | VS-8 | index missing; index of another format; injected 429 then deferral | `FAILED` or `BLOCKED` with the code; no claim, no negative |
 | VS-9 | VS-1 killed after LOOKUP committed, then `resume` | ACQUIRE…LOOKUP not re-run (no new `step_started` for them); same `C(J)` as an uninterrupted run |
 | VS-10 | replay of each completed case | `reproduced`; `stale` when the bundle, index, engine or schema identity is changed |
