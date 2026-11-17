@@ -16,7 +16,7 @@ input identities. There is no other workflow state (W-1).
 from __future__ import annotations
 
 import copy
-from collections.abc import Mapping
+from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -557,16 +557,70 @@ def controller_identity() -> dict[str, Any]:
     }
 
 
-def identity_digests(values: Mapping[str, Any]) -> dict[str, str]:
+class LazyIdentities(Mapping[str, Any]):
+    """Identity values of which some are established only when first read (Step 12, L-04): the D-062 index
+    verification costs seconds and only LOOKUP and the steps after it depend on the index (``STEP_IDENTITIES``), so an
+    investigation that has not reached LOOKUP is run, resumed and checked for staleness without it. A value is computed
+    at most once per object; membership never computes one."""
+
+    def __init__(self, eager: Mapping[str, Any], lazy: Mapping[str, Callable[[], Any]]) -> None:
+        self._eager = dict(eager)
+        self._lazy = dict(lazy)
+        self._done: dict[str, Any] = {}
+
+    def __getitem__(self, name: str) -> Any:
+        if name in self._eager:
+            return self._eager[name]
+        if name not in self._done:
+            self._done[name] = self._lazy[name]()
+        return self._done[name]
+
+    def __contains__(self, name: object) -> bool:
+        return name in self._eager or name in self._lazy
+
+    def __iter__(self) -> Iterator[str]:
+        return iter([*self._eager, *(n for n in self._lazy if n not in self._eager)])
+
+    def __len__(self) -> int:
+        return len(set(self._eager) | set(self._lazy))
+
+
+class IdentityDigests(Mapping[str, str]):
+    """The digests of the input identity vector, each computed when first read from the current values."""
+
+    def __init__(self, values: Mapping[str, Any]) -> None:
+        self._values = values
+        self._done: dict[str, str] = {}
+
+    def __getitem__(self, name: str) -> str:
+        if name not in IDENTITY_NAMES:
+            raise KeyError(name)
+        if name not in self._done:
+            value = copy.deepcopy(self._values[name])
+            if name == "stage04":
+                value = {"environment": value, "controller": controller_identity()}
+            self._done[name] = ids.identity_digest(name, value)
+        return self._done[name]
+
+    def __contains__(self, name: object) -> bool:
+        return name in IDENTITY_NAMES
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(IDENTITY_NAMES)
+
+    def __len__(self) -> int:
+        return len(IDENTITY_NAMES)
+
+
+def identity_digests(values: Mapping[str, Any]) -> Mapping[str, str]:
     """Digests of the input identity vector (SPEC 10.3). ``values`` holds the six components as the environment
     reports them now; the controller's own identity is added to ``stage04``. A missing component is a failure,
-    never staleness (MM 10.2)."""
+    never staleness (MM 10.2). Each digest is computed when first read (``IdentityDigests``), so a component that no
+    step in question depends on is never established (L-04)."""
     missing = [n for n in IDENTITY_NAMES if n not in values]
     if missing:
         raise InvestigationMemoryError("IDENTITY_UNAVAILABLE", f"identity components missing: {missing}")
-    full = {n: copy.deepcopy(values[n]) for n in IDENTITY_NAMES}
-    full["stage04"] = {"environment": full["stage04"], "controller": controller_identity()}
-    return {n: ids.identity_digest(n, full[n]) for n in IDENTITY_NAMES}
+    return IdentityDigests(values)
 
 
 def dependencies(f: Folder, step: str) -> list[list[Any]]:

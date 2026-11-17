@@ -35,7 +35,7 @@ from citerift.investigation.adapters.lookup import IndexVerifier, Opener, enviro
 from citerift.investigation.adapters.normalize import normalize
 from citerift.investigation.adapters.validate import validate
 from citerift.investigation.adapters.verify import make_verify
-from citerift.investigation.workflow import PLAN_VERSION
+from citerift.investigation.workflow import PLAN_VERSION, LazyIdentities
 from citerift.retraction.query import Index
 from citerift.wiki.bundle import BundleError, open_bundle
 from citerift.wiki.extract import ExtractConfig
@@ -113,14 +113,16 @@ class Integration:
         request_key = copy.deepcopy(dict(created["request_key"]))
 
         def current(root: Mapping[str, Any] | None) -> Mapping[str, Any]:
-            return {
+            eager = {
                 "request_key": copy.deepcopy(request_key),
                 "root": root_identity(request, root),
                 "extraction": extraction_identity(self.extract_config),
-                "index": environment_identity(Path(request["index_path"]), self.index_verifier),
                 "stage04": {**copy.deepcopy(dict(self.stage04)), "integration": dict(INTEGRATION_SCHEMAS)},
                 "config": copy.deepcopy(request["config"]),
             }
+            # The index is verified (D-062) only when a step key or staleness check reads it (L-04).
+            index = Path(request["index_path"])
+            return LazyIdentities(eager, {"index": lambda: environment_identity(index, self.index_verifier)})
 
         return current
 

@@ -31,6 +31,7 @@ from citerift.investigation.adapters.live import (
     policy_digest,
     side_channel,
 )
+from citerift.investigation.adapters.lookup import IndexVerifier
 from citerift.investigation.adapters.plan import STAGE04_IDENTITY, Integration
 from citerift.investigation.adapters.supervise import supervise, tree
 from citerift.investigation.controller import run_investigation
@@ -327,7 +328,7 @@ def _live(env: Path, index: Path) -> tuple[Path, dict[str, Any]]:
 
 def _integration(env: Path, **kw: Any) -> Integration:
     live = make_live_acquire(POLICY, child=FAKE, t_acq_ms=kw.pop("t_acq_ms", T_ACQ_MS), workroot=env / "acquire")
-    return Integration(detector=S8.synthetic_detector, live=live)
+    return Integration(detector=S8.synthetic_detector, live=live, **kw)
 
 
 def _run(root: Path, payload: dict[str, Any], integ: Integration, at: datetime | None = None) -> Any:
@@ -367,6 +368,27 @@ def test_retry_after_resume_waits_before_the_instant_and_starts_at_it(
     assert _attempts(root, payload) == 1
     done = _run(root, payload, _integration(env), at=nb)
     assert done.status == "NEEDS_RESOLUTION" and _attempts(root, payload) == 2
+
+
+def test_l04_a_run_that_waits_before_lookup_does_not_verify_the_index(
+    env: Path, index: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Step 12, L-04 (found by the VS-8c freeze run): the index identity is needed only by LOOKUP and the steps after
+    it (``workflow.STEP_IDENTITIES``), so an investigation blocked at ACQUIRE is run and resumed without the D-062
+    verification (about 25 s on the accepted index); LOOKUP still verifies it before reading."""
+    root, payload = _live(env, index)
+    monkeypatch.setenv("CITERIFT_FAKE_MODE", "retry_after:600")
+    verifier = IndexVerifier()
+    first = _run(root, payload, _integration(env, index_verifier=verifier))
+    assert first.explanation["next"]["action"] == "wait" and verifier.verifications == 0
+    with InvestigationMemory.open(root, payload["investigation_key"], writable=False) as mem:
+        [failed] = [r["payload"] for r in mem.view.records if r["kind"] == "step_failed"]
+    nb = datetime.fromisoformat(failed["not_before"].replace("Z", "+00:00"))
+    monkeypatch.setenv("CITERIFT_FAKE_MODE", "replay")
+    early = _run(root, payload, _integration(env, index_verifier=verifier), at=nb - timedelta(seconds=1))
+    assert early.explanation["next"]["action"] == "wait" and verifier.verifications == 0
+    done = _run(root, payload, _integration(env, index_verifier=verifier), at=nb)
+    assert done.status == "NEEDS_RESOLUTION" and verifier.verifications >= 1
 
 
 def _attempts(root: Path, payload: dict[str, Any]) -> int:

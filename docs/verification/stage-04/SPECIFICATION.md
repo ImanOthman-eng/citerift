@@ -127,10 +127,12 @@ support (`policy.reduce`, rule 7f).
   (Stage 02 format and policy, integrity and structure, digests recomputed and compared with the stored metadata and the
   build manifest beside the index, every derived table recomputed); it omits only Stage 02's per-event JSON-Schema
   re-check, which stays in Stage 02's complete `verify` (the certification). The SQLite file bytes are not part of the
-  identity, so a byte-different but canonically equal rebuild is the same input. The file's stat fingerprint and SHA-256 remain an operational guard only: the file
-  must not change during one LOOKUP attempt. A verified identity may be reused within one process while the file's
-  stat fingerprint (device, inode, size, `mtime_ns`, `ctime_ns`) is unchanged; never across processes. Recorded paths
-  are operational locators (`--index`, `--bundle`); they enter no scientific digest (Step 12, A11-6).
+  identity, so a byte-different but canonically equal rebuild is the same input. The file's stat fingerprint and SHA-256
+  remain an operational guard only: the file must not change during one LOOKUP attempt. The identity is established only
+  when LOOKUP or a step key or staleness check that depends on the index needs it (Step 12, L-04). A verified identity
+  may be reused within one process while the file's stat fingerprint (device, inode, size, `mtime_ns`, `ctime_ns`) is
+  unchanged; never across processes. Recorded paths are operational locators (`--index`, `--bundle`); they enter no
+  scientific digest (Step 12, A11-6).
 
 ## 4. Root and child identities (owner decision D-4)
 

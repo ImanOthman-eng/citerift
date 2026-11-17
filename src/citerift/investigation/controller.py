@@ -226,13 +226,15 @@ class WorkflowController:
         )
         return self._append("step_failed", payload, step, number, orphan=True)
 
-    def current_values(self) -> dict[str, Any]:
+    def current_values(self) -> Mapping[str, Any]:
         """The input identity values now (SPEC 10.3). The environment sees the bound root's identity only, never its
-        display title, so no key depends on a title (owner Step 7 item 16)."""
+        display title, so no key depends on a title (owner Step 7 item 16). Values the environment establishes only
+        when read (``workflow.LazyIdentities``, L-04) are kept lazy."""
         root = self.view.root
-        return dict(self._identities(copy.deepcopy(root["subject"]["identity"]) if root is not None else None))
+        values = self._identities(copy.deepcopy(root["subject"]["identity"]) if root is not None else None)
+        return values if isinstance(values, workflow.LazyIdentities) else dict(values)
 
-    def current_digests(self) -> dict[str, str]:
+    def current_digests(self) -> Mapping[str, str]:
         """The digests of the input identity vector now (SPEC 10.3)."""
         return workflow.identity_digests(self.current_values())
 
@@ -356,7 +358,11 @@ class WorkflowController:
             read_bytes=read_bytes,
             now=self._clock(),
             investigation={k: workflow.created(f)[k] for k in ("investigation_key", "investigation_id")},
-            identities=copy.deepcopy(dict(values)) if values is not None else None,
+            # The identities the step is keyed with (L-04: a component no key of this step depends on, such as the
+            # index before LOOKUP, is not established for it).
+            identities=(
+                copy.deepcopy({n: values[n] for n in workflow.STEP_IDENTITIES[step]}) if values is not None else None
+            ),
         )
 
     # Results -------------------------------------------------------------------------------------------------------
