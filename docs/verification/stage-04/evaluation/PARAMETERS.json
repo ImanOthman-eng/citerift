@@ -1,0 +1,60 @@
+{
+ "format": "citerift-stage04-eval-parameters/1",
+ "status": "PRE-REGISTERED, binding once the owner accepts PREREGISTRATION.md; no value may change after the draw (D-068)",
+ "frozen_engine": {
+  "content_commit": "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0",
+  "tree": "86152ad543971d321059f16f93c3aff671f467c4",
+  "freeze_manifest_digest": "609796cee9fc168b379669dde7ca5c410868e37455944d86b12624578fae42cc",
+  "attestation_commit": "15ef3c302e3d0a5406150e523b144174ed69f433",
+  "checked_paths": ["src", "schemas", "pyproject.toml", "uv.lock"]
+ },
+ "frame": {
+  "exclude_listed_tier": false,
+  "note": "owner choice at acceptance (PREREGISTRATION.md 3.3); listed-tier matches are recorded either way"
+ },
+ "retraction_watch": {
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "csv_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+ },
+ "sampling": {
+  "allocation": {
+   "ar": {"primary": {"S1": 22, "S2": 8}, "reserve": {"S1": 7, "S2": 3}},
+   "en": {"primary": {"S1": 22, "S2": 8}, "reserve": {"S1": 7, "S2": 3}}
+  },
+  "expansion": {
+   "block_size": 10,
+   "max_blocks": 12,
+   "stratum_order": ["S1", "S2"],
+   "min_identifier_reached_truth_positive_units": 40,
+   "min_negative_proxy_units": 75
+  },
+  "attempt_ceiling": 200
+ },
+ "acquisition": {
+  "capture": "citerift-wiki capture --wiki W --page-id P --out bundles/W-P (render on, no redirect following)",
+  "acquired_capture_exit_codes": [0, 6],
+  "transient_capture_exit_codes": [4, 8],
+  "transient_retries": 2,
+  "transient_retry_wait_seconds": 300,
+  "pause_between_captures_seconds": 2,
+  "acquired_extraction_status": ["complete", "partial"]
+ },
+ "retrieval": {
+  "max_text_bytes": 6000,
+  "min_title_tokens": 4,
+  "title_coverage": 0.8,
+  "max_title_records": 5
+ },
+ "annotation": {
+  "annotators": ["A", "B"],
+  "adjudicator": "ADJ",
+  "model_family": "Claude Sonnet",
+  "max_articles_per_instance": 6,
+  "note_max_chars": 500
+ },
+ "gates": {
+  "min_positive_units": 30,
+  "max_false_attachment_upper_95": 0.10,
+  "min_negative_units": 60
+ }
+}
