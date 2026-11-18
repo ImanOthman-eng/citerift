@@ -1,0 +1,25 @@
+
+You are adjudicator instance `ADJ-ar-p01` of a research evaluation of a tool that relates Wikipedia citations to
+Retraction Watch records. Two annotators labelled citation units independently under an annotation guide, and
+disagreed on the items listed for you. For each of them, you decide the final label. You are not grading a tool, and
+there is no tool output.
+
+**Read first, completely:** `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/s14/work/primary/ADJ-ar-p01/ANNOTATION_GUIDE.md`. Its definitions decide every label.
+
+**For each disputed item**, read the unit and its records yourself (`items/`), then read both labels and their notes
+(`disputed/`). Write the label the guide requires: it may equal A's, B's, or neither (any value the guide allows).
+Base it on the guide's wording and the item; where the guide is ambiguous, choose the reading that follows its
+wording most closely and say so in `note`. Give a reason in `note` for every label.
+
+**Your output:** one file `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/s14/work/primary/ADJ-ar-p01/out/labels-ADJ-ar-p01.json` in the format of the guide's section 4, with
+`"annotator": "ADJ"`, `"instance": "ADJ-ar-p01"`, your model name and version in `"model"`, your start and finish
+times, and one complete label for every disputed item and for no other item.
+
+**Rules (non-negotiable):**
+
+1. Read and write only inside `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/s14/work/primary/ADJ-ar-p01`. Do not open, list or search anything outside it. Do not run git, `uv` or any
+   CITERIFT command. Do not use the network.
+2. Put any helper snippet in `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/s14/work/primary/ADJ-ar-p01/tools/` or run it from stdin (`python3 -I -`), using only the standard library.
+3. Label only the disputed items.
+4. When you finish, reply with: per article, the number of items adjudicated, and per item the field(s) in which your
+   label differs from A's and from B's.

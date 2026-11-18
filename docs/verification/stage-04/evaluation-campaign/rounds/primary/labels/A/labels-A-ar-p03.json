@@ -1,0 +1,130 @@
+{
+ "format": "citerift-stage04-eval-labels/1",
+ "annotator": "A",
+ "instance": "A-ar-p03",
+ "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+ "started_at": "2026-11-18T00:00:00Z",
+ "finished_at": "2026-11-18T00:30:00Z",
+ "labels": [
+  {
+   "item_id": "ar-75250931-un-00001",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, year and PMID match R1; DOI field empty."
+  },
+  {
+   "item_id": "ar-77289996-un-00058",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Cites food/supplement-CYP450 interactions paper (Ceska Slov Farm 2007); R1 is a different paper, shown by title tokens only."
+  },
+  {
+   "item_id": "ar-77289996-un-00059",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, DOI and PMID match both records (retraction and EoC of same paper)."
+  },
+  {
+   "item_id": "ar-72023431-un-00001",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Web source on influenza/cold; no identifiers; records are different Cochrane reviews."
+  },
+  {
+   "item_id": "ar-72023431-un-00002",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Echinacea review; DOI confirmed by CD000530 in pages; no record confirms the PMID belongs to same work."
+  },
+  {
+   "item_id": "ar-72023431-un-00009",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Lancet Infect Dis echinacea meta-analysis; no record shown for these identifiers, DOI/PMID agreement not verifiable from item; text consistent."
+  },
+  {
+   "item_id": "ar-72023431-un-00019",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Heated humidified air review; DOI confirmed by CD001728 in pages; PMID not verifiable from item."
+  },
+  {
+   "item_id": "ar-72023431-un-00022",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated",
+    "R5": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "JAMA 2014 Oral zinc: R5 matches by title, DOI, PMID. R1-R4 are Cochrane zinc reviews, different papers."
+  },
+  {
+   "item_id": "ar-73548367-un-00010",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, year, DOI, PMID match R1."
+  },
+  {
+   "item_id": "ar-77513048-un-00009",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unit cites the 2006 pub2 version (R2 matches DOI/PMID/title); R1 is the original 2005 version with a different DOI."
+  },
+  {
+   "item_id": "ar-76532685-un-00041",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, DOI and PMID (also written as URL) match R1."
+  }
+ ]
+}

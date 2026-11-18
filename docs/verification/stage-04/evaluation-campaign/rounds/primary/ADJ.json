@@ -1,0 +1,137 @@
+{
+ "annotator": "ADJ",
+ "format": "citerift-stage04-eval-labels/1",
+ "instances": [
+  {
+   "file": "labels-ADJ-ar-p01.json",
+   "instance": "ADJ-ar-p01",
+   "items": 5,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "2089285075b415b6fc1b58f88cf610c5c37f5185e5958a1ef0994ed5a20870d8"
+  },
+  {
+   "file": "labels-ADJ-en-p01.json",
+   "instance": "ADJ-en-p01",
+   "items": 6,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "b73b6a3741ed355f3a91fc60b138826c0e9aaff4735157ae83aa1f47a5b2ceee"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "ar-72023431-un-00002",
+   "kind": "work_citation",
+   "note": "Echinacea review; DOI CD000530 confirmed by pages field. Item does not show the PMID names the same work (no record), so cannot_tell per guide; DOI alone identifies the work.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00009",
+   "kind": "work_citation",
+   "note": "Lancet ID echinacea meta-analysis; journal/volume/pages agree with DOI. No record shows the PMID is the same work, so cannot_tell; DOI alone identifies it.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00019",
+   "kind": "work_citation",
+   "note": "Heated humidified air review; DOI CD001728 matches pages field. PMID not shown to be same work, so cannot_tell; DOI alone identifies it.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76517782-un-00001",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction: ...' and DOI tpj.13066 = R2 notice DOI; R1 notice DOI differs. Two listed identifiers (same DOI twice); guide counts listed identifiers and says yes when all name one work.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76664591-un-00008",
+   "kind": "work_citation",
+   "note": "A cite-web reference (a real reference, so not other_mention) to an Altmetric page, not the paper or its notice; no identifier. Guide ambiguous on web pages; chose work_citation as it is a reference.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1380584334-un-00019",
+   "kind": "work_citation",
+   "note": "Cites Voutila 2017 Mol Ther; R1 (BioMed Res Int) is a different paper by title tokens only. Guide's yes needs the item to show identifiers name one work; no record does, so cannot_tell (B's yes rests on consistency). DOI matches journal/year, so attachable.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1382029428-un-00004",
+   "kind": "work_citation",
+   "note": "Cites the Mech Dev supplement paper (same title/authors as R1 but different journal, DOI, PMID), so R1 unrelated. Item does not show DOI and PMID name one work. DOI prefix S0925-4773 agrees with the cited journal, so the DOI alone identifies it.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00074",
+   "kind": "work_citation",
+   "note": "Rizos 2012 JAMA meta-analysis; R1 is a different paper. No record shows DOI/PMID pair is one work. Title, journal, year and DOI (10.1001, JAMA) agree, so the DOI alone identifies the cited work.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00076",
+   "kind": "work_citation",
+   "note": "ACC/AHA/HRS 2008 guideline; R1 unrelated. DOI as written is mistyped (CIRCUALTIONAHA), so it may not identify the work; the PMID is not confirmed by the item. Cannot decide that an identifier alone identifies it.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "en-1385937283-un-00093",
+   "kind": "work_citation",
+   "note": "White 2018 AJEM meta-analysis; R1, R2 different papers. Pair not shown to be one work. Title, journal, year agree with DOI 10.1016/j.ajem.2018.09.045, so the DOI alone identifies it.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00107",
+   "kind": "work_citation",
+   "note": "Title, authors, journal, year and PMID match R1 original. R1 lists its DOI (2019.01.016) with that PMID as one paper, and the unit's DOI (2019.10.026) differs, so identifiers name different works. PMID with title decides the cited paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "no",
+   "single_identifier_attachable": "yes"
+  }
+ ]
+}

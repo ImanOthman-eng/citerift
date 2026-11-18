@@ -1,0 +1,1389 @@
+{
+ "annotator": "B",
+ "format": "citerift-stage04-eval-labels/1",
+ "instances": [
+  {
+   "file": "labels-B-ar-p01.json",
+   "instance": "B-ar-p01",
+   "items": 19,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "2f06559e2c6954e70243f92ac18b4d8dbbd13c8c96310467089bef955896aa1f"
+  },
+  {
+   "file": "labels-B-ar-p02.json",
+   "instance": "B-ar-p02",
+   "items": 8,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "0d0da8f1cc6e7498bdbb55e93be30466e4832f58e6618cc7bd6a259720942c66"
+  },
+  {
+   "file": "labels-B-ar-p03.json",
+   "instance": "B-ar-p03",
+   "items": 11,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "34e0109d0d61ce9f7f3eb2f977d95d4b7edc4776f816c3811a93292a41d87d73"
+  },
+  {
+   "file": "labels-B-ar-p04.json",
+   "instance": "B-ar-p04",
+   "items": 13,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "4581cbb9067e160e401cd6caf7030a85200990cf0e780016eeb71acbe5caff54"
+  },
+  {
+   "file": "labels-B-ar-p05.json",
+   "instance": "B-ar-p05",
+   "items": 9,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "a537a3513f4e920af5a356858a2dfda4dc845a062bbdfa72f438ef2b6344f0e5"
+  },
+  {
+   "file": "labels-B-en-p01.json",
+   "instance": "B-en-p01",
+   "items": 8,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "c00208f6f0a1d435169f1c78a082f5d9608cb1ba08c0aed22803858e8a36f39e"
+  },
+  {
+   "file": "labels-B-en-p02.json",
+   "instance": "B-en-p02",
+   "items": 21,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "6f9f8978dcfbed27cfa6952d4256c39d072a3b190cba9359ddafb8aad767bf92"
+  },
+  {
+   "file": "labels-B-en-p03.json",
+   "instance": "B-en-p03",
+   "items": 11,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "f8a0f930d0e6b99c70933738a55dac01fe1dc8d19be8491bb9e7c4abea79a48e"
+  },
+  {
+   "file": "labels-B-en-p04.json",
+   "instance": "B-en-p04",
+   "items": 14,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "cc3f999adf179bcb29d50bba2809f59364f1e2bbd1b02ec41f88b0775421cc0c"
+  },
+  {
+   "file": "labels-B-en-p05.json",
+   "instance": "B-en-p05",
+   "items": 13,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "1c674e384b990007a968ff544e924a148d44689be24ccde60f7c776a2beb68f8"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "ar-71386322-un-00004",
+   "kind": "work_citation",
+   "note": "Unit DOI .pub2 and PMID 19821361 match R2; its title matches R2. R1 is the earlier version (DOI without .pub2, no PMID, different title/date).",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00001",
+   "kind": "work_citation",
+   "note": "Web page, no identifiers; records are different Cochrane reviews.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-72023431-un-00002",
+   "kind": "work_citation",
+   "note": "Echinacea/other paper, DOI and PMID consistent in one template; no conflict shown. Records shown by title tokens only are different papers.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00009",
+   "kind": "work_citation",
+   "note": "Lancet ID meta-analysis; DOI/PMID consistent in one template; records unrelated.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00019",
+   "kind": "work_citation",
+   "note": "Heated humidified air review; records are different papers.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-72023431-un-00022",
+   "kind": "work_citation",
+   "note": "JAMA 2014 oral zinc paper; R1-R4 are Cochrane zinc reviews, different papers.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated",
+    "R5": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-73548367-un-00010",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-74717247-un-00006",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI, PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75250931-un-00001",
+   "kind": "work_citation",
+   "note": "DOI field empty; PMID matches record original and title.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75325981-un-00121",
+   "kind": "work_citation",
+   "note": "Title, journal abbreviation, DOI and PMID match R1.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75585355-un-00034",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID all match R1.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00017",
+   "kind": "work_citation",
+   "note": "Different paper (title, authors, journal, identifiers do not match the record); record reached by title tokens only.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00024",
+   "kind": "work_citation",
+   "note": "Different paper (title, authors, journal, identifiers do not match the record); record reached by title tokens only.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00025",
+   "kind": "work_citation",
+   "note": "Cited is Rubinstein 2011 Cochrane CD008112; records are other Cochrane reviews (CD000447).",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00026",
+   "kind": "work_citation",
+   "note": "Cited is Rubinstein 2012 Cochrane CD008880; records are CD000447 reviews.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00036",
+   "kind": "work_citation",
+   "note": "Different paper (title, authors, journal, identifiers do not match the record); record reached by title tokens only.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00061",
+   "kind": "work_citation",
+   "note": "Different paper (title, authors, journal, identifiers do not match the record); record reached by title tokens only.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00071",
+   "kind": "work_citation",
+   "note": "Title, journal, DOI and PMID match the record's original paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75974075-un-00090",
+   "kind": "work_citation",
+   "note": "Different paper (title, authors, journal, identifiers do not match the record); record reached by title tokens only.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75985654-un-00003",
+   "kind": "work_citation",
+   "note": "Cites the original paper (title, journal, DOI match); both records concern that paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76361132-un-00011",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76430131-un-00001",
+   "kind": "work_citation",
+   "note": "Cites Ronksley et al., BMJ 2011 on alcohol; R1 is a sarcoidosis meta-analysis in another journal. No identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-76430131-un-00069",
+   "kind": "work_citation",
+   "note": "Link to NEJM PDF whose DOI equals R1 original DOI; link title is a bot error, but the DOI identifies the paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76430131-un-00188",
+   "kind": "work_citation",
+   "note": "Cites WCRF/AICR 2007 report; R1 is a British Journal of Nursing paper with a different title. No identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-76487991-un-00015",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76488672-un-00009",
+   "kind": "work_citation",
+   "note": "DOI field is blank; only the PMID is present and matches the record's original paper by title/journal/year.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76507640-un-00008",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76509069-un-00009",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76517782-un-00001",
+   "kind": "notice_citation",
+   "note": "Retraction notice (DOI 10.1111/tpj.13066) = R2 notice. R1 is a correction with another notice DOI (tpj.12893); unit cites neither its paper nor its notice. Both identifiers are the same DOI.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76532685-un-00041",
+   "kind": "work_citation",
+   "note": "PMID appears twice (bare and URL), same value.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76545971-un-00012",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76554210-un-00014",
+   "kind": "work_citation",
+   "note": "Both records concern the same cited paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76554210-un-00016",
+   "kind": "work_citation",
+   "note": "Same paper, abbreviated author list; both records concern it.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76640808-un-00004",
+   "kind": "work_citation",
+   "note": "Unit DOI/PMID/date 2009-10-07 match Pub 2 (R2). R1 is the earlier version (DOI without .pub2, July 2009), a different publication despite same title.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76664591-un-00008",
+   "kind": "work_citation",
+   "note": "Cite web to an Altmetric page about the paper, not the paper or its notice; no identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-76664591-un-00011",
+   "kind": "notice_citation",
+   "note": "Retraction notice; DOI and PMID equal R1 notice identifiers.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76917247-un-00009",
+   "kind": "work_citation",
+   "note": "Unit DOI/PMID/date Nov 2011 match Pub 2 (R2). R1 is the earlier version (DOI without .pub2, 2010) with different authors.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77019746-un-00002",
+   "kind": "work_citation",
+   "note": "Same paper; title lacks 'the' but authors, journal, year, DOI, PMID match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77019746-un-00004",
+   "kind": "work_citation",
+   "note": "Same paper as R1 original; DOI and PMID match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00041",
+   "kind": "work_citation",
+   "note": "Urisman et al. PLoS Pathog 2006 matches R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00042",
+   "kind": "work_citation",
+   "note": "Schlaberg et al. PNAS 2009 matches R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00045",
+   "kind": "notice_citation",
+   "note": "Titled 'Retraction.', Science 2011 334:1636, PMID equals R1 notice PMID.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00046",
+   "kind": "notice_citation",
+   "note": "Titled 'Retraction. Identification of a novel gammaretrovirus...', PMID equals R1 notice PMID.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00088",
+   "kind": "work_citation",
+   "note": "Szymanski fish consumption review, AJCN 2010; R1 is a different paper (pilots).",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00098",
+   "kind": "work_citation",
+   "note": "Same Szymanski AJCN paper; R1 is a different paper.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77092008-un-00100",
+   "kind": "work_citation",
+   "note": "WCRF/AICR 2007 book, no DOI/PMID; R1 is a different work (BJN) by title tokens.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-77092008-un-00172",
+   "kind": "work_citation",
+   "note": "Ghosh & Myers PNAS 1998; R1 is a different paper (Oncology Reports) with partly similar title.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77182018-un-00010",
+   "kind": "work_citation",
+   "note": "Schuur et al. permafrost paper; R1 is a different paper shown by title tokens; DOI identifies the cited work.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77182018-un-00039",
+   "kind": "work_citation",
+   "note": "Kotz et al. Nature 2024; DOI and PMID match both records' original.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77274868-un-00013",
+   "kind": "work_citation",
+   "note": "Anand et al. Pharm Res 2008; matches R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77274868-un-00020",
+   "kind": "work_citation",
+   "note": "Same paper as R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77274868-un-00033",
+   "kind": "work_citation",
+   "note": "Same paper as R1 original; DOI written twice in two forms.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77274868-un-00077",
+   "kind": "work_citation",
+   "note": "Danaei et al. Lancet 2005; R1 is a Cureus paper with a similar title; DOI in text and URL agree.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77289996-un-00058",
+   "kind": "work_citation",
+   "note": "Cites Nekvindova paper on food/supplement-CYP450 interactions; R1 is a different paper by title/journal/PMID.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77289996-un-00059",
+   "kind": "work_citation",
+   "note": "DOI/PMID match both records' original paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77469870-un-00259",
+   "kind": "work_citation",
+   "note": "Text cites Pang et al. 'Induction of human neuronal cells by defined transcription factors'; the DOI equals R1's original (Qiang et al., different title/authors), so the DOI points to another paper than the one cited.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-77469870-un-00261",
+   "kind": "work_citation",
+   "note": "Title, authors, journal, DOI and PMID agree with R1.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77490549-un-00066",
+   "kind": "work_citation",
+   "note": "Ricaurte et al. Science 2002 matches R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77490549-un-00067",
+   "kind": "notice_citation",
+   "note": "Retraction of Ricaurte et al.; DOI and PMID both equal R1 notice identifiers.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77513048-un-00009",
+   "kind": "work_citation",
+   "note": "Unit cites the pub2 version (R2 lists its DOI and PMID); R1 is the original 2005 version, a different record/version.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1048135374-un-00001",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1048135374-un-00002",
+   "kind": "work_citation",
+   "note": "Both records concern the cited paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1332191748-un-00001",
+   "kind": "work_citation",
+   "note": "Unit cites the 2009 Pub2 version (DOI .pub2, PMID 19160231) = R2; R1 is the 2003 original version with different DOI.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1343052098-un-00061",
+   "kind": "work_citation",
+   "note": "Celiac disease amenorrhea case report in J Reprod Med; R1 is a different paper by title/journal/PMID.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1343052098-un-00098",
+   "kind": "work_citation",
+   "note": "Volta 2006 Dig Liver Dis; R1 is a different paper (Autoimmun Rev 2019).",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1343052098-un-00110",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1346179368-un-00016",
+   "kind": "work_citation",
+   "note": "Peptoniphilus urinimassiliensis paper; DOI and PMID match R4 original. R1 is the adjacent paper (DOI ...002, PMID 28203375), not cited; R2, R3 other papers.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1357721035-un-00005",
+   "kind": "work_citation",
+   "note": "Cites the Nature 2016 paper; DOI and PMID are both its original identifiers in R1/R2.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1357721035-un-00009",
+   "kind": "notice_citation",
+   "note": "Cites the Retraction Note (R1 notice DOI/PMID). R2's notice is the separate expression of concern, not cited.",
+   "records": {
+    "R1": "cited_notice",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1358781195-un-00017",
+   "kind": "work_citation",
+   "note": "Cimmino 2005 PNAS; DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1362341070-un-00003",
+   "kind": "work_citation",
+   "note": "Cites original paper (title has RETRACTED ARTICLE prefix); DOI matches R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1366113251-un-00012",
+   "kind": "work_citation",
+   "note": "Title, journal, date, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1370115005-un-00005",
+   "kind": "work_citation",
+   "note": "Goodson 2014; DOI and PMID match original for both R1 and R2.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1370115005-un-00007",
+   "kind": "notice_citation",
+   "note": "Web citation titled 'Retraction ...' with URL containing 10.3389/fpubh.2016.00156 = R2 notice DOI. R1's notice (00155) is a different notice. No DOI/PMID field, so no identifier to attach by.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1370514695-un-00005",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00005",
+   "kind": "work_citation",
+   "note": "Title, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00006",
+   "kind": "work_citation",
+   "note": "Title, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00007",
+   "kind": "work_citation",
+   "note": "Title, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00008",
+   "kind": "work_citation",
+   "note": "Title, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00009",
+   "kind": "work_citation",
+   "note": "Title, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00011",
+   "kind": "work_citation",
+   "note": "Title carries RETRACTED prefix; still cites the original paper; DOI and PMID match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371750807-un-00012",
+   "kind": "work_citation",
+   "note": "Title carries RETRACTED ARTICLE prefix; cites original paper; DOI and PMID match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1372282627-un-00005",
+   "kind": "notice_citation",
+   "note": "Cites the Frontiers retraction notice (DOI/PMID are R1 notice ids). R2 is an expression of concern with a different notice; not cited.",
+   "records": {
+    "R1": "cited_notice",
+    "R2": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1372282627-un-00027",
+   "kind": "work_citation",
+   "note": "Coleman response letter in J Psychiatr Res; R1 is a different Spine letter shown by title tokens.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1374547270-un-00005",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1374547270-un-00016",
+   "kind": "notice_citation",
+   "note": "Cites the Lancet retraction notice (R2). R1 is the expression-of-concern notice, a different notice.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1374623485-un-00003",
+   "kind": "work_citation",
+   "note": "Rooter paper, different from R1 title; no identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1374623485-un-00015",
+   "kind": "work_citation",
+   "note": "Same title and author as R1 (AMC paper, PDF copy); no identifier in unit.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1374623485-un-00016",
+   "kind": "work_citation",
+   "note": "DOI equals R1 original DOI; title (REMOVED: prefix) and author match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1374816022-un-00033",
+   "kind": "work_citation",
+   "note": "Original Tang et al paper; DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1374816022-un-00034",
+   "kind": "notice_citation",
+   "note": "Retraction notice; DOI and PMID match R1 notice ids.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1377563909-un-00011",
+   "kind": "work_citation",
+   "note": "Zhang and Li 1997 paper; ids match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1379994366-un-00031",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI, PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380584334-un-00004",
+   "kind": "work_citation",
+   "note": "Cites the original paper of the Correction record; identifiers match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380584334-un-00019",
+   "kind": "work_citation",
+   "note": "Unit cites Voutila et al. 2017 Mol Ther; R1 is a different paper (title-token match only); DOI and PMID consistent with each other.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380993715-un-00013",
+   "kind": "work_citation",
+   "note": "Maguitman et al. WWW'05 paper; R1 is a different paper (title tokens only).",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380993715-un-00014",
+   "kind": "work_citation",
+   "note": "Markines et al. WWW'09 paper; R1 is a different paper.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380993715-un-00042",
+   "kind": "work_citation",
+   "note": "Qiu et al. 2017; title, journal, year and DOI match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380993715-un-00044",
+   "kind": "work_citation",
+   "note": "Ratkiewicz et al. Truthy; R1 is a different paper.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381560813-un-00003",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction: ...', DOI/PMID equal R1 notice ids.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381744447-un-00015",
+   "kind": "work_citation",
+   "note": "Cites Pub 2 (2011, CD008456.pub2, PMID 22071849) = R2. R1 is the earlier 2010 version with a different DOI.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381744447-un-00026",
+   "kind": "notice_citation",
+   "note": "Cites the pub3 retraction notice (DOI and PMID match both records' notice ids).",
+   "records": {
+    "R1": "cited_notice",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1382029428-un-00004",
+   "kind": "work_citation",
+   "note": "Same title/authors but Mechanisms of Development supplement, different DOI/PMID than R1 (Gene Expression Patterns). No record confirms DOI and PMID name one work.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "en-1382029428-un-00005",
+   "kind": "work_citation",
+   "note": "",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1383338971-un-00011",
+   "kind": "notice_citation",
+   "note": "Title starts 'Retraction.'; DOI and PMID equal R1 notice identifiers.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1383465397-un-00007",
+   "kind": "work_citation",
+   "note": "Press release, no identifiers; R1 reached by title tokens only, a different work.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1383465397-un-00028",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385074926-un-00036",
+   "kind": "work_citation",
+   "note": "Cites the original paper of the Correction record; identifiers match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385770335-un-00026",
+   "kind": "notice_citation",
+   "note": "DOI and PMID equal R1 notice identifiers; 2002 EMBO J 21(14):3918 is the notice, though it carries the original title.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00002",
+   "kind": "work_citation",
+   "note": "Different paper than R1. DOI and PMID both in one cite template for one review; item does not independently show they match, judged yes from the template.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00007",
+   "kind": "work_citation",
+   "note": "IPCC SR15 chapter; no identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1385925483-un-00029",
+   "kind": "work_citation",
+   "note": "Funke et al meat pricing paper; unrelated to R1.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00084",
+   "kind": "work_citation",
+   "note": "Web report; no identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1385925483-un-00128",
+   "kind": "work_citation",
+   "note": "IPCC chapter with DOI.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00130",
+   "kind": "work_citation",
+   "note": "IPCC SPM with DOI.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00131",
+   "kind": "work_citation",
+   "note": "IPCC report, no identifier.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1385925483-un-00136",
+   "kind": "work_citation",
+   "note": "Moomaw et al forests paper.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00185",
+   "kind": "work_citation",
+   "note": "IPCC AR6 chapter; DOI written with trailing period but identifies the chapter.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00207",
+   "kind": "work_citation",
+   "note": "IPCC chapter with DOI.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00312",
+   "kind": "work_citation",
+   "note": "Kotz et al original paper; DOI and PMID are the original ids in both records.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385925483-un-00324",
+   "kind": "work_citation",
+   "note": "IPCC book chapter, ISBN only; not the Kotz paper.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1385937283-un-00074",
+   "kind": "work_citation",
+   "note": "Rizos 2012 JAMA omega-3 meta-analysis; R1 is a different paper. No record shows whether DOI and PMID name one work; they are consistent with the text.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00076",
+   "kind": "work_citation",
+   "note": "ACC/AHA/HRS 2008 device guidelines; R1 (Boldt) unrelated. Record does not confirm DOI/PMID pair; DOI has a typo in the suffix as written (CIRCUALTIONAHA) but is consistent with the text.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00093",
+   "kind": "work_citation",
+   "note": "White et al. 2018 airway management review; R1, R2 different papers. No record confirms the DOI/PMID pair.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385937283-un-00107",
+   "kind": "work_citation",
+   "note": "Title, authors, journal match R1 and PMID equals R1 original PMID, but the unit's DOI (...10.026) differs from R1's original DOI (...01.016) and notice DOI (...10.025); item does not show which work that DOI names. PMID plus title identify the cited paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1386001833-un-00108",
+   "kind": "work_citation",
+   "note": "McKitrick conference chapter; no identifiers; records are a different paper.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1386001833-un-00178",
+   "kind": "work_citation",
+   "note": "Title and DOI match R1 (title carries RETRACTED:).",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  }
+ ]
+}

@@ -150,8 +150,17 @@ def collect(campaign: Path, round_name: str, work: Path, role: str) -> list[str]
     return out
 
 
+KEPT_ATTACHMENTS = ("model",)
+
+
 def record(campaign: Path, round_name: str, instance: str, agent_id: str, transcripts: Path, model: str) -> None:
-    """Platform metadata of one instance; the transcript is copied as kept by the platform (or recorded missing)."""
+    """Platform metadata of one instance and its transcript (or its absence, recorded as missing).
+
+    The committed transcript keeps every user and assistant record (the brief, every tool call and result, every
+    answer) and the platform's ``model`` attachment, unchanged. Platform context attachments (system prompt snapshots,
+    tool listings, environment, organization and session identifiers) are left out of the public repository; their
+    record types are listed, and the SHA-256 and line count of the platform's original file are recorded.
+    """
     rdir = campaign / "rounds" / round_name
     path = rdir / "INSTANCES.json"
     doc = read_json(path) if path.exists() else {"round": round_name, "instances": {}}
@@ -162,14 +171,25 @@ def record(campaign: Path, round_name: str, instance: str, agent_id: str, transc
         "recorded_at": datetime.now(UTC).isoformat(),
     }
     if src.is_file():
+        lines = src.read_text(encoding="utf-8").splitlines()
+        kept, dropped = [], set()
+        for line in lines:
+            rec = json.loads(line)
+            att = (rec.get("attachment") or {}).get("type")
+            if rec.get("type") in ("user", "assistant") or att in KEPT_ATTACHMENTS:
+                kept.append(line)
+            else:
+                dropped.add(att or str(rec.get("type")))
         (rdir / "transcripts").mkdir(parents=True, exist_ok=True)
         dst = rdir / "transcripts" / f"{instance}.jsonl"
-        shutil.copyfile(src, dst)
+        dst.write_text("\n".join(kept) + "\n", encoding="utf-8")
+        text = "\n".join(kept)
         entry["transcript"] = f"transcripts/{dst.name}"
         entry["transcript_sha256"] = file_sha256(dst)
-        text = dst.read_text(encoding="utf-8")
+        entry["platform_original"] = {"sha256": file_sha256(src), "lines": len(lines), "kept_lines": len(kept)}
+        entry["left_out_record_types"] = sorted(dropped)
         entry["platform_models"] = sorted(set(re.findall(r'"model":"(claude-[^"]+)"', text)))
-        stamps = re.findall(r'"timestamp":"([^"]+)"', text)
+        stamps = [json.loads(x)["timestamp"] for x in kept if json.loads(x).get("type") in ("user", "assistant")]
         entry["first_timestamp"], entry["last_timestamp"] = (stamps[0], stamps[-1]) if stamps else (None, None)
     else:
         entry["transcript"] = None

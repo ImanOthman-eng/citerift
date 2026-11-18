@@ -1,0 +1,93 @@
+{
+ "format": "citerift-stage04-eval-labels/1",
+ "annotator": "A",
+ "instance": "A-ar-p02",
+ "model": "Sonnet 5.5 (claude-sonnet-5-5)",
+ "started_at": "2026-11-18T14:14:32.720607Z",
+ "finished_at": "2026-11-18T14:14:32.720645Z",
+ "labels": [
+  {
+   "item_id": "ar-75325981-un-00121",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, DOI and PMID match R1."
+  },
+  {
+   "item_id": "ar-75585355-un-00034",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, DOI and PMID all match R1."
+  },
+  {
+   "item_id": "ar-75985654-un-00003",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Cites the Chen 2017 GJI paper; DOI equals original DOI of both records (EoC and retraction)."
+  },
+  {
+   "item_id": "ar-76430131-un-00001",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Cites Ronksley et al., BMJ 2011 alcohol/cardiovascular; R1 is a different paper (sarcoidosis, IJC Heart Vasc). No identifier."
+  },
+  {
+   "item_id": "ar-76430131-un-00069",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Bare link to NEJM PDF whose URL contains DOI 10.1056/NEJMoa1200303 = R1 original DOI; link title is a bot placeholder, so identification rests on the DOI."
+  },
+  {
+   "item_id": "ar-76430131-un-00188",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Cites the WCRF/AICR 2007 report, not Coughlin's British Journal of Nursing paper; shown by title tokens only. No identifier."
+  },
+  {
+   "item_id": "ar-76640808-un-00004",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unit cites the Pub 2 version (doi .pub2, PMID 19821371, 2009-10-07); R1 is the earlier version (doi without .pub2, different date), not the cited one."
+  },
+  {
+   "item_id": "ar-76917247-un-00009",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unit cites Pub 2 (doi .pub2, PMID 22071849, Nov 2011, six authors); R1 is the earlier version without .pub2."
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "format": "citerift-stage04-eval-labels/1",
+ "annotator": "ADJ",
+ "instance": "ADJ-en-p01",
+ "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+ "started_at": "2026-11-18T14:16:21Z",
+ "finished_at": "2026-11-18T14:18:30Z",
+ "labels": [
+  {
+   "item_id": "en-1382029428-un-00004",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Cites the Mech Dev supplement paper (same title/authors as R1 but different journal, DOI, PMID), so R1 unrelated. Item does not show DOI and PMID name one work. DOI prefix S0925-4773 agrees with the cited journal, so the DOI alone identifies it."
+  },
+  {
+   "item_id": "en-1385937283-un-00074",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Rizos 2012 JAMA meta-analysis; R1 is a different paper. No record shows DOI/PMID pair is one work. Title, journal, year and DOI (10.1001, JAMA) agree, so the DOI alone identifies the cited work."
+  },
+  {
+   "item_id": "en-1385937283-un-00076",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "cannot_tell",
+   "note": "ACC/AHA/HRS 2008 guideline; R1 unrelated. DOI as written is mistyped (CIRCUALTIONAHA), so it may not identify the work; the PMID is not confirmed by the item. Cannot decide that an identifier alone identifies it."
+  },
+  {
+   "item_id": "en-1385937283-un-00093",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "White 2018 AJEM meta-analysis; R1, R2 different papers. Pair not shown to be one work. Title, journal, year agree with DOI 10.1016/j.ajem.2018.09.045, so the DOI alone identifies it."
+  },
+  {
+   "item_id": "en-1385937283-un-00107",
+   "kind": "work_citation",
+   "same_work": "no",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, authors, journal, year and PMID match R1 original. R1 lists its DOI (2019.01.016) with that PMID as one paper, and the unit's DOI (2019.10.026) differs, so identifiers name different works. PMID with title decides the cited paper."
+  },
+  {
+   "item_id": "en-1380584334-un-00019",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Cites Voutila 2017 Mol Ther; R1 (BioMed Res Int) is a different paper by title tokens only. Guide's yes needs the item to show identifiers name one work; no record does, so cannot_tell (B's yes rests on consistency). DOI matches journal/year, so attachable."
+  }
+ ]
+}
