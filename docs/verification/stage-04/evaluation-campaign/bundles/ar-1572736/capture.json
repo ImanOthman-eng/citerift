@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 138019,
+   "body_sha256": "16e92eb6c21d05bd15f0425ef841378d2bc72d1e0aa7127747a754fcfd7bb44c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.675,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T14:30:10.990302Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1572736",
+   "wire_bytes": 40590
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "177b03dd0892b60b0d2e1d8cdb9b1dc0131fbea7ee88584eed8387cdc5263fba",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.385,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-18T14:30:21.667265Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76524939/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 822153,
+   "body_sha256": "bec2742f83427dac36a061e7ed114a1b7701d6dba5ad0140f2375a2fe679743f",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.53,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T14:31:00.053190Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76524939/html",
+   "wire_bytes": 122606
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "177b03dd0892b60b0d2e1d8cdb9b1dc0131fbea7ee88584eed8387cdc5263fba"
+ ],
+ "finished_at": "2026-11-18T14:31:00.586456Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 1572736,
+  "parent_revision_id": 76524871,
+  "redirect_followed": null,
+  "revision_id": 76524939,
+  "revision_timestamp": "2026-09-11T16:01:59Z",
+  "sha1": "3507370aca3b6b628a1f82b3fc7967ea9be224a6",
+  "size": 137070,
+  "title": "ألم عضلي ليفي",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "bec2742f83427dac36a061e7ed114a1b7701d6dba5ad0140f2375a2fe679743f",
+  "bytes": 822153,
+  "checks": {
+   "document_revision_id": "76524939",
+   "header_revision_id": "76524939",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "1572736",
+   "render_id": "cad3e073-e34f-11f1-a804-17b9085da29f",
+   "revision_sha1": "3507370aca3b6b628a1f82b3fc7967ea9be224a6",
+   "revision_sha1_base36": "66zshgnltji0fogobegvbjio01hm7ja"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76524939",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 14:31:00 GMT",
+   "etag": "W/\"76524939/cad3e073-e34f-11f1-a804-17b9085da29f/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:43 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76524939/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 1572736,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "be865933ed54cf11167fdce00bc11eb6dee2f5e709a27915ef92ec85fe8325d8",
+  "bytes": 137070,
+  "response_artifact": "16e92eb6c21d05bd15f0425ef841378d2bc72d1e0aa7127747a754fcfd7bb44c",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=1572736"
+ },
+ "started_at": "2026-11-18T14:30:04.386191Z",
+ "status": "complete"
+}

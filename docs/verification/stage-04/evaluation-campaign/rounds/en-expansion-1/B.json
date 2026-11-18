@@ -1,0 +1,211 @@
+{
+ "annotator": "B",
+ "format": "citerift-stage04-eval-labels/1",
+ "instances": [
+  {
+   "file": "labels-B-en-e101.json",
+   "instance": "B-en-e101",
+   "items": 10,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "8579a6ab1042d009467e1e1e331d36794d2cd2de8ca6d0b12bffd39ec546ff93"
+  },
+  {
+   "file": "labels-B-en-e102.json",
+   "instance": "B-en-e102",
+   "items": 7,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "1583d9e9991c16a762434373c123aa37a04b26272b6449de3b2e939116fe778d"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "en-1321932571-un-00009",
+   "kind": "work_citation",
+   "note": "Cites the 2003 Plant Journal paper (title carries 'Retracted:' prefix); DOI and PMID are the original ids.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1321932571-un-00010",
+   "kind": "notice_citation",
+   "note": "Cites the 2015 retraction notice (tpj.13066 / 27170951). R1's correction notice is a different document.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1364621565-un-00011",
+   "kind": "notice_citation",
+   "note": "Unit title is 'Withdrawal: ...' (a withdrawal notice), but the record lists this same DOI as the original paper and has no notice identifiers; cannot tell whether the DOI names the notice or the paper.",
+   "records": {
+    "R1": "cannot_tell"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371974761-un-00004",
+   "kind": "work_citation",
+   "note": "Unit cites the original Oncologist 2020 paper; all four records concern it.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work",
+    "R3": "cited_work",
+    "R4": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371974761-un-00009",
+   "kind": "notice_citation",
+   "note": "Unit cites the 2022 expression-of-concern notice (DOI/PMID = R4 notice ids); other records' notices differ.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1371974761-un-00010",
+   "kind": "notice_citation",
+   "note": "Unit cites the 2025 retraction notice (DOI/PMID = R1 notice ids); other records' notices differ.",
+   "records": {
+    "R1": "cited_notice",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1375274397-un-00026",
+   "kind": "work_citation",
+   "note": "Unit cites the original Science paper; all three records concern it.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work",
+    "R3": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1378356736-un-00065",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction Note: ...' with the retraction notice DOI/PMID listed as R2's notice ids. R1 is a correction of the same paper with a different notice DOI; not cited.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1378356736-un-00066",
+   "kind": "work_citation",
+   "note": "Original 2002 Nature paper; DOI and PMID are both the records' original ids.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380332315-un-00007",
+   "kind": "work_citation",
+   "note": "Both identifiers are the same DOI (URL and doi field); matches R1's original DOI, title, journal.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381756131-un-00002",
+   "kind": "work_citation",
+   "note": "Press release web citation about Sancuso; unrelated to the Cochrane review.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1381756131-un-00005",
+   "kind": "work_citation",
+   "note": "Cochrane review pub2; DOI and PMID match record's original; title matches (typo 'ntagonists').",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381756131-un-00007",
+   "kind": "work_citation",
+   "note": "Unit cites the 2006 pub2 version (Carlisle & Stevenson, DOI .pub2, PMID 16856030) = R2. R1 is the original 2002 version (DOI without .pub2, other authors, different year).",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385068854-un-00006",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match the record.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385672227-un-00005",
+   "kind": "work_citation",
+   "note": "Title, journal, year, DOI and PMID match the record's original paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1386403147-un-00008",
+   "kind": "work_citation",
+   "note": "El-Chammas & Danner, Nutr Clin Pract; no record shows whether DOI and PMID name one work. Both records are different papers matched on title words only. No sign of conflict, so one identifier is taken to identify the work.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1386403147-un-00011",
+   "kind": "work_citation",
+   "note": "Cochrane pub3 (2008), DOI and PMID match R3's original ids. R1 (original version) and R2 (pub2) are other versions with other identifiers.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  }
+ ]
+}

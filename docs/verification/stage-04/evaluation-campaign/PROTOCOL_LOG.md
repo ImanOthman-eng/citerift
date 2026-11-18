@@ -37,3 +37,28 @@ small. Nothing here changes a pre-registered rule.
 - Lock: 127 items, 11 adjudicated (`rounds/primary/LOCK.json`).
 - Expansion decision (`s13_acquire.py status`, engine-independent): ar identifier-reached truth-positive units 33
   (< 40), negative-proxy units 1110; en 31 (< 40) and 807. Both languages expand: `ar-expansion-1`, `en-expansion-1`.
+
+## Round `ar-expansion-1`
+
+- 10 of 10 positions acquired (attempts 61–70), 0 failures; 17 items.
+- A and B: 2 instances each, format-valid on first submission; 0 items disagreed, so the round's ADJ file is empty
+  (`executor/s14_batches.py empty-adj`; no adjudicator instance). Lock: 17 items, 0 adjudicated.
+
+## Round `en-expansion-1`
+
+- 10 of 10 positions acquired (attempts 71–80), 0 failures; 17 items.
+- A and B: 2 instances each, format-valid on first submission; 3 items disagreed, adjudicated by 1 instance
+  (`ADJ-en-e101`). Lock: 17 items, 3 adjudicated.
+- No tool call of any expansion-round instance used a path outside its work directory.
+
+## Expansion decisions after the expansion rounds were locked
+
+- ar: identifier-reached truth-positive units 43 (≥ 40), negative-proxy units 1441 (≥ 75): **stop, both counts met**.
+- en: 41 (≥ 40) and 1016 (≥ 75): **stop, both counts met**.
+- Attempts used: 80 of 200. Note: `status` run between the acquisition and the lock of `en-expansion-1` showed the
+  English decision as `expand: en-expansion-2`, because that block's attempts already existed while its labels were not
+  locked yet; no action was taken on it, and the decision recorded above is the one computed after the lock.
+
+## Campaign lock
+
+- `LOCK.json` = `s13_labels.py merge` of the three round locks (161 items). Committed before the prediction run.
