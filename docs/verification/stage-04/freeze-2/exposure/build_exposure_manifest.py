@@ -5,7 +5,7 @@ manifest); the differences are the campaign source, the corrective identifiers b
 Usage (from the repository root):
 
     python -I docs/verification/stage-04/freeze-2/exposure/build_exposure_manifest.py \
-        > docs/verification/stage-04/freeze-2/exposure/EXPOSURE_MANIFEST.json
+        --out docs/verification/stage-04/freeze-2/exposure/EXPOSURE_MANIFEST.json
 
 It lists, at article level (wiki plus page id, or wiki plus normalised title when no page id is recorded), every
 Wikipedia article that the project examined before the Stage 04 freeze and that therefore may not enter the final
@@ -28,16 +28,19 @@ evaluation frame:
   articles already listed here (the campaign article ``en-39868218``, the 232 development revisions, the vertical
   slice); ``S04-REF`` picks up every bundle the corrective code, tests or evidence name.
 
-Retraction Watch works (not Wikipedia articles) inspected in the corrective cycle are listed separately under
-``identifiers``: the keys of the role-collision fixture (``tests/stage04/fixtures/corrective/rw_role_collision.json``).
-Whether a future frame also excludes articles citing them is a pre-registration choice.
+Retraction Watch works (not Wikipedia articles) are recorded under ``identifiers`` for information only, never as an
+exclusion input (reviewer finding F-04): the census read every DOI and PMID of the pinned snapshot, so record-level
+exposure is the whole snapshot, and the rule treats every record alike. Excluding articles that cite role-colliding
+keys would remove the very cases a new gate must test; the frame excludes by article only. The block names the keys of
+the role-collision fixture (``tests/stage04/fixtures/corrective/rw_role_collision.json``) as the ones examined by name.
 
 The wiki-agnostic, deliberately over-inclusive Stage 03 rule (``confirmation-d036/scripts/exposure_set.py``) is
 recomputed and kept as a separate ``listed`` block with its own digest; whether the frame also excludes it is a
 pre-registration choice (Step 13).
 
-Only tracked files at the current commit are read (``git ls-files``); no request is made; the Stage 01 census and
-dump-scan frames are not read, and no evaluation frame, sample or draw is produced or inspected.
+Only tracked files are read (``git ls-files``), and the builder refuses a working tree that differs from the commit
+it names, so the manifest describes exactly ``source_commit`` (reviewer finding F-03); no request is made; the
+Stage 01 census and dump-scan frames are not read, and no evaluation frame, sample or draw is produced or inspected.
 """
 
 from __future__ import annotations
@@ -58,7 +61,9 @@ DEV = "docs/verification/stage-04/review/step9/dev_measurements.json"
 PURPOSIVE = "docs/verification/stage-01/data/purposive_discovery.json"
 EVIDENCE = "docs/verification/stage-01/EVIDENCE_MANIFEST.json"
 REF_ROOTS = ("src/citerift/investigation", "tests/stage04", "docs/verification/stage-04")
-SELF_DIR = ("docs/verification/stage-04/freeze/", "docs/verification/stage-04/freeze-2/")
+# The superseded freeze is covered by the check that every article of its manifest is listed here (reviewer finding
+# F-05); freeze-2 is scanned except this manifest's own directory.
+SELF_DIR = ("docs/verification/stage-04/freeze/", "docs/verification/stage-04/freeze-2/exposure/")
 CAMPAIGN = "docs/verification/stage-04/evaluation-campaign"
 CAMPAIGN_ARTICLES = 80
 FIXTURE = "tests/stage04/fixtures/corrective/rw_role_collision.json"
@@ -220,8 +225,16 @@ def campaign_articles(arts: Articles, bundles: dict[str, dict[str, Any]]) -> dic
     }
 
 
+def clean_tree() -> None:
+    """Refuse a working tree that differs from HEAD (tracked changes or untracked files), so that the bytes read are
+    the bytes of ``source_commit`` (reviewer finding F-03)."""
+    dirty = git("status", "--porcelain", "--untracked-files=all").strip()
+    if dirty:
+        raise SystemExit(f"the working tree differs from HEAD; commit first:\n{dirty[:2000]}")
+
+
 def fixture_identifiers() -> dict[str, Any]:
-    """Retraction Watch keys inspected in the corrective cycle (works, not articles)."""
+    """Retraction Watch keys examined by name in the corrective cycle (works, not articles); information only."""
     fx = load(FIXTURE)
     dois: set[str] = set()
     pmids: set[str] = set()
@@ -242,8 +255,12 @@ def fixture_identifiers() -> dict[str, Any]:
         "source_sha256": hashlib.sha256((ROOT / FIXTURE).read_bytes()).hexdigest(),
         "doi": sorted(dois),
         "pmid": sorted(pmids),
-        "note": "Retraction Watch works inspected in root-cause and adversarial work; frame use is a pre-registration "
-        "choice",
+        "role": "information only, never an exclusion input (reviewer finding F-04)",
+        "census_scope": "every DOI and PMID of the pinned snapshot rw-2f116e9ffed718e6 was read by the corrective "
+        "census (corrective/census/CENSUS.json, PAIR_CENSUS.json, PAIR_CENSUS_LENIENT.json); record-level exposure "
+        "is the whole snapshot",
+        "note": "the keys of the role-collision fixture, examined by name in root-cause and adversarial work; the rule "
+        "treats every record alike, and a frame excludes by article only",
     }
 
 
@@ -372,9 +389,27 @@ def build() -> dict[str, Any]:
     }
 
 
-def main() -> int:
+def covers_superseded(records: list[dict[str, Any]]) -> None:
+    """Every article of the superseded manifest is listed here, by key, with its titles and revisions (F-05)."""
+    mine = {r["key"]: r for r in records}
+    for old in load(SUPERSEDED)["articles"]:
+        new = mine.get(old["key"])
+        if (
+            new is None
+            or not set(old["titles"]) <= set(new["titles"])
+            or not set(old["revision_ids"]) <= set(new["revision_ids"])
+        ):
+            raise SystemExit(f"{old['key']} of the superseded manifest is not fully listed")
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = argv if argv is not None else sys.argv[1:]
+    if len(args) != 2 or args[0] != "--out":
+        raise SystemExit("usage: build_exposure_manifest.py --out FILE")
+    clean_tree()
     doc = build()
-    sys.stdout.write(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=1) + "\n")
+    covers_superseded(doc["articles"])
+    Path(args[1]).write_text(json.dumps(doc, ensure_ascii=False, sort_keys=True, indent=1) + "\n", encoding="utf-8")
     return 0
 
 

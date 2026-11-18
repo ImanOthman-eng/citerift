@@ -83,10 +83,13 @@ LIMITATIONS = [
     "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a "
     "notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) "
     "is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
-    "D-071 resolution by a second identifier: a clean second cited identifier naming the same event resolves a role "
-    "collision (as dt-1 did for PMID_ROLE_COLLISION); if that identifier is itself wrong in the citation, the "
-    "attachment "
-    "rests on it (owner card on this rule).",
+    "D-071 resolution by a second identifier (strict rule, SPEC 7.3a): a role collision is resolved only by another "
+    "cited identifier that has no notice role itself and whose record states a different notice identifier in its "
+    "scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the "
+    "measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong "
+    "in the citation, the attachment rests on it.",
+    "Original DOI cited with the same record's notice PMID (reviewer finding B-03, the mirror of D-058) stays "
+    "positive, as in dt-1; not changed without an owner decision.",
     "The 80 campaign articles and the 232 development revisions are development evidence; the regression on them is "
     "not an evaluation and is never counted as unseen data.",
     "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET); see the "
