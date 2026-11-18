@@ -62,3 +62,19 @@ small. Nothing here changes a pre-registered rule.
 ## Campaign lock
 
 - `LOCK.json` = `s13_labels.py merge` of the three round locks (161 items). Committed before the prediction run.
+
+## Prediction run: aborted first invocation (no prediction produced)
+
+- 14:43:50Z: `s13_run.py --campaign docs/verification/stage-04/evaluation-campaign` was started. The frozen engine
+  refused every article before creating any investigation: `citerift-investigate run` exited 3 (`status: invalid`)
+  with `MEMORY_ROOT_UNSAFE: .../evaluation-campaign/run/memory is inside a repository working tree` (the engine's own
+  memory-root safety rule, S-15.3 / MR-13). The tool was stopped after 24 such refusals; `RUN.json` was never written,
+  the memory root stayed empty (no investigation, claim, lookup or export exists), and no engine output of any kind was
+  produced. The tool's progress file and log are kept unchanged in `aborted-run-attempt-1/`.
+- Cause: the pre-registered tool puts the memory root at `<campaign>/run/memory`, and this campaign directory is in
+  the repository. The pre-registration does not fix the campaign's location.
+- Correction (no pre-registered file changed): the one prediction run is executed with `--campaign` set to a copy of
+  the campaign outside the repository (scratch directory), made with `cp -a` of `SEED.json`, `DRAW.json`, `LOCK.json`,
+  `ACQUISITION.json`, `packets/`, `bundles/`, `extractions/` and `rounds/`, and checked identical with `diff -r` before
+  the run. Its `run/` outputs are copied back into this directory afterwards. This is reported as a protocol deviation
+  in the Step 14 report.
