@@ -1582,3 +1582,29 @@ on already exposed development fixtures. Deriving sensitivity results from froze
 preferred. A variant that cannot be computed faithfully without changing the frozen production engine is not
 approximated: its limitation is pre-registered and it is omitted from final execution. The pre-registration states
 exactly which variants are executable before the draw.
+
+## D-070 — Step 13 pre-registration accepted; the Stage 03 listed tier stays in the frame
+- Status: accepted
+- Topic: stage-04-step13-preregistration-accepted-listed-tier-kept
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation/PREREGISTRATION.md; docs/verification/stage-04/evaluation/PREREGISTRATION_MANIFEST.json; docs/verification/stage-04/review/step13/STEP13_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP2Hk5yHet3jmkhGoVf9yZD5` (2026-11-18T12:04:37Z). The owner accepts the
+Stage 04 Step 13 pre-registration exactly as committed at `827ac1aa1d9d16d444d4860e4119f8633d8e802e`, canonical
+pre-registration digest `P = 4eded723bbb464c247b31e675d2f2fc7d16133328d55925c9a787801efd1098a`, with CI run 341 as its
+green verification. Listed tier: KEEP IT IN, exactly as registered; the frame is not rebuilt and P does not change; the
+Stage 03 listed tier is not treated as design exposure for exclusion purposes (listed-only pages were never captured,
+read, annotated or used for Stage 04 design; excluding them would reduce English S1 from 380 to 105 and thin the
+marker/notice hazard test). Registered frame: Arabic S1 143, S2 37 (180); English S1 380, S2 307 (687); the exposure
+rules of PREREGISTRATION section 3.3 remain binding. Accepted with P: G1 ≥ 30, G2 one-sided 95 % upper bound ≤ 0.10,
+G5 ≥ 60 per language; expansion targets 40 and 75; allocation 22 S1 + 8 S2 primary and 7 + 3 reserve per language;
+expansion blocks and the 200-attempt ceiling; the section 14 deviations; D-067, D-068, D-069 as registered; registry
+04-I and MATHEMATICAL_MODEL 11.2 read as superseded by D-067 and D-068. No denominator, gate, allocation, exposure rule,
+metric or replacement rule may change after this acceptance without an explicit pre-registration-breaking owner
+decision. Seed: exactly the registered rule (drand quicknet, the first round at least one hour after this message, no
+alternate round, at least two mirrors agreeing, all mirror answers kept in SEED.json, randomness = SHA-256(signature)
+checked; no two-mirror agreement within 24 hours → STOP for owner decision); the absence of local BLS public-key
+verification is accepted as the registered limitation. Step 13 is ACCEPTED AND CLOSED; Step 14 only is authorized,
+strictly under P; Step 15 does not start until the Step 14 campaign is complete and presented for owner review.
