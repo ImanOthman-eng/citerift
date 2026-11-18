@@ -78,3 +78,24 @@ small. Nothing here changes a pre-registered rule.
   `ACQUISITION.json`, `packets/`, `bundles/`, `extractions/` and `rounds/`, and checked identical with `diff -r` before
   the run. Its `run/` outputs are copied back into this directory afterwards. This is reported as a protocol deviation
   in the Step 14 report.
+
+## The one prediction run
+
+- 14:44:44Z: `s13_run.py --campaign <scratch>/s14/campaign-run` started (the verified copy). Its pre-run checks passed
+  (frozen trees of `src`, `schemas`, `pyproject.toml`, `uv.lock` equal `b5bf8ed`, no uncommitted change; every
+  pre-registered file hash; SEED's digest = P; every locked packet hash).
+- Second tooling defect: the tool does not create the parent directory `run/exports/`, and the frozen engine's
+  `export` requires the output's parent to exist. The first article, `ar-10305362`, was investigated (COMPLETED),
+  verified (passed), and its export was refused (`OUTPUT_PATH_UNSAFE: .../run/exports: No such file or directory`,
+  exit 3, nothing written). At 14:46:30Z the executor created the empty directory `run/exports/` (no other action);
+  from the second article on, exports were written. `ar-10305362` therefore has no export in `RUN.json`, which the
+  pre-registered scorer counts as a structural violation (S1); it is reported as such, with its cause.
+- The run finished at about 16:45Z: 80 articles, `RUN.json` written once. Outputs copied back into `run/` (`RUN.json`,
+  `PROGRESS.json`, and `run-archive.tar.gz` = `tar --sort=name -czf` of the whole `run/` tree with the memory and
+  exports, 30.8 MB). The campaign inputs of the copy were checked identical to this directory with `diff -r` after
+  scoring.
+
+## Scoring
+
+- `s13_score.py --campaign <copy> --index <index>` → `SCORES.json` (copied here, identical SHA-256). Results and
+  their reading are in `REPORT.md`.
