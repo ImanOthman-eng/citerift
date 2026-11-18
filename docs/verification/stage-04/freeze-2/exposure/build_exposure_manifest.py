@@ -32,7 +32,8 @@ Retraction Watch works (not Wikipedia articles) are recorded under ``identifiers
 exclusion input (reviewer finding F-04): the census read every DOI and PMID of the pinned snapshot, so record-level
 exposure is the whole snapshot, and the rule treats every record alike. Excluding articles that cite role-colliding
 keys would remove the very cases a new gate must test; the frame excludes by article only. The block names the keys of
-the role-collision fixture (``tests/stage04/fixtures/corrective/rw_role_collision.json``) as the ones examined by name.
+the role-collision fixture (``tests/stage04/fixtures/corrective/rw_role_collision.json``); other keys that the root
+cause and the reviews name are inside the census scope (reviewer note N-03).
 
 The wiki-agnostic, deliberately over-inclusive Stage 03 rule (``confirmation-d036/scripts/exposure_set.py``) is
 recomputed and kept as a separate ``listed`` block with its own digest; whether the frame also excludes it is a
@@ -234,7 +235,7 @@ def clean_tree() -> None:
 
 
 def fixture_identifiers() -> dict[str, Any]:
-    """Retraction Watch keys examined by name in the corrective cycle (works, not articles); information only."""
+    """The role-collision fixture keys (Retraction Watch works, not articles); information only."""
     fx = load(FIXTURE)
     dois: set[str] = set()
     pmids: set[str] = set()
@@ -259,8 +260,8 @@ def fixture_identifiers() -> dict[str, Any]:
         "census_scope": "every DOI and PMID of the pinned snapshot rw-2f116e9ffed718e6 was read by the corrective "
         "census (corrective/census/CENSUS.json, PAIR_CENSUS.json, PAIR_CENSUS_LENIENT.json); record-level exposure "
         "is the whole snapshot",
-        "note": "the keys of the role-collision fixture, examined by name in root-cause and adversarial work; the rule "
-        "treats every record alike, and a frame excludes by article only",
+        "note": "the keys of the role-collision fixture; other keys named in root-cause and review work are inside "
+        "the census scope; the rule treats every record alike, and a frame excludes by article only",
     }
 
 

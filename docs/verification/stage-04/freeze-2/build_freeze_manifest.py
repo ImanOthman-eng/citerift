@@ -88,7 +88,8 @@ LIMITATIONS = [
     "scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the "
     "measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong "
     "in the citation, the attachment rests on it.",
-    "Original DOI cited with the same record's notice PMID (reviewer finding B-03, the mirror of D-058) stays "
+    "Original DOI cited with the same record's notice PMID (corrective-cycle reviewer finding B-03 of REVIEW_B.md, "
+    "the mirror of D-058) stays "
     "positive, as in dt-1; not changed without an owner decision.",
     "The 80 campaign articles and the 232 development revisions are development evidence; the regression on them is "
     "not an evaluation and is never counted as unseen data.",
@@ -115,7 +116,7 @@ LIMITATIONS = [
     "The Step 4 reference model was written by the same engineering process as the production code; its "
     "independence is procedural (separate model, oracle and tests), not organisational.",
     "A-07: D-7 drops taint reasons that D-6 keeps (frozen Step 4 model and SPEC 7.3 agree).",
-    "B-03 residual: a retry whose earlier ACQUIRE side channel was deleted by someone is not detected.",
+    "Step 12 B-03 residual: a retry whose earlier ACQUIRE side channel was deleted by someone is not detected.",
     "B-13: LOOKUP memory is bounded per query; the aggregate is queries x per-query bound.",
     "C-12: Stage 02 crossref_sources has no ORDER BY (upstream; 0 rows in the accepted RW-only index).",
     "E-05, E-06, E-08: denominator and sensitivity-variant choices are Step 13 pre-registration decisions.",
