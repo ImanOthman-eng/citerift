@@ -254,6 +254,7 @@ def main(argv: list[str] | None = None) -> int:
         if a.set == "dev"
         else cross_check_campaign(revisions, a.historical_exports or (CAMPAIGN / "run" / "exports"))
     )
+    tot = totals(revisions)  # before the per-candidate rows are dropped (positive_units reads them)
     for row in revisions.values():
         row.pop("all_candidates", None)
     out = {
@@ -269,7 +270,7 @@ def main(argv: list[str] | None = None) -> int:
         "network_attempts": sum(p["network_attempts"] for p in parts),
         "seconds_per_shard": [p["seconds"] for p in sorted(parts, key=lambda p: p["shard"][0])],
         "cross_check_dt1": cross,
-        "totals": totals(revisions),
+        "totals": tot,
         "revisions": dict(sorted(revisions.items())),
     }
     write_json(a.out, out)
