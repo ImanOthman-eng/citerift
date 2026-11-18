@@ -118,9 +118,9 @@ def _created() -> dict[str, Any]:
         "config_digest": SHA,
         "stage04": {
             "engine_version": "9" * 13 + "." + "9" * 13 + "." + "9" * 12,
-            "table_version": "dt-1",
+            "table_version": "dt-2",
             "plan_version": "plan-1",
-            "schema_version": "3.0.0",  # Step 12 (D-062): Stage 04 schemas 3.0.0; same length
+            "schema_version": "4.0.0",  # D-071: Stage 04 schemas 4.0.0 (Step 12: 3.0.0); same length
         },
         "migrated_from": None,
     }
@@ -134,7 +134,7 @@ def _claim(cls: str) -> dict[str, Any]:
         "cand_ref": SHA,
         "candidate": {"shape": "PAIR", "keys": [doi, pmid], "coherence": "COHERENT"},
         "class": cls,
-        "table_version": "dt-1",
+        "table_version": "dt-2",
         "alternatives": [],
         "upstream_reasons": [],
         "evidence_set": SHA,
@@ -473,7 +473,7 @@ def reader_memory(n: int = 3000) -> dict[str, Any]:
         claim, _ = claim_and_set("RETRACTED_WORK_CITED", [evs[0]["evidence_id"]] * 4)
         claim["evidence_set"], claim["supporting_count"] = digest(value), n
         claim["claim_id"] = ids.claim_id(
-            claim["cand_ref"], claim["class"], claim["rule"], "dt-1", claim["evidence_set"]
+            claim["cand_ref"], claim["class"], claim["rule"], "dt-2", claim["evidence_set"]
         )
         out = {"claims": [claim["claim_id"]]}
         recs = (*(ContentRecord("evidence_recorded", e) for e in evs), ContentRecord("claim_recorded", claim))

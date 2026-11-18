@@ -277,7 +277,7 @@ For a candidate `c` of unit `u`: `ξ(c) = ⟨E(u), σ(c), τ(u), Λ(c), κ(c), L
 | D-7 | `∃ℓ ∈ Λ: st(ℓ) = matched ∧ ps(ℓ) = conflicting ∧ pv(ℓ) = null` | `CONTRADICTION_IN_SOURCES` |
 | D-8 | `τ` | `UNRESOLVED_IDENTIFIER` |
 | D-9 | `st(L) = ambiguous_identity ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_IDENTITY` |
-| D-10 | `st(L) = matched ∧ L ∈ Contract ∧ (collision(L) ∨ BRIDGE_ONLY_SUPPORT ∈ br(L))` | `UNRESOLVED_IDENTITY` |
+| D-10 | `st(L) = matched ∧ L ∈ Contract ∧ (collision(L) ∨ rc(c) ∨ BRIDGE_ONLY_SUPPORT ∈ br(L))` | `UNRESOLVED_IDENTITY` |
 | D-11 | `st(L) = matched ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
 | D-12 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
 | D-13 | `∃ℓ ∈ Λ: st(ℓ) = unavailable` | `LOOKUP_UNAVAILABLE` |
@@ -286,7 +286,16 @@ For a candidate `c` of unit `u`: `ξ(c) = ⟨E(u), σ(c), τ(u), Λ(c), κ(c), L
 | D-16 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` |
 | D-17 | true | `fail(DECISION_TABLE_GAP)` |
 
-  where `collision(L)` holds when `L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, and
+  where `collision(L)` holds when `L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`;
+  `rc(c)` (table dt-2, owner decision D-071; dt-1 is the same table with `rc ≡ false`) holds when `st(L) = matched` and
+  some event `e` of `L` is role-ambiguous: `(A(e) = ∅ ∨ ∃(S,k) ∈ A(e): nr(S,k)) ∧ ¬∃S: disc(S,e)`, where `A(e)` is the
+  set of attaching keys (original identifiers of `e` that `c` cites or that Stage 02 matched it by); `nr(S,k)` (notice
+  role) holds when some event of any lookup of `c` has `k` as its original `S` identifier and the flag
+  `NOTICE_S_EQUALS_ORIGINAL`, or `k` is cited, `Q1(k)` is available and `nh(Q1(k)) ≠ 0` (`nh` = Stage 02's
+  `notice_hit_count`, absent read as non-zero); and `disc(S,e)` holds when the cited key `k` of scheme `S` equals
+  `e`'s original `S` identifier, `¬nr(S,k)`, and `e`'s notice `S` identifier is present and differs from `k` (SPEC
+  7.3a). The dt-2 oracle (`simulations/stage04/dt2_reference.py`) models `rc` as one more abstract input of the case;
+  with `rc = false` it equals the dt-1 oracle case for case, and `rc` is inert unless `st(L) = matched`; and
   `pos(retracted) = RETRACTED_WORK_CITED`, `pos(expression_of_concern) = CONCERN_CITED`,
   `pos(correction) = CORRECTION_CITED`, `pos(reinstated) = REINSTATED_WORK_CITED` (so `dom(pos)` is the four values
   of F-4). `Contract` is the set of lookup results whose state and projection are among the forms of F-1 to F-4 and

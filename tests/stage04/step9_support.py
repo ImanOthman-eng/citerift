@@ -161,7 +161,15 @@ def observation(query: dict[str, str | None], lk: R.Lookup, extra: list[dict[str
         "query": query,
         "index": INDEX,
         "budget_bytes": 16777216,
-        "result": {"lookup_state": state, "projection": proj, "issues": issues, "checked_sources": [CHECKED_SOURCE]},
+        "result": {
+            "lookup_state": state,
+            "projection": proj,
+            "issues": issues,
+            "checked_sources": [CHECKED_SOURCE],
+            # Stage 02 renders the notice hits of every result; none here (dt-2 reads them, D-071).
+            "notice_hit_count": 0,
+            "notice_hits": [],
+        },
         "events": events,
         "event_count": len(events),
     }
@@ -193,8 +201,9 @@ def keys_of_shape(shape: str) -> list[dict[str, str]]:
     }[shape]
 
 
-def concretize(c: R.Case) -> tuple[DetectInput, dict[str, Any]]:
-    """The committed DETECT input of one abstract case, and its blobs by digest."""
+def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
+    """The committed DETECT input of one abstract case, and its blobs by digest. A dt-2 case (``dt2_reference.Case``)
+    with ``rc`` set gets a role-ambiguous event in its deciding lookup (``role_collision_event``)."""
     blobs: dict[str, Any] = {}
 
     def put(value: Any) -> str:
@@ -247,7 +256,10 @@ def concretize(c: R.Case) -> tuple[DetectInput, dict[str, Any]]:
         ("q2", c.q2, {"doi": D, "pmid": P}),
     ):
         if lk is not None:
-            lookups.append({"query": q, "observation": put(observation(q, lk, extra[role], role))})
+            obs = observation(q, lk, extra[role], role)
+            if getattr(c, "rc", False) and role == {"DOI": "d", "PMID": "p", "PAIR": "q2"}.get(c.shape):
+                role_collision_event(c.shape, obs)
+            lookups.append({"query": q, "observation": put(obs)})
     inputs = {
         "schema": "urn:citerift:schema:investigation:v1:candidate-inputs",
         "schema_version": "1.0.0",
@@ -268,6 +280,24 @@ def concretize(c: R.Case) -> tuple[DetectInput, dict[str, Any]]:
         "lookups": lookups,
     }
     return DetectInput(inputs, plan, blobs.__getitem__, {"root_id": "2" * 64}), blobs
+
+
+def role_collision_event(shape: str, obs: dict[str, Any]) -> None:
+    """dt-2 ``rc`` (owner decision D-071) made concrete in the deciding lookup: a direct event attached only through a
+    cited key that the checked evidence also gives as a notice. DOI and PAIR: a same-record DOI collision (Stage 02
+    flag NOTICE_DOI_EQUALS_ORIGINAL); PMID: a cross-record collision (another record's notice PMID, notice_hit_count
+    1). Only meaningful for a matched deciding lookup, as the abstraction states; added to any state, it is inert."""
+    if obs["result"]["lookup_state"] != "matched":
+        return
+    if shape == "PMID":
+        e = event("ev-rc", "pmid", None, P)
+        obs["result"]["notice_hit_count"] = 1
+        obs["result"]["notice_hits"] = [{"event_id": "ev-rc-notice", "event_type": "correction"}]
+    else:
+        e = event("ev-rc", "doi", D, None)
+        e["flags"] = ["NOTICE_DOI_EQUALS_ORIGINAL"]
+    obs["events"].append(e)
+    obs["event_count"] = len(obs["events"])
 
 
 def expected(c: R.Case) -> dict[str, Any]:

@@ -1,4 +1,5 @@
-"""The decision table dt-1 and the coherence function kappa (SPEC 6.5, 7.1 to 7.3; MM 5.1 to 5.3): Stage 04 Step 9.
+"""The decision table dt-2 and the coherence function kappa (SPEC 6.5, 7.1 to 7.3; MM 5.1 to 5.3): Stage 04 Step 9,
+corrected by owner decision D-071 (corrective cycle after the failed gate 04-I).
 
 This module is the pure decision core of the production detector. It reads a typed view of one work candidate
 (``Candidate``: use eligibility, shape, keys, taint, the CO_REPORTED_MULTIPLE flag and the candidate's lookups as
@@ -13,8 +14,17 @@ SPEC 7.3 lists them. D-5 and D-17 are failures, never classes: they end DETECT w
 (Step 4 correction SC-1), so a projection outside the Stage 02 contract reaches D-5 (a lookup other than the deciding
 one) or D-17 (the deciding lookup), never a finding.
 
-The frozen Step 4 reference model (``simulations/stage04/dt1_reference.py``) is the independent oracle of this code;
-it imports nothing from here and this module imports nothing from it.
+dt-2 differs from dt-1 in one guard only: D-10 also holds when the deciding lookup has a role-ambiguous event
+(``role_ambiguous``): an event every key of which that attaches it to the citation is, per the checked evidence, also a
+notice identifier (in a record of the candidate's lookups that gives the key both roles, flag
+``NOTICE_<S>_EQUALS_ORIGINAL``, or as another record's notice, ``notice_hit_count`` of the cited key's own lookup)
+and that no cited key discriminates (``discriminating``: the record gives a different notice identifier in that
+scheme). Such a candidate is ``UNRESOLVED_IDENTITY`` with ``IDENTIFIER_ROLE_COLLISION``
+(D-071 sections 3 and 4); where no event is role-ambiguous dt-2 decides exactly as dt-1.
+
+The post-failure reference model (``simulations/stage04/dt2_reference.py``) is the independent oracle of this code;
+the frozen Step 4 model (``dt1_reference.py``) is kept unchanged as the oracle of the frozen engine. Neither imports
+anything from here and this module imports nothing from them.
 """
 
 from __future__ import annotations
@@ -23,7 +33,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-TABLE_VERSION = "dt-1"
+TABLE_VERSION = "dt-2"
 
 Q1_DOI = "Q1_DOI"
 Q1_PMID = "Q1_PMID"
@@ -38,6 +48,9 @@ POSITIVE = {
     "reinstated": "REINSTATED_WORK_CITED",
 }
 NOT_FOUND_VALUE = "not_found_in_checked_sources"
+# Stage 02 import flags of a record giving one key as both its original and its notice identifier (Stage 02 SPEC 6.3).
+SAME_RECORD_FLAG = {"doi": "NOTICE_DOI_EQUALS_ORIGINAL", "pmid": "NOTICE_PMID_EQUALS_ORIGINAL"}
+ROLE_COLLISION = "IDENTIFIER_ROLE_COLLISION"
 
 # Projection forms (MM 4.5): the (status, value) shapes a guard can name. ``none`` is "no projection".
 VF, UNC, UNC_NOT_FOUND, CONF, UNAV, NONE, OTHER = "vf", "unc", "unc:not_found", "conf", "unavailable", "none", "other"
@@ -84,6 +97,11 @@ class Event:
     linked_via: str | None
     original_doi: str | None
     original_pmid: str | None
+    flags: tuple[str, ...] = ()  # Stage 02 event flags (dt-2 reads the same-record collision flags)
+    # The record's notice identifiers as Stage 02 renders them (null when absent, or when equal to the original and
+    # replaced by the flag): dt-2 reads them to tell whether a second identifier discriminates the work from the notice.
+    notice_doi: str | None = None
+    notice_pmid: str | None = None
 
     @property
     def direct(self) -> bool:
@@ -103,6 +121,9 @@ class Lookup:
     collision: tuple[str, ...]  # event ids a PMID_ROLE_COLLISION issue names that have matched_by = pmid
     budget_refused: bool  # an issue LOOKUP_EVIDENCE_LIMIT_EXCEEDED (S-6.10a, D-048)
     events: tuple[Event, ...]
+    # Stage 02 ``notice_hit_count``: events of other records whose notice identifier is the query key (dt-2). None when
+    # the observation does not state it (never so for a rendered Stage 02 result); read as "may be a notice".
+    notice_hits: int | None = 0
 
     @property
     def available(self) -> bool:
@@ -245,6 +266,77 @@ def kappa(c: Candidate) -> str | None:
     return COHERENT if conaming(c) else UNDETERMINED
 
 
+# Role collisions (dt-2, owner decision D-071) ------------------------------------------------------------------------
+
+
+def attached_keys(c: Candidate, e: Event) -> tuple[tuple[str, str], ...]:
+    """The keys through which event ``e`` is attached to the citation: each original identifier of ``e`` that the
+    candidate cites, and the one Stage 02 matched or bridged it by (``matched_by``)."""
+    out: list[tuple[str, str]] = []
+    for scheme, cited, own in (("doi", c.doi, e.original_doi), ("pmid", c.pmid, e.original_pmid)):
+        if own is not None and (own == cited or e.matched_by == scheme):
+            out.append((scheme, own))
+    return tuple(out)
+
+
+def notice_elsewhere(c: Candidate, scheme: str) -> bool:
+    """The cited key of ``scheme`` is the notice identifier of another record per its own single-key lookup (``L`` for
+    a DOI or PMID candidate, Q1 for a PAIR). An unavailable lookup states nothing; it never yields a positive (D-13)."""
+    lk = c.lookup(Q1_DOI if scheme == "doi" else Q1_PMID)
+    if lk is None or not lk.available:
+        return False
+    return lk.notice_hits is None or lk.notice_hits > 0
+
+
+def role_collided(c: Candidate, scheme: str, key: str) -> bool:
+    """The checked evidence of the candidate gives ``key`` also as a notice identifier: in **any** record of any of the
+    candidate's lookups that has ``key`` as its original identifier and also as its notice identifier
+    (``NOTICE_<S>_EQUALS_ORIGINAL``), or, for a cited key, as the notice identifier of another record. A property of the
+    key, not of one event: a key that some record gives as a notice never resolves another event's collision."""
+    flag = SAME_RECORD_FLAG[scheme]
+    for _, lk in c.lookups:
+        for e in lk.events:
+            own = e.original_doi if scheme == "doi" else e.original_pmid
+            if own == key and flag in e.flags:
+                return True
+    cited = c.doi if scheme == "doi" else c.pmid
+    return key == cited and notice_elsewhere(c, scheme)
+
+
+def discriminating(c: Candidate, e: Event, scheme: str) -> bool:
+    """The citation's key of ``scheme`` is independent evidence that it names the work of ``e``, not its notice: the
+    candidate cites it, it is ``e``'s original identifier, no checked evidence gives it a notice role
+    (``role_collided``), and ``e``'s own record gives a **different** notice identifier in the same scheme, so that
+    the key tells the work from the notice. A key whose record states no notice identifier in its scheme does not
+    discriminate (absence of a notice identifier is not evidence of the work)."""
+    cited = c.doi if scheme == "doi" else c.pmid
+    own, notice = (e.original_doi, e.notice_doi) if scheme == "doi" else (e.original_pmid, e.notice_pmid)
+    return (
+        cited is not None
+        and own == cited
+        and not role_collided(c, scheme, cited)
+        and notice is not None
+        and notice != cited
+    )
+
+
+def role_ambiguous(c: Candidate) -> tuple[str, ...]:
+    """Event ids of the matched deciding lookup whose publication object is not established (D-071 sections 3 and 4):
+    an event attached through a role-collided key (or through no key at all; fail closed, Stage 02 never yields one)
+    that no discriminating key of the citation (``discriminating``) resolves. Such an event cannot support a positive
+    attachment. Nothing else resolves it: no non-cited bridge key, no title, publisher, prefix or notice type."""
+    lk = c.deciding
+    if lk is None or lk.state != "matched":
+        return ()
+    out = set()
+    for e in lk.events:
+        keys = attached_keys(c, e)
+        collided = not keys or any(role_collided(c, scheme, key) for scheme, key in keys)
+        if collided and not any(discriminating(c, e, scheme) for scheme in ("doi", "pmid")):
+            out.add(e.event_id)
+    return tuple(sorted(out))
+
+
 def implied_pair_state(state_d: str, state_p: str, witness: bool) -> str:
     """The Q2 state that F-6 and F-9 imply from the two single-key states and a single-key witness."""
     if witness:
@@ -328,7 +420,7 @@ def _d10(x: _Ctx) -> bool:
         lk is not None
         and lk.state == "matched"
         and lk.in_contract()
-        and (bool(lk.collision) or "BRIDGE_ONLY_SUPPORT" in lk.basis_reasons)
+        and (bool(lk.collision) or bool(role_ambiguous(x.c)) or "BRIDGE_ONLY_SUPPORT" in lk.basis_reasons)
     )
 
 
@@ -400,6 +492,8 @@ def decide(c: Candidate, rules: tuple[tuple[str, Guard], ...] = RULES) -> Outcom
         cls, upstream_role = "UNRESOLVED_IDENTITY", c.deciding_role
         if L.collision:
             reasons.add("PMID_ROLE_COLLISION")
+        if set(role_ambiguous(c)) - set(L.collision):
+            reasons.add(ROLE_COLLISION)
         if "BRIDGE_ONLY_SUPPORT" in L.basis_reasons:
             reasons.add("BRIDGE_ONLY_SUPPORT")
     elif rule == "D-11":

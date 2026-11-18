@@ -1,4 +1,4 @@
-"""The production detector of DETECT: dt-1, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
+"""The production detector of DETECT: dt-2, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
 
 ``dt1_detector`` reads only committed content (the candidate inputs and lookup plan named by ``DetectInput``, the
 lookup observations, the index identity and the extraction they name), builds the typed views of ``dt1``, decides
@@ -35,9 +35,19 @@ from citerift.investigation.adapters.detect import DetectFailure, DetectInput, D
 from citerift.investigation.canonical import canon, sha256_hex
 
 # Version 2 (Step 12, A-03): the occurrences of a tainted unit support every claim that carries a taint reason.
-DETECTOR_IDENTITY = "citerift-dt1-detector/2 (dt-1)"
+# Version 3 (corrective cycle, owner decision D-071): decision table dt-2; the view carries event flags and notice hits.
+DETECTOR_IDENTITY = "citerift-dt1-detector/3 (dt-2)"
 LIMIT_CODE = "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"
 TAINT_REASONS = frozenset({"IDENTIFIER_UNCONFIRMED", "IDENTIFIER_MALFORMED", "IDENTIFIER_ROLE_UNRESOLVED"})
+
+
+def _flags(raw: Any) -> tuple[str, ...]:
+    """Stage 02 event flags (required by the Stage 02 event schema). A missing value, or one that is not a list of
+    strings, cannot show that an identifier has no notice role: it is read as both same-record collision flags (fail
+    closed; LOOKUP validates every observation it commits, so production never reaches this)."""
+    if isinstance(raw, list) and all(isinstance(f, str) for f in raw):
+        return tuple(raw)
+    return tuple(sorted(dt1.SAME_RECORD_FLAG.values()))
 
 
 def _events(obs: Mapping[str, Any]) -> tuple[dt1.Event, ...]:
@@ -50,14 +60,18 @@ def _events(obs: Mapping[str, Any]) -> tuple[dt1.Event, ...]:
             linked_via=e.get("linked_via"),
             original_doi=e.get("original_doi"),
             original_pmid=e.get("original_pmid"),
+            flags=_flags(e.get("flags")),
+            notice_doi=e.get("notice_doi"),
+            notice_pmid=e.get("notice_pmid"),
         )
         for k, e in enumerate(obs.get("events") or ())
     )
 
 
 def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
-    """What dt-1 reads of one lookup observation: state, projection form, basis reasons and conflict groups, the
-    PMID_ROLE_COLLISION events matched by PMID, the budget refusal, and every event (never only the rendered page)."""
+    """What dt-2 reads of one lookup observation: state, projection form, basis reasons and conflict groups, the
+    PMID_ROLE_COLLISION events matched by PMID, the budget refusal, every event with its flags (never only the rendered
+    page) and Stage 02's ``notice_hit_count`` (None when the result does not state a non-negative integer)."""
     res = obs["result"]
     events = _events(obs)
     proj = res.get("projection")
@@ -89,6 +103,8 @@ def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
             if eid in by_id and by_id[eid].matched_by == "pmid"
         }
     )
+    hits = res.get("notice_hit_count")
+    notice_hits = hits if isinstance(hits, int) and not isinstance(hits, bool) and hits >= 0 else None
     return dt1.Lookup(
         state=str(res.get("lookup_state")),
         projection=present,
@@ -99,6 +115,7 @@ def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
         collision=tuple(collision),
         budget_refused=any(isinstance(i, Mapping) and i.get("code") == LIMIT_CODE for i in issues),
         events=events,
+        notice_hits=notice_hits,
     )
 
 

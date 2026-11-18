@@ -94,7 +94,7 @@ def _created() -> dict[str, Any]:
         "config_digest": SHA,
         "stage04": {
             "engine_version": "9" * 13 + "." + "9" * 13 + "." + "9" * 12,
-            "table_version": "dt-1",
+            "table_version": "dt-2",
             "plan_version": "plan-1",
             "schema_version": "1.0.0",
         },

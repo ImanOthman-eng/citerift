@@ -1,0 +1,733 @@
+{
+ "attribution": "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 200 records; other columns left empty. Cited as the source requests; not a redistribution of the dataset.",
+ "campaign_bundle": {
+  "docs/verification/stage-04/evaluation-campaign/bundles/en-39868218": {
+   "doi": [
+    "10.1002/asi.23238",
+    "10.1038/nature03007",
+    "10.1038/nature06071",
+    "10.1063/1.2807658",
+    "10.1103/physrevlett.56.278"
+   ],
+   "pmid": [
+    "10033146",
+    "15496915",
+    "17805287"
+   ]
+  }
+ },
+ "classes": {
+  "both_schemes_equal_pair": {
+   "doi": "10.1016/j.ajcnut.2024.11.014",
+   "pmid": "39566682"
+  },
+  "contradictory_source_rows": {
+   "doi": "10.1007/s11581-008-0309-x",
+   "pmid": null
+  },
+  "cross_record_doi": {
+   "doi": "10.1001/jama.296.4.396-a",
+   "pmid": null
+  },
+  "cross_record_pmid": {
+   "doi": null,
+   "pmid": "22088135"
+  },
+  "doi_and_pmid_collided_in_two_records_pair": {
+   "doi": "10.1001/jamapsychiatry.2014.1193",
+   "pmid": "25054836"
+  },
+  "doi_original_pmid_notice_pair": {
+   "doi": "10.3389/fpsyg.2025.1544589",
+   "pmid": "41993809"
+  },
+  "jasist_failure": {
+   "doi": "10.1002/asi.23238",
+   "pmid": null
+  },
+  "no_notice_identifier": {
+   "doi": "10.21275/mr241114172224",
+   "pmid": null
+  },
+  "no_original_identifier_notice_doi": {
+   "doi": "10.4174/astr.2024.106.1.61",
+   "pmid": null
+  },
+  "original_with_distinct_notice_doi": {
+   "doi": "10.1134/s0026893316010040",
+   "pmid": null
+  },
+  "original_with_distinct_notice_doi_notice_side": {
+   "doi": "10.1134/s0026893326010012",
+   "pmid": null
+  },
+  "same_doi_correction": {
+   "doi": "10.1001/jamapsychiatry.2014.1193",
+   "pmid": null
+  },
+  "same_doi_expression_of_concern": {
+   "doi": "10.1007/s00125-012-2648-4",
+   "pmid": null
+  },
+  "same_doi_reinstated": {
+   "doi": "10.1007/bf01475382",
+   "pmid": null
+  },
+  "same_doi_retracted": {
+   "doi": "10.1002/1096-9098(200007)74:3%3c201::aid-jso8%3e3.0.co;2-5",
+   "pmid": null
+  },
+  "same_doi_with_clean_pmid_doi_only": {
+   "doi": "10.1016/j.intimp.2024.112214",
+   "pmid": null
+  },
+  "same_doi_with_clean_pmid_pair": {
+   "doi": "10.1016/j.intimp.2024.112214",
+   "pmid": "38823176"
+  },
+  "same_doi_with_discriminating_pmid_pair": {
+   "doi": "10.1002/dmrr.2436",
+   "pmid": "23861104"
+  },
+  "same_pmid": {
+   "doi": null,
+   "pmid": "10066780"
+  },
+  "same_pmid_with_clean_doi_pair": {
+   "doi": "10.1124/jpet.108.147280",
+   "pmid": "19318594"
+  },
+  "same_pmid_with_discriminating_doi_pair": {
+   "doi": "10.1038/srep08209",
+   "pmid": "41730980"
+  }
+ },
+ "disagreements": [],
+ "fixture": "rw_role_collision.csv",
+ "fixture_bytes": 7204,
+ "fixture_fields": [
+  "Record ID",
+  "Title",
+  "Journal",
+  "Publisher",
+  "RetractionDate",
+  "RetractionDOI",
+  "RetractionPubMedID",
+  "OriginalPaperDate",
+  "OriginalPaperDOI",
+  "OriginalPaperPubMedID",
+  "RetractionNature"
+ ],
+ "fixture_records": 25,
+ "fixture_sha256": "339744e0998187a5d541e17747bd3f0871ba0031d27fce6916495e9dc3525c4c",
+ "method": "Write the attributed Retraction Watch subset fixture of the role-collision suite (corrective cycle, D-071 item 7).  Method. The pinned snapshot is checked byte for byte. Keys are selected from an index built from the full snapshot, one or two per class of the adversarial list of D-071 section 7, each the **first in sorted order** among the keys of its class (a class is defined by Stage 02 flags, roles and states only; never by a label, a title, a journal or an outcome of the engine), plus the failed-campaign key ``10.1002/asi.23238`` by name and every key of the exposed campaign bundle ``en-39868218`` (both design-exposed after D-071). Every key is queried alone (Q1) and the listed pairs together (Q2) through the Stage 04 bounded lookup; the fixture keeps the Record IDs of every event and notice hit those queries return, with the selected fields of the Step 8 fixture. An index built from the fixture alone must give the same state, status, value, dates, record ids, notice hits and same-record collision flags for every query; disagreements fail the run. No synthetic row is added.",
+ "outcomes": [
+  {
+   "collision_flags": [],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1001/jama.296.4.396-a",
+   "event_types": [
+    "correction"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [
+    "10307"
+   ],
+   "pmid": null,
+   "record_ids": [
+    "10309"
+   ],
+   "role": "original_and_notice",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "correction"
+  },
+  {
+   "collision_flags": [
+    "17546:NOTICE_DOI_EQUALS_ORIGINAL",
+    "17546:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1001/jamapsychiatry.2014.1193",
+   "event_types": [
+    "correction",
+    "reinstated"
+   ],
+   "events": 2,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": "25054836",
+   "record_ids": [
+    "17545",
+    "17546"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "uncertain",
+   "value": null
+  },
+  {
+   "collision_flags": [
+    "17546:NOTICE_DOI_EQUALS_ORIGINAL",
+    "17546:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1001/jamapsychiatry.2014.1193",
+   "event_types": [
+    "correction",
+    "reinstated"
+   ],
+   "events": 2,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "17545",
+    "17546"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "uncertain",
+   "value": null
+  },
+  {
+   "collision_flags": [
+    "40040:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2000-08-10",
+   "doi": "10.1002/1096-9098(200007)74:3%3c201::aid-jso8%3e3.0.co;2-5",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "40040"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "40120:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2014-04-28",
+   "doi": "10.1002/asi.23238",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": "10033146",
+   "record_ids": [
+    "40120"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "40120:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2014-04-28",
+   "doi": "10.1002/asi.23238",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": "15496915",
+   "record_ids": [
+    "40120"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "40120:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2014-04-28",
+   "doi": "10.1002/asi.23238",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": "17805287",
+   "record_ids": [
+    "40120"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "40120:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2014-04-28",
+   "doi": "10.1002/asi.23238",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "40120"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "71360:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "uncertain",
+   "date_value": "2025-05-01",
+   "doi": "10.1002/dmrr.2436",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": "23861104",
+   "record_ids": [
+    "71360"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "18529:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1007/bf01475382",
+   "event_types": [
+    "reinstated"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "18529"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "uncertain",
+   "value": null
+  },
+  {
+   "collision_flags": [
+    "8049:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1007/s00125-012-2648-4",
+   "event_types": [
+    "expression_of_concern"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "8049"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "expression_of_concern"
+  },
+  {
+   "collision_flags": [],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1007/s11581-008-0309-x",
+   "event_types": [
+    "correction",
+    "retracted"
+   ],
+   "events": 2,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "18541",
+    "18542"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "conflicting",
+   "value": null
+  },
+  {
+   "collision_flags": [
+    "71762:NOTICE_DOI_EQUALS_ORIGINAL",
+    "71762:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2024-11-19",
+   "doi": "10.1016/j.ajcnut.2024.11.014",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": "39566682",
+   "record_ids": [
+    "71762"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "73693:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2026-10-06",
+   "doi": "10.1016/j.intimp.2024.112214",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": "38823176",
+   "record_ids": [
+    "73693"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "73693:NOTICE_DOI_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2026-10-06",
+   "doi": "10.1016/j.intimp.2024.112214",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "73693"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "72205:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2026-02-23",
+   "doi": "10.1038/srep08209",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": "41730980",
+   "record_ids": [
+    "72205"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [
+    "34057:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1124/jpet.108.147280",
+   "event_types": [
+    "correction"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": "19318594",
+   "record_ids": [
+    "34057"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "correction"
+  },
+  {
+   "collision_flags": [],
+   "date_status": "uncertain",
+   "date_value": "2026-04-01",
+   "doi": "10.1134/s0026893316010040",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "74069"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.1134/s0026893326010012",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "none",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [
+    "74069"
+   ],
+   "pmid": null,
+   "record_ids": [
+    "74069"
+   ],
+   "role": "notice",
+   "state": "notice_only",
+   "status": "uncertain",
+   "value": null
+  },
+  {
+   "collision_flags": [],
+   "date_status": "verified_fact",
+   "date_value": "2026-07-09",
+   "doi": "10.21275/mr241114172224",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [],
+   "pmid": null,
+   "record_ids": [
+    "71659"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [],
+   "date_status": "verified_fact",
+   "date_value": "2026-03-31",
+   "doi": "10.3389/fpsyg.2025.1544589",
+   "event_types": [
+    "retracted"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [
+    "73681"
+   ],
+   "pmid": "41993809",
+   "record_ids": [
+    "73681"
+   ],
+   "role": "original_and_notice",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [],
+   "date_status": null,
+   "date_value": null,
+   "doi": "10.4174/astr.2024.106.1.61",
+   "event_types": [
+    "retracted",
+    "retracted",
+    "retracted"
+   ],
+   "events": 3,
+   "identity": "none",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [
+    "67169",
+    "67170",
+    "67171"
+   ],
+   "pmid": null,
+   "record_ids": [
+    "67169",
+    "67170",
+    "67171"
+   ],
+   "role": "notice",
+   "state": "notice_only",
+   "status": "uncertain",
+   "value": null
+  },
+  {
+   "collision_flags": [
+    "18080:NOTICE_PMID_EQUALS_ORIGINAL"
+   ],
+   "date_status": "verified_fact",
+   "date_value": "2001-03-30",
+   "doi": null,
+   "event_types": [
+    "correction",
+    "retracted"
+   ],
+   "events": 2,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [
+    "PMID_ROLE_COLLISION"
+   ],
+   "notice_hit_record_ids": [],
+   "pmid": "10066780",
+   "record_ids": [
+    "18080",
+    "462"
+   ],
+   "role": "original",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "retracted"
+  },
+  {
+   "collision_flags": [],
+   "date_status": null,
+   "date_value": null,
+   "doi": null,
+   "event_types": [
+    "correction"
+   ],
+   "events": 1,
+   "identity": "exact",
+   "issue_record_ids": [],
+   "issues": [],
+   "notice_hit_record_ids": [
+    "4831"
+   ],
+   "pmid": "22088135",
+   "record_ids": [
+    "42837"
+   ],
+   "role": "original_and_notice",
+   "state": "matched",
+   "status": "verified_fact",
+   "value": "correction"
+  }
+ ],
+ "queries": 43,
+ "source": {
+  "commit": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4",
+  "sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+  "url": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv"
+ },
+ "subset_equals_full_index": true,
+ "synthetic_rows": 0
+}

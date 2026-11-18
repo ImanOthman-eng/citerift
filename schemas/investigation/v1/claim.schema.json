@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:claim",
   "title": "CITERIFT Stage 04 claim, version 2",
-  "description": "One dt-1 claim about one work candidate (SPEC 7.2, 7.3, 8.3; MM 5.2, 6). Status, value, rule and the reasons a rule always attaches are functions of the class and are enforced here. The evidence lists are in the content-addressed evidence set the claim names (owner decision D-047); the counts here equal the lengths of the set's lists. Facts that need other records or the set (evidence resolution EV-1, EV-2, claim id derivation, one claim per candidate) are checked by Investigation Memory and VERIFY. No field, class or value means 'not retracted' (S-7.5, M-12).",
-  "x-citerift-version": "2.0.0",
+  "description": "One dt-2 claim about one work candidate (SPEC 7.2, 7.3, 8.3; MM 5.2, 6). Status, value, rule and the reasons a rule always attaches are functions of the class and are enforced here. The evidence lists are in the content-addressed evidence set the claim names (owner decision D-047); the counts here equal the lengths of the set's lists. Facts that need other records or the set (evidence resolution EV-1, EV-2, claim id derivation, one claim per candidate) are checked by Investigation Memory and VERIFY. No field, class or value means 'not retracted' (S-7.5, M-12).",
+  "x-citerift-version": "3.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -179,7 +179,7 @@
     },
     {
       "if": {"properties": {"rule": {"const": "D-10"}}},
-      "then": {"properties": {"class": {"const": "UNRESOLVED_IDENTITY"}, "reasons": {"contains": {"enum": ["PMID_ROLE_COLLISION", "BRIDGE_ONLY_SUPPORT"]}}}}
+      "then": {"properties": {"class": {"const": "UNRESOLVED_IDENTITY"}, "reasons": {"contains": {"enum": ["PMID_ROLE_COLLISION", "IDENTIFIER_ROLE_COLLISION", "BRIDGE_ONLY_SUPPORT"]}}}}
     },
     {
       "if": {"properties": {"class": {"const": "UNRESOLVED_IDENTIFIER"}}},

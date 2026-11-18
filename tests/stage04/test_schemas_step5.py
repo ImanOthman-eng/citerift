@@ -193,7 +193,7 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
         "candidate": {"shape": "DOI", "keys": [dict(DOI)], "coherence": None},
         "class": cls,
         "rule": "D-14",
-        "table_version": "dt-1",
+        "table_version": "dt-2",
         "status": "verified_fact",
         "value": "retracted",
         "alternatives": [],
@@ -344,10 +344,10 @@ def identities(live: bool = False, extraction_status: str = "complete") -> dict[
             "export_lines": 13,
         },
         "stage04": {
-            "engine_version": "0.2.0",
-            "table_version": "dt-1",
+            "engine_version": "0.3.0",
+            "table_version": "dt-2",
             "plan_version": "plan-1",
-            "schema_version": "3.0.0",
+            "schema_version": "4.0.0",
         },
         "config": live_config() if live else bundle_config(),
         "config_digest": h("config"),
@@ -442,10 +442,10 @@ def created() -> dict[str, Any]:
             "investigation_id": "0b1e2c3d-4e5f-8a6b-9c7d-0e1f2a3b4c5d",
             "config_digest": h("config"),
             "stage04": {
-                "engine_version": "0.2.0",
-                "table_version": "dt-1",
+                "engine_version": "0.3.0",
+                "table_version": "dt-2",
                 "plan_version": "plan-1",
-                "schema_version": "3.0.0",
+                "schema_version": "4.0.0",
             },
             "migrated_from": None,
         },
@@ -555,8 +555,9 @@ def test_schemas_are_valid_2020_12_and_versioned() -> None:
         expected = {RECORD: "4.0.0", REPORT: "3.0.0", EVIDENCE_SET: "1.0.0", PROJECTION_SET: "1.0.0",
                     EVIDENCE_BATCH: "1.0.0", REPORT_CHUNK: "1.0.0", LOOKUP_BATCH: "1.0.0",
                     CANDIDATE_BATCH: "1.0.0", **dict.fromkeys(STEP8, "1.0.0"),
-                    # Step 12 (D-062): the canonical index identity (common 3, lookup observation 2).
-                    COMMON: "3.0.0", P + "lookup-observation": "2.0.0"}  # fmt: skip
+                    # Step 12 (D-062): the canonical index identity (common 3, lookup observation 2). Corrective
+                    # cycle (D-071): decision table dt-2 and IDENTIFIER_ROLE_COLLISION (common 4, claim 3).
+                    COMMON: "4.0.0", CLAIM: "3.0.0", P + "lookup-observation": "2.0.0"}  # fmt: skip
         assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 
@@ -1181,7 +1182,7 @@ def test_stale_and_config_identity_fields_retained() -> None:
         del r["identities"]["index"][field]
         bad(r, REPORT)
     r = copy.deepcopy(rep)
-    r["identities"]["stage04"]["table_version"] = "dt-2"
+    r["identities"]["stage04"]["table_version"] = "dt-1"  # the superseded table (D-071) is refused, as any other value
     bad(r, REPORT)
     stale = record(
         "stale_detected", {"changed": [], "recorded": {}, "current": {}}, step=None, attempt=None, root_id=None

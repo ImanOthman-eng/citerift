@@ -772,6 +772,24 @@ BASELINE_64E7ACA = {
 }
 
 
+# Corrective cycle (owner decision D-071 section 11): the Stage 04 identity changed (0.2.0 / dt-1 / 3.0.0 to 0.3.0 /
+# dt-2 / 4.0.0), so the logical-view digests changed. corrective/identity/LOGICAL_VIEW_DIFF.json records, per scenario,
+# the digest reproduced on the pre-correction tree (equal to the accepted baseline, asserted here), the digest of this
+# tree, and that the two views differ only in identity values, digests derived from them and the order those induce.
+IDENTITY_DIFF = json.loads(
+    (
+        Path(__file__).resolve().parents[2] / "docs/verification/stage-04/corrective/identity/LOGICAL_VIEW_DIFF.json"
+    ).read_text(encoding="utf-8")
+)
+
+
+def dt2_digest(which: str, name: str, baseline: str) -> str:
+    row = IDENTITY_DIFF["scripts"][which][name]
+    assert row["old_digest"] == baseline, "the pre-correction tree must reproduce the accepted baseline"
+    assert row["equal_modulo_identity_digests_and_order"] and row["counts_equal"]
+    return str(row["new_digest"])
+
+
 @pytest.mark.reproducibility
 @pytest.mark.parametrize("name", list(BASELINE_64E7ACA))
 def test_logical_content_equals_the_accepted_baseline(name: str) -> None:
@@ -784,4 +802,5 @@ def test_logical_content_equals_the_accepted_baseline(name: str) -> None:
     spec.loader.exec_module(module)
     got = module.logical_view(ROOT, module.SCENARIOS[name])
     # Step 8 (IF-7) replaced the SYNTHETIC bundle observation; everything else equals the baseline.
-    assert with_legacy_bundle(got["view"], module._canon) == BASELINE_64E7ACA[name], got["counts"]
+    want = dt2_digest("d053", name, BASELINE_64E7ACA[name])
+    assert with_legacy_bundle(got["view"], module._canon) == want, got["counts"]

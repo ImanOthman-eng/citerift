@@ -152,7 +152,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "candidate": {"shape": "PAIR", "keys": [doi, pmid], "coherence": "INCOMPATIBLE"},
             "class": "IDENTITY_CONFLICT",
             "rule": "D-6",
-            "table_version": "dt-1",
+            "table_version": "dt-2",
             "status": "conflicting",
             "value": None,
             "alternatives": [
@@ -172,7 +172,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "candidate": {"shape": "DOI", "keys": [doi], "coherence": None},
             "class": "NOT_FOUND_IN_CHECKED_SOURCES",
             "rule": "D-16",
-            "table_version": "dt-1",
+            "table_version": "dt-2",
             "status": "uncertain",
             "value": "not_found_in_checked_sources",
             "alternatives": [],
@@ -183,7 +183,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "contradicting_count": 0,
         }
         disposition, qkind = "REPORT_NOT_FOUND", None
-    cid = ids.claim_id(cand, claim["class"], claim["rule"], "dt-1", claim["evidence_set"])
+    cid = ids.claim_id(cand, claim["class"], claim["rule"], "dt-2", claim["evidence_set"])
     claim = {"claim_id": cid, **claim}
     q = None if qkind is None else {"question_id": ids.question_id(cid, qkind), "claim_id": cid, "kind": qkind}
     decision = {"decision_id": ids.decision_id(cid, disposition), "claim_id": cid, "disposition": disposition}

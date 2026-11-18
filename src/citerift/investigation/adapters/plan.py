@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 
 from citerift.investigation import __version__ as ENGINE_VERSION
+from citerift.investigation import dt1
 from citerift.investigation.adapters import StepAdapter, StepRequest, StepResult
 from citerift.investigation.adapters.acquire import retained_acquire
 from citerift.investigation.adapters.assemble import make_assemble
@@ -43,12 +44,12 @@ from citerift.wiki.extract import ExtractConfig
 # The Stage 04 engine identity (A-6, Step 12): ``engine_version`` is the Stage 04 package's own version
 # (``citerift.investigation.__version__``), bumped whenever engine semantics change, so a changed engine is a changed
 # input (STALE), not only a replay mismatch; ``schema_version`` is the version of the Stage 04 schema set (3.0.0 since
-# D-062 changed the index identity).
+# D-062 changed the index identity; 4.0.0 since D-071: decision table dt-2 and the reason IDENTIFIER_ROLE_COLLISION).
 STAGE04_IDENTITY = {
     "engine_version": ENGINE_VERSION,
-    "table_version": "dt-1",
+    "table_version": dt1.TABLE_VERSION,
     "plan_version": PLAN_VERSION,
-    "schema_version": "3.0.0",
+    "schema_version": "4.0.0",
 }
 # The Step 8 blob schemas the adapters write; a change of any is a change of the Stage 04 identity (STALE).
 INTEGRATION_SCHEMAS = {

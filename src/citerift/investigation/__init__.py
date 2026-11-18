@@ -12,4 +12,5 @@ No module in this package imports ``citerift.governance`` (S-15.1).
 
 from __future__ import annotations
 
-__version__ = "0.2.0"
+# 0.3.0: decision table dt-2 (owner decision D-071, the corrective cycle after the failed gate 04-I).
+__version__ = "0.3.0"

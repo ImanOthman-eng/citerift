@@ -205,7 +205,7 @@ def synthetic_detector(inp: DetectInput) -> Detection:
             "candidate": {"shape": cand["shape"], "keys": copy.deepcopy(cand["keys"]), "coherence": coherence},
             "class": cls,
             "rule": rule,
-            "table_version": "dt-1",
+            "table_version": "dt-2",
             "status": st,
             "value": value,
             "alternatives": alternatives,
@@ -215,7 +215,7 @@ def synthetic_detector(inp: DetectInput) -> Detection:
             "supporting_count": len(value_set["supporting"]),
             "contradicting_count": 0,
         }
-        claim["claim_id"] = ids.claim_id(cand["cand_ref"], cls, rule, "dt-1", es)
+        claim["claim_id"] = ids.claim_id(cand["cand_ref"], cls, rule, "dt-2", es)
         claims.append((claim, value_set))
     return Detection(evidence=tuple(evidence.values()), claims=tuple(claims), identity=DETECTOR_IDENTITY)
 

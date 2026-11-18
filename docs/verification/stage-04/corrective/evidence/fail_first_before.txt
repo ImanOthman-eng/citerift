@@ -1,0 +1,442 @@
+# Fail-first run of tests/stage04/test_corrective_role_collision.py on the frozen engine
+# HEAD f207bc025c992d24b409e5869e3f380bc986e821; src/ identical to the frozen commit b5bf8ed (git diff b5bf8ed HEAD -- src is empty)
+# command: uv run pytest tests/stage04/test_corrective_role_collision.py -q -p no:cacheprovider
+
+..FFFF.......FF..F.FF..FFFFF..F.FF.F....FFFFF...F                        [100%]
+=================================== FAILURES ===================================
+______ test_same_doi_as_original_and_notice_abstains[retracted-retracted] ______
+
+etype = 'retracted', value = 'retracted'
+
+    @pytest.mark.parametrize(
+        ("etype", "value"),
+        [
+            ("retracted", "retracted"),
+            ("correction", "correction"),
+            ("expression_of_concern", "expression_of_concern"),
+            ("reinstated", "reinstated"),
+        ],
+    )
+    def test_same_doi_as_original_and_notice_abstains(etype: str, value: str) -> None:
+        """Retraction, correction notice, EoC notice, reinstatement notice and a withdrawal item: one record gives the DOI
+        in both roles (Stage 02 flag NOTICE_DOI_EQUALS_ORIGINAL)."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, etype=etype, flags=(SAME_DOI,))], vf(value)))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:160: AssertionError
+_____ test_same_doi_as_original_and_notice_abstains[correction-correction] _____
+
+etype = 'correction', value = 'correction'
+
+    @pytest.mark.parametrize(
+        ("etype", "value"),
+        [
+            ("retracted", "retracted"),
+            ("correction", "correction"),
+            ("expression_of_concern", "expression_of_concern"),
+            ("reinstated", "reinstated"),
+        ],
+    )
+    def test_same_doi_as_original_and_notice_abstains(etype: str, value: str) -> None:
+        """Retraction, correction notice, EoC notice, reinstatement notice and a withdrawal item: one record gives the DOI
+        in both roles (Stage 02 flag NOTICE_DOI_EQUALS_ORIGINAL)."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, etype=etype, flags=(SAME_DOI,))], vf(value)))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'COR...ON_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:160: AssertionError
+_ test_same_doi_as_original_and_notice_abstains[expression_of_concern-expression_of_concern] _
+
+etype = 'expression_of_concern', value = 'expression_of_concern'
+
+    @pytest.mark.parametrize(
+        ("etype", "value"),
+        [
+            ("retracted", "retracted"),
+            ("correction", "correction"),
+            ("expression_of_concern", "expression_of_concern"),
+            ("reinstated", "reinstated"),
+        ],
+    )
+    def test_same_doi_as_original_and_notice_abstains(etype: str, value: str) -> None:
+        """Retraction, correction notice, EoC notice, reinstatement notice and a withdrawal item: one record gives the DOI
+        in both roles (Stage 02 flag NOTICE_DOI_EQUALS_ORIGINAL)."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, etype=etype, flags=(SAME_DOI,))], vf(value)))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'CONCERN_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:160: AssertionError
+_____ test_same_doi_as_original_and_notice_abstains[reinstated-reinstated] _____
+
+etype = 'reinstated', value = 'reinstated'
+
+    @pytest.mark.parametrize(
+        ("etype", "value"),
+        [
+            ("retracted", "retracted"),
+            ("correction", "correction"),
+            ("expression_of_concern", "expression_of_concern"),
+            ("reinstated", "reinstated"),
+        ],
+    )
+    def test_same_doi_as_original_and_notice_abstains(etype: str, value: str) -> None:
+        """Retraction, correction notice, EoC notice, reinstatement notice and a withdrawal item: one record gives the DOI
+        in both roles (Stage 02 flag NOTICE_DOI_EQUALS_ORIGINAL)."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, etype=etype, flags=(SAME_DOI,))], vf(value)))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'REI...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:160: AssertionError
+______ test_two_records_sharing_one_identifier_in_different_roles_abstain ______
+
+    def test_two_records_sharing_one_identifier_in_different_roles_abstain() -> None:
+        """The DOI is the original of e1 and the notice of another record (notice_hit_count > 0)."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, notice_doi=D2)], vf("correction"), notice_hits=1))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'COR...ON_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:222: AssertionError
+_______________________ test_cross_record_pmid_abstains ________________________
+
+    def test_cross_record_pmid_abstains() -> None:
+        out = decide("PMID", p=obs("matched", [ev("e1", "pmid", None, P)], vf(), notice_hits=2))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:227: AssertionError
+____________________ test_both_identifiers_collided_abstain ____________________
+
+    def test_both_identifiers_collided_abstain() -> None:
+>       assert got(_pair((SAME_DOI,), (SAME_PMID,))) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:252: AssertionError
+____________ test_a_same_record_doi_and_a_cross_record_pmid_abstain ____________
+
+    def test_a_same_record_doi_and_a_cross_record_pmid_abstain() -> None:
+>       assert got(_pair((SAME_DOI,), p_hits=1)) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:260: AssertionError
+________ test_a_bridged_event_attached_through_a_collided_doi_abstains _________
+
+    def test_a_bridged_event_attached_through_a_collided_doi_abstains() -> None:
+        """PMID query: Stage 02 bridges every other record of the co-occurring DOI (doi_cooccurrence); that DOI is the
+        bridged event's notice identifier too, so the bridged support is role-ambiguous."""
+        direct = ev("e1", "pmid", "10.5555/rc.bridge", P)
+        bridged = ev("e2", "doi", "10.5555/rc.bridge", None, via="doi_cooccurrence", flags=(SAME_DOI,))
+        out = decide("PMID", p=obs("matched", [direct, bridged], vf()))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:269: AssertionError
+______________ test_the_collision_precedes_an_unavailable_lookup _______________
+
+    def test_the_collision_precedes_an_unavailable_lookup() -> None:
+        """Unresolved identity precedes operational failure, as dt-1's PMID collision already does."""
+        q2 = obs("matched", COLLIDED, vf())
+>       assert got(decide("PAIR", obs("matched", COLLIDED, vf()), UNAVAILABLE, q2)) == (
+            "D-10",
+            "UNRESOLVED_IDENTITY",
+            (NEW, "KEY_RESULTS_DIFFER"),
+        )
+E       AssertionError: assert ('D-13', 'LOO...UERY_FAILED')) == ('D-10', 'UNR...ULTS_DIFFER'))
+E         
+E         At index 0 diff: 'D-13' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:292: AssertionError
+_______________ test_the_collision_precedes_an_uncertain_status ________________
+
+    def test_the_collision_precedes_an_uncertain_status() -> None:
+        unc = proj("uncertain", None, ["MIXED_CURRENT_EFFECT"])
+>       assert got(decide("DOI", obs("matched", COLLIDED, unc))) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-11', 'UNR...STABLISHED',)) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-11' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:301: AssertionError
+_____________ test_bridge_only_and_collision_reasons_are_both_kept _____________
+
+    def test_bridge_only_and_collision_reasons_are_both_kept() -> None:
+        bridge = proj("uncertain", None, ["BRIDGE_ONLY_SUPPORT", "BRIDGED_EVIDENCE_MATERIAL"])
+        out = decide("DOI", obs("matched", COLLIDED, bridge))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", ("BRIDGE_ONLY_SUPPORT", NEW))
+E       AssertionError: assert ('D-10', 'UNR...LY_SUPPORT',)) == ('D-10', 'UNR...E_COLLISION'))
+E         
+E         At index 2 diff: ('BRIDGE_ONLY_SUPPORT',) != ('BRIDGE_ONLY_SUPPORT', 'IDENTIFIER_ROLE_COLLISION')
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:307: AssertionError
+___________ test_a_collision_never_gives_notice_cited_or_a_negative ____________
+
+    def test_a_collision_never_gives_notice_cited_or_a_negative() -> None:
+        for etype in ("retracted", "correction", "expression_of_concern", "reinstated"):
+            out = decide("DOI", obs("matched", [ev("e1", "doi", D, None, etype=etype, flags=(SAME_DOI,))], vf(etype)))
+>           assert out.cls == "UNRESOLVED_IDENTITY" and out.cls != "NOTICE_CITED" and out.value is None
+E           AssertionError: assert ('RETRACTED_WORK_CITED' == 'UNRESOLVED_IDENTITY'
+E             
+E             - UNRESOLVED_IDENTITY
+E             + RETRACTED_WORK_CITED)
+
+tests/stage04/test_corrective_role_collision.py:313: AssertionError
+___ test_a_matched_deciding_lookup_without_notice_hit_evidence_fails_closed ____
+
+    def test_a_matched_deciding_lookup_without_notice_hit_evidence_fails_closed() -> None:
+        """Stage 02 always renders notice_hit_count; an observation without it cannot show the key is not a notice."""
+        out = decide("DOI", obs("matched", [ev("e1", "doi", D, None)], vf(), notice_hits=None))
+>       assert got(out) == ("D-10", "UNRESOLVED_IDENTITY", (NEW,))
+E       AssertionError: assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:319: AssertionError
+___________________ test_real_rows[both_schemes_equal_pair] ____________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'both_schemes_equal_pair'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: both_schemes_equal_pair
+E       assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+_______________________ test_real_rows[cross_record_doi] _______________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'cross_record_doi'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: cross_record_doi
+E       assert ('D-14', 'COR...ON_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+______________________ test_real_rows[cross_record_pmid] _______________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'cross_record_pmid'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: cross_record_pmid
+E       assert ('D-14', 'COR...ON_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+________________________ test_real_rows[jasist_failure] ________________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'jasist_failure'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: jasist_failure
+E       assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+_____________________ test_real_rows[same_doi_correction] ______________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'same_doi_correction'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: same_doi_correction
+E       assert ('D-11', 'UNR...STABLISHED',)) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-11' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+________________ test_real_rows[same_doi_expression_of_concern] ________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'same_doi_expression_of_concern'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: same_doi_expression_of_concern
+E       assert ('D-14', 'CONCERN_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+_____________________ test_real_rows[same_doi_reinstated] ______________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'same_doi_reinstated'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: same_doi_reinstated
+E       assert ('D-11', 'UNR...STABLISHED',)) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-11' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+______________________ test_real_rows[same_doi_retracted] ______________________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'same_doi_retracted'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: same_doi_retracted
+E       assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+______________ test_real_rows[same_doi_with_clean_pmid_doi_only] _______________
+
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+name = 'same_doi_with_clean_pmid_doi_only'
+
+    @pytest.mark.integration
+    @pytest.mark.parametrize("name", sorted(EXPECTED))
+    def test_real_rows(rc_index: Path, name: str) -> None:
+        q = CLASSES[name]
+        rule, cls, reasons, _ = EXPECTED[name]
+>       assert got(real_decide(rc_index, q["doi"], q["pmid"])) == (rule, cls, reasons), name
+E       AssertionError: same_doi_with_clean_pmid_doi_only
+E       assert ('D-14', 'RET...RK_CITED', ()) == ('D-10', 'UNR..._COLLISION',))
+E         
+E         At index 0 diff: 'D-14' != 'D-10'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:415: AssertionError
+____________________ test_historical_jasist_unit_end_to_end ____________________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-494/test_historical_jasist_unit_en0')
+rc_index = PosixPath('/tmp/pytest-of-root/pytest-494/rwrc0/index/rw-c710ff1df10747dd.sqlite')
+
+    @pytest.mark.integration
+    def test_historical_jasist_unit_end_to_end(tmp_path: Path, rc_index: Path) -> None:
+        """The exposed campaign article en-39868218 (development evidence after D-071), run through the controller on the
+        real-row index: the unit citing 10.1002/asi.23238 alone is UNRESOLVED_IDENTITY, the claim validates, the run
+        completes and verifies."""
+        import test_step9_real as T9
+    
+        run = T9.Run(tmp_path, EN_JASIST, rc_index)
+        assert run.result.status == "COMPLETED"
+        T9._verified(run)
+        claims = [c for c in run.claims() if [k["normalized"] for k in c["candidate"]["keys"]] == ["10.1002/asi.23238"]]
+        assert len(claims) == 1
+        c = claims[0]
+>       assert (c["class"], c["rule"], c["status"], c["value"], c["reasons"]) == (
+            "UNRESOLVED_IDENTITY",
+            "D-10",
+            "uncertain",
+            None,
+            [NEW],
+        )
+E       AssertionError: assert ('RETRACTED_W...etracted', []) == ('UNRESOLVED_...E_COLLISION'])
+E         
+E         At index 0 diff: 'RETRACTED_WORK_CITED' != 'UNRESOLVED_IDENTITY'
+E         Use -v to get more diff
+
+tests/stage04/test_corrective_role_collision.py:447: AssertionError
+=========================== short test summary info ============================
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[retracted-retracted]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[correction-correction]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[expression_of_concern-expression_of_concern]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[reinstated-reinstated]
+FAILED tests/stage04/test_corrective_role_collision.py::test_two_records_sharing_one_identifier_in_different_roles_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_cross_record_pmid_abstains
+FAILED tests/stage04/test_corrective_role_collision.py::test_both_identifiers_collided_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_same_record_doi_and_a_cross_record_pmid_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_bridged_event_attached_through_a_collided_doi_abstains
+FAILED tests/stage04/test_corrective_role_collision.py::test_the_collision_precedes_an_unavailable_lookup
+FAILED tests/stage04/test_corrective_role_collision.py::test_the_collision_precedes_an_uncertain_status
+FAILED tests/stage04/test_corrective_role_collision.py::test_bridge_only_and_collision_reasons_are_both_kept
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_collision_never_gives_notice_cited_or_a_negative
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_matched_deciding_lookup_without_notice_hit_evidence_fails_closed
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[both_schemes_equal_pair]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[cross_record_doi]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[cross_record_pmid]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[jasist_failure]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_correction]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_expression_of_concern]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_reinstated]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_retracted]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_with_clean_pmid_doi_only]
+FAILED tests/stage04/test_corrective_role_collision.py::test_historical_jasist_unit_end_to_end
+24 failed, 25 passed in 17.39s

@@ -84,6 +84,23 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
 - Residual: a notice that Retraction Watch does not record as a notice (an unindexed notice DOI) gives `no_record`, so
   the citation is `NOT_FOUND_IN_CHECKED_SOURCES`, not a false positive. A Stage 02 record whose notice and original
   share one PMID is carried as `PMID_ROLE_COLLISION` (D-10).
+- Realized (gate 04-I, failed; owner decision D-071): the frozen engine (table dt-1) read only the PMID collision; a
+  DOI recorded in one Retraction Watch record as both original and notice DOI (`10.1002/asi.23238`, a withdrawal) was
+  attached as `RETRACTED_WORK_CITED`. The census of the pinned Stage 02 snapshot (`corrective/census/CENSUS.json`)
+  found 13,681 DOIs and 1,053 PMIDs given both roles in one record and 56 DOIs and 27 PMIDs given both roles across
+  records; the frozen engine made nearly all the DOI cases positive. Table dt-2 (SPEC 7.3a) abstains on every
+  role-ambiguous event (`UNRESOLVED_IDENTITY`, `IDENTIFIER_ROLE_COLLISION`) unless another cited identifier of the
+  citation names the same event cleanly.
+- Residual after dt-2: a true retraction recorded with its own DOI as the notice DOI is no longer reported positive
+  unless the citation carries a second identifier that tells the work from the notice (its record gives a different
+  notice identifier in that scheme): a recall cost the owner chose over false attachment (D-071 section 4). On the
+  pinned snapshot no single-key citation of a colliding identifier is positive any more, and 1,472 of 31,506 positive
+  DOI+PMID pairs become `UNRESOLVED_IDENTITY` (`corrective/census/PAIR_CENSUS.json`; 800 under the lenient
+  alternative put to the owner, `PAIR_CENSUS_LENIENT.json`); the cost on exposed articles is in
+  `corrective/regression/`. If the discriminating second identifier is itself wrong in the citation, the attachment
+  rests on it (as for any PAIR, R4-03). A non-cited bridged key is not checked for another record's notice role
+  (reviewer finding A-04); it cannot make a positive on its own, since Stage 02 never counts bridged records toward a
+  verified value.
 - Gate and invariant: 04-A, 04-C; M-12.
 - Blocks verification: **blocks**.
 

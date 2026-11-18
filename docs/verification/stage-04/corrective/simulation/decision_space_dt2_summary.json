@@ -1,0 +1,241 @@
+{
+ "cases": 25264896,
+ "cases_per_shape": {
+  "DOI": 49152,
+  "NONE": 768,
+  "PAIR": 25165824,
+  "PMID": 49152
+ },
+ "distinct_decisions": 383,
+ "dt1_oracle_manifest_sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735",
+ "elapsed_s": 351.9,
+ "model_digest": "d01f343821b1e07d273056598c757f2fd7a583461d735467bdc7bb19159c56ca",
+ "model_version": "dt2-reference/1",
+ "not_rechecked_here": [
+  "DETERMINISM",
+  "STRENGTHEN_TAINT",
+  "STRENGTHEN_UNAVAILABLE",
+  "STRENGTHEN_WITNESS",
+  "TAINT_CLASS_INDEPENDENCE"
+ ],
+ "oracle": {
+  "cases": 25264896,
+  "cases_per_shape": {
+   "DOI": 49152,
+   "NONE": 768,
+   "PAIR": 25165824,
+   "PMID": 49152
+  },
+  "distinct_decisions": 383,
+  "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and, within a chunk, decision_space_dt2.iter_chunk() (the frozen order with rc = False, then with rc = True); the value indexes dt2_decisions.json 'decisions'",
+  "files": {
+   "dt2_decisions.json": "e0ed7fe4aa830bc4798ef1eda59de82b7bf62a34d9c283083a8b74276dc7cd5c",
+   "dt2_table.u16le.gz": "04a40415957c5f396309ae36631530859d98ca811f94979e9e9d7cb363c37ac8"
+  },
+  "frozen_dt1_oracle_manifest_sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735",
+  "model_digest": "d01f343821b1e07d273056598c757f2fd7a583461d735467bdc7bb19159c56ca",
+  "model_version": "dt2-reference/1",
+  "oracle_version": "dt2-oracle/1",
+  "table_raw_sha256": "212de00b159ca1ce267adeeaf0b6a25d413158bf17631eb6edf20a8b1ccd3529",
+  "table_version": "dt-2"
+ },
+ "properties": {
+  "AB2_REASONS": {
+   "checked": 8420128,
+   "examples": [],
+   "statement": "every abstention, needs-resolution and failure carries at least one reason code (AB-2)",
+   "violations": 0
+  },
+  "EQUIVALENCE_RC_FALSE": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "with rc = False, the dt-2 decision is the frozen dt-1 oracle's decision for the same case",
+   "violations": 0
+  },
+  "FAILURE_CONTAINMENT": {
+   "checked": 10429422,
+   "examples": [],
+   "statement": "an unavailable lookup never yields a finding or not-found; kind failure only from D-5/D-17",
+   "violations": 0
+  },
+  "FAIL_CLOSED_INVALID": {
+   "checked": 24775128,
+   "examples": [],
+   "statement": "no invalid case yields a positive finding or NOT_FOUND_IN_CHECKED_SOURCES",
+   "violations": 0
+  },
+  "IDENTITY_DOMINANCE": {
+   "checked": 7340032,
+   "examples": [],
+   "statement": "a cited PAIR candidate with kappa = INCOMPATIBLE is IDENTITY_CONFLICT whatever its projections, taint and availability (P3 a, gate 04-D); an invalid one may instead fail DETECT (D-5), never anything else",
+   "violations": 0
+  },
+  "MONOTONE_GUARDS": {
+   "checked": 24990624,
+   "examples": [],
+   "statement": "when a monotone guard (D-5 invalid_query, D-6, D-7, D-8, D-13) holds, the result is no finding and no not-found (MM P4)",
+   "violations": 0
+  },
+  "NOTICE_SEPARATION": {
+   "checked": 1579122,
+   "examples": [],
+   "statement": "a notice_only deciding lookup never yields a finding or not-found; NOTICE_CITED has no value; a positive PAIR finding beside a notice_only key lookup carries KEY_RESULTS_DIFFER",
+   "violations": 0
+  },
+  "NO_FINDING_UNDER_CONFLICT": {
+   "checked": 22020096,
+   "examples": [],
+   "statement": "no case with kappa = INCOMPATIBLE yields a positive finding or not-found",
+   "violations": 0
+  },
+  "NO_NEGATIVE": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "every value is a positive value, not_found_in_checked_sources or null; no class, value or reason means 'not retracted' (S-7.5, M-12)",
+   "violations": 0
+  },
+  "P1_VALID_NO_FAILURE": {
+   "checked": 489768,
+   "examples": [],
+   "statement": "no valid case reaches D-5 or D-17 (MM P1; D-17 unreachable on Stage 02's model)",
+   "violations": 0
+  },
+  "P2_VALID": {
+   "checked": 364992,
+   "examples": [],
+   "statement": "on valid PAIR cases with all three lookups available, kappa = INCOMPATIBLE iff Q2 is ambiguous_identity (MM P2)",
+   "violations": 0
+  },
+  "P5_NOT_FOUND_CONDITIONS": {
+   "checked": 16,
+   "examples": [],
+   "statement": "NOT_FOUND_IN_CHECKED_SOURCES implies cited, keyed, untainted, every lookup available, none invalid, deciding lookup no_record with value not_found_in_checked_sources (MM P5)",
+   "violations": 0
+  },
+  "POSITIVE_FROM_DECIDING": {
+   "checked": 1456,
+   "examples": [],
+   "statement": "a positive class is reached only from a matched deciding lookup with a verified_fact projection of the same value",
+   "violations": 0
+  },
+  "RC_DETERMINISM": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "deciding an equal rc case built from fresh objects gives an identical decision",
+   "violations": 0
+  },
+  "RC_EFFECT": {
+   "checked": 5028,
+   "examples": [],
+   "statement": "where rc changes a decision, the twin's rule was D-10 to D-16 and the result is D-10 UNRESOLVED_IDENTITY carrying IDENTIFIER_ROLE_COLLISION and the twin's pair reasons",
+   "violations": 0
+  },
+  "RC_INERT_UNLESS_MATCHED": {
+   "checked": 4737408,
+   "examples": [],
+   "statement": "rc changes nothing when the deciding lookup is not matched",
+   "violations": 0
+  },
+  "RC_NO_FINDING": {
+   "checked": 7895040,
+   "examples": [],
+   "statement": "a case whose deciding lookup is matched and holds a role-ambiguous event (rc) never yields a positive finding or not-found",
+   "violations": 0
+  },
+  "RC_NO_NOTICE_FROM_COLLISION": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "rc never yields NOTICE_CITED",
+   "violations": 0
+  },
+  "RC_PRECEDENCE": {
+   "checked": 12632448,
+   "examples": [],
+   "statement": "rc never changes a decision of D-1 to D-9 (contract, identity conflict, contradiction, taint, ambiguity keep their place) and never moves a case to a later tier",
+   "violations": 0
+  },
+  "RC_REASON_IFF": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "IDENTIFIER_ROLE_COLLISION is a reason exactly when rc holds and the rule is D-10",
+   "violations": 0
+  },
+  "STATUS_CONSISTENCY": {
+   "checked": 17124882,
+   "examples": [],
+   "statement": "status, value and disposition are the functions of the class in SPEC 7.2 and 7.6",
+   "violations": 0
+  },
+  "TOTAL": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "every case is decided by exactly one rule of D-1..D-17 (no case falls through the table)",
+   "violations": 0
+  },
+  "UNKNOWN_PRESERVATION": {
+   "checked": 18948096,
+   "examples": [],
+   "statement": "a deciding lookup outside the contract, or with an uncertain, ambiguous, gap or conflicting projection, never yields a finding or not-found",
+   "violations": 0
+  }
+ },
+ "rules": {
+  "no_rc|invalid|D-1": 4129188,
+  "no_rc|invalid|D-12": 50,
+  "no_rc|invalid|D-13": 703,
+  "no_rc|invalid|D-17": 2223,
+  "no_rc|invalid|D-2": 4129188,
+  "no_rc|invalid|D-3": 15,
+  "no_rc|invalid|D-4": 109,
+  "no_rc|invalid|D-5": 4067784,
+  "no_rc|invalid|D-6": 31008,
+  "no_rc|invalid|D-7": 6464,
+  "no_rc|invalid|D-8": 20832,
+  "no_rc|valid|D-1": 81628,
+  "no_rc|valid|D-10": 2933,
+  "no_rc|valid|D-11": 419,
+  "no_rc|valid|D-12": 13,
+  "no_rc|valid|D-13": 660,
+  "no_rc|valid|D-14": 1456,
+  "no_rc|valid|D-15": 9,
+  "no_rc|valid|D-16": 8,
+  "no_rc|valid|D-2": 81628,
+  "no_rc|valid|D-3": 1,
+  "no_rc|valid|D-4": 3,
+  "no_rc|valid|D-6": 16040,
+  "no_rc|valid|D-7": 21584,
+  "no_rc|valid|D-8": 38500,
+  "no_rc|valid|D-9": 2,
+  "rc|invalid|D-1": 4129188,
+  "rc|invalid|D-12": 50,
+  "rc|invalid|D-13": 703,
+  "rc|invalid|D-17": 2223,
+  "rc|invalid|D-2": 4129188,
+  "rc|invalid|D-3": 15,
+  "rc|invalid|D-4": 109,
+  "rc|invalid|D-5": 4067784,
+  "rc|invalid|D-6": 31008,
+  "rc|invalid|D-7": 6464,
+  "rc|invalid|D-8": 20832,
+  "rc|valid|D-1": 81628,
+  "rc|valid|D-10": 5028,
+  "rc|valid|D-12": 13,
+  "rc|valid|D-13": 440,
+  "rc|valid|D-15": 9,
+  "rc|valid|D-16": 8,
+  "rc|valid|D-2": 81628,
+  "rc|valid|D-3": 1,
+  "rc|valid|D-4": 3,
+  "rc|valid|D-6": 16040,
+  "rc|valid|D-7": 21584,
+  "rc|valid|D-8": 38500,
+  "rc|valid|D-9": 2
+ },
+ "table_version": "dt-2",
+ "valid_per_shape": {
+  "DOI": 1728,
+  "NONE": 24,
+  "PAIR": 486192,
+  "PMID": 1824
+ }
+}

@@ -122,7 +122,7 @@ def claim_and_set(cls: str, ev: list[str], cand: str = "cand") -> tuple[dict[str
         "candidate": {"shape": "DOI", "keys": [dict(DOI)], "coherence": None},
         "class": cls,
         "rule": "D-14",
-        "table_version": "dt-1",
+        "table_version": "dt-2",
         "status": "verified_fact",
         "value": "retracted",
         "alternatives": [],
@@ -181,7 +181,7 @@ def claim_and_set(cls: str, ev: list[str], cand: str = "cand") -> tuple[dict[str
     base["evidence_set"] = digest(value)
     base["supporting_count"] = len(value["supporting"])
     base["contradicting_count"] = len(value["contradicting"])
-    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-1", base["evidence_set"])
+    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-2", base["evidence_set"])
     return base, value
 
 

@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:investigation:v1:common",
   "title": "CITERIFT Stage 04 shared definitions, version 1",
   "description": "Identities, configuration, vocabularies and evidence shared by the Stage 04 request, journal-record, claim and report schemas (docs/verification/stage-04/SPECIFICATION.md, MATHEMATICAL_MODEL.md). Accepted upstream definitions are reused by $ref and never copied or changed. Every hash is a lowercase SHA-256; every number is an integer (MM 2.1).",
-  "x-citerift-version": "3.0.0",
+  "x-citerift-version": "4.0.0",
   "$defs": {
     "sha256": {
       "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
@@ -57,8 +57,8 @@
       "const": "plan-1"
     },
     "table_version": {
-      "description": "Decision table dt-1 (SPEC 7.3).",
-      "const": "dt-1"
+      "description": "Decision table dt-2 (SPEC 7.3; owner decision D-071). Claims of dt-1 belong to the frozen engine and are not migrated.",
+      "const": "dt-2"
     },
     "subject_type": {
       "description": "Open, versioned enumeration of investigation subjects (S-4.5). Version 1 knows one type; any other value fails validation (SUBJECT_TYPE_UNSUPPORTED) instead of being guessed.",
@@ -327,7 +327,7 @@
           "$ref": "#/$defs/plan_version"
         },
         "schema_version": {
-          "const": "3.0.0"
+          "const": "4.0.0"
         }
       }
     },
@@ -405,7 +405,7 @@
       ]
     },
     "claim_class": {
-      "description": "The fifteen classes of dt-1 (SPEC 7.2). There is no class meaning 'not retracted', 'clean' or any other global negative (S-7.5).",
+      "description": "The fifteen classes of dt-1 and dt-2 (SPEC 7.2). There is no class meaning 'not retracted', 'clean' or any other global negative (S-7.5).",
       "enum": [
         "RETRACTED_WORK_CITED",
         "CONCERN_CITED",
@@ -470,7 +470,7 @@
       ]
     },
     "reason": {
-      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons. LOOKUP_EVIDENCE_LIMIT_EXCEEDED: owner decision D-048 (version 2.0.0).",
+      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons. LOOKUP_EVIDENCE_LIMIT_EXCEEDED: owner decision D-048 (version 2.0.0). IDENTIFIER_ROLE_COLLISION: owner decision D-071 (version 4.0.0).",
       "enum": [
         "LIST_DEFINED_UNUSED",
         "CONFLICTING_DEFINITIONS",
@@ -483,6 +483,7 @@
         "RETRACTION_EVENT_TYPE_CONFLICT",
         "KEY_NAMES_SEVERAL_WORKS",
         "PMID_ROLE_COLLISION",
+        "IDENTIFIER_ROLE_COLLISION",
         "BRIDGE_ONLY_SUPPORT",
         "CURRENT_EFFECT_NOT_ESTABLISHED",
         "COVERAGE_GAP_RELEVANT_ROWS",

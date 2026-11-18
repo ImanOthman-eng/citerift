@@ -423,7 +423,7 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-7 | 4 | some lookup in `Λ(c)` has state `matched` and projection status `conflicting` with value null | `CONTRADICTION_IN_SOURCES` | alternatives from the first such lookup in the order L, Q1(DOI), Q1(PMID); reason `RETRACTION_EVENT_TYPE_CONFLICT` |
 | D-8 | 5 | `τ` | `UNRESOLVED_IDENTIFIER` | taint reasons (S-6.6) |
 | D-9 | 5 | `L.state = ambiguous_identity` and projection `uncertain` with value null | `UNRESOLVED_IDENTITY` | reason `KEY_NAMES_SEVERAL_WORKS` |
-| D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION` or `BRIDGE_ONLY_SUPPORT` |
+| D-10 | 5 | `L.state = matched`, its projection within F-2 and F-4, and (`L` has a `PMID_ROLE_COLLISION` issue naming an event with `matched_by = pmid`, or `L` has a role-ambiguous event (section 7.3a, table dt-2), or the projection's basis reasons include `BRIDGE_ONLY_SUPPORT`) | `UNRESOLVED_IDENTITY` | reason `PMID_ROLE_COLLISION`, `IDENTIFIER_ROLE_COLLISION` (a role-ambiguous event not already named by the PMID issue) or `BRIDGE_ONLY_SUPPORT` |
 | D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `CURRENT_EFFECT_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
 | D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
 | D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`, and also `LOOKUP_EVIDENCE_LIMIT_EXCEEDED` when an unavailable lookup was refused by the lookup evidence budget (S-6.10a, owner decision D-048); the code of the failed query stays in its lookup observation |
@@ -431,6 +431,43 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-15 | 8 | `L.state = notice_only` and projection `uncertain` with value null | `NOTICE_CITED` | reason `CITED_IDENTIFIER_IS_NOTICE`; never an attachment to the retracted work |
 | D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | reason `NOT_FOUND_IN_CHECKED_SOURCES`; provenance = checked sources |
 | D-17 | 10 | otherwise | — (DETECT `failed_terminal`, `DECISION_TABLE_GAP`) | unreachable on Stage 02's model (MM proposition P1); fail-closed; reached by a deciding lookup outside the Stage 02 contract |
+
+### 7.3a Identifier role collisions (table dt-2, owner decision D-071)
+
+Table dt-1 (frozen engine b5bf8ed) read an identifier role collision only through Stage 02's lookup issue
+`PMID_ROLE_COLLISION`. Gate 04-I failed on a citation whose DOI is, in one Retraction Watch record, both the original
+and the notice DOI (`corrective/ROOT_CAUSE.md`): dt-1 gave `RETRACTED_WORK_CITED`. Table dt-2 applies the owner's
+principle (D-071 section 3): an identifier whose checked evidence gives incompatible publication-object roles never
+produces a positive work attachment solely because one of those roles is original.
+
+- An event `e` of the deciding lookup `L` is attached to the citation through its *attaching keys*: each original
+  identifier of `e` (DOI, PMID) that the candidate cites, and the one Stage 02 matched or bridged it by (`matched_by`).
+- A key has a *notice role* when the checked evidence of the candidate also gives it as a notice identifier: in any
+  record of any of the candidate's lookups that gives the key as both its original and its notice identifier (Stage 02
+  import flag `NOTICE_DOI_EQUALS_ORIGINAL` or `NOTICE_PMID_EQUALS_ORIGINAL`), or, for a key the candidate cites, in
+  another record (`notice_hit_count > 0` in that key's own single-key lookup; a missing count is read as "may be a
+  notice", fail closed; an unavailable lookup states nothing and is handled by D-13). This is a property of the key,
+  not of one event: a key that one record gives as a notice never resolves another record's event (reviewer finding
+  B-01). Event flags that are missing or malformed are read as both same-record flags (fail closed).
+- A cited key *discriminates* for `e` when it is `e`'s original identifier in its scheme, it has no notice role, and
+  `e`'s own record gives a **different** notice identifier in the same scheme, so that the key tells the work from
+  the notice. A record that states no notice identifier in that scheme gives no such evidence (absence of a notice
+  identifier is not evidence of the work).
+- `e` is *role-ambiguous* when some attaching key has a notice role (or `e` has no attaching key; fail closed) and no
+  cited key discriminates for `e`. A non-cited bridge key never resolves (reviewer finding A-01); nothing else does
+  either: no publisher, prefix, title, notice type or string test. Whether a discriminating second identifier should
+  resolve at all, and in this strict form, is put to the owner (decision card); this is the fail-closed reading.
+- `L` matched with a role-ambiguous event satisfies D-10: `UNRESOLVED_IDENTITY`, reason `IDENTIFIER_ROLE_COLLISION`
+  (new in dt-2; no existing code named a DOI or cross-record collision). D-10 sits in tier 5, after D-6, D-7 and D-8 and
+  before D-11 to D-16, so the order contradiction → unresolved → operational failure → positive → notice/no-finding is
+  unchanged, and a collision never produces `NOTICE_CITED` (D-15 requires `notice_only`).
+- Where no event of `L` is role-ambiguous, dt-2 decides exactly as dt-1 (checked over the whole abstract domain:
+  `simulations/stage04/oracle-dt2`, property `EQUIVALENCE_RC_FALSE`). How role ambiguity is computed is checked
+  separately, exhaustively on a synthetic domain against an independent formulation of this section
+  (`tests/stage04/test_corrective_role_property.py`), and on every original DOI+PMID pair of the pinned snapshot
+  (`corrective/census/PAIR_CENSUS.json`).
+
+The rule is placed in Stage 04; Stage 02 is unchanged (its flags and `notice_hit_count` already carry the evidence).
 
 Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5 and finalized by owner decision D-043; they
 replace the Step 4 model's placeholders and change no class, guard or precedence
@@ -453,7 +490,7 @@ defect in one candidate means the table or an adapter cannot be trusted for any 
 | Input class | Rule(s) |
 |---|---|
 | DOI only | D-7 to D-16 with `σ = DOI` (D-9 cannot fire: a DOI-only Stage 02 query never returns `ambiguous_identity`) |
-| PMID only | D-7 to D-16 with `σ = PMID`; D-9 when the PMID's records carry more than one DOI; D-10 for a PMID role collision |
+| PMID only | D-7 to D-16 with `σ = PMID`; D-9 when the PMID's records carry more than one DOI; D-10 for a PMID role collision (dt-2: also a cross-record one, section 7.3a) |
 | DOI + PMID coherent | `κ ∈ {COHERENT, UNDETERMINED}`: D-7 to D-16 on `L = Q2`; `PAIR_UNCORROBORATED` when `UNDETERMINED` |
 | DOI + PMID incompatible | D-6 `IDENTITY_CONFLICT` |
 | DOI + PMID, a lookup unavailable | D-6 when a witness exists in the available lookups; otherwise `κ = NOT_DETERMINED` and D-13 (or an earlier tier) |
