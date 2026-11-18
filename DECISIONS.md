@@ -1608,3 +1608,34 @@ alternate round, at least two mirrors agreeing, all mirror answers kept in SEED.
 checked; no two-mirror agreement within 24 hours → STOP for owner decision); the absence of local BLS public-key
 verification is accepted as the registered limitation. Step 13 is ACCEPTED AND CLOSED; Step 14 only is authorized,
 strictly under P; Step 15 does not start until the Step 14 campaign is complete and presented for owner review.
+
+## D-071 — Gate 04-I failed evaluation accepted; one corrective cycle within Stage 04
+- Status: accepted
+- Topic: stage-04-04i-failed-corrective-cycle
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-campaign/REPORT.md; docs/verification/stage-04/evaluation-campaign/SCORES.json; docs/verification/stage-04/review/step14/STEP14_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPTDrESsDr75RoYgLhdymUyn` (2026-11-18T20:07:29Z). Gate 04-I at evaluation
+commit `1064113902c674f1c61dcb7eda33afe40350ca71` is accepted as a valid, faithfully reported failed evaluation
+(English G2 FAIL, English G3 FAIL, Arabic G4 FAIL, overall NOT PASSED). The frozen engine `b5bf8ed` is not accepted as
+the final Stage 04 engine. One evidence-supported corrective cycle within Stage 04 is authorized; Stage 04 remains
+IN_PROGRESS; Step 15 does not start. The completed campaign is never altered, deleted, rescored, redrawn or rerun (P,
+seed, draw, locked labels, RUN.json, SCORES.json unchanged; no samples added; no Arabic export created in it; no rerun
+on the 80 articles); it is design-exposed development evidence from now on, and its 80 articles, revisions, packets and
+locked items join the future exposure manifest. The cycle: root-cause audit of `en-39868218` / `un-00011` and a
+read-only role-collision census of the pinned Stage 02 snapshot; the general rule "an identifier whose checked evidence
+gives incompatible publication-object roles must never produce a positive work attachment solely because one of those
+roles is original" (source/evidence based; no DOI, publisher or "Withdrawal" special case; abstain, preferably
+UNRESOLVED_IDENTITY, unless independent production evidence resolves the object; a new reason code only if no existing
+one fits); the protection runs before D-14 without weakening contradiction → unresolved → operational failure →
+positive → notice/no-finding; a new post-failure reference-model version, the old oracle kept; Stage 04 correction
+preferred, and any Stage 02 maintenance only after a separate owner decision; the role-collision adversarial suite and
+full regression on the vertical slice, the 232 development revisions and the 80 exposed campaign articles; evaluation
+runner fixes (memory outside the repository from the start, export parent created before the first article, fail-first
+tested); fresh independent reviews (scientific semantics, identity/publication-object roles, regression, source
+provenance, security, evaluation leakage) with no unresolved HIGH/CRITICAL; a new engine identity (not 0.2.0; at least a
+new minor version); a complete new Step-12-style freeze, the old freeze marked SUPERSEDED_AFTER_FAILED_04_I and kept; an
+updated exposure manifest hashed and committed. For this instruction the work stops at the new freeze candidate; the new
+Step 13 pre-registration (P2, new drand seed, G2 ≤ 0.10, G3 = 0, G4 = 0 by default) waits for explicit authorization.
