@@ -1,0 +1,1490 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 4,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 4
+   },
+   {
+    "left": 6,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 4,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 4
+   },
+   {
+    "left": 8,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 8
+   }
+  ],
+  "containers": {
+   "note": 8
+  },
+  "excluded_identifiers": {
+   "other_site_url": 2
+  },
+  "identifiers_by_role": {
+   "marker_target": 2,
+   "primary_citation_field": 2
+  },
+  "identifiers_by_scheme": {
+   "doi": 2,
+   "pmid": 2
+  },
+  "identifiers_render": {
+   "render_link_found": 4
+  },
+  "markers": {
+   "ambiguous_text": 4,
+   "no_recognized_warning_in_inspected_region": 3,
+   "recognized_warning_text": 1
+  },
+  "parse_nodes": 181,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 8,
+   "total": 8,
+   "unmatched": 0
+  },
+  "source_bytes": 5598,
+  "units": {
+   "citation_template": 8
+  },
+  "uses": {
+   "anonymous": 7,
+   "bound": 1
+  },
+  "uses_render": {
+   "matched": 8
+  }
+ },
+ "capture": {
+  "capture_sha256": "413c2f1645e7160cc58e645d5d8eb3a9a4980689b5ee61a6212dff5205060d49",
+  "page_id": 68076493,
+  "render_artifact": "14296e6606d2f61bb9abed7986e14361b085e50aeb4d0b4e0112f6b662e91dd9",
+  "render_state": "captured",
+  "revision_id": 1370115005,
+  "sha1": "fc207c15f4c5d991e7c00a99bbd30ecc0aed6c8c",
+  "source_artifact": "f89778abc65d2007592e6d24aeb338b27d10ece0b455d9fc1caab4a52d350e19",
+  "title": "Frontiers in Public Health",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1134,
+      "byte_start": 756,
+      "cp_end": 1128,
+      "cp_start": 750
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1140,
+      "byte_start": 751,
+      "cp_end": 1134,
+      "cp_start": 745
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1140,
+    "byte_start": 751,
+    "cp_end": 1134,
+    "cp_start": 745
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1345,
+      "byte_start": 1173,
+      "cp_end": 1339,
+      "cp_start": 1167
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1351,
+      "byte_start": 1168,
+      "cp_end": 1345,
+      "cp_start": 1162
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1351,
+    "byte_start": 1168,
+    "cp_end": 1345,
+    "cp_start": 1162
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2193,
+      "byte_start": 1671,
+      "cp_end": 2187,
+      "cp_start": 1665
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2199,
+      "byte_start": 1666,
+      "cp_end": 2193,
+      "cp_start": 1660
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2199,
+    "byte_start": 1666,
+    "cp_end": 2193,
+    "cp_start": 1660
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00003"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2837,
+      "byte_start": 2333,
+      "cp_end": 2831,
+      "cp_start": 2327
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2843,
+      "byte_start": 2315,
+      "cp_end": 2837,
+      "cp_start": 2309
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "RWstand",
+   "name_raw": "RWstand",
+   "render": {
+    "region_id": "cite_note-RWstand-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2843,
+    "byte_start": 2315,
+    "cp_end": 2837,
+    "cp_start": 2309
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3377,
+      "byte_start": 2877,
+      "cp_end": 3371,
+      "cp_start": 2871
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3383,
+      "byte_start": 2872,
+      "cp_end": 3377,
+      "cp_start": 2866
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3383,
+    "byte_start": 2872,
+    "cp_end": 3377,
+    "cp_start": 2866
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3856,
+      "byte_start": 3485,
+      "cp_end": 3850,
+      "cp_start": 3479
+     },
+     "id": "ct-00006/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3862,
+      "byte_start": 3480,
+      "cp_end": 3856,
+      "cp_start": 3474
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-6",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3862,
+    "byte_start": 3480,
+    "cp_end": 3856,
+    "cp_start": 3474
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": [
+    "us-00006"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 4358,
+      "byte_start": 3891,
+      "cp_end": 4352,
+      "cp_start": 3885
+     },
+     "id": "ct-00007/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 4364,
+      "byte_start": 3886,
+      "cp_end": 4358,
+      "cp_start": 3880
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00007",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-7",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 4364,
+    "byte_start": 3886,
+    "cp_end": 4358,
+    "cp_start": 3880
+   },
+   "unit_ids": [
+    "un-00007"
+   ],
+   "use_ids": [
+    "us-00007"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 5336,
+      "byte_start": 4814,
+      "cp_end": 5330,
+      "cp_start": 4808
+     },
+     "id": "ct-00008/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 5342,
+      "byte_start": 4809,
+      "cp_end": 5336,
+      "cp_start": 4803
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00008",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-8",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 5342,
+    "byte_start": 4809,
+    "cp_end": 5336,
+    "cp_start": 4803
+   },
+   "unit_ids": [
+    "un-00008"
+   ],
+   "use_ids": [
+    "us-00008"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4133,
+    "byte_start": 4104,
+    "cp_end": 4127,
+    "cp_start": 4098,
+    "exact": true,
+    "raw": "10.3389/fpubh.2016.00156/full",
+    "raw_sha256": "9acff74216faff4ba99193f976e2b9f576827f65387edb07eccba6ea02e22593"
+   }
+  },
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4338,
+    "byte_start": 4309,
+    "cp_end": 4332,
+    "cp_start": 4303,
+    "exact": true,
+    "raw": "10.3389/fpubh.2016.00156/full",
+    "raw_sha256": "9acff74216faff4ba99193f976e2b9f576827f65387edb07eccba6ea02e22593"
+   }
+  }
+ ],
+ "extraction_digest": "fadd794e50e8044803039c1c6fa539ab8fb336b87cf7e48a8d9cadbe9957c811",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.3389/fpubh.2014.00154",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.3389/fpubh.2014.00154",
+    "raw": "10.3389/fpubh.2014.00154",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwbQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/cite/span[1]/a",
+      "quote": "10.3389/fpubh.2014.00154",
+      "subtree_sha256": "5a6c232ad2135e375ff74d6e6073af0aef01747cb171c51714232c0c5da6d9aa"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2994,
+    "byte_start": 2970,
+    "cp_end": 2988,
+    "cp_start": 2964,
+    "exact": true,
+    "raw": "10.3389/fpubh.2014.00154",
+    "raw_sha256": "18708b419dcd7d10fe83b9e7c615a557d9e7ffba7732751e31a92c5bb62100eb"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "25695040",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "25695040",
+    "raw": "25695040",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwdA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/cite/a[5]",
+      "quote": "25695040",
+      "subtree_sha256": "9f73c2fe4bc5eec9b28335b5d40b59446ee469c15b3bb62f418a3abd584acb86"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3008,
+    "byte_start": 3000,
+    "cp_end": 3002,
+    "cp_start": 2994,
+    "exact": true,
+    "raw": "25695040",
+    "raw_sha256": "af184765ad333fffc9eefb7fdf0f9555dec68d01e32993da7b8e212458c99119"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.3389/fpubh.2019.00334",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.3389/fpubh.2019.00334",
+    "raw": "10.3389/fpubh.2019.00334",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwew",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/span[2]/a",
+      "quote": "10.3389/fpubh.2019.00334",
+      "subtree_sha256": "01c5d66ca29a41bd197b8828cde9be5ebf8163a5ade4407d8e7426acdc596886"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 3155,
+    "byte_start": 3131,
+    "cp_end": 3149,
+    "cp_start": 3125,
+    "exact": true,
+    "raw": "10.3389/fpubh.2019.00334",
+    "raw_sha256": "4ce80dd579cc59e3091c37b2b2e1d4a2f2a66fd585a4a30ed7d166e522d134b0"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "31720286",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "31720286",
+    "raw": "31720286",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwgA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/a[3]",
+      "quote": "31720286",
+      "subtree_sha256": "a66a66dab0128cfa84127bc9e5a80e45eb56e750a2b8acfc5c5ba68e01e34ba3"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3169,
+    "byte_start": 3161,
+    "cp_end": 3163,
+    "cp_start": 3155,
+    "exact": true,
+    "raw": "31720286",
+    "raw_sha256": "c7481638c1cfddf700fc7279ac885f6a8f0d41ffe79124d508851803da612c05"
+   },
+   "unit_id": null
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "158be9ad0dfbee00c67229b83e7850d69320259e73cdb07546334dcdfa06fe72"
+    },
+    "region_id": "cite_note-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[2]",
+     "quote": "↑ \"Frontiers in Public Health\". www.scimagojr.com. Retrieved 2021-08-03.",
+     "subtree_sha256": "c794d1add3dde8eae06dfe3f720a3f1374b580fb85a70876a9b689899d92fa64"
+    },
+    "region_id": "cite_note-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "./Retraction_Watch",
+      "red": false,
+      "target": "Retraction Watch",
+      "target_basis": "href"
+     },
+     "locator": {
+      "element_id": "mwVA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[3]/span[2]/cite/i/a",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "e50ec87aa00a38f471deab49c6f88961f9bf30e8095e4f95adcaa10624956fe8"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "bout HIV denial paper, launches investigation\". Retraction Watch. 2014-09-26. Archived from the original o",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-3",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[3]",
+     "quote": "↑ \"Publisher issues statement of concern about HIV denial paper, launches investigation\". Retraction Watch. 2014-09-26. Archived from the original on 2014-09-29",
+     "subtree_sha256": "4cf626b880dce5e017a4937d05664ada5faff8c7d20914566ce956cac8f51d3c"
+    },
+    "region_id": "cite_note-3"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "locator": {
+      "element_id": "mwXw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[4]/span[2]/cite/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "d9d3a5514df81970caddb661444717ee9c91999d69064f63dbe4fbba881c7234"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "l article stand, reclassifies it as \"opinion\"\". Retraction Watch. Archived from the original on 16 March 2",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-RWstand-4",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[4]",
+     "quote": "↑ Ferguson, Cat (24 February 2015). \"Frontiers lets HIV denial article stand, reclassifies it as \"opinion\"\". Retraction Watch. Archived from the original on 16 ",
+     "subtree_sha256": "2bdf14adb2b5dce3774a827acf72324fb2533c526ddc3f8bfd6bab9483735670"
+    },
+    "region_id": "cite_note-RWstand-4"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwdg",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.3389/fpubh.2019.00334, PMID 31720286, Retraction Watch)",
+      "subtree_sha256": "ac0570232cfb3cb309c9a85b039687cdeb569a4220f835f959febbe8c4551869"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "/fpubh.2014.00154. PMC 4172096. PMID 25695040. (Retracted, see doi:10.3389/fpubh.2019.00334, PMID 3172028",
+     "term": "retracted"
+    },
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "http://retractionwatch.com/2019/10/25/misguided-and-ineffectual-publisher-offers-mea-culpa-in-retraction-of-paper-questioning-link-between-hiv-and-aids/",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwhA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/a[4]/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "675e4ee6beef9fdb6c7ff9c5d888d18979e539dfe8717dd46bf1ee692fbc54e3"
+     },
+     "matched": "Retraction",
+     "part": "text",
+     "snippet": "ee doi:10.3389/fpubh.2019.00334, PMID 31720286, Retraction Watch)",
+     "term": "retraction"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-5",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[5]",
+     "quote": "↑ Goodson, P. (2014). \"Questioning the HIV-AIDS hypothesis: 30 years of dissent\". Frontiers in Public Health. 2: 154. doi:10.3389/fpubh.2014.00154. PMC 4172096.",
+     "subtree_sha256": "50f481f80e58587f2e5e93753d35ab915b032bd23f8f63e21d71d58bb16db781"
+    },
+    "region_id": "cite_note-5"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 3371,
+     "cp_start": 3109,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-6",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[6]",
+     "quote": "↑ \"More Fringe Science from Borderline Publisher Frontiers\". Archived from the original on 19 August 2026. Retrieved 19 August 2026.",
+     "subtree_sha256": "0c5773ee26f66d6cb7dd7bed3f6bbcffc736908f3ac0054418003bba58522eed"
+    },
+    "region_id": "cite_note-6"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00007",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2016.00156/full",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwlQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[7]/span[2]/cite/a[1]",
+      "quote": "\"Retraction Human and Environmental Dangers Posed by Ongoing Global Tropospheric Aerosolized Particulates for Weather Modification\"",
+      "subtree_sha256": "f3b9115ec1f54c134430c7c0316ec75e9df284c3afbd50ab381b11ca3d11f738"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "\"Retraction Human and Environmental Dangers Posed by Ongoin",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-7",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[7]",
+     "quote": "↑ \"Retraction Human and Environmental Dangers Posed by Ongoing Global Tropospheric Aerosolized Particulates for Weather Modification\". Archived from the origina",
+     "subtree_sha256": "bdbe11ef9ac19611c81ef201fcfd16b97f9f5a11261e48ebb60d85de0100d81c"
+    },
+    "region_id": "cite_note-7"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00008",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "./Retraction_Watch",
+      "red": false,
+      "target": "Retraction Watch",
+      "target_basis": "href"
+     },
+     "locator": {
+      "element_id": "mwoA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[8]/span[2]/cite/i/a",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "6482cfc025a1d87f1d40afb7aaad6ddd8a091e8139892e19c9089be5eb1c7689"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "es to autism pulled following heavy criticism\". Retraction Watch. Archived from the original on 2018-03-16",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-8",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[8]",
+     "quote": "↑ Chawla, Dalmeet Singh (2016-11-28). \"Study linking vaccines to autism pulled following heavy criticism\". Retraction Watch. Archived from the original on 2018-",
+     "subtree_sha256": "7fef91b9600e09ffbbb95ff354f2d5d52482764c9a2fecd3c33df785b7ea8617"
+    },
+    "region_id": "cite_note-8"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt3"
+   },
+   "source": {
+    "byte_end": 1134,
+    "byte_start": 756,
+    "cp_end": 1128,
+    "cp_start": 750
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt6"
+   },
+   "source": {
+    "byte_end": 1345,
+    "byte_start": 1173,
+    "cp_end": 1339,
+    "cp_start": 1167
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt11"
+   },
+   "source": {
+    "byte_end": 2193,
+    "byte_start": 1671,
+    "cp_end": 2187,
+    "cp_start": 1665
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt14"
+   },
+   "source": {
+    "byte_end": 2837,
+    "byte_start": 2333,
+    "cp_end": 2831,
+    "cp_start": 2327
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt17"
+   },
+   "source": {
+    "byte_end": 3115,
+    "byte_start": 2877,
+    "cp_end": 3109,
+    "cp_start": 2871
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": "ct-00006/d1",
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt23"
+   },
+   "source": {
+    "byte_end": 3856,
+    "byte_start": 3485,
+    "cp_end": 3850,
+    "cp_start": 3479
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00007",
+   "definition_id": "ct-00007/d1",
+   "duplicate_params": [],
+   "id": "un-00007",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt26"
+   },
+   "source": {
+    "byte_end": 4358,
+    "byte_start": 3891,
+    "cp_end": 4352,
+    "cp_start": 3885
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00008",
+   "definition_id": "ct-00008/d1",
+   "duplicate_params": [],
+   "id": "un-00008",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt29"
+   },
+   "source": {
+    "byte_end": 5336,
+    "byte_start": 4814,
+    "cp_end": 5330,
+    "cp_start": 4808
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "f710c6418f0e22c6a921345b5b68c8cc3e2aa9d08bcf9af6a977fce1a00ca5bd"
+    },
+    "state": "matched",
+    "target_note": "cite_note-1"
+   },
+   "source": {
+    "byte_end": 1140,
+    "byte_start": 751,
+    "cp_end": 1134,
+    "cp_start": 745
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p/sup[2]",
+     "quote": "[2]",
+     "subtree_sha256": "7e79a4c5910b41dc7c0c69a04c228fe9a3f184e8c81446beb41b7bb1392824b2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-2"
+   },
+   "source": {
+    "byte_end": 1351,
+    "byte_start": 1168,
+    "cp_end": 1345,
+    "cp_start": 1162
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00003",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-3",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[1]/sup[1]",
+     "quote": "[3]",
+     "subtree_sha256": "06f7fc899ed8ebfff3bd76d8c9329694a74aa9192500edb8baec123a55403610"
+    },
+    "state": "matched",
+    "target_note": "cite_note-3"
+   },
+   "source": {
+    "byte_end": 2199,
+    "byte_start": 1666,
+    "cp_end": 2193,
+    "cp_start": 1660
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00004",
+   "name": "RWstand",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-RWstand_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[1]/sup[2]",
+     "quote": "[4]",
+     "subtree_sha256": "b2efcb07803b4431b428327d3a1102afe0a40a664b91f13dd3a9cb2c5e611211"
+    },
+    "state": "matched",
+    "target_note": "cite_note-RWstand-4"
+   },
+   "source": {
+    "byte_end": 2843,
+    "byte_start": 2315,
+    "cp_end": 2837,
+    "cp_start": 2309
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00005",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-5",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[1]/sup[3]",
+     "quote": "[5]",
+     "subtree_sha256": "6c30e5c3a2355294c5d36bd8f1f775ad900113851556e3b2157ed6ad54227e33"
+    },
+    "state": "matched",
+    "target_note": "cite_note-5"
+   },
+   "source": {
+    "byte_end": 3383,
+    "byte_start": 2872,
+    "cp_end": 3377,
+    "cp_start": 2866
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00006",
+   "group": "",
+   "id": "us-00006",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-6",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[2]/sup[1]",
+     "quote": "[6]",
+     "subtree_sha256": "07a2c18e32890e6b89b39f9952503d1a93a2e634c6c7504f2fff95b86effd6dc"
+    },
+    "state": "matched",
+    "target_note": "cite_note-6"
+   },
+   "source": {
+    "byte_end": 3862,
+    "byte_start": 3480,
+    "cp_end": 3856,
+    "cp_start": 3474
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00007",
+   "group": "",
+   "id": "us-00007",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-7",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[2]/sup[2]",
+     "quote": "[7]",
+     "subtree_sha256": "3a688ba7d23d174f185b0a943eef2cec28eb29421c4602afeb63bbf94159fd2f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-7"
+   },
+   "source": {
+    "byte_end": 4364,
+    "byte_start": 3886,
+    "cp_end": 4358,
+    "cp_start": 3880
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00008",
+   "group": "",
+   "id": "us-00008",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-8",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup",
+     "quote": "[8]",
+     "subtree_sha256": "a6d7cd406123c515389b3d7a6d8464a739ac20386f7073ada49c17620eb34c45"
+    },
+    "state": "matched",
+    "target_note": "cite_note-8"
+   },
+   "source": {
+    "byte_end": 5342,
+    "byte_start": 4809,
+    "cp_end": 5336,
+    "cp_start": 4803
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

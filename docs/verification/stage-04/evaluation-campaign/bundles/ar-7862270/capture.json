@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "913818e3fe7daf72130307f6a45e345755a6d2225559c3f77daedffefd973e30",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.339,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:21:21.160386Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7862270",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 22543,
+   "body_sha256": "ae170c3df020086d60ecaab563a313a0c0d370b9f3b1631c3761b6cd981ffd1f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.408,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:22:00.500156Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7862270",
+   "wire_bytes": 7626
+  },
+  {
+   "body_bytes": 136158,
+   "body_sha256": "e079e577c3b0ffc301924b641bd0036670e79c4e667e3487d228ba240bc47a56",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.356,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:22:10.908311Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76554210/html",
+   "wire_bytes": 23652
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "913818e3fe7daf72130307f6a45e345755a6d2225559c3f77daedffefd973e30"
+ ],
+ "finished_at": "2026-11-18T13:22:12.265034Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7862270,
+  "parent_revision_id": 61812761,
+  "redirect_followed": null,
+  "revision_id": 76554210,
+  "revision_timestamp": "2026-09-14T00:27:07Z",
+  "sha1": "e8c94b18b22ad815f0e3f5ea4b751a728caab314",
+  "size": 21936,
+  "title": "تنظيم بالإنقاص وتنظيم بالزيادة",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "e079e577c3b0ffc301924b641bd0036670e79c4e667e3487d228ba240bc47a56",
+  "bytes": 136158,
+  "checks": {
+   "document_revision_id": "76554210",
+   "header_revision_id": "76554210",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7862270",
+   "render_id": "1045e0ef-e353-11f1-8c75-ed3ef36b7b0e",
+   "revision_sha1": "e8c94b18b22ad815f0e3f5ea4b751a728caab314",
+   "revision_sha1_base36": "r6wvo38qm0ldvl56bfd933xgcq8r21g"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76554210",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:22:11 GMT",
+   "etag": "W/\"76554210/1045e0ef-e353-11f1-8c75-ed3ef36b7b0e/view\"",
+   "last-modified": "Sun, 15 Nov 2026 16:28:58 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76554210/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7862270,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "b1f38ec3d98fcfccc9b542478add5c6089ddf34a938f7ba8732a4ef46185d44e",
+  "bytes": 21936,
+  "response_artifact": "ae170c3df020086d60ecaab563a313a0c0d370b9f3b1631c3761b6cd981ffd1f",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7862270"
+ },
+ "started_at": "2026-11-18T13:21:14.005929Z",
+ "status": "complete"
+}

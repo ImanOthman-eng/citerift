@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 18531,
+   "body_sha256": "c54b945b37e35a4da111f45c48b8347d9906224a6ed49eb542eff90fd1ef4cf9",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.401,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:23:21.565269Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3396963",
+   "wire_bytes": 6869
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "ce961e907bc1b67066625b9e8a4decbb5e79e7c55cb7fed6dc1e47ca6701828b",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.376,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:23:31.967124Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/72023431/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 109515,
+   "body_sha256": "5f01c1877a5bae82dcebcdb7fa195317b18c35dbba7e0c81c4a596e389c2f965",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.954,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:24:00.344289Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/72023431/html",
+   "wire_bytes": 19813
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "ce961e907bc1b67066625b9e8a4decbb5e79e7c55cb7fed6dc1e47ca6701828b"
+ ],
+ "finished_at": "2026-11-18T13:24:01.299142Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 3396963,
+  "parent_revision_id": 67729721,
+  "redirect_followed": null,
+  "revision_id": 72023431,
+  "revision_timestamp": "2025-09-14T03:27:47Z",
+  "sha1": "4de24a6fc85864f163cb430faa1bbca0e5df4946",
+  "size": 17890,
+  "title": "العلاجات البديلة لنزلات البرد",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "5f01c1877a5bae82dcebcdb7fa195317b18c35dbba7e0c81c4a596e389c2f965",
+  "bytes": 109515,
+  "checks": {
+   "document_revision_id": "72023431",
+   "header_revision_id": "72023431",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "3396963",
+   "render_id": "513dfea5-e353-11f1-9d82-139b26c2cea1",
+   "revision_sha1": "4de24a6fc85864f163cb430faa1bbca0e5df4946",
+   "revision_sha1_base36": "93imxx3kmxz5c2ev2oorbaoc65a67gm"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "72023431",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:24:00 GMT",
+   "etag": "W/\"72023431/513dfea5-e353-11f1-9d82-139b26c2cea1/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:15:48 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/72023431/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 3396963,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "371e4fe55e2941ae523c9b408721049a2172d7352aef390182b343e50b00170f",
+  "bytes": 17890,
+  "response_artifact": "c54b945b37e35a4da111f45c48b8347d9906224a6ed49eb542eff90fd1ef4cf9",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3396963"
+ },
+ "started_at": "2026-11-18T13:23:15.013703Z",
+ "status": "complete"
+}

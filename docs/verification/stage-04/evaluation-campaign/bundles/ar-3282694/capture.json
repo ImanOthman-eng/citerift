@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 3614,
+   "body_sha256": "d148294059a5f88d8321bdba15faf841c768fc3a5c452b66a9d03315f9a616fd",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.457,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:27:25.875040Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3282694",
+   "wire_bytes": 1814
+  },
+  {
+   "body_bytes": 27722,
+   "body_sha256": "c867e55024dbea2445838f8be332771a0da4e2102ef5f79799a5f5391e9c5582",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.425,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:27:36.333123Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75250931/html",
+   "wire_bytes": 7272
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-18T13:27:36.758075Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 3282694,
+  "parent_revision_id": 70720039,
+  "redirect_followed": null,
+  "revision_id": 75250931,
+  "revision_timestamp": "2026-06-09T17:18:25Z",
+  "sha1": "2e3d6ed2c7cf1e5441c8f6062f132c2213f6d39c",
+  "size": 3042,
+  "title": "عدم تحمل الدواء",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "c867e55024dbea2445838f8be332771a0da4e2102ef5f79799a5f5391e9c5582",
+  "bytes": 27722,
+  "checks": {
+   "document_revision_id": "75250931",
+   "header_revision_id": "75250931",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "3282694",
+   "render_id": "1055117b-d055-11f1-b948-314f10adc785",
+   "revision_sha1": "2e3d6ed2c7cf1e5441c8f6062f132c2213f6d39c",
+   "revision_sha1_base36": "5eg54r6cyr2ea9izivckjvpiz1h5cik"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "75250931",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:27:36 GMT",
+   "etag": "W/\"75250931/1055117b-d055-11f1-b948-314f10adc785/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:15:39 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75250931/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 3282694,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "8e4f2991ac7f1aaee0d1a6c3ca2d07b8d27473f52576191fb13f2219d78f8e2e",
+  "bytes": 3042,
+  "response_artifact": "d148294059a5f88d8321bdba15faf841c768fc3a5c452b66a9d03315f9a616fd",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3282694"
+ },
+ "started_at": "2026-11-18T13:27:25.873194Z",
+ "status": "complete"
+}

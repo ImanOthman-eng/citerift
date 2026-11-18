@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 42214,
+   "body_sha256": "4cb2932c6283b0ca10ccc32dfee36e17974a302d38b3c8d9245a29969a9d77b1",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.704,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:29:12.304288Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5076412",
+   "wire_bytes": 13943
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "c04f7ddb105a6082db4eac93582b3cab532b02af26656547153482aee9fdb882",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.347,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "37",
+   "retry_after_s": 37.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:29:23.008506Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76361132/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 227426,
+   "body_sha256": "e7c6515ef34f66cab303d58b0df4b94b0d40699c1bedab4c6bca43ab4da380d4",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.427,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:30:00.355931Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76361132/html",
+   "wire_bytes": 38679
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "c04f7ddb105a6082db4eac93582b3cab532b02af26656547153482aee9fdb882"
+ ],
+ "finished_at": "2026-11-18T13:30:00.784505Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 5076412,
+  "parent_revision_id": 76107039,
+  "redirect_followed": null,
+  "revision_id": 76361132,
+  "revision_timestamp": "2026-08-28T04:24:14Z",
+  "sha1": "3fbad38a47296f659cbf07fdf598363084f0af24",
+  "size": 41479,
+  "title": "الأسباب المعدية المسببة للسرطان",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "e7c6515ef34f66cab303d58b0df4b94b0d40699c1bedab4c6bca43ab4da380d4",
+  "bytes": 227426,
+  "checks": {
+   "document_revision_id": "76361132",
+   "header_revision_id": "76361132",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "5076412",
+   "render_id": "18b5ff7c-e2ea-11f1-9420-a529fe44b85a",
+   "revision_sha1": "3fbad38a47296f659cbf07fdf598363084f0af24",
+   "revision_sha1_base36": "7fzvm2cflc8rg08hpa42g8cjm7b8nc4"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76361132",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:30:00 GMT",
+   "etag": "W/\"76361132/18b5ff7c-e2ea-11f1-9420-a529fe44b85a/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:48 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76361132/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 5076412,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "e9ba84113afa5da17682ffbdaf1dc244d17555dde1f22cb38dcb86859565bdf7",
+  "bytes": 41479,
+  "response_artifact": "4cb2932c6283b0ca10ccc32dfee36e17974a302d38b3c8d9245a29969a9d77b1",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=5076412"
+ },
+ "started_at": "2026-11-18T13:29:05.650259Z",
+ "status": "complete"
+}

@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 16961,
+   "body_sha256": "9fdc8913b109c4dc6424532a8ab295a8e680223e14fc19ad217856fd57325c18",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.426,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:35:10.991409Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6678151",
+   "wire_bytes": 5787
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "c424aec396bc131cc21d44973acf827835a03562065f8c5e8864ddbbcf6311cc",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.353,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:35:21.417501Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77019746/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 83219,
+   "body_sha256": "30beba5224ad7a42f97ad08279ae034254be5665454d21b2d2c2917669f780bc",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.856,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:36:00.771303Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77019746/html",
+   "wire_bytes": 16508
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "c424aec396bc131cc21d44973acf827835a03562065f8c5e8864ddbbcf6311cc"
+ ],
+ "finished_at": "2026-11-18T13:36:01.627478Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 6678151,
+  "parent_revision_id": 61111063,
+  "redirect_followed": null,
+  "revision_id": 77019746,
+  "revision_timestamp": "2026-10-19T16:00:19Z",
+  "sha1": "e24d2d2f212a07e12dcc6ae266312670f13ed129",
+  "size": 16339,
+  "title": "ازدهار (علم النفس)",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "30beba5224ad7a42f97ad08279ae034254be5665454d21b2d2c2917669f780bc",
+  "bytes": 83219,
+  "checks": {
+   "document_revision_id": "77019746",
+   "header_revision_id": "77019746",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "6678151",
+   "render_id": "fe6546a5-e354-11f1-9d82-139b26c2cea1",
+   "revision_sha1": "e24d2d2f212a07e12dcc6ae266312670f13ed129",
+   "revision_sha1_base36": "qfn5pvplmz07vsogysufrvurmhqzqy1"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77019746",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:36:01 GMT",
+   "etag": "W/\"77019746/fe6546a5-e354-11f1-9d82-139b26c2cea1/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:27:43 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77019746/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 6678151,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9e638c5f831b12b9e5e72f84cd80ce2cdd81f4bf7c238e6a0db69a3c125a32fd",
+  "bytes": 16339,
+  "response_artifact": "9fdc8913b109c4dc6424532a8ab295a8e680223e14fc19ad217856fd57325c18",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=6678151"
+ },
+ "started_at": "2026-11-18T13:35:04.378893Z",
+ "status": "complete"
+}

@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "9bd817161f2d95b5a38d14b993fd47e0a12aa6e02f28aed494532c4ed6b6c7e7",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.341,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:57:21.207294Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=60575",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 129475,
+   "body_sha256": "3fb34ec90b838f9fe8047fe4a23e7e93a017d5ee93eae696d9ed07d98d4a1c06",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.417,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:58:00.548734Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=60575",
+   "wire_bytes": 43713
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "376e01d46d95d02b6e5b502f4bd491f1ceafe79cc67392ea58535b8429b27fed",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.375,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:58:10.967248Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385937283/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 814517,
+   "body_sha256": "5aacb1dac48558021b42381557ae3ad69c03386b06d1bc248fc981fb768dbd67",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.527,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:59:00.343214Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385937283/html",
+   "wire_bytes": 130534
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "9bd817161f2d95b5a38d14b993fd47e0a12aa6e02f28aed494532c4ed6b6c7e7",
+  "376e01d46d95d02b6e5b502f4bd491f1ceafe79cc67392ea58535b8429b27fed"
+ ],
+ "finished_at": "2026-11-18T13:59:00.872619Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 60575,
+  "parent_revision_id": 1383231336,
+  "redirect_followed": null,
+  "revision_id": 1385937283,
+  "revision_timestamp": "2026-11-16T01:13:54Z",
+  "sha1": "0543c8123c9a9f41c7adc512de3a3095543946a5",
+  "size": 128076,
+  "title": "Cardiac arrest",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "5aacb1dac48558021b42381557ae3ad69c03386b06d1bc248fc981fb768dbd67",
+  "bytes": 814517,
+  "checks": {
+   "document_revision_id": "1385937283",
+   "header_revision_id": "1385937283",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "60575",
+   "render_id": "f8d11918-e2e6-11f1-97da-8d1cbb802fb5",
+   "revision_sha1": "0543c8123c9a9f41c7adc512de3a3095543946a5",
+   "revision_sha1_base36": "0m50p1tyctrd4toxoyy31j7a19uxtph"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1385937283",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:59:00 GMT",
+   "etag": "W/\"1385937283/f8d11918-e2e6-11f1-97da-8d1cbb802fb5/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:23:36 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385937283/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 60575,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "ff261096e26205170b8900dd09aadb684bfb4dcc53c3e9a6610af6f5059644a6",
+  "bytes": 128076,
+  "response_artifact": "3fb34ec90b838f9fe8047fe4a23e7e93a017d5ee93eae696d9ed07d98d4a1c06",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=60575"
+ },
+ "started_at": "2026-11-18T13:57:13.935316Z",
+ "status": "complete"
+}

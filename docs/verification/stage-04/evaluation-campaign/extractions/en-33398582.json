@@ -1,0 +1,6839 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 22,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 22
+   },
+   {
+    "left": 22,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 22
+   },
+   {
+    "left": 22,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 22
+   },
+   {
+    "left": 27,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 27
+   },
+   {
+    "left": 27,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 27
+   },
+   {
+    "left": 97,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 97
+   },
+   {
+    "left": 97,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 97
+   },
+   {
+    "left": 97,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 97
+   }
+  ],
+  "containers": {
+   "note": 27
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "marker_target": 2,
+   "primary_citation_field": 20
+  },
+  "identifiers_by_scheme": {
+   "doi": 11,
+   "pmid": 11
+  },
+  "identifiers_render": {
+   "render_link_found": 22
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 26,
+   "recognized_warning_text": 1
+  },
+  "parse_nodes": 1142,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 97,
+   "total": 97,
+   "unmatched": 0
+  },
+  "source_bytes": 39622,
+  "units": {
+   "citation_template": 27
+  },
+  "uses": {
+   "anonymous": 1,
+   "bound": 96
+  },
+  "uses_render": {
+   "matched": 97
+  }
+ },
+ "capture": {
+  "capture_sha256": "4ce1b3666341367b83e78be0ace3efe253ac1d66594b7035cee1c28a593fb42c",
+  "page_id": 33398582,
+  "render_artifact": "85b3bb46de8684531beb609106e3c0221cb1e2012e46a0236a6d227fc5a2c2b4",
+  "render_state": "captured",
+  "revision_id": 1381744447,
+  "sha1": "b11ea7517992b30c5618594d7d3b734fac59b773",
+  "source_artifact": "5d9984beeaa605dbd5d8adf9f2869f64584038bbeeadd67bc7e180b41a6e4960",
+  "title": "Atypical facial pain",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 424,
+      "byte_start": 238,
+      "cp_end": 422,
+      "cp_start": 238
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 430,
+      "byte_start": 215,
+      "cp_end": 428,
+      "cp_start": 215
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "Odell 2010",
+   "name_raw": "Odell 2010",
+   "render": {
+    "region_id": "cite_note-Odell_2010-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 430,
+    "byte_start": 215,
+    "cp_end": 428,
+    "cp_start": 215
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00002",
+    "us-00014"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 680,
+      "byte_start": 478,
+      "cp_end": 678,
+      "cp_start": 476
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 686,
+      "byte_start": 454,
+      "cp_end": 684,
+      "cp_start": 452
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": "Scully 2005",
+   "name_raw": "Scully 2005",
+   "render": {
+    "region_id": "cite_note-Scully_2005-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 686,
+    "byte_start": 454,
+    "cp_end": 684,
+    "cp_start": 452
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00003",
+    "us-00015",
+    "us-00046",
+    "us-00053",
+    "us-00056",
+    "us-00057",
+    "us-00066",
+    "us-00095",
+    "us-00096"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 987,
+      "byte_start": 787,
+      "cp_end": 985,
+      "cp_start": 785
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 993,
+      "byte_start": 759,
+      "cp_end": 991,
+      "cp_start": 757
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "Hargreaves 2010",
+   "name_raw": "Hargreaves 2010",
+   "render": {
+    "region_id": "cite_note-Hargreaves_2010-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 993,
+    "byte_start": 759,
+    "cp_end": 991,
+    "cp_start": 757
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00004",
+    "us-00005",
+    "us-00012",
+    "us-00047",
+    "us-00048",
+    "us-00054",
+    "us-00055",
+    "us-00067"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 5643,
+      "byte_start": 5369,
+      "cp_end": 5641,
+      "cp_start": 5367
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 5649,
+      "byte_start": 5341,
+      "cp_end": 5647,
+      "cp_start": 5339
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "Zakrzewska 2013",
+   "name_raw": "Zakrzewska 2013",
+   "render": {
+    "region_id": "cite_note-Zakrzewska_2013-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 5649,
+    "byte_start": 5341,
+    "cp_end": 5647,
+    "cp_start": 5339
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00006",
+    "us-00018",
+    "us-00044"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 5849,
+      "byte_start": 5672,
+      "cp_end": 5847,
+      "cp_start": 5670
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 5855,
+      "byte_start": 5649,
+      "cp_end": 5853,
+      "cp_start": 5647
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": "Bruch 2010",
+   "name_raw": "Bruch 2010",
+   "render": {
+    "region_id": "cite_note-Bruch_2010-10",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 5855,
+    "byte_start": 5649,
+    "cp_end": 5853,
+    "cp_start": 5647
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00019",
+    "us-00040",
+    "us-00052"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 6320,
+      "byte_start": 5909,
+      "cp_end": 6318,
+      "cp_start": 5907
+     },
+     "id": "ct-00006/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 6326,
+      "byte_start": 5882,
+      "cp_end": 6324,
+      "cp_start": 5880
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "note",
+   "layout": null,
+   "name": "Coulthard 2008",
+   "name_raw": "Coulthard 2008",
+   "render": {
+    "region_id": "cite_note-Coulthard_2008-11",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 6326,
+    "byte_start": 5882,
+    "cp_end": 6324,
+    "cp_start": 5880
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": [
+    "us-00021"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 6551,
+      "byte_start": 6353,
+      "cp_end": 6549,
+      "cp_start": 6351
+     },
+     "id": "ct-00007/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 6557,
+      "byte_start": 6326,
+      "cp_end": 6555,
+      "cp_start": 6324
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00007",
+   "kind": "note",
+   "layout": null,
+   "name": "Tyldesley 2003",
+   "name_raw": "Tyldesley 2003",
+   "render": {
+    "region_id": "cite_note-Tyldesley_2003-12",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 6557,
+    "byte_start": 6326,
+    "cp_end": 6555,
+    "cp_start": 6324
+   },
+   "unit_ids": [
+    "un-00007"
+   ],
+   "use_ids": [
+    "us-00022",
+    "us-00039",
+    "us-00043"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 7098,
+      "byte_start": 6582,
+      "cp_end": 7094,
+      "cp_start": 6580
+     },
+     "id": "ct-00008/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 7104,
+      "byte_start": 6557,
+      "cp_end": 7100,
+      "cp_start": 6555
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00008",
+   "kind": "note",
+   "layout": null,
+   "name": "NIXDORF 2012",
+   "name_raw": "NIXDORF 2012",
+   "render": {
+    "region_id": "cite_note-NIXDORF_2012-13",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 7104,
+    "byte_start": 6557,
+    "cp_end": 7100,
+    "cp_start": 6555
+   },
+   "unit_ids": [
+    "un-00008"
+   ],
+   "use_ids": [
+    "us-00023"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 12180,
+      "byte_start": 11825,
+      "cp_end": 12172,
+      "cp_start": 11821
+     },
+     "id": "ct-00009/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 12186,
+      "byte_start": 11802,
+      "cp_end": 12178,
+      "cp_start": 11798
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00009",
+   "kind": "note",
+   "layout": null,
+   "name": "Quail 2005",
+   "name_raw": "Quail 2005",
+   "render": {
+    "region_id": "cite_note-Quail_2005-14",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 12186,
+    "byte_start": 11802,
+    "cp_end": 12178,
+    "cp_start": 11798
+   },
+   "unit_ids": [
+    "un-00009"
+   ],
+   "use_ids": [
+    "us-00027",
+    "us-00028"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 12579,
+      "byte_start": 12350,
+      "cp_end": 12569,
+      "cp_start": 12342
+     },
+     "id": "ct-00010/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 12585,
+      "byte_start": 12325,
+      "cp_end": 12575,
+      "cp_start": 12317
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00010",
+   "kind": "note",
+   "layout": null,
+   "name": "Sciubba 2009",
+   "name_raw": "Sciubba 2009",
+   "render": {
+    "region_id": "cite_note-Sciubba_2009-15",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 12585,
+    "byte_start": 12325,
+    "cp_end": 12575,
+    "cp_start": 12317
+   },
+   "unit_ids": [
+    "un-00010"
+   ],
+   "use_ids": [
+    "us-00029"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 13336,
+      "byte_start": 13006,
+      "cp_end": 13325,
+      "cp_start": 12996
+     },
+     "id": "ct-00011/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 13342,
+      "byte_start": 12976,
+      "cp_end": 13331,
+      "cp_start": 12966
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00011",
+   "kind": "note",
+   "layout": null,
+   "name": "Vogt-Ferrier 2010",
+   "name_raw": "Vogt-Ferrier 2010",
+   "render": {
+    "region_id": "cite_note-Vogt-Ferrier_2010-16",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 13342,
+    "byte_start": 12976,
+    "cp_end": 13331,
+    "cp_start": 12966
+   },
+   "unit_ids": [
+    "un-00011"
+   ],
+   "use_ids": [
+    "us-00030"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 16640,
+      "byte_start": 16249,
+      "cp_end": 16629,
+      "cp_start": 16238
+     },
+     "id": "ct-00012/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 16646,
+      "byte_start": 16214,
+      "cp_end": 16635,
+      "cp_start": 16203
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00012",
+   "kind": "note",
+   "layout": null,
+   "name": "AAE position statement",
+   "name_raw": "AAE position statement",
+   "render": {
+    "region_id": "cite_note-AAE_position_statement-17",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 16646,
+    "byte_start": 16214,
+    "cp_end": 16635,
+    "cp_start": 16203
+   },
+   "unit_ids": [
+    "un-00012"
+   ],
+   "use_ids": [
+    "us-00032",
+    "us-00033",
+    "us-00034"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 18662,
+      "byte_start": 18378,
+      "cp_end": 18647,
+      "cp_start": 18367
+     },
+     "id": "ct-00013/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 18668,
+      "byte_start": 18355,
+      "cp_end": 18653,
+      "cp_start": 18344
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00013",
+   "kind": "note",
+   "layout": null,
+   "name": "Patel 1012",
+   "name_raw": "Patel 1012",
+   "render": {
+    "region_id": "cite_note-Patel_1012-19",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 18668,
+    "byte_start": 18355,
+    "cp_end": 18653,
+    "cp_start": 18344
+   },
+   "unit_ids": [
+    "un-00013"
+   ],
+   "use_ids": [
+    "us-00041"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 19158,
+      "byte_start": 18916,
+      "cp_end": 19141,
+      "cp_start": 18901
+     },
+     "id": "ct-00014/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 19164,
+      "byte_start": 18892,
+      "cp_end": 19147,
+      "cp_start": 18877
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00014",
+   "kind": "note",
+   "layout": null,
+   "name": "Scully 2008",
+   "name_raw": "Scully 2008",
+   "render": {
+    "region_id": "cite_note-Scully_2008-8",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 19164,
+    "byte_start": 18892,
+    "cp_end": 19147,
+    "cp_start": 18877
+   },
+   "unit_ids": [
+    "un-00014"
+   ],
+   "use_ids": [
+    "us-00010",
+    "us-00017",
+    "us-00024",
+    "us-00025",
+    "us-00026",
+    "us-00035",
+    "us-00036",
+    "us-00038",
+    "us-00042",
+    "us-00088",
+    "us-00093"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 20982,
+      "byte_start": 20369,
+      "cp_end": 20965,
+      "cp_start": 20352
+     },
+     "id": "ct-00015/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 20988,
+      "byte_start": 20343,
+      "cp_end": 20971,
+      "cp_start": 20326
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00015",
+   "kind": "note",
+   "layout": null,
+   "name": "Aggarwal 2011",
+   "name_raw": "Aggarwal 2011",
+   "render": {
+    "region_id": "cite_note-Aggarwal_2011-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 20988,
+    "byte_start": 20343,
+    "cp_end": 20971,
+    "cp_start": 20326
+   },
+   "unit_ids": [
+    "un-00015"
+   ],
+   "use_ids": [
+    "us-00001",
+    "us-00007",
+    "us-00045",
+    "us-00050",
+    "us-00086",
+    "us-00087",
+    "us-00090"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 23569,
+      "byte_start": 23361,
+      "cp_end": 23552,
+      "cp_start": 23344
+     },
+     "id": "ct-00016/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 23575,
+      "byte_start": 23336,
+      "cp_end": 23558,
+      "cp_start": 23319
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00016",
+   "kind": "note",
+   "layout": null,
+   "name": "Neville 2001",
+   "name_raw": "Neville 2001",
+   "render": {
+    "region_id": "cite_note-Neville_2001-9",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 23575,
+    "byte_start": 23336,
+    "cp_end": 23558,
+    "cp_start": 23319
+   },
+   "unit_ids": [
+    "un-00016"
+   ],
+   "use_ids": [
+    "us-00013",
+    "us-00020",
+    "us-00031",
+    "us-00063",
+    "us-00084",
+    "us-00089"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 24274,
+      "byte_start": 24024,
+      "cp_end": 24257,
+      "cp_start": 24007
+     },
+     "id": "ct-00017/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 24280,
+      "byte_start": 24007,
+      "cp_end": 24263,
+      "cp_start": 23990
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00017",
+   "kind": "note",
+   "layout": null,
+   "name": "ICHD-2",
+   "name_raw": "ICHD-2",
+   "render": {
+    "region_id": "cite_note-ICHD-2-6",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 24280,
+    "byte_start": 24007,
+    "cp_end": 24263,
+    "cp_start": 23990
+   },
+   "unit_ids": [
+    "un-00017"
+   ],
+   "use_ids": [
+    "us-00008",
+    "us-00064",
+    "us-00073",
+    "us-00085"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 25061,
+      "byte_start": 24501,
+      "cp_end": 25044,
+      "cp_start": 24484
+     },
+     "id": "ct-00018/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 25067,
+      "byte_start": 24458,
+      "cp_end": 25050,
+      "cp_start": 24441
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00018",
+   "kind": "note",
+   "layout": null,
+   "name": "Classification of Chronic Pain",
+   "name_raw": "Classification of Chronic Pain",
+   "render": {
+    "region_id": "cite_note-Classification_of_Chronic_Pain-20",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 25067,
+    "byte_start": 24458,
+    "cp_end": 25050,
+    "cp_start": 24441
+   },
+   "unit_ids": [
+    "un-00018"
+   ],
+   "use_ids": [
+    "us-00065",
+    "us-00074"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 25632,
+      "byte_start": 25426,
+      "cp_end": 25615,
+      "cp_start": 25409
+     },
+     "id": "ct-00019/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 25638,
+      "byte_start": 25403,
+      "cp_end": 25621,
+      "cp_start": 25386
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00019",
+   "kind": "note",
+   "layout": null,
+   "name": "Glick 2003",
+   "name_raw": "Glick 2003",
+   "render": {
+    "region_id": "cite_note-Glick_2003-7",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 25638,
+    "byte_start": 25403,
+    "cp_end": 25621,
+    "cp_start": 25386
+   },
+   "unit_ids": [
+    "un-00019"
+   ],
+   "use_ids": [
+    "us-00009",
+    "us-00011",
+    "us-00016",
+    "us-00049",
+    "us-00051",
+    "us-00058",
+    "us-00059",
+    "us-00060",
+    "us-00061",
+    "us-00062",
+    "us-00068",
+    "us-00069",
+    "us-00070",
+    "us-00076",
+    "us-00097"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 26487,
+      "byte_start": 26209,
+      "cp_end": 26470,
+      "cp_start": 26192
+     },
+     "id": "ct-00020/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 26493,
+      "byte_start": 26177,
+      "cp_end": 26476,
+      "cp_start": 26160
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00020",
+   "kind": "note",
+   "layout": null,
+   "name": "ICHD-2 introduction",
+   "name_raw": "ICHD-2 introduction",
+   "render": {
+    "region_id": "cite_note-ICHD-2_introduction-21",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 26493,
+    "byte_start": 26177,
+    "cp_end": 26476,
+    "cp_start": 26160
+   },
+   "unit_ids": [
+    "un-00020"
+   ],
+   "use_ids": [
+    "us-00071",
+    "us-00072"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 27933,
+      "byte_start": 27457,
+      "cp_end": 27916,
+      "cp_start": 27440
+     },
+     "id": "ct-00021/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 27939,
+      "byte_start": 27435,
+      "cp_end": 27922,
+      "cp_start": 27418
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00021",
+   "kind": "note",
+   "layout": null,
+   "name": "IASP 2011",
+   "name_raw": "IASP 2011",
+   "render": {
+    "region_id": "cite_note-IASP_2011-22",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 27939,
+    "byte_start": 27435,
+    "cp_end": 27922,
+    "cp_start": 27418
+   },
+   "unit_ids": [
+    "un-00021"
+   ],
+   "use_ids": [
+    "us-00075",
+    "us-00094"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 30128,
+      "byte_start": 29614,
+      "cp_end": 30111,
+      "cp_start": 29597
+     },
+     "id": "ct-00022/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 30134,
+      "byte_start": 29563,
+      "cp_end": 30117,
+      "cp_start": 29546
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00022",
+   "kind": "note",
+   "layout": null,
+   "name": "Classification of Chronic Pain (terms)",
+   "name_raw": "Classification of Chronic Pain (terms)",
+   "render": {
+    "region_id": "cite_note-Classification_of_Chronic_Pain_(terms)-24",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 30134,
+    "byte_start": 29563,
+    "cp_end": 30117,
+    "cp_start": 29546
+   },
+   "unit_ids": [
+    "un-00022"
+   ],
+   "use_ids": [
+    "us-00078"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 30852,
+      "byte_start": 30515,
+      "cp_end": 30831,
+      "cp_start": 30497
+     },
+     "id": "ct-00023/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 30858,
+      "byte_start": 30492,
+      "cp_end": 30837,
+      "cp_start": 30475
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00023",
+   "kind": "note",
+   "layout": null,
+   "name": "Türp 1996",
+   "name_raw": "Türp 1996",
+   "render": {
+    "region_id": "cite_note-Türp_1996-25",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 30858,
+    "byte_start": 30492,
+    "cp_end": 30837,
+    "cp_start": 30475
+   },
+   "unit_ids": [
+    "un-00023"
+   ],
+   "use_ids": [
+    "us-00079",
+    "us-00080"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 31860,
+      "byte_start": 31593,
+      "cp_end": 31838,
+      "cp_start": 31571
+     },
+     "id": "ct-00024/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 31866,
+      "byte_start": 31570,
+      "cp_end": 31844,
+      "cp_start": 31548
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00024",
+   "kind": "note",
+   "layout": null,
+   "name": "Eller 2005",
+   "name_raw": "Eller 2005",
+   "render": {
+    "region_id": "cite_note-Eller_2005-23",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 31866,
+    "byte_start": 31570,
+    "cp_end": 31844,
+    "cp_start": 31548
+   },
+   "unit_ids": [
+    "un-00024"
+   ],
+   "use_ids": [
+    "us-00077",
+    "us-00081",
+    "us-00082"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 33406,
+      "byte_start": 32996,
+      "cp_end": 33384,
+      "cp_start": 32974
+     },
+     "id": "ct-00025/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 33412,
+      "byte_start": 32948,
+      "cp_end": 33390,
+      "cp_start": 32926
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00025",
+   "kind": "note",
+   "layout": null,
+   "name": "TNA Facial Pain Association website",
+   "name_raw": "TNA Facial Pain Association website",
+   "render": {
+    "region_id": "cite_note-TNA_Facial_Pain_Association_website-26",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 33412,
+    "byte_start": 32948,
+    "cp_end": 33390,
+    "cp_start": 32926
+   },
+   "unit_ids": [
+    "un-00025"
+   ],
+   "use_ids": [
+    "us-00083"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 38140,
+      "byte_start": 37838,
+      "cp_end": 38118,
+      "cp_start": 37816
+     },
+     "id": "ct-00026/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 38146,
+      "byte_start": 37833,
+      "cp_end": 38124,
+      "cp_start": 37811
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00026",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-27",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 38146,
+    "byte_start": 37833,
+    "cp_end": 38124,
+    "cp_start": 37811
+   },
+   "unit_ids": [
+    "un-00026"
+   ],
+   "use_ids": [
+    "us-00091"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 38584,
+      "byte_start": 38296,
+      "cp_end": 38560,
+      "cp_start": 38274
+     },
+     "id": "ct-00027/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 38590,
+      "byte_start": 38270,
+      "cp_end": 38566,
+      "cp_start": 38248
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00027",
+   "kind": "note",
+   "layout": null,
+   "name": "Williams 2009",
+   "name_raw": "Williams 2009",
+   "render": {
+    "region_id": "cite_note-Williams_2009-18",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 38590,
+    "byte_start": 38270,
+    "cp_end": 38566,
+    "cp_start": 38248
+   },
+   "unit_ids": [
+    "un-00027"
+   ],
+   "use_ids": [
+    "us-00037",
+    "us-00092"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "e29896c4a011b989805e9605227343c458c34579d64dcfc37fefc8130d697472",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1129-2377-14-37",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1129-2377-14-37",
+    "raw": "10.1186/1129-2377-14-37",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwAyA",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[5]/span[2]/cite/span[1]/a",
+      "quote": "10.1186/1129-2377-14-37",
+      "subtree_sha256": "7d242003c211c9574ef51ba9abba9e3be04af47312aee9332c23d2fa3859f51e"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5597,
+    "byte_start": 5574,
+    "cp_end": 5595,
+    "cp_start": 5572,
+    "exact": true,
+    "raw": "10.1186/1129-2377-14-37",
+    "raw_sha256": "2799793fe4b90b4ef0512ace682767eab7e1c800f43319f5e0edbdb17c799f1c"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "23617409",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "23617409",
+    "raw": "23617409",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwAyc",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[5]/span[2]/cite/a[5]",
+      "quote": "23617409",
+      "subtree_sha256": "9c6dfecdf882d4a83b0484a93811e05a31bf30f9ed66ab0bbbe24ba72a83ecde"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 5611,
+    "byte_start": 5603,
+    "cp_end": 5609,
+    "cp_start": 5601,
+    "exact": true,
+    "raw": "23617409",
+    "raw_sha256": "87b088c109f6edcb9085be656d0153080ff9b7a3eceb7a6a5cd713f58857baed"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00008",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1111/j.1365-2842.2011.02247.x",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1111/j.1365-2842.2011.02247.x",
+    "raw": "10.1111/j.1365-2842.2011.02247.x",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA84",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[13]/span[2]/cite/a[3]",
+      "quote": "10.1111/j.1365-2842.2011.02247.x",
+      "subtree_sha256": "480eb10ce060ab713986d53a850b1699ca79ce9893eeb0a923161986412d0d83"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 7004,
+    "byte_start": 6972,
+    "cp_end": 7000,
+    "cp_start": 6968,
+    "exact": true,
+    "raw": "10.1111/j.1365-2842.2011.02247.x",
+    "raw_sha256": "3a3fa35f9b5885069767d76ab2616d570a3fd639bb511f634f98ba1e1b2a5798"
+   },
+   "unit_id": "un-00008"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00008",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "21848527",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "21848527",
+    "raw": "21848527",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA9U",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[13]/span[2]/cite/a[6]",
+      "quote": "21848527",
+      "subtree_sha256": "e633b2aad389264658d5ec6d3881e1ae65863c8e4e2b9431c5e400f537fed462"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 7018,
+    "byte_start": 7010,
+    "cp_end": 7014,
+    "cp_start": 7006,
+    "exact": true,
+    "raw": "21848527",
+    "raw_sha256": "329396b73314bbc58229a95f29637ac422ac4811a6b9c498484e3610f4cd80c4"
+   },
+   "unit_id": "un-00008"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00009",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "16113700",
+    "structural_steps": []
+   },
+   "id": "id-00005",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "16113700",
+    "raw": "16113700",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA-Q",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[14]/span[2]/cite/a[3]",
+      "quote": "16113700",
+      "subtree_sha256": "cc51ad28f00d21408510e55be92bf770cdcffa88fe05c9aacd13cebfac132caa"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 12108,
+    "byte_start": 12100,
+    "cp_end": 12100,
+    "cp_start": 12092,
+    "exact": true,
+    "raw": "16113700",
+    "raw_sha256": "dc3a9bfdd4377553b7a119206cb58d8e1585d18dc9eaf9edc4543ba02649b47a"
+   },
+   "unit_id": "un-00009"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00010",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "19371400",
+    "structural_steps": []
+   },
+   "id": "id-00006",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "19371400",
+    "raw": "19371400",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA_E",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[15]/span[2]/cite/a[4]",
+      "quote": "19371400",
+      "subtree_sha256": "4015c1afa56dab3a1024c0ca8738ecf40d2fde271b3efe26e96ffcfcf425b422"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 12540,
+    "byte_start": 12532,
+    "cp_end": 12530,
+    "cp_start": 12522,
+    "exact": true,
+    "raw": "19371400",
+    "raw_sha256": "6ca87610a4d5e8e021da759a6bc68eccaafeeaf529cd2756b5141cb7250fa47c"
+   },
+   "unit_id": "un-00010"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00010",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1111/j.1601-0825.2009.01532.x",
+    "structural_steps": []
+   },
+   "id": "id-00007",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1111/j.1601-0825.2009.01532.x",
+    "raw": "10.1111/j.1601-0825.2009.01532.x",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA-4",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[15]/span[2]/cite/a[2]",
+      "quote": "10.1111/j.1601-0825.2009.01532.x",
+      "subtree_sha256": "af5948d91a328d3c06cdad49f696c76e1dd02cb2f4f5e2c3486885f221e6e2af"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 12577,
+    "byte_start": 12545,
+    "cp_end": 12567,
+    "cp_start": 12535,
+    "exact": true,
+    "raw": "10.1111/j.1601-0825.2009.01532.x",
+    "raw_sha256": "e2d68f7c859469c436e01c7863e25febeab9d33aba6913e36a5cb1639194e792"
+   },
+   "unit_id": "un-00010"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00011",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1002/14651858.CD008455",
+    "structural_steps": []
+   },
+   "id": "id-00008",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/14651858.cd008455",
+    "raw": "10.1002/14651858.CD008455",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwA_k",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[16]/span[2]/cite/a[2]",
+      "quote": "10.1002/14651858.CD008455",
+      "subtree_sha256": "3eec54fa236af202d52355d808b9698660778f4565b9a5d4ffa24cc44c042efd"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 13318,
+    "byte_start": 13293,
+    "cp_end": 13307,
+    "cp_start": 13282,
+    "exact": true,
+    "raw": "10.1002/14651858.CD008455",
+    "raw_sha256": "41e44f77d5529c8c5c21a87d444649d01a5e5ea6be5f5f5495fced7de961cd34"
+   },
+   "unit_id": "un-00011"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00013",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1080/19424396.2012.12220949 ",
+    "structural_steps": []
+   },
+   "id": "id-00009",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1080/19424396.2012.12220949",
+    "raw": "10.1080/19424396.2012.12220949 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBCc",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[19]/span[2]/cite/a[2]",
+      "quote": "10.1080/19424396.2012.12220949",
+      "subtree_sha256": "ae132a570364cbf4f86bf6e24fda1c670300ec096ef299607b2856a33b60d036"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 18630,
+    "byte_start": 18599,
+    "cp_end": 18615,
+    "cp_start": 18584,
+    "exact": true,
+    "raw": "10.1080/19424396.2012.12220949 ",
+    "raw_sha256": "f5292ba15c832b8814d8175117d41edd8044fe083c8b6dab582c8d5274646c12"
+   },
+   "unit_id": "un-00013"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00013",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "23097829",
+    "structural_steps": []
+   },
+   "id": "id-00010",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "23097829",
+    "raw": "23097829",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBCo",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[19]/span[2]/cite/a[4]",
+      "quote": "23097829",
+      "subtree_sha256": "3ef54abd21365b7b67351c5ee46fa5bba33862dac9c18cda7136254c24398ba5"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 18644,
+    "byte_start": 18636,
+    "cp_end": 18629,
+    "cp_start": 18621,
+    "exact": true,
+    "raw": "23097829",
+    "raw_sha256": "7d46720b30dff83009b82b14270b4850aecdaef40a9954a08283dffd5574a991"
+   },
+   "unit_id": "un-00013"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00015",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1002/14651858.CD008456.pub2",
+    "structural_steps": []
+   },
+   "id": "id-00011",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/14651858.cd008456.pub2",
+    "raw": "10.1002/14651858.CD008456.pub2",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwArk",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/cite/a[2]",
+      "quote": "10.1002/14651858.CD008456.pub2",
+      "subtree_sha256": "0932defca0b116601b7393d9cab8ce65b073b26323ac66ed2250c7ed59ad22f9"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 20762,
+    "byte_start": 20732,
+    "cp_end": 20745,
+    "cp_start": 20715,
+    "exact": true,
+    "raw": "10.1002/14651858.CD008456.pub2",
+    "raw_sha256": "7a3fed1064cddaae5578fdbb6d8ff12decc94e8ff6b52356fa7ef3f2c25dd862"
+   },
+   "unit_id": "un-00015"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00015",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "22071849",
+    "structural_steps": []
+   },
+   "id": "id-00012",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "22071849",
+    "raw": "22071849",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwArw",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/cite/a[4]",
+      "quote": "22071849",
+      "subtree_sha256": "c0fda652ed9740936a1ad45948a3f65f7d4b994d50f8da38f576fa7d31e58ee7"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 20776,
+    "byte_start": 20768,
+    "cp_end": 20759,
+    "cp_start": 20751,
+    "exact": true,
+    "raw": "22071849",
+    "raw_sha256": "39ee54c5d3b3680ceb27abcfdb1c861d22cb79799464c5a25cb14452b303bb20"
+   },
+   "unit_id": "un-00015"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00015",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1002/14651858.CD008456.pub3",
+    "structural_steps": []
+   },
+   "id": "id-00013",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/14651858.cd008456.pub3",
+    "raw": "10.1002/14651858.CD008456.pub3",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwAsI",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/span[2]/a[2]",
+      "quote": "10.1002/14651858.CD008456.pub3",
+      "subtree_sha256": "828f4bcaaaab094891deba6a46dd9e77e46378d517fdcc9175ee260810ab2e55"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 20825,
+    "byte_start": 20795,
+    "cp_end": 20808,
+    "cp_start": 20778,
+    "exact": true,
+    "raw": "10.1002/14651858.CD008456.pub3",
+    "raw_sha256": "254cffbd1157976572eaa39fc654d8440480fbec754329672a1837a068dafab0"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00015",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "26678041",
+    "structural_steps": []
+   },
+   "id": "id-00014",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "26678041",
+    "raw": "26678041",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwAsc",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/span[2]/a[4]",
+      "quote": "26678041",
+      "subtree_sha256": "c04714c54d855e91745be2bd46d2a7439756eb51a4e09c9bd66f15cf77c67590"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 20839,
+    "byte_start": 20831,
+    "cp_end": 20822,
+    "cp_start": 20814,
+    "exact": true,
+    "raw": "26678041",
+    "raw_sha256": "d706c96824cf8edb5a001ad3b10e61c136cef5b2132ef807c789d751208ac935"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00023",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "8705588",
+    "structural_steps": []
+   },
+   "id": "id-00015",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "8705588",
+    "raw": "8705588",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBHs",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[25]/span[2]/cite/a[4]",
+      "quote": "8705588",
+      "subtree_sha256": "c1afe45e89458a828274242c8dcca64dbfd16b70681369a913cfdca297eb3f29"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 30816,
+    "byte_start": 30809,
+    "cp_end": 30795,
+    "cp_start": 30788,
+    "exact": true,
+    "raw": "8705588",
+    "raw_sha256": "04f4ff27dee0ef2855601bcc1949056c213a50a69abf9814ecb17a8e10b725b1"
+   },
+   "unit_id": "un-00023"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00023",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1016/s1079-2104(96)80018-7",
+    "structural_steps": []
+   },
+   "id": "id-00016",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/s1079-2104(96)80018-7",
+    "raw": "10.1016/s1079-2104(96)80018-7",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBHg",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[25]/span[2]/cite/a[2]",
+      "quote": "10.1016/s1079-2104(96)80018-7",
+      "subtree_sha256": "d81081081f90db6f3e3d02cd2ff44a638fe627a638927dedee1d0d2211c04b1f"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 30850,
+    "byte_start": 30821,
+    "cp_end": 30829,
+    "cp_start": 30800,
+    "exact": true,
+    "raw": "10.1016/s1079-2104(96)80018-7",
+    "raw_sha256": "d6262e4d897dcc09fa604d64c34d981fdd36efe04a15599116c6644c6f7e2e7f"
+   },
+   "unit_id": "un-00023"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00024",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "15913279",
+    "structural_steps": []
+   },
+   "id": "id-00017",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "15913279",
+    "raw": "15913279",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBGI",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[23]/span[2]/cite/a[4]",
+      "quote": "15913279",
+      "subtree_sha256": "1a2f69ed3b80834a563dc2ddb917ec2682c7b7e1a556200c9e2660152263f349"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 31814,
+    "byte_start": 31806,
+    "cp_end": 31792,
+    "cp_start": 31784,
+    "exact": true,
+    "raw": "15913279",
+    "raw_sha256": "c6961e09cda327483142c3efd687014c28e329ecbe0d653cf34367f5a8ef4576"
+   },
+   "unit_id": "un-00024"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00024",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.3171/foc.2005.18.5.4",
+    "structural_steps": []
+   },
+   "id": "id-00018",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.3171/foc.2005.18.5.4",
+    "raw": "10.3171/foc.2005.18.5.4",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBFo",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[23]/span[2]/cite/a[1]",
+      "quote": "\"Trigeminal neuralgia: definition and classification\"",
+      "subtree_sha256": "f6ab7ade0f85c9a501748055be9e91ee2ecd416d8de76b97263764200cd95a4a"
+     },
+     {
+      "element_id": "mwBF8",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[23]/span[2]/cite/span[1]/a",
+      "quote": "10.3171/foc.2005.18.5.4",
+      "subtree_sha256": "177f2ea39c608499326f9255658b02f36ff8bed945b7a880a6d1698edd5e7d43"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 31842,
+    "byte_start": 31819,
+    "cp_end": 31820,
+    "cp_start": 31797,
+    "exact": true,
+    "raw": "10.3171/foc.2005.18.5.4",
+    "raw_sha256": "300f44d4ff9fddf5d8b565d2cd130def59fc678b83707fc3763daf3e20dfb43d"
+   },
+   "unit_id": "un-00024"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00026",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1002/14651858.CD008456.pub3 ",
+    "structural_steps": []
+   },
+   "id": "id-00019",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/14651858.cd008456.pub3",
+    "raw": "10.1002/14651858.CD008456.pub3 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBI8",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[27]/span[2]/cite/a[3]",
+      "quote": "10.1002/14651858.CD008456.pub3",
+      "subtree_sha256": "24bb891573ab0db8422151f40c2318fd77b9ab04ac2f11b2c5dedd92fa036dc4"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 37888,
+    "byte_start": 37857,
+    "cp_end": 37866,
+    "cp_start": 37835,
+    "exact": true,
+    "raw": "10.1002/14651858.CD008456.pub3 ",
+    "raw_sha256": "3a4c881651965e764e30c469a21b849cb2941cacca40f09a1d05dbe7d47928dd"
+   },
+   "unit_id": "un-00026"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00026",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "26678041 ",
+    "structural_steps": []
+   },
+   "id": "id-00020",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "26678041",
+    "raw": "26678041 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBJY",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[27]/span[2]/cite/a[6]",
+      "quote": "26678041",
+      "subtree_sha256": "0a9a7b5079a1540f12bf6e0eed2d01053316cbc06a2549f63cba32ef0d6189d0"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 37904,
+    "byte_start": 37895,
+    "cp_end": 37882,
+    "cp_start": 37873,
+    "exact": true,
+    "raw": "26678041 ",
+    "raw_sha256": "6f6abb2eafbeebb27cebc80b6fde650c733be8c9538a544a83127104c5111589"
+   },
+   "unit_id": "un-00026"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00027",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1055/s-0029-1202593",
+    "structural_steps": []
+   },
+   "id": "id-00021",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1055/s-0029-1202593",
+    "raw": "10.1055/s-0029-1202593",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBBY",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[18]/span[2]/cite/a[3]",
+      "quote": "10.1055/s-0029-1202593",
+      "subtree_sha256": "f5e159f311d9a83104a1eed4bb869e6f51a12cab0394b1e09529444598eafff3"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 38556,
+    "byte_start": 38534,
+    "cp_end": 38532,
+    "cp_start": 38510,
+    "exact": true,
+    "raw": "10.1055/s-0029-1202593",
+    "raw_sha256": "b7564da666188e49a0a94fccd1289f7cf98e340e906de2fd05eb659ed3693953"
+   },
+   "unit_id": "un-00027"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00027",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "22110799",
+    "structural_steps": []
+   },
+   "id": "id-00022",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "22110799",
+    "raw": "22110799",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwBB0",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[18]/span[2]/cite/a[6]",
+      "quote": "22110799",
+      "subtree_sha256": "d784d9debc22dfa32266fc47c1c9b1abd2430d2a3c3b862a2433aa1d3bf0e3b2"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 38570,
+    "byte_start": 38562,
+    "cp_end": 38546,
+    "cp_start": 38538,
+    "exact": true,
+    "raw": "22110799",
+    "raw_sha256": "1a68cc3843bc53818a7c10af84268af2525eb707821aff8ccdc064455ca956cb"
+   },
+   "unit_id": "un-00027"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Odell_2010-2",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[2]",
+     "quote": "1 2 Odell EW, ed. (2010). Clinical problem solving in dentistry (3rd ed.). Edinburgh: Churchill Livingstone. pp. 311–315. ISBN 978-0-443-06784-6.",
+     "subtree_sha256": "3f4c3f2b9ceeddfe4488d4dd366f157fbac71054a8733af424f3774eb9f2ef58"
+    },
+    "region_id": "cite_note-Odell_2010-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Scully_2005-3",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[3]",
+     "quote": "1 2 3 4 5 6 7 8 9 Scully C, Kalantzis A (2005). Oxford handbook of dental patient care (2nd ed.). New York: Oxford University Press. pp. 237, 310. ISBN 978-0-19",
+     "subtree_sha256": "64af16fed53ad9db13b811d46c41dde621c3c82809b0ba289e37faea9c02e974"
+    },
+    "region_id": "cite_note-Scully_2005-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Hargreaves_2010-4",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[4]",
+     "quote": "1 2 3 4 5 6 7 8 Hargreaves KM, Cohen S, Berman LH, eds. (2010). Cohen's pathways of the pulp (10th ed.). St. Louis, Mo.: Mosby Elsevier. pp. 55, 60. ISBN 978-0-",
+     "subtree_sha256": "27c6a58853e6b15030a2ff7122506af90b5a413dc0bec5726a2550ca032baa6a"
+    },
+    "region_id": "cite_note-Hargreaves_2010-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Zakrzewska_2013-5",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[5]",
+     "quote": "1 2 3 Zakrzewska, JM (Apr 25, 2013). \"Multi-dimensionality of chronic pain of the oral cavity and face\". The Journal of Headache and Pain. 14 (1): 37. doi:10.11",
+     "subtree_sha256": "b866be575a3e5b3d86a5c2d6bde9171f5034f73d7782b4369417b4a56f93251a"
+    },
+    "region_id": "cite_note-Zakrzewska_2013-5"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Bruch_2010-10",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[10]",
+     "quote": "1 2 3 Treister NS, Bruch JM (2010). Clinical oral medicine and pathology. New York: Humana Press. pp. 130, 135. ISBN 978-1-60327-519-4.",
+     "subtree_sha256": "caf10e5d624884d43e8986f2e7c21807a475d22b7c86c7a44298960733abe401"
+    },
+    "region_id": "cite_note-Bruch_2010-10"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Coulthard_2008-11",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[11]",
+     "quote": "↑ Coulthard P, Horner K, Sloan P, Theaker E (2008). Master dentistry volume 1, oral and maxillofacial surgery, radiology, pathology and oral medicine (2nd ed.).",
+     "subtree_sha256": "47e3ed2335aeda769c3600b226b0078e99944d9e2331f51dad1de871195e5db9"
+    },
+    "region_id": "cite_note-Coulthard_2008-11"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00007",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Tyldesley_2003-12",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[12]",
+     "quote": "1 2 3 Tyldesley WR, Field A, Longman L (2003). Tyldesley's Oral medicine (5th ed.). Oxford: Oxford University Press. pp. 206, 207. ISBN 978-0-19-263147-3.",
+     "subtree_sha256": "5e69e564a8c32832b389b9db4f8d914581584aeded2f4d7123ee1c5076654d60"
+    },
+    "region_id": "cite_note-Tyldesley_2003-12"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00008",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-NIXDORF_2012-13",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[13]",
+     "quote": "↑ NIXDORF, D. R.; DRANGSHOLT, M. T.; ETTLIN, D. A.; GAUL, C.; De LEEUW, R.; SVENSSON, P.; ZAKRZEWSKA, J. M.; DE LAAT, A.; CEUSTERS, W.; et al. (1 March 2012). \"",
+     "subtree_sha256": "5c61b626a650d269e22f46a0f11d8885ed00234c55d1a5017b05303eb9d197db"
+    },
+    "region_id": "cite_note-NIXDORF_2012-13"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00009",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Quail_2005-14",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[14]",
+     "quote": "1 2 Quail, G; Mueller, D; Yoon, MS; Pageler, L; Diener, H; Katsarava, Z (August 2005). \"Atypical facial pain—a diagnostic challenge\" (PDF). Australian Family Ph",
+     "subtree_sha256": "b33e452043038ee997f08c80feb7ef7c1a03759fce329094b042218d413cabcd"
+    },
+    "region_id": "cite_note-Quail_2005-14"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00010",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Sciubba_2009-15",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[15]",
+     "quote": "↑ Sciubba, JJ (July 2009). \"Neuralgia-inducing cavitational osteonecrosis: a status report\". Oral Diseases. 15 (5): 309–12. doi:10.1111/j.1601-0825.2009.01532.x",
+     "subtree_sha256": "9a92c48d448664db7c21fddfead3175d1b6a8e8de66a098486e3221ff8e75cfe"
+    },
+    "region_id": "cite_note-Sciubba_2009-15"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00011",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Vogt-Ferrier_2010-16",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[16]",
+     "quote": "↑ Vogt-Ferrier, NB; Hugentobler M; Uebelhart B; Tramèr M; Rollason V (16 Jun 2010). Vogt-Ferrier, Nicole B (ed.). \"Interventions for treating osteonecrosis of t",
+     "subtree_sha256": "f924c1c1dce5bfb1fc0d9c537b2ce182a0d5573b0db8f8a4fb64330d995879e3"
+    },
+    "region_id": "cite_note-Vogt-Ferrier_2010-16"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00012",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-AAE_position_statement-17",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[17]",
+     "quote": "1 2 3 \"AAE Position Statement on NICO lesions (Neuralgia-Inducing Cavitational Osteonecrosis)\" (PDF). AAE Research and Scientific Affairs Committee. Archived fr",
+     "subtree_sha256": "265e27f12ea7577e6d02fa34d8577e1df9ab5dccfbf1bc4dd7f334248090a148"
+    },
+    "region_id": "cite_note-AAE_position_statement-17"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00013",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Patel_1012-19",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[19]",
+     "quote": "↑ Patel, SB; Boros, AL; Kumar, SK (September 2012). \"Atypical odontalgia—an update\". Journal of the California Dental Association. 40 (9): 739–47. doi:10.1080/1",
+     "subtree_sha256": "36e8538ebb12f4988c9cdde21507b8095c12ffc8cfb39de8c68b23d5b46329dd"
+    },
+    "region_id": "cite_note-Patel_1012-19"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00014",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Scully_2008-8",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[8]",
+     "quote": "1 2 3 4 5 6 7 8 9 10 11 Scully, Crispian (2008). Oral and maxillofacial medicine: the basis of diagnosis and treatment (2nd ed.). Edinburgh: Churchill Livingsto",
+     "subtree_sha256": "80dcabb945b4c35943feb40a07f29d626f8fd925d93d5e3cb3a43433b3ff3ae3"
+    },
+    "region_id": "cite_note-Scully_2008-8"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00015",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwAr4",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.1002/14651858.CD008456.pub3, PMID 26678041, Retraction Watch)",
+      "subtree_sha256": "826acbed3574c967a9893b533e19124f1f35797c1447c085ede09121d0bf4bef"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "10.1002/14651858.CD008456.pub2. PMID 22071849. (Retracted, see doi:10.1002/14651858.CD008456.pub3, PMID 2",
+     "term": "retracted"
+    },
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "http://retractionwatch.com/2010/09/20/progressive-how-the-cochrane-library-handles-updates-in-progress/",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwAss",
+      "id_unique": true,
+      "path": "/html/body/section[8]/div/div/ol/li[1]/span[2]/span[2]/a[5]/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "60ab89598467612c855335bfe2bb31b2161a9e11163edf90ab3098db604e0cdb"
+     },
+     "matched": "Retraction",
+     "part": "text",
+     "snippet": ":10.1002/14651858.CD008456.pub3, PMID 26678041, Retraction Watch)",
+     "term": "retraction"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Aggarwal_2011-1",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[1]",
+     "quote": "1 2 3 4 5 6 7 .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .cit",
+     "subtree_sha256": "a4bf1dbc154a4ea73ce3b12aec1368b92a221cab361495df20df1f5681dcdf0f"
+    },
+    "region_id": "cite_note-Aggarwal_2011-1"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 20965,
+     "cp_start": 20762,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00016",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Neville_2001-9",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[9]",
+     "quote": "1 2 3 4 5 6 Neville BW, Damm DD, Allen CA, Bouquot JE (2002). Oral & maxillofacial pathology (2nd ed.). Philadelphia: W.B. Saunders. pp. 745, 746. ISBN 978-0-72",
+     "subtree_sha256": "991e877199475386cec5b701819fb4e7d89af87799e3e78065914996ad448c67"
+    },
+    "region_id": "cite_note-Neville_2001-9"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00017",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-ICHD-2-6",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[6]",
+     "quote": "1 2 3 4 \"2nd Edition of The International Classification of Headache Disorders (ICHD-2)\". International Headache Society. Retrieved 7 May 2013.",
+     "subtree_sha256": "93ce400c05ee1809765a6865aa2ff3c6d22cf099857fa0ded0ca9657aae1e3ad"
+    },
+    "region_id": "cite_note-ICHD-2-6"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00018",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Classification_of_Chronic_Pain-20",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[20]",
+     "quote": "1 2 \"Classification of Chronic Pain, Part II, B. Relatively Localized Syndromes of the Head and Neck; Group IV: Lesions of the ear, nose, and oral cavity\". IASP",
+     "subtree_sha256": "d9569925a8c2057ce1ab2f37dffddd7c1483a3b23f983602092241f140f89973"
+    },
+    "region_id": "cite_note-Classification_of_Chronic_Pain-20"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00019",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Glick_2003-7",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[7]",
+     "quote": "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 Greenberg MS, Glick M (2003). Burket's oral medicine diagnosis & treatment (10th ed.). Hamilton, Ont.: BC Decker. pp. 317, 3",
+     "subtree_sha256": "76734b3083b3a531243fcfeca54640c4e9b353a62adf799cb4bdcf33a23d3e52"
+    },
+    "region_id": "cite_note-Glick_2003-7"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00020",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-ICHD-2_introduction-21",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[21]",
+     "quote": "1 2 \"2nd Edition of The International Headache Classification (ICHD-2), Cranial neuralgias and central causes of facial pain; Introduction\". IHS. Retrieved 7 Ma",
+     "subtree_sha256": "0905d90a39022098c27cacb9b1b8ba7fe3609042c2d2fdfda53572819134bbda"
+    },
+    "region_id": "cite_note-ICHD-2_introduction-21"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00021",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-IASP_2011-22",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[22]",
+     "quote": "1 2 \"Trigeminal Neuralgia and Persistent Idiopathic Facial Pain\". International Association for the Study of Pain. Archived from the original on 17 October 2012",
+     "subtree_sha256": "895e9557266bcc82bca7ad4e1a9cf3367a2f778bd1ccb72eefc2c2063ff2c36e"
+    },
+    "region_id": "cite_note-IASP_2011-22"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00022",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Classification_of_Chronic_Pain_(terms)-24",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[24]",
+     "quote": "↑ \"Classification of Chronic Pain, Part III Pain Terms A Current List with Definitions and Notes on Usage\". IASP. Archived from the original on 19 December 2012",
+     "subtree_sha256": "54effc7aafa166d3b67dcf348d83f5dbac5c486c47191274ded7e4a51cd67b9c"
+    },
+    "region_id": "cite_note-Classification_of_Chronic_Pain_(terms)-24"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00023",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Türp_1996-25",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[25]",
+     "quote": "1 2 Türp, JC; Gobetti, JP (April 1996). \"Trigeminal neuralgia versus atypical facial pain. A review of the literature and case report\". Oral Surgery, Oral Medic",
+     "subtree_sha256": "7ac14606151cad79ded2524f5c69044dd956a6cf7be477d434b162c2bfcee980"
+    },
+    "region_id": "cite_note-Türp_1996-25"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00024",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Eller_2005-23",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[23]",
+     "quote": "1 2 3 Eller, JL; Raslan, AM; Burchiel, KJ (May 15, 2005). \"Trigeminal neuralgia: definition and classification\". Neurosurgical Focus. 18 (5): E3. doi:10.3171/fo",
+     "subtree_sha256": "ad76af35f29cc2aa1af7dde6adb73f1852b9d411434677ff60c6a8740083d502"
+    },
+    "region_id": "cite_note-Eller_2005-23"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00025",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-TNA_Facial_Pain_Association_website-26",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[26]",
+     "quote": "↑ \"Facial Pain experts establish a new pain classification\". TNA Facial Pain Association. Archived from the original on 22 June 2013. Retrieved 7 May 2013.",
+     "subtree_sha256": "a385681a65531ff72abaac06cc7f21a98f01ee4e3b4eefb98d65239f9b9deb4f"
+    },
+    "region_id": "cite_note-TNA_Facial_Pain_Association_website-26"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00026",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-27",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[27]",
+     "quote": "↑ Aggarwal Vishal R (2015). \"Psychosocial interventions for the management of chronic orofacial pain\". Cochrane Database of Systematic Reviews. 2015 (12) CD0084",
+     "subtree_sha256": "baf78ffe34af569da373d36af8087dfa5d2b7d3473b43b37140efe79152bb510"
+    },
+    "region_id": "cite_note-27"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00027",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Williams_2009-18",
+     "id_unique": true,
+     "path": "/html/body/section[8]/div/div/ol/li[18]",
+     "quote": "1 2 Williams, Christopher; Dellon, A.; Rosson, Gedge (5 March 2009). \"Management of Chronic Facial Pain\". Craniomaxillofacial Trauma and Reconstruction. 2 (2): ",
+     "subtree_sha256": "2e35ea42e4ed17942cbece051fd32396b57ad059abb82be588daf7eb75da2bb0"
+    },
+    "region_id": "cite_note-Williams_2009-18"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 424,
+    "byte_start": 238,
+    "cp_end": 422,
+    "cp_start": 238
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 680,
+    "byte_start": 478,
+    "cp_end": 678,
+    "cp_start": 476
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 987,
+    "byte_start": 787,
+    "cp_end": 985,
+    "cp_start": 785
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt40"
+   },
+   "source": {
+    "byte_end": 5643,
+    "byte_start": 5369,
+    "cp_end": 5641,
+    "cp_start": 5367
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt43"
+   },
+   "source": {
+    "byte_end": 5849,
+    "byte_start": 5672,
+    "cp_end": 5847,
+    "cp_start": 5670
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": "ct-00006/d1",
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt47"
+   },
+   "source": {
+    "byte_end": 6320,
+    "byte_start": 5909,
+    "cp_end": 6318,
+    "cp_start": 5907
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00007",
+   "definition_id": "ct-00007/d1",
+   "duplicate_params": [],
+   "id": "un-00007",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt50"
+   },
+   "source": {
+    "byte_end": 6551,
+    "byte_start": 6353,
+    "cp_end": 6549,
+    "cp_start": 6351
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00008",
+   "definition_id": "ct-00008/d1",
+   "duplicate_params": [],
+   "id": "un-00008",
+   "identifier_ids": [
+    "id-00003",
+    "id-00004"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt53"
+   },
+   "source": {
+    "byte_end": 7098,
+    "byte_start": 6582,
+    "cp_end": 7094,
+    "cp_start": 6580
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00009",
+   "definition_id": "ct-00009/d1",
+   "duplicate_params": [],
+   "id": "un-00009",
+   "identifier_ids": [
+    "id-00005"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt60"
+   },
+   "source": {
+    "byte_end": 12180,
+    "byte_start": 11825,
+    "cp_end": 12172,
+    "cp_start": 11821
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00010",
+   "definition_id": "ct-00010/d1",
+   "duplicate_params": [],
+   "id": "un-00010",
+   "identifier_ids": [
+    "id-00006",
+    "id-00007"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt63"
+   },
+   "source": {
+    "byte_end": 12579,
+    "byte_start": 12350,
+    "cp_end": 12569,
+    "cp_start": 12342
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00011",
+   "definition_id": "ct-00011/d1",
+   "duplicate_params": [],
+   "id": "un-00011",
+   "identifier_ids": [
+    "id-00008"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt66"
+   },
+   "source": {
+    "byte_end": 13336,
+    "byte_start": 13006,
+    "cp_end": 13325,
+    "cp_start": 12996
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00012",
+   "definition_id": "ct-00012/d1",
+   "duplicate_params": [],
+   "id": "un-00012",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 16640,
+    "byte_start": 16249,
+    "cp_end": 16629,
+    "cp_start": 16238
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00013",
+   "definition_id": "ct-00013/d1",
+   "duplicate_params": [],
+   "id": "un-00013",
+   "identifier_ids": [
+    "id-00009",
+    "id-00010"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt85"
+   },
+   "source": {
+    "byte_end": 18662,
+    "byte_start": 18378,
+    "cp_end": 18647,
+    "cp_start": 18367
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00014",
+   "definition_id": "ct-00014/d1",
+   "duplicate_params": [],
+   "id": "un-00014",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt88"
+   },
+   "source": {
+    "byte_end": 19158,
+    "byte_start": 18916,
+    "cp_end": 19141,
+    "cp_start": 18901
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00015",
+   "definition_id": "ct-00015/d1",
+   "duplicate_params": [],
+   "id": "un-00015",
+   "identifier_ids": [
+    "id-00011",
+    "id-00012"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt98"
+   },
+   "source": {
+    "byte_end": 20778,
+    "byte_start": 20369,
+    "cp_end": 20761,
+    "cp_start": 20352
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00016",
+   "definition_id": "ct-00016/d1",
+   "duplicate_params": [],
+   "id": "un-00016",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt116"
+   },
+   "source": {
+    "byte_end": 23569,
+    "byte_start": 23361,
+    "cp_end": 23552,
+    "cp_start": 23344
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00017",
+   "definition_id": "ct-00017/d1",
+   "duplicate_params": [],
+   "id": "un-00017",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt119"
+   },
+   "source": {
+    "byte_end": 24274,
+    "byte_start": 24024,
+    "cp_end": 24257,
+    "cp_start": 24007
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00018",
+   "definition_id": "ct-00018/d1",
+   "duplicate_params": [],
+   "id": "un-00018",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt122"
+   },
+   "source": {
+    "byte_end": 25061,
+    "byte_start": 24501,
+    "cp_end": 25044,
+    "cp_start": 24484
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00019",
+   "definition_id": "ct-00019/d1",
+   "duplicate_params": [],
+   "id": "un-00019",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt127"
+   },
+   "source": {
+    "byte_end": 25632,
+    "byte_start": 25426,
+    "cp_end": 25615,
+    "cp_start": 25409
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  },
+  {
+   "container_id": "ct-00020",
+   "definition_id": "ct-00020/d1",
+   "duplicate_params": [],
+   "id": "un-00020",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt132"
+   },
+   "source": {
+    "byte_end": 26487,
+    "byte_start": 26209,
+    "cp_end": 26470,
+    "cp_start": 26192
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00021",
+   "definition_id": "ct-00021/d1",
+   "duplicate_params": [],
+   "id": "un-00021",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt138"
+   },
+   "source": {
+    "byte_end": 27933,
+    "byte_start": 27457,
+    "cp_end": 27916,
+    "cp_start": 27440
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00022",
+   "definition_id": "ct-00022/d1",
+   "duplicate_params": [],
+   "id": "un-00022",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt143"
+   },
+   "source": {
+    "byte_end": 30128,
+    "byte_start": 29614,
+    "cp_end": 30111,
+    "cp_start": 29597
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00023",
+   "definition_id": "ct-00023/d1",
+   "duplicate_params": [],
+   "id": "un-00023",
+   "identifier_ids": [
+    "id-00015",
+    "id-00016"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt146"
+   },
+   "source": {
+    "byte_end": 30852,
+    "byte_start": 30515,
+    "cp_end": 30831,
+    "cp_start": 30497
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00024",
+   "definition_id": "ct-00024/d1",
+   "duplicate_params": [],
+   "id": "un-00024",
+   "identifier_ids": [
+    "id-00017",
+    "id-00018"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt151"
+   },
+   "source": {
+    "byte_end": 31860,
+    "byte_start": 31593,
+    "cp_end": 31838,
+    "cp_start": 31571
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00025",
+   "definition_id": "ct-00025/d1",
+   "duplicate_params": [],
+   "id": "un-00025",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 33406,
+    "byte_start": 32996,
+    "cp_end": 33384,
+    "cp_start": 32974
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00026",
+   "definition_id": "ct-00026/d1",
+   "duplicate_params": [],
+   "id": "un-00026",
+   "identifier_ids": [
+    "id-00019",
+    "id-00020"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt168"
+   },
+   "source": {
+    "byte_end": 38140,
+    "byte_start": 37838,
+    "cp_end": 38118,
+    "cp_start": 37816
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00027",
+   "definition_id": "ct-00027/d1",
+   "duplicate_params": [],
+   "id": "un-00027",
+   "identifier_ids": [
+    "id-00021",
+    "id-00022"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt171"
+   },
+   "source": {
+    "byte_end": 38584,
+    "byte_start": 38296,
+    "cp_end": 38560,
+    "cp_start": 38274
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00001",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "67280947d031cc631fec1cfaa93e68700f3bb182aeb842090b76043b95a8f2bf"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 183,
+    "byte_start": 155,
+    "cp_end": 183,
+    "cp_start": 155
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00002",
+   "name": "Odell 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Odell_2010_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[2]",
+     "quote": "[2]",
+     "subtree_sha256": "e638ca75b1f3f1d5d2d0b4997bd6382da1fb7766da7dbb3b6b71776671314fce"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Odell_2010-2"
+   },
+   "source": {
+    "byte_end": 430,
+    "byte_start": 215,
+    "cp_end": 428,
+    "cp_start": 215
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00003",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[3]",
+     "quote": "[3]",
+     "subtree_sha256": "a676ff2b543e872171a060001d37d6cc80cc3c4fc68f590a62824f4775c8d1ce"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 686,
+    "byte_start": 454,
+    "cp_end": 684,
+    "cp_start": 452
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00004",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "reference_role_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[4]",
+     "quote": "[4]",
+     "subtree_sha256": "181ba62f28932e509d1f0f966c8b929871ffc81670e5e53706cee9e5f9993830"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 736,
+    "byte_start": 706,
+    "cp_end": 734,
+    "cp_start": 704
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00005",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "reference_role_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[5]",
+     "quote": "[4]",
+     "subtree_sha256": "e0f0a128f3c7bf712ad75174b1100a91f83c8e9a0f9ba9ecbb41775e0fd8df31"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 993,
+    "byte_start": 759,
+    "cp_end": 991,
+    "cp_start": 757
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00006",
+   "name": "Zakrzewska 2013",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-Zakrzewska_2013_5-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[2]/td/sup[6]",
+     "quote": "[5]",
+     "subtree_sha256": "7dfe3901afbe3d2068748c9015ee526507ffca1e8e34ff18cdcf512ff4dfdf28"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Zakrzewska_2013-5"
+   },
+   "source": {
+    "byte_end": 1062,
+    "byte_start": 1032,
+    "cp_end": 1060,
+    "cp_start": 1030
+   },
+   "template": {
+    "canonical": "Infobox medical condition (new)",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox medical condition (new)"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00007",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[1]/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "180e47680638d68be24294ada7385e14860a69c80a0353364015ce0982a68afb"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 1583,
+    "byte_start": 1555,
+    "cp_end": 1581,
+    "cp_start": 1553
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00017",
+   "group": "",
+   "id": "us-00008",
+   "name": "ICHD-2",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_6-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[1]/sup[2]",
+     "quote": "[6]",
+     "subtree_sha256": "6c99becaabdc2a91501f9acbc63380d27af7838d8897474ccce99caf1c4a0104"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2-6"
+   },
+   "source": {
+    "byte_end": 2202,
+    "byte_start": 2183,
+    "cp_end": 2200,
+    "cp_start": 2181
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00009",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[1]/sup[3]",
+     "quote": "[7]",
+     "subtree_sha256": "bced99c57b194bb8c4f421a06bfc501e59cc6d3d71ccfa4d576d245c41cf5c40"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 2579,
+    "byte_start": 2554,
+    "cp_end": 2577,
+    "cp_start": 2552
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00010",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup",
+     "quote": "[8]",
+     "subtree_sha256": "ab08e6756d02d5899bed34082c832806aa0b65332430766779da05944bedbd65"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 2820,
+    "byte_start": 2794,
+    "cp_end": 2818,
+    "cp_start": 2792
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00011",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[3]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "b9822f05835170eaf385835be6977b8c872a8cc7eb0fa95d86ff1b211ad6cb49"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 3829,
+    "byte_start": 3804,
+    "cp_end": 3827,
+    "cp_start": 3802
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00012",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[4]/sup",
+     "quote": "[4]",
+     "subtree_sha256": "9e116f41e9e5de74a5ef3dbb38419fbd1caaf3ca00c92e0c428ed0d5429ff0af"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 4607,
+    "byte_start": 4577,
+    "cp_end": 4605,
+    "cp_start": 4575
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00013",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[1]/sup",
+     "quote": "[9]",
+     "subtree_sha256": "bce7832682be2e2ab9cc7239ee12e72bd600d58911c82432d1680e0bd0d8075a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 4896,
+    "byte_start": 4869,
+    "cp_end": 4894,
+    "cp_start": 4867
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00014",
+   "name": "Odell 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Odell_2010_2-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[1]",
+     "quote": "[2]",
+     "subtree_sha256": "53e7365adf22b8a35b0b7111910ebb54de645e55d6251a4d93acead9588602bb"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Odell_2010-2"
+   },
+   "source": {
+    "byte_end": 5264,
+    "byte_start": 5239,
+    "cp_end": 5262,
+    "cp_start": 5237
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00015",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "c9f6dbb72e119f07942ca12109243a6e8fc26130a26be72d37416b85f08b5384"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 5290,
+    "byte_start": 5264,
+    "cp_end": 5288,
+    "cp_start": 5262
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00016",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-2",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[3]",
+     "quote": "[7]",
+     "subtree_sha256": "57b89f15dac09469fe82d1284e4619b21eba9c24cfd97c288b4cefffa86fb8a2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 5315,
+    "byte_start": 5290,
+    "cp_end": 5313,
+    "cp_start": 5288
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00017",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[4]",
+     "quote": "[8]",
+     "subtree_sha256": "e3f68eb9b1a16a55e9139223660d34434449a4f3ab855dc827ae74ae95f7f601"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 5341,
+    "byte_start": 5315,
+    "cp_end": 5339,
+    "cp_start": 5313
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00018",
+   "name": "Zakrzewska 2013",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Zakrzewska_2013_5-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[5]",
+     "quote": "[5]",
+     "subtree_sha256": "50fa214b19e642ba6b30b9c493d24691984cda16d057c35d95e5c0dcda5f48bb"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Zakrzewska_2013-5"
+   },
+   "source": {
+    "byte_end": 5649,
+    "byte_start": 5341,
+    "cp_end": 5647,
+    "cp_start": 5339
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00019",
+   "name": "Bruch 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bruch_2010_10-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[6]",
+     "quote": "[10]",
+     "subtree_sha256": "67f1692bb85e5af2070e53962d357abec216e4dbf6668d7531b18ac39c3ce752"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bruch_2010-10"
+   },
+   "source": {
+    "byte_end": 5855,
+    "byte_start": 5649,
+    "cp_end": 5853,
+    "cp_start": 5647
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00020",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[7]",
+     "quote": "[9]",
+     "subtree_sha256": "14b802c1445c005798c5bd790f610081cb1ee89ee6ed544a1cf2d1204e65fe34"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 5882,
+    "byte_start": 5855,
+    "cp_end": 5880,
+    "cp_start": 5853
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00006",
+   "group": "",
+   "id": "us-00021",
+   "name": "Coulthard 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Coulthard_2008_11-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[8]",
+     "quote": "[11]",
+     "subtree_sha256": "2857c59313c70a01a7672e09c928308836561aee94bbc883b115b3a8dfc063fb"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Coulthard_2008-11"
+   },
+   "source": {
+    "byte_end": 6326,
+    "byte_start": 5882,
+    "cp_end": 6324,
+    "cp_start": 5880
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00007",
+   "group": "",
+   "id": "us-00022",
+   "name": "Tyldesley 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Tyldesley_2003_12-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[9]",
+     "quote": "[12]",
+     "subtree_sha256": "12d75079938e1b079f53b5413e8ad1d72415443159df0d16963853378e12dc1d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Tyldesley_2003-12"
+   },
+   "source": {
+    "byte_end": 6557,
+    "byte_start": 6326,
+    "cp_end": 6555,
+    "cp_start": 6324
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00008",
+   "group": "",
+   "id": "us-00023",
+   "name": "NIXDORF 2012",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-NIXDORF_2012_13-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p[3]/sup[10]",
+     "quote": "[13]",
+     "subtree_sha256": "a51d8129d285437e44385356a30f51b352adf2e767b414c2ff22ffb6dcda8929"
+    },
+    "state": "matched",
+    "target_note": "cite_note-NIXDORF_2012-13"
+   },
+   "source": {
+    "byte_end": 7104,
+    "byte_start": 6557,
+    "cp_end": 7100,
+    "cp_start": 6555
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00024",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[1]/p/sup",
+     "quote": "[8]",
+     "subtree_sha256": "486401da2d3328dcb048d879148ddacaa202bde5b34268eeea71fbe9807884de"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 10465,
+    "byte_start": 10439,
+    "cp_end": 10461,
+    "cp_start": 10435
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00025",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-3",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/p[1]/sup",
+     "quote": "[8]",
+     "subtree_sha256": "2f85e98308aea5c6213483d3cf6a7c6793b8ddd5c3eeebd363e6c63d61f9a823"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 10876,
+    "byte_start": 10850,
+    "cp_end": 10872,
+    "cp_start": 10846
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00026",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-4",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/p[2]/sup",
+     "quote": "[8]",
+     "subtree_sha256": "d2762be780b3b16efc76214f3e8d4cbff038b46533936b1a6f815eb5d15b0f24"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 11498,
+    "byte_start": 11472,
+    "cp_end": 11494,
+    "cp_start": 11468
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00009",
+   "group": "",
+   "id": "us-00027",
+   "name": "Quail 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Quail_2005_14-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/p[3]/sup[1]",
+     "quote": "[14]",
+     "subtree_sha256": "d10b982373dbccf5c2480a13279a34740f1aca45af41a3b6f0a98bfdba112b41"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Quail_2005-14"
+   },
+   "source": {
+    "byte_end": 11641,
+    "byte_start": 11616,
+    "cp_end": 11637,
+    "cp_start": 11612
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00009",
+   "group": "",
+   "id": "us-00028",
+   "name": "Quail 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Quail_2005_14-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/p[3]/sup[2]",
+     "quote": "[14]",
+     "subtree_sha256": "bf128a69479be42cdff66006f6279e8569842a793cf9e671e966407020d0a3d7"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Quail_2005-14"
+   },
+   "source": {
+    "byte_end": 12186,
+    "byte_start": 11802,
+    "cp_end": 12178,
+    "cp_start": 11798
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00010",
+   "group": "",
+   "id": "us-00029",
+   "name": "Sciubba 2009",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Sciubba_2009_15-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/p/sup[1]",
+     "quote": "[15]",
+     "subtree_sha256": "5bea77f492c27888a5c5ed1423f8c7a2e6d747d7bc574229efe398661627b3be"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Sciubba_2009-15"
+   },
+   "source": {
+    "byte_end": 12585,
+    "byte_start": 12325,
+    "cp_end": 12575,
+    "cp_start": 12317
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00011",
+   "group": "",
+   "id": "us-00030",
+   "name": "Vogt-Ferrier 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Vogt-Ferrier_2010_16-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/p/sup[2]",
+     "quote": "[16]",
+     "subtree_sha256": "150bc2ccbc422f2cfb5937814668c913342ecbd53fc55f696d9e31cd60d0297d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Vogt-Ferrier_2010-16"
+   },
+   "source": {
+    "byte_end": 13342,
+    "byte_start": 12976,
+    "cp_end": 13331,
+    "cp_start": 12966
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00031",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/p/sup[3]",
+     "quote": "[9]",
+     "subtree_sha256": "202d9fe595eb4fffb23eec39ef5af6c21e76da9beff7597c5867c08d4f8f9af2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 14565,
+    "byte_start": 14538,
+    "cp_end": 14554,
+    "cp_start": 14527
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00012",
+   "group": "",
+   "id": "us-00032",
+   "name": "AAE position statement",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-AAE_position_statement_17-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/p/sup[4]",
+     "quote": "[17]",
+     "subtree_sha256": "377cf07db65f648a10aecacc2aa2b91dc0d86128b4d7b3690b2477c5bd120925"
+    },
+    "state": "matched",
+    "target_note": "cite_note-AAE_position_statement-17"
+   },
+   "source": {
+    "byte_end": 14894,
+    "byte_start": 14857,
+    "cp_end": 14883,
+    "cp_start": 14846
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00012",
+   "group": "",
+   "id": "us-00033",
+   "name": "AAE position statement",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-AAE_position_statement_17-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/p/sup[5]",
+     "quote": "[17]",
+     "subtree_sha256": "a55a7eb3018b5786b98290579918412e967627ae952a6017413dc4fabf600f72"
+    },
+    "state": "matched",
+    "target_note": "cite_note-AAE_position_statement-17"
+   },
+   "source": {
+    "byte_end": 15016,
+    "byte_start": 14979,
+    "cp_end": 15005,
+    "cp_start": 14968
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00012",
+   "group": "",
+   "id": "us-00034",
+   "name": "AAE position statement",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "single_use_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-AAE_position_statement_17-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[1]/blockquote/p/sup",
+     "quote": "[17]",
+     "subtree_sha256": "0cad55fb4e7d83d5542183e0e0b43cfcb0b2ef8ff084e28422920b950b206fb4"
+    },
+    "state": "matched",
+    "target_note": "cite_note-AAE_position_statement-17"
+   },
+   "source": {
+    "byte_end": 16646,
+    "byte_start": 16214,
+    "cp_end": 16635,
+    "cp_start": 16203
+   },
+   "template": {
+    "canonical": "Blockquote",
+    "family": null,
+    "kind": "other",
+    "name": "blockquote"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00035",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-5",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[2]/section[2]/p/sup",
+     "quote": "[8]",
+     "subtree_sha256": "85aeca5ccd7a223ccbc1dee65effe53c974f102bdff53f927ed90d9efabfa899"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 16778,
+    "byte_start": 16752,
+    "cp_end": 16767,
+    "cp_start": 16741
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00036",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-6",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[3]/p[1]/sup",
+     "quote": "[8]",
+     "subtree_sha256": "90912b9eca255471b5250eab71a02fe30a79a5bfb77c5ec8e48f89f6d301b17f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 17410,
+    "byte_start": 17384,
+    "cp_end": 17399,
+    "cp_start": 17373
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00027",
+   "group": "",
+   "id": "us-00037",
+   "name": "Williams 2009",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Williams_2009_18-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[3]/p[2]/sup[1]",
+     "quote": "[18]",
+     "subtree_sha256": "fc0c03110a079806c4b380a5566fc2e48b895d94d04a507342b21de816d765a2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Williams_2009-18"
+   },
+   "source": {
+    "byte_end": 17728,
+    "byte_start": 17700,
+    "cp_end": 17717,
+    "cp_start": 17689
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00038",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-7",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[3]/p[2]/sup[2]",
+     "quote": "[8]",
+     "subtree_sha256": "a2cd9a7b5cc330bd74d02fc24aa795d049f5f7d5674799732f2362ec59d2f6a3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 17854,
+    "byte_start": 17828,
+    "cp_end": 17843,
+    "cp_start": 17817
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00007",
+   "group": "",
+   "id": "us-00039",
+   "name": "Tyldesley 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Tyldesley_2003_12-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/section[3]/p[2]/sup[3]",
+     "quote": "[12]",
+     "subtree_sha256": "3fc8efd6524b4bd3ae37412cc46634fe8e57401aeef3873f67528a9cba3d5834"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Tyldesley_2003-12"
+   },
+   "source": {
+    "byte_end": 18012,
+    "byte_start": 17983,
+    "cp_end": 18001,
+    "cp_start": 17972
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00040",
+   "name": "Bruch 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bruch_2010_10-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p[1]/sup[1]",
+     "quote": "[10]",
+     "subtree_sha256": "ecb2dc1cdbeb27a8a624fd627601b6d84a4c41bbddf702d4f256553b1b1d188a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bruch_2010-10"
+   },
+   "source": {
+    "byte_end": 18158,
+    "byte_start": 18133,
+    "cp_end": 18147,
+    "cp_start": 18122
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00013",
+   "group": "",
+   "id": "us-00041",
+   "name": "Patel 1012",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Patel_1012_19-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p[1]/sup[2]",
+     "quote": "[19]",
+     "subtree_sha256": "7f9e9c2dc8d5de1de053ad870e807d900f5ffd8ef97417c10e6d165ec66f9568"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Patel_1012-19"
+   },
+   "source": {
+    "byte_end": 18668,
+    "byte_start": 18355,
+    "cp_end": 18653,
+    "cp_start": 18344
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00042",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-8",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p[1]/sup[3]",
+     "quote": "[8]",
+     "subtree_sha256": "3d824c3031b8ebc2b15bb477346c4c290dca276465cd23170e28dd06eb5be3a2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 19164,
+    "byte_start": 18892,
+    "cp_end": 19147,
+    "cp_start": 18877
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00007",
+   "group": "",
+   "id": "us-00043",
+   "name": "Tyldesley 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Tyldesley_2003_12-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p[2]/sup",
+     "quote": "[12]",
+     "subtree_sha256": "1d00b5256d983d79b19c7f489ab60006334e679b25ef8a5d932d97e0f01a2548"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Tyldesley_2003-12"
+   },
+   "source": {
+    "byte_end": 19302,
+    "byte_start": 19273,
+    "cp_end": 19285,
+    "cp_start": 19256
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00044",
+   "name": "Zakrzewska 2013",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Zakrzewska_2013_5-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p[3]/sup",
+     "quote": "[5]",
+     "subtree_sha256": "37ad68d65fd8e23731ab758958237723138fdd27defc2666fedb96ac62e60ad3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Zakrzewska_2013-5"
+   },
+   "source": {
+    "byte_end": 19399,
+    "byte_start": 19370,
+    "cp_end": 19382,
+    "cp_start": 19353
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00045",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[1]/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "139a039e32b6964d01d515b15315bbcacfbdd27fe4a56482d29fe89286cd1f53"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 19548,
+    "byte_start": 19520,
+    "cp_end": 19531,
+    "cp_start": 19503
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00046",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[1]/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "b731db0d630526905d3d99254e6d4616198279e72e64cd4edd22d3b7169fbe3f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 19637,
+    "byte_start": 19611,
+    "cp_end": 19620,
+    "cp_start": 19594
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00047",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[1]/sup[3]",
+     "quote": "[4]",
+     "subtree_sha256": "5fcff732b4ca3d5d19dd70e08d5dff53b79a48ed8de38b4a0ac52ad0242ce09a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 19724,
+    "byte_start": 19694,
+    "cp_end": 19707,
+    "cp_start": 19677
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00048",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[1]/sup[4]",
+     "quote": "[4]",
+     "subtree_sha256": "84812bd58c0c10d8ad1051613c2abc3e9c761af213db5054e37a375f28522a69"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 19955,
+    "byte_start": 19925,
+    "cp_end": 19938,
+    "cp_start": 19908
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00049",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[2]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "89ea305f2ac0ca63687b4becc246985bfaf26ea910ae9601344202e16e7ab33a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 20140,
+    "byte_start": 20115,
+    "cp_end": 20123,
+    "cp_start": 20098
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00050",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[3]/sup",
+     "quote": "[1]",
+     "subtree_sha256": "140b76f2a53bf8350314e07c7860ce2be41fb06b06f4fad20ab7a45f7bebbf4a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 20988,
+    "byte_start": 20343,
+    "cp_end": 20971,
+    "cp_start": 20326
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00051",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[1]",
+     "quote": "[7]",
+     "subtree_sha256": "ffc7cd18f083caf91b6b89de42f12ac739debda8fd0c900ce906b8ea3bbab5c2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 21338,
+    "byte_start": 21313,
+    "cp_end": 21321,
+    "cp_start": 21296
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00052",
+   "name": "Bruch 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bruch_2010_10-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[2]",
+     "quote": "[10]",
+     "subtree_sha256": "9a691ae57a4ef80f12252721f21f828791ac2c177a19f17b31aa5478fb793ab3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bruch_2010-10"
+   },
+   "source": {
+    "byte_end": 21422,
+    "byte_start": 21397,
+    "cp_end": 21405,
+    "cp_start": 21380
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00053",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[3]",
+     "quote": "[3]",
+     "subtree_sha256": "e4bba4310496ef676dc8af1c4906ba4135f2083d1552e46a7cbcd59e8eb26d6f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 21504,
+    "byte_start": 21478,
+    "cp_end": 21487,
+    "cp_start": 21461
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00054",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-5",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[4]",
+     "quote": "[4]",
+     "subtree_sha256": "4cb33d7a57bf02c45a8e8f35dd2d2f4eeac0edb22282ddea68643a34a692fc9d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 21719,
+    "byte_start": 21689,
+    "cp_end": 21702,
+    "cp_start": 21672
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00055",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-6",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[5]",
+     "quote": "[4]",
+     "subtree_sha256": "96b3c63ab8c2b4bcbd58815a686c9fd871e96e31098c454bb8ff9927efb677f5"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 21853,
+    "byte_start": 21823,
+    "cp_end": 21836,
+    "cp_start": 21806
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00056",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[6]",
+     "quote": "[3]",
+     "subtree_sha256": "418baf84ae5c5aec949c674699402f692379638fc48fa1363b1e0b1a805550cd"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 22081,
+    "byte_start": 22055,
+    "cp_end": 22064,
+    "cp_start": 22038
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00057",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-5",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/p[4]/sup[7]",
+     "quote": "[3]",
+     "subtree_sha256": "0d436a68f8c077e4907b6d77216ee325a69130b19832557a17d13056a9cb2913"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 22299,
+    "byte_start": 22273,
+    "cp_end": 22282,
+    "cp_start": 22256
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00058",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-5",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/p/sup",
+     "quote": "[7]",
+     "subtree_sha256": "724779854a1a472d2665cbd1124f7db8f7279a1754cef9a6942a283defaf0845"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 22578,
+    "byte_start": 22553,
+    "cp_end": 22561,
+    "cp_start": 22536
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00059",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-6",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/ul/li[1]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "deb36683fef857870cf6e84fc847d35062d570ee8caadd1539da37fe1382945c"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 22713,
+    "byte_start": 22688,
+    "cp_end": 22696,
+    "cp_start": 22671
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00060",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-7",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/ul/li[2]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "63a6088bc659efca12cf7b11468e8a3773854acbe5f8ac2c88edced0bb4ae00d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 22890,
+    "byte_start": 22865,
+    "cp_end": 22873,
+    "cp_start": 22848
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00061",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-8",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/ul/li[3]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "aee797391349bfffd7459a881dc8be31468fa3c1c138ec891301205872c36be8"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 22996,
+    "byte_start": 22971,
+    "cp_end": 22979,
+    "cp_start": 22954
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00062",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-9",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/ul/li[4]/sup",
+     "quote": "[7]",
+     "subtree_sha256": "efaf1fca6224da79f247dc82e9d8835807d32fc2d3bd628613ff445c687919be"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 23166,
+    "byte_start": 23141,
+    "cp_end": 23149,
+    "cp_start": 23124
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00063",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[1]/ul/li[5]/sup",
+     "quote": "[9]",
+     "subtree_sha256": "9de54bc244841e70dd94ef172e302baf9d40e4ccd41dc2b5487a2fb3d1c00b10"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 23575,
+    "byte_start": 23336,
+    "cp_end": 23558,
+    "cp_start": 23319
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00017",
+   "group": "",
+   "id": "us-00064",
+   "name": "ICHD-2",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_6-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[2]/ul/li[1]/sup",
+     "quote": "[6]",
+     "subtree_sha256": "ca442f844220c69e769ee5584a32c02a75c02056b241ae4bf53a82ab33917931"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2-6"
+   },
+   "source": {
+    "byte_end": 24280,
+    "byte_start": 24007,
+    "cp_end": 24263,
+    "cp_start": 23990
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00018",
+   "group": "",
+   "id": "us-00065",
+   "name": "Classification of Chronic Pain",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Classification_of_Chronic_Pain_20-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[2]/ul/li[2]/sup",
+     "quote": "[20]",
+     "subtree_sha256": "f4845e6bedf35dd82edace4455a975b369cb09761770c8f7bd3a4c43af0308a3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Classification_of_Chronic_Pain-20"
+   },
+   "source": {
+    "byte_end": 25067,
+    "byte_start": 24458,
+    "cp_end": 25050,
+    "cp_start": 24441
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00066",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-6",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[2]/ul/li[3]/sup",
+     "quote": "[3]",
+     "subtree_sha256": "8b85c4cf049d3f2d2c1b7d79112c51630aac6e8f1310ff71a4bf59dd7659de54"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 25168,
+    "byte_start": 25142,
+    "cp_end": 25151,
+    "cp_start": 25125
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00067",
+   "name": "Hargreaves 2010",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Hargreaves_2010_4-7",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[1]/section[2]/ul/li[4]/sup",
+     "quote": "[4]",
+     "subtree_sha256": "6fa3ed00097813f227f5bad34789eecdefed9eba11b54ec977468b986f6b4ae5"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Hargreaves_2010-4"
+   },
+   "source": {
+    "byte_end": 25291,
+    "byte_start": 25261,
+    "cp_end": 25274,
+    "cp_start": 25244
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00068",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-10",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[1]/sup[1]",
+     "quote": "[7]",
+     "subtree_sha256": "15c1591ae0805d470c3b806d64baa066bf763b1a5b73b9e6f20cbfee5c3244a9"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 25638,
+    "byte_start": 25403,
+    "cp_end": 25621,
+    "cp_start": 25386
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00069",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-11",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[1]/sup[2]",
+     "quote": "[7]",
+     "subtree_sha256": "0846043974f90675f738c33a6e35ab236cf890e125de77f1ce15bee4ad6ea236"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 25787,
+    "byte_start": 25762,
+    "cp_end": 25770,
+    "cp_start": 25745
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00070",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-12",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[1]/sup[3]",
+     "quote": "[7]",
+     "subtree_sha256": "b5f7ff8301cfeb1eda925a58c54e2ee4843683021c19fbcf6b82055710d24c53"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 26055,
+    "byte_start": 26030,
+    "cp_end": 26038,
+    "cp_start": 26013
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00020",
+   "group": "",
+   "id": "us-00071",
+   "name": "ICHD-2 introduction",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_introduction_21-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[1]/sup[4]",
+     "quote": "[21]",
+     "subtree_sha256": "2d084c3313122d5627eeda1924a4a54d761f647ba6db0a96d9a7debd1d395b22"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2_introduction-21"
+   },
+   "source": {
+    "byte_end": 26493,
+    "byte_start": 26177,
+    "cp_end": 26476,
+    "cp_start": 26160
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00020",
+   "group": "",
+   "id": "us-00072",
+   "name": "ICHD-2 introduction",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_introduction_21-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[1]/sup[5]",
+     "quote": "[21]",
+     "subtree_sha256": "845e1b709030516b2dd9f55b8d31ebf98b43a41ccc8a55e1d7ed50671b324b54"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2_introduction-21"
+   },
+   "source": {
+    "byte_end": 26736,
+    "byte_start": 26702,
+    "cp_end": 26719,
+    "cp_start": 26685
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00017",
+   "group": "",
+   "id": "us-00073",
+   "name": "ICHD-2",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_6-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[2]/sup[1]",
+     "quote": "[6]",
+     "subtree_sha256": "a53eba0709eb6257493f214a15ed31bc841e00198da4989b619daa5b2a5c48b0"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2-6"
+   },
+   "source": {
+    "byte_end": 27068,
+    "byte_start": 27049,
+    "cp_end": 27051,
+    "cp_start": 27032
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00018",
+   "group": "",
+   "id": "us-00074",
+   "name": "Classification of Chronic Pain",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Classification_of_Chronic_Pain_20-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[2]/sup[2]",
+     "quote": "[20]",
+     "subtree_sha256": "58382f263162308565f0439a3468e03e154e91e28bb49c8d07c3104c06e0b219"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Classification_of_Chronic_Pain-20"
+   },
+   "source": {
+    "byte_end": 27320,
+    "byte_start": 27275,
+    "cp_end": 27303,
+    "cp_start": 27258
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00021",
+   "group": "",
+   "id": "us-00075",
+   "name": "IASP 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-IASP_2011_22-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[2]/sup[3]",
+     "quote": "[22]",
+     "subtree_sha256": "f5bbc1ef5a6aa7faf486a26017c70ceeea35d29eac66416064e92a0e10829f4a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-IASP_2011-22"
+   },
+   "source": {
+    "byte_end": 27939,
+    "byte_start": 27435,
+    "cp_end": 27922,
+    "cp_start": 27418
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00076",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-13",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[2]/p[2]/sup[4]",
+     "quote": "[7]",
+     "subtree_sha256": "c00d263203433430031fc8702a2ff1e93643a3296f3b0bb4a5ed9ffa550c0812"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 28204,
+    "byte_start": 28179,
+    "cp_end": 28187,
+    "cp_start": 28162
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00024",
+   "group": "",
+   "id": "us-00077",
+   "name": "Eller 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Eller_2005_23-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/table/caption/sup",
+     "quote": "[23]",
+     "subtree_sha256": "cc0f872ee1d8bc9b600f180fa908f461f52b308c5687f170c4e71c1ffeebbd92"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Eller_2005-23"
+   },
+   "source": {
+    "byte_end": 28426,
+    "byte_start": 28401,
+    "cp_end": 28409,
+    "cp_start": 28384
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00022",
+   "group": "",
+   "id": "us-00078",
+   "name": "Classification of Chronic Pain (terms)",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Classification_of_Chronic_Pain_(terms)_24-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[1]/sup[1]",
+     "quote": "[24]",
+     "subtree_sha256": "0835e4e767656b2b3a3f9622d1ae6592effcccb61bdf1bc16f243d48dff462e3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Classification_of_Chronic_Pain_(terms)-24"
+   },
+   "source": {
+    "byte_end": 30134,
+    "byte_start": 29563,
+    "cp_end": 30117,
+    "cp_start": 29546
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00023",
+   "group": "",
+   "id": "us-00079",
+   "name": "Türp 1996",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Türp_1996_25-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[1]/sup[2]",
+     "quote": "[25]",
+     "subtree_sha256": "e1335440d8fd9908fef8dcfed21deafb4be478dd2a1b9e7c3596e52511e0d0e5"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Türp_1996-25"
+   },
+   "source": {
+    "byte_end": 30858,
+    "byte_start": 30492,
+    "cp_end": 30837,
+    "cp_start": 30475
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00023",
+   "group": "",
+   "id": "us-00080",
+   "name": "Türp 1996",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Türp_1996_25-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[1]/sup[3]",
+     "quote": "[25]",
+     "subtree_sha256": "e9df43ff5523aabb6cc2c6628137e9f86e3a66451c5919a7f046c7c7d1a106c6"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Türp_1996-25"
+   },
+   "source": {
+    "byte_end": 31067,
+    "byte_start": 31042,
+    "cp_end": 31045,
+    "cp_start": 31021
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00024",
+   "group": "",
+   "id": "us-00081",
+   "name": "Eller 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Eller_2005_23-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[1]/sup[4]",
+     "quote": "[23]",
+     "subtree_sha256": "ff0dcfd6ba4bd87c3cd30e7da70df5025c2cafe0bd36cb6526b359dc19f9f4b0"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Eller_2005-23"
+   },
+   "source": {
+    "byte_end": 31254,
+    "byte_start": 31229,
+    "cp_end": 31232,
+    "cp_start": 31207
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00024",
+   "group": "",
+   "id": "us-00082",
+   "name": "Eller 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Eller_2005_23-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[1]/sup[5]",
+     "quote": "[23]",
+     "subtree_sha256": "276e4fe435f8be0f5a722d3e1d151dc3d53400357ddfe942af74cd8f2a4e23d1"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Eller_2005-23"
+   },
+   "source": {
+    "byte_end": 31866,
+    "byte_start": 31570,
+    "cp_end": 31844,
+    "cp_start": 31548
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00025",
+   "group": "",
+   "id": "us-00083",
+   "name": "TNA Facial Pain Association website",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "single_use_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-TNA_Facial_Pain_Association_website_26-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/blockquote/p/sup",
+     "quote": "[26]",
+     "subtree_sha256": "30feb1df917745007d9be697e34e21481a286a89793ba5a1fd87bf2139771433"
+    },
+    "state": "matched",
+    "target_note": "cite_note-TNA_Facial_Pain_Association_website-26"
+   },
+   "source": {
+    "byte_end": 33412,
+    "byte_start": 32948,
+    "cp_end": 33390,
+    "cp_start": 32926
+   },
+   "template": {
+    "canonical": "Blockquote",
+    "family": null,
+    "kind": "other",
+    "name": "blockquote"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00084",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[1]/section[3]/p[2]/sup",
+     "quote": "[9]",
+     "subtree_sha256": "1dd598f63be1ee9b2323515ff72aac2e0dc558c39fece4790039152e633b29f3"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 33602,
+    "byte_start": 33575,
+    "cp_end": 33580,
+    "cp_start": 33553
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00017",
+   "group": "",
+   "id": "us-00085",
+   "name": "ICHD-2",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICHD-2_6-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[2]/dl[4]/dd/dl/dd/sup",
+     "quote": "[6]",
+     "subtree_sha256": "8976c5f0156264a082b6f3ec5cf468c60e63df778ebfe7d92e7e434d178a1523"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICHD-2-6"
+   },
+   "source": {
+    "byte_end": 34175,
+    "byte_start": 34156,
+    "cp_end": 34153,
+    "cp_start": 34134
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00086",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-4",
+     "id_unique": true,
+     "path": "/html/body/section[5]/section[1]/p[1]/sup",
+     "quote": "[1]",
+     "subtree_sha256": "8aaf5c8827dcd34f83d8d9a44bd6d9a2dd6964dd31ddbf5969c7711dcbf11f58"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 34876,
+    "byte_start": 34848,
+    "cp_end": 34854,
+    "cp_start": 34826
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00087",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-5",
+     "id_unique": true,
+     "path": "/html/body/section[5]/section[1]/p[2]/sup",
+     "quote": "[1]",
+     "subtree_sha256": "8170c3dca9d7986179dfc3d7bf74e696ea4d72d97e431676713aae515f42efe2"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 35672,
+    "byte_start": 35644,
+    "cp_end": 35650,
+    "cp_start": 35622
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00088",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-9",
+     "id_unique": true,
+     "path": "/html/body/section[5]/section[3]/p/sup[1]",
+     "quote": "[8]",
+     "subtree_sha256": "6a663e14ed10c5a02deefce578c1b0c83dad43dfc8751a20787b6646b1598404"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 35907,
+    "byte_start": 35881,
+    "cp_end": 35885,
+    "cp_start": 35859
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00016",
+   "group": "",
+   "id": "us-00089",
+   "name": "Neville 2001",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Neville_2001_9-5",
+     "id_unique": true,
+     "path": "/html/body/section[5]/section[3]/p/sup[2]",
+     "quote": "[9]",
+     "subtree_sha256": "fda5befeb733553e1009d45057d6d917c8c57a46b755daf69d21b180390cd70c"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Neville_2001-9"
+   },
+   "source": {
+    "byte_end": 36806,
+    "byte_start": 36779,
+    "cp_end": 36784,
+    "cp_start": 36757
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00015",
+   "group": "",
+   "id": "us-00090",
+   "name": "Aggarwal 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aggarwal_2011_1-6",
+     "id_unique": true,
+     "path": "/html/body/section[6]/p[1]/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "f4a5e366b06a31e7998d4fe0047f9a363cb9c45e1cdf497dfbc0c97f91cb3808"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aggarwal_2011-1"
+   },
+   "source": {
+    "byte_end": 37659,
+    "byte_start": 37631,
+    "cp_end": 37637,
+    "cp_start": 37609
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00026",
+   "group": "",
+   "id": "us-00091",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-27",
+     "id_unique": true,
+     "path": "/html/body/section[6]/p[1]/sup[2]",
+     "quote": "[27]",
+     "subtree_sha256": "6750c1529c516c777731961ea28ebf27afe9dae371a26c5139c7240b6f6a3130"
+    },
+    "state": "matched",
+    "target_note": "cite_note-27"
+   },
+   "source": {
+    "byte_end": 38146,
+    "byte_start": 37833,
+    "cp_end": 38124,
+    "cp_start": 37811
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00027",
+   "group": "",
+   "id": "us-00092",
+   "name": "Williams 2009",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Williams_2009_18-1",
+     "id_unique": true,
+     "path": "/html/body/section[6]/p[2]/sup",
+     "quote": "[18]",
+     "subtree_sha256": "ac66c67b0bba840e738fd99a94a0d2ba9573a253ebd1e103b6cd19acd06c2a10"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Williams_2009-18"
+   },
+   "source": {
+    "byte_end": 38590,
+    "byte_start": 38270,
+    "cp_end": 38566,
+    "cp_start": 38248
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00014",
+   "group": "",
+   "id": "us-00093",
+   "name": "Scully 2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2008_8-10",
+     "id_unique": true,
+     "path": "/html/body/section[7]/p/sup[1]",
+     "quote": "[8]",
+     "subtree_sha256": "be56741d547eb208dc9453ffbf22c259a1d963b0f2c7afce3a76bd0dc0446467"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2008-8"
+   },
+   "source": {
+    "byte_end": 38757,
+    "byte_start": 38731,
+    "cp_end": 38731,
+    "cp_start": 38705
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00021",
+   "group": "",
+   "id": "us-00094",
+   "name": "IASP 2011",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-IASP_2011_22-1",
+     "id_unique": true,
+     "path": "/html/body/section[7]/p/sup[2]",
+     "quote": "[22]",
+     "subtree_sha256": "9170d6ebd6730eb684c0cdbd7403c88863c0d017a9aebe9445aa204fd17e380e"
+    },
+    "state": "matched",
+    "target_note": "cite_note-IASP_2011-22"
+   },
+   "source": {
+    "byte_end": 39039,
+    "byte_start": 39015,
+    "cp_end": 39011,
+    "cp_start": 38987
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00095",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-7",
+     "id_unique": true,
+     "path": "/html/body/section[7]/p/sup[3]",
+     "quote": "[3]",
+     "subtree_sha256": "4853b5203d018a81edae605ac97f07feca8d4a2195feb370d4d0879580bb16e0"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 39103,
+    "byte_start": 39077,
+    "cp_end": 39073,
+    "cp_start": 39047
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00096",
+   "name": "Scully 2005",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Scully_2005_3-8",
+     "id_unique": true,
+     "path": "/html/body/section[7]/p/sup[4]",
+     "quote": "[3]",
+     "subtree_sha256": "41fd7f1f4d5b46573fbd0d1c40fc8b913ac951ff9cf169117243f6f10d9eb748"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Scully_2005-3"
+   },
+   "source": {
+    "byte_end": 39177,
+    "byte_start": 39151,
+    "cp_end": 39147,
+    "cp_start": 39121
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00019",
+   "group": "",
+   "id": "us-00097",
+   "name": "Glick 2003",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Glick_2003_7-14",
+     "id_unique": true,
+     "path": "/html/body/section[7]/p/sup[5]",
+     "quote": "[7]",
+     "subtree_sha256": "420e77659d511ece4b966afce592259cc64583346e3701595d81af73316f3ecf"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Glick_2003-7"
+   },
+   "source": {
+    "byte_end": 39274,
+    "byte_start": 39249,
+    "cp_end": 39244,
+    "cp_start": 39219
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

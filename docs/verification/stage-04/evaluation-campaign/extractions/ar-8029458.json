@@ -1,0 +1,782 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 2,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 2,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 2
+   },
+   {
+    "left": 4,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 4
+   },
+   {
+    "left": 4,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 4
+   },
+   {
+    "left": 5,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 5,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 5,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 5
+   }
+  ],
+  "containers": {
+   "note": 4
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "primary_citation_field": 2
+  },
+  "identifiers_by_scheme": {
+   "doi": 1,
+   "pmid": 1
+  },
+  "identifiers_render": {
+   "render_link_found": 2
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 4
+  },
+  "parse_nodes": 210,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 5,
+   "total": 5,
+   "unmatched": 0
+  },
+  "source_bytes": 8871,
+  "units": {
+   "citation_template": 4
+  },
+  "uses": {
+   "bound": 5
+  },
+  "uses_render": {
+   "matched": 5
+  }
+ },
+ "capture": {
+  "capture_sha256": "6ad3479c80357e0e13b41503fdf4cd12c262bbed46343eca0253fcb8b98c8453",
+  "page_id": 8029458,
+  "render_artifact": "5ebe581ba3ea6c273c49ab050ea0f7c3092148c13e0d6441b3b7768664d9c031",
+  "render_state": "captured",
+  "revision_id": 71386322,
+  "sha1": "1820fd2ed031669d12e773bc5c954da4e845776d",
+  "source_artifact": "19073bb766e4e4110f8a5aaa0a81a45ccf32ebe8d7c1fe6711cc075fa483ddff",
+  "title": "الإعياء المزمن مجهول السبب",
+  "wiki": "ar"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 812,
+      "byte_start": 359,
+      "cp_end": 583,
+      "cp_start": 214
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 818,
+      "byte_start": 332,
+      "cp_end": 589,
+      "cp_start": 187
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "SchultzChapter",
+   "name_raw": "SchultzChapter",
+   "render": {
+    "region_id": "cite_note-SchultzChapter-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 818,
+    "byte_start": 332,
+    "cp_end": 589,
+    "cp_start": 187
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1365,
+      "byte_start": 940,
+      "cp_end": 1010,
+      "cp_start": 664
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1371,
+      "byte_start": 922,
+      "cp_end": 1016,
+      "cp_start": 646
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": "ICD10",
+   "name_raw": "ICD10",
+   "render": {
+    "region_id": "cite_note-ICD10-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1371,
+    "byte_start": 922,
+    "cp_end": 1016,
+    "cp_start": 646
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002",
+    "us-00003"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2130,
+      "byte_start": 1633,
+      "cp_end": 1601,
+      "cp_start": 1183
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2136,
+      "byte_start": 1614,
+      "cp_end": 1607,
+      "cp_start": 1164
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "ICD-11",
+   "name_raw": "ICD-11",
+   "render": {
+    "region_id": "cite_note-ICD-11-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2136,
+    "byte_start": 1614,
+    "cp_end": 1607,
+    "cp_start": 1164
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 6853,
+      "byte_start": 6320,
+      "cp_end": 4416,
+      "cp_start": 3984
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 6859,
+      "byte_start": 6299,
+      "cp_end": 4422,
+      "cp_start": 3963
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "Cochrane",
+   "name_raw": "Cochrane",
+   "render": {
+    "region_id": "cite_note-Cochrane-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 6859,
+    "byte_start": 6299,
+    "cp_end": 4422,
+    "cp_start": 3963
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "5e08edb03cc6e5b3027983ec04d518de2bd8f8dc5dd07bfaf87370c53b5135cc",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "19821361",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "19821361",
+    "raw": "19821361",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwiw",
+      "id_unique": true,
+      "path": "/html/body/section[5]/div[1]/div/div/ol/li[4]/span[2]/cite/a[6]",
+      "quote": "19821361",
+      "subtree_sha256": "c4b3a35a4671c573898b54bac3605d1f98e5ed83c5309bc51d30cac31819d320"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 6410,
+    "byte_start": 6402,
+    "cp_end": 4045,
+    "cp_start": 4037,
+    "exact": true,
+    "raw": "19821361",
+    "raw_sha256": "e24ee6c5f1aceb8a96152afeee8772f69784576f7e6d7704498e3f2bf9d956d2"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "استشهاد بدورية محكمة",
+     "family": "journal",
+     "kind": "citation",
+     "name": "استشهاد بدورية محكمة"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1002/14651858.CD006348.pub2",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1002/14651858.cd006348.pub2",
+    "raw": "10.1002/14651858.CD006348.pub2",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwhw",
+      "id_unique": true,
+      "path": "/html/body/section[5]/div[1]/div/div/ol/li[4]/span[2]/cite/a[2]",
+      "quote": "10.1002/14651858.CD006348.pub2",
+      "subtree_sha256": "0ecfe28e5120a1874a149881a5fdfaf29a5847ab1eccddc4ade7c7d98c1b634f"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 6445,
+    "byte_start": 6415,
+    "cp_end": 4080,
+    "cp_start": 4050,
+    "exact": true,
+    "raw": "10.1002/14651858.CD006348.pub2",
+    "raw_sha256": "2df19ff2cacbbb59963006329cf4d8c77b8c4e7378d2b32582d81b3c98359c42"
+   },
+   "unit_id": "un-00004"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-SchultzChapter-1",
+     "id_unique": true,
+     "path": "/html/body/section[5]/div[1]/div/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "0dac1ddf186f50f7cb959dc02de7e1c121fd1ba0fe267711a491de2f4ff558d0"
+    },
+    "region_id": "cite_note-SchultzChapter-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-ICD10-2",
+     "id_unique": true,
+     "path": "/html/body/section[5]/div[1]/div/div/ol/li[2]",
+     "quote": "1 2 \"ICD-10 Version:2016 | R53\". World Health Organization. مؤرشف من الأصل في 2020-12-20. اطلع عليه بتاريخ 2020-05-29.",
+     "subtree_sha256": "11df154c09064a5306a74ebdbf116681fc20e48402d61ea85029579d8fd72923"
+    },
+    "region_id": "cite_note-ICD10-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-ICD-11-3",
+     "id_unique": true,
+     "path": "/html/body/section[5]/div[1]/div/div/ol/li[3]",
+     "quote": "↑ \"ICD-11 - Mortality and Morbidity Statistics | MG22 Fatigue\". World Health Organization. 2019. مؤرشف من الأصل في 2020-12-20. اطلع عليه بتاريخ 2020-05-31.",
+     "subtree_sha256": "9d05241e5cfe29792d21a55bc4de18e49eddb19ee6a896b701916ed684b6f079"
+    },
+    "region_id": "cite_note-ICD-11-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 1,
+    "locator": {
+     "element_id": "cite_note-Cochrane-4",
+     "id_unique": true,
+     "path": "/html/body/section[5]/div[1]/div/div/ol/li[4]",
+     "quote": "↑ Adams, Denise; Wu, Taixiang; Yang, Xunzhe; Tai, Shusheng; Vohra, Sunita (2009). \"Traditional Chinese medicinal herbs for the treatment of idiopathic chronic f",
+     "subtree_sha256": "639e02d12b27d8d7543e0cc2483e7b4715ed0b8601ed69033bde0c5cda443292"
+    },
+    "region_id": "cite_note-Cochrane-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt4"
+   },
+   "source": {
+    "byte_end": 812,
+    "byte_start": 359,
+    "cp_end": 583,
+    "cp_start": 214
+   },
+   "template": {
+    "canonical": "استشهاد بكتاب",
+    "family": "book",
+    "kind": "citation",
+    "name": "استشهاد بكتاب"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt7"
+   },
+   "source": {
+    "byte_end": 1365,
+    "byte_start": 940,
+    "cp_end": 1010,
+    "cp_start": 664
+   },
+   "template": {
+    "canonical": "استشهاد ويب",
+    "family": "web",
+    "kind": "citation",
+    "name": "استشهاد ويب"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt11"
+   },
+   "source": {
+    "byte_end": 2130,
+    "byte_start": 1633,
+    "cp_end": 1601,
+    "cp_start": 1183
+   },
+   "template": {
+    "canonical": "استشهاد ويب",
+    "family": "web",
+    "kind": "citation",
+    "name": "استشهاد ويب"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt14"
+   },
+   "source": {
+    "byte_end": 6853,
+    "byte_start": 6320,
+    "cp_end": 4416,
+    "cp_start": 3984
+   },
+   "template": {
+    "canonical": "استشهاد بدورية محكمة",
+    "family": "journal",
+    "kind": "citation",
+    "name": "استشهاد بدورية محكمة"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "SchultzChapter",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-SchultzChapter_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[1]/sup",
+     "quote": "[1]",
+     "subtree_sha256": "6041383b61c23fa0a0a2786ef4a5a6ff1b3b8c2bf6f7dc1f1e768a0903332038"
+    },
+    "state": "matched",
+    "target_note": "cite_note-SchultzChapter-1"
+   },
+   "source": {
+    "byte_end": 818,
+    "byte_start": 332,
+    "cp_end": 589,
+    "cp_start": 187
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": "ICD10",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICD10_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup",
+     "quote": "[2]",
+     "subtree_sha256": "65f93a571e79504d14cabe12fcb57354d29fe8ddd865d32fdc135c12677a871d"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICD10-2"
+   },
+   "source": {
+    "byte_end": 1371,
+    "byte_start": 922,
+    "cp_end": 1016,
+    "cp_start": 646
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00003",
+   "name": "ICD10",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICD10_2-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[1]",
+     "quote": "[2]",
+     "subtree_sha256": "85bf189de8f6c610438c5338b88a1cdbc6af83ea00fc232913dad07bd1f04cbd"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICD10-2"
+   },
+   "source": {
+    "byte_end": 1614,
+    "byte_start": 1594,
+    "cp_end": 1164,
+    "cp_start": 1144
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00004",
+   "name": "ICD-11",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-ICD-11_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "05a029d61d507beefeeed0c3c735f566d5b17c1e5e8ea2071bc25fd89c513010"
+    },
+    "state": "matched",
+    "target_note": "cite_note-ICD-11-3"
+   },
+   "source": {
+    "byte_end": 2136,
+    "byte_start": 1614,
+    "cp_end": 1607,
+    "cp_start": 1164
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00005",
+   "name": "Cochrane",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Cochrane_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[4]/section[2]/p/sup",
+     "quote": "[4]",
+     "subtree_sha256": "aadd99584cae6f6d111fab0acc6ba65bfed31c69ba370c9b684008d123952a2e"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Cochrane-4"
+   },
+   "source": {
+    "byte_end": 6859,
+    "byte_start": 6299,
+    "cp_end": 4422,
+    "cp_start": 3963
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

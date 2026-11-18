@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 3139,
+   "body_sha256": "a0398a6c24ed79f25e056b45c5b7bcfb7048b93656a4b556953efee6e1898f0c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.505,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:50:11.010392Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=36470809",
+   "wire_bytes": 1690
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "409c5e1395aa98b7506d0ab3ac6b1709dd9321cad13b7bae4c1e481e657f42b8",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.471,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:50:21.516247Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1048135374/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 68141,
+   "body_sha256": "4cddf8ae1429deec691c988a9430ee6ddab16cd54257d985ecd7ca5965e69ccc",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.47,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:51:00.987862Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1048135374/html",
+   "wire_bytes": 11364
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "409c5e1395aa98b7506d0ab3ac6b1709dd9321cad13b7bae4c1e481e657f42b8"
+ ],
+ "finished_at": "2026-11-18T13:51:01.458430Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 36470809,
+  "parent_revision_id": 992573886,
+  "redirect_followed": null,
+  "revision_id": 1048135374,
+  "revision_timestamp": "2021-10-04T13:03:01Z",
+  "sha1": "bdd993aa4467adda2d620a12cda71fc7799457a5",
+  "size": 2553,
+  "title": "Mir-661 microRNA precursor family",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "4cddf8ae1429deec691c988a9430ee6ddab16cd54257d985ecd7ca5965e69ccc",
+  "bytes": 68141,
+  "checks": {
+   "document_revision_id": "1048135374",
+   "header_revision_id": "1048135374",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "36470809",
+   "render_id": "3bcdc54e-e2c4-11f1-92b8-2b1a87ccb6c9",
+   "revision_sha1": "bdd993aa4467adda2d620a12cda71fc7799457a5",
+   "revision_sha1_base36": "m6cuunv85p9un2zcsjv94s1a6l0fgyt"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1048135374",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:51:01 GMT",
+   "etag": "W/\"1048135374/3bcdc54e-e2c4-11f1-92b8-2b1a87ccb6c9/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:49:05 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1048135374/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 36470809,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "b6a6a8406c5022f109165df925c95ed36be393d7cf6849f460ea7be324d3243d",
+  "bytes": 2553,
+  "response_artifact": "a0398a6c24ed79f25e056b45c5b7bcfb7048b93656a4b556953efee6e1898f0c",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=36470809"
+ },
+ "started_at": "2026-11-18T13:50:10.668450Z",
+ "status": "complete"
+}

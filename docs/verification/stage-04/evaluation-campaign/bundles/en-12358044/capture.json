@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "e0a7fe16e35fae9fcc1f4b9d4cab6033febd6e538744382d1bb4966608d8c1cf",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.581,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:53:10.876288Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12358044",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 5736,
+   "body_sha256": "2b1375e2e43468792d418d5ad78c2eb913714dccdb720b4329cec4066dc62e2e",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.419,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:54:00.457279Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12358044",
+   "wire_bytes": 2748
+  },
+  {
+   "body_bytes": 54479,
+   "body_sha256": "fffb7f86454abe00fb7724a1e830f23abfcba46072df823856291cc788d3b895",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.407,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:54:10.876524Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1370514695/html",
+   "wire_bytes": 11414
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "e0a7fe16e35fae9fcc1f4b9d4cab6033febd6e538744382d1bb4966608d8c1cf"
+ ],
+ "finished_at": "2026-11-18T13:54:11.284207Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 12358044,
+  "parent_revision_id": 1328155455,
+  "redirect_followed": null,
+  "revision_id": 1370514695,
+  "revision_timestamp": "2026-08-21T15:36:02Z",
+  "sha1": "68ef272710949098edc34f475f2102a5b04e1539",
+  "size": 5146,
+  "title": "Bornean flat-headed frog",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "fffb7f86454abe00fb7724a1e830f23abfcba46072df823856291cc788d3b895",
+  "bytes": 54479,
+  "checks": {
+   "document_revision_id": "1370514695",
+   "header_revision_id": "1370514695",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "12358044",
+   "render_id": "9108cb35-e2c2-11f1-b0c2-157594df3661",
+   "revision_sha1": "68ef272710949098edc34f475f2102a5b04e1539",
+   "revision_sha1_base36": "c99p6cnry7g4136b7fjda22h4fsbqyh"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1370514695",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:54:11 GMT",
+   "etag": "W/\"1370514695/9108cb35-e2c2-11f1-b0c2-157594df3661/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:35:55 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1370514695/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 12358044,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "adc6a029c20b6a61720d20998b82079490ae729ddee72c15056ac713e39e290b",
+  "bytes": 5146,
+  "response_artifact": "2b1375e2e43468792d418d5ad78c2eb913714dccdb720b4329cec4066dc62e2e",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=12358044"
+ },
+ "started_at": "2026-11-18T13:53:04.136687Z",
+ "status": "complete"
+}

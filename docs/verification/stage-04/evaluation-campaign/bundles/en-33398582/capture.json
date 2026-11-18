@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 40670,
+   "body_sha256": "25b33f46166b3e73e0a40ee4bb7cedb64f627cc1c4538b7b0a71ef8755bf7d1c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.433,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:45:10.880263Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33398582",
+   "wire_bytes": 14348
+  },
+  {
+   "body_bytes": 186369,
+   "body_sha256": "85b3bb46de8684531beb609106e3c0221cb1e2012e46a0236a6d227fc5a2c2b4",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.44,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:45:21.313645Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381744447/html",
+   "wire_bytes": 35510
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-18T13:45:21.754808Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 33398582,
+  "parent_revision_id": 1314216559,
+  "redirect_followed": null,
+  "revision_id": 1381744447,
+  "revision_timestamp": "2026-10-24T14:25:36Z",
+  "sha1": "b11ea7517992b30c5618594d7d3b734fac59b773",
+  "size": 39622,
+  "title": "Atypical facial pain",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "85b3bb46de8684531beb609106e3c0221cb1e2012e46a0236a6d227fc5a2c2b4",
+  "bytes": 186369,
+  "checks": {
+   "document_revision_id": "1381744447",
+   "header_revision_id": "1381744447",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "33398582",
+   "render_id": "5d7c73e5-e2c7-11f1-a5e0-97a4a1078bcc",
+   "revision_sha1": "b11ea7517992b30c5618594d7d3b734fac59b773",
+   "revision_sha1_base36": "koto6ghpusjlbv0fvgrvlew395shoqb"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1381744447",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:45:21 GMT",
+   "etag": "W/\"1381744447/5d7c73e5-e2c7-11f1-a5e0-97a4a1078bcc/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:47:30 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1381744447/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 33398582,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "5d9984beeaa605dbd5d8adf9f2869f64584038bbeeadd67bc7e180b41a6e4960",
+  "bytes": 39622,
+  "response_artifact": "25b33f46166b3e73e0a40ee4bb7cedb64f627cc1c4538b7b0a71ef8755bf7d1c",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33398582"
+ },
+ "started_at": "2026-11-18T13:45:07.909410Z",
+ "status": "complete"
+}

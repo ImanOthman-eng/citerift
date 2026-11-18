@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 21369,
+   "body_sha256": "c26e2e2a00bf7712605e8fad6056862d26afd690661b2535a17f4f3e00819e02",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.498,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T14:08:10.989280Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=57386068",
+   "wire_bytes": 8315
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "ea7a8ac6389467b468adf4c449c12113440903902fd1ea5e38b4d68ef1cf2d20",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.362,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-18T14:08:21.487433Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1358781195/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 107686,
+   "body_sha256": "ccbbd62943eaa817ce325fd9cbb20cd780331a5f380af929e469dbbe70b5da69",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.552,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T14:09:00.850457Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1358781195/html",
+   "wire_bytes": 20222
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "ea7a8ac6389467b468adf4c449c12113440903902fd1ea5e38b4d68ef1cf2d20"
+ ],
+ "finished_at": "2026-11-18T14:09:01.403498Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 57386068,
+  "parent_revision_id": 1356915234,
+  "redirect_followed": null,
+  "revision_id": 1358781195,
+  "revision_timestamp": "2026-06-10T22:37:50Z",
+  "sha1": "02768aa4057e18b325585a9db1831c02ff3aedf5",
+  "size": 20710,
+  "title": "Epigenetic effects of smoking",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "ccbbd62943eaa817ce325fd9cbb20cd780331a5f380af929e469dbbe70b5da69",
+  "bytes": 107686,
+  "checks": {
+   "document_revision_id": "1358781195",
+   "header_revision_id": "1358781195",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "57386068",
+   "render_id": "58bbb492-e2cf-11f1-a116-2b80e414d1d7",
+   "revision_sha1": "02768aa4057e18b325585a9db1831c02ff3aedf5",
+   "revision_sha1_base36": "0acvhsbj0z8ksfsf4bqew5pulh6wxyt"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1358781195",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 14:09:01 GMT",
+   "etag": "W/\"1358781195/58bbb492-e2cf-11f1-a116-2b80e414d1d7/view\"",
+   "last-modified": "Tue, 17 Nov 2026 20:00:46 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1358781195/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 57386068,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "f920034ab4037a09f233b8edaec78c7a189f68e0fb6a33acbadfff442a3a114c",
+  "bytes": 20710,
+  "response_artifact": "c26e2e2a00bf7712605e8fad6056862d26afd690661b2535a17f4f3e00819e02",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=57386068"
+ },
+ "started_at": "2026-11-18T14:08:03.810011Z",
+ "status": "complete"
+}

@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "c869919b5b55435a85c13d3a4046ea4288caf516116c9e43a75426f2e9da58ce",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.395,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "6",
+   "retry_after_s": 6.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:37:53.679309Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=246458",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 42405,
+   "body_sha256": "50871ae7bf46e0a221005fb7206b7bd90e99bb3f88693b638974c7766e238de3",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.393,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:38:04.075266Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=246458",
+   "wire_bytes": 16105
+  },
+  {
+   "body_bytes": 290219,
+   "body_sha256": "b778abdf3e79ed17b976a8c9941d15ca02d42fd1c8e3e5e023436917f01e6f02",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.58,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:38:14.468547Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374816022/html",
+   "wire_bytes": 50749
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "c869919b5b55435a85c13d3a4046ea4288caf516116c9e43a75426f2e9da58ce"
+ ],
+ "finished_at": "2026-11-18T13:38:15.049384Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 246458,
+  "parent_revision_id": 1368879879,
+  "redirect_followed": null,
+  "revision_id": 1374816022,
+  "revision_timestamp": "2026-09-14T06:24:47Z",
+  "sha1": "caf6afa7bf7c7ae89ae76935620f6038c351337f",
+  "size": 41652,
+  "title": "Golden rice",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "b778abdf3e79ed17b976a8c9941d15ca02d42fd1c8e3e5e023436917f01e6f02",
+  "bytes": 290219,
+  "checks": {
+   "document_revision_id": "1374816022",
+   "header_revision_id": "1374816022",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "246458",
+   "render_id": "93682a6d-e2bc-11f1-a4e1-85c29c81a7b8",
+   "revision_sha1": "caf6afa7bf7c7ae89ae76935620f6038c351337f",
+   "revision_sha1_base36": "npi3si357gl51ambk9kqkupxfza4n0f"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1374816022",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:38:14 GMT",
+   "etag": "W/\"1374816022/93682a6d-e2bc-11f1-a4e1-85c29c81a7b8/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:24:22 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1374816022/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 246458,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "5da99336dd6c6a7b012c63300b9f29763e155f0209539ee9c218b78081497914",
+  "bytes": 41652,
+  "response_artifact": "50871ae7bf46e0a221005fb7206b7bd90e99bb3f88693b638974c7766e238de3",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=246458"
+ },
+ "started_at": "2026-11-18T13:37:48.207011Z",
+ "status": "complete"
+}

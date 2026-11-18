@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 81931,
+   "body_sha256": "3bc23ad30e9bf0605bc48205a9dbfae31da59d44db7ac07917e5c10df99f8665",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.461,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:13:10.583322Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10427484",
+   "wire_bytes": 24342
+  },
+  {
+   "body_bytes": 407542,
+   "body_sha256": "8892698037308abe35c79a71d64fe7598cb110f4a376d5210c359a6bcabc41ac",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 1.973,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:13:21.045177Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77182018/html",
+   "wire_bytes": 67713
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-18T13:13:23.019713Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 10427484,
+  "parent_revision_id": 76468999,
+  "redirect_followed": null,
+  "revision_id": 77182018,
+  "revision_timestamp": "2026-11-07T01:25:02Z",
+  "sha1": "6049682da4316aa38ec67d1aeb06b2d9de2598ea",
+  "size": 80841,
+  "title": "تغير المناخ في آسيا",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "8892698037308abe35c79a71d64fe7598cb110f4a376d5210c359a6bcabc41ac",
+  "bytes": 407542,
+  "checks": {
+   "document_revision_id": "77182018",
+   "header_revision_id": "77182018",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "10427484",
+   "render_id": "d45e46a3-e351-11f1-9882-9b1f232b22ed",
+   "revision_sha1": "6049682da4316aa38ec67d1aeb06b2d9de2598ea",
+   "revision_sha1_base36": "b8wl3vl63k4b4spfxxgaesl7spe8tey"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77182018",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:13:21 GMT",
+   "etag": "W/\"77182018/d45e46a3-e351-11f1-9882-9b1f232b22ed/view\"",
+   "last-modified": "Mon, 09 Nov 2026 14:08:18 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77182018/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 10427484,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "78f0bb539de911c7ebf9da3e5d021258fdf9a7d20c531a03323c04aa9a95eb25",
+  "bytes": 80841,
+  "response_artifact": "3bc23ad30e9bf0605bc48205a9dbfae31da59d44db7ac07917e5c10df99f8665",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10427484"
+ },
+ "started_at": "2026-11-18T13:13:04.956193Z",
+ "status": "complete"
+}

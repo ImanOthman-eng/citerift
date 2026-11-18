@@ -1,0 +1,1505 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 8,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 8,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 8
+   },
+   {
+    "left": 6,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 10,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 10
+   },
+   {
+    "left": 10,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 10
+   },
+   {
+    "left": 10,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 10
+   }
+  ],
+  "containers": {
+   "note": 6
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "marker_target": 2,
+   "primary_citation_field": 6
+  },
+  "identifiers_by_scheme": {
+   "doi": 5,
+   "pmid": 3
+  },
+  "identifiers_render": {
+   "render_link_found": 8
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 5,
+   "recognized_warning_text": 1
+  },
+  "parse_nodes": 231,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 10,
+   "total": 10,
+   "unmatched": 0
+  },
+  "source_bytes": 5146,
+  "units": {
+   "citation_template": 6
+  },
+  "uses": {
+   "anonymous": 1,
+   "bound": 9
+  },
+  "uses_render": {
+   "matched": 10
+  }
+ },
+ "capture": {
+  "capture_sha256": "9e0648b3fa578f2a13c68e6226f6fa22dd596f84176cf9b9a7e24058605a1932",
+  "page_id": 12358044,
+  "render_artifact": "fffb7f86454abe00fb7724a1e830f23abfcba46072df823856291cc788d3b895",
+  "render_state": "captured",
+  "revision_id": 1370514695,
+  "sha1": "68ef272710949098edc34f475f2102a5b04e1539",
+  "source_artifact": "adc6a029c20b6a61720d20998b82079490ae729ddee72c15056ac713e39e290b",
+  "title": "Bornean flat-headed frog",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 396,
+      "byte_start": 163,
+      "cp_end": 396,
+      "cp_start": 163
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 402,
+      "byte_start": 122,
+      "cp_end": 402,
+      "cp_start": 122
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "iucn status 17 November 2021",
+   "name_raw": "iucn status 17 November 2021",
+   "render": {
+    "region_id": "cite_note-iucn_status_17_November_2021-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 402,
+    "byte_start": 122,
+    "cp_end": 402,
+    "cp_start": 122
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001",
+    "us-00009"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1128,
+      "byte_start": 789,
+      "cp_end": 1128,
+      "cp_start": 789
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1134,
+      "byte_start": 773,
+      "cp_end": 1134,
+      "cp_start": 773
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": "frost",
+   "name_raw": "frost",
+   "render": {
+    "region_id": "cite_note-frost-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1134,
+    "byte_start": 773,
+    "cp_end": 1134,
+    "cp_start": 773
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1776,
+      "byte_start": 1400,
+      "cp_end": 1774,
+      "cp_start": 1400
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1782,
+      "byte_start": 1395,
+      "cp_end": 1780,
+      "cp_start": 1395
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1782,
+    "byte_start": 1395,
+    "cp_end": 1780,
+    "cp_start": 1395
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2233,
+      "byte_start": 1926,
+      "cp_end": 2231,
+      "cp_start": 1924
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2239,
+      "byte_start": 1901,
+      "cp_end": 2237,
+      "cp_start": 1899
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "Iskandar1978",
+   "name_raw": "Iskandar1978",
+   "render": {
+    "region_id": "cite_note-Iskandar1978-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2239,
+    "byte_start": 1901,
+    "cp_end": 2237,
+    "cp_start": 1899
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2963,
+      "byte_start": 2523,
+      "cp_end": 2961,
+      "cp_start": 2521
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2969,
+      "byte_start": 2498,
+      "cp_end": 2967,
+      "cp_start": 2496
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": "Bickford2008",
+   "name_raw": "Bickford2008",
+   "render": {
+    "region_id": "cite_note-Bickford2008-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2969,
+    "byte_start": 2498,
+    "cp_end": 2967,
+    "cp_start": 2496
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00003",
+    "us-00006",
+    "us-00008",
+    "us-00010"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3674,
+      "byte_start": 3439,
+      "cp_end": 3672,
+      "cp_start": 3437
+     },
+     "id": "ct-00006/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3680,
+      "byte_start": 3417,
+      "cp_end": 3678,
+      "cp_start": 3415
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "note",
+   "layout": null,
+   "name": "AmphibiaWeb",
+   "name_raw": "AmphibiaWeb",
+   "render": {
+    "region_id": "cite_note-AmphibiaWeb-6",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3680,
+    "byte_start": 3417,
+    "cp_end": 3678,
+    "cp_start": 3415
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": [
+    "us-00007"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "5004270ffb2da585485f3907ed85b46decbe4913ee353ab6b0c05fbc02b0e7a1",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite iucn",
+     "family": "unlisted",
+     "kind": "citation",
+     "name": "cite iucn"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.2305/IUCN.UK.2018-2.RLTS.T54444A3015179.en ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.2305/iucn.uk.2018-2.rlts.t54444a3015179.en",
+    "raw": "10.2305/IUCN.UK.2018-2.RLTS.T54444A3015179.en ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwXQ",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[1]/span[2]/cite/span[1]/a",
+      "quote": "10.2305/IUCN.UK.2018-2.RLTS.T54444A3015179.en",
+      "subtree_sha256": "77a81ba2aace2eb21b195484395f25760ea007acffc665b53531d17d057c8193"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 365,
+    "byte_start": 319,
+    "cp_end": 365,
+    "cp_start": 319,
+    "exact": true,
+    "raw": "10.2305/IUCN.UK.2018-2.RLTS.T54444A3015179.en ",
+    "raw_sha256": "97139e3245c0b908940e89dcdca6e3ca9a44c36df07d1c86ac8dbd7963cadedc"
+   },
+   "unit_id": "un-00001"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "Cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1016/j.cub.2024.03.017 ",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/j.cub.2024.03.017",
+    "raw": "10.1016/j.cub.2024.03.017 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwlA",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[4]/span[2]/cite/a[1]",
+      "quote": "\"The only \"lungless\" frog has a glottis and lungs\"",
+      "subtree_sha256": "cdea849440868bed6b6165ae829fc0e1c59df3a31512d4dcdcd26e09c6ad0092"
+     },
+     {
+      "element_id": "mwnA",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[4]/span[2]/cite/span[2]/a",
+      "quote": "10.1016/j.cub.2024.03.017",
+      "subtree_sha256": "fd0c48db8949896de8b51a01e8f5b7532c99b4558af681f2454a62d1d65278b8"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1698,
+    "byte_start": 1672,
+    "cp_end": 1696,
+    "cp_start": 1670,
+    "exact": true,
+    "raw": "10.1016/j.cub.2024.03.017 ",
+    "raw_sha256": "adbcd799bd9c5d9f8931221e8bc69285d8cdbeda4d947af30553745dcb7993ac"
+   },
+   "unit_id": "un-00003"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "Cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "38772334",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "38772334",
+    "raw": "38772334",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwog",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[4]/span[2]/cite/a[8]",
+      "quote": "38772334",
+      "subtree_sha256": "a87c4792380be91ed7f2e18ae085902483a9b0b3073157533e5a070638fd8094"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1728,
+    "byte_start": 1720,
+    "cp_end": 1726,
+    "cp_start": 1718,
+    "exact": true,
+    "raw": "38772334",
+    "raw_sha256": "551f594e13211d525a8ac60e1ce0f740310495e9829d31a64b3980796e01d03c"
+   },
+   "unit_id": "un-00003"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.2307/1443681 ",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.2307/1443681",
+    "raw": " 10.2307/1443681 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwrw",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[5]/span[2]/cite/a[3]",
+      "quote": "10.2307/1443681",
+      "subtree_sha256": "25365c3fd3af4bd14eff74529739717435cbf046009dff660b29ef81a2611ac5"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2213,
+    "byte_start": 2196,
+    "cp_end": 2211,
+    "cp_start": 2194,
+    "exact": true,
+    "raw": " 10.2307/1443681 ",
+    "raw_sha256": "af0bfeb9d6b742459146ea5b4a3bfc9ebf539e9d5ef50b05e866afe8a3fcd9c8"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 10.1016/j.cub.2008.03.010 ",
+    "structural_steps": []
+   },
+   "id": "id-00005",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/j.cub.2008.03.010",
+    "raw": " 10.1016/j.cub.2008.03.010 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwdQ",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/cite/a[1]",
+      "quote": "\"A lungless frog discovered on Borneo\"",
+      "subtree_sha256": "f86141cab75512b5ef0fe58b6153a760db8a9d9d2d7d3f4ba0320cc4356d28da"
+     },
+     {
+      "element_id": "mwfQ",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/cite/span[2]/a",
+      "quote": "10.1016/j.cub.2008.03.010",
+      "subtree_sha256": "f5e04f4f0da696c2f90507377f5f7ff59713ab0ffeffa48809823c96793bcca3"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2800,
+    "byte_start": 2773,
+    "cp_end": 2798,
+    "cp_start": 2771,
+    "exact": true,
+    "raw": " 10.1016/j.cub.2008.03.010 ",
+    "raw_sha256": "61eeb84a6cce0a39087d97fc1a074e3c04d8ef6f0e5e5abb64f48b444c55ad3c"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": " 18424139 ",
+    "structural_steps": []
+   },
+   "id": "id-00006",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "18424139",
+    "raw": " 18424139 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwgA",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/cite/a[6]",
+      "quote": "18424139",
+      "subtree_sha256": "80800619205fef7752632c4253d42c41a5914be328b95e06bca0d018f820585b"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 2818,
+    "byte_start": 2808,
+    "cp_end": 2816,
+    "cp_start": 2806,
+    "exact": true,
+    "raw": " 18424139 ",
+    "raw_sha256": "8b8b16a1457181d406cdb698366fcb3ba85e5412f4cf24d6d98bd0b25053de3e"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1016/j.cub.2024.07.093",
+    "structural_steps": []
+   },
+   "id": "id-00007",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1016/j.cub.2024.07.093",
+    "raw": "10.1016/j.cub.2024.07.093",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwiQ",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/span[2]/a[2]",
+      "quote": "10.1016/j.cub.2024.07.093",
+      "subtree_sha256": "e6b5bfd3df5fc770cca06db8b479dc654c681e73de3f5cc6525dbc7f13cfb217"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2931,
+    "byte_start": 2906,
+    "cp_end": 2929,
+    "cp_start": 2904,
+    "exact": true,
+    "raw": "10.1016/j.cub.2024.07.093",
+    "raw_sha256": "82912414b3f0eb4e48c4724b079e4d4fdaca03175746601641d7db4e39a0109c"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "39096905",
+    "structural_steps": []
+   },
+   "id": "id-00008",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "39096905",
+    "raw": "39096905",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwjg",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/span[2]/a[4]",
+      "quote": "39096905",
+      "subtree_sha256": "420f79569a4fab8de4e6a9dac18dec7fbb746c2becd3cea69240577c925fc3c0"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 2945,
+    "byte_start": 2937,
+    "cp_end": 2943,
+    "cp_start": 2935,
+    "exact": true,
+    "raw": "39096905",
+    "raw_sha256": "4d62c05c1ad12c2a844dfbe58ac13e43d382be536afc97de4639ba93da3def54"
+   },
+   "unit_id": null
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-iucn_status_17_November_2021-1",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[1]",
+     "quote": "1 2 .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:targ",
+     "subtree_sha256": "bfd2d4c3b118385cfe24486d25870910c146395b1d2466d049c0b3d424fb883a"
+    },
+    "region_id": "cite_note-iucn_status_17_November_2021-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-frost-2",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[2]",
+     "quote": "↑ Frost, Darrel R. (2013). \"Barbourula kalimantanensis Iskandar, 1978\". Amphibian Species of the World 5.6, an Online Reference. American Museum of Natural Hist",
+     "subtree_sha256": "56a1506ff89dd1d95fbe7ea2f2f8e7aff6c61785c4f1b8cbff605ab4f5b36ba0"
+    },
+    "region_id": "cite_note-frost-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-4",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[4]",
+     "quote": "↑ Blackburn, David C.; Gray, Jaimi A.; Stanley, Edward L. (2024-05-20). \"The only \"lungless\" frog has a glottis and lungs\". Current Biology. 34 (10): R492–R493.",
+     "subtree_sha256": "660c9be30ebb8a2b7d4dbeb0e853028572c28ab6681c980751bffb4f2bfb70bd"
+    },
+    "region_id": "cite_note-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Iskandar1978-5",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[5]",
+     "quote": "↑ Iskandar, Djoko T. (1978). \"A new species of Barbourula: first record of a discoglossid anuran in Borneo\". Copeia. 1978 (4): 564–566. doi:10.2307/1443681. JST",
+     "subtree_sha256": "30de8dc822b21d80656e492854225f00282215159ab523f03d32375085e3b306"
+    },
+    "region_id": "cite_note-Iskandar1978-5"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwhQ",
+      "id_unique": true,
+      "path": "/html/body/section[6]/div/div/ol/li[3]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.1016/j.cub.2024.07.093, PMID 39096905)",
+      "subtree_sha256": "3d9bd8bef4e3cdbc7391ec50ba158641f9bafb5a4a6c8eacb6aef2caf39dc612"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "cub.2008.03.010. PMID 18424139. S2CID 1427952. (Retracted, see doi:10.1016/j.cub.2024.07.093, PMID 390969",
+     "term": "retracted"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Bickford2008-3",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[3]",
+     "quote": "1 2 3 4 Bickford, David; Iskandar, Djoko; Barlian, Anggraini (2008). \"A lungless frog discovered on Borneo\". Current Biology. 18 (9): R374–R375. Bibcode:2008CBi",
+     "subtree_sha256": "89747e20afae558983a1f407866fca6214af08bbb825b6bd17028757e61cb4e8"
+    },
+    "region_id": "cite_note-Bickford2008-3"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 2961,
+     "cp_start": 2888,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-AmphibiaWeb-6",
+     "id_unique": true,
+     "path": "/html/body/section[6]/div/div/ol/li[6]",
+     "quote": "↑ Boisvert, Adam (2008-11-24). \"Barbourula kalimantanensis\". AmphibiaWeb. Retrieved 2013-12-11.",
+     "subtree_sha256": "93b2c20c9f34d9b62a3a939675da6330aaf50453ace9d2335095068703fc4e93"
+    },
+    "region_id": "cite_note-AmphibiaWeb-6"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [
+    "id-00001"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 396,
+    "byte_start": 163,
+    "cp_end": 396,
+    "cp_start": 163
+   },
+   "template": {
+    "canonical": "Cite iucn",
+    "family": "unlisted",
+    "kind": "citation",
+    "name": "cite iucn"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt9"
+   },
+   "source": {
+    "byte_end": 1128,
+    "byte_start": 789,
+    "cp_end": 1128,
+    "cp_start": 789
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [
+    "id-00002",
+    "id-00003"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt13"
+   },
+   "source": {
+    "byte_end": 1776,
+    "byte_start": 1400,
+    "cp_end": 1774,
+    "cp_start": 1400
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "Cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [
+    "id-00004"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt16"
+   },
+   "source": {
+    "byte_end": 2233,
+    "byte_start": 1926,
+    "cp_end": 2231,
+    "cp_start": 1924
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [
+    "id-00005",
+    "id-00006"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt19"
+   },
+   "source": {
+    "byte_end": 2890,
+    "byte_start": 2523,
+    "cp_end": 2888,
+    "cp_start": 2521
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": "ct-00006/d1",
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt26"
+   },
+   "source": {
+    "byte_end": 3674,
+    "byte_start": 3439,
+    "cp_end": 3672,
+    "cp_start": 3437
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "iucn status 17 November 2021",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "single_use_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-iucn_status_17_November_2021_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[3]/td/div/small/sup",
+     "quote": "[1]",
+     "subtree_sha256": "5eee4dd1eb945922d4b75e03c964cb94ce49df30e8ebff2bfaf4239ad3348db0"
+    },
+    "state": "matched",
+    "target_note": "cite_note-iucn_status_17_November_2021-1"
+   },
+   "source": {
+    "byte_end": 402,
+    "byte_start": 122,
+    "cp_end": 402,
+    "cp_start": 122
+   },
+   "template": {
+    "canonical": "Speciesbox",
+    "family": null,
+    "kind": "other",
+    "name": "speciesbox"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": "frost",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-frost_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[1]",
+     "quote": "[2]",
+     "subtree_sha256": "6d7fd0e95bf9c376ef2da4571d6d76223a99a8c6ae21508b41eee221eb1db7ec"
+    },
+    "state": "matched",
+    "target_note": "cite_note-frost-2"
+   },
+   "source": {
+    "byte_end": 1134,
+    "byte_start": 773,
+    "cp_end": 1134,
+    "cp_start": 773
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00003",
+   "name": "Bickford2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bickford2008_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "83a208fdaff344af0265b3a8aba1e845d5f7a7893b8604ed64fef3141787a15b"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bickford2008-3"
+   },
+   "source": {
+    "byte_end": 1230,
+    "byte_start": 1204,
+    "cp_end": 1230,
+    "cp_start": 1204
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00004",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-4",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[3]",
+     "quote": "[4]",
+     "subtree_sha256": "29f15b7a4824b916c2ef2579b1e269fc5e1a4a79bf7f9fadd6f27525ec5a75ca"
+    },
+    "state": "matched",
+    "target_note": "cite_note-4"
+   },
+   "source": {
+    "byte_end": 1782,
+    "byte_start": 1395,
+    "cp_end": 1780,
+    "cp_start": 1395
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00005",
+   "name": "Iskandar1978",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Iskandar1978_5-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[3]/sup[1]",
+     "quote": "[5]",
+     "subtree_sha256": "672c616f7212db545eefc51602a0cf495e44d6c7289741d8c4c8e2ab4a53b34a"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Iskandar1978-5"
+   },
+   "source": {
+    "byte_end": 2239,
+    "byte_start": 1901,
+    "cp_end": 2237,
+    "cp_start": 1899
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00006",
+   "name": "Bickford2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bickford2008_3-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[3]/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "43f8c1a312309180a60eed358fe3fa7e1c24f0cbb5b806b12fce8b88bef876b7"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bickford2008-3"
+   },
+   "source": {
+    "byte_end": 2969,
+    "byte_start": 2498,
+    "cp_end": 2967,
+    "cp_start": 2496
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00006",
+   "group": "",
+   "id": "us-00007",
+   "name": "AmphibiaWeb",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-AmphibiaWeb_6-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup",
+     "quote": "[6]",
+     "subtree_sha256": "21ad1fe69a44ad787abb06713b1c20a09e8a6cacd9ec5d7fda8cebec1f137569"
+    },
+    "state": "matched",
+    "target_note": "cite_note-AmphibiaWeb-6"
+   },
+   "source": {
+    "byte_end": 3680,
+    "byte_start": 3417,
+    "cp_end": 3678,
+    "cp_start": 3415
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00008",
+   "name": "Bickford2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bickford2008_3-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/p/sup",
+     "quote": "[3]",
+     "subtree_sha256": "0049b2d04a3da878d684aae8150c1beb059e62e14d16edd190edd577b296a734"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bickford2008-3"
+   },
+   "source": {
+    "byte_end": 3974,
+    "byte_start": 3948,
+    "cp_end": 3972,
+    "cp_start": 3946
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00009",
+   "name": "iucn status 17 November 2021",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-iucn_status_17_November_2021_1-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "90a6d85e75ec3b1c2dc588d3756fe85acceb469e5fb94c90721326893af0d836"
+    },
+    "state": "matched",
+    "target_note": "cite_note-iucn_status_17_November_2021-1"
+   },
+   "source": {
+    "byte_end": 4311,
+    "byte_start": 4268,
+    "cp_end": 4309,
+    "cp_start": 4266
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00010",
+   "name": "Bickford2008",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Bickford2008_3-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/p/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "0363ce11aa5e3bf0f27f7293330fc3e2989a9e0dcd1eb1d015642853d6ef9f71"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Bickford2008-3"
+   },
+   "source": {
+    "byte_end": 4337,
+    "byte_start": 4311,
+    "cp_end": 4335,
+    "cp_start": 4309
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

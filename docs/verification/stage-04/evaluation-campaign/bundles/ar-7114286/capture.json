@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "854bad79542988005711a1ae0f5bf205025496018c87300b44fd09aa7a9a4250",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.364,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-18T13:22:22.264278Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7114286",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 21427,
+   "body_sha256": "fa8ef62a5a5b633a3b013b902c87d8e4e8b4c70f2bc05bc7a23a108578c80ed3",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.437,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:23:00.628488Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7114286",
+   "wire_bytes": 7598
+  },
+  {
+   "body_bytes": 107388,
+   "body_sha256": "5d32e91749f5c3911c5d458c7b2a34a82c973116a9ca4649e6983cdd3492f064",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.498,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-18T13:23:11.066533Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/74717247/html",
+   "wire_bytes": 20227
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "854bad79542988005711a1ae0f5bf205025496018c87300b44fd09aa7a9a4250"
+ ],
+ "finished_at": "2026-11-18T13:23:11.565689Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7114286,
+  "parent_revision_id": 73504268,
+  "redirect_followed": null,
+  "revision_id": 74717247,
+  "revision_timestamp": "2026-05-25T13:30:27Z",
+  "sha1": "d860b9da4fdf283b60cac6c6b45e32d9aac54d66",
+  "size": 20813,
+  "title": "وراثة نسبة الذكاء",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "5d32e91749f5c3911c5d458c7b2a34a82c973116a9ca4649e6983cdd3492f064",
+  "bytes": 107388,
+  "checks": {
+   "document_revision_id": "74717247",
+   "header_revision_id": "74717247",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7114286",
+   "render_id": "916b0ba7-d2ce-11f1-bb83-733644dc5648",
+   "revision_sha1": "d860b9da4fdf283b60cac6c6b45e32d9aac54d66",
+   "revision_sha1_base36": "p9wuhpxjbu31mcs7j5rjlncjc77gqjq"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "74717247",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Wed, 18 Nov 2026 13:23:11 GMT",
+   "etag": "W/\"74717247/916b0ba7-d2ce-11f1-bb83-733644dc5648/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:14:36 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/74717247/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7114286,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1b256dccc70c6c9e3b6198ae9dcb15a94a2eff5d9bfbe31a2d64ad2caddbff84",
+  "bytes": 20813,
+  "response_artifact": "fa8ef62a5a5b633a3b013b902c87d8e4e8b4c70f2bc05bc7a23a108578c80ed3",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7114286"
+ },
+ "started_at": "2026-11-18T13:22:15.307710Z",
+ "status": "complete"
+}
