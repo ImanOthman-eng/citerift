@@ -1494,3 +1494,91 @@ is committed as a narrow Stage 00 maintenance (A-00-003) before Step 12 continue
 Python versions, check-report, clean tree, pip-audit --strict, ci-gate) is required before Step 12 proceeds to freeze.
 The same message keeps the D-064 work unchanged and accepts the 21-case differential proof with zero discrepancies as
 evidence for `verify_index_identity`.
+
+## D-066 — Stage 04 freeze accepted with the ≤ 5 s p95 target NOT_MET
+- Status: accepted
+- Topic: stage-04-freeze-performance-target-not-met
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/freeze/FREEZE_REPORT.md (section 7); docs/verification/stage-04/freeze/ATTESTATION.md; docs/verification/stage-04/review/step12/STEP12_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPV9NbT2xMsMtwK9Z5Wt3WZ6` (2026-11-18T08:19:10Z) accepts the Stage 04 freeze:
+frozen scientific-content commit `b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0`, tree
+`86152ad543971d321059f16f93c3aff671f467c4`, freeze manifest digest
+`609796cee9fc168b379669dde7ca5c410868e37455944d86b12624578fae42cc`, attestation commit
+`15ef3c302e3d0a5406150e523b144174ed69f433`, and CI run 338 on the exact frozen commit. The freeze is accepted with the
+performance target "warm retained investigation ≤ 5 s p95" recorded as NOT_MET. The frozen measured behaviour is an
+explicit engineering limitation: about 25.5–30.5 s p95 across the measured cases, of which about 24–25 s is the
+per-process D-064 Stage 02 canonical identity verification. Rationale (owner): the target is an engineering-performance
+objective, not a scientific correctness gate; meeting it now would require changing a deliberately accepted
+integrity/reuse rule after freeze; correctness and provenance integrity take precedence. D-064 is not weakened; no
+cross-process trust and no reduced verification profile may be introduced merely to hit the target; the target must
+never be claimed as met. The freeze report keeps the limitation (it is section 7 and the first entry of the manifest's
+limitations; the freeze is not regenerated to add this decision). Future optimization of the verification architecture
+only in a post-Stage-04 version or through an explicit freeze-breaking owner decision.
+
+## D-067 — E-05: identity-conflict evaluation is exhaustive-descriptive, no hard minimum denominator
+- Status: accepted
+- Topic: stage-04-e05-identity-conflict-exhaustive-descriptive
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step12/STEP12_TRIAGE.md (E-05); docs/verification/stage-04/review/step12/STEP12_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPV9NbT2xMsMtwK9Z5Wt3WZ6` (2026-11-18), for the Step 13 pre-registration.
+Every IDENTITY_CONFLICT case that occurs in the final evaluation sample is independently annotated and adjudicated.
+There is no hard minimum identity-conflict denominator: sampling is not expanded solely to obtain a number of identity
+conflicts, and the gate does not fail merely because identity conflicts are rare or absent. Reported at minimum: the
+count per language; the pooled count; the adjudicated interpretation of each occurring case; whether the engine's
+abstention was justified; whether an annotator judged the citation unambiguous and attachable by one identifier; and
+whether any identity-conflict case was incorrectly converted into a positive attachment. If n = 0, the report states
+that no identity-conflict case occurred in the pre-registered evaluation sample; if n > 0, all cases are reported
+descriptively. No population-rate claim is made from this denominator unless Step 13 independently pre-registers a
+valid inferential design for it. The structural hazard requirement stays strict: an unresolved identity conflict must
+never be silently counted as a positive attachment.
+
+## D-068 — E-06: attachment precision covers all four positive Stage 04 classes
+- Status: accepted
+- Topic: stage-04-e06-four-class-attachment-precision
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step12/STEP12_TRIAGE.md (E-06); docs/verification/stage-04/review/step12/STEP12_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPV9NbT2xMsMtwK9Z5Wt3WZ6` (2026-11-18). The primary attachment-precision
+denominator includes every unit classified into any positive Stage 04 work-status class: RETRACTED_WORK_CITED,
+CONCERN_CITED, CORRECTION_CITED and REINSTATED_WORK_CITED, since all four make an affirmative attachment/status
+assertion about a work and carry false-attachment risk. Primary metric, per language: positive_attachment_precision =
+correct positive attachments / all four-class positive attachments, with the pre-registered exact confidence-interval
+method. The existing proposed positive denominator applies to this pooled four-class metric unless Step 13 feasibility
+analysis, performed before the draw and without prediction exposure, demonstrates that the denominator rule itself must
+be clarified. Also reported, for every positive class with n > 0: count, correct and incorrect attachments, and an exact
+interval where statistically interpretable. No hard per-class minimum for rare CORRECTION_CITED or
+REINSTATED_WORK_CITED cases; a class with zero cases is reported as n = 0. Step 13 may additionally pre-register a
+secondary subset metric over RETRACTED_WORK_CITED + CONCERN_CITED for continuity with the original planning question,
+but it must not replace or hide the all-four-class primary precision. No metric definition may change after the sample
+is drawn.
+
+## D-069 — E-08: sensitivity analysis and naive baseline are pre-registered evaluation tooling, not engine code
+- Status: accepted
+- Topic: stage-04-e08-evaluation-tooling-outside-frozen-engine
+- Date: 2026-11-18
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/review/step12/STEP12_TRIAGE.md (E-08); docs/verification/stage-04/review/step12/STEP12_CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPV9NbT2xMsMtwK9Z5Wt3WZ6` (2026-11-18). The freeze is not broken to add the
+sensitivity variants or the baseline scorer to the production engine; they belong to the Step 13
+pre-registration/evaluation layer and are specified and hashed before the final sample is drawn. Naive baseline: the
+baseline described in the planning package, flag a unit when any eligible cited identifier appears in the relevant
+Retraction Watch identifier fields, with every eligibility and matching rule defined precisely before the draw; it must
+not call the production detector. Sensitivity variants (descriptive only, never used to tune or alter the frozen
+engine): (1) identifier_link excluded; (2) P-2 / identity-conflict protection disabled; (3) labeled_reference_text
+included. Executable tooling, if useful, is added in Step 13 as separate evaluation-only tooling under the
+verification/evaluation area; it must not modify `src/citerift/investigation`, alter the frozen engine, frozen schemas
+or dt-1, or be imported by production code; it is committed and hashed before the final draw and has deterministic tests
+on already exposed development fixtures. Deriving sensitivity results from frozen retained intermediate evidence is
+preferred. A variant that cannot be computed faithfully without changing the frozen production engine is not
+approximated: its limitation is pre-registered and it is omitted from final execution. The pre-registration states
+exactly which variants are executable before the draw.
