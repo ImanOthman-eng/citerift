@@ -1,9 +1,10 @@
 """Write the attributed Retraction Watch subset fixture of the role-collision suite (corrective cycle, D-071 item 7).
 
 Method. The pinned snapshot is checked byte for byte. Keys are selected from an index built from the full snapshot,
-one or two per class of the adversarial list of D-071 section 7, each the **first in sorted order** among the keys of
-its class (a class is defined by Stage 02 flags, roles and states only; never by a label, a title, a journal or an
-outcome of the engine), plus the failed-campaign key ``10.1002/asi.23238`` by name and every key of the exposed
+one or two per class of the adversarial list of D-071 section 7, each the **first** of its class in a fixed order
+(the smallest key, or, for a class defined on events, the event with the smallest event id; reviewer finding D-04). A
+class is defined by Stage 02 flags, roles and states only; never by a label, a title, a journal or an outcome of the
+engine. Also selected: the failed-campaign key ``10.1002/asi.23238`` by name and every key of the exposed
 campaign bundle ``en-39868218`` (both design-exposed after D-071). Every key is queried alone (Q1) and the listed pairs
 together (Q2) through the Stage 04 bounded lookup; the fixture keeps the Record IDs of every event and notice hit those
 queries return, with the selected fields of the Step 8 fixture. An index built from the fixture alone must give the
@@ -40,11 +41,11 @@ from citerift.retraction.store import build  # noqa: E402
 
 JASIST = "10.1002/asi.23238"
 CAMPAIGN_BUNDLE = "docs/verification/stage-04/evaluation-campaign/bundles/en-39868218"
-MAX_RECORDS = 200
+MAX_RECORDS = 120  # the Stage 02 limit for committed fixtures (Stage 02 SPECIFICATION; reviewer finding D-01)
 SAME = {"doi": "NOTICE_DOI_EQUALS_ORIGINAL", "pmid": "NOTICE_PMID_EQUALS_ORIGINAL"}
 ATTRIBUTION = (
     "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit "
-    "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 200 records; other columns left empty. "
+    "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 120 records; other columns left empty. "
     "Cited as the source requests; not a redistribution of the dataset."
 )
 
@@ -200,6 +201,12 @@ def main() -> int:
     if check_bytes(args.csv, receipt).sha256 != receipt.expected_sha256:
         sys.stderr.write("the CSV is not the pinned snapshot\n")
         return 1
+    con = sqlite3.connect(f"file:{args.index}?mode=ro", uri=True)
+    source = dict(con.execute("SELECT key, value FROM meta").fetchall()).get("source_sha256")
+    con.close()
+    if source != receipt.expected_sha256:  # reviewer finding E-11: the index must be built from the pinned snapshot
+        sys.stderr.write("the index was not built from the pinned snapshot\n")
+        return 1
     with Index(args.index) as full:
         classes = select(_events(args.index), full)
         bundle = S8.bundle_keys(CAMPAIGN_BUNDLE)
@@ -260,7 +267,18 @@ def main() -> int:
         "fixture_records": len(used),
         "fixture_fields": list(S8.FIXTURE_FIELDS),
         "attribution": ATTRIBUTION,
-        "source": {"commit": receipt.commit, "sha256": receipt.expected_sha256, "url": receipt.url},
+        "source": {
+            "bytes": receipt.expected_bytes,
+            "commit": receipt.commit,
+            "path": receipt.path,
+            "repository": receipt.repository,
+            "sha256": receipt.expected_sha256,
+            "url": receipt.url,
+        },
+        "selection_index": {"source_sha256": source, "note": "an index built by Stage 02 from the pinned snapshot"},
+        "outcomes_sha256": hashlib.sha256(
+            json.dumps([[q[0], q[1], full_out[q]] for q in all_queries], sort_keys=True).encode()
+        ).hexdigest(),
         "synthetic_rows": 0,
         "method": __doc__.split("Run:")[0].strip().replace("\n", " "),
         "classes": classes,

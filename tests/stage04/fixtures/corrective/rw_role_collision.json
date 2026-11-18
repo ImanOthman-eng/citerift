@@ -1,5 +1,5 @@
 {
- "attribution": "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 200 records; other columns left empty. Cited as the source requests; not a redistribution of the dataset.",
+ "attribution": "Retraction Watch data via Crossref (https://gitlab.com/crossref/retraction-watch-data), commit a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4; selected fields of at most 120 records; other columns left empty. Cited as the source requests; not a redistribution of the dataset.",
  "campaign_bundle": {
   "docs/verification/stage-04/evaluation-campaign/bundles/en-39868218": {
    "doi": [
@@ -120,7 +120,7 @@
  ],
  "fixture_records": 25,
  "fixture_sha256": "339744e0998187a5d541e17747bd3f0871ba0031d27fce6916495e9dc3525c4c",
- "method": "Write the attributed Retraction Watch subset fixture of the role-collision suite (corrective cycle, D-071 item 7).  Method. The pinned snapshot is checked byte for byte. Keys are selected from an index built from the full snapshot, one or two per class of the adversarial list of D-071 section 7, each the **first in sorted order** among the keys of its class (a class is defined by Stage 02 flags, roles and states only; never by a label, a title, a journal or an outcome of the engine), plus the failed-campaign key ``10.1002/asi.23238`` by name and every key of the exposed campaign bundle ``en-39868218`` (both design-exposed after D-071). Every key is queried alone (Q1) and the listed pairs together (Q2) through the Stage 04 bounded lookup; the fixture keeps the Record IDs of every event and notice hit those queries return, with the selected fields of the Step 8 fixture. An index built from the fixture alone must give the same state, status, value, dates, record ids, notice hits and same-record collision flags for every query; disagreements fail the run. No synthetic row is added.",
+ "method": "Write the attributed Retraction Watch subset fixture of the role-collision suite (corrective cycle, D-071 item 7).  Method. The pinned snapshot is checked byte for byte. Keys are selected from an index built from the full snapshot, one or two per class of the adversarial list of D-071 section 7, each the **first** of its class in a fixed order (the smallest key, or, for a class defined on events, the event with the smallest event id; reviewer finding D-04). A class is defined by Stage 02 flags, roles and states only; never by a label, a title, a journal or an outcome of the engine. Also selected: the failed-campaign key ``10.1002/asi.23238`` by name and every key of the exposed campaign bundle ``en-39868218`` (both design-exposed after D-071). Every key is queried alone (Q1) and the listed pairs together (Q2) through the Stage 04 bounded lookup; the fixture keeps the Record IDs of every event and notice hit those queries return, with the selected fields of the Step 8 fixture. An index built from the fixture alone must give the same state, status, value, dates, record ids, notice hits and same-record collision flags for every query; disagreements fail the run. No synthetic row is added.",
  "outcomes": [
   {
    "collision_flags": [],
@@ -722,9 +722,17 @@
    "value": "correction"
   }
  ],
+ "outcomes_sha256": "3b7b0eef5f953b63d0a59452d31c54e3e2772aff2e17d5b181008f39aa7776f6",
  "queries": 43,
+ "selection_index": {
+  "note": "an index built by Stage 02 from the pinned snapshot",
+  "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+ },
  "source": {
+  "bytes": 68076023,
   "commit": "a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4",
+  "path": "retraction_watch.csv",
+  "repository": "https://gitlab.com/crossref/retraction-watch-data",
   "sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
   "url": "https://gitlab.com/crossref/retraction-watch-data/-/raw/a987928a816e0a6f8bb7f8ebc68ad15fe44ab3c4/retraction_watch.csv"
  },

@@ -104,8 +104,9 @@ REASON_TEXT = {
     "RETRACTION_EVENT_TYPE_CONFLICT": "the checked sources record events of conflicting types",
     "KEY_NAMES_SEVERAL_WORKS": "one identifier names several works in the checked sources",
     "PMID_ROLE_COLLISION": "the PMID may name the notice rather than the work",
-    "IDENTIFIER_ROLE_COLLISION": "the checked sources give the cited identifier both as the work and as a notice, and "
-    "no other identifier of the citation settles which one is cited",
+    "IDENTIFIER_ROLE_COLLISION": "an identifier that links the citation to the work is also a notice identifier in the "
+    "checked sources (or they do not say it is not), and no other identifier of the citation tells the work from the "
+    "notice",
     "BRIDGE_ONLY_SUPPORT": "the only support links the identifiers indirectly",
     "CURRENT_EFFECT_NOT_ESTABLISHED": "the current effect of the recorded events is not established",
     "COVERAGE_GAP_RELEVANT_ROWS": "rows of the checked sources that may concern this identifier are quarantined or "

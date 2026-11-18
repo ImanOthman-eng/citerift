@@ -17,9 +17,10 @@ Abstract input of one work candidate (``Case``):
 - ``wd``, ``wp``, ``w2``: a direct witness of incompatibility is visible in Q1(d), Q1(p), Q2;
 - ``coname``: a direct event naming both the DOI and the PMID is visible in an available Q1;
 - ``rc`` (dt-2): the deciding lookup holds a role-ambiguous event that the PMID_ROLE_COLLISION bit does not cover: an
-  event every key of which that attaches it to the citation is, per the checked evidence, also a notice identifier
-  (the same record's, or another record's). Meaningful only for a matched deciding lookup (``stage02_abstraction``
-  validity for dt-2: ``rc`` implies a matched deciding lookup).
+  event attached through a key that the checked evidence also gives as a notice identifier (the same record's, or
+  another record's), which no cited key with no notice role and a record-stated different notice identifier resolves
+  (SPEC 7.3a). The bit is free here; how production computes it is tested separately. Meaningful only for a matched
+  deciding lookup (``stage02_abstraction`` validity for dt-2: ``rc`` implies a matched deciding lookup).
 
 An abstract lookup value is ``(state, shape, collision)``: the Stage 02 lookup state, the shape of its projection
 (status and value class) and whether a PMID_ROLE_COLLISION issue names a PMID-matched event.

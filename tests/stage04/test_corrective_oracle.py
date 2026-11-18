@@ -36,7 +36,7 @@ import dt2_reference as R2  # noqa: E402
 import stage02_abstraction as A  # noqa: E402
 
 # Pinned digest of the dt-2 oracle manifest (decision_space_dt2.py). Changing the oracle needs a visible change here.
-ORACLE_DT2_MANIFEST_SHA256 = "808f6b422e818c840b8a47af5a9368200c3fc437f9be2670c7f1c5719828a43d"
+ORACLE_DT2_MANIFEST_SHA256 = "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0"
 
 pytestmark = pytest.mark.simulation
 

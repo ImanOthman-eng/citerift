@@ -1,5 +1,7 @@
 """Corrective cycle (owner decision D-071; reviewer finding A-03): an exhaustive property test of how dt-2 computes
-role ambiguity, against an independent formulation written from SPEC 7.3a (not from the code).
+role ambiguity, against a separate restatement of SPEC 7.3a written from the specification, not from the code. It
+catches implementation slips, not a wrong reading of the principle (reviewer finding A-12); the edges outside its
+domain (missing ``notice_hit_count``, malformed flags, an unavailable Q1) are named tests of the adversarial suite.
 
 The dt-2 oracle (``test_corrective_oracle.py``) checks the decision table given the abstract input ``rc``; this test
 checks the production computation of ``rc`` (``dt1.role_ambiguous`` through ``adapters.detector.lookup_view``) on every
@@ -58,7 +60,7 @@ def observation(events: list[dict[str, Any]], hits: int) -> dict[str, Any]:
     return {"query": {}, "result": result, "events": events, "event_count": len(events)}
 
 
-# The independent formulation (SPEC 7.3a) ---------------------------------------------------------------------------
+# The restatement of SPEC 7.3a --------------------------------------------------------------------------------------
 
 
 def spec_ambiguous(cited: dict[str, str | None], lookups: dict[str, list[dict[str, Any]]], hits: dict[str, int],

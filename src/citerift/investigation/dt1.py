@@ -15,12 +15,12 @@ SPEC 7.3 lists them. D-5 and D-17 are failures, never classes: they end DETECT w
 one) or D-17 (the deciding lookup), never a finding.
 
 dt-2 differs from dt-1 in one guard only: D-10 also holds when the deciding lookup has a role-ambiguous event
-(``role_ambiguous``): an event every key of which that attaches it to the citation is, per the checked evidence, also a
-notice identifier (in a record of the candidate's lookups that gives the key both roles, flag
-``NOTICE_<S>_EQUALS_ORIGINAL``, or as another record's notice, ``notice_hit_count`` of the cited key's own lookup)
-and that no cited key discriminates (``discriminating``: the record gives a different notice identifier in that
-scheme). Such a candidate is ``UNRESOLVED_IDENTITY`` with ``IDENTIFIER_ROLE_COLLISION``
-(D-071 sections 3 and 4); where no event is role-ambiguous dt-2 decides exactly as dt-1.
+(``role_ambiguous``): an event attached to the citation through a key that the checked evidence also gives as a notice
+identifier (``role_collided``: a record of the candidate's lookups gives the key both roles, flag
+``NOTICE_<S>_EQUALS_ORIGINAL``, or another record gives it as its notice, ``notice_hit_count`` of the cited key's own
+lookup), when no cited key discriminates (``discriminating``: a cited key with no notice role whose record gives a
+different notice identifier in that scheme). Such a candidate is ``UNRESOLVED_IDENTITY`` with
+``IDENTIFIER_ROLE_COLLISION`` (D-071 sections 3 and 4); where no event is role-ambiguous dt-2 decides exactly as dt-1.
 
 The post-failure reference model (``simulations/stage04/dt2_reference.py``) is the independent oracle of this code;
 the frozen Step 4 model (``dt1_reference.py``) is kept unchanged as the oracle of the frozen engine. Neither imports

@@ -1,8 +1,9 @@
-"""Stage 04 Step 12: ``VALIDATION.json``, the measured validation summary that the freeze manifest records.
+"""Stage 04 corrective cycle (D-071): ``VALIDATION.json`` of the freeze-2 candidate, the measured validation summary
+that its freeze manifest records (the Step 12 format; the superseded freeze's numbers are the comparison column).
 
 Run from the repository root after the freeze evidence is committed:
 
-    uv run python -P docs/verification/stage-04/freeze/build_validation.py
+    uv run python -P docs/verification/stage-04/freeze-2/build_validation.py
 
 Every number is read from the retained evidence files beside this script, except the test runs (local and CI), which
 are recorded here from their logs and the GitHub Actions API, with the run ids so that they can be checked.
@@ -82,29 +83,29 @@ def load(rel: str) -> Any:
 
 
 def main() -> int:
-    vs = load("freeze/vertical-slice/vertical_slice.json")
-    step11 = load("evidence/vertical-slice/results/vertical_slice.json")
-    perf = load("freeze/performance/perf_breakdown.json")
-    comp = load("freeze/performance/verification_components.json")
-    d062 = load("freeze/d062/two_build_equivalence.json")
-    tamper = load("freeze/d062/tamper_differential.json")
+    vs = load("freeze-2/vertical-slice/vertical_slice.json")
+    old_freeze = load("freeze/vertical-slice/vertical_slice.json")
+    perf = load("freeze-2/performance/perf_breakdown.json")
+    comp = load("freeze-2/performance/verification_components.json")
+    d062 = load("freeze-2/d062/two_build_equivalence.json")
+    tamper = load("freeze-2/d062/tamper_differential.json")
     rows = []
     for case, c in vs["cases"].items():
         p = c["perf"]["wall_s"]
-        old = step11["cases"][case]["perf"]["wall_s"]
+        old = old_freeze["cases"][case]["perf"]["wall_s"]
         rows.append(
             {
                 "case": case,
                 "n": p["n"],
                 "run_median_s": p["median"],
                 "run_p95_s": p["p95"],
-                "step11_run_p95_s": old["p95"],
+                "superseded_freeze_run_p95_s": old["p95"],
                 "replay_p95_s": c["perf"]["replay_wall_s"]["p95"],
                 "meets_target": p["p95"] <= TARGET_S,
             }
         )
     out = {
-        "label": "Stage 04 Step 12 validation summary (freeze); measured, not an evaluation",
+        "label": "Stage 04 corrective cycle validation summary (freeze-2 candidate); measured, not an evaluation",
         "code_revision": CODE_REVISION,
         "tests": TESTS,
         "ci_runtime": {"runs": CI_RUNTIME, "finding": CI_RUNTIME_FINDING, "policy": "OD-S12-2 (D-065)"},

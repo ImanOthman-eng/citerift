@@ -154,8 +154,10 @@ Properties:
 - **Precedence unchanged.** The protection is a guard of D-10 (tier 5, "unresolved"): after D-5 (contract), D-6
   (identity conflict) and D-7 (contradiction), before D-13 (operational failure) and D-14 (positive), and before
   D-15/D-16 (notice / not found). The order contradiction → unresolved → operational failure → positive →
-  notice/no-finding is not changed. A collided candidate whose lookup is also unavailable is `UNRESOLVED_IDENTITY`,
-  exactly as a PMID collision already is under dt-1.
+  notice/no-finding is not changed. A collided candidate whose deciding lookup is matched and another lookup
+  unavailable is `UNRESOLVED_IDENTITY`, exactly as a PMID collision already is under dt-1. When the lookup of a key
+  that would otherwise discriminate is unavailable, that key states nothing and the result is D-13
+  `LOOKUP_UNAVAILABLE` or D-10, never a positive (reviewer finding B-04).
 - **Abstention, not a notice claim.** `NOTICE_CITED` stays reachable only through D-15 (a `notice_only` deciding
   lookup). A collision never produces `NOTICE_CITED` and never a negative.
 - **New reason code justified.** `PMID_ROLE_COLLISION` names a PMID-specific Stage 02 issue; no existing code
@@ -179,7 +181,14 @@ of `e` itself) and let **any** non-collided key resolve. Reviewers found:
 
 All 31,756 distinct original DOI+PMID pairs of the snapshot, cited together and decided by both tables
 (`census/PAIR_CENSUS.json`; `PAIR_CENSUS_LENIENT.json` for the alternative): dt-2 changes 1,570 decisions (D-14 →
-D-10: RETRACTED 1,410, CONCERN 39, CORRECTION 23; D-11 → D-10: 98); no dt-2 positive rests on a role-ambiguous event.
+D-10: RETRACTED 1,410, CONCERN 39, CORRECTION 23; D-11 → D-10: 98). That no dt-2 positive rests on a role-ambiguous event holds by construction (the D-10 guard); reviewer B
+checked independently, from the raw `ident` table, that every one of the 357 pair positives with one cited key in a
+notice role rests on the other cited key, which has no notice role and whose record gives a different notice
+identifier. Strict versus lenient also differs on the PMID side (reviewer finding A-10): dt-1 let a clean DOI
+resolve a PMID collision; the strict rule requires the record to give a different notice DOI, which drops 5 positive
+pairs (for example `10.1074/jbc.274.11.7196` + `10066780`; the DOI alone is positive). Original DOI cited with the
+same record's notice PMID stays positive (628 pairs; the mirror of owner decision D-058, reviewer finding B-03, put to
+the owner).
 Under the lenient alternative 881 change (800 positives). Positives: dt-1 31,506, dt-2 30,034.
 
 Expected effect, stated before any regression is run: the JASIST unit becomes `UNRESOLVED_IDENTITY`

@@ -194,3 +194,79 @@ give the expected dt-2 outcome on the full index (`probe6.py`), confirming `subs
 NOT READY FOR REFREEZE: one CRITICAL (B-01, a real PAIR whose both identifiers carry the notice role is still
 `RETRACTED_WORK_CITED`; a small key-level change of `role_collided` moves exactly that one of 31,756 pairs), plus two MEDIUM items for the
 owner (B-02, B-03).
+
+## Re-review of 9963908
+
+Scope: commit `9963908` (`dt1.role_collided(c, scheme, key)` over all lookups of the candidate, `dt1.discriminating`,
+`role_ambiguous` revised; `adapters/detector.py` `_flags` fail-closed; `census/PAIR_CENSUS.json`,
+`PAIR_CENSUS_LENIENT.json`, `pair_census.py`; `CENSUS.json` with a dt-2 column; ROOT_CAUSE §2.4, §3, §4a, §4b;
+`tests/stage04/test_corrective_role_property.py`). `src/citerift/investigation/dt1.py` and `adapters/detector.py` in the
+working tree are identical to the commit (`git diff 9963908 --stat` lists only REVIEW_D, the runner, the fixture
+script and the runner test). Same constraints as before; pinned index read-only; probes in
+`/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/` (`probe8.py`, `probe9.py`, `probe10.py`
+new; `probe1.py`, `probe6.py` re-run).
+
+`uv run pytest tests/stage04/test_corrective_role_collision.py tests/stage04/test_corrective_role_property.py -q -p
+no:cacheprovider` → `61 passed in 4.09s`.
+
+### (1) B-01 and its variants now abstain — verified
+
+Real pair `10.1016/j.diabet.2013.06.003` + `24076359` (production path, pinned index): `D-10 UNRESOLVED_IDENTITY
+('IDENTIFIER_ROLE_COLLISION',)` (was D-14). Synthetic variants built with the suite's own observation builders
+(`probe9.py`), all through `lookup_view` and `dt1.decide`:
+
+| variant | result |
+|---|---|
+| V1 DOI flag on one record, PMID flag on another (B-01 shape) | D-10 `IDENTIFIER_ROLE_COLLISION` |
+| V2 three records of one pair; the PMID flag on the third, the second clean with distinct notices | D-10 |
+| V3 PMID same-record flag on an event present only in Q1(PMID), not in Q2 | D-10 |
+| V4 DOI same-record flag on an event present only in Q1(DOI), not in Q2 | D-10 |
+| V5 resolving PMID is another record's notice (`notice_hit_count` 1 in Q1(PMID)) | D-10 |
+| V5b Q1(PMID) without `notice_hit_count` | D-10 |
+| V7 resolving PMID "clean" only by absence (record states no notice PMID) | D-10 |
+| V10 malformed (`null`) flags on an event only in Q1(PMID) | D-10 (read as both flags) |
+| V6 DOI collided, PMID uncollided and the record states a different notice PMID | D-14 (the designed resolution) |
+| V8 DOI cross-record notice, PMID discriminating | D-14 (designed) |
+
+Index-wide (`probe8.py`, 129 s): all 175,491 distinct DOI and PMID keys of the snapshot (every original and every
+notice key) as single-key citations → no D-14 on any key that the `ident` table gives a notice role (D-14 81,743, all
+on keys with no notice role; D-15 78,688; D-10 14,801; D-11 240; D-9 17; D-7 2). All 31,756 original pairs → D-14
+30,034, D-10 1,570, D-11 105, D-6 47: identical to `PAIR_CENSUS.json` (transitions sum to the same totals).
+
+### (2) No dt-2 positive rests on a key with a notice role — verified, with one owner-level exception (B-03)
+
+- Single keys: 0 positives on a notice-role key (above).
+- Original pairs: 357 positives have one cited key with a notice role (193 DOI, 164 PMID); **none has both**. An
+  independent check from the raw `ident` table (`probe10.py`, not using `dt1`) confirms that in every one of the 357,
+  every direct event attached through the notice-role key is resolved by the other cited key, which is that event's
+  original identifier, has no notice role anywhere in the snapshot, and whose record states a different notice
+  identifier in its scheme: 0 violations.
+- Notice DOI + original PMID (D-058 shape): 31,390 real combinations → 158 positives, each attached through the
+  original PMID (owner decision D-058). Notice DOI + notice PMID: 29,532 → no positive (D-15 29,495).
+- Original DOI + notice PMID (B-03 shape): 31,279 real combinations → **628 positives**
+  (`RETRACTED/…_CITED` with `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`), e.g. `10.1002/14651858.cd000018` +
+  `21563126`. The attaching key (the DOI) has no notice role, so no positive rests on a notice-role *attaching* key,
+  but the citation itself carries a notice identifier. Unchanged by 9963908; see B-03.
+
+### (3) Status of the original findings
+
+| id | severity | status after 9963908 | evidence |
+|---|---|---|---|
+| B-01 | CRITICAL | **Resolved** | real pair now D-10; V1–V5, V10 abstain; key-level rule over all lookups (`dt1.role_collided`); index sweeps above |
+| B-02 | MEDIUM | **Resolved in code (strict); owner decision pending on strict vs lenient** | `discriminating` requires a different notice identifier in the resolving scheme (V7 abstains); `PAIR_CENSUS.json` 1,570 changes vs `PAIR_CENSUS_LENIENT.json` 881 put to the owner (ROOT_CAUSE §4a, §4b). I support the strict reading. |
+| B-03 | MEDIUM | **Open — owner decision** | 628 real original-DOI + notice-PMID combinations positive; `test_doi_original_with_the_notice_pmid_is_unchanged` still pins D-14; no owner decision, and ROOT_CAUSE / SPEC do not mention the D-058 mirror. Recommendation unchanged. |
+| B-04 | LOW | **Open** | V9: DOI collided, resolving PMID's Q1 unavailable → `D-13 LOOKUP_UNAVAILABLE` (no positive possible: D-13 precedes D-14). SPEC 7.3a now states "an unavailable lookup states nothing and is handled by D-13", so the behaviour is documented, but ROOT_CAUSE §4 ("A collided candidate whose lookup is also unavailable is `UNRESOLVED_IDENTITY`") overstates it for this case. Fix the sentence or read an unavailable Q1 as "may be a notice". |
+| B-05 | LOW | **Resolved** | ROOT_CAUSE §2.2 annotates the PMID metric (counts the DOI flag), §2.4 records the 24 `NO_NOTICE_IDENTIFIER` + `NOTICE_PMID_EQUALS_ORIGINAL` events and §3 the third asymmetry. (The JSON key name is unchanged; acceptable with the annotation.) |
+| B-06 | LOW | **Resolved** | `CENSUS.json` now has a dt-2 column (all single colliding keys D-10 or D-9, 0 positives, matching my sweep); `PAIR_CENSUS.json` covers all original pairs; the property test checks `roleamb` against an independent formulation. The mixed original/notice pair shapes (B-03) are still not in the committed census. |
+| B-07 | INFO | Unchanged | bridged non-cited flagged event still forces D-10 (now also because only cited keys resolve); bridged clean event stays D-14; harmless for positives |
+| B-08 | INFO | Unchanged | normalization and count findings still hold |
+| B-09 | INFO | Unchanged | census counts still correct; PAIR census totals verified against my independent sweep |
+
+New in 9963908: no new defect found. The `_flags` fail-closed reading (V10) and the "any attaching key collided"
+semantics with resolution only by a discriminating cited key are consistent with D-071 §3 and §4 on every probe.
+
+### Re-review verdict
+
+No open CRITICAL or HIGH in identity / publication-object roles. Open: B-03 (MEDIUM, owner decision on the D-058
+mirror, 628 real combinations), B-02 strict-vs-lenient choice (owner decision; strict is implemented), B-04 (LOW,
+one overstated sentence).

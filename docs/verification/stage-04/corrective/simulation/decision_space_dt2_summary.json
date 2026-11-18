@@ -8,8 +8,8 @@
  },
  "distinct_decisions": 383,
  "dt1_oracle_manifest_sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735",
- "elapsed_s": 351.9,
- "model_digest": "d01f343821b1e07d273056598c757f2fd7a583461d735467bdc7bb19159c56ca",
+ "elapsed_s": 320.0,
+ "model_digest": "b670e7be5915a074f111debe185ecec14e4c72e1af07ed901a9fde00b4e04e65",
  "model_version": "dt2-reference/1",
  "not_rechecked_here": [
   "DETERMINISM",
@@ -33,7 +33,7 @@
    "dt2_table.u16le.gz": "04a40415957c5f396309ae36631530859d98ca811f94979e9e9d7cb363c37ac8"
   },
   "frozen_dt1_oracle_manifest_sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735",
-  "model_digest": "d01f343821b1e07d273056598c757f2fd7a583461d735467bdc7bb19159c56ca",
+  "model_digest": "b670e7be5915a074f111debe185ecec14e4c72e1af07ed901a9fde00b4e04e65",
   "model_version": "dt2-reference/1",
   "oracle_version": "dt2-oracle/1",
   "table_raw_sha256": "212de00b159ca1ce267adeeaf0b6a25d413158bf17631eb6edf20a8b1ccd3529",
@@ -237,5 +237,6 @@
   "NONE": 24,
   "PAIR": 486192,
   "PMID": 1824
- }
+ },
+ "valid_per_shape_note": "valid cases of the dt-2 domain, rc = False and rc = True counted separately; rc = True beside a non-matched deciding lookup is valid and inert (reviewer finding A-09), so each frozen valid case is counted twice"
 }

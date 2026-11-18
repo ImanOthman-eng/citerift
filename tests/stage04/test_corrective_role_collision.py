@@ -2,8 +2,9 @@
 
 Principle (D-071 section 3): an identifier whose checked evidence gives incompatible publication-object roles never
 produces a positive work attachment solely because one of those roles is original. dt-2 extends D-10: a matched
-deciding lookup with a role-ambiguous event (every key it is attached through is the original and, per the checked
-evidence, also a notice: the same record's notice identifier, or another record's) is UNRESOLVED_IDENTITY with
+deciding lookup with a role-ambiguous event (attached through a key that the checked evidence also gives as a notice,
+in the same record or another, and not resolved by a cited key that tells the work from the notice) is
+UNRESOLVED_IDENTITY with
 ``IDENTIFIER_ROLE_COLLISION`` (``PMID_ROLE_COLLISION`` unchanged for the dt-1 case).
 
 Three layers:

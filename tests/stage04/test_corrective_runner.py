@@ -130,3 +130,54 @@ def test_the_historical_guard_refuses_the_corrected_engine() -> None:
         pytest.skip("the frozen commit is not in this clone (shallow checkout)")
     with pytest.raises(SystemExit, match="the engine is not the frozen one"):
         old.frozen_check(params)
+
+
+def test_corrected_tool_never_changes_the_mode_of_an_existing_root(tmp_path: Path) -> None:
+    """Reviewer findings E-01, E-02: an existing group- or world-writable root is refused by the engine rule, not
+    tightened and accepted, and its mode is left as it was; a symlinked root is refused without touching its target."""
+    new = _load(NEW, "s13_run_v2")
+    c = campaign(tmp_path)
+    loose = tmp_path / "loose"
+    loose.mkdir()
+    loose.chmod(0o777)
+    with pytest.raises(new.RunnerRefused):
+        new.prepare(c, loose)
+    assert loose.stat().st_mode & 0o777 == 0o777
+    target = tmp_path / "target"
+    target.mkdir()
+    target.chmod(0o755)
+    link = tmp_path / "link"
+    link.symlink_to(target)
+    with pytest.raises(new.RunnerRefused):
+        new.prepare(c, link)
+    assert target.stat().st_mode & 0o777 == 0o755
+
+
+def test_corrected_tool_creates_nothing_under_a_working_tree(tmp_path: Path) -> None:
+    new = _load(NEW, "s13_run_v2")
+    c = campaign(tmp_path)
+    (tmp_path / "checkout" / ".git").mkdir(parents=True)
+    root = tmp_path / "checkout" / "a" / "b" / "memory"
+    with pytest.raises(new.RunnerRefused):
+        new.prepare(c, root)
+    assert not (tmp_path / "checkout" / "a").exists()
+
+
+def test_corrected_tool_refuses_a_symlinked_export_parent(tmp_path: Path) -> None:
+    new = _load(NEW, "s13_run_v2")
+    c = campaign(tmp_path)
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    (c / "run").mkdir()
+    (c / "run" / "exports").symlink_to(elsewhere)
+    with pytest.raises(new.RunnerRefused):
+        new.prepare(c, tmp_path / "memory")
+
+
+def test_corrected_tool_subprocess_engine_is_this_repository() -> None:
+    """Reviewer finding E-03: the article subprocesses run ``python -I``; the probe names this repository's engine."""
+    new = _load(NEW, "s13_run_v2")
+    from citerift.investigation import __version__
+
+    ident = new.engine_identity()
+    assert ident == {"engine_version": __version__, "package": "src/citerift/investigation/__init__.py"}

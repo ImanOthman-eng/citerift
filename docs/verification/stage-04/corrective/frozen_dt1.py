@@ -9,6 +9,7 @@ flags, notice identifiers and ``notice_hits``, do not exist in dt-1 and are drop
 from __future__ import annotations
 
 import hashlib
+import sqlite3
 import subprocess
 import sys
 import types
@@ -63,6 +64,37 @@ def to_frozen(c: Any) -> Any:
         c.eligibility, c.eligibility_reason, c.shape, c.doi, c.pmid, c.taint, c.multi,
         tuple((r, lk(x)) for r, x in c.lookups),
     )  # fmt: skip
+
+
+def provenance(index_path: Path) -> dict[str, Any]:
+    """What a census output records about its inputs (reviewer finding D-02): the index identity from its stored
+    metadata, the two tables compared, the engine version and the code commit."""
+    from citerift.investigation import __version__, dt1  # noqa: PLC0415 - only when provenance is asked for
+
+    con = sqlite3.connect(f"file:{index_path}?mode=ro", uri=True)
+    meta = dict(con.execute("SELECT key, value FROM meta").fetchall())
+    con.close()
+    head = subprocess.run(  # noqa: S603 - fixed argv
+        ["git", "-C", str(REPO), "rev-parse", "HEAD"],  # noqa: S607
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    dirty = subprocess.run(  # noqa: S603 - fixed argv
+        ["git", "-C", str(REPO), "status", "--porcelain", "--", "src", "schemas"],  # noqa: S607
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    return {
+        "index": {k: meta.get(k) for k in ("snapshot_id", "artifact_digest", "semantic_digest", "source_sha256")},
+        "tables": {
+            "frozen": {"table_version": "dt-1", "commit": FROZEN_COMMIT, "blob": FROZEN_BLOB},
+            "current": {"table_version": dt1.TABLE_VERSION, "engine_version": __version__},
+        },
+        "code_commit": head,
+        "engine_sources_uncommitted": bool(dirty),
+    }
 
 
 def decide(c: Any) -> Any:

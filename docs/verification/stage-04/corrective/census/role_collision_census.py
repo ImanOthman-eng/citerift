@@ -197,6 +197,7 @@ def census(path: Path) -> dict[str, Any]:
 
     return {
         "census": "citerift-stage04-role-collision-census/1",
+        "provenance": F1.provenance(path),
         "index": {
             "snapshot_id": meta.get("snapshot_id"),
             "artifact_digest": meta.get("artifact_digest"),

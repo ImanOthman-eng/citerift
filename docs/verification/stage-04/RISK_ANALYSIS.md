@@ -90,7 +90,9 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   found 13,681 DOIs and 1,053 PMIDs given both roles in one record and 56 DOIs and 27 PMIDs given both roles across
   records; the frozen engine made nearly all the DOI cases positive. Table dt-2 (SPEC 7.3a) abstains on every
   role-ambiguous event (`UNRESOLVED_IDENTITY`, `IDENTIFIER_ROLE_COLLISION`) unless another cited identifier of the
-  citation names the same event cleanly.
+  citation, with no notice role itself, tells the work from the notice (SPEC 7.3a). Every dual role is treated as
+  incompatible, including a key that one record gives both roles while another gives a distinct notice (reviewer
+  finding A-05): the stricter reading of the principle.
 - Residual after dt-2: a true retraction recorded with its own DOI as the notice DOI is no longer reported positive
   unless the citation carries a second identifier that tells the work from the notice (its record gives a different
   notice identifier in that scheme): a recall cost the owner chose over false attachment (D-071 section 4). On the

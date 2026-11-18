@@ -236,14 +236,19 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "run":
         k, n = (int(x) for x in a.shard.split("/"))
         t0 = time.perf_counter()
+        prov = F1.provenance(a.index)  # at the start of the run: the code that decides (reviewer finding D-02)
         part = run_shard(a.set, a.index.resolve(), k, n)
         part["seconds"] = round(time.perf_counter() - t0, 1)
+        part["provenance"] = prov
         write_json(a.out, part)
         return 0
     parts = [read_json(p) for p in a.parts]
     revisions = {k: v for p in parts for k, v in p["revisions"].items()}
     if sorted(revisions) != sorted(n for n, _ in bundles_of(a.set)):
         sys.exit("the shards do not cover the set")
+    provs = [p.get("provenance") for p in parts]
+    if provs[0] is None or any(x != provs[0] for x in provs) or provs[0]["engine_sources_uncommitted"]:
+        sys.exit("the shards do not record one committed code revision")
     cross = (
         cross_check_dev(revisions)
         if a.set == "dev"
@@ -258,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
         "engine_version": ENGINE_VERSION,
         "table_version": dt1.TABLE_VERSION,
         "frozen_reference": FROZEN,
+        "provenance": provs[0],
         "index_sha256": file_sha256(a.index),
         "tool_sha256": file_sha256(Path(__file__)),
         "network_attempts": sum(p["network_attempts"] for p in parts),

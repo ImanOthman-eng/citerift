@@ -90,6 +90,10 @@ def main() -> int:
                 )
     out = {
         "census": "citerift-stage04-pair-census/1",
+        "provenance": F1.provenance(a.index),
+        "variant_note": "production rule (dt1.discriminating)"
+        if a.variant == "strict"
+        else "measured alternative: dt1.discriminating replaced in this process by the lenient rule",
         "shard": [k, n],
         "variant": a.variant,
         "pairs": len(todo),

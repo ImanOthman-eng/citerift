@@ -212,6 +212,9 @@ def run(out: Path, oracle_dir: Path | None, workers: int) -> dict[str, Any]:
         "cases": len(table),
         "cases_per_shape": dict(per_shape),
         "valid_per_shape": dict(per_shape_valid),
+        "valid_per_shape_note": "valid cases of the dt-2 domain, rc = False and rc = True counted separately; rc = "
+        "True beside a non-matched deciding lookup is valid and inert (reviewer finding A-09), so each frozen valid "
+        "case is counted twice",
         "distinct_decisions": len(decisions),
         "rules": dict(sorted(rules.items())),
         "properties": {

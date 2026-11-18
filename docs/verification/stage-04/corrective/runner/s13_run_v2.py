@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -51,9 +52,20 @@ class RunnerRefused(SystemExit):
     """The runner refuses before the first article: nothing was run."""
 
 
+def _inside_a_working_tree(path: Path) -> Path | None:
+    """The nearest directory at or above ``path`` (existing or not) that holds a ``.git`` entry, if any."""
+    for parent in (path, *path.parents):
+        if os.path.lexists(parent / ".git"):
+            return parent
+    return None
+
+
 def prepare(campaign: Path, memory_root: Path) -> dict[str, Any]:
-    """Operational preparation before the first article: the memory root outside the repository (created 0700), the
-    export parent inside the campaign. Raises ``RunnerRefused`` and runs nothing when either cannot be prepared."""
+    """Operational preparation before the first article: the memory root outside the repository (created 0700 when
+    absent), the export parent inside the campaign. Raises ``RunnerRefused`` and runs nothing when either cannot be
+    prepared. Nothing is created and no mode is changed before the location checks pass (reviewer findings E-01,
+    E-02, E-13): an existing root is never chmod-ed, so a root the engine would refuse (group- or world-writable, not
+    a real directory, another owner) is refused here too, by the engine's own rule."""
     root = Path(memory_root)
     if not root.is_absolute():
         raise RunnerRefused(f"the memory root {root} is not absolute")
@@ -61,26 +73,51 @@ def prepare(campaign: Path, memory_root: Path) -> dict[str, Any]:
     probe = root.resolve(strict=False)
     if probe == repo or repo in probe.parents:
         raise RunnerRefused(f"the memory root {root} is inside the repository {repo}")
+    tree = _inside_a_working_tree(probe)
+    if tree is not None:
+        raise RunnerRefused(f"the memory root {root} is inside a repository working tree ({tree})")
     try:
-        root.mkdir(mode=0o700, parents=True, exist_ok=True)
-        root.chmod(0o700)
+        if not os.path.lexists(root):
+            root.mkdir(mode=0o700, parents=True)
         resolved = check_memory_root(root, repository=repo)
     except PathUnsafe as exc:
         raise RunnerRefused(f"the memory root is refused by the engine rule: {exc}") from exc
     except OSError as exc:
         raise RunnerRefused(f"the memory root {root} cannot be prepared: {exc}") from exc
-    exports = campaign / "run" / "exports"
+    run = campaign / "run"
+    exports = run / "exports"
+    for d in (run, exports):
+        if d.is_symlink():
+            raise RunnerRefused(f"{d} is a symbolic link")  # E-06: exports stay inside the campaign
     try:
         exports.mkdir(parents=True, exist_ok=True)
     except OSError as exc:
         raise RunnerRefused(f"the export parent {exports} cannot be created: {exc}") from exc
-    if not exports.is_dir():
-        raise RunnerRefused(f"the export parent {exports} is not a directory")
+    if exports.is_symlink() or not exports.is_dir():
+        raise RunnerRefused(f"the export parent {exports} is not a real directory")
     return {"memory_root": str(resolved), "exports": "run/exports"}
 
 
+ENGINE_PROBE = "import json, citerift.investigation as m; print(json.dumps([m.__version__, m.__file__]))"
+
+
+def engine_identity() -> dict[str, str]:
+    """The engine the article subprocesses import (reviewer finding E-03): every subprocess runs ``python -I`` (no
+    ``PYTHONPATH``, no user site, no current directory on the path), and this probe, run the same way, must import
+    the package from this repository's ``src``."""
+    res = subprocess.run([sys.executable, "-I", "-c", ENGINE_PROBE], capture_output=True, text=True, check=False)  # noqa: S603
+    try:
+        version, where = json.loads(res.stdout)
+    except ValueError as exc:
+        raise RunnerRefused(f"the engine cannot be imported: {res.stderr[-500:]}") from exc
+    src = (REPO / "src").resolve()
+    if src not in Path(where).resolve().parents:
+        raise RunnerRefused(f"the subprocess engine is {where}, not this repository's {src}")
+    return {"engine_version": str(version), "package": str(Path(where).resolve().relative_to(REPO.resolve()))}
+
+
 def investigate(*args: str) -> tuple[int, dict[str, Any]]:
-    cmd = [sys.executable, "-m", "citerift.investigation.cli", *args, "--format", "json"]
+    cmd = [sys.executable, "-I", "-m", "citerift.investigation.cli", *args, "--format", "json"]
     res = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603 - fixed argv
     try:
         doc = json.loads(res.stdout)
@@ -202,6 +239,7 @@ def main(argv: list[str] | None = None) -> int:
     checks = {
         "frozen": frozen_check(read_json(a.parameters)),
         "preregistration": prereg_check(campaign, a.prereg_manifest),
+        "engine": engine_identity(),
     }
     operational = prepare(campaign, a.memory_root)
     root = Path(operational["memory_root"])

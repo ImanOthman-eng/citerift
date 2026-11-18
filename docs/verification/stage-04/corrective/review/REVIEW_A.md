@@ -214,3 +214,131 @@ No CRITICAL or HIGH finding. On every Stage 02-producible input I traced, dt-2 i
 positive and no `NOTICE_CITED` from a role-collided key without a second cited key, precedence intact, and dt-1
 unchanged elsewhere. Before a refreeze, fix A-01 (only cited keys may resolve) and correct the A-03 claim, and the
 owner should decide the A-02 assumption with the 886/692/194 figures.
+
+## Re-review of 9963908
+
+Scope: commit `9963908` (HEAD). The working tree differs from HEAD only in `corrective/runner/s13_run_v2.py`,
+`corrective/scripts/role_collision_fixture.py` and `tests/stage04/test_corrective_runner.py`, none of which touches
+the rule. Same constraints as `REVIEW_BRIEF.md`; I modified nothing but this file.
+
+Read: `dt1.py` (`attached_keys`, `notice_elsewhere`, `role_collided` :291, `discriminating` :306, `role_ambiguous`
+:323, `_d10`, `decide`), `adapters/detector.py` (`_flags` :44, `_events`), `explanations.py`, SPEC 7.3a, MM D-10 /
+`rc(c)`, RISK_ANALYSIS R4-04, `corrective/ROOT_CAUSE.md` §4, §4a, §4b, `census/pair_census.py`, `PAIR_CENSUS*.json`,
+the regenerated `CENSUS.json` (dt-2 outcomes), `tests/stage04/test_corrective_role_property.py`, the revised
+adversarial suite, and Stage 02 `policy.py` lines 120-175 (rule 7f, bridged assertions).
+
+Commands run (targeted, allowed):
+
+- `uv run pytest tests/stage04/test_corrective_role_collision.py -q -p no:cacheprovider` → `59 passed in 3.17s`
+- `uv run pytest tests/stage04/test_corrective_role_property.py -q -p no:cacheprovider` → `2 passed in 2.19s`
+- `uv run pytest tests/stage04/test_corrective_oracle.py -q -p no:cacheprovider` → `20 passed in 14.50s`
+- My earlier probes re-run on the production `dt1.decide`. With synthetic events: the A-01 configuration (clean
+  direct event plus an event whose cited DOI is collided and which was bridged by a non-cited PMID) now gives
+  `D-10 UNRESOLVED_IDENTITY ('e1','e2')`. On the pinned index: `10.1002/asi.23238` gives D-10 with
+  `IDENTIFIER_ROLE_COLLISION`; the B-01 pair `10.1016/j.diabet.2013.06.003` + `24076359` gives D-10; PMID `3507357`
+  still gives D-14 `CONCERN_CITED` (see A-04).
+
+### Semantics verified on the current tree
+
+- **The code matches the written rule exactly.** `role_ambiguous` = (no attaching key, or some attaching key has a
+  notice role) ∧ no cited key discriminates. Notice role (`role_collided`) is a property of the key: the same-record
+  flag on any event of any of the candidate's lookups whose original identifier in that scheme is the key, or, for a
+  cited key, `notice_hit_count ≠ 0` in its own available Q1. `discriminating` = cited ∧ the event's original ∧ no notice
+  role ∧ the event's record gives a notice identifier in that scheme that is present and different. SPEC 7.3a
+  (bullets 1-4), MM `rc(c)` (`A(e)`, `nr`, `disc`) and ROOT_CAUSE §4 items 1-4 state exactly this. Missing or
+  malformed `flags` are read as both same-record flags (detector.py:44-50), as SPEC 7.3a says. A missing
+  `notice_doi`/`notice_pmid` makes `discriminating` false, which is also fail-closed.
+- **No positive and no NOTICE_CITED from a key with a notice role.** A key with a notice role can never be
+  `discriminating`, so an event attached through it can be resolved only by the *other* cited key, and only when the
+  record separates work from notice in that scheme. Tracing the four ways Stage 02 builds a matched lookup (direct,
+  `query_pair`, `pmid_cooccurrence`, `doi_cooccurrence`) and the B-01 configuration, I found no other route to D-14.
+  D-15 is unchanged (it still needs `notice_only`).
+- **dt-1 is unchanged where nothing is role-ambiguous.** The only table edits are still the `_d10` disjunct and the
+  reason. The oracle summary (model digest `d01f3438…`, which matches the unchanged `dt2_reference.py`) still shows
+  `EQUIVALENCE_RC_FALSE` 0 violations over 12,632,448 cases. Precedence is as in the first review.
+- **The census figures are accurate** (recomputed from the JSON):
+  - Strict variant: 1,570 changed decisions. Of these, 1,472 are positives lost (RETRACTED 1,410, CONCERN 39,
+    CORRECTION 23) and 98 are D-11 → D-10.
+  - Lenient variant: 881 changed, of which 800 are positives.
+  - Positives on the pairs: 31,506 under dt-1 and 30,034 under dt-2.
+  - `CENSUS.json`: every colliding single key is now D-10 or D-9, none is positive, which matches RISK_ANALYSIS's
+    statement.
+- **The new RISK_ANALYSIS claim that bridged records never support a value holds** ("cannot make a positive on its
+  own, since Stage 02 never counts bridged records toward a verified value"). Stage 02 rule 7f (policy.py:120-175)
+  excludes bridged assertions from a value and reports `BRIDGE_ONLY_SUPPORT` / `BRIDGED_EVIDENCE_NOT_COUNTED`.
+
+### Status of the first-round findings
+
+| Id | Status | Basis |
+|---|---|---|
+| A-01 | **resolved** | Only cited keys can discriminate (dt1.py:306-320). SPEC 7.3a is now consistent with itself. My probe now gives D-10. There is a test for it (`test_a_non_cited_bridge_key_never_resolves_a_collided_cited_key`). |
+| A-02 | **owner decision** | The strict reading is implemented (a record that gives a different notice identifier in the scheme) and the lenient variant is measured (`PAIR_CENSUS_LENIENT.json`). The 886/692/194 figures are quoted correctly in ROOT_CAUSE §4a. The framing given to the owner is incomplete: see A-10. |
+| A-03 | **resolved** | ROOT_CAUSE §4 now credits the oracle only "given the abstract input `rc`". The computation of `rc` is checked by `test_corrective_role_property.py` (23,328 combinations: 7,776 per shape × 3, as the test asserts) and by the pair census. Limits of that test: see A-12. |
+| A-04 | **resolved (documented residual)** | RISK_ANALYSIS R4-04 records it, and the safety argument (rule 7f) is verified. PMID `3507357` still gives D-14 on its direct event, as before. |
+| A-05 | **partly open, LOW** | The recall cost is now measured on the full pair set (verified). Still open: RISK_ANALYSIS.md:100 says "the cost on exposed articles is in `corrective/regression/`", but that directory still holds only `regress.py`. SPEC 7.3a still does not say that every dual role is treated as incompatible, which is stricter than the principle (the 198 DOIs that another record gives with a distinct notice DOI still abstain). |
+| A-06 | **open, LOW** | `explanations.py:107` is unchanged: "the checked sources give the cited identifier both as the work and as a notice". With the key-level rule this is wrong more often: the key with the notice role can be a non-cited bridge key, or the citation's *other* identifier; or the count may be missing (fail-closed). |
+| A-07 | **resolved** | `_flags` fails closed. `Lookup.notice_hits = 0` remains as a dataclass default, but production builds a `Lookup` only in `lookup_view`. |
+| A-08 | INFO, no action needed | Unchanged; these limits are by design or belong to Stage 02. |
+| A-09 | **open, INFO** | The summary JSON and its notes are unchanged (it double-counts inert `rc` cases as valid; five properties are not rechecked). |
+
+### New findings
+
+#### A-10 — MEDIUM (owner decision framing) — The strict rule also reverses dt-1's resolution of a PMID collision by a clean DOI, and the owner's choice is described only from the DOI side
+
+Evidence (verified):
+- Under the strict rule, a clean cited DOI no longer resolves a PMID with a notice role unless the record also gives
+  a distinct notice DOI (`test_a_clean_doi_whose_record_states_no_notice_doi_does_not_resolve_a_pmid_collision`).
+  dt-1 resolved this case positively, and the first draft described it as the mirrored treatment.
+- Real example on the pinned index, from production `dt1.decide`:
+  - `DOI 10.1074/jbc.274.11.7196` alone → `D-14 RETRACTED_WORK_CITED`;
+  - the same DOI with its own PMID `10066780` → `D-10 UNRESOLVED_IDENTITY`;
+  - `PMID 10066780` alone → `D-10` (`PMID_ROLE_COLLISION`, `IDENTIFIER_ROLE_COLLISION`).
+- Why: the PMID gets its notice role from a *correction* record (`ev-0055497`, `NOTICE_PMID_EQUALS_ORIGINAL`,
+  `NO_NOTICE_IDENTIFIER`). The retraction record (`ev-0072902`) is clean but gives no notice DOI, so the DOI cannot
+  discriminate.
+- So a fuller citation of the same work now gets a weaker result than the DOI alone (the result is not monotone in
+  the identifiers cited).
+- I classified the pair census changes against the index. 5 D-14 and 2 D-11 pairs have a DOI with no notice role
+  and a PMID with a same-record notice role. Most of the remaining changes are DOI same-record (666) or DOI and PMID
+  same-record (775).
+- ROOT_CAUSE §4a and RISK_ANALYSIS present the strict/lenient choice only as the DOI-collision case (A-02/B-02).
+  This consequence of my own A-02 recommendation, applied symmetrically, is not named.
+
+Inference: the strict reading can be defended here too. If the citation names the correction notice through the
+shared PMID, a tool could have derived the DOI from that PMID. But the owner should decide it knowingly.
+
+Recommendation: add to the decision card and ROOT_CAUSE §4a two points. First, the strict variant also withdraws
+dt-1's clean-DOI resolution of PMID collisions (7 pairs on the snapshot, 5 of them positives). Second, it makes a
+DOI+PMID citation abstain where the same DOI alone is positive. Give the jbc example.
+
+#### A-11 — LOW — Stale descriptions of the old rule remain
+
+Verified by `grep`:
+- `dt1.py:17-22` (module docstring: "an event **every** key of which that attaches it … is … also a notice
+  identifier"). The code uses *some* attaching key, plus "no cited key discriminates".
+- `simulations/stage04/dt2_reference.py:18-22` (the `rc` docstring states the old per-event definition).
+- `tests/stage04/test_corrective_role_collision.py:5`.
+- `RISK_ANALYSIS.md:92-93` ("unless another cited identifier of the citation names the same event cleanly"). The rule
+  now requires a *discriminating* identifier; the Residual bullet below it says this correctly.
+
+Editing `dt2_reference.py` changes the model digest and the pinned oracle manifest, so it needs a re-pin. Also,
+ROOT_CAUSE §4b's "no dt-2 positive rests on a role-ambiguous event" is true by construction (D-10 precedes D-14). It
+is not a finding of the census and should not be presented as one.
+
+Recommendation: update the four texts; re-pin the oracle manifest if the model docstring is edited, or record that
+the docstring is superseded by SPEC 7.3a.
+
+#### A-12 — INFO — The property test checks the implementation against a restatement; its domain is narrow
+
+`spec_ambiguous` has the same structure as the code (any attaching key with a notice role ∧ no telling-apart key).
+It catches implementation slips, not a wrong reading of the principle. The domain has one deciding event. The second
+record appears only in Q1 lookups. There is no `notice_hit_count = None`, no malformed `flags`, and no unavailable Q1.
+Those edges are covered by named tests in the adversarial suite. That is adequate for A-03; describe the test as a
+restatement of SPEC 7.3a, not as independent semantics.
+
+### Verdict of the re-review
+
+No CRITICAL or HIGH finding. The revised rule is implemented exactly as SPEC 7.3a, MM `rc(c)` and ROOT_CAUSE §4 state
+it. I found no route by which a key with a notice role produces a positive or `NOTICE_CITED` without a
+discriminating second cited key. A-01, A-03, A-04 and A-07 are resolved. A-02 and A-10 are for the owner, and A-10
+must be added to the decision framing. A-05, A-06, A-09 and A-11 are open at LOW or INFO.
