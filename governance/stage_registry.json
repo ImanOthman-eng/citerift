@@ -21332,7 +21332,7 @@
           "requirement": "Engineering verification and delivery: complete suite on Python 3.12 and 3.13, ruff check and format, mypy, citerift-gov check and successful GitHub CI at the cited revision; no new runtime dependency without a recorded reason; required documents including a measured creative differentiation review; unmerged pull request"
         }
       ],
-      "status": "BLOCKED",
+      "status": "IN_PROGRESS",
       "authorization": {
         "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPFrh5szvKs3Wf6aVj3k31gR",
         "scope": "Owner explicitly authorizes Stage 04 (Detection Engine and Vertical Slice) only, starting from main 741df40c408d9d68d9805f901ef0d82b523cdb2c after PR #6; Stages 00-03 are not modified or reopened; Stage 05 and every later stage are not authorized.",
@@ -21346,8 +21346,8 @@
           "id": "B-04-001",
           "description": "Gate 04-I NOT PASSED under P2 (owner decision D-079): Arabic passes G1-G5; English fails G2 only (1 false attachment of 44 positive units, one-sided 95 % upper bound 0.1033 > 0.10). The P2 result is final and immutable (D-079); no third corrective or evaluation cycle is authorized (D-081). Evidence: docs/verification/stage-04/evaluation-p2-campaign/REPORT.md, docs/verification/stage-04/HANDOFF.md.",
           "opened_at": "2026-11-19T19:23:50Z",
-          "resolved_at": null,
-          "resolution": null
+          "resolved_at": "2026-11-19T20:39:03Z",
+          "resolution": "Resolved only to return Stage 04 to IN_PROGRESS for the final corrective cycle authorized by the owner (D-083, cmsg_018VCB51nDHP6HXmLU4ea5yPYP4QxCiKQ1Hzx2XLj9zxep). Gate 04-I remains NOT PASSED under P and P2; neither evaluation changes."
         }
       ],
       "amendments": []
@@ -22060,6 +22060,17 @@
       "recorded_by": "engineering-agent",
       "reason": "Open blocker B-04-001: gate 04-I NOT PASSED under P2 (D-079). Recorded under the owner's instruction to record the scientifically accurate blocker in a non-accepted blocked state; Stage 04 is not verified or accepted; Stage 05 is not authorized.",
       "owner_ref": "cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4"
+    },
+    {
+      "seq": 52,
+      "at": "2026-11-19T20:39:03Z",
+      "stage": "04",
+      "from": "BLOCKED",
+      "to": "IN_PROGRESS",
+      "actor": "owner",
+      "recorded_by": "engineering-agent",
+      "reason": "all blockers resolved (B-04-001: Resolved only to return Stage 04 to IN_PROGRESS for the final corrective cycle authorized by the owner (D-083, cmsg_018VCB51nDHP6HXmLU4ea5yPYP4QxCiKQ1Hzx2XLj9zxep). Gate 04-I remains NOT PASSED under P and P2; neither evaluation changes.)",
+      "owner_ref": null
     }
   ]
 }

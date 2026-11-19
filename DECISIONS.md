@@ -1850,11 +1850,12 @@ consistency layer, adversarial evaluation, a new freeze and a new prospective ho
 this cycle.
 
 ## D-081 — No third corrective or evaluation cycle for Stage 04 now
-- Status: accepted
+- Status: superseded
 - Topic: stage-04-no-third-cycle
 - Date: 2026-11-19
 - Stage: 04
 - Supersedes: none
+- Superseded-by: D-083
 - Evidence: docs/verification/stage-04/evaluation-campaign/REPORT.md; docs/verification/stage-04/evaluation-p2-campaign/REPORT.md
 
 Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4`. No dt-3 is created to make 04-I pass, no P3, no
@@ -1886,3 +1887,37 @@ The same message directs a non-passing final closure audit and handoff of Stage 
 scientific acceptance): no Step 15 acceptance transition, no VERIFIED_AWAITING_OWNER_ACCEPTANCE, no ACCEPTED_CLOSED,
 no Stage 05 authorization. If the governance model supports a non-accepted blocked state without changing its
 semantics, the blocker "Gate 04-I NOT PASSED under P2" is recorded; otherwise Stage 04 stays IN_PROGRESS.
+
+## D-083 — One final corrective research cycle for Stage 04 authorized; D-081's "no third cycle" superseded
+- Status: accepted
+- Topic: stage-04-final-corrective-cycle
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: D-081
+- Evidence: docs/verification/stage-04/HANDOFF.md; docs/verification/stage-04/final-closure/AUDIT.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPYP4QxCiKQ1Hzx2XLj9zxep` (2026-11-19T20:37:57Z). The owner authorizes one
+final corrective research cycle for Stage 04, explicitly revisiting and superseding D-081's "no third corrective
+cycle" restriction, because known defects must be addressed before downstream stages depend on Stage 04. Gate 04-I
+is not amended or weakened; neither historical evaluation is modified (P / dt-1 and P2 / dt-2 stay NOT PASSED; all
+their seeds, draws, labels, `RUN.json`, `SCORES.json` and reports stay unchanged); Stage 05 is not authorized.
+Blocker B-04-001 is resolved only to return Stage 04 from BLOCKED to IN_PROGRESS for this cycle. The remainder of
+D-081 (both evaluations stay in the permanent record; the improvement is never described as a pass) stands and is
+carried by this entry; D-081 is marked superseded only because the governance record supersedes whole entries.
+
+Scope: (1) a general bibliographic-object consistency layer for the identifier-versus-bibliographic-object defect
+(D-080) distinguishing compatible, insufficient and materially conflicting bibliographic evidence, a material
+conflict never producing a positive, with no case-, DOI-, author-, journal-, publisher- or suffix-specific rule and
+no fuzzy threshold without an independent specification and adversarial evidence; (2) an architecture review before
+code, preferring a Stage 04-owned correction (Stage 02 or Stage 03 maintenance only after a separate owner decision);
+(3) a formal specification and an independent reference model; (4) a fail-first adversarial corpus; (5) a study of
+the D-072 role-collision recall cost, keeping the strict rule unless a resolution is proven safe (no JASIST
+regression, notice/original separation kept, no ambiguous object made positive); (6) the open LOW findings A-04,
+D-05, E-05, E-07, C-07, N-01; (7) re-review of the accepted residuals (path spelling, different bundle STALE, Stage
+02 `crossref_sources` ordering); (8) profiling and semantics-preserving performance work without weakening D-064,
+NOT_MET retained if 5 s p95 is not reached; (9) a new engine and table identity; (10) independent reviews, no
+unresolved CRITICAL/HIGH/MEDIUM finding and every LOW fixed or classified with evidence; (11) regressions on all
+Stage 04 tests, the dt-1, dt-2 and new oracles, the vertical slice, the 232 + 80 + 100 articles (development
+evidence only), the role-collision census, B-03, C-01 and the corpus, reporting every changed claim; (12) exposure
+manifest v3; (13) a freeze-3 candidate with the full check list. STOP before any P3, seed, draw, frame capture,
+annotation or prospective run; freeze-3 is not called accepted.
