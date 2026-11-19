@@ -455,8 +455,12 @@ produces a positive work attachment solely because one of those roles is origina
   identifier is not evidence of the work).
 - `e` is *role-ambiguous* when some attaching key has a notice role (or `e` has no attaching key; fail closed) and no
   cited key discriminates for `e`. A non-cited bridge key never resolves (reviewer finding A-01); nothing else does
-  either: no publisher, prefix, title, notice type or string test. Whether a discriminating second identifier should
-  resolve at all, and in this strict form, is put to the owner (decision card); this is the fail-closed reading.
+  either: no publisher, prefix, title, notice type or string test. This strict form is approved by owner decision
+  D-072; the lenient alternative (a cited second key with no notice role resolves even when its record states no
+  notice identifier in that scheme) is **not** adopted. Its recall cost is stated, not reclassified as a performance
+  result: of 31,506 dt-1 positive DOI+PMID pairs of the pinned snapshot, the strict rule makes 1,472 abstain, the
+  lenient alternative would make 800 abstain (`corrective/census/PAIR_CENSUS.json`, `PAIR_CENSUS_LENIENT.json`). No
+  threshold and no special case derived from a holdout is part of the rule.
 - `L` matched with a role-ambiguous event satisfies D-10: `UNRESOLVED_IDENTITY`, reason `IDENTIFIER_ROLE_COLLISION`
   (new in dt-2; no existing code named a DOI or cross-record collision). D-10 sits in tier 5, after D-6, D-7 and D-8 and
   before D-11 to D-16, so the order contradiction → unresolved → operational failure → positive → notice/no-finding is
@@ -472,8 +476,11 @@ The rule is placed in Stage 04; Stage 02 is unchanged (its flags and `notice_hit
 Collision is read per key over every record of the candidate's lookups, including a second record of the same work
 (the same original DOI and PMID). Such a sibling record (for example an expression of concern whose notice identifiers
 equal the article's) therefore makes the keys collided even for a retraction record that itself states distinct notice
-identifiers, and the citation abstains (reviewer finding C-01: 53 of 31,756 snapshot pairs, one campaign claim). This
-is the rule as built and frozen; whether a same-work sibling should stop colliding is an open owner question.
+identifiers, and the citation abstains (reviewer finding C-01: 53 of 31,756 snapshot pairs, one campaign claim,
+`ar-3351802 un-00059`). Owner decision D-073 keeps this: there is no same-work-sibling exemption, and the collision
+is never overridden by same-work equality, a shared original DOI or PMID, a preference among event types, title
+similarity or record order. That these are probably true retractions is a description, not a reason to resolve them.
+A later engine may revisit them only with independently verified evidence that tells the publication objects apart.
 
 Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5 and finalized by owner decision D-043; they
 replace the Step 4 model's placeholders and change no class, guard or precedence
@@ -505,7 +512,7 @@ defect in one candidate means the table or an adapter cannot be trusted for any 
 | lookup unavailable | O-3 (index), D-13 (query) |
 | lookup ambiguous | D-6 (pair), D-9 (single key) |
 | retracted work | D-14 → `RETRACTED_WORK_CITED` |
-| retraction notice | D-15 → `NOTICE_CITED` (a DOI-only notice); a notice DOI paired with the original's PMID produces D-6 only when the checked evidence supplies an incompatibility witness as defined in section 6.5. When no such witness exists because the original DOI is not recorded, the pair follows the ordinary coherence and decision-table rules; a verified retracted result may reach D-14 with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED` (owner decision D-058) |
+| retraction notice | D-15 → `NOTICE_CITED` (a DOI-only notice); a notice DOI paired with the original's PMID produces D-6 only when the checked evidence supplies an incompatibility witness as defined in section 6.5. When no such witness exists because the original DOI is not recorded, the pair follows the ordinary coherence and decision-table rules; a verified retracted result may reach D-14 with `KEY_RESULTS_DIFFER` and `PAIR_UNCORROBORATED` (owner decision D-058). The mirror (owner decision D-075): an original DOI cited with the same record's notice PMID stays positive when the DOI is clean and independently supports the work; the notice PMID is never positive support, stays visible and adds no `IDENTITY_CONFLICT` of its own; when the DOI is absent, unavailable or role-collided, D-14 is never reached through the notice PMID (`tests/stage04/test_corrective_role_collision.py`, `corrective/census/B03_CENSUS.json`) |
 | expression of concern / flagged record | D-14 → `CONCERN_CITED`, `CORRECTION_CITED`, `REINSTATED_WORK_CITED`; D-11 when the effect is mixed or unlinked; flags are carried as reasons. `REINSTATED_WORK_CITED` is unreachable through S-6.8 and S-6.9: Stage 02 states the value `reinstated` only with supersession links, which have no source in Stage 02 data and which Stage 04 never passes (`policy.py`, Step 4 finding S4-04); the rule stays for a later versioned source |
 | marker target | S-6.7: observation only, never a candidate |
 | multiple candidate records | several events of one work: Stage 02 reduces them (D-7, D-11, D-14); several works for one key: D-9; several keys in one unit: S-6.5 |

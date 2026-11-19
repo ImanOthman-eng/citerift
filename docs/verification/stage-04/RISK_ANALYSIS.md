@@ -98,8 +98,10 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   notice identifier in that scheme): a recall cost the owner chose over false attachment (D-071 section 4). On the
   pinned snapshot no single-key citation of a colliding identifier is positive any more, and 1,472 of 31,506 positive
   DOI+PMID pairs become `UNRESOLVED_IDENTITY` (`corrective/census/PAIR_CENSUS.json`; 800 under the lenient
-  alternative put to the owner, `PAIR_CENSUS_LENIENT.json`); the cost on exposed articles is in
-  `corrective/regression/`. If the discriminating second identifier is itself wrong in the citation, the attachment
+  alternative, `PAIR_CENSUS_LENIENT.json`). The owner approved the strict rule and declined the lenient one (D-072):
+  this cost is a recall limitation of the engine, to be stated as such in any later evaluation, never reported as a
+  performance result. A same-work sibling record (reviewer finding C-01, 53 pairs, one campaign claim) also abstains,
+  with no exemption (D-073). The cost on exposed articles is in `corrective/regression/`. If the discriminating second identifier is itself wrong in the citation, the attachment
   rests on it (as for any PAIR, R4-03). A non-cited bridged key is not checked for another record's notice role
   (reviewer finding A-04); it cannot make a positive on its own, since Stage 02 never counts bridged records toward a
   verified value.

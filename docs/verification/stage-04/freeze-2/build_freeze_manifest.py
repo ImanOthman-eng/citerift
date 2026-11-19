@@ -56,6 +56,7 @@ EVIDENCE = {
     "census": f"{C}/census/CENSUS.json",
     "pair_census": f"{C}/census/PAIR_CENSUS.json",
     "pair_census_lenient": f"{C}/census/PAIR_CENSUS_LENIENT.json",
+    "b03_census": f"{C}/census/B03_CENSUS.json",
     "role_collision_fixture": "tests/stage04/fixtures/corrective/rw_role_collision.json",
     "fail_first_before": f"{C}/evidence/fail_first_before.txt",
     "runner_fail_first": f"{C}/evidence/runner_fail_first.txt",
@@ -87,17 +88,20 @@ LIMITATIONS = [
     "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a "
     "notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) "
     "is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
-    "D-071 resolution by a second identifier (strict rule, SPEC 7.3a): a role collision is resolved only by another "
-    "cited identifier that has no notice role itself and whose record states a different notice identifier in its "
-    "scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the "
-    "measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong "
-    "in the citation, the attachment rests on it.",
-    "C-01: collision is read per key over every record, so a second record of the same work (same original DOI and "
-    "PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes a clean retraction "
-    "abstain (53 snapshot pairs, one campaign claim); owner question open.",
-    "Original DOI cited with the same record's notice PMID (corrective-cycle reviewer finding B-03 of REVIEW_B.md, "
-    "the mirror of D-058) stays "
-    "positive, as in dt-1; not changed without an owner decision.",
+    "D-072 strict resolution by a second identifier (SPEC 7.3a): a role collision is resolved only by another cited "
+    "identifier that has no notice role itself, directly identifies the same work, and whose record states a "
+    "different notice identifier in its scheme. Recall cost, a limitation and never a performance result: on the "
+    "pinned snapshot 1,472 of 31,506 dt-1 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (the declined lenient "
+    "alternative would lose 800). Any future evaluation (P2) states this limitation. If the resolving identifier is "
+    "itself wrong in the citation, the attachment rests on it.",
+    "D-073 (reviewer finding C-01): collision is read per key over every record, so a second record of the same work "
+    "(same original DOI and PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes "
+    "a clean retraction abstain (53 snapshot pairs, one campaign claim, ar-3351802 un-00059); no same-work-sibling "
+    "exemption; 'probable true positive' is descriptive only.",
+    "D-075 (corrective-cycle reviewer finding B-03 of REVIEW_B.md, the mirror of D-058): an original DOI cited with "
+    "the same record's notice PMID stays positive when the DOI is clean (628 of 31,279 snapshot pairs; 30,482 are "
+    "IDENTITY_CONFLICT under both tables because the record states the work's own, different PMID); the notice PMID "
+    "is never positive support, and a role-collided, unavailable or absent DOI never reaches D-14 through it.",
     "The 80 campaign articles and the 232 development revisions are development evidence; the regression on them is "
     "not an evaluation and is never counted as unseen data.",
     "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET); see the "

@@ -21,7 +21,16 @@ the per-candidate rows were dropped and read 0. The merge now computes the total
 
 One campaign claim (`ar-3351802 un-00059`) abstains because a second record of the same work (an expression of
 concern) gives both cited keys both roles while the deciding retraction record itself states distinct notice
-identifiers: a probable true-positive loss of the key-level rule, put to the owner (reviewer finding C-01).
+identifiers (reviewer finding C-01). Owner decision D-073 keeps it `UNRESOLVED_IDENTITY`: no same-work-sibling
+exemption. "Probable true positive" describes it; it is not a reason to resolve it.
+
+The changed claims here are the recall cost of the strict rule approved by owner decision D-072 (snapshot: 1,472 of
+31,506 dt-1 positive pairs abstain; 800 under the declined lenient alternative). Any later evaluation states this cost
+as a limitation of the engine; it is not reported as a performance result. Owner decision D-075 leaves an original DOI
+cited with the same record's notice PMID positive when the DOI is clean (`../census/B03_CENSUS.json`: of 31,279 such
+pairs, 628 positive under dt-2 and 794 under dt-1; the 166 that change are D-14 to D-10 because the DOI itself is
+role-collided; 30,482 are `IDENTITY_CONFLICT` under both tables because the record also states the work's own, different
+PMID, an incompatibility witness of SPEC 6.5, not because the cited PMID is a notice identifier).
 
 These outputs were never joined with the campaign's labels, adjudications or scorer, and must not be (reviewer finding
 F-08). The rule was designed from the one authorized failure only (D-071 section 2).

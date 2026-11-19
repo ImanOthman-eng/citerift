@@ -175,7 +175,7 @@ of `e` itself) and let **any** non-collided key resolve. Reviewers found:
 - A-02 / B-02 (MEDIUM): in 692 of 886 events with a same-record DOI collision and a clean original PMID, the record
   states no notice PMID, so the PMID is "clean" only because evidence is missing. The rule now requires the record to
   give a different notice identifier in the resolving scheme (strict reading of "independent evidence"); the lenient
-  alternative is measured and put to the owner.
+  alternative was measured and put to the owner, who approved the strict rule (D-072).
 
 ### 4b. Pair census
 
@@ -187,8 +187,8 @@ notice role rests on the other cited key, which has no notice role and whose rec
 identifier. Strict versus lenient also differs on the PMID side (reviewer finding A-10): dt-1 let a clean DOI
 resolve a PMID collision; the strict rule requires the record to give a different notice DOI, which drops 5 positive
 pairs (for example `10.1074/jbc.274.11.7196` + `10066780`; the DOI alone is positive). Original DOI cited with the
-same record's notice PMID stays positive (628 pairs; the mirror of owner decision D-058, reviewer finding B-03, put to
-the owner).
+same record's notice PMID stays positive when the DOI is clean (628 pairs under dt-2, `census/B03_CENSUS.json`; the
+mirror of owner decision D-058, reviewer finding B-03, kept by owner decision D-075).
 Under the lenient alternative 881 change (800 positives). Positives: dt-1 31,506, dt-2 30,034.
 
 Expected effect, stated before any regression is run: the JASIST unit becomes `UNRESOLVED_IDENTITY`
