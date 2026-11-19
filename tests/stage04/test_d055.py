@@ -800,6 +800,7 @@ def _fresh(tmp_path: Path) -> Path:
 # Ceiling (owner D-055: the D-053 primitive and ceiling, re-checked with the LOOKUP and DETECT entries) ----------------
 
 D055 = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-04" / "review" / "step7" / "d055"
+FINAL_BOUNDS = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-04" / "final-cycle" / "bounds"
 
 
 @pytest.mark.contracts
@@ -892,7 +893,8 @@ def test_format_4_bounds_are_recomputed_and_proven() -> None:
     """Recompute ``d055/bounds.py`` from the format-4 records as implemented and compare with the retained
     ``bounds.json``: every record kind within 1 MiB, the worst-case journal of a run at the Stage 03 caps within 512 MiB
     with substantial headroom, and every blob kind except the ACQUIRE observation (IF-7, a Step 8 condition) within
-    256 MiB."""
+    256 MiB. Since the final corrective cycle (D-083: dt-3 evidence and claims) the retained file is
+    ``final-cycle/bounds/bounds.json``; the D-055 file stays as the dt-2 record."""
     import importlib.util
 
     from citerift.investigation.journal import JOURNAL_FORMAT, MAX_JOURNAL_BYTES, MAX_RECORD_BYTES
@@ -903,7 +905,7 @@ def test_format_4_bounds_are_recomputed_and_proven() -> None:
     spec.loader.exec_module(module)
     kinds = module.record_kinds()
     journal_bound = module.journal(kinds, module.entry_sizes())
-    retained = json.loads((D055 / "bounds.json").read_text(encoding="utf-8"))
+    retained = json.loads((FINAL_BOUNDS / "bounds.json").read_text(encoding="utf-8"))
     assert retained["journal_format"] == JOURNAL_FORMAT == 4
     assert {k: v["bytes"] for k, v in kinds.items()} == {
         k: v["bytes"] for k, v in retained["record_kinds_max_bytes"].items()

@@ -104,9 +104,35 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   with no exemption (D-073). The cost on exposed articles is in `corrective/regression/`. If the discriminating second identifier is itself wrong in the citation, the attachment
   rests on it (as for any PAIR, R4-03). A non-cited bridged key is not checked for another record's notice role
   (reviewer finding A-04); it cannot make a positive on its own, since Stage 02 never counts bridged records toward a
-  verified value.
+  verified value. The final corrective cycle proved this on the whole pinned snapshot (owner decision D-083 item 6):
+  every one of the 81,743 positives of a single-key citation of each original DOI and PMID has a direct, non-ambiguous
+  event of its own class and no `BRIDGE_ONLY_SUPPORT` (0 violations); the exposure (a bridged event reached through a
+  key that some record gives as a notice) is 254 events, all under one PMID, each positive also directly supported
+  (`final-cycle/lows/a04_invariant_census.json`).
 - Gate and invariant: 04-A, 04-C; M-12.
 - Blocks verification: **blocks**.
+
+### R4-04a Bibliographic-object confusion (owner decision D-083)
+
+- Cause: a citation whose identifiers are the original identifiers of a retracted record while its own description
+  names another publication object (a comment, reply, editorial or erratum carrying the work's DOI or PMID, or a
+  citation whose identifiers were copied from another reference) counted as a citation of the retracted work.
+- Realized (gate 04-I under P2, failed; owner decision D-080): `en-27958530` `un-00004` (a different author; the
+  record's title followed by "– Comments") attached as `RETRACTED_WORK_CITED` by dt-2.
+- Prevention: table dt-3 (SPEC 7.3b): bib-1 compares the template's own authors and title with each record of the
+  deciding lookup and abstains (`UNRESOLVED_IDENTITY`, `BIBLIOGRAPHIC_OBJECT_CONFLICT`) on a material conflict.
+- Residual: (1) only `citation_template` units have a cited object; a citation in another form, or a template without
+  authors and title, is `INSUFFICIENT` and decides as under dt-2. (2) A related object whose cited title equals the
+  record's title and whose authors agree (for example a reply by the same authors with the same title) is not detected.
+  (3) A wrong author list in a genuine citation of the work (for example, authors of another reference pasted in)
+  makes the citation abstain: a recall cost, in the safe direction. (4) Stage 02 records with no title or no authors
+  give `INSUFFICIENT`; the pinned snapshot has none with empty authors. (5) The designation lexicon is closed (English
+  and Arabic forms listed in the specification; genre words such as editorial, letter or commentary are deliberately
+  excluded because a retracted work can itself be one); an unlisted language or wording is `COMPATIBLE` when the
+  authors agree, so an editorial by the work's own authors with an overlapping title is not detected.
+  These are recall or detection limits, stated, never reclassified as performance results.
+- Gate and invariant: 04-C, 04-I; oracle property `BC_NO_POSITIVE`, `BC_ONLY_REMOVES_POSITIVES`.
+- Blocks verification: **blocks** if a material conflict ever yields a positive; residuals **disclosed**.
 
 ### R4-05 Identifier-role confusion
 
@@ -470,6 +496,7 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
 | R4-02 | False reassurance | 04-A, 04-C, 04-G | blocks; coverage disclosed |
 | R4-03 | DOI/PMID collision | 04-D | blocks; undetectable case disclosed |
 | R4-04 | Notice/original confusion | 04-A, 04-C | blocks |
+| R4-04a | Bibliographic-object confusion | 04-C, 04-I | blocks; residuals disclosed |
 | R4-05 | Identifier-role confusion | 04-C | blocks; recall limit disclosed |
 | R4-06 | Stale Stage 02 index | 04-F | blocks; snapshot date disclosed |
 | R4-07 | Stale Stage 03 extraction | 04-F | blocks |
@@ -499,7 +526,7 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
 | R4-31 | Storage exhaustion and I/O errors | 04-E, 04-G | blocks |
 | R4-32 | Inherited upstream limitations | 04-A, 04-I | disclosed |
 
-All 32 risks are open. None is resolved by this document.
+All 33 risks are open. None is resolved by this document.
 
 ## 6. Mapping from the plan's lists
 
