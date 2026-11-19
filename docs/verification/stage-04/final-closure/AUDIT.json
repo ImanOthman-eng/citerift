@@ -1,0 +1,269 @@
+{
+ "checks": [
+  {
+   "check": 1,
+   "committed": "1d674dfe6d8c72506c0ea56667ab5ff5fbebf877aacf3bfc68d56e75c35bec67",
+   "name": "SCORES.json reproduced byte for byte",
+   "reproduced": "1d674dfe6d8c72506c0ea56667ab5ff5fbebf877aacf3bfc68d56e75c35bec67",
+   "result": "PASS"
+  },
+  {
+   "changed": [],
+   "check": 2,
+   "digest": "5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a",
+   "files": 28,
+   "name": "P2 digest and every listed file",
+   "rebuilt_digest": "5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a",
+   "result": "PASS"
+  },
+  {
+   "check": 3,
+   "draw_file_sha256": "4efdb7bf75996060f4631a9aee5b756a06dbe631d116948547fcaa29f132226d",
+   "draw_plan_digest": "e9416c964bf319a71fcf8dc4cb41d29b1ccd139030b38f32bd36d69ab673f88f",
+   "mirrors_agreeing": 3,
+   "mirrors_failed": [
+    "https://drand.cloudflare.com"
+   ],
+   "name": "seed and draw identities",
+   "recomputed_plan_digest": "e9416c964bf319a71fcf8dc4cb41d29b1ccd139030b38f32bd36d69ab673f88f",
+   "result": "PASS",
+   "round": 34096937,
+   "seed": "b45666399e691ab6a1301086d33eb5f6b776748e6e0504a5399a407aaaba4e6c"
+  },
+  {
+   "acquired": 100,
+   "attempts": 100,
+   "by_language_stratum": {
+    "ar S1": 42,
+    "ar S2": 8,
+    "en S1": 42,
+    "en S2": 8
+   },
+   "check": 4,
+   "exposed": [],
+   "exposure_manifest_articles": 378,
+   "historical_campaign_overlap": [],
+   "name": "acquisition log and exposure-v2 non-overlap",
+   "result": "PASS"
+  },
+  {
+   "changed_after_lock": [],
+   "check": 5,
+   "extraction_differs": [],
+   "name": "packet hashes (locked hashes, and packets rebuilt from the committed bundles)",
+   "packets": 100,
+   "rebuilt_differs": [],
+   "result": "PASS"
+  },
+  {
+   "adjudicated": 10,
+   "check": 6,
+   "items": 167,
+   "lock_sha256": "92a4f6408e52c835eb4a31fa7fc3febd4aac062d281ef06f27718cd0911b3961",
+   "name": "A/B/ADJ labels and LOCK.json (round locks and campaign lock reproduced)",
+   "problems": [],
+   "result": "PASS"
+  },
+  {
+   "check": 7,
+   "first_article_started": null,
+   "lock_commit": "72842148644ac6620d2ac626228a2f13322b6b29",
+   "lock_commit_time": "2026-11-19T15:16:37+00:00",
+   "name": "labels locked (and committed) before RUN.json",
+   "result": "PASS",
+   "run_commit": "44a847961633582b25af93647c72d08b160773b5",
+   "run_head_recorded": "72842148644ac6620d2ac626228a2f13322b6b29"
+  },
+  {
+   "check": 8,
+   "commands": {
+    "run": 100
+   },
+   "format": "citerift-stage04-eval-run/3",
+   "name": "exactly one prediction-run identity",
+   "other_run_files": [],
+   "result": "PASS",
+   "run_json_commits": [
+    "44a847961633582b25af93647c72d08b160773b5"
+   ],
+   "run_sha256": "db8c5432014f4c104470b670bdacfe050da09b4f4e66737f8c9cadbcd4adde3e"
+  },
+  {
+   "check": 9,
+   "content_commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+   "freeze_manifest_digest": "d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13",
+   "identity": {
+    "claim_schema_version": "3.0.0",
+    "detector_identity": "citerift-dt1-detector/3 (dt-2)",
+    "engine_version": "0.3.0",
+    "package_version": "0.3.0",
+    "plan_version": "plan-1",
+    "schema_version": "4.0.0",
+    "table_version": "dt-2"
+   },
+   "name": "frozen engine 28ba646 (run, scores and current checkout)",
+   "result": "PASS",
+   "tree": "45c52da459b09597f105d6e4abd8ab00332c6799",
+   "trees_at_run": {
+    "pyproject.toml": "0cf2555733ef5a75b372981fa31d809703c46f20",
+    "schemas": "11599931fe605547ff99fde6c86b0948dfb36a54",
+    "src": "ed0e1c17f0ff7e315e2aa2c6fa3da2bc343f2374",
+    "uv.lock": "9013ce30b080ff5d81e1e2f9f6d2b1ebed9cebb6"
+   },
+   "trees_now": {
+    "pyproject.toml": "0cf2555733ef5a75b372981fa31d809703c46f20",
+    "schemas": "11599931fe605547ff99fde6c86b0948dfb36a54",
+    "src": "ed0e1c17f0ff7e315e2aa2c6fa3da2bc343f2374",
+    "uv.lock": "9013ce30b080ff5d81e1e2f9f6d2b1ebed9cebb6"
+   }
+  },
+  {
+   "archive_sha256": "54835a74c80b794522c370777aeea0f08e48910670a8ac9c8e2487939f9fc7a4",
+   "check": 10,
+   "export_files_checked": 6969,
+   "exports": 100,
+   "lifecycles": {
+    "COMPLETED": 99,
+    "NEEDS_RESOLUTION": 1
+   },
+   "memory_investigations": 100,
+   "name": "all 100 exports and the Investigation Memory archive",
+   "problems": [],
+   "result": "PASS",
+   "verify_passed": 100
+  },
+  {
+   "check": 11,
+   "gate_04_I": "NOT PASSED",
+   "gates": {
+    "ar": {
+     "G1": {
+      "pass": true,
+      "value": 42
+     },
+     "G2": {
+      "pass": true,
+      "value": [
+       0,
+       42
+      ]
+     },
+     "G2_upper_bound": 0.0688,
+     "G3": {
+      "pass": true,
+      "value": 0
+     },
+     "G4": {
+      "pass": true,
+      "value": 0
+     },
+     "G5": {
+      "pass": true,
+      "value": 766
+     }
+    },
+    "en": {
+     "G1": {
+      "pass": true,
+      "value": 44
+     },
+     "G2": {
+      "pass": false,
+      "value": [
+       1,
+       44
+      ]
+     },
+     "G2_upper_bound": 0.1033,
+     "G3": {
+      "pass": true,
+      "value": 0
+     },
+     "G4": {
+      "pass": true,
+      "value": 0
+     },
+     "G5": {
+      "pass": true,
+      "value": 1717
+     }
+    }
+   },
+   "name": "G1-G5 exactly as reported (recomputed from SCORES.json)",
+   "result": "PASS"
+  },
+  {
+   "check": 12,
+   "name": "baseline and sensitivity outputs (inside the reproduced SCORES.json)",
+   "not_computable": {
+    "a": 0,
+    "b": 0,
+    "c": 87
+   },
+   "positives_and_false_attachments": {
+    "a": {
+     "ar": [
+      39,
+      0
+     ],
+     "en": [
+      43,
+      1
+     ]
+    },
+    "b": {
+     "ar": [
+      42,
+      0
+     ],
+     "en": [
+      44,
+      1
+     ]
+    },
+    "baseline": {
+     "ar": [
+      51,
+      3
+     ],
+     "en": [
+      73,
+      22
+     ]
+    },
+    "c": {
+     "ar": [
+      40,
+      0
+     ],
+     "en": [
+      44,
+      1
+     ]
+    }
+   },
+   "result": "PASS"
+  },
+  {
+   "check": 13,
+   "deviations": {
+    "1_seed_boundary": true,
+    "2_one_mirror_403": true,
+    "3_B-ar-p05_recorded": true,
+    "4_status_listings_not_acted_on": true,
+    "5_wrapper_detachment": true,
+    "6_archive": true,
+    "7_transcripts": true,
+    "8_executor_glue_small_diff": true
+   },
+   "name": "every protocol deviation matches the retained evidence",
+   "result": "PASS"
+  }
+ ],
+ "finished_at": "2026-11-19T19:32:55.243653+00:00",
+ "format": "citerift-stage04-final-closure-audit/1",
+ "head": "49c7a5839d641459f56b2e8be01236604a967ac1",
+ "index_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+ "passed": true,
+ "started_at": "2026-11-19T19:29:33.805803+00:00"
+}

@@ -1,0 +1,24 @@
+## ruff check
+All checks passed!
+exit=0
+## ruff format --check
+647 files already formatted
+## mypy
+Success: no issues found in 95 source files
+## check-schemas
+<frozen runpy>:128: RuntimeWarning: 'citerift.contracts.validate' found in sys.modules after import of package 'citerift.contracts', but prior to execution of 'citerift.contracts.validate'; this may result in unpredictable behaviour
+2 schemas checked, 0 problems
+## step3 checker
+PASS  RA review-finding references resolve
+RESULT: PASS (0 failed)
+## gov check
+Consistency check: 0 errors, 0 warnings
+## render-status --check
+PROJECT_STATUS.md is up to date
+## uv lock --check
+Resolved 47 packages in 1ms
+## pip-audit
+No known vulnerabilities found
+## oracle manifests
+411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735  simulations/stage04/oracle/MANIFEST.json
+60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0  simulations/stage04/oracle-dt2/MANIFEST.json

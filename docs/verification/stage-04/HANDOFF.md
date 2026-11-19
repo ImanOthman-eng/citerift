@@ -35,7 +35,7 @@ SUPERSEDED_AFTER_FAILED_04_I (D-071) and is unchanged.
 | Engine | `b5bf8ed`, 0.2.0, dt-1 | `28ba646`, 0.3.0, dt-2 |
 | Pre-registration | P `4eded723bbb464c247b31e675d2f2fc7d16133328d55925c9a787801efd1098a` (commit `827ac1a`, D-070) | P2 `5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a` (commit `10cc9d8`, D-077) |
 | Seed | quicknet round 34067905, seed `32aebd7f82d03b153d226a941072fa2e76eeb8d46f92ddba96a43fc0dffbc60f` | quicknet round 34096937 (D-078), seed `b45666399e691ab6a1301086d33eb5f6b776748e6e0504a5399a407aaaba4e6c` |
-| Draw (`DRAW.json` SHA-256) | `bc137002…db930` | `4efdb7bf75996060f4631a9aee5b756a06dbe631d116948547fcaa29f132226d` (plan digest `be63947a…7285`) |
+| Draw (`DRAW.json` SHA-256) | `bc137002…db930` | `4efdb7bf75996060f4631a9aee5b756a06dbe631d116948547fcaa29f132226d` (canonical document digest `be63947a…7285`) |
 | Articles | 80 (ar 40, en 40) | 100 (ar 50 = S1 42 + S2 8; en 50 = S1 42 + S2 8) |
 | Items / adjudicated | 161 / 14 | 167 / 10 |
 | Label lock | `6059e462c48afc7ed35c1203cd446b3b582d4a485a3a757cdca129ed562672dc` | `92a4f6408e52c835eb4a31fa7fc3febd4aac062d281ef06f27718cd0911b3961` |
