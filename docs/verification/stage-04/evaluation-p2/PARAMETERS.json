@@ -1,0 +1,75 @@
+{
+ "format": "citerift-stage04-eval-parameters/2",
+ "status": "P2, PRE-REGISTERED, binding once the owner accepts PREREGISTRATION.md by its digest; no value may change after the draw (D-068)",
+ "frozen_engine": {
+  "content_commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+  "tree": "45c52da459b09597f105d6e4abd8ab00332c6799",
+  "freeze_manifest_path": "docs/verification/stage-04/freeze-2/FREEZE_MANIFEST.json",
+  "freeze_manifest_digest": "d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13",
+  "attestation_commit": "6dab7f8ea1b97982dca978c38ca0fc8eea6e1a7f",
+  "accepted_by": "D-076",
+  "checked_paths": ["src", "schemas", "pyproject.toml", "uv.lock"],
+  "identity": {
+   "engine_version": "0.3.0",
+   "package_version": "0.3.0",
+   "table_version": "dt-2",
+   "schema_version": "4.0.0",
+   "claim_schema_version": "3.0.0",
+   "plan_version": "plan-1",
+   "detector_identity": "citerift-dt1-detector/3 (dt-2)"
+  }
+ },
+ "exposure": {
+  "manifest_path": "docs/verification/stage-04/freeze-2/exposure/EXPOSURE_MANIFEST.json",
+  "manifest_sha256": "b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b"
+ },
+ "frame": {
+  "exclude_listed_tier": false,
+  "note": "D-070 kept by D-076: pages only listed in Stage 03 selection files stay in the frame; listed-tier matches are recorded"
+ },
+ "retraction_watch": {
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "csv_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+ },
+ "sampling": {
+  "allocation": {
+   "ar": {"primary": {"S1": 22, "S2": 8}, "reserve": {"S1": 7, "S2": 3}},
+   "en": {"primary": {"S1": 22, "S2": 8}, "reserve": {"S1": 7, "S2": 3}}
+  },
+  "expansion": {
+   "block_size": 10,
+   "max_blocks": 12,
+   "stratum_order": ["S1", "S2"],
+   "min_identifier_reached_truth_positive_units": 40,
+   "min_negative_proxy_units": 75
+  },
+  "attempt_ceiling": 200
+ },
+ "acquisition": {
+  "capture": "citerift-wiki capture --wiki W --page-id P --out bundles/W-P (render on, no redirect following)",
+  "acquired_capture_exit_codes": [0, 6],
+  "transient_capture_exit_codes": [4, 8],
+  "transient_retries": 2,
+  "transient_retry_wait_seconds": 300,
+  "pause_between_captures_seconds": 2,
+  "acquired_extraction_status": ["complete", "partial"]
+ },
+ "retrieval": {
+  "max_text_bytes": 6000,
+  "min_title_tokens": 4,
+  "title_coverage": 0.8,
+  "max_title_records": 5
+ },
+ "annotation": {
+  "annotators": ["A", "B"],
+  "adjudicator": "ADJ",
+  "model_family": "Claude Sonnet",
+  "max_articles_per_instance": 6,
+  "note_max_chars": 500
+ },
+ "gates": {
+  "min_positive_units": 30,
+  "max_false_attachment_upper_95": 0.10,
+  "min_negative_units": 60
+ }
+}

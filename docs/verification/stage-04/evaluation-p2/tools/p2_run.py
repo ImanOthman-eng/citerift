@@ -1,0 +1,275 @@
+"""Stage 04 P2: the one locked prediction run (P2 PREREGISTRATION.md section 9), with the corrected runner.
+
+Derived from the corrected runner of the corrective cycle (``corrective/runner/s13_run_v2.py``, owner decision D-071
+section 9), which fixed the two defects of the historical tool (``evaluation/tools/s13_run.py``, unchanged) seen in the
+failed campaign: (1) it placed the Investigation Memory inside the repository, which the engine refuses
+(``MEMORY_ROOT_UNSAFE``); (2) it did not create the export parent ``<campaign>/run/exports``, so the first article kept
+no export. ``tests/stage04/test_p2_evaluation.py`` proves that neither can recur.
+
+Before the first article (any failure stops the run before any prediction exists, ``RunnerRefused``):
+
+- ``RUN.json`` must not exist (one prediction run);
+- the frozen-engine identity of ``PARAMETERS.json`` (``p2_common.engine_check``): the freeze-2 manifest digest and tree
+  at the content commit, the running engine, table, schema, claim-schema, plan and detector identity, and the trees of
+  ``src``, ``schemas``, ``pyproject.toml`` and ``uv.lock`` at ``HEAD`` with no uncommitted change;
+- every file of ``PREREGISTRATION_MANIFEST.json`` has its recorded SHA-256 and the manifest digest is the
+  ``prereg_digest`` of ``SEED.json``; every packet still has its locked SHA-256;
+- the engine the article subprocesses import (``python -I``) is this repository's ``src`` with the pinned version;
+- the Investigation Memory root (``--memory-root``): absolute, outside the repository and any working tree, accepted by
+  the engine's own rule (``fsutil.check_memory_root``), created ``0700`` when absent, never ``chmod``-ed; recorded only
+  under ``operational`` in ``RUN.json`` (a locator, in no score and no digest);
+- the export parent ``<campaign>/run/exports`` is created and must be a real directory.
+
+Then, per acquired article, the production command line only: ``run``, ``resume`` at most three times (exit 8 or 14),
+``verify``, and ``export`` after a passed verify. ``RUN.json`` is written once, at the end; an interrupted run is
+continued by invoking the tool again (``run/PROGRESS.json``; the engine reopens the same investigation key).
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+from p2_common import (  # noqa: E402
+    EVALUATION,
+    PARAMETERS,
+    REPO,
+    EngineMismatch,
+    digest,
+    engine_check,
+    file_sha256,
+    read_json,
+    write_json,
+)
+
+from citerift.investigation.errors import PathUnsafe  # noqa: E402
+from citerift.investigation.fsutil import check_memory_root  # noqa: E402
+
+FORMAT = "citerift-stage04-eval-run/3"
+PREREG_MANIFEST = EVALUATION / "PREREGISTRATION_MANIFEST.json"
+RESUME_CODES = (8, 14)
+MAX_RESUMES = 3
+
+
+class RunnerRefused(SystemExit):
+    """The runner refuses before the first article: nothing was run."""
+
+
+def _inside_a_working_tree(path: Path) -> Path | None:
+    """The nearest directory at or above ``path`` (existing or not) that holds a ``.git`` entry, if any."""
+    for parent in (path, *path.parents):
+        if os.path.lexists(parent / ".git"):
+            return parent
+    return None
+
+
+def prepare(campaign: Path, memory_root: Path) -> dict[str, Any]:
+    """Operational preparation before the first article: the memory root outside the repository (created 0700 when
+    absent), the export parent inside the campaign. Raises ``RunnerRefused`` and runs nothing when either cannot be
+    prepared. Nothing is created and no mode is changed before the location checks pass (reviewer findings E-01,
+    E-02, E-13): an existing root is never chmod-ed, so a root the engine would refuse (group- or world-writable, not
+    a real directory, another owner) is refused here too, by the engine's own rule."""
+    root = Path(memory_root)
+    if not root.is_absolute():
+        raise RunnerRefused(f"the memory root {root} is not absolute")
+    repo = REPO.resolve()
+    probe = root.resolve(strict=False)
+    if probe == repo or repo in probe.parents:
+        raise RunnerRefused(f"the memory root {root} is inside the repository {repo}")
+    tree = _inside_a_working_tree(probe)
+    if tree is not None:
+        raise RunnerRefused(f"the memory root {root} is inside a repository working tree ({tree})")
+    try:
+        if not os.path.lexists(root):
+            root.mkdir(mode=0o700, parents=True)
+        resolved = check_memory_root(root, repository=repo)
+    except PathUnsafe as exc:
+        raise RunnerRefused(f"the memory root is refused by the engine rule: {exc}") from exc
+    except OSError as exc:
+        raise RunnerRefused(f"the memory root {root} cannot be prepared: {exc}") from exc
+    run = campaign / "run"
+    exports = run / "exports"
+    for d in (run, exports):
+        if d.is_symlink():
+            raise RunnerRefused(f"{d} is a symbolic link")  # E-06: exports stay inside the campaign
+    try:
+        exports.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        raise RunnerRefused(f"the export parent {exports} cannot be created: {exc}") from exc
+    if exports.is_symlink() or not exports.is_dir():
+        raise RunnerRefused(f"the export parent {exports} is not a real directory")
+    return {"memory_root": str(resolved), "exports": "run/exports"}
+
+
+ENGINE_PROBE = "import json, citerift.investigation as m; print(json.dumps([m.__version__, m.__file__]))"
+
+
+def engine_identity(expected_version: str) -> dict[str, str]:
+    """The engine the article subprocesses import (reviewer finding E-03): every subprocess runs ``python -I`` (no
+    ``PYTHONPATH``, no user site, no current directory on the path), and this probe, run the same way, must import
+    the package from this repository's ``src``."""
+    res = subprocess.run([sys.executable, "-I", "-c", ENGINE_PROBE], capture_output=True, text=True, check=False)  # noqa: S603
+    try:
+        version, where = json.loads(res.stdout)
+    except ValueError as exc:
+        raise RunnerRefused(f"the engine cannot be imported: {res.stderr[-500:]}") from exc
+    src = (REPO / "src").resolve()
+    if src not in Path(where).resolve().parents:
+        raise RunnerRefused(f"the subprocess engine is {where}, not this repository's {src}")
+    if str(version) != expected_version:
+        raise RunnerRefused(f"the subprocess engine is version {version}, not the pinned {expected_version}")
+    return {"engine_version": str(version), "package": str(Path(where).resolve().relative_to(REPO.resolve()))}
+
+
+def investigate(*args: str) -> tuple[int, dict[str, Any]]:
+    cmd = [sys.executable, "-I", "-m", "citerift.investigation.cli", *args, "--format", "json"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=False)  # noqa: S603 - fixed argv
+    try:
+        doc = json.loads(res.stdout)
+    except ValueError:
+        doc = {"unparsed_stdout": res.stdout[-2000:], "stderr": res.stderr[-2000:]}
+    return res.returncode, doc
+
+
+def run_article(name: str, wiki: str, campaign: Path, index: Path, memory_root: Path) -> dict[str, Any]:
+    """One article, as the historical tool, with the configured memory root and the prepared export parent. The
+    record holds no memory path (operational locator only)."""
+    bundle = campaign / "bundles" / name
+    root = str(memory_root)
+    t0 = time.perf_counter()
+    code, doc = investigate("run", "--bundle", str(bundle), "--index", str(index), "--memory-root", root)
+    res = doc.get("result") or {}
+    key = res.get("investigation_key")
+    steps = [{"command": "run", "exit": code}]
+    resumes = 0
+    while key and code in RESUME_CODES and resumes < MAX_RESUMES:
+        resumes += 1
+        code, doc = investigate("resume", "--memory-root", root, "--key", key)
+        res = doc.get("result") or res
+        steps.append({"command": "resume", "exit": code})
+    rec: dict[str, Any] = {
+        "article": name,
+        "wiki": wiki,
+        "investigation_key": key,
+        "lifecycle": res.get("lifecycle"),
+        "claims_by_class": res.get("claims_by_class"),
+        "verify_passed": False,
+        "export": None,
+        "commands": steps,
+    }
+    if key is None:
+        rec["error"] = doc
+        return rec
+    vcode, vdoc = investigate(
+        "verify", "--memory-root", root, "--key", key, "--index", str(index), "--bundle", str(bundle)
+    )
+    rec["verify"] = {"exit": vcode, "result": (vdoc.get("result") or {}).get("result")}
+    rec["verify_passed"] = rec["verify"]["result"] == "passed"
+    if rec["verify_passed"]:
+        out = campaign / "run" / "exports" / name
+        ecode, edoc = investigate(
+            "export",
+            "--memory-root",
+            root,
+            "--key",
+            key,
+            "--index",
+            str(index),
+            "--bundle",
+            str(bundle),
+            "--out",
+            str(out),
+        )
+        rec["export_exit"] = ecode
+        if out.is_dir() and (out / "export.json").exists():
+            rec["export"] = f"run/exports/{name}"
+            rec["export_manifest_sha256"] = file_sha256(out / "export.json")
+        else:
+            rec["export_error"] = edoc
+    rec["seconds"] = round(time.perf_counter() - t0, 3)
+    return rec
+
+
+def articles_of(campaign: Path) -> list[tuple[str, str]]:
+    names = []
+    for rdir in sorted((campaign / "rounds").glob("*")):
+        if not (rdir / "LOCK.json").exists():
+            raise RunnerRefused(f"round {rdir.name} is not locked")
+        names += read_json(rdir / "ARTICLES.json")["articles"]
+    return [(n, n.split("-", 1)[0]) for n in sorted(set(names))]
+
+
+def frozen_check(params: dict[str, Any]) -> dict[str, Any]:
+    """The pinned freeze-2 engine (``p2_common.engine_check``); any mismatch refuses the run."""
+    try:
+        return engine_check(params)
+    except EngineMismatch as exc:
+        raise RunnerRefused(str(exc.code)) from exc
+
+
+def prereg_check(campaign: Path, manifest_path: Path) -> dict[str, Any]:
+    manifest = read_json(manifest_path)
+    changed = [f["path"] for f in manifest["files"] if file_sha256(REPO / f["path"]) != f["sha256"]]
+    if changed:
+        raise RunnerRefused(f"pre-registered files changed: {changed}")
+    seed = read_json(campaign / "SEED.json")
+    if seed["prereg_digest"] != digest(manifest):
+        raise RunnerRefused("SEED.json names another pre-registration")
+    lock = read_json(campaign / "LOCK.json")
+    moved = [p for p, sha in lock["packets"].items() if file_sha256(campaign / "packets" / p) != sha]
+    if moved:
+        raise RunnerRefused(f"packets changed after the lock: {moved[:3]}")
+    return {"prereg_digest": seed["prereg_digest"], "lock_sha256": file_sha256(campaign / "LOCK.json")}
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Stage 04: the one prediction run (corrected runner)")
+    ap.add_argument("--campaign", type=Path, required=True)
+    ap.add_argument("--index", type=Path, required=True)
+    ap.add_argument("--memory-root", type=Path, required=True, help="absolute, outside the repository")
+    a = ap.parse_args(argv)
+    campaign = a.campaign.resolve()
+    final = campaign / "run" / "RUN.json"
+    if final.exists():
+        raise RunnerRefused("RUN.json exists: the one prediction run is over")
+    params = read_json(PARAMETERS)
+    checks = {
+        "frozen": frozen_check(params),
+        "preregistration": prereg_check(campaign, PREREG_MANIFEST),
+        "engine": engine_identity(params["frozen_engine"]["identity"]["engine_version"]),
+    }
+    operational = prepare(campaign, a.memory_root)
+    root = Path(operational["memory_root"])
+    progress_path = campaign / "run" / "PROGRESS.json"
+    progress = read_json(progress_path) if progress_path.exists() else {"articles": {}}
+    for name, wiki in articles_of(campaign):
+        if name in progress["articles"]:
+            continue
+        progress["articles"][name] = run_article(name, wiki, campaign, a.index.resolve(), root)
+        write_json(progress_path, progress)
+        r = progress["articles"][name]
+        print(name, r["lifecycle"], r["verify_passed"], r["export"] is not None, flush=True)
+    write_json(
+        final,
+        {
+            "format": FORMAT,
+            "checks": checks,
+            "index_sha256": file_sha256(a.index),
+            "articles": [progress["articles"][n] for n in sorted(progress["articles"])],
+            "operational": {**operational, "note": "locators only; not evidence, not scored, not in any digest"},
+        },
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
