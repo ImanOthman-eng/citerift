@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "485484c6ce3563155df5b9c59aa300120cdae35a779bcbd7fa63e9569a572f98",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.342,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:43:11.469308Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=30455822",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 8005,
+   "body_sha256": "c6a5df766ecddd16f4a2b8737cfc9334b75672586e8480b854646289aa191052",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.39,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:44:00.812284Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=30455822",
+   "wire_bytes": 3228
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "45d646b6e94d03ded28962849c4cfbda2d9d385fda4c93e1b66f1e7f359a83d5",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.356,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:44:11.203138Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1386025687/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 59615,
+   "body_sha256": "213d1d75d5b29c4ab8cd62d716bbf54be23816df29f23161ee1b9b403ce68b37",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.428,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:45:00.559649Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1386025687/html",
+   "wire_bytes": 11375
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "485484c6ce3563155df5b9c59aa300120cdae35a779bcbd7fa63e9569a572f98",
+  "45d646b6e94d03ded28962849c4cfbda2d9d385fda4c93e1b66f1e7f359a83d5"
+ ],
+ "finished_at": "2026-11-19T14:45:00.988292Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 30455822,
+  "parent_revision_id": 1257493255,
+  "redirect_followed": null,
+  "revision_id": 1386025687,
+  "revision_timestamp": "2026-11-16T13:08:15Z",
+  "sha1": "565e92f68536b27837aab3359d5aa69b78e76025",
+  "size": 7442,
+  "title": "Naoki Mori (virologist)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "213d1d75d5b29c4ab8cd62d716bbf54be23816df29f23161ee1b9b403ce68b37",
+  "bytes": 59615,
+  "checks": {
+   "document_revision_id": "1386025687",
+   "header_revision_id": "1386025687",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "30455822",
+   "render_id": "655a00c8-e303-11f1-bd30-ffe35ba9e0f0",
+   "revision_sha1": "565e92f68536b27837aab3359d5aa69b78e76025",
+   "revision_sha1_base36": "a378bh1k99j1ht6vhoil0rrgjsa5kbp"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1386025687",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:45:00 GMT",
+   "etag": "W/\"1386025687/655a00c8-e303-11f1-bd30-ffe35ba9e0f0/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:46:00 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1386025687/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 30455822,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "144cb6f295dac1786d9807748d99b1214ab90d76ba7c0d6e85dda5f31cdb3762",
+  "bytes": 7442,
+  "response_artifact": "c6a5df766ecddd16f4a2b8737cfc9334b75672586e8480b854646289aa191052",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=30455822"
+ },
+ "started_at": "2026-11-19T14:43:04.720716Z",
+ "status": "complete"
+}

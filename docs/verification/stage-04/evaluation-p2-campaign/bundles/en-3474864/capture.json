@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "40aab7b0c7c22784768b8721361217efc2f98ed8dd654b79550cd09a6101ed13",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.312,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:45:10.988307Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3474864",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 14896,
+   "body_sha256": "2899c7103546a1f3d455913539f94db9daecd42b19b0c9a49e76cc9a86962998",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.442,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:46:00.300776Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3474864",
+   "wire_bytes": 6256
+  },
+  {
+   "body_bytes": 114880,
+   "body_sha256": "ca75599e7101fe99ce098950810321bf80c38b089482bd00dafa42d79acdadcb",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.429,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:46:10.743130Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382964001/html",
+   "wire_bytes": 21481
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "40aab7b0c7c22784768b8721361217efc2f98ed8dd654b79550cd09a6101ed13"
+ ],
+ "finished_at": "2026-11-19T14:46:11.172985Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 3474864,
+  "parent_revision_id": 1349564938,
+  "redirect_followed": null,
+  "revision_id": 1382964001,
+  "revision_timestamp": "2026-10-31T06:44:53Z",
+  "sha1": "f918ec53b8fd643f12b22363b576b5ada343f38b",
+  "size": 14243,
+  "title": "Acanthocheilonemiasis",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "ca75599e7101fe99ce098950810321bf80c38b089482bd00dafa42d79acdadcb",
+  "bytes": 114880,
+  "checks": {
+   "document_revision_id": "1382964001",
+   "header_revision_id": "1382964001",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "3474864",
+   "render_id": "9abc1d8a-e316-11f1-93b1-a306d8d3b690",
+   "revision_sha1": "f918ec53b8fd643f12b22363b576b5ada343f38b",
+   "revision_sha1_base36": "t3i5ydchzpkam36aunp2dgho16lrv63"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1382964001",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:46:11 GMT",
+   "etag": "W/\"1382964001/9abc1d8a-e316-11f1-93b1-a306d8d3b690/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:29:29 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1382964001/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 3474864,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "07d4244565fa17957cf6e8ebaf5379b0762ac314bba11c0ca6e5a22c2970c5d4",
+  "bytes": 14243,
+  "response_artifact": "2899c7103546a1f3d455913539f94db9daecd42b19b0c9a49e76cc9a86962998",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=3474864"
+ },
+ "started_at": "2026-11-19T14:45:03.852044Z",
+ "status": "complete"
+}

@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 7676,
+   "body_sha256": "acbdbfdea03a6decdf04ac2c938ed9c811316b65bb3c4c78bd5944cde6e54c75",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.4,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:36:31.645291Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4541327",
+   "wire_bytes": 3083
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "dda11deb2016c883cbbb9fc25387eaca8e9b60a8b1d990c87d7a8d7980186d91",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.348,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "18",
+   "retry_after_s": 18.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:36:42.046149Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76491241/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 334946,
+   "body_sha256": "50870d1252fae8847a380ff592785190603b442744b32852b10ee942511af049",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.706,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:37:00.394567Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76491241/html",
+   "wire_bytes": 54998
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "dda11deb2016c883cbbb9fc25387eaca8e9b60a8b1d990c87d7a8d7980186d91"
+ ],
+ "finished_at": "2026-11-19T14:37:01.101887Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4541327,
+  "parent_revision_id": 75951018,
+  "redirect_followed": null,
+  "revision_id": 76491241,
+  "revision_timestamp": "2026-09-09T20:12:07Z",
+  "sha1": "26431292d5259af233853e3d844b5c6dc7cfa43e",
+  "size": 7138,
+  "title": "FKBP10",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "50870d1252fae8847a380ff592785190603b442744b32852b10ee942511af049",
+  "bytes": 334946,
+  "checks": {
+   "document_revision_id": "76491241",
+   "header_revision_id": "76491241",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4541327",
+   "render_id": "2844bb0d-dd10-11f1-9e96-157c1a62902d",
+   "revision_sha1": "26431292d5259af233853e3d844b5c6dc7cfa43e",
+   "revision_sha1_base36": "4gwdnw4e323zyjhp53xhlmcbjnotbni"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76491241",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:37:00 GMT",
+   "etag": "W/\"76491241/2844bb0d-dd10-11f1-9e96-157c1a62902d/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:47 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76491241/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4541327,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3f2891ad9990215bbf1d5440c0b221268e2db41de0a919f8b6410bceef379bc2",
+  "bytes": 7138,
+  "response_artifact": "acbdbfdea03a6decdf04ac2c938ed9c811316b65bb3c4c78bd5944cde6e54c75",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4541327"
+ },
+ "started_at": "2026-11-19T14:36:25.401647Z",
+ "status": "complete"
+}

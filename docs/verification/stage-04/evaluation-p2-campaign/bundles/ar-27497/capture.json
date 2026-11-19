@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 54116,
+   "body_sha256": "4ed327bed64320c500c17ca9aa72dfdf4dc537e9f1d76e49b3b4f7d5d6264c50",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.449,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:36:10.737278Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=27497",
+   "wire_bytes": 18456
+  },
+  {
+   "body_bytes": 414763,
+   "body_sha256": "b3a27bb329310d3838e734f0664e771255e789261cae2d0cd513e1c53adcccbd",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.458,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:36:21.187135Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75383434/html",
+   "wire_bytes": 68244
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T14:36:21.646450Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 27497,
+  "parent_revision_id": 74726234,
+  "redirect_followed": null,
+  "revision_id": 75383434,
+  "revision_timestamp": "2026-06-12T11:33:25Z",
+  "sha1": "5ebe0feefa3e970660a6af8a330016bcf02b2cfe",
+  "size": 53323,
+  "title": "ليدوكائين",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "b3a27bb329310d3838e734f0664e771255e789261cae2d0cd513e1c53adcccbd",
+  "bytes": 414763,
+  "checks": {
+   "document_revision_id": "75383434",
+   "header_revision_id": "75383434",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "27497",
+   "render_id": "5e541d88-dae9-11f1-87d8-3584dad13fb7",
+   "revision_sha1": "5ebe0feefa3e970660a6af8a330016bcf02b2cfe",
+   "revision_sha1_base36": "b2esohndb3ptg88lbukqpyw4wenujge"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "75383434",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:36:21 GMT",
+   "etag": "W/\"75383434/5e541d88-dae9-11f1-87d8-3584dad13fb7/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:41 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/75383434/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 27497,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "fd652e4f5ec68deb147758b3fed7f52ea34a9c37038f2bb433636cef0657644f",
+  "bytes": 53323,
+  "response_artifact": "4ed327bed64320c500c17ca9aa72dfdf4dc537e9f1d76e49b3b4f7d5d6264c50",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=27497"
+ },
+ "started_at": "2026-11-19T14:36:04.207572Z",
+ "status": "complete"
+}

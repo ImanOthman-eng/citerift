@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "6210b8a0f044aaf0fba08385c665d110e04b7640da908d7cfcfe31513e7c4ffa",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.416,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:46:21.172312Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38028125",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 49089,
+   "body_sha256": "80f299bfb01e0a93a18d12371e5519fee0fa59c44355bacb7a63ffdb6ee5c39e",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.406,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:47:00.588418Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38028125",
+   "wire_bytes": 17583
+  },
+  {
+   "body_bytes": 235693,
+   "body_sha256": "2e6f4857bc9e5998f74b27056d18b4d65b6213bfdd735792b81c051d5a6365f6",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.503,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:47:10.995142Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1384347610/html",
+   "wire_bytes": 41746
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "6210b8a0f044aaf0fba08385c665d110e04b7640da908d7cfcfe31513e7c4ffa"
+ ],
+ "finished_at": "2026-11-19T14:47:11.499007Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 38028125,
+  "parent_revision_id": 1380711745,
+  "redirect_followed": null,
+  "revision_id": 1384347610,
+  "revision_timestamp": "2026-11-07T21:02:53Z",
+  "sha1": "20d09ca903d5f057d3d4a5772bc5bd35f118b76c",
+  "size": 48347,
+  "title": "High-dose chemotherapy and bone marrow transplant",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "2e6f4857bc9e5998f74b27056d18b4d65b6213bfdd735792b81c051d5a6365f6",
+  "bytes": 235693,
+  "checks": {
+   "document_revision_id": "1384347610",
+   "header_revision_id": "1384347610",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "38028125",
+   "render_id": "f2dc35f5-e2e8-11f1-84b8-df7c37aaa365",
+   "revision_sha1": "20d09ca903d5f057d3d4a5772bc5bd35f118b76c",
+   "revision_sha1_base36": "3tzr83frq1jtw9w8xvxfk4p8nxbecto"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1384347610",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:47:11 GMT",
+   "etag": "W/\"1384347610/f2dc35f5-e2e8-11f1-84b8-df7c37aaa365/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:49:56 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1384347610/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 38028125,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1714984f10455f258239b24a899b94bd500000b49513e2a947afd2d3c116cfa1",
+  "bytes": 48347,
+  "response_artifact": "80f299bfb01e0a93a18d12371e5519fee0fa59c44355bacb7a63ffdb6ee5c39e",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=38028125"
+ },
+ "started_at": "2026-11-19T14:46:14.236569Z",
+ "status": "complete"
+}

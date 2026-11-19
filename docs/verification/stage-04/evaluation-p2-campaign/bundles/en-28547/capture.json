@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "2d15daf4a73720a38be904adec7844ae83cdd9d2aac0c4cabb50f20597b739f7",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.343,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:37:32.016356Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=28547",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 34929,
+   "body_sha256": "1652a8c62055ca4961d2dcb6de546596eda058bc8f251f4af710509b57e9f15f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.435,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:38:00.360155Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=28547",
+   "wire_bytes": 12863
+  },
+  {
+   "body_bytes": 200714,
+   "body_sha256": "1e12a1760e110897a26b7dc9d66d89e6f43d02365a3a8e657ab97641e0c5a0a0",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.448,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:38:10.795627Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1365391661/html",
+   "wire_bytes": 36534
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "2d15daf4a73720a38be904adec7844ae83cdd9d2aac0c4cabb50f20597b739f7"
+ ],
+ "finished_at": "2026-11-19T14:38:11.244134Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 28547,
+  "parent_revision_id": 1356199202,
+  "redirect_followed": null,
+  "revision_id": 1365391661,
+  "revision_timestamp": "2026-07-22T03:03:56Z",
+  "sha1": "fd30da81f6b8d3ab058552c994397387e37f0b2d",
+  "size": 34085,
+  "title": "Sokal affair",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "1e12a1760e110897a26b7dc9d66d89e6f43d02365a3a8e657ab97641e0c5a0a0",
+  "bytes": 200714,
+  "checks": {
+   "document_revision_id": "1365391661",
+   "header_revision_id": "1365391661",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "28547",
+   "render_id": "99f6a9e2-e2bc-11f1-8136-214ebb2d2fce",
+   "revision_sha1": "fd30da81f6b8d3ab058552c994397387e37f0b2d",
+   "revision_sha1_base36": "tkpv6455a6o6w6d92dhgd771eo12otp"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1365391661",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:38:11 GMT",
+   "etag": "W/\"1365391661/99f6a9e2-e2bc-11f1-8136-214ebb2d2fce/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:23:28 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1365391661/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 28547,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9b7f6f35631cc9d65630b8782ebc695daeaa519baf2deb111a46b5e6775d7092",
+  "bytes": 34085,
+  "response_artifact": "1652a8c62055ca4961d2dcb6de546596eda058bc8f251f4af710509b57e9f15f",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=28547"
+ },
+ "started_at": "2026-11-19T14:37:25.286566Z",
+ "status": "complete"
+}
