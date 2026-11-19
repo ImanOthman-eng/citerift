@@ -45,3 +45,17 @@ deviation, however small. Nothing here changes a pre-registered rule. The histor
 - Expansion decision (`p2_acquire.py status`, engine-independent, after the lock): ar identifier-reached
   truth-positive units 27 (< 40), negative-proxy units 427; en 27 (< 40) and 1208. Both languages expand:
   `ar-expansion-1`, `en-expansion-1`.
+
+## Rounds `ar-expansion-1` and `en-expansion-1`
+
+- Acquisition: ar 10 of 10 (attempts 61–70, 14:30Z–14:37Z), en 10 of 10 (attempts 71–80, 14:38Z–14:50Z), all S1,
+  0 failures; items ar 11, en 19; every article has items.
+- Annotation: 2 A and 2 B instances per language (platform model `claude-sonnet-5-5`), every file format-valid on the
+  first submission. ar: 1 item disagreed (`ar-76578049-un-00036`, a web reference to a comment page: A `other_mention`,
+  B `work_citation`), adjudicated by `ADJ-ar-e101`. en: 0 items disagreed, so the round's ADJ file is empty
+  (`p2c_batches.py empty-adj`, no adjudicator instance). No tool call used a path outside its work directory.
+- Locks: ar 11 items, 1 adjudicated; en 19 items, 0 adjudicated.
+- Expansion decisions after each lock (engine-independent): en after `en-expansion-1`: 37 identifier-reached
+  truth-positive units (< 40), 1502 negative-proxy units → `en-expansion-2`. ar after `ar-expansion-1`: 37 (< 40) and
+  682 → `ar-expansion-2`. (A `status` run between the en lock and the ar lock also listed an ar decision; it was not
+  acted on, and the ar decision recorded here is the one computed after the ar lock.)
