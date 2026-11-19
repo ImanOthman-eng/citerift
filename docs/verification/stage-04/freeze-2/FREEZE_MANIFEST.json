@@ -18,7 +18,7 @@
   ],
   "verification_profile": "verify_index_identity (OD-S12-1)"
  },
- "code_revision_of_the_evidence": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+ "code_revision_of_the_evidence": "032bbaf434291126976c06ad10d6cddeb90408c6",
  "d062_failed_checks": [],
  "d062_tamper_discrepancies": [],
  "decision_semantics": {
@@ -56,6 +56,10 @@
   "sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0"
  },
  "evidence": {
+  "b03_census": {
+   "path": "docs/verification/stage-04/corrective/census/B03_CENSUS.json",
+   "sha256": "7222de2c7a8c2f902c9e53e3caea1f9bf9b3d3fd4f18be91df24ce034654f487"
+  },
   "campaign_regression": {
    "path": "docs/verification/stage-04/corrective/regression/CAMPAIGN_REGRESSION.json",
    "sha256": "b4d0102b834b077f677db7a8ebb149c71bd76537fd345b2e960f29ff5ffd3564"
@@ -106,7 +110,7 @@
   },
   "review_triage": {
    "path": "docs/verification/stage-04/corrective/review/TRIAGE.md",
-   "sha256": "df587b459bea8514b86f2c8bb1d4bfebe52605bbd197b12e022510f4fde71eeb"
+   "sha256": "3bd741e7130f1d063609e0d81932359799b4ee96c4633c49578db8fc9627c8c4"
   },
   "role_collision_fixture": {
    "path": "tests/stage04/fixtures/corrective/rw_role_collision.json",
@@ -114,7 +118,7 @@
   },
   "root_cause": {
    "path": "docs/verification/stage-04/corrective/ROOT_CAUSE.md",
-   "sha256": "12d7a564122ef44b59b53a756ca958d3035fcc0f4d7a3301be7d2a6d7d95f1bc"
+   "sha256": "75127c4101284e2d40e851a448936593bb38a40a0180124298640cea8b1a0435"
   },
   "runner_fail_first": {
    "path": "docs/verification/stage-04/corrective/evidence/runner_fail_first.txt",
@@ -126,7 +130,7 @@
   },
   "validation": {
    "path": "docs/verification/stage-04/freeze-2/VALIDATION.json",
-   "sha256": "89e705e4ebf0a00de27ff71a623b439ba8919f7a15f0ca30783b8c3e31b7059f"
+   "sha256": "22a4aff10cd4e913c3e583a34826ea74eff68e4c2b2a6f829f436567bd044a2e"
   },
   "verification_components": {
    "path": "docs/verification/stage-04/freeze-2/performance/verification_components.json",
@@ -139,15 +143,15 @@
  },
  "exposure_manifest": {
   "path": "docs/verification/stage-04/freeze-2/exposure/EXPOSURE_MANIFEST.json",
-  "sha256": "932cd65f79d7d72b508923bdfc0892422ee25eeea653b0941370649a595343b5"
+  "sha256": "b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b"
  },
  "format": "citerift-stage04-freeze/2",
  "label": "Stage 04 freeze candidate manifest (corrective cycle, D-071). Frozen scientific code: the freeze-content commit that holds this file; named with its tree and CI run by the attestation commit that follows it. Not a freeze until the owner accepts it.",
  "limitations": [
   "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
-  "D-071 resolution by a second identifier (strict rule, SPEC 7.3a): a role collision is resolved only by another cited identifier that has no notice role itself and whose record states a different notice identifier in its scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong in the citation, the attachment rests on it.",
-  "C-01: collision is read per key over every record, so a second record of the same work (same original DOI and PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes a clean retraction abstain (53 snapshot pairs, one campaign claim); owner question open.",
-  "Original DOI cited with the same record's notice PMID (corrective-cycle reviewer finding B-03 of REVIEW_B.md, the mirror of D-058) stays positive, as in dt-1; not changed without an owner decision.",
+  "D-072 strict resolution by a second identifier (SPEC 7.3a): a role collision is resolved only by another cited identifier that has no notice role itself, directly identifies the same work, and whose record states a different notice identifier in its scheme. Recall cost, a limitation and never a performance result: on the pinned snapshot 1,472 of 31,506 dt-1 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (the declined lenient alternative would lose 800). Any future evaluation (P2) states this limitation. If the resolving identifier is itself wrong in the citation, the attachment rests on it.",
+  "D-073 (reviewer finding C-01): collision is read per key over every record, so a second record of the same work (same original DOI and PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes a clean retraction abstain (53 snapshot pairs, one campaign claim, ar-3351802 un-00059); no same-work-sibling exemption; 'probable true positive' is descriptive only.",
+  "D-075 (corrective-cycle reviewer finding B-03 of REVIEW_B.md, the mirror of D-058): an original DOI cited with the same record's notice PMID stays positive when the DOI is clean (628 of 31,279 snapshot pairs; 30,482 are IDENTITY_CONFLICT under both tables because the record states the work's own, different PMID); the notice PMID is never positive support, and a role-collided, unavailable or absent DOI never reaches D-14 through it.",
   "The 80 campaign articles and the 232 development revisions are development evidence; the regression on them is not an evaluation and is never counted as unseen data.",
   "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET); see the performance section of FREEZE_REPORT.md for the residual cases and bottlenecks.",
   "D-062 verification scope (D-064, owner decision OD-S12-1): each process runs the D-062 identity-verification profile (verify_index_identity: format and policy, integrity and structure, digests recomputed against the metadata, build manifest, full derivation recompute); Stage 02's per-event JSON-Schema pass runs only in Stage 02's complete verify (the certification, run in the Step 12 evidence); in the differential tamper evidence no case is rejected by that pass alone.",
@@ -170,7 +174,7 @@
   "pyproject.toml": "00e8c8788b5363c3c96e4a3c511c1ed1204d179108861a5d6504f02f701c8d8f",
   "uv.lock": "754dda88515aa32227325c1a8f4d3cd332ab20f77d9b3545754bc97753366a96"
  },
- "parent_sha": "80e414b0d2d399637a63152f778335ea01e0b44f",
+ "parent_sha": "90282408193bf05cd49a4c9df7c90e853ff0ee9d",
  "performance": {
   "breakdown_median_s": {
    "file_sha256_s": 0.505,
@@ -400,43 +404,54 @@
  },
  "tests": {
   "ci": {
-   "conclusion": "failure (the known failure only)",
+   "conclusion": "success",
    "jobs": {
     "ci-gate": {
-     "conclusion": "failure (verify matrix)"
+     "conclusion": "success"
     },
     "verify (python 3.12)": {
-     "failed": 1,
-     "passed": 3371,
-     "pytest_reported": "809.54 s",
-     "python": "3.12.3"
+     "failed": 0,
+     "passed": 3382,
+     "pytest_reported": "790.06 s",
+     "report": "0 problems"
     },
     "verify (python 3.13)": {
-     "failed": 1,
-     "passed": 3371,
-     "pytest_reported": "736.92 s",
-     "python": "3.13.14"
+     "failed": 0,
+     "passed": 3382,
+     "pytest_reported": "1079.54 s",
+     "report": "0 problems"
     }
    },
-   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
-   "run_id": 44449077298,
-   "run_number": 360
+   "pip_audit": "No known vulnerabilities found (both jobs)",
+   "run_id": 44483392722,
+   "run_number": 364
   },
-  "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+  "code_revision": "032bbaf434291126976c06ad10d6cddeb90408c6",
   "lint": {
+   "check_schemas": "2 schemas checked, 0 problems",
    "citerift_gov_check": "0 errors, 0 warnings",
    "mypy": "Success: no issues found in 95 source files",
+   "render_status_check": "PROJECT_STATUS.md is up to date",
    "ruff_check": "All checks passed!",
-   "ruff_format": "620 files already formatted"
+   "ruff_format": "623 files already formatted",
+   "step3_docs_check": "RESULT: PASS (0 failed)"
   },
   "local": {
-   "failed": 1,
-   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
-   "note": "full suite in this 4-vCPU container, after the evidence runs",
-   "passed": 3371,
-   "python": "3.12.3",
-   "skipped": 0,
-   "wall": "20 min 45 s"
+   "note": "full suite in this 4-vCPU container, both versions run at the same time",
+   "python_3_12": {
+    "failed": 0,
+    "passed": 3382,
+    "python": "3.12.3",
+    "skipped": 0,
+    "wall": "22 min 06 s"
+   },
+   "python_3_13": {
+    "failed": 0,
+    "passed": 3382,
+    "python": "3.13.18",
+    "skipped": 0,
+    "wall": "20 min 38 s"
+   }
   }
  },
  "vertical_slice": {

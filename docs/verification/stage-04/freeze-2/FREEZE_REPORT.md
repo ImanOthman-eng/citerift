@@ -2,7 +2,10 @@
 
 Owner instruction D-071 (`cmsg_018VCB51nDHP6HXmLU4ea5yPTDrESsDr75RoYgLhdymUyn`, 2026-11-18T20:07:29Z): gate 04-I
 failed at evaluation commit `1064113`; the frozen engine `b5bf8ed` is not final; one corrective cycle, ending with a
-complete freeze candidate, then STOP before a new Step 13.
+complete freeze candidate, then STOP before a new Step 13. Owner instruction of 2026-11-19
+(`cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj`, decisions D-072 to D-075): the first candidate (`d8a059d`,
+CI run 362 red on one P-listed test) was not accepted; the decisions below were recorded and the candidate was
+regenerated from the resulting tree. This report describes the regenerated candidate.
 
 Everything below is development evidence on design-exposed inputs (D-5). It is not an evaluation. No new sample was
 drawn, nothing was annotated, the failed campaign was not rerun, and no new pre-registration exists. This is a
@@ -14,17 +17,18 @@ drawn, nothing was annotated, the failed campaign was not rerun, and no new pre-
 |---|---|
 | Superseded freeze | `b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0` (engine 0.2.0, dt-1), marked `SUPERSEDED_AFTER_FAILED_04_I` in `../freeze/SUPERSEDED.md`; every file of `../freeze/` unchanged |
 | Baseline of the cycle | `f207bc025c992d24b409e5869e3f380bc986e821` (D-071 recorded; `src` identical to `b5bf8ed`) |
-| Code revision of the test runs | `99c4194622498b2343584f08b4f6e52cd2f077e3` (`src` and `schemas` equal those of every evidence run, `dfee881` onwards) |
-| Evidence commit (parent of the freeze-content commit) | `80e414b0d2d399637a63152f778335ea01e0b44f` |
+| First candidate (not accepted) | content `d8a059d`, manifest digest `6be3d310…`, attestation `2aeb6b5`, CI run 362 red (1 P-listed test) |
+| Code revision of the test runs | `032bbaf434291126976c06ad10d6cddeb90408c6` (`src` and `schemas` equal those of every evidence run, `dfee881` onwards); CI run 364 green |
+| Evidence commit (parent of the freeze-content commit) | `90282408193bf05cd49a4c9df7c90e853ff0ee9d` |
 | Freeze manifest | `FREEZE_MANIFEST.json`, format `citerift-stage04-freeze/2` |
-| Manifest digest (SHA-256 of the canonical encoding) | `6be3d310c88ad01ccdb5f9e7987cad6716c7f469399ad5d6d9e41d363b5ab77a` |
-| Exposure manifest v2 | `exposure/EXPOSURE_MANIFEST.json`, SHA-256 `932cd65f79d7d72b508923bdfc0892422ee25eeea653b0941370649a595343b5` (built at `7215aa0`) |
+| Manifest digest (SHA-256 of the canonical encoding) | `d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13` |
+| Exposure manifest v2 | `exposure/EXPOSURE_MANIFEST.json`, SHA-256 `b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b` (rebuilt at `3ef1e56`; 378 articles, as before; only evidence paths changed) |
 | Frozen SHA (freeze-content commit), its tree, its CI run | named by the attestation commit that follows (two-record mechanism) |
 
 The digest is reproduced by `uv run python docs/verification/stage-04/freeze-2/build_freeze_manifest.py` at the
 evidence commit, which prints it. The manifest pins 43 Stage 04 source files, 16 Stage 04 schemas, the decision
 semantics files, both oracle manifests (frozen dt-1 `41105077…`, kept; dt-2 `60a21534…`), `pyproject.toml`, `uv.lock`,
-the exposure manifest and 20 evidence files.
+the exposure manifest and 21 evidence files (the B-03 census added).
 
 ## 2. Root cause and correction
 
@@ -41,6 +45,20 @@ the exposure manifest and 20 evidence files.
   reason `IDENTIFIER_ROLE_COLLISION` (new; no existing code fit). Never `NOTICE_CITED`. Missing or malformed evidence
   fails closed. The guard sits in D-10, before D-14; the order contradiction → unresolved → operational failure →
   positive → notice/no-finding is unchanged. No DOI, publisher, word or language is special-cased.
+- **Resolution by a second identifier (owner decision D-072).** The strict rule is approved: a resolving cited key has
+  no notice role, directly identifies the same work, and its record gives a distinct notice identifier in its scheme.
+  The lenient alternative is not adopted. Recall cost, stated as a limitation and never as a performance result: of
+  31,506 dt-1 positive DOI+PMID pairs of the snapshot, 1,472 abstain under the strict rule (800 would under the
+  lenient one). No threshold or holdout-derived special case.
+- **Same-work sibling records (owner decision D-073, reviewer finding C-01).** No exemption. The 53 snapshot pairs,
+  including `ar-3351802 un-00059`, stay `UNRESOLVED_IDENTITY`; "probable true positive" is descriptive only.
+- **Original DOI with the same record's notice PMID (owner decision D-075, reviewer finding B-03).** Positive when the
+  clean original DOI independently supports the work; the notice PMID is never positive support and stays visible
+  (`KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED` kept); no `IDENTITY_CONFLICT` is made from the notice role; an absent,
+  unavailable or role-collided DOI never reaches D-14 through the notice PMID. B-03 census
+  (`../corrective/census/B03_CENSUS.json`, 31,279 pairs): 628 positive under dt-2 (794 under dt-1; the 166 that change
+  are D-14 to D-10 because the DOI is itself role-collided). 30,482 pairs are `IDENTITY_CONFLICT` under both tables:
+  the record also states the work's own, different PMID, an incompatibility witness (SPEC 6.5), unchanged from dt-1.
 - **Corrected JASIST result:** `D-10 UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION)`, in the regression of the
   campaign article and in `test_historical_jasist_unit_end_to_end`.
 
@@ -60,19 +78,29 @@ An investigation made by the frozen engine is refused by the dt-2 schemas at its
 
 ## 4. Tests and fail-first evidence
 
-- **New suites:** `test_corrective_role_collision.py` (59, adversarial, on an attributed 25-record Retraction Watch
+- **New suites:** `test_corrective_role_collision.py` (64, adversarial, 5 of them the D-075 boundary tests, on an attributed 25-record Retraction Watch
   fixture), `test_corrective_role_property.py` (2; 23,328 combinations against a restatement of SPEC 7.3a),
   `test_corrective_oracle.py` (dt-2 oracle: 25,264,896 cases, 383 distinct decisions, 0 violations),
-  `test_corrective_runner.py` (12), `test_corrective_compat.py` (2).
+  `test_corrective_runner.py` (12), `test_corrective_compat.py` (3, including the freeze-2 dt-2 identity test).
 - **Fail-first:** the final role-collision and property suites against the frozen engine's `src` and `schemas`:
   37 failed, 24 passed (`../corrective/evidence/fail_first_final.txt`); the runner fixes fail first on the historical
   tool (`runner_fail_first.txt`).
-- **Full suite on `99c4194`:** local (Python 3.12.3) 3,371 passed, 1 failed; CI run 360 (Python 3.12.3 and 3.13.14)
-  3,371 passed, 1 failed each, so `ci-gate` is red. The one failure is
-  `test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine`, a P-listed test that asserts the
-  running engine is the superseded `b5bf8ed`. It is not skipped, marked or edited: P files are untouchable without
-  the owner, and the owner's decision is pending.
-- `ruff check`, `ruff format --check`, `mypy` (95 files) and `citerift-gov check` (0 errors, 0 warnings) pass.
+- **Historical pre-registration (owner decision D-074).** `test_step13_evaluation.py` no longer asserts that the
+  running engine is `b5bf8ed`; it verifies the historical freeze from git objects: P
+  (`4eded723…1098a`) resolves to the files at `827ac1a`, every listed file's blob there matches its recorded hash, and
+  the manifest digest is unchanged; P names the frozen engine `b5bf8ed` (tree and freeze-manifest digest); the
+  historical frozen check, run on a detached checkout of `b5bf8ed`, succeeds; the Step 14 campaign `RUN.json` at
+  `1064113` equals the tree's copy and records that engine and P; the current dt-2 engine fails the old assertion. The
+  only P-listed file that differs from `827ac1a` is that test file, which D-074 authorizes; P, the manifest, the
+  campaign, `b5bf8ed` and the scores are unchanged.
+- **Full suite on `032bbaf`:** local Python 3.12.3: 3,382 passed, 0 failed, 0 skipped; local Python 3.13.18: 3,382
+  passed, 0 failed, 0 skipped. CI run 364 (`44483392722`): `verify (python 3.12)` 3,382 passed, `verify (python
+  3.13)` 3,382 passed, test report check 0 problems on both, `pip-audit --strict` no known vulnerabilities, `ci-gate`
+  success.
+- `ruff check`, `ruff format --check` (623 files), `mypy` (95 files), schema validation (0 problems), the Step 3
+  document checker (0 failed), `citerift-gov check` (0 errors, 0 warnings) and `render-status --check` pass. The frozen
+  dt-1 oracle (`41105077…`) and `dt1_reference.py` are unchanged since `b5bf8ed`; the dt-2 oracle (`60a21534…`) tests
+  pass.
 - One existing test was narrowed in meaning-preserving form: `test_oracle_and_model_unchanged_by_step5` now refuses
   any modification, deletion or rename of a `simulations/stage04` file that existed at `244c4b6`, and allows the files
   D-071's new oracle version adds.
@@ -102,9 +130,8 @@ after an engine-identity probe; it refuses to run where a `RUN.json` exists.
 Six fresh reviews (A semantics, B identifiers and roles, C regression risk, D provenance, E security, F evaluation
 leakage) plus a re-verification of the D, E and F fixes; dispositions in `../corrective/review/TRIAGE.md`. One CRITICAL
 (B-01, a pair whose two keys are each a notice identifier in different records) was fixed and re-verified. No HIGH was
-raised. **No CRITICAL or HIGH finding is open.** Open items: owner decisions A-02/B-02/A-10 (strict versus lenient),
-B-03 (original DOI with the same record's notice PMID, the mirror of D-058) and C-01 (a same-work sibling record
-collides a clean retraction); LOW items D-05, E-05, E-07, C-07, N-01 with stated reasons.
+raised. The MEDIUM items put to the owner are decided: A-02, B-02 and A-10 by D-072, C-01 by D-073, B-03 by D-075.
+**No finding of MEDIUM or higher is open.** Open LOW items D-05, E-05, E-07, C-07 and N-01 keep their stated reasons.
 
 ## 8. Vertical slice, D-062 and performance
 
@@ -119,11 +146,12 @@ collides a clean retraction); LOW items D-05, E-05, E-07, C-07, N-01 with stated
   freeze 25.5 to 30.5 s); the D-062 identity verification takes 26.1 s of the 32.7 s VS-1 breakdown run
   (`performance/`). The correction adds no measurable cost.
 
-## 9. Open owner decisions
+## 9. Owner decisions and what remains
 
-1. Strict versus lenient resolution by a second identifier (card `cmsg_018VCB51nDHP6HXmLU4ea5yPHj8evfLAf6BjmudsykjrGy`).
-2. Same-work sibling records (C-01; card `cmsg_018VCB51nDHP6HXmLU4ea5yP3kTt3KcXyqmhT7HXKdfzb4`).
-3. The P-listed test that pins the superseded engine (card `cmsg_018VCB51nDHP6HXmLU4ea5yPKGg9QN82npdYdMmf5LXJez`); CI
-   stays red on it until then.
-4. B-03 (original DOI with the same record's notice PMID stays positive, as in dt-1).
-5. Acceptance of this candidate, and any new Step 13 (P2, new seed, the 80 campaign articles excluded).
+Recorded in `DECISIONS.md`: D-072 (strict rule), D-073 (no same-work-sibling exemption), D-074 (the historical P test
+verifies the historical freeze), D-075 (B-03 stays positive on a clean original DOI). Open: acceptance of this
+candidate by the owner, and any new Step 13 (P2, new seed, the 80 campaign articles excluded), which is not started.
+Any future P2 states the D-072 recall cost and the D-073 abstentions as limitations.
+
+**Validation of the vertical slice, D-062 and performance (section 8)** comes from runs on `src` and `schemas` that are
+byte-identical to those of `032bbaf` (unchanged since `dfee881`); these runs were not repeated.
