@@ -1,0 +1,196 @@
+{
+ "ci_runtime": {
+  "finding": "No required job reached 30 minutes (OD-S12-2).",
+  "policy": "OD-S12-2 (D-065)",
+  "runs": [
+   {
+    "commit": "99c4194",
+    "py312_tests": "13m29s",
+    "py313_tests": "12m16s",
+    "result": "failure (known)",
+    "run": 360
+   }
+  ]
+ },
+ "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+ "d062": {
+  "operational_tests": "5 passed, 18 deselected in 0.96s",
+  "tamper_cases": 21,
+  "tamper_discrepancies": [],
+  "tamper_rejected_only_by_profile": [],
+  "two_build_failed_checks": []
+ },
+ "label": "Stage 04 corrective cycle validation summary (freeze-2 candidate); measured, not an evaluation",
+ "performance": {
+  "breakdown_median_s": {
+   "file_sha256_s": 0.505,
+   "import_s": 0.227,
+   "index_verify_s": 26.051,
+   "memory_open_s": 0.804,
+   "process_wall_s": 33.027,
+   "run_s": 32.714,
+   "schema_s": 3.935,
+   "show_s": 0.832,
+   "stage02_digests_s": 6.973,
+   "unaccounted_s": 2.061
+  },
+  "cause": "the D-062 identity-verification profile of D-064 runs in every process that reaches LOOKUP (no cross-process reuse, OD-S12-1)",
+  "max_run_p95_s": 30.548,
+  "status": "NOT_MET",
+  "table": [
+   {
+    "case": "VS-1",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.02,
+    "run_median_s": 30.131,
+    "run_p95_s": 30.548,
+    "superseded_freeze_run_p95_s": 30.464
+   },
+   {
+    "case": "VS-2",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.434,
+    "run_median_s": 25.337,
+    "run_p95_s": 26.547,
+    "superseded_freeze_run_p95_s": 27.633
+   },
+   {
+    "case": "VS-3a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.203,
+    "run_median_s": 25.737,
+    "run_p95_s": 25.96,
+    "superseded_freeze_run_p95_s": 26.37
+   },
+   {
+    "case": "VS-3b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.917,
+    "run_median_s": 27.419,
+    "run_p95_s": 27.865,
+    "superseded_freeze_run_p95_s": 29.268
+   },
+   {
+    "case": "VS-4",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.412,
+    "run_median_s": 24.793,
+    "run_p95_s": 25.318,
+    "superseded_freeze_run_p95_s": 26.297
+   },
+   {
+    "case": "VS-5",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.33,
+    "run_median_s": 25.85,
+    "run_p95_s": 26.958,
+    "superseded_freeze_run_p95_s": 26.31
+   },
+   {
+    "case": "VS-6a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.53,
+    "run_median_s": 24.829,
+    "run_p95_s": 25.151,
+    "superseded_freeze_run_p95_s": 25.522
+   },
+   {
+    "case": "VS-6b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.404,
+    "run_median_s": 24.581,
+    "run_p95_s": 25.447,
+    "superseded_freeze_run_p95_s": 25.977
+   }
+  ],
+  "target": "warm retained investigation <= 5 s p95 (D-061, unchanged)",
+  "verification_components_median_s": {
+   "compute_digests": 6.951,
+   "derivation_problems": 16.206,
+   "file read + SHA-256 (I/O floor of one full pass)": 0.247,
+   "manifest_problems": 0.0,
+   "scan event JOIN raw_record (digests: event lines)": 0.377,
+   "scan event ORDER BY event_id (derivation compare)": 0.254,
+   "scan ident (derivation)": 0.484,
+   "scan raw_record (digests: record lines)": 0.144,
+   "scan raw_record SELECT * (derivation)": 0.143,
+   "scan title_token (derivation compare)": 0.383,
+   "structural: PRAGMA foreign_key_check": 2.203,
+   "structural: PRAGMA integrity_check": 0.924,
+   "structural_problems (all of the above + invariants)": 3.25,
+   "whole_profile (identity_verification_problems)": 26.668
+  }
+ },
+ "tests": {
+  "ci": {
+   "conclusion": "failure (the known failure only)",
+   "jobs": {
+    "ci-gate": {
+     "conclusion": "failure (verify matrix)"
+    },
+    "verify (python 3.12)": {
+     "failed": 1,
+     "passed": 3371,
+     "pytest_reported": "809.54 s",
+     "python": "3.12.3"
+    },
+    "verify (python 3.13)": {
+     "failed": 1,
+     "passed": 3371,
+     "pytest_reported": "736.92 s",
+     "python": "3.13.14"
+    }
+   },
+   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
+   "run_id": 44449077298,
+   "run_number": 360
+  },
+  "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+  "lint": {
+   "citerift_gov_check": "0 errors, 0 warnings",
+   "mypy": "Success: no issues found in 95 source files",
+   "ruff_check": "All checks passed!",
+   "ruff_format": "620 files already formatted"
+  },
+  "local": {
+   "failed": 1,
+   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
+   "note": "full suite in this 4-vCPU container, after the evidence runs",
+   "passed": 3371,
+   "python": "3.12.3",
+   "skipped": 0,
+   "wall": "20 min 45 s"
+  }
+ },
+ "vertical_slice": {
+  "cases": [
+   "VS-1",
+   "VS-2",
+   "VS-3a",
+   "VS-3b",
+   "VS-4",
+   "VS-5",
+   "VS-6a",
+   "VS-6b"
+  ],
+  "extras": [
+   "VS-7",
+   "VS-8",
+   "VS-9",
+   "VS-10",
+   "checkpoint",
+   "I-2"
+  ],
+  "failed_checks": {},
+  "machine": "x86_64, 4 CPUs",
+  "python": "3.12.3"
+ }
+}

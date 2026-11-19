@@ -1,0 +1,43 @@
+# Fail-first run of the final corrective suites on the frozen engine (owner decision D-071)
+# Worktree of 99c4194622498b2343584f08b4f6e52cd2f077e3 with src/ and schemas/ checked out from the frozen commit b5bf8ed; imported engine: 0.2.0 dt-1 <worktree>/src/citerift/investigation/__init__.py
+# command: PYTHONPATH=<worktree>/src python -m pytest tests/stage04/test_corrective_role_collision.py tests/stage04/test_corrective_role_property.py -q -p no:cacheprovider
+
+..FFFF.......FF.F.FFFFFFFFF..FFFFF..F.FFF.F....FFFFFF.FF..FFF            [100%]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[retracted-retracted]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[correction-correction]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[expression_of_concern-expression_of_concern]
+FAILED tests/stage04/test_corrective_role_collision.py::test_same_doi_as_original_and_notice_abstains[reinstated-reinstated]
+FAILED tests/stage04/test_corrective_role_collision.py::test_two_records_sharing_one_identifier_in_different_roles_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_cross_record_pmid_abstains
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_clean_pmid_whose_record_states_no_notice_pmid_does_not_resolve
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_clean_doi_whose_record_states_no_notice_doi_does_not_resolve_a_pmid_collision
+FAILED tests/stage04/test_corrective_role_collision.py::test_both_identifiers_collided_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_cross_record_doi_is_resolved_by_a_discriminating_pmid
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_same_record_doi_and_a_cross_record_pmid_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_notice_identifier_that_equals_the_cited_key_never_discriminates
+FAILED tests/stage04/test_corrective_role_collision.py::test_doi_and_pmid_collided_in_two_different_records_abstain
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_non_cited_bridge_key_never_resolves_a_collided_cited_key
+FAILED tests/stage04/test_corrective_role_collision.py::test_malformed_event_flags_fail_closed
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_bridged_event_attached_through_a_collided_doi_abstains
+FAILED tests/stage04/test_corrective_role_collision.py::test_the_collision_precedes_an_unavailable_lookup
+FAILED tests/stage04/test_corrective_role_collision.py::test_the_collision_precedes_an_uncertain_status
+FAILED tests/stage04/test_corrective_role_collision.py::test_bridge_only_and_collision_reasons_are_both_kept
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_collision_never_gives_notice_cited_or_a_negative
+FAILED tests/stage04/test_corrective_role_collision.py::test_a_matched_deciding_lookup_without_notice_hit_evidence_fails_closed
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[both_schemes_equal_pair]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[cross_record_doi]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[cross_record_pmid]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[doi_and_pmid_collided_in_two_records_pair]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[jasist_failure]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_correction]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_expression_of_concern]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_reinstated]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_retracted]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_with_clean_pmid_doi_only]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_doi_with_clean_pmid_pair]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_pmid]
+FAILED tests/stage04/test_corrective_role_collision.py::test_real_rows[same_pmid_with_clean_doi_pair]
+FAILED tests/stage04/test_corrective_role_collision.py::test_historical_jasist_unit_end_to_end
+FAILED tests/stage04/test_corrective_role_property.py::test_role_ambiguity_equals_the_independent_formulation_on_the_whole_domain
+FAILED tests/stage04/test_corrective_role_property.py::test_no_positive_and_no_notice_from_a_role_ambiguous_case
+37 failed, 24 passed in 2.28s

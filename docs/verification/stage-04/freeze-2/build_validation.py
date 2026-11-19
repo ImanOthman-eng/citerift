@@ -19,63 +19,52 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 S04 = HERE.parent
 TARGET_S = 5.0
-CODE_REVISION = "3eec84f63467192407934dda2de544338a5d9140"
+CODE_REVISION = "99c4194622498b2343584f08b4f6e52cd2f077e3"
+# ``src`` and ``schemas`` of CODE_REVISION equal those of every commit the freeze-2 evidence ran from (dfee881 to
+# 99c4194: regression, vertical slice, D-062, performance); the later commits change documents and tests only.
 
-# Test runs of the code revision above (the freeze evidence was produced from it); the freeze-content commit's own
-# CI run is named by the attestation commit.
+# Test runs of the code revision above. One test fails, by design of the pre-registration P, until the owner decides
+# how a P-listed test that pins the superseded engine is handled (decision card on the P-listed test); it is not
+# skipped, marked or edited here (owner rule: never skip or disable a test to get green).
+KNOWN_FAILURE = (
+    "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check "
+    "that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2"
+)
 TESTS: dict[str, Any] = {
     "code_revision": CODE_REVISION,
     "local": {
         "python": "3.12.3",
-        "passed": 3249,
+        "passed": 3371,
+        "failed": 1,
         "skipped": 0,
-        "failed": 0,
-        "wall": "18 min 48 s",
-        "note": "full suite in this 4-vCPU container, before the evidence runs",
+        "known_failure": KNOWN_FAILURE,
+        "wall": "20 min 45 s",
+        "note": "full suite in this 4-vCPU container, after the evidence runs",
     },
     "ci": {
-        "run_id": 44179654515,
-        "run_number": 337,
-        "conclusion": "success",
+        "run_id": 44449077298,
+        "run_number": 360,
+        "conclusion": "failure (the known failure only)",
         "jobs": {
-            "verify (python 3.12)": {
-                "python": "3.12.3",
-                "passed": 3249,
-                "test_step": "19 min 34 s",
-                "pytest_reported": "1173.38 s",
-                "job": "19 min 56 s",
-                "check_report": "0 problems",
-            },
-            "verify (python 3.13)": {
-                "python": "3.13.14",
-                "passed": 3249,
-                "test_step": "11 min 30 s",
-                "pytest_reported": "689.21 s",
-                "job": "11 min 53 s",
-                "check_report": "0 problems",
-            },
-            "ci-gate": {"conclusion": "success"},
+            "verify (python 3.12)": {"python": "3.12.3", "passed": 3371, "failed": 1, "pytest_reported": "809.54 s"},
+            "verify (python 3.13)": {"python": "3.13.14", "passed": 3371, "failed": 1, "pytest_reported": "736.92 s"},
+            "ci-gate": {"conclusion": "failure (verify matrix)"},
         },
-        "clean_tree": True,
-        "pip_audit_strict": "no known vulnerabilities",
+        "known_failure": KNOWN_FAILURE,
+    },
+    "lint": {
+        "ruff_check": "All checks passed!",
+        "ruff_format": "620 files already formatted",
+        "mypy": "Success: no issues found in 95 source files",
+        "citerift_gov_check": "0 errors, 0 warnings",
     },
 }
 
-# GitHub-hosted runner times of the Step 12 runs (OD-S12-2: 18 minutes is diagnostic, 30 minutes the hard timeout).
+# GitHub-hosted runner times of the corrective-cycle CI run on the code revision (OD-S12-2: 30 minutes hard timeout).
 CI_RUNTIME = [
-    {"run": 332, "commit": "9499c49", "py312_tests": "10m16s", "py313_tests": "11m29s", "result": "success"},
-    {"run": 333, "commit": "75e7b26", "py312_tests": "19m53s", "py313_tests": "17m07s", "result": "cancelled (20 min)"},
-    {"run": 334, "commit": "00c2d6c", "py312_tests": "19m40s", "py313_tests": "11m28s", "result": "cancelled (20 min)"},
-    {"run": 335, "commit": "91c70af", "py312_tests": "13m59s", "py313_tests": "10m06s", "result": "success"},
-    {"run": 336, "commit": "c23e5dc", "py312_tests": "12m32s", "py313_tests": "18m03s", "result": "success"},
-    {"run": 337, "commit": "3eec84f", "py312_tests": "19m34s", "py313_tests": "11m30s", "result": "success"},
+    {"run": 360, "commit": "99c4194", "py312_tests": "13m29s", "py313_tests": "12m16s", "result": "failure (known)"},
 ]
-CI_RUNTIME_FINDING = (
-    "Runs over 18 minutes alternate between the Python versions on the same code (run 336: 3.13 slow, 3.12 fast; run "
-    "337: 3.12 slow, 3.13 fast). In run 337 the untouched Stage 00-03 test files ran a median 1.46x slower on 3.12 "
-    "than in run 335 and the Stage 04 files 1.44x; Python 3.13 per-file times equal run 334 (median 1.00x). Recorded "
-    "as GitHub-hosted runner variance under OD-S12-2; no required job reached 30 minutes."
-)
+CI_RUNTIME_FINDING = "No required job reached 30 minutes (OD-S12-2)."
 
 
 def load(rel: str) -> Any:
