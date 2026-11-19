@@ -1747,3 +1747,46 @@ invalidates it, keeps gates G1 to G5 and the exact interval method, keeps D-067 
 role-collision and recall-withholding metrics, uses the corrected runner, updates baseline and sensitivity tooling to
 dt-2, and commits to the first drand quicknet round at least one hour after the owner's future acceptance of P2. The
 deliverable stops at P2, ready for owner acceptance.
+
+## D-077 — Pre-registration P2 accepted; Step 14 under P2 authorized
+- Status: accepted
+- Topic: stage-04-p2-accepted
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-p2/PREREGISTRATION.md; docs/verification/stage-04/evaluation-p2/PREREGISTRATION_MANIFEST.json
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP6Ugyq1ZbRyyuDXEcx5N7Bh` (2026-11-19, sent 12:16:15Z, stored 12:16:16Z).
+The owner accepts the corrected-engine pre-registration P2 exactly as committed at
+`10cc9d8267942d625d0d32a4b4b72101155c0d06`, canonical digest
+`P2 = 5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a`; P2 is immutable. CI run 368 on that commit is
+accepted as green. The frozen engine stays the freeze-2 content commit `28ba6467c7005eec7bf51869974719a402059ca7`
+(tree `45c52da459b09597f105d6e4abd8ab00332c6799`, freeze manifest
+`d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13`, exposure manifest v2
+`b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b`; engine 0.3.0, dt-2, common schema 4.0.0, claim
+schema 3.0.0, detector `citerift-dt1-detector/3 (dt-2)`).
+
+Accepted as registered: the frames (ar S1 110 / S2 29, total 139; en S1 346 / S2 299, total 645) with the exposure-v2
+exclusion, the 80 first-campaign articles permanently design-exposed and excluded, and the Stage 03 listed-only tier
+eligible under D-070, no frame definition changing after acceptance; the sampling (per language 22 S1 + 8 S2 primary,
+7 S1 + 3 S2 reserve, deterministic expansion blocks of 10, S1 then S2, targets of 40 identifier-reached truth-positive
+and 75 negative-proxy units, at most 200 acquisition attempts), never altered after labels or predictions and never
+enlarged because the historical evaluation failed G2; the gates G1 to G5 per language, all five required in both
+languages, no threshold relaxed or reinterpreted; the annotation guide and label format, with `ambiguous_object` a
+distinct record judgment that is never a correct attachment, annotators and adjudicator blinded to Stage 04 and every
+label locked before the prediction run; metrics 8.8 and 8.9 as descriptive only (they never turn an abstention into a
+positive, rescue G2 or G3, replace attachment precision or modify a gate), the "independently clean cited identifier"
+definition for that descriptive analysis only, not weakening D-072; and the dt-2 limitations as declared (1,472 of
+31,506; 800 lenient; 53 C-01 cases; 628 B-03 pairs under D-075; no notice-PMID rescue), not revisable in response to
+the P2 result. The historical P (`4eded723…1098a`), its seed, draw, packets, labels, `RUN.json`, `SCORES.json`, report and
+failed gate result stay immutable; the first campaign remains 04-I NOT PASSED for engine 0.2.0 / dt-1 and its
+denominator is never combined with P2.
+
+The same message authorizes Step 14 under P2 only: the seed round is the first drand quicknet round whose round time is
+at least one hour after the timestamp of the acceptance message, fetched only under the registered mirror and
+agreement protocol (a failure stops for an owner decision); then SEED.json committed, DRAW.json, acquisition with the
+capture-time exposure recheck, packets, blinded A/B annotation, adjudication, label lock and its verification, the
+single prediction run on frozen dt-2 with the corrected runner, scoring, baseline and sensitivity exactly under P2, and
+the Step 14 report. After the draw nothing in the engine, P2, gates, draw or scoring changes; only the registered
+replacement and expansion rules operate; a tooling or protocol defect not governed by P2 stops the campaign for an
+owner decision. Step 15 is not authorized.
