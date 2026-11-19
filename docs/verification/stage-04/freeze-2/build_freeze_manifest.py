@@ -54,12 +54,16 @@ EVIDENCE = {
     "validation": f"{F2}/VALIDATION.json",
     "root_cause": f"{C}/ROOT_CAUSE.md",
     "census": f"{C}/census/CENSUS.json",
+    "pair_census": f"{C}/census/PAIR_CENSUS.json",
+    "pair_census_lenient": f"{C}/census/PAIR_CENSUS_LENIENT.json",
     "role_collision_fixture": "tests/stage04/fixtures/corrective/rw_role_collision.json",
     "fail_first_before": f"{C}/evidence/fail_first_before.txt",
     "runner_fail_first": f"{C}/evidence/runner_fail_first.txt",
     "decision_space_dt2": f"{C}/simulation/decision_space_dt2_summary.json",
     "dev_regression": f"{C}/regression/DEV_REGRESSION.json",
     "campaign_regression": f"{C}/regression/CAMPAIGN_REGRESSION.json",
+    "named_cases": f"{C}/regression/NAMED_CASES.json",
+    "identity_logical_view_diff": f"{C}/identity/LOGICAL_VIEW_DIFF.json",
     "review_triage": f"{C}/review/TRIAGE.md",
     "superseded_freeze_manifest": f"{S04}/freeze/FREEZE_MANIFEST.json",
 }
@@ -88,6 +92,9 @@ LIMITATIONS = [
     "scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the "
     "measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong "
     "in the citation, the attachment rests on it.",
+    "C-01: collision is read per key over every record, so a second record of the same work (same original DOI and "
+    "PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes a clean retraction "
+    "abstain (53 snapshot pairs, one campaign claim); owner question open.",
     "Original DOI cited with the same record's notice PMID (corrective-cycle reviewer finding B-03 of REVIEW_B.md, "
     "the mirror of D-058) stays "
     "positive, as in dt-1; not changed without an owner decision.",
@@ -105,7 +112,7 @@ LIMITATIONS = [
     "The external checkpoint (D-052) detects divergence from a recorded state; it is not authentication or a "
     "signature.",
     "Investigation Memory requires a local POSIX filesystem (rename, fsync, O_NOFOLLOW, flock semantics).",
-    "Evaluation labels planned for Step 14 are AI-generated (Stage 03 precedent); not human ground truth.",
+    "Evaluation labels of a future gate are AI-generated (Stage 03 precedent); not human ground truth.",
     "The Stage 02 snapshot covers Retraction Watch records up to its build; later events are not covered.",
     "Some dt-1 classes were not seen in real development data; they are covered by the Step 4 enumerated domain "
     "and synthetic tests only.",
@@ -119,7 +126,7 @@ LIMITATIONS = [
     "Step 12 B-03 residual: a retry whose earlier ACQUIRE side channel was deleted by someone is not detected.",
     "B-13: LOOKUP memory is bounded per query; the aggregate is queries x per-query bound.",
     "C-12: Stage 02 crossref_sources has no ORDER BY (upstream; 0 rows in the accepted RW-only index).",
-    "E-05, E-06, E-08: denominator and sensitivity-variant choices are Step 13 pre-registration decisions.",
+    "Step 12 E-05, E-06, E-08: denominator and sensitivity-variant choices are Step 13 pre-registration decisions.",
 ]
 
 

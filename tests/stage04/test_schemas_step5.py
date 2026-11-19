@@ -1582,11 +1582,24 @@ def test_every_valid_reference_decision_is_a_valid_claim() -> None:
 
 @pytest.mark.simulation
 def test_oracle_and_model_unchanged_by_step5() -> None:
-    """Exit criterion 10: the frozen Step 4 oracle and reference model are unchanged."""
+    """Exit criterion 10: the frozen Step 4 oracle and reference model are unchanged. No file of
+    ``simulations/stage04`` that existed at 244c4b6 is modified, deleted, renamed or retyped; owner decision D-071
+    (section 5) adds a new oracle version beside the kept one (``oracle-dt2``, ``dt2_reference.py``), so files added
+    after 244c4b6 are allowed."""
     import subprocess
 
     out = subprocess.run(
-        ["git", "-C", str(ROOT), "diff", "--name-only", "244c4b6", "--", "simulations/stage04"],
+        [
+            "git",
+            "-C",
+            str(ROOT),
+            "diff",
+            "--name-only",
+            "--diff-filter=CDMRTUXB",
+            "244c4b6",
+            "--",
+            "simulations/stage04",
+        ],
         capture_output=True,
         text=True,
         check=False,
