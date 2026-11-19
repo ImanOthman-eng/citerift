@@ -63,6 +63,11 @@ class CorruptInvestigation(InvestigationMemoryError):
         super().__init__("CORRUPT", str(cause))
         self.cause = cause
 
+    @property
+    def engine_identity_differs(self) -> bool:
+        """E-07: the journal was refused because another engine created it (valid for that engine, not corrupt)."""
+        return self.cause.code == "ENGINE_IDENTITY_DIFFERS"
+
 
 class SpanError(InvestigationMemoryError):
     """D-043 unit anchor refusals: SPAN_INVALID, SOURCE_DIGEST_MISMATCH, ROOT_IDENTITY_MISMATCH, ANCHOR_MISMATCH."""

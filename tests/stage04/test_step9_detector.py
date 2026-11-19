@@ -512,8 +512,13 @@ def test_the_detector_imports_no_clock_randomness_network_or_model() -> None:
 
 
 def test_the_table_is_d1_to_d17_in_order() -> None:
-    assert tuple(f"D-{i}" for i in range(1, 18)) == dt1.RULE_IDS
-    assert [r for r, _ in dt1.RULES] == list(R.RULES)
+    """dt-3 (owner decision D-083): D-1 to D-17 in order, with D-13a between D-13 and D-14, as in the dt-3
+    reference model; the dt-1 table is the same without D-13a."""
+    import dt3_reference as R3
+
+    expected = (*(f"D-{i}" for i in range(1, 14)), "D-13a", *(f"D-{i}" for i in range(14, 18)))
+    assert expected == dt1.RULE_IDS == tuple(R3.RULES)
+    assert tuple(r for r in dt1.RULE_IDS if r != "D-13a") == tuple(R.RULES)
 
 
 def test_outcome_is_a_function_of_the_view() -> None:

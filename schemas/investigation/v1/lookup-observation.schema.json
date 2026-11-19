@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:citerift:schema:investigation:v1:lookup-observation",
-  "title": "CITERIFT Stage 04 lookup observation, version 2",
-  "description": "Step 8: one Stage 02 lookup of LOOKUP (obs_kind lookup), made only through Index.gather_bounded within the configured lookup evidence budget (D-048, A-02-001). result is exactly Stage 02 render(evidence, snapshot_id, page_size=MAX_PAGE); events is the complete list of the lookup's events in Stage 02's public form (S-3.1: paging is never relied on), so event_count equals result.total_event_count. A lookup over the budget is unavailable with no events and the issue LOOKUP_EVIDENCE_LIMIT_EXCEEDED; a query that raised is unavailable with its error code (S-6.10). Nothing is truncated: events is bounded by the budget, not by a cut.",
-  "x-citerift-version": "2.0.0",
+  "title": "CITERIFT Stage 04 lookup observation, version 3",
+  "description": "Step 8: one Stage 02 lookup of LOOKUP (obs_kind lookup), made only through Index.gather_bounded within the configured lookup evidence budget (D-048, A-02-001). result is exactly Stage 02 render(evidence, snapshot_id, page_size=MAX_PAGE); events is the complete list of the lookup's events in Stage 02's public form (S-3.1: paging is never relied on), so event_count equals result.total_event_count. A lookup over the budget is unavailable with no events and the issue LOOKUP_EVIDENCE_LIMIT_EXCEEDED; a query that raised is unavailable with its error code (S-6.10). Nothing is truncated: events is bounded by the budget, not by a cut. Version 3 (dt-3, owner decision D-083): records holds, for each event in the same order, the bibliographic fields of the same Stage 02 event (Stage 02 event schema), bound by event_id and row_sha256.",
+  "x-citerift-version": "3.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,6 +14,7 @@
     "budget_bytes",
     "result",
     "events",
+    "records",
     "event_count"
   ],
   "properties": {
@@ -21,8 +22,8 @@
       "const": "urn:citerift:schema:investigation:v1:lookup-observation"
     },
     "schema_version": {
-      "description": "Unknown versions fail closed. Version 2 (D-062): the index identity is the canonical Stage 02 content identity.",
-      "const": "2.0.0"
+      "description": "Unknown versions fail closed. Version 2 (D-062): the index identity is the canonical Stage 02 content identity. Version 3 (D-083): records.",
+      "const": "3.0.0"
     },
     "query": {
       "type": "object",
@@ -83,6 +84,23 @@
       "type": "array",
       "items": {
         "$ref": "urn:citerift:schema:retraction:v1:lookup-result#/properties/events/items"
+      }
+    },
+    "records": {
+      "description": "bib-1 record side (BIBLIOGRAPHIC_SPEC.md 2.3): one entry per event, in the order of events.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event_id", "row_sha256", "title", "authors", "journal", "original_year"],
+        "properties": {
+          "event_id": {"$ref": "urn:citerift:schema:retraction:v1:event#/properties/event_id"},
+          "row_sha256": {"$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"},
+          "title": {"$ref": "urn:citerift:schema:retraction:v1:event#/properties/title"},
+          "authors": {"$ref": "urn:citerift:schema:retraction:v1:event#/properties/authors"},
+          "journal": {"$ref": "urn:citerift:schema:retraction:v1:event#/properties/journal"},
+          "original_year": {"$ref": "urn:citerift:schema:retraction:v1:event#/properties/original_year"}
+        }
       }
     },
     "event_count": {

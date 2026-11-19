@@ -103,7 +103,13 @@ def obs(
     if notice_hits is not None:
         result["notice_hit_count"] = notice_hits
         result["notice_hits"] = [{"event_id": f"ev-nh-{i}"} for i in range(notice_hits)]
-    return {"query": {}, "result": result, "events": events, "event_count": len(events)}
+    # lookup observation version 3 (dt-3, owner decision D-083): one bib-1 record per event, bound to it; no field
+    records = [
+        {"event_id": e.get("event_id"), "row_sha256": e.get("row_sha256"), "title": None, "authors": None,
+         "journal": None, "original_year": None}
+        for e in events
+    ]  # fmt: skip
+    return {"query": {}, "result": result, "events": events, "event_count": len(events), "records": records}
 
 
 UNAVAILABLE = obs("unavailable", [], proj("unavailable", None, ["INDEX_UNAVAILABLE"]), notice_hits=None)

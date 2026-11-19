@@ -1,0 +1,471 @@
+"""bib-1: the bibliographic-object consistency layer (owner decision D-083; normative text
+docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md).
+
+A citation names a publication object twice: by its identifiers and by its own description. This module compares the
+description of one citation-template unit (``CitedObject``, parsed from the unit's committed source span) with the
+bibliographic fields of one Stage 02 record (``RecordObject``) and classifies the pair as COMPATIBLE, INSUFFICIENT or
+MATERIAL_CONFLICT. It is pure: no clock, no randomness, no network, no I/O beyond reading its packaged alias profile.
+
+Every relation is threshold-free (spec P2): equality, contiguous containment, a shared word, or no shared word. Only
+authors and title are decisive; year and periodical are recorded and never decide (spec 4.3). A field that cannot be
+compared is INSUFFICIENT and never blocks anything. The independent reference model is
+``simulations/stage04/bib_reference.py``; this module imports nothing from it and it imports nothing from here.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import unicodedata
+from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
+from functools import cache
+from importlib import resources
+from typing import Any
+
+import mwparserfromhell
+from mwparserfromhell.nodes import Template, Text
+
+BIB_VERSION = "bib-1"
+MAX_VALUES = 64  # spec 2.1 step 6: at most this many titles and at most this many authors
+MAX_TOTAL_CODE_POINTS = 4096  # spec 2.1 step 6: all values of all families together
+PROFILE_FILE = "data/bib-profile-1.json"
+
+AGREE, COMPATIBLE, CONFLICT, INSUFFICIENT = "AGREE", "COMPATIBLE", "CONFLICT", "INSUFFICIENT"
+SAME, DIFFERENT, NOT_IN_RECORD = "SAME", "DIFFERENT", "NOT_IN_RECORD"
+EQUAL, CONTAINED, OVERLAP, DISJOINT, INCOMPARABLE, MISSING = (
+    "EQUAL",
+    "CONTAINED",
+    "OVERLAP",
+    "DISJOINT",
+    "INCOMPARABLE",
+    "MISSING",
+)
+OBJ_COMPATIBLE, OBJ_INSUFFICIENT, MATERIAL_CONFLICT = "COMPATIBLE", "INSUFFICIENT", "MATERIAL_CONFLICT"
+R_AUTHORS, R_TITLE_DISJOINT, R_RELATED = "BIB_AUTHORS_DISJOINT", "BIB_TITLE_DISJOINT", "BIB_TITLE_RELATED_OBJECT"
+REASONS = (R_AUTHORS, R_TITLE_DISJOINT, R_RELATED)
+
+# Spec 2.1 step 5: parameter families and the CS1 keys of the profile that form them.
+FAMILIES: dict[str, tuple[str, ...]] = {
+    "titles": ("Title", "ScriptTitle", "TransTitle", "Chapter", "ScriptChapter", "TransChapter"),
+    "authors": ("AuthorList-Last", "Authors", "Vauthors"),
+    "periodical": ("Periodical",),
+    "date": ("Date",),
+    "year": ("Year",),
+    "volume": ("Volume",),
+    "issue": ("Issue",),
+    "pages": ("Page", "Pages"),
+}
+SCRIPT_KEYS = frozenset({"ScriptTitle", "ScriptChapter"})
+_SCRIPT_PREFIX = re.compile(r"^[A-Za-z]{2,3}(-[A-Za-z0-9]+)?:")
+_WORD = re.compile(r"[^\W_]+")
+_ETAL = re.compile(r"\bet\.?\s*al\b\.?")
+_YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
+_SPACE = re.compile(r"\s+")
+
+# Spec 4.2: designations of a related object (folded words and phrases), counted only outside the record's title.
+DESIGNATION_WORDS = frozenset(
+    {
+        "addendum",
+        "addenda",
+        "clarification",
+        "correction",
+        "corrections",
+        "corrigendum",
+        "corrigenda",
+        "erratum",
+        "errata",
+        "retraction",
+        "retractions",
+        "withdrawal",
+        "removal",
+        "comment",
+        "comments",
+        "reply",
+        "replies",
+        "تعليق",
+        "التعليق",
+        "تعقيب",
+        "التعقيب",
+        "رد",
+        "الرد",
+        "تصحيح",
+        "التصحيح",
+        "استدراك",
+        "الاستدراك",
+        "سحب",
+        "السحب",
+    }
+)
+DESIGNATION_PHRASES: tuple[tuple[str, ...], ...] = (
+    ("expression", "of", "concern"),
+    ("response", "to"),
+    ("تعبير", "عن", "القلق"),
+)
+
+
+# Normalization (spec 3) -----------------------------------------------------------------------------------------------
+
+
+def fold(s: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", s)
+    return "".join(c for c in decomposed if unicodedata.category(c) not in ("Mn", "Mc", "Me")).casefold()
+
+
+def words(s: str) -> list[str]:
+    return _WORD.findall(fold(s))
+
+
+def script(word: str) -> str | None:
+    """The script of a word: the first word of the Unicode name of its first non-digit character."""
+    for c in word:
+        if c.isdecimal():
+            continue
+        name = unicodedata.name(c, "")
+        return name.split(" ", 1)[0] if name else None
+    return None
+
+
+def name_words(value: str) -> set[str]:
+    """Spec 3: the name words of one author value (``et al`` removed; single letters and numbers are not names)."""
+    text = _ETAL.sub(" ", fold(value))
+    return {w for w in _WORD.findall(text) if len(w) >= 2 and not w.isdecimal()}
+
+
+def _scripts(ws: set[str] | Sequence[str]) -> set[str]:
+    return {s for w in ws if (s := script(w)) is not None}
+
+
+# Inputs (spec 2) ------------------------------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class CitedObject:
+    """The cleaned bibliographic fields of one citation-template unit (spec 2.1)."""
+
+    titles: tuple[str, ...] = ()
+    authors: tuple[str, ...] = ()
+    periodical: str | None = None
+    date: str | None = None
+    year: str | None = None
+    volume: str | None = None
+    issue: str | None = None
+    pages: str | None = None
+
+    def to_json(self) -> dict[str, Any]:
+        return {
+            "titles": list(self.titles),
+            "authors": list(self.authors),
+            "periodical": self.periodical,
+            "date": self.date,
+            "year": self.year,
+            "volume": self.volume,
+            "issue": self.issue,
+            "pages": self.pages,
+        }
+
+    @classmethod
+    def from_json(cls, raw: Any) -> CitedObject | None:
+        """The object a committed ``cited_bibliography`` value describes; None for a value that is not one (fail
+        closed to INSUFFICIENT, spec B8)."""
+        if not isinstance(raw, Mapping):
+            return None
+
+        def strs(v: Any) -> tuple[str, ...]:
+            return tuple(x for x in v if isinstance(x, str)) if isinstance(v, list) else ()
+
+        def one(v: Any) -> str | None:
+            return v if isinstance(v, str) else None
+
+        return cls(
+            titles=strs(raw.get("titles")),
+            authors=strs(raw.get("authors")),
+            periodical=one(raw.get("periodical")),
+            date=one(raw.get("date")),
+            year=one(raw.get("year")),
+            volume=one(raw.get("volume")),
+            issue=one(raw.get("issue")),
+            pages=one(raw.get("pages")),
+        )
+
+
+@dataclass(frozen=True)
+class RecordObject:
+    """The bibliographic fields of one Stage 02 event (spec 2.3). Values of another type are treated as absent."""
+
+    title: str | None = None
+    authors: str | None = None
+    journal: str | None = None
+    original_year: int | None = None
+
+    @classmethod
+    def from_json(cls, raw: Any) -> RecordObject | None:
+        if not isinstance(raw, Mapping):
+            return None
+        year = raw.get("original_year")
+        return cls(
+            title=raw.get("title") if isinstance(raw.get("title"), str) else None,
+            authors=raw.get("authors") if isinstance(raw.get("authors"), str) else None,
+            journal=raw.get("journal") if isinstance(raw.get("journal"), str) else None,
+            original_year=year if isinstance(year, int) and not isinstance(year, bool) else None,
+        )
+
+
+@cache
+def profile() -> dict[str, Any]:
+    data: dict[str, Any] = json.loads(
+        resources.files("citerift.investigation").joinpath(PROFILE_FILE).read_text(encoding="utf-8")
+    )
+    return data
+
+
+def profile_identity() -> dict[str, Any]:
+    """What the engine identity records of the alias profile: its version and each wiki's source revision."""
+    p = profile()
+    return {
+        "profile_version": p["profile_version"],
+        "wikis": {w: dict(v["source"]) for w, v in sorted(p["wikis"].items())},
+    }
+
+
+@cache
+def _matchers(wiki: str) -> tuple[tuple[str, str, re.Pattern[str]], ...]:
+    """(family, CS1 key, compiled alias pattern) for one wiki, in family order then profile order."""
+    aliases = profile()["wikis"][wiki]["aliases"]
+    out = []
+    for family, keys in FAMILIES.items():
+        for key in keys:
+            for alias in aliases[key]:
+                pattern = "".join("(?:[1-9][0-9]*)?" if ch == "#" else re.escape(ch) for ch in alias)
+                out.append((family, key, re.compile(pattern)))
+    return tuple(out)
+
+
+def _family_of(wiki: str, name: str) -> tuple[str, str] | None:
+    for family, key, pattern in _matchers(wiki):
+        if pattern.fullmatch(name):
+            return family, key
+    return None
+
+
+def _clean(value: Any) -> str | None:
+    text = value.strip_code(normalize=True, collapse=True)
+    text = _SPACE.sub(" ", text).strip()
+    return text or None
+
+
+def cited_object(text: str, wiki: str) -> CitedObject | None:
+    """Spec 2.1 steps 2 to 5 for the decoded source of one citation-template unit; None for no cited object."""
+    if wiki not in profile()["wikis"]:
+        return None
+    code = mwparserfromhell.parse(text)
+    nodes = [n for n in code.nodes if not (isinstance(n, Text) and not str(n).strip())]
+    if len(nodes) != 1 or not isinstance(nodes[0], Template):
+        return None
+    effective: dict[str, Any] = {}
+    for param in nodes[0].params:
+        if not param.showkey:
+            continue
+        # A later duplicate replaces the earlier value; the name keeps the position of its first occurrence.
+        effective[str(param.name).strip()] = param.value
+    fields: dict[str, list[str]] = {f: [] for f in FAMILIES}
+    for name, raw in effective.items():
+        found = _family_of(wiki, name)
+        if found is None:
+            continue
+        family, key = found
+        value = _clean(raw)
+        if value is not None and key in SCRIPT_KEYS:
+            value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
+        if value is not None:
+            fields[family].append(value)
+
+    # Spec 2.1 step 6: above the bounds of the committed value there is no cited object (never truncated).
+    if any(len(fields[f]) > MAX_VALUES for f in ("titles", "authors")) or (
+        sum(len(v) for vs in fields.values() for v in vs) > MAX_TOTAL_CODE_POINTS
+    ):
+        return None
+
+    def first(family: str) -> str | None:
+        return fields[family][0] if fields[family] else None
+
+    return CitedObject(
+        titles=tuple(fields["titles"]),
+        authors=tuple(fields["authors"]),
+        periodical=first("periodical"),
+        date=first("date"),
+        year=first("year"),
+        volume=first("volume"),
+        issue=first("issue"),
+        pages=first("pages"),
+    )
+
+
+# Field verdicts (spec 4) ---------------------------------------------------------------------------------------------
+
+
+def authors_verdict(cited: Sequence[str], record: str | None) -> str:
+    a_c: set[str] = set().union(*(name_words(v) for v in cited)) if cited else set()
+    a_r: set[str] = set().union(*(name_words(p) for p in record.split(";"))) if record else set()
+    if a_c & a_r:
+        return AGREE
+    if _scripts(a_c) & _scripts(a_r):
+        return CONFLICT
+    return INSUFFICIENT
+
+
+def _contains(outer: Sequence[str], inner: Sequence[str]) -> int:
+    """The first index of ``inner`` as consecutive words of ``outer``, or -1."""
+    n = len(inner)
+    if n == 0 or n > len(outer):
+        return -1
+    for i in range(len(outer) - n + 1):
+        if list(outer[i : i + n]) == list(inner):
+            return i
+    return -1
+
+
+def relation(t: Sequence[str], r: Sequence[str]) -> str:
+    """Spec 4.2: the relation of a cited title's words to the record title's words (both non-empty)."""
+    if list(t) == list(r):
+        return EQUAL
+    if _contains(t, r) >= 0 or _contains(r, t) >= 0:
+        return CONTAINED
+    if set(t) & set(r):
+        return OVERLAP
+    if _scripts(t) & _scripts(r):
+        return DISJOINT
+    return INCOMPARABLE
+
+
+_RANK = {EQUAL: 0, CONTAINED: 1, OVERLAP: 2, DISJOINT: 3, INCOMPARABLE: 4}
+
+
+def designates(t: Sequence[str], r: Sequence[str], rel: str) -> bool:
+    """Spec 4.2: the cited title names an object related to the record's work (a word or phrase of the designation
+    lexicon outside the record's own title)."""
+    if rel == CONTAINED:
+        at = _contains(t, r)
+        extra = list(t[:at]) + list(t[at + len(r) :]) if at >= 0 else []
+    elif rel == OVERLAP:
+        extra = [w for w in t if w not in set(r)]
+    else:
+        return False
+    if DESIGNATION_WORDS.intersection(extra):
+        return True
+    return any(_contains(t, p) >= 0 and _contains(r, p) < 0 for p in DESIGNATION_PHRASES)
+
+
+@dataclass(frozen=True)
+class TitleResult:
+    verdict: str
+    relation: str
+    designation: bool
+
+
+def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
+    r = words(record) if record else []
+    best: tuple[str, list[str]] | None = None
+    for value in cited:
+        t = words(value)
+        if not t or not r:
+            continue
+        rel = relation(t, r)
+        if best is None or _RANK[rel] < _RANK[best[0]]:
+            best = (rel, t)
+    if best is None:
+        return TitleResult(INSUFFICIENT, MISSING, False)
+    rel, t = best
+    designation = designates(t, r, rel)
+    if rel == EQUAL:
+        return TitleResult(AGREE, rel, False)
+    if rel in (CONTAINED, OVERLAP):
+        return TitleResult(CONFLICT if designation else COMPATIBLE, rel, designation)
+    if rel == DISJOINT:
+        return TitleResult(CONFLICT, rel, False)
+    return TitleResult(INSUFFICIENT, rel, False)
+
+
+def year_verdict(date: str | None, year: str | None, record_year: int | None) -> str:
+    found = None
+    for text in (date, year):
+        if text:
+            m = _YEAR.search(text)
+            if m:
+                found = int(m.group(1))
+                break
+    if found is None or record_year is None:
+        return INSUFFICIENT
+    return SAME if found == record_year else DIFFERENT
+
+
+def periodical_verdict(cited: str | None, journal: str | None) -> str:
+    c, j = words(cited) if cited else [], words(journal) if journal else []
+    if not c or not j:
+        return INSUFFICIENT
+    return SAME if c == j else DIFFERENT
+
+
+# Object verdict (spec 5) ----------------------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Comparison:
+    authors: str
+    title: str
+    title_relation: str
+    designation: bool
+    year: str
+    periodical: str
+    object: str
+    reasons: tuple[str, ...]
+
+    def to_json(self) -> dict[str, Any]:
+        return {
+            "version": BIB_VERSION,
+            "authors": self.authors,
+            "title": self.title,
+            "title_relation": self.title_relation,
+            "designation": self.designation,
+            "year": self.year,
+            "periodical": self.periodical,
+            "volume": NOT_IN_RECORD,
+            "issue": NOT_IN_RECORD,
+            "pages": NOT_IN_RECORD,
+            "object": self.object,
+            "reasons": list(self.reasons),
+        }
+
+
+NO_COMPARISON = Comparison(INSUFFICIENT, INSUFFICIENT, MISSING, False, INSUFFICIENT, INSUFFICIENT, OBJ_INSUFFICIENT, ())
+
+
+def compare(cited: CitedObject | None, record: RecordObject | None) -> Comparison:
+    """The bib-1 verdict of one (cited object, record) pair."""
+    if cited is None or record is None:
+        return NO_COMPARISON
+    a = authors_verdict(cited.authors, record.authors)
+    t = title_verdict(cited.titles, record.title)
+    reasons = []
+    if a == CONFLICT:
+        reasons.append(R_AUTHORS)
+    if t.relation == DISJOINT:
+        reasons.append(R_TITLE_DISJOINT)
+    if t.designation:
+        reasons.append(R_RELATED)
+    if reasons:
+        obj = MATERIAL_CONFLICT
+    elif a == AGREE or t.verdict in (AGREE, COMPATIBLE):
+        obj = OBJ_COMPATIBLE
+    else:
+        obj = OBJ_INSUFFICIENT
+    return Comparison(
+        authors=a,
+        title=t.verdict,
+        title_relation=t.relation,
+        designation=t.designation,
+        year=year_verdict(cited.date, cited.year, record.original_year),
+        periodical=periodical_verdict(cited.periodical, record.journal),
+        object=obj,
+        reasons=tuple(sorted(reasons)),
+    )

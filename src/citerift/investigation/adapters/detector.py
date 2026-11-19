@@ -1,4 +1,4 @@
-"""The production detector of DETECT: dt-2, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
+"""The production detector of DETECT: dt-3, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
 
 ``dt1_detector`` reads only committed content (the candidate inputs and lookup plan named by ``DetectInput``, the
 lookup observations, the index identity and the extraction they name), builds the typed views of ``dt1``, decides
@@ -15,7 +15,13 @@ Evidence written by DETECT (D-051 ids ``H(observation, pointer, kind)``; refs po
   for the identifier field of a witness (S-7.3), value null;
 - ``coherence``: the Q2 lookup observation of a PAIR at ``/query``, value kappa;
 - ``work_candidate``: the extraction, at the first occurrence of the candidate's keys (``/identifiers/j``), or at
-  ``/units/i`` for a NONE candidate; value ``{shape, keys, coherence}``.
+  ``/units/i`` for a NONE candidate; value ``{shape, keys, coherence}``;
+- ``lookup_record`` (dt-3, owner decision D-083): a lookup observation at ``/records/k`` (the bib-1 record of event
+  ``k``), value null, ref: the event item. A claim decided by D-13a or D-14 is supported by the record item of every
+  event of its deciding lookup and by the unit's ``cited_bibliography`` item (NORMALIZE) when the unit has one: the
+  bib-1 verdict is a pure function of these two, recomputed by VERIFY's replay. It is not stored as an item value,
+  because the same record item serves every unit that reaches it while the verdict depends on the unit (an item
+  holding it would give one id two values, B-8).
 
 B-8 (Step 8 carry-forward): a ``work_candidate`` item at the unit's pointer would give two CO_REPORTED_MULTIPLE
 candidates of one unit the same evidence id with different values. Within one extraction the candidates of a unit
@@ -30,13 +36,14 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from typing import Any
 
-from citerift.investigation import dt1, ids, sets
+from citerift.investigation import bibliographic, dt1, ids, sets
 from citerift.investigation.adapters.detect import DetectFailure, DetectInput, Detection
 from citerift.investigation.canonical import canon, sha256_hex
 
 # Version 2 (Step 12, A-03): the occurrences of a tainted unit support every claim that carries a taint reason.
 # Version 3 (corrective cycle, owner decision D-071): decision table dt-2; the view carries event flags and notice hits.
-DETECTOR_IDENTITY = "citerift-dt1-detector/3 (dt-2)"
+# Version 4 (final corrective cycle, owner decision D-083): dt-3; the view carries the bib-1 cited object and records.
+DETECTOR_IDENTITY = "citerift-dt1-detector/4 (dt-3)"
 LIMIT_CODE = "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"
 TAINT_REASONS = frozenset({"IDENTIFIER_UNCONFIRMED", "IDENTIFIER_MALFORMED", "IDENTIFIER_ROLE_UNRESOLVED"})
 
@@ -50,7 +57,28 @@ def _flags(raw: Any) -> tuple[str, ...]:
     return tuple(sorted(dt1.SAME_RECORD_FLAG.values()))
 
 
+def _records(obs: Mapping[str, Any]) -> list[bibliographic.RecordObject | None]:
+    """bib-1 records of a lookup observation, one per event in order, each bound to its public event by ``event_id``
+    and ``row_sha256``. A missing, misaligned or unbound ``records`` list is a defect of committed content: DETECT
+    fails (``ADAPTER_INCONSISTENT``), it never decides without the record side."""
+    events = obs.get("events") or []
+    records = obs.get("records")
+    if not isinstance(records, list) or len(records) != len(events):
+        raise DetectFailure(dt1.ADAPTER_INCONSISTENT, "a lookup observation's records do not match its events")
+    out: list[bibliographic.RecordObject | None] = []
+    for e, r in zip(events, records, strict=True):
+        if (
+            not isinstance(r, Mapping)
+            or r.get("event_id") != e.get("event_id")
+            or r.get("row_sha256") != e.get("row_sha256")
+        ):
+            raise DetectFailure(dt1.ADAPTER_INCONSISTENT, "a lookup record is not bound to its event")
+        out.append(bibliographic.RecordObject.from_json(r))
+    return out
+
+
 def _events(obs: Mapping[str, Any]) -> tuple[dt1.Event, ...]:
+    records = _records(obs)
     return tuple(
         dt1.Event(
             position=k,
@@ -63,13 +91,14 @@ def _events(obs: Mapping[str, Any]) -> tuple[dt1.Event, ...]:
             flags=_flags(e.get("flags")),
             notice_doi=e.get("notice_doi"),
             notice_pmid=e.get("notice_pmid"),
+            record=records[k],
         )
         for k, e in enumerate(obs.get("events") or ())
     )
 
 
 def lookup_view(obs: Mapping[str, Any]) -> dt1.Lookup:
-    """What dt-2 reads of one lookup observation: state, projection form, basis reasons and conflict groups, the
+    """What dt-3 reads of one lookup observation: state, projection form, basis reasons and conflict groups, the
     PMID_ROLE_COLLISION events matched by PMID, the budget refusal, every event with its flags (never only the rendered
     page) and Stage 02's ``notice_hit_count`` (None when the result does not state a non-negative integer)."""
     res = obs["result"]
@@ -155,6 +184,7 @@ def candidate_view(
         taint=tuple(cand["taint"]),
         multi="CO_REPORTED_MULTIPLE" in cand["flags"],
         lookups=tuple((role, lookups[q]) for role, q in lookup_roles(cand)),
+        cited=bibliographic.CitedObject.from_json(unit.get("bibliography")),
     )
 
 
@@ -311,6 +341,16 @@ class _Run:
             o = obs_of[out.upstream_role]
             supporting.add(self.projection_ev(o))
             supporting.update(self.event_ev(o, e.position) for e in self.views[o].events)
+        if rule in ("D-13a", "D-14"):
+            # bib-1 (D-083): every event of the deciding lookup with its comparison against the unit's description.
+            o = obs_of[str(view.deciding_role)]
+            cited_ev = unit["evidence"].get("cited_bibliography")
+            if (cited_ev is None) != (unit.get("bibliography") is None):
+                raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"unit {cand['unit_id']}: description without evidence")
+            if cited_ev is not None:
+                supporting.add(cited_ev)
+            for k, _ in out.comparisons:
+                supporting.add(self.items.add("lookup_record", o, f"/records/{k}", [self.event_ev(o, k)], None))
         upstream: list[dict[str, Any]] = []
         if out.upstream_role is not None:
             o = obs_of[out.upstream_role]

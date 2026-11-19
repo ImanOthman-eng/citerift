@@ -643,7 +643,8 @@ def _entries(
 @dataclass(frozen=True)
 class RunResult:
     """What one run reports. ``status`` is the lifecycle, or ``INVESTIGATION_BUSY`` when another process holds the
-    lock (nothing written). ``CORRUPT`` is computed, never recorded."""
+    lock (nothing written). ``CORRUPT`` is computed, never recorded; so is ``ENGINE_IDENTITY_DIFFERS`` (E-07: another
+    engine created the journal; nothing read or written)."""
 
     status: str
     state: WorkflowState | None
@@ -771,7 +772,10 @@ def run_investigation(
         mem, ctl = open_controller(memory_root, key, adapters, identities, clock=clock, repository=repository)
     except Busy as exc:
         return RunResult("INVESTIGATION_BUSY", None, None, str(exc))
-    except (CorruptInvestigation, WorkflowCorrupt) as exc:
+    except CorruptInvestigation as exc:
+        status = "ENGINE_IDENTITY_DIFFERS" if exc.engine_identity_differs else "CORRUPT"  # E-07
+        return RunResult(status, None, None, str(exc))
+    except WorkflowCorrupt as exc:
         return RunResult("CORRUPT", None, None, str(exc))
     with mem:
         try:

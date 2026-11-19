@@ -44,19 +44,20 @@ from citerift.wiki.extract import ExtractConfig
 # The Stage 04 engine identity (A-6, Step 12): ``engine_version`` is the Stage 04 package's own version
 # (``citerift.investigation.__version__``), bumped whenever engine semantics change, so a changed engine is a changed
 # input (STALE), not only a replay mismatch; ``schema_version`` is the version of the Stage 04 schema set (3.0.0 since
-# D-062 changed the index identity; 4.0.0 since D-071: decision table dt-2 and the reason IDENTIFIER_ROLE_COLLISION).
+# D-062 changed the index identity; 4.0.0 since D-071: decision table dt-2 and the reason IDENTIFIER_ROLE_COLLISION;
+# 5.0.0 since D-083: decision table dt-3, rule D-13a, the bib-1 reasons and evidence kinds).
 STAGE04_IDENTITY = {
     "engine_version": ENGINE_VERSION,
     "table_version": dt1.TABLE_VERSION,
     "plan_version": PLAN_VERSION,
-    "schema_version": "4.0.0",
+    "schema_version": "5.0.0",
 }
 # The Step 8 blob schemas the adapters write; a change of any is a change of the Stage 04 identity (STALE).
 INTEGRATION_SCHEMAS = {
     "bundle-observation": "1.0.0",
     "bundle-artifact-set": "1.0.0",
-    "candidate-inputs": "1.0.0",
-    "lookup-observation": "2.0.0",
+    "candidate-inputs": "2.0.0",
+    "lookup-observation": "3.0.0",
     "lookup-plan": "1.0.0",
 }
 

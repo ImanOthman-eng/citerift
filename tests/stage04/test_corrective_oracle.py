@@ -6,8 +6,10 @@ it.
 - ``simulations/stage04/oracle-dt2/`` is its frozen oracle over 25,264,896 abstract cases; its manifest digest is
   pinned here, so any change to it is visible.
 - With ``rc = False`` the dt-2 oracle equals the frozen dt-1 oracle case for case (checked over the whole table).
-- The production table (``citerift.investigation.dt1``, table version dt-2) gives the oracle's decision on one valid
-  case per distinct decision, with and without ``rc``, through the production detector on concrete inputs.
+- The production table (``citerift.investigation.dt1``) gives the oracle's decision on one valid case per distinct
+  decision, with and without ``rc``, through the production detector on concrete inputs. Since D-083 production is
+  dt-3; a dt-2 case is a dt-3 case with ``bc`` False, on which dt-3 equals dt-2 (``test_final_oracle.py``), so this
+  check is kept unchanged as a regression of dt-2 behaviour.
 """
 
 from __future__ import annotations
@@ -60,7 +62,8 @@ def test_the_dt2_oracle_is_frozen() -> None:
         manifest["frozen_dt1_oracle_manifest_sha256"]
         == hashlib.sha256((SIM / "oracle/MANIFEST.json").read_bytes()).hexdigest()
     )
-    assert manifest["table_version"] == dt1.TABLE_VERSION == R2.TABLE_VERSION == "dt-2"
+    assert manifest["table_version"] == R2.TABLE_VERSION == "dt-2"
+    assert dt1.TABLE_VERSION == "dt-3"  # D-083: production moved on; the dt-2 oracle is kept unchanged
     assert manifest["cases"] == 2 * json.loads((SIM / "oracle/MANIFEST.json").read_text())["cases"]
 
 

@@ -21,7 +21,7 @@ from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
 from citerift.investigation.memory import InvestigationMemory, created_payload
 
 SUBJECT = "wikipedia_article_revision"
-STAGE04 = {"engine_version": "0.3.0", "table_version": "dt-2", "plan_version": "plan-1", "schema_version": "4.0.0"}
+STAGE04 = {"engine_version": "0.4.0", "table_version": "dt-3", "plan_version": "plan-1", "schema_version": "5.0.0"}
 CAPTURE_BYTES = b"SYNTHETIC capture.json"
 CAPTURE = hashlib.sha256(CAPTURE_BYTES).hexdigest()
 SOURCE_BYTES = b"SYNTHETIC source text"
@@ -291,7 +291,7 @@ def not_found_claim(mem: InvestigationMemory, evidence_id: str) -> dict[str, Any
         },
         "class": "NOT_FOUND_IN_CHECKED_SOURCES",
         "rule": "D-16",
-        "table_version": "dt-2",
+        "table_version": "dt-3",
         "status": "uncertain",
         "value": "not_found_in_checked_sources",
         "alternatives": [],

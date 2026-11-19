@@ -156,7 +156,7 @@ def observation(query: dict[str, str | None], lk: R.Lookup, extra: list[dict[str
     events += copy.deepcopy(extra)
     return {
         "schema": "urn:citerift:schema:investigation:v1:lookup-observation",
-        "schema_version": "1.0.0",
+        "schema_version": "3.0.0",
         "label": LABEL,
         "query": query,
         "index": INDEX,
@@ -201,9 +201,43 @@ def keys_of_shape(shape: str) -> list[dict[str, str]]:
     }[shape]
 
 
+# dt-3 (owner decision D-083): the bib-1 description of the synthetic unit and record fields that conflict with it
+# (disjoint authors), used for ``bc``; every other record carries no bibliographic field (INSUFFICIENT).
+BC_CITED = {
+    "titles": ["Synthetic title of a related object"],
+    "authors": ["Commentator"],
+    "periodical": None,
+    "date": None,
+    "year": None,
+    "volume": None,
+    "issue": None,
+    "pages": None,
+}
+BC_RECORD = {"title": "Synthetic title of a related object", "authors": "Ann Author;Bob Writer"}
+
+
+def records_of(obs: dict[str, Any], conflicting: bool, fields: Mapping[str, Any] | None = None) -> list[dict[str, Any]]:
+    """The bib-1 records of an observation's events (lookup observation version 3), bound by event id and row hash.
+    ``fields`` (title, authors, journal, original_year), when given, is every event's record."""
+    if fields is None:
+        fields = BC_RECORD if conflicting else {}
+    return [
+        {
+            "event_id": e["event_id"],
+            "row_sha256": e.get("row_sha256"),
+            "title": fields.get("title"),
+            "authors": fields.get("authors"),
+            "journal": fields.get("journal"),
+            "original_year": fields.get("original_year"),
+        }
+        for e in obs["events"]
+    ]
+
+
 def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
     """The committed DETECT input of one abstract case, and its blobs by digest. A dt-2 case (``dt2_reference.Case``)
-    with ``rc`` set gets a role-ambiguous event in its deciding lookup (``role_collision_event``)."""
+    with ``rc`` set gets a role-ambiguous event in its deciding lookup (``role_collision_event``); a dt-3 case with
+    ``bc`` set gets a unit description and deciding-lookup records in bib-1 MATERIAL_CONFLICT (``BC_CITED``)."""
     blobs: dict[str, Any] = {}
 
     def put(value: Any) -> str:
@@ -236,8 +270,18 @@ def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
             "unit": ids.evidence_id(ext, "/units/0", "unit"),
             "use_eligibility": ids.evidence_id(ext, "/units/0", "use_eligibility"),
         },
+        "bibliography": None,
         "occurrences": occ,
     }
+    bc = bool(getattr(c, "bc", False))
+    # ``bib`` (optional): a (cited_bibliography value or None, record fields) pair that replaces BC_CITED/BC_RECORD,
+    # for detector-level tests of real descriptions (the corpus of the final corrective cycle).
+    bib = getattr(c, "bib", None)
+    cited = copy.deepcopy(bib[0]) if bib is not None else (copy.deepcopy(BC_CITED) if bc else None)
+    if cited is not None:
+        unit["bibliography"] = cited
+        unit["evidence"]["cited_bibliography"] = ids.evidence_id(ext, "/units/0", "cited_bibliography")
+    deciding_role = {"DOI": "d", "PMID": "p", "PAIR": "q2"}.get(c.shape)
     cand = {
         "cand_ref": ids.cand_ref(unit_ref, keys),
         "unit_id": "un-1",
@@ -257,12 +301,15 @@ def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
     ):
         if lk is not None:
             obs = observation(q, lk, extra[role], role)
-            if getattr(c, "rc", False) and role == {"DOI": "d", "PMID": "p", "PAIR": "q2"}.get(c.shape):
+            if getattr(c, "rc", False) and role == deciding_role:
                 role_collision_event(c.shape, obs)
+            obs["records"] = records_of(
+                obs, bc and role == deciding_role, bib[1] if bib is not None and role == deciding_role else None
+            )
             lookups.append({"query": q, "observation": put(obs)})
     inputs = {
         "schema": "urn:citerift:schema:investigation:v1:candidate-inputs",
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "root_id": "2" * 64,
         "bundle": "3" * 64,
         "extraction": ext,

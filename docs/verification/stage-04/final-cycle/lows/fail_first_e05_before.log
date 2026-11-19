@@ -1,0 +1,13 @@
+# fail-first: tests/stage04/test_final_lows.py -k e05 run against the engine source of 6663314 (PYTHONPATH=<worktree>/src)
+E           AssertionError: {
+E               "command": "show",
+E               "error": {
+E                 "code": "MEMORY_ROOT_UNSAFE",
+E                 "detail": "<tmp>/account-name-here/memory is writable by group or others"
+E               },
+E               "exit_code": 3,
+E               "status": "invalid"
+E             }
+E             citerift-investigate show: invalid: MEMORY_ROOT_UNSAFE: <tmp>/account-name-here/memory is writable by group or others
+E             
+E           assert ('account-name-here' not in '{\n  "comma... or others\n'

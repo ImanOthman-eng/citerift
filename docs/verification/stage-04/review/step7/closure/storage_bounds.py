@@ -118,12 +118,36 @@ def _created() -> dict[str, Any]:
         "config_digest": SHA,
         "stage04": {
             "engine_version": "9" * 13 + "." + "9" * 13 + "." + "9" * 12,
-            "table_version": "dt-2",
+            "table_version": "dt-3",  # D-083 (dt-2 before); same length
             "plan_version": "plan-1",
-            "schema_version": "4.0.0",  # D-071: Stage 04 schemas 4.0.0 (Step 12: 3.0.0); same length
+            "schema_version": "5.0.0",  # D-083: Stage 04 schemas 5.0.0 (D-071: 4.0.0; Step 12: 3.0.0); same length
         },
         "migrated_from": None,
     }
+
+
+# D-083: every reason a D-13a claim can carry together (BIBLIOGRAPHIC_SPEC.md section 6), the longest reasons list.
+D13A_REASONS = [
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+    "BIB_AUTHORS_DISJOINT",
+    "BIB_TITLE_DISJOINT",
+    "BIB_TITLE_RELATED_OBJECT",
+    "CO_REPORTED_MULTIPLE",
+    "KEY_RESULTS_DIFFER",
+    "PAIR_UNCORROBORATED",
+]
+
+
+def _cited_bibliography_max() -> dict[str, Any]:
+    """D-083: the largest committed bib-1 description (spec 2.1 step 6: at most 64 titles and 64 authors, 4,096 code
+    points in all): every code point a control character (6 bytes of canonical JSON each), spread over 134 values."""
+    per, rest = divmod(4096, 134)
+    lengths = [per + (1 if i < rest else 0) for i in range(134)]
+    vals = [CTRL * n for n in lengths]
+    return {"titles": vals[:64], "authors": vals[64:128], **dict(zip(SINGLE_FIELDS, vals[128:], strict=True))}
+
+
+SINGLE_FIELDS = ("periodical", "date", "year", "volume", "issue", "pages")
 
 
 def _claim(cls: str) -> dict[str, Any]:
@@ -134,7 +158,7 @@ def _claim(cls: str) -> dict[str, Any]:
         "cand_ref": SHA,
         "candidate": {"shape": "PAIR", "keys": [doi, pmid], "coherence": "COHERENT"},
         "class": cls,
-        "table_version": "dt-2",
+        "table_version": "dt-3",
         "alternatives": [],
         "upstream_reasons": [],
         "evidence_set": SHA,
@@ -154,7 +178,21 @@ def _claim(cls: str) -> dict[str, Any]:
                 {"value": {**alt, "reached_by": pmid}, "supporting_count": MAXINT},
             ],
         )
-    else:  # UNRESOLVED_STATUS: the only class with upstream reasons, at maxItems 192
+    elif cls == "UNRESOLVED_IDENTITY":  # D-083: D-13a, the longest reasons list, with all 192 upstream reasons
+        base.update(
+            rule="D-13a",
+            status="uncertain",
+            value=None,
+            # the longest valid list: a PAIR (KEY_RESULTS_DIFFER) left UNDETERMINED (PAIR_UNCORROBORATED); only a
+            # single-key candidate carries CO_REPORTED_MULTIPLE
+            candidate={"shape": "PAIR", "keys": [doi, pmid], "coherence": "UNDETERMINED"},
+            reasons=[r for r in D13A_REASONS if r != "CO_REPORTED_MULTIPLE"],
+            upstream_reasons=[
+                {"source": "stage02_projection_basis", "code": f"{CODE[:76]}{i:04d}", "evidence": SHA}
+                for i in range(192)
+            ],
+        )
+    else:  # UNRESOLVED_STATUS: upstream reasons at maxItems 192
         base.update(
             rule="D-11",
             status="uncertain",
@@ -178,6 +216,7 @@ def _evidence(kind: str) -> dict[str, Any]:
         },
         "identifier_occurrence": {"status": "OBSERVATION_ROLE", "key": doi},
         "unit": {"source_artifact": SHA, "unit_span_sha256": SHA},
+        "cited_bibliography": {"version": "bib-1", "fields": _cited_bibliography_max()},
     }
     return {
         "evidence_id": SHA,
@@ -334,11 +373,18 @@ def record_kinds() -> dict[str, Any]:
             ),
         ),
     }
-    for kind in ("work_candidate", "identifier_occurrence", "unit", "lookup_event"):
+    for kind in (
+        "work_candidate",
+        "identifier_occurrence",
+        "unit",
+        "lookup_event",
+        "cited_bibliography",
+        "lookup_record",
+    ):
         out[f"evidence_recorded ({kind})"] = _measure(
             f"evidence {kind}", _record("evidence_recorded", "NORMALIZE", 3, _evidence(kind), True)
         )
-    for cls in ("IDENTITY_CONFLICT", "UNRESOLVED_STATUS"):
+    for cls in ("IDENTITY_CONFLICT", "UNRESOLVED_STATUS", "UNRESOLVED_IDENTITY"):
         out[f"claim_recorded ({cls})"] = _measure(
             f"claim {cls}", _record("claim_recorded", "DETECT", 3, _claim(cls), True)
         )
@@ -346,6 +392,7 @@ def record_kinds() -> dict[str, Any]:
     # no class allows together; it bounds every claim whatever the class rules combine.
     both = _claim("IDENTITY_CONFLICT")
     both["upstream_reasons"] = _claim("UNRESOLVED_STATUS")["upstream_reasons"]
+    both["reasons"] = D13A_REASONS  # D-083: the longest reasons list of any class
     over = len(canon(_record("claim_recorded", "DETECT", 3, both, True)))
     out["claim_recorded (sum of field maxima, not a valid record)"] = {
         "bytes": over,
@@ -473,7 +520,7 @@ def reader_memory(n: int = 3000) -> dict[str, Any]:
         claim, _ = claim_and_set("RETRACTED_WORK_CITED", [evs[0]["evidence_id"]] * 4)
         claim["evidence_set"], claim["supporting_count"] = digest(value), n
         claim["claim_id"] = ids.claim_id(
-            claim["cand_ref"], claim["class"], claim["rule"], "dt-2", claim["evidence_set"]
+            claim["cand_ref"], claim["class"], claim["rule"], "dt-3", claim["evidence_set"]
         )
         out = {"claims": [claim["claim_id"]]}
         recs = (*(ContentRecord("evidence_recorded", e) for e in evs), ContentRecord("claim_recorded", claim))

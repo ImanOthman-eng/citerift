@@ -569,10 +569,11 @@ def test_unsupported_schema_version_is_refused(tmp_path: Path, where: str) -> No
     root = memory_root(tmp_path)
     payload = bundle_payload(root)
     payload = copy.deepcopy(payload)
-    payload[where]["schema_version"] = "5.0.0"  # unknown to the reader (request 2.0.0, stage04 4.0.0)
+    payload[where]["schema_version"] = "6.0.0"  # unknown to the reader (request 2.0.0, stage04 5.0.0)
     with pytest.raises(AppendRefused) as exc:
         InvestigationMemory.create(root, payload, clock=Clock())
-    assert exc.value.invariant == "SCHEMA"
+    # E-07 (D-083): another stage04 identity is refused under its own code, before the schema check
+    assert exc.value.invariant == ("E-07" if where == "stage04" else "SCHEMA")
     assert os.listdir(root) == []
 
 
@@ -610,7 +611,7 @@ def test_records_never_alias_the_callers_objects(tmp_path: Path) -> None:
     stage04 = dict(STAGE04)
     payload = created_payload(bundle_payload(root)["request"], stage04, bundle_capture_sha256=CAPTURE)
     stage04["schema_version"] = "9.9.9"
-    assert payload["stage04"]["schema_version"] == "4.0.0"
+    assert payload["stage04"]["schema_version"] == "5.0.0"
     with InvestigationMemory.create(root, payload, clock=Clock()) as m:
         drive(m)
         before = m.view.content_digest()

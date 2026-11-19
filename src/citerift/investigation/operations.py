@@ -227,6 +227,18 @@ def created_for(request: Mapping[str, Any]) -> dict[str, Any]:
 # Opening ---------------------------------------------------------------------------------------------------------
 
 
+ENGINE_IDENTITY_DIFFERS = "ENGINE_IDENTITY_DIFFERS"
+
+
+def _corrupt(exc: CorruptInvestigation) -> OperationError:
+    """CORRUPT, except a journal another engine created (E-07): STALE, with its own code, so that a valid investigation
+    of an earlier engine in a reused memory root is not reported as tampered with. Either way nothing is read from it
+    and nothing is written."""
+    if exc.engine_identity_differs:
+        return OperationError("stale", ENGINE_IDENTITY_DIFFERS, str(exc))
+    return OperationError("corrupt", "INVESTIGATION_CORRUPT", str(exc))
+
+
 @contextmanager
 def opened(memory_root: Path, key: str) -> Iterator[InvestigationMemory]:
     """A read-only open: the lock (busy), Memory's checks and the workflow invariants (corrupt). Nothing is written."""
@@ -235,7 +247,7 @@ def opened(memory_root: Path, key: str) -> Iterator[InvestigationMemory]:
     except Busy as exc:
         raise OperationError("busy", "INVESTIGATION_BUSY", str(exc)) from exc
     except CorruptInvestigation as exc:
-        raise OperationError("corrupt", "INVESTIGATION_CORRUPT", str(exc)) from exc
+        raise _corrupt(exc) from exc
     except PathUnsafe as exc:
         if exc.code == "MEMORY_ROOT_UNSAFE":
             raise OperationError("invalid", exc.code, exc.detail) from exc
@@ -471,7 +483,7 @@ def run(request: Mapping[str, Any]) -> tuple[dict[str, Any], int]:
     except Busy as exc:
         raise OperationError("busy", "INVESTIGATION_BUSY", str(exc)) from exc
     except CorruptInvestigation as exc:
-        raise OperationError("corrupt", "INVESTIGATION_CORRUPT", str(exc)) from exc
+        raise _corrupt(exc) from exc
     except PathUnsafe as exc:
         raise OperationError("invalid", exc.code, exc.detail) from exc
     except InvestigationMemoryError as exc:
@@ -497,6 +509,8 @@ def _drive(root: Path, created: Mapping[str, Any], integration: Integration) -> 
         ) from exc
     if result.status == "INVESTIGATION_BUSY":
         raise OperationError("busy", "INVESTIGATION_BUSY", result.detail)
+    if result.status == ENGINE_IDENTITY_DIFFERS:
+        raise OperationError("stale", ENGINE_IDENTITY_DIFFERS, result.detail)
     if result.status == "CORRUPT":
         raise OperationError("corrupt", "INVESTIGATION_CORRUPT", result.detail)
     return _after(root, key, result.detail, integration)
@@ -524,7 +538,7 @@ def verify(
         with opened(memory_root, key) as mem:
             return _verify(mem, integ, supplied)
     except OperationError as exc:
-        if exc.status in ("busy", "corrupt"):
+        if exc.status in ("busy", "corrupt") or exc.code == ENGINE_IDENTITY_DIFFERS:
             out = {"result": exc.status, "code": exc.code, "detail": exc.detail, "checks": []}
             return out, EXIT[exc.status]
         raise
@@ -717,7 +731,7 @@ def export(
                 raise OperationError(status, "EXPORT_REFUSED", f"{why}; nothing exported")
             written = exporter.write(mem, out, memory_root)
     except OperationError as exc:
-        if exc.code in ("INVESTIGATION_BUSY", "INVESTIGATION_CORRUPT"):
+        if exc.code in ("INVESTIGATION_BUSY", "INVESTIGATION_CORRUPT", ENGINE_IDENTITY_DIFFERS):
             raise OperationError(exc.status, "EXPORT_REFUSED", f"{exc.code}: {exc.detail}") from exc
         raise
     return {"exported": str(out), **written}, EXIT[status_of(lifecycle, outcome)]  # passed: COMPLETED or NR

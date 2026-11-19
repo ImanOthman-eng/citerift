@@ -223,7 +223,7 @@ def test_d047_claim_over_50000_evidence_ids_commits_replays_and_keeps_no_inline_
     assert stored == canon(value) and len(stored) > MAX_RECORD_BYTES
     # claim_id binds the exact set: a different set gives a different id.
     other = sets.evidence_set([e["evidence_id"] for e in evs[:-1]])
-    assert ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-2", digest(other)) != claim["claim_id"]
+    assert ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-3", digest(other)) != claim["claim_id"]
     # Replay: a full reopen (blobs read, sets checked) gives the same content digest.
     digests = []
     for _ in range(2):
@@ -296,7 +296,7 @@ def _claim_case(change: str) -> Any:
         elif change == "count-mismatch":
             claim = {**claim, "supporting_count": 2}
             claim["claim_id"] = ids.claim_id(
-                claim["cand_ref"], claim["class"], claim["rule"], "dt-2", claim["evidence_set"]
+                claim["cand_ref"], claim["class"], claim["rule"], "dt-3", claim["evidence_set"]
             )
             blobs.append(value)
         elif change == "not-a-set":
@@ -304,7 +304,7 @@ def _claim_case(change: str) -> Any:
             claim = _bind_keep_counts(claim, value)
             blobs.append(value)
         elif change == "claim-id-of-another-set":
-            claim["claim_id"] = ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-2", h("other"))
+            claim["claim_id"] = ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-3", h("other"))
             blobs.append(value)
         recs = tuple(ContentRecord("claim_recorded", claim) if c.kind == "claim_recorded" else c for c in r.records)
         out = {"claims": [claim["claim_id"]]}
@@ -319,7 +319,7 @@ def _bind_keep_counts(claim: dict[str, Any], value: dict[str, Any], supporting: 
     c["evidence_set"] = digest(value)
     if supporting is not None:
         c["supporting_count"] = supporting
-    c["claim_id"] = ids.claim_id(c["cand_ref"], c["class"], c["rule"], "dt-2", c["evidence_set"])
+    c["claim_id"] = ids.claim_id(c["cand_ref"], c["class"], c["rule"], "dt-3", c["evidence_set"])
     return c
 
 

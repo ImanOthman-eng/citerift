@@ -57,7 +57,13 @@ def observation(events: list[dict[str, Any]], hits: int) -> dict[str, Any]:
         "notice_hit_count": hits,
         "notice_hits": [{"event_id": f"nh-{i}"} for i in range(hits)],
     }
-    return {"query": {}, "result": result, "events": events, "event_count": len(events)}
+    # lookup observation version 3 (dt-3, owner decision D-083): one bib-1 record per event, bound to it; no field
+    records = [
+        {"event_id": e.get("event_id"), "row_sha256": e.get("row_sha256"), "title": None, "authors": None,
+         "journal": None, "original_year": None}
+        for e in events
+    ]  # fmt: skip
+    return {"query": {}, "result": result, "events": events, "event_count": len(events), "records": records}
 
 
 # The restatement of SPEC 7.3a --------------------------------------------------------------------------------------

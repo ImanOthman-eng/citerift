@@ -108,6 +108,12 @@ REASON_TEXT = {
     "checked sources (or they do not say it is not), and no other identifier of the citation tells the work from the "
     "notice",
     "BRIDGE_ONLY_SUPPORT": "the only support links the identifiers indirectly",
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT": "the citation's own description (authors or title) conflicts with the record its "
+    "identifiers reach, so the cited publication is not established",
+    "BIB_AUTHORS_DISJOINT": "the cited authors share no name with the record's authors",
+    "BIB_TITLE_DISJOINT": "the cited title shares no word with the record's title",
+    "BIB_TITLE_RELATED_OBJECT": "the cited title names an object related to the record's work (for example a comment, "
+    "reply, correction or notice)",
     "CURRENT_EFFECT_NOT_ESTABLISHED": "the current effect of the recorded events is not established",
     "COVERAGE_GAP_RELEVANT_ROWS": "rows of the checked sources that may concern this identifier are quarantined or "
     "carry invalid identifiers",

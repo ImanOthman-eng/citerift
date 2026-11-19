@@ -60,7 +60,15 @@ from citerift.investigation import batches, ids, report, retained, sets
 from citerift.investigation.canonical import H
 from citerift.investigation.errors import BlobError, CanonError, InvariantViolation
 from citerift.investigation.journal import JOURNAL_FORMAT
-from citerift.investigation.schemas import CANDIDATE_BATCH, EVIDENCE_BATCH, LOOKUP_BATCH, RECORD, problems
+from citerift.investigation.schemas import (
+    CANDIDATE_BATCH,
+    COMMON,
+    EVIDENCE_BATCH,
+    LOOKUP_BATCH,
+    RECORD,
+    problems,
+    ref_problems,
+)
 
 STEPS = ("VALIDATE", "ACQUIRE", "EXTRACT", "NORMALIZE", "LOOKUP", "DETECT", "ASSEMBLE", "VERIFY")
 TERMINAL = {"step_succeeded", "step_failed", "step_deferred", "step_interrupted"}
@@ -146,6 +154,32 @@ class _Defs:
 
 def _violation(invariant: str, code: str, detail: str, seq: int | None) -> InvariantViolation:
     return InvariantViolation(invariant, code, detail, seq)
+
+
+ENGINE_IDENTITY_DIFFERS = "ENGINE_IDENTITY_DIFFERS"
+_TABLE_VERSION = COMMON + "#/$defs/table_version"
+_SCHEMA_VERSION = COMMON + "#/$defs/stage04_identity/properties/schema_version"
+
+
+def engine_identity_differs(rec: Any) -> str | None:
+    """Reviewer finding E-07 (owner decision D-083): the first record of an investigation that names, as strings, a
+    table version or a schema version other than this engine's. Such a journal is refused like any record outside
+    the schemas, but under its own code, so that a valid investigation of an earlier engine (a reused memory root) is
+    not reported as corrupt. Anything else about the record is not looked at here: every other defect is found by the
+    full checks, and the code never accepts a record."""
+    if not isinstance(rec, dict) or rec.get("kind") != "investigation_created" or rec.get("seq") != 0:
+        return None
+    payload = rec.get("payload")
+    stage04 = payload.get("stage04") if isinstance(payload, dict) else None
+    if not isinstance(stage04, dict):
+        return None
+    table, schema = stage04.get("table_version"), stage04.get("schema_version")
+    if not (isinstance(table, str) and isinstance(schema, str)):
+        return None
+    if ref_problems(table, _TABLE_VERSION) or ref_problems(schema, _SCHEMA_VERSION):
+        engine = stage04.get("engine_version")
+        return f"created by engine {engine!r} (table {table!r}, schema {schema!r}), not by this engine"
+    return None
 
 
 class Folder:
@@ -597,6 +631,10 @@ class Folder:
             raise _violation("S-8.2", "JOURNAL_CORRUPT", "record is not an object", seq)
         if rec.get("v") != JOURNAL_FORMAT or isinstance(rec.get("v"), bool):
             raise _violation("S-8.7", "JOURNAL_VERSION_UNSUPPORTED", f"journal version {rec.get('v')!r}", seq)
+        if seq == 0:
+            differs = engine_identity_differs(rec)
+            if differs is not None:
+                raise _violation("E-07", ENGINE_IDENTITY_DIFFERS, differs, seq)
         found = problems(rec, RECORD)
         if found:
             raise _violation("SCHEMA", "RECORD_INVALID", "; ".join(found[:3]), seq)

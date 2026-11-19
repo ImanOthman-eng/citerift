@@ -1,0 +1,1201 @@
+{
+ "format": "citerift-bib-corpus/1",
+ "specification": "docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md (bib-1)",
+ "label": "SYNTHETIC unless origin names development evidence; never evaluation data",
+ "cases": [
+  {
+   "id": "garry-exact",
+   "category": "garry",
+   "wiki": "en",
+   "source": "{{cite journal\n |author=Robert Garry\n |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments\n |journal=Virology Journal\n |date=21 July 2010\n |volume=7\n |issue=1\n |page=169\n |doi=10.1186/1743-422X-7-169\n |pmid=20663162\n |pmc=2918564\n |s2cid=8124033\n |doi-access=free\n }}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "development:en-27958530/un-00004",
+   "note": "other author; title = record title + a comment designation"
+  },
+  {
+   "id": "garry-authors-only",
+   "category": "garry",
+   "wiki": "en",
+   "source": "{{cite journal |author=Robert Garry |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time |journal=Virology Journal}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "designation removed: the author rule alone blocks it (no suffix rule involved)"
+  },
+  {
+   "id": "garry-title-only",
+   "category": "garry",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Hon |first1=K. L. |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "original authors but a comment designation outside the record title"
+  },
+  {
+   "id": "garry-true-original",
+   "category": "true_original",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Hon |first1=K. L. |last2=Ng |first2=P. C. |last3=Leung |first3=T. F. |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time |journal=Virology Journal |date=2010 |doi=10.1186/1743-422X-7-169}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title": "AGREE",
+    "title_relation": "EQUAL",
+    "year": "SAME",
+    "periodical": "SAME"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "true-original-vauthors",
+   "category": "true_original",
+   "wiki": "en",
+   "source": "{{cite journal |vauthors=Hon KL, Ng PC, Leung TF |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "punct-case",
+   "category": "punctuation",
+   "wiki": "en",
+   "source": "{{cite journal |author=Lindqvist, M. Q. |title=THERMAL DRIFT OF SYNTHETIC LATTICE SENSORS — A FIELD STUDY.}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "punct-markup",
+   "category": "punctuation",
+   "wiki": "en",
+   "source": "{{cite journal |last=Oyelaran |title=''Thermal drift'' of [[synthetic lattice]] sensors: a field&nbsp;study<!-- note -->}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "diacritics",
+   "category": "author_format",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Brezinová |first1=H. |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": "diacritics folded"
+  },
+  {
+   "id": "author-inverted",
+   "category": "author_format",
+   "wiki": "en",
+   "source": "{{cite journal |author=Lindqvist, Mara Q. |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "author-initials-only",
+   "category": "author_format",
+   "wiki": "en",
+   "source": "{{cite journal |author=M. Q. L. |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": "initials are not names"
+  },
+  {
+   "id": "truncated-etal",
+   "category": "truncated_authors",
+   "wiki": "en",
+   "source": "{{cite journal |author=Lindqvist M, et al. |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "only-etal",
+   "category": "truncated_authors",
+   "wiki": "en",
+   "source": "{{cite journal |author=et al. |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "subtitle-truncated",
+   "category": "subtitle",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "subtitle-extended",
+   "category": "subtitle",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study: results from three winters}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "typo-overlap",
+   "category": "punctuation",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drfit of syntetic lattice sensors}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title_relation": "OVERLAP",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "comment-other-authors",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |author=Peter Quill |title=Comment on: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "CONFLICT",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "comment-same-authors",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Comments on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "reply",
+   "category": "reply",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Reply to the comment on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "response-to",
+   "category": "reply",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Response to Quill: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "phrase 'response to'"
+  },
+  {
+   "id": "editorial-genre",
+   "category": "editorial",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Editorial: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "a genre, not a relation: a retracted editorial is itself a work (known limit)"
+  },
+  {
+   "id": "erratum",
+   "category": "erratum",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Erratum: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "correction-to",
+   "category": "erratum",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Correction to: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "corrigendum",
+   "category": "erratum",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study (Corrigendum)}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "withdrawal-notice",
+   "category": "withdrawal",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Withdrawal: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "withdrawn-status",
+   "category": "withdrawal",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=WITHDRAWN: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "status watermark of the work itself"
+  },
+  {
+   "id": "retraction-notice",
+   "category": "retraction_notice",
+   "wiki": "en",
+   "source": "{{cite journal |title=Retraction notice to \"Thermal drift of synthetic lattice sensors: a field study\"}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "INSUFFICIENT",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "retracted-watermark",
+   "category": "retraction_notice",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=RETRACTED ARTICLE: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "eoc-notice",
+   "category": "eoc",
+   "wiki": "en",
+   "source": "{{cite journal |title=Expression of concern: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "retracted-comment-own-title",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Comment on the lattice debate}}",
+   "record": {
+    "title": "Comment on the lattice debate",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title": "AGREE",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "a retracted comment: the designation is inside the record's own title"
+  },
+  {
+   "id": "letter-genre-dev",
+   "category": "editorial",
+   "wiki": "en",
+   "source": "{{cite journal |journal=[[The BMJ]] |last=Murphy |first=John M. |author-link=John Murphy (branding consultant) |title=Letter: Cello scrotum |date=11 May 1974 |volume=2 |issue=5914 |page=335 |pmid=4827125 |pmc=1610985 |doi=10.1136/bmj.2.5914.335-a}}",
+   "record": {
+    "title": "Cello scrotum",
+    "authors": "J M Murphy",
+    "journal": "BMJ: British Medical Journal",
+    "original_year": 1974
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "designation": false,
+    "year": "SAME"
+   },
+   "origin": "development:en-21293835",
+   "note": "the retracted work is itself a letter"
+  },
+  {
+   "id": "jasist-withdrawal-dev",
+   "category": "withdrawal",
+   "wiki": "en",
+   "source": "{{cite journal |arxiv=1407.2137 |last1=Iorio |first1=L. |journal=Journal of the Association for Information Science and Technology |volume=65 |issue=11 |page=2375 |doi=10.1002/asi.23238 |title=''Withdrawal:'' 'A new type of misconduct in the field of the physical sciences: The case of the pseudonyms used by I. Ciufolini to anonymously criticize other people's works on arXiv' by L. Iorio |year=2014}}",
+   "record": {
+    "title": "A new type of misconduct in the field of the physical sciences: The case of the pseudonyms used by I. Ciufolini to anonymously criticize other people's works on arXiv",
+    "authors": "L Iorio",
+    "journal": "Journal of the Association for Information Science and Technology",
+    "original_year": 2014
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "designation": true
+   },
+   "origin": "development:en-39868218/un-00011",
+   "note": "the evaluation-1 JASIST unit: dt-3 still decides it by D-10 (role collision) first"
+  },
+  {
+   "id": "same-title-other-authors",
+   "category": "same_title_other_object",
+   "wiki": "en",
+   "source": "{{cite journal |author=Ines Vargas |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "title": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "wrong-identifier-dev",
+   "category": "incompatible_description",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |الأخير1=Pang |الأول1=Z. P. |الأخير2=Yang |الأول2=N. |الأخير3=Vierbuchen |الأول3=T. |عنوان=Induction of human neuronal cells by defined transcription factors |صحيفة=Cell |المجلد=145 |العدد=7 |صفحات=1010–1011 |تاريخ=2011}}",
+   "record": {
+    "title": "Directed Conversion of Alzheimer's Disease Patient Skin Fibroblasts Into Functional Neurons",
+    "authors": "Liang Qiang;Ryousuke Fujita;Toru Yamashita;Sergio Angulo;Herve Rhinn;David Rhee;Claudia Doege;Lily Chau;William B. Vanti;Herman Moreno;Asa Abeliovich",
+    "journal": "Cell",
+    "original_year": 2011
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "OVERLAP"
+   },
+   "origin": "development:ar-10305362",
+   "note": "titles share only function words (OVERLAP, not DISJOINT); the authors decide"
+  },
+  {
+   "id": "same-authors-disjoint-title",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Coastal erosion budgets}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_DISJOINT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "DISJOINT"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "disjoint-title-no-authors",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |title=Coastal erosion budgets}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_DISJOINT"
+    ],
+    "authors": "INSUFFICIENT",
+    "title_relation": "DISJOINT"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "chapter-in-book-dev",
+   "category": "true_original",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |الأخير1=Ahovuo-Saloranta |الأول1=A. |الأخير2=Rautakorpi |الفصل=Antibiotics for acute maxillary sinusitis |عنوان=Cochrane Database of Systematic Reviews |سنة=2008 |doi=10.1002/14651858.CD000243.pub2}}",
+   "record": {
+    "title": "Antibiotics for acute maxillary sinusitis (Pub 2)",
+    "authors": "Anneli Ahovuo Saloranta;Ulla Maija Rautakorpi;Oleg V Borisenko;Helena Liira;John W Williams Jr;Marjukka Makela",
+    "journal": "Cochrane Database of Systematic Reviews",
+    "original_year": 2008
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "CONTAINED"
+   },
+   "origin": "development:ar-311750-a1",
+   "note": "the work's title is in the chapter parameter; the title parameter names the database"
+  },
+  {
+   "id": "malformed-title-markup-only",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title={{lang|fr|}}<!-- --> |author=<!-- -->}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title": "INSUFFICIENT",
+    "title_relation": "MISSING"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "missing-title",
+   "category": "missing_title",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill |journal=Journal of Synthetic Instrumentation}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "title_relation": "MISSING",
+    "periodical": "SAME"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "missing-title-agree",
+   "category": "missing_title",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Oyelaran}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "MISSING"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "missing-author",
+   "category": "missing_author",
+   "wiki": "en",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "no-fields",
+   "category": "insufficient",
+   "wiki": "en",
+   "source": "{{cite journal |doi=10.5555/synthetic.1}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "MISSING"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "not-a-template",
+   "category": "insufficient",
+   "wiki": "en",
+   "source": "Lindqvist M. Thermal drift. doi:10.5555/synthetic.1",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": "free text: no cited object"
+  },
+  {
+   "id": "two-templates",
+   "category": "insufficient",
+   "wiki": "en",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study}} {{cite journal |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "oversized-title",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill |title=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": "spec 2.1 step 6: 4,097 code points in all, above the size bound: no cited object (never truncated)"
+  },
+  {
+   "id": "too-many-authors",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title=Coastal erosion budgets |last1=Q1 |last2=Q2 |last3=Q3 |last4=Q4 |last5=Q5 |last6=Q6 |last7=Q7 |last8=Q8 |last9=Q9 |last10=Q10 |last11=Q11 |last12=Q12 |last13=Q13 |last14=Q14 |last15=Q15 |last16=Q16 |last17=Q17 |last18=Q18 |last19=Q19 |last20=Q20 |last21=Q21 |last22=Q22 |last23=Q23 |last24=Q24 |last25=Q25 |last26=Q26 |last27=Q27 |last28=Q28 |last29=Q29 |last30=Q30 |last31=Q31 |last32=Q32 |last33=Q33 |last34=Q34 |last35=Q35 |last36=Q36 |last37=Q37 |last38=Q38 |last39=Q39 |last40=Q40 |last41=Q41 |last42=Q42 |last43=Q43 |last44=Q44 |last45=Q45 |last46=Q46 |last47=Q47 |last48=Q48 |last49=Q49 |last50=Q50 |last51=Q51 |last52=Q52 |last53=Q53 |last54=Q54 |last55=Q55 |last56=Q56 |last57=Q57 |last58=Q58 |last59=Q59 |last60=Q60 |last61=Q61 |last62=Q62 |last63=Q63 |last64=Q64 |last65=Q65}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": "spec 2.1 step 6: 65 author values"
+  },
+  {
+   "id": "at-the-size-bound",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill |title=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "DISJOINT"
+   },
+   "origin": "synthetic",
+   "note": "spec 2.1 step 6: exactly 4,096 code points in all is described"
+  },
+  {
+   "id": "sixty-four-authors",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study |last1=Q1 |last2=Q2 |last3=Q3 |last4=Q4 |last5=Q5 |last6=Q6 |last7=Q7 |last8=Q8 |last9=Q9 |last10=Q10 |last11=Q11 |last12=Q12 |last13=Q13 |last14=Q14 |last15=Q15 |last16=Q16 |last17=Q17 |last18=Q18 |last19=Q19 |last20=Q20 |last21=Q21 |last22=Q22 |last23=Q23 |last24=Q24 |last25=Q25 |last26=Q26 |last27=Q27 |last28=Q28 |last29=Q29 |last30=Q30 |last31=Q31 |last32=Q32 |last33=Q33 |last34=Q34 |last35=Q35 |last36=Q36 |last37=Q37 |last38=Q38 |last39=Q39 |last40=Q40 |last41=Q41 |last42=Q42 |last43=Q43 |last44=Q44 |last45=Q45 |last46=Q46 |last47=Q47 |last48=Q48 |last49=Q49 |last50=Q50 |last51=Q51 |last52=Q52 |last53=Q53 |last54=Q54 |last55=Q55 |last56=Q56 |last57=Q57 |last58=Q58 |last59=Q59 |last60=Q60 |last61=Q61 |last62=Q62 |last63=Q63 |last64=Lindqvist}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": "spec 2.1 step 6: 64 author values are described"
+  },
+  {
+   "id": "record-malformed",
+   "category": "insufficient",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": 5,
+    "authors": [
+     "Mara Lindqvist"
+    ],
+    "journal": null,
+    "original_year": true
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "MISSING",
+    "year": "INSUFFICIENT"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "duplicate-param-last-wins",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title=Coastal erosion budgets |last1=Lindqvist}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_DISJOINT"
+    ]
+   },
+   "origin": "synthetic",
+   "note": "title given once; contrast with the next case"
+  },
+  {
+   "id": "duplicate-param-overrides",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title=Coastal erosion budgets |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title": "AGREE"
+   },
+   "origin": "synthetic",
+   "note": "the later duplicate replaces the earlier value"
+  },
+  {
+   "id": "arabic-title-latin-record",
+   "category": "arabic",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=الانجراف الحراري في المستشعرات |الأخير1=لينكفيست}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "INCOMPARABLE"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "arabic-params-latin-values",
+   "category": "arabic",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=Thermal drift of synthetic lattice sensors: a field study |الأخير1=Lindqvist |صحيفة=Journal of Synthetic Instrumentation |سنة=2015}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title": "AGREE",
+    "year": "SAME",
+    "periodical": "SAME"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "arabic-designation",
+   "category": "arabic",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=تعليق على Thermal drift of synthetic lattice sensors: a field study |الأخير1=Lindqvist}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "Arabic 'comment on' before the record title"
+  },
+  {
+   "id": "arabic-clitic-designation",
+   "category": "arabic",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=والرد Thermal drift of synthetic lattice sensors: a field study |الأخير1=Lindqvist}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "known limit: a clitic-prefixed word is not recognized"
+  },
+  {
+   "id": "arabic-indic-year",
+   "category": "arabic",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=Thermal drift of synthetic lattice sensors: a field study |تاريخ=٢٠١٥}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "year": "INSUFFICIENT"
+   },
+   "origin": "synthetic",
+   "note": ""
+  },
+  {
+   "id": "transliteration",
+   "category": "recall_cost",
+   "wiki": "en",
+   "source": "{{cite journal |author=Alharbi |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Saad Al Harbi",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ]
+   },
+   "origin": "synthetic",
+   "note": "known recall cost: transliteration variants"
+  },
+  {
+   "id": "corporate-author",
+   "category": "recall_cost",
+   "wiki": "en",
+   "source": "{{cite journal |author=Synthetic Sensor Consortium |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ]
+   },
+   "origin": "synthetic",
+   "note": "known recall cost: a corporate author in an author parameter"
+  },
+  {
+   "id": "collaboration-param-ignored",
+   "category": "author_format",
+   "wiki": "en",
+   "source": "{{cite journal |collaboration=Synthetic Sensor Consortium |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT"
+   },
+   "origin": "synthetic",
+   "note": ""
+  }
+ ]
+}

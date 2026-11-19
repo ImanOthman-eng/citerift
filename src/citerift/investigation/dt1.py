@@ -1,5 +1,5 @@
-"""The decision table dt-2 and the coherence function kappa (SPEC 6.5, 7.1 to 7.3; MM 5.1 to 5.3): Stage 04 Step 9,
-corrected by owner decision D-071 (corrective cycle after the failed gate 04-I).
+"""The decision table dt-3 (dt-2 plus D-13a) and the coherence function kappa (SPEC 6.5, 7.1 to 7.3; MM 5.1 to 5.3):
+Stage 04 Step 9, corrected by owner decisions D-071 (dt-2, after the failed gate 04-I) and D-083 (dt-3).
 
 This module is the pure decision core of the production detector. It reads a typed view of one work candidate
 (``Candidate``: use eligibility, shape, keys, taint, the CO_REPORTED_MULTIPLE flag and the candidate's lookups as
@@ -22,9 +22,17 @@ lookup), when no cited key discriminates (``discriminating``: a cited key with n
 different notice identifier in that scheme). Such a candidate is ``UNRESOLVED_IDENTITY`` with
 ``IDENTIFIER_ROLE_COLLISION`` (D-071 sections 3 and 4); where no event is role-ambiguous dt-2 decides exactly as dt-1.
 
-The post-failure reference model (``simulations/stage04/dt2_reference.py``) is the independent oracle of this code;
-the frozen Step 4 model (``dt1_reference.py``) is kept unchanged as the oracle of the frozen engine. Neither imports
-anything from here and this module imports nothing from them.
+dt-3 (final corrective cycle, owner decision D-083) is dt-2 with one rule inserted between D-13 and D-14: **D-13a**
+holds when the D-14 guard holds (the deciding lookup is matched with a verified-fact projection) and some event of the
+deciding lookup is in bib-1 MATERIAL_CONFLICT with the candidate's own bibliographic description
+(``citerift.investigation.bibliographic``; normative text docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md).
+Such a candidate is ``UNRESOLVED_IDENTITY`` with ``BIBLIOGRAPHIC_OBJECT_CONFLICT`` and the bib-1 reasons. Every other
+case decides exactly as dt-2: D-13a can only replace a positive, never create one.
+
+The dt-3 reference model (``simulations/stage04/dt3_reference.py``) and the independent bib-1 reference
+(``bib_reference.py``) are the oracles of this code; the dt-2 model (``dt2_reference.py``) and the frozen Step 4 model
+(``dt1_reference.py``) are kept unchanged as the oracles of the frozen engines. None imports anything from here and
+this module imports nothing from them.
 """
 
 from __future__ import annotations
@@ -33,7 +41,9 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-TABLE_VERSION = "dt-2"
+from citerift.investigation import bibliographic as bib
+
+TABLE_VERSION = "dt-3"
 
 Q1_DOI = "Q1_DOI"
 Q1_PMID = "Q1_PMID"
@@ -51,6 +61,7 @@ NOT_FOUND_VALUE = "not_found_in_checked_sources"
 # Stage 02 import flags of a record giving one key as both its original and its notice identifier (Stage 02 SPEC 6.3).
 SAME_RECORD_FLAG = {"doi": "NOTICE_DOI_EQUALS_ORIGINAL", "pmid": "NOTICE_PMID_EQUALS_ORIGINAL"}
 ROLE_COLLISION = "IDENTIFIER_ROLE_COLLISION"
+BIB_CONFLICT = "BIBLIOGRAPHIC_OBJECT_CONFLICT"
 
 # Projection forms (MM 4.5): the (status, value) shapes a guard can name. ``none`` is "no projection".
 VF, UNC, UNC_NOT_FOUND, CONF, UNAV, NONE, OTHER = "vf", "unc", "unc:not_found", "conf", "unavailable", "none", "other"
@@ -102,6 +113,8 @@ class Event:
     # replaced by the flag): dt-2 reads them to tell whether a second identifier discriminates the work from the notice.
     notice_doi: str | None = None
     notice_pmid: str | None = None
+    # dt-3: the record's bibliographic fields (None when the observation holds none for this event).
+    record: bib.RecordObject | None = None
 
     @property
     def direct(self) -> bool:
@@ -178,6 +191,8 @@ class Candidate:
     taint: tuple[str, ...]
     multi: bool
     lookups: tuple[tuple[str, Lookup], ...]  # (role, lookup) in the order Q1_DOI, Q1_PMID, Q2, absent roles left out
+    # dt-3: the unit's own bibliographic description (None for a unit without one, spec 2.1).
+    cited: bib.CitedObject | None = None
 
     def lookup(self, role: str) -> Lookup | None:
         return next((lk for r, lk in self.lookups if r == role), None)
@@ -206,6 +221,8 @@ class Outcome:
     witnesses: tuple[tuple[str, int], ...] = ()  # (role, event position) of every witness in an available lookup
     conflict_role: str | None = None  # D-7: the lookup whose conflict groups give the alternatives
     upstream_role: str | None = None  # the lookup whose Stage 02 basis reasons are kept
+    # dt-3: (event position in the deciding lookup, bib-1 comparison) for every event of L, for D-13a and D-14.
+    comparisons: tuple[tuple[int, bib.Comparison], ...] = ()
 
     @property
     def status(self) -> str | None:
@@ -337,6 +354,23 @@ def role_ambiguous(c: Candidate) -> tuple[str, ...]:
     return tuple(sorted(out))
 
 
+# Bibliographic-object consistency (dt-3, owner decision D-083) --------------------------------------------------------
+
+
+def comparisons(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
+    """The bib-1 comparison of the candidate's description with every event of a matched deciding lookup (direct or
+    bridged, in order); empty when the deciding lookup is absent or not matched."""
+    lk = c.deciding
+    if lk is None or lk.state != "matched":
+        return ()
+    return tuple((e.position, bib.compare(c.cited, e.record)) for e in lk.events)
+
+
+def bib_conflicts(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
+    """The comparisons of ``comparisons`` in MATERIAL_CONFLICT (spec 5): any one blocks a positive (fail closed)."""
+    return tuple((k, cmp) for k, cmp in comparisons(c) if cmp.object == bib.MATERIAL_CONFLICT)
+
+
 def implied_pair_state(state_d: str, state_p: str, witness: bool) -> str:
     """The Q2 state that F-6 and F-9 imply from the two single-key states and a single-key witness."""
     if witness:
@@ -440,6 +474,7 @@ RULES: tuple[tuple[str, Guard], ...] = (
     ("D-11", lambda x: x.L_is("matched", UNC)),
     ("D-12", lambda x: x.L_is("no_record", UNC)),
     ("D-13", lambda x: any(not lk.available for _, lk in x.c.lookups)),
+    ("D-13a", lambda x: x.L_is("matched", VF) and bool(bib_conflicts(x.c))),
     ("D-14", lambda x: x.L_is("matched", VF)),
     ("D-15", lambda x: x.L_is("notice_only", UNC)),
     ("D-16", lambda x: x.L_is("no_record", UNC_NOT_FOUND)),
@@ -466,6 +501,7 @@ def decide(c: Candidate, rules: tuple[tuple[str, Guard], ...] = RULES) -> Outcom
     reasons: set[str] = set()
     cls: str
     conflict_role = upstream_role = None
+    compared: tuple[tuple[int, bib.Comparison], ...] = ()
     L = c.deciding
     if rule == "D-1":
         cls = "UNUSED_DEFINITION"
@@ -504,10 +540,15 @@ def decide(c: Candidate, rules: tuple[tuple[str, Guard], ...] = RULES) -> Outcom
         cls, reasons = "LOOKUP_UNAVAILABLE", {"LOOKUP_QUERY_FAILED"}
         if any(not lk.available and lk.budget_refused for _, lk in c.lookups):
             reasons.add("LOOKUP_EVIDENCE_LIMIT_EXCEEDED")
+    elif rule == "D-13a":
+        compared = comparisons(c)
+        cls, upstream_role = "UNRESOLVED_IDENTITY", c.deciding_role
+        reasons = {BIB_CONFLICT, *(r for _, cmp in compared for r in cmp.reasons)}
     elif rule == "D-14":
         if L is None:
             raise AssertionError("D-14 without a deciding lookup")
         cls, upstream_role = POSITIVE[L.value], c.deciding_role
+        compared = comparisons(c)
     elif rule == "D-15":
         cls, reasons, upstream_role = "NOTICE_CITED", {"CITED_IDENTIFIER_IS_NOTICE"}, c.deciding_role
     elif rule == "D-16":
@@ -521,4 +562,4 @@ def decide(c: Candidate, rules: tuple[tuple[str, Guard], ...] = RULES) -> Outcom
         reasons.add("PAIR_UNCORROBORATED")
     if c.multi:
         reasons.add("CO_REPORTED_MULTIPLE")
-    return Outcome(rule, cls, None, tuple(sorted(reasons)), k, viol, wit, conflict_role, upstream_role)
+    return Outcome(rule, cls, None, tuple(sorted(reasons)), k, viol, wit, conflict_role, upstream_role, compared)

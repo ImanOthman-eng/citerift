@@ -334,7 +334,7 @@ def test_no_detector_fails_detect_with_decision_table_gap(tmp_path: Path, index:
     case = _run(tmp_path, S8.AR_OBOKATA, index, Integration(detector=None))
     t = case.result.explanation["terminated_by"]
     assert (t["step"], t["code"]) == ("DETECT", "DECISION_TABLE_GAP")
-    assert "dt-2" in t["detail"] and case.kind("claim_recorded") == []
+    assert "dt-3" in t["detail"] and case.kind("claim_recorded") == []
 
 
 def test_removing_the_bundle_after_acquire_changes_nothing(tmp_path: Path, index: Path, ar: Case, offline: Any) -> None:

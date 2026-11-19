@@ -205,8 +205,10 @@ def test_no_evidence_outside_the_candidates_provenance(ar: Run) -> None:
         unit = units[cand["unit_id"]]
         keys = {k["normalized"] for k in cand["keys"]}
         own = {unit["evidence"]["unit"], unit["evidence"]["use_eligibility"], *unit["occurrences"]}
+        if unit["evidence"].get("cited_bibliography") is not None:
+            own.add(unit["evidence"]["cited_bibliography"])
         for e in ar.set_items(claim) + ar.set_items(claim, "alternatives"):
-            if e["kind"] in ("unit", "use_eligibility", "identifier_occurrence"):
+            if e["kind"] in ("unit", "use_eligibility", "identifier_occurrence", "cited_bibliography"):
                 assert e["evidence_id"] in own
             elif e["observation"] in by_obs:
                 q = by_obs[e["observation"]]

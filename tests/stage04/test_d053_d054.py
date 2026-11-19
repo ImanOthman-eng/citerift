@@ -783,11 +783,26 @@ IDENTITY_DIFF = json.loads(
 )
 
 
+# Final corrective cycle (owner decision D-083): the identity changed again (0.3.0 / dt-2 / 4.0.0 to 0.4.0 / dt-3 /
+# 5.0.0). final-cycle/identity/LOGICAL_VIEW_DIFF.json records, per scenario, the digest reproduced on the dt-2 tree
+# 6663314 (equal to the dt-2 digest above, asserted here) and the digest of this tree, with the same proof that only
+# identity values, digests derived from them and the order they induce differ.
+FINAL_DIFF = json.loads(
+    (
+        Path(__file__).resolve().parents[2] / "docs/verification/stage-04/final-cycle/identity/LOGICAL_VIEW_DIFF.json"
+    ).read_text(encoding="utf-8")
+)
+
+
 def dt2_digest(which: str, name: str, baseline: str) -> str:
+    """The digest of this tree, chained from the accepted baseline through the dt-2 and the dt-3 identity changes."""
     row = IDENTITY_DIFF["scripts"][which][name]
     assert row["old_digest"] == baseline, "the pre-correction tree must reproduce the accepted baseline"
     assert row["equal_modulo_identity_digests_and_order"] and row["counts_equal"]
-    return str(row["new_digest"])
+    final = FINAL_DIFF["scripts"][which][name]
+    assert final["old_digest"] == row["new_digest"], "the dt-2 tree must reproduce the dt-2 digest"
+    assert final["equal_modulo_identity_digests_and_order"] and final["counts_equal"]
+    return str(final["new_digest"])
 
 
 @pytest.mark.reproducibility

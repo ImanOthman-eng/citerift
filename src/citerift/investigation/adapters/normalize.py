@@ -2,9 +2,12 @@
 
 Production transform of SPEC 6.1 to 6.6 and MM 4.1 to 4.4, with no decision-table semantics (no coherence, class,
 rule or disposition: those are DETECT, Step 9). It reads only committed content: the ACQUIRE manifest, the extraction
-blob and the retained source artifact (raw blob, D-043). It never re-parses wikitext, never normalizes an identifier
-itself (keys are exactly Stage 03's ``normalization.normalized``, produced by Stage 02's normalizer), never merges
-co-reported identifiers and never infers a negative from a missing identifier.
+blob and the retained source artifact (raw blob, D-043). It never re-parses wikitext for identifiers, never normalizes
+an identifier itself (keys are exactly Stage 03's ``normalization.normalized``, produced by Stage 02's normalizer),
+never merges co-reported identifiers and never infers a negative from a missing identifier. Since dt-3 (owner decision
+D-083) it parses the named arguments of each ``citation_template`` unit's own source span into the unit's
+bibliographic description (bib-1, ``citerift.investigation.bibliographic``); Stage 03's units, spans and template
+identities are used unchanged.
 
 Evidence (D-051 ids ``H(observation, pointer, kind)``), returned as individual records; the controller batches them
 (D-053):
@@ -14,7 +17,9 @@ Evidence (D-051 ids ``H(observation, pointer, kind)``), returned as individual r
 - per unit ``i``: ``unit`` at ``/units/i`` with the D-043 span hash (ref: the extraction identity) and
   ``use_eligibility`` at ``/units/i`` (ref: the unit);
 - per identifier ``j``: ``identifier_occurrence`` at ``/identifiers/j`` with its status and key (ref: its unit, or the
-  extraction identity when it has none).
+  extraction identity when it has none);
+- per citation-template unit ``i`` with a description: ``cited_bibliography`` at ``/units/i`` (ref: the unit), value
+  the bib-1 fields, also carried by the unit's entry in the candidate inputs (``bibliography``).
 
 The output blob (``candidate-inputs``) lists units, work candidates, observation keys and the lookups to make.
 A failure is ``NORMALIZE_INVALID`` (a defect of the committed input: a dangling container or unit, a schema-invalid
@@ -26,7 +31,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from citerift.investigation import ids
+from citerift.investigation import bibliographic, ids
 from citerift.investigation.adapters import ContentRecord, Failed, StepRequest, StepResult, Succeeded
 from citerift.investigation.adapters.acquire import RetentionError, committed_manifest
 from citerift.investigation.anchors import SourceArtifact, unit_span_sha256
@@ -40,7 +45,8 @@ CANDIDATE_ROLES = frozenset({"primary_citation_field", "identifier_link"})
 CONFIRMED_BOUNDARIES = frozenset({"field", "delimited", "url"})
 AMBIGUOUS_STEP = "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS"
 CO_REPORTED = "CO_REPORTED_IDENTIFIERS"
-SCHEMA_VERSION = "1.0.0"
+# 2.0.0 (dt-3, owner decision D-083): every unit carries its bib-1 description (``bibliography``, null when none).
+SCHEMA_VERSION = "2.0.0"
 
 
 class NormalizeInvalid(Exception):
@@ -128,6 +134,20 @@ def _key_tuple(k: Mapping[str, str]) -> tuple[str, str]:
     return (k["scheme"], k["normalized"])
 
 
+def cited_description(unit: Mapping[str, Any], source: SourceArtifact, wiki: str) -> dict[str, Any] | None:
+    """bib-1 spec 2.1: the description of a ``citation_template`` unit from its own verified source span (already
+    hashed by ``unit_span_sha256``), or None (another kind, a span that is not UTF-8, no single template)."""
+    if unit.get("kind") != "citation_template":
+        return None
+    span = unit["source"]
+    try:
+        text = source.data[span["byte_start"] : span["byte_end"]].decode("utf-8")
+    except (UnicodeDecodeError, KeyError, TypeError):
+        return None
+    cited = bibliographic.cited_object(text, wiki)
+    return cited.to_json() if cited is not None else None
+
+
 def normalize(req: StepRequest) -> StepResult:
     """The NORMALIZE adapter."""
     try:
@@ -199,6 +219,18 @@ def _normalize(req: StepRequest) -> StepResult:
             "use_eligibility", ext_digest, pointer, [ev_unit["evidence_id"]], {"eligibility": elig, "reason": reason}
         )
         items += [ev_unit, ev_elig]
+        cited = cited_description(unit, source, root_identity["wiki"])
+        unit_evidence = {"unit": ev_unit["evidence_id"], "use_eligibility": ev_elig["evidence_id"]}
+        if cited is not None:
+            ev_bib = evidence(
+                "cited_bibliography",
+                ext_digest,
+                pointer,
+                [ev_unit["evidence_id"]],
+                {"version": bibliographic.BIB_VERSION, "fields": cited},
+            )
+            items.append(ev_bib)
+            unit_evidence["cited_bibliography"] = ev_bib["evidence_id"]
         entry = {
             "unit_id": unit["id"],
             "pointer": pointer,
@@ -206,7 +238,8 @@ def _normalize(req: StepRequest) -> StepResult:
             "eligibility": elig,
             "reason": reason,
             "taint": [],
-            "evidence": {"unit": ev_unit["evidence_id"], "use_eligibility": ev_elig["evidence_id"]},
+            "evidence": unit_evidence,
+            "bibliography": cited,
             "occurrences": [],
         }
         units.append(entry)

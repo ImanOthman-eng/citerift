@@ -38,7 +38,8 @@ code  status            meaning
 9     failed            FAILED: a step failed terminally
 10    needs_resolution  NEEDS_RESOLUTION: verified, with an open question
 11    stale             STALE, or (``verify``, ``replay``, ``export``, and ``show`` of a non-terminal investigation) an
-                        input identity differs from the recorded one
+                        input identity differs from the recorded one; also ``ENGINE_IDENTITY_DIFFERS`` (any command):
+                        another engine created the investigation (E-07), nothing is read or written
 12    corrupt           CORRUPT: the journal, a blob or the report graph is invalid
 13    busy              another process holds the investigation lock
 14    incomplete        CREATED or RUNNING and a step may start now (for example after a crash, before ``resume``)
@@ -63,6 +64,7 @@ import argparse
 import json
 import sys
 import unicodedata
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -261,6 +263,38 @@ def _printable(line: str) -> str:
     return "".join(c if c == "\t" or unicodedata.category(c) not in ("Cc", "Cf") else f"\\u{ord(c):04x}" for c in line)
 
 
+MEMORY_ROOT_PLACEHOLDER = "<memory-root>"
+
+
+def _redactor(args: argparse.Namespace) -> Callable[[Any], Any]:
+    """Reviewer finding E-05 (owner decision D-083): what the command line prints never carries the absolute memory
+    root (an account or session locator). Every spelling of it (as given, absolute, resolved) in any output string,
+    error details included, is replaced by ``<memory-root>``; the journal and Memory itself are not changed."""
+    root = getattr(args, "memory_root", None)
+    if root is None:
+        return lambda value: value
+    spellings: set[str] = {str(Path(root))}
+    for spell in (Path.absolute, Path.resolve):
+        try:
+            spellings.add(str(spell(Path(root))))
+        except (OSError, RuntimeError):
+            continue
+    ordered = sorted((s for s in spellings if len(s) > 1), key=len, reverse=True)
+
+    def redact(value: Any) -> Any:
+        if isinstance(value, str):
+            for s in ordered:
+                value = value.replace(s, MEMORY_ROOT_PLACEHOLDER)
+            return value
+        if isinstance(value, dict):
+            return {k: redact(v) for k, v in value.items()}
+        if isinstance(value, list | tuple):
+            return [redact(v) for v in value]
+        return value
+
+    return redact
+
+
 def _json_error(command: str | None, status: str, code: str, detail: str) -> None:
     out = {
         "command": command,
@@ -281,26 +315,29 @@ def main(argv: list[str] | None = None) -> int:
             _json_error(raw[0] if raw and not raw[0].startswith("-") else None, "usage", "USAGE", "see standard error")
         return code
     fmt = getattr(args, "format", "text")
+    redact = _redactor(args)
     try:
         result, code = dispatch(args)
     except OperationError as exc:
         code = ops.EXIT[exc.status]
+        detail = redact(exc.detail)
         if fmt == "json":
             out = {"command": args.command, "status": exc.status, "exit_code": code}
-            out["error"] = {"code": exc.code, "detail": exc.detail}
+            out["error"] = {"code": exc.code, "detail": detail}
             sys.stdout.write(json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False) + "\n")
-        _err(f"{PROG} {args.command}: {exc.status}: {exc.code}: {exc.detail}")
+        _err(f"{PROG} {args.command}: {exc.status}: {exc.code}: {detail}")
         return code
     except Exception as exc:  # a defect: report it, export nothing
-        _err(f"{PROG} {args.command}: internal error: {type(exc).__name__}: {exc}")
+        _err(redact(f"{PROG} {args.command}: internal error: {type(exc).__name__}: {exc}"))
         if fmt == "json":
-            _json_error(args.command, "internal", "INTERNAL", f"{type(exc).__name__}: {exc}"[:500])
+            _json_error(args.command, "internal", "INTERNAL", redact(f"{type(exc).__name__}: {exc}")[:500])
         return ops.EXIT["internal"]
     status = STATUS_OF_CODE[code]
-    if args.command == "checkpoint" and args.out is None:
+    if args.command == "checkpoint" and args.out is None:  # the checkpoint bytes are written as made, never redacted
         sys.stdout.write(d052.encode(result["checkpoint"]).decode("utf-8"))
-        _err(result["statement"])
+        _err(redact(result["statement"]))
         return code
+    result = redact(result)
     if fmt == "json":
         out = {"command": args.command, "status": status, "exit_code": code, "result": result}
         sys.stdout.write(json.dumps(out, indent=2, sort_keys=True, ensure_ascii=False) + "\n")

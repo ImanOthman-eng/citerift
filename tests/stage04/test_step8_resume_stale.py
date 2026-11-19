@@ -216,7 +216,7 @@ def test_a_changed_lookup_budget_is_another_investigation(tmp_path: Path, index:
     "change",
     [
         lambda: Integration(detector=S8.synthetic_detector, stage04={**STAGE04_IDENTITY, "schema_version": "2.0.1"}),
-        lambda: Integration(detector=S8.synthetic_detector, stage04={**STAGE04_IDENTITY, "table_version": "dt-3"}),
+        lambda: Integration(detector=S8.synthetic_detector, stage04={**STAGE04_IDENTITY, "table_version": "dt-4"}),
     ],
     ids=["schema", "table"],
 )

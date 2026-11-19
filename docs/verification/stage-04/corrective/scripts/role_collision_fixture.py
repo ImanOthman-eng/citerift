@@ -202,7 +202,8 @@ def main() -> int:
         sys.stderr.write("the CSV is not the pinned snapshot\n")
         return 1
     con = sqlite3.connect(f"file:{args.index}?mode=ro", uri=True)
-    source = dict(con.execute("SELECT key, value FROM meta").fetchall()).get("source_sha256")
+    meta = dict(con.execute("SELECT key, value FROM meta").fetchall())
+    source = meta.get("source_sha256")
     con.close()
     if source != receipt.expected_sha256:  # reviewer finding E-11: the index must be built from the pinned snapshot
         sys.stderr.write("the index was not built from the pinned snapshot\n")
@@ -275,7 +276,14 @@ def main() -> int:
             "sha256": receipt.expected_sha256,
             "url": receipt.url,
         },
-        "selection_index": {"source_sha256": source, "note": "an index built by Stage 02 from the pinned snapshot"},
+        # reviewer finding D-05 (closed in the final cycle, D-083): the selection index's full identity
+        "selection_index": {
+            "source_sha256": source,
+            "artifact_digest": meta.get("artifact_digest"),
+            "semantic_digest": meta.get("semantic_digest"),
+            "snapshot_id": meta.get("snapshot_id"),
+            "note": "an index built by Stage 02 from the pinned snapshot",
+        },
         "outcomes_sha256": hashlib.sha256(
             json.dumps([[q[0], q[1], full_out[q]] for q in all_queries], sort_keys=True).encode()
         ).hexdigest(),

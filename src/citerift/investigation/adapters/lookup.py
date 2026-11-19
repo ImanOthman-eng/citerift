@@ -13,7 +13,11 @@ through ``citerift.investigation.lookup.bounded_gather``, that is ``Index.gather
 
 - within the budget the observation holds Stage 02's rendered result and every event, unpaged;
 - over the budget it is ``unavailable`` with no events and ``LOOKUP_EVIDENCE_LIMIT_EXCEEDED`` (all or nothing);
-- a query that raises is ``unavailable`` with its error code (S-6.10), never ``no_record``.
+- a query that raises is ``unavailable`` with its error code (S-6.10), never ``no_record``;
+- beside the unchanged public events, ``records`` holds each event's bibliographic fields (title, authors, journal,
+  original year) from the same Stage 02 event that ``Index.gather_bounded`` returned, bound to the public event by
+  ``event_id`` and Stage 02's ``row_sha256`` (dt-3, owner decision D-083; Stage 02 HANDOFF: read through ``Index``).
+  The D-048 byte budget already counts every stored event column, so the budget and the events are unchanged.
 
 Each lookup observation is returned as an individual ``observation_recorded`` record; the controller batches them
 (D-055). The index file must not change during the attempt: an operational guard (the file's stat fingerprint and its
@@ -51,7 +55,9 @@ from citerift.retraction.store import (
 )
 
 # Version 2 (D-062): the observation's index identity is the canonical Stage 02 content identity.
-SCHEMA_VERSION_OBS = "2.0.0"
+# Version 3 (D-083): the observation records each event's bibliographic fields (``records``) for bib-1.
+SCHEMA_VERSION_OBS = "3.0.0"
+RECORD_FIELDS = ("title", "authors", "journal", "original_year")
 SCHEMA_VERSION_PLAN = "1.0.0"
 # The record schema's source_ref operations (common.schema.json): the bounded call is Stage 02's ``gather`` operation
 # with a byte budget (``Index.gather_bounded``); the budget is in every lookup observation (``budget_bytes``).
@@ -243,6 +249,10 @@ def observe(index: Index, ident: dict[str, Any], doi: str | None, pmid: str | No
         ev = failed_query(doi, pmid, "INDEX_QUERY_FAILED", f"{type(exc).__name__}: {exc}")
     result = render(ev, index.snapshot_id, page_size=MAX_PAGE)
     events = [public_event(e) for e in ev.events]
+    records = [
+        {"event_id": e.get("event_id"), "row_sha256": e.get("row_sha256"), **{k: e.get(k) for k in RECORD_FIELDS}}
+        for e in ev.events
+    ]
     return {
         "schema": LOOKUP_OBSERVATION,
         "schema_version": SCHEMA_VERSION_OBS,
@@ -251,6 +261,7 @@ def observe(index: Index, ident: dict[str, Any], doi: str | None, pmid: str | No
         "budget_bytes": budget,
         "result": result,
         "events": events,
+        "records": records,
         "event_count": len(events),
     }
 

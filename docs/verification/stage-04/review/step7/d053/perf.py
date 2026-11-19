@@ -42,7 +42,7 @@ def measure(n: int) -> dict[str, Any]:
     value = sets.evidence_set([e["evidence_id"] for e in evs])
     claim, _ = claim_and_set("RETRACTED_WORK_CITED", [evs[0]["evidence_id"]] * 4)
     claim["evidence_set"], claim["supporting_count"] = digest(value), n
-    claim["claim_id"] = ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-2", claim["evidence_set"])
+    claim["claim_id"] = ids.claim_id(claim["cand_ref"], claim["class"], claim["rule"], "dt-3", claim["evidence_set"])
     out = {"claims": [claim["claim_id"]]}
     recs = (*(ContentRecord(kind, e) for e in evs), ContentRecord("claim_recorded", claim))
 

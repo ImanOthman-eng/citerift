@@ -232,7 +232,7 @@ CHANGES: dict[str, tuple[str, Any]] = {
     "Stage 03 config": ("extraction", lambda e: e.values["extraction"].__setitem__("normalizer", "n-2")),
     "Stage 02 index": ("index", lambda e: e.values["index"].__setitem__("artifact_digest", "3" * 64)),
     "Stage 04 schema version": ("stage04", lambda e: e.values["stage04"].__setitem__("schema_version", "1.0.1")),
-    "decision table version": ("stage04", lambda e: e.values["stage04"].__setitem__("table_version", "dt-3")),
+    "decision table version": ("stage04", lambda e: e.values["stage04"].__setitem__("table_version", "dt-4")),
     "effective config": ("config", lambda e: e.values["config"].__setitem__("extra", True)),
     "D-042 bound": ("config", lambda e: e.values["config"].__setitem__("t_acq_ms", 250_000)),
 }
