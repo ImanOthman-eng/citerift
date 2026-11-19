@@ -1717,3 +1717,33 @@ and uncorroborated-pair warnings where they apply. No IDENTITY_CONFLICT is manuf
 notice identifier of the same work. If the clean original-work identifier is absent, unavailable or itself
 role-collided, D-14 is never recovered from the notice key. Explicit regression tests cover the boundary; the measured
 snapshot pairs remain positive.
+
+## D-076 — Freeze-2 accepted; corrective cycle closed; Step 13 (new pre-registration P2 only) authorized
+- Status: accepted
+- Topic: stage-04-freeze2-accepted
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/freeze-2/FREEZE_MANIFEST.json; docs/verification/stage-04/freeze-2/FREEZE_REPORT.md; docs/verification/stage-04/freeze-2/ATTESTATION.md; docs/verification/stage-04/corrective/CLOSURE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP9UYHLzpXxFTSu95UPqEi99` (2026-11-19T09:28:37Z). The owner accepts Stage 04
+freeze-2. The authoritative corrected Stage 04 frozen scientific engine is the content commit
+`28ba6467c7005eec7bf51869974719a402059ca7`, tree `45c52da459b09597f105d6e4abd8ab00332c6799`, attestation
+`6dab7f8ea1b97982dca978c38ca0fc8eea6e1a7f`, freeze manifest digest
+`d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13`, exposure manifest v2 SHA-256
+`b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b`. CI run 365 on the exact frozen-content commit and
+CI run 366 on the attestation commit are accepted. Engine identity: engine 0.3.0, decision table dt-2, Stage 04 common
+schema 4.0.0, claim schema 3.0.0, detector `citerift-dt1-detector/3 (dt-2)`. The superseded freeze
+`b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0` remains historical evidence only, marked SUPERSEDED_AFTER_FAILED_04_I. The
+first pre-registration P and the failed Step 14 campaign remain immutable historical evidence and are not altered or
+deleted. The performance target remains NOT_MET under D-066. The strict recall and abstention costs of D-072 and D-073
+remain declared limitations. The corrective freeze cycle (D-071) is accepted and closed; Stage 04 remains IN_PROGRESS.
+
+The same message authorizes Step 13 for a completely new pre-registration P2 for the corrected dt-2 engine only, in a
+new versioned area, without overwriting the historical Step 13 files: no drand seed, no draw, no acquisition, no
+annotation, no adjudication, no predictions and no Step 14. P2 pins the frozen identity above, excludes every article of
+exposure manifest v2 (at article identity and again at capture), keeps D-070's listed-only tier unless new evidence
+invalidates it, keeps gates G1 to G5 and the exact interval method, keeps D-067 and D-068, adds descriptive dt-2
+role-collision and recall-withholding metrics, uses the corrected runner, updates baseline and sensitivity tooling to
+dt-2, and commits to the first drand quicknet round at least one hour after the owner's future acceptance of P2. The
+deliverable stops at P2, ready for owner acceptance.
