@@ -7,12 +7,19 @@
     "commit": "99c4194",
     "py312_tests": "13m29s",
     "py313_tests": "12m16s",
-    "result": "failure (known)",
+    "result": "failure (P test)",
     "run": 360
+   },
+   {
+    "commit": "032bbaf",
+    "py312_tests": "13m11s",
+    "py313_tests": "18m01s",
+    "result": "success",
+    "run": 364
    }
   ]
  },
- "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+ "code_revision": "032bbaf434291126976c06ad10d6cddeb90408c6",
  "d062": {
   "operational_tests": "5 passed, 18 deselected in 0.96s",
   "tamper_cases": 21,
@@ -131,43 +138,54 @@
  },
  "tests": {
   "ci": {
-   "conclusion": "failure (the known failure only)",
+   "conclusion": "success",
    "jobs": {
     "ci-gate": {
-     "conclusion": "failure (verify matrix)"
+     "conclusion": "success"
     },
     "verify (python 3.12)": {
-     "failed": 1,
-     "passed": 3371,
-     "pytest_reported": "809.54 s",
-     "python": "3.12.3"
+     "failed": 0,
+     "passed": 3382,
+     "pytest_reported": "790.06 s",
+     "report": "0 problems"
     },
     "verify (python 3.13)": {
-     "failed": 1,
-     "passed": 3371,
-     "pytest_reported": "736.92 s",
-     "python": "3.13.14"
+     "failed": 0,
+     "passed": 3382,
+     "pytest_reported": "1079.54 s",
+     "report": "0 problems"
     }
    },
-   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
-   "run_id": 44449077298,
-   "run_number": 360
+   "pip_audit": "No known vulnerabilities found (both jobs)",
+   "run_id": 44483392722,
+   "run_number": 364
   },
-  "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+  "code_revision": "032bbaf434291126976c06ad10d6cddeb90408c6",
   "lint": {
+   "check_schemas": "2 schemas checked, 0 problems",
    "citerift_gov_check": "0 errors, 0 warnings",
    "mypy": "Success: no issues found in 95 source files",
+   "render_status_check": "PROJECT_STATUS.md is up to date",
    "ruff_check": "All checks passed!",
-   "ruff_format": "620 files already formatted"
+   "ruff_format": "623 files already formatted",
+   "step3_docs_check": "RESULT: PASS (0 failed)"
   },
   "local": {
-   "failed": 1,
-   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
-   "note": "full suite in this 4-vCPU container, after the evidence runs",
-   "passed": 3371,
-   "python": "3.12.3",
-   "skipped": 0,
-   "wall": "20 min 45 s"
+   "note": "full suite in this 4-vCPU container, both versions run at the same time",
+   "python_3_12": {
+    "failed": 0,
+    "passed": 3382,
+    "python": "3.12.3",
+    "skipped": 0,
+    "wall": "22 min 06 s"
+   },
+   "python_3_13": {
+    "failed": 0,
+    "passed": 3382,
+    "python": "3.13.18",
+    "skipped": 0,
+    "wall": "20 min 38 s"
+   }
   }
  },
  "vertical_slice": {
