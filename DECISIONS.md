@@ -1790,3 +1790,20 @@ single prediction run on frozen dt-2 with the corrected runner, scoring, baselin
 the Step 14 report. After the draw nothing in the engine, P2, gates, draw or scoring changes; only the registered
 replacement and expansion rules operate; a tooling or protocol defect not governed by P2 stops the campaign for an
 owner decision. Step 15 is not authorized.
+
+## D-078 — P2 seed round fixed at quicknet round 34096937
+- Status: accepted
+- Topic: stage-04-p2-seed-round
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-p2/tools/p2_draw.py
+
+Owner answer on decision card `cmsg_018VCB51nDHP6HXmLU4ea5yPMKB8XbkvvvLVJsfoATf2Nf` (tapped 2026-11-19T12:18:57Z, option
+"Round 34096937 (13:16:15Z)"). The P2 acceptance message (D-077) carries two platform timestamps, sent 12:16:15Z and
+stored 12:16:16Z, and the registered rule ("the first quicknet round at least one hour after the acceptance message")
+selects round 34096937 (13:16:15Z) from the first and 34096938 (13:16:18Z) from the second. The owner fixes the seed
+round at **34096937**, the round that the registered tool `p2_draw.py seed --acceptance-time 2026-11-19T12:16:15Z`
+computes from the sent-at timestamp (round time exactly 3600 s after it). The decision was made at 12:18:57Z, before
+either round existed, so it could not depend on the randomness. No other round is used; the mirror and agreement
+protocol of P2 4.2 applies unchanged.
