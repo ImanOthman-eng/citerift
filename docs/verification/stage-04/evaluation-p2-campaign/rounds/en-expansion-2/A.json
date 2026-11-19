@@ -1,0 +1,248 @@
+{
+ "annotator": "A",
+ "format": "citerift-stage04-eval-labels/2",
+ "instances": [
+  {
+   "file": "labels-A-en-e201.json",
+   "instance": "A-en-e201",
+   "items": 9,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "8c4f2b475df2024e8d44f4307fb7c9032672e2fcc90ba11ea9c8098d13e8dbff"
+  },
+  {
+   "file": "labels-A-en-e202.json",
+   "instance": "A-en-e202",
+   "items": 12,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "299cb3252dc84de3e20f62d86d08b8e368460dcfc99fe670d46f5cd21598f11a"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "en-1360254766-un-00006",
+   "kind": "work_citation",
+   "note": "Paper cited; title, journal, year, DOI and PMID match both records' original paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1360254766-un-00008",
+   "kind": "work_citation",
+   "note": "Paper cited; title, journal, year, DOI and PMID match original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1360254766-un-00009",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction: ...', J Immunol 2015 vol 194 p6190 = the notice; no identifier in unit.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1376351408-un-00003",
+   "kind": "work_citation",
+   "note": "Paper cited; title, journal, date, DOI, PMID match record original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1376351408-un-00010",
+   "kind": "work_citation",
+   "note": "Title, author, journal and year match R1, but unit DOI (cureus.1067) and PMID (28409068) differ from the record's original DOI (1047) and PMID (38348426); item cannot show whether unit's DOI and PMID name one work or whether either identifier alone identifies the cited paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "en-1376498073-un-00046",
+   "kind": "work_citation",
+   "note": "Cites Cochrane review version Pub5 (2013, CD003711.pub5, PMID 23986406) = R5 original. R1-R4 are other versions (different DOI/PMID/year) of the review.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated",
+    "R5": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1378048796-un-00017",
+   "kind": "work_citation",
+   "note": "Paper cited (title prefix 'RETRACTED ARTICLE' is a label); DOI and PMID match original of all three records.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work",
+    "R3": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1378048796-un-00021",
+   "kind": "notice_citation",
+   "note": "'Retraction Note: ...' with R3's notice DOI and PMID. R1/R2 are corrections with other notices; neither their paper nor their notices is cited.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380960451-un-00034",
+   "kind": "work_citation",
+   "note": "Lombardi 2009 Science paper; title, authors, DOI and PMID match all three records' original paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work",
+    "R3": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380960451-un-00044",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction', Alberts B, Science 334:1636; DOI and PMID equal R1 notice identifiers.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380960451-un-00045",
+   "kind": "notice_citation",
+   "note": "Title 'Retraction for Lo et al., ...' PNAS 2012; DOI/PMID are R1's notice identifiers.",
+   "records": {
+    "R1": "cited_notice"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1380960451-un-00047",
+   "kind": "work_citation",
+   "note": "PACE trial in Lancet 2011; records are a Cochrane schizophrenia review and a PLoS One cost-effectiveness paper, different works shown by title tokens.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381929165-un-00005",
+   "kind": "notice_citation",
+   "note": "Title 'Expression of Concern: ...'; DOI is R2's notice DOI. R1 is a retraction with different notice DOI, so neither its paper nor its notice is cited.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381929165-un-00015",
+   "kind": "work_citation",
+   "note": "Original paper cited; DOI is the original DOI of both records.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381929165-un-00016",
+   "kind": "work_citation",
+   "note": "Same DOI, journal, year, pseudonymous author; title wording differs slightly from record but is the paper itself, no notice marker.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381929165-un-00017",
+   "kind": "work_citation",
+   "note": "Original paper; DOI, journal, year and title match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1381929165-un-00018",
+   "kind": "work_citation",
+   "note": "Original paper; DOI, journal, year and title match.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1383408830-un-00004",
+   "kind": "work_citation",
+   "note": "Marino et al. 2003 JBC; title, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1384745268-un-00013",
+   "kind": "work_citation",
+   "note": "Cite web titled 'The case for colonialism' with tandfonline doi/abs URL; DOI is the original paper's. Record has no notice DOI, so not a notice.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1384977621-un-00006",
+   "kind": "work_citation",
+   "note": "Weaver et al. 1986 Cell; title, DOI and PMID match original paper of both records (correction and retraction).",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "en-1385570862-un-00082",
+   "kind": "work_citation",
+   "note": "Diogo & Ziermann 2015 Dev Dyn; title, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  }
+ ]
+}

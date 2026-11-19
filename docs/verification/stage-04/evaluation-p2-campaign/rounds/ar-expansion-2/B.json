@@ -1,0 +1,159 @@
+{
+ "annotator": "B",
+ "format": "citerift-stage04-eval-labels/2",
+ "instances": [
+  {
+   "file": "labels-B-ar-e201.json",
+   "instance": "B-ar-e201",
+   "items": 7,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "4307d39709d6ad59a30dbe8de0827bcf7198f90b197689fe7f3b1f9b8fae3134"
+  },
+  {
+   "file": "labels-B-ar-e202.json",
+   "instance": "B-ar-e202",
+   "items": 6,
+   "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+   "sha256": "b3f5714bc2c5a34f1c7d154891bec509f3367f892f7c7c4980530b0842c19b40"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "ar-72522674-un-00012",
+   "kind": "work_citation",
+   "note": "Title, journal, authors, DOI match R1 original; only one identifier (DOI) in unit.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-74983765-un-00003",
+   "kind": "work_citation",
+   "note": "Unit cites Pub2 (2004, DOI .pub2, PMID 14973997) = R2. R1 is the original unversioned review (2000), a different version.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75590474-un-00008",
+   "kind": "work_citation",
+   "note": "Book chapter on sleep (ISBN only, no DOI/PMID); R1 is a diabetes paper shown by title tokens.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "no_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-75590474-un-00039",
+   "kind": "work_citation",
+   "note": "Unit cites the 2013 Sci Transl Med paper (R2 original DOI/PMID). R1 is a different item, the 2014 Comment on it (different DOI/PMID).",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75818180-un-00014",
+   "kind": "work_citation",
+   "note": "Title, authors, journal, year, DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76371386-un-00023",
+   "kind": "work_citation",
+   "note": "BMJ 1974 letter 'Cello scrotum'; DOI and PMID both match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76445162-un-00003",
+   "kind": "work_citation",
+   "note": "Title, journal, date, DOI and PMID match R1 original paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76488746-un-00014",
+   "kind": "work_citation",
+   "note": "Title, authors, Cell 2003, DOI and PMID all match R1 original paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76488746-un-00019",
+   "kind": "work_citation",
+   "note": "Title, authors, Mol Cell 2004, DOI and PMID match R1 original paper.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76491351-un-00004",
+   "kind": "work_citation",
+   "note": "Gene Expr Patterns paper; DOI and PMID match R1 original.",
+   "records": {
+    "R1": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76491351-un-00006",
+   "kind": "work_citation",
+   "note": "Title copied from the Gene Expr Patterns paper but journal is Mech Dev 2002 Suppl 1 with different DOI/PMID (not R1's). Item does not show whether the unit's DOI and PMID name one work, nor that either identifies the cited work; R1 not matched by journal or identifiers.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "ar-76915083-un-00006",
+   "kind": "work_citation",
+   "note": "Unit cites Cochrane review version Pub3 (DOI .pub3, PMID 18425890), matching R3. R1 (original version) and R2 (Pub2) are other versions, not cited.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-77275928-un-00009",
+   "kind": "work_citation",
+   "note": "Unit is the 2014 issue 7 CD003815 version (pub4), matching R4 DOI/PMID. R1-R3 are earlier versions with different DOI/PMID and dates.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "yes"
+  }
+ ]
+}

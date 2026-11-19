@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 16443,
+   "body_sha256": "6c3c421be9ee749d56ebe0acf908bfa4815c8e40a1eca4270b8a999ea04cd854",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.385,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:05:11.447317Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4275349",
+   "wire_bytes": 6642
+  },
+  {
+   "body_bytes": 186797,
+   "body_sha256": "b9d5dc40833c3c2b637061d3a89567c2e7839476b492ba4dabfaf44fd254e962",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 2.372,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:05:21.833133Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/74983765/html",
+   "wire_bytes": 33055
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T15:05:24.206180Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4275349,
+  "parent_revision_id": 69927110,
+  "redirect_followed": null,
+  "revision_id": 74983765,
+  "revision_timestamp": "2026-06-04T06:34:43Z",
+  "sha1": "940d1ab1864236e049ae2e79b0e72b2561834110",
+  "size": 15788,
+  "title": "بليومايسين",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "b9d5dc40833c3c2b637061d3a89567c2e7839476b492ba4dabfaf44fd254e962",
+  "bytes": 186797,
+  "checks": {
+   "document_revision_id": "74983765",
+   "header_revision_id": "74983765",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4275349",
+   "render_id": "a567e353-e42a-11f1-a9b2-478ecc89f082",
+   "revision_sha1": "940d1ab1864236e049ae2e79b0e72b2561834110",
+   "revision_sha1_base36": "hal2a1dxlym9e2fiyzgufhq0q4mle6o"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "74983765",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 15:05:21 GMT",
+   "etag": "W/\"74983765/a567e353-e42a-11f1-a9b2-478ecc89f082/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:46 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/74983765/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4275349,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "7ee5a8da40593c9dda6bef709f8d596dac242171ae38e20e0c9ff8b104218cf2",
+  "bytes": 15788,
+  "response_artifact": "6c3c421be9ee749d56ebe0acf908bfa4815c8e40a1eca4270b8a999ea04cd854",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4275349"
+ },
+ "started_at": "2026-11-19T15:05:07.600872Z",
+ "status": "complete"
+}

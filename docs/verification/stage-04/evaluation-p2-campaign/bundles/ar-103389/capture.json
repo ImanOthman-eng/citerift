@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "62804342ce075f603cf4e6574dc23c2dd94e3b3043e42052028992a1578fc425",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.389,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-19T15:11:11.111344Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=103389",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 6211,
+   "body_sha256": "d3708d0954dbae63fdcb683f0e50b24106962765334945b58922a7b8868d0edf",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.422,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:12:00.500339Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=103389",
+   "wire_bytes": 2631
+  },
+  {
+   "body_bytes": 59253,
+   "body_sha256": "b333b541c0d407a5004eacd238747d2a1fa108f85240cc9a83c9c9cf5e4e9e00",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.391,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:12:10.923233Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76915083/html",
+   "wire_bytes": 12496
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "62804342ce075f603cf4e6574dc23c2dd94e3b3043e42052028992a1578fc425"
+ ],
+ "finished_at": "2026-11-19T15:12:11.314654Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 103389,
+  "parent_revision_id": 76516858,
+  "redirect_followed": null,
+  "revision_id": 76915083,
+  "revision_timestamp": "2026-10-07T13:15:26Z",
+  "sha1": "3255cc3c001cbb6032671dcafa47e0b62b23188c",
+  "size": 5671,
+  "title": "كازين",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "b333b541c0d407a5004eacd238747d2a1fa108f85240cc9a83c9c9cf5e4e9e00",
+  "bytes": 59253,
+  "checks": {
+   "document_revision_id": "76915083",
+   "header_revision_id": "76915083",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "103389",
+   "render_id": "174e1314-e3ae-11f1-bc45-89ec5558640f",
+   "revision_sha1": "3255cc3c001cbb6032671dcafa47e0b62b23188c",
+   "revision_sha1_base36": "5vo3lhsnc1ib70ovvw93q3lztvcift8"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76915083",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 15:12:11 GMT",
+   "etag": "W/\"76915083/174e1314-e3ae-11f1-bc45-89ec5558640f/view\"",
+   "last-modified": "Sun, 25 Oct 2026 08:12:47 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76915083/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 103389,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "2a862cd3f5c7d998f3cf2fd23ca0cf823f8def57886e6dbcd85ff1bae278f824",
+  "bytes": 5671,
+  "response_artifact": "d3708d0954dbae63fdcb683f0e50b24106962765334945b58922a7b8868d0edf",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=103389"
+ },
+ "started_at": "2026-11-19T15:11:05.771460Z",
+ "status": "complete"
+}

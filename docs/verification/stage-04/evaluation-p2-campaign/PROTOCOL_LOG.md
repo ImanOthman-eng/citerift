@@ -59,3 +59,25 @@ deviation, however small. Nothing here changes a pre-registered rule. The histor
   truth-positive units (< 40), 1502 negative-proxy units → `en-expansion-2`. ar after `ar-expansion-1`: 37 (< 40) and
   682 → `ar-expansion-2`. (A `status` run between the en lock and the ar lock also listed an ar decision; it was not
   acted on, and the ar decision recorded here is the one computed after the ar lock.)
+
+## Rounds `en-expansion-2` and `ar-expansion-2`
+
+- Acquisition: en 10 of 10 (attempts 81–90, 14:54Z–15:05Z), ar 10 of 10 (attempts 91–100, 15:05Z–15:14Z), all S1,
+  0 failures; items en 21, ar 13; every article has items.
+- Annotation: 2 A and 2 B instances per language (platform model `claude-sonnet-5-5`), every file format-valid on the
+  first submission. en: 0 items disagreed (empty ADJ file). ar: 1 item disagreed (`ar-76491351-un-00006`, in
+  `single_identifier_attachable` only), adjudicated by `ADJ-ar-e201`. No tool call used a path outside its work
+  directory.
+- Locks: en 21 items, 0 adjudicated; ar 13 items, 1 adjudicated.
+- Expansion decisions after each lock: en after `en-expansion-2`: 51 identifier-reached truth-positive units (≥ 40),
+  1718 negative-proxy units (≥ 75): **stop, both counts met**. ar after `ar-expansion-2`: 48 (≥ 40) and 785 (≥ 75):
+  **stop, both counts met**. (A `status` run after the en lock and before the ar lock listed an ar decision computed
+  without the `ar-expansion-2` labels; it was not acted on.)
+- Attempts used: 100 of 200. Articles: ar 50 (S1 42, S2 8), en 50 (S1 42, S2 8); 0 acquisition failures,
+  0 replacements, 0 `EXPOSED_AT_CAPTURE`.
+
+## Campaign lock
+
+- `LOCK.json` = `p2_labels.py merge` of the five round locks: 167 items, 100 packets, 10 adjudicated. Verified before
+  the prediction run: every round-lock hash and every packet hash it records equals the committed file, and it covers
+  every acquired article. Committed before the prediction run.

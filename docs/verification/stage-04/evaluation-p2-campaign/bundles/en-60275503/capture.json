@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 41029,
+   "body_sha256": "de448b5dae2a29212440f1a4c3573f404873d32538d91bd237d8d892cd8c6e5c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.388,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:01:11.243245Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=60275503",
+   "wire_bytes": 15721
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "c383b4d9538d3058c9f6c4ca1fdcacb75f533055401cee7a3edb254dbde4b2fc",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.338,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T15:01:21.631493Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1376351408/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 241204,
+   "body_sha256": "173a42deb5f28b4d151f901af4bbaa5bf4d8a968202e9a60890ba132d20d2fdc",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.513,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:02:00.970139Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1376351408/html",
+   "wire_bytes": 42061
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "c383b4d9538d3058c9f6c4ca1fdcacb75f533055401cee7a3edb254dbde4b2fc"
+ ],
+ "finished_at": "2026-11-19T15:02:01.484368Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 60275503,
+  "parent_revision_id": 1365730768,
+  "redirect_followed": null,
+  "revision_id": 1376351408,
+  "revision_timestamp": "2026-09-23T16:47:23Z",
+  "sha1": "3829dc18b19e8609fd191625fb73285a1f1849c4",
+  "size": 40363,
+  "title": "Physician burnout",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "173a42deb5f28b4d151f901af4bbaa5bf4d8a968202e9a60890ba132d20d2fdc",
+  "bytes": 241204,
+  "checks": {
+   "document_revision_id": "1376351408",
+   "header_revision_id": "1376351408",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "60275503",
+   "render_id": "6334a3bd-e416-11f1-89c8-07d8d97f8238",
+   "revision_sha1": "3829dc18b19e8609fd191625fb73285a1f1849c4",
+   "revision_sha1_base36": "6k6fus176qd85w0hztbgl83jyk9fd8k"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1376351408",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 15:02:01 GMT",
+   "etag": "W/\"1376351408/6334a3bd-e416-11f1-89c8-07d8d97f8238/view\"",
+   "last-modified": "Thu, 19 Nov 2026 11:24:58 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1376351408/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 60275503,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "a09d3edf1afd372a447251595ef4fe212d2e8ed7210ed10e5edf76b695c50e6e",
+  "bytes": 40363,
+  "response_artifact": "de448b5dae2a29212440f1a4c3573f404873d32538d91bd237d8d892cd8c6e5c",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=60275503"
+ },
+ "started_at": "2026-11-19T15:01:06.797346Z",
+ "status": "complete"
+}

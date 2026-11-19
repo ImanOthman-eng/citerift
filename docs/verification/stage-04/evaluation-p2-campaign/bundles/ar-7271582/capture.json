@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "90c46ea2e3cc3248897cad7ec197bdc3c4291cfda49e2f0648d17766fa1b639d",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.307,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-19T15:09:21.723248Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7271582",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 14189,
+   "body_sha256": "34c023832dda86ec387bca1410e5640c611c803f1203db57f05e4a58e5d0f8b8",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.414,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:10:00.030346Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7271582",
+   "wire_bytes": 5477
+  },
+  {
+   "body_bytes": 112191,
+   "body_sha256": "f1dabdfcbe82314815d16bb705c6cfae5ccbb12f1de1acac8bba58ae1f0178f8",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.456,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T15:10:10.445142Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77275928/html",
+   "wire_bytes": 21900
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "90c46ea2e3cc3248897cad7ec197bdc3c4291cfda49e2f0648d17766fa1b639d"
+ ],
+ "finished_at": "2026-11-19T15:10:10.901808Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7271582,
+  "parent_revision_id": 77269734,
+  "redirect_followed": null,
+  "revision_id": 77275928,
+  "revision_timestamp": "2026-11-09T15:37:14Z",
+  "sha1": "41ecbc9eefd2c2dd6722fbad421803d418db1bcd",
+  "size": 13593,
+  "title": "تاريخ المعالجات السنية",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "f1dabdfcbe82314815d16bb705c6cfae5ccbb12f1de1acac8bba58ae1f0178f8",
+  "bytes": 112191,
+  "checks": {
+   "document_revision_id": "77275928",
+   "header_revision_id": "77275928",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7271582",
+   "render_id": "721b92e3-dc53-11f1-b02b-d3b8a90fc4e1",
+   "revision_sha1": "41ecbc9eefd2c2dd6722fbad421803d418db1bcd",
+   "revision_sha1_base36": "7p8614b2uqkwusloxkwhuwxxsm05n0t"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77275928",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 15:10:10 GMT",
+   "etag": "W/\"77275928/721b92e3-dc53-11f1-b02b-d3b8a90fc4e1/view\"",
+   "last-modified": "Mon, 09 Nov 2026 15:37:15 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77275928/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7271582,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "9191cf80302a362e77e24af7edca49d4091e1b3d042d042c952646a00dab19ee",
+  "bytes": 13593,
+  "response_artifact": "34c023832dda86ec387bca1410e5640c611c803f1203db57f05e4a58e5d0f8b8",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7271582"
+ },
+ "started_at": "2026-11-19T15:09:14.868712Z",
+ "status": "complete"
+}
