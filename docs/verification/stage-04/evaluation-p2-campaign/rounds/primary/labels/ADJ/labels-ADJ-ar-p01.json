@@ -1,0 +1,64 @@
+{
+ "format": "citerift-stage04-eval-labels/2",
+ "annotator": "ADJ",
+ "instance": "ADJ-ar-p01",
+ "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+ "started_at": "2026-11-19T14:28:32Z",
+ "finished_at": "2026-11-19T14:31:00Z",
+ "labels": [
+  {
+   "item_id": "ar-75970672-un-00023",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Cites the Echinacea Cochrane review; DOI CD000530.pub3 agrees with the pages field and title, so the DOI alone identifies it. Guide: same_work yes needs the item to show the identifiers name one work; no record or text confirms the PMID, so cannot_tell. R1,R2 other reviews."
+  },
+  {
+   "item_id": "ar-75970672-un-00025",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "cannot_tell",
+   "note": "Hulisz 2004 J Am Pharm Assoc. DOI as written carries a junk '.Hulisz' suffix (not a valid DOI as written); PMID is clean but nothing in the item confirms it names this paper. same_work not shown. R1 is a Cochrane zinc review, different paper."
+  },
+  {
+   "item_id": "ar-76080986-un-00007",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "cannot_tell",
+   "note": "Standaert 2011 Spine paper. Nothing in the item (no record, no DOI-embedded detail) confirms that DOI or PMID names this paper, so same_work and attachability not shown. R1 is a different Cochrane review."
+  },
+  {
+   "item_id": "ar-76080986-un-00052",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Lee & Done 2004 Cochrane P6 review; DOI CD003281.pub2 agrees with pages CD003281 and title, so it alone identifies the work. PMID unconfirmed by item, so same_work cannot_tell. R1 is CD004125, different review."
+  },
+  {
+   "item_id": "ar-76080986-un-00055",
+   "kind": "work_citation",
+   "same_work": "cannot_tell",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated"
+   },
+   "single_identifier_attachable": "cannot_tell",
+   "note": "Trinh 2007 Spine paper, not the Cochrane versions in R1-R4 (journal, year, identifiers differ; reached by title tokens only). Neither DOI nor PMID is confirmed against the text by the item, so same_work and attachability not shown."
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+ "annotator": "ADJ",
+ "format": "citerift-stage04-eval-labels/2",
+ "instances": [
+  {
+   "file": "labels-ADJ-ar-p01.json",
+   "instance": "ADJ-ar-p01",
+   "items": 5,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "ecd016172a9d9e29a63021ed6bd1c1e072c1f18efa24e96d76eec594b54e28ae"
+  },
+  {
+   "file": "labels-ADJ-en-p01.json",
+   "instance": "ADJ-en-p01",
+   "items": 3,
+   "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+   "sha256": "c73e5b8b1ee43e851cfb19af9bf32236cbe1150eca6e23c990243f0a44b50d6f"
+  }
+ ],
+ "labels": [
+  {
+   "item_id": "ar-75970672-un-00023",
+   "kind": "work_citation",
+   "note": "Cites the Echinacea Cochrane review; DOI CD000530.pub3 agrees with the pages field and title, so the DOI alone identifies it. Guide: same_work yes needs the item to show the identifiers name one work; no record or text confirms the PMID, so cannot_tell. R1,R2 other reviews.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-75970672-un-00025",
+   "kind": "work_citation",
+   "note": "Hulisz 2004 J Am Pharm Assoc. DOI as written carries a junk '.Hulisz' suffix (not a valid DOI as written); PMID is clean but nothing in the item confirms it names this paper. same_work not shown. R1 is a Cochrane zinc review, different paper.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "ar-76080986-un-00007",
+   "kind": "work_citation",
+   "note": "Standaert 2011 Spine paper. Nothing in the item (no record, no DOI-embedded detail) confirms that DOI or PMID names this paper, so same_work and attachability not shown. R1 is a different Cochrane review.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "ar-76080986-un-00052",
+   "kind": "work_citation",
+   "note": "Lee & Done 2004 Cochrane P6 review; DOI CD003281.pub2 agrees with pages CD003281 and title, so it alone identifies the work. PMID unconfirmed by item, so same_work cannot_tell. R1 is CD004125, different review.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "yes"
+  },
+  {
+   "item_id": "ar-76080986-un-00055",
+   "kind": "work_citation",
+   "note": "Trinh 2007 Spine paper, not the Cochrane versions in R1-R4 (journal, year, identifiers differ; reached by title tokens only). Neither DOI nor PMID is confirmed against the text by the item, so same_work and attachability not shown.",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated",
+    "R4": "unrelated"
+   },
+   "same_work": "cannot_tell",
+   "single_identifier_attachable": "cannot_tell"
+  },
+  {
+   "item_id": "en-1331372829-un-00003",
+   "kind": "work_citation",
+   "note": "Unit text is the paper itself (title, author, Research Evaluation, 11 Aug 2021, vol 30(3), pp 405-419a; no notice wording), matching both records by title/author/journal/year. Only DOI rvab030 is R2's notice DOI, not the original DOI, so it does not identify the cited paper.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "single_identifier",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1373069395-un-00004",
+   "kind": "work_citation",
+   "note": "Unit is a reference to Garry's 'Comments' (different author, title ends 'Comments'), a document that is neither R1's paper nor its retraction notice. DOI/PMID are both the original paper's (same_work yes) but text does not confirm them, so no identifier identifies the cited work.",
+   "records": {
+    "R1": "unrelated"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "no"
+  },
+  {
+   "item_id": "en-1386551143-un-00196",
+   "kind": "work_citation",
+   "note": "Text clearly cites the Kotz et al. paper (title, authors, Nature 628, pp 551-557, 17 Apr 2024); no correction wording. DOI and PMID are both R1's notice ids (one document, so same_work yes) and do not identify the cited paper. Guide's cited_work allows match by title/authors/journal/year; ambiguous_object not used since text names the paper clearly.",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "same_work": "yes",
+   "single_identifier_attachable": "no"
+  }
+ ]
+}

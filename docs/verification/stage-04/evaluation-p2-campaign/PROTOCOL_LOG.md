@@ -28,6 +28,20 @@ deviation, however small. Nothing here changes a pre-registered rule. The histor
 
 ## Round `primary`
 
-- Acquisition 13:2xZ to 14:23Z (`p2_acquire.py acquire --round primary`): 60 of 60 positions acquired (ar 22 S1 + 8 S2,
+- Acquisition 13:19Z to 14:23Z (`p2_acquire.py acquire --round primary`): 60 of 60 positions acquired (ar 22 S1 + 8 S2,
   en 22 S1 + 8 S2), 0 failures, 0 replacements, 0 `EXPOSED_AT_CAPTURE`; 60 attempts of 200. 103 items; 1 article
   without items.
+- Annotation: 10 batches per role (ar 5, en 5; at most six articles of one language each), one new Claude Code agent
+  per instance, model `sonnet` (platform model `claude-sonnet-5-5` for every instance), started 14:25Z with the P2
+  brief text filled in (`rounds/primary/briefs/`). Work directories are outside the repository (scratchpad). A and B:
+  103 labels each, every file format-valid on the first submission (`p2_labels.py check`).
+- Disagreements: 8 items (ar 5, en 3), adjudicated by 2 ADJ instances (`ADJ-ar-p01`, `ADJ-en-p01`); their labels are
+  final as written (the executor never edits a label).
+- Every tool call of every primary instance was checked for paths: none read or wrote outside its work directory (the
+  only path-like strings outside it were JSON field lists inside helper snippets, such as `/journal/year`).
+- Instance `B-ar-p05` ended without a final reply through the platform's hand-back channel; its label file was complete
+  and format-valid, and its transcript is recorded like every other.
+- Lock: 103 items, 8 adjudicated (`rounds/primary/LOCK.json`).
+- Expansion decision (`p2_acquire.py status`, engine-independent, after the lock): ar identifier-reached
+  truth-positive units 27 (< 40), negative-proxy units 427; en 27 (< 40) and 1208. Both languages expand:
+  `ar-expansion-1`, `en-expansion-1`.

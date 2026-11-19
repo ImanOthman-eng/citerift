@@ -1,0 +1,42 @@
+{
+ "format": "citerift-stage04-eval-labels/2",
+ "annotator": "ADJ",
+ "instance": "ADJ-en-p01",
+ "model": "claude-sonnet-5-5 (Sonnet 5.5)",
+ "started_at": "2026-11-19T14:28:32Z",
+ "finished_at": "2026-11-19T14:28:51Z",
+ "labels": [
+  {
+   "item_id": "en-1331372829-un-00003",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Unit text is the paper itself (title, author, Research Evaluation, 11 Aug 2021, vol 30(3), pp 405-419a; no notice wording), matching both records by title/author/journal/year. Only DOI rvab030 is R2's notice DOI, not the original DOI, so it does not identify the cited paper."
+  },
+  {
+   "item_id": "en-1386551143-un-00196",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Text clearly cites the Kotz et al. paper (title, authors, Nature 628, pp 551-557, 17 Apr 2024); no correction wording. DOI and PMID are both R1's notice ids (one document, so same_work yes) and do not identify the cited paper. Guide's cited_work allows match by title/authors/journal/year; ambiguous_object not used since text names the paper clearly."
+  },
+  {
+   "item_id": "en-1373069395-un-00004",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Unit is a reference to Garry's 'Comments' (different author, title ends 'Comments'), a document that is neither R1's paper nor its retraction notice. DOI/PMID are both the original paper's (same_work yes) but text does not confirm them, so no identifier identifies the cited work."
+  }
+ ]
+}

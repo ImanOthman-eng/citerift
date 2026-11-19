@@ -1,0 +1,221 @@
+{
+ "format": "citerift-stage04-eval-labels/2",
+ "annotator": "A",
+ "instance": "A-en-p01",
+ "model": "Claude Sonnet 5.5 (claude-sonnet-5-5)",
+ "started_at": "2026-11-19T14:26:36Z",
+ "finished_at": "2026-11-19T14:27:09Z",
+ "labels": [
+  {
+   "item_id": "en-1382495828-un-00003",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title, journal, authors, DOI and PMID match R1 original paper."
+  },
+  {
+   "item_id": "en-1331372829-un-00003",
+   "kind": "cannot_tell",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "ambiguous_object",
+    "R2": "ambiguous_object"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Title, journal, volume/pages (405-419a) are the paper's, but the only DOI rvab030 is the notice DOI of R2 (EoC); paper DOI is rvab020. Cannot tell whether paper or notice is cited. R1's notice DOI is rvad014, not cited."
+  },
+  {
+   "item_id": "en-1383231615-un-00006",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Paper by title/journal/2003; DOI and PMID are R1 original identifiers."
+  },
+  {
+   "item_id": "en-1381494378-un-00035",
+   "kind": "notice_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title 'Retraction—Ileal-lymphoid...', Lancet 2010 p.445; DOI/PMID are R2 notice ids. R1 is the 2004 correction: its notice and the paper are not cited."
+  },
+  {
+   "item_id": "en-1384323835-un-00088",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "1986 Cell paper; DOI and PMID are the original ids of both records."
+  },
+  {
+   "item_id": "en-1384323835-un-00092",
+   "kind": "notice_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "unrelated",
+    "R2": "cited_notice"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Title 'Retraction: altered repertoire...', Cell 1991 p.536; DOI/PMID are R2 notice ids. R1 correction notice not cited."
+  },
+  {
+   "item_id": "en-1386551143-un-00024",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unrelated paper/chapter; record shown by title tokens only."
+  },
+  {
+   "item_id": "en-1386551143-un-00115",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unrelated paper/chapter; record shown by title tokens only."
+  },
+  {
+   "item_id": "en-1386551143-un-00141",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unrelated paper/chapter; record shown by title tokens only."
+  },
+  {
+   "item_id": "en-1386551143-un-00145",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unrelated paper/chapter; record shown by title tokens only."
+  },
+  {
+   "item_id": "en-1386551143-un-00169",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Different paper (Carter et al. 2018); records are about Kotz et al. 2024."
+  },
+  {
+   "item_id": "en-1386551143-un-00173",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Unrelated paper/chapter; record shown by title tokens only. No identifier."
+  },
+  {
+   "item_id": "en-1386551143-un-00196",
+   "kind": "cannot_tell",
+   "same_work": "yes",
+   "records": {
+    "R1": "ambiguous_object",
+    "R2": "ambiguous_object"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Title/authors/journal/date are the Kotz 2024 paper's, but DOI and PMID are R1's notice (correction) identifiers; issue 8020 differs from paper's. Paper or correction notice cited cannot be told. Both ids are R1's notice ids so they name one work."
+  },
+  {
+   "item_id": "en-1386551143-un-00198",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Different paper (O'Brien & Leichenko 2000)."
+  },
+  {
+   "item_id": "en-1386551143-un-00208",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Think-tank report; no identifier; record unrelated."
+  },
+  {
+   "item_id": "en-1386551143-un-00233",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Unrelated paper/chapter; record shown by title tokens only."
+  },
+  {
+   "item_id": "en-1386551143-un-00247",
+   "kind": "work_citation",
+   "same_work": "yes",
+   "records": {
+    "R1": "cited_work",
+    "R2": "cited_work"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Kotz 2024 paper by title; DOI and PMID are original ids of both records."
+  },
+  {
+   "item_id": "en-1386551143-un-00251",
+   "kind": "work_citation",
+   "same_work": "single_identifier",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated",
+    "R3": "unrelated"
+   },
+   "single_identifier_attachable": "yes",
+   "note": "Different paper (Kompas 2018)."
+  },
+  {
+   "item_id": "en-1386551143-un-00254",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated",
+    "R2": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "NBER working paper; no identifier."
+  },
+  {
+   "item_id": "en-1386551143-un-00275",
+   "kind": "work_citation",
+   "same_work": "no_identifier",
+   "records": {
+    "R1": "unrelated"
+   },
+   "single_identifier_attachable": "no",
+   "note": "Unrelated paper/chapter; record shown by title tokens only. No identifier."
+  }
+ ]
+}

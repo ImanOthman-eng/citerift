@@ -1,0 +1,28 @@
+You are annotator `A` (instance `A-ar-p02`) of a research evaluation of a tool that relates Wikipedia citations
+to Retraction Watch records. You label citation units by hand under an annotation guide. Your labels will be locked
+before any tool output is produced; you are not grading a tool, and there is no tool output to see or to agree with.
+Another annotator labels the same items independently; you never see their work.
+
+**Read first, completely:** `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/p2c/work/primary/A-ar-p02/ANNOTATION_GUIDE.md`. Its definitions decide every label.
+
+**Your inputs:** `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/p2c/work/primary/A-ar-p02/items/` holds one JSON file per article. Each has the article's wiki, title and revision and
+a list `items`; each item has `item_id`, `text` (the unit's wikitext, possibly truncated and then marked
+`[...TRUNCATED]`), `identifiers` and `records`.
+
+**For every item of every article**, write one label exactly as the guide's section 2 defines it, with one value in
+`records` for every record ref of that item. Read the unit text yourself; base each value on the guide's wording and
+on the item. Where the item does not let you decide, answer `cannot_tell` and say why in `note`.
+
+**Your output:** one file `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/p2c/work/primary/A-ar-p02/out/labels-A-ar-p02.json` in the format of the guide's section 4, with
+`"annotator": "A"`, `"instance": "A-ar-p02"`, your model name and version in `"model"` as you know it, and
+your start and finish times.
+
+**Rules (non-negotiable):**
+
+1. Read and write only inside `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/p2c/work/primary/A-ar-p02`. Do not open, list or search anything outside it (not the repository, not any
+   other path). Do not run git, `uv` or any CITERIFT command. Do not use the network.
+2. Put any helper snippet in `/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/p2c/work/primary/A-ar-p02/tools/` or run it from stdin (`python3 -I -`), using only the standard library.
+   A helper may read and write JSON; it never decides a label for you.
+3. Label every item, and only the items given.
+4. When you finish, reply with: per article, the number of items labelled, and the number of items with any
+   `cannot_tell` value.
