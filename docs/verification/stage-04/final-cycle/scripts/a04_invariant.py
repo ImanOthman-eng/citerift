@@ -22,6 +22,10 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from fc_provenance import provenance
+
 from citerift.investigation import dt1
 from citerift.investigation.adapters.detector import lookup_view
 from citerift.investigation.adapters.lookup import observe
@@ -98,6 +102,7 @@ def main() -> int:
         "exposure_bridged_through_a_notice_key": exposure,
         "exposure_keys": sorted({(x["scheme"], x["key"]) for x in exposure}),
         "table_version": dt1.TABLE_VERSION,
+        "provenance": provenance(Path(__file__), path),
     }
     target.write_text(json.dumps(report, indent=1, sort_keys=True, default=list) + "\n", encoding="utf-8")
     print(

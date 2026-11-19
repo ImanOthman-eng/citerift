@@ -36,7 +36,6 @@ import argparse
 import dataclasses
 import hashlib
 import json
-import sqlite3
 import subprocess
 import sys
 import tempfile
@@ -51,9 +50,11 @@ S04 = REPO / "docs/verification/stage-04"
 TOOLS = S04 / "evaluation/tools"
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(REPO / "tests" / "stage04"))
+sys.path.insert(0, str(S04 / "final-cycle"))
 
 import pytest  # noqa: E402
 import step8_support as S8  # noqa: E402
+from fc_provenance import provenance as fc_provenance  # noqa: E402
 from s13_common import file_sha256, read_json, write_json  # noqa: E402
 
 from citerift.investigation import __version__ as ENGINE_VERSION  # noqa: E402
@@ -115,19 +116,14 @@ def decision(out: Any) -> dict[str, Any]:
 
 
 def provenance(index_path: Path) -> dict[str, Any]:
-    con = sqlite3.connect(f"file:{index_path}?mode=ro", uri=True)
-    meta = dict(con.execute("SELECT key, value FROM meta").fetchall())
-    con.close()
-    dirty = _git("status", "--porcelain", "--", "src", "schemas").strip()
-    return {
-        "index": {k: meta.get(k) for k in ("snapshot_id", "artifact_digest", "semantic_digest", "source_sha256")},
-        "tables": {
-            "reference": {"table_version": "dt-2", "commit": DT2_COMMIT, "blob": DT2_BLOB},
-            "current": {"table_version": dt1.TABLE_VERSION, "engine_version": ENGINE_VERSION},
-        },
-        "code_commit": _git("rev-parse", "HEAD").strip(),
-        "engine_sources_uncommitted": bool(dirty),
+    """The committed code and index of a shard (reviewer finding N-01: the whole scientific dependency set is checked
+    for uncommitted changes and the running tool's SHA-256 is recorded; see ``fc_provenance``)."""
+    out = fc_provenance(Path(__file__), index_path)
+    out["tables"] = {
+        "reference": {"table_version": "dt-2", "commit": DT2_COMMIT, "blob": DT2_BLOB},
+        "current": {"table_version": dt1.TABLE_VERSION, "engine_version": ENGINE_VERSION},
     }
+    return out
 
 
 def one(tmp: Path, bundle: Path, index: Path) -> dict[str, Any]:
@@ -295,8 +291,13 @@ def main(argv: list[str] | None = None) -> int:
     if sorted(revisions) != sorted(n for n, _ in bundles_of(a.set)):
         sys.exit("the shards do not cover the set")
     provs = [p.get("provenance") for p in parts]
-    if provs[0] is None or any(x != provs[0] for x in provs) or provs[0]["engine_sources_uncommitted"]:
+    if provs[0] is None or any(x != provs[0] for x in provs) or provs[0]["uncommitted"]:
         sys.exit("the shards do not record one committed code revision")
+    if (
+        provs[0]["tool_sha256"] != file_sha256(Path(__file__))
+        or provs[0]["code_commit"] != _git("rev-parse", "HEAD").strip()
+    ):
+        sys.exit("the shards ran another tool or commit than this merge")
     cross = cross_check(a.set, revisions)
     tot = totals(revisions)  # before the per-candidate rows are dropped
     for row in revisions.values():
