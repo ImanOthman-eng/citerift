@@ -45,3 +45,26 @@ def test_the_same_case_from_the_current_engine_folds() -> None:
     for rec in records:
         folder.apply(rec)
     assert len(folder.records) == len(records)
+
+
+def test_freeze2_names_the_dt2_engine_identity() -> None:
+    """Owner decision D-074: freeze-2 records the new engine identity (0.3.0, dt-2, schema 4.0.0, detector 3), that
+    identity is the running code's, and every frozen source and schema file is byte-identical to the tree."""
+    import hashlib
+    import json
+
+    from citerift.investigation import __version__, dt1
+    from citerift.investigation.adapters.detector import DETECTOR_IDENTITY
+    from citerift.investigation.adapters.plan import STAGE04_IDENTITY
+
+    manifest = json.loads((S04 / "freeze-2" / "FREEZE_MANIFEST.json").read_text(encoding="utf-8"))
+    ident = manifest["stage04_identity"]
+    assert (ident["engine_version"], ident["table_version"], ident["schema_version"]) == ("0.3.0", "dt-2", "4.0.0")
+    assert ident["detector_identity"] == DETECTOR_IDENTITY == "citerift-dt1-detector/3 (dt-2)"
+    assert ident["package_version"] == __version__ and manifest["decision_table_version"] == dt1.TABLE_VERSION
+    assert {k: v for k, v in ident.items() if k in STAGE04_IDENTITY} == dict(STAGE04_IDENTITY)
+    assert manifest["supersedes"]["frozen_commit"] == "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0"
+    repo = S04.parents[2]
+    for group in ("source_files", "schemas"):
+        for path, sha in manifest[group].items():
+            assert hashlib.sha256((repo / path).read_bytes()).hexdigest() == sha, path

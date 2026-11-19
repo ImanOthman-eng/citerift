@@ -1639,3 +1639,81 @@ provenance, security, evaluation leakage) with no unresolved HIGH/CRITICAL; a ne
 new minor version); a complete new Step-12-style freeze, the old freeze marked SUPERSEDED_AFTER_FAILED_04_I and kept; an
 updated exposure manifest hashed and committed. For this instruction the work stops at the new freeze candidate; the new
 Step 13 pre-registration (P2, new drand seed, G2 ≤ 0.10, G3 = 0, G4 = 0 by default) waits for explicit authorization.
+
+## D-072 — Strict role-collision resolution rule (dt-2) approved
+- Status: accepted
+- Topic: stage-04-dt2-strict-resolution
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/corrective/census/PAIR_CENSUS.json; docs/verification/stage-04/corrective/census/PAIR_CENSUS_LENIENT.json; docs/verification/stage-04/corrective/review/TRIAGE.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj` (2026-11-19T07:45:19Z). The strict interpretation
+implemented in dt-2 is approved; the lenient alternative is not adopted. A second cited identifier resolves a
+role-collided identifier only when the checked evidence positively distinguishes the work from the notice: the resolving
+cited key is free of a notice role, directly identifies the same work, and its record gives a distinct notice identifier
+in that scheme where SPEC 7.3a requires the discrimination. Absence of a notice role is not by itself evidence that the
+key cannot identify the notice. The correction is precision-first and fail-closed; its recall cost is accepted and stays
+visible as an explicit recall/abstention trade-off, never as a performance result: dt-1 positive pairs 31,506; strict
+dt-2 loses 1,472; the lenient alternative would lose 800. The strict alternative stays documented in SPEC,
+RISK_ANALYSIS, the freeze report, the regression evidence and future P2 limitations. No threshold or holdout-derived
+special case is authorized.
+
+## D-073 — No same-work-sibling exemption (reviewer finding C-01)
+- Status: accepted
+- Topic: stage-04-dt2-no-sibling-exemption
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/corrective/review/REVIEW_C.md; docs/verification/stage-04/corrective/regression/CAMPAIGN_REGRESSION.json
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj`. No exemption is added for the 53 same-work
+sibling-record pairs of C-01; their strict dt-2 behaviour (UNRESOLVED_IDENTITY when the D-10 role-collision guard
+applies) is kept. A sibling record of the same work does not resolve publication-object identity when the checked
+source reuses the cited identifier in both the original-work role and a notice role (notice, EoC, correction or other
+notice object), even when another sibling record provides a clean retraction event: the Stage 04 evidence model lacks
+the publication-object context to prove the citation refers to the clean original. Same-work equality, a shared
+original DOI/PMID, event type preference, title similarity and record ordering are not used to override the collision.
+`ar-3351802` / `un-00059` and the other 52 measured pairs are a documented recall cost of dt-2; calling them "probable
+true positives" is descriptive only and does not restore D-14. A future engine may revisit them only with independently
+verified publication-object disambiguation evidence.
+
+## D-074 — The historical P test verifies the historical freeze, not the current HEAD
+- Status: accepted
+- Topic: stage-04-historical-p-test
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: tests/stage04/test_step13_evaluation.py; tests/stage04/test_corrective_compat.py
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj`. `test_frozen_check_passes_on_the_frozen_engine`
+is obsolete in its applicability after D-071 superseded the first frozen engine. P
+(`4eded723bbb464c247b31e675d2f2fc7d16133328d55925c9a787801efd1098a`), commit `827ac1a`, the historical
+PREREGISTRATION manifest, the Step 14 campaign, the frozen engine `b5bf8ed` and the failed campaign scores are not
+changed. The repository HEAD is no longer required to equal the historical frozen engine. The Step 13 test code is
+corrected to prove, from the historical git objects: P resolves to the exact accepted pre-registration files at
+`827ac1a`; the manifest digest is unchanged; the frozen engine named by P is exactly `b5bf8ed`; the historical frozen
+check succeeds on that historical frozen tree; the Step 14 campaign names and used that engine; the current dt-2 engine
+has a different identity and does not satisfy the old assertion. No skip, xfail, deletion of the historical invariant,
+change of P or weakening to "commit exists". P is identified by its historical commit and digest, not by requiring
+every future HEAD to keep those files byte-identical. A new explicit test proves that freeze-2 uses the dt-2 engine
+identity.
+
+## D-075 — B-03: a clean original DOI keeps D-14 beside the same record's notice PMID
+- Status: accepted
+- Topic: stage-04-b03-original-doi-notice-pmid
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/corrective/census/B03_CENSUS.json; tests/stage04/test_corrective_role_collision.py
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj`. The current B-03 behaviour is approved, the
+mirror of D-058: for a citation with a clean, directly supported original-work DOI and a PMID that the same checked
+record identifies as the notice PMID, the notice PMID does not invalidate the independently supported DOI attachment,
+which may remain D-14 when the DOI is direct contract-valid support, has no unresolved role collision of its own, and
+no D-6 identity-conflict witness, D-7 contradiction or earlier unresolved rule applies to the deciding evidence. The
+notice PMID never counts as positive support, stays visible in evidence and provenance, and keeps the key-disagreement
+and uncorroborated-pair warnings where they apply. No IDENTITY_CONFLICT is manufactured merely because one key is a
+notice identifier of the same work. If the clean original-work identifier is absent, unavailable or itself
+role-collided, D-14 is never recovered from the notice key. Explicit regression tests cover the boundary; the measured
+snapshot pairs remain positive.

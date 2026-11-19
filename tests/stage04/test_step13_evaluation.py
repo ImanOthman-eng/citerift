@@ -583,18 +583,123 @@ def test_expansion_counts_are_engine_independent() -> None:
 # ------------------------------------------------------------------------------------------------ run guard
 
 
+# Owner decision D-074 (2026-11-19): the frozen-engine check is proved in its historical context. The repository HEAD
+# no longer has to equal the superseded engine b5bf8ed (D-071 replaced it by dt-2); P is identified by its historical
+# commit 827ac1a and its digest, and the proof reads those git objects. P itself is not changed.
+
+PREREG_COMMIT = "827ac1aa1d9d16d444d4860e4119f8633d8e802e"
+P_DIGEST = "4eded723bbb464c247b31e675d2f2fc7d16133328d55925c9a787801efd1098a"
+FROZEN_ENGINE = "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0"
+CAMPAIGN_COMMIT = "1064113902c674f1c61dcb7eda33afe40350ca71"
+MANIFEST_REL = "docs/verification/stage-04/evaluation/PREREGISTRATION_MANIFEST.json"
+THIS_TEST = "tests/stage04/test_step13_evaluation.py"  # changed by D-074 only; its P bytes are proved from git
+
+
+def _git(*args: str, text: bool = True) -> Any:
+    return subprocess.run(["git", *args], cwd=REPO, capture_output=True, check=True, text=text).stdout
+
+
+def _require_history() -> None:
+    for commit in (PREREG_COMMIT, FROZEN_ENGINE, CAMPAIGN_COMMIT):
+        probe = subprocess.run(
+            ["git", "cat-file", "-e", f"{commit}^{{commit}}"], cwd=REPO, capture_output=True, check=False
+        )
+        if probe.returncode != 0:
+            pytest.fail(f"commit {commit} is missing: the historical proof needs the full history (no shallow clone)")
+
+
+def _historical_manifest() -> dict[str, Any]:
+    return json.loads(_git("show", f"{PREREG_COMMIT}:{MANIFEST_REL}"))
+
+
 @pytest.mark.unit
-def test_frozen_check_passes_on_the_frozen_engine() -> None:
+def test_p_resolves_to_the_historical_preregistration_files() -> None:
+    """D-074 (1, 2): the manifest at 827ac1a has digest P, every file it lists hashes, at 827ac1a, to its recorded
+    SHA-256, and the manifest in the tree is that same manifest."""
+    import hashlib
+
+    _require_history()
+    manifest = _historical_manifest()
+    assert C.digest(manifest) == P_DIGEST
+    assert (REPO / MANIFEST_REL).read_bytes() == _git("show", f"{PREREG_COMMIT}:{MANIFEST_REL}", text=False)
+    assert len(manifest["files"]) > 20
+    for f in manifest["files"]:
+        blob = _git("show", f"{PREREG_COMMIT}:{f['path']}", text=False)
+        assert hashlib.sha256(blob).hexdigest() == f["sha256"], f["path"]
+
+
+@pytest.mark.unit
+def test_p_files_are_unchanged_in_the_tree_except_this_test() -> None:
+    """D-074: every pre-registered file except this test file still has its P bytes; this file alone differs, and
+    only because D-074 replaced its frozen-engine check (its P bytes are proved from git above)."""
+    changed = sorted(
+        f["path"] for f in _historical_manifest()["files"] if C.file_sha256(REPO / f["path"]) != f["sha256"]
+    )
+    assert changed == [THIS_TEST]
+
+
+@pytest.mark.unit
+def test_p_names_the_superseded_frozen_engine() -> None:
+    """D-074 (3): the frozen engine named by P is exactly b5bf8ed, its tree and its freeze manifest digest."""
+    _require_history()
+    frozen = _historical_manifest()["frozen_engine"]
+    assert frozen == PARAMS["frozen_engine"]
+    assert frozen["content_commit"] == FROZEN_ENGINE
+    assert frozen["tree"] == _git("rev-parse", f"{FROZEN_ENGINE}^{{tree}}").strip()
+    assert frozen["freeze_manifest_digest"] == "609796cee9fc168b379669dde7ca5c410868e37455944d86b12624578fae42cc"
+
+
+def _historical_checkout(tmp: Path, commit: str, paths: list[str]) -> Path:
+    """A worktree at ``commit`` with only ``paths`` checked out (the frozen check reads only those)."""
+    wt = tmp / "frozen"
+    _git("worktree", "add", "--no-checkout", "--detach", str(wt), commit)
+    subprocess.run(["git", "reset", "-q"], cwd=wt, check=True)
+    subprocess.run(["git", "checkout", "--", *paths], cwd=wt, check=True)
+    return wt
+
+
+@pytest.mark.unit
+def test_the_historical_frozen_check_passes_on_the_historical_frozen_tree(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """D-074 (4, 5): the pre-registered run guard (``s13_run.frozen_check``, unchanged) passes on the frozen tree
+    b5bf8ed, and the trees it reports are exactly those the Step 14 campaign recorded when it ran."""
     import s13_run as RN
 
-    commit = PARAMS["frozen_engine"]["content_commit"]
-    probe = subprocess.run(
-        ["git", "cat-file", "-e", f"{commit}^{{commit}}"], cwd=REPO, capture_output=True, check=False
+    _require_history()
+    paths = PARAMS["frozen_engine"]["checked_paths"]
+    wt = _historical_checkout(tmp_path, FROZEN_ENGINE, paths)
+    try:
+        monkeypatch.setattr(C, "REPO", wt)  # s13_common.git runs in C.REPO
+        historical_params = json.loads(
+            _git("show", f"{PREREG_COMMIT}:docs/verification/stage-04/evaluation/PARAMETERS.json")
+        )
+        res = RN.frozen_check(historical_params)
+    finally:
+        monkeypatch.undo()
+        _git("worktree", "remove", "--force", str(wt))
+    assert res["head"] == FROZEN_ENGINE
+    assert set(res["trees"]) == set(paths)
+    run = json.loads(_git("show", f"{CAMPAIGN_COMMIT}:docs/verification/stage-04/evaluation-campaign/run/RUN.json"))
+    assert (REPO / "docs/verification/stage-04/evaluation-campaign/run/RUN.json").read_text(encoding="utf-8") == (
+        _git("show", f"{CAMPAIGN_COMMIT}:docs/verification/stage-04/evaluation-campaign/run/RUN.json")
     )
-    if probe.returncode != 0:
-        pytest.skip("the frozen commit is not in this clone (shallow checkout)")
-    res = RN.frozen_check(PARAMS)
-    assert set(res["trees"]) == set(PARAMS["frozen_engine"]["checked_paths"])
+    assert run["checks"]["frozen"]["content_commit"] == FROZEN_ENGINE
+    assert run["checks"]["frozen"]["trees"] == res["trees"]
+    assert run["checks"]["preregistration"]["prereg_digest"] == P_DIGEST
+
+
+@pytest.mark.unit
+def test_the_current_engine_is_not_the_superseded_frozen_engine() -> None:
+    """D-074 (6): the current dt-2 engine has a different identity and must not satisfy the old guard."""
+    import s13_run as RN
+
+    _require_history()
+    with pytest.raises(SystemExit, match="the engine is not the frozen one"):
+        RN.frozen_check(PARAMS)
+    assert dt1.TABLE_VERSION == "dt-2"
+    frozen_dt1 = _git("show", f"{FROZEN_ENGINE}:src/citerift/investigation/dt1.py")
+    assert 'TABLE_VERSION = "dt-1"' in frozen_dt1
 
 
 @pytest.mark.unit
@@ -656,9 +761,16 @@ def test_combine_joins_instances_of_one_role(tmp_path: Path) -> None:
 
 @pytest.mark.unit
 def test_preregistration_manifest_matches_the_files() -> None:
+    """The manifest in the tree is the one P names, and ``s13_manifest.build`` over today's files differs from it only
+    in this test file's digest (owner decision D-074); the P bytes of this file are proved from git above."""
     import s13_manifest as MF
 
     assert MF.MANIFEST.exists()
     recorded = C.read_json(MF.MANIFEST)
-    assert recorded == MF.build()
+    assert C.digest(recorded) == P_DIGEST
+    now = MF.build()
+    assert {k: v for k, v in now.items() if k != "files"} == {k: v for k, v in recorded.items() if k != "files"}
+    assert [f["path"] for f in now["files"]] == [f["path"] for f in recorded["files"]]
+    differing = [a["path"] for a, b in zip(now["files"], recorded["files"], strict=True) if a != b]
+    assert differing == [THIS_TEST]
     assert recorded["frozen_engine"] == PARAMS["frozen_engine"]

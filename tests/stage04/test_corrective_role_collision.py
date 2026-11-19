@@ -41,6 +41,7 @@ pytestmark = pytest.mark.unit
 REPO = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "corrective"
 NEW = "IDENTIFIER_ROLE_COLLISION"
+POSITIVE_CLASSES = set(dt1.POSITIVE.values())
 SAME_DOI, SAME_PMID = "NOTICE_DOI_EQUALS_ORIGINAL", "NOTICE_PMID_EQUALS_ORIGINAL"
 D, P, D2, P2, PX = "10.5555/rc.work", "9100001", "10.5555/rc.notice", "9100002", "9100077"
 
@@ -176,8 +177,8 @@ def test_original_doi_with_a_different_notice_doi_stays_positive() -> None:
 
 
 def test_doi_original_with_the_notice_pmid_is_unchanged() -> None:
-    """The cited PMID is the notice's (another record's notice key); the event is attached through the DOI only, which
-    is not collided, so dt-1's result stands (D-14 with KEY_RESULTS_DIFFER and PAIR_UNCORROBORATED)."""
+    """Owner decision D-075 (B-03): the cited PMID is the same record's notice PMID; the event is attached through the
+    DOI only, which is not collided, so dt-1's result stands (D-14 with KEY_RESULTS_DIFFER and PAIR_UNCORROBORATED)."""
     e = ev("e1", "doi", D, None, notice_pmid=P)
     q1d = obs("matched", [e], vf())
     q1p = obs(
@@ -192,6 +193,55 @@ def test_doi_original_with_the_notice_pmid_is_unchanged() -> None:
         "RETRACTED_WORK_CITED",
         ("KEY_RESULTS_DIFFER", "PAIR_UNCORROBORATED"),
     )
+
+
+# Owner decision D-075 (B-03, the mirror of D-058): a clean original DOI keeps D-14 beside the same record's notice
+# PMID; the notice PMID is never itself positive support, and nothing is recovered from it when the DOI fails.
+
+
+def _b03(q1d: dict[str, Any], *, q2: dict[str, Any] | None = None) -> dt1.Outcome:
+    q1p = obs(
+        "notice_only",
+        [ev("e1", "notice", D, None, notice_pmid=P)],
+        proj("uncertain", None, ["NOTICE_ONLY"]),
+        notice_hits=1,
+    )
+    return decide("PAIR", q1d, q1p, q2 if q2 is not None else q1d)
+
+
+def test_d075_the_notice_pmid_alone_is_never_positive() -> None:
+    out = decide(
+        "PMID",
+        p=obs("notice_only", [ev("e1", "notice", D, None, notice_pmid=P)], proj("uncertain", None, ["NOTICE_ONLY"]),
+              notice_hits=1),
+    )  # fmt: skip
+    assert out.cls not in POSITIVE_CLASSES
+    assert got(out) == ("D-15", "NOTICE_CITED", ("CITED_IDENTIFIER_IS_NOTICE",))
+
+
+def test_d075_no_identity_conflict_is_manufactured_from_the_notice_pmid() -> None:
+    out = _b03(obs("matched", [ev("e1", "doi", D, None, notice_pmid=P)], vf()))
+    assert out.rule == "D-14" and out.cls == "RETRACTED_WORK_CITED"
+    assert out.cls != "IDENTITY_CONFLICT"
+    assert "KEY_RESULTS_DIFFER" in out.reasons  # the key disagreement stays visible
+
+
+def test_d075_a_role_collided_original_doi_is_not_recovered_from_the_notice_pmid() -> None:
+    e = ev("e1", "doi", D, None, flags=(SAME_DOI,), notice_pmid=P)
+    out = _b03(obs("matched", [e], vf()))
+    assert got(out)[:2] == ("D-10", "UNRESOLVED_IDENTITY")
+    assert NEW in out.reasons
+
+
+def test_d075_an_unavailable_original_doi_is_not_recovered_from_the_notice_pmid() -> None:
+    out = _b03(UNAVAILABLE, q2=UNAVAILABLE)
+    assert out.cls not in POSITIVE_CLASSES
+    assert out.rule == "D-13"
+
+
+def test_d075_an_absent_original_doi_is_not_recovered_from_the_notice_pmid() -> None:
+    out = _b03(NO_RECORD, q2=NO_RECORD)
+    assert out.cls not in POSITIVE_CLASSES
 
 
 def test_d058_notice_doi_with_the_original_pmid_is_unchanged() -> None:
