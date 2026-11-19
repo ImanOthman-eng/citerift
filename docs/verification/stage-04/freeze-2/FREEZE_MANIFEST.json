@@ -1,0 +1,455 @@
+{
+ "baseline_sha": "f207bc025c992d24b409e5869e3f380bc986e821",
+ "canonical_stage02_identity": {
+  "accepted_snapshot": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "export_lines": 147152,
+   "lookup_schema_version": "1.1.0",
+   "policy_version": "citerift-rde-policy/1.3.0",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6"
+  },
+  "csv_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+  "definition": "snapshot_id, policy_version, lookup_schema_version, artifact_digest (scientific); semantic_digest, export_lines (consistency); verified by Stage 02 checks before use (D-062)",
+  "digest_keys": [
+   "artifact_digest",
+   "semantic_digest",
+   "export_lines"
+  ],
+  "verification_profile": "verify_index_identity (OD-S12-1)"
+ },
+ "code_revision_of_the_evidence": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+ "d062_failed_checks": [],
+ "d062_tamper_discrepancies": [],
+ "decision_semantics": {
+  "canonical_stage02_identity": {
+   "src/citerift/investigation/adapters/lookup.py": "3ab6ebe885f5dde46972c010af5e9fe83da3ae5f66717b2d57d660e56b655af6"
+  },
+  "decision_table_and_coherence": {
+   "src/citerift/investigation/dt1.py": "3fb02e134044619eec2cb8b036d3862e4d1c451cac06417d1c51769f1bb4c1b6"
+  },
+  "detector": {
+   "src/citerift/investigation/adapters/detect.py": "ffeb39e77c03d8c6909296c269b99bdf51513b70e5155311762ce3f0834436a1",
+   "src/citerift/investigation/adapters/detector.py": "b709aa3230711b4a8527f0a3c8bf9cbbbaf1c58cac802b64ddf8768cc8a05d2f"
+  },
+  "evidence_identity": {
+   "src/citerift/investigation/ids.py": "ef7ebdfbc6a6db552e25ccf761dd74119fcfdab801942f7e00a9b7f1038c48ff",
+   "src/citerift/investigation/sets.py": "bc2b04dfe143af89d4f977770cb5effdc6e36de1133c35c9e348b8b186ccd704"
+  },
+  "outcome": {
+   "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5"
+  },
+  "plan": {
+   "src/citerift/investigation/adapters/plan.py": "67aa4efc3590114a81ae840d864b87e752c58d3f865db92f614a46eda6a54927",
+   "src/citerift/investigation/workflow.py": "1c98dbd0b505563d07c2288ef7fa14fba4923f168bc7268306bc05d75778250d"
+  },
+  "report_and_projection_mappings": {
+   "src/citerift/investigation/adapters/assemble.py": "324817d8e3c754b796c3328141bda0996eee679ae0e09dd07013e90dcfc5c337",
+   "src/citerift/investigation/explanations.py": "a7e4116582325648e794a9c7253884f9f68601b0d4048fc279bf65e34b7d7a28",
+   "src/citerift/investigation/projections.py": "181f7926a30e48656e4404bfc4fed5ee4e757e652852f30d0a7cf478fa7aaa15",
+   "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5"
+  }
+ },
+ "decision_table_version": "dt-2",
+ "dt2_oracle_manifest": {
+  "path": "simulations/stage04/oracle-dt2/MANIFEST.json",
+  "sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0"
+ },
+ "evidence": {
+  "campaign_regression": {
+   "path": "docs/verification/stage-04/corrective/regression/CAMPAIGN_REGRESSION.json",
+   "sha256": "b4d0102b834b077f677db7a8ebb149c71bd76537fd345b2e960f29ff5ffd3564"
+  },
+  "census": {
+   "path": "docs/verification/stage-04/corrective/census/CENSUS.json",
+   "sha256": "e0785f3195fb39e1749bf6e9e25c3b228ca2918455bbf9de2b7187a580ccae97"
+  },
+  "d062_tamper_differential": {
+   "path": "docs/verification/stage-04/freeze-2/d062/tamper_differential.json",
+   "sha256": "7819059f1ed35db10e686b347c6b40aaee8cc3d1b30b5f78cf2fa0468e8b3105"
+  },
+  "d062_two_build_equivalence": {
+   "path": "docs/verification/stage-04/freeze-2/d062/two_build_equivalence.json",
+   "sha256": "5659dd8ce7f9947c34fcec0630f59b95f506b98d7a6a0b7c61f1083948164d49"
+  },
+  "decision_space_dt2": {
+   "path": "docs/verification/stage-04/corrective/simulation/decision_space_dt2_summary.json",
+   "sha256": "e753517262a44aad666fb5f57dce5480b1a590f791be66a56c3d6d9ffa1095ea"
+  },
+  "dev_regression": {
+   "path": "docs/verification/stage-04/corrective/regression/DEV_REGRESSION.json",
+   "sha256": "7bab318dfcec68cfeaa8bc9a509e6e342e37ff530b7831390656b3ab3359add8"
+  },
+  "fail_first_before": {
+   "path": "docs/verification/stage-04/corrective/evidence/fail_first_before.txt",
+   "sha256": "2c33aa659aa77d0b42ff900064ab91534da647542fe33cad77f9f2690d004144"
+  },
+  "identity_logical_view_diff": {
+   "path": "docs/verification/stage-04/corrective/identity/LOGICAL_VIEW_DIFF.json",
+   "sha256": "5b11fcab32536941a310d6fb05349d7ff4c78961e981ebcdbe4b76ca94aae5bd"
+  },
+  "named_cases": {
+   "path": "docs/verification/stage-04/corrective/regression/NAMED_CASES.json",
+   "sha256": "13f679d23a198934a9adcd34df2415b0cea2f0e77a9d8786f80a5422bf227d89"
+  },
+  "pair_census": {
+   "path": "docs/verification/stage-04/corrective/census/PAIR_CENSUS.json",
+   "sha256": "f7566f180121282edd8fe384920c28da7e290546b707e11e9c06732791950cef"
+  },
+  "pair_census_lenient": {
+   "path": "docs/verification/stage-04/corrective/census/PAIR_CENSUS_LENIENT.json",
+   "sha256": "d106ef377438a9378b8e7e84f7697423c2bd94e34cdb2e257a07116fe62521cc"
+  },
+  "performance_breakdown": {
+   "path": "docs/verification/stage-04/freeze-2/performance/perf_breakdown.json",
+   "sha256": "5a7aada1df411ce05050bb97f092f8e6e0c4d8f3a0a8bd9f8d528865f24a9400"
+  },
+  "review_triage": {
+   "path": "docs/verification/stage-04/corrective/review/TRIAGE.md",
+   "sha256": "df587b459bea8514b86f2c8bb1d4bfebe52605bbd197b12e022510f4fde71eeb"
+  },
+  "role_collision_fixture": {
+   "path": "tests/stage04/fixtures/corrective/rw_role_collision.json",
+   "sha256": "b418fe84b107596085f609369c7c28777035981eb1deec8ab20f0dcd2e26afc8"
+  },
+  "root_cause": {
+   "path": "docs/verification/stage-04/corrective/ROOT_CAUSE.md",
+   "sha256": "12d7a564122ef44b59b53a756ca958d3035fcc0f4d7a3301be7d2a6d7d95f1bc"
+  },
+  "runner_fail_first": {
+   "path": "docs/verification/stage-04/corrective/evidence/runner_fail_first.txt",
+   "sha256": "ac41eba29412d30753bdcdd15aa3b2db02cea5e0b58422f31db2eb09f426102c"
+  },
+  "superseded_freeze_manifest": {
+   "path": "docs/verification/stage-04/freeze/FREEZE_MANIFEST.json",
+   "sha256": "89b15a81330f044b3035b7398eda86da135c19a28ffc810fba818fb6a1ff6485"
+  },
+  "validation": {
+   "path": "docs/verification/stage-04/freeze-2/VALIDATION.json",
+   "sha256": "89e705e4ebf0a00de27ff71a623b439ba8919f7a15f0ca30783b8c3e31b7059f"
+  },
+  "verification_components": {
+   "path": "docs/verification/stage-04/freeze-2/performance/verification_components.json",
+   "sha256": "5922eaef2a4c6b88b3f1bf7d2dff27cad810b7434cf14e5ff814b3c4412fb2c6"
+  },
+  "vertical_slice": {
+   "path": "docs/verification/stage-04/freeze-2/vertical-slice/vertical_slice.json",
+   "sha256": "6cc479e52b799e4d010e6b01c12d1aa0bfff74818e3d67f9bee7cad9bd7490a3"
+  }
+ },
+ "exposure_manifest": {
+  "path": "docs/verification/stage-04/freeze-2/exposure/EXPOSURE_MANIFEST.json",
+  "sha256": "932cd65f79d7d72b508923bdfc0892422ee25eeea653b0941370649a595343b5"
+ },
+ "format": "citerift-stage04-freeze/2",
+ "label": "Stage 04 freeze candidate manifest (corrective cycle, D-071). Frozen scientific code: the freeze-content commit that holds this file; named with its tree and CI run by the attestation commit that follows it. Not a freeze until the owner accepts it.",
+ "limitations": [
+  "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
+  "D-071 resolution by a second identifier (strict rule, SPEC 7.3a): a role collision is resolved only by another cited identifier that has no notice role itself and whose record states a different notice identifier in its scheme; on the pinned snapshot 1,472 of 31,506 positive DOI+PMID pairs become UNRESOLVED_IDENTITY (800 under the measured lenient alternative; owner card on strict versus lenient). If the resolving identifier is itself wrong in the citation, the attachment rests on it.",
+  "C-01: collision is read per key over every record, so a second record of the same work (same original DOI and PMID, e.g. an expression of concern whose notice identifiers equal the article's) makes a clean retraction abstain (53 snapshot pairs, one campaign claim); owner question open.",
+  "Original DOI cited with the same record's notice PMID (corrective-cycle reviewer finding B-03 of REVIEW_B.md, the mirror of D-058) stays positive, as in dt-1; not changed without an owner decision.",
+  "The 80 campaign articles and the 232 development revisions are development evidence; the regression on them is not an evaluation and is never counted as unseen data.",
+  "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET); see the performance section of FREEZE_REPORT.md for the residual cases and bottlenecks.",
+  "D-062 verification scope (D-064, owner decision OD-S12-1): each process runs the D-062 identity-verification profile (verify_index_identity: format and policy, integrity and structure, digests recomputed against the metadata, build manifest, full derivation recompute); Stage 02's per-event JSON-Schema pass runs only in Stage 02's complete verify (the certification, run in the Step 12 evidence); in the differential tamper evidence no case is rejected by that pass alone.",
+  "F-11: a descendant that leaves the session by double fork or setsid is attributed and killed only while it is found in the scan; the bound is per attempt, not per investigation.",
+  "The external checkpoint (D-052) detects divergence from a recorded state; it is not authentication or a signature.",
+  "Investigation Memory requires a local POSIX filesystem (rename, fsync, O_NOFOLLOW, flock semantics).",
+  "Evaluation labels of a future gate are AI-generated (Stage 03 precedent); not human ground truth.",
+  "The Stage 02 snapshot covers Retraction Watch records up to its build; later events are not covered.",
+  "Some dt-1 classes were not seen in real development data; they are covered by the Step 4 enumerated domain and synthetic tests only.",
+  "A11-5: the lifecycle distinction BLOCKED versus RUNNING-and-waiting is kept in the journal and the JSON output; the user-facing status is blocked (exit 8) for both.",
+  "A11-6: journals keep the absolute bundle, index and memory-root paths of the creating host as provenance; they enter no scientific digest, and moved inputs are named with --index and --bundle (no journal rewriting).",
+  "The Step 4 reference model was written by the same engineering process as the production code; its independence is procedural (separate model, oracle and tests), not organisational.",
+  "A-07: D-7 drops taint reasons that D-6 keeps (frozen Step 4 model and SPEC 7.3 agree).",
+  "Step 12 B-03 residual: a retry whose earlier ACQUIRE side channel was deleted by someone is not detected.",
+  "B-13: LOOKUP memory is bounded per query; the aggregate is queries x per-query bound.",
+  "C-12: Stage 02 crossref_sources has no ORDER BY (upstream; 0 rows in the accepted RW-only index).",
+  "Step 12 E-05, E-06, E-08: denominator and sensitivity-variant choices are Step 13 pre-registration decisions."
+ ],
+ "lockfile": {
+  "pyproject.toml": "00e8c8788b5363c3c96e4a3c511c1ed1204d179108861a5d6504f02f701c8d8f",
+  "uv.lock": "754dda88515aa32227325c1a8f4d3cd332ab20f77d9b3545754bc97753366a96"
+ },
+ "parent_sha": "80e414b0d2d399637a63152f778335ea01e0b44f",
+ "performance": {
+  "breakdown_median_s": {
+   "file_sha256_s": 0.505,
+   "import_s": 0.227,
+   "index_verify_s": 26.051,
+   "memory_open_s": 0.804,
+   "process_wall_s": 33.027,
+   "run_s": 32.714,
+   "schema_s": 3.935,
+   "show_s": 0.832,
+   "stage02_digests_s": 6.973,
+   "unaccounted_s": 2.061
+  },
+  "cause": "the D-062 identity-verification profile of D-064 runs in every process that reaches LOOKUP (no cross-process reuse, OD-S12-1)",
+  "max_run_p95_s": 30.548,
+  "status": "NOT_MET",
+  "table": [
+   {
+    "case": "VS-1",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.02,
+    "run_median_s": 30.131,
+    "run_p95_s": 30.548,
+    "superseded_freeze_run_p95_s": 30.464
+   },
+   {
+    "case": "VS-2",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.434,
+    "run_median_s": 25.337,
+    "run_p95_s": 26.547,
+    "superseded_freeze_run_p95_s": 27.633
+   },
+   {
+    "case": "VS-3a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 25.203,
+    "run_median_s": 25.737,
+    "run_p95_s": 25.96,
+    "superseded_freeze_run_p95_s": 26.37
+   },
+   {
+    "case": "VS-3b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.917,
+    "run_median_s": 27.419,
+    "run_p95_s": 27.865,
+    "superseded_freeze_run_p95_s": 29.268
+   },
+   {
+    "case": "VS-4",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.412,
+    "run_median_s": 24.793,
+    "run_p95_s": 25.318,
+    "superseded_freeze_run_p95_s": 26.297
+   },
+   {
+    "case": "VS-5",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.33,
+    "run_median_s": 25.85,
+    "run_p95_s": 26.958,
+    "superseded_freeze_run_p95_s": 26.31
+   },
+   {
+    "case": "VS-6a",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.53,
+    "run_median_s": 24.829,
+    "run_p95_s": 25.151,
+    "superseded_freeze_run_p95_s": 25.522
+   },
+   {
+    "case": "VS-6b",
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 24.404,
+    "run_median_s": 24.581,
+    "run_p95_s": 25.447,
+    "superseded_freeze_run_p95_s": 25.977
+   }
+  ],
+  "target": "warm retained investigation <= 5 s p95 (D-061, unchanged)",
+  "verification_components_median_s": {
+   "compute_digests": 6.951,
+   "derivation_problems": 16.206,
+   "file read + SHA-256 (I/O floor of one full pass)": 0.247,
+   "manifest_problems": 0.0,
+   "scan event JOIN raw_record (digests: event lines)": 0.377,
+   "scan event ORDER BY event_id (derivation compare)": 0.254,
+   "scan ident (derivation)": 0.484,
+   "scan raw_record (digests: record lines)": 0.144,
+   "scan raw_record SELECT * (derivation)": 0.143,
+   "scan title_token (derivation compare)": 0.383,
+   "structural: PRAGMA foreign_key_check": 2.203,
+   "structural: PRAGMA integrity_check": 0.924,
+   "structural_problems (all of the above + invariants)": 3.25,
+   "whole_profile (identity_verification_problems)": 26.668
+  }
+ },
+ "performance_breakdown_median": {
+  "file_sha256_s": 0.505,
+  "import_s": 0.227,
+  "index_verify_s": 26.051,
+  "memory_open_s": 0.804,
+  "process_wall_s": 33.027,
+  "run_s": 32.714,
+  "schema_s": 3.935,
+  "show_s": 0.832,
+  "stage02_digests_s": 6.973,
+  "unaccounted_s": 2.061
+ },
+ "schemas": {
+  "schemas/investigation/v1/bundle-artifact-set.schema.json": "194189143efb144fa9a81faa5722bc2518544b42472ebd4acc877b968766f361",
+  "schemas/investigation/v1/bundle-observation.schema.json": "c809a73dc4f658c53b00f7fe6e0b23ab2a4ee00988434902da4d3a2cd3c824c5",
+  "schemas/investigation/v1/candidate-inputs.schema.json": "3fb134f5d0efac1cd8375f93e7336fd217e78e0458b590e453e4ff556458407f",
+  "schemas/investigation/v1/candidate-result-batch.schema.json": "de2939ee73bab84064abc61cf905a1a26bcf1e738d700897703fc7f1c210dba1",
+  "schemas/investigation/v1/claim.schema.json": "8a1737f1d3d8045748e4161641c1bdbdb78b0e03b70767559910ef0f81d0cfda",
+  "schemas/investigation/v1/common.schema.json": "7d13f381c4f8ad8413d2fdf683bc2a2c695ce2479b1391f07064124b50cec424",
+  "schemas/investigation/v1/evidence-batch.schema.json": "691acac53fe821e1562b3d1b9fc6934a0d734387325f21a46871292eecfcb261",
+  "schemas/investigation/v1/evidence-set.schema.json": "e9c161a229311df1c7a89d3f19e97688fcd5c5241bb1dc938d4875919059ffa9",
+  "schemas/investigation/v1/journal-record.schema.json": "df85a7dcdff3f22a798ce1cccf842c30f47ca533cb55fcd1d5f7d70301efb4e1",
+  "schemas/investigation/v1/lookup-batch.schema.json": "efdbdc14372d9edafdc2e1b3155c077eeaca42baa987a053a725a6a4573f64e6",
+  "schemas/investigation/v1/lookup-observation.schema.json": "fc140700b1f18fc98a8def354a6cbc023a8ea7abf9ca58635da5b3f29b8a613c",
+  "schemas/investigation/v1/lookup-plan.schema.json": "72225bd5fdae38bb5dd29264c0973b8145514095174de4c19162805f7c24a67a",
+  "schemas/investigation/v1/projection-set.schema.json": "4c959896ada90d85e0c5dc2108b4587220ee11a2602416e1a62be73196f1f385",
+  "schemas/investigation/v1/report-chunk.schema.json": "b1248b632312b86add13d19898c242bbc3da86ce0b448836ab910868f748e29d",
+  "schemas/investigation/v1/report.schema.json": "41b9cfec2a89dd93114b0b07d72e6624b3e5c1a5019933a5136fc6054d2b4f3b",
+  "schemas/investigation/v1/request.schema.json": "c63e76e88f8b5ec84d4638b5d40d556e5e594dc1286ba0f27a1ed6bc281f96e3"
+ },
+ "source_files": {
+  "src/citerift/investigation/__init__.py": "0a7563b8503269509aa0244bb9df37161e202da0c0ef373f4e446947cc72d394",
+  "src/citerift/investigation/adapters/__init__.py": "953eaeaad0d6f441cb98206f88b6f5a308a50432efaa9ea5c934a728008c4b18",
+  "src/citerift/investigation/adapters/acquire.py": "66a298a2dc1af6a53d4e145a8c008d2f26b16519672f59bac5f636e074bffd47",
+  "src/citerift/investigation/adapters/assemble.py": "324817d8e3c754b796c3328141bda0996eee679ae0e09dd07013e90dcfc5c337",
+  "src/citerift/investigation/adapters/detect.py": "ffeb39e77c03d8c6909296c269b99bdf51513b70e5155311762ce3f0834436a1",
+  "src/citerift/investigation/adapters/detector.py": "b709aa3230711b4a8527f0a3c8bf9cbbbaf1c58cac802b64ddf8768cc8a05d2f",
+  "src/citerift/investigation/adapters/extract.py": "dd12df2554a240b518d1a63d0f8006866884322c2c133f283cff989c23d74e86",
+  "src/citerift/investigation/adapters/live.py": "39dccfa52a185d8162b1dc1158237dcd88827de20aa9c66b81412be0ffba81a6",
+  "src/citerift/investigation/adapters/live_child.py": "740e68a172c6f0a78819fde914a2767ce872f43e047480cb570c4ea254838a34",
+  "src/citerift/investigation/adapters/lookup.py": "3ab6ebe885f5dde46972c010af5e9fe83da3ae5f66717b2d57d660e56b655af6",
+  "src/citerift/investigation/adapters/normalize.py": "5c7fc059f8797582f1c46a2a5455d07f22028fa12e2a4f868311d6263f9c3637",
+  "src/citerift/investigation/adapters/plan.py": "67aa4efc3590114a81ae840d864b87e752c58d3f865db92f614a46eda6a54927",
+  "src/citerift/investigation/adapters/supervise.py": "07d3ea7d0c069ac2a1c5e1116a704578d8a4fac9739dd10833d01f5e50da770b",
+  "src/citerift/investigation/adapters/validate.py": "a8f330a341ed5fa13027cbd8872426ba997ade6684323eda622255fe13ed5252",
+  "src/citerift/investigation/adapters/verify.py": "b77e10782675396ac0982d9846cd5d61a70107341cef36fe7b76dbcc5b1cb97b",
+  "src/citerift/investigation/anchors.py": "5ec21f871643612f1c1d9cc284f8373c1bed43e1185e6c090be4b5629c679239",
+  "src/citerift/investigation/batches.py": "8a30002d2abd81dd4f452e475c3d936f8c8c9983897a10037b35d02b07dcda36",
+  "src/citerift/investigation/blobs.py": "c07cd51ad4cb1a29dd540c54c9207bbbd77a9a2425eab9f70adfac4a0e15bd50",
+  "src/citerift/investigation/canonical.py": "f45d5dd812f490abfb76e4af3d97f899b6203496eb81c7734556f3c534c8b772",
+  "src/citerift/investigation/checkpoint.py": "816387e95823736aa11b2ba40ad65f9947bec814dac150219eb2ed01c8a43d12",
+  "src/citerift/investigation/cli.py": "23e8d77c29ed754837e6cff6ccdf7d6132a810fec6c67a5c5bed35a5dcf7046e",
+  "src/citerift/investigation/controller.py": "dc4046ce9809b34a0be918cf6d130f1188203037c0fb0790952d213d9ad97a08",
+  "src/citerift/investigation/dt1.py": "3fb02e134044619eec2cb8b036d3862e4d1c451cac06417d1c51769f1bb4c1b6",
+  "src/citerift/investigation/errors.py": "75be849c435283be0b9e13d926a33ab944f00fba2f561119e37abf88c9afb1b8",
+  "src/citerift/investigation/explanations.py": "a7e4116582325648e794a9c7253884f9f68601b0d4048fc279bf65e34b7d7a28",
+  "src/citerift/investigation/export.py": "376264f62a8add41bea0ec126b8e67fb3be4c5b4cc87084b3129470a9d524b8c",
+  "src/citerift/investigation/extraction.py": "9e3d06697c75a92b30f5033a8efc8a9d9c27a340afdab676c617bc02b8ddec58",
+  "src/citerift/investigation/faults.py": "3f415211ead46e89f9921921915db6c9a439c8da3df20ebd95ce7d928bddc8cd",
+  "src/citerift/investigation/fold.py": "e76e9a1d36cac879ff5881f4bb1e18768be3b8e3df871d2c94841014301ca642",
+  "src/citerift/investigation/fsutil.py": "b98aeacbe98d8e02f38964cb0d9ba52456219cc8408abdec35ff6d4b703d18e8",
+  "src/citerift/investigation/ids.py": "ef7ebdfbc6a6db552e25ccf761dd74119fcfdab801942f7e00a9b7f1038c48ff",
+  "src/citerift/investigation/journal.py": "4776a681175daa53c9810c8606fc92a71d579b66d145756ac6e3e83f9f889ac6",
+  "src/citerift/investigation/lock.py": "f6cd7c5ec4bc4db7a4058c0b1026d5e0dac9a1ec995005837a0f5602f777d6b2",
+  "src/citerift/investigation/lookup.py": "563bbfdd1943a4ec1169cf61b1d959249cedc650326f2fda2ba8bafb52709013",
+  "src/citerift/investigation/memory.py": "6154a4ac24603e36e2c0eb20fdc978df405c0e1c6c88a12c021093d4b3835f4f",
+  "src/citerift/investigation/operations.py": "170642130c82b74d045f4a47bd212112de841aa90c4c315357cdff7516ec24d8",
+  "src/citerift/investigation/outputs.py": "7650187e0d5bbfea99c2971eecefdd6801f6753bc0342170284a826b987d8850",
+  "src/citerift/investigation/projections.py": "181f7926a30e48656e4404bfc4fed5ee4e757e652852f30d0a7cf478fa7aaa15",
+  "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5",
+  "src/citerift/investigation/retained.py": "4a90d3f151848c98649b9b5882c0a9f8ef5e4fa95ba4615df47c0b254732065c",
+  "src/citerift/investigation/schemas.py": "9063fbb2e2dfe4674fdf465ccd3f13c588c18f9119bc4e62872f104722f44d96",
+  "src/citerift/investigation/sets.py": "bc2b04dfe143af89d4f977770cb5effdc6e36de1133c35c9e348b8b186ccd704",
+  "src/citerift/investigation/workflow.py": "1c98dbd0b505563d07c2288ef7fa14fba4923f168bc7268306bc05d75778250d"
+ },
+ "stage03_extraction_identity": {
+  "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+  "extractor": {
+   "name": "citerift-wiki",
+   "normalizer": "citerift.retraction.identifiers (Stage 02)",
+   "parsers": {
+    "html": "lxml 6.1.3 (libxml2 2.14.6)",
+    "wikitext": "mwparserfromhell 0.7.2"
+   },
+   "profile": {
+    "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+    "version": "1.0.0"
+   },
+   "version": "1.2.0"
+  }
+ },
+ "stage04_identity": {
+  "detector_identity": "citerift-dt1-detector/3 (dt-2)",
+  "engine_version": "0.3.0",
+  "integration": {
+   "bundle-artifact-set": "1.0.0",
+   "bundle-observation": "1.0.0",
+   "candidate-inputs": "1.0.0",
+   "lookup-observation": "2.0.0",
+   "lookup-plan": "1.0.0"
+  },
+  "package_version": "0.3.0",
+  "plan_version": "plan-1",
+  "schema_version": "4.0.0",
+  "table_version": "dt-2"
+ },
+ "step4_oracle_manifest": {
+  "path": "simulations/stage04/oracle/MANIFEST.json",
+  "role": "frozen dt-1, kept",
+  "sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735"
+ },
+ "supersedes": {
+  "evaluation_commit": "1064113902c674f1c61dcb7eda33afe40350ca71",
+  "frozen_commit": "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0",
+  "manifest": "docs/verification/stage-04/freeze/FREEZE_MANIFEST.json",
+  "manifest_sha256": "89b15a81330f044b3035b7398eda86da135c19a28ffc810fba818fb6a1ff6485",
+  "note": "docs/verification/stage-04/freeze/SUPERSEDED.md",
+  "status": "SUPERSEDED_AFTER_FAILED_04_I"
+ },
+ "tests": {
+  "ci": {
+   "conclusion": "failure (the known failure only)",
+   "jobs": {
+    "ci-gate": {
+     "conclusion": "failure (verify matrix)"
+    },
+    "verify (python 3.12)": {
+     "failed": 1,
+     "passed": 3371,
+     "pytest_reported": "809.54 s",
+     "python": "3.12.3"
+    },
+    "verify (python 3.13)": {
+     "failed": 1,
+     "passed": 3371,
+     "pytest_reported": "736.92 s",
+     "python": "3.13.14"
+    }
+   },
+   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
+   "run_id": 44449077298,
+   "run_number": 360
+  },
+  "code_revision": "99c4194622498b2343584f08b4f6e52cd2f077e3",
+  "lint": {
+   "citerift_gov_check": "0 errors, 0 warnings",
+   "mypy": "Success: no issues found in 95 source files",
+   "ruff_check": "All checks passed!",
+   "ruff_format": "620 files already formatted"
+  },
+  "local": {
+   "failed": 1,
+   "known_failure": "tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine: the P-listed check that the running engine is the superseded frozen engine b5bf8ed; fails because src and schemas are now dt-2",
+   "note": "full suite in this 4-vCPU container, after the evidence runs",
+   "passed": 3371,
+   "python": "3.12.3",
+   "skipped": 0,
+   "wall": "20 min 45 s"
+  }
+ },
+ "vertical_slice": {
+  "cases": [
+   "VS-1",
+   "VS-2",
+   "VS-3a",
+   "VS-3b",
+   "VS-4",
+   "VS-5",
+   "VS-6a",
+   "VS-6b"
+  ],
+  "failed_checks": {}
+ }
+}
