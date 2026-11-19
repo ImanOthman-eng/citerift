@@ -469,6 +469,12 @@ produces a positive work attachment solely because one of those roles is origina
 
 The rule is placed in Stage 04; Stage 02 is unchanged (its flags and `notice_hit_count` already carry the evidence).
 
+Collision is read per key over every record of the candidate's lookups, including a second record of the same work
+(the same original DOI and PMID). Such a sibling record (for example an expression of concern whose notice identifiers
+equal the article's) therefore makes the keys collided even for a retraction record that itself states distinct notice
+identifiers, and the citation abstains (reviewer finding C-01: 53 of 31,756 snapshot pairs, one campaign claim). This
+is the rule as built and frozen; whether a same-work sibling should stop colliding is an open owner question.
+
 Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5 and finalized by owner decision D-043; they
 replace the Step 4 model's placeholders and change no class, guard or precedence
 (`review/step5/STEP5_PLACEHOLDER_MAPPING.md`).

@@ -19,5 +19,9 @@ on uncommitted engine code. After the shards ran, one defect in `merge` was fixe
 the per-candidate rows were dropped and read 0. The merge now computes the totals first. `tool_sha256` is the hash of
 `regress.py` at merge time; its `run` code is unchanged from the code that made the shards.
 
+One campaign claim (`ar-3351802 un-00059`) abstains because a second record of the same work (an expression of
+concern) gives both cited keys both roles while the deciding retraction record itself states distinct notice
+identifiers: a probable true-positive loss of the key-level rule, put to the owner (reviewer finding C-01).
+
 These outputs were never joined with the campaign's labels, adjudications or scorer, and must not be (reviewer finding
 F-08). The rule was designed from the one authorized failure only (D-071 section 2).
