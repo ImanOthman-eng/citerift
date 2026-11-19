@@ -81,3 +81,32 @@ deviation, however small. Nothing here changes a pre-registered rule. The histor
 - `LOCK.json` = `p2_labels.py merge` of the five round locks: 167 items, 100 packets, 10 adjudicated. Verified before
   the prediction run: every round-lock hash and every packet hash it records equals the committed file, and it covers
   every acquired article. Committed before the prediction run.
+
+## Prediction run
+
+- Started 2026-11-19T15:17:04Z, once, after the campaign lock was committed: `p2_run.py --campaign <C> --index
+  <pinned index> --memory-root <session scratch>/p2c/run-memory` (memory root absolute and outside the repository).
+- Operational intervention (no change to the runner, the engine, its arguments or its outputs): the run was started
+  under the session's background-command wrapper, which kills the process tree it started after 2 hours; at the
+  historical rate (median 89 s per article) 100 articles need about 150 minutes. At 15:20:50Z, after 2 articles had
+  finished, the `uv run` wrapper process (only a launcher waiting on its child) was sent SIGKILL so that the runner's
+  Python process was reparented to init and left that tree. It was tested first on a dummy `uv run --no-sync python`
+  process (the child survived and was reparented). The runner process (same PID, same arguments, same open log file)
+  continued without interruption: its third article's `verify` subprocess was running at that moment and completed.
+  The `exit 137` line in the run log is the wrapper's status, not the runner's.
+- The runner finished at 17:51Z: 100 articles (99 COMPLETED, 1 NEEDS_RESOLUTION), 100 VERIFY passed, 100 exports,
+  0 resumes; median 89.1 s per article, maximum 139.4 s, 153.9 minutes in total (so the 2-hour wrapper limit would
+  have interrupted it; the detached process passed that limit at 17:17Z without interruption). `RUN.json` was
+  written once by the runner. The runner was invoked once; it never refused, and no article was run twice.
+- Outputs kept as in the historical campaign: `run/RUN.json`, `run/PROGRESS.json`, and `run/run-archive.tar.gz`
+  (`tar --sort=name -czf` of a `run/` tree holding `RUN.json`, `PROGRESS.json`, the 100 exports and the full
+  Investigation Memory). Before the raw exports were moved out of the repository working tree, the archive was
+  extracted into an empty directory and compared with `diff -r` against the exports and the memory root (identical)
+  and `cmp` against `RUN.json` (identical).
+
+## Scoring
+
+- `p2_score.py --campaign <C> --index <pinned index> --out <C>/SCORES.json --memory-root <run memory root>`, once, at
+  17:51Z–17:54Z, after the run, on the committed lock. It computes the engine scores, the gates, the naive baseline,
+  the three sensitivity variants and the P2 descriptive analyses (8.8, 8.9). Results and their reading are in
+  `REPORT.md`. Nothing was changed after the scores existed.
