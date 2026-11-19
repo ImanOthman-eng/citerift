@@ -2,24 +2,24 @@
 
 Second record of the two-record mechanism: it names the freeze-content commit, which cannot name itself.
 
+This attestation replaces the one for the first candidate (content `d8a059d`, CI run 362 red on one P-listed test),
+which the owner did not accept (`cmsg_018VCB51nDHP6HXmLU4ea5yPC9MGHitF1TN4me2xbMsFkj`). The candidate below was
+regenerated after owner decisions D-072 to D-075.
+
 | Record | Value |
 |---|---|
-| Freeze-content commit (candidate SHA) | `d8a059dccd9b7782f8a9ee0b19a2ec39370b14da` |
-| Its tree | `973703020f8d0d09c0e4552e3fc616bf02e23c28` |
-| Its parent (evidence commit) | `80e414b0d2d399637a63152f778335ea01e0b44f` |
-| Freeze manifest digest | `6be3d310c88ad01ccdb5f9e7987cad6716c7f469399ad5d6d9e41d363b5ab77a` (reproduced byte for byte at `80e414b`) |
-| Exposure manifest v2 SHA-256 | `932cd65f79d7d72b508923bdfc0892422ee25eeea653b0941370649a595343b5` |
-| CI run on the content commit | run 362, id `44451825018`: **failure** |
+| Freeze-content commit (candidate SHA) | `28ba6467c7005eec7bf51869974719a402059ca7` |
+| Its tree | `45c52da459b09597f105d6e4abd8ab00332c6799` |
+| Its parent (evidence commit) | `90282408193bf05cd49a4c9df7c90e853ff0ee9d` |
+| Freeze manifest digest | `d9db2704c495459acc3487b0e656d27b386f124cae4e3bdf36b1e059a2c61c13` (reproduced byte for byte at `9028240`) |
+| Exposure manifest v2 SHA-256 | `b2a2a937a6ec245135a3495dad9e458e1b6a64e69cdf2eb4099794c5ab45e67b` |
+| CI run on the content commit | run 365, id `44486733733`: **success** |
 
-CI run 362, both verify jobs: `1 failed, 3371 passed` (Python 3.12: test step 17 min 43 s, pytest 1061.85 s; Python
-3.13: 12 min 4 s, 723.83 s); lint, format, mypy strict, schema validation and the governance check passed; the
-clean-tree, unchanged-files and pip-audit steps were skipped because the test step failed; `ci-gate` failed on the
-matrix result. No required job reached 30 minutes (OD-S12-2).
-
-The one failure is `tests/stage04/test_step13_evaluation.py::test_frozen_check_passes_on_the_frozen_engine`: a
-P-listed check that the running engine is the superseded frozen engine `b5bf8ed`. It fails because the candidate's
-`src` and `schemas` are dt-2, as D-071 requires. It is not skipped, marked or edited; how it is handled is an owner
-decision (card `cmsg_018VCB51nDHP6HXmLU4ea5yPKGg9QN82npdYdMmf5LXJez`). Until then the candidate has no green CI run.
+CI run 365: `verify (python 3.12)` 3,382 passed (test step 20 min 57 s, pytest 1256.13 s); `verify (python 3.13)`
+3,382 passed (12 min 9 s, 727.42 s); in both jobs governance check and `render-status --check`, lock check, ruff,
+format, mypy strict, schema validation, the test-report check (0 problems), the unchanged-files check and
+`pip-audit --strict` (no known vulnerabilities) passed; `ci-gate` success. No required job reached 30 minutes
+(OD-S12-2).
 
 This is a freeze **candidate**. It is not a freeze until the owner accepts it, and no new Step 13 starts without the
 owner's explicit authorization.
