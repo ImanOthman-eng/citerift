@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "91e2e05079ef0fcfa13a614fa03b6ad8ff367bd06d47ebf96ae853a00da33f7e",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.345,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "37",
+   "retry_after_s": 37.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:45:23.403281Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10299315",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 137573,
+   "body_sha256": "abc10e78e8bcc90be5d8217ae06cdda33ea34d19494a436be215a70b3b2a3594",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.487,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:46:00.748512Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10299315",
+   "wire_bytes": 35565
+  },
+  {
+   "body_bytes": 574489,
+   "body_sha256": "968a2f064c92b76e6410a3d0b599db11a9df091794bc1918845c11ad536b2e8b",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.498,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:46:11.236210Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76964420/html",
+   "wire_bytes": 87989
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "91e2e05079ef0fcfa13a614fa03b6ad8ff367bd06d47ebf96ae853a00da33f7e"
+ ],
+ "finished_at": "2026-11-19T13:46:11.736871Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 10299315,
+  "parent_revision_id": 76109936,
+  "redirect_followed": null,
+  "revision_id": 76964420,
+  "revision_timestamp": "2026-10-13T09:24:05Z",
+  "sha1": "1182e8538a38a38b650b95dea020b62dd75343d1",
+  "size": 136045,
+  "title": "قضية جيانكوي",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "968a2f064c92b76e6410a3d0b599db11a9df091794bc1918845c11ad536b2e8b",
+  "bytes": 574489,
+  "checks": {
+   "document_revision_id": "76964420",
+   "header_revision_id": "76964420",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "10299315",
+   "render_id": "2dabe19b-dc8b-11f1-97ce-c3a80948df0e",
+   "revision_sha1": "1182e8538a38a38b650b95dea020b62dd75343d1",
+   "revision_sha1_base36": "21mzvazjr8lchh3hz353iaysldpqjtd"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76964420",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:46:11 GMT",
+   "etag": "W/\"76964420/2dabe19b-dc8b-11f1-97ce-c3a80948df0e/view\"",
+   "last-modified": "Sun, 08 Nov 2026 12:51:11 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76964420/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 10299315,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "375c2350ff5bfc134337087b384a83a9179b341b59e552b4445b578f5ce05c05",
+  "bytes": 136045,
+  "response_artifact": "abc10e78e8bcc90be5d8217ae06cdda33ea34d19494a436be215a70b3b2a3594",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=10299315"
+ },
+ "started_at": "2026-11-19T13:45:16.803206Z",
+ "status": "complete"
+}

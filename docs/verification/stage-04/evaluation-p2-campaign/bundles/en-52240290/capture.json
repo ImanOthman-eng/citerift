@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "48eaea09dd73abb90b4830befdd308a989f40f0e6a6cd53b2f5e9c0840e68d15",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.372,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "28",
+   "retry_after_s": 28.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:20:31.788317Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=52240290",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 10029,
+   "body_sha256": "26d593be782f22cd62d2e0d4f9076406b05aba4a156c9be54676b6a1e4e6a8d0",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.428,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:21:00.161285Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=52240290",
+   "wire_bytes": 4105
+  },
+  {
+   "body_bytes": 56974,
+   "body_sha256": "cc0063adaa610d8c55af46e6c8ad8a3bfd27ad56e3ee509df4d4936752e6d3a5",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.434,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:21:10.589595Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380693446/html",
+   "wire_bytes": 12035
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "48eaea09dd73abb90b4830befdd308a989f40f0e6a6cd53b2f5e9c0840e68d15"
+ ],
+ "finished_at": "2026-11-19T14:21:11.023638Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 52240290,
+  "parent_revision_id": 1372020224,
+  "redirect_followed": null,
+  "revision_id": 1380693446,
+  "revision_timestamp": "2026-10-17T08:12:33Z",
+  "sha1": "154f56272c01071f922803f1abcf11d300821680",
+  "size": 9449,
+  "title": "Jiban Jyoti Panda",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "cc0063adaa610d8c55af46e6c8ad8a3bfd27ad56e3ee509df4d4936752e6d3a5",
+  "bytes": 56974,
+  "checks": {
+   "document_revision_id": "1380693446",
+   "header_revision_id": "1380693446",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "52240290",
+   "render_id": "5013b78b-e2c8-11f1-918a-5fd42bafe1f1",
+   "revision_sha1": "154f56272c01071f922803f1abcf11d300821680",
+   "revision_sha1_base36": "2hm1qxwnm743xmkqf1jrdoivze52v0g"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1380693446",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:21:10 GMT",
+   "etag": "W/\"1380693446/5013b78b-e2c8-11f1-918a-5fd42bafe1f1/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:57:12 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1380693446/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 52240290,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "cc3c59aa0c1cbef671e80af2b39518d77a100ad6cec08a11d4826e6b7a017c67",
+  "bytes": 9449,
+  "response_artifact": "26d593be782f22cd62d2e0d4f9076406b05aba4a156c9be54676b6a1e4e6a8d0",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=52240290"
+ },
+ "started_at": "2026-11-19T14:20:25.273330Z",
+ "status": "complete"
+}

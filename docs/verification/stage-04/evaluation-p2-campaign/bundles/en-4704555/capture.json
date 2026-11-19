@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "2ad47f7400a1e4aef074544924b5929c55912e2395ffc8852d4dc992db3889d1",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.383,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:56:21.419289Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4704555",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 7233,
+   "body_sha256": "8b9edccd2809e71d8fccc66a8314d9357a8bcc43609dc5d49782e3b39465d84e",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.41,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:57:00.803187Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4704555",
+   "wire_bytes": 3003
+  },
+  {
+   "body_bytes": 98829,
+   "body_sha256": "ee62384651dea791e48caf80e258c1d265128912e457dfb65ca4de7f931e2f24",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.454,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:57:11.213699Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1373147236/html",
+   "wire_bytes": 17042
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "2ad47f7400a1e4aef074544924b5929c55912e2395ffc8852d4dc992db3889d1"
+ ],
+ "finished_at": "2026-11-19T13:57:11.668247Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4704555,
+  "parent_revision_id": 1347348480,
+  "redirect_followed": null,
+  "revision_id": 1373147236,
+  "revision_timestamp": "2026-09-04T07:47:38Z",
+  "sha1": "0ef6f92d72b348b75c7c991df5d09e5af1ea09f6",
+  "size": 6640,
+  "title": "Kamran Bagheri Lankarani",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "ee62384651dea791e48caf80e258c1d265128912e457dfb65ca4de7f931e2f24",
+  "bytes": 98829,
+  "checks": {
+   "document_revision_id": "1373147236",
+   "header_revision_id": "1373147236",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4704555",
+   "render_id": "c25fc461-e3b0-11f1-9f5a-67e9542f865d",
+   "revision_sha1": "0ef6f92d72b348b75c7c991df5d09e5af1ea09f6",
+   "revision_sha1_base36": "1qxgy9k34doms80jnqwrzl6rsxw8t86"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1373147236",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:57:11 GMT",
+   "etag": "W/\"1373147236/c25fc461-e3b0-11f1-9f5a-67e9542f865d/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:30:42 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1373147236/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4704555,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "ee8420812fe920e97708fe9c73e927ebc86a24af9da672a039f57800afc3a68e",
+  "bytes": 6640,
+  "response_artifact": "8b9edccd2809e71d8fccc66a8314d9357a8bcc43609dc5d49782e3b39465d84e",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4704555"
+ },
+ "started_at": "2026-11-19T13:56:14.303894Z",
+ "status": "complete"
+}

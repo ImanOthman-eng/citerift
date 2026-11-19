@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 102010,
+   "body_sha256": "941f170f326338f91b26977c8bef62982ea2556e734bdfec8e15727878d2c38c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.495,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:24:10.704249Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=676248",
+   "wire_bytes": 30414
+  },
+  {
+   "body_bytes": 515764,
+   "body_sha256": "4c0910d57a8ed6ba770be6b7e2837b23e5f86c61ce2e9be5001a73184979d672",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.537,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:24:21.200166Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76080986/html",
+   "wire_bytes": 82926
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T13:24:21.739124Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 676248,
+  "parent_revision_id": 75591425,
+  "redirect_followed": null,
+  "revision_id": 76080986,
+  "revision_timestamp": "2026-08-03T18:17:53Z",
+  "sha1": "d4594c5310764c661516a5e1b24998b7f1b36afd",
+  "size": 100969,
+  "title": "وخز بالإبر",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "4c0910d57a8ed6ba770be6b7e2837b23e5f86c61ce2e9be5001a73184979d672",
+  "bytes": 515764,
+  "checks": {
+   "document_revision_id": "76080986",
+   "header_revision_id": "76080986",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "676248",
+   "render_id": "5ef38764-e3ec-11f1-af8b-1be555f27375",
+   "revision_sha1": "d4594c5310764c661516a5e1b24998b7f1b36afd",
+   "revision_sha1_base36": "osywlhudlk6vqpdgktyygvg0zjbsagt"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76080986",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:24:21 GMT",
+   "etag": "W/\"76080986/5ef38764-e3ec-11f1-af8b-1be555f27375/view\"",
+   "last-modified": "Sun, 15 Nov 2026 16:28:44 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76080986/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 676248,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "74b4ac20020561f8ae6d8a2ef86e49064663a9285915aade32974e7dcb0eff78",
+  "bytes": 100969,
+  "response_artifact": "941f170f326338f91b26977c8bef62982ea2556e734bdfec8e15727878d2c38c",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=676248"
+ },
+ "started_at": "2026-11-19T13:24:03.447313Z",
+ "status": "complete"
+}

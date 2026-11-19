@@ -25,3 +25,9 @@ deviation, however small. Nothing here changes a pre-registered rule. The histor
   (randomness `8402f166…3772` = SHA-256 of the signature, checked by the tool); `drand.cloudflare.com` answered HTTP
   403 (as in the historical campaign). All four answers are in `SEED.json`. Seed
   `b45666399e691ab6a1301086d33eb5f6b776748e6e0504a5399a407aaaba4e6c`.
+
+## Round `primary`
+
+- Acquisition 13:2xZ to 14:23Z (`p2_acquire.py acquire --round primary`): 60 of 60 positions acquired (ar 22 S1 + 8 S2,
+  en 22 S1 + 8 S2), 0 failures, 0 replacements, 0 `EXPOSED_AT_CAPTURE`; 60 attempts of 200. 103 items; 1 article
+  without items.

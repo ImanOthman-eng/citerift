@@ -1,0 +1,879 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 1,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 1
+   },
+   {
+    "left": 1,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 1
+   },
+   {
+    "left": 1,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 1
+   },
+   {
+    "left": 5,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 5,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 7,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 7
+   },
+   {
+    "left": 7,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 7
+   },
+   {
+    "left": 7,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 7
+   }
+  ],
+  "containers": {
+   "note": 5
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "primary_citation_field": 1
+  },
+  "identifiers_by_scheme": {
+   "doi": 1
+  },
+  "identifiers_render": {
+   "render_link_found": 1
+  },
+  "markers": {
+   "no_recognized_warning_in_inspected_region": 5
+  },
+  "parse_nodes": 264,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 7,
+   "total": 7,
+   "unmatched": 0
+  },
+  "source_bytes": 3786,
+  "units": {
+   "citation_template": 5
+  },
+  "uses": {
+   "anonymous": 2,
+   "bound": 5
+  },
+  "uses_render": {
+   "matched": 7
+  }
+ },
+ "capture": {
+  "capture_sha256": "5417135c856b0d814ffd54521f84c76fb77ffc205955c3e5d8c41ef6b9bf0721",
+  "page_id": 13953485,
+  "render_artifact": "01e6d991cde9370eda028670e768a1ead4f6b1232e509b7097f34f261af70d07",
+  "render_state": "captured",
+  "revision_id": 1331372829,
+  "sha1": "5d3d13a2f9d0f392586a4fc296c7e05d22391241",
+  "source_artifact": "654777c6e5a1dee720186a6a52adf6c26797d0ff3f5720607ec4154f14f25267",
+  "title": "International Journal of Molecular Sciences",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1450,
+      "byte_start": 1205,
+      "cp_end": 1448,
+      "cp_start": 1203
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1456,
+      "byte_start": 1187,
+      "cp_end": 1454,
+      "cp_start": 1185
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": "Grove",
+   "name_raw": "Grove",
+   "render": {
+    "region_id": "cite_note-Grove-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1456,
+    "byte_start": 1187,
+    "cp_end": 1454,
+    "cp_start": 1185
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001",
+    "us-00005"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1650,
+      "byte_start": 1543,
+      "cp_end": 1646,
+      "cp_start": 1541
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1656,
+      "byte_start": 1538,
+      "cp_end": 1652,
+      "cp_start": 1536
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1656,
+    "byte_start": 1538,
+    "cp_end": 1652,
+    "cp_start": 1536
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2146,
+      "byte_start": 1749,
+      "cp_end": 2137,
+      "cp_start": 1744
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2152,
+      "byte_start": 1722,
+      "cp_end": 2143,
+      "cp_start": 1718
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "Oviedo-García",
+   "name_raw": "Oviedo-García",
+   "render": {
+    "region_id": "cite_note-Oviedo-García-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2152,
+    "byte_start": 1722,
+    "cp_end": 2143,
+    "cp_start": 1718
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00003",
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3005,
+      "byte_start": 2862,
+      "cp_end": 2993,
+      "cp_start": 2850
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3011,
+      "byte_start": 2857,
+      "cp_end": 2999,
+      "cp_start": 2845
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3011,
+    "byte_start": 2857,
+    "cp_end": 2999,
+    "cp_start": 2845
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00006"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3418,
+      "byte_start": 3198,
+      "cp_end": 3406,
+      "cp_start": 3186
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3424,
+      "byte_start": 3184,
+      "cp_end": 3412,
+      "cp_start": 3172
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": "WoS",
+   "name_raw": "WoS",
+   "render": {
+    "region_id": "cite_note-WoS-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3424,
+    "byte_start": 3184,
+    "cp_end": 3412,
+    "cp_start": 3172
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00007"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "b439ce86237b8a354e140977d35c346de653698a5e96478af5b83f9513dbface",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00003",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1093/reseval/rvab030 ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1093/reseval/rvab030",
+    "raw": "10.1093/reseval/rvab030 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwXg",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[3]/span[2]/cite/span/a",
+      "quote": "10.1093/reseval/rvab030",
+      "subtree_sha256": "1f1bb8f899ec4d4a08cf8863502a6449a6a02bb65b55405d5763379dd4230ce2"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2128,
+    "byte_start": 2104,
+    "cp_end": 2119,
+    "cp_start": 2095,
+    "exact": true,
+    "raw": "10.1093/reseval/rvab030 ",
+    "raw_sha256": "5a3f1cff659af29da96e751a361f4830742d9e80f4f011934c331896866d5b1e"
+   },
+   "unit_id": "un-00003"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Grove-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[1]",
+     "quote": "1 2 .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:targ",
+     "subtree_sha256": "e0fabf35a0cd9624bd36697b0e34a4aa7b127cdf7b828c1f5a7ad8514f55b573"
+    },
+    "region_id": "cite_note-Grove-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[2]",
+     "quote": "↑ \"IJMS — Editors\". Retrieved 2012-03-07.",
+     "subtree_sha256": "4f53c678b637634f7d2377aae40410d0e2e9a94ad4a808a062ab473df9a2fb35"
+    },
+    "region_id": "cite_note-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Oviedo-García-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[3]",
+     "quote": "1 2 Ángeles Oviedo-García, Maria (11 August 2021). \"Journal citation reports and the definition of a predatory journal: The case of the Multidisciplinary Digita",
+     "subtree_sha256": "7e35fbc8d4782d29ee925a00f6d1a1e2ca394518512c7602570b3805b8e2137a"
+    },
+    "region_id": "cite_note-Oviedo-García-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[4]",
+     "quote": "↑ \"International journal of molecular sciences. - NLM Catalog - NCBI\".",
+     "subtree_sha256": "db63bb62551b0729657403b85765221c38de82f7a6e3a34a92ecb074b2e97391"
+    },
+    "region_id": "cite_note-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-WoS-5",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[5]",
+     "quote": "↑ \"International Journal of Molecular Sciences\". 2023 Journal Citation Reports. Web of Science (Science ed.). Clarivate. 2024.",
+     "subtree_sha256": "1164bf8f21494e0ad855025878adb83bdf2c2c2098c81a154914df82c57dc042"
+    },
+    "region_id": "cite_note-WoS-5"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt3"
+   },
+   "source": {
+    "byte_end": 1450,
+    "byte_start": 1205,
+    "cp_end": 1448,
+    "cp_start": 1203
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt6"
+   },
+   "source": {
+    "byte_end": 1650,
+    "byte_start": 1543,
+    "cp_end": 1646,
+    "cp_start": 1541
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [
+    "id-00001"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt9"
+   },
+   "source": {
+    "byte_end": 2146,
+    "byte_start": 1749,
+    "cp_end": 2137,
+    "cp_start": 1744
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 3005,
+    "byte_start": 2862,
+    "cp_end": 2993,
+    "cp_start": 2850
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt21"
+   },
+   "source": {
+    "byte_end": 3418,
+    "byte_start": 3198,
+    "cp_end": 3406,
+    "cp_start": 3186
+   },
+   "template": {
+    "canonical": "Cite book",
+    "family": "book",
+    "kind": "citation",
+    "name": "cite book"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": "Grove",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Grove_1-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[1]/sup",
+     "quote": "[1]",
+     "subtree_sha256": "5867dd7270569c66c554e59695008cdacecdeb8e271ca4f450bfbd19d4b7b01b"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Grove-1"
+   },
+   "source": {
+    "byte_end": 1456,
+    "byte_start": 1187,
+    "cp_end": 1454,
+    "cp_start": 1185
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[1]",
+     "quote": "[2]",
+     "subtree_sha256": "dfe64f580f365c7cb14fd664246368f773a803a670dd4ca0bbc9f866316d1615"
+    },
+    "state": "matched",
+    "target_note": "cite_note-2"
+   },
+   "source": {
+    "byte_end": 1656,
+    "byte_start": 1538,
+    "cp_end": 1652,
+    "cp_start": 1536
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00003",
+   "name": "Oviedo-García",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Oviedo-García_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup[2]",
+     "quote": "[3]",
+     "subtree_sha256": "7c1b6be75598a74237735e0e88e13088adf5b5d3e52a5c264045b25ecdbbb225"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Oviedo-García-3"
+   },
+   "source": {
+    "byte_end": 2152,
+    "byte_start": 1722,
+    "cp_end": 2143,
+    "cp_start": 1718
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00004",
+   "name": "Oviedo-García",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Oviedo-García_3-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[1]",
+     "quote": "[3]",
+     "subtree_sha256": "4018ebda5e492c196886efae2f5f1d8c555fd44db6c45e6d199c6f2a67c2320c"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Oviedo-García-3"
+   },
+   "source": {
+    "byte_end": 2283,
+    "byte_start": 2254,
+    "cp_end": 2273,
+    "cp_start": 2245
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00005",
+   "name": "Grove",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Grove_1-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[2]",
+     "quote": "[1]",
+     "subtree_sha256": "583e53c906f2c5fca3b386b1db5daa82c3eaed4e23e7574d4bf74271f55a7e1b"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Grove-1"
+   },
+   "source": {
+    "byte_end": 2442,
+    "byte_start": 2422,
+    "cp_end": 2430,
+    "cp_start": 2410
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00006",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "single_use_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-4",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/ul/li[10]/sup",
+     "quote": "[4]",
+     "subtree_sha256": "9fc158c70091027c7683ec7c5d593644dd86b5fa71ed6ae37bf9ec283aad8b85"
+    },
+    "state": "matched",
+    "target_note": "cite_note-4"
+   },
+   "source": {
+    "byte_end": 3011,
+    "byte_start": 2857,
+    "cp_end": 2999,
+    "cp_start": 2845
+   },
+   "template": {
+    "canonical": "Columns-list",
+    "family": null,
+    "kind": "other",
+    "name": "columns-list"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00007",
+   "name": "WoS",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-WoS_5-0",
+     "id_unique": true,
+     "path": "/html/body/section[3]/p[2]/sup",
+     "quote": "[5]",
+     "subtree_sha256": "b8240db33066c8f2fec82f960918c7a6ae5a6545d9d2ec8f28a784a4890e996f"
+    },
+    "state": "matched",
+    "target_note": "cite_note-WoS-5"
+   },
+   "source": {
+    "byte_end": 3424,
+    "byte_start": 3184,
+    "cp_end": 3412,
+    "cp_start": 3172
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

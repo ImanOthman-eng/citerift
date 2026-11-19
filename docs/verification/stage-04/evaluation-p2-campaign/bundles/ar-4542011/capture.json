@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 11890,
+   "body_sha256": "8727a244b1558b09a931587a0b636bc06e69b81e7f13480049334ada9c337e1c",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.519,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:25:10.991362Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4542011",
+   "wire_bytes": 4172
+  },
+  {
+   "body_bytes": 387695,
+   "body_sha256": "85e5fd49ab4f5be683656ea3952a3fa8bf4e58e97699da3fcfe2d81a0d656e52",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.477,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:25:21.511177Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76491384/html",
+   "wire_bytes": 62536
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T13:25:21.989863Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4542011,
+  "parent_revision_id": 75951209,
+  "redirect_followed": null,
+  "revision_id": 76491384,
+  "revision_timestamp": "2026-09-09T20:27:57Z",
+  "sha1": "841c400170aa749115b439f7edbc6011ee38dec2",
+  "size": 11338,
+  "title": "FZR1",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "85e5fd49ab4f5be683656ea3952a3fa8bf4e58e97699da3fcfe2d81a0d656e52",
+  "bytes": 387695,
+  "checks": {
+   "document_revision_id": "76491384",
+   "header_revision_id": "76491384",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4542011",
+   "render_id": "767e6b7a-daf6-11f1-a725-bf4b9d4c3ff0",
+   "revision_sha1": "841c400170aa749115b439f7edbc6011ee38dec2",
+   "revision_sha1_base36": "ffjtnjykm2wojb771fu9ve8tvc4pygy"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76491384",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:25:21 GMT",
+   "etag": "W/\"76491384/767e6b7a-daf6-11f1-a725-bf4b9d4c3ff0/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:47 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76491384/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4542011,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "603f78bb50866d8149d9314418171024488786d665498a881f9ffbc4171c61c1",
+  "bytes": 11338,
+  "response_artifact": "8727a244b1558b09a931587a0b636bc06e69b81e7f13480049334ada9c337e1c",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4542011"
+ },
+ "started_at": "2026-11-19T13:25:03.757254Z",
+ "status": "complete"
+}

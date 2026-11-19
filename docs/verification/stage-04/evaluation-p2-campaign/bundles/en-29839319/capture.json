@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "d60cf0ad4e47d31420301759d4c6115f275dd07e6f76565a8810d593f155fa87",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.328,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:13:21.474317Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=29839319",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 8071,
+   "body_sha256": "d7dd1f48eff56897ef44860ad49e9f9eb53892e4aad68fda9fe05f7a7a76c8c0",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.434,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:14:00.803149Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=29839319",
+   "wire_bytes": 3662
+  },
+  {
+   "body_bytes": 58171,
+   "body_sha256": "b124eb144cfb5d87f4b880453e124478308346d8042bd0393cdbdbc8c4a6db76",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.433,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:14:11.240505Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1292433851/html",
+   "wire_bytes": 11804
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "d60cf0ad4e47d31420301759d4c6115f275dd07e6f76565a8810d593f155fa87"
+ ],
+ "finished_at": "2026-11-19T14:14:11.673714Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 29839319,
+  "parent_revision_id": 1229892426,
+  "redirect_followed": null,
+  "revision_id": 1292433851,
+  "revision_timestamp": "2025-05-26T22:46:51Z",
+  "sha1": "1c1493d5ad3817547f3589d7eee9a5fbd2169a86",
+  "size": 7465,
+  "title": "Hexacyclinol",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "b124eb144cfb5d87f4b880453e124478308346d8042bd0393cdbdbc8c4a6db76",
+  "bytes": 58171,
+  "checks": {
+   "document_revision_id": "1292433851",
+   "header_revision_id": "1292433851",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "29839319",
+   "render_id": "438d6ae1-e35d-11f1-9a06-d39008434fde",
+   "revision_sha1": "1c1493d5ad3817547f3589d7eee9a5fbd2169a86",
+   "revision_sha1_base36": "3a30fb9xzbnfq0fm3eux76w6njfs6fa"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1292433851",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:14:11 GMT",
+   "etag": "W/\"1292433851/438d6ae1-e35d-11f1-9a06-d39008434fde/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:45:45 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1292433851/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 29839319,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "c4bc7af1da8e6824360455caf658e01fb28bc52754a1554a53c7426fc793a083",
+  "bytes": 7465,
+  "response_artifact": "d7dd1f48eff56897ef44860ad49e9f9eb53892e4aad68fda9fe05f7a7a76c8c0",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=29839319"
+ },
+ "started_at": "2026-11-19T14:13:15.209834Z",
+ "status": "complete"
+}

@@ -1,0 +1,1640 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 12,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 12
+   },
+   {
+    "left": 12,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 12
+   },
+   {
+    "left": 12,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 12
+   },
+   {
+    "left": 6,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 5,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 5,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 5,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 5
+   }
+  ],
+  "containers": {
+   "bibliography_entry": 1,
+   "note": 5
+  },
+  "excluded_identifiers": {},
+  "identifiers_by_role": {
+   "marker_target": 4,
+   "primary_citation_field": 8
+  },
+  "identifiers_by_scheme": {
+   "doi": 6,
+   "pmid": 6
+  },
+  "identifiers_render": {
+   "render_link_found": 12
+  },
+  "markers": {
+   "ambiguous_text": 1,
+   "no_recognized_warning_in_inspected_region": 3,
+   "recognized_warning_text": 2
+  },
+  "parse_nodes": 308,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 5,
+   "total": 5,
+   "unmatched": 0
+  },
+  "source_bytes": 5307,
+  "units": {
+   "citation_template": 6
+  },
+  "uses": {
+   "anonymous": 2,
+   "bound": 3
+  },
+  "uses_render": {
+   "matched": 5
+  }
+ },
+ "capture": {
+  "capture_sha256": "ce3f8d4325e541cb97a13868f11878fba5e35def6fc16ae1cd57c9a18105fa60",
+  "page_id": 27958530,
+  "render_artifact": "23a7b47c541cce251bd084d260b6913e1be9070e8283eb15721ade1f53987f7b",
+  "render_state": "captured",
+  "revision_id": 1373069395,
+  "sha1": "fabbff696b2ab4f1e3987c4fdfe90b996892526c",
+  "source_artifact": "ca5e070c843de49946f5617653c9605b46468c2dfdbd2fdb8558619d6e509e49",
+  "title": "Virology Journal",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2251,
+      "byte_start": 1656,
+      "cp_end": 2249,
+      "cp_start": 1654
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2257,
+      "byte_start": 1651,
+      "cp_end": 2255,
+      "cp_start": 1649
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2257,
+    "byte_start": 1651,
+    "cp_end": 2255,
+    "cp_start": 1649
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2664,
+      "byte_start": 2389,
+      "cp_end": 2662,
+      "cp_start": 2387
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 2670,
+      "byte_start": 2369,
+      "cp_end": 2668,
+      "cp_start": 2367
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": "Aetiology",
+   "name_raw": "Aetiology",
+   "render": {
+    "region_id": "cite_note-Aetiology-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 2670,
+    "byte_start": 2369,
+    "cp_end": 2668,
+    "cp_start": 2367
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3180,
+      "byte_start": 2705,
+      "cp_end": 3178,
+      "cp_start": 2703
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3186,
+      "byte_start": 2684,
+      "cp_end": 3184,
+      "cp_start": 2682
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": "Pharyngula",
+   "name_raw": "Pharyngula",
+   "render": {
+    "region_id": "cite_note-Pharyngula-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3186,
+    "byte_start": 2684,
+    "cp_end": 3184,
+    "cp_start": 2682
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00003"
+   ]
+  },
+  {
+   "binding_state": "single_definition",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3925,
+      "byte_start": 3330,
+      "cp_end": 3921,
+      "cp_start": 3328
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3931,
+      "byte_start": 3309,
+      "cp_end": 3927,
+      "cp_start": 3307
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": "VJComments",
+   "name_raw": "VJComments",
+   "render": {
+    "region_id": "cite_note-VJComments-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3931,
+    "byte_start": 3309,
+    "cp_end": 3927,
+    "cp_start": 3307
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 4333,
+      "byte_start": 3981,
+      "cp_end": 4329,
+      "cp_start": 3977
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 4339,
+      "byte_start": 3976,
+      "cp_end": 4335,
+      "cp_start": 3972
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 4339,
+    "byte_start": 3976,
+    "cp_end": 4335,
+    "cp_start": 3972
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  },
+  {
+   "binding_state": "not_applicable",
+   "definitions": [],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "bibliography_entry",
+   "layout": "list_item",
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "/html/body/section[5]/ul/li",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 4931,
+    "byte_start": 4675,
+    "cp_end": 4927,
+    "cp_start": 4671
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": []
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [],
+ "extraction_digest": "d020c5bcb8174c89dfe8ee6d7699c5c56da96180d71be1c50c9caccca7fc59ac",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-7-169\n ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-7-169",
+    "raw": "10.1186/1743-422X-7-169\n ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwRg",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/cite/span[1]/a",
+      "quote": "10.1186/1743-422X-7-169",
+      "subtree_sha256": "6f6a015a264a96ebb0afd9ca768d06d3c9ddedb219a4b3d6213543bb8ae29499"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 1939,
+    "byte_start": 1914,
+    "cp_end": 1937,
+    "cp_start": 1912,
+    "exact": true,
+    "raw": "10.1186/1743-422X-7-169\n ",
+    "raw_sha256": "090bd0354b642f9e6cc4d737f4b7d8963a2b3bc23fb478e28df706717cf3f12f"
+   },
+   "unit_id": "un-00001"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "20663162\n ",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "20663162",
+    "raw": "20663162\n ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwTQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/cite/a[5]",
+      "quote": "20663162",
+      "subtree_sha256": "fb19aa6a94563d395ca128ebf8ba488acec0bb6e4df05e6932dcb84588b7f742"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 1969,
+    "byte_start": 1959,
+    "cp_end": 1967,
+    "cp_start": 1957,
+    "exact": true,
+    "raw": "20663162\n ",
+    "raw_sha256": "75031fa0979939085aa14a869a5391dc4584b0323cf68eacaee7482ed5b80df3"
+   },
+   "unit_id": "un-00001"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-7-190",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-7-190",
+    "raw": "10.1186/1743-422X-7-190",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwVA",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/span[2]/span[2]/a",
+      "quote": "10.1186/1743-422X-7-190",
+      "subtree_sha256": "f5fadcbde8b597cc5d80aebc42cc459a361767800776cda3b725dd23bea874ee"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 2037,
+    "byte_start": 2014,
+    "cp_end": 2035,
+    "cp_start": 2012,
+    "exact": true,
+    "raw": "10.1186/1743-422X-7-190",
+    "raw_sha256": "02323e84c6a7e97444b045f8b08d0f995702687815672bdb9732f7d32fb121cb"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00001",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "20707907",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "20707907",
+    "raw": "20707907",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwWQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/span[2]/a[3]",
+      "quote": "20707907",
+      "subtree_sha256": "267604b8bdc36adcdc2a90adabfcc54646090a81848d6de45fdcec346fbcdf36"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 2051,
+    "byte_start": 2043,
+    "cp_end": 2049,
+    "cp_start": 2041,
+    "exact": true,
+    "raw": "20707907",
+    "raw_sha256": "09ef027694d0a66d17a27e54d0c18557faa6f1320abc24c285ec0fdbe14c9810"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-7-169\n ",
+    "structural_steps": []
+   },
+   "id": "id-00005",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-7-169",
+    "raw": "10.1186/1743-422X-7-169\n ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwfw",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/cite/span[1]/a",
+      "quote": "10.1186/1743-422X-7-169",
+      "subtree_sha256": "81b9756f36bd06d870094e69e7cc67cfc9b95004f4a4474281f8412b60164ca6"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 3606,
+    "byte_start": 3581,
+    "cp_end": 3602,
+    "cp_start": 3577,
+    "exact": true,
+    "raw": "10.1186/1743-422X-7-169\n ",
+    "raw_sha256": "090bd0354b642f9e6cc4d737f4b7d8963a2b3bc23fb478e28df706717cf3f12f"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "20663162\n ",
+    "structural_steps": []
+   },
+   "id": "id-00006",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "20663162",
+    "raw": "20663162\n ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwhg",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/cite/a[5]",
+      "quote": "20663162",
+      "subtree_sha256": "a5d6175456217b1634a32caeba575e3b2a8330182ecef1ade71b90d4cc361871"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3622,
+    "byte_start": 3612,
+    "cp_end": 3618,
+    "cp_start": 3608,
+    "exact": true,
+    "raw": "20663162\n ",
+    "raw_sha256": "75031fa0979939085aa14a869a5391dc4584b0323cf68eacaee7482ed5b80df3"
+   },
+   "unit_id": "un-00004"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-7-190",
+    "structural_steps": []
+   },
+   "id": "id-00007",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-7-190",
+    "raw": "10.1186/1743-422X-7-190",
+    "scheme": "doi",
+    "transformations": [
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwkA",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/span[2]/span[2]/a",
+      "quote": "10.1186/1743-422X-7-190",
+      "subtree_sha256": "8c23f1b25bfd370bbff1e51ff4ef7cb96796b1e5f65328da79d6645570721f27"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 3711,
+    "byte_start": 3688,
+    "cp_end": 3707,
+    "cp_start": 3684,
+    "exact": true,
+    "raw": "10.1186/1743-422X-7-190",
+    "raw_sha256": "02323e84c6a7e97444b045f8b08d0f995702687815672bdb9732f7d32fb121cb"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00004",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "20707907",
+    "structural_steps": []
+   },
+   "id": "id-00008",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "20707907",
+    "raw": "20707907",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwlQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/span[2]/a[3]",
+      "quote": "20707907",
+      "subtree_sha256": "91c40d553cfb90b12bb7374a0a120c47471ba9a9b55aca07026eba10ea972082"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 3725,
+    "byte_start": 3717,
+    "cp_end": 3721,
+    "cp_start": 3713,
+    "exact": true,
+    "raw": "20707907",
+    "raw_sha256": "09ef027694d0a66d17a27e54d0c18557faa6f1320abc24c285ec0fdbe14c9810"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "20707907\n ",
+    "structural_steps": []
+   },
+   "id": "id-00009",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "20707907",
+    "raw": "20707907\n ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwrA",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[5]/span[2]/cite/a[5]",
+      "quote": "20707907",
+      "subtree_sha256": "1beb2bd6ea43660d62fe6e251b9261b32408d35a64f666db17cf825ef1f14fec"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4213,
+    "byte_start": 4203,
+    "cp_end": 4209,
+    "cp_start": 4199,
+    "exact": true,
+    "raw": "20707907\n ",
+    "raw_sha256": "e6d4c1b300a4a8a8b703c6649ebe2531252ba7c1c2b1a9b6ef00ecf8163b06bd"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-7-190\n ",
+    "structural_steps": []
+   },
+   "id": "id-00010",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-7-190",
+    "raw": "10.1186/1743-422X-7-190\n ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwpQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[5]/span[2]/cite/span[1]/a",
+      "quote": "10.1186/1743-422X-7-190",
+      "subtree_sha256": "bc9bd1162f1ba028d6453acba4367d788d473cc64b5d9bfef3120e6d5f16a04c"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4301,
+    "byte_start": 4276,
+    "cp_end": 4297,
+    "cp_start": 4272,
+    "exact": true,
+    "raw": "10.1186/1743-422X-7-190\n ",
+    "raw_sha256": "5cc9f2a34f8a43db71eebbd6f1c1447af05da2a1181348499e8f6f2e289c1e5f"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00006",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1186/1743-422X-1-1\n ",
+    "structural_steps": []
+   },
+   "id": "id-00011",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1186/1743-422x-1-1",
+    "raw": "10.1186/1743-422X-1-1\n ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE",
+     "ASCII_CASE_FOLD"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": null,
+      "id_unique": false,
+      "path": "/html/body/section[5]/ul/li/cite/span[1]/a",
+      "quote": "10.1186/1743-422X-1-1",
+      "subtree_sha256": "90e6b2d4412df90ee22bc9389c9c5eb2d28c3341561c4d8e2891ee2f5563c103"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4873,
+    "byte_start": 4850,
+    "cp_end": 4869,
+    "cp_start": 4846,
+    "exact": true,
+    "raw": "10.1186/1743-422X-1-1\n ",
+    "raw_sha256": "86eea8cd671d1a53af8f55f7ccb02f01e3504dbc85a384ed1b5f5f389a8485da"
+   },
+   "unit_id": "un-00006"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00006",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "15507150\n ",
+    "structural_steps": []
+   },
+   "id": "id-00012",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "15507150",
+    "raw": "15507150\n ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": null,
+      "id_unique": false,
+      "path": "/html/body/section[5]/ul/li/cite/a[5]",
+      "quote": "15507150",
+      "subtree_sha256": "baf57d9fa50c4de292290e1544df33868c366017c59329fecbeb3624d6493d32"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4902,
+    "byte_start": 4892,
+    "cp_end": 4898,
+    "cp_start": 4888,
+    "exact": true,
+    "raw": "15507150\n ",
+    "raw_sha256": "7754fedda4931beef90914e6df5220f8ed5c49140615d76034c29a496139985c"
+   },
+   "unit_id": "un-00006"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwTw",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.1186/1743-422X-7-190, PMID 20707907, Retraction Watch)",
+      "subtree_sha256": "0b2054dee22f5334c8a02971ac33093c19b82446b167e9687e344b414e1b3c87"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "6/1743-422X-7-169. PMC 2918564. PMID 20663162. (Retracted, see doi:10.1186/1743-422X-7-190, PMID 20707907",
+     "term": "retracted"
+    },
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "http://retractionwatch.com/2010/08/12/the-shroud-of-retraction-virology-journal-withdraws-paper-about-whether-christ-cured-a-woman-with-the-flu/",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwXQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[1]/span[2]/span[2]/a[4]/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "a2dbe36a101d3216d2ff1a05842b52a56612c9b907275400155e406ec679907e"
+     },
+     "matched": "Retraction",
+     "part": "text",
+     "snippet": "see doi:10.1186/1743-422X-7-190, PMID 20707907, Retraction Watch)",
+     "term": "retraction"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-1",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "21f97d3a56653b7823c019ac93d0818fdb4bfd13c19bd706d3f6109fd32e4328"
+    },
+    "region_id": "cite_note-1"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 2249,
+     "cp_start": 1996,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Aetiology-2",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[2]",
+     "quote": "↑ Tara C. Smith (10 August 2010). \"Biblical fever = influenza. You're kidding me, right?\". Aetiology. ScienceBlogs. Retrieved 11 August 2010.",
+     "subtree_sha256": "7d25eb7005026d7ae5342871d0eab0a51132aac7554589227ab7305bc78cc063"
+    },
+    "region_id": "cite_note-Aetiology-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-Pharyngula-3",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[3]",
+     "quote": "↑ PZ Myers (11 August 2010). \"But what if she had vapors, or an imbalance of humors?\". Pharyngula. ScienceBlogs. Archived from the original on 15 August 2010. R",
+     "subtree_sha256": "dd69cd59f9149d27d66a3eae18f767c0cb7115260c1e57ae981477774c1e3d26"
+    },
+    "region_id": "cite_note-Pharyngula-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwiw",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.1186/1743-422X-7-190, PMID 20707907, Retraction Watch)",
+      "subtree_sha256": "482c7af69430b60b291983c3d3a3ad22a8659c0dee91ed6b80857d4923ad1a1c"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "69. PMC 2918564. PMID 20663162. S2CID 8124033. (Retracted, see doi:10.1186/1743-422X-7-190, PMID 20707907",
+     "term": "retracted"
+    },
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "http://retractionwatch.com/2010/08/12/the-shroud-of-retraction-virology-journal-withdraws-paper-about-whether-christ-cured-a-woman-with-the-flu/",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwmQ",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[4]/span[2]/span[2]/a[4]/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "449486c683290111ef611c86d18cb39e686bbc8ef1b7e18c90cfa2dbd51fbe5f"
+     },
+     "matched": "Retraction",
+     "part": "text",
+     "snippet": "see doi:10.1186/1743-422X-7-190, PMID 20707907, Retraction Watch)",
+     "term": "retraction"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-VJComments-4",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[4]",
+     "quote": "↑ Robert Garry (21 July 2010). \"Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments\". Virology",
+     "subtree_sha256": "abef761aa445951c82aa92292128e005f3c336953543920efa1f457433bafba3"
+    },
+    "region_id": "cite_note-VJComments-4"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 3921,
+     "cp_start": 3668,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2924865",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwoA",
+      "id_unique": true,
+      "path": "/html/body/section[4]/div/div/ol/li[5]/span[2]/cite/a[1]",
+      "quote": "\"Retraction: Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time\"",
+      "subtree_sha256": "1063856ad16500eaee702511c5b747ba58059a86d9e04b77c4e7aec91f4b1a7a"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "Kam LE Hon; Pak C Ng; Ting F Leung (2010). \"Retraction: Influenza or not influenza: Analysis of a case",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-5",
+     "id_unique": true,
+     "path": "/html/body/section[4]/div/div/ol/li[5]",
+     "quote": "↑ Kam LE Hon; Pak C Ng; Ting F Leung (2010). \"Retraction: Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical ",
+     "subtree_sha256": "f2b0ab2f636846a1663953409764468d195f5ebfb534d61823cd73d3dca2a23a"
+    },
+    "region_id": "cite_note-5"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "mwsA",
+     "id_unique": true,
+     "path": "/html/body/section[5]/ul/li",
+     "quote": "Robert F. Garry (2004). \"Virology on the Internet: the time is right for a new journal\". Virology Journal. 1 (1): 1. doi:10.1186/1743-422X-1-1. PMC 524032. PMID",
+     "subtree_sha256": "6b4a91fb1b43b9266f18592c597e7640a0641788f7c1f7325e9f93056f90ce2c"
+    },
+    "region_id": "/html/body/section[5]/ul/li"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt6"
+   },
+   "source": {
+    "byte_end": 1998,
+    "byte_start": 1657,
+    "cp_end": 1996,
+    "cp_start": 1655
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt12"
+   },
+   "source": {
+    "byte_end": 2664,
+    "byte_start": 2390,
+    "cp_end": 2662,
+    "cp_start": 2388
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt15"
+   },
+   "source": {
+    "byte_end": 3180,
+    "byte_start": 2706,
+    "cp_end": 3178,
+    "cp_start": 2704
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [
+    "id-00005",
+    "id-00006"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt18"
+   },
+   "source": {
+    "byte_end": 3672,
+    "byte_start": 3331,
+    "cp_end": 3668,
+    "cp_start": 3329
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [
+    "id-00009",
+    "id-00010"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt24"
+   },
+   "source": {
+    "byte_end": 4333,
+    "byte_start": 3982,
+    "cp_end": 4329,
+    "cp_start": 3978
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": null,
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [
+    "id-00011",
+    "id-00012"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt32"
+   },
+   "source": {
+    "byte_end": 4931,
+    "byte_start": 4676,
+    "cp_end": 4927,
+    "cp_start": 4672
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "cite journal"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-1",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[1]",
+     "quote": "[1]",
+     "subtree_sha256": "6113757ff280f9b2c0e03352e0226cc050fcec87735c6f430e461dcbabd5d439"
+    },
+    "state": "matched",
+    "target_note": "cite_note-1"
+   },
+   "source": {
+    "byte_end": 2257,
+    "byte_start": 1651,
+    "cp_end": 2255,
+    "cp_start": 1649
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": "Aetiology",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Aetiology_2-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[2]",
+     "quote": "[2]",
+     "subtree_sha256": "d36cbe034d2121867589fa2657371e21016e58bef9ad253df2b2a7c6280de3ce"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Aetiology-2"
+   },
+   "source": {
+    "byte_end": 2670,
+    "byte_start": 2369,
+    "cp_end": 2668,
+    "cp_start": 2367
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00003",
+   "name": "Pharyngula",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-Pharyngula_3-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[3]",
+     "quote": "[3]",
+     "subtree_sha256": "7b9fac9530a19e1071b38263956fefb00f95cc3666d47a106f68db6ce6c398a4"
+    },
+    "state": "matched",
+    "target_note": "cite_note-Pharyngula-3"
+   },
+   "source": {
+    "byte_end": 3186,
+    "byte_start": 2684,
+    "cp_end": 3184,
+    "cp_start": 2682
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "bound",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00004",
+   "name": "VJComments",
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "name_anchor",
+    "locator": {
+     "element_id": "cite_ref-VJComments_4-0",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[4]",
+     "quote": "[4]",
+     "subtree_sha256": "43ff4874759b8a8de4fc806c4dffe14d7228f37b62cd2698c86014909625c3a4"
+    },
+    "state": "matched",
+    "target_note": "cite_note-VJComments-4"
+   },
+   "source": {
+    "byte_end": 3931,
+    "byte_start": 3309,
+    "cp_end": 3927,
+    "cp_start": 3307
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00005",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-5",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[5]",
+     "quote": "[5]",
+     "subtree_sha256": "28b6ab2b467214224d124e8afcc1bf1fc269eb6416a2847ddfa2b919129e09b0"
+    },
+    "state": "matched",
+    "target_note": "cite_note-5"
+   },
+   "source": {
+    "byte_end": 4339,
+    "byte_start": 3976,
+    "cp_end": 4335,
+    "cp_start": 3972
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

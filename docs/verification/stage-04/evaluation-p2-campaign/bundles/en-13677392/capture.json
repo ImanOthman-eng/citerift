@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "4c56449f7d279166d2a94af36ee99f4f44c358b6480ca266ee59ea6ca86f2e8e",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.319,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:05:21.335298Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=13677392",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 3140,
+   "body_sha256": "46d2a650a4c84d1ff31926a2ae39422481983ce5afcc22f600ab607c231710d0",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.425,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:06:00.654805Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=13677392",
+   "wire_bytes": 1443
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "2828d4b36efcb0296bed9b94ed0938adead5e692b520c31e4901b4c8d1371e0b",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.339,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "49",
+   "retry_after_s": 49.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:06:11.080643Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1336277301/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 42624,
+   "body_sha256": "6e738517a9734635cfddaa66b7534cb6676de8b2809ad372cc5e946640de933d",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.389,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:07:00.420134Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1336277301/html",
+   "wire_bytes": 9094
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "4c56449f7d279166d2a94af36ee99f4f44c358b6480ca266ee59ea6ca86f2e8e",
+  "2828d4b36efcb0296bed9b94ed0938adead5e692b520c31e4901b4c8d1371e0b"
+ ],
+ "finished_at": "2026-11-19T14:07:00.809543Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 13677392,
+  "parent_revision_id": 1318822684,
+  "redirect_followed": null,
+  "revision_id": 1336277301,
+  "revision_timestamp": "2026-02-02T21:54:00Z",
+  "sha1": "f9609a6239959cb78bc1d01e8df8ab2561fd13a8",
+  "size": 2548,
+  "title": "Solar Energy Materials and Solar Cells",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "6e738517a9734635cfddaa66b7534cb6676de8b2809ad372cc5e946640de933d",
+  "bytes": 42624,
+  "checks": {
+   "document_revision_id": "1336277301",
+   "header_revision_id": "1336277301",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "13677392",
+   "render_id": "5e2ff776-e2fd-11f1-ab3a-159df858f754",
+   "revision_sha1": "f9609a6239959cb78bc1d01e8df8ab2561fd13a8",
+   "revision_sha1_base36": "t4ojxpicay59ncgfte97xaozugmbr1k"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1336277301",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:07:00 GMT",
+   "etag": "W/\"1336277301/5e2ff776-e2fd-11f1-ab3a-159df858f754/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:36:53 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1336277301/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 13677392,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "cd85cdcc86f40dc74f45b019a16a8d0b38810e3759a428c800684f829556eeb4",
+  "bytes": 2548,
+  "response_artifact": "46d2a650a4c84d1ff31926a2ae39422481983ce5afcc22f600ab607c231710d0",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=13677392"
+ },
+ "started_at": "2026-11-19T14:05:14.619465Z",
+ "status": "complete"
+}

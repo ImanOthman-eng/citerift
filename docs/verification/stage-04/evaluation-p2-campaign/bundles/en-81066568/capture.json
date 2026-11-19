@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "93ebf975a789dfebe8f531ba833691a3b3e31969771dbea446eebfa78f0be26e",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.308,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:21:21.023277Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=81066568",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 106032,
+   "body_sha256": "fef452bb8db594d4e5322f9362e309f22179e3e92c9e86db000b4c31afd551c7",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.56,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:22:00.331921Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=81066568",
+   "wire_bytes": 39149
+  },
+  {
+   "body_bytes": 635079,
+   "body_sha256": "39f82bed7408c662ca834669a539d356aab709e0d720b8b529a611f8c3961e56",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.475,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:22:10.893153Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1386069450/html",
+   "wire_bytes": 113212
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "93ebf975a789dfebe8f531ba833691a3b3e31969771dbea446eebfa78f0be26e"
+ ],
+ "finished_at": "2026-11-19T14:22:11.370489Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 81066568,
+  "parent_revision_id": 1385826486,
+  "redirect_followed": null,
+  "revision_id": 1386069450,
+  "revision_timestamp": "2026-11-16T19:15:46Z",
+  "sha1": "ec03d1da719e49ea0208cec48653ff1721fb6c60",
+  "size": 105200,
+  "title": "Mammalian SWI/SNF (BAF) complex",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "39f82bed7408c662ca834669a539d356aab709e0d720b8b529a611f8c3961e56",
+  "bytes": 635079,
+  "checks": {
+   "document_revision_id": "1386069450",
+   "header_revision_id": "1386069450",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "81066568",
+   "render_id": "3ec8aeb2-e2c4-11f1-9595-e5319ee472c3",
+   "revision_sha1": "ec03d1da719e49ea0208cec48653ff1721fb6c60",
+   "revision_sha1_base36": "rkhng96foqomu981kdlp9om6aeurc68"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1386069450",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:22:11 GMT",
+   "etag": "W/\"1386069450/3ec8aeb2-e2c4-11f1-9595-e5319ee472c3/view\"",
+   "last-modified": "Tue, 17 Nov 2026 20:11:54 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1386069450/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 81066568,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "d148781d1d97f482fbe1990da8fb233efed328d5707c33aa8682725033ad9677",
+  "bytes": 105200,
+  "response_artifact": "fef452bb8db594d4e5322f9362e309f22179e3e92c9e86db000b4c31afd551c7",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=81066568"
+ },
+ "started_at": "2026-11-19T14:21:13.832106Z",
+ "status": "complete"
+}

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 23403,
+   "body_sha256": "8e9686a79f01c4207336949372ee5186d2a87db98093ec08fd6c87d49e736688",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.416,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:20:10.946288Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33948767",
+   "wire_bytes": 9763
+  },
+  {
+   "body_bytes": 152955,
+   "body_sha256": "ed0a22baf13c81a722375585d0109aea66c248ef90edc19b357b6c705c7899a8",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.424,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:20:21.363206Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385820222/html",
+   "wire_bytes": 28656
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T14:20:21.788034Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 33948767,
+  "parent_revision_id": 1369611318,
+  "redirect_followed": null,
+  "revision_id": 1385820222,
+  "revision_timestamp": "2026-11-15T10:19:51Z",
+  "sha1": "3e14e86914f38b7dd5180f33e6fadfc4ac19a297",
+  "size": 22761,
+  "title": "Biomarkers of aging",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "ed0a22baf13c81a722375585d0109aea66c248ef90edc19b357b6c705c7899a8",
+  "bytes": 152955,
+  "checks": {
+   "document_revision_id": "1385820222",
+   "header_revision_id": "1385820222",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "33948767",
+   "render_id": "2efc90ee-e2c3-11f1-9c3b-fb9c1e272ebe",
+   "revision_sha1": "3e14e86914f38b7dd5180f33e6fadfc4ac19a297",
+   "revision_sha1_base36": "792dgleumtl1mdb8321tquyauxdnst3"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1385820222",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:20:21 GMT",
+   "etag": "W/\"1385820222/2efc90ee-e2c3-11f1-9c3b-fb9c1e272ebe/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:47:48 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385820222/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 33948767,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "3c9316f628c04382070e1a236bd0ceffd5690a52a07286fc7d54c35583a8b7f0",
+  "bytes": 22761,
+  "response_artifact": "8e9686a79f01c4207336949372ee5186d2a87db98093ec08fd6c87d49e736688",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=33948767"
+ },
+ "started_at": "2026-11-19T14:20:08.464889Z",
+ "status": "complete"
+}

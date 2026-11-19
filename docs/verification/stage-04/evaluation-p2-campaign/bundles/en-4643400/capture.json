@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "66a369a0f49f267cce6e4af047dbc202d15b8c7a5ae8cb983228b6aa95fc5ecd",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.634,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:51:21.817364Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4643400",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 46281,
+   "body_sha256": "fd04d7394b7209e3a3ac88208b0a109043a1c8942264903f0a809ef9a29c7424",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 1.004,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:52:00.452270Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4643400",
+   "wire_bytes": 16982
+  },
+  {
+   "body_bytes": 375031,
+   "body_sha256": "cddcef7a70bf82211188b4db27a3d0ef28104bb21ba57eddd7274f98acbed270",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.48,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:52:11.457156Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385826460/html",
+   "wire_bytes": 59052
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "66a369a0f49f267cce6e4af047dbc202d15b8c7a5ae8cb983228b6aa95fc5ecd"
+ ],
+ "finished_at": "2026-11-19T13:52:11.939252Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4643400,
+  "parent_revision_id": 1374472812,
+  "redirect_followed": null,
+  "revision_id": 1385826460,
+  "revision_timestamp": "2026-11-15T11:06:02Z",
+  "sha1": "1b0b18584ffe98fb39ac29224daab74681ef335e",
+  "size": 45513,
+  "title": "Majorana fermion",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "cddcef7a70bf82211188b4db27a3d0ef28104bb21ba57eddd7274f98acbed270",
+  "bytes": 375031,
+  "checks": {
+   "document_revision_id": "1385826460",
+   "header_revision_id": "1385826460",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4643400",
+   "render_id": "8e57aa6a-e2bd-11f1-9365-13b8e8ac6bf2",
+   "revision_sha1": "1b0b18584ffe98fb39ac29224daab74681ef335e",
+   "revision_sha1_base36": "35q0m5enxg8e18i5bsi4oonv9q8ts2m"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1385826460",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:52:11 GMT",
+   "etag": "W/\"1385826460/8e57aa6a-e2bd-11f1-9365-13b8e8ac6bf2/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:30:38 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385826460/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4643400,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "34e11ba55027188003de712c1223fff91d96ef7d1dd46ac385af63f504174d0e",
+  "bytes": 45513,
+  "response_artifact": "fd04d7394b7209e3a3ac88208b0a109043a1c8942264903f0a809ef9a29c7424",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4643400"
+ },
+ "started_at": "2026-11-19T13:51:14.863972Z",
+ "status": "complete"
+}

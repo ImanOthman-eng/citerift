@@ -1,0 +1,155 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "5ca6c07985831a96c65d47165720dd6248c1e72128a1b7a9d9b926a22b5fff24",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.342,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:46:21.735265Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8773304",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 16317,
+   "body_sha256": "d6a724cb55b938f979d3261a6d31ce8f1e295b040c159bc1167af93b7f3f36de",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.427,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:47:00.078877Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8773304",
+   "wire_bytes": 5902
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "13de83c27b5fc117b9e3ce2e71d30108629345340d2a7af343170ec402240bc5",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.329,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "50",
+   "retry_after_s": 50.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:47:10.506147Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77412946/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 57306,
+   "body_sha256": "f7899dc3028085b042389672307359665d8efdbeabe8c01403e16abd4b25f186",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.452,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:48:00.835207Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77412946/html",
+   "wire_bytes": 13767
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "5ca6c07985831a96c65d47165720dd6248c1e72128a1b7a9d9b926a22b5fff24",
+  "13de83c27b5fc117b9e3ce2e71d30108629345340d2a7af343170ec402240bc5"
+ ],
+ "finished_at": "2026-11-19T13:48:01.288019Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 8773304,
+  "parent_revision_id": 77412805,
+  "redirect_followed": null,
+  "revision_id": 77412946,
+  "revision_timestamp": "2026-11-12T14:03:10Z",
+  "sha1": "ce54a64d0873ad9625e8575744dc06805d63f8d4",
+  "size": 15663,
+  "title": "هندسة الخط الجنسي البشري",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "f7899dc3028085b042389672307359665d8efdbeabe8c01403e16abd4b25f186",
+  "bytes": 57306,
+  "checks": {
+   "document_revision_id": "77412946",
+   "header_revision_id": "77412946",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "8773304",
+   "render_id": "cd42c8dc-dea1-11f1-a2c7-dd7747df441c",
+   "revision_sha1": "ce54a64d0873ad9625e8575744dc06805d63f8d4",
+   "revision_sha1_base36": "o3ntzk9u4dqz2kjf4h4ger9j3shu2fo"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77412946",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:48:01 GMT",
+   "etag": "W/\"77412946/cd42c8dc-dea1-11f1-a2c7-dd7747df441c/view\"",
+   "last-modified": "Thu, 12 Nov 2026 14:03:10 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77412946/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 8773304,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "f024cdaf89c0fe9cf32cb86a483e5435aa3bf5aad73994be736b9f869fd69017",
+  "bytes": 15663,
+  "response_artifact": "d6a724cb55b938f979d3261a6d31ce8f1e295b040c159bc1167af93b7f3f36de",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=8773304"
+ },
+ "started_at": "2026-11-19T13:46:17.778700Z",
+ "status": "complete"
+}

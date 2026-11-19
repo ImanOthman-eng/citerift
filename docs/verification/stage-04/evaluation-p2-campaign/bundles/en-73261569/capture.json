@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "ba48f787f8800abd0437484dd80ddb3cd37d92b1c619a54b105461e3eec17fc0",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.334,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "39",
+   "retry_after_s": 39.0,
+   "retryable": true,
+   "started_at": "2026-11-19T14:04:21.073316Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=73261569",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 33016,
+   "body_sha256": "18af90ddb18330889370643208b9cf112c5abd241ee7bd9aa896bd47b3017ddc",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.429,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:05:00.408261Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=73261569",
+   "wire_bytes": 11155
+  },
+  {
+   "body_bytes": 222093,
+   "body_sha256": "f2ebe707098f8a6f5938c0708a4ff9a0d0e6df7c4517e9f1ae1dcdf133cc1070",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.497,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T14:05:10.837562Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1372575149/html",
+   "wire_bytes": 36249
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "ba48f787f8800abd0437484dd80ddb3cd37d92b1c619a54b105461e3eec17fc0"
+ ],
+ "finished_at": "2026-11-19T14:05:11.335615Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 73261569,
+  "parent_revision_id": 1369225671,
+  "redirect_followed": null,
+  "revision_id": 1372575149,
+  "revision_timestamp": "2026-09-01T08:44:44Z",
+  "sha1": "428fa60e188e04455301e8f51bcaa7c755484d06",
+  "size": 32269,
+  "title": "Ranga Dias (physicist)",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "f2ebe707098f8a6f5938c0708a4ff9a0d0e6df7c4517e9f1ae1dcdf133cc1070",
+  "bytes": 222093,
+  "checks": {
+   "document_revision_id": "1372575149",
+   "header_revision_id": "1372575149",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "73261569",
+   "render_id": "f8c01c8d-e2c4-11f1-a323-259cc20a7d58",
+   "revision_sha1": "428fa60e188e04455301e8f51bcaa7c755484d06",
+   "revision_sha1_base36": "7rwi8foe15vq745r4s11w5icvfbf7ye"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1372575149",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 14:05:11 GMT",
+   "etag": "W/\"1372575149/f8c01c8d-e2c4-11f1-a323-259cc20a7d58/view\"",
+   "last-modified": "Tue, 17 Nov 2026 20:08:40 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1372575149/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 73261569,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "a9d931dfc3911e0df94d8a9ffa973ddf7bc2d02f63d9550df7f674930df3f22e",
+  "bytes": 32269,
+  "response_artifact": "18af90ddb18330889370643208b9cf112c5abd241ee7bd9aa896bd47b3017ddc",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=73261569"
+ },
+ "started_at": "2026-11-19T14:04:13.786787Z",
+ "status": "complete"
+}

@@ -1,0 +1,1284 @@
+{
+ "accounting": {
+  "checks": [
+   {
+    "left": 5,
+    "name": "no source span reported twice for one scheme",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 7,
+    "name": "candidates = identifiers + excluded",
+    "ok": true,
+    "right": 7
+   },
+   {
+    "left": 5,
+    "name": "identifiers by role sum",
+    "ok": true,
+    "right": 5
+   },
+   {
+    "left": 6,
+    "name": "one marker observation per container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "every unit in exactly one container",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "source uses = matched + abstained + source_only",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "render uses = matched + unmatched",
+    "ok": true,
+    "right": 6
+   },
+   {
+    "left": 6,
+    "name": "matched pairs are one-to-one",
+    "ok": true,
+    "right": 6
+   }
+  ],
+  "containers": {
+   "note": 6
+  },
+  "excluded_identifiers": {
+   "other_site_url": 2
+  },
+  "identifiers_by_role": {
+   "marker_target": 2,
+   "primary_citation_field": 3
+  },
+  "identifiers_by_scheme": {
+   "doi": 3,
+   "pmid": 2
+  },
+  "identifiers_render": {
+   "render_link_found": 5
+  },
+  "markers": {
+   "ambiguous_text": 1,
+   "no_recognized_warning_in_inspected_region": 4,
+   "recognized_warning_text": 1
+  },
+  "parse_nodes": 288,
+  "render_only_identifiers": 0,
+  "render_uses": {
+   "matched": 6,
+   "total": 6,
+   "unmatched": 0
+  },
+  "source_bytes": 6640,
+  "units": {
+   "citation_template": 6
+  },
+  "uses": {
+   "anonymous": 6
+  },
+  "uses_render": {
+   "matched": 6
+  }
+ },
+ "capture": {
+  "capture_sha256": "48b02cee36a8e79fe8ad35e0e49d0395e5b530b1a9162fa1d694f3d4fc6fcb17",
+  "page_id": 4704555,
+  "render_artifact": "ee62384651dea791e48caf80e258c1d265128912e457dfb65ca4de7f931e2f24",
+  "render_state": "captured",
+  "revision_id": 1373147236,
+  "sha1": "0ef6f92d72b348b75c7c991df5d09e5af1ea09f6",
+  "source_artifact": "ee8420812fe920e97708fe9c73e927ebc86a24af9da672a039f57800afc3a68e",
+  "title": "Kamran Bagheri Lankarani",
+  "wiki": "en"
+ },
+ "components": {
+  "markers": {
+   "state": "complete"
+  },
+  "reconciliation": {
+   "state": "complete"
+  },
+  "render": {
+   "state": "complete"
+  },
+  "source": {
+   "state": "complete"
+  }
+ },
+ "config": {
+  "max_candidates": 50000,
+  "max_depth": 60,
+  "max_nodes": 400000,
+  "max_refs": 20000,
+  "max_render_elements": 2000000,
+  "max_templates": 50000,
+  "worker_memory_mib": 1024,
+  "worker_wall_s": 30.0
+ },
+ "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+ "containers": [
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1105,
+      "byte_start": 857,
+      "cp_end": 1087,
+      "cp_start": 839
+     },
+     "id": "ct-00001/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1111,
+      "byte_start": 852,
+      "cp_end": 1093,
+      "cp_start": 834
+     },
+     "zone": "template_param"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00001",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-1",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1111,
+    "byte_start": 852,
+    "cp_end": 1093,
+    "cp_start": 834
+   },
+   "unit_ids": [
+    "un-00001"
+   ],
+   "use_ids": [
+    "us-00001"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 1945,
+      "byte_start": 1635,
+      "cp_end": 1909,
+      "cp_start": 1599
+     },
+     "id": "ct-00002/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 1951,
+      "byte_start": 1630,
+      "cp_end": 1915,
+      "cp_start": 1594
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00002",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-2",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 1951,
+    "byte_start": 1630,
+    "cp_end": 1915,
+    "cp_start": 1594
+   },
+   "unit_ids": [
+    "un-00002"
+   ],
+   "use_ids": [
+    "us-00002"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 2997,
+      "byte_start": 2697,
+      "cp_end": 2955,
+      "cp_start": 2655
+     },
+     "id": "ct-00003/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3003,
+      "byte_start": 2692,
+      "cp_end": 2961,
+      "cp_start": 2650
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00003",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-3",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3003,
+    "byte_start": 2692,
+    "cp_end": 2961,
+    "cp_start": 2650
+   },
+   "unit_ids": [
+    "un-00003"
+   ],
+   "use_ids": [
+    "us-00003"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 3258,
+      "byte_start": 3102,
+      "cp_end": 3216,
+      "cp_start": 3060
+     },
+     "id": "ct-00004/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 3264,
+      "byte_start": 3097,
+      "cp_end": 3222,
+      "cp_start": 3055
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00004",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-4",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 3264,
+    "byte_start": 3097,
+    "cp_end": 3222,
+    "cp_start": 3055
+   },
+   "unit_ids": [
+    "un-00004"
+   ],
+   "use_ids": [
+    "us-00004"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 4433,
+      "byte_start": 3382,
+      "cp_end": 4389,
+      "cp_start": 3340
+     },
+     "id": "ct-00005/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 4439,
+      "byte_start": 3377,
+      "cp_end": 4395,
+      "cp_start": 3335
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00005",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-5",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 4439,
+    "byte_start": 3377,
+    "cp_end": 4395,
+    "cp_start": 3335
+   },
+   "unit_ids": [
+    "un-00005"
+   ],
+   "use_ids": [
+    "us-00005"
+   ]
+  },
+  {
+   "binding_state": "anonymous",
+   "definitions": [
+    {
+     "body": {
+      "byte_end": 5560,
+      "byte_start": 4740,
+      "cp_end": 5516,
+      "cp_start": 4696
+     },
+     "id": "ct-00006/d1",
+     "origin": "tag",
+     "source": {
+      "byte_end": 5566,
+      "byte_start": 4735,
+      "cp_end": 5522,
+      "cp_start": 4691
+     },
+     "zone": "prose"
+    }
+   ],
+   "group": "",
+   "group_raw": null,
+   "id": "ct-00006",
+   "kind": "note",
+   "layout": null,
+   "name": null,
+   "name_raw": null,
+   "render": {
+    "region_id": "cite_note-6",
+    "state": "matched"
+   },
+   "source": {
+    "byte_end": 5566,
+    "byte_start": 4735,
+    "cp_end": 5522,
+    "cp_start": 4691
+   },
+   "unit_ids": [
+    "un-00006"
+   ],
+   "use_ids": [
+    "us-00006"
+   ]
+  }
+ ],
+ "exceptions": [],
+ "excluded_identifiers": [
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 3997,
+    "byte_start": 3971,
+    "cp_end": 3955,
+    "cp_start": 3929,
+    "exact": true,
+    "raw": "10.1007/s11356-021-16530-6",
+    "raw_sha256": "313cc34e0a6215b7403a7cf1e92a41d9b64d437729eb8d044d1233b466935bec"
+   }
+  },
+  {
+   "reason": "other_site_url",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5355,
+    "byte_start": 5329,
+    "cp_end": 5311,
+    "cp_start": 5285,
+    "exact": true,
+    "raw": "10.1007/s11356-024-35004-z",
+    "raw_sha256": "7e6dc626e77b092e8c35a36801d9b275c5f1a547fdf24d0c6a6ea8e7c7f5b0cf"
+   }
+  }
+ ],
+ "extraction_digest": "2d4f99c3696d14c9cc9a25f74121abbf31fabd85f08f02f60f3cd77b66b0dba8",
+ "extractor": {
+  "name": "citerift-wiki",
+  "normalizer": "citerift.retraction.identifiers (Stage 02)",
+  "parsers": {
+   "html": "lxml 6.1.3 (libxml2 2.14.6)",
+   "wikitext": "mwparserfromhell 0.7.2"
+  },
+  "profile": {
+   "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+   "version": "1.0.0"
+  },
+  "version": "1.2.0"
+ },
+ "identifiers": [
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "Cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1007/s11356-021-16530-6 ",
+    "structural_steps": []
+   },
+   "id": "id-00001",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1007/s11356-021-16530-6",
+    "raw": "10.1007/s11356-021-16530-6 ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwYw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/cite/a[4]",
+      "quote": "10.1007/s11356-021-16530-6",
+      "subtree_sha256": "f801ce44a96941e3a04458b8cbb3bf9f6f75988cd2bf213927d6ca3eb7a465de"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4139,
+    "byte_start": 4112,
+    "cp_end": 4095,
+    "cp_start": 4068,
+    "exact": true,
+    "raw": "10.1007/s11356-021-16530-6 ",
+    "raw_sha256": "ed04750769b9e124bf408d381a5a5abea0de940564b140617c2d1a8aff8fb571"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "Cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "34550520 ",
+    "structural_steps": []
+   },
+   "id": "id-00002",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "34550520",
+    "raw": "34550520 ",
+    "scheme": "pmid",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwaQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/cite/a[8]",
+      "quote": "34550520",
+      "subtree_sha256": "9882485d6a6298addca89a4dc0cd79f0cc667c4827420ce7a6864233ef8b5be4"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter pmid",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4154,
+    "byte_start": 4145,
+    "cp_end": 4110,
+    "cp_start": 4101,
+    "exact": true,
+    "raw": "34550520 ",
+    "raw_sha256": "041160f2503563d0a5690965cded07b0857b746ad64054eb3313f9b43ec85813"
+   },
+   "unit_id": "un-00005"
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1007/s11356-024-35004-z",
+    "structural_steps": []
+   },
+   "id": "id-00003",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1007/s11356-024-35004-z",
+    "raw": "10.1007/s11356-024-35004-z",
+    "scheme": "doi",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwbw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/a[2]",
+      "quote": "10.1007/s11356-024-35004-z",
+      "subtree_sha256": "6351922576af7b7b89bf20d48f17be11fcf46f12032ff932bb3d261ec4bf9e55"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 4267,
+    "byte_start": 4241,
+    "cp_end": 4223,
+    "cp_start": 4197,
+    "exact": true,
+    "raw": "10.1007/s11356-024-35004-z",
+    "raw_sha256": "7e6dc626e77b092e8c35a36801d9b275c5f1a547fdf24d0c6a6ea8e7c7f5b0cf"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00005",
+   "context": {
+    "in_link_text": false,
+    "param": "pmid",
+    "template": {
+     "canonical": "Retracted",
+     "family": null,
+     "kind": "marker",
+     "name": "Retracted"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "39289267",
+    "structural_steps": []
+   },
+   "id": "id-00004",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "39289267",
+    "raw": "39289267",
+    "scheme": "pmid",
+    "transformations": [],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwdA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/a[4]",
+      "quote": "39289267",
+      "subtree_sha256": "560e53eedd34bcd3a2e156465a9211509f8b51514be1a68de1587e0e68ad090a"
+     }
+    ]
+   },
+   "role": "marker_target",
+   "role_reason": "inside a retraction-marker template",
+   "scheme": "pmid",
+   "source": {
+    "byte_end": 4281,
+    "byte_start": 4273,
+    "cp_end": 4237,
+    "cp_start": 4229,
+    "exact": true,
+    "raw": "39289267",
+    "raw_sha256": "386c4bb208e0d91d8c1db4a65601e25a28c312a64f418e01e1f7aa37601eb076"
+   },
+   "unit_id": null
+  },
+  {
+   "boundary": "field",
+   "container_id": "ct-00006",
+   "context": {
+    "in_link_text": false,
+    "param": "doi",
+    "template": {
+     "canonical": "Cite journal",
+     "family": "journal",
+     "kind": "citation",
+     "name": "Cite journal"
+    }
+   },
+   "decoding": {
+    "input_steps": [],
+    "normalizer_input": "10.1007/s11356-024-35004-z ",
+    "structural_steps": []
+   },
+   "id": "id-00005",
+   "normalization": {
+    "input_form": "bare",
+    "issues": [],
+    "missing": false,
+    "normalized": "10.1007/s11356-024-35004-z",
+    "raw": "10.1007/s11356-024-35004-z ",
+    "scheme": "doi",
+    "transformations": [
+     "TRIM_OUTER_WHITESPACE"
+    ],
+    "valid": true
+   },
+   "origin": "template_field",
+   "render": {
+    "state": "render_link_found",
+    "witnesses": [
+     {
+      "element_id": "mwhQ",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[6]/span[2]/cite/a[4]",
+      "quote": "10.1007/s11356-024-35004-z",
+      "subtree_sha256": "b0377e385fc25c6b9587ea68f4e8fbd398a08c78f5062f079abdf1039e0f7e3d"
+     }
+    ]
+   },
+   "role": "primary_citation_field",
+   "role_reason": "citation parameter doi",
+   "scheme": "doi",
+   "source": {
+    "byte_end": 5489,
+    "byte_start": 5462,
+    "cp_end": 5445,
+    "cp_start": 5418,
+    "exact": true,
+    "raw": "10.1007/s11356-024-35004-z ",
+    "raw_sha256": "91281a96353877241098c2c830c3c099ba9e0e7e0b7a5d0a859668e63657e6f9"
+   },
+   "unit_id": "un-00006"
+  }
+ ],
+ "issues": [],
+ "markers": [
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00001",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-1",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[1]",
+     "quote": "↑ .mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:\"\\\"\"\"\\\"\"\"'\"\"'\"}.mw-parser-output .citation:target",
+     "subtree_sha256": "970ac50bd9600a15f38a10e678717ecef1c29ae15a9b2c224ebd38fb465e2d8f"
+    },
+    "region_id": "cite_note-1"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00002",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-2",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[2]",
+     "quote": "↑ \"Kamran Bagheri Lankarani at SUMS\". Archived from the original on 2008-05-13. Retrieved 2008-08-13.",
+     "subtree_sha256": "e2957a2fee36d66a8f9ddb936b1ef9a3ed1e94c5007685a2e523cbd0fe28bf47"
+    },
+    "region_id": "cite_note-2"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00003",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-3",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[3]",
+     "quote": "↑ \"Biography of Iranian Ministers\" (PDF). Archived from the original (PDF) on 2007-06-10.",
+     "subtree_sha256": "e2e29a0b18cca69376d6760cc233e0938d8e24705569f47e284b425c29e6d3a1"
+    },
+    "region_id": "cite_note-3"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00004",
+   "evidence": [],
+   "reason": "no profile term in the inspected text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-4",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[4]",
+     "quote": "↑ \"Kamran B Lankarani\". scholar.google.com. Retrieved 2025-04-19.",
+     "subtree_sha256": "ad9e3078ff93113d5e76646e0224576df1f89c8478398891c04015b6d53e6623"
+    },
+    "region_id": "cite_note-4"
+   },
+   "source_marker_templates": [],
+   "state": "no_recognized_warning_in_inspected_region"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00005",
+   "evidence": [
+    {
+     "kind": "warning",
+     "locator": {
+      "element_id": "mwaw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]",
+      "quote": "(Retracted, see doi:10.1007/s11356-024-35004-z, PMID 39289267, Retraction Watch)",
+      "subtree_sha256": "b37ceb0f8df9c84d95a2adf77907e1ffa5cbca2574744b3eefd86b0a99c6445b"
+     },
+     "matched": "Retracted",
+     "part": "text",
+     "snippet": "56-021-16530-6. ISSN 1614-7499. PMID 34550520. (Retracted, see doi:10.1007/s11356-024-35004-z, PMID 39289",
+     "term": "retracted"
+    },
+    {
+     "exclusion": "quoted",
+     "kind": "ambiguous",
+     "link": {
+      "href": "https://link.springer.com/article/10.1007/s11356-021-16530-6",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwXA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/cite/span[1]/a",
+      "quote": "\"RETRACTED ARTICLE: The modulatory potential of herbalantioxidants against oxidative stress and heavy metal pollution: plants againstenvironmental oxidative str",
+      "subtree_sha256": "772b89bd90686132e46ee49bf343e777056da7f4dbe9b4567d5cb3636ba69a2f"
+     },
+     "matched": "RETRACTED",
+     "part": "cite_text",
+     "snippet": "pour, Mansoureh; Ebrahimi, Zahra (2021-11-01). \"RETRACTED ARTICLE: The modulatory potential of herbalanti",
+     "term": "retracted"
+    },
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "https://retractionwatch.com/2024/08/22/sleuths-spur-cleanup-at-journal-with-nearly-140-retractions-and-counting/",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mweA",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[5]/span[2]/span[2]/a[5]/i",
+      "quote": "Retraction Watch",
+      "subtree_sha256": "8d635bd73663d4b2996e812d5f3fb552b60963047cf77277646042c0dbb38624"
+     },
+     "matched": "Retraction",
+     "part": "text",
+     "snippet": " doi:10.1007/s11356-024-35004-z, PMID 39289267, Retraction Watch)",
+     "term": "retraction"
+    }
+   ],
+   "reason": "a warning term in the region's visible text",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-5",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[5]",
+     "quote": "↑ Omidifar, Navid; Nili-Ahmadabadi, Amir; Nakhostin-Ansari, Amin; Lankarani, Kamran Bagheri; Moghadami, Mohsen; Mousavi, Seyyed Mojtaba; Hashemi, Seyyed Alireza",
+     "subtree_sha256": "6a71795adee4eae9b72e702be4f42564119f35ba1575bf3eee701428bf4333f9"
+    },
+    "region_id": "cite_note-5"
+   },
+   "source_marker_templates": [
+    {
+     "cp_end": 4389,
+     "cp_start": 4181,
+     "template": "Retracted"
+    }
+   ],
+   "state": "recognized_warning_text"
+  },
+  {
+   "browser_visibility": "not_evaluated",
+   "container_id": "ct-00006",
+   "evidence": [
+    {
+     "kind": "ambiguous",
+     "link": {
+      "href": "https://link.springer.com/article/10.1007/s11356-024-35004-z",
+      "red": false,
+      "target": null,
+      "target_basis": "none"
+     },
+     "locator": {
+      "element_id": "mwfw",
+      "id_unique": true,
+      "path": "/html/body/section[3]/div/div/ol/li[6]/span[2]/cite/span[1]/a",
+      "quote": "\"Retraction Note: The modulatory potential of herbal antioxidants against oxidative stress and heavy metal pollution: plants against environmental oxidative str",
+      "subtree_sha256": "b37135c281037111d4597c1a1c68ff135de0cff527170babfc435383637b3816"
+     },
+     "matched": "Retraction",
+     "part": "cite_text",
+     "snippet": "pour, Mansoureh; Ebrahimi, Zahra (2024-10-01). \"Retraction Note: The modulatory potential of herbal antiox",
+     "term": "retraction"
+    }
+   ],
+   "reason": "only ambiguous wording, a warning term inside the citation itself, in a title prefix or quotation, with other attached letters, or in text the HTML hides",
+   "region": {
+    "hidden_elements": 0,
+    "locator": {
+     "element_id": "cite_note-6",
+     "id_unique": true,
+     "path": "/html/body/section[3]/div/div/ol/li[6]",
+     "quote": "↑ Omidifar, Navid; Nili-Ahmadabadi, Amir; Nakhostin-Ansari, Amin; Lankarani, Kamran Bagheri; Moghadami, Mohsen; Mousavi, Seyyed Mojtaba; Hashemi, Seyyed Alireza",
+     "subtree_sha256": "e95825b6ad8d3e041cafc46783a246b52b97fc06eaac0a74d231b6099d050dbf"
+    },
+    "region_id": "cite_note-6"
+   },
+   "source_marker_templates": [],
+   "state": "ambiguous_text"
+  }
+ ],
+ "render_only": {
+  "identifiers": [],
+  "limit_warnings": [],
+  "uses": []
+ },
+ "schema": "urn:citerift:schema:wiki:v1:extraction",
+ "schema_version": "1.2.0",
+ "status": "complete",
+ "units": [
+  {
+   "container_id": "ct-00001",
+   "definition_id": "ct-00001/d1",
+   "duplicate_params": [],
+   "id": "un-00001",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "region_only",
+    "template_omitted": null,
+    "transclusion": null
+   },
+   "source": {
+    "byte_end": 1105,
+    "byte_start": 857,
+    "cp_end": 1087,
+    "cp_start": 839
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "cite web"
+   }
+  },
+  {
+   "container_id": "ct-00002",
+   "definition_id": "ct-00002/d1",
+   "duplicate_params": [],
+   "id": "un-00002",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt13"
+   },
+   "source": {
+    "byte_end": 1945,
+    "byte_start": 1635,
+    "cp_end": 1909,
+    "cp_start": 1599
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00003",
+   "definition_id": "ct-00003/d1",
+   "duplicate_params": [],
+   "id": "un-00003",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt16"
+   },
+   "source": {
+    "byte_end": 2997,
+    "byte_start": 2697,
+    "cp_end": 2955,
+    "cp_start": 2655
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00004",
+   "definition_id": "ct-00004/d1",
+   "duplicate_params": [],
+   "id": "un-00004",
+   "identifier_ids": [],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt19"
+   },
+   "source": {
+    "byte_end": 3258,
+    "byte_start": 3102,
+    "cp_end": 3216,
+    "cp_start": 3060
+   },
+   "template": {
+    "canonical": "Cite web",
+    "family": "web",
+    "kind": "citation",
+    "name": "Cite web"
+   }
+  },
+  {
+   "container_id": "ct-00005",
+   "definition_id": "ct-00005/d1",
+   "duplicate_params": [],
+   "id": "un-00005",
+   "identifier_ids": [
+    "id-00001",
+    "id-00002"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt22"
+   },
+   "source": {
+    "byte_end": 4225,
+    "byte_start": 3382,
+    "cp_end": 4181,
+    "cp_start": 3340
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "Cite journal"
+   }
+  },
+  {
+   "container_id": "ct-00006",
+   "definition_id": "ct-00006/d1",
+   "duplicate_params": [],
+   "id": "un-00006",
+   "identifier_ids": [
+    "id-00005"
+   ],
+   "kind": "citation_template",
+   "parent_unit": null,
+   "render": {
+    "state": "matched",
+    "template_omitted": null,
+    "transclusion": "#mwt28"
+   },
+   "source": {
+    "byte_end": 5560,
+    "byte_start": 4740,
+    "cp_end": 5516,
+    "cp_start": 4696
+   },
+   "template": {
+    "canonical": "Cite journal",
+    "family": "journal",
+    "kind": "citation",
+    "name": "Cite journal"
+   }
+  }
+ ],
+ "uses": [
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00001",
+   "group": "",
+   "id": "us-00001",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "single_use_in_template_output",
+    "locator": {
+     "element_id": "cite_ref-1",
+     "id_unique": true,
+     "path": "/html/body/section[1]/table/tbody/tr[13]/td/sup",
+     "quote": "[1]",
+     "subtree_sha256": "94f442b8d68e6602ca94a34a0aa640d78c883d66d2e57edf354587fdcf42b0c6"
+    },
+    "state": "matched",
+    "target_note": "cite_note-1"
+   },
+   "source": {
+    "byte_end": 1111,
+    "byte_start": 852,
+    "cp_end": 1093,
+    "cp_start": 834
+   },
+   "template": {
+    "canonical": "Infobox officeholder",
+    "family": null,
+    "kind": "other",
+    "name": "Infobox officeholder"
+   },
+   "zone": "template_param"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00002",
+   "group": "",
+   "id": "us-00002",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-2",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[2]/sup",
+     "quote": "[2]",
+     "subtree_sha256": "03370ecaba2017c36afd8aa92f7dc4296d800ab43c4ef5f4b451ec871edff805"
+    },
+    "state": "matched",
+    "target_note": "cite_note-2"
+   },
+   "source": {
+    "byte_end": 1951,
+    "byte_start": 1630,
+    "cp_end": 1915,
+    "cp_start": 1594
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00003",
+   "group": "",
+   "id": "us-00003",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-3",
+     "id_unique": true,
+     "path": "/html/body/section[1]/p[3]/sup",
+     "quote": "[3]",
+     "subtree_sha256": "b1713d7006d37725faeb00f2e0cedb53f68005b0366a53778484fbf8f1ea4f1e"
+    },
+    "state": "matched",
+    "target_note": "cite_note-3"
+   },
+   "source": {
+    "byte_end": 3003,
+    "byte_start": 2692,
+    "cp_end": 2961,
+    "cp_start": 2650
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00004",
+   "group": "",
+   "id": "us-00004",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-4",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[1]",
+     "quote": "[4]",
+     "subtree_sha256": "b4e7d33f36aa1a5a7836f52d2814470fdbd93862b05f566e00a27625e77ab18c"
+    },
+    "state": "matched",
+    "target_note": "cite_note-4"
+   },
+   "source": {
+    "byte_end": 3264,
+    "byte_start": 3097,
+    "cp_end": 3222,
+    "cp_start": 3055
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00005",
+   "group": "",
+   "id": "us-00005",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-5",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[2]",
+     "quote": "[5]",
+     "subtree_sha256": "95eafa987bfbb598e4f78d6807864ed7b44bffe1a15e4e0973288ca07de43cf9"
+    },
+    "state": "matched",
+    "target_note": "cite_note-5"
+   },
+   "source": {
+    "byte_end": 4439,
+    "byte_start": 3377,
+    "cp_end": 4395,
+    "cp_start": 3335
+   },
+   "template": null,
+   "zone": "prose"
+  },
+  {
+   "binding": "anonymous",
+   "container_id": "ct-00006",
+   "group": "",
+   "id": "us-00006",
+   "name": null,
+   "origin": "tag",
+   "position": 0,
+   "render": {
+    "basis": "position_between_anchors",
+    "locator": {
+     "element_id": "cite_ref-6",
+     "id_unique": true,
+     "path": "/html/body/section[2]/p/sup[3]",
+     "quote": "[6]",
+     "subtree_sha256": "c7bbef05289c30a918d4c860a95a3a372542fb5a0f1301c79ff915e239e2f505"
+    },
+    "state": "matched",
+    "target_note": "cite_note-6"
+   },
+   "source": {
+    "byte_end": 5566,
+    "byte_start": 4735,
+    "cp_end": 5522,
+    "cp_start": 4691
+   },
+   "template": null,
+   "zone": "prose"
+  }
+ ]
+}

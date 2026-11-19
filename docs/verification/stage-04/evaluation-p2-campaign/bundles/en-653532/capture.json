@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 274,
+   "body_sha256": "9944644c9716c0c90b63ff5ae5f28923a7b56adaa62772c34e7f40df9bafd570",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.337,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": "25",
+   "retry_after_s": 25.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:55:35.226756Z",
+   "status": 429,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=653532",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 12626,
+   "body_sha256": "ef7408386f2ad50784e23a4894ea930541fdb66e9ad0872ca3bb790a55d4cb1a",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.391,
+   "number": 2,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:56:00.564141Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=653532",
+   "wire_bytes": 5298
+  },
+  {
+   "body_bytes": 70668,
+   "body_sha256": "31c9591b80be34beed48fc83e3610f1927f1b040e2dd94cfd3bfcf37e45b7425",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.464,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:56:10.955394Z",
+   "status": 200,
+   "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385298451/html",
+   "wire_bytes": 13413
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "9944644c9716c0c90b63ff5ae5f28923a7b56adaa62772c34e7f40df9bafd570"
+ ],
+ "finished_at": "2026-11-19T13:56:11.419550Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "en.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 653532,
+  "parent_revision_id": 1370020709,
+  "redirect_followed": null,
+  "revision_id": 1385298451,
+  "revision_timestamp": "2026-11-12T17:55:02Z",
+  "sha1": "7c48c0454fe67c0052077e0a4e0f3c1e0aa2a0c5",
+  "size": 11977,
+  "title": "Retracted article on dopaminergic neurotoxicity of MDMA",
+  "wiki": "en"
+ },
+ "render": {
+  "artifact": "31c9591b80be34beed48fc83e3610f1927f1b040e2dd94cfd3bfcf37e45b7425",
+  "bytes": 70668,
+  "checks": {
+   "document_revision_id": "1385298451",
+   "header_revision_id": "1385298451",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "653532",
+   "render_id": "3ccb0b7f-e2f5-11f1-8d84-0b33d83f0817",
+   "revision_sha1": "7c48c0454fe67c0052077e0a4e0f3c1e0aa2a0c5",
+   "revision_sha1_base36": "ein1hzaagro65pusndt4ycuao1u1kn9"
+  },
+  "headers": {
+   "content-language": "en",
+   "content-revision-id": "1385298451",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:56:11 GMT",
+   "etag": "W/\"1385298451/3ccb0b7f-e2f5-11f1-8d84-0b33d83f0817/view\"",
+   "last-modified": "Tue, 17 Nov 2026 19:25:21 GMT"
+  },
+  "state": "captured",
+  "url": "https://en.wikipedia.org/w/rest.php/v1/revision/1385298451/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 653532,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "en"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "8d47f9378510d632d642f724125a1ec43157031aca0e0d732e2e038bcd523d53",
+  "bytes": 11977,
+  "response_artifact": "ef7408386f2ad50784e23a4894ea930541fdb66e9ad0872ca3bb790a55d4cb1a",
+  "url": "https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=653532"
+ },
+ "started_at": "2026-11-19T13:55:35.225230Z",
+ "status": "complete"
+}

@@ -1,0 +1,116 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 10787,
+   "body_sha256": "7739a5f9097aab135ea5a825555817a49999bdb70034ce81513b48f961b8e39f",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.456,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:37:11.036359Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4540384",
+   "wire_bytes": 4073
+  },
+  {
+   "body_bytes": 312713,
+   "body_sha256": "c429457e050c29d61d255bd24c7e22e5f3e2c5c6269f85e592da404cc71ae3ae",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.438,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:37:21.493208Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76525420/html",
+   "wire_bytes": 51681
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [],
+ "finished_at": "2026-11-19T13:37:21.932137Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 4540384,
+  "parent_revision_id": 75962365,
+  "redirect_followed": null,
+  "revision_id": 76525420,
+  "revision_timestamp": "2026-09-11T16:48:02Z",
+  "sha1": "c546d0522c7aed07dc27a3feb1a9d2e02cac9aa2",
+  "size": 10237,
+  "title": "SMARCC2",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "c429457e050c29d61d255bd24c7e22e5f3e2c5c6269f85e592da404cc71ae3ae",
+  "bytes": 312713,
+  "checks": {
+   "document_revision_id": "76525420",
+   "header_revision_id": "76525420",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "4540384",
+   "render_id": "749bbd50-dac4-11f1-9102-1bc2d3795d49",
+   "revision_sha1": "c546d0522c7aed07dc27a3feb1a9d2e02cac9aa2",
+   "revision_sha1_base36": "n1l5ytpngdfhhxcttipv9qwm1zzvr8i"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "76525420",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:37:21 GMT",
+   "etag": "W/\"76525420/749bbd50-dac4-11f1-9102-1bc2d3795d49/view\"",
+   "last-modified": "Sat, 07 Nov 2026 12:08:47 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/76525420/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 4540384,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "172740d351afec4003ea1748fb28666c0008980934514eecb01f14c7827cea69",
+  "bytes": 10237,
+  "response_artifact": "7739a5f9097aab135ea5a825555817a49999bdb70034ce81513b48f961b8e39f",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=4540384"
+ },
+ "started_at": "2026-11-19T13:37:03.961278Z",
+ "status": "complete"
+}

@@ -1,0 +1,136 @@
+{
+ "attempts": [
+  {
+   "body_bytes": 8496,
+   "body_sha256": "cc397e1625c17d948ef5864a4b10b1537f8a835a46d23c900053586b4da4836a",
+   "code": null,
+   "content_type": "application/json; charset=utf-8",
+   "detail": "",
+   "duration_s": 0.447,
+   "number": 1,
+   "operation": "source",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:29:12.086230Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7250702",
+   "wire_bytes": 3124
+  },
+  {
+   "body_bytes": 274,
+   "body_sha256": "c8eaac54e39f3f9dc0362f6c41840dd7c951d3b88044d2229c4853365794484c",
+   "code": "HTTP_RATE_LIMITED",
+   "content_type": "text/plain",
+   "detail": "",
+   "duration_s": 0.379,
+   "number": 1,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": "38",
+   "retry_after_s": 38.0,
+   "retryable": true,
+   "started_at": "2026-11-19T13:29:22.534161Z",
+   "status": 429,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77425925/html",
+   "wire_bytes": 274
+  },
+  {
+   "body_bytes": 135228,
+   "body_sha256": "058962cd242314aec287600418511d128f0c188e3cd0e246edf86a88b9fc4f84",
+   "code": null,
+   "content_type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "detail": "",
+   "duration_s": 0.528,
+   "number": 2,
+   "operation": "render",
+   "retry_after_problem": null,
+   "retry_after_raw": null,
+   "retry_after_s": null,
+   "retryable": false,
+   "started_at": "2026-11-19T13:30:00.913838Z",
+   "status": 200,
+   "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77425925/html",
+   "wire_bytes": 22723
+  }
+ ],
+ "client": {
+  "name": "citerift-wiki",
+  "policy": {
+   "backoff_s": 10.0,
+   "deadline_s": 180.0,
+   "max_attempts": 3,
+   "max_body_bytes": 33554432,
+   "max_wire_bytes": 33554432,
+   "maxlag_s": 5,
+   "min_interval_s": 10.0,
+   "op_timeout_s": 30.0,
+   "user_agent": "CITERIFT-wiki/1.0 (https://github.com/ImanOthman-eng/citerift; read-only research; contact via GitHub issues)"
+  },
+  "version": "1.2.0"
+ },
+ "failure_artifacts": [
+  "c8eaac54e39f3f9dc0362f6c41840dd7c951d3b88044d2229c4853365794484c"
+ ],
+ "finished_at": "2026-11-19T13:30:01.442324Z",
+ "issues": [],
+ "not_before": null,
+ "page": {
+  "content_model": "wikitext",
+  "host": "ar.wikipedia.org",
+  "is_latest": true,
+  "namespace": 0,
+  "page_id": 7250702,
+  "parent_revision_id": 75295487,
+  "redirect_followed": null,
+  "revision_id": 77425925,
+  "revision_timestamp": "2026-11-12T18:48:28Z",
+  "sha1": "6074d0a37fb7175ce6849e8a807f48df97925269",
+  "size": 7930,
+  "title": "فيروس كورونا ألفا",
+  "wiki": "ar"
+ },
+ "render": {
+  "artifact": "058962cd242314aec287600418511d128f0c188e3cd0e246edf86a88b9fc4f84",
+  "bytes": 135228,
+  "checks": {
+   "document_revision_id": "77425925",
+   "header_revision_id": "77425925",
+   "html_version": "2.8.0",
+   "namespace": "0",
+   "page_id": "7250702",
+   "render_id": "a8fade60-dec9-11f1-a3de-23989c982cce",
+   "revision_sha1": "6074d0a37fb7175ce6849e8a807f48df97925269",
+   "revision_sha1_base36": "b9m97puzhlshbxy66jk82a0pomvb7mx"
+  },
+  "headers": {
+   "content-language": "ar",
+   "content-revision-id": "77425925",
+   "content-type": "text/html; charset=utf-8; profile=\"https://www.mediawiki.org/wiki/Specs/HTML/2.8.0\"",
+   "date": "Thu, 19 Nov 2026 13:30:01 GMT",
+   "etag": "W/\"77425925/a8fade60-dec9-11f1-a3de-23989c982cce/view\"",
+   "last-modified": "Thu, 12 Nov 2026 18:48:30 GMT"
+  },
+  "state": "captured",
+  "url": "https://ar.wikipedia.org/w/rest.php/v1/revision/77425925/html"
+ },
+ "request": {
+  "follow_redirect": false,
+  "page_id": 7250702,
+  "render": true,
+  "revision_id": null,
+  "title": null,
+  "wiki": "ar"
+ },
+ "schema": "urn:citerift:schema:wiki:v1:capture",
+ "schema_version": "1.0.0",
+ "source": {
+  "artifact": "1f9eaae48bcd2ea27da9fc0b3eb19176439403ccb33ae163b7c697b57c00af6d",
+  "bytes": 7930,
+  "response_artifact": "cc397e1625c17d948ef5864a4b10b1537f8a835a46d23c900053586b4da4836a",
+  "url": "https://ar.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=revisions%7Cinfo&rvprop=ids%7Ctimestamp%7Cflags%7Csize%7Csha1%7Ccontentmodel%7Ccontent&rvslots=main&maxlag=5&pageids=7250702"
+ },
+ "started_at": "2026-11-19T13:29:04.861139Z",
+ "status": "complete"
+}
