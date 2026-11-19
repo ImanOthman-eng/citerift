@@ -691,13 +691,13 @@ def test_the_historical_frozen_check_passes_on_the_historical_frozen_tree(
 
 @pytest.mark.unit
 def test_the_current_engine_is_not_the_superseded_frozen_engine() -> None:
-    """D-074 (6): the current dt-2 engine has a different identity and must not satisfy the old guard."""
+    """D-074 (6): the current engine (dt-3 since D-083) has a different identity and must not satisfy the old guard."""
     import s13_run as RN
 
     _require_history()
     with pytest.raises(SystemExit, match="the engine is not the frozen one"):
         RN.frozen_check(PARAMS)
-    assert dt1.TABLE_VERSION == "dt-2"
+    assert dt1.TABLE_VERSION == "dt-3"
     frozen_dt1 = _git("show", f"{FROZEN_ENGINE}:src/citerift/investigation/dt1.py")
     assert 'TABLE_VERSION = "dt-1"' in frozen_dt1
 

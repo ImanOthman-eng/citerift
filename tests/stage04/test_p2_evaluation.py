@@ -112,14 +112,66 @@ def test_p2_keeps_the_historical_gates_allocation_expansion_and_retrieval() -> N
 # ------------------------------------------------------------------------------------------------ engine identity
 
 
-@pytest.mark.unit
-def test_engine_check_accepts_the_frozen_freeze2_engine() -> None:
+# Owner decision on the final corrective cycle (D-083 card, "Amend both, D-074 style"): the working tree is no longer
+# the freeze-2 engine (dt-3 replaced it), so the frozen-engine checks are proved in their historical context. P2's own
+# tools at the P2 commit run, as a ``python -I`` subprocess, in a worktree of that commit with its own ``src`` first on
+# the path. P2, its files, its runs and its scores are not changed; the P2 bytes of this file are proved from git.
+
+P2_COMMIT = "10cc9d8267942d625d0d32a4b4b72101155c0d06"
+P2_DIGEST = "5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a"
+MANIFEST_REL = "docs/verification/stage-04/evaluation-p2/PREREGISTRATION_MANIFEST.json"
+THIS_TEST = "tests/stage04/test_p2_evaluation.py"
+HISTORICAL_PROBE = """
+import json, sys
+from pathlib import Path
+wt = Path.cwd()
+sys.path[:0] = [str(wt / "src"), str(wt / "docs/verification/stage-04/evaluation-p2/tools")]
+import citerift, p2_common as C, p2_manifest as MF, p2_run as RN
+assert Path(citerift.__file__).resolve().is_relative_to(wt.resolve()), citerift.__file__
+out = {"engine_check": C.engine_check(), "frozen_check": RN.frozen_check(C.read_json(C.PARAMETERS))}
+out["manifest_equal"] = MF.build() == C.read_json(MF.MANIFEST)
+print(json.dumps(out))
+"""
+
+
+@pytest.fixture(scope="module")
+def p2_worktree(tmp_path_factory: pytest.TempPathFactory) -> Any:
+    """A worktree at the P2 commit holding what the P2 engine and manifest checks read."""
     _require_history()
-    res = C.engine_check(PARAMS)
-    assert res["content_commit"] == FROZEN and res["tree"] == FROZEN_TREE
-    assert res["freeze_manifest_digest"] == FREEZE_DIGEST
-    assert res["identity"]["table_version"] == dt1.TABLE_VERSION == "dt-2"
-    assert res["identity"]["package_version"] == __version__
+    wt = tmp_path_factory.mktemp("p2") / "wt"
+    paths = [
+        ".gitignore",
+        *PARAMS["frozen_engine"]["checked_paths"],
+        "docs/verification/stage-04/evaluation-p2",
+        *MF.EXTERNAL,
+    ]
+    _git("worktree", "add", "--no-checkout", "--detach", str(wt), P2_COMMIT)
+    try:
+        subprocess.run(["git", "reset", "-q"], cwd=wt, check=True)
+        subprocess.run(["git", "checkout", "--", *paths], cwd=wt, check=True)
+        yield wt
+    finally:
+        _git("worktree", "remove", "--force", str(wt))
+
+
+def _historical(wt: Path) -> subprocess.CompletedProcess[str]:
+    cmd = [sys.executable, "-I", "-B", "-c", HISTORICAL_PROBE]  # -B: no bytecode written into the checked tree
+    return subprocess.run(cmd, cwd=wt, capture_output=True, text=True, check=False)
+
+
+@pytest.mark.unit
+def test_engine_check_accepts_the_frozen_freeze2_engine(p2_worktree: Path) -> None:
+    """P2's engine check and runner guard, at the P2 commit, accept the freeze-2 engine there."""
+    res = _historical(p2_worktree)
+    assert res.returncode == 0, res.stderr[-2000:]
+    out = json.loads(res.stdout)
+    for check in ("engine_check", "frozen_check"):
+        got = out[check]
+        assert got["content_commit"] == FROZEN and got["tree"] == FROZEN_TREE, check
+        assert got["freeze_manifest_digest"] == FREEZE_DIGEST, check
+        assert got["identity"] == PARAMS["frozen_engine"]["identity"], check
+        assert got["head"] == P2_COMMIT, check
+    assert out["manifest_equal"] is True
 
 
 def _mutated(path: tuple[str, ...], value: Any) -> dict[str, Any]:
@@ -155,18 +207,26 @@ def test_engine_check_refuses_any_scientific_engine_mismatch(path: tuple[str, ..
 
 
 @pytest.mark.unit
-def test_engine_check_refuses_a_changed_engine_tree(monkeypatch: pytest.MonkeyPatch) -> None:
-    _require_history()
-    real = C.git
+def test_engine_check_refuses_a_changed_engine_tree(p2_worktree: Path) -> None:
+    """At the P2 commit, one uncommitted change to the engine makes P2's own check refuse it."""
+    target = p2_worktree / "src/citerift/investigation/dt1.py"
+    original = target.read_bytes()
+    try:
+        target.write_bytes(original + b"\n")
+        res = _historical(p2_worktree)
+    finally:
+        target.write_bytes(original)
+    assert res.returncode != 0
+    assert "the engine is not the frozen one" in res.stderr
 
-    def fake(*args: str) -> str:
-        if args[:1] == ("rev-parse",) and args[1].startswith("HEAD:src"):
-            return "0" * 40
-        return real(*args)
 
-    monkeypatch.setattr(C, "git", fake)
-    with pytest.raises(C.EngineMismatch, match="not the frozen one"):
+@pytest.mark.unit
+def test_the_current_engine_is_not_the_freeze2_engine() -> None:
+    """The working tree runs the dt-3 engine; P2's checks refuse it before anything runs."""
+    with pytest.raises(C.EngineMismatch, match="identity"):
         C.engine_check(PARAMS)
+    assert dt1.TABLE_VERSION == "dt-3" != PARAMS["frozen_engine"]["identity"]["table_version"]
+    assert 'TABLE_VERSION = "dt-2"' in _git("show", f"{FROZEN}:src/citerift/investigation/dt1.py")
 
 
 @pytest.mark.unit
@@ -534,10 +594,11 @@ def test_runner_refuses_another_engine_before_any_article(tmp_path: Path) -> Non
         RN.frozen_check(_mutated(("frozen_engine", "content_commit"), SUPERSEDED))
     with pytest.raises(RN.RunnerRefused):
         RN.frozen_check(_mutated(("frozen_engine", "identity", "table_version"), "dt-1"))
-    assert RN.frozen_check(PARAMS)["content_commit"] == FROZEN
+    with pytest.raises(RN.RunnerRefused):
+        RN.frozen_check(PARAMS)  # the working tree is the dt-3 engine; the freeze-2 run guard refuses it
     with pytest.raises(RN.RunnerRefused, match="version"):
-        RN.engine_identity("0.2.0")
-    assert RN.engine_identity(__version__)["engine_version"] == "0.3.0"
+        RN.engine_identity("0.3.0")
+    assert RN.engine_identity(__version__)["engine_version"] == __version__ == "0.4.0"
 
 
 @pytest.mark.unit
@@ -546,8 +607,19 @@ def test_runner_refuses_another_preregistration(tmp_path: Path) -> None:
     c.mkdir()
     C.write_json(c / "SEED.json", {"prereg_digest": HISTORICAL_P})
     C.write_json(c / "LOCK.json", {"packets": {}})
-    with pytest.raises(RN.RunnerRefused, match="another pre-registration"):
+    # In the working tree this file differs from its P2 bytes, so the runner refuses before reading the seed.
+    with pytest.raises(
+        RN.RunnerRefused, match=r"pre-registered files changed: \['tests/stage04/test_p2_evaluation.py'\]"
+    ):
         RN.prereg_check(c, RN.PREREG_MANIFEST)
+    # The seed check itself, on a copy of the manifest naming this file's current bytes.
+    manifest = C.read_json(RN.PREREG_MANIFEST)
+    for f in manifest["files"]:
+        if f["path"] == THIS_TEST:
+            f["sha256"] = C.file_sha256(REPO / THIS_TEST)
+    C.write_json(tmp_path / "manifest.json", manifest)
+    with pytest.raises(RN.RunnerRefused, match="another pre-registration"):
+        RN.prereg_check(c, tmp_path / "manifest.json")
 
 
 # ------------------------------------------------------------------------------------------------ dev run, manifest
@@ -572,8 +644,22 @@ def test_dev_run_ran_the_dt2_engine_with_the_committed_tools() -> None:
 
 @pytest.mark.unit
 def test_p2_manifest_matches_the_files_and_names_the_identities() -> None:
+    """The manifest in the tree is the one of the P2 commit, has digest P2, and every file it lists hashes, at the P2
+    commit, to its recorded SHA-256; in the tree only this test file differs (its P2 bytes are proved here, and the
+    manifest build at the P2 commit equals the record, see ``test_engine_check_accepts_the_frozen_freeze2_engine``)."""
+    import hashlib
+
+    _require_history()
     recorded = C.read_json(P2 / "PREREGISTRATION_MANIFEST.json")
-    assert MF.build() == recorded
+    assert (REPO / MANIFEST_REL).read_text(encoding="utf-8") == _git("show", f"{P2_COMMIT}:{MANIFEST_REL}")
+    assert C.digest(recorded) == P2_DIGEST
+    for f in recorded["files"]:
+        blob = subprocess.run(
+            ["git", "show", f"{P2_COMMIT}:{f['path']}"], cwd=REPO, capture_output=True, check=True
+        ).stdout
+        assert hashlib.sha256(blob).hexdigest() == f["sha256"], f["path"]
+    changed = sorted(f["path"] for f in recorded["files"] if C.file_sha256(REPO / f["path"]) != f["sha256"])
+    assert changed == [THIS_TEST]
     assert recorded["frozen_engine"] == PARAMS["frozen_engine"]
     assert recorded["exposure"]["manifest_sha256"] == EXPOSURE_SHA
     assert recorded["historical_p"]["digest"] == HISTORICAL_P
