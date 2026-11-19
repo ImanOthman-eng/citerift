@@ -1807,3 +1807,82 @@ round at **34096937**, the round that the registered tool `p2_draw.py seed --acc
 computes from the sent-at timestamp (round time exactly 3600 s after it). The decision was made at 12:18:57Z, before
 either round existed, so it could not depend on the randomness. No other round is used; the mirror and agreement
 protocol of P2 4.2 applies unchanged.
+
+## D-079 — P2 evaluation evidence accepted; gate 04-I remains NOT PASSED
+- Status: accepted
+- Topic: stage-04-p2-evidence-accepted
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-p2-campaign/REPORT.md; docs/verification/stage-04/evaluation-p2-campaign/SCORES.json; docs/verification/stage-04/evaluation-p2-campaign/PROTOCOL_LOG.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4` (2026-11-19T19:04:39Z). The owner accepts the P2
+campaign evidence at the campaign/report revision `2b45931` as a faithful execution of the accepted P2 protocol. The
+P2 campaign result is final and immutable. Not permitted: changing P2 or G2; adding articles after the result;
+expanding to n ≥ 46; redrawing; relabelling; readjudicating the failing unit; rerunning predictions; modifying
+`SCORES.json`; combining the P and P2 denominators; claiming that 04-I passed.
+
+Official outcome. Arabic: G1 PASS (42 positive units); G2 PASS (0/42 false attachments, one-sided 95 % upper bound
+0.0688); G3 PASS (0 hazards); G4 PASS (0 structural violations); G5 PASS (766 negatives). English: G1 PASS (44);
+G2 FAIL (1/44, upper bound 0.1033 > 0.10); G3 PASS (0); G4 PASS (0); G5 PASS (1,717). **Gate 04-I = NOT PASSED.**
+
+## D-080 — Failing English unit is a new observed limitation, not grounds for post-hoc correction
+- Status: accepted
+- Topic: stage-04-identifier-vs-bibliographic-object
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-p2-campaign/REPORT.md; docs/verification/stage-04/evaluation-p2-campaign/LOCK.json
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4`. The locked result for `en-27958530` /
+`un-00004` (item `en-1373069395-un-00004`) is retained. The citation carries DOI `10.1186/1743-422X-7-169` and PMID
+`20663162`, the original-paper identifiers of Retraction Watch record 1873, but its text has author Robert Garry and a
+title ending "– Comments" rather than the original paper's authors and title. The frozen engine attached
+`RETRACTED_WORK_CITED`. The locked labels are authoritative (A: record `cannot_tell`; B: `unrelated`; ADJ:
+`unrelated`), so the scored false attachment stands; the annotation is not reinterpreted after G2 was observed.
+
+Limitation classification: **identifier-versus-bibliographic-object conflict not modeled by Stage 04 dt-2.** The
+Stage 04 detector establishes publication identity principally through DOI/PMID and checked-source semantics; it has
+no general production rule proving that title/author/journal text is consistent with the publication object those
+identifiers name before a positive attachment. No "Comments" string, Robert Garry, Virology Journal, DOI-specific or
+title-suffix exception is added. A defensible correction would need a separately designed bibliographic-object
+consistency layer, adversarial evaluation, a new freeze and a new prospective holdout; that work is not authorized in
+this cycle.
+
+## D-081 — No third corrective or evaluation cycle for Stage 04 now
+- Status: accepted
+- Topic: stage-04-no-third-cycle
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-campaign/REPORT.md; docs/verification/stage-04/evaluation-p2-campaign/REPORT.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4`. No dt-3 is created to make 04-I pass, no P3, no
+further holdout draw. Both prospective evaluations stay in the permanent record: (1) dt-1 / P: 04-I NOT PASSED;
+(2) dt-2 / P2: 04-I NOT PASSED, Arabic passing every gate and English failing only G2. The second result materially
+improves the evidence but does not supersede the registered gate. The improvement is reported accurately (English
+precision 43/44 = 0.977; Arabic 42/42 = 1.000; zero hazards and zero structural violations in both languages; the
+naive baseline substantially worse; a measurable recall loss from the strict role-collision rule) and never described
+as proof that the gate passed.
+
+## D-082 — Prediction-wrapper deviation accepted as operational, not result-changing
+- Status: accepted
+- Topic: stage-04-p2-wrapper-deviation
+- Date: 2026-11-19
+- Stage: 04
+- Supersedes: none
+- Evidence: docs/verification/stage-04/evaluation-p2-campaign/PROTOCOL_LOG.md; docs/verification/stage-04/evaluation-p2-campaign/run/RUN.json
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yPCrAWa1AotYwE4STJgegth4`. Protocol deviation 5 of the P2 report is retained
+exactly: the session wrapper's two-hour process-tree limit was avoided by terminating only the `uv` launcher after two
+articles, leaving the running campaign runner alive. On the retained evidence the runner was not interrupted, was
+invoked once, made 0 article resumes, wrote `RUN.json` once, all 100 investigations verified, all 100 exports exist
+and the frozen engine identity was unchanged, so the deviation does not invalidate the scores. It stays a documented
+operational deviation and is never hidden. The process-detachment technique must not be reproduced in a future
+scientific campaign: a future long run is launched under infrastructure whose declared lifetime exceeds the
+registered campaign duration.
+
+The same message directs a non-passing final closure audit and handoff of Stage 04 (evidence finalization, not
+scientific acceptance): no Step 15 acceptance transition, no VERIFIED_AWAITING_OWNER_ACCEPTANCE, no ACCEPTED_CLOSED,
+no Stage 05 authorization. If the governance model supports a non-accepted blocked state without changing its
+semantics, the blocker "Gate 04-I NOT PASSED under P2" is recorded; otherwise Stage 04 stays IN_PROGRESS.
