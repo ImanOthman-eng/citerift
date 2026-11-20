@@ -1,6 +1,7 @@
 """Development survey of (citation, Stage 02 event) pairs under bib-1 (owner decision D-083; read-only, descriptive).
 
-Usage: ``uv run python survey_pairs.py <Stage 02 index .sqlite> <output .json outside the repository>``
+Usage: ``uv run python survey_pairs.py <Stage 02 index .sqlite> <output .json>`` (committed as
+``../lows/survey_pairs.json``; it holds verdicts and ids, no citation or record text).
 
 Over every development bundle with a committed source artifact (the 232 Step 13 development revisions, the 80
 articles of evaluation 1 and the 100 articles of evaluation 2, all design-exposed), every citation template (any depth)
@@ -8,6 +9,7 @@ whose ``doi`` or ``pmid`` argument reaches a Stage 02 event as an original ident
 Each pair is described by the bib-1 code (``citerift.investigation.bibliographic``): authors and title verdicts, title
 relation, designation, year and the object verdict. No label, adjudication or score of either campaign is read; the
 counts set no threshold (bib-1 has none). The Stage 02 index is read only through ``citerift.retraction.query.Index``.
+The output records the provenance of ``fc_provenance`` (reviewer finding D-03).
 """
 
 from __future__ import annotations
@@ -19,6 +21,10 @@ from pathlib import Path
 from typing import Any
 
 import mwparserfromhell
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from fc_provenance import finish, start
 
 from citerift.investigation import bibliographic as B
 from citerift.retraction.query import Index
@@ -37,10 +43,9 @@ def bundles() -> list[tuple[str, Path]]:
 
 
 def main() -> None:
+    prov = start(Path(__file__), Path(sys.argv[1]))
     index = Index(Path(sys.argv[1]))
     target = Path(sys.argv[2]).resolve()
-    if target.is_relative_to(REPO):
-        raise SystemExit("write the survey outside the repository")
     pairs: list[dict[str, Any]] = []
     skipped: list[str] = []
     for tag, bundle in bundles():
@@ -79,7 +84,9 @@ def main() -> None:
         "object": dict(Counter(p["object"] for p in pairs)),
         "material_conflicts": [p for p in pairs if p["object"] == B.MATERIAL_CONFLICT],
     }
-    target.write_text(json.dumps({"summary": summary, "pairs": pairs}, indent=1, ensure_ascii=False) + "\n")
+    finish(prov, Path(__file__), Path(sys.argv[1]))
+    doc = {"summary": summary, "pairs": pairs, "provenance": prov}
+    target.write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in summary.items() if k != "material_conflicts"}, indent=1, ensure_ascii=False))
     for p in summary["material_conflicts"]:
         print("MATERIAL_CONFLICT", p["set"], p["bundle"], p["event_id"], p["reasons"])

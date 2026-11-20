@@ -29,7 +29,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from fc_provenance import provenance
+from fc_provenance import finish, start
 
 from citerift.investigation import bibliographic as B
 from citerift.retraction.query import Index
@@ -52,6 +52,7 @@ def first_draft_agree(cited: list[str], record: str) -> bool:
 
 def main() -> int:
     path, target = Path(sys.argv[1]), Path(sys.argv[2])
+    prov = start(Path(__file__), path)
     with Index(path) as index:
         ids = [r[0] for r in index.conn.execute("SELECT event_id FROM event ORDER BY event_id")]
         events = {i: index.event_by_id(i) for i in ids}
@@ -87,8 +88,9 @@ def main() -> int:
         "agree_by_accident": counts,
         "designation_in_record_title": designated,
         "single_author_records": single,
-        "provenance": provenance(Path(__file__), path),
+        "provenance": prov,
     }
+    finish(prov, Path(__file__), path)
     target.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != "provenance"}, sort_keys=True))
     return 0

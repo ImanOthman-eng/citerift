@@ -9,6 +9,9 @@ same legacy-bundle substitution the tests make, and reports every leaf that diff
 shown to differ **only** in identity values, in digests derived from them, and in the order of lists sorted by such
 digests (claim ids include the table version), never in a class, rule, reason, key, disposition, question or count.
 
+The output records the provenance of ``fc_provenance`` for this tree, with the step 7 equivalence scripts in the
+checked set, and the old checkout's head, which must have no uncommitted change (reviewer finding D-03).
+
 Usage (from the repository root): ``uv run python -P docs/.../logical_view_diff.py --old <checkout of 6663314> --out F``
 """
 
@@ -29,6 +32,11 @@ SCRIPTS = {
     "d055": "docs/verification/stage-04/review/step7/d055/equivalence.py",
 }
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+sys.path.insert(0, str(HERE.parent))
+
+from fc_provenance import finish, start  # noqa: E402
+
+EXTRA = ("docs/verification/stage-04/review/step7",)
 
 
 def child(root: Path, which: str) -> dict[str, Any]:
@@ -93,17 +101,25 @@ def normal(x: Any) -> Any:
     return x
 
 
+def old_head(old: Path) -> str:
+    """The commit of the old checkout, which must have no uncommitted change outside caches."""
+
+    def git(*args: str) -> str:
+        return subprocess.run(["git", "-C", str(old), *args], capture_output=True, text=True, check=True).stdout  # noqa: S603, S607
+
+    dirty = [x for x in git("status", "--porcelain", "--untracked-files=all").splitlines() if "__pycache__" not in x]
+    if dirty:
+        raise SystemExit(f"the old checkout {old} has uncommitted changes: {dirty[:5]}")
+    return git("rev-parse", "HEAD").strip()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--old", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args()
-    head = subprocess.run(  # noqa: S603 - fixed argv
-        ["git", "-C", str(a.old), "rev-parse", "HEAD"],  # noqa: S607
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.strip()
+    prov = start(Path(__file__), extra=EXTRA)
+    head = old_head(a.old)
     report: dict[str, Any] = {"old_root_head": head, "scripts": {}}
     other = 0
     for which in SCRIPTS:
@@ -136,6 +152,10 @@ def main() -> int:
             other += 0 if rows[name]["counts_equal"] else 1
         report["scripts"][which] = rows
     report["only_identity_digests_and_order"] = other == 0
+    finish(prov, Path(__file__), extra=EXTRA)
+    if old_head(a.old) != head:
+        raise SystemExit("the old checkout changed while the tool ran")
+    report["provenance"] = prov
     a.out.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     print(
         json.dumps({w: {n: r["by_kind"] for n, r in rows.items()} for w, rows in report["scripts"].items()}, indent=1)

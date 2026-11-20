@@ -24,7 +24,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from fc_provenance import provenance
+from fc_provenance import finish, start
 
 from citerift.investigation import dt1
 from citerift.investigation.adapters.detector import lookup_view
@@ -53,6 +53,7 @@ def keys(path: Path) -> list[tuple[str, str]]:
 
 def main() -> int:
     path, target = Path(sys.argv[1]), Path(sys.argv[2])
+    prov = start(Path(__file__), path)
     rules: Counter[str] = Counter()
     types: Counter[str] = Counter()
     violations: list[dict[str, Any]] = []
@@ -102,8 +103,9 @@ def main() -> int:
         "exposure_bridged_through_a_notice_key": exposure,
         "exposure_keys": sorted({(x["scheme"], x["key"]) for x in exposure}),
         "table_version": dt1.TABLE_VERSION,
-        "provenance": provenance(Path(__file__), path),
+        "provenance": prov,
     }
+    finish(prov, Path(__file__), path)
     target.write_text(json.dumps(report, indent=1, sort_keys=True, default=list) + "\n", encoding="utf-8")
     print(
         json.dumps({k: v for k, v in report.items() if k != "exposure_bridged_through_a_notice_key"}, indent=1)[:4000]

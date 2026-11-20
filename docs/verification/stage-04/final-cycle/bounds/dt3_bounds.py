@@ -52,7 +52,7 @@ REPO = HERE.parents[4]
 HIST = REPO / "docs" / "verification" / "stage-04" / "review" / "step7"
 sys.path[:0] = [str(REPO / "tests" / "stage04"), str(HERE.parent)]
 
-from fc_provenance import provenance  # noqa: E402
+from fc_provenance import finish, start  # noqa: E402
 
 from citerift.investigation import batches  # noqa: E402
 from citerift.investigation.adapters.lookup import observe  # noqa: E402
@@ -247,6 +247,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, default=HERE / "bounds.json")
     args = ap.parse_args()
+    prov = start(Path(__file__))
     with tempfile.TemporaryDirectory() as d:
         lk = lookup_v3(Path(d))
     kinds = record_kinds()
@@ -277,8 +278,9 @@ def main() -> None:
         ),
         "ACQUIRE_observation": "conditional on the Step 8 representation (IF-7, see its row)",
         "total_storage": D055.total(j, b),
-        "provenance": provenance(Path(__file__)),
+        "provenance": prov,
     }
+    finish(prov, Path(__file__))
     args.out.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     summary = {
         "journal_maximal": j["maximal"]["journal_bytes"],

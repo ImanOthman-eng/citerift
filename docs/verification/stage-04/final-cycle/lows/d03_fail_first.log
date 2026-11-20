@@ -1,0 +1,23 @@
+# D-03 fail-first: tests/stage04/test_final_provenance.py before the reruns (ce5c86b + working tree, 2026-11-20T04:38:37Z)
+E       AssertionError: fail-first/decided_by_dt2_engine_6663314.json records no provenance
+E       assert False
+E        +  where False = isinstance(None, dict)
+E       AssertionError: fail-first/decided_by_dt3_engine.json records no provenance
+E       assert False
+E        +  where False = isinstance(None, dict)
+E       AssertionError: identity/LOGICAL_VIEW_DIFF.json records no provenance
+E       assert False
+E        +  where False = isinstance(None, dict)
+E       AssertionError: lows/a04_invariant_census.json records no provenance
+E       assert False
+E        +  where False = isinstance(None, dict)
+E       AssertionError: {}
+E       assert ({})
+E       KeyError: 'engine_source'
+FAILED tests/stage04/test_final_provenance.py::test_a_result_was_computed_by_committed_code_that_still_decides_as_head[fail-first/decided_by_dt2_engine_6663314.json]
+FAILED tests/stage04/test_final_provenance.py::test_a_result_was_computed_by_committed_code_that_still_decides_as_head[fail-first/decided_by_dt3_engine.json]
+FAILED tests/stage04/test_final_provenance.py::test_a_result_was_computed_by_committed_code_that_still_decides_as_head[identity/LOGICAL_VIEW_DIFF.json]
+FAILED tests/stage04/test_final_provenance.py::test_a_result_was_computed_by_committed_code_that_still_decides_as_head[lows/a04_invariant_census.json]
+FAILED tests/stage04/test_final_provenance.py::test_results_computed_from_a_stage02_index_name_one_index
+FAILED tests/stage04/test_final_provenance.py::test_the_fail_first_runs_name_their_engine_commits
+6 failed, 3 passed in 0.11s

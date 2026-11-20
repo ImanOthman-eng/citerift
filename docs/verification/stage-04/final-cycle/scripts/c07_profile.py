@@ -25,7 +25,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from fc_provenance import provenance
+from fc_provenance import finish, start
 
 from citerift.investigation import bibliographic as bib
 from citerift.investigation import dt1
@@ -112,6 +112,7 @@ def largest_keys(path: Path) -> list[tuple[str, str, int]]:
 
 def main() -> int:
     path, target = Path(sys.argv[1]), Path(sys.argv[2])
+    prov = start(Path(__file__), path)
     report: dict[str, Any] = {"repeats": REPEATS, "synthetic": [], "real": []}
     for n in SIZES:
         seconds, out = timed(synthetic(n))
@@ -137,7 +138,8 @@ def main() -> int:
             print(scheme, key, n, len(lk.events), round(seconds, 4), out.rule, flush=True)
     report["platform"] = {"python": platform.python_version(), "machine": platform.machine()}
     report["table_version"] = dt1.TABLE_VERSION
-    report["provenance"] = provenance(Path(__file__), path)
+    report["provenance"] = prov
+    finish(prov, Path(__file__), path)
     target.write_text(json.dumps(report, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     return 0
 

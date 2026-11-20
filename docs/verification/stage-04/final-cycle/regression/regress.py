@@ -54,7 +54,8 @@ sys.path.insert(0, str(S04 / "final-cycle"))
 
 import pytest  # noqa: E402
 import step8_support as S8  # noqa: E402
-from fc_provenance import provenance as fc_provenance  # noqa: E402
+from fc_provenance import finish as fc_finish  # noqa: E402
+from fc_provenance import start as fc_start  # noqa: E402
 from s13_common import file_sha256, read_json, write_json  # noqa: E402
 
 from citerift.investigation import __version__ as ENGINE_VERSION  # noqa: E402
@@ -115,10 +116,10 @@ def decision(out: Any) -> dict[str, Any]:
     return {"rule": out.rule, "class": out.cls or out.failure, "reasons": list(out.reasons)}
 
 
-def provenance(index_path: Path) -> dict[str, Any]:
+def with_tables(out: dict[str, Any]) -> dict[str, Any]:
     """The committed code and index of a shard (reviewer finding N-01: the whole scientific dependency set is checked
-    for uncommitted changes and the running tool's SHA-256 is recorded; see ``fc_provenance``)."""
-    out = fc_provenance(Path(__file__), index_path)
+    for uncommitted changes and the running tool's SHA-256 is recorded; see ``fc_provenance``; D-03: a shard refuses
+    to start from, or to finish in, a changed tree) with the two decision tables."""
     out["tables"] = {
         "reference": {"table_version": "dt-2", "commit": DT2_COMMIT, "blob": DT2_BLOB},
         "current": {"table_version": dt1.TABLE_VERSION, "engine_version": ENGINE_VERSION},
@@ -280,8 +281,9 @@ def main(argv: list[str] | None = None) -> int:
     if a.cmd == "run":
         k, n = (int(x) for x in a.shard.split("/"))
         t0 = time.perf_counter()
-        prov = provenance(a.index)
+        prov = with_tables(fc_start(Path(__file__), a.index))
         part = run_shard(a.set, a.index.resolve(), k, n)
+        fc_finish({x: y for x, y in prov.items() if x != "tables"}, Path(__file__), a.index)
         part["seconds"] = round(time.perf_counter() - t0, 1)
         part["provenance"] = prov
         write_json(a.out, part)
