@@ -317,10 +317,11 @@ def test_a_record_contradicting_its_public_event_fails_closed(field: str) -> Non
 
 
 @pytest.mark.parametrize("entity", ["&#xD800;", "&#xDFFF;", "&#55296;"])
-def test_normalize_makes_only_a_surrogate_value_absent(entity: str) -> None:
-    """Reviewer findings E-01 and F-02: a numeric entity that decodes to a lone surrogate made the unit's
-    cited_bibliography evidence uncanonicalizable, and the whole NORMALIZE step failed; now only that value is absent
-    (spec 2.1 step 4): the unit keeps the rest of its description, and every other unit of the page keeps its own."""
+def test_normalize_replaces_a_surrogate_and_keeps_the_value(entity: str) -> None:
+    """Reviewer findings E-01, F-02 and C-01: a numeric entity that decodes to a lone surrogate made the unit's
+    cited_bibliography evidence uncanonicalizable, and the whole NORMALIZE step failed; then the value was dropped,
+    which could remove a conflicting author. Now the surrogate becomes U+FFFD (spec 2.1 step 4): the value keeps its
+    words, the evidence is canonical, and every other unit of the page keeps its own description."""
     from citerift.investigation.adapters.normalize import cited_description
     from citerift.investigation.anchors import SourceArtifact
     from citerift.investigation.canonical import canon, sha256_hex
@@ -335,7 +336,7 @@ def test_normalize_makes_only_a_surrogate_value_absent(entity: str) -> None:
         return {"kind": "citation_template", "source": {"byte_start": start, "byte_end": end}}
 
     partial = cited_description(unit(0, split), source, "en")
-    assert partial is not None and partial["titles"] == [] and partial["authors"] == ["Hon"]
+    assert partial is not None and partial["titles"] == ["Retraction of X\ufffd"] and partial["authors"] == ["Hon"]
     kept = cited_description(unit(split + 1, len(data)), source, "en")
     assert kept is not None and kept["titles"] == ["Thermal drift"]
     canon({"bad": partial, "good": kept})

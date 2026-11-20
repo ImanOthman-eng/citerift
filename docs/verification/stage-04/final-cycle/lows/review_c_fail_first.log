@@ -1,0 +1,16 @@
+# Review C finding C-01 (a lone surrogate inside a compared value) and the stated residual C-12: fail-first with lows/corpus_probe.py
+# command: uv run python docs/verification/stage-04/final-cycle/lows/corpus_probe.py <src> lone-surrogate-entity surrogate-in-author-garry surrogate-in-title-garry surrogate-in-author-commenter surrogate-in-author-genuine inline-designation-joined
+## before: the engine of e3d7952 (review F fixes, before C-01)
+# engine: <repository>/src at e3d7952
+lone-surrogate-entity MISMATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "MISSING"}
+   expected {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+surrogate-in-author-garry MISMATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_TITLE_RELATED_OBJECT"], "authors": "INSUFFICIENT", "title_relation": "CONTAINED", "designation": true}
+   expected {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT", "BIB_TITLE_RELATED_OBJECT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": true}
+surrogate-in-title-garry MISMATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "MISSING", "designation": false}
+   expected {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT", "BIB_TITLE_RELATED_OBJECT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": true}
+surrogate-in-author-commenter MISMATCH {"object": "COMPATIBLE", "reasons": [], "authors": "INSUFFICIENT", "title_relation": "CONTAINED", "designation": false}
+   expected {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": false}
+surrogate-in-author-genuine MISMATCH {"object": "COMPATIBLE", "reasons": [], "authors": "INSUFFICIENT", "title_relation": "EQUAL"}
+   expected {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+inline-designation-joined MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "OVERLAP", "designation": false}
+# 5 mismatched

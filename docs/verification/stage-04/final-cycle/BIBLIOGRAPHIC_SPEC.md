@@ -44,10 +44,11 @@ Only units of kind `citation_template` have a cited object; every other unit has
    comment, argument, heading) is surrounded by one space on each side, so a removed or replaced node is a word
    boundary (reviewer finding A-01: `Time{{snd}}Comments` and `Time<br/>Comments` are two words, not `TimeComments`). Then
    every run of characters matching Python's `re` class `\s` (str patterns) becomes one space and the result is
-   stripped with `str.strip()`. An empty result is an absent value. A non-empty cleaned value that cannot be encoded as
-   UTF-8 (it holds a lone surrogate, which a numeric entity such as `&#xD800;` decodes to) is also an absent value:
-   it is not Unicode text and cannot be committed as evidence (reviewer finding E-01), and only that value is lost,
-   not the rest of the description (reviewer finding F-02).
+   stripped with `str.strip()`. An empty result is an absent value. In a non-empty cleaned value, every lone
+   surrogate code point (U+D800 to U+DFFF, which a numeric entity such as `&#xD800;` decodes to) is replaced by
+   U+FFFD. The value is then Unicode text and can be committed as evidence (reviewer finding E-01), and U+FFFD is no
+   word character, so the value keeps its words: a surrogate never removes a compared value or the description
+   (reviewer findings F-02 and C-01).
 5. Fields by parameter family, using the alias profile of the unit's wiki (section 2.2). A family's value list keeps
    the effective arguments in source order of their first occurrence:
    - `titles`: Title, ScriptTitle, TransTitle, Chapter, ScriptChapter, TransChapter. For ScriptTitle and
@@ -279,6 +280,9 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
   EQUAL title is COMPATIBLE (corpus case `chapter-erratum-disjoint`).
 - The text inside a tag is kept by the pinned parser's `strip_code` (for example a `<ref>` inside a title), so it is
   part of the cited title (corpus case `markup-ref-content-kept`; it can only add conflicts).
+- Inline formatting joins as rendered (section 2.1 step 4), so a designation word written in an inline tag with no
+  space before it (`<T><i>Comments</i>`) fuses with the preceding word and is not recognized (corpus case
+  `inline-designation-joined`; reviewer finding C-12).
 - A related note cited with no author parameter, or only with author values that are not comparable (another
   script, initials only of no record surname), whose title holds the record's title and a designation outside the
   lexicon ("Remarks on X"), stays positive (corpus case `related-note-no-author-residual`). Title DISJOINT is reached

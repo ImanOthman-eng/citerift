@@ -34,6 +34,8 @@ CHECKED = (
     "docs/verification/stage-04/evaluation-p2-campaign",
     "docs/verification/stage-04/corrective/regression",
     "docs/verification/stage-04/review/step7",
+    # reviewer finding C-07: the Stage 03 bundles of the 232 development revisions (DEV_RUN.json names them there).
+    "docs/verification/stage-03",
     "pyproject.toml",
     "uv.lock",
 )

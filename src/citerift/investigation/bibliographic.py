@@ -69,6 +69,7 @@ _WORD = re.compile(r"[^\W_]+")
 _ETAL = re.compile(r"\bet\.?\s*al\b\.?")
 _YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
 _SPACE = re.compile(r"\s+")
+_SURROGATE = re.compile("[\ud800-\udfff]")
 
 # Spec 4.2: designations of a related object (folded words and phrases), counted only outside the record's title.
 _DESIGNATION_TEXT = (
@@ -276,21 +277,15 @@ def _joined(node: Any) -> bool:
 
 def _clean(value: Any) -> str | None:
     """Spec 2.1 step 4: node by node, a removed or replaced node (template, other tag, comment, argument, heading) is a
-    word boundary; text, entities, links and inline formatting tags join their neighbours as written."""
+    word boundary; text, entities, links and inline formatting tags join their neighbours as written. A lone surrogate
+    (from a numeric entity such as ``&#xD800;``) becomes U+FFFD, which is no word character, so the value stays Unicode
+    text and keeps its words (reviewer findings E-01, F-02 and C-01)."""
     parts = []
     for node in value.nodes:
         text = Wikicode([node]).strip_code(normalize=True, collapse=True)
         parts.append(text if _joined(node) else f" {text} ")
-    cleaned = _SPACE.sub(" ", "".join(parts)).strip()
+    cleaned = _SURROGATE.sub("\ufffd", _SPACE.sub(" ", "".join(parts)).strip())
     return cleaned or None
-
-
-def _encodable(value: str) -> bool:
-    try:
-        value.encode("utf-8")
-    except UnicodeEncodeError:  # a lone surrogate, for example from the entity &#xD800;
-        return False
-    return True
 
 
 def cited_object(text: str, wiki: str) -> CitedObject | None:
@@ -327,9 +322,7 @@ def _parsed(text: str, wiki: str) -> CitedObject | None:
         value = _clean(raw)
         if value is not None and key in SCRIPT_KEYS:
             value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
-        # Spec 2.1 step 4: a value that is not Unicode text (a lone surrogate) is absent; the rest of the description
-        # stays (reviewer finding F-02).
-        if value is not None and _encodable(value):
+        if value is not None:
             fields[family].append(value)
 
     # Spec 2.1 step 6: above the bounds of the committed value there is no cited object (never truncated).

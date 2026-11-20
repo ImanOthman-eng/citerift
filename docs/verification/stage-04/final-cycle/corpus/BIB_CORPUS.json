@@ -46,7 +46,7 @@
     "authors": "CONFLICT",
     "title_relation": "EQUAL"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "designation removed: the author rule alone blocks it (no suffix rule involved)"
   },
   {
@@ -69,7 +69,7 @@
     "title_relation": "CONTAINED",
     "designation": true
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "original authors but a comment designation outside the record title"
   },
   {
@@ -92,7 +92,7 @@
     "year": "SAME",
     "periodical": "SAME"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": ""
   },
   {
@@ -112,7 +112,7 @@
     "authors": "AGREE",
     "title_relation": "EQUAL"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": ""
   },
   {
@@ -1309,10 +1309,10 @@
     "object": "COMPATIBLE",
     "reasons": [],
     "authors": "AGREE",
-    "title_relation": "MISSING"
+    "title_relation": "EQUAL"
    },
    "origin": "synthetic",
-   "note": "E-01, F-02: a value holding a lone surrogate (from a numeric entity) is not Unicode text and is absent; the rest of the description stays (spec 2.1 step 4); the expectation changed with F-02 (was: no cited object)"
+   "note": "E-01, F-02, C-01: a lone surrogate (from a numeric entity) becomes U+FFFD, which is no word character, so the value keeps its words (spec 2.1 step 4); the expectation changed twice (no cited object, then an absent title)"
   },
   {
    "id": "lone-surrogate-garry-pages",
@@ -1335,7 +1335,7 @@
     "title_relation": "CONTAINED",
     "designation": true
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "F-02: a lone surrogate in a field never compared no longer drops the whole description"
   },
   {
@@ -1358,7 +1358,7 @@
     "title_relation": "CONTAINED",
     "designation": false
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "F-01: a value made only of initials-shaped tokens keeps its first token (an all-caps short surname)"
   },
   {
@@ -1379,7 +1379,7 @@
     ],
     "authors": "CONFLICT"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "F-01"
   },
   {
@@ -1400,7 +1400,7 @@
     ],
     "authors": "CONFLICT"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "F-01: 'WU H' keeps 'WU'"
   },
   {
@@ -1420,7 +1420,7 @@
     "authors": "AGREE",
     "title_relation": "EQUAL"
    },
-   "origin": "synthetic",
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "F-01: the genuine all-caps surname of a record author now agrees (was INSUFFICIENT)"
   },
   {
@@ -1714,6 +1714,141 @@
    },
    "origin": "synthetic",
    "note": "stated limit (spec section 9): a value DISJOINT from the record title never designates"
+  },
+  {
+   "id": "surrogate-in-author-garry",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal\n |author=Robert Garry&#xD800;\n |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments\n |journal=Virology Journal\n |date=21 July 2010\n |volume=7\n |issue=1\n |page=169\n |doi=10.1186/1743-422X-7-169\n |pmid=20663162\n |pmc=2918564\n |s2cid=8124033\n |doi-access=free\n }}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
+   "note": "C-01: a lone surrogate inside a compared value no longer drops the value (it becomes U+FFFD)"
+  },
+  {
+   "id": "surrogate-in-title-garry",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal\n |author=Robert Garry\n |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments&#xD800;\n |journal=Virology Journal\n |date=21 July 2010\n |volume=7\n |issue=1\n |page=169\n |doi=10.1186/1743-422X-7-169\n |pmid=20663162\n |pmc=2918564\n |s2cid=8124033\n |doi-access=free\n }}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
+   "note": "C-01"
+  },
+  {
+   "id": "surrogate-in-author-commenter",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill&#xD800; |title=Thermal drift of synthetic lattice sensors: a field study: a second look}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "C-01 and C-08: on a second record, the author is the only conflict; dropping the value made it positive"
+  },
+  {
+   "id": "surrogate-in-author-genuine",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist&#xD800; |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "C-01: the genuine citation keeps its compatible verdict"
+  },
+  {
+   "id": "caps-surname-commenter",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |last=WU |title=Thermal drift of synthetic lattice sensors: a field study: a second look}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "F-01 and C-08: the initials rule on a second record"
+  },
+  {
+   "id": "inline-designation-joined",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study<i>Comments</i>}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "OVERLAP",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "stated residual (C-12, spec section 9): inline formatting joins as rendered, so an unspaced designation word fuses with the word before it and is not recognized"
   },
   {
    "id": "collaboration-param-ignored",

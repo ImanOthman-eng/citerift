@@ -674,9 +674,10 @@ CASES = [
         REC,
         CO,
         authors="AGREE",
-        title_relation="MISSING",
-        note="E-01, F-02: a value holding a lone surrogate (from a numeric entity) is not Unicode text and is absent; "
-        "the rest of the description stays (spec 2.1 step 4); the expectation changed with F-02 (was: no cited object)",
+        title_relation="EQUAL",
+        note="E-01, F-02, C-01: a lone surrogate (from a numeric entity) becomes U+FFFD, which is no word character, "
+        "so the value keeps its words (spec 2.1 step 4); the expectation changed twice (no cited object, then an "
+        "absent title)",
     ),
     case(
         "lone-surrogate-garry-pages",
@@ -878,6 +879,76 @@ CASES = [
         note="stated limit (spec section 9): a value DISJOINT from the record title never designates",
     ),
     case(
+        "surrogate-in-author-garry",
+        "malformed",
+        GARRY_TEMPLATE.replace("|author=Robert Garry", "|author=Robert Garry&#xD800;"),
+        GARRY_RECORD,
+        MC,
+        [RA, RR],
+        authors="CONFLICT",
+        title_relation="CONTAINED",
+        designation=True,
+        note="C-01: a lone surrogate inside a compared value no longer drops the value (it becomes U+FFFD)",
+    ),
+    case(
+        "surrogate-in-title-garry",
+        "malformed",
+        GARRY_TEMPLATE.replace("– Comments\n", "– Comments&#xD800;\n"),
+        GARRY_RECORD,
+        MC,
+        [RA, RR],
+        authors="CONFLICT",
+        title_relation="CONTAINED",
+        designation=True,
+        note="C-01",
+    ),
+    case(
+        "surrogate-in-author-commenter",
+        "malformed",
+        cite(last1="Quill&#xD800;", title=T + ": a second look"),
+        REC,
+        MC,
+        [RA],
+        authors="CONFLICT",
+        title_relation="CONTAINED",
+        designation=False,
+        note="C-01 and C-08: on a second record, the author is the only conflict; dropping the value made it positive",
+    ),
+    case(
+        "surrogate-in-author-genuine",
+        "malformed",
+        cite(last1="Lindqvist&#xD800;", title=T),
+        REC,
+        CO,
+        authors="AGREE",
+        title_relation="EQUAL",
+        note="C-01: the genuine citation keeps its compatible verdict",
+    ),
+    case(
+        "caps-surname-commenter",
+        "incompatible_description",
+        cite(last="WU", title=T + ": a second look"),
+        REC,
+        MC,
+        [RA],
+        authors="CONFLICT",
+        title_relation="CONTAINED",
+        designation=False,
+        note="F-01 and C-08: the initials rule on a second record",
+    ),
+    case(
+        "inline-designation-joined",
+        "comment",
+        cite(last1="Lindqvist", title=T + "<i>Comments</i>"),
+        REC,
+        CO,
+        authors="AGREE",
+        title_relation="OVERLAP",
+        designation=False,
+        note="stated residual (C-12, spec section 9): inline formatting joins as rendered, so an unspaced designation "
+        "word fuses with the word before it and is not recognized",
+    ),
+    case(
         "collaboration-param-ignored",
         "author_format",
         cite(collaboration="Synthetic Sensor Consortium", title=T),
@@ -889,6 +960,9 @@ CASES = [
 
 
 def main() -> None:
+    for c in CASES:  # reviewer finding C-08: a variant built on the real P2 record is not synthetic
+        if c["record"] is GARRY_RECORD and c["origin"] == "synthetic":
+            c["origin"] = "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)"
     ids = [c["id"] for c in CASES]
     if len(ids) != len(set(ids)):
         raise SystemExit("duplicate case id")

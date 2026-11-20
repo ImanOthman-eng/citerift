@@ -76,8 +76,8 @@ R21. (2.1 step 4, amended) "Each node's text": ``Wikicode([node]).strip_code(nor
     top-level node of the argument value; Text, HTMLEntity, Wikilink and ExternalLink pieces, and Tag pieces whose tag
     is an inline formatting tag (i, b, sub, sup, span, small, big, u, s, em, strong; F-04), are joined as written,
     every other piece gets one space on each side; the whitespace collapse then applies to the joined string. Only
-    arguments whose name belongs to a family are cleaned (the others are not fields); a cleaned family value that is
-    not UTF-8 encodable is absent (F-02).
+    arguments whose name belongs to a family are cleaned (the others are not fields); a cleaned family value has every
+    lone surrogate replaced by U+FFFD (F-02, C-01).
 R22. (3, 4.1 amended) Particles are removed from the name words of both sides; the initials test is on the raw
     whitespace tokens of the cited value (``str.split()``), before folding, and a value whose every token is initials
     keeps its first token (F-01); ``S_R`` takes the name words of each part
@@ -194,8 +194,8 @@ def _is_joined(node: Any) -> bool:
 
 def _clean(value: Any) -> str | None:
     """Step 4: each top-level node stripped alone; a node other than text, entity, link or inline formatting tag is a
-    word boundary; each run of ``\\s`` becomes one space, ``str.strip()``; empty is absent; a value that is not UTF-8
-    encodable is absent (reviewer finding F-02)."""
+    word boundary; each run of ``\\s`` becomes one space, ``str.strip()``; empty is absent; a lone surrogate becomes
+    U+FFFD (reviewer findings F-02 and C-01)."""
     pieces = []
     for node in value.nodes:
         piece = mwparserfromhell.wikicode.Wikicode([node]).strip_code(normalize=True, collapse=True)
@@ -203,11 +203,8 @@ def _clean(value: Any) -> str | None:
     cleaned = WHITESPACE_RUN.sub(" ", "".join(pieces)).strip()
     if cleaned == "":
         return None
-    try:
-        cleaned.encode("utf-8")
-    except UnicodeEncodeError:
-        return None
-    return cleaned
+    # C-01: every code point in the surrogate block is replaced by U+FFFD (not a word character, so words survive).
+    return "".join("\ufffd" if 0xD800 <= ord(ch) <= 0xDFFF else ch for ch in cleaned)
 
 
 def cited_object(text: str, wiki: str, profile: dict[str, Any]) -> dict[str, Any] | None:

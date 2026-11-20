@@ -8,6 +8,7 @@ For every JSON result under ``docs/verification/stage-04/final-cycle`` (all but 
 - the tool in the working tree is that tool (reviewer finding F-03), and the engine, the inputs and the final-cycle
   tools and modules a result depends on (``SAME_AS_HEAD``) are identical at ``code_commit`` and at HEAD, so the result
   still describes the code under test (a change there needs a rerun);
+- the committed files a result reads from another result or an input (``READS``) are unchanged since its commit;
 - the results computed from a Stage 02 index all name one index.
 
 The fail-first inputs are a pure function of the corpus and the bib-1 code and are recomputed here. The history is
@@ -55,7 +56,16 @@ SAME_AS_HEAD = (
     # Reviewer finding F-03: the final-cycle tools and the modules they load (provenance, bounds builders).
     f"{S04}/final-cycle/*.py",
     f"{S04}/corrective/census/*.py",
+    # Reviewer finding C-07: the Stage 03 bundles of the development revisions.
+    "docs/verification/stage-03",
 )
+# Reviewer finding C-07: committed final-cycle files one result reads from (another result or an input); they must be
+# unchanged from the result's commit to HEAD.
+READS = {
+    "role-collision/ROLE_COLLISION_STUDY.json": ("regression/*_REGRESSION.json",),
+    "fail-first/decided_by_dt3_engine.json": ("fail-first/detector_inputs.json", "corpus/BIB_CORPUS.json"),
+    "fail-first/decided_by_dt2_engine_6663314.json": ("fail-first/detector_inputs.json", "corpus/BIB_CORPUS.json"),
+}
 DT2_ENGINE_COMMIT = "6663314"
 
 pytestmark = pytest.mark.unit
@@ -95,7 +105,8 @@ def test_a_result_was_computed_by_committed_code_that_still_decides_as_head(rel:
     tool = subprocess.run(["git", "show", f"{commit}:{prov['tool']}"], cwd=REPO, capture_output=True, check=True).stdout
     assert hashlib.sha256(tool).hexdigest() == prov["tool_sha256"], rel
     assert hashlib.sha256((REPO / prov["tool"]).read_bytes()).hexdigest() == prov["tool_sha256"], f"{rel}: tool changed"
-    changed = _git("diff", "--name-only", commit, "HEAD", "--", *SAME_AS_HEAD)
+    reads = [f"{S04}/final-cycle/{p}" for p in READS.get(rel, ())]
+    changed = _git("diff", "--name-only", commit, "HEAD", "--", *SAME_AS_HEAD, *reads)
     assert changed == "", f"{rel} was computed at {commit[:12]}; changed since: {changed.split()[:10]}"
 
 
