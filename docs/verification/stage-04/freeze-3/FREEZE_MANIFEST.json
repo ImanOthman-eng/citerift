@@ -1,0 +1,603 @@
+{
+ "baseline_sha": "66633148c8226ef5bbd20b32d15a3c8c0bb7abf7",
+ "canonical_stage02_identity": {
+  "accepted_snapshot": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "export_lines": 147152,
+   "lookup_schema_version": "1.1.0",
+   "policy_version": "citerift-rde-policy/1.3.0",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6"
+  },
+  "csv_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655",
+  "definition": "snapshot_id, policy_version, lookup_schema_version, artifact_digest (scientific); semantic_digest, export_lines (consistency); verified by Stage 02 checks before use (D-062)",
+  "digest_keys": [
+   "artifact_digest",
+   "semantic_digest",
+   "export_lines"
+  ],
+  "verification_profile": "verify_index_identity (OD-S12-1)"
+ },
+ "code_revision_of_the_evidence": "208a8de2533acd7a31b4580f791bd548a645b4c7",
+ "d062_failed_checks": [],
+ "d062_tamper_discrepancies": [],
+ "decision_semantics": {
+  "bibliographic_consistency": {
+   "src/citerift/investigation/bibliographic.py": "69af8ba5bd1ab90288723d1f948ca4beb2d408f674e97a2085ce17ce91d83454",
+   "src/citerift/investigation/data/bib-profile-1.json": "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f"
+  },
+  "canonical_stage02_identity_and_records": {
+   "src/citerift/investigation/adapters/lookup.py": "39d6f28285cdd526d383422dc64c580304f43432bacc737071e7a9b4003169c0"
+  },
+  "cited_description": {
+   "src/citerift/investigation/adapters/normalize.py": "428d5380620fc2fb18620f0c247bcb49c9c95f676870846681e2ed96b4ab83af"
+  },
+  "decision_table_and_coherence": {
+   "src/citerift/investigation/dt1.py": "f170b29238326636b0ed288e5faaf4dd4a7eca321a07e25f826c57c7d6127669"
+  },
+  "detector": {
+   "src/citerift/investigation/adapters/detect.py": "b6aafca2109daef2e145ff004709829c940b298809cb44bc8bf125192dae2251",
+   "src/citerift/investigation/adapters/detector.py": "9da7082f6f83195f5cd8ef245bd308e1284df8d7266030af4af6ea43049d9782"
+  },
+  "evidence_identity": {
+   "src/citerift/investigation/ids.py": "ef7ebdfbc6a6db552e25ccf761dd74119fcfdab801942f7e00a9b7f1038c48ff",
+   "src/citerift/investigation/sets.py": "bc2b04dfe143af89d4f977770cb5effdc6e36de1133c35c9e348b8b186ccd704"
+  },
+  "outcome": {
+   "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5"
+  },
+  "plan": {
+   "src/citerift/investigation/adapters/plan.py": "656df90d0298713e7eedde1028f94dbb6161e5303fc6375027f723705ca6839f",
+   "src/citerift/investigation/workflow.py": "1c98dbd0b505563d07c2288ef7fa14fba4923f168bc7268306bc05d75778250d"
+  },
+  "report_and_projection_mappings": {
+   "src/citerift/investigation/adapters/assemble.py": "324817d8e3c754b796c3328141bda0996eee679ae0e09dd07013e90dcfc5c337",
+   "src/citerift/investigation/explanations.py": "3405b5dbf9dc807c7c0a67d846f09f7b429fa81b4aaceee17e0cbb6c73c298d6",
+   "src/citerift/investigation/projections.py": "181f7926a30e48656e4404bfc4fed5ee4e757e652852f30d0a7cf478fa7aaa15",
+   "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5"
+  }
+ },
+ "decision_table_version": "dt-3",
+ "evidence": {
+  "a04_invariant_census": {
+   "path": "docs/verification/stage-04/final-cycle/lows/a04_invariant_census.json",
+   "sha256": "98231424da17973e0939a411a57b5eea42c27f943472972f3d000efa7d74365c"
+  },
+  "adversarial_corpus": {
+   "path": "docs/verification/stage-04/final-cycle/corpus/BIB_CORPUS.json",
+   "sha256": "771d004aca6d1d3b23ffba1b9cfcce0f6c552ed76ca5e30ffd71c346aa8a3986"
+  },
+  "author_coincidence": {
+   "path": "docs/verification/stage-04/final-cycle/lows/author_coincidence.json",
+   "sha256": "1d2afc29fdcf7cbaddb79f48bc4cf395e2df239960523be5c5d5d907fdb71557"
+  },
+  "b03_census_dt3": {
+   "path": "docs/verification/stage-04/final-cycle/regression/census/B03_CENSUS.json",
+   "sha256": "05b061390de05499b8321c72e3e5a71fe57579095d318d565d5b08c669e20ecb"
+  },
+  "bibliographic_specification": {
+   "path": "docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md",
+   "sha256": "375f35989668f52e94b37fbed3666fae75b002fc0cdabc1c00df896b9dbfc633"
+  },
+  "build_vs_adopt": {
+   "path": "docs/verification/stage-04/final-cycle/BUILD_VS_ADOPT.md",
+   "sha256": "e8352e35edefba73557f2f3766952b62398d9c89f23d144573ae4ec1e1761d0b"
+  },
+  "c07_profile": {
+   "path": "docs/verification/stage-04/final-cycle/lows/c07_profile.json",
+   "sha256": "49e2658385be3deaa47190a794170917ffe55f33b6f05e84ad7f4696d0dc28ec"
+  },
+  "campaign_regression": {
+   "path": "docs/verification/stage-04/final-cycle/regression/CAMPAIGN_REGRESSION.json",
+   "sha256": "0ebc8a461b29cdbe2380d8839664a4be47072404210dd2d47c874c02fda5f8a9"
+  },
+  "d062_tamper_differential": {
+   "path": "docs/verification/stage-04/freeze-3/d062/tamper_differential.json",
+   "sha256": "fbf617038a3d447c66c634587e8ba67bd0e365350030ebb28481ae49e5e28535"
+  },
+  "d062_two_build_equivalence": {
+   "path": "docs/verification/stage-04/freeze-3/d062/two_build_equivalence.json",
+   "sha256": "007cda2c24e8532905ce6e4488253fc21fd2773ca24d5035e0b3119384c4006c"
+  },
+  "decision_space_dt3": {
+   "path": "docs/verification/stage-04/final-cycle/simulation/decision_space_dt3_summary.json",
+   "sha256": "a5cd835e99357f419203e8a60d15b3d037f634b175f6859546fb7e44a2274e24"
+  },
+  "description_sizes": {
+   "path": "docs/verification/stage-04/final-cycle/lows/description_sizes.json",
+   "sha256": "c0ad4aa8f5ac3010d9418d0d50e95b46df17adc7041a6c44927804f8244e28ca"
+  },
+  "dev_regression": {
+   "path": "docs/verification/stage-04/final-cycle/regression/DEV_REGRESSION.json",
+   "sha256": "47f7ad6af8c822ccb9bc9eed2130ca19a4e3e913f46ffbf98beebfcbd19ea033"
+  },
+  "development_survey": {
+   "path": "docs/verification/stage-04/final-cycle/lows/survey_pairs.json",
+   "sha256": "78843940973a85b43ba4c810d9f2af417ec42259d41706e54c47d03b9d426e8a"
+  },
+  "fail_first_dt2_engine": {
+   "path": "docs/verification/stage-04/final-cycle/fail-first/decided_by_dt2_engine_6663314.json",
+   "sha256": "494b3e06f0b351463308c35ba0425a8bf8bb1fbe993441d399301ab7703ce9b4"
+  },
+  "fail_first_dt3_engine": {
+   "path": "docs/verification/stage-04/final-cycle/fail-first/decided_by_dt3_engine.json",
+   "sha256": "50eb66f7ff72bbb731271427c8b6581931cb21885fbf516d265269a5dd497f4d"
+  },
+  "fail_first_inputs": {
+   "path": "docs/verification/stage-04/final-cycle/fail-first/detector_inputs.json",
+   "sha256": "c99833e43eb10b3a2b70acba852d4c362384f8c217d55520d35599d5b72a8d58"
+  },
+  "identity_logical_view_diff": {
+   "path": "docs/verification/stage-04/final-cycle/identity/LOGICAL_VIEW_DIFF.json",
+   "sha256": "6e287f8376c0409ee56c5124ca6c0a869fd7332dd4a21284c4a90b25711881c3"
+  },
+  "low_disposition": {
+   "path": "docs/verification/stage-04/final-cycle/LOW_DISPOSITION.md",
+   "sha256": "c727afe620b687209602df35c79c6cbbc75f1b3c18e1ea8b8b5e789b8789af1c"
+  },
+  "p2_regression": {
+   "path": "docs/verification/stage-04/final-cycle/regression/P2_REGRESSION.json",
+   "sha256": "c524b05329539600fb497aff751bf9f231f427fadc9a63e2fe07e53ec06b1d02"
+  },
+  "pair_census_dt3": {
+   "path": "docs/verification/stage-04/final-cycle/regression/census/PAIR_CENSUS.json",
+   "sha256": "165bf5fc0722b58c2a8e566ecf91972b130f6d9e7de3667372c378bb833b53de"
+  },
+  "performance_and_bounds": {
+   "path": "docs/verification/stage-04/final-cycle/PERFORMANCE_AND_BOUNDS.md",
+   "sha256": "db8224f3529fb6c0bb402a89e251184ea5bda664f84c329d950532c0000ba1a6"
+  },
+  "performance_breakdown": {
+   "path": "docs/verification/stage-04/freeze-3/performance/perf_breakdown.json",
+   "sha256": "866b52fe4aa04d5711c7cc4708bc70cca4bc9c6ec629c9f0e27cc8522626ca67"
+  },
+  "regression_report": {
+   "path": "docs/verification/stage-04/final-cycle/REGRESSION.md",
+   "sha256": "54e7ec46252a4099f638ae888ec4c05813e6e4ebb431dadb3cbc53a1f89854dc"
+  },
+  "review_a": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_A.md",
+   "sha256": "72a4e5e7038b9c6758a2d12de7281cd21013b65664ec6c3df3136ffd8ffcf720"
+  },
+  "review_b": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_B.md",
+   "sha256": "7b90fc0a680d8cf0f617956b3b6e4d80fb52ab30172b40e6ec8dbf2a8d7f8f11"
+  },
+  "review_brief": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_BRIEF.md",
+   "sha256": "9c1f97d915baa96f05dad8dd60c174e35f4b5b632989be2f3827c144ca066fb5"
+  },
+  "review_c": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_C.md",
+   "sha256": "97997afc7ec5a2099d8251c90ee63f04dfe1eb5ccc307dec4417aca2d85d5ed6"
+  },
+  "review_d": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_D.md",
+   "sha256": "a038d7feeb240c4dcdc378117a6ee59f44edbe655d0f0e7f1e58497ec0b3bdec"
+  },
+  "review_e": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_E.md",
+   "sha256": "25ec25b8d6210a8f03c76db4c057f4755220ec015300a0008eab2fbf771f17f3"
+  },
+  "review_f": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_F.md",
+   "sha256": "6a5d3192fc6d84b88aedc3ae371e4f0dc1d3a8bdb1c468f49146eefbb7e37a69"
+  },
+  "review_g": {
+   "path": "docs/verification/stage-04/final-cycle/review/REVIEW_G.md",
+   "sha256": "56c8450fae97d9d27bdaf67c98c252bee35cb3c9aad36ef1cfea1f45d9343446"
+  },
+  "role_collision_census_dt3": {
+   "path": "docs/verification/stage-04/final-cycle/regression/census/CENSUS.json",
+   "sha256": "b53bfa1bafe342fe14f9861d135015c7b6a7d07187e9c3b88681b0055a126962"
+  },
+  "role_collision_report": {
+   "path": "docs/verification/stage-04/final-cycle/ROLE_COLLISION_STUDY.md",
+   "sha256": "09ccc309f76ef0d15dd9f5efa1aab1137d04280069c11f0974248999c9649a49"
+  },
+  "role_collision_study": {
+   "path": "docs/verification/stage-04/final-cycle/role-collision/ROLE_COLLISION_STUDY.json",
+   "sha256": "f0cd288801e5210f0b7c76020988588360480aafa189b232eb4c38308a12eeec"
+  },
+  "root_cause_and_architecture": {
+   "path": "docs/verification/stage-04/final-cycle/ROOT_CAUSE_AND_ARCHITECTURE.md",
+   "sha256": "ef34ab913091351c1e2098913194d95e4681c8b4e5bcfc9e50d5fefcb0c52a31"
+  },
+  "secret_scan_formats": {
+   "path": "docs/verification/stage-04/freeze-3/SECRET_SCAN.json",
+   "sha256": "8cadb32ee68410ed10ed616747fffb224842d613328b0702912eac7a442f7428"
+  },
+  "secret_scan_gate": {
+   "path": "docs/verification/stage-04/freeze-3/SECRET_SCAN_GATE.json",
+   "sha256": "36cab464cb99de536c224934be5f3376f5f9141aba5106c1145b3ab4811c807c"
+  },
+  "storage_bounds": {
+   "path": "docs/verification/stage-04/final-cycle/bounds/bounds.json",
+   "sha256": "bdbbef37db1e8f6767b7fc805f1ede0645b999115371de87007b2b1a1a9172c4"
+  },
+  "validation": {
+   "path": "docs/verification/stage-04/freeze-3/VALIDATION.json",
+   "sha256": "694305d909ba277512b5d4e1d1dd713d452ff8b7639b32468b6d6026f450ee1d"
+  },
+  "verification_components": {
+   "path": "docs/verification/stage-04/freeze-3/performance/verification_components.json",
+   "sha256": "0ddced7f1a40f1182a239314f23f3780603f9f573543e44778327d2e2109a7dd"
+  },
+  "vertical_slice": {
+   "path": "docs/verification/stage-04/freeze-3/vertical-slice/vertical_slice.json",
+   "sha256": "f243c1b13d81eb796650d35c506fb7affa640ce64f7880948b504384aa9ada00"
+  }
+ },
+ "exposure_manifest": {
+  "path": "docs/verification/stage-04/freeze-3/exposure/EXPOSURE_MANIFEST.json",
+  "sha256": "f3556be865ed051f4a9144172f09965ec767737379e3cd87e251b69ac0eeedc9"
+ },
+ "format": "citerift-stage04-freeze/3",
+ "label": "Stage 04 freeze-3 candidate manifest (final corrective cycle, D-083). Frozen scientific code: the freeze-content commit that holds this file; named with its tree and CI run by the attestation commit that follows it. Not a freeze until the owner accepts it.",
+ "limitations": [
+  "dt-3 / bib-1 (D-083): a material bibliographic conflict between the citation's own description and any event of the deciding lookup makes the candidate UNRESOLVED_IDENTITY (D-13a), never positive. bib-1 can block a positive, never create, restore or move one (dt-3 equals dt-2 case for case without a conflict: oracle-dt3).",
+  "bib-1 recall costs on genuine citations (fail closed; BIBLIOGRAPHIC_SPEC.md section 9): a record that lists fewer authors than the citation, a misspelled or mixed-script record name, a genre word the citation adds to the record title ('Letter: X'), a title in another language, a conflicting bridged or co-keyed event of the same key. On the 243 design-exposed development pairs, 6 pairs (5 citations) abstain that an engineering reading of citation and record (not a label) takes for the retracted work itself (in-sample, never an estimate).",
+  "bib-1 residual false compatibility (reviewer finding A-02): a commenter sharing a surname with the work's authors (3.3 % of random record pairs for one cited name), writing a note whose title holds the record's title and no lexicon word, stays positive; so does a related note cited with no comparable author whose extra title words are outside the lexicon or whose designation word is split by an invisible format character (review G-04); free-text references and identifier-only units have no description.",
+  "bib-1 size bounds (spec 2.1 steps 1 and 6; reviewer findings E-02 and F-02): a citation source above 16,384 code points, a family above 64 values or a description above 4,096 code points has no description and decides as under dt-2 (development maxima: 5,722 code points, 56 values, 1,804 code points); a crafted unit under the source bound was measured at 6.5 s of parser time (one crafted shape, not a bound).",
+  "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
+  "D-072 strict rule kept (D-083 item 5, ROLE_COLLISION_STUDY.md): bib-1 never resolves a role collision. In a same-record collision every event of the lookup describes a retracted work, never the notice, so bib-1 compares the citation with the same fields for both roles and cannot tell them apart; 1,472 of 31,506 dt-1 positive DOI+PMID pairs stay UNRESOLVED_IDENTITY.",
+  "D-073 (C-01): a second record of the same work makes a clean retraction abstain (53 snapshot pairs); no same-work-sibling exemption.",
+  "D-075: an original DOI cited with the same record's notice PMID stays positive when the DOI is clean; the notice PMID is never positive support.",
+  "The 232 development revisions, the 80 first-campaign and the 100 P2 articles are development evidence; the regression on them is not an evaluation, is never rescored and is never counted as unseen data.",
+  "D-061 performance: the warm p95 of a retained investigation is above the 5 s target (NOT_MET, D-066); D-064 (per-process verify_index_identity) is not weakened.",
+  "Storage: the maximal journal at the Stage 03 caps is 434,316,192 B (1.2x headroom) at 25,753 events per deciding lookup; above 32,030 events per deciding lookup a run is refused (JOURNAL_TOO_LARGE); LOOKUP observation v3 has a measured rho of 13.07 and no analytic bound; the Step 8 candidate-inputs terms have no derived bound (E-09).",
+  "C-07: the role-collision scan is quadratic in a lookup's events (2.6 s at 3,000 synthetic events; below 0.03 s on the snapshot's largest keys); measured and retained.",
+  "D-062 verification scope (D-064): each process runs verify_index_identity; Stage 02's per-event JSON-Schema pass runs only in Stage 02's complete verify; no tamper case is rejected by that pass alone.",
+  "F-11: a descendant that leaves the session by double fork or setsid is attributed and killed only while it is found in the scan; the bound is per attempt, not per investigation.",
+  "The external checkpoint (D-052) detects divergence from a recorded state; it is not authentication.",
+  "Investigation Memory requires a local POSIX filesystem (rename, fsync, O_NOFOLLOW, flock semantics).",
+  "Evaluation labels of a future gate are AI-generated (Stage 03 precedent); not human ground truth.",
+  "The Stage 02 snapshot covers Retraction Watch records up to its build; later events are not covered.",
+  "The reference models were written by the same engineering process as the production code; their independence is procedural (separate model, oracle and tests), not organisational.",
+  "Accepted residuals re-reviewed (D-083 item 7): run idempotency depends on path spelling (use resume --key); a different bundle at the recorded path is STALE; Stage 02 crossref_sources has no ORDER BY (0 rows in the RW-only index)."
+ ],
+ "lockfile": {
+  "pyproject.toml": "00e8c8788b5363c3c96e4a3c511c1ed1204d179108861a5d6504f02f701c8d8f",
+  "uv.lock": "754dda88515aa32227325c1a8f4d3cd332ab20f77d9b3545754bc97753366a96"
+ },
+ "oracle_manifests": {
+  "dt-1 (Step 4, frozen)": {
+   "path": "simulations/stage04/oracle/MANIFEST.json",
+   "sha256": "411050772807cfbc5e2053431307516344984a759c489c746a490f1db3e27735"
+  },
+  "dt-2 (corrective cycle, historical)": {
+   "path": "simulations/stage04/oracle-dt2/MANIFEST.json",
+   "sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0"
+  },
+  "dt-3 (final cycle)": {
+   "path": "simulations/stage04/oracle-dt3/MANIFEST.json",
+   "sha256": "1c302c78161332b548b2bf81b3fdddf022b3f70ee24c7ed59485e33e255f7652"
+  }
+ },
+ "parent_sha": "1a6231ca02886cae6171b5dda4481a290a9a498c",
+ "performance": {
+  "bib1_cpu_s_per_development_page": {
+   "max": 0.1722,
+   "median": 0.0035,
+   "p95": 0.0384
+  },
+  "bib1_crafted_unit_under_source_bound": [
+   {
+    "cited_object": false,
+    "code_points": 4823,
+    "cpu_s": 0.551,
+    "nesting": 400
+   },
+   {
+    "cited_object": false,
+    "code_points": 15623,
+    "cpu_s": 6.542,
+    "nesting": 1300
+   }
+  ],
+  "breakdown_median_s": {
+   "file_sha256_s": 0.473,
+   "import_s": 0.225,
+   "index_verify_s": 25.511,
+   "memory_open_s": 0.925,
+   "process_wall_s": 32.935,
+   "run_s": 32.605,
+   "schema_s": 4.307,
+   "show_s": 0.965,
+   "stage02_digests_s": 6.166,
+   "unaccounted_s": 2.147
+  },
+  "cause": "the D-062 identity-verification profile of D-064 runs in every process that reaches LOOKUP (no cross-process reuse, OD-S12-1)",
+  "max_run_p95_s": 33.756,
+  "status": "NOT_MET",
+  "table": [
+   {
+    "case": "VS-1",
+    "freeze_2_run_p95_s": 30.548,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.479,
+    "run_median_s": 32.611,
+    "run_p95_s": 33.756
+   },
+   {
+    "case": "VS-2",
+    "freeze_2_run_p95_s": 26.547,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.494,
+    "run_median_s": 29.32,
+    "run_p95_s": 31.708
+   },
+   {
+    "case": "VS-3a",
+    "freeze_2_run_p95_s": 25.96,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.854,
+    "run_median_s": 26.844,
+    "run_p95_s": 27.909
+   },
+   {
+    "case": "VS-3b",
+    "freeze_2_run_p95_s": 27.865,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.954,
+    "run_median_s": 29.988,
+    "run_p95_s": 32.984
+   },
+   {
+    "case": "VS-4",
+    "freeze_2_run_p95_s": 25.318,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.571,
+    "run_median_s": 28.358,
+    "run_p95_s": 28.564
+   },
+   {
+    "case": "VS-5",
+    "freeze_2_run_p95_s": 26.958,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.141,
+    "run_median_s": 29.618,
+    "run_p95_s": 31.539
+   },
+   {
+    "case": "VS-6a",
+    "freeze_2_run_p95_s": 25.151,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.936,
+    "run_median_s": 26.145,
+    "run_p95_s": 27.814
+   },
+   {
+    "case": "VS-6b",
+    "freeze_2_run_p95_s": 25.447,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.82,
+    "run_median_s": 26.618,
+    "run_p95_s": 29.47
+   }
+  ],
+  "target": "warm retained investigation <= 5 s p95 (D-061, unchanged)",
+  "verification_components_median_s": {
+   "compute_digests": 6.258,
+   "derivation_problems": 14.656,
+   "file read + SHA-256 (I/O floor of one full pass)": 0.234,
+   "manifest_problems": 0.0,
+   "scan event JOIN raw_record (digests: event lines)": 0.347,
+   "scan event ORDER BY event_id (derivation compare)": 0.237,
+   "scan ident (derivation)": 0.444,
+   "scan raw_record (digests: record lines)": 0.133,
+   "scan raw_record SELECT * (derivation)": 0.131,
+   "scan title_token (derivation compare)": 0.35,
+   "structural: PRAGMA foreign_key_check": 2.006,
+   "structural: PRAGMA integrity_check": 0.901,
+   "structural_problems (all of the above + invariants)": 2.912,
+   "whole_profile (identity_verification_problems)": 23.725
+  }
+ },
+ "performance_breakdown_median": {
+  "file_sha256_s": 0.473,
+  "import_s": 0.225,
+  "index_verify_s": 25.511,
+  "memory_open_s": 0.925,
+  "process_wall_s": 32.935,
+  "run_s": 32.605,
+  "schema_s": 4.307,
+  "show_s": 0.965,
+  "stage02_digests_s": 6.166,
+  "unaccounted_s": 2.147
+ },
+ "previous_freezes": [
+  {
+   "evaluation": "P, gate 04-I NOT PASSED (evaluation commit 1064113)",
+   "frozen_commit": "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0",
+   "manifest": "docs/verification/stage-04/freeze/FREEZE_MANIFEST.json",
+   "manifest_sha256": "89b15a81330f044b3035b7398eda86da135c19a28ffc810fba818fb6a1ff6485",
+   "status": "SUPERSEDED_AFTER_FAILED_04_I",
+   "table_version": "dt-1"
+  },
+  {
+   "evaluation": "P2, gate 04-I NOT PASSED (evaluation commit 2b45931)",
+   "frozen_commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+   "manifest": "docs/verification/stage-04/freeze-2/FREEZE_MANIFEST.json",
+   "manifest_sha256": "f9d77d41431730a817fec9473db2e5e73a6ef11c423a6d76f28937eccb8d34b2",
+   "status": "accepted as D-076; gate 04-I NOT PASSED under P2 (D-080, evaluation commit 2b45931); historical, immutable; superseded only if the owner accepts this candidate",
+   "table_version": "dt-2"
+  }
+ ],
+ "schemas": {
+  "schemas/investigation/v1/bundle-artifact-set.schema.json": "194189143efb144fa9a81faa5722bc2518544b42472ebd4acc877b968766f361",
+  "schemas/investigation/v1/bundle-observation.schema.json": "c809a73dc4f658c53b00f7fe6e0b23ab2a4ee00988434902da4d3a2cd3c824c5",
+  "schemas/investigation/v1/candidate-inputs.schema.json": "6414d630e13f137e2cf551260f7dfba24bd7b2ab3afd449000349699fc3353a2",
+  "schemas/investigation/v1/candidate-result-batch.schema.json": "de2939ee73bab84064abc61cf905a1a26bcf1e738d700897703fc7f1c210dba1",
+  "schemas/investigation/v1/claim.schema.json": "e3b32368d1cf880cd930bf984e834241b320d92b6ad19c4f2e16038787ad0934",
+  "schemas/investigation/v1/common.schema.json": "6f0b019496a101991e24219cbc2baf7d5f5a808425d5a7cae864edb4097cb5da",
+  "schemas/investigation/v1/evidence-batch.schema.json": "691acac53fe821e1562b3d1b9fc6934a0d734387325f21a46871292eecfcb261",
+  "schemas/investigation/v1/evidence-set.schema.json": "e9c161a229311df1c7a89d3f19e97688fcd5c5241bb1dc938d4875919059ffa9",
+  "schemas/investigation/v1/journal-record.schema.json": "df85a7dcdff3f22a798ce1cccf842c30f47ca533cb55fcd1d5f7d70301efb4e1",
+  "schemas/investigation/v1/lookup-batch.schema.json": "efdbdc14372d9edafdc2e1b3155c077eeaca42baa987a053a725a6a4573f64e6",
+  "schemas/investigation/v1/lookup-observation.schema.json": "7159205ca0dd594e6f0b2b7574e0b74f2172678ace0298bbbed1391c081cbc97",
+  "schemas/investigation/v1/lookup-plan.schema.json": "72225bd5fdae38bb5dd29264c0973b8145514095174de4c19162805f7c24a67a",
+  "schemas/investigation/v1/projection-set.schema.json": "4c959896ada90d85e0c5dc2108b4587220ee11a2602416e1a62be73196f1f385",
+  "schemas/investigation/v1/report-chunk.schema.json": "b1248b632312b86add13d19898c242bbc3da86ce0b448836ab910868f748e29d",
+  "schemas/investigation/v1/report.schema.json": "41b9cfec2a89dd93114b0b07d72e6624b3e5c1a5019933a5136fc6054d2b4f3b",
+  "schemas/investigation/v1/request.schema.json": "c63e76e88f8b5ec84d4638b5d40d556e5e594dc1286ba0f27a1ed6bc281f96e3"
+ },
+ "source_files": {
+  "src/citerift/investigation/__init__.py": "ed202d8a2becbcadc5d88c4e2f6b8efc67a6047b3859a844a1763ee878211cb0",
+  "src/citerift/investigation/adapters/__init__.py": "953eaeaad0d6f441cb98206f88b6f5a308a50432efaa9ea5c934a728008c4b18",
+  "src/citerift/investigation/adapters/acquire.py": "66a298a2dc1af6a53d4e145a8c008d2f26b16519672f59bac5f636e074bffd47",
+  "src/citerift/investigation/adapters/assemble.py": "324817d8e3c754b796c3328141bda0996eee679ae0e09dd07013e90dcfc5c337",
+  "src/citerift/investigation/adapters/detect.py": "b6aafca2109daef2e145ff004709829c940b298809cb44bc8bf125192dae2251",
+  "src/citerift/investigation/adapters/detector.py": "9da7082f6f83195f5cd8ef245bd308e1284df8d7266030af4af6ea43049d9782",
+  "src/citerift/investigation/adapters/extract.py": "dd12df2554a240b518d1a63d0f8006866884322c2c133f283cff989c23d74e86",
+  "src/citerift/investigation/adapters/live.py": "39dccfa52a185d8162b1dc1158237dcd88827de20aa9c66b81412be0ffba81a6",
+  "src/citerift/investigation/adapters/live_child.py": "740e68a172c6f0a78819fde914a2767ce872f43e047480cb570c4ea254838a34",
+  "src/citerift/investigation/adapters/lookup.py": "39d6f28285cdd526d383422dc64c580304f43432bacc737071e7a9b4003169c0",
+  "src/citerift/investigation/adapters/normalize.py": "428d5380620fc2fb18620f0c247bcb49c9c95f676870846681e2ed96b4ab83af",
+  "src/citerift/investigation/adapters/plan.py": "656df90d0298713e7eedde1028f94dbb6161e5303fc6375027f723705ca6839f",
+  "src/citerift/investigation/adapters/supervise.py": "07d3ea7d0c069ac2a1c5e1116a704578d8a4fac9739dd10833d01f5e50da770b",
+  "src/citerift/investigation/adapters/validate.py": "a8f330a341ed5fa13027cbd8872426ba997ade6684323eda622255fe13ed5252",
+  "src/citerift/investigation/adapters/verify.py": "b77e10782675396ac0982d9846cd5d61a70107341cef36fe7b76dbcc5b1cb97b",
+  "src/citerift/investigation/anchors.py": "5ec21f871643612f1c1d9cc284f8373c1bed43e1185e6c090be4b5629c679239",
+  "src/citerift/investigation/batches.py": "8a30002d2abd81dd4f452e475c3d936f8c8c9983897a10037b35d02b07dcda36",
+  "src/citerift/investigation/bibliographic.py": "69af8ba5bd1ab90288723d1f948ca4beb2d408f674e97a2085ce17ce91d83454",
+  "src/citerift/investigation/blobs.py": "c07cd51ad4cb1a29dd540c54c9207bbbd77a9a2425eab9f70adfac4a0e15bd50",
+  "src/citerift/investigation/canonical.py": "f45d5dd812f490abfb76e4af3d97f899b6203496eb81c7734556f3c534c8b772",
+  "src/citerift/investigation/checkpoint.py": "816387e95823736aa11b2ba40ad65f9947bec814dac150219eb2ed01c8a43d12",
+  "src/citerift/investigation/cli.py": "c25b04742abf44698b73b74554875ab67fd327963662eb3de36ce0f43728db2a",
+  "src/citerift/investigation/controller.py": "99d5fbdae72d7ab2b74f2efa3c96a947c78ecbaa3a01250a48b90a6706377b95",
+  "src/citerift/investigation/data/bib-profile-1.json": "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f",
+  "src/citerift/investigation/dt1.py": "f170b29238326636b0ed288e5faaf4dd4a7eca321a07e25f826c57c7d6127669",
+  "src/citerift/investigation/errors.py": "242c766088cb758a6ade90e2ba07e9a7b67d5f509dae20aacf3b5b2c00023e59",
+  "src/citerift/investigation/explanations.py": "3405b5dbf9dc807c7c0a67d846f09f7b429fa81b4aaceee17e0cbb6c73c298d6",
+  "src/citerift/investigation/export.py": "376264f62a8add41bea0ec126b8e67fb3be4c5b4cc87084b3129470a9d524b8c",
+  "src/citerift/investigation/extraction.py": "9e3d06697c75a92b30f5033a8efc8a9d9c27a340afdab676c617bc02b8ddec58",
+  "src/citerift/investigation/faults.py": "3f415211ead46e89f9921921915db6c9a439c8da3df20ebd95ce7d928bddc8cd",
+  "src/citerift/investigation/fold.py": "13b692e0bc64f2458618c944ea1913aacc451d48b650b5820b4c05ac8e06578a",
+  "src/citerift/investigation/fsutil.py": "7a3e0ac1f0b6e314a3ad95b3e7bea3850f2037f1847e247c751c15cf40b7753e",
+  "src/citerift/investigation/ids.py": "ef7ebdfbc6a6db552e25ccf761dd74119fcfdab801942f7e00a9b7f1038c48ff",
+  "src/citerift/investigation/journal.py": "4776a681175daa53c9810c8606fc92a71d579b66d145756ac6e3e83f9f889ac6",
+  "src/citerift/investigation/lock.py": "f6cd7c5ec4bc4db7a4058c0b1026d5e0dac9a1ec995005837a0f5602f777d6b2",
+  "src/citerift/investigation/lookup.py": "563bbfdd1943a4ec1169cf61b1d959249cedc650326f2fda2ba8bafb52709013",
+  "src/citerift/investigation/memory.py": "6154a4ac24603e36e2c0eb20fdc978df405c0e1c6c88a12c021093d4b3835f4f",
+  "src/citerift/investigation/operations.py": "ea05b841fb63273e17846889ba53ca0c767aaf91ba3a7b12937c525d1e43d716",
+  "src/citerift/investigation/outputs.py": "7650187e0d5bbfea99c2971eecefdd6801f6753bc0342170284a826b987d8850",
+  "src/citerift/investigation/projections.py": "181f7926a30e48656e4404bfc4fed5ee4e757e652852f30d0a7cf478fa7aaa15",
+  "src/citerift/investigation/report.py": "1e8779e1b5d4b9578bd285af63e87096859ec38feb4de3dc20e6945fe62e63a5",
+  "src/citerift/investigation/retained.py": "4a90d3f151848c98649b9b5882c0a9f8ef5e4fa95ba4615df47c0b254732065c",
+  "src/citerift/investigation/schemas.py": "9063fbb2e2dfe4674fdf465ccd3f13c588c18f9119bc4e62872f104722f44d96",
+  "src/citerift/investigation/sets.py": "bc2b04dfe143af89d4f977770cb5effdc6e36de1133c35c9e348b8b186ccd704",
+  "src/citerift/investigation/workflow.py": "1c98dbd0b505563d07c2288ef7fa14fba4923f168bc7268306bc05d75778250d"
+ },
+ "stage03_extraction_identity": {
+  "config_digest": "07df80eb23600887a7826ba93c1440d0f48cc77ec72cf715a1f548a2d5fe963b",
+  "extractor": {
+   "name": "citerift-wiki",
+   "normalizer": "citerift.retraction.identifiers (Stage 02)",
+   "parsers": {
+    "html": "lxml 6.1.3 (libxml2 2.14.6)",
+    "wikitext": "mwparserfromhell 0.7.2"
+   },
+   "profile": {
+    "digest": "ba5ae18b34ec3824cae770548d4e929bec6891e8dfdc72f591ddfdd12cc3a697",
+    "version": "1.0.0"
+   },
+   "version": "1.2.0"
+  }
+ },
+ "stage04_identity": {
+  "bib_profile_sha256": "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f",
+  "detector_identity": "citerift-dt1-detector/4 (dt-3)",
+  "engine_version": "0.4.0",
+  "integration": {
+   "bundle-artifact-set": "1.0.0",
+   "bundle-observation": "1.0.0",
+   "candidate-inputs": "2.0.0",
+   "lookup-observation": "3.0.0",
+   "lookup-plan": "1.0.0"
+  },
+  "package_version": "0.4.0",
+  "parser_version": "0.7.2",
+  "plan_version": "plan-1",
+  "schema_version": "5.0.0",
+  "table_version": "dt-3"
+ },
+ "tests": {
+  "ci": {
+   "conclusion": "success",
+   "jobs": {
+    "ci-gate": {
+     "conclusion": "success"
+    },
+    "verify (python 3.12)": {
+     "failed": 0,
+     "passed": 3681,
+     "pytest_reported": "1006.74 s",
+     "report": "0 problems"
+    },
+    "verify (python 3.13)": {
+     "failed": 0,
+     "passed": 3681,
+     "pytest_reported": "791.53 s",
+     "report": "0 problems"
+    }
+   },
+   "pip_audit": "No known vulnerabilities found (both jobs)",
+   "run_id": 44725151080,
+   "run_number": 390
+  },
+  "code_revision": "208a8de2533acd7a31b4580f791bd548a645b4c7",
+  "lint": {
+   "check_schemas": "2 schemas checked, 0 problems",
+   "citerift_gov_check": "0 errors, 0 warnings",
+   "mypy": "Success: no issues found in 96 source files",
+   "render_status_check": "PROJECT_STATUS.md is up to date",
+   "ruff_check": "All checks passed!",
+   "ruff_format": "698 files already formatted",
+   "step3_docs_check": "RESULT: PASS (0 failed)"
+  },
+  "local": {
+   "note": "full suite in this 4-vCPU container, both versions run at the same time",
+   "python_3_12": {
+    "failed": 0,
+    "passed": 3681,
+    "python": "3.12.3",
+    "skipped": 0,
+    "wall": "22 min 29 s"
+   },
+   "python_3_13": {
+    "failed": 0,
+    "passed": 3681,
+    "python": "3.13.18",
+    "skipped": 0,
+    "wall": "21 min 18 s"
+   },
+   "report_check": "0 problems (both; clean tree at the code revision)"
+  },
+  "secret_scan": {
+   "credential_formats_all_tracked": "SECRET_SCAN.json: 7,409 files, 1 hit (test fixture placeholder URL, tests/stage03/test_wiki_fetch_capture.py, asserted to be refused); not a secret",
+   "project_gate_freeze_surface": "SECRET_SCAN_GATE.json: 2,274 files, 0 matches"
+  }
+ },
+ "vertical_slice": {
+  "cases": [
+   "VS-1",
+   "VS-2",
+   "VS-3a",
+   "VS-3b",
+   "VS-4",
+   "VS-5",
+   "VS-6a",
+   "VS-6b"
+  ],
+  "failed_checks": {}
+ }
+}
