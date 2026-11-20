@@ -201,11 +201,14 @@ def keys_of_shape(shape: str) -> list[dict[str, str]]:
     }[shape]
 
 
-# dt-3 (owner decision D-083): the bib-1 description of the synthetic unit and record fields that conflict with it
-# (disjoint authors), used for ``bc``; every other record carries no bibliographic field (INSUFFICIENT).
+# dt-3/dt-4 (owner decisions D-083, D-087): the description of the synthetic unit and record fields that conflict with
+# it (disjoint authors), used for ``bc`` and for ``bib == "CONFLICT"``; every other record carries no bibliographic
+# field (INSUFFICIENT).
 BC_CITED = {
     "titles": ["Synthetic title of a related object"],
     "authors": ["Commentator"],
+    "author_lists": [],
+    "vauthors": [],
     "periodical": None,
     "date": None,
     "year": None,
@@ -214,14 +217,41 @@ BC_CITED = {
     "pages": None,
 }
 BC_RECORD = {"title": "Synthetic title of a related object", "authors": "Ann Author;Bob Writer"}
+# dt-4 (D-087): a description that does not establish the record's object (a longer title, no comparable author),
+# used for ``bib == "NOT_ESTABLISHED"``; the record is BC_RECORD.
+NE_CITED = {**BC_CITED, "titles": ["Synthetic title of a related object: an extended version"], "authors": []}
+# dt-4 (D-086): the unavailability reason used for ``bib == "UNAVAILABLE"``.
+UNAVAILABLE_REASON = "BIB_SOURCE_LIMIT_EXCEEDED"
 
 
-def records_of(obs: dict[str, Any], conflicting: bool, fields: Mapping[str, Any] | None = None) -> list[dict[str, Any]]:
-    """The bib-1 records of an observation's events (lookup observation version 3), bound by event id and row hash.
+def bib_inputs(c: Any) -> tuple[dict[str, Any] | None, str | None, Mapping[str, Any] | None]:
+    """The unit's description, its unavailability reason and the deciding-lookup record fields of an abstract case:
+    ``bib_pair`` (a concrete (description, record fields[, reason]) triple) when the case has one, else the dt-4
+    ``bib`` state, else the dt-3 ``bc`` bit."""
+    pair = getattr(c, "bib_pair", None)
+    if pair is not None:
+        reason = pair[2] if len(pair) > 2 else None
+        return copy.deepcopy(pair[0]), reason, pair[1]
+    state = getattr(c, "bib", None)
+    if state is None:
+        state = "CONFLICT" if getattr(c, "bc", False) else "NONE"
+    if state == "CONFLICT":
+        return copy.deepcopy(BC_CITED), None, BC_RECORD
+    if state == "NOT_ESTABLISHED":
+        return copy.deepcopy(NE_CITED), None, BC_RECORD
+    if state == "UNAVAILABLE":
+        return None, UNAVAILABLE_REASON, None
+    if state != "NONE":
+        raise AssertionError(f"unknown bib state {state!r}")
+    return None, None, None
+
+
+def records_of(obs: dict[str, Any], fields: Mapping[str, Any] | None = None) -> list[dict[str, Any]]:
+    """The records of an observation's events (lookup observation version 3), bound by event id and row hash.
     ``fields`` (title, authors, journal, original_year), when given, is every event's record; the events' own
     ``title`` and ``journal`` are set to the same values, as Stage 02 gives them."""
     if fields is None:
-        fields = BC_RECORD if conflicting else {}
+        fields = {}
     for e in obs["events"]:  # the public event carries the same title and journal (detector check, finding B-06)
         e["title"], e["journal"] = fields.get("title"), fields.get("journal")
     return [
@@ -240,7 +270,8 @@ def records_of(obs: dict[str, Any], conflicting: bool, fields: Mapping[str, Any]
 def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
     """The committed DETECT input of one abstract case, and its blobs by digest. A dt-2 case (``dt2_reference.Case``)
     with ``rc`` set gets a role-ambiguous event in its deciding lookup (``role_collision_event``); a dt-3 case with
-    ``bc`` set gets a unit description and deciding-lookup records in bib-1 MATERIAL_CONFLICT (``BC_CITED``)."""
+    ``bc`` set, or a dt-4 case with ``bib`` CONFLICT, NOT_ESTABLISHED or UNAVAILABLE, gets the matching unit
+    description (or unavailability reason) and deciding-lookup records (``bib_inputs``)."""
     blobs: dict[str, Any] = {}
 
     def put(value: Any) -> str:
@@ -274,15 +305,13 @@ def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
             "use_eligibility": ids.evidence_id(ext, "/units/0", "use_eligibility"),
         },
         "bibliography": None,
+        "bibliography_unavailable": None,
         "occurrences": occ,
     }
-    bc = bool(getattr(c, "bc", False))
-    # ``bib`` (optional): a (cited_bibliography value or None, record fields) pair that replaces BC_CITED/BC_RECORD,
-    # for detector-level tests of real descriptions (the corpus of the final corrective cycle).
-    bib = getattr(c, "bib", None)
-    cited = copy.deepcopy(bib[0]) if bib is not None else (copy.deepcopy(BC_CITED) if bc else None)
-    if cited is not None:
+    cited, unavailable, record_fields = bib_inputs(c)
+    if cited is not None or unavailable is not None:
         unit["bibliography"] = cited
+        unit["bibliography_unavailable"] = unavailable
         unit["evidence"]["cited_bibliography"] = ids.evidence_id(ext, "/units/0", "cited_bibliography")
     deciding_role = {"DOI": "d", "PMID": "p", "PAIR": "q2"}.get(c.shape)
     cand = {
@@ -306,13 +335,11 @@ def concretize(c: Any) -> tuple[DetectInput, dict[str, Any]]:
             obs = observation(q, lk, extra[role], role)
             if getattr(c, "rc", False) and role == deciding_role:
                 role_collision_event(c.shape, obs)
-            obs["records"] = records_of(
-                obs, bc and role == deciding_role, bib[1] if bib is not None and role == deciding_role else None
-            )
+            obs["records"] = records_of(obs, record_fields if role == deciding_role else None)
             lookups.append({"query": q, "observation": put(obs)})
     inputs = {
         "schema": "urn:citerift:schema:investigation:v1:candidate-inputs",
-        "schema_version": "2.0.0",
+        "schema_version": "3.0.0",
         "root_id": "2" * 64,
         "bundle": "3" * 64,
         "extraction": ext,

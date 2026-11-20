@@ -1,4 +1,4 @@
-"""The production detector of DETECT: dt-3, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
+"""The production detector of DETECT: dt-4, kappa, claims and their evidence (Stage 04 Step 9; SPEC 6.5, 7, 8.3).
 
 ``dt1_detector`` reads only committed content (the candidate inputs and lookup plan named by ``DetectInput``, the
 lookup observations, the index identity and the extraction they name), builds the typed views of ``dt1``, decides
@@ -16,12 +16,13 @@ Evidence written by DETECT (D-051 ids ``H(observation, pointer, kind)``; refs po
 - ``coherence``: the Q2 lookup observation of a PAIR at ``/query``, value kappa;
 - ``work_candidate``: the extraction, at the first occurrence of the candidate's keys (``/identifiers/j``), or at
   ``/units/i`` for a NONE candidate; value ``{shape, keys, coherence}``;
-- ``lookup_record`` (dt-3, owner decision D-083): a lookup observation at ``/records/k`` (the bib-1 record of event
-  ``k``), value null, ref: the event item. A claim decided by D-13a or D-14 is supported by the record item of every
+- ``lookup_record`` (dt-3, owner decision D-083): a lookup observation at ``/records/k`` (the record of event ``k``),
+  value null, ref: the event item. A claim decided by D-13a, D-13c or D-14 is supported by the record item of every
   event of its deciding lookup and by the unit's ``cited_bibliography`` item (NORMALIZE) when the unit has one: the
-  bib-1 verdict is a pure function of these two, recomputed by VERIFY's replay. It is not stored as an item value,
+  bib-2 verdict is a pure function of these two, recomputed by VERIFY's replay. It is not stored as an item value,
   because the same record item serves every unit that reaches it while the verdict depends on the unit (an item
-  holding it would give one id two values, B-8).
+  holding it would give one id two values, B-8). A claim decided by D-13b (dt-4, D-086) is supported by the unit's
+  ``cited_bibliography`` item, whose value records why the check was unavailable.
 
 B-8 (Step 8 carry-forward): a ``work_candidate`` item at the unit's pointer would give two CO_REPORTED_MULTIPLE
 candidates of one unit the same evidence id with different values. Within one extraction the candidates of a unit
@@ -43,7 +44,8 @@ from citerift.investigation.canonical import canon, sha256_hex
 # Version 2 (Step 12, A-03): the occurrences of a tainted unit support every claim that carries a taint reason.
 # Version 3 (corrective cycle, owner decision D-071): decision table dt-2; the view carries event flags and notice hits.
 # Version 4 (final corrective cycle, owner decision D-083): dt-3; the view carries the bib-1 cited object and records.
-DETECTOR_IDENTITY = "citerift-dt1-detector/4 (dt-3)"
+# Version 5 (owner decisions D-086, D-087): dt-4; the view carries the bib-2 description or its unavailability reason.
+DETECTOR_IDENTITY = "citerift-dt1-detector/5 (dt-4)"
 LIMIT_CODE = "LOOKUP_EVIDENCE_LIMIT_EXCEEDED"
 TAINT_REASONS = frozenset({"IDENTIFIER_UNCONFIRMED", "IDENTIFIER_MALFORMED", "IDENTIFIER_ROLE_UNRESOLVED"})
 
@@ -58,10 +60,10 @@ def _flags(raw: Any) -> tuple[str, ...]:
 
 
 def _records(obs: Mapping[str, Any]) -> list[bibliographic.RecordObject | None]:
-    """bib-1 records of a lookup observation, one per event in order, each bound to its public event by ``event_id``
-    and ``row_sha256``, and holding the same ``title`` and ``journal`` as that event (reviewer finding B-06: the public
-    event already carries both). A missing, misaligned, unbound or contradicting ``records`` list is a defect of
-    committed content: DETECT fails (``ADAPTER_INCONSISTENT``), it never decides without the record side."""
+    """The bibliographic records of a lookup observation, one per event in order, each bound to its public event by
+    ``event_id`` and ``row_sha256``, and holding the same ``title`` and ``journal`` as that event (reviewer finding
+    B-06: the public event already carries both). A missing, misaligned, unbound or contradicting ``records`` list is
+    a defect of committed content: DETECT fails (``ADAPTER_INCONSISTENT``), it never decides without the record side."""
     events = obs.get("events") or []
     records = obs.get("records")
     if not isinstance(records, list) or len(records) != len(events):
@@ -174,10 +176,35 @@ def lookup_roles(cand: Mapping[str, Any]) -> list[tuple[str, str]]:
     return out
 
 
+def cited_of(unit: Mapping[str, Any]) -> tuple[bibliographic.CitedObject | None, str | None]:
+    """The unit's bib-2 result (spec 2.1, 7): ``(description, None)``, ``(None, reason)`` for UNAVAILABLE, or
+    ``(None, None)`` for ABSENT. A unit whose committed entry is not exactly one of these, or whose
+    ``cited_bibliography`` item is missing or extra, is a defect of committed content: DETECT fails
+    (``ADAPTER_INCONSISTENT``); it never reads such a unit as having no description (D-086)."""
+    raw, reason = unit.get("bibliography"), unit.get("bibliography_unavailable")
+    has_ev = isinstance(unit.get("evidence"), Mapping) and unit["evidence"].get("cited_bibliography") is not None
+    where = f"unit {unit.get('unit_id')}"
+    if raw is not None and reason is not None:
+        raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"{where}: a description and an unavailability reason")
+    if has_ev != (raw is not None or reason is not None):
+        raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"{where}: bibliographic result and evidence disagree")
+    if reason is not None:
+        if reason not in bibliographic.UNAVAILABLE_REASONS:
+            raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"{where}: unknown unavailability reason")
+        return None, reason
+    if raw is None:
+        return None, None
+    cited = bibliographic.CitedObject.from_json(raw)
+    if cited is None or cited.to_json() != raw:
+        raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"{where}: a description that is not a bib-2 description")
+    return cited, None
+
+
 def candidate_view(
     cand: Mapping[str, Any], unit: Mapping[str, Any], lookups: Mapping[str, dt1.Lookup]
 ) -> dt1.Candidate:
     d, p = keys_of(cand)
+    cited, unavailable = cited_of(unit)
     return dt1.Candidate(
         eligibility=unit["eligibility"],
         eligibility_reason=unit["reason"],
@@ -187,7 +214,8 @@ def candidate_view(
         taint=tuple(cand["taint"]),
         multi="CO_REPORTED_MULTIPLE" in cand["flags"],
         lookups=tuple((role, lookups[q]) for role, q in lookup_roles(cand)),
-        cited=bibliographic.CitedObject.from_json(unit.get("bibliography")),
+        cited=cited,
+        cited_unavailable=unavailable,
     )
 
 
@@ -344,12 +372,13 @@ class _Run:
             o = obs_of[out.upstream_role]
             supporting.add(self.projection_ev(o))
             supporting.update(self.event_ev(o, e.position) for e in self.views[o].events)
-        if rule in ("D-13a", "D-14"):
-            # bib-1 (D-083): every event of the deciding lookup with its comparison against the unit's description.
+        if rule in ("D-13a", "D-13b", "D-13c", "D-14"):
+            # bib-2 (D-083, D-086, D-087): the unit's bibliographic item (its description, or why the check was
+            # unavailable) and, unless unavailable, every event of the deciding lookup with its record.
             o = obs_of[str(view.deciding_role)]
             cited_ev = unit["evidence"].get("cited_bibliography")
-            if (cited_ev is None) != (unit.get("bibliography") is None):
-                raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"unit {cand['unit_id']}: description without evidence")
+            if rule == "D-13b" and cited_ev is None:
+                raise DetectFailure(dt1.ADAPTER_INCONSISTENT, f"unit {cand['unit_id']}: unavailable without evidence")
             if cited_ev is not None:
                 supporting.add(cited_ev)
             for k, _ in out.comparisons:

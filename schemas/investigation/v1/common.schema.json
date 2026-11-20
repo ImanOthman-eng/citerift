@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:investigation:v1:common",
   "title": "CITERIFT Stage 04 shared definitions, version 1",
   "description": "Identities, configuration, vocabularies and evidence shared by the Stage 04 request, journal-record, claim and report schemas (docs/verification/stage-04/SPECIFICATION.md, MATHEMATICAL_MODEL.md). Accepted upstream definitions are reused by $ref and never copied or changed. Every hash is a lowercase SHA-256; every number is an integer (MM 2.1).",
-  "x-citerift-version": "5.0.0",
+  "x-citerift-version": "6.0.0",
   "$defs": {
     "sha256": {
       "$ref": "urn:citerift:schema:contracts:v1:common#/$defs/sha256"
@@ -57,8 +57,8 @@
       "const": "plan-1"
     },
     "table_version": {
-      "description": "Decision table dt-3 (SPEC 7.3; owner decisions D-071 and D-083: dt-2 plus rule D-13a). Claims of dt-1 and dt-2 belong to the frozen engines and are not migrated.",
-      "const": "dt-3"
+      "description": "Decision table dt-4 (SPEC 7.3; owner decisions D-071, D-083, D-086 and D-087: dt-2 plus rules D-13a, D-13b and D-13c, final-cycle/BIBLIOGRAPHIC_SPEC_2.md 6). Claims of dt-1, dt-2 and dt-3 belong to earlier engines and are not migrated.",
+      "const": "dt-4"
     },
     "subject_type": {
       "description": "Open, versioned enumeration of investigation subjects (S-4.5). Version 1 knows one type; any other value fails validation (SUBJECT_TYPE_UNSUPPORTED) instead of being guessed.",
@@ -327,7 +327,7 @@
           "$ref": "#/$defs/plan_version"
         },
         "schema_version": {
-          "const": "5.0.0"
+          "const": "6.0.0"
         }
       }
     },
@@ -448,6 +448,8 @@
         "D-12",
         "D-13",
         "D-13a",
+        "D-13b",
+        "D-13c",
         "D-14",
         "D-15",
         "D-16"
@@ -471,7 +473,7 @@
       ]
     },
     "reason": {
-      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons. LOOKUP_EVIDENCE_LIMIT_EXCEEDED: owner decision D-048 (version 2.0.0). IDENTIFIER_ROLE_COLLISION: owner decision D-071 (version 4.0.0). BIBLIOGRAPHIC_OBJECT_CONFLICT and the BIB_ reasons: owner decision D-083, bib-1 (version 5.0.0).",
+      "description": "Stage 04 claim reason codes (SPEC 6.2, 6.5, 6.6, 7.3; placeholder resolution in review/step5/STEP5_PLACEHOLDER_MAPPING.md). Stage 02 basis reasons are not in this list: they are kept, with their provenance, in upstream_reasons. LOOKUP_EVIDENCE_LIMIT_EXCEEDED: owner decision D-048 (version 2.0.0). IDENTIFIER_ROLE_COLLISION: owner decision D-071 (version 4.0.0). BIBLIOGRAPHIC_OBJECT_CONFLICT and the BIB_ reasons: owner decision D-083, bib-1 (version 5.0.0). BIBLIOGRAPHIC_CHECK_UNAVAILABLE, BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED and their BIB_ details: owner decisions D-086 and D-087, bib-2 (version 6.0.0).",
       "enum": [
         "LIST_DEFINED_UNUSED",
         "CONFLICTING_DEFINITIONS",
@@ -498,7 +500,25 @@
         "BIBLIOGRAPHIC_OBJECT_CONFLICT",
         "BIB_AUTHORS_DISJOINT",
         "BIB_TITLE_DISJOINT",
-        "BIB_TITLE_RELATED_OBJECT"
+        "BIB_TITLE_RELATED_OBJECT",
+        "BIBLIOGRAPHIC_CHECK_UNAVAILABLE",
+        "BIB_PARSE_FAILED",
+        "BIB_SOURCE_LIMIT_EXCEEDED",
+        "BIB_VALUE_LIMIT_EXCEEDED",
+        "BIB_DESCRIPTION_LIMIT_EXCEEDED",
+        "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED",
+        "BIB_TITLE_EXTENDED",
+        "BIB_TITLE_PARTIAL",
+        "BIB_TITLE_INCOMPARABLE"
+      ]
+    },
+    "bib_unavailable_reason": {
+      "description": "bib-2 (final-cycle/BIBLIOGRAPHIC_SPEC_2.md 2.1, owner decision D-086): why the bibliographic check of a citation-template unit could not be performed. Never natural absence.",
+      "enum": [
+        "BIB_PARSE_FAILED",
+        "BIB_SOURCE_LIMIT_EXCEEDED",
+        "BIB_VALUE_LIMIT_EXCEEDED",
+        "BIB_DESCRIPTION_LIMIT_EXCEEDED"
       ]
     },
     "coherence": {
@@ -758,13 +778,15 @@
       ]
     },
     "cited_bibliography": {
-      "description": "bib-1 cited object (final-cycle/BIBLIOGRAPHIC_SPEC.md 2.1): the cleaned named-argument values of one citation-template unit by family.",
+      "description": "bib-2 cited object (final-cycle/BIBLIOGRAPHIC_SPEC_2.md 2.1, DESCRIBED): the cleaned named-argument values of one citation-template unit by family; authors by form (one person per parameter, free-form list, Vancouver list).",
       "type": "object",
       "additionalProperties": false,
-      "required": ["titles", "authors", "periodical", "date", "year", "volume", "issue", "pages"],
+      "required": ["titles", "authors", "author_lists", "vauthors", "periodical", "date", "year", "volume", "issue", "pages"],
       "properties": {
         "titles": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
         "authors": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+        "author_lists": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+        "vauthors": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
         "periodical": {"type": ["string", "null"], "minLength": 1, "maxLength": 4096},
         "date": {"type": ["string", "null"], "minLength": 1, "maxLength": 4096},
         "year": {"type": ["string", "null"], "minLength": 1, "maxLength": 4096},
@@ -1001,15 +1023,25 @@
           }
         },
         {
-          "description": "bib-1 (owner decision D-083): the unit's cited object, at /units/i of the extraction.",
+          "description": "bib-2 (owner decisions D-083, D-086): the result for a citation-template unit, at /units/i of the extraction: its cited object (fields), or why the check was unavailable (unavailable).",
           "if": {"properties": {"kind": {"const": "cited_bibliography"}}},
           "then": {
             "properties": {
               "value": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["version", "fields"],
-                "properties": {"version": {"const": "bib-1"}, "fields": {"$ref": "#/$defs/cited_bibliography"}}
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["version", "fields"],
+                    "properties": {"version": {"const": "bib-2"}, "fields": {"$ref": "#/$defs/cited_bibliography"}}
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["version", "unavailable"],
+                    "properties": {"version": {"const": "bib-2"}, "unavailable": {"$ref": "#/$defs/bib_unavailable_reason"}}
+                  }
+                ]
               }
             }
           }

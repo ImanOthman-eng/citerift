@@ -14,4 +14,6 @@ from __future__ import annotations
 
 # 0.3.0: decision table dt-2 (owner decision D-071, the corrective cycle after the failed gate 04-I).
 # 0.4.0: decision table dt-3 and the bib-1 bibliographic-object consistency layer (owner decision D-083).
-__version__ = "0.4.0"
+# 0.5.0: decision table dt-4 and bib-2: an unavailable check fails closed and weak compatibility is not identity
+# (owner decisions D-086, D-087).
+__version__ = "0.5.0"

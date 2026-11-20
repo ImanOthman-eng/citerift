@@ -1,6 +1,6 @@
 """DETECT: the thin integration boundary around a detector (Step 8; the production detector is Step 9).
 
-The decision table dt-3 and the coherence function κ (SPEC 6.5, 7.3) are ``citerift.investigation.dt1``, and the
+The decision table dt-4 and the coherence function κ (SPEC 6.5, 7.3) are ``citerift.investigation.dt1``, and the
 production detector that builds claims and evidence from them is ``adapters.detector.dt1_detector`` (Step 9). This
 module only connects the committed NORMALIZE and LOOKUP outputs to a
 ``Detector`` and returns what the detector decides as individual logical records (evidence items, claims and the
@@ -23,7 +23,7 @@ from citerift.investigation.adapters.lookup import committed_inputs
 from citerift.investigation.canonical import canon, sha256_hex
 from citerift.investigation.schemas import CANDIDATE_INPUTS, LOOKUP_PLAN, problems
 
-NO_DETECTOR = "no detector is supplied: DETECT decides nothing without the decision table dt-3"
+NO_DETECTOR = "no detector is supplied: DETECT decides nothing without the decision table dt-4"
 OUTPUT_TAG = "citerift-detect-output/1"
 
 

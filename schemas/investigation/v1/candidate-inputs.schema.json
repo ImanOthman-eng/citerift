@@ -3,7 +3,7 @@
   "$id": "urn:citerift:schema:investigation:v1:candidate-inputs",
   "title": "CITERIFT Stage 04 NORMALIZE candidate inputs, version 1",
   "description": "Step 8: the output blob of a committed NORMALIZE (SPEC 9.1 row 4): the typed inputs of LOOKUP and of the Step 9 detector, derived from the committed Stage 03 extraction only. Units carry their D-043 anchor identity (unit_ref), use eligibility (SPEC 6.2) and taint reasons (S-6.6); candidates carry shape, keys and flags (S-6.5) and the D-051 evidence ids of the facts they come from; observation keys are the valid keys of observation-role identifiers and of identifiers outside every unit (S-6.7); queries are the Q1 and Q2 lookups LOOKUP must make (S-6.8, S-6.9). It holds no decision-table value: no coherence, no class, no disposition (those are DETECT, Step 9). Every list is bounded by the Stage 03 caps (20,000 units, 50,000 identifier occurrences).",
-  "x-citerift-version": "2.0.0",
+  "x-citerift-version": "3.0.0",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -23,8 +23,8 @@
       "const": "urn:citerift:schema:investigation:v1:candidate-inputs"
     },
     "schema_version": {
-      "description": "Unknown versions fail closed. Version 2 (dt-3, owner decision D-083): every unit carries bibliography.",
-      "const": "2.0.0"
+      "description": "Unknown versions fail closed. Version 2 (dt-3, owner decision D-083): every unit carries bibliography. Version 3 (dt-4, owner decisions D-086 and D-087): bib-2 descriptions and bibliography_unavailable.",
+      "const": "3.0.0"
     },
     "root_id": {
       "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/sha256"
@@ -68,6 +68,7 @@
           "taint",
           "evidence",
           "bibliography",
+          "bibliography_unavailable",
           "occurrences"
         ],
         "properties": {
@@ -129,13 +130,24 @@
             }
           },
           "bibliography": {
-            "description": "bib-1 cited object of a citation-template unit (BIBLIOGRAPHIC_SPEC.md 2.1), null when the unit has none; present exactly when evidence.cited_bibliography is.",
+            "description": "bib-2 cited object of a citation-template unit (BIBLIOGRAPHIC_SPEC_2.md 2.1, DESCRIBED), null otherwise (a unit of another kind, or a check that was unavailable).",
             "oneOf": [
               {
                 "type": "null"
               },
               {
                 "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/cited_bibliography"
+              }
+            ]
+          },
+          "bibliography_unavailable": {
+            "description": "bib-2 (owner decision D-086): why the bibliographic check of a citation-template unit could not be performed (UNAVAILABLE), null otherwise. At most one of bibliography and bibliography_unavailable is non-null, and evidence.cited_bibliography is present exactly when one is.",
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "urn:citerift:schema:investigation:v1:common#/$defs/bib_unavailable_reason"
               }
             ]
           },
@@ -150,9 +162,20 @@
         },
         "allOf": [
           {
+            "not": {
+              "properties": {
+                "bibliography": {"not": {"type": "null"}},
+                "bibliography_unavailable": {"not": {"type": "null"}}
+              }
+            }
+          },
+          {
             "if": {
               "properties": {
                 "bibliography": {
+                  "type": "null"
+                },
+                "bibliography_unavailable": {
                   "type": "null"
                 }
               }

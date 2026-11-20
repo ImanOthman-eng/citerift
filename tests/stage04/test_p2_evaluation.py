@@ -280,7 +280,7 @@ def test_the_current_engine_is_not_the_freeze2_engine() -> None:
     """The working tree runs the dt-3 engine; P2's checks refuse it before anything runs."""
     with pytest.raises(C.EngineMismatch, match="identity"):
         C.engine_check(PARAMS)
-    assert dt1.TABLE_VERSION == "dt-3" != PARAMS["frozen_engine"]["identity"]["table_version"]
+    assert dt1.TABLE_VERSION == "dt-4" != PARAMS["frozen_engine"]["identity"]["table_version"]
     assert 'TABLE_VERSION = "dt-2"' in _git("show", f"{FROZEN}:src/citerift/investigation/dt1.py")
 
 
@@ -654,7 +654,7 @@ def test_runner_refuses_another_engine_before_any_article(p2_worktree: Path) -> 
         RN.frozen_check(PARAMS)  # the working tree is the dt-3 engine; the freeze-2 run guard refuses it
     with pytest.raises(RN.RunnerRefused, match="version"):
         RN.engine_identity("0.3.0")
-    assert RN.engine_identity(__version__)["engine_version"] == __version__ == "0.4.0"
+    assert RN.engine_identity(__version__)["engine_version"] == __version__ == "0.5.0"
 
 
 @pytest.mark.unit

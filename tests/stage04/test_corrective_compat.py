@@ -51,7 +51,7 @@ def _refused(path: Path, table: str, schema: str) -> None:
     assert exc.value.seq == 0
     assert table in exc.value.reason and schema in exc.value.reason
     rec = json.loads(json.dumps(records[0]))
-    rec["payload"]["stage04"].update(table_version="dt-3", schema_version="5.0.0")
+    rec["payload"]["stage04"].update(table_version="dt-4", schema_version="6.0.0")
     with pytest.raises(InvariantViolation) as exc:
         Folder(None).apply(rec)  # the same record claiming this engine's identity is still refused (digest, schema)
     assert exc.value.code in ("RECORD_INVALID", "CHAIN_BROKEN")
@@ -71,7 +71,7 @@ def _git(*args: str, text: bool = True) -> Any:
 
 def test_freeze2_identity_is_proved_from_its_frozen_commit() -> None:
     """D-076: freeze-2 records engine 0.3.0, dt-2, schema 4.0.0, detector 3; every source and schema file it
-    lists hashes, at the frozen commit, to its recorded SHA-256. The running engine is dt-3 and differs (D-083)."""
+    lists hashes, at the frozen commit, to its recorded SHA-256. The running engine is dt-4 and differs (D-083, D-087)."""
     from citerift.investigation import __version__, dt1
     from citerift.investigation.adapters.detector import DETECTOR_IDENTITY
 
@@ -90,7 +90,7 @@ def test_freeze2_identity_is_proved_from_its_frozen_commit() -> None:
         for path, sha in manifest[group].items():
             blob = _git("show", f"{FREEZE2_COMMIT}:{path}", text=False)
             assert hashlib.sha256(blob).hexdigest() == sha, path
-    assert (__version__, dt1.TABLE_VERSION, DETECTOR_IDENTITY) == ("0.4.0", "dt-3", "citerift-dt1-detector/4 (dt-3)")
+    assert (__version__, dt1.TABLE_VERSION, DETECTOR_IDENTITY) == ("0.5.0", "dt-4", "citerift-dt1-detector/5 (dt-4)")
     assert ident["package_version"] != __version__ and manifest["decision_table_version"] != dt1.TABLE_VERSION
 
 

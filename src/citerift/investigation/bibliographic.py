@@ -1,15 +1,19 @@
-"""bib-1: the bibliographic-object consistency layer (owner decision D-083; normative text
-docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md).
+"""bib-2: the bibliographic-object consistency layer, version 2 (owner decisions D-083, D-086, D-087; normative
+text docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC_2.md, which revises bib-1, BIBLIOGRAPHIC_SPEC.md).
 
-A citation names a publication object twice: by its identifiers and by its own description. This module compares the
-description of one citation-template unit (``CitedObject``, parsed from the unit's committed source span) with the
-bibliographic fields of one Stage 02 record (``RecordObject``) and classifies the pair as COMPATIBLE, INSUFFICIENT or
-MATERIAL_CONFLICT. It is pure: no clock, no randomness, no network, no I/O beyond reading its packaged alias profile.
+A citation names a publication object twice: by its identifiers and by its own description. This module describes one
+citation-template unit (``cited_object``: a ``CitedObject``, or ``Unavailable`` with a reason when the description
+cannot be produced, D-086) and compares the description with the bibliographic fields of one Stage 02 record
+(``RecordObject``): COMPATIBLE, INSUFFICIENT, NOT_ESTABLISHED or MATERIAL_CONFLICT. It is pure: no clock, no
+randomness, no network, no I/O beyond reading its packaged alias profile.
 
-Every relation is threshold-free (spec P2): equality, contiguous containment, a shared word, or no shared word. Only
-authors and title are decisive; year and periodical are recorded and never decide (spec 4.3). A field that cannot be
-compared is INSUFFICIENT and never blocks anything. The independent reference model is
-``simulations/stage04/bib_reference.py``; this module imports nothing from it and it imports nothing from here.
+Every relation is threshold-free (spec P2). Only the title can establish the object (EQUAL, or a shortened form whose
+omitted words name no related object); a longer, partial or incomparable title does not (D-087, A-02). Authors can
+only refute it; an author value that packs several people agrees with nothing. Invisible characters (Unicode general
+category Cf and the Default_Ignorable_Code_Point property) are read as written, as a word boundary and as nothing, and
+a pair must pass every reading (D-087, G-04). Year and
+periodical are recorded and never decide. The independent reference model is
+``simulations/stage04/bib2_reference.py``; this module imports nothing from it and it imports nothing from here.
 """
 
 from __future__ import annotations
@@ -25,37 +29,58 @@ from importlib import resources
 from typing import Any
 
 import mwparserfromhell
-from mwparserfromhell.nodes import ExternalLink, HTMLEntity, Tag, Template, Text, Wikilink
+from mwparserfromhell.nodes import Comment, ExternalLink, HTMLEntity, Tag, Template, Text, Wikilink
 from mwparserfromhell.wikicode import Wikicode
 
-BIB_VERSION = "bib-1"
-MAX_VALUES = 64  # spec 2.1 step 6: at most this many titles and at most this many authors
-MAX_TOTAL_CODE_POINTS = 4096  # spec 2.1 step 6: all values of all families together
-MAX_SOURCE_CODE_POINTS = 16384  # spec 2.1 step 1: a longer unit source is not parsed (resource bound; dev max 5,722)
+BIB_VERSION = "bib-2"
+MAX_VALUES = 64  # spec 2.1 step 7: at most this many titles and at most this many author values (all three forms)
+MAX_TOTAL_CODE_POINTS = 4096  # spec 2.1 step 7: all values of all families together
+MAX_SOURCE_CODE_POINTS = 16384  # spec 2.1 step 2: a longer unit source is not parsed (resource bound; dev max 5,722)
 PROFILE_FILE = "data/bib-profile-1.json"
 # Spec 2.2: the alias profile and the parser are part of the engine: a profile with other bytes or another parser
 # version is refused (the engine fails closed) rather than silently changing verdicts under the same identity.
 PROFILE_SHA256 = "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f"
 PARSER_VERSION = "0.7.2"
 
-AGREE, COMPATIBLE, CONFLICT, INSUFFICIENT = "AGREE", "COMPATIBLE", "CONFLICT", "INSUFFICIENT"
+AGREE, CONFLICT, INSUFFICIENT, NOT_ESTABLISHED = "AGREE", "CONFLICT", "INSUFFICIENT", "NOT_ESTABLISHED"
 SAME, DIFFERENT, NOT_IN_RECORD = "SAME", "DIFFERENT", "NOT_IN_RECORD"
-EQUAL, CONTAINED, OVERLAP, DISJOINT, INCOMPARABLE, MISSING = (
+EQUAL, SHORTER, LONGER, OVERLAP, DISJOINT, INCOMPARABLE, MISSING = (
     "EQUAL",
-    "CONTAINED",
+    "SHORTER",
+    "LONGER",
     "OVERLAP",
     "DISJOINT",
     "INCOMPARABLE",
     "MISSING",
 )
-OBJ_COMPATIBLE, OBJ_INSUFFICIENT, MATERIAL_CONFLICT = "COMPATIBLE", "INSUFFICIENT", "MATERIAL_CONFLICT"
+OBJ_COMPATIBLE, OBJ_INSUFFICIENT, OBJ_NOT_ESTABLISHED, MATERIAL_CONFLICT = (
+    "COMPATIBLE",
+    "INSUFFICIENT",
+    "NOT_ESTABLISHED",
+    "MATERIAL_CONFLICT",
+)
+# Spec 5: conflict reasons (bib-1) and the reasons of a title that does not establish the object (bib-2, D-087).
 R_AUTHORS, R_TITLE_DISJOINT, R_RELATED = "BIB_AUTHORS_DISJOINT", "BIB_TITLE_DISJOINT", "BIB_TITLE_RELATED_OBJECT"
-REASONS = (R_AUTHORS, R_TITLE_DISJOINT, R_RELATED)
+R_EXTENDED, R_PARTIAL, R_INCOMPARABLE = "BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE"
+CONFLICT_REASONS = (R_AUTHORS, R_TITLE_DISJOINT, R_RELATED)
+NOT_ESTABLISHED_REASONS = (R_EXTENDED, R_PARTIAL, R_INCOMPARABLE)
+# Spec 2.1 (D-086): why a citation template's description could not be produced.
+U_PARSE, U_SOURCE, U_VALUES, U_DESCRIPTION = (
+    "BIB_PARSE_FAILED",
+    "BIB_SOURCE_LIMIT_EXCEEDED",
+    "BIB_VALUE_LIMIT_EXCEEDED",
+    "BIB_DESCRIPTION_LIMIT_EXCEEDED",
+)
+UNAVAILABLE_REASONS = (U_PARSE, U_SOURCE, U_VALUES, U_DESCRIPTION)
+REASONS = (*CONFLICT_REASONS, *NOT_ESTABLISHED_REASONS, *UNAVAILABLE_REASONS)
 
-# Spec 2.1 step 5: parameter families and the CS1 keys of the profile that form them.
+# Spec 2.1 step 6: parameter families and the CS1 keys of the profile that form them. The three author forms are kept
+# apart (spec 4.1): one person per parameter, a free-form list, a Vancouver list.
 FAMILIES: dict[str, tuple[str, ...]] = {
     "titles": ("Title", "ScriptTitle", "TransTitle", "Chapter", "ScriptChapter", "TransChapter"),
-    "authors": ("AuthorList-Last", "Authors", "Vauthors"),
+    "authors": ("AuthorList-Last",),
+    "author_lists": ("Authors",),
+    "vauthors": ("Vauthors",),
     "periodical": ("Periodical",),
     "date": ("Date",),
     "year": ("Year",),
@@ -63,6 +88,8 @@ FAMILIES: dict[str, tuple[str, ...]] = {
     "issue": ("Issue",),
     "pages": ("Page", "Pages"),
 }
+AUTHOR_FAMILIES = ("authors", "author_lists", "vauthors")
+COMPARED_FAMILIES = frozenset({"titles", *AUTHOR_FAMILIES})
 SCRIPT_KEYS = frozenset({"ScriptTitle", "ScriptChapter"})
 _SCRIPT_PREFIX = re.compile(r"^[A-Za-z]{2,3}(-[A-Za-z0-9]+)?:")
 _WORD = re.compile(r"[^\W_]+")
@@ -70,8 +97,12 @@ _ETAL = re.compile(r"\bet\.?\s*al\b\.?")
 _YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
 _SPACE = re.compile(r"\s+")
 _SURROGATE = re.compile("[\ud800-\udfff]")
+# Spec 4.1: list separators (";" and the Arabic semicolon) and commas ("," and the Arabic comma).
+_LIST_SEP = re.compile("[;؛]")
+_LIST_OR_COMMA = re.compile("[;؛,،]")
+_COMMA = re.compile("[,،]")
 
-# Spec 4.2: designations of a related object (folded words and phrases), counted only outside the record's title.
+# Spec 4.2: designations of a related object (folded words and phrases); bib-1's lexicon, not extended.
 _DESIGNATION_TEXT = (
     # Crossmark update types (singular and plural of each)
     "addendum addenda clarification clarifications correction corrections corrigendum corrigenda erratum errata "
@@ -89,7 +120,7 @@ DESIGNATION_PHRASES: tuple[tuple[str, ...], ...] = (
     ("expressions", "of", "concern"),
     ("تعبير", "عن", "القلق"),
 )
-# Spec 4.1: name particles, which say nothing about who the person is (folded forms).
+# Spec 3.2: name particles, which say nothing about who the person is (folded forms).
 _PARTICLES_TEXT = "al el de del della der den di da du la le van von bin ibn abu ben dos das بن ابن ابو"
 NAME_PARTICLES = frozenset(_PARTICLES_TEXT.split())
 
@@ -116,30 +147,62 @@ def script(word: str) -> str | None:
     return None
 
 
+# Spec 3.1: the code points of the Unicode property Default_Ignorable_Code_Point (DerivedCoreProperties.txt; the
+# property is stable). Together with general category Cf they are the invisible characters.
+_DEFAULT_IGNORABLE = (
+    (0x00AD, 0x00AD), (0x034F, 0x034F), (0x061C, 0x061C), (0x115F, 0x1160), (0x17B4, 0x17B5), (0x180B, 0x180F),
+    (0x200B, 0x200F), (0x202A, 0x202E), (0x2060, 0x206F), (0x3164, 0x3164), (0xFE00, 0xFE0F), (0xFEFF, 0xFEFF),
+    (0xFFA0, 0xFFA0), (0xFFF0, 0xFFF8), (0x1BCA0, 0x1BCA3), (0x1D173, 0x1D17A), (0xE0000, 0xE0FFF),
+)  # fmt: skip
+
+
+def invisible(c: str) -> bool:
+    """Spec 3.1: a character of general category Cf or with the property Default_Ignorable_Code_Point."""
+    return unicodedata.category(c) == "Cf" or any(a <= ord(c) <= b for a, b in _DEFAULT_IGNORABLE)
+
+
+def has_invisible(s: str) -> bool:
+    """Spec 3.1: the string holds an invisible character."""
+    return any(invisible(c) for c in s)
+
+
+def boundary(s: str) -> str:
+    """Spec 3.1: the boundary reading of a string: every invisible character replaced by a space."""
+    return "".join(" " if invisible(c) else c for c in s)
+
+
+def joined(s: str) -> str:
+    """Spec 3.1: the joined reading of a string: every invisible character removed."""
+    return "".join(c for c in s if not invisible(c))
+
+
+READINGS = {"boundary": boundary, "joined": joined}
+
+
 def name_words(value: str) -> set[str]:
-    """Spec 3: the name words of one author value (``et al`` removed; single letters, numbers and name particles are
-    not names)."""
+    """Spec 3.2: the name words of a string (``et al`` removed; single letters, numbers and name particles are not
+    names)."""
     text = _ETAL.sub(" ", fold(value))
     return {w for w in _WORD.findall(text) if len(w) >= 2 and not w.isdecimal() and w not in NAME_PARTICLES}
 
 
 def _is_initials(token: str) -> bool:
-    """Spec 4.1: a whitespace token of a cited author value that is one to three upper-case letters once its full stops
-    and trailing commas and semicolons are removed ("KL", "J.J.", "S.M.,") is a set of initials, not a name."""
+    """Spec 3.2: a whitespace token that is one to three upper-case letters once its full stops and trailing commas and
+    semicolons are removed ("KL", "J.J.", "S.M.,") is a set of initials, not a name."""
     t = token.replace(".", "").rstrip(",;")
     return 1 <= len(t) <= 3 and t.isalpha() and t.isupper()
 
 
 def cited_name_words(value: str) -> set[str]:
-    """Spec 4.1: the name words of one cited author value, initials removed first. A value made only of initials keeps
-    its first token, so the rule never empties a value (reviewer finding F-01: ``|last=LI`` is the surname Li)."""
+    """Spec 3.2: the name words of one cited author part, initials removed first. A part made only of initials keeps
+    its first token, so the rule never empties it (bib-1 reviewer finding F-01: ``|last=LI`` is the surname Li)."""
     tokens = value.split()
     kept = [t for t in tokens if not _is_initials(t)] or tokens[:1]
     return name_words(" ".join(kept))
 
 
 def record_surname_words(authors: str) -> set[str]:
-    """Spec 4.1: for each ``;``-separated record author, its name words without the first (the given name); a single
+    """Spec 3.2: for each ``;``-separated record author, its name words without the first (the given name); a single
     name word is kept. Retraction Watch writes authors given name first ("Kam L E Hon")."""
     out: set[str] = set()
     for part in authors.split(";"):
@@ -158,10 +221,12 @@ def _scripts(ws: set[str] | Sequence[str]) -> set[str]:
 
 @dataclass(frozen=True)
 class CitedObject:
-    """The cleaned bibliographic fields of one citation-template unit (spec 2.1)."""
+    """The cleaned bibliographic fields of one citation-template unit (spec 2.1, DESCRIBED)."""
 
     titles: tuple[str, ...] = ()
     authors: tuple[str, ...] = ()
+    author_lists: tuple[str, ...] = ()
+    vauthors: tuple[str, ...] = ()
     periodical: str | None = None
     date: str | None = None
     year: str | None = None
@@ -173,6 +238,8 @@ class CitedObject:
         return {
             "titles": list(self.titles),
             "authors": list(self.authors),
+            "author_lists": list(self.author_lists),
+            "vauthors": list(self.vauthors),
             "periodical": self.periodical,
             "date": self.date,
             "year": self.year,
@@ -183,8 +250,7 @@ class CitedObject:
 
     @classmethod
     def from_json(cls, raw: Any) -> CitedObject | None:
-        """The object a committed ``cited_bibliography`` value describes; None for a value that is not one (fail
-        closed to INSUFFICIENT, spec B8)."""
+        """The object a committed ``cited_bibliography`` value describes; None for a value that is not one."""
         if not isinstance(raw, Mapping):
             return None
 
@@ -197,6 +263,8 @@ class CitedObject:
         return cls(
             titles=strs(raw.get("titles")),
             authors=strs(raw.get("authors")),
+            author_lists=strs(raw.get("author_lists")),
+            vauthors=strs(raw.get("vauthors")),
             periodical=one(raw.get("periodical")),
             date=one(raw.get("date")),
             year=one(raw.get("year")),
@@ -204,6 +272,33 @@ class CitedObject:
             issue=one(raw.get("issue")),
             pages=one(raw.get("pages")),
         )
+
+    def strings(self) -> tuple[str, ...]:
+        """The compared cited strings (spec 3.1): every title and author value."""
+        return (*self.titles, *self.authors, *self.author_lists, *self.vauthors)
+
+    def reading(self, mode: str) -> CitedObject:
+        """Spec 3.1: the boundary or joined reading of every compared value."""
+        f = READINGS[mode]
+        return CitedObject(
+            titles=tuple(f(v) for v in self.titles),
+            authors=tuple(f(v) for v in self.authors),
+            author_lists=tuple(f(v) for v in self.author_lists),
+            vauthors=tuple(f(v) for v in self.vauthors),
+            periodical=self.periodical,
+            date=self.date,
+            year=self.year,
+            volume=self.volume,
+            issue=self.issue,
+            pages=self.pages,
+        )
+
+
+@dataclass(frozen=True)
+class Unavailable:
+    """Spec 2.1 (D-086): a citation template whose description could not be produced, and why."""
+
+    reason: str
 
 
 @dataclass(frozen=True)
@@ -227,16 +322,28 @@ class RecordObject:
             original_year=year if isinstance(year, int) and not isinstance(year, bool) else None,
         )
 
+    def strings(self) -> tuple[str, ...]:
+        return tuple(v for v in (self.title, self.authors) if v is not None)
+
+    def reading(self, mode: str) -> RecordObject:
+        f = READINGS[mode]
+        return RecordObject(
+            title=f(self.title) if self.title is not None else None,
+            authors=f(self.authors) if self.authors is not None else None,
+            journal=self.journal,
+            original_year=self.original_year,
+        )
+
 
 class EnvironmentNotPinned(RuntimeError):
-    """The alias profile or the parser is not the one this engine pins (spec 2.2): the engine refuses to run."""
+    """The alias profile, the parser or the wiki is not one this engine pins (spec 2.1, 2.2): the engine refuses."""
 
 
 @cache
 def profile() -> dict[str, Any]:
     raw = resources.files("citerift.investigation").joinpath(PROFILE_FILE).read_bytes()
     if hashlib.sha256(raw).hexdigest() != PROFILE_SHA256:
-        raise EnvironmentNotPinned("the bib-1 alias profile is not the pinned one")
+        raise EnvironmentNotPinned("the bib alias profile is not the pinned one")
     if mwparserfromhell.__version__ != PARSER_VERSION:
         raise EnvironmentNotPinned(
             f"mwparserfromhell {mwparserfromhell.__version__} is not the pinned {PARSER_VERSION}"
@@ -266,8 +373,8 @@ def _family_of(wiki: str, name: str) -> tuple[str, str] | None:
 
 
 _INLINE = (Text, HTMLEntity, Wikilink, ExternalLink)
-# Spec 2.1 step 4 (reviewer finding F-04): inline formatting renders joined to its neighbours ("CO<sub>2</sub>",
-# italic or bold wiki markup inside a word), so these tags (the wiki markup parses as tags i and b) join as written.
+# Spec 2.1 step 5: inline formatting renders joined to its neighbours ("CO<sub>2</sub>", italic or bold wiki markup
+# inside a word), so these tags (the wiki markup parses as tags i and b) join as written.
 INLINE_TAGS = frozenset({"i", "b", "sub", "sup", "span", "small", "big", "u", "s", "em", "strong"})
 
 
@@ -276,60 +383,51 @@ def _joined(node: Any) -> bool:
 
 
 def _clean(value: Any) -> str | None:
-    """Spec 2.1 step 4: node by node, a removed or replaced node (template, other tag, comment, argument, heading) is a
+    """Spec 2.1 step 5: node by node, a removed or replaced node (template, other tag, comment, argument, heading) is a
     word boundary; text, entities, links and inline formatting tags join their neighbours as written. A lone surrogate
     (from a numeric entity such as ``&#xD800;``) becomes U+FFFD, which is no word character, so the value stays Unicode
-    text and keeps its words (reviewer findings E-01, F-02 and C-01)."""
+    text and keeps its words."""
     parts = []
     for node in value.nodes:
         text = Wikicode([node]).strip_code(normalize=True, collapse=True)
         parts.append(text if _joined(node) else f" {text} ")
-    cleaned = _SURROGATE.sub("\ufffd", _SPACE.sub(" ", "".join(parts)).strip())
+    cleaned = _SURROGATE.sub("�", _SPACE.sub(" ", "".join(parts)).strip())
     return cleaned or None
 
 
-def cited_object(text: str, wiki: str) -> CitedObject | None:
-    """Spec 2.1 steps 2 to 5 for the decoded source of one citation-template unit; None for no cited object. The
-    pinned parser's C tokenizer must be active (spec 2.2; the pure-Python tokenizer can parse differently, and Stage 03
-    switches it in its worker processes): otherwise the engine refuses (reviewer finding E-11)."""
+def describe(data: bytes | None, wiki: str) -> CitedObject | Unavailable:
+    """Spec 2.1 steps 1 to 8 for the committed source bytes of one ``citation_template`` unit (None: the span could not
+    be read): its description, or why there is none (D-086). An unknown wiki makes the engine refuse."""
+    if data is None:
+        return Unavailable(U_PARSE)
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return Unavailable(U_PARSE)
+    return cited_object(text, wiki)
+
+
+def cited_object(text: str, wiki: str) -> CitedObject | Unavailable:
+    """Spec 2.1 steps 2 to 8 for the decoded source of one citation-template unit. The pinned parser's C tokenizer
+    must be active (spec 2.2; the pure-Python tokenizer can parse differently, and Stage 03 switches it in its worker
+    processes) and the wiki must be one of the profile's: otherwise the engine refuses."""
     if not mwparserfromhell.parser.use_c:
         raise EnvironmentNotPinned("the C tokenizer of mwparserfromhell is not active")
-    if wiki not in profile()["wikis"] or len(text) > MAX_SOURCE_CODE_POINTS:
-        return None
+    if wiki not in profile()["wikis"]:
+        raise EnvironmentNotPinned(f"the bib alias profile has no wiki {wiki!r}")
+    if len(text) > MAX_SOURCE_CODE_POINTS:
+        return Unavailable(U_SOURCE)
     try:
-        return _parsed(text, wiki)
+        fields = _parsed(text, wiki)
     except Exception:
-        return None
-
-
-def _parsed(text: str, wiki: str) -> CitedObject | None:
-    code = mwparserfromhell.parse(text)
-    nodes = [n for n in code.nodes if not (isinstance(n, Text) and not str(n).strip())]
-    if len(nodes) != 1 or not isinstance(nodes[0], Template):
-        return None
-    effective: dict[str, Any] = {}
-    for param in nodes[0].params:
-        if not param.showkey:
-            continue
-        # A later duplicate replaces the earlier value; the name keeps the position of its first occurrence.
-        effective[str(param.name).strip()] = param.value
-    fields: dict[str, list[str]] = {f: [] for f in FAMILIES}
-    for name, raw in effective.items():
-        found = _family_of(wiki, name)
-        if found is None:
-            continue
-        family, key = found
-        value = _clean(raw)
-        if value is not None and key in SCRIPT_KEYS:
-            value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
-        if value is not None:
-            fields[family].append(value)
-
-    # Spec 2.1 step 6: above the bounds of the committed value there is no cited object (never truncated).
-    if any(len(fields[f]) > MAX_VALUES for f in ("titles", "authors")) or (
-        sum(len(v) for vs in fields.values() for v in vs) > MAX_TOTAL_CODE_POINTS
-    ):
-        return None
+        return Unavailable(U_PARSE)
+    if fields is None:
+        return Unavailable(U_PARSE)
+    # Spec 2.1 step 7: above the bounds of the committed value there is no description (never truncated).
+    if len(fields["titles"]) > MAX_VALUES or sum(len(fields[f]) for f in AUTHOR_FAMILIES) > MAX_VALUES:
+        return Unavailable(U_VALUES)
+    if sum(len(v) for vs in fields.values() for v in vs) > MAX_TOTAL_CODE_POINTS:
+        return Unavailable(U_DESCRIPTION)
 
     def first(family: str) -> str | None:
         return fields[family][0] if fields[family] else None
@@ -337,6 +435,8 @@ def _parsed(text: str, wiki: str) -> CitedObject | None:
     return CitedObject(
         titles=tuple(fields["titles"]),
         authors=tuple(fields["authors"]),
+        author_lists=tuple(fields["author_lists"]),
+        vauthors=tuple(fields["vauthors"]),
         periodical=first("periodical"),
         date=first("date"),
         year=first("year"),
@@ -346,17 +446,99 @@ def _parsed(text: str, wiki: str) -> CitedObject | None:
     )
 
 
+def _name(param: Any) -> str | None:
+    """Spec 2.1 step 4: the parameter's name with its comments removed (MediaWiki ignores them), stripped; None when
+    the name holds any other markup (a template, a link: what it names cannot be read without expanding it)."""
+    nodes = [n for n in param.name.nodes if not isinstance(n, Comment)]
+    if not all(isinstance(n, Text) for n in nodes):
+        return None
+    return "".join(str(n) for n in nodes).strip()
+
+
+def _hides_content(raw: Any) -> bool:
+    """Spec 2.1 step 5: the value holds, at any depth, a template call with an argument or a template parameter
+    (``{{{x}}}``): cleaning would drop words the rendered citation shows (``{{lang|en|Comments on}}``)."""
+    return any(t.params for t in raw.filter_templates(recursive=True)) or bool(raw.filter_arguments(recursive=True))
+
+
+def _parsed(text: str, wiki: str) -> dict[str, list[str]] | None:
+    """Spec 2.1 steps 3 to 6: the family values, or None when the source is not exactly one template, a named
+    parameter's name cannot be read, or a compared value hides content."""
+    code = mwparserfromhell.parse(text)
+    nodes = [n for n in code.nodes if not (isinstance(n, Text) and not str(n).strip())]
+    if len(nodes) != 1 or not isinstance(nodes[0], Template):
+        return None
+    effective: dict[str, Any] = {}
+    for param in nodes[0].params:
+        if not param.showkey:
+            continue
+        name = _name(param)
+        if name is None:
+            return None
+        # A later duplicate replaces the earlier value; the name keeps the position of its first occurrence.
+        effective[name] = param.value
+    fields: dict[str, list[str]] = {f: [] for f in FAMILIES}
+    for name, raw in effective.items():
+        found = _family_of(wiki, name)
+        if found is None:
+            continue
+        family, key = found
+        if family in COMPARED_FAMILIES and _hides_content(raw):
+            return None
+        value = _clean(raw)
+        if value is not None and key in SCRIPT_KEYS:
+            value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
+        if value is not None:
+            fields[family].append(value)
+    return fields
+
+
 # Field verdicts (spec 4) ---------------------------------------------------------------------------------------------
 
 
-def authors_verdict(cited: Sequence[str], record: str | None) -> str:
-    """Spec 4.1: every comparable cited author value must name a record author by a surname word."""
+# Spec 4.1: a conjunction is "&" or a whitespace token that casefolds to "and" or is the Arabic "\u0648".
+_CONJUNCTION_TOKENS = frozenset({"and", "\u0648"})
+
+
+def _conjunction(piece: str) -> bool:
+    return "&" in piece or any(t.casefold() in _CONJUNCTION_TOKENS for t in piece.split())
+
+
+def author_parts(cited: CitedObject) -> list[tuple[str, bool]]:
+    """Spec 4.1: the cited author parts, each ``(text, packed)``: a Vancouver list splits into persons at list
+    separators and commas; a one-person parameter or a free-form list splits at list separators, and a piece that may
+    still hold several names (a conjunction or a comma: "Smith, John" and "Smith J, Jones K" cannot be told apart) is
+    packed."""
+    out: list[tuple[str, bool]] = []
+    for value in cited.vauthors:
+        out += [(p.strip(), False) for p in _LIST_OR_COMMA.split(value) if p.strip()]
+    for value in (*cited.authors, *cited.author_lists):
+        for p in (p.strip() for p in _LIST_SEP.split(value)):
+            if p:
+                out.append((p, _conjunction(p) or bool(_COMMA.search(p))))
+    return out
+
+
+def authors_verdict(cited: CitedObject, record: str | None) -> str:
+    """Spec 4.1: CONFLICT if a comparable part names no record author (a packed part: none of its names), or if a
+    comparable whole author value does (bib-1's test, kept so that splitting a value never hides a conflict, B4);
+    AGREE if a comparable person part names one and none conflicts; INSUFFICIENT otherwise. A packed part never
+    agrees."""
     s_r = record_surname_words(record) if record else set()
     scripts_r = _scripts(s_r)
-    comparable = [ws for ws in (cited_name_words(v) for v in cited) if _scripts(ws) & scripts_r]
-    if not comparable:
-        return INSUFFICIENT
-    return AGREE if all(ws & s_r for ws in comparable) else CONFLICT
+    for value in (*cited.authors, *cited.author_lists, *cited.vauthors):
+        ws = cited_name_words(value)
+        if _scripts(ws) & scripts_r and not ws & s_r:
+            return CONFLICT
+    agree = False
+    for text, packed in author_parts(cited):
+        ws = cited_name_words(text)
+        if not _scripts(ws) & scripts_r:
+            continue  # not comparable
+        if not ws & s_r:
+            return CONFLICT
+        agree = agree or not packed
+    return AGREE if agree else INSUFFICIENT
 
 
 def _contains(outer: Sequence[str], inner: Sequence[str]) -> int:
@@ -374,8 +556,10 @@ def relation(t: Sequence[str], r: Sequence[str]) -> str:
     """Spec 4.2: the relation of a cited title's words to the record title's words (both non-empty)."""
     if list(t) == list(r):
         return EQUAL
-    if _contains(t, r) >= 0 or _contains(r, t) >= 0:
-        return CONTAINED
+    if _contains(r, t) >= 0:
+        return SHORTER
+    if _contains(t, r) >= 0:
+        return LONGER
     if set(t) & set(r):
         return OVERLAP
     if _scripts(t) & _scripts(r):
@@ -383,22 +567,28 @@ def relation(t: Sequence[str], r: Sequence[str]) -> str:
     return INCOMPARABLE
 
 
-_RANK = {EQUAL: 0, CONTAINED: 1, OVERLAP: 2, DISJOINT: 3, INCOMPARABLE: 4}
+_RANK = {EQUAL: 0, SHORTER: 1, LONGER: 2, OVERLAP: 3, DISJOINT: 4, INCOMPARABLE: 5}
+
+
+def _outside(outer: Sequence[str], inner: Sequence[str]) -> list[str]:
+    at = _contains(outer, inner)
+    return list(outer[:at]) + list(outer[at + len(inner) :]) if at >= 0 else list(outer)
 
 
 def designates(t: Sequence[str], r: Sequence[str], rel: str) -> bool:
-    """Spec 4.2: the cited title names an object related to the record's work (a word or phrase of the designation
-    lexicon outside the record's own title)."""
-    if rel == CONTAINED:
-        at = _contains(t, r)
-        extra = list(t[:at]) + list(t[at + len(r) :]) if at >= 0 else []
-    elif rel == OVERLAP:
-        extra = [w for w in t if w not in set(r)]
+    """Spec 4.2: one side names an object related to the other's (a word of the designation lexicon among the words
+    that side has beyond the other, or a lexicon phrase that only one side holds)."""
+    if rel == SHORTER:
+        cited_extra, record_extra = [], _outside(r, t)
+    elif rel == LONGER:
+        cited_extra, record_extra = _outside(t, r), []
+    elif rel in (OVERLAP, DISJOINT, INCOMPARABLE):
+        cited_extra, record_extra = [w for w in t if w not in set(r)], [w for w in r if w not in set(t)]
     else:
         return False
-    if DESIGNATION_WORDS.intersection(extra):
+    if DESIGNATION_WORDS.intersection(cited_extra) or DESIGNATION_WORDS.intersection(record_extra):
         return True
-    return any(_contains(t, p) >= 0 and _contains(r, p) < 0 for p in DESIGNATION_PHRASES)
+    return any((_contains(t, p) >= 0) != (_contains(r, p) >= 0) for p in DESIGNATION_PHRASES)
 
 
 @dataclass(frozen=True)
@@ -408,8 +598,11 @@ class TitleResult:
     designation: bool
 
 
+_NOT_ESTABLISHED_BY = {LONGER: R_EXTENDED, OVERLAP: R_PARTIAL, INCOMPARABLE: R_INCOMPARABLE}
+
+
 def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
-    """Spec 4.2: the best relation over the values; designation over every CONTAINED or OVERLAP value (one designating
+    """Spec 4.2: the best relation over the values; designation over every value that is not EQUAL (one designating
     value suffices, fail closed)."""
     r = words(record) if record else []
     best: str | None = None
@@ -424,15 +617,11 @@ def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
             best = rel
     if best is None:
         return TitleResult(INSUFFICIENT, MISSING, False)
-    if designation:
-        return TitleResult(CONFLICT, best, True)
-    if best == EQUAL:
+    if designation or best == DISJOINT:
+        return TitleResult(CONFLICT, best, designation)
+    if best in (EQUAL, SHORTER):
         return TitleResult(AGREE, best, False)
-    if best in (CONTAINED, OVERLAP):
-        return TitleResult(COMPATIBLE, best, False)
-    if best == DISJOINT:
-        return TitleResult(CONFLICT, best, False)
-    return TitleResult(INSUFFICIENT, best, False)
+    return TitleResult(NOT_ESTABLISHED, best, False)
 
 
 def year_verdict(date: str | None, year: str | None, record_year: int | None) -> str:
@@ -468,6 +657,7 @@ class Comparison:
     periodical: str
     object: str
     reasons: tuple[str, ...]
+    readings: int = 1  # spec 3.1: 3 when a compared string held an invisible character
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -483,28 +673,32 @@ class Comparison:
             "pages": NOT_IN_RECORD,
             "object": self.object,
             "reasons": list(self.reasons),
+            "readings": self.readings,
         }
 
 
 NO_COMPARISON = Comparison(INSUFFICIENT, INSUFFICIENT, MISSING, False, INSUFFICIENT, INSUFFICIENT, OBJ_INSUFFICIENT, ())
+# Spec 3.1: the order in which the worse of two readings is taken.
+_SEVERITY = {MATERIAL_CONFLICT: 3, OBJ_NOT_ESTABLISHED: 2, OBJ_INSUFFICIENT: 1, OBJ_COMPATIBLE: 0}
 
 
-def compare(cited: CitedObject | None, record: RecordObject | None) -> Comparison:
-    """The bib-1 verdict of one (cited object, record) pair."""
-    if cited is None or record is None:
-        return NO_COMPARISON
-    a = authors_verdict(cited.authors, record.authors)
+def _compare_one(cited: CitedObject, record: RecordObject) -> Comparison:
+    """Spec 4 and 5 under one reading."""
+    a = authors_verdict(cited, record.authors)
     t = title_verdict(cited.titles, record.title)
     reasons = []
     if a == CONFLICT:
         reasons.append(R_AUTHORS)
-    if t.relation == DISJOINT:
+    if t.verdict == CONFLICT and t.relation == DISJOINT:
         reasons.append(R_TITLE_DISJOINT)
     if t.designation:
         reasons.append(R_RELATED)
     if reasons:
         obj = MATERIAL_CONFLICT
-    elif a == AGREE or t.verdict in (AGREE, COMPATIBLE):
+    elif t.verdict == NOT_ESTABLISHED:
+        obj = OBJ_NOT_ESTABLISHED
+        reasons.append(_NOT_ESTABLISHED_BY[t.relation])
+    elif t.verdict == AGREE:
         obj = OBJ_COMPATIBLE
     else:
         obj = OBJ_INSUFFICIENT
@@ -517,4 +711,29 @@ def compare(cited: CitedObject | None, record: RecordObject | None) -> Compariso
         periodical=periodical_verdict(cited.periodical, record.journal),
         object=obj,
         reasons=tuple(sorted(reasons)),
+    )
+
+
+def compare(cited: CitedObject | None, record: RecordObject | None) -> Comparison:
+    """The bib-2 verdict of one (described unit, record) pair: the worst of the three readings (as written, boundary,
+    joined) when a compared string holds an invisible character (spec 3.1), the single reading otherwise."""
+    if cited is None or record is None:
+        return NO_COMPARISON
+    written = _compare_one(cited, record)
+    if not any(has_invisible(s) for s in (*cited.strings(), *record.strings())):
+        return written
+    results = [written, *(_compare_one(cited.reading(m), record.reading(m)) for m in READINGS)]
+    worst = max(_SEVERITY[c.object] for c in results)
+    chosen = next(c for c in results if _SEVERITY[c.object] == worst)
+    reasons = sorted({r for c in results if _SEVERITY[c.object] == worst for r in c.reasons})
+    return Comparison(
+        authors=chosen.authors,
+        title=chosen.title,
+        title_relation=chosen.title_relation,
+        designation=chosen.designation,
+        year=chosen.year,
+        periodical=chosen.periodical,
+        object=chosen.object,
+        reasons=tuple(reasons),
+        readings=len(results),
     )

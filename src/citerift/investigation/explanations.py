@@ -114,6 +114,18 @@ REASON_TEXT = {
     "BIB_TITLE_DISJOINT": "the cited title shares no word with the record's title",
     "BIB_TITLE_RELATED_OBJECT": "the cited title names an object related to the record's work (for example a comment, "
     "reply, correction or notice)",
+    "BIBLIOGRAPHIC_CHECK_UNAVAILABLE": "the citation's own description could not be checked against the record its "
+    "identifiers reach, so the cited publication is not established",
+    "BIB_PARSE_FAILED": "the citation template could not be read as exactly one template",
+    "BIB_SOURCE_LIMIT_EXCEEDED": "the citation template is longer than the bibliographic check reads",
+    "BIB_VALUE_LIMIT_EXCEEDED": "the citation template has more title or author values than the bibliographic check "
+    "reads",
+    "BIB_DESCRIPTION_LIMIT_EXCEEDED": "the citation's description is longer than the bibliographic check reads",
+    "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED": "the citation's own description is compatible with the record its "
+    "identifiers reach but does not establish that it is the same publication",
+    "BIB_TITLE_EXTENDED": "the cited title holds the record's title and adds other words",
+    "BIB_TITLE_PARTIAL": "the cited title shares only some words with the record's title",
+    "BIB_TITLE_INCOMPARABLE": "the cited title is in another script than the record's title",
     "CURRENT_EFFECT_NOT_ESTABLISHED": "the current effect of the recorded events is not established",
     "COVERAGE_GAP_RELEVANT_ROWS": "rows of the checked sources that may concern this identifier are quarantined or "
     "carry invalid identifiers",

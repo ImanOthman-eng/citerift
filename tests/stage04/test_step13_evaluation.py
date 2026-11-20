@@ -697,7 +697,7 @@ def test_the_current_engine_is_not_the_superseded_frozen_engine() -> None:
     _require_history()
     with pytest.raises(SystemExit, match="the engine is not the frozen one"):
         RN.frozen_check(PARAMS)
-    assert dt1.TABLE_VERSION == "dt-3"
+    assert dt1.TABLE_VERSION == "dt-4"
     frozen_dt1 = _git("show", f"{FROZEN_ENGINE}:src/citerift/investigation/dt1.py")
     assert 'TABLE_VERSION = "dt-1"' in frozen_dt1
 

@@ -6,8 +6,9 @@ blob and the retained source artifact (raw blob, D-043). It never re-parses wiki
 an identifier itself (keys are exactly Stage 03's ``normalization.normalized``, produced by Stage 02's normalizer),
 never merges co-reported identifiers and never infers a negative from a missing identifier. Since dt-3 (owner decision
 D-083) it parses the named arguments of each ``citation_template`` unit's own source span into the unit's
-bibliographic description (bib-1, ``citerift.investigation.bibliographic``); Stage 03's units, spans and template
-identities are used unchanged.
+bibliographic description (bib-2 since dt-4, ``citerift.investigation.bibliographic``); Stage 03's units, spans and
+template identities are used unchanged. A description that cannot be produced (a resource bound, a parse failure) is
+recorded as unavailable with its reason, never as the absence of a description (owner decision D-086).
 
 Evidence (D-051 ids ``H(observation, pointer, kind)``), returned as individual records; the controller batches them
 (D-053):
@@ -18,8 +19,10 @@ Evidence (D-051 ids ``H(observation, pointer, kind)``), returned as individual r
   ``use_eligibility`` at ``/units/i`` (ref: the unit);
 - per identifier ``j``: ``identifier_occurrence`` at ``/identifiers/j`` with its status and key (ref: its unit, or the
   extraction identity when it has none);
-- per citation-template unit ``i`` with a description: ``cited_bibliography`` at ``/units/i`` (ref: the unit), value
-  the bib-1 fields, also carried by the unit's entry in the candidate inputs (``bibliography``).
+- per citation-template unit ``i``: ``cited_bibliography`` at ``/units/i`` (ref: the unit), value
+  ``{version: "bib-2", fields}`` or ``{version: "bib-2", unavailable: reason}``; the unit's entry in the candidate
+  inputs carries the same as ``bibliography`` (the fields or null) and ``bibliography_unavailable`` (the reason or
+  null). A unit of another kind has neither.
 
 The output blob (``candidate-inputs``) lists units, work candidates, observation keys and the lookups to make.
 A failure is ``NORMALIZE_INVALID`` (a defect of the committed input: a dangling container or unit, a schema-invalid
@@ -46,7 +49,8 @@ CONFIRMED_BOUNDARIES = frozenset({"field", "delimited", "url"})
 AMBIGUOUS_STEP = "DOI_PATH_TRAILING_SEGMENT_AMBIGUOUS"
 CO_REPORTED = "CO_REPORTED_IDENTIFIERS"
 # 2.0.0 (dt-3, owner decision D-083): every unit carries its bib-1 description (``bibliography``, null when none).
-SCHEMA_VERSION = "2.0.0"
+# 3.0.0 (dt-4, owner decisions D-086, D-087): bib-2 descriptions and ``bibliography_unavailable`` (reason or null).
+SCHEMA_VERSION = "3.0.0"
 
 
 class NormalizeInvalid(Exception):
@@ -134,18 +138,24 @@ def _key_tuple(k: Mapping[str, str]) -> tuple[str, str]:
     return (k["scheme"], k["normalized"])
 
 
-def cited_description(unit: Mapping[str, Any], source: SourceArtifact, wiki: str) -> dict[str, Any] | None:
-    """bib-1 spec 2.1: the description of a ``citation_template`` unit from its own verified source span (already
-    hashed by ``unit_span_sha256``), or None (another kind, a span that is not UTF-8, no single template)."""
+def cited_description(
+    unit: Mapping[str, Any], source: SourceArtifact, wiki: str
+) -> bibliographic.CitedObject | bibliographic.Unavailable | None:
+    """bib-2 spec 2.1: None for a unit that is not a ``citation_template`` (ABSENT); otherwise the description from
+    the unit's own verified source span (already hashed by ``unit_span_sha256``), or why it could not be produced
+    (UNAVAILABLE: a span that cannot be read or decoded, a resource bound, a parse failure)."""
     if unit.get("kind") != "citation_template":
         return None
-    span = unit["source"]
+    span = unit.get("source")
+    data: bytes | None
     try:
-        text = source.data[span["byte_start"] : span["byte_end"]].decode("utf-8")
-    except (UnicodeDecodeError, KeyError, TypeError):
-        return None
-    cited = bibliographic.cited_object(text, wiki)
-    return cited.to_json() if cited is not None else None
+        start, end = span["byte_start"], span["byte_end"]  # type: ignore[index]
+        if not (isinstance(start, int) and isinstance(end, int) and 0 <= start <= end <= len(source.data)):
+            raise TypeError("span outside the source")
+        data = source.data[start:end]
+    except (KeyError, TypeError):
+        data = None
+    return bibliographic.describe(data, wiki)
 
 
 def normalize(req: StepRequest) -> StepResult:
@@ -219,16 +229,18 @@ def _normalize(req: StepRequest) -> StepResult:
             "use_eligibility", ext_digest, pointer, [ev_unit["evidence_id"]], {"eligibility": elig, "reason": reason}
         )
         items += [ev_unit, ev_elig]
-        cited = cited_description(unit, source, root_identity["wiki"])
+        described = cited_description(unit, source, root_identity["wiki"])
         unit_evidence = {"unit": ev_unit["evidence_id"], "use_eligibility": ev_elig["evidence_id"]}
-        if cited is not None:
-            ev_bib = evidence(
-                "cited_bibliography",
-                ext_digest,
-                pointer,
-                [ev_unit["evidence_id"]],
-                {"version": bibliographic.BIB_VERSION, "fields": cited},
-            )
+        cited: dict[str, Any] | None = None
+        unavailable: str | None = None
+        if isinstance(described, bibliographic.Unavailable):
+            unavailable = described.reason
+        elif described is not None:
+            cited = described.to_json()
+        if described is not None:
+            bib_value: dict[str, Any] = {"version": bibliographic.BIB_VERSION}
+            bib_value |= {"unavailable": unavailable} if unavailable is not None else {"fields": cited}
+            ev_bib = evidence("cited_bibliography", ext_digest, pointer, [ev_unit["evidence_id"]], bib_value)
             items.append(ev_bib)
             unit_evidence["cited_bibliography"] = ev_bib["evidence_id"]
         entry = {
@@ -240,6 +252,7 @@ def _normalize(req: StepRequest) -> StepResult:
             "taint": [],
             "evidence": unit_evidence,
             "bibliography": cited,
+            "bibliography_unavailable": unavailable,
             "occurrences": [],
         }
         units.append(entry)

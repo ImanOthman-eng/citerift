@@ -193,7 +193,7 @@ def claim(cls: str = "RETRACTED_WORK_CITED") -> dict[str, Any]:
         "candidate": {"shape": "DOI", "keys": [dict(DOI)], "coherence": None},
         "class": cls,
         "rule": "D-14",
-        "table_version": "dt-3",
+        "table_version": "dt-4",
         "status": "verified_fact",
         "value": "retracted",
         "alternatives": [],
@@ -344,10 +344,10 @@ def identities(live: bool = False, extraction_status: str = "complete") -> dict[
             "export_lines": 13,
         },
         "stage04": {
-            "engine_version": "0.4.0",
-            "table_version": "dt-3",
+            "engine_version": "0.5.0",
+            "table_version": "dt-4",
             "plan_version": "plan-1",
-            "schema_version": "5.0.0",
+            "schema_version": "6.0.0",
         },
         "config": live_config() if live else bundle_config(),
         "config_digest": h("config"),
@@ -442,10 +442,10 @@ def created() -> dict[str, Any]:
             "investigation_id": "0b1e2c3d-4e5f-8a6b-9c7d-0e1f2a3b4c5d",
             "config_digest": h("config"),
             "stage04": {
-                "engine_version": "0.4.0",
-                "table_version": "dt-3",
+                "engine_version": "0.5.0",
+                "table_version": "dt-4",
                 "plan_version": "plan-1",
-                "schema_version": "5.0.0",
+                "schema_version": "6.0.0",
             },
             "migrated_from": None,
         },
@@ -558,8 +558,9 @@ def test_schemas_are_valid_2020_12_and_versioned() -> None:
                     # Step 12 (D-062): the canonical index identity (common 3, lookup observation 2). Corrective
                     # cycle (D-071): decision table dt-2 and IDENTIFIER_ROLE_COLLISION (common 4, claim 3). Final
                     # cycle (D-083): dt-3 and bib-1 (common 5, claim 4, lookup observation 3, candidate inputs 2).
-                    COMMON: "5.0.0", CLAIM: "4.0.0", P + "lookup-observation": "3.0.0",
-                    P + "candidate-inputs": "2.0.0"}  # fmt: skip
+                    # D-086/D-087: dt-4 and bib-2 (common 6, claim 5, candidate inputs 3).
+                    COMMON: "6.0.0", CLAIM: "5.0.0", P + "lookup-observation": "3.0.0",
+                    P + "candidate-inputs": "3.0.0"}  # fmt: skip
         assert s["x-citerift-version"] == expected.get(sid, "2.0.0"), sid
         assert (SCHEMAS / "investigation" / "v1" / f"{sid.removeprefix(P)}.schema.json").is_file()
 

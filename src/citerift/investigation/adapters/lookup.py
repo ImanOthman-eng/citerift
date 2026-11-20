@@ -59,7 +59,8 @@ from citerift.retraction.store import (
 )
 
 # Version 2 (D-062): the observation's index identity is the canonical Stage 02 content identity.
-# Version 3 (D-083): the observation records each event's bibliographic fields (``records``) for bib-1.
+# Version 3 (D-083): the observation records each event's bibliographic fields (``records``) for bib-1; unchanged
+# for bib-2 (dt-4).
 SCHEMA_VERSION_OBS = "3.0.0"
 RECORD_FIELDS = ("title", "authors", "journal", "original_year")
 SCHEMA_VERSION_PLAN = "1.0.0"

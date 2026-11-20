@@ -1,5 +1,6 @@
-"""The decision table dt-3 (dt-2 plus D-13a) and the coherence function kappa (SPEC 6.5, 7.1 to 7.3; MM 5.1 to 5.3):
-Stage 04 Step 9, corrected by owner decisions D-071 (dt-2, after the failed gate 04-I) and D-083 (dt-3).
+"""The decision table dt-4 (dt-2 plus D-13a, D-13b and D-13c) and the coherence function kappa (SPEC 6.5, 7.1 to 7.3;
+MM 5.1 to 5.3): Stage 04 Step 9, corrected by owner decisions D-071 (dt-2, after the failed gate 04-I), D-083 (dt-3)
+and D-086/D-087 (dt-4).
 
 This module is the pure decision core of the production detector. It reads a typed view of one work candidate
 (``Candidate``: use eligibility, shape, keys, taint, the CO_REPORTED_MULTIPLE flag and the candidate's lookups as
@@ -29,10 +30,18 @@ deciding lookup is in bib-1 MATERIAL_CONFLICT with the candidate's own bibliogra
 Such a candidate is ``UNRESOLVED_IDENTITY`` with ``BIBLIOGRAPHIC_OBJECT_CONFLICT`` and the bib-1 reasons. Every other
 case decides exactly as dt-2: D-13a can only replace a positive, never create one.
 
-The dt-3 reference model (``simulations/stage04/dt3_reference.py``) and the independent bib-1 reference
-(``bib_reference.py``) are the oracles of this code; the dt-2 model (``dt2_reference.py``) and the frozen Step 4 model
-(``dt1_reference.py``) are kept unchanged as the oracles of the frozen engines. None imports anything from here and
-this module imports nothing from them.
+dt-4 (owner decisions D-086 and D-087) compares with bib-2 (normative text
+docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC_2.md, section 6) and adds two rules after D-13a, guarded
+like D-14: **D-13b** holds when the unit's bibliographic check was UNAVAILABLE (a resource bound or a parse failure,
+never natural absence) and gives ``UNRESOLVED_IDENTITY`` with ``BIBLIOGRAPHIC_CHECK_UNAVAILABLE`` and the unavailability
+reason; **D-13c** holds when some event of the deciding lookup is NOT_ESTABLISHED (weak compatibility: a longer,
+partially overlapping or incomparable title) and gives ``UNRESOLVED_IDENTITY`` with
+``BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED`` and the bib-2 title reasons. Like D-13a they only replace a positive.
+
+The dt-4 reference model (``simulations/stage04/dt4_reference.py``) and the independent bib-2 reference
+(``bib2_reference.py``) are the oracles of this code; the dt-3, dt-2 and frozen Step 4 models (``dt3_reference.py``,
+``dt2_reference.py``, ``dt1_reference.py``) and the bib-1 reference (``bib_reference.py``) are kept unchanged as the
+oracles of the earlier engines. None imports anything from here and this module imports nothing from them.
 """
 
 from __future__ import annotations
@@ -43,7 +52,7 @@ from typing import Any
 
 from citerift.investigation import bibliographic as bib
 
-TABLE_VERSION = "dt-3"
+TABLE_VERSION = "dt-4"
 
 Q1_DOI = "Q1_DOI"
 Q1_PMID = "Q1_PMID"
@@ -62,6 +71,8 @@ NOT_FOUND_VALUE = "not_found_in_checked_sources"
 SAME_RECORD_FLAG = {"doi": "NOTICE_DOI_EQUALS_ORIGINAL", "pmid": "NOTICE_PMID_EQUALS_ORIGINAL"}
 ROLE_COLLISION = "IDENTIFIER_ROLE_COLLISION"
 BIB_CONFLICT = "BIBLIOGRAPHIC_OBJECT_CONFLICT"
+BIB_UNAVAILABLE = "BIBLIOGRAPHIC_CHECK_UNAVAILABLE"  # dt-4, D-086
+BIB_NOT_ESTABLISHED = "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED"  # dt-4, D-087
 
 # Projection forms (MM 4.5): the (status, value) shapes a guard can name. ``none`` is "no projection".
 VF, UNC, UNC_NOT_FOUND, CONF, UNAV, NONE, OTHER = "vf", "unc", "unc:not_found", "conf", "unavailable", "none", "other"
@@ -191,8 +202,11 @@ class Candidate:
     taint: tuple[str, ...]
     multi: bool
     lookups: tuple[tuple[str, Lookup], ...]  # (role, lookup) in the order Q1_DOI, Q1_PMID, Q2, absent roles left out
-    # dt-3: the unit's own bibliographic description (None for a unit without one, spec 2.1).
+    # dt-3/dt-4: the unit's own bibliographic description (None for a unit without one, bib-2 spec 2.1).
     cited: bib.CitedObject | None = None
+    # dt-4 (D-086): why the unit's bibliographic check was unavailable (a bib-2 UNAVAILABLE reason), None otherwise.
+    # At most one of ``cited`` and ``cited_unavailable`` is set (the detector refuses a unit that gives both).
+    cited_unavailable: str | None = None
 
     def lookup(self, role: str) -> Lookup | None:
         return next((lk for r, lk in self.lookups if r == role), None)
@@ -221,7 +235,7 @@ class Outcome:
     witnesses: tuple[tuple[str, int], ...] = ()  # (role, event position) of every witness in an available lookup
     conflict_role: str | None = None  # D-7: the lookup whose conflict groups give the alternatives
     upstream_role: str | None = None  # the lookup whose Stage 02 basis reasons are kept
-    # dt-3: (event position in the deciding lookup, bib-1 comparison) for every event of L, for D-13a and D-14.
+    # (event position in the deciding lookup, bib-2 comparison) for every event of L, for D-13a, D-13c and D-14.
     comparisons: tuple[tuple[int, bib.Comparison], ...] = ()
 
     @property
@@ -354,11 +368,11 @@ def role_ambiguous(c: Candidate) -> tuple[str, ...]:
     return tuple(sorted(out))
 
 
-# Bibliographic-object consistency (dt-3, owner decision D-083) --------------------------------------------------------
+# Bibliographic-object consistency (dt-3/dt-4, owner decisions D-083, D-086, D-087) -----------------------------------
 
 
 def comparisons(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
-    """The bib-1 comparison of the candidate's description with every event of a matched deciding lookup (direct or
+    """The bib-2 comparison of the candidate's description with every event of a matched deciding lookup (direct or
     bridged, in order); empty when the deciding lookup is absent or not matched."""
     lk = c.deciding
     if lk is None or lk.state != "matched":
@@ -369,6 +383,12 @@ def comparisons(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
 def bib_conflicts(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
     """The comparisons of ``comparisons`` in MATERIAL_CONFLICT (spec 5): any one blocks a positive (fail closed)."""
     return tuple((k, cmp) for k, cmp in comparisons(c) if cmp.object == bib.MATERIAL_CONFLICT)
+
+
+def bib_not_established(c: Candidate) -> tuple[tuple[int, bib.Comparison], ...]:
+    """The comparisons of ``comparisons`` that are NOT_ESTABLISHED (bib-2 spec 5): weak compatibility blocks a
+    positive."""
+    return tuple((k, cmp) for k, cmp in comparisons(c) if cmp.object == bib.OBJ_NOT_ESTABLISHED)
 
 
 def implied_pair_state(state_d: str, state_p: str, witness: bool) -> str:
@@ -475,6 +495,8 @@ RULES: tuple[tuple[str, Guard], ...] = (
     ("D-12", lambda x: x.L_is("no_record", UNC)),
     ("D-13", lambda x: any(not lk.available for _, lk in x.c.lookups)),
     ("D-13a", lambda x: x.L_is("matched", VF) and bool(bib_conflicts(x.c))),
+    ("D-13b", lambda x: x.L_is("matched", VF) and x.c.cited_unavailable is not None),
+    ("D-13c", lambda x: x.L_is("matched", VF) and bool(bib_not_established(x.c))),
     ("D-14", lambda x: x.L_is("matched", VF)),
     ("D-15", lambda x: x.L_is("notice_only", UNC)),
     ("D-16", lambda x: x.L_is("no_record", UNC_NOT_FOUND)),
@@ -543,7 +565,16 @@ def decide(c: Candidate, rules: tuple[tuple[str, Guard], ...] = RULES) -> Outcom
     elif rule == "D-13a":
         compared = comparisons(c)
         cls, upstream_role = "UNRESOLVED_IDENTITY", c.deciding_role
-        reasons = {BIB_CONFLICT, *(r for _, cmp in compared for r in cmp.reasons)}
+        reasons = {BIB_CONFLICT, *(r for _, cmp in bib_conflicts(c) for r in cmp.reasons)}
+    elif rule == "D-13b":
+        if c.cited_unavailable is None:
+            raise AssertionError("D-13b without an unavailability reason")
+        cls, upstream_role = "UNRESOLVED_IDENTITY", c.deciding_role
+        reasons = {BIB_UNAVAILABLE, c.cited_unavailable}
+    elif rule == "D-13c":
+        compared = comparisons(c)
+        cls, upstream_role = "UNRESOLVED_IDENTITY", c.deciding_role
+        reasons = {BIB_NOT_ESTABLISHED, *(r for _, cmp in bib_not_established(c) for r in cmp.reasons)}
     elif rule == "D-14":
         if L is None:
             raise AssertionError("D-14 without a deciding lookup")

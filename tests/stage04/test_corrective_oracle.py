@@ -63,7 +63,7 @@ def test_the_dt2_oracle_is_frozen() -> None:
         == hashlib.sha256((SIM / "oracle/MANIFEST.json").read_bytes()).hexdigest()
     )
     assert manifest["table_version"] == R2.TABLE_VERSION == "dt-2"
-    assert dt1.TABLE_VERSION == "dt-3"  # D-083: production moved on; the dt-2 oracle is kept unchanged
+    assert dt1.TABLE_VERSION == "dt-4"  # D-083, D-087: production moved on; the dt-2 oracle is kept unchanged
     assert manifest["cases"] == 2 * json.loads((SIM / "oracle/MANIFEST.json").read_text())["cases"]
 
 

@@ -122,7 +122,7 @@ def claim_and_set(cls: str, ev: list[str], cand: str = "cand") -> tuple[dict[str
         "candidate": {"shape": "DOI", "keys": [dict(DOI)], "coherence": None},
         "class": cls,
         "rule": "D-14",
-        "table_version": "dt-3",
+        "table_version": "dt-4",
         "status": "verified_fact",
         "value": "retracted",
         "alternatives": [],
@@ -181,7 +181,7 @@ def claim_and_set(cls: str, ev: list[str], cand: str = "cand") -> tuple[dict[str
     base["evidence_set"] = digest(value)
     base["supporting_count"] = len(value["supporting"])
     base["contradicting_count"] = len(value["contradicting"])
-    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-3", base["evidence_set"])
+    base["claim_id"] = ids.claim_id(base["cand_ref"], cls, base["rule"], "dt-4", base["evidence_set"])
     return base, value
 
 
@@ -333,7 +333,7 @@ def synthetic_report(
             "extraction": {
                 "extractor": {
                     "name": "citerift-wiki",
-                    "version": "0.4.0",
+                    "version": "0.5.0",
                     "profile": {"version": "1", "digest": h("profile")},
                     "parsers": {"wikitext": "mwparserfromhell 0.6.6", "html": "html5lib"},
                     "normalizer": "citerift-rde-normalizer/1",
