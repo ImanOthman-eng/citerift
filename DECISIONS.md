@@ -1938,3 +1938,65 @@ objects and run the historical checks in worktrees of their commits. P and P2, t
 labels, runs and scores are unchanged and are still proved from git; both evaluations stay NOT PASSED. This settles
 final-cycle reviewer findings D-01 and D-04.
 
+
+## D-085 — Freeze-3 candidate c3854b8 not accepted yet
+- Status: accepted
+- Topic: stage-04-freeze-3-not-accepted
+- Date: 2026-11-20
+- Stage: 04
+- Evidence: docs/verification/stage-04/freeze-3/FREEZE_REPORT.md; docs/verification/stage-04/freeze-3/ATTESTATION.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP2PP7zzBVkR1qLdWfXovT83` (2026-11-20T12:29:11Z). The owner does not accept
+the freeze-3 candidate `c3854b8f386d507ad129ebfb81cf96be7202549e`. Its attestation `be8a857` and CI runs 391/392 stay
+valid evidence for that candidate, but acceptance is withheld because two owner-decision findings remain scientifically
+relevant: E-02 / F-02 (the bibliographic check fails open to dt-2 when a resource or well-formedness limit prevents
+bib-1 from producing a cited description) and A-02 / G-04 (known false-compatibility paths). No P3, no seed, no draw;
+P, P2 and both historical campaigns are not modified. This remains development work only.
+
+## D-086 — The E-02 / F-02 fail-open behaviour is rejected; an unavailable bibliographic check fails closed
+- Status: accepted
+- Topic: stage-04-bib-check-unavailable-fails-closed
+- Date: 2026-11-20
+- Stage: 04
+- Evidence: docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md; docs/verification/stage-04/final-cycle/LOW_DISPOSITION.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP2PP7zzBVkR1qLdWfXovT83`. "Source over 16,384 code points, family over 64
+values, description over 4,096 code points, or an equivalent bibliography-processing inability gives no description
+and decides as under dt-2" is not accepted: it silently disables the safety layer on the input shapes most likely to
+stress it. The engine must distinguish at least (1) bibliography genuinely absent or not supplied, (2) bibliography
+successfully extracted, (3) unavailable because a configured resource bound was exceeded and (4) unavailable because
+parsing or normalisation failed; 3 and 4 are never collapsed into natural absence. A candidate that would otherwise
+reach D-14 but whose bibliographic check could not be performed (source, family-value or description limit, parser
+failure, another explicit bib-1 processing failure) is never positive: preferred class `UNRESOLVED_IDENTITY` with the
+stable general reason `BIBLIOGRAPHIC_CHECK_UNAVAILABLE` and structured detail reasons such as
+`BIB_SOURCE_LIMIT_EXCEEDED`, `BIB_VALUE_LIMIT_EXCEEDED`, `BIB_DESCRIPTION_LIMIT_EXCEEDED`, `BIB_PARSE_FAILED` (the
+smallest coherent set the architecture supports; raw exceptions are not semantics). Natural absence is not labelled a
+processing failure. The committed evidence shows why the check was unavailable, and VERIFY/replay reproduces it.
+Fail-first tests show that an oversized Garry-style conflict cannot reach D-14, and that genuine citations at the
+same boundary may abstain but never silently become positive.
+
+## D-087 — The A-02 / G-04 residual is rejected; G-04 fixed by Unicode normalisation, A-02 by a stronger object rule
+- Status: accepted
+- Topic: stage-04-bib-false-compatibility
+- Date: 2026-11-20
+- Stage: 04
+- Evidence: docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC.md; docs/verification/stage-04/final-cycle/review/REVIEW_G.md
+
+Owner message `cmsg_018VCB51nDHP6HXmLU4ea5yP2PP7zzBVkR1qLdWfXovT83`. The remaining known false-compatibility paths are
+not accepted as final freeze semantics. G-04: rendered-equivalent default-ignorable formatting characters (at least
+Unicode category Cf: soft hyphen, zero-width space, joiner, non-joiner, word joiner, BOM where applicable) are
+normalised before word comparison by a general Unicode rule, in production and in the independent reference, with
+fail-first cases (designation split by soft hyphen, by zero-width space, by a joiner; a genuine surname containing
+such a character; Arabic cases where applicable) and a proof that the normalisation creates no positive dt-3 would
+not otherwise allow. A-02: weak compatibility is not proof of publication-object identity. The known paths
+(commenter sharing a surname; no comparable author; several people packed into one `authors`/`vauthors` value with
+only one matching; a non-lexicon designation such as "Remarks"; a title that holds the record title plus further
+object-defining words) are addressed generically and fail closed, without endlessly expanding the lexicon and
+without fuzzy thresholds; a stronger equivalent rule is allowed if independent review shows it is safer. The recall
+cost is measured and reported. Because these change decision semantics after the attested candidate, a new table
+and engine identity follows dt-3 / 0.4.0; Investigation Memory of an earlier build is not reused. The 512 MiB
+journal design is not reopened (1.2x headroom kept as a limitation while the proven maximum stays under 512 MiB,
+E_L at the journal limit >= E_L, overflow stays JOURNAL_TOO_LARGE, no partial authoritative journal); 5 s p95 stays
+NOT_MET; D-064 is not weakened. Every rerun, review (no CRITICAL, HIGH or MEDIUM awaiting owner acceptance; a known
+path to an incorrect positive is not acceptable merely because the corpus has not shown it) and check of D-083 item
+13 is repeated, ending in a revised freeze-3 candidate that is not called accepted; STOP before P3.
