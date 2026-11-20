@@ -20,35 +20,37 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 S04 = HERE.parent
 TARGET_S = 5.0
-CODE_REVISION = "032bbaf434291126976c06ad10d6cddeb90408c6"
-# ``src`` and ``schemas`` of CODE_REVISION equal those of every commit the freeze-2 evidence ran from (dfee881 onwards:
-# regression, vertical slice, D-062, performance); the later commits change documents and tests only.
+CODE_REVISION = "208a8de2533acd7a31b4580f791bd548a645b4c7"
+# ``src``, ``schemas``, ``pyproject.toml`` and ``uv.lock`` of CODE_REVISION equal those of ``bb7a0cf`` (the review C
+# fixes), the code every final-cycle result, the vertical slice, D-062 and the performance measurements ran on; the
+# later commits change documents, evidence and evaluation-free tools only.
 
-# Test runs of the code revision above, after owner decisions D-072 to D-075. The P-listed test that pinned the
-# superseded engine was corrected under D-074 (it now verifies the historical freeze from git objects); no test is
-# skipped, marked or disabled.
+# Test runs of the code revision above. No test is skipped, marked or disabled. A first local run at ``d5cd4ba``
+# (3,681 passed twice) is not recorded as a Python 3.13 result: its "3.13" environment was built without
+# ``--python 3.13`` and ran Python 3.12.3 (its test report says so); both versions were rerun here.
 TESTS: dict[str, Any] = {
     "code_revision": CODE_REVISION,
     "local": {
-        "python_3_12": {"python": "3.12.3", "passed": 3382, "failed": 0, "skipped": 0, "wall": "22 min 06 s"},
-        "python_3_13": {"python": "3.13.18", "passed": 3382, "failed": 0, "skipped": 0, "wall": "20 min 38 s"},
+        "python_3_12": {"python": "3.12.3", "passed": 3681, "failed": 0, "skipped": 0, "wall": "22 min 29 s"},
+        "python_3_13": {"python": "3.13.18", "passed": 3681, "failed": 0, "skipped": 0, "wall": "21 min 18 s"},
+        "report_check": "0 problems (both; clean tree at the code revision)",
         "note": "full suite in this 4-vCPU container, both versions run at the same time",
     },
     "ci": {
-        "run_id": 44483392722,
-        "run_number": 364,
+        "run_id": 44725151080,
+        "run_number": 390,
         "conclusion": "success",
         "jobs": {
             "verify (python 3.12)": {
-                "passed": 3382,
+                "passed": 3681,
                 "failed": 0,
-                "pytest_reported": "790.06 s",
+                "pytest_reported": "1006.74 s",
                 "report": "0 problems",
             },
             "verify (python 3.13)": {
-                "passed": 3382,
+                "passed": 3681,
                 "failed": 0,
-                "pytest_reported": "1079.54 s",
+                "pytest_reported": "791.53 s",
                 "report": "0 problems",
             },
             "ci-gate": {"conclusion": "success"},
@@ -57,19 +59,24 @@ TESTS: dict[str, Any] = {
     },
     "lint": {
         "ruff_check": "All checks passed!",
-        "ruff_format": "623 files already formatted",
-        "mypy": "Success: no issues found in 95 source files",
+        "ruff_format": "698 files already formatted",
+        "mypy": "Success: no issues found in 96 source files",
         "check_schemas": "2 schemas checked, 0 problems",
         "step3_docs_check": "RESULT: PASS (0 failed)",
         "citerift_gov_check": "0 errors, 0 warnings",
         "render_status_check": "PROJECT_STATUS.md is up to date",
     },
+    "secret_scan": {
+        "project_gate_freeze_surface": "SECRET_SCAN_GATE.json: 2,274 files, 0 matches",
+        "credential_formats_all_tracked": "SECRET_SCAN.json: 7,409 files, 1 hit (test fixture placeholder URL, "
+        "tests/stage03/test_wiki_fetch_capture.py, asserted to be refused); not a secret",
+    },
 }
 
-# GitHub-hosted runner times of the corrective-cycle CI runs on code revisions (OD-S12-2: 30 minutes hard timeout).
+# GitHub-hosted runner times of the final-cycle CI runs on code revisions (OD-S12-2: 30 minutes hard timeout).
 CI_RUNTIME = [
-    {"run": 360, "commit": "99c4194", "py312_tests": "13m29s", "py313_tests": "12m16s", "result": "failure (P test)"},
-    {"run": 364, "commit": "032bbaf", "py312_tests": "13m11s", "py313_tests": "18m01s", "result": "success"},
+    {"run": 389, "commit": "18acf6f", "py312_tests": "14m23s", "py313_tests": "13m08s", "result": "success"},
+    {"run": 390, "commit": "208a8de", "py312_tests": "16m48s", "py313_tests": "13m13s", "result": "success"},
 ]
 CI_RUNTIME_FINDING = "No required job reached 30 minutes (OD-S12-2)."
 

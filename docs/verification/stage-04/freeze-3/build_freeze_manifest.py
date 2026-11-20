@@ -99,6 +99,8 @@ EVIDENCE = {
     "review_e": f"{FC}/review/REVIEW_E.md",
     "review_f": f"{FC}/review/REVIEW_F.md",
     "review_g": f"{FC}/review/REVIEW_G.md",
+    "secret_scan_gate": f"{F3}/SECRET_SCAN_GATE.json",
+    "secret_scan_formats": f"{F3}/SECRET_SCAN.json",
 }
 EXPOSURE = f"{F3}/exposure/EXPOSURE_MANIFEST.json"
 # The frozen decision semantics, by role.

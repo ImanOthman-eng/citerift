@@ -1,0 +1,238 @@
+{
+ "ci_runtime": {
+  "finding": "No required job reached 30 minutes (OD-S12-2).",
+  "policy": "OD-S12-2 (D-065)",
+  "runs": [
+   {
+    "commit": "18acf6f",
+    "py312_tests": "14m23s",
+    "py313_tests": "13m08s",
+    "result": "success",
+    "run": 389
+   },
+   {
+    "commit": "208a8de",
+    "py312_tests": "16m48s",
+    "py313_tests": "13m13s",
+    "result": "success",
+    "run": 390
+   }
+  ]
+ },
+ "code_revision": "208a8de2533acd7a31b4580f791bd548a645b4c7",
+ "d062": {
+  "operational_tests": "5 passed, 18 deselected in 1.01s",
+  "tamper_cases": 21,
+  "tamper_discrepancies": [],
+  "tamper_rejected_only_by_profile": [],
+  "two_build_failed_checks": []
+ },
+ "label": "Stage 04 final corrective cycle validation summary (freeze-3 candidate); measured, not an evaluation",
+ "performance": {
+  "bib1_cpu_s_per_development_page": {
+   "max": 0.1722,
+   "median": 0.0035,
+   "p95": 0.0384
+  },
+  "bib1_crafted_unit_under_source_bound": [
+   {
+    "cited_object": false,
+    "code_points": 4823,
+    "cpu_s": 0.551,
+    "nesting": 400
+   },
+   {
+    "cited_object": false,
+    "code_points": 15623,
+    "cpu_s": 6.542,
+    "nesting": 1300
+   }
+  ],
+  "breakdown_median_s": {
+   "file_sha256_s": 0.473,
+   "import_s": 0.225,
+   "index_verify_s": 25.511,
+   "memory_open_s": 0.925,
+   "process_wall_s": 32.935,
+   "run_s": 32.605,
+   "schema_s": 4.307,
+   "show_s": 0.965,
+   "stage02_digests_s": 6.166,
+   "unaccounted_s": 2.147
+  },
+  "cause": "the D-062 identity-verification profile of D-064 runs in every process that reaches LOOKUP (no cross-process reuse, OD-S12-1)",
+  "max_run_p95_s": 33.756,
+  "status": "NOT_MET",
+  "table": [
+   {
+    "case": "VS-1",
+    "freeze_2_run_p95_s": 30.548,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.479,
+    "run_median_s": 32.611,
+    "run_p95_s": 33.756
+   },
+   {
+    "case": "VS-2",
+    "freeze_2_run_p95_s": 26.547,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.494,
+    "run_median_s": 29.32,
+    "run_p95_s": 31.708
+   },
+   {
+    "case": "VS-3a",
+    "freeze_2_run_p95_s": 25.96,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.854,
+    "run_median_s": 26.844,
+    "run_p95_s": 27.909
+   },
+   {
+    "case": "VS-3b",
+    "freeze_2_run_p95_s": 27.865,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 27.954,
+    "run_median_s": 29.988,
+    "run_p95_s": 32.984
+   },
+   {
+    "case": "VS-4",
+    "freeze_2_run_p95_s": 25.318,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.571,
+    "run_median_s": 28.358,
+    "run_p95_s": 28.564
+   },
+   {
+    "case": "VS-5",
+    "freeze_2_run_p95_s": 26.958,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 28.141,
+    "run_median_s": 29.618,
+    "run_p95_s": 31.539
+   },
+   {
+    "case": "VS-6a",
+    "freeze_2_run_p95_s": 25.151,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.936,
+    "run_median_s": 26.145,
+    "run_p95_s": 27.814
+   },
+   {
+    "case": "VS-6b",
+    "freeze_2_run_p95_s": 25.447,
+    "meets_target": false,
+    "n": 5,
+    "replay_p95_s": 26.82,
+    "run_median_s": 26.618,
+    "run_p95_s": 29.47
+   }
+  ],
+  "target": "warm retained investigation <= 5 s p95 (D-061, unchanged)",
+  "verification_components_median_s": {
+   "compute_digests": 6.258,
+   "derivation_problems": 14.656,
+   "file read + SHA-256 (I/O floor of one full pass)": 0.234,
+   "manifest_problems": 0.0,
+   "scan event JOIN raw_record (digests: event lines)": 0.347,
+   "scan event ORDER BY event_id (derivation compare)": 0.237,
+   "scan ident (derivation)": 0.444,
+   "scan raw_record (digests: record lines)": 0.133,
+   "scan raw_record SELECT * (derivation)": 0.131,
+   "scan title_token (derivation compare)": 0.35,
+   "structural: PRAGMA foreign_key_check": 2.006,
+   "structural: PRAGMA integrity_check": 0.901,
+   "structural_problems (all of the above + invariants)": 2.912,
+   "whole_profile (identity_verification_problems)": 23.725
+  }
+ },
+ "tests": {
+  "ci": {
+   "conclusion": "success",
+   "jobs": {
+    "ci-gate": {
+     "conclusion": "success"
+    },
+    "verify (python 3.12)": {
+     "failed": 0,
+     "passed": 3681,
+     "pytest_reported": "1006.74 s",
+     "report": "0 problems"
+    },
+    "verify (python 3.13)": {
+     "failed": 0,
+     "passed": 3681,
+     "pytest_reported": "791.53 s",
+     "report": "0 problems"
+    }
+   },
+   "pip_audit": "No known vulnerabilities found (both jobs)",
+   "run_id": 44725151080,
+   "run_number": 390
+  },
+  "code_revision": "208a8de2533acd7a31b4580f791bd548a645b4c7",
+  "lint": {
+   "check_schemas": "2 schemas checked, 0 problems",
+   "citerift_gov_check": "0 errors, 0 warnings",
+   "mypy": "Success: no issues found in 96 source files",
+   "render_status_check": "PROJECT_STATUS.md is up to date",
+   "ruff_check": "All checks passed!",
+   "ruff_format": "698 files already formatted",
+   "step3_docs_check": "RESULT: PASS (0 failed)"
+  },
+  "local": {
+   "note": "full suite in this 4-vCPU container, both versions run at the same time",
+   "python_3_12": {
+    "failed": 0,
+    "passed": 3681,
+    "python": "3.12.3",
+    "skipped": 0,
+    "wall": "22 min 29 s"
+   },
+   "python_3_13": {
+    "failed": 0,
+    "passed": 3681,
+    "python": "3.13.18",
+    "skipped": 0,
+    "wall": "21 min 18 s"
+   },
+   "report_check": "0 problems (both; clean tree at the code revision)"
+  },
+  "secret_scan": {
+   "credential_formats_all_tracked": "SECRET_SCAN.json: 7,409 files, 1 hit (test fixture placeholder URL, tests/stage03/test_wiki_fetch_capture.py, asserted to be refused); not a secret",
+   "project_gate_freeze_surface": "SECRET_SCAN_GATE.json: 2,274 files, 0 matches"
+  }
+ },
+ "vertical_slice": {
+  "cases": [
+   "VS-1",
+   "VS-2",
+   "VS-3a",
+   "VS-3b",
+   "VS-4",
+   "VS-5",
+   "VS-6a",
+   "VS-6b"
+  ],
+  "extras": [
+   "VS-7",
+   "VS-8",
+   "VS-9",
+   "VS-10",
+   "checkpoint",
+   "I-2"
+  ],
+  "failed_checks": {},
+  "machine": "x86_64, 4 CPUs",
+  "python": "3.12.3"
+ }
+}
