@@ -36,27 +36,46 @@ title word.
 
 ## 2. Development survey (descriptive, used to set no threshold)
 
-Reproducible with `scripts/survey_pairs.py` (read-only; Stage 02 index path and an output path outside the repository
-as arguments; section 5). Over the 411 revisions with a committed source artifact (232 + 80 + 100, one development
-bundle, `en-614753-a1`, has no source artifact), every citation template whose `doi` or `pmid` reaches a Stage 02 event
-as an original identifier gives 243 (citation, event) pairs (28 development, 99 evaluation 1, 116 evaluation 2). Each
-pair is described by the bib-1 code itself (specification sections 2 to 5):
+Reproducible with `scripts/survey_pairs.py` (read-only; arguments: the Stage 02 index and an output path; section 5).
+The committed output is `lows/survey_pairs.json` (code commit `14fe609`, verdicts and ids only). Over the 411
+revisions with a committed source artifact (232 + 80 + 100; one development bundle, `en-614753-a1`, has no source
+artifact), every citation template whose `doi` or `pmid` reaches a Stage 02 event as an original identifier gives
+243 (citation, event) pairs: 28 development, 99 evaluation 1, 116 evaluation 2. Each pair is described by the bib-1
+code itself, as amended after the independent reviews (specification sections 2 to 5):
 
 | Observation (bib-1) | Count |
 |---|---|
-| Authors AGREE / CONFLICT / INSUFFICIENT | 239 / 2 / 2 |
+| Authors AGREE / CONFLICT / INSUFFICIENT | 235 / 6 / 2 |
 | Title EQUAL / CONTAINED / OVERLAP / DISJOINT | 165 / 61 / 17 / 0 |
-| CONTAINED or OVERLAP with a designation | 2 |
+| CONTAINED or OVERLAP with a designation | 4 |
 | Year SAME / DIFFERENT / INSUFFICIENT | 223 / 19 / 1 |
-| Object COMPATIBLE / MATERIAL_CONFLICT | 240 / 3 |
+| Object COMPATIBLE / MATERIAL_CONFLICT | 234 / 9 |
 | Stage 02 events with an Arabic-script title (whole snapshot, 73,356 events) | 0 |
 | Stage 02 events with empty authors (whole snapshot) | 0 |
 
-The three MATERIAL_CONFLICT pairs are the two units of section 1 (`en-27958530` / `ev-0071523`: authors disjoint and
-a related-object designation; `ar-10305362` / `ev-0073139`: authors disjoint) and the evaluation-1 JASIST unit
-(`en-39868218` / `ev-0033558`: "Withdrawal:" designation, authors agreeing), which dt-2 already decides by D-10 (role
-collision) before D-13a is reached. No other pair is changed: the recall cost of bib-1 on this development evidence is
-nil beyond the two misattributions it is meant to stop (`REGRESSION.md` gives the claim-level effect).
+The nine MATERIAL_CONFLICT pairs are of two kinds. The pairs were read by hand and, as design-exposed articles,
+are in exposure manifest v3. No label, adjudication or score was read.
+
+- **A different publication object (the layer's purpose), 3 pairs:**
+  - `en-27958530` / `ev-0071523`: the P2 failure of section 1. Authors are disjoint and the title carries a
+    related-object designation.
+  - `ar-10305362` / `ev-0073139`: a Cell paper cited with another paper's DOI. Authors are disjoint.
+  - `en-39868218` / `ev-0033558`: the evaluation-1 JASIST unit, with a "Withdrawal:" designation. dt-2 already
+    decides it by D-10 (role collision), before D-13a is reached.
+- **The retracted work itself, abstaining by the amended rules (recall cost, fail closed), 6 pairs in 5
+  citations.** Specification section 9 states each cost:
+  - `en-3202774-a1` / `ev-0033785`: the record lists one author of a nine-author guideline.
+  - `en-41008786`: the record misspells a co-author ("Perdersen"). This gives 2 pairs, one per event of the key.
+  - `en-83484354` / `ev-0045778`: a cited surname ends in a Cyrillic letter.
+  - `ar-1651067` and `en-21293835` / `ev-0056669`: the citation says "Letter: Cello scrotum". The retracted work is
+    that letter, and the record title omits the genre word.
+
+The first draft of bib-1 (`59f2ad0`) conflicted on the first kind only. The amendments that closed reviewer finding
+A-02 bring the other six pairs: every comparable cited author must name a record surname, and genre words are in the
+lexicon. They trade these abstentions for a lower rate of accidental compatibility (`PERFORMANCE_AND_BOUNDS.md`
+section 4). **These are in-sample observations on 243 design-exposed pairs, which include both failed campaigns.
+They are development evidence only and no estimate of recall or precision.** The claim-level effect is in
+`REGRESSION.md`.
 
 An earlier exploratory pass over the same 243 pairs (before the specification, with ad hoc folding) found that the
 titles of one object vary (typographic variants, Greek letters spelled out, "(Pub 2)" in Retraction Watch, publisher
@@ -73,9 +92,10 @@ What the survey shows, and how the specification uses it:
   shared word).
 - Publication years of the same object differ by one or more in 19 of 243 pairs. Year is recorded, never decisive.
 - Leading designations occur on genuine citations of the record's own object: "RETRACTED:" / "Retracted article:"
-  (status watermarks of the work itself) and "Letter:" (`Cello scrotum` is itself a retracted letter). A designation
-  can therefore only count where it names a *relation to another object* (section 4 of the specification), never a
-  genre or a status.
+  (status watermarks of the work itself) and "Letter:" (`Cello scrotum` is itself a retracted letter). Status words
+  are therefore not in the lexicon. Genre words ("letter", "editorial") are, after reviewer finding A-02: a letter
+  or editorial about a work must not be read as the work. That costs the Cello scrotum citation (above), a stated
+  recall cost (specification section 9).
 
 ## 3. Architecture review (item 2)
 
@@ -114,6 +134,6 @@ See `BUILD_VS_ADOPT.md`. No new dependency is adopted: the comparison uses only 
 
 ## 5. Reproduction
 
-`scripts/survey_pairs.py` (read-only; arguments: the Stage 02 index `rw-2f116e9ffed718e6` and an output path outside
-the repository) recomputes the table of section 2 from the committed bundles. It reads the index only through
+`scripts/survey_pairs.py` (read-only; arguments: the Stage 02 index `rw-2f116e9ffed718e6` and an output path)
+recomputes the table of section 2 from the committed bundles (committed output `lows/survey_pairs.json`). It reads the index only through
 `citerift.retraction.query.Index` and reads no label, adjudication or score.

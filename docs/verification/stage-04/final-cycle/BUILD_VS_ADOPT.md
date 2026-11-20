@@ -43,7 +43,7 @@ dependencies only); 6 maintenance; 7 security surface; 8 Python 3.12/3.13 compat
 | grobid-client-python (GROBID) | client for the GROBID reference-parsing service | 0.2.2, 2026-11-06 | not stated on PyPI (not verified) | requests, dateparser, beautifulsoup4, lxml | active | needs a GROBID server (Java) | not verified | a service to run | depends on a server and its model version | a server over HTTP | free-text parsing | a Java service and a network hop | not deterministic across model versions | out of scope; network | **REJECT** |
 | habanero | Crossref API client | 2.9.2, 2026-06-17 | MIT | httpx2, packaging, tqdm, urllib3 | active | network client | `>=3.10`; not run | free (rate-limited API) | depends on live API | Crossref API | record metadata from Crossref | a live network source at decision time | not reproducible offline | the record side already comes from Stage 02 (accepted interface) | **REJECT** (network; not needed) |
 | pybtex / citeproc-py | BibTeX parsing / CSL formatting | 0.26.1, 2026-04-03 / 0.12.3, 2026-11-12 | MIT / BSD-2-Clause-Views | latexcodec, pyyaml / lxml | active | parsers of their own formats | not run | free | could be pinned | none | none (other formats; formatting, not comparison) | unrelated data models | not evaluated | out of scope | **REJECT** |
-| Wikipedia CS1 configuration (`Module:Citation/CS1/Configuration`, en rev 1384336575, ar rev 76424085) | the wikis' own parameter-alias tables | revisions of 2026-11-07 and 2026-09-03 | wiki content (CC BY-SA 4.0); used here as interface facts (parameter names) | none | maintained by the wiki communities | data only, read once, hashed | n/a | free | content SHA-256 and revision id recorded in `bib-profile-1.json` | read once (2026-11-19), never at run time | the alias lists (hand-made lists would miss aliases) | a profile file in the engine identity | the profile is checked equal to an independently extracted one | better than a hand-made list | **ADAPT** (parameter names extracted into a pinned, attributed profile) |
+| Wikipedia CS1 configuration (`Module:Citation/CS1/Configuration`, en rev 1384336575, ar rev 76424085) | the wikis' own parameter-alias tables | revisions of 2026-11-07 and 2026-09-03 | wiki content (CC BY-SA 4.0); used here as interface facts (parameter names) | none | maintained by the wiki communities | data only, read once, hashed | n/a | free | content SHA-256 and revision id recorded in `bib-profile-1.json` | read once (2026-11-19), never at run time | the alias lists (hand-made lists would miss aliases) | a profile file pinned by SHA-256 in the engine code (`PROFILE_SHA256`; another profile is refused) | the profile is checked equal to an independently extracted one | better than a hand-made list | **ADAPT** (parameter names extracted into a pinned, attributed profile) |
 
 ## 4. Decision
 
@@ -56,7 +56,8 @@ be reproducible offline; copyleft candidates are not needed, so no owner licence
 
 Note for the owner: the profile copies parameter names (interface identifiers) from CC BY-SA wiki modules, with
 attribution by page and revision. We treat names of template parameters as functional facts; if the owner prefers,
-the profile can carry an explicit CC BY-SA notice without any change to the alias data (the profile digest, part of the engine identity, would change).
+the profile can carry an explicit CC BY-SA notice without any change to the alias data (the profile bytes, pinned by `PROFILE_SHA256` in the engine code, would change, which needs a new engine version;
+reviewer findings A-03, D-02).
 
 ## 5. Verification
 

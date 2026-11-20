@@ -390,3 +390,19 @@ def test_a04_bridged_events_alone_never_give_a_positive(tmp_path: Path) -> None:
     out = dt1.decide(dt1.Candidate("CITED", None, "PMID", None, "8", (), False, ((dt1.Q1_PMID, lk),), None))
     assert out.cls != "RETRACTED_WORK_CITED", out
     assert out.rule != "D-14" or out.cls == "CORRECTION_CITED", out
+
+
+def test_the_profile_and_parser_pins_belong_to_engine_0_4_0() -> None:
+    """Reviewer finding D-02: a profile or parser change is a code change and needs a new engine version; this test
+    pins the three together, so changing one without the others fails here."""
+    import hashlib
+
+    import citerift.investigation as ci
+
+    raw = (REPO / "src" / "citerift" / "investigation" / "data" / "bib-profile-1.json").read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == B.PROFILE_SHA256
+    assert (ci.__version__, B.PROFILE_SHA256, B.PARSER_VERSION) == (
+        "0.4.0",
+        "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f",
+        "0.7.2",
+    )
