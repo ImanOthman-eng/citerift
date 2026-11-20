@@ -292,7 +292,7 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
   bound (16,384 code points, for example with a long `quote`), above the step 6 bounds, or one the parser raises on
   (corpus case `oversized-source`; reviewer finding F-02). These are resource and well-formedness bounds; the
   development maximum is 5,722 code points, and the development maximum of one family is 56 values, against the
-  bound of 64. A crafted unit just under the step 1 bound can still cost seconds of parser time (5.7 s CPU for a
+  bound of 64. A crafted unit just under the step 1 bound can still cost seconds of parser time (6.5 s CPU for a
   15,623-code-point nested unit, `lows/description_sizes.json`); the performance limitation is stated in
   `PERFORMANCE_AND_BOUNDS.md`.
 

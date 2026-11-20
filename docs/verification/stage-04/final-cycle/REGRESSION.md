@@ -13,7 +13,7 @@ repository. For every work candidate, the recorded dt-3 claim is compared with t
 (`dt1.py` of the freeze-2 commit `28ba646`, read from git by blob id and checked) on the same committed inputs.
 
 Outputs: `regression/DEV_REGRESSION.json`, `CAMPAIGN_REGRESSION.json` and `P2_REGRESSION.json`. Each was merged from
-three shards that record one provenance: code commit `ce8acf4`, an empty uncommitted list, and the Stage 02 index
+three shards that record one provenance: code commit `f83d20b`, an empty uncommitted list, and the Stage 02 index
 identity. `tests/stage04/test_final_provenance.py` checks the provenance against HEAD.
 
 Checks that hold on all three sets:
@@ -61,8 +61,10 @@ compared fields. It stays positive, exactly as under dt-2.
 | evaluation 2 | `ar-1651067` / `un-00023` | `10.1136/bmj.2.5914.335-a`, PMID 4827125 | 1 event: authors AGREE, title CONTAINED with designation | the retracted letter itself; the citation adds "Letter:" (recall cost) |
 | evaluation 2 | `en-21293835` / `un-00003` | `10.1136/bmj.2.5914.335-a`, PMID 4827125 | 1 event: authors AGREE, title CONTAINED with designation | as `ar-1651067` (recall cost) |
 
-So 2 of the 7 changed claims block a different publication object, and 5 are abstentions on the retracted work
-itself. Those 5 are the recall cost of the threshold-free rules (spec section 9). The reading is an engineering
+By this engineering reading of the citation and the record (not a label; in-sample; reviewer finding C-09), 2 of the
+7 changed claims block a different publication object, and 5 are abstentions on the retracted work itself. Those 5
+are the recall cost of the threshold-free rules (spec section 9). Most of these articles belong to campaigns whose
+adjudications had been seen before this cycle, so the reading cannot be shown to be independent of them. The reading is an engineering
 inspection of the citation and the record, not a label. It is in-sample on design-exposed articles and is not an
 estimate. The 7 claims are the 9 MATERIAL_CONFLICT pairs of the development survey (`lows/survey_pairs.json`) less
 the JASIST pair, which dt-2 already decides at D-10, with `en-41008786` counted once for its two events.
@@ -91,9 +93,15 @@ changes none of them. The analysis is in `ROLE_COLLISION_STUDY.md`. D-072 stays 
 
 The corrective-cycle census tools were rerun on dt-3 (`regression/census/`): the role-collision census, the B-03
 census and the pair census. Each equals its dt-2 counterpart (`../corrective/census/`; checked by
-`test_final_provenance.py::test_the_role_collision_censuses_are_unchanged_under_dt3`). In particular, 1,472 of the
-31,506 dt-1 positive DOI+PMID pairs stay `UNRESOLVED_IDENTITY` (D-072: 1,410 retracted-work, 39 concern and 23
-correction pairs). dt-3 adds no same-work-sibling exemption (D-073).
+`test_final_provenance.py::test_the_role_collision_censuses_are_unchanged_under_dt3`). The census candidates carry no cited
+description, so bib-1 cannot act in them and the equality holds by construction (with `bc` False, dt-3 equals dt-2;
+reviewer finding C-06). It confirms that D-10 and the other rules are unchanged, not bib-1. The census results keep the
+corrective-cycle provenance of those tools (code commit, a clean engine tree, the index); the provenance test checks
+that the census tools and the engine are unchanged from that commit to HEAD. In particular, 1,472 of the 31,506 dt-1
+positive DOI+PMID pairs stay `UNRESOLVED_IDENTITY` (D-072: 1,410 retracted-work, 39 concern and 23
+correction pairs). dt-3 adds no same-work-sibling exemption (D-073), so the C-01 sibling cases are unchanged:
+one of them, `ar-3351802` / `un-00059`, is among the role-collision candidates of section 5 and stays
+`UNRESOLVED_IDENTITY` (reviewer finding C-11).
 
 ## 7. Changed claims of earlier documents
 
@@ -105,5 +113,5 @@ correction pairs). dt-3 adds no same-work-sibling exemption (D-073).
   (`lows/description_sizes.json`): a largest description of 1,804 code points and a largest family of 56 values, not
   766 and 14.
 
-Run time: three shards per set on the 4-vCPU container, about 33 min (development), 13 min (evaluation 1) and 16 min
+Run time: three shards per set on the 4-vCPU container, about 34 min (development), 13 min (evaluation 1) and 16 min
 (evaluation 2).

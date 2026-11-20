@@ -13,7 +13,7 @@ target is made.
 
 ## 2. Storage bounds (D-055 re-proved for dt-3)
 
-Source: `bounds/bounds.json`, written by `bounds/dt3_bounds.py` (code commit `ce8acf4`). The historical dt-2
+Source: `bounds/bounds.json`, written by `bounds/dt3_bounds.py` (code commit `f83d20b`). The historical dt-2
 derivation (`../review/step7/d055/`) is unchanged.
 
 | Quantity | dt-2 (D-055) | dt-3 | Limit |
@@ -51,7 +51,7 @@ here: an overflow is `BLOB_TOO_LARGE` (fail closed).
 
 ## 3. Decision cost of dt-3 (reviewer findings C-07 and E-10)
 
-Source: `lows/c07_profile.json`, written by `scripts/c07_profile.py` (code commit `ce8acf4`, run alone on the
+Source: `lows/c07_profile.json`, written by `scripts/c07_profile.py` (code commit `f83d20b`, run alone on the
 4-vCPU container). Each figure is the median of 5 runs of `dt1.decide`.
 
 | Events per lookup (synthetic PAIR, 3 lookups, full bib-1 records) | decide |
@@ -59,15 +59,15 @@ Source: `lows/c07_profile.json`, written by `scripts/c07_profile.py` (code commi
 | 10 | 0.001 s |
 | 100 | 0.013 s |
 | 300 | 0.054 s |
-| 1,000 | 0.338 s |
-| 3,000 | 2.586 s |
+| 1,000 | 0.395 s |
+| 3,000 | 2.561 s |
 
 On the snapshot's largest keys (top 5 DOIs and PMIDs by event count, decided on the production LOOKUP observation
 with a cited object), the slowest decision takes 0.026 s, at 145 events. The largest key (281 events) takes 0.00003 s
 because it is decided at D-9, before any scan.
 
 **Extrapolation (inference, not measured).** Scaled as n² from the 3,000-event point, a lookup at the storage bound's
-25,753 events would take about 190 s per decision, and one at the refusal point of 32,030 events about 295 s. Such a
+25,753 events would take about 190 s per decision, and one at the refusal point of 32,030 events about 290 s. Such a
 lookup does not exist on the snapshot (largest key: 281 events), but a future snapshot or a crafted index could hold
 one. The cost is CPU time inside one investigation; the decision stays correct, and it does not bypass any bound.
 
@@ -80,7 +80,7 @@ here and in the LOW table (E-10); restructuring it later needs a differential pr
 
 ## 4. How often bib-1's author rule agrees by accident (reviewer finding A-02)
 
-Source: `lows/author_coincidence.json` (`scripts/author_coincidence.py`, code commit `ce8acf4`). Over 20,000 seeded
+Source: `lows/author_coincidence.json` (`scripts/author_coincidence.py`, code commit `f83d20b`). Over 20,000 seeded
 random pairs of Stage 02 records with different author strings, record a's names were cited against record b:
 
 | Rule | Pairs whose authors AGREE by accident |
@@ -96,7 +96,7 @@ The title verdict and the designation check apply independently.
 
 ## 5. Size of the cited descriptions and bib-1 parse time (reviewer findings A-08 and E-02)
 
-Source: `lows/description_sizes.json` (`scripts/description_sizes.py`, code commit `ce8acf4`, run alone). The tool
+Source: `lows/description_sizes.json` (`scripts/description_sizes.py`, code commit `f83d20b`, run alone). The tool
 takes the units from the Stage 03 extractor, as production does, over the 411 development revisions with a source
 (232 + 80 + 100, design-exposed; one bundle has no source). It reads no label.
 
@@ -111,10 +111,11 @@ The value bound is near the development maximum. A citation that lists more than
 its unit decides as under dt-2 (spec section 9).
 
 bib-1 process time per page (all `cited_object` calls of one revision, that is, the bib-1 share of NORMALIZE): median
-0.0034 s, p95 0.048 s, maximum 0.200 s. This is small next to the about 18 s of `verify_index_identity` (section 1).
+0.0035 s, p95 0.038 s, maximum 0.172 s. This is small next to the about 18 s of `verify_index_identity` (section 1).
 A crafted unit just under the step 1 bound (nested links and templates, the shape of reviewer finding E-02) costs
-0.46 s CPU at 4,823 code points and 5.7 s at 15,623 code points. A page of such units could therefore cost minutes
-of NORMALIZE time; that is a stated performance limitation, not a correctness one (such a unit has no description).
+0.55 s CPU at 4,823 code points and 6.5 s at 15,623 code points in the committed run (an earlier run of the same
+tool gave 0.46 s and 5.7 s). A page of such units could therefore cost minutes of NORMALIZE time; that is a stated
+performance limitation, not a correctness one (such a unit has no description).
 
 ## 6. Limitations
 
@@ -124,5 +125,5 @@ of NORMALIZE time; that is a stated performance limitation, not a correctness on
 - LOOKUP v3 has a measured rho of 13.07, with no analytic bound.
 - The decision is quadratic in a lookup's events (C-07), harmless at the real maximum.
 - The Step 8 candidate-inputs terms have no derived bound (E-09). Overflow fails closed.
-- A crafted citation just under the 16,384-code-point bound costs about 5.7 s of parser time; a citation above it,
-  or with more than 64 values in one family, has no description and decides as under dt-2.
+- A crafted citation just under the 16,384-code-point bound cost 6.5 s of parser time in the committed run; a
+  citation above it, or with more than 64 values in one family, has no description and decides as under dt-2.

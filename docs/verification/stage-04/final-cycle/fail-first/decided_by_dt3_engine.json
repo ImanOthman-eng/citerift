@@ -630,6 +630,56 @@
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
   },
+  "surrogate-in-author-garry": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-13a",
+   "class": "UNRESOLVED_IDENTITY",
+   "reasons": [
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+    "BIB_AUTHORS_DISJOINT",
+    "BIB_TITLE_RELATED_OBJECT"
+   ]
+  },
+  "surrogate-in-title-garry": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-13a",
+   "class": "UNRESOLVED_IDENTITY",
+   "reasons": [
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+    "BIB_AUTHORS_DISJOINT",
+    "BIB_TITLE_RELATED_OBJECT"
+   ]
+  },
+  "surrogate-in-author-commenter": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-13a",
+   "class": "UNRESOLVED_IDENTITY",
+   "reasons": [
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+    "BIB_AUTHORS_DISJOINT"
+   ]
+  },
+  "surrogate-in-author-genuine": {
+   "expect_object": "COMPATIBLE",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "caps-surname-commenter": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-13a",
+   "class": "UNRESOLVED_IDENTITY",
+   "reasons": [
+    "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+    "BIB_AUTHORS_DISJOINT"
+   ]
+  },
+  "inline-designation-joined": {
+   "expect_object": "COMPATIBLE",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
   "collaboration-param-ignored": {
    "expect_object": "COMPATIBLE",
    "rule": "D-14",
@@ -638,11 +688,11 @@
   }
  },
  "engine_source": {
-  "commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+  "commit": "f83d20be70aef42c93fd1fe290a613c29e953109",
   "path_in_repository": "src/"
  },
  "provenance": {
-  "code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+  "code_commit": "f83d20be70aef42c93fd1fe290a613c29e953109",
   "checked_paths": [
    "src",
    "schemas",
@@ -654,6 +704,7 @@
    "docs/verification/stage-04/evaluation-p2-campaign",
    "docs/verification/stage-04/corrective/regression",
    "docs/verification/stage-04/review/step7",
+   "docs/verification/stage-03",
    "pyproject.toml",
    "uv.lock"
   ],

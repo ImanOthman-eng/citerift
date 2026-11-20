@@ -37,8 +37,8 @@ title word.
 ## 2. Development survey (descriptive, used to set no threshold)
 
 Reproducible with `scripts/survey_pairs.py` (read-only; arguments: the Stage 02 index and an output path; section 5).
-The committed output is `lows/survey_pairs.json` (code commit `ce8acf4`, after the review F fixes, verdicts and
-ids only; the same 9 conflicts as before those fixes). Over the 411 revisions with a committed source artifact
+The committed output is `lows/survey_pairs.json` (code commit `f83d20b`, after the review F and C fixes, verdicts
+and ids only; the same 9 conflicts as before those fixes). Over the 411 revisions with a committed source artifact
 (232 + 80 + 100; one development bundle, `en-614753-a1`, has no source artifact), every citation template whose `doi` or `pmid` reaches a Stage 02 event as an original identifier gives
 243 (citation, event) pairs: 28 development, 99 evaluation 1, 116 evaluation 2. Each pair is described by the bib-1
 code itself, as amended after the independent reviews (specification sections 2 to 5):

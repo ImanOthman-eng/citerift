@@ -112,12 +112,12 @@ def test_p2_keeps_the_historical_gates_allocation_expansion_and_retrieval() -> N
 # ------------------------------------------------------------------------------------------------ engine identity
 
 
-# Final corrective cycle (D-083), PENDING OWNER DECISION (decision card "Allow the two pre-registered test files to
-# check the old engines from git?", recommended option "Amend both, D-074 style"; no owner answer is recorded yet, and
-# this amendment is reverted if the owner keeps the file byte-identical): the working tree is no longer the freeze-2
-# engine (dt-3 replaced it), so the frozen-engine checks are proved in their historical context. P2's own
-# tools at the P2 commit run, as a ``python -I`` subprocess, in a worktree of that commit with its own ``src`` first on
-# the path. P2, its files, its runs and its scores are not changed; the P2 bytes of this file are proved from git.
+# Final corrective cycle (D-083), owner decision D-084 (decision card "Allow the two pre-registered test files to
+# check the old engines from git?", option "Amend both, D-074 style", chosen 2026-11-20): the working tree is no
+# longer the freeze-2 engine (dt-3 replaced it), so the frozen-engine checks are proved in their historical context.
+# P2's own tools at the P2 commit run, as a ``python -I`` subprocess, in a worktree of that commit with its own ``src``
+# first on the path. P2, its files, its runs and its scores are not changed; the P2 bytes of this file are proved from
+# git.
 
 P2_COMMIT = "10cc9d8267942d625d0d32a4b4b72101155c0d06"
 P2_DIGEST = "5d323a67d89a521384772ce7a566520e862715ce9389227f428ff8439f74f75a"

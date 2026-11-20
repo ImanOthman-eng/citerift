@@ -127,15 +127,15 @@ LIMITATIONS = [
     "bib-1 recall costs on genuine citations (fail closed; BIBLIOGRAPHIC_SPEC.md section 9): a record that lists fewer "
     "authors than the citation, a misspelled or mixed-script record name, a genre word the citation adds to the "
     "record title ('Letter: X'), a title in another language, a conflicting bridged or co-keyed event of the same "
-    "key. On the 243 design-exposed development pairs, 6 pairs (5 citations) of the retracted work itself abstain "
-    "(in-sample, never an estimate).",
+    "key. On the 243 design-exposed development pairs, 6 pairs (5 citations) abstain that an engineering reading "
+    "of citation and record (not a label) takes for the retracted work itself (in-sample, never an estimate).",
     "bib-1 residual false compatibility (reviewer finding A-02): a commenter sharing a surname with the work's authors "
     "(3.3 % of random record pairs for one cited name), writing a note whose title holds the record's title and no "
     "lexicon word, stays positive; free-text references and identifier-only units have no description.",
     "bib-1 size bounds (spec 2.1 steps 1 and 6; reviewer findings E-02 and F-02): a citation source above 16,384 code "
     "points, a family above 64 values or a description above 4,096 code points has no description and decides as under "
     "dt-2 (development maxima: 5,722 code points, 56 values, 1,804 code points); a crafted unit under the source bound "
-    "costs up to about 5.7 s of parser time.",
+    "was measured at 6.5 s of parser time (one crafted shape, not a bound).",
     "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a "
     "notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) "
     "is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",

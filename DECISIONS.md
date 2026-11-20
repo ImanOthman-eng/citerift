@@ -1921,3 +1921,20 @@ Stage 04 tests, the dt-1, dt-2 and new oracles, the vertical slice, the 232 + 80
 evidence only), the role-collision census, B-03, C-01 and the corpus, reporting every changed claim; (12) exposure
 manifest v3; (13) a freeze-3 candidate with the full check list. STOP before any P3, seed, draw, frame capture,
 annotation or prospective run; freeze-3 is not called accepted.
+
+## D-084 — The P and P2 pre-registered tests verify their historical engines from git (D-074 style)
+- Status: accepted
+- Topic: stage-04-historical-test-amendment
+- Date: 2026-11-20
+- Stage: 04
+- Evidence: tests/stage04/test_p2_evaluation.py; tests/stage04/test_step13_evaluation.py; docs/verification/stage-04/final-cycle/LOW_DISPOSITION.md
+
+Owner answer on decision card `cmsg_018VCB51nDHP6HXmLU4ea5yPMLNjt7WVEnsz4KbEmUGNxB` ("Allow the two pre-registered
+test files to check the old engines from git?"), option "Amend both, D-074 style", chosen by the owner in the app at
+2026-11-20T07:20:25Z. Under dt-3 the working tree is no longer the freeze-2 (dt-2) or frozen (dt-1) engine, so the
+tests that asserted it would fail permanently. As D-074 did for P, `test_p2_evaluation.py` and
+`test_step13_evaluation.py` (amended in `1b0670a`) verify the historical engines `28ba646` and `b5bf8ed` from git
+objects and run the historical checks in worktrees of their commits. P and P2, their digests, files, seeds, draws,
+labels, runs and scores are unchanged and are still proved from git; both evaluations stay NOT PASSED. This settles
+final-cycle reviewer findings D-01 and D-04.
+

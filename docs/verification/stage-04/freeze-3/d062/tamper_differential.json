@@ -1,0 +1,430 @@
+{
+ "base_identity": {
+  "artifact_digest": "aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578",
+  "export_lines": 13,
+  "lookup_schema_version": "1.1.0",
+  "policy_version": "citerift-rde-policy/1.3.0",
+  "semantic_digest": "e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a",
+  "snapshot_id": "rw-1b7aa3769eb089af"
+ },
+ "cases": {
+  "content changed, metadata and manifest recomputed": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 1,
+    "problems": [
+     "DERIVED_TABLE_INCONSISTENT: event"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DERIVED_TABLE_INCONSISTENT: event (1 problems)"
+   }
+  },
+  "content changed, metadata recomputed (manifest stale)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "MANIFEST_MISMATCH: artifact_digest manifest aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 index e6ef9ee58989d4fe002428238eb2b3d89a71b49e14fa9f8371ab9f4016d0f988",
+     "DERIVED_TABLE_INCONSISTENT: event"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "MANIFEST_MISMATCH: artifact_digest manifest aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 index e6ef9ee58989d4fe002428238eb2b3d89a71b49e14fa9f8371ab9f4016d0f988; DERIVED_TABLE_INCONSISTENT: event (2 problems)"
+   }
+  },
+  "derived table mutated (ident)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 1,
+    "problems": [
+     "IDENT_INCONSISTENT at record 1"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "IDENT_INCONSISTENT at record 1 (1 problems)"
+   }
+  },
+  "derived table mutated (title_token)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 1,
+    "problems": [
+     "DERIVED_TABLE_INCONSISTENT: title_token"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DERIVED_TABLE_INCONSISTENT: title_token (1 problems)"
+   }
+  },
+  "event field with a schema-invalid type (flags is a string)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 4,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed 48afb6ff42817c1e0765f28ba7ab42b13e8ddca68cc9b0304578bf3b567773f3",
+     "DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed abf3e549b0b52631313b04f75248162b0870575ab0e06e6fe26ff0170d63a3e7",
+     "DERIVED_TABLE_INCONSISTENT: event",
+     "EVENT_INVALID ev-0000001: SCHEMA_VIOLATION at /flags: 'not-a-list' is not of type 'array'"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed 48afb6ff42817c1e0765f28ba7ab42b13e8ddca68cc9b0304578bf3b567773f3; DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed ab"
+   }
+  },
+  "event field with a schema-invalid value (original_year text)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 3,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed e1702ddd3a54ffbe9bf5a218a2bcff5a687a772917277fdf636cb9c212e009de",
+     "DERIVED_TABLE_INCONSISTENT: event",
+     "EVENT_INVALID ev-0000001: SCHEMA_VIOLATION at /original_year: 'nineteen' is not of type 'integer', 'null'"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed e1702ddd3a54ffbe9bf5a218a2bcff5a687a772917277fdf636cb9c212e009de; DERIVED_TABLE_INCONSISTENT: event (2 problems)"
+   }
+  },
+  "forged stored artifact_digest": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored 0000000000000000000000000000000000000000000000000000000000000000 recomputed aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578",
+     "MANIFEST_MISMATCH: artifact_digest manifest aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 index 0000000000000000000000000000000000000000000000000000000000000000"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored 0000000000000000000000000000000000000000000000000000000000000000 recomputed aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578; MANIFEST_MISMATCH: artifact_digest manifest aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 index 000"
+   }
+  },
+  "forged stored export_lines": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DIGEST_MISMATCH: export_lines stored 1 recomputed 13",
+     "MANIFEST_MISMATCH: export_lines manifest 13 index 1"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: export_lines stored 1 recomputed 13; MANIFEST_MISMATCH: export_lines manifest 13 index 1 (2 problems)"
+   }
+  },
+  "forged stored semantic_digest": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DIGEST_MISMATCH: semantic_digest stored 1111111111111111111111111111111111111111111111111111111111111111 recomputed e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a",
+     "MANIFEST_MISMATCH: semantic_digest manifest e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a index 1111111111111111111111111111111111111111111111111111111111111111"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: semantic_digest stored 1111111111111111111111111111111111111111111111111111111111111111 recomputed e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a; MANIFEST_MISMATCH: semantic_digest manifest e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a index 111"
+   }
+  },
+  "malformed event JSON field (notice_date)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "raised": "JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "verification raised JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+   }
+  },
+  "manifest mismatch (manifest digest edited)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 1,
+    "problems": [
+     "MANIFEST_MISMATCH: artifact_digest manifest ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff index aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "MANIFEST_MISMATCH: artifact_digest manifest ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff index aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 (1 problems)"
+   }
+  },
+  "manifest missing": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 1,
+    "problems": [
+     "MANIFEST_MISSING: no build manifest beside the index"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "MANIFEST_MISSING: no build manifest beside the index (1 problems)"
+   }
+  },
+  "queryable event mutated (title)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed e6ef9ee58989d4fe002428238eb2b3d89a71b49e14fa9f8371ab9f4016d0f988",
+     "DERIVED_TABLE_INCONSISTENT: event"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed e6ef9ee58989d4fe002428238eb2b3d89a71b49e14fa9f8371ab9f4016d0f988; DERIVED_TABLE_INCONSISTENT: event (2 problems)"
+   }
+  },
+  "queryable event mutated, same length (size-preserving SQL change)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed 27f0c5615d20a1604305331be678e3f023965c12a0e3d1b58fa8c99739ce60aa",
+     "DERIVED_TABLE_INCONSISTENT: event"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed 27f0c5615d20a1604305331be678e3f023965c12a0e3d1b58fa8c99739ce60aa; DERIVED_TABLE_INCONSISTENT: event (2 problems)"
+   }
+  },
+  "raw record and every derived table changed consistently (another artifact)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": true,
+    "events_schema_checked": 5,
+    "problem_count": 0,
+    "problems": []
+   },
+   "profile": {
+    "accepted": true,
+    "identity": {
+     "artifact_digest": "31143dba5f01eed0b2abeea5acea1e263e43d669e2206a0b27a503a09c2f6b14",
+     "export_lines": 11,
+     "lookup_schema_version": "1.1.0",
+     "policy_version": "citerift-rde-policy/1.3.0",
+     "semantic_digest": "002af76ddb91385347cb18c716c683758b3000e9940df6fd352c8ff4caf8f8bb",
+     "snapshot_id": "rw-0964e153bffe56e4"
+    },
+    "identity_vs_untampered": "different canonical identity (STALE)"
+   }
+  },
+  "raw record mutated": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 9,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed de7cc9c9963aac78df3aa1a44a3e3a1bffb3b79655ce86a8c21d1f497d2a0f01",
+     "DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 00dc2af70c52eb14272423477dff95ba46817490453a6fa80f21f3468f894570",
+     "RAW_RECORD_INCONSISTENT at record 1",
+     "IDENT_INCONSISTENT at record 1",
+     "DERIVED_TABLE_INCONSISTENT: notice"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed de7cc9c9963aac78df3aa1a44a3e3a1bffb3b79655ce86a8c21d1f497d2a0f01; DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 00"
+   }
+  },
+  "schema-invalid event field, metadata and manifest recomputed": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 2,
+    "problems": [
+     "DERIVED_TABLE_INCONSISTENT: event",
+     "EVENT_INVALID ev-0000001: SCHEMA_VIOLATION at /flags: 'not-a-list' is not of type 'array'"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DERIVED_TABLE_INCONSISTENT: event (1 problems)"
+   }
+  },
+  "size-preserving byte flip at the file midpoint": {
+   "agree": true,
+   "discrepancy": false,
+   "flipped_location": {
+    "dbstat": {
+     "cells": 6,
+     "pagetype": "leaf",
+     "table": "notice",
+     "unused_bytes": 3714
+    },
+    "offset_in_page": 2048,
+    "page": 16,
+    "page_size": 4096
+   },
+   "full_verify": {
+    "accepted": true,
+    "events_schema_checked": 6,
+    "problem_count": 0,
+    "problems": []
+   },
+   "profile": {
+    "accepted": true,
+    "identity": {
+     "artifact_digest": "aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578",
+     "export_lines": 13,
+     "lookup_schema_version": "1.1.0",
+     "policy_version": "citerift-rde-policy/1.3.0",
+     "semantic_digest": "e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a",
+     "snapshot_id": "rw-1b7aa3769eb089af"
+    },
+    "identity_vs_untampered": "same"
+   }
+  },
+  "size-preserving direct byte edit of stored row content (every place)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 3,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed bd1ffe80e6f5866b205221fc9d058b644dec4febaa95960b42b96d26897f473f",
+     "DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 23d8918df2f62e1a42a2df92f18a6f6937169264802a0e1d07c56e94e65d6680",
+     "RAW_RECORD_INCONSISTENT at record 1"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed bd1ffe80e6f5866b205221fc9d058b644dec4febaa95960b42b96d26897f473f; DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 23"
+   }
+  },
+  "size-preserving direct byte edit of stored row content (first place)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": false,
+    "events_schema_checked": 6,
+    "problem_count": 4,
+    "problems": [
+     "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed fb296777c7c6746f4f445a99cd23f79af096abcd15bf242b7da6ad744f5c3d28",
+     "DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 23d8918df2f62e1a42a2df92f18a6f6937169264802a0e1d07c56e94e65d6680",
+     "RAW_RECORD_INCONSISTENT at record 1",
+     "DERIVED_TABLE_INCONSISTENT: event"
+    ]
+   },
+   "profile": {
+    "accepted": false,
+    "code": "INDEX_CORRUPT",
+    "detail": "DIGEST_MISMATCH: artifact_digest stored aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578 recomputed fb296777c7c6746f4f445a99cd23f79af096abcd15bf242b7da6ad744f5c3d28; DIGEST_MISMATCH: semantic_digest stored e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a recomputed 23"
+   }
+  },
+  "untampered (control)": {
+   "agree": true,
+   "discrepancy": false,
+   "full_verify": {
+    "accepted": true,
+    "events_schema_checked": 6,
+    "problem_count": 0,
+    "problems": []
+   },
+   "profile": {
+    "accepted": true,
+    "identity": {
+     "artifact_digest": "aa9dd886403cda51b98f1a0dcf553ee39967bb9c008ce65f5cf13086518a2578",
+     "export_lines": 13,
+     "lookup_schema_version": "1.1.0",
+     "policy_version": "citerift-rde-policy/1.3.0",
+     "semantic_digest": "e0771f3f7354bb696ccb5765400b226517bda846285bdf987ba743ca0b0d0d0a",
+     "snapshot_id": "rw-1b7aa3769eb089af"
+    },
+    "identity_vs_untampered": "same"
+   }
+  }
+ },
+ "control_accepted_by_both": true,
+ "discrepancies": [],
+ "generated_at": "2026-11-20T06:54:35Z",
+ "label": "Stage 04 Step 12 OD-S12-1 differential tamper proof: Stage 02 complete verify vs the D-062 identity-verification profile; attributed Retraction Watch subset index (Step 8 tests); not an evaluation",
+ "operational": {
+  "cases": {
+   "failures are never reused": "test_failures_are_never_cached",
+   "file changed after the reuse entry was stored": "test_a_change_after_verification_is_verified_again",
+   "file replaced during LOOKUP": "test_a_file_replaced_during_the_lookup_fails_closed",
+   "inode replacement (same size and times) after the identity was reused": "test_a_replaced_inode_with_the_same_size_and_times_is_verified_again",
+   "size-preserving in-place change with the mtime restored, after reuse": "test_a_size_preserving_in_place_change_with_restored_mtime_is_verified_again"
+  },
+  "full_verify": "not applicable: complete verify has no process-local reuse and no during-read guard",
+  "pytest_exit_code": 0,
+  "pytest_summary": "5 passed, 18 deselected in 1.01s"
+ },
+ "python": "3.12.3",
+ "rejected_only_by_the_profile": []
+}
