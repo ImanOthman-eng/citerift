@@ -21,3 +21,16 @@ related-note-no-author-residual MATCH {"object": "COMPATIBLE", "reasons": [], "a
 caps-surname-commenter MISMATCH {"object": "COMPATIBLE", "reasons": [], "authors": "INSUFFICIENT", "title_relation": "CONTAINED", "designation": false}
    expected {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": false}
 # 8 mismatched
+## after: the engine of bb7a0cf
+# engine: <repository>/src at bb7a0cf
+lone-surrogate-garry-pages MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT", "BIB_TITLE_RELATED_OBJECT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": true}
+caps-surname-only MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": false}
+caps-surname-with-first MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT"}
+caps-vauthors MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT"}
+caps-surname-genuine MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+inline-subscript MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+inline-italic-inside-a-word MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+re-hyphen-prefix MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_TITLE_RELATED_OBJECT"], "authors": "AGREE", "title_relation": "CONTAINED", "designation": true}
+related-note-no-author-residual MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "INSUFFICIENT", "title_relation": "CONTAINED", "designation": false}
+caps-surname-commenter MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": false}
+# 0 mismatched

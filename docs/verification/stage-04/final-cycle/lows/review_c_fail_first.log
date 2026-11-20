@@ -14,3 +14,12 @@ surrogate-in-author-genuine MISMATCH {"object": "COMPATIBLE", "reasons": [], "au
    expected {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
 inline-designation-joined MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "OVERLAP", "designation": false}
 # 5 mismatched
+## after: the engine of bb7a0cf
+# engine: <repository>/src at bb7a0cf
+lone-surrogate-entity MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+surrogate-in-author-garry MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT", "BIB_TITLE_RELATED_OBJECT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": true}
+surrogate-in-title-garry MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT", "BIB_TITLE_RELATED_OBJECT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": true}
+surrogate-in-author-commenter MATCH {"object": "MATERIAL_CONFLICT", "reasons": ["BIB_AUTHORS_DISJOINT"], "authors": "CONFLICT", "title_relation": "CONTAINED", "designation": false}
+surrogate-in-author-genuine MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "EQUAL"}
+inline-designation-joined MATCH {"object": "COMPATIBLE", "reasons": [], "authors": "AGREE", "title_relation": "OVERLAP", "designation": false}
+# 0 mismatched
