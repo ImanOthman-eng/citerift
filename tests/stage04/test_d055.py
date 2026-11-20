@@ -800,7 +800,9 @@ def _fresh(tmp_path: Path) -> Path:
 # Ceiling (owner D-055: the D-053 primitive and ceiling, re-checked with the LOOKUP and DETECT entries) ----------------
 
 D055 = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-04" / "review" / "step7" / "d055"
-FINAL_BOUNDS = Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-04" / "final-cycle" / "bounds"
+FINAL_BOUNDS = (
+    Path(__file__).resolve().parents[2] / "docs" / "verification" / "stage-04" / "final-cycle" / "dt4" / "bounds"
+)
 
 
 @pytest.mark.contracts
@@ -859,15 +861,30 @@ FINAL_DIFF = json.loads(
 )
 
 
+# Revised freeze-3 (owner decisions D-086 and D-087): the identity changed again (0.4.0 / dt-3 / 5.0.0 to 0.5.0 / dt-4
+# / 6.0.0). final-cycle/dt4/identity/LOGICAL_VIEW_DIFF.json records, per scenario, the digest reproduced on the dt-3
+# tree c3854b8 (equal to the dt-3 digest above, asserted here) and the digest of this tree, with the same proof.
+DT4_DIFF = json.loads(
+    (
+        Path(__file__).resolve().parents[2]
+        / "docs/verification/stage-04/final-cycle/dt4/identity/LOGICAL_VIEW_DIFF.json"
+    ).read_text(encoding="utf-8")
+)
+
+
 def dt2_digest(which: str, name: str, baseline: str) -> str:
-    """The digest of this tree, chained from the accepted baseline through the dt-2 and the dt-3 identity changes."""
+    """The digest of this tree, chained from the accepted baseline through the dt-2, dt-3 and dt-4 identity
+    changes."""
     row = IDENTITY_DIFF["scripts"][which][name]
     assert row["old_digest"] == baseline, "the pre-correction tree must reproduce the accepted baseline"
     assert row["equal_modulo_identity_digests_and_order"] and row["counts_equal"]
     final = FINAL_DIFF["scripts"][which][name]
     assert final["old_digest"] == row["new_digest"], "the dt-2 tree must reproduce the dt-2 digest"
     assert final["equal_modulo_identity_digests_and_order"] and final["counts_equal"]
-    return str(final["new_digest"])
+    dt4 = DT4_DIFF["scripts"][which][name]
+    assert dt4["old_digest"] == final["new_digest"], "the dt-3 tree must reproduce the dt-3 digest"
+    assert dt4["equal_modulo_identity_digests_and_order"] and dt4["counts_equal"]
+    return str(dt4["new_digest"])
 
 
 @pytest.mark.reproducibility
@@ -892,23 +909,24 @@ def test_logical_content_equals_the_format_3_baseline(name: str) -> None:
 def test_format_4_bounds_are_recomputed_and_proven() -> None:
     """Recompute the format-4 bounds from the records as implemented and compare with the retained file: every record
     kind within 1 MiB, the worst-case journal of a run at the Stage 03 caps within 512 MiB, and every blob kind except
-    the ACQUIRE observation (IF-7, a Step 8 condition) within 256 MiB. Since the final corrective cycle (D-083: dt-3
-    evidence and claims) the derivation is ``final-cycle/bounds/dt3_bounds.py`` (the D-055 derivation run with the
-    dt-3 builders, reviewer finding D-07) and the retained file ``final-cycle/bounds/bounds.json``; the D-055 file and
-    generators stay as the dt-2 record. The lookup shape measurement (about a minute) is not repeated here: its
-    result ``E_L`` is taken from the retained file and the evidence census and journal are recomputed from it."""
+    the ACQUIRE observation (IF-7, a Step 8 condition) within 256 MiB. Since the revised freeze-3 (D-086, D-087: dt-4
+    evidence and claims) the derivation is ``final-cycle/dt4/bounds/dt4_bounds.py`` (the D-055 derivation run with the
+    dt-4 builders) and the retained file ``final-cycle/dt4/bounds/bounds.json``; the dt-3 files in
+    ``final-cycle/bounds`` and the D-055 file and generators stay as the dt-3 and dt-2 records. The lookup shape
+    measurement (about a minute) is not repeated here: its result ``E_L`` is taken from the retained file and the
+    evidence census and journal are recomputed from it."""
     import importlib.util
 
     from citerift.investigation.journal import JOURNAL_FORMAT, MAX_JOURNAL_BYTES, MAX_RECORD_BYTES
 
-    spec = importlib.util.spec_from_file_location("fc_dt3_bounds", FINAL_BOUNDS / "dt3_bounds.py")
+    spec = importlib.util.spec_from_file_location("fc_dt4_bounds", FINAL_BOUNDS / "dt4_bounds.py")
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     retained = json.loads((FINAL_BOUNDS / "bounds.json").read_text(encoding="utf-8"))
     assert retained["provenance"]["uncommitted"] == []
     kinds = module.record_kinds()
-    census_r = retained["journal"]["evidence_census_dt3"]
+    census_r = retained["journal"]["evidence_census_dt4"]
     census = module.evidence_census(census_r["E_L"], census_r["deciding_lookups_max"], 20000)
     assert census == census_r
     assert census["E_L"] == retained["lookup_observation_v3"]["E_L_events_per_lookup_max"]
@@ -920,8 +938,8 @@ def test_format_4_bounds_are_recomputed_and_proven() -> None:
     assert max(v["bytes"] for v in kinds.values()) <= MAX_RECORD_BYTES
     assert journal_bound["maximal"]["journal_bytes"] == retained["journal"]["maximal"]["journal_bytes"]
     assert journal_bound["maximal"]["journal_bytes"] <= MAX_JOURNAL_BYTES
-    # dt-3: two evidence items per event of every deciding lookup; the bound holds up to E_L_at_journal_limit events
-    # per lookup (more is refused at the append, JOURNAL_TOO_LARGE, fail closed).
+    # dt-3 and dt-4: two evidence items per event of every deciding lookup; the bound holds up to E_L_at_journal_limit
+    # events per lookup (more is refused at the append, JOURNAL_TOO_LARGE, fail closed).
     assert journal_bound["E_L_at_journal_limit"] >= census["E_L"]
     assert retained["journal_limit_proven"] and retained["record_limit_proven"]
     assert retained["blob_limit_proven_except_ACQUIRE_and_LOOKUP_observations"]

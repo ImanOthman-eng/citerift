@@ -1,0 +1,22 @@
+{
+ "cases": 101059584,
+ "cases_per_shape": {
+  "DOI": 196608,
+  "NONE": 3072,
+  "PAIR": 100663296,
+  "PMID": 196608
+ },
+ "distinct_decisions": 395,
+ "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+ "dt3_oracle_manifest_sha256": "1c302c78161332b548b2bf81b3fdddf022b3f70ee24c7ed59485e33e255f7652",
+ "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and, within a chunk, decision_space_dt4.iter_chunk() (the dt-2 order with bib = NONE, then with CONFLICT, UNAVAILABLE and NOT_ESTABLISHED); the value indexes dt4_decisions.json 'decisions'",
+ "files": {
+  "dt4_decisions.json": "a49bd6f40a09eb86e4e973bf30e794d72c6549db7a4750250c21f966902e69fc",
+  "dt4_table.u16le.gz": "dbf8eed469ecc2402597437c52228b954ec01d2fa3fc81e0213bd21112138930"
+ },
+ "model_digest": "574a6fccadd97b8cc3cc63362aa4d0845fce2a2e592235e84617a73249f6f74b",
+ "model_version": "dt4-reference/1",
+ "oracle_version": "dt4-oracle/1",
+ "table_raw_sha256": "c3b435e962713f463f88abdc38950b0dc975621fa14124671f58a680a3c8300d",
+ "table_version": "dt-4"
+}

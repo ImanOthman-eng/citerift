@@ -1,0 +1,182 @@
+{
+ "cases": 101059584,
+ "cases_per_shape": {
+  "DOI": 196608,
+  "NONE": 3072,
+  "PAIR": 100663296,
+  "PMID": 196608
+ },
+ "distinct_decisions": 395,
+ "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+ "dt3_oracle_manifest_sha256": "1c302c78161332b548b2bf81b3fdddf022b3f70ee24c7ed59485e33e255f7652",
+ "elapsed_s": 1105.5,
+ "model_digest": "574a6fccadd97b8cc3cc63362aa4d0845fce2a2e592235e84617a73249f6f74b",
+ "model_version": "dt4-reference/1",
+ "oracle": {
+  "cases": 101059584,
+  "cases_per_shape": {
+   "DOI": 196608,
+   "NONE": 3072,
+   "PAIR": 100663296,
+   "PMID": 196608
+  },
+  "distinct_decisions": 395,
+  "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+  "dt3_oracle_manifest_sha256": "1c302c78161332b548b2bf81b3fdddf022b3f70ee24c7ed59485e33e255f7652",
+  "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and, within a chunk, decision_space_dt4.iter_chunk() (the dt-2 order with bib = NONE, then with CONFLICT, UNAVAILABLE and NOT_ESTABLISHED); the value indexes dt4_decisions.json 'decisions'",
+  "files": {
+   "dt4_decisions.json": "a49bd6f40a09eb86e4e973bf30e794d72c6549db7a4750250c21f966902e69fc",
+   "dt4_table.u16le.gz": "dbf8eed469ecc2402597437c52228b954ec01d2fa3fc81e0213bd21112138930"
+  },
+  "model_digest": "574a6fccadd97b8cc3cc63362aa4d0845fce2a2e592235e84617a73249f6f74b",
+  "model_version": "dt4-reference/1",
+  "oracle_version": "dt4-oracle/1",
+  "table_raw_sha256": "c3b435e962713f463f88abdc38950b0dc975621fa14124671f58a680a3c8300d",
+  "table_version": "dt-4"
+ },
+ "properties": {
+  "B4_NO_NEW_POSITIVE": {
+   "checked": 1456,
+   "examples": [],
+   "statement": "a dt-4 positive (D-14) occurs only with bib = NONE, and the dt-3 oracle (bc = False) gives the same positive",
+   "violations": 0
+  },
+  "BIB_DETERMINISM": {
+   "checked": 101059584,
+   "examples": [],
+   "statement": "deciding an equal case built from fresh objects gives an identical decision",
+   "violations": 0
+  },
+  "BIB_EFFECT": {
+   "checked": 2912,
+   "examples": [],
+   "statement": "where UNAVAILABLE or NOT_ESTABLISHED changes a decision, the result is its rule (D-13b, D-13c), UNRESOLVED_IDENTITY, status uncertain, value null, disposition ABSTAIN, carrying its general reason and exactly the twin's pair reasons",
+   "violations": 0
+  },
+  "BIB_EVERY_POSITIVE_BLOCKED": {
+   "checked": 4368,
+   "examples": [],
+   "statement": "every dt-2 D-14 positive becomes D-13a, D-13b or D-13c under CONFLICT, UNAVAILABLE or NOT_ESTABLISHED respectively",
+   "violations": 0
+  },
+  "BIB_NO_NOTICE_OR_NOT_FOUND": {
+   "checked": 75794688,
+   "examples": [],
+   "statement": "no bib state yields NOTICE_CITED or NOT_FOUND_IN_CHECKED_SOURCES that the twin lacks",
+   "violations": 0
+  },
+  "BIB_NO_POSITIVE": {
+   "checked": 47370240,
+   "examples": [],
+   "statement": "a case with bib other than NONE whose deciding lookup is matched never yields a positive",
+   "violations": 0
+  },
+  "BIB_ONLY_REMOVES_POSITIVES": {
+   "checked": 50529792,
+   "examples": [],
+   "statement": "UNAVAILABLE and NOT_ESTABLISHED change a decision only where the NONE twin is a D-14 positive (D-1 to D-13 and D-15 to D-17 keep their place, class and reasons)",
+   "violations": 0
+  },
+  "BIB_REASON_IFF": {
+   "checked": 303178752,
+   "examples": [],
+   "statement": "each general bibliographic reason is a reason exactly when its state holds and the rule is its rule",
+   "violations": 0
+  },
+  "BIB_TOTAL": {
+   "checked": 101059584,
+   "examples": [],
+   "statement": "every case is decided by exactly one rule of dt-4",
+   "violations": 0
+  },
+  "EQUIVALENCE_CONFLICT_DT3": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "with bib = CONFLICT, the dt-4 decision is the dt-3 oracle's decision with bc = True",
+   "violations": 0
+  },
+  "EQUIVALENCE_NONE_DT2": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "with bib = NONE, the dt-4 decision is the dt-2 oracle's decision for the same case",
+   "violations": 0
+  },
+  "EQUIVALENCE_NONE_DT3": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "with bib = NONE, the dt-4 decision is the dt-3 oracle's decision with bc = False",
+   "violations": 0
+  }
+ },
+ "rules": {
+  "CONFLICT|D-1": 8421632,
+  "CONFLICT|D-10": 7961,
+  "CONFLICT|D-11": 419,
+  "CONFLICT|D-12": 126,
+  "CONFLICT|D-13": 2506,
+  "CONFLICT|D-13a": 1456,
+  "CONFLICT|D-15": 18,
+  "CONFLICT|D-16": 16,
+  "CONFLICT|D-17": 4446,
+  "CONFLICT|D-2": 8421632,
+  "CONFLICT|D-3": 32,
+  "CONFLICT|D-4": 224,
+  "CONFLICT|D-5": 8135568,
+  "CONFLICT|D-6": 94096,
+  "CONFLICT|D-7": 56096,
+  "CONFLICT|D-8": 118664,
+  "CONFLICT|D-9": 4,
+  "NONE|D-1": 8421632,
+  "NONE|D-10": 7961,
+  "NONE|D-11": 419,
+  "NONE|D-12": 126,
+  "NONE|D-13": 2506,
+  "NONE|D-14": 1456,
+  "NONE|D-15": 18,
+  "NONE|D-16": 16,
+  "NONE|D-17": 4446,
+  "NONE|D-2": 8421632,
+  "NONE|D-3": 32,
+  "NONE|D-4": 224,
+  "NONE|D-5": 8135568,
+  "NONE|D-6": 94096,
+  "NONE|D-7": 56096,
+  "NONE|D-8": 118664,
+  "NONE|D-9": 4,
+  "NOT_ESTABLISHED|D-1": 8421632,
+  "NOT_ESTABLISHED|D-10": 7961,
+  "NOT_ESTABLISHED|D-11": 419,
+  "NOT_ESTABLISHED|D-12": 126,
+  "NOT_ESTABLISHED|D-13": 2506,
+  "NOT_ESTABLISHED|D-13c": 1456,
+  "NOT_ESTABLISHED|D-15": 18,
+  "NOT_ESTABLISHED|D-16": 16,
+  "NOT_ESTABLISHED|D-17": 4446,
+  "NOT_ESTABLISHED|D-2": 8421632,
+  "NOT_ESTABLISHED|D-3": 32,
+  "NOT_ESTABLISHED|D-4": 224,
+  "NOT_ESTABLISHED|D-5": 8135568,
+  "NOT_ESTABLISHED|D-6": 94096,
+  "NOT_ESTABLISHED|D-7": 56096,
+  "NOT_ESTABLISHED|D-8": 118664,
+  "NOT_ESTABLISHED|D-9": 4,
+  "UNAVAILABLE|D-1": 8421632,
+  "UNAVAILABLE|D-10": 7961,
+  "UNAVAILABLE|D-11": 419,
+  "UNAVAILABLE|D-12": 126,
+  "UNAVAILABLE|D-13": 2506,
+  "UNAVAILABLE|D-13b": 1456,
+  "UNAVAILABLE|D-15": 18,
+  "UNAVAILABLE|D-16": 16,
+  "UNAVAILABLE|D-17": 4446,
+  "UNAVAILABLE|D-2": 8421632,
+  "UNAVAILABLE|D-3": 32,
+  "UNAVAILABLE|D-4": 224,
+  "UNAVAILABLE|D-5": 8135568,
+  "UNAVAILABLE|D-6": 94096,
+  "UNAVAILABLE|D-7": 56096,
+  "UNAVAILABLE|D-8": 118664,
+  "UNAVAILABLE|D-9": 4
+ },
+ "table_version": "dt-4"
+}

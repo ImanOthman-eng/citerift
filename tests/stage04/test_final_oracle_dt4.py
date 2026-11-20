@@ -41,7 +41,7 @@ import dt4_reference as R4  # noqa: E402
 import stage02_abstraction as A  # noqa: E402
 
 # Pinned digest of the dt-4 oracle manifest (decision_space_dt4.py). Changing the oracle needs a visible change here.
-ORACLE_DT4_MANIFEST_SHA256 = "PENDING"
+ORACLE_DT4_MANIFEST_SHA256 = "918b2d93e47c2a23e27392fd88e9fe828167e329d357f8c7b32ffbb5d2db96f3"
 ORACLE_DT3_MANIFEST_SHA256 = "1c302c78161332b548b2bf81b3fdddf022b3f70ee24c7ed59485e33e255f7652"
 ORACLE_DT2_MANIFEST_SHA256 = "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0"
 
@@ -101,8 +101,10 @@ def test_the_dt4_table_read_back_against_the_dt2_and_dt3_tables() -> None:
     blocked = {"UNAVAILABLE": 0, "NOT_ESTABLISHED": 0}
     for shape, use, tt in DS.chunks():
         size = 2 * DS.chunk_size(shape)
-        off2, off3, off4 = DS2.chunk_offset(shape, use, tt), DS3.chunk_offset(shape, use, tt), DS4.chunk_offset(
-            shape, use, tt
+        off2, off3, off4 = (
+            DS2.chunk_offset(shape, use, tt),
+            DS3.chunk_offset(shape, use, tt),
+            DS4.chunk_offset(shape, use, tt),
         )
         twin = tab2[off2 : off2 + size]
         block = {s: tab4[off4 + n * size : off4 + (n + 1) * size] for n, s in enumerate(DS4.STATES)}

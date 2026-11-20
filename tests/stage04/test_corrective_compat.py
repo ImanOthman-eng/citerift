@@ -71,7 +71,8 @@ def _git(*args: str, text: bool = True) -> Any:
 
 def test_freeze2_identity_is_proved_from_its_frozen_commit() -> None:
     """D-076: freeze-2 records engine 0.3.0, dt-2, schema 4.0.0, detector 3; every source and schema file it
-    lists hashes, at the frozen commit, to its recorded SHA-256. The running engine is dt-4 and differs (D-083, D-087)."""
+    lists hashes, at the frozen commit, to its recorded SHA-256. The running engine is dt-4 and differs (D-083,
+    D-087)."""
     from citerift.investigation import __version__, dt1
     from citerift.investigation.adapters.detector import DETECTOR_IDENTITY
 

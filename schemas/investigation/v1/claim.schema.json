@@ -222,7 +222,7 @@
       "then": {"properties": {"rule": {"const": "D-13b"}}}
     },
     {
-      "description": "D-13c (dt-4, owner decision D-087): the deciding lookup would give a positive, but the citation's own description does not establish the record's publication object (weak compatibility: a longer, partially overlapping or incomparable title).",
+      "description": "D-13c (dt-4, owner decision D-087): the deciding lookup would give a positive, but the citation's own description does not establish the record's publication object (weak compatibility: a shortened title other than the record's main title or a main title without an agreeing author, a longer, partially overlapping or incomparable title, title values that differ, or a genre the record's title does not name).",
       "if": {"properties": {"rule": {"const": "D-13c"}}},
       "then": {
         "properties": {
@@ -230,7 +230,7 @@
           "reasons": {
             "allOf": [
               {"contains": {"const": "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED"}},
-              {"contains": {"enum": ["BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE"]}}
+              {"contains": {"enum": ["BIB_TITLE_SHORTENED", "BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE", "BIB_TITLE_VALUES_DIFFER", "BIB_GENRE_UNMATCHED"]}}
             ]
           }
         }
@@ -238,7 +238,7 @@
     },
     {
       "description": "The not-established reasons only on D-13c.",
-      "if": {"properties": {"reasons": {"contains": {"enum": ["BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED", "BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE"]}}}},
+      "if": {"properties": {"reasons": {"contains": {"enum": ["BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED", "BIB_TITLE_SHORTENED", "BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE", "BIB_TITLE_VALUES_DIFFER", "BIB_GENRE_UNMATCHED"]}}}},
       "then": {"properties": {"rule": {"const": "D-13c"}}}
     },
     {

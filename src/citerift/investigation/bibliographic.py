@@ -33,13 +33,13 @@ from mwparserfromhell.nodes import Comment, ExternalLink, HTMLEntity, Tag, Templ
 from mwparserfromhell.wikicode import Wikicode
 
 BIB_VERSION = "bib-2"
-MAX_VALUES = 64  # spec 2.1 step 7: at most this many titles and at most this many author values (all three forms)
+MAX_VALUES = 64  # spec 2.1 step 7: at most this many title and genre values, and as many author values (all forms)
 MAX_TOTAL_CODE_POINTS = 4096  # spec 2.1 step 7: all values of all families together
 MAX_SOURCE_CODE_POINTS = 16384  # spec 2.1 step 2: a longer unit source is not parsed (resource bound; dev max 5,722)
-PROFILE_FILE = "data/bib-profile-1.json"
+PROFILE_FILE = "data/bib-profile-2.json"
 # Spec 2.2: the alias profile and the parser are part of the engine: a profile with other bytes or another parser
 # version is refused (the engine fails closed) rather than silently changing verdicts under the same identity.
-PROFILE_SHA256 = "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f"
+PROFILE_SHA256 = "7420622ecaf0047158f023b3ae81b93e55749998f199c57353f41d2d3d1cbece"
 PARSER_VERSION = "0.7.2"
 
 AGREE, CONFLICT, INSUFFICIENT, NOT_ESTABLISHED = "AGREE", "CONFLICT", "INSUFFICIENT", "NOT_ESTABLISHED"
@@ -62,8 +62,10 @@ OBJ_COMPATIBLE, OBJ_INSUFFICIENT, OBJ_NOT_ESTABLISHED, MATERIAL_CONFLICT = (
 # Spec 5: conflict reasons (bib-1) and the reasons of a title that does not establish the object (bib-2, D-087).
 R_AUTHORS, R_TITLE_DISJOINT, R_RELATED = "BIB_AUTHORS_DISJOINT", "BIB_TITLE_DISJOINT", "BIB_TITLE_RELATED_OBJECT"
 R_EXTENDED, R_PARTIAL, R_INCOMPARABLE = "BIB_TITLE_EXTENDED", "BIB_TITLE_PARTIAL", "BIB_TITLE_INCOMPARABLE"
+R_SHORTENED = "BIB_TITLE_SHORTENED"
+R_VALUES, R_GENRE = "BIB_TITLE_VALUES_DIFFER", "BIB_GENRE_UNMATCHED"  # spec 4.2 (M4) and 4.2a (M3)
 CONFLICT_REASONS = (R_AUTHORS, R_TITLE_DISJOINT, R_RELATED)
-NOT_ESTABLISHED_REASONS = (R_EXTENDED, R_PARTIAL, R_INCOMPARABLE)
+NOT_ESTABLISHED_REASONS = (R_SHORTENED, R_EXTENDED, R_PARTIAL, R_INCOMPARABLE, R_VALUES, R_GENRE)
 # Spec 2.1 (D-086): why a citation template's description could not be produced.
 U_PARSE, U_SOURCE, U_VALUES, U_DESCRIPTION = (
     "BIB_PARSE_FAILED",
@@ -78,6 +80,7 @@ REASONS = (*CONFLICT_REASONS, *NOT_ESTABLISHED_REASONS, *UNAVAILABLE_REASONS)
 # apart (spec 4.1): one person per parameter, a free-form list, a Vancouver list.
 FAMILIES: dict[str, tuple[str, ...]] = {
     "titles": ("Title", "ScriptTitle", "TransTitle", "Chapter", "ScriptChapter", "TransChapter"),
+    "genres": ("TitleType", "TitleNote"),
     "authors": ("AuthorList-Last",),
     "author_lists": ("Authors",),
     "vauthors": ("Vauthors",),
@@ -89,7 +92,7 @@ FAMILIES: dict[str, tuple[str, ...]] = {
     "pages": ("Page", "Pages"),
 }
 AUTHOR_FAMILIES = ("authors", "author_lists", "vauthors")
-COMPARED_FAMILIES = frozenset({"titles", *AUTHOR_FAMILIES})
+COMPARED_FAMILIES = frozenset({"titles", "genres", *AUTHOR_FAMILIES})
 SCRIPT_KEYS = frozenset({"ScriptTitle", "ScriptChapter"})
 _SCRIPT_PREFIX = re.compile(r"^[A-Za-z]{2,3}(-[A-Za-z0-9]+)?:")
 _WORD = re.compile(r"[^\W_]+")
@@ -157,8 +160,10 @@ _DEFAULT_IGNORABLE = (
 
 
 def invisible(c: str) -> bool:
-    """Spec 3.1: a character of general category Cf or with the property Default_Ignorable_Code_Point."""
-    return unicodedata.category(c) == "Cf" or any(a <= ord(c) <= b for a, b in _DEFAULT_IGNORABLE)
+    """Spec 3.1: a character of general category Cf, a control character (Cc) that is not whitespace, or a character
+    with the property Default_Ignorable_Code_Point."""
+    cat = unicodedata.category(c)
+    return cat == "Cf" or (cat == "Cc" and not c.isspace()) or any(a <= ord(c) <= b for a, b in _DEFAULT_IGNORABLE)
 
 
 def has_invisible(s: str) -> bool:
@@ -177,6 +182,43 @@ def joined(s: str) -> str:
 
 
 READINGS = {"boundary": boundary, "joined": joined}
+
+
+def mixed(word: str) -> bool:
+    """Spec 3.2: a word whose letters (general category L other than Lm) belong to two or more scripts; it cannot be
+    read (a designation written with look-alike letters of another script would not match the lexicon)."""
+    found = {script(c) for c in word if unicodedata.category(c).startswith("L") and unicodedata.category(c) != "Lm"}
+    return len(found) > 1 and not any(found <= one for one in _ONE_WRITING_SYSTEM)
+
+
+# Spec 3.2 (M6): the scripts one writing system mixes by design (the augmented script sets of Unicode UTS #39 5.1).
+_ONE_WRITING_SYSTEM = (
+    frozenset({"CJK", "HIRAGANA", "KATAKANA"}),
+    frozenset({"CJK", "HANGUL"}),
+    frozenset({"CJK", "BOPOMOFO"}),
+)
+# Spec 3.2 (M7): a Latin letter whose name ends in a single-letter group (small capitals, dotless, script, turned and
+# long letters) is read as that letter when a word is looked up in the designation lexicon.
+_LATIN_LOOKALIKE = re.compile(r"LATIN (?:SMALL |CAPITAL )?LETTER (?:[A-Z]+ )*([A-Z])(?: WITH [A-Z ]+)?")
+
+
+def skeleton(word: str) -> str:
+    """Spec 3.2 (M7): the word with every Latin look-alike letter read as its base letter (lexicon lookups only)."""
+    out = []
+    for c in word:
+        m = _LATIN_LOOKALIKE.fullmatch(unicodedata.name(c, ""))
+        out.append(m.group(1).casefold() if m else c)
+    return "".join(out)
+
+
+def names_designation(word: str) -> bool:
+    """Spec 3.2 (M7): the word or its skeleton is in the designation lexicon."""
+    return word in DESIGNATION_WORDS or skeleton(word) in DESIGNATION_WORDS
+
+
+def phrase_in(ws: Sequence[str], phrase: Sequence[str]) -> bool:
+    """Spec 3.2 (M7): a lexicon phrase occurs in the words or in their skeletons."""
+    return _contains(ws, phrase) >= 0 or _contains([skeleton(w) for w in ws], phrase) >= 0
 
 
 def name_words(value: str) -> set[str]:
@@ -224,6 +266,7 @@ class CitedObject:
     """The cleaned bibliographic fields of one citation-template unit (spec 2.1, DESCRIBED)."""
 
     titles: tuple[str, ...] = ()
+    genres: tuple[str, ...] = ()
     authors: tuple[str, ...] = ()
     author_lists: tuple[str, ...] = ()
     vauthors: tuple[str, ...] = ()
@@ -237,6 +280,7 @@ class CitedObject:
     def to_json(self) -> dict[str, Any]:
         return {
             "titles": list(self.titles),
+            "genres": list(self.genres),
             "authors": list(self.authors),
             "author_lists": list(self.author_lists),
             "vauthors": list(self.vauthors),
@@ -262,6 +306,7 @@ class CitedObject:
 
         return cls(
             titles=strs(raw.get("titles")),
+            genres=strs(raw.get("genres")),
             authors=strs(raw.get("authors")),
             author_lists=strs(raw.get("author_lists")),
             vauthors=strs(raw.get("vauthors")),
@@ -274,14 +319,15 @@ class CitedObject:
         )
 
     def strings(self) -> tuple[str, ...]:
-        """The compared cited strings (spec 3.1): every title and author value."""
-        return (*self.titles, *self.authors, *self.author_lists, *self.vauthors)
+        """The compared cited strings (spec 3.1): every title, genre and author value."""
+        return (*self.titles, *self.genres, *self.authors, *self.author_lists, *self.vauthors)
 
     def reading(self, mode: str) -> CitedObject:
         """Spec 3.1: the boundary or joined reading of every compared value."""
         f = READINGS[mode]
         return CitedObject(
             titles=tuple(f(v) for v in self.titles),
+            genres=tuple(f(v) for v in self.genres),
             authors=tuple(f(v) for v in self.authors),
             author_lists=tuple(f(v) for v in self.author_lists),
             vauthors=tuple(f(v) for v in self.vauthors),
@@ -382,6 +428,11 @@ def _joined(node: Any) -> bool:
     return isinstance(node, _INLINE) or (isinstance(node, Tag) and str(node.tag).strip().lower() in INLINE_TAGS)
 
 
+# Spec 2.1 step 5 (M1): a comment, and each side of a nowiki tag's text, render nothing yet may sit inside a word
+# (``Err<!-- -->atum``); written as an invisible character, section 3.1 reads them both as a boundary and as nothing.
+_RENDERS_NOTHING = "\u200b"
+
+
 def _clean(value: Any) -> str | None:
     """Spec 2.1 step 5: node by node, a removed or replaced node (template, other tag, comment, argument, heading) is a
     word boundary; text, entities, links and inline formatting tags join their neighbours as written. A lone surrogate
@@ -390,9 +441,14 @@ def _clean(value: Any) -> str | None:
     parts = []
     for node in value.nodes:
         text = Wikicode([node]).strip_code(normalize=True, collapse=True)
-        parts.append(text if _joined(node) else f" {text} ")
+        if isinstance(node, Comment):
+            parts.append(_RENDERS_NOTHING)
+        elif isinstance(node, Tag) and str(node.tag).strip().lower() == "nowiki":
+            parts.append(f"{_RENDERS_NOTHING}{text}{_RENDERS_NOTHING}")
+        else:
+            parts.append(text if _joined(node) else f" {text} ")
     cleaned = _SURROGATE.sub("�", _SPACE.sub(" ", "".join(parts)).strip())
-    return cleaned or None
+    return cleaned if joined(cleaned).strip() else None
 
 
 def describe(data: bytes | None, wiki: str) -> CitedObject | Unavailable:
@@ -424,7 +480,8 @@ def cited_object(text: str, wiki: str) -> CitedObject | Unavailable:
     if fields is None:
         return Unavailable(U_PARSE)
     # Spec 2.1 step 7: above the bounds of the committed value there is no description (never truncated).
-    if len(fields["titles"]) > MAX_VALUES or sum(len(fields[f]) for f in AUTHOR_FAMILIES) > MAX_VALUES:
+    titles = len(fields["titles"]) + len(fields["genres"])
+    if titles > MAX_VALUES or sum(len(fields[f]) for f in AUTHOR_FAMILIES) > MAX_VALUES:
         return Unavailable(U_VALUES)
     if sum(len(v) for vs in fields.values() for v in vs) > MAX_TOTAL_CODE_POINTS:
         return Unavailable(U_DESCRIPTION)
@@ -434,6 +491,7 @@ def cited_object(text: str, wiki: str) -> CitedObject | Unavailable:
 
     return CitedObject(
         titles=tuple(fields["titles"]),
+        genres=tuple(fields["genres"]),
         authors=tuple(fields["authors"]),
         author_lists=tuple(fields["author_lists"]),
         vauthors=tuple(fields["vauthors"]),
@@ -446,19 +504,36 @@ def cited_object(text: str, wiki: str) -> CitedObject | Unavailable:
     )
 
 
-def _name(param: Any) -> str | None:
-    """Spec 2.1 step 4: the parameter's name with its comments removed (MediaWiki ignores them), stripped; None when
-    the name holds any other markup (a template, a link: what it names cannot be read without expanding it)."""
-    nodes = [n for n in param.name.nodes if not isinstance(n, Comment)]
-    if not all(isinstance(n, Text) for n in nodes):
+_IGNORED = ""  # spec 2.1 step 4: a parameter that is ignored (a commented name that names no family)
+
+
+def _name(param: Any, wiki: str) -> str | None:
+    """Spec 2.1 step 4: the parameter's name, stripped; ``_IGNORED`` for a name holding comments that, once they are
+    removed, names no family (MediaWiki reads such a parameter under a name no family uses, and bib-1 read it under one
+    no alias matches: either way it is not read); None when the name holds any other markup (a template, a link: it
+    cannot be read without expanding it) or comments around a name of a family (MediaWiki reads it under that name,
+    bib-1 did not; reading it could replace a value bib-1 compared, against B4)."""
+    nodes = param.name.nodes
+    if all(isinstance(n, Text) for n in nodes):
+        return str(param.name).strip()
+    if not all(isinstance(n, (Text, Comment)) for n in nodes):
         return None
-    return "".join(str(n) for n in nodes).strip()
+    bare = "".join(str(n) for n in nodes if isinstance(n, Text)).strip()
+    return None if _family_of(wiki, bare) is not None else _IGNORED
+
+
+# Spec 2.1 step 5: tags whose content cleaning keeps as the text it renders (inline formatting, nowiki) or that render
+# no text (a line break). Any other tag in a compared value may hide what it renders (``<math>``, ``<score>``).
+READABLE_TAGS = frozenset({*INLINE_TAGS, "nowiki", "br"})
 
 
 def _hides_content(raw: Any) -> bool:
-    """Spec 2.1 step 5: the value holds, at any depth, a template call with an argument or a template parameter
-    (``{{{x}}}``): cleaning would drop words the rendered citation shows (``{{lang|en|Comments on}}``)."""
-    return any(t.params for t in raw.filter_templates(recursive=True)) or bool(raw.filter_arguments(recursive=True))
+    """Spec 2.1 step 5: the value holds, at any depth, a template or parser function (``{{lang|en|Comments on}}``,
+    ``{{lc:Comments on}}``, ``{{PAGENAME}}``: what it renders cannot be known without expanding it), a template
+    parameter (``{{{x}}}``) or a tag other than the readable ones."""
+    if raw.filter_templates(recursive=True) or raw.filter_arguments(recursive=True):
+        return True
+    return any(str(t.tag).strip().lower() not in READABLE_TAGS for t in raw.filter_tags(recursive=True))
 
 
 def _parsed(text: str, wiki: str) -> dict[str, list[str]] | None:
@@ -472,9 +547,11 @@ def _parsed(text: str, wiki: str) -> dict[str, list[str]] | None:
     for param in nodes[0].params:
         if not param.showkey:
             continue
-        name = _name(param)
+        name = _name(param, wiki)
         if name is None:
             return None
+        if name == _IGNORED:
+            continue
         # A later duplicate replaces the earlier value; the name keeps the position of its first occurrence.
         effective[name] = param.value
     fields: dict[str, list[str]] = {f: [] for f in FAMILIES}
@@ -526,14 +603,19 @@ def authors_verdict(cited: CitedObject, record: str | None) -> str:
     agrees."""
     s_r = record_surname_words(record) if record else set()
     scripts_r = _scripts(s_r)
+
+    def comparable(ws: set[str]) -> bool:
+        # A word that mixes scripts cannot be read and is compared (spec 4.1), so a look-alike name still conflicts.
+        return bool(s_r) and (bool(_scripts(ws) & scripts_r) or any(mixed(w) for w in ws))
+
     for value in (*cited.authors, *cited.author_lists, *cited.vauthors):
         ws = cited_name_words(value)
-        if _scripts(ws) & scripts_r and not ws & s_r:
+        if comparable(ws) and not ws & s_r:
             return CONFLICT
     agree = False
     for text, packed in author_parts(cited):
         ws = cited_name_words(text)
-        if not _scripts(ws) & scripts_r:
+        if not comparable(ws):
             continue  # not comparable
         if not ws & s_r:
             return CONFLICT
@@ -586,9 +668,30 @@ def designates(t: Sequence[str], r: Sequence[str], rel: str) -> bool:
         cited_extra, record_extra = [w for w in t if w not in set(r)], [w for w in r if w not in set(t)]
     else:
         return False
-    if DESIGNATION_WORDS.intersection(cited_extra) or DESIGNATION_WORDS.intersection(record_extra):
+    extra = [*cited_extra, *record_extra]
+    if any(names_designation(w) or mixed(w) for w in extra):
         return True
-    return any((_contains(t, p) >= 0) != (_contains(r, p) >= 0) for p in DESIGNATION_PHRASES)
+    return any(phrase_in(t, p) != phrase_in(r, p) for p in DESIGNATION_PHRASES)
+
+
+def genre_designates(genres: Sequence[str], record: str | None) -> bool:
+    """Spec 4.2a: a genre value (CS1 ``type``, ``medium``, ``department``, ``title-note``) names a related object when
+    it holds a lexicon word or phrase, or a word that mixes scripts, that the record's title does not hold."""
+    r = words(record) if record else []
+    for value in genres:
+        g = words(value)
+        if any((names_designation(w) or mixed(w)) and w not in r for w in g):
+            return True
+        if any(phrase_in(g, p) and not phrase_in(r, p) for p in DESIGNATION_PHRASES):
+            return True
+    return False
+
+
+def genre_unmatched(genres: Sequence[str], record: str | None) -> bool:
+    """Spec 4.2a (M3): some genre value has a word the record's title does not hold (the lexicon is not extended, so a
+    genre it does not know cannot be told from a harmless one)."""
+    r = set(words(record)) if record else set()
+    return any(w not in r for value in genres for w in words(value))
 
 
 @dataclass(frozen=True)
@@ -596,9 +699,10 @@ class TitleResult:
     verdict: str
     relation: str
     designation: bool
+    values_differ: bool = False  # spec 4.2 (M4): some value agrees and another does not
 
 
-_NOT_ESTABLISHED_BY = {LONGER: R_EXTENDED, OVERLAP: R_PARTIAL, INCOMPARABLE: R_INCOMPARABLE}
+_NOT_ESTABLISHED_BY = {SHORTER: R_SHORTENED, LONGER: R_EXTENDED, OVERLAP: R_PARTIAL, INCOMPARABLE: R_INCOMPARABLE}
 
 
 def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
@@ -607,21 +711,26 @@ def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
     r = words(record) if record else []
     best: str | None = None
     designation = False
+    agreeing = differing = 0
     for value in cited:
         t = words(value)
         if not t or not r:
             continue
         rel = relation(t, r)
         designation = designation or designates(t, r, rel)
+        if rel == EQUAL:  # spec 4.2 (M8): only an equal title agrees
+            agreeing += 1
+        else:
+            differing += 1
         if best is None or _RANK[rel] < _RANK[best]:
             best = rel
     if best is None:
         return TitleResult(INSUFFICIENT, MISSING, False)
     if designation or best == DISJOINT:
         return TitleResult(CONFLICT, best, designation)
-    if best in (EQUAL, SHORTER):
+    if agreeing and not differing:
         return TitleResult(AGREE, best, False)
-    return TitleResult(NOT_ESTABLISHED, best, False)
+    return TitleResult(NOT_ESTABLISHED, best, False, values_differ=bool(agreeing))
 
 
 def year_verdict(date: str | None, year: str | None, record_year: int | None) -> str:
@@ -686,18 +795,26 @@ def _compare_one(cited: CitedObject, record: RecordObject) -> Comparison:
     """Spec 4 and 5 under one reading."""
     a = authors_verdict(cited, record.authors)
     t = title_verdict(cited.titles, record.title)
+    designation = t.designation or genre_designates(cited.genres, record.title)
     reasons = []
     if a == CONFLICT:
         reasons.append(R_AUTHORS)
     if t.verdict == CONFLICT and t.relation == DISJOINT:
         reasons.append(R_TITLE_DISJOINT)
-    if t.designation:
+    if designation:
         reasons.append(R_RELATED)
-    if reasons:
+    conflict = bool(
+        reasons
+    )  # spec 5: authors CONFLICT, title CONFLICT (designation or DISJOINT) or a genre designation
+    if not conflict:
+        if t.verdict == NOT_ESTABLISHED:
+            reasons.append(R_VALUES if t.values_differ else _NOT_ESTABLISHED_BY[t.relation])
+        if genre_unmatched(cited.genres, record.title):
+            reasons.append(R_GENRE)
+    if conflict:
         obj = MATERIAL_CONFLICT
-    elif t.verdict == NOT_ESTABLISHED:
+    elif reasons:
         obj = OBJ_NOT_ESTABLISHED
-        reasons.append(_NOT_ESTABLISHED_BY[t.relation])
     elif t.verdict == AGREE:
         obj = OBJ_COMPATIBLE
     else:
@@ -706,7 +823,7 @@ def _compare_one(cited: CitedObject, record: RecordObject) -> Comparison:
         authors=a,
         title=t.verdict,
         title_relation=t.relation,
-        designation=t.designation,
+        designation=designation,
         year=year_verdict(cited.date, cited.year, record.original_year),
         periodical=periodical_verdict(cited.periodical, record.journal),
         object=obj,

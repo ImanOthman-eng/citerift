@@ -45,7 +45,7 @@ import dt4_reference as R4  # noqa: E402
 pytestmark = pytest.mark.unit
 
 CASES: list[dict[str, Any]] = json.loads(CORPUS.read_text(encoding="utf-8"))["cases"]
-PROFILE = BR2.load_profile(SIM / "bib-reference-profile.json")
+PROFILE = BR2.load_profile(SIM / "bib2-reference-profile.json")
 BIB1 = H.bib1()
 UNAVAILABLE = "UNAVAILABLE"
 
@@ -112,16 +112,24 @@ def test_corpus_case_production_and_reference(case: dict[str, Any]) -> None:
 
 # Generated cases ------------------------------------------------------------------------------------------------------
 
-FORMAT = ["\u00ad", "\u200b", "\u200c", "\u200d", "\u2060", "\ufeff", "\u200f", "\u061c", "\u202a"]
+# Invisible characters (spec 3.1): category Cf, and Default_Ignorable code points of other categories (a letter, an
+# unassigned code point, marks, a tag character).
+FORMAT = [
+    "\u00ad", "\u200b", "\u200c", "\u200d", "\u2060", "\ufeff", "\u200f", "\u061c", "\u202a", "\u3164", "\u2065",
+    "\ufe0f", "\u034f", "\u180b", "\U000e0041",
+]  # fmt: skip
 WORDS = [
     "Thermal", "drift", "of", "synthetic", "lattice", "sensors", "a", "field", "study", "Coastal", "erosion",
     "budgets", "Comment", "comments", "Reply", "Erratum", "Correction", "corrigendum", "Retraction", "Withdrawal",
     "Expression", "concern", "response", "to", "RETRACTED:", "Retracted", "article:", "Letter:", "Remarks", "α",
     "naïve", "Ⅻ", "x_y", "—", ":", "'", ";", ",", "and", "&", "2010", "١٩٩٩", "تعليق", "الرد", "تصحيح", "سحب",
     "دراسة", "ميدانية", "والرد", "،", "؛", "Müller", "O'Brien", "et", "al.", "et al", "Jr.", "ﬁeld", "Lindqvist",
-    "Oyelaran", "Quill", "M", "MQ", "Q.",
+    "Oyelaran", "Quill", "M", "MQ", "Q.", "و",
 ]  # fmt: skip
-MARKUP = ["''", "[[Lattice|lattice]]", "<!-- c -->", "&amp;", "{{lang|fr|terme}}", "<i>x</i>", "\n", "&#xD800;"]
+MARKUP = [
+    "''", "[[Lattice|lattice]]", "<!-- c -->", "&amp;", "{{lang|fr|terme}}", "<i>x</i>", "\n", "&#xD800;", "{{snd}}",
+    "{{{1}}}",
+]  # fmt: skip
 NAMES = [
     "Mara Q Lindqvist", "Tomas Oyelaran", "Hana Brezinova", "L Iorio", "Kam L E Hon", "محمد علي", "Sa\u00adad Ali",
 ]  # fmt: skip
@@ -131,11 +139,11 @@ TITLES = [
 EN_PARAMS = [
     "title", "script-title", "trans-title", "chapter", "author", "author1", "last", "last1", "first1", "last2",
     "people", "credits", "vauthors", "authors", "editor1", "journal", "date", "year", "volume", "pages", "doi",
-    "Title", "title ", " last3",
+    "Title", "title ", " last3", "title<!-- c -->", "{{echo|title}}",
 ]  # fmt: skip
 AR_PARAMS = [
     "عنوان", "الأخير1", "الأول1", "مؤلف", "المؤلفون", "authors", "عدة مؤلفين", "صحيفة", "تاريخ", "سنة", "title",
-    "last1",
+    "last1", "host",
 ]  # fmt: skip
 
 
@@ -229,7 +237,7 @@ def test_production_equals_the_reference_on_generated_cases() -> None:
         seen.add(got["object"])
         seen.add(f"readings={got['readings']}")
     assert differ == []
-    want = {"COMPATIBLE", "INSUFFICIENT", "NOT_ESTABLISHED", "MATERIAL_CONFLICT", "readings=1", "readings=2"}
+    want = {"COMPATIBLE", "INSUFFICIENT", "NOT_ESTABLISHED", "MATERIAL_CONFLICT", "readings=1", "readings=3"}
     assert want | set(B.UNAVAILABLE_REASONS) <= seen, seen
 
 
@@ -255,14 +263,14 @@ def test_b4_bib2_never_passes_what_bib1_refused_and_never_reads_a_failure_as_abs
     assert passes > 500, passes
 
 
-def test_b9_one_reading_without_format_characters() -> None:
+def test_b9_one_reading_without_invisible_characters() -> None:
     for wiki, source, raw in GENERATED:
         cited = B.describe(source.encode("utf-8"), wiki)
         if isinstance(cited, B.Unavailable):
             continue
         record = B.RecordObject.from_json(raw)
         strings = [*cited.strings(), *(record.strings() if record is not None else ())]
-        if not any(B.has_format(s) for s in strings):
+        if not any(B.has_invisible(s) for s in strings):
             assert B.compare(cited, record).readings == 1
 
 
@@ -446,6 +454,11 @@ class _Bib:
         self.bib = bib
 
 
+def _with_state(base: Any, bib: str) -> _With:
+    cited, reason, record = S9.bib_inputs(_Bib(bib))
+    return _With(base, cited, record, reason)
+
+
 @pytest.mark.parametrize("bib", ["CONFLICT", "UNAVAILABLE", "NOT_ESTABLISHED"])
 def test_no_bib_rule_overrides_an_earlier_rule(bib: str) -> None:
     """Spec B7: a role-collided, notice-only or unused candidate is decided exactly as with no description."""
@@ -458,7 +471,7 @@ def test_no_bib_rule_overrides_an_earlier_rule(bib: str) -> None:
         R4.Case("CITED", "DOI", frozenset(), False, ("unavailable", "none", False), None, None),
     ):  # fmt: skip
         plain, *_ = _decide(base)
-        with_bib, *_ = _decide(_With(base, *S9.bib_inputs(_Bib(bib))))
+        with_bib, *_ = _decide(_with_state(base, bib))
         assert plain["rule"] != "D-14" and plain["rule"] == with_bib["rule"], base
         assert (plain["class"], sorted(plain["reasons"])) == (with_bib["class"], sorted(with_bib["reasons"]))
 
@@ -468,7 +481,7 @@ def test_each_bib_state_blocks_every_positive_value(bib: str) -> None:
     for value in ("retracted", "expression_of_concern", "correction", "reinstated"):
         base = R4.Case("CITED", "DOI", frozenset(), False, ("matched", f"vf:{value}", False), None, None)
         plain, *_ = _decide(base)
-        blocked, *_ = _decide(_With(base, *S9.bib_inputs(_Bib(bib))))
+        blocked, *_ = _decide(_with_state(base, bib))
         assert plain["rule"] == "D-14"
         assert blocked["rule"] == {"CONFLICT": "D-13a", "UNAVAILABLE": "D-13b", "NOT_ESTABLISHED": "D-13c"}[bib]
         assert blocked["class"] == "UNRESOLVED_IDENTITY"
@@ -540,13 +553,14 @@ def test_normalize_describes_or_says_why_not() -> None:
 
     garry = next(c for c in CASES if c["id"] == "garry-oversized-source")["source"].encode("utf-8")
     good = b"{{cite journal |title=Thermal drift |last1=Lindqvist}}"
-    data = garry + b"\n" + good + b"\n\xff\xfe"
+    data = garry + b"\n" + good + b"\n" + "\u00e9".encode("utf-8")
     src = _source_artifact(data)
     a, b = len(garry), len(garry) + 1 + len(good)
     assert cited_description(_unit(0, a), src, "en") == B.Unavailable(B.U_SOURCE)
     kept = cited_description(_unit(a + 1, b), src, "en")
     assert isinstance(kept, B.CitedObject) and kept.titles == ("Thermal drift",)
-    assert cited_description(_unit(b + 1, len(data)), src, "en") == B.Unavailable(B.U_PARSE)  # not UTF-8
+    # a span that cuts a character in two does not decode
+    assert cited_description(_unit(b + 1, len(data) - 1), src, "en") == B.Unavailable(B.U_PARSE)
     assert cited_description(_unit(0, a, "free_text"), src, "en") is None  # ABSENT: natural absence
     assert cited_description({"kind": "citation_template", "source": {}}, src, "en") == B.Unavailable(B.U_PARSE)
     assert cited_description(_unit(5, len(data) + 9), src, "en") == B.Unavailable(B.U_PARSE)
@@ -578,8 +592,9 @@ def test_the_engine_identity_is_new() -> None:
     from citerift.investigation.adapters.detector import DETECTOR_IDENTITY
     from citerift.investigation.adapters.plan import INTEGRATION_SCHEMAS, STAGE04_IDENTITY
 
-    raw = (REPO / "src" / "citerift" / "investigation" / "data" / "bib-profile-1.json").read_bytes()
+    raw = (REPO / "src" / "citerift" / "investigation" / "data" / "bib-profile-2.json").read_bytes()
     assert hashlib.sha256(raw).hexdigest() == B.PROFILE_SHA256
+    assert json.loads(raw)["profile_version"] == "bib-profile-2"
     assert (ci.__version__, dt1.TABLE_VERSION, B.BIB_VERSION, B.PARSER_VERSION) == ("0.5.0", "dt-4", "bib-2", "0.7.2")
     assert (STAGE04_IDENTITY["engine_version"], STAGE04_IDENTITY["schema_version"]) == ("0.5.0", "6.0.0")
     assert INTEGRATION_SCHEMAS["candidate-inputs"] == "3.0.0"

@@ -4,7 +4,8 @@ Checks cross-references and table structure only. It does not evaluate the decis
 inputs: that is the reference model and the state-space enumeration of Step 4.
 
 Amended in the final corrective cycle (owner decision D-083): the table dt-3 adds rule D-13a between D-13 and D-14,
-and the risk analysis adds risk R4-04a after R4-04. Risk ids may carry one letter suffix after an existing number;
+and the risk analysis adds risk R4-04a after R4-04. Amended for the revised freeze-3 (owner decisions D-086, D-087):
+the table dt-4 adds rules D-13b and D-13c after D-13a. Risk ids may carry one letter suffix after an existing number;
 every other check is unchanged.
 
 Usage: python check_step3_docs.py <repository root>
@@ -136,7 +137,7 @@ def main(root: Path) -> int:
     mm_rows = table_rows(section(mm, "### 5.2 Decision table as a function", "where `collision(L)`"))
     spec_d = {row[0]: codes(row[3]) for row in spec_rows if row[0].startswith("D-")}
     mm_d = {row[0]: codes(row[2]) for row in mm_rows}
-    expected = [f"D-{i}" for i in range(1, 14)] + ["D-13a"] + [f"D-{i}" for i in range(14, 18)]
+    expected = [f"D-{i}" for i in range(1, 14)] + ["D-13a", "D-13b", "D-13c"] + [f"D-{i}" for i in range(14, 18)]
     r.check("SPEC 7.3 has rules D-1 to D-17 in order", list(spec_d) == expected, str(list(spec_d)))
     r.check("MM 5.2 has rules D-1 to D-17 in order", list(mm_d) == expected, str(list(mm_d)))
     for rule in expected:

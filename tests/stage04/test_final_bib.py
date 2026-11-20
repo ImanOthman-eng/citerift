@@ -58,7 +58,7 @@ def test_the_reference_model_imports_no_production_code() -> None:
 
 def test_the_production_profile_is_the_independently_extracted_profile() -> None:
     prod = PROD.profile()
-    assert prod["profile_version"] == "bib-profile-1"
+    assert prod["profile_version"] == "bib-profile-2"  # bib-2's profile (D-087): bib-1's plus TitleType, TitleNote
     for wiki in ("ar", "en"):
         assert {k: sorted(v) for k, v in prod["wikis"][wiki]["aliases"].items()} == {
             k: sorted(v) for k, v in PROFILE["wikis"][wiki]["aliases"].items()
@@ -181,12 +181,21 @@ def test_no_section2_input_of_another_type_raises() -> None:
     assert B.cited_object("{{cite journal |title=A}}", "fr") is None
 
 
-def test_bib1_and_bib2_read_the_same_pinned_profile_and_parser() -> None:
-    """The alias profile and the parser pin are unchanged from bib-1 to bib-2 (BIBLIOGRAPHIC_SPEC_2.md 2.2): bib-1 at
-    c3854b8 and the production bib-2 name the same profile digest and parser version."""
+def test_bib2_extends_the_pinned_bib1_profile_and_keeps_the_parser() -> None:
+    """BIBLIOGRAPHIC_SPEC_2.md 2.2: bib-1 at c3854b8 still pins ``bib-profile-1.json`` (unchanged); the production bib-2
+    pins ``bib-profile-2.json``, which holds every bib-1 alias list unchanged, from the same CS1 revisions, plus the
+    keys TitleType and TitleNote; the parser pin is unchanged."""
     import hashlib
 
-    raw = (REPO / "src" / "citerift" / "investigation" / "data" / "bib-profile-1.json").read_bytes()
-    assert hashlib.sha256(raw).hexdigest() == B.PROFILE_SHA256 == PROD.PROFILE_SHA256
+    data = REPO / "src" / "citerift" / "investigation" / "data"
+    raw1, raw2 = (data / "bib-profile-1.json").read_bytes(), (data / "bib-profile-2.json").read_bytes()
+    assert hashlib.sha256(raw1).hexdigest() == B.PROFILE_SHA256
+    assert hashlib.sha256(raw2).hexdigest() == PROD.PROFILE_SHA256
+    p1, p2 = json.loads(raw1), json.loads(raw2)
+    assert set(p1["wikis"]) == set(p2["wikis"]) == {"ar", "en"}
+    for wiki in p1["wikis"]:
+        a1, a2 = p1["wikis"][wiki]["aliases"], p2["wikis"][wiki]["aliases"]
+        assert p1["wikis"][wiki]["source"] == p2["wikis"][wiki]["source"]
+        assert {k: a2[k] for k in a1} == a1 and set(a2) - set(a1) == {"TitleType", "TitleNote"}
     assert (B.BIB_VERSION, PROD.BIB_VERSION) == ("bib-1", "bib-2")
     assert B.PARSER_VERSION == PROD.PARSER_VERSION == "0.7.2"

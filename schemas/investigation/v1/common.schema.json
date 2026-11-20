@@ -507,6 +507,9 @@
         "BIB_VALUE_LIMIT_EXCEEDED",
         "BIB_DESCRIPTION_LIMIT_EXCEEDED",
         "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED",
+        "BIB_TITLE_SHORTENED",
+        "BIB_TITLE_VALUES_DIFFER",
+        "BIB_GENRE_UNMATCHED",
         "BIB_TITLE_EXTENDED",
         "BIB_TITLE_PARTIAL",
         "BIB_TITLE_INCOMPARABLE"
@@ -778,12 +781,13 @@
       ]
     },
     "cited_bibliography": {
-      "description": "bib-2 cited object (final-cycle/BIBLIOGRAPHIC_SPEC_2.md 2.1, DESCRIBED): the cleaned named-argument values of one citation-template unit by family; authors by form (one person per parameter, free-form list, Vancouver list).",
+      "description": "bib-2 cited object (final-cycle/BIBLIOGRAPHIC_SPEC_2.md 2.1, DESCRIBED): the cleaned named-argument values of one citation-template unit by family; genres (CS1 type, medium, department, title-note); authors by form (one person per parameter, free-form list, Vancouver list).",
       "type": "object",
       "additionalProperties": false,
-      "required": ["titles", "authors", "author_lists", "vauthors", "periodical", "date", "year", "volume", "issue", "pages"],
+      "required": ["titles", "genres", "authors", "author_lists", "vauthors", "periodical", "date", "year", "volume", "issue", "pages"],
       "properties": {
         "titles": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+        "genres": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
         "authors": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
         "author_lists": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
         "vauthors": {"type": "array", "maxItems": 64, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},

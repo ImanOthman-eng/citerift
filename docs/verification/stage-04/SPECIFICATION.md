@@ -402,7 +402,7 @@ has no class for it and the report schema forbids such a value; **conflicting ev
 **stale evidence** = the lifecycle state `STALE` (section 10.3), never a claim; **unresolved evidence** =
 `UNRESOLVED_IDENTITY`, `UNRESOLVED_IDENTIFIER`, `UNRESOLVED_STATUS`.
 
-### 7.3 Decision table (version `dt-1`; dt-2 adds 7.3a, dt-3 adds D-13a and 7.3b)
+### 7.3 Decision table (version `dt-1`; dt-2 adds 7.3a, dt-3 adds D-13a and 7.3b, dt-4 adds D-13b, D-13c and 7.3c)
 
 Inputs per work candidate `c` of unit `u` (MM section 4): use eligibility `U`; shape `σ ∈ {NONE, DOI, PMID, PAIR}`;
 taint `τ` and its reasons; the lookups of `c` (`Λ(c)`: Q1 of each key, and Q2 for `PAIR`); coherence `κ`; the deciding
@@ -427,7 +427,9 @@ preconditions (rows O-1 to O-3) are checked before any candidate is decided.
 | D-11 | 5 | `L.state = matched` and projection status `uncertain` with value null | `UNRESOLVED_STATUS` | reason `CURRENT_EFFECT_NOT_ESTABLISHED`; Stage 02 basis reasons kept as upstream reasons with their evidence |
 | D-12 | 5 | `L.state = no_record` and projection `uncertain` with value null | `UNRESOLVED_STATUS` | reason `COVERAGE_GAP_RELEVANT_ROWS` |
 | D-13 | 6 | some lookup in `Λ(c)` has state `unavailable` | `LOOKUP_UNAVAILABLE` | reason `LOOKUP_QUERY_FAILED`, and also `LOOKUP_EVIDENCE_LIMIT_EXCEEDED` when an unavailable lookup was refused by the lookup evidence budget (S-6.10a, owner decision D-048); the code of the failed query stays in its lookup observation |
-| D-13a | 7 | (table dt-3, owner decision D-083) `L.state = matched`, projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}`, and some event of `L` is in bib-1 `MATERIAL_CONFLICT` with the unit's own cited object (section 7.3b) | `UNRESOLVED_IDENTITY` | status `uncertain`, value null, disposition `ABSTAIN`; reason `BIBLIOGRAPHIC_OBJECT_CONFLICT` plus the bib-1 reasons of the conflicting comparisons and the pair reasons D-14 would attach; never a positive, never `NOTICE_CITED` |
+| D-13a | 7 | (table dt-3, owner decision D-083; bib-2 from dt-4) `L.state = matched`, projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}`, and some event of `L` is in `MATERIAL_CONFLICT` with the unit's own cited object (sections 7.3b, 7.3c) | `UNRESOLVED_IDENTITY` | status `uncertain`, value null, disposition `ABSTAIN`; reason `BIBLIOGRAPHIC_OBJECT_CONFLICT` plus the reasons of the conflicting comparisons and the pair reasons D-14 would attach; never a positive, never `NOTICE_CITED` |
+| D-13b | 7 | (table dt-4, owner decision D-086) as D-14, and the unit's bibliographic check was `UNAVAILABLE` (section 7.3c) | `UNRESOLVED_IDENTITY` | status `uncertain`, value null, disposition `ABSTAIN`; reason `BIBLIOGRAPHIC_CHECK_UNAVAILABLE` plus exactly one of `BIB_SOURCE_LIMIT_EXCEEDED`, `BIB_VALUE_LIMIT_EXCEEDED`, `BIB_DESCRIPTION_LIMIT_EXCEEDED`, `BIB_PARSE_FAILED`, and the pair reasons D-14 would attach |
+| D-13c | 7 | (table dt-4, owner decision D-087) as D-14, and some event of `L` is `NOT_ESTABLISHED` with the unit's cited object (section 7.3c) | `UNRESOLVED_IDENTITY` | status `uncertain`, value null, disposition `ABSTAIN`; reason `BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED` plus the bib-2 title reasons (`BIB_TITLE_EXTENDED`, `BIB_TITLE_PARTIAL`, `BIB_TITLE_INCOMPARABLE`) of those comparisons and the pair reasons D-14 would attach |
 | D-14 | 7 | `L.state = matched` and projection status `verified_fact` with value `v ∈ {retracted, expression_of_concern, correction, reinstated}` | positive class of `v` (table 7.2) | reasons `KEY_RESULTS_DIFFER`, `PAIR_UNCORROBORATED`, `CO_REPORTED_MULTIPLE` attached when they apply |
 | D-15 | 8 | `L.state = notice_only` and projection `uncertain` with value null | `NOTICE_CITED` | reason `CITED_IDENTIFIER_IS_NOTICE`; never an attachment to the retracted work |
 | D-16 | 9 | `L.state = no_record` and projection `uncertain` with value `not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` | reason `NOT_FOUND_IN_CHECKED_SOURCES`; provenance = checked sources |
@@ -520,7 +522,29 @@ bib-1, specified in full in `final-cycle/BIBLIOGRAPHIC_SPEC.md` (normative; summ
   reference model (`simulations/stage04/bib_reference.py`) on an adversarial corpus and a seeded differential set
   (`tests/stage04/test_final_bib.py`).
 
-The D-072 role-collision rule is unchanged: bib-1 never resolves a role collision (`final-cycle/ROLE_COLLISION_STUDY.md`).
+#### 7.3c Bibliographic-object layer version 2 (bib-2, table dt-4; owner decisions D-085, D-086, D-087)
+
+dt-4 replaces bib-1 by bib-2 (`final-cycle/BIBLIOGRAPHIC_SPEC_2.md`, normative) and adds D-13b and D-13c after D-13a:
+
+- D-086: a citation-template unit whose description cannot be produced (the source above 16,384 code points, more than
+  64 title or author values, more than 4,096 code points of values, a source that is not exactly one template, a
+  value or parameter name that hides content, an undecodable span, any parser exception) is `UNAVAILABLE` with one
+  reason, recorded as the unit's `cited_bibliography` evidence and replayed by VERIFY. It never reads as natural
+  absence: a candidate that would be positive abstains by D-13b. A unit that is not a citation template, or a template
+  with no title and no author, is natural absence and decides as dt-2.
+- D-087 G-04: every compared string holding an invisible character (category Cf or Default_Ignorable_Code_Point) is
+  compared as written, with each such character as a word boundary and with each removed; the worst reading decides.
+- D-087 A-02: only an EQUAL title, or a shortened form whose omitted words name no related object, establishes the
+  object; a longer, partially overlapping or incomparable title is `NOT_ESTABLISHED` (D-13c). Authors only refute; an
+  author value that may hold several people never agrees. A designation of a related object is checked on every title
+  value that is not EQUAL. The designation lexicon is bib-1's, unchanged; there is no score or threshold.
+- dt-4 never yields a positive that dt-3 would not (B4), and with every compared event `COMPATIBLE` or `INSUFFICIENT`
+  and an available check it decides exactly as dt-2 (checked over the whole abstract domain: `oracle-dt4`, against
+  `oracle-dt2` and `oracle-dt3`); bib-2 is checked against an independent reference
+  (`simulations/stage04/bib2_reference.py`) on the corpus `final-cycle/corpus/BIB2_CORPUS.json` and a seeded
+  differential set (`tests/stage04/test_final_bib2.py`).
+
+The D-072 role-collision rule is unchanged: bib-1 and bib-2 never resolve a role collision (`final-cycle/ROLE_COLLISION_STUDY.md`).
 Stage 02 and Stage 03 are unchanged.
 
 Reason names for D-1, D-2, D-7, D-11, D-13 and D-16 were fixed in Step 5 and finalized by owner decision D-043; they

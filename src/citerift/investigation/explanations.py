@@ -123,6 +123,11 @@ REASON_TEXT = {
     "BIB_DESCRIPTION_LIMIT_EXCEEDED": "the citation's description is longer than the bibliographic check reads",
     "BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED": "the citation's own description is compatible with the record its "
     "identifiers reach but does not establish that it is the same publication",
+    "BIB_TITLE_SHORTENED": "the cited title is a part of the record's title other than its main title, or only its "
+    "main title with no cited author matching a record author",
+    "BIB_TITLE_VALUES_DIFFER": "one cited title value matches the record's title and another cited title value "
+    "does not",
+    "BIB_GENRE_UNMATCHED": "the citation states a type or title note the record's title does not name",
     "BIB_TITLE_EXTENDED": "the cited title holds the record's title and adds other words",
     "BIB_TITLE_PARTIAL": "the cited title shares only some words with the record's title",
     "BIB_TITLE_INCOMPARABLE": "the cited title is in another script than the record's title",

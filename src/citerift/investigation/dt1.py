@@ -34,9 +34,10 @@ dt-4 (owner decisions D-086 and D-087) compares with bib-2 (normative text
 docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC_2.md, section 6) and adds two rules after D-13a, guarded
 like D-14: **D-13b** holds when the unit's bibliographic check was UNAVAILABLE (a resource bound or a parse failure,
 never natural absence) and gives ``UNRESOLVED_IDENTITY`` with ``BIBLIOGRAPHIC_CHECK_UNAVAILABLE`` and the unavailability
-reason; **D-13c** holds when some event of the deciding lookup is NOT_ESTABLISHED (weak compatibility: a longer,
-partially overlapping or incomparable title) and gives ``UNRESOLVED_IDENTITY`` with
-``BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED`` and the bib-2 title reasons. Like D-13a they only replace a positive.
+reason; **D-13c** holds when some event of the deciding lookup is NOT_ESTABLISHED (weak compatibility: a shortened
+title other than the record's main title, a longer, partially overlapping or incomparable title) and gives
+``UNRESOLVED_IDENTITY`` with ``BIBLIOGRAPHIC_OBJECT_NOT_ESTABLISHED`` and the bib-2 title reasons.
+Like D-13a they only replace a positive.
 
 The dt-4 reference model (``simulations/stage04/dt4_reference.py``) and the independent bib-2 reference
 (``bib2_reference.py``) are the oracles of this code; the dt-3, dt-2 and frozen Step 4 models (``dt3_reference.py``,

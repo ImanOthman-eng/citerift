@@ -26,6 +26,10 @@ HISTORICAL = {
     f"{S04}/freeze-2": "6dab7f8",  # freeze-2 (28ba646, D-076)
     "simulations/stage04/oracle": "244c4b6",  # dt-1 oracle (Step 4)
     "simulations/stage04/oracle-dt2": "dfee881",  # dt-2 oracle (corrective cycle)
+    f"{S04}/freeze-3": "be8a857",  # freeze-3 candidate c3854b8, not accepted (D-085); evidence for it stays valid
+    "simulations/stage04/oracle-dt3": "79a0023",  # dt-3 oracle (final cycle, bib-1)
+    f"{S04}/final-cycle/corpus/BIB_CORPUS.json": "bb7a0cf",  # the bib-1 corpus, kept as bib-2's base (D-087)
+    f"{S04}/final-cycle/corpus/build_corpus.py": "bb7a0cf",
 }
 
 pytestmark = pytest.mark.unit

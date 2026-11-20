@@ -1,18 +1,21 @@
 """Independent reference model of the bibliographic-object consistency layer bib-2 (owner decisions D-086, D-087).
 
-Written from ``docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC_2.md`` (sections 2 to 5 and 8, including the
-amendment of section 4.2 that checks designation for every title value whose relation is not EQUAL) and, where that
-text says "unchanged from bib-1", from section 2.1 step 4 and section 3 of ``BIBLIOGRAPHIC_SPEC.md``. The parsing,
-value cleaning and word functions are copied from the earlier independent bib-1 reference ``bib_reference.py`` (which
-bib-2 declares unchanged), so this file stands alone. It imports no production code: nothing from ``citerift`` and
-nothing from the other reference modules, only the standard library and ``mwparserfromhell`` (the parser the
-specification names). Its alias profile is ``bib-reference-profile.json`` next to this file, the profile extracted
-separately for ``bib_reference.py`` from the raw ``Module:Citation/CS1/Configuration`` revisions the specification
-names (en 1384336575, ar 76424085), not copied from the production profile. Simple code is preferred to fast code.
+Written from ``docs/verification/stage-04/final-cycle/BIBLIOGRAPHIC_SPEC_2.md`` as amended after this model's reviews
+(items A1 to A15 and B1 to B7 of ``bib2_reference_NOTES.md``): sections 2 to 5 and 8, and, where that text says
+"unchanged from bib-1", section 2.1 step 4 and section 3 of ``BIBLIOGRAPHIC_SPEC.md``. The parsing, value cleaning (with
+B1) and word functions are copied from the earlier independent bib-1 reference ``bib_reference.py`` (which bib-2
+declares unchanged), so this file stands alone. It imports no production code: nothing from ``citerift`` and nothing
+from the other reference modules, only the standard library and ``mwparserfromhell`` (the parser the specification
+names). Its alias profile is ``bib2-reference-profile.json`` next to this file (``PROFILE_PATH``): the bib-1 reference's
+own profile ``bib-reference-profile.json`` (extracted separately from the raw ``Module:Citation/CS1/Configuration``
+revisions the specification names, en 1384336575 and ar 76424085, content SHA-256 recorded in the file; left unchanged
+for the bib-1 reference) with the keys TitleType and TitleNote added from the same raw revisions (downloaded with
+``action=raw``, SHA-256 checked against the recorded values), not copied from the production profile. Simple code is
+preferred to fast code.
 
-Public API: ``load_profile``, ``describe`` (section 2.1 steps 1 to 8: ``{"state": "UNAVAILABLE", "reason": r}`` or
-``{"state": "DESCRIBED", "fields": C}``; the caller handles ABSENT units) and ``compare`` (sections 3, 4 and 5, both
-readings of section 3.1).
+Public API: ``load_profile`` (default: ``PROFILE_PATH``), ``describe`` (section 2.1 steps 1 to 8:
+``{"state": "UNAVAILABLE", "reason": r}`` or ``{"state": "DESCRIBED", "fields": C}``; the caller handles ABSENT units)
+and ``compare`` (sections 3, 4, 4.2a and 5 under the three readings of section 3.1).
 
 Readings of the specification
 -----------------------------
@@ -26,69 +29,122 @@ R1. (2.1 last paragraph, 2.2) Engine configuration is checked before any unit is
     mwparserfromhell version other than 0.7.2, or an inactive C tokenizer (``mwparserfromhell.parser.use_c``).
 R2. (2.1 step 1) ``data`` that is ``None`` (span unreadable) or not ``bytes``/``bytearray`` (B8) gives
     UNAVAILABLE(BIB_PARSE_FAILED); decoding is strict ``bytes.decode("utf-8")``, so a leading byte-order mark is kept
-    as U+FEFF (and then, as a non-whitespace top-level Text node, gives BIB_PARSE_FAILED at step 3).
+    as U+FEFF (and then, as a non-whitespace top-level Text node, gives BIB_PARSE_FAILED at step 3, as section 9 says).
 R3. (2.1 step 2) The bound is ``len(text) > 16384`` on the decoded ``str``, checked before parsing.
 R4. (2.1 step 3) "Ignoring top-level Text nodes whose value is empty after ``str.strip()``": every other top-level
     node (comment, tag, a second template, other text) gives BIB_PARSE_FAILED. Any template counts, whatever its name.
-    Exceptions are caught over parsing, reading ``template.params`` (``showkey``, ``name``, ``value``) and cleaning;
-    only the effective values of arguments whose name belongs to a family are cleaned (the others are not fields), so
-    an exception while cleaning a replaced or a non-family value cannot occur.
-R5. (2.1 step 4) A later parameter of the same name replaces the earlier one even when its value is empty (the
-    effective value is then absent); a Python ``dict`` keeps the first insertion position. The name is exactly
-    ``str(param.name).strip()``: a comment or a template inside a name is kept, so such a name matches no alias.
-R6. (2.1 step 5) Cleaning is bib-1's, copied unchanged from ``bib_reference.py`` (its reading R21): each top-level
+    Exceptions are caught over parsing, reading ``template.params`` and the names, the hidden-content check of step 5
+    and cleaning; only the effective values of arguments in a family are cleaned (the others are not fields).
+R5. (2.1 step 4) Applied to every parameter with ``showkey`` true, in source order, also to one that a later parameter
+    replaces. The top-level nodes of ``param.name`` decide: Text only -> ``str(param.name).strip()``; Text and Comment
+    nodes with at least one Comment -> the Text values concatenated and stripped; if that name belongs to no family
+    (R8) the parameter is ignored (it neither enters nor replaces an effective argument), otherwise BIB_PARSE_FAILED;
+    any other node type (Template, Argument, Wikilink, ExternalLink, HTMLEntity, Tag, ...) -> BIB_PARSE_FAILED. A dict
+    keeps the first position of a name.
+R6. (2.1 step 5) Checked on the effective (last) argument of every name in ``titles``, ``genres``, ``authors``,
+    ``author_lists`` or ``vauthors``, whether or not its value cleans to an absent value: BIB_PARSE_FAILED when
+    ``value.filter_templates(recursive=True)`` or ``value.filter_arguments(recursive=True)`` yields anything, or
+    ``value.filter_tags(recursive=True)`` yields a tag whose ``str(tag.tag).strip().lower()`` is not one of the eleven
+    inline formatting tags, ``nowiki`` or ``br``. The pinned parser's recursive traversal includes template parameters,
+    tag contents and tag attributes; the content of ``<nowiki>`` is not parsed, so nothing inside it is a node.
+    Comment, HTMLEntity, Wikilink and ExternalLink nodes are readable.
+R7. (2.1 step 5, B1) Cleaning is bib-1's (copied from ``bib_reference.py``, its reading R21) with B1: each top-level
     node is ``Wikicode([node]).strip_code(normalize=True, collapse=True)``; Text, HTMLEntity, Wikilink, ExternalLink
-    and the eleven inline tags (tag name compared after ``strip().lower()``) join as written; every other node gets one
-    space on each side; runs of ``\\s`` become one space; ``str.strip()``; empty is absent; lone surrogates become
-    U+FFFD. Format characters are kept.
-R7. (2.1 step 6) A name contributes to every family one of whose aliases it matches. In bib-reference-profile.json the
-    only such name is ar ``host`` (AuthorList-Last ``host#`` with an empty ``#``, and Authors ``host``): its value is in
-    both ``authors`` and ``author_lists`` and counts twice for the bound of step 7. ``#`` matches the empty string or
-    ``[1-9][0-9]*`` (ASCII), whole name, case-sensitive.
-R8. (2.1 step 6) The ScriptTitle/ScriptChapter prefix is removed once from the cleaned value, the rest stripped with
-    ``str.strip()``; an empty rest is absent. ``pages`` is the first value over the Page and Pages aliases together.
-R9. (2.1 step 7) "Values" are effective arguments with a non-absent value after step 6. The 64-value bounds count
-    ``titles`` and, separately, ``authors`` + ``author_lists`` + ``vauthors``. The 4,096 code-point bound counts every
-    value of every family of step 6, including the values after the first of ``periodical``, ``date``, ``year``,
-    ``volume``, ``issue`` and ``pages`` (bib-1 states "all values, not only the first"; bib-2 says "all values of all
-    families"), and titles after the prefix removal of step 6. Code points are ``len`` of the ``str`` after U+FFFD
-    replacement.
-R10. (3.1) A format character is a code point with ``unicodedata.category(c) == "Cf"`` in the running Python's Unicode
-    database. The compared strings are the cited title values (after step 6), the cited author values of the three
-    forms, the record's title and the record's authors; periodical, journal, date and year are never edited and do not
-    count for "some string holds one", so periodical and year are equal in both readings.
-R11. (3.1) Two readings are made exactly when some compared string holds a format character (``readings`` = 2), else
-    one (``readings`` = 1). The pair's object verdict is the worse in MATERIAL_CONFLICT > NOT_ESTABLISHED >
-    INSUFFICIENT > COMPATIBLE; the reported field verdicts (authors, title, title_relation, designation) are the
-    split reading's when it gives that object verdict, else the joined reading's; reasons are the union of the reasons
+    and the eleven inline tags (tag name compared after ``strip().lower()``) join as written; a top-level Comment node
+    is one U+200B; a top-level ``nowiki`` tag (same name comparison) is its ``strip_code`` text between two U+200B
+    (``<nowiki/>`` gives two U+200B); every other node (a ``br`` tag) gets one space on each side; runs of ``\\s``
+    become one space (U+200B is not ``\\s``); ``str.strip()`` (which keeps U+200B); a result whose every character is
+    invisible (R11), the empty string included, is absent; then lone surrogates become U+FFFD (a lone surrogate is not
+    invisible, so a value of one is present). Comments and nowiki tags nested inside an inline tag are not top-level
+    nodes: ``strip_code`` of the inline tag drops a comment and keeps the nowiki text, joined. Invisible characters are
+    kept.
+R8. (2.1 step 6) A name belongs to the first family, in the order titles, genres, authors, author_lists, vauthors,
+    periodical, date, year, volume, issue, pages, then the first key in the listed order, that has an alias matching
+    the whole name (``#`` = empty or ``[1-9][0-9]*``, ASCII, case-sensitive); the first alias in profile order does not
+    change the family or key, so it is not tracked. ar ``host`` is in ``authors`` only. ``genres`` keys: TitleType,
+    TitleNote.
+R9. (2.1 step 6) The ScriptTitle/ScriptChapter prefix is removed once from the cleaned value (the name's key is the
+    first key of R8), the rest stripped with ``str.strip()``; an empty rest is absent. ``pages`` is the first value over
+    the Page and Pages aliases together.
+R10. (2.1 step 7) "Values" are effective arguments with a non-absent value after step 6. The 64-value bounds count
+    ``titles`` + ``genres`` and, separately, ``authors`` + ``author_lists`` + ``vauthors``. The 4,096 code-point total
+    counts every value of every family (genres included), including the values after the first of the recorded
+    families, after cleaning (the U+200B of B1 and the U+FFFD replacement included) and after script-prefix removal;
+    ``len`` of the ``str``.
+R11. (3.1) An invisible character is a code point of general category Cf, of category Cc for which ``str.isspace()`` is
+    false, or one in the Default_Ignorable_Code_Point ranges the specification lists (hard-coded here as written,
+    ``DEFAULT_IGNORABLE``); categories come from the running Python's Unicode database. The compared strings are the
+    ones section 3.1 lists (B2): the cited title values (after step 6), the cited genre values, the cited author
+    values of the three forms, the record's title and the record's authors; periodical, journal, date and year are
+    not, so they are never edited and do not count for "some string holds one".
+R12. (3.1) Three readings exactly when some compared string holds an invisible character (``readings`` = 3), else
+    one (``readings`` = 1): as written; boundary (each invisible character replaced by one U+0020 space, no further
+    collapse); joined (each removed). The object verdict is the worst in MATERIAL_CONFLICT > NOT_ESTABLISHED >
+    INSUFFICIENT > COMPATIBLE; the reported field verdicts (authors, title, title_relation, designation) are those of
+    the first reading, in the order as written, boundary, joined, that gives it; reasons are the union of the reasons
     of every reading that gives it.
-R12. (3.2) Words, folding, scripts, name words, particles, initials and ``S_R`` are copied from ``bib_reference.py``
+R13. (3.2) Words, folding, scripts, name words, particles, initials and ``S_R`` are copied from ``bib_reference.py``
     (its readings R8 to R10 and R22): initials are tested on ``str.split()`` tokens of the raw string, before folding.
-R13. (4.1) Splitting uses the characters ``;`` ``؛`` (list separators) and additionally ``,`` ``،`` for ``vauthors``.
-    For every form an empty piece (after ``str.strip()``) is dropped. A conjunction is the character ``&`` anywhere in
-    the piece, or a ``str.split()`` token whose ``casefold()`` is ``and`` (``and,`` is not one). Commas are counted as
-    characters ``,`` and ``،``. Packed or person, ``N`` is the piece's cited name words.
-R14. (4.1) Author verdict: CONFLICT if some comparable part has ``N ∩ S_R = ∅`` (person or packed alike); else AGREE
-    if some comparable person part has ``N ∩ S_R ≠ ∅``; else INSUFFICIENT. AGREE has no effect on the object verdict.
-R15. (4.2) SHORTER and LONGER need a contiguous subsequence of strictly smaller length; OVERLAP uses word sets.
+R14. (3.2, B6) A word (already folded: words come from ``words`` or the name-word functions) is mixed when the set of
+    ``script(c)`` over its characters ``c`` of general category L other than Lm has two or more elements and is not
+    a subset of {CJK, HIRAGANA, KATAKANA}, {CJK, HANGUL} or {CJK, BOPOMOFO}. ``script`` is the first word of the
+    character's Unicode name (NFKD has already turned Hangul syllables into ``HANGUL CHOSEONG ...`` jamo and halfwidth
+    forms into full ones). A letter of another script used in Japanese text (U+3006 ``IDEOGRAPHIC CLOSING MARK``, Lo)
+    still makes the word mixed.
+R15. (4.1) Splitting uses the characters ``;`` and U+061B (list separators) and additionally ``,`` and U+060C for
+    ``vauthors``. For every form an empty piece (after ``str.strip()``) is dropped. A conjunction is the character
+    ``&`` anywhere in the piece, or a ``str.split()`` token whose ``casefold()`` is ``and`` or that is exactly U+0648.
+    An ``authors`` or ``author_lists`` piece is packed when it holds a conjunction or any comma character.
+R16. (4.1) "Comparable when ``S_R`` is not empty and some word of ``N`` has a script that some word of ``S_R`` has, or
+    some word of ``N`` is mixed" is read as (``S_R`` non-empty and a shared script) or (a mixed word), so a mixed word
+    is comparable also against a record without authors (and then conflicts). The whole-value guard applies the same
+    test to ``W``, the cited name words of the whole unsplit value, under the reading at hand. Author verdict:
+    CONFLICT if the guard applies to some value or some comparable part has ``N ∩ S_R = ∅`` (person or packed alike);
+    else AGREE if some comparable person part has ``N ∩ S_R ≠ ∅``; else INSUFFICIENT.
+R17. (4.2) SHORTER and LONGER need a contiguous subsequence of strictly smaller length; OVERLAP uses word sets.
     "Leftmost occurrence" is the smallest start index. A value with empty ``words`` is skipped. Ties between values
     keep the first value of the ``titles`` list.
-R16. (4.2, amended) Designation is evaluated for every value whose own relation is not EQUAL (SHORTER, LONGER,
-    OVERLAP, DISJOINT, INCOMPARABLE), whichever value is chosen; one designating value makes the pair designate.
-    DW words are matched against the extra words (lists of folded words); DP phrases as ``words(phrase)``
-    contiguous in ``T`` but not in ``T_R``, or in ``T_R`` but not in ``T``. The DP clause is evaluated only for a
-    value whose relation is not EQUAL (an EQUAL value cannot satisfy it anyway).
-R17. (4.2, 5) When the chosen relation is DISJOINT and some value also designates, the title verdict is CONFLICT
-    and both ``BIB_TITLE_DISJOINT`` and ``BIB_TITLE_RELATED_OBJECT`` are given: section 5 lists the reasons by their
-    own conditions ("relation DISJOINT", "designation"), which the else-chain of section 4.2 does not restrict.
-R18. (5) A NOT_ESTABLISHED reason is given only when the object is NOT_ESTABLISHED; a MATERIAL_CONFLICT pair whose
-    title is also NOT_ESTABLISHED (authors CONFLICT) carries only the conflict reasons. COMPATIBLE and INSUFFICIENT
-    carry none.
-R19. (4.3) Year and periodical are bib-1's (copied): ``R.original_year`` counts only as a non-bool ``int``;
-    volume, issue and pages are always NOT_IN_RECORD.
-R20. (B8) ``fields`` or ``record`` that is not a dict gives the INSUFFICIENT result with relation MISSING and one
+R18. (4.2) Designation is evaluated for every value whose own relation is not EQUAL; an extra word designates when it
+    names a designation (R24) or is mixed; a DP phrase (as ``words(phrase)``) designates when it occurs (R24) in
+    ``T`` but not in ``T_R``, or the reverse.
+R19. (4.2, main title, B4) The separator pattern is searched in the record's title string under the reading at hand
+    (``re.search``, first match); the main title is ``words`` of the text before the match; none without a match. A
+    value (with non-empty ``T``) agrees when its relation is EQUAL, or SHORTER with words equal to the main title's.
+    Title verdict, first that holds: a designating value or pair relation DISJOINT -> CONFLICT; pair relation MISSING
+    -> INSUFFICIENT (checked before "every value agrees", which would hold vacuously with no compared value, R25);
+    every compared value agrees -> AGREE; some agrees and another not -> NOT_ESTABLISHED ``BIB_TITLE_VALUES_DIFFER``;
+    else NOT_ESTABLISHED with the pair relation's reason (SHORTER, LONGER, OVERLAP or INCOMPARABLE; EQUAL cannot occur
+    here, since an EQUAL value agrees).
+R20. (4.2a, B3) For each genre value ``G = words(g)``, both under the reading at hand: designates when a word of
+    ``G`` names a designation (R24) or is mixed and is not (as itself, not as its skeleton) a word of
+    ``words(R.title)``, or a DP phrase occurs (R24) in ``G`` and does not occur (R24) in ``words(R.title)``;
+    otherwise unmatched when some word of ``G`` is not (as itself) a word of ``words(R.title)``. A genre value with no
+    word (punctuation only) neither designates nor is unmatched. Checked whatever the title relation, also with no
+    cited title or no record title (then every genre word is unmatched or designates).
+R21. (5, B5) MATERIAL_CONFLICT when authors CONFLICT, the title verdict is CONFLICT or a genre value designates;
+    reasons: ``BIB_AUTHORS_DISJOINT`` (authors CONFLICT), ``BIB_TITLE_DISJOINT`` (pair relation DISJOINT),
+    ``BIB_TITLE_RELATED_OBJECT`` (a title or genre designation). Else NOT_ESTABLISHED when any of these holds, with
+    every reason that holds: the title verdict's NOT_ESTABLISHED reason (R19), ``BIB_GENRE_UNMATCHED`` (some genre
+    value unmatched, also with no title), ``BIB_TITLE_SHORTENED`` (B5: title AGREE with pair relation SHORTER and an
+    author verdict other than AGREE). Else COMPATIBLE when the title verdict is AGREE, else INSUFFICIENT. The reported
+    ``designation`` is true for either kind; the reported ``title`` stays the verdict of section 4.2 (AGREE under B5,
+    unchanged by a genre). COMPATIBLE and INSUFFICIENT carry no reason.
+R22. (4.3) Year and periodical are bib-1's (copied): ``R.original_year`` counts only as a non-bool ``int``; volume,
+    issue and pages are always NOT_IN_RECORD.
+R23. (B8) ``fields`` or ``record`` that is not a dict gives the INSUFFICIENT result with relation MISSING and one
     reading. A record field of the wrong type (title, authors, journal not ``str``; original_year not a non-bool
     ``int``) is absent. Non-string entries of the ``fields`` lists and non-string scalar fields are ignored.
+R24. (3.2, B7) The skeleton is computed per character of an already folded word with ``unicodedata.name(c, "")`` and
+    ``re.fullmatch`` of the stated pattern; the replaced letter is regex group 3 (the single letter just before an
+    optional `` WITH ...`` part), casefolded. Names outside the pattern are kept, for example ``LATIN SMALL LETTER
+    ALPHA`` (U+0251), ``LATIN LETTER DENTAL CLICK`` (U+01C0) and ``LATIN SMALL CAPITAL LETTER I WITH STROKE``
+    (U+1D7B, "SMALL CAPITAL LETTER" is not the pattern's "SMALL LETTER" nor "LETTER SMALL CAPITAL"). A word names a
+    designation when it or its skeleton is in DW; a DP phrase occurs in a sequence when it is contiguous in the
+    sequence or in the list of the skeletons of its words (each word's skeleton, so the word boundaries are kept).
+    The skeleton is used only for these two lookups: relations, extra words, genre-word membership in the record's
+    title and author words compare the words themselves.
+R25. (4.2, 5) With no compared title value (no value with non-empty ``T``, or empty ``T_R``) the title verdict is
+    INSUFFICIENT, never a vacuous AGREE, as section 5 states ("INSUFFICIENT (no cited title or no record title ...)").
 """
 
 from __future__ import annotations
@@ -101,19 +157,22 @@ from typing import Any
 
 import mwparserfromhell
 
-MODEL_VERSION = "bib-2-reference/1"
+MODEL_VERSION = "bib-2-reference/4"
 PARSER_VERSION = "0.7.2"
+PROFILE_PATH = Path(__file__).with_name("bib2-reference-profile.json")
 
 TITLE_KEYS = ("Title", "ScriptTitle", "TransTitle", "Chapter", "ScriptChapter", "TransChapter")
 SCRIPT_KEYS = ("ScriptTitle", "ScriptChapter")
-# Section 2.1 step 6: list families (all values) and single-value families (first value, recorded only).
+# Section 2.1 step 6, in the listed order (R8): list families (all values) and recorded families (first value).
 LIST_FAMILIES: dict[str, tuple[str, ...]] = {
     "titles": TITLE_KEYS,
+    "genres": ("TitleType", "TitleNote"),
     "authors": ("AuthorList-Last",),
     "author_lists": ("Authors",),
     "vauthors": ("Vauthors",),
 }
 AUTHOR_FORMS = ("authors", "author_lists", "vauthors")
+COMPARED_FAMILIES = ("titles", "genres", *AUTHOR_FORMS)
 SINGLE_FAMILIES: dict[str, tuple[str, ...]] = {
     "periodical": ("Periodical",),
     "date": ("Date",),
@@ -138,9 +197,42 @@ SCRIPT_PREFIX = re.compile(r"^[A-Za-z]{2,3}(-[A-Za-z0-9]+)?:")
 WORD = re.compile(r"[^\W_]+")
 ET_AL = re.compile(r"\bet\.?\s*al\b\.?")
 YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
-LIST_SEPARATORS = re.compile("[;\u061b]")  # ; and the Arabic semicolon
-VANCOUVER_SEPARATORS = re.compile("[;\u061b,\u060c]")  # list separators and commas (, and the Arabic comma)
-COMMAS = (",", "\u060c")
+MAIN_TITLE_SEPARATOR = re.compile(r"[:?!;\u061F\u061B]|\.\s|\s[-\u2013\u2014]\s|\s[(\[]")
+LIST_SEPARATORS = re.compile(r"[;\u061B]")
+VANCOUVER_SEPARATORS = re.compile(r"[;\u061B,\u060C]")
+COMMAS = (",", chr(0x060C))
+ARABIC_AND = chr(0x0648)
+REPLACEMENT = chr(0xFFFD)
+ZERO_WIDTH_SPACE = chr(0x200B)
+# Section 3.2, B6: the scripts one writing system mixes by design (the augmented sets of UTS #39) count as one.
+AUGMENTED_SCRIPTS = (
+    frozenset({"CJK", "HIRAGANA", "KATAKANA"}),
+    frozenset({"CJK", "HANGUL"}),
+    frozenset({"CJK", "BOPOMOFO"}),
+)
+# Section 3.2, B7: the Unicode names of the Latin letters a skeleton replaces by their last single-letter group.
+SKELETON_NAME = re.compile(r"LATIN (SMALL |CAPITAL )?LETTER ([A-Z]+ )*([A-Z])( WITH [A-Z ]+)?")
+
+# Section 3.1: the Default_Ignorable_Code_Point ranges as the specification lists them (inclusive).
+DEFAULT_IGNORABLE = (
+    (0x00AD, 0x00AD),
+    (0x034F, 0x034F),
+    (0x061C, 0x061C),
+    (0x115F, 0x1160),
+    (0x17B4, 0x17B5),
+    (0x180B, 0x180F),
+    (0x200B, 0x200F),
+    (0x202A, 0x202E),
+    (0x2060, 0x206F),
+    (0x3164, 0x3164),
+    (0xFE00, 0xFE0F),
+    (0xFEFF, 0xFEFF),
+    (0xFFA0, 0xFFA0),
+    (0xFFF0, 0xFFF8),
+    (0x1BCA0, 0x1BCA3),
+    (0x1D173, 0x1D17A),
+    (0xE0000, 0xE0FFF),
+)
 
 DW_TEXT = (
     "addendum addenda clarification clarifications correction corrections corrigendum corrigenda erratum errata "
@@ -158,18 +250,21 @@ NP = frozenset(NP_TEXT.split(" "))
 RELATION_RANK = ("EQUAL", "SHORTER", "LONGER", "OVERLAP", "DISJOINT", "INCOMPARABLE")
 OBJECT_RANK = {"COMPATIBLE": 0, "INSUFFICIENT": 1, "NOT_ESTABLISHED": 2, "MATERIAL_CONFLICT": 3}
 NOT_ESTABLISHED_REASON = {
+    "SHORTER": "BIB_TITLE_SHORTENED",
     "LONGER": "BIB_TITLE_EXTENDED",
     "OVERLAP": "BIB_TITLE_PARTIAL",
     "INCOMPARABLE": "BIB_TITLE_INCOMPARABLE",
 }
+VALUES_DIFFER = "BIB_TITLE_VALUES_DIFFER"
+GENRE_UNMATCHED = "BIB_GENRE_UNMATCHED"
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Profile and engine configuration (R1, R7)
+# Profile and engine configuration (R1, R8)
 
 
-def load_profile(path: Path | str) -> dict[str, Any]:
-    """Read the alias profile (bib-reference-profile.json)."""
+def load_profile(path: Path | str = PROFILE_PATH) -> dict[str, Any]:
+    """Read the alias profile (by default bib2-reference-profile.json next to this file)."""
     data: dict[str, Any] = json.loads(Path(path).read_text(encoding="utf-8"))
     return data
 
@@ -203,17 +298,21 @@ def _check_parser() -> None:
         raise RuntimeError("the C tokenizer of mwparserfromhell is not active")
 
 
-def _matches(name: str, patterns: list[re.Pattern[str]]) -> bool:
-    return any(p.fullmatch(name) is not None for p in patterns)
-
-
-def _families_of(name: str, table: dict[str, list[re.Pattern[str]]]) -> list[str]:
-    """Every family (R7) one of whose CS1 keys has an alias matching ``name``."""
-    return [fam for fam, keys in ALL_FAMILIES.items() if any(_matches(name, table[key]) for key in keys)]
+def _family_of(name: str, table: dict[str, list[re.Pattern[str]]]) -> tuple[str, str] | None:
+    """(family, key) of a name: the first family, then the first key, with an alias matching it whole (R8)."""
+    for family, keys in ALL_FAMILIES.items():
+        for key in keys:
+            if any(p.fullmatch(name) is not None for p in table[key]):
+                return family, key
+    return None
 
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Section 2.1: cited object (describe)
+
+
+class _Unreadable(Exception):
+    """A parameter name or value that section 2.1 steps 4 and 5 cannot read (BIB_PARSE_FAILED)."""
 
 
 JOINED = (
@@ -223,6 +322,27 @@ JOINED = (
     mwparserfromhell.nodes.ExternalLink,
 )
 JOINED_TAGS = ("i", "b", "sub", "sup", "span", "small", "big", "u", "s", "em", "strong")
+READABLE_TAGS = (*JOINED_TAGS, "nowiki", "br")
+
+
+def _read_name(name: Any, table: dict[str, list[re.Pattern[str]]]) -> str | None:
+    """Step 4 (R5): the name, None when the parameter is ignored; raises ``_Unreadable`` for BIB_PARSE_FAILED."""
+    nodes = list(name.nodes)
+    if all(isinstance(node, mwparserfromhell.nodes.Text) for node in nodes):
+        return str(name).strip()
+    if all(isinstance(node, (mwparserfromhell.nodes.Text, mwparserfromhell.nodes.Comment)) for node in nodes):
+        bare = "".join(str(node.value) for node in nodes if isinstance(node, mwparserfromhell.nodes.Text)).strip()
+        if _family_of(bare, table) is None:
+            return None
+        raise _Unreadable("comment in the name of a family parameter")
+    raise _Unreadable("markup in a parameter name")
+
+
+def _holds_hidden_content(value: Any) -> bool:
+    """Step 5 (R6): a Template or Argument node, or a tag other than the readable ones, at any depth."""
+    if value.filter_templates(recursive=True) or value.filter_arguments(recursive=True):
+        return True
+    return any(str(tag.tag).strip().lower() not in READABLE_TAGS for tag in value.filter_tags(recursive=True))
 
 
 def _is_joined(node: Any) -> bool:
@@ -231,16 +351,28 @@ def _is_joined(node: Any) -> bool:
     return isinstance(node, mwparserfromhell.nodes.Tag) and str(node.tag).strip().lower() in JOINED_TAGS
 
 
+def _is_nowiki(node: Any) -> bool:
+    return isinstance(node, mwparserfromhell.nodes.Tag) and str(node.tag).strip().lower() == "nowiki"
+
+
 def _clean(value: Any) -> str | None:
-    """Step 5 (bib-1 step 4, unchanged; copied from bib_reference.py)."""
+    """Step 5 cleaning (R7): bib-1's, except that a Comment is one U+200B and a nowiki tag's text sits between two."""
     pieces = []
     for node in value.nodes:
+        if isinstance(node, mwparserfromhell.nodes.Comment):
+            pieces.append(ZERO_WIDTH_SPACE)
+            continue
         piece = mwparserfromhell.wikicode.Wikicode([node]).strip_code(normalize=True, collapse=True)
-        pieces.append(piece if _is_joined(node) else " " + piece + " ")
+        if _is_joined(node):
+            pieces.append(piece)
+        elif _is_nowiki(node):
+            pieces.append(ZERO_WIDTH_SPACE + piece + ZERO_WIDTH_SPACE)
+        else:
+            pieces.append(" " + piece + " ")
     cleaned = WHITESPACE_RUN.sub(" ", "".join(pieces)).strip()
-    if cleaned == "":
+    if all(is_invisible(ch) for ch in cleaned):  # also the empty string
         return None
-    return "".join("\ufffd" if 0xD800 <= ord(ch) <= 0xDFFF else ch for ch in cleaned)
+    return "".join(REPLACEMENT if 0xD800 <= ord(ch) <= 0xDFFF else ch for ch in cleaned)
 
 
 def _unavailable(reason: str) -> dict[str, Any]:
@@ -276,30 +408,34 @@ def describe(data: bytes | None, wiki: str, profile: dict[str, Any]) -> dict[str
         for param in nodes[0].params:
             if not param.showkey:
                 continue
-            effective[str(param.name).strip()] = param.value  # a dict keeps the first position of a name
-        cleaned: list[tuple[str, str | None, list[str]]] = []
+            name = _read_name(param.name, table)
+            if name is not None:
+                effective[name] = param.value  # a dict keeps the first position of a name
+        cleaned: list[tuple[str, str, str | None]] = []  # (family, key, cleaned value)
         for name, raw in effective.items():
-            families = _families_of(name, table)
-            if families:
-                cleaned.append((name, _clean(raw), families))
+            belongs = _family_of(name, table)
+            if belongs is None:
+                continue
+            family, key = belongs
+            if family in COMPARED_FAMILIES and _holds_hidden_content(raw):
+                raise _Unreadable("hidden content")
+            cleaned.append((family, key, _clean(raw)))
     except Exception:
         return _unavailable(PARSE_FAILED)
 
     # Step 6.
     values: dict[str, list[str]] = {fam: [] for fam in ALL_FAMILIES}
-    for name, value, families in cleaned:
+    for family, key, value in cleaned:
         if value is None:
             continue
-        for fam in families:
-            if fam == "titles" and any(_matches(name, table[key]) for key in SCRIPT_KEYS):
-                rest = SCRIPT_PREFIX.sub("", value, count=1).strip()
-                if rest != "":
-                    values[fam].append(rest)
-            else:
-                values[fam].append(value)
+        kept = SCRIPT_PREFIX.sub("", value, count=1).strip() if key in SCRIPT_KEYS else value
+        if kept != "":
+            values[family].append(kept)
 
     # Step 7.
-    if len(values["titles"]) > MAX_VALUES or sum(len(values[f]) for f in AUTHOR_FORMS) > MAX_VALUES:
+    if len(values["titles"]) + len(values["genres"]) > MAX_VALUES:
+        return _unavailable(VALUE_LIMIT)
+    if sum(len(values[f]) for f in AUTHOR_FORMS) > MAX_VALUES:
         return _unavailable(VALUE_LIMIT)
     if sum(len(v) for fam in ALL_FAMILIES for v in values[fam]) > MAX_DESCRIPTION:
         return _unavailable(DESCRIPTION_LIMIT)
@@ -312,7 +448,7 @@ def describe(data: bytes | None, wiki: str, profile: dict[str, Any]) -> dict[str
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Section 3: normalization (3.2 copied from bib_reference.py; 3.1 readings)
+# Section 3: normalization (3.2 copied from bib_reference.py; 3.1 readings; mixed words)
 
 
 def fold(s: str) -> str:
@@ -336,6 +472,39 @@ def script(w: str) -> str | None:
         except ValueError:
             return None
     return None
+
+
+def mixed(w: str) -> bool:
+    """Section 3.2 (R14): the letters (category L except Lm) of ``w`` belong to two or more scripts, and not all to one
+    augmented set (B6: Japanese, Korean, or CJK with Bopomofo)."""
+    scripts = set()
+    for c in w:
+        category = unicodedata.category(c)
+        if category.startswith("L") and category != "Lm":
+            scripts.add(script(c))
+    if len(scripts) < 2:
+        return False
+    return not any(scripts <= augmented for augmented in AUGMENTED_SCRIPTS)
+
+
+def skeleton(w: str) -> str:
+    """Section 3.2, B7 (R24): every character whose Unicode name fully matches ``SKELETON_NAME`` becomes the
+    casefolded letter of its last single-letter group; other characters are kept."""
+    out = []
+    for c in w:
+        match = SKELETON_NAME.fullmatch(unicodedata.name(c, ""))
+        out.append(match.group(3).casefold() if match is not None else c)
+    return "".join(out)
+
+
+def names_designation(w: str) -> bool:
+    """B7: the word or its skeleton is in DW."""
+    return w in DW or skeleton(w) in DW
+
+
+def phrase_occurs(phrase: list[str], seq: list[str]) -> bool:
+    """B7: the phrase occurs as consecutive words of the sequence or of the sequence of its words' skeletons."""
+    return _contains(phrase, seq) or _contains(phrase, [skeleton(w) for w in seq])
 
 
 def name_words(value: str) -> list[str]:
@@ -370,14 +539,32 @@ def _scripts(ws: set[str] | list[str]) -> set[str]:
     return {s for s in (script(w) for w in ws) if s is not None}
 
 
-def has_format(s: str | None) -> bool:
-    return s is not None and any(unicodedata.category(c) == "Cf" for c in s)
+def is_invisible(c: str) -> bool:
+    """Section 3.1 (R11): category Cf, a control (Cc) that is not whitespace, or a listed default-ignorable."""
+    category = unicodedata.category(c)
+    if category == "Cf" or (category == "Cc" and not c.isspace()):
+        return True
+    cp = ord(c)
+    return any(lo <= cp <= hi for lo, hi in DEFAULT_IGNORABLE)
 
 
-def remove_format(s: str | None) -> str | None:
-    if s is None:
-        return None
-    return "".join(c for c in s if unicodedata.category(c) != "Cf")
+def has_invisible(s: str | None) -> bool:
+    return s is not None and any(is_invisible(c) for c in s)
+
+
+def _as_written(s: str) -> str:
+    return s
+
+
+def _boundary(s: str) -> str:
+    return "".join(" " if is_invisible(c) else c for c in s)
+
+
+def _joined(s: str) -> str:
+    return "".join(c for c in s if not is_invisible(c))
+
+
+READINGS = (_as_written, _boundary, _joined)  # the order of section 3.1
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -385,34 +572,39 @@ def remove_format(s: str | None) -> str | None:
 
 
 def author_parts(form: str, value: str) -> list[tuple[bool, set[str]]]:
-    """(packed, N) for every non-empty part of one cited author value of the given form."""
+    """(packed, N) for every non-empty part of one cited author value of the given form (R15)."""
     splitter = VANCOUVER_SEPARATORS if form == "vauthors" else LIST_SEPARATORS
     parts = []
     for piece in splitter.split(value):
         if piece.strip() == "":
             continue
-        commas = sum(piece.count(c) for c in COMMAS)
-        conjunction = "&" in piece or any(tok.casefold() == "and" for tok in piece.split())
         if form == "vauthors":
             packed = False
-        elif form == "authors":
-            packed = conjunction or commas >= 2
-        else:  # author_lists
-            packed = conjunction or commas >= 1
+        else:  # authors and author_lists
+            comma = any(c in piece for c in COMMAS)
+            conjunction = "&" in piece or any(tok.casefold() == "and" or tok == ARABIC_AND for tok in piece.split())
+            packed = conjunction or comma
         parts.append((packed, cited_author_words(piece)))
     return parts
 
 
+def _comparable(n: set[str], s_r: set[str]) -> bool:
+    """R16: (S_R non-empty and a shared script) or a mixed word."""
+    return (bool(s_r) and bool(_scripts(n) & _scripts(s_r))) or any(mixed(w) for w in n)
+
+
 def author_verdict(cited: dict[str, list[str]], record_authors: str | None) -> str:
     s_r = record_surnames(record_authors)
-    record_scripts = _scripts(s_r)
     conflict = False
     agree = False
     for form in AUTHOR_FORMS:
         for value in cited.get(form, []):
+            w = cited_author_words(value)  # whole-value guard
+            if _comparable(w, s_r) and not (w & s_r):
+                conflict = True
             for packed, n in author_parts(form, value):
-                if not (_scripts(n) & record_scripts):
-                    continue  # not comparable: set aside
+                if not _comparable(n, s_r):
+                    continue  # set aside
                 if not (n & s_r):
                     conflict = True
                 elif not packed:
@@ -423,7 +615,7 @@ def author_verdict(cited: dict[str, list[str]], record_authors: str | None) -> s
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Section 4.2: title
+# Section 4.2: title, and 4.2a: genre
 
 
 def _first_occurrence(inner: list[str], outer: list[str]) -> int | None:
@@ -470,49 +662,87 @@ def extra_words(rel: str, t: list[str], t_r: list[str]) -> tuple[list[str], list
 
 
 def designates(rel: str, t: list[str], t_r: list[str]) -> bool:
-    """R16 (amended 4.2): every relation but EQUAL is checked."""
+    """R18: every relation but EQUAL is checked; an extra word that names a designation or is mixed, or a DP phrase
+    that occurs (B7) on one side only."""
     if rel == "EQUAL":
         return False
     cited_extra, record_extra = extra_words(rel, t, t_r)
-    if any(w in DW for w in cited_extra) or any(w in DW for w in record_extra):
+    if any(names_designation(w) or mixed(w) for w in cited_extra + record_extra):
         return True
     for phrase in DP:
         p = words(phrase)
-        if _contains(p, t) != _contains(p, t_r):
+        if phrase_occurs(p, t) != phrase_occurs(p, t_r):
             return True
     return False
 
 
-def title_relation(cited_titles: list[str], record_title: str | None) -> tuple[str, bool]:
-    """(relation of the chosen value, whether any value designates)."""
+def main_title_words(record_title: str | None) -> list[str] | None:
+    """R19: words of the record's title before the first separator; None when there is no separator."""
+    if record_title is None:
+        return None
+    match = MAIN_TITLE_SEPARATOR.search(record_title)
+    if match is None:
+        return None
+    return words(record_title[: match.start()])
+
+
+def title_relation(cited_titles: list[str], record_title: str | None) -> tuple[str, bool, int, int]:
+    """(pair relation, whether any value designates, number of values that agree, number of values compared)."""
     t_r = words(record_title)
     if not t_r:
-        return "MISSING", False
+        return "MISSING", False, 0, 0
+    main = main_title_words(record_title)
     best: int | None = None
     any_designates = False
+    agreeing = 0
+    compared = 0
     for value in cited_titles:
         t = words(value)
         if not t:
             continue
+        compared += 1
         rel = relation(t, t_r)
         if designates(rel, t, t_r):
             any_designates = True
+        if rel == "EQUAL" or (rel == "SHORTER" and main is not None and t == main):
+            agreeing += 1
         rank = RELATION_RANK.index(rel)
         if best is None or rank < best:
             best = rank
     if best is None:
-        return "MISSING", False
-    return RELATION_RANK[best], any_designates
+        return "MISSING", False, 0, 0
+    return RELATION_RANK[best], any_designates, agreeing, compared
 
 
-def title_verdict(rel: str, designation: bool) -> str:
+def title_verdict(rel: str, designation: bool, agreeing: int, compared: int) -> tuple[str, str | None]:
+    """R19: (title verdict, its NOT_ESTABLISHED reason or None)."""
     if designation or rel == "DISJOINT":
-        return "CONFLICT"
-    if rel in ("EQUAL", "SHORTER"):
-        return "AGREE"
-    if rel in NOT_ESTABLISHED_REASON:
-        return "NOT_ESTABLISHED"
-    return "INSUFFICIENT"  # MISSING
+        return "CONFLICT", None
+    if rel == "MISSING":
+        return "INSUFFICIENT", None  # no compared value: never a vacuous agreement
+    if agreeing == compared:
+        return "AGREE", None
+    if agreeing > 0:
+        return "NOT_ESTABLISHED", VALUES_DIFFER
+    return "NOT_ESTABLISHED", NOT_ESTABLISHED_REASON[rel]
+
+
+def genre_check(genres: list[str], record_title: str | None) -> tuple[bool, bool]:
+    """Section 4.2a (R20): (some genre value designates, some genre value is unmatched)."""
+    t_r = words(record_title)
+    record = set(t_r)
+    any_designates = False
+    any_unmatched = False
+    for g in genres:
+        gw = words(g)
+        designating = any((names_designation(w) or mixed(w)) and w not in record for w in gw) or any(
+            phrase_occurs(words(phrase), gw) and not phrase_occurs(words(phrase), t_r) for phrase in DP
+        )
+        if designating:
+            any_designates = True
+        elif any(w not in record for w in gw):
+            any_unmatched = True
+    return any_designates, any_unmatched
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -575,14 +805,20 @@ def _insufficient() -> dict[str, Any]:
 
 
 def _one_reading(
-    titles: list[str], cited_authors: dict[str, list[str]], r_title: str | None, r_authors: str | None
+    titles: list[str],
+    genres: list[str],
+    cited_authors: dict[str, list[str]],
+    r_title: str | None,
+    r_authors: str | None,
 ) -> dict[str, Any]:
-    """Sections 4.1, 4.2 and 5 under one reading."""
+    """Sections 4.1, 4.2, 4.2a and 5 under one reading (R21)."""
     authors = author_verdict(cited_authors, r_authors)
-    rel, designation = title_relation(titles, r_title)
-    title = title_verdict(rel, designation)
+    rel, title_designation, agreeing, compared = title_relation(titles, r_title)
+    title, title_reason = title_verdict(rel, title_designation, agreeing, compared)
+    genre_designation, genre_unmatched = genre_check(genres, r_title)
+    designation = title_designation or genre_designation
     reasons: list[str] = []
-    if authors == "CONFLICT" or title == "CONFLICT":
+    if authors == "CONFLICT" or title == "CONFLICT" or designation:
         obj = "MATERIAL_CONFLICT"
         if authors == "CONFLICT":
             reasons.append("BIB_AUTHORS_DISJOINT")
@@ -590,13 +826,19 @@ def _one_reading(
             reasons.append("BIB_TITLE_DISJOINT")
         if designation:
             reasons.append("BIB_TITLE_RELATED_OBJECT")
-    elif title == "NOT_ESTABLISHED":
-        obj = "NOT_ESTABLISHED"
-        reasons.append(NOT_ESTABLISHED_REASON[rel])
-    elif title == "AGREE":
-        obj = "COMPATIBLE"
     else:
-        obj = "INSUFFICIENT"
+        if title_reason is not None:
+            reasons.append(title_reason)
+        if genre_unmatched:
+            reasons.append(GENRE_UNMATCHED)
+        if title == "AGREE" and rel == "SHORTER" and authors != "AGREE":
+            reasons.append("BIB_TITLE_SHORTENED")  # B5: a main title alone needs an agreeing author
+        if reasons:
+            obj = "NOT_ESTABLISHED"
+        elif title == "AGREE":
+            obj = "COMPATIBLE"
+        else:
+            obj = "INSUFFICIENT"
     return {
         "authors": authors,
         "title": title,
@@ -619,22 +861,25 @@ def compare(fields: dict[str, Any] | None, record: dict[str, Any] | None) -> dic
     r_year = r_year_raw if isinstance(r_year_raw, int) and not isinstance(r_year_raw, bool) else None
 
     titles = _str_list(fields.get("titles"))
+    genres = _str_list(fields.get("genres"))
     cited_authors = {form: _str_list(fields.get(form)) for form in AUTHOR_FORMS}
-    compared = [*titles, *(v for form in AUTHOR_FORMS for v in cited_authors[form]), r_title, r_authors]
+    compared = [*titles, *genres, *(v for form in AUTHOR_FORMS for v in cited_authors[form]), r_title, r_authors]
+    readings = READINGS if any(has_invisible(s) for s in compared) else READINGS[:1]
 
-    split = _one_reading(titles, cited_authors, r_title, r_authors)
-    results = [split]
-    if any(has_format(s) for s in compared):
-        joined = _one_reading(
-            [remove_format(t) or "" for t in titles],
-            {form: [remove_format(v) or "" for v in cited_authors[form]] for form in AUTHOR_FORMS},
-            remove_format(r_title),
-            remove_format(r_authors),
+    results = []
+    for read in readings:
+        results.append(
+            _one_reading(
+                [read(t) for t in titles],
+                [read(g) for g in genres],
+                {form: [read(v) for v in cited_authors[form]] for form in AUTHOR_FORMS},
+                None if r_title is None else read(r_title),
+                None if r_authors is None else read(r_authors),
+            )
         )
-        results.append(joined)
     worst = max(OBJECT_RANK[r["object"]] for r in results)
     giving = [r for r in results if OBJECT_RANK[r["object"]] == worst]
-    reported = giving[0]  # the split reading when both give it
+    reported = giving[0]  # the first reading, in the order of section 3.1, that gives the worst result
     reasons = sorted({reason for r in giving for reason in r["reasons"]})
 
     year = year_verdict(cited_year(_str_or_none(fields.get("date")), _str_or_none(fields.get("year"))), r_year)
@@ -656,19 +901,30 @@ def compare(fields: dict[str, Any] | None, record: dict[str, Any] | None) -> dic
 
 
 def _self_check() -> None:
-    """The lexicon is stated as folded: fold leaves every DW and NP entry unchanged and each DP phrase has words. The
-    format characters 3.1 names are of category Cf and no word character (so the split reading separates words)."""
+    """The lexicon is stated as folded: fold and the skeleton leave every DW and NP entry unchanged, no entry is mixed,
+    and each DP phrase has words. The characters section 3.1 names are invisible. The examples of section 3.2 hold."""
     for w in DW | NP:
-        if fold(w) != w or words(w) != [w]:
+        if fold(w) != w or words(w) != [w] or mixed(w) or skeleton(w) != w:
             raise AssertionError(w)
+    small_capitals = "".join(chr(cp) for cp in (0x1D07, 0x0280, 0x0280, 0x1D00, 0x1D1B, 0x1D1C, 0x1D0D))
+    if skeleton(small_capitals) != "erratum" or skeleton("err" + chr(0x0131) + "tum") != "erritum":
+        raise AssertionError("skeleton")
+    japanese = "".join(chr(cp) for cp in (0x65E5, 0x672C, 0x3054, 0x30AB, 0x30CA))
+    korean = "".join(chr(cp) for cp in (0x97D3, 0xD55C, 0xAD6D))
+    if mixed(japanese) or mixed(korean) or not mixed("err" + chr(0x0430) + "tum"):
+        raise AssertionError("mixed")
     for phrase in DP:
         if not words(phrase):
             raise AssertionError(phrase)
-    for c in "\u00ad\u200b\u200c\u200d\u2060\ufeff\u200e\u200f\u202a\u202e\u2066\u2069":
-        if unicodedata.category(c) != "Cf" or WORD.fullmatch(fold(c)) is not None:
-            raise AssertionError(hex(ord(c)))
+    for cp in (0x00AD, 0x200B, 0x200C, 0x200D, 0x2060, 0xFEFF, 0x202E, 0x2066, 0xFE0F, 0x3164, 0x115F, 0x2065, 0x0080):
+        if not is_invisible(chr(cp)):
+            raise AssertionError(hex(cp))
+    if is_invisible("\t") or is_invisible(" "):
+        raise AssertionError("whitespace")
     if relation(["a"], ["a", "b"]) != "SHORTER" or relation(["a", "b"], ["a"]) != "LONGER":
         raise AssertionError("relation")
+    if main_title_words("Gene therapy (Pub 2)") != ["gene", "therapy"] or main_title_words("A-B c") is not None:
+        raise AssertionError("main title")
 
 
 _self_check()

@@ -13,6 +13,11 @@ For every JSON result under ``docs/verification/stage-04/final-cycle`` (all but 
 
 The fail-first inputs are a pure function of the corpus and the bib-1 code and are recomputed here. The history is
 required, never skipped (CI checks out the full history).
+
+Revised freeze-3 (owner decisions D-086 and D-087): the results of the dt-4 engine are under ``final-cycle/dt4``
+and are checked as above against HEAD. The results outside it are the record of the freeze-3 candidate c3854b8 that
+D-085 did not accept (``HISTORICAL_AT``): each is unchanged from c3854b8 to HEAD, and the check above holds for it
+from its commit to c3854b8 (it described the code of that candidate); they are never rerun or edited.
 """
 
 from __future__ import annotations
@@ -29,14 +34,20 @@ import pytest
 REPO = Path(__file__).resolve().parents[2]
 S04 = "docs/verification/stage-04"
 FC = REPO / S04 / "final-cycle"
-# The corrective-cycle census tools (``corrective/census``, unchanged) rerun on dt-3; they record their own provenance.
+# The corrective-cycle census tools (``corrective/census``, unchanged) rerun on dt-3 and on dt-4; they record their own
+# provenance.
 CENSUS = FC / "regression" / "census"
+CENSUS_DT4 = FC / "dt4" / "census"
+# The freeze-3 candidate whose results stay as its record (D-085: not accepted).
+HISTORICAL_AT = "c3854b8"
 
 # Inputs, not results: each is checked elsewhere.
 INPUTS = {
     "corpus/BIB_CORPUS.json": "the adversarial corpus; every case is decided by test_final_bib.py",
     "fail-first/detector_inputs.json": "recomputed from the corpus by test_fail_first_inputs_are_recomputed",
     "simulation/decision_space_dt3_summary.json": "the dt-3 oracle summary (oracle pinned by test_final_oracle.py)",
+    "simulation/decision_space_dt4_summary.json": "the dt-4 oracle summary (oracle pinned by test_final_oracle_dt4.py)",
+    "corpus/BIB2_CORPUS.json": "the bib-2 corpus; every case is decided by test_final_bib2.py",
 }
 # What a final-cycle result depends on besides its own tool: the engine, the schemas, the reference models, the pinned
 # dependencies, the test support modules the tools import, and the input trees (campaign bundles, the dt-2 regression,
@@ -65,6 +76,11 @@ READS = {
     "role-collision/ROLE_COLLISION_STUDY.json": ("regression/*_REGRESSION.json",),
     "fail-first/decided_by_dt3_engine.json": ("fail-first/detector_inputs.json", "corpus/BIB_CORPUS.json"),
     "fail-first/decided_by_dt2_engine_6663314.json": ("fail-first/detector_inputs.json", "corpus/BIB_CORPUS.json"),
+    "dt4/role-collision/ROLE_COLLISION_STUDY.json": ("dt4/regression/*_REGRESSION.json",),
+    "dt4/regression/DELTA_C3854B8.json": ("regression/*_REGRESSION.json", "dt4/regression/*_REGRESSION.json"),
+    "dt4/fail-first/decided_by_dt2_engine.json": ("corpus/BIB2_CORPUS.json",),
+    "dt4/fail-first/decided_by_dt3_engine.json": ("corpus/BIB2_CORPUS.json",),
+    "dt4/fail-first/decided_by_dt4_engine.json": ("corpus/BIB2_CORPUS.json",),
 }
 DT2_ENGINE_COMMIT = "6663314"
 
@@ -79,8 +95,12 @@ def _results() -> list[str]:
     return sorted(
         str(p.relative_to(FC))
         for p in FC.rglob("*.json")
-        if "__pycache__" not in p.parts and p.parts[len(FC.parts)] != "review" and p.parent != CENSUS
+        if "__pycache__" not in p.parts and p.parts[len(FC.parts)] != "review" and p.parent not in (CENSUS, CENSUS_DT4)
     )
+
+
+def _historical(rel: str) -> bool:
+    return not rel.startswith("dt4/")
 
 
 def _load(rel: str) -> dict[str, Any]:
@@ -106,6 +126,16 @@ def test_a_result_was_computed_by_committed_code_that_still_decides_as_head(rel:
     assert hashlib.sha256(tool).hexdigest() == prov["tool_sha256"], rel
     assert hashlib.sha256((REPO / prov["tool"]).read_bytes()).hexdigest() == prov["tool_sha256"], f"{rel}: tool changed"
     reads = [f"{S04}/final-cycle/{p}" for p in READS.get(rel, ())]
+    if _historical(rel):
+        # the record of c3854b8: unchanged since, and it described that candidate's code
+        assert _git("diff", "--name-only", HISTORICAL_AT, "HEAD", "--", f"{S04}/final-cycle/{rel}") == "", rel
+        ancestor = subprocess.run(["git", "merge-base", "--is-ancestor", commit, HISTORICAL_AT], cwd=REPO, check=False)
+        assert ancestor.returncode == 0, f"{rel}: {commit[:12]} is not in the history of {HISTORICAL_AT}"
+        changed = _git("diff", "--name-only", commit, HISTORICAL_AT, "--", *SAME_AS_HEAD, *reads)
+        assert changed == "", (
+            f"{rel} was computed at {commit[:12]}; changed before {HISTORICAL_AT}: {changed.split()[:10]}"
+        )
+        return
     changed = _git("diff", "--name-only", commit, "HEAD", "--", *SAME_AS_HEAD, *reads)
     assert changed == "", f"{rel} was computed at {commit[:12]}; changed since: {changed.split()[:10]}"
 
@@ -127,6 +157,21 @@ def test_the_fail_first_runs_name_their_engine_commits() -> None:
     assert dt3["table_version"] == "dt-3"
     view = _load("identity/LOGICAL_VIEW_DIFF.json")
     assert view["old_root_head"].startswith(DT2_ENGINE_COMMIT)
+
+
+def test_the_dt4_fail_first_runs_name_their_engine_commits() -> None:
+    """D-086/D-087: the bib-2 corpus decided by the accepted dt-2 engine (6663314), the freeze-3 candidate's dt-3 engine
+    (c3854b8) and the engine under test, each from a clean checkout of its commit."""
+    for name, table, commit in (("dt2", "dt-2", DT2_ENGINE_COMMIT), ("dt3", "dt-3", HISTORICAL_AT)):
+        run = _load(f"dt4/fail-first/decided_by_{name}_engine.json")
+        assert run["table_version"] == table and run["engine_source"]["commit"].startswith(commit), name
+        assert run["engine_source"]["uncommitted"] == [], name
+    dt4 = _load("dt4/fail-first/decided_by_dt4_engine.json")
+    assert dt4["table_version"] == "dt-4"
+    assert dt4["engine_source"]["commit"] == dt4["provenance"]["code_commit"]
+    assert dt4["engine_source"]["uncommitted"] == []
+    view = _load("dt4/identity/LOGICAL_VIEW_DIFF.json")
+    assert view["old_root_head"].startswith(HISTORICAL_AT) and view["only_identity_digests_and_order"]
 
 
 def test_fail_first_inputs_are_recomputed() -> None:
@@ -168,6 +213,20 @@ def test_a_tool_refuses_a_dirty_tree_and_a_tree_that_changes_while_it_runs(monke
 
 
 @pytest.mark.parametrize("name", ["CENSUS.json", "B03_CENSUS.json", "PAIR_CENSUS.json"])
+def test_the_role_collision_censuses_are_unchanged_under_dt4(name: str) -> None:
+    """D-086/D-087: the same censuses rerun on dt-4 from a clean checkout are equal in everything but their
+    provenance (D-13b and D-13c, like D-13a, need a description, which a single-key or DOI+PMID census case lacks)."""
+    new = json.loads((CENSUS_DT4 / name).read_text(encoding="utf-8"))
+    old = json.loads((REPO / S04 / "corrective" / "census" / name).read_text(encoding="utf-8"))
+    prov = new.pop("provenance")
+    old.pop("provenance")
+    assert new == old
+    assert prov["engine_sources_uncommitted"] is False
+    assert prov["tables"]["current"] == {"engine_version": "0.5.0", "table_version": "dt-4"}
+    assert _git("diff", "--name-only", prov["code_commit"], "HEAD", "--", *SAME_AS_HEAD) == ""
+
+
+@pytest.mark.parametrize("name", ["CENSUS.json", "B03_CENSUS.json", "PAIR_CENSUS.json"])
 def test_the_role_collision_censuses_are_unchanged_under_dt3(name: str) -> None:
     """D-083 item 11: the role-collision, B-03 and pair censuses of the corrective cycle (dt-2), rerun by their own
     unchanged tools on dt-3 from a clean checkout, are equal in everything but their provenance: a single-key or
@@ -179,4 +238,6 @@ def test_the_role_collision_censuses_are_unchanged_under_dt3(name: str) -> None:
     assert new == old
     assert prov["engine_sources_uncommitted"] is False
     assert prov["tables"]["current"] == {"engine_version": "0.4.0", "table_version": "dt-3"}
-    assert _git("diff", "--name-only", prov["code_commit"], "HEAD", "--", *SAME_AS_HEAD) == ""
+    # the record of c3854b8 (D-085): computed from that candidate's code and unchanged since
+    assert _git("diff", "--name-only", prov["code_commit"], HISTORICAL_AT, "--", *SAME_AS_HEAD) == ""
+    assert _git("diff", "--name-only", HISTORICAL_AT, "HEAD", "--", str((CENSUS / name).relative_to(REPO))) == ""

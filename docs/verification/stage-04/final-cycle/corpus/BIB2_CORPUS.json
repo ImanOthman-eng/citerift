@@ -176,7 +176,7 @@
    "expect": {
     "object": "COMPATIBLE",
     "reasons": [],
-    "authors": "AGREE",
+    "authors": "INSUFFICIENT",
     "title": "AGREE",
     "title_relation": "EQUAL"
    },
@@ -258,7 +258,7 @@
    "expect": {
     "object": "COMPATIBLE",
     "reasons": [],
-    "authors": "AGREE",
+    "authors": "INSUFFICIENT",
     "title_relation": "EQUAL"
    },
    "origin": "synthetic",
@@ -311,7 +311,7 @@
    "expect": {
     "object": "COMPATIBLE",
     "reasons": [],
-    "authors": "AGREE",
+    "authors": "INSUFFICIENT",
     "title_relation": "EQUAL"
    },
    "origin": "synthetic",
@@ -362,8 +362,10 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
     "title_relation": "SHORTER",
     "designation": false
    },
@@ -1060,8 +1062,10 @@
     "original_year": 2008
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
     "authors": "AGREE",
     "title_relation": "SHORTER",
     "designation": false
@@ -1088,11 +1092,11 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "INSUFFICIENT",
-    "reasons": [],
-    "authors": "INSUFFICIENT",
-    "title": "INSUFFICIENT",
-    "title_relation": "MISSING"
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
    },
    "origin": "synthetic",
    "note": "",
@@ -1712,13 +1716,11 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "MATERIAL_CONFLICT",
+    "object": "UNAVAILABLE",
     "reasons": [
-     "BIB_TITLE_RELATED_OBJECT"
+     "BIB_PARSE_FAILED"
     ],
-    "authors": "AGREE",
-    "title_relation": "LONGER",
-    "designation": true
+    "unavailable": "BIB_PARSE_FAILED"
    },
    "origin": "synthetic",
    "note": "A-01: a removed template is a word boundary (spec 2.1 step 4), so 'Comments' stays a word",
@@ -1745,13 +1747,11 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "MATERIAL_CONFLICT",
+    "object": "UNAVAILABLE",
     "reasons": [
-     "BIB_TITLE_RELATED_OBJECT"
+     "BIB_PARSE_FAILED"
     ],
-    "authors": "AGREE",
-    "title_relation": "OVERLAP",
-    "designation": true
+    "unavailable": "BIB_PARSE_FAILED"
    },
    "origin": "synthetic",
    "note": "A-01: {{!}} is a word boundary; 'Reply' is an extra word the record title lacks",
@@ -1810,13 +1810,11 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "MATERIAL_CONFLICT",
+    "object": "UNAVAILABLE",
     "reasons": [
-     "BIB_TITLE_RELATED_OBJECT"
+     "BIB_PARSE_FAILED"
     ],
-    "authors": "AGREE",
-    "title_relation": "LONGER",
-    "designation": true
+    "unavailable": "BIB_PARSE_FAILED"
    },
    "origin": "synthetic",
    "note": "the pinned parser's strip_code keeps a tag's contents (an expectation that the <ref> text is dropped was wrong and corrected after the first run), and the tag is a word boundary: 'Comments' designates, fail closed",
@@ -2876,13 +2874,15 @@
     "original_year": 2010
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_VALUES_DIFFER"
+    ],
     "authors": "AGREE",
     "title_relation": "EQUAL"
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
-   "note": "exactly 4,096 code points over all values; the trans-title is DISJOINT and holds no designation",
+   "note": "exactly 4,096 code points over all values: described and compared; the trans-title is DISJOINT, holds no designation and does not agree (M4), so the pair abstains as NOT_ESTABLISHED, never UNAVAILABLE",
    "requirement": "D-086"
   },
   {
@@ -2947,7 +2947,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "soft-hyphen inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -2972,7 +2972,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "zwsp inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -2997,7 +2997,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "zwnj inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -3022,7 +3022,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "zwj inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -3047,7 +3047,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "word-joiner inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -3072,7 +3072,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
    "note": "bom inside 'Comments'; the commenter's surname replaced by a record author's",
@@ -3097,7 +3097,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "",
@@ -3122,7 +3122,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "split reading: LONGER with 'comments' (conflict); joined reading: OVERLAP with 'studycomments'",
@@ -3146,7 +3146,7 @@
     ],
     "authors": "AGREE",
     "title_relation": "OVERLAP",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "split reading of the record title: 'syn' 'thetic' (OVERLAP); the worse reading decides",
@@ -3170,7 +3170,7 @@
     ],
     "authors": "AGREE",
     "title_relation": "OVERLAP",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "stated cost (spec 9): a format character inside a genuine word abstains",
@@ -3192,7 +3192,7 @@
     "reasons": [],
     "authors": "AGREE",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "a format character next to a space changes no word under either reading",
@@ -3216,7 +3216,7 @@
     ],
     "authors": "CONFLICT",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "stated cost (spec 9): the split reading sees 'lind' 'qvist', as bib-1 did; fail closed",
@@ -3238,7 +3238,7 @@
     "reasons": [],
     "authors": "AGREE",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "",
@@ -3260,7 +3260,7 @@
     "reasons": [],
     "authors": "AGREE",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "",
@@ -3285,7 +3285,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "",
@@ -3310,7 +3310,7 @@
     "authors": "AGREE",
     "title_relation": "LONGER",
     "designation": true,
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "U+061C ARABIC LETTER MARK before the designation",
@@ -3332,7 +3332,7 @@
     "reasons": [],
     "authors": "AGREE",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "",
@@ -3356,7 +3356,7 @@
     ],
     "authors": "AGREE",
     "title_relation": "OVERLAP",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "stated cost: a format character inside a genuine word abstains",
@@ -3380,7 +3380,7 @@
     ],
     "authors": "CONFLICT",
     "title_relation": "EQUAL",
-    "readings": 2
+    "readings": 3
    },
    "origin": "synthetic",
    "note": "stated cost: the split reading conflicts, as under bib-1",
@@ -3398,8 +3398,10 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
     "authors": "AGREE",
     "title_relation": "SHORTER"
    },
@@ -3829,14 +3831,16 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
     "authors": "AGREE",
     "title_relation": "SHORTER",
     "designation": false
    },
    "origin": "synthetic",
-   "note": "a shortened form whose omitted words name no other object stays compatible",
+   "note": "a shortened form other than the main title does not establish the object (spec 4.2, D-087 A-02)",
    "requirement": "D-087 A-02"
   },
   {
@@ -3899,14 +3903,1143 @@
     "original_year": 2015
    },
    "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_VALUES_DIFFER"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "M4: every title value must agree; 'remarks' is not in the lexicon: the longer value is not established",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "vauthors-whole-value-conflict",
+   "category": "packed_authors",
+   "wiki": "en",
+   "source": "{{cite journal |vauthors=& KL، |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "A1: the parts hold no comparable word, the whole value does and names no author (bib-1's test, kept)",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "title-lang-template-hides-designation",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title={{lang|en|Comments on}} Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "A2: cleaning would drop the template's words; the value cannot be read, so the check is unavailable",
+   "requirement": "D-086"
+  },
+  {
+   "id": "title-template-argument",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title={{{1}}} Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "A2: a template argument in a compared value",
+   "requirement": "D-086"
+  },
+  {
+   "id": "periodical-template-is-not-compared",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |journal={{lang|fr|Revue}}}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
     "object": "COMPATIBLE",
     "reasons": [],
     "authors": "AGREE",
     "title_relation": "EQUAL"
    },
    "origin": "synthetic",
-   "note": "the best relation decides; the longer value holds no designation",
+   "note": "a template in a recorded family is cleaned as in bib-1; nothing compared is hidden",
+   "requirement": "D-086"
+  },
+  {
+   "id": "parameterless-template-is-boundary",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift {{snd}} synthetic lattice sensors}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "a template without parameters may render anything ({{Erratum}}); its value cannot be read",
+   "requirement": "D-086"
+  },
+  {
+   "id": "commented-parameter-name",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title<!-- as published -->=Comments on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "A3: MediaWiki reads this parameter as the title, which bib-1 did not (no title: INSUFFICIENT); a name with markup cannot be read either way without changing what bib-1 compared, so the check is unavailable",
+   "requirement": "D-086"
+  },
+  {
+   "id": "templated-parameter-name",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |{{echo|title}}=Comments on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "A3: a name holding a template cannot be read without expanding it",
+   "requirement": "D-086"
+  },
+  {
+   "id": "hangul-filler-hides-erratum",
+   "category": "format_character",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Errㅤatum: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "LONGER",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "A4: U+3164 is a letter (not Cf) but Default_Ignorable; the joined reading finds the designation",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "unassigned-ignorable-hides-comment",
+   "category": "format_character",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Com⁥ment on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "LONGER",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "A4: U+2065 is unassigned (Cn) and Default_Ignorable; the joined reading finds the designation",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "variation-selector-in-genuine-title",
+   "category": "format_character",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal️ drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "a variation selector (a mark, removed by folding) leaves a genuine title equal under every reading",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "arabic-waw-packed",
+   "category": "packed_authors",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |مؤلف=أحمد و القاسم |عنوان=الانجراف الحراري في المستشعرات الشبكية}}",
+   "record": {
+    "title": "الانجراف الحراري في المستشعرات الشبكية",
+    "authors": "سارة أحمد الخطيب;عمر يوسف",
+    "journal": null,
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "A15: the Arabic conjunction packs two people in one author value; packed never agrees",
    "requirement": "D-087 A-02"
+  },
+  {
+   "id": "arabic-host-is-one-person",
+   "category": "packed_authors",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |host=القاسم |عنوان=الانجراف الحراري في المستشعرات الشبكية}}",
+   "record": {
+    "title": "الانجراف الحراري في المستشعرات الشبكية",
+    "authors": "سارة أحمد الخطيب;عمر يوسف",
+    "journal": null,
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "A11: ar host is in the one-person family; a non-author conflicts",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "surname-given-comma-is-packed",
+   "category": "packed_authors",
+   "wiki": "en",
+   "source": "{{cite journal |author=Lindqvist, Mara |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "A6: 'Surname, Given' cannot be told from two people, so it never agrees; it can still conflict",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "two-people-one-comma-is-packed",
+   "category": "packed_authors",
+   "wiki": "en",
+   "source": "{{cite journal |author=Lindqvist M, Quill P |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "A6: one author and one non-author in one value: undetermined, never a conflict, never an agreement",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "genre-type-erratum",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Erratum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "CS1 type states the genre; the record's title does not hold it (bib-1: COMPATIBLE)",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "genre-department-letters",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |department=Letters}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "genre-type-without-title",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |type=Retraction notice}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "MISSING",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "a stated genre designates even when the citation has no title",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "genre-word-in-record-title",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Letter: Thermal drift of synthetic lattice sensors: a field study |type=Letter}}",
+   "record": {
+    "title": "Letter: Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "a retracted letter cited as a letter: the record's title holds the word",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "genre-neutral-type",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Research article}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_GENRE_UNMATCHED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "M3: a genre the lexicon does not hold and the record's title does not name is not established (a cost)",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "arabic-genre-type",
+   "category": "genre",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=الانجراف الحراري في المستشعرات الشبكية |النوع=تصحيح}}",
+   "record": {
+    "title": "الانجراف الحراري في المستشعرات الشبكية",
+    "authors": "سارة أحمد الخطيب;عمر يوسف",
+    "journal": null,
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "ar type (النوع) = correction",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "title-parser-function",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title={{lc:Comments on}} Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "a parser function has no parameters for the parser but renders words",
+   "requirement": "D-086"
+  },
+  {
+   "id": "title-magic-word",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study {{PAGENAME}}}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "",
+   "requirement": "D-086"
+  },
+  {
+   "id": "title-math-hides-designation",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=<math>\\text{Comments on}</math> Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "cleaning drops a math tag's content, which renders",
+   "requirement": "D-086"
+  },
+  {
+   "id": "title-nowiki-is-read",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=<nowiki>Comments on</nowiki> Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "LONGER",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "nowiki content is kept by cleaning: it is read",
+   "requirement": "D-086"
+  },
+  {
+   "id": "commented-name-of-no-family",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |url<!-- dead -->=https://example.org/x}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "a commented name of no family is ignored, as by bib-1",
+   "requirement": "D-086"
+  },
+  {
+   "id": "commented-name-of-recorded-family",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |journal<!-- x -->=Letters}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "UNAVAILABLE",
+    "reasons": [
+     "BIB_PARSE_FAILED"
+    ],
+    "unavailable": "BIB_PARSE_FAILED"
+   },
+   "origin": "synthetic",
+   "note": "",
+   "requirement": "D-086"
+  },
+  {
+   "id": "cyrillic-lookalike-second-title",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Errаtum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "a Cyrillic a inside 'Erratum': a mixed word counts as a designation",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "cyrillic-lookalike-genre",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Lеtter}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "cyrillic-lookalike-author",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal\n |author=Rоbert Gаrry\n |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time\n |journal=Virology Journal\n |date=21 July 2010\n |volume=7\n |issue=1\n |page=169\n |doi=10.1186/1743-422X-7-169\n |pmid=20663162\n |pmc=2918564\n |s2cid=8124033\n |doi-access=free\n }}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "EQUAL"
+   },
+   "origin": "variant of development:en-27958530/un-00004 (real Stage 02 record, constructed citation)",
+   "note": "a look-alike name is compared and names no record author",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "c1-control-hides-erratum",
+   "category": "format_character",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Erratum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "a C1 control character is read as invisible; the joined reading finds the designation",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "shortened-suffix-of-title",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "SHORTER"
+   },
+   "origin": "synthetic",
+   "note": "the subtitle alone may be the title of another work",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "shortened-other-work-title",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Quill |title=Cystic fibrosis}}",
+   "record": {
+    "title": "Gene therapy for cystic fibrosis",
+    "authors": "Ann Quill",
+    "journal": null,
+    "original_year": 2001
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "SHORTER"
+   },
+   "origin": "synthetic",
+   "note": "a shortened title that is the full title of another work does not establish the object",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "greek-letter-in-equal-title",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Integrin αvβ3 in lattice sensors}}",
+   "record": {
+    "title": "Integrin αvβ3 in lattice sensors",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "a mixed word both titles hold is no extra word: an equal title is unaffected",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "comment-inside-chapter-erratum",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Err<!-- -->atum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "M1: MediaWiki renders the comment as nothing, so the chapter reads Erratum (joined reading)",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "nowiki-inside-type-erratum",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Err<nowiki/>atum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "M1: an empty nowiki tag renders nothing inside the genre word",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "comment-beside-genuine-title",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study <!-- checked 2024 -->}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "M1: a comment after the title is a boundary in every reading; the title stays EQUAL",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "comment-only-title",
+   "category": "hidden_content",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=<!-- title -->}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "MISSING"
+   },
+   "origin": "synthetic",
+   "note": "M1: a value with no visible character is absent (natural absence, not a failure)",
+   "requirement": "D-086"
+  },
+  {
+   "id": "zwsp-inside-type-erratum",
+   "category": "invisible",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Err​atum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true,
+    "readings": 3
+   },
+   "origin": "synthetic",
+   "note": "M2: genre values are compared strings of section 3.1",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "genre-conference-abstract",
+   "category": "genre",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Conference abstract}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_GENRE_UNMATCHED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "M3: a genre outside the lexicon (an abstract shares the paper's title) is not established",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "arabic-genre-letter-outside-lexicon",
+   "category": "genre",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=الانجراف الحراري في المستشعرات الشبكية |النوع=رسالة}}",
+   "record": {
+    "title": "الانجراف الحراري في المستشعرات الشبكية",
+    "authors": "سارة أحمد الخطيب;عمر يوسف",
+    "journal": null,
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_GENRE_UNMATCHED"
+    ],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "M3: 'رسالة' (letter) is not in the Arabic lexicon, which is not extended; the pair is not established",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "arabic-genre-persian-yeh-variant",
+   "category": "genre",
+   "wiki": "ar",
+   "source": "{{استشهاد بدورية محكمة |عنوان=الانجراف الحراري في المستشعرات الشبكية |النوع=تعلیق}}",
+   "record": {
+    "title": "الانجراف الحراري في المستشعرات الشبكية",
+    "authors": "سارة أحمد الخطيب;عمر يوسف",
+    "journal": null,
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_GENRE_UNMATCHED"
+    ],
+    "authors": "INSUFFICIENT",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "M3: 'تعلیق' with a Persian yeh is no lexicon word, so it is unmatched, never harmless",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "small-capitals-chapter-erratum",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=ᴇʀʀᴀᴛᴜᴍ}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "M7: small capitals are Latin look-alikes; the skeleton of the chapter is 'erratum'",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "dotless-i-genre-correction",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |type=Correctıon}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "M7: a dotless i inside 'Correction' is read as i for the lexicon lookup",
+   "requirement": "D-087 G-04"
+  },
+  {
+   "id": "main-title-without-author",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
+    "authors": "INSUFFICIENT",
+    "title_relation": "SHORTER"
+   },
+   "origin": "synthetic",
+   "note": "M8: the main title alone may be another work's whole title; it never agrees",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "main-title-with-author",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "SHORTER"
+   },
+   "origin": "synthetic",
+   "note": "M8: the main title never agrees, even with an agreeing author (M5 superseded)",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "main-title-of-a-notice-in-another-language",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors}}",
+   "record": {
+    "title": "Thermal drift of synthetic lattice sensors: Berichtigung",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_SHORTENED"
+    ],
+    "authors": "AGREE",
+    "title_relation": "SHORTER"
+   },
+   "origin": "synthetic",
+   "note": "M8: the omitted subtitle names a notice in a word outside the lexicon; the main title cannot show it",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "title-and-chapter-remarks",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Remarks}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_VALUES_DIFFER"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "M4: 'Remarks' is outside the lexicon; a title value that does not agree is never ignored",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "japanese-title-beside-equal-trans-title",
+   "category": "weak_compatibility",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=熱ドリフトの研究 |trans-title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_VALUES_DIFFER"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "M6: kanji with kana is one writing system, not mixed (no conflict); M4: the original title differs",
+   "requirement": "D-087 A-02"
+  },
+  {
+   "id": "greek-lookalike-whole-chapter",
+   "category": "lookalike",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=ϹΟΜΜΕΝΤ}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "NOT_ESTABLISHED",
+    "reasons": [
+     "BIB_TITLE_VALUES_DIFFER"
+    ],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "a chapter written wholly in Greek look-alikes ('COMMENT') is no lexicon word and never agrees (M4)",
+   "requirement": "D-087 G-04"
   }
  ]
 }

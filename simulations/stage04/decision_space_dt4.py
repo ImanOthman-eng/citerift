@@ -78,7 +78,8 @@ PROPERTIES = {
     "or NOT_ESTABLISHED respectively",
     "BIB_REASON_IFF": "each general bibliographic reason is a reason exactly when its state holds and the rule is its "
     "rule",
-    "BIB_NO_NOTICE_OR_NOT_FOUND": "no bib state yields NOTICE_CITED or NOT_FOUND_IN_CHECKED_SOURCES that the twin lacks",
+    "BIB_NO_NOTICE_OR_NOT_FOUND": "no bib state yields NOTICE_CITED or NOT_FOUND_IN_CHECKED_SOURCES that the twin "
+    "lacks",
     "BIB_DETERMINISM": "deciding an equal case built from fresh objects gives an identical decision",
 }
 

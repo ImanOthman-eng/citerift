@@ -206,6 +206,7 @@ def keys_of_shape(shape: str) -> list[dict[str, str]]:
 # field (INSUFFICIENT).
 BC_CITED = {
     "titles": ["Synthetic title of a related object"],
+    "genres": [],
     "authors": ["Commentator"],
     "author_lists": [],
     "vauthors": [],

@@ -282,6 +282,8 @@ For a candidate `c` of unit `u`: `ξ(c) = ⟨E(u), σ(c), τ(u), Λ(c), κ(c), L
 | D-12 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = null` | `UNRESOLVED_STATUS` |
 | D-13 | `∃ℓ ∈ Λ: st(ℓ) = unavailable` | `LOOKUP_UNAVAILABLE` |
 | D-13a | `st(L) = matched ∧ ps(L) = verified_fact ∧ pv(L) ∈ dom(pos) ∧ bc(c)` | `UNRESOLVED_IDENTITY` |
+| D-13b | `st(L) = matched ∧ ps(L) = verified_fact ∧ pv(L) ∈ dom(pos) ∧ bu(c)` | `UNRESOLVED_IDENTITY` |
+| D-13c | `st(L) = matched ∧ ps(L) = verified_fact ∧ pv(L) ∈ dom(pos) ∧ bn(c)` | `UNRESOLVED_IDENTITY` |
 | D-14 | `st(L) = matched ∧ ps(L) = verified_fact ∧ pv(L) ∈ dom(pos)` | `pos(pv(L))` |
 | D-15 | `st(L) = notice_only ∧ ps(L) = uncertain ∧ pv(L) = null` | `NOTICE_CITED` |
 | D-16 | `st(L) = no_record ∧ ps(L) = uncertain ∧ pv(L) = not_found_in_checked_sources` | `NOT_FOUND_IN_CHECKED_SOURCES` |
@@ -302,7 +304,15 @@ For a candidate `c` of unit `u`: `ξ(c) = ⟨E(u), σ(c), τ(u), Λ(c), κ(c), L
   bibliographic fields of `e`'s Stage 02 record and `obj` the bib-1 object verdict (`final-cycle/BIBLIOGRAPHIC_SPEC.md`
   sections 2 to 5; `obj(⊥, ·) = obj(·, ⊥) = NO_COMPARISON`, which never satisfies `bc`). The dt-3 oracle
   (`simulations/stage04/dt3_reference.py`, `oracle-dt3/`) models `bc` as one more abstract input; with `bc = false` it
-  equals the dt-2 oracle case for case, and `bc` only replaces D-14 by D-13a; and
+  equals the dt-2 oracle case for case, and `bc` only replaces D-14 by D-13a;
+  in table dt-4 (owner decisions D-086, D-087; dt-3 is dt-4 with `bu ≡ bn ≡ false` and bib-1 for `obj`) `obj` is the
+  bib-2 object verdict (`final-cycle/BIBLIOGRAPHIC_SPEC_2.md` sections 2 to 5), `bu(c)` holds when the check of the
+  candidate's unit is `UNAVAILABLE` (no event is then compared, so `bu` excludes `bc` and `bn`), and `bn(c)` holds when
+  some event `e` of `L` has `obj(C(u), R(e)) = NOT_ESTABLISHED`. The dt-4 oracle (`simulations/stage04/dt4_reference.py`,
+  `oracle-dt4/`) models the unit's state `bib ∈ {NONE, CONFLICT, UNAVAILABLE, NOT_ESTABLISHED}` as one abstract input
+  (CONFLICT has precedence over NOT_ESTABLISHED across events, as D-13a precedes D-13c); with `bib = NONE` it equals the
+  dt-2 oracle, with `bib = CONFLICT` the dt-3 oracle with `bc = true`, and the other two states only replace D-14 by
+  D-13b or D-13c; and
   `pos(retracted) = RETRACTED_WORK_CITED`, `pos(expression_of_concern) = CONCERN_CITED`,
   `pos(correction) = CORRECTION_CITED`, `pos(reinstated) = REINSTATED_WORK_CITED` (so `dom(pos)` is the four values
   of F-4). `Contract` is the set of lookup results whose state and projection are among the forms of F-1 to F-4 and
