@@ -25,7 +25,7 @@ from importlib import resources
 from typing import Any
 
 import mwparserfromhell
-from mwparserfromhell.nodes import ExternalLink, HTMLEntity, Template, Text, Wikilink
+from mwparserfromhell.nodes import ExternalLink, HTMLEntity, Tag, Template, Text, Wikilink
 from mwparserfromhell.wikicode import Wikicode
 
 BIB_VERSION = "bib-1"
@@ -130,8 +130,11 @@ def _is_initials(token: str) -> bool:
 
 
 def cited_name_words(value: str) -> set[str]:
-    """Spec 4.1: the name words of one cited author value, initials removed first."""
-    return name_words(" ".join(t for t in value.split() if not _is_initials(t)))
+    """Spec 4.1: the name words of one cited author value, initials removed first. A value made only of initials keeps
+    its first token, so the rule never empties a value (reviewer finding F-01: ``|last=LI`` is the surname Li)."""
+    tokens = value.split()
+    kept = [t for t in tokens if not _is_initials(t)] or tokens[:1]
+    return name_words(" ".join(kept))
 
 
 def record_surname_words(authors: str) -> set[str]:
@@ -262,15 +265,22 @@ def _family_of(wiki: str, name: str) -> tuple[str, str] | None:
 
 
 _INLINE = (Text, HTMLEntity, Wikilink, ExternalLink)
+# Spec 2.1 step 4 (reviewer finding F-04): inline formatting renders joined to its neighbours ("CO<sub>2</sub>",
+# italic or bold wiki markup inside a word), so these tags (the wiki markup parses as tags i and b) join as written.
+INLINE_TAGS = frozenset({"i", "b", "sub", "sup", "span", "small", "big", "u", "s", "em", "strong"})
+
+
+def _joined(node: Any) -> bool:
+    return isinstance(node, _INLINE) or (isinstance(node, Tag) and str(node.tag).strip().lower() in INLINE_TAGS)
 
 
 def _clean(value: Any) -> str | None:
-    """Spec 2.1 step 4: node by node, a removed or replaced node (template, tag, comment, argument, heading) is a word
-    boundary; text, entities and links join their neighbours as written."""
+    """Spec 2.1 step 4: node by node, a removed or replaced node (template, other tag, comment, argument, heading) is a
+    word boundary; text, entities, links and inline formatting tags join their neighbours as written."""
     parts = []
     for node in value.nodes:
         text = Wikicode([node]).strip_code(normalize=True, collapse=True)
-        parts.append(text if isinstance(node, _INLINE) else f" {text} ")
+        parts.append(text if _joined(node) else f" {text} ")
     cleaned = _SPACE.sub(" ", "".join(parts)).strip()
     return cleaned or None
 
@@ -317,9 +327,9 @@ def _parsed(text: str, wiki: str) -> CitedObject | None:
         value = _clean(raw)
         if value is not None and key in SCRIPT_KEYS:
             value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
-        if value is not None:
-            if not _encodable(value):  # spec 2.1 step 4: a value that is not Unicode text gives no cited object
-                return None
+        # Spec 2.1 step 4: a value that is not Unicode text (a lone surrogate) is absent; the rest of the description
+        # stays (reviewer finding F-02).
+        if value is not None and _encodable(value):
             fields[family].append(value)
 
     # Spec 2.1 step 6: above the bounds of the committed value there is no cited object (never truncated).

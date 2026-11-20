@@ -36,14 +36,17 @@ Only units of kind `citation_template` have a cited object; every other unit has
    Positional parameters are ignored.
 4. Value cleaning, node by node over the top-level nodes of `param.value`: each node's text is
    `strip_code(normalize=True, collapse=True)` of that node alone (templates and comments give nothing, tags keep their
-   contents, links keep their text, HTML entities are decoded). The text of a Text node, an HTML entity, a wikilink or
-   an external link is joined to its neighbours as written; the text of every other node (template, tag, comment,
-   argument, heading) is surrounded by one space on each side, so a removed or replaced node is a word boundary
-   (reviewer finding A-01: `Time{{snd}}Comments` and `Time<br/>Comments` are two words, not `TimeComments`). Then
+   contents, links keep their text, HTML entities are decoded). The text of a Text node, an HTML entity, a wikilink,
+   an external link or an inline formatting tag (`i`, `b`, `sub`, `sup`, `span`, `small`, `big`, `u`, `s`, `em`,
+   `strong`; the italic and bold wiki markup parses as `i` and `b`) is joined to its neighbours as written, as it is
+   rendered (reviewer finding F-04: `CO<sub>2</sub>` is `CO2`); the text of every other node (template, other tag,
+   comment, argument, heading) is surrounded by one space on each side, so a removed or replaced node is a word
+   boundary (reviewer finding A-01: `Time{{snd}}Comments` and `Time<br/>Comments` are two words, not `TimeComments`). Then
    every run of characters matching Python's `re` class `\s` (str patterns) becomes one space and the result is
-   stripped with `str.strip()`. An empty result is an absent value. If a non-empty cleaned value cannot be encoded as
-   UTF-8 (it holds a lone surrogate, which a numeric entity such as `&#xD800;` decodes to), `C = ⊥` (reviewer
-   finding E-01: such a value is not Unicode text and cannot be committed as evidence).
+   stripped with `str.strip()`. An empty result is an absent value. A non-empty cleaned value that cannot be encoded as
+   UTF-8 (it holds a lone surrogate, which a numeric entity such as `&#xD800;` decodes to) is also an absent value:
+   it is not Unicode text and cannot be committed as evidence (reviewer finding E-01), and only that value is lost,
+   not the rest of the description (reviewer finding F-02).
 5. Fields by parameter family, using the alias profile of the unit's wiki (section 2.2). A family's value list keeps
    the effective arguments in source order of their first occurrence:
    - `titles`: Title, ScriptTitle, TransTitle, Chapter, ScriptChapter, TransChapter. For ScriptTitle and
@@ -97,6 +100,9 @@ null), `authors` (string or null; Retraction Watch `;`-separated full names), `j
 - Cited author name words of one cited author value: first remove every whitespace-separated token of the value that,
   once its full stops are removed and trailing commas and semicolons stripped, is one to three letters all upper case
   (`str.isalpha()` and `str.isupper()`: initials such as `KL`, `J.J.`, `S.M.,`); then the name words of the rest.
+  When every token of the value has that shape, its first token is kept, so the rule never empties a value
+  (reviewer finding F-01: `|last=LI` or `|vauthors=WU H` name the surname Li or Wu, which `last=` and Vancouver put
+  first).
 - Record surname words `S_R`: for each `;`-separated part of `R.authors`, its name words in order; without the first of
   them when there are at least two (Retraction Watch writes the given name first: "Kam L E Hon" gives `hon`), the
   single word otherwise.
@@ -271,7 +277,23 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
 - The text inside a tag is kept by the pinned parser's `strip_code` (for example a `<ref>` inside a title), so it is
   part of the cited title (corpus case `markup-ref-content-kept`; it can only add conflicts).
 
+- A related note cited with no author parameter, or only with author values that are not comparable (another
+  script, initials only of no record surname), whose title holds the record's title and a designation outside the
+  lexicon ("Remarks on X"), stays positive (corpus case `related-note-no-author-residual`). Title DISJOINT is reached
+  only by titles with no word in common: about 29 % of the pairs of different snapshot records (reviewer finding
+  A-02's measurement), so the title verdict alone rarely tells two Latin-script objects apart.
+- A unit without a description is decided by its identifiers exactly as under dt-2: a template above the step 1
+  bound (16,384 code points, for example with a long `quote`), above the step 6 bounds, or one the parser raises on
+  (corpus case `oversized-source`; reviewer finding F-02). These are resource and well-formedness bounds; the
+  development maximum is 5,722 code points. A crafted unit just under the step 1 bound can still cost seconds of
+  parser time (about 4.7 s measured by reviewer E-02/F); the performance limitation is stated in
+  `PERFORMANCE_AND_BOUNDS.md`.
+
 Recall costs on genuine citations (fail closed; development evidence, never evaluation scoring):
+
+- A title word written with a hyphenated `re-` prefix ("Re-examined", "re-analysis") gives the lexicon word `re`
+  (words split at hyphens), so a citation that adds such a word to the record's title abstains (corpus case
+  `re-hyphen-prefix`; reviewer finding F-05).
 
 - A record that lists fewer authors than the citation (11,741 of 73,356 snapshot events list one author;
   `lows/author_coincidence.json`): every cited co-author absent from the record gives CONFLICT (development case

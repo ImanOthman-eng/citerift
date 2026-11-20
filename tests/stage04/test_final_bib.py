@@ -317,10 +317,10 @@ def test_a_record_contradicting_its_public_event_fails_closed(field: str) -> Non
 
 
 @pytest.mark.parametrize("entity", ["&#xD800;", "&#xDFFF;", "&#55296;"])
-def test_normalize_gives_no_cited_object_for_a_surrogate_entity(entity: str) -> None:
-    """Reviewer finding E-01: a numeric entity that decodes to a lone surrogate made the unit's cited_bibliography
-    evidence uncanonicalizable, and the whole NORMALIZE step failed; now that unit has no cited object (spec 2.1 step
-    4) and every other unit of the page keeps its own."""
+def test_normalize_makes_only_a_surrogate_value_absent(entity: str) -> None:
+    """Reviewer findings E-01 and F-02: a numeric entity that decodes to a lone surrogate made the unit's
+    cited_bibliography evidence uncanonicalizable, and the whole NORMALIZE step failed; now only that value is absent
+    (spec 2.1 step 4): the unit keeps the rest of its description, and every other unit of the page keeps its own."""
     from citerift.investigation.adapters.normalize import cited_description
     from citerift.investigation.anchors import SourceArtifact
     from citerift.investigation.canonical import canon, sha256_hex
@@ -334,10 +334,11 @@ def test_normalize_gives_no_cited_object_for_a_surrogate_entity(entity: str) -> 
     def unit(start: int, end: int) -> dict[str, Any]:
         return {"kind": "citation_template", "source": {"byte_start": start, "byte_end": end}}
 
-    assert cited_description(unit(0, split), source, "en") is None
+    partial = cited_description(unit(0, split), source, "en")
+    assert partial is not None and partial["titles"] == [] and partial["authors"] == ["Hon"]
     kept = cited_description(unit(split + 1, len(data)), source, "en")
     assert kept is not None and kept["titles"] == ["Thermal drift"]
-    canon({"bad": cited_description(unit(0, split), source, "en"), "good": kept})
+    canon({"bad": partial, "good": kept})
 
 
 def test_the_engine_refuses_without_the_c_tokenizer(monkeypatch: pytest.MonkeyPatch) -> None:

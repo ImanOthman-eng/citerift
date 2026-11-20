@@ -73,12 +73,14 @@ R19. (B8) A record that is not a dict is absent; a record field of the wrong typ
 R20. (2.1 step 1, amendment of the final cycle's review) The 16,384 code-point bound is ``len(text)`` of the decoded
     ``str``, checked before parsing.
 R21. (2.1 step 4, amended) "Each node's text": ``Wikicode([node]).strip_code(normalize=True, collapse=True)`` of each
-    top-level node of the argument value; Text, HTMLEntity, Wikilink and ExternalLink pieces are joined as written,
+    top-level node of the argument value; Text, HTMLEntity, Wikilink and ExternalLink pieces, and Tag pieces whose tag
+    is an inline formatting tag (i, b, sub, sup, span, small, big, u, s, em, strong; F-04), are joined as written,
     every other piece gets one space on each side; the whitespace collapse then applies to the joined string. Only
     arguments whose name belongs to a family are cleaned (the others are not fields); a cleaned family value that is
-    not UTF-8 encodable gives ``C = ⊥``.
+    not UTF-8 encodable is absent (F-02).
 R22. (3, 4.1 amended) Particles are removed from the name words of both sides; the initials test is on the raw
-    whitespace tokens of the cited value (``str.split()``), before folding; ``S_R`` takes the name words of each part
+    whitespace tokens of the cited value (``str.split()``), before folding, and a value whose every token is initials
+    keeps its first token (F-01); ``S_R`` takes the name words of each part
     after particle removal and drops the first when at least two remain. A cited value's script set is that of its
     cited author name words; comparability is a common script with ``S_R``.
 R23. (4.2 amended) Designation is computed for every value (``designates`` is false except for CONTAINED and
@@ -180,26 +182,31 @@ JOINED = (
     mwparserfromhell.nodes.Wikilink,
     mwparserfromhell.nodes.ExternalLink,
 )
+# R21 (amended, reviewer finding F-04): tags rendered inline join as written; every other tag is a boundary.
+JOINED_TAGS = ("i", "b", "sub", "sup", "span", "small", "big", "u", "s", "em", "strong")
 
 
-class _NotText(Exception):
-    """A cleaned value that cannot be encoded as UTF-8 (step 4): C = ⊥."""
+def _is_joined(node: Any) -> bool:
+    if isinstance(node, JOINED):
+        return True
+    return isinstance(node, mwparserfromhell.nodes.Tag) and str(node.tag).strip().lower() in JOINED_TAGS
 
 
 def _clean(value: Any) -> str | None:
-    """Step 4: each top-level node stripped alone; a node other than text, entity or link is a word boundary; each run
-    of ``\\s`` becomes one space, ``str.strip()``; empty is absent; not UTF-8 encodable raises ``_NotText``."""
+    """Step 4: each top-level node stripped alone; a node other than text, entity, link or inline formatting tag is a
+    word boundary; each run of ``\\s`` becomes one space, ``str.strip()``; empty is absent; a value that is not UTF-8
+    encodable is absent (reviewer finding F-02)."""
     pieces = []
     for node in value.nodes:
         piece = mwparserfromhell.wikicode.Wikicode([node]).strip_code(normalize=True, collapse=True)
-        pieces.append(piece if isinstance(node, JOINED) else " " + piece + " ")
+        pieces.append(piece if _is_joined(node) else " " + piece + " ")
     cleaned = WHITESPACE_RUN.sub(" ", "".join(pieces)).strip()
     if cleaned == "":
         return None
     try:
         cleaned.encode("utf-8")
-    except UnicodeEncodeError as exc:
-        raise _NotText from exc
+    except UnicodeEncodeError:
+        return None
     return cleaned
 
 
@@ -247,8 +254,6 @@ def cited_object(text: str, wiki: str, profile: dict[str, Any]) -> dict[str, Any
         for name, raw in effective.items():
             if any(_name_matches(name, alias_table[key]) for key in family_keys_all):
                 cleaned[name] = _clean(raw)
-    except _NotText:
-        return None
     except Exception:
         return None
 
@@ -325,7 +330,12 @@ def _initials(token: str) -> bool:
 
 
 def cited_author_words(value: str) -> set[str]:
-    return set(name_words(" ".join(tok for tok in value.split() if not _initials(tok))))
+    """R22 (amended, reviewer finding F-01): a value whose every token is initials keeps its first token."""
+    tokens = value.split()
+    kept = [tok for tok in tokens if not _initials(tok)]
+    if not kept:
+        kept = tokens[:1]
+    return set(name_words(" ".join(kept)))
 
 
 def record_surnames(authors: str | None) -> set[str]:

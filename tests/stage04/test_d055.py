@@ -924,4 +924,5 @@ def test_format_4_bounds_are_recomputed_and_proven() -> None:
     # per lookup (more is refused at the append, JOURNAL_TOO_LARGE, fail closed).
     assert journal_bound["E_L_at_journal_limit"] >= census["E_L"]
     assert retained["journal_limit_proven"] and retained["record_limit_proven"]
-    assert retained["blob_limit_proven_except_ACQUIRE_observation"]
+    assert retained["blob_limit_proven_except_ACQUIRE_and_LOOKUP_observations"]
+    assert retained["LOOKUP_observation_within_limit_measured"]  # measured rho, no analytic bound (E-07)

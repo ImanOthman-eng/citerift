@@ -17,7 +17,11 @@ through ``citerift.investigation.lookup.bounded_gather``, that is ``Index.gather
 - beside the unchanged public events, ``records`` holds each event's bibliographic fields (title, authors, journal,
   original year) from the same Stage 02 event that ``Index.gather_bounded`` returned, bound to the public event by
   ``event_id`` and Stage 02's ``row_sha256`` (dt-3, owner decision D-083; Stage 02 HANDOFF: read through ``Index``).
-  The D-048 byte budget already counts every stored event column, so the budget and the events are unchanged.
+  The D-048 byte budget already counts every stored event column, so the budget and the events are unchanged, but
+  ``records`` repeats title and journal, so the observation's bytes per budget byte (rho) grow: measured at most
+  13.07 over the D-048 shapes, with no analytic bound (reviewer finding E-07;
+  ``docs/verification/stage-04/final-cycle/bounds/bounds.json``); an observation above the blob limit is
+  ``BLOB_TOO_LARGE``, a ``STORAGE_ERROR`` (fail closed).
 
 Each lookup observation is returned as an individual ``observation_recorded`` record; the controller batches them
 (D-055). The index file must not change during the attempt: an operational guard (the file's stat fingerprint and its

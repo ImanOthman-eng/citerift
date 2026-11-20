@@ -213,6 +213,8 @@ def blobs(j: dict[str, Any], lk: dict[str, Any], census: dict[str, Any]) -> dict
     rows["LOOKUP observation (D-048)"] = {
         "bound_bytes": lk["worst_observation_bytes"],
         "why": "observation v3 (E-07): rho_bound x the 16 MiB schema maximum of the budget + the largest intercept",
+        "basis": "measured, not proven: rho_bound is the measured maximum over the D-048 shapes (no analytic bound for "
+        "v3; reviewer findings E-07 and F); above the blob limit the observation is BLOB_TOO_LARGE (fail closed)",
     }
     rows["evidence batch"] = {
         "bound_bytes": max(c, census["E_max"] + batches.BATCH_ENVELOPE),
@@ -273,9 +275,10 @@ def main() -> None:
         "journal_limit_proven": j["maximal"]["proven_within_limit"],
         "lookup_observation_v3": lk,
         "blobs": b,
-        "blob_limit_proven_except_ACQUIRE_observation": all(
-            r["within_limit"] for k, r in b.items() if not k.startswith("ACQUIRE")
+        "blob_limit_proven_except_ACQUIRE_and_LOOKUP_observations": all(
+            r["within_limit"] for k, r in b.items() if not k.startswith(("ACQUIRE", "LOOKUP observation"))
         ),
+        "LOOKUP_observation_within_limit_measured": b["LOOKUP observation (D-048)"]["within_limit"],
         "ACQUIRE_observation": "conditional on the Step 8 representation (IF-7, see its row)",
         "total_storage": D055.total(j, b),
         "provenance": prov,
@@ -290,7 +293,8 @@ def main() -> None:
         "E_max": census["E_max"],
         "rho": lk["rho_bound"],
         "lookup_worst": lk["worst_observation_bytes"],
-        "blobs_ok": result["blob_limit_proven_except_ACQUIRE_observation"],
+        "blobs_ok": result["blob_limit_proven_except_ACQUIRE_and_LOOKUP_observations"],
+        "lookup_ok_measured": result["LOOKUP_observation_within_limit_measured"],
         "largest_record": result["largest_record_bytes"],
     }
     print(json.dumps(summary, indent=1))

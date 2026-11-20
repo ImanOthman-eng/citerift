@@ -1,0 +1,23 @@
+# Review F findings F-01, F-02 (surrogate), F-04, F-05 and the A-02 residual: fail-first probe (/tmp/claude-0/-home-user/6e897802-8925-5c74-9e54-d0b75d7ee684/scratchpad/fprobe.py, synthetic inputs)
+## before: bib-1 at 7d5b936
+li (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('LI',)) {'authors': 'INSUFFICIENT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+lee (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('LEE',)) {'authors': 'INSUFFICIENT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+ng-genuine (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time',), ('NG',)) {'authors': 'INSUFFICIENT', 'title_relation': 'EQUAL', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+wu-v (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('WU H',)) {'authors': 'INSUFFICIENT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+garry-surr None None
+surr-title None None
+sub (('Atmospheric CO 2 and lattice sensors',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'OVERLAP', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+ital (('Bio logy of lattice sensors',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'OVERLAP', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+re-hyph (('Re-examined: Thermal drift of synthetic lattice sensors: a field study',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'CONTAINED', 'designation': True, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_TITLE_RELATED_OBJECT']}
+remarks-noauth (('Remarks on Thermal drift of synthetic lattice sensors: a field study',), ()) {'authors': 'INSUFFICIENT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+## after: bib-1 of the working tree (F-01, F-02, F-04 fixed; F-05 and A-02 residual stated)
+li (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('LI',)) {'authors': 'CONFLICT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_AUTHORS_DISJOINT']}
+lee (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('LEE',)) {'authors': 'CONFLICT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_AUTHORS_DISJOINT']}
+ng-genuine (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time',), ('NG',)) {'authors': 'AGREE', 'title_relation': 'EQUAL', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+wu-v (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look',), ('WU H',)) {'authors': 'CONFLICT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_AUTHORS_DISJOINT']}
+garry-surr (('Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments',), ('Robert Garry',)) {'authors': 'CONFLICT', 'title_relation': 'CONTAINED', 'designation': True, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_AUTHORS_DISJOINT', 'BIB_TITLE_RELATED_OBJECT']}
+surr-title ((), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'MISSING', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+sub (('Atmospheric CO2 and lattice sensors',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'EQUAL', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+ital (('Biology of lattice sensors',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'EQUAL', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}
+re-hyph (('Re-examined: Thermal drift of synthetic lattice sensors: a field study',), ('Lindqvist',)) {'authors': 'AGREE', 'title_relation': 'CONTAINED', 'designation': True, 'object': 'MATERIAL_CONFLICT', 'reasons': ['BIB_TITLE_RELATED_OBJECT']}
+remarks-noauth (('Remarks on Thermal drift of synthetic lattice sensors: a field study',), ()) {'authors': 'INSUFFICIENT', 'title_relation': 'CONTAINED', 'designation': False, 'object': 'COMPATIBLE', 'reasons': []}

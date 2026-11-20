@@ -5,8 +5,9 @@ For every JSON result under ``docs/verification/stage-04/final-cycle`` (all but 
 
 - it records the provenance of ``fc_provenance`` with an empty ``uncommitted`` list;
 - the recorded tool SHA-256 is the SHA-256 of that tool at the recorded ``code_commit``;
-- the engine and the inputs a result depends on (``SAME_AS_HEAD``) are identical at ``code_commit`` and at HEAD, so the
-  result still describes the code under test (a change there needs a rerun);
+- the tool in the working tree is that tool (reviewer finding F-03), and the engine, the inputs and the final-cycle
+  tools and modules a result depends on (``SAME_AS_HEAD``) are identical at ``code_commit`` and at HEAD, so the result
+  still describes the code under test (a change there needs a rerun);
 - the results computed from a Stage 02 index all name one index.
 
 The fail-first inputs are a pure function of the corpus and the bib-1 code and are recomputed here. The history is
@@ -51,6 +52,9 @@ SAME_AS_HEAD = (
     f"{S04}/evaluation-p2-campaign",
     f"{S04}/corrective/regression",
     f"{S04}/review/step7",
+    # Reviewer finding F-03: the final-cycle tools and the modules they load (provenance, bounds builders).
+    f"{S04}/final-cycle/*.py",
+    f"{S04}/corrective/census/*.py",
 )
 DT2_ENGINE_COMMIT = "6663314"
 
@@ -90,6 +94,7 @@ def test_a_result_was_computed_by_committed_code_that_still_decides_as_head(rel:
     assert found.returncode == 0, f"{rel}: commit {commit} is needed (a full git checkout)"
     tool = subprocess.run(["git", "show", f"{commit}:{prov['tool']}"], cwd=REPO, capture_output=True, check=True).stdout
     assert hashlib.sha256(tool).hexdigest() == prov["tool_sha256"], rel
+    assert hashlib.sha256((REPO / prov["tool"]).read_bytes()).hexdigest() == prov["tool_sha256"], f"{rel}: tool changed"
     changed = _git("diff", "--name-only", commit, "HEAD", "--", *SAME_AS_HEAD)
     assert changed == "", f"{rel} was computed at {commit[:12]}; changed since: {changed.split()[:10]}"
 

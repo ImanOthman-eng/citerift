@@ -55,7 +55,9 @@ def index_identity(index_path: Path) -> dict[str, Any]:
         meta = dict(con.execute("SELECT key, value FROM meta").fetchall())
     finally:
         con.close()
-    return {k: meta.get(k) for k in ("snapshot_id", "artifact_digest", "semantic_digest", "source_sha256")}
+    out = {k: meta.get(k) for k in ("snapshot_id", "artifact_digest", "semantic_digest", "source_sha256")}
+    out["file_sha256"] = file_sha256(index_path)  # the bytes read, beside their own claimed identity (F-03)
+    return out
 
 
 def provenance(tool: Path, index_path: Path | None = None, extra: tuple[str, ...] = ()) -> dict[str, Any]:

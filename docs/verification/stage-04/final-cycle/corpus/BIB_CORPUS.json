@@ -1306,12 +1306,206 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "INSUFFICIENT",
+    "object": "COMPATIBLE",
     "reasons": [],
-    "cited_none": true
+    "authors": "AGREE",
+    "title_relation": "MISSING"
    },
    "origin": "synthetic",
-   "note": "E-01: a numeric entity that decodes to a lone surrogate is not Unicode text (spec 2.1 step 4)"
+   "note": "E-01, F-02: a value holding a lone surrogate (from a numeric entity) is not Unicode text and is absent; the rest of the description stays (spec 2.1 step 4); the expectation changed with F-02 (was: no cited object)"
+  },
+  {
+   "id": "lone-surrogate-garry-pages",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal\n |author=Robert Garry\n |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time – Comments\n |journal=Virology Journal\n |date=21 July 2010\n |volume=7\n |issue=1\n |page=&#xD800;\n |doi=10.1186/1743-422X-7-169\n |pmid=20663162\n |pmc=2918564\n |s2cid=8124033\n |doi-access=free\n }}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT",
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "F-02: a lone surrogate in a field never compared no longer drops the whole description"
+  },
+  {
+   "id": "caps-surname-only",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |last=LI |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT",
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "F-01: a value made only of initials-shaped tokens keeps its first token (an all-caps short surname)"
+  },
+  {
+   "id": "caps-surname-with-first",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |last=LEE |first=Min |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "F-01"
+  },
+  {
+   "id": "caps-vauthors",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |vauthors=WU H |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time: a second look}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "F-01: 'WU H' keeps 'WU'"
+  },
+  {
+   "id": "caps-surname-genuine",
+   "category": "author_format",
+   "wiki": "en",
+   "source": "{{cite journal |last1=NG |first1=PC |title=Influenza or not influenza: Analysis of a case of high fever that happened 2000 years ago in Biblical time}}",
+   "record": {
+    "title": "Influenza or not Influenza: Analysis of a Case of High Fever That Happened 2000 Years Ago in Biblical Time",
+    "authors": "Kam L E Hon;Pak C Ng;Ting F Leung",
+    "journal": "Virology Journal",
+    "original_year": 2010
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "F-01: the genuine all-caps surname of a record author now agrees (was INSUFFICIENT)"
+  },
+  {
+   "id": "inline-subscript",
+   "category": "punctuation",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Atmospheric CO<sub>2</sub> and lattice sensors}}",
+   "record": {
+    "title": "Atmospheric CO2 and Lattice Sensors",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "F-04: inline formatting tags join as written (was OVERLAP)"
+  },
+  {
+   "id": "inline-italic-inside-a-word",
+   "category": "punctuation",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=''Bio''logy of lattice sensors}}",
+   "record": {
+    "title": "Biology of Lattice Sensors",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "AGREE",
+    "title_relation": "EQUAL"
+   },
+   "origin": "synthetic",
+   "note": "F-04: italic wiki markup inside a word joins as written (was OVERLAP)"
+  },
+  {
+   "id": "re-hyphen-prefix",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Re-examined: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "F-05, stated recall cost (spec section 9): words split at hyphens, so 're-' gives the lexicon word 're'"
+  },
+  {
+   "id": "related-note-no-author-residual",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |title=Remarks on Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "authors": "INSUFFICIENT",
+    "title_relation": "CONTAINED",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "A-02 residual, stated (spec section 9): a related note with no author and a designation outside the lexicon stays COMPATIBLE"
   },
   {
    "id": "oversized-source",
@@ -1330,7 +1524,7 @@
     "cited_none": true
    },
    "origin": "synthetic",
-   "note": "E-02: a template source over 16,384 code points is not parsed (spec 2.1 step 1)"
+   "note": "E-02: a template source over 16,384 code points is not parsed (spec 2.1 step 1); F-02 residual, stated (spec section 9): such a unit has no description and is decided by its identifiers, as under dt-2"
   },
   {
    "id": "given-name-collision",
