@@ -283,6 +283,10 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
 - Inline formatting joins as rendered (section 2.1 step 4), so a designation word written in an inline tag with no
   space before it (`<T><i>Comments</i>`) fuses with the preceding word and is not recognized (corpus case
   `inline-designation-joined`; reviewer finding C-12).
+- An invisible format character (soft hyphen `&shy;`, zero-width space, zero-width joiner, word joiner) inside a
+  designation word splits it into two non-lexicon words ("Com&shy;ments"), so the designation is not recognized. A
+  related note cited this way with no comparable author stays positive; with a commenter's name, the author conflict
+  still blocks it (reviewer finding G-04; no such cited value was found in the development bundles).
 - A related note cited with no author parameter, or only with author values that are not comparable (another
   script, initials only of no record surname), whose title holds the record's title and a designation outside the
   lexicon ("Remarks on X"), stays positive (corpus case `related-note-no-author-residual`). Title DISJOINT is reached

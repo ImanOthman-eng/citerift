@@ -98,6 +98,7 @@ EVIDENCE = {
     "review_d": f"{FC}/review/REVIEW_D.md",
     "review_e": f"{FC}/review/REVIEW_E.md",
     "review_f": f"{FC}/review/REVIEW_F.md",
+    "review_g": f"{FC}/review/REVIEW_G.md",
 }
 EXPOSURE = f"{F3}/exposure/EXPOSURE_MANIFEST.json"
 # The frozen decision semantics, by role.
@@ -131,7 +132,9 @@ LIMITATIONS = [
     "of citation and record (not a label) takes for the retracted work itself (in-sample, never an estimate).",
     "bib-1 residual false compatibility (reviewer finding A-02): a commenter sharing a surname with the work's authors "
     "(3.3 % of random record pairs for one cited name), writing a note whose title holds the record's title and no "
-    "lexicon word, stays positive; free-text references and identifier-only units have no description.",
+    "lexicon word, stays positive; so does a related note cited with no comparable author whose extra title words "
+    "are outside the lexicon or whose designation word is split by an invisible format character (review G-04); "
+    "free-text references and identifier-only units have no description.",
     "bib-1 size bounds (spec 2.1 steps 1 and 6; reviewer findings E-02 and F-02): a citation source above 16,384 code "
     "points, a family above 64 values or a description above 4,096 code points has no description and decides as under "
     "dt-2 (development maxima: 5,722 code points, 56 values, 1,804 code points); a crafted unit under the source bound "
@@ -140,7 +143,8 @@ LIMITATIONS = [
     "notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) "
     "is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
     "D-072 strict rule kept (D-083 item 5, ROLE_COLLISION_STUDY.md): bib-1 never resolves a role collision. In a "
-    "same-record collision bib-1 compares the citation with one record for both roles, so it cannot tell them apart; "
+    "same-record collision every event of the lookup describes a retracted work, never the notice, so bib-1 "
+    "compares the citation with the same fields for both roles and cannot tell them apart; "
     "1,472 of 31,506 dt-1 positive DOI+PMID pairs stay UNRESOLVED_IDENTITY.",
     "D-073 (C-01): a second record of the same work makes a clean retraction abstain (53 snapshot pairs); no "
     "same-work-sibling exemption.",

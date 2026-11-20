@@ -1933,7 +1933,7 @@ Owner answer on decision card `cmsg_018VCB51nDHP6HXmLU4ea5yPMLNjt7WVEnsz4KbEmUGN
 test files to check the old engines from git?"), option "Amend both, D-074 style", chosen by the owner in the app at
 2026-11-20T07:20:25Z. Under dt-3 the working tree is no longer the freeze-2 (dt-2) or frozen (dt-1) engine, so the
 tests that asserted it would fail permanently. As D-074 did for P, `test_p2_evaluation.py` and
-`test_step13_evaluation.py` (amended in `1b0670a`) verify the historical engines `28ba646` and `b5bf8ed` from git
+`test_step13_evaluation.py` (amended in `1b0670a`; the P2 identity-guard mutation tests in `79a0023`) verify the historical engines `28ba646` and `b5bf8ed` from git
 objects and run the historical checks in worktrees of their commits. P and P2, their digests, files, seeds, draws,
 labels, runs and scores are unchanged and are still proved from git; both evaluations stay NOT PASSED. This settles
 final-cycle reviewer findings D-01 and D-04.

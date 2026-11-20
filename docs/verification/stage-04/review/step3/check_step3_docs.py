@@ -3,6 +3,10 @@
 Checks cross-references and table structure only. It does not evaluate the decision table or the state machines on
 inputs: that is the reference model and the state-space enumeration of Step 4.
 
+Amended in the final corrective cycle (owner decision D-083): the table dt-3 adds rule D-13a between D-13 and D-14,
+and the risk analysis adds risk R4-04a after R4-04. Risk ids may carry one letter suffix after an existing number;
+every other check is unchanged.
+
 Usage: python check_step3_docs.py <repository root>
 Prints one line per check and ends with RESULT: PASS or RESULT: FAIL (exit status 0 or 1).
 """
@@ -64,15 +68,17 @@ def main(root: Path) -> int:
         r.check(f"{g} has specification, model and risk entries", all(row[1:4]) and "R4-" in row[3], str(row))
 
     # Risks: contiguous ids, every risk under a gate, summary gates equal SPEC 17.1.
-    heads = re.findall(r"^### (R4-\d\d) ", ra, flags=re.M)
+    heads = re.findall(r"^### (R4-\d\d[a-z]?) ", ra, flags=re.M)
     ids = sorted(heads)
     r.check("RA risk ids unique", len(ids) == len(set(ids)), str(ids))
-    r.check("RA risk ids contiguous from R4-01", ids == [f"R4-{i:02d}" for i in range(1, len(ids) + 1)], str(ids))
+    base = [i for i in ids if re.fullmatch(r"R4-\d\d", i)]
+    r.check("RA risk ids contiguous from R4-01", base == [f"R4-{i:02d}" for i in range(1, len(base) + 1)], str(ids))
+    r.check("RA suffixed risk ids extend a numbered risk", all(i[:5] in base for i in ids), str(ids))
     summary = {row[0]: row for row in table_rows(section(ra, "## 5. Summary", "## 6."))}
     r.check("RA summary lists every risk", sorted(summary) == ids, str(sorted(set(ids) ^ set(summary))))
     risk_gates: dict[str, set[str]] = {i: set() for i in ids}
     for g in GATES:
-        for rid in re.findall(r"R4-\d\d", trace.get(g, ["", "", "", ""])[3]):
+        for rid in re.findall(r"R4-\d\d[a-z]?\b", trace.get(g, ["", "", "", ""])[3]):
             risk_gates.setdefault(rid, set()).add(g)
     for rid in ids:
         listed = set(re.findall(r"04-[A-J]", summary.get(rid, ["", "", ""])[2]))
@@ -95,7 +101,7 @@ def main(root: Path) -> int:
         r.check(f"{rid} is not marked resolved", not re.search(r"(?i)status:\s*(resolved|closed)", block))
     r.check("RA states that every risk is open", f"All {len(ids)} risks are open." in ra)
     for doc_name, text in (("SPEC", spec), ("MM", mm), ("REVIEW", review)):
-        refs = set(re.findall(r"R4-\d\d", text))
+        refs = set(re.findall(r"R4-\d\d[a-z]?\b", text))
         r.check(f"{doc_name} risk references resolve", refs <= set(ids), str(sorted(refs - set(ids))))
         r.check(f"{doc_name} has no old-style risk reference", not re.search(r"\bRA R-\d", text))
 
@@ -130,7 +136,7 @@ def main(root: Path) -> int:
     mm_rows = table_rows(section(mm, "### 5.2 Decision table as a function", "where `collision(L)`"))
     spec_d = {row[0]: codes(row[3]) for row in spec_rows if row[0].startswith("D-")}
     mm_d = {row[0]: codes(row[2]) for row in mm_rows}
-    expected = [f"D-{i}" for i in range(1, 18)]
+    expected = [f"D-{i}" for i in range(1, 14)] + ["D-13a"] + [f"D-{i}" for i in range(14, 18)]
     r.check("SPEC 7.3 has rules D-1 to D-17 in order", list(spec_d) == expected, str(list(spec_d)))
     r.check("MM 5.2 has rules D-1 to D-17 in order", list(mm_d) == expected, str(list(mm_d)))
     for rule in expected:

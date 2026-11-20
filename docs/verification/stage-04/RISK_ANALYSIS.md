@@ -127,6 +127,10 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   citation whose identifiers were copied from another reference) counted as a citation of the retracted work.
 - Realized (gate 04-I under P2, failed; owner decision D-080): `en-27958530` `un-00004` (a different author; the
   record's title followed by "– Comments") attached as `RETRACTED_WORK_CITED` by dt-2.
+- Detection: the adversarial corpus (`final-cycle/corpus/`, decided by engine and independent reference in
+  `tests/stage04/test_final_bib.py`), the dt-3 oracle properties, the fail-first runs (`final-cycle/fail-first/`) and
+  the development regression (`final-cycle/REGRESSION.md`); in a run, the claim names every compared record and the
+  conflict reasons.
 - Prevention: table dt-3 (SPEC 7.3b): bib-1 compares the template's own authors and title with each record of the
   deciding lookup and abstains (`UNRESOLVED_IDENTITY`, `BIBLIOGRAPHIC_OBJECT_CONFLICT`) on a material conflict.
 - Residual: (1) only `citation_template` units have a cited object; a citation in another form, or a template without
