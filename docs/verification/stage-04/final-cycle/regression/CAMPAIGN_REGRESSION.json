@@ -1,0 +1,2349 @@
+{
+ "cross_check_dt2": {
+  "mismatched": [],
+  "revisions": 80,
+  "source": "corrective/regression/CAMPAIGN_REGRESSION.json dt2_classes"
+ },
+ "engine_version": "0.4.0",
+ "index_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+ "label": "DEVELOPMENT AND REGRESSION EVIDENCE ONLY (design-exposed; owner decisions D-071, D-083); no labels, not an evaluation",
+ "network_attempts": 0,
+ "provenance": {
+  "checked_paths": [
+   "src",
+   "schemas",
+   "simulations/stage04",
+   "docs/verification/stage-04/final-cycle",
+   "tests/stage04",
+   "docs/verification/stage-04/evaluation",
+   "docs/verification/stage-04/evaluation-campaign",
+   "docs/verification/stage-04/evaluation-p2-campaign",
+   "docs/verification/stage-04/corrective/regression",
+   "docs/verification/stage-04/review/step7",
+   "pyproject.toml",
+   "uv.lock"
+  ],
+  "code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+  "excluded_paths": [
+   "docs/verification/stage-04/final-cycle/review"
+  ],
+  "index": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "file_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6",
+   "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+  },
+  "tables": {
+   "current": {
+    "engine_version": "0.4.0",
+    "table_version": "dt-3"
+   },
+   "reference": {
+    "blob": "815f0dde0392415fd97c9c4c58e43026d3162bf8",
+    "commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+    "table_version": "dt-2"
+   }
+  },
+  "tool": "docs/verification/stage-04/final-cycle/regression/regress.py",
+  "tool_sha256": "4f0499a62f4990d95afe8022664eb6a4b017edd6b3e4b43fa27edc65e6f1b966",
+  "uncommitted": []
+ },
+ "reference_table": {
+  "blob": "815f0dde0392415fd97c9c4c58e43026d3162bf8",
+  "commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+  "table_version": "dt-2"
+ },
+ "revisions": {
+  "ar-10305362": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-10305362",
+   "candidates": 271,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "CONFLICT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [
+        "BIB_AUTHORS_DISJOINT"
+       ],
+       "title": "COMPATIBLE",
+       "title_relation": "OVERLAP",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "9b20d3e125dd603dc42725a244c4411325386f7bbd900ebb44226de619bf6291",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1016/j.cell.2011.07.007"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00259"
+    }
+   ],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 131,
+    "NO_IDENTIFIER": 138,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 131,
+    "NO_IDENTIFIER": 138,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 40.61,
+   "units_with_description": 266,
+   "verified": true
+  },
+  "ar-10427484": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-10427484",
+   "candidates": 45,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 26,
+    "NO_IDENTIFIER": 18,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 26,
+    "NO_IDENTIFIER": 18,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.61,
+   "units_with_description": 45,
+   "verified": true
+  },
+  "ar-131998": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-131998",
+   "candidates": 153,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 3,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 65,
+    "NO_IDENTIFIER": 84,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 3,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 65,
+    "NO_IDENTIFIER": 84,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 34.46,
+   "units_with_description": 145,
+   "verified": true
+  },
+  "ar-1326115": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1326115",
+   "candidates": 185,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "NO_IDENTIFIER": 65,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "NO_IDENTIFIER": 65,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 36.2,
+   "units_with_description": 169,
+   "verified": true
+  },
+  "ar-1451014": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1451014",
+   "candidates": 67,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 33,
+    "NO_IDENTIFIER": 24,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 8
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 33,
+    "NO_IDENTIFIER": 24,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 8
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 29.5,
+   "units_with_description": 52,
+   "verified": true
+  },
+  "ar-1572736": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1572736",
+   "candidates": 154,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 127,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 127,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 35.94,
+   "units_with_description": 146,
+   "verified": true
+  },
+  "ar-1637866": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1637866",
+   "candidates": 3,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.85,
+   "units_with_description": 3,
+   "verified": true
+  },
+  "ar-1779619": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1779619",
+   "candidates": 5,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.24,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-1794886": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1794886",
+   "candidates": 62,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 38,
+    "NO_IDENTIFIER": 23,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 38,
+    "NO_IDENTIFIER": 23,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.57,
+   "units_with_description": 37,
+   "verified": true
+  },
+  "ar-1850763": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1850763",
+   "candidates": 193,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 158,
+    "NO_IDENTIFIER": 34,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 158,
+    "NO_IDENTIFIER": 34,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 38.53,
+   "units_with_description": 176,
+   "verified": true
+  },
+  "ar-1941870": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-1941870",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.42,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-2016009": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-2016009",
+   "candidates": 3,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.03,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-264795": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-264795",
+   "candidates": 184,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 95,
+    "NO_IDENTIFIER": 88,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 95,
+    "NO_IDENTIFIER": 88,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 35.69,
+   "units_with_description": 175,
+   "verified": true
+  },
+  "ar-2952915": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-2952915",
+   "candidates": 25,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 14,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 14,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.47,
+   "units_with_description": 24,
+   "verified": true
+  },
+  "ar-3045830": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3045830",
+   "candidates": 34,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.15,
+   "units_with_description": 22,
+   "verified": true
+  },
+  "ar-3282694": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3282694",
+   "candidates": 2,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.68,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-3351802": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3351802",
+   "candidates": 96,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 37,
+    "NO_IDENTIFIER": 58,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 37,
+    "NO_IDENTIFIER": 58,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 1,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "d79965319caee19f2181ffba29931d75c6480b969242868286bc3689e5c814e3",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1186/1741-7015-11-222",
+      "24120035"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00059"
+    }
+   ],
+   "seconds": 30.21,
+   "units_with_description": 89,
+   "verified": true
+  },
+  "ar-3396963": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3396963",
+   "candidates": 24,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.79,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-35257": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-35257",
+   "candidates": 65,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 30,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 30,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 30.21,
+   "units_with_description": 56,
+   "verified": true
+  },
+  "ar-3599199": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3599199",
+   "candidates": 34,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 23,
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 7
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 23,
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 7
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.45,
+   "units_with_description": 34,
+   "verified": true
+  },
+  "ar-3644362": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3644362",
+   "candidates": 104,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 73,
+    "NO_IDENTIFIER": 30,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 73,
+    "NO_IDENTIFIER": 30,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 32.62,
+   "units_with_description": 103,
+   "verified": true
+  },
+  "ar-3696018": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-3696018",
+   "candidates": 626,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 35,
+    "NO_IDENTIFIER": 590,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 35,
+    "NO_IDENTIFIER": 590,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 45.39,
+   "units_with_description": 69,
+   "verified": true
+  },
+  "ar-412458": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-412458",
+   "candidates": 118,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 92,
+    "NO_IDENTIFIER": 25,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 92,
+    "NO_IDENTIFIER": 25,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 35.14,
+   "units_with_description": 106,
+   "verified": true
+  },
+  "ar-4385360": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4385360",
+   "candidates": 47,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 45,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 45,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 29.99,
+   "units_with_description": 46,
+   "verified": true
+  },
+  "ar-451337": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-451337",
+   "candidates": 113,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 88,
+    "NO_IDENTIFIER": 24,
+    "UNRESOLVED_STATUS": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 88,
+    "NO_IDENTIFIER": 24,
+    "UNRESOLVED_STATUS": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 33.83,
+   "units_with_description": 105,
+   "verified": true
+  },
+  "ar-4538455": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4538455",
+   "candidates": 18,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.3,
+   "units_with_description": 18,
+   "verified": true
+  },
+  "ar-4538789": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4538789",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.07,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "ar-4538868": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4538868",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 18,
+    "NO_IDENTIFIER": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 18,
+    "NO_IDENTIFIER": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.2,
+   "units_with_description": 21,
+   "verified": true
+  },
+  "ar-4540034": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4540034",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.21,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "ar-4540049": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4540049",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.64,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "ar-4540338": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4540338",
+   "candidates": 22,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 18,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 18,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.38,
+   "units_with_description": 22,
+   "verified": true
+  },
+  "ar-4541164": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-4541164",
+   "candidates": 11,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.69,
+   "units_with_description": 11,
+   "verified": true
+  },
+  "ar-5076412": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-5076412",
+   "candidates": 44,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 9
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 9
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.83,
+   "units_with_description": 40,
+   "verified": true
+  },
+  "ar-6557322": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-6557322",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.9,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-6678151": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-6678151",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 3
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 3
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.4,
+   "units_with_description": 9,
+   "verified": true
+  },
+  "ar-7114286": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-7114286",
+   "candidates": 24,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.41,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-7862270": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-7862270",
+   "candidates": 16,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 5,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 5,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.06,
+   "units_with_description": 16,
+   "verified": true
+  },
+  "ar-8029458": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-8029458",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.49,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-8414305": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-8414305",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 5
+   },
+   "dt3_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 5
+   },
+   "lifecycle": "NEEDS_RESOLUTION",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.49,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "ar-9969918": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/ar-9969918",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 5
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 5
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.74,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "en-12228277": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-12228277",
+   "candidates": 117,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "DIFFERENT",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "856e98a7cb9d7eaad59e61e54bfd532c0e722dd8d8cacd58349d365b5e4266d2",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1016/j.giec.2006.03.005",
+      "16644460"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00110"
+    }
+   ],
+   "seconds": 34.67,
+   "units_with_description": 117,
+   "verified": true
+  },
+  "en-12358044": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-12358044",
+   "candidates": 6,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.76,
+   "units_with_description": 6,
+   "verified": true
+  },
+  "en-12767927": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-12767927",
+   "candidates": 1,
+   "changed": [],
+   "dt2_classes": {
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.0,
+   "units_with_description": 1,
+   "verified": true
+  },
+  "en-14138534": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-14138534",
+   "candidates": 36,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 34,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.19,
+   "units_with_description": 36,
+   "verified": true
+  },
+  "en-14181009": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-14181009",
+   "candidates": 26,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 24,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 24,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.51,
+   "units_with_description": 26,
+   "verified": true
+  },
+  "en-14304380": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-14304380",
+   "candidates": 33,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 31,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 31,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.57,
+   "units_with_description": 33,
+   "verified": true
+  },
+  "en-14817091": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-14817091",
+   "candidates": 15,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 13,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 13,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.36,
+   "units_with_description": 15,
+   "verified": true
+  },
+  "en-15213450": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-15213450",
+   "candidates": 14,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.33,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "en-154826": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-154826",
+   "candidates": 109,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 108
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 108
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.92,
+   "units_with_description": 96,
+   "verified": true
+  },
+  "en-15946829": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-15946829",
+   "candidates": 28,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 16
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 16
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.24,
+   "units_with_description": 27,
+   "verified": true
+  },
+  "en-1741558": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-1741558",
+   "candidates": 33,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 25,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 25,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "COMPATIBLE",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "ca0ff377ca07ed294b6a3af3e4dd3c11c349a1225aeb24d18e423308127b2f4d",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1016/j.amc.2007.03.011"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00016"
+    }
+   ],
+   "seconds": 26.21,
+   "units_with_description": 31,
+   "verified": true
+  },
+  "en-20977826": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-20977826",
+   "candidates": 35,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 17,
+    "NO_IDENTIFIER": 17,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 17,
+    "NO_IDENTIFIER": 17,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.45,
+   "units_with_description": 35,
+   "verified": true
+  },
+  "en-2119179": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-2119179",
+   "candidates": 385,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "NO_IDENTIFIER": 268,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 116,
+    "NO_IDENTIFIER": 268,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 40.95,
+   "units_with_description": 348,
+   "verified": true
+  },
+  "en-246458": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-246458",
+   "candidates": 61,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 20,
+    "NO_IDENTIFIER": 39,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 20,
+    "NO_IDENTIFIER": 39,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.9,
+   "units_with_description": 61,
+   "verified": true
+  },
+  "en-28377060": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-28377060",
+   "candidates": 58,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 49,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 49,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.46,
+   "units_with_description": 58,
+   "verified": true
+  },
+  "en-32465321": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-32465321",
+   "candidates": 5,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.33,
+   "units_with_description": 5,
+   "verified": true
+  },
+  "en-33398582": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-33398582",
+   "candidates": 27,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 16,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 16,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.5,
+   "units_with_description": 27,
+   "verified": true
+  },
+  "en-35139119": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-35139119",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 3
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 3
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.36,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "en-35629436": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-35629436",
+   "candidates": 5,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.52,
+   "units_with_description": 5,
+   "verified": true
+  },
+  "en-36470809": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-36470809",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.35,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "en-3765577": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-3765577",
+   "candidates": 16,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 14,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 14,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.14,
+   "units_with_description": 15,
+   "verified": true
+  },
+  "en-38501018": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-38501018",
+   "candidates": 228,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 83,
+    "NO_IDENTIFIER": 144,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 83,
+    "NO_IDENTIFIER": 144,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 36.21,
+   "units_with_description": 222,
+   "verified": true
+  },
+  "en-39868218": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-39868218",
+   "candidates": 19,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 14,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 14,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": true,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [
+        "BIB_TITLE_RELATED_OBJECT"
+       ],
+       "title": "CONFLICT",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "c0ab463c45d43c95396ec2d96de1ab2ce18579fdc4eb650c72d32241474a08f5",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1002/asi.23238"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00011"
+    }
+   ],
+   "seconds": 26.61,
+   "units_with_description": 18,
+   "verified": true
+  },
+  "en-41008786": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-41008786",
+   "candidates": 18,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "CONFLICT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [
+        "BIB_AUTHORS_DISJOINT"
+       ],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "CONFLICT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 1,
+       "reasons": [
+        "BIB_AUTHORS_DISJOINT"
+       ],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "c188b630077010c48333eb8dfd466799357c3392483be6d0309f7aede5646e73",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/nature17620",
+      "27075097"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00005"
+    }
+   ],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 13,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 13,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.9,
+   "units_with_description": 18,
+   "verified": true
+  },
+  "en-41406004": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-41406004",
+   "candidates": 98,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 46,
+    "NO_IDENTIFIER": 51,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 46,
+    "NO_IDENTIFIER": 51,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 30.51,
+   "units_with_description": 98,
+   "verified": true
+  },
+  "en-429616": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-429616",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.22,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "en-43140783": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-43140783",
+   "candidates": 25,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.57,
+   "units_with_description": 24,
+   "verified": true
+  },
+  "en-43427": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-43427",
+   "candidates": 80,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 39,
+    "NO_IDENTIFIER": 39,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 39,
+    "NO_IDENTIFIER": 39,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.84,
+   "units_with_description": 78,
+   "verified": true
+  },
+  "en-46603361": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-46603361",
+   "candidates": 16,
+   "changed": [],
+   "dt2_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 10
+   },
+   "dt3_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 10
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.93,
+   "units_with_description": 14,
+   "verified": true
+  },
+  "en-57386068": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-57386068",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.6,
+   "units_with_description": 17,
+   "verified": true
+  },
+  "en-60575": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-60575",
+   "candidates": 163,
+   "changed": [],
+   "dt2_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 125,
+    "NO_IDENTIFIER": 37
+   },
+   "dt3_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 125,
+    "NO_IDENTIFIER": 37
+   },
+   "lifecycle": "NEEDS_RESOLUTION",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 37.07,
+   "units_with_description": 163,
+   "verified": true
+  },
+  "en-68076493": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-68076493",
+   "candidates": 8,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.65,
+   "units_with_description": 8,
+   "verified": true
+  },
+  "en-68985460": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-68985460",
+   "candidates": 30,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 26,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.54,
+   "units_with_description": 29,
+   "verified": true
+  },
+  "en-70516335": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-70516335",
+   "candidates": 16,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 7,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 7,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.31,
+   "units_with_description": 16,
+   "verified": true
+  },
+  "en-708662": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-708662",
+   "candidates": 108,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 79,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 79,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 32.72,
+   "units_with_description": 105,
+   "verified": true
+  },
+  "en-7090906": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-7090906",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.31,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "en-72478180": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-72478180",
+   "candidates": 48,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 27,
+    "NO_IDENTIFIER": 20,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 27,
+    "NO_IDENTIFIER": 20,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.3,
+   "units_with_description": 46,
+   "verified": true
+  },
+  "en-75613316": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-75613316",
+   "candidates": 11,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.99,
+   "units_with_description": 11,
+   "verified": true
+  },
+  "en-8520848": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-8520848",
+   "candidates": 82,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 81
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 81
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.32,
+   "units_with_description": 82,
+   "verified": true
+  },
+  "en-9516673": {
+   "bundle": "docs/verification/stage-04/evaluation-campaign/bundles/en-9516673",
+   "candidates": 56,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 50,
+    "NO_IDENTIFIER": 5
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 50,
+    "NO_IDENTIFIER": 5
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 29.33,
+   "units_with_description": 53,
+   "verified": true
+  }
+ },
+ "seconds_per_shard": [
+  796.6,
+  784.2,
+  727.7
+ ],
+ "set": "campaign",
+ "table_version": "dt-3",
+ "tool_sha256": "4f0499a62f4990d95afe8022664eb6a4b017edd6b3e4b43fa27edc65e6f1b966",
+ "totals": {
+  "candidates": 4920,
+  "candidates_with_description": 4116,
+  "changed": [
+   {
+    "bib": [
+     {
+      "authors": "CONFLICT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "title": "COMPATIBLE",
+      "title_relation": "OVERLAP",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "9b20d3e125dd603dc42725a244c4411325386f7bbd900ebb44226de619bf6291",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_AUTHORS_DISJOINT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1016/j.cell.2011.07.007"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-10305362",
+    "unit_id": "un-00259"
+   },
+   {
+    "bib": [
+     {
+      "authors": "CONFLICT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "CONFLICT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 1,
+      "reasons": [
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "c188b630077010c48333eb8dfd466799357c3392483be6d0309f7aede5646e73",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_AUTHORS_DISJOINT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/nature17620",
+     "27075097"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-41008786",
+    "unit_id": "un-00005"
+   }
+  ],
+  "changed_by_transition": {
+   "D-14 RETRACTED_WORK_CITED -> D-13a UNRESOLVED_IDENTITY": 2
+  },
+  "changed_claims": 2,
+  "dt2_positive_pairs_by_bib_object": {
+   "COMPATIBLE": 90,
+   "INSUFFICIENT": 1,
+   "MATERIAL_CONFLICT": 3
+  },
+  "lifecycle": {
+   "COMPLETED": 78,
+   "NEEDS_RESOLUTION": 2
+  },
+  "lost_positive": 2,
+  "new_not_found": 0,
+  "new_notice_cited": 0,
+  "new_positive": 0,
+  "positive_units": {
+   "dt2": 78,
+   "dt3": 76
+  },
+  "recorded_equals_dt3_everywhere": true,
+  "revisions": 80,
+  "role_collision_candidates": [
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 1,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "d79965319caee19f2181ffba29931d75c6480b969242868286bc3689e5c814e3",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1186/1741-7015-11-222",
+     "24120035"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-3351802",
+    "unit_id": "un-00059"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "DIFFERENT",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "856e98a7cb9d7eaad59e61e54bfd532c0e722dd8d8cacd58349d365b5e4266d2",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1016/j.giec.2006.03.005",
+     "16644460"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-12228277",
+    "unit_id": "un-00110"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "COMPATIBLE",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "ca0ff377ca07ed294b6a3af3e4dd3c11c349a1225aeb24d18e423308127b2f4d",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1016/j.amc.2007.03.011"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-1741558",
+    "unit_id": "un-00016"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": true,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "title": "CONFLICT",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "c0ab463c45d43c95396ec2d96de1ab2ce18579fdc4eb650c72d32241474a08f5",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1002/asi.23238"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-39868218",
+    "unit_id": "un-00011"
+   }
+  ],
+  "verified": 80
+ }
+}

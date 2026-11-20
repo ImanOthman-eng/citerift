@@ -1,0 +1,3875 @@
+{
+ "cross_check_dt2": {
+  "mismatched": [],
+  "revisions": 100,
+  "source": "evaluation-p2-campaign/run/RUN.json claims_by_class"
+ },
+ "engine_version": "0.4.0",
+ "index_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+ "label": "DEVELOPMENT AND REGRESSION EVIDENCE ONLY (design-exposed; owner decisions D-071, D-083); no labels, not an evaluation",
+ "network_attempts": 0,
+ "provenance": {
+  "checked_paths": [
+   "src",
+   "schemas",
+   "simulations/stage04",
+   "docs/verification/stage-04/final-cycle",
+   "tests/stage04",
+   "docs/verification/stage-04/evaluation",
+   "docs/verification/stage-04/evaluation-campaign",
+   "docs/verification/stage-04/evaluation-p2-campaign",
+   "docs/verification/stage-04/corrective/regression",
+   "docs/verification/stage-04/review/step7",
+   "pyproject.toml",
+   "uv.lock"
+  ],
+  "code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+  "excluded_paths": [
+   "docs/verification/stage-04/final-cycle/review"
+  ],
+  "index": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "file_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6",
+   "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+  },
+  "tables": {
+   "current": {
+    "engine_version": "0.4.0",
+    "table_version": "dt-3"
+   },
+   "reference": {
+    "blob": "815f0dde0392415fd97c9c4c58e43026d3162bf8",
+    "commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+    "table_version": "dt-2"
+   }
+  },
+  "tool": "docs/verification/stage-04/final-cycle/regression/regress.py",
+  "tool_sha256": "4f0499a62f4990d95afe8022664eb6a4b017edd6b3e4b43fa27edc65e6f1b966",
+  "uncommitted": []
+ },
+ "reference_table": {
+  "blob": "815f0dde0392415fd97c9c4c58e43026d3162bf8",
+  "commit": "28ba6467c7005eec7bf51869974719a402059ca7",
+  "table_version": "dt-2"
+ },
+ "revisions": {
+  "ar-10299315": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-10299315",
+   "candidates": 91,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 40,
+    "NO_IDENTIFIER": 50
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 40,
+    "NO_IDENTIFIER": 50
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 29.83,
+   "units_with_description": 91,
+   "verified": true
+  },
+  "ar-10302756": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-10302756",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 24.26,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-103389": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-103389",
+   "candidates": 7,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.21,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-1079300": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-1079300",
+   "candidates": 19,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 12,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 12,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.17,
+   "units_with_description": 18,
+   "verified": true
+  },
+  "ar-13048": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-13048",
+   "candidates": 169,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 82,
+    "NO_IDENTIFIER": 86,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 82,
+    "NO_IDENTIFIER": 86,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 33.33,
+   "units_with_description": 106,
+   "verified": true
+  },
+  "ar-1651067": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-1651067",
+   "candidates": 32,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": true,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "DIFFERENT",
+       "position": 0,
+       "reasons": [
+        "BIB_TITLE_RELATED_OBJECT"
+       ],
+       "title": "CONFLICT",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "6bb63d938179b42261e0e760cbc9c8c9227691c0d0012214594c5e3d622515c7",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1136/bmj.2.5914.335-a",
+      "4827125"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00023"
+    }
+   ],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 17,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 17,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.95,
+   "units_with_description": 31,
+   "verified": true
+  },
+  "ar-1761069": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-1761069",
+   "candidates": 50,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 35,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 35,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.13,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-1775585": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-1775585",
+   "candidates": 43,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 14,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.4,
+   "units_with_description": 3,
+   "verified": true
+  },
+  "ar-1993213": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-1993213",
+   "candidates": 150,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 91,
+    "NO_IDENTIFIER": 57,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 91,
+    "NO_IDENTIFIER": 57,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 34.65,
+   "units_with_description": 142,
+   "verified": true
+  },
+  "ar-2658326": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-2658326",
+   "candidates": 7,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.66,
+   "units_with_description": 0,
+   "verified": true
+  },
+  "ar-2704317": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-2704317",
+   "candidates": 33,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 17,
+    "NO_IDENTIFIER": 15,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 17,
+    "NO_IDENTIFIER": 15,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.62,
+   "units_with_description": 32,
+   "verified": true
+  },
+  "ar-27497": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-27497",
+   "candidates": 50,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 34,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 34,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.3,
+   "units_with_description": 48,
+   "verified": true
+  },
+  "ar-3015887": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-3015887",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.09,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "ar-3045526": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-3045526",
+   "candidates": 26,
+   "changed": [],
+   "dt2_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 13,
+    "NO_IDENTIFIER": 12
+   },
+   "dt3_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 13,
+    "NO_IDENTIFIER": 12
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.09,
+   "units_with_description": 17,
+   "verified": true
+  },
+  "ar-3045843": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-3045843",
+   "candidates": 15,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.6,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "ar-3208722": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-3208722",
+   "candidates": 145,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 99,
+    "NO_IDENTIFIER": 44,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 99,
+    "NO_IDENTIFIER": 44,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 34.03,
+   "units_with_description": 38,
+   "verified": true
+  },
+  "ar-4275349": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4275349",
+   "candidates": 9,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.23,
+   "units_with_description": 8,
+   "verified": true
+  },
+  "ar-4501381": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4501381",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 5
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 5
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.89,
+   "units_with_description": 5,
+   "verified": true
+  },
+  "ar-4508100": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4508100",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.7,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-4538134": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4538134",
+   "candidates": 2,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.79,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-4538220": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4538220",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.87,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "ar-4538687": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4538687",
+   "candidates": 20,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.41,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-4538847": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4538847",
+   "candidates": 22,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 5
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 5
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.65,
+   "units_with_description": 22,
+   "verified": true
+  },
+  "ar-4539331": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4539331",
+   "candidates": 20,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "UNRESOLVED_IDENTIFIER": 8
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "UNRESOLVED_IDENTIFIER": 8
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.33,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-4539358": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4539358",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.72,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "ar-4540373": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4540373",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.75,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "ar-4540384": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4540384",
+   "candidates": 20,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.9,
+   "units_with_description": 20,
+   "verified": true
+  },
+  "ar-4540951": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4540951",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.16,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "ar-4541327": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4541327",
+   "candidates": 11,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.14,
+   "units_with_description": 11,
+   "verified": true
+  },
+  "ar-4541909": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4541909",
+   "candidates": 19,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 2,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 2,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.47,
+   "units_with_description": 19,
+   "verified": true
+  },
+  "ar-4542011": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4542011",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.51,
+   "units_with_description": 21,
+   "verified": true
+  },
+  "ar-4542018": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-4542018",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.07,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "ar-5298646": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-5298646",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 24.68,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "ar-5571208": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-5571208",
+   "candidates": 3,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.01,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "ar-6010866": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-6010866",
+   "candidates": 3,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 24.71,
+   "units_with_description": 0,
+   "verified": true
+  },
+  "ar-672487": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-672487",
+   "candidates": 74,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 29,
+    "NO_IDENTIFIER": 44,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 29,
+    "NO_IDENTIFIER": 44,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.23,
+   "units_with_description": 63,
+   "verified": true
+  },
+  "ar-676248": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-676248",
+   "candidates": 97,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 48,
+    "NO_IDENTIFIER": 47,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 48,
+    "NO_IDENTIFIER": 47,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 29.79,
+   "units_with_description": 65,
+   "verified": true
+  },
+  "ar-7250702": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-7250702",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.02,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-7271582": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-7271582",
+   "candidates": 12,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.95,
+   "units_with_description": 11,
+   "verified": true
+  },
+  "ar-7378444": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-7378444",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "IDENTITY_CONFLICT": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "NEEDS_RESOLUTION",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.38,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "ar-7507514": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-7507514",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.15,
+   "units_with_description": 5,
+   "verified": true
+  },
+  "ar-7923503": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-7923503",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 12,
+    "NO_IDENTIFIER": 4,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 12,
+    "NO_IDENTIFIER": 4,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "09f3d6e4210ab120e59b3f3121c538ef269ddb135a4cbebb7c89a2481bfcdbe2",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/nature23305",
+      "28783728"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00006"
+    }
+   ],
+   "seconds": 27.06,
+   "units_with_description": 15,
+   "verified": true
+  },
+  "ar-8029983": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-8029983",
+   "candidates": 46,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 35,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 35,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "756b52b191d19390f0170c894ef8fd1e4f4aaf4a77734b4b5b476b414bb941d9",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1093/nsr/nwaa036"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00009"
+    }
+   ],
+   "seconds": 26.84,
+   "units_with_description": 45,
+   "verified": true
+  },
+  "ar-8177443": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-8177443",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 3,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 3,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "INSUFFICIENT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "COMPATIBLE",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "3fb81f2770abb4ef42a5b0f88e06bc2a93e33f3a27c3eb8f1ff5e0a3784a321f",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1016/j.cancergen.2016.05.066"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00008"
+    }
+   ],
+   "seconds": 26.42,
+   "units_with_description": 8,
+   "verified": true
+  },
+  "ar-8267363": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-8267363",
+   "candidates": 19,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 8,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.46,
+   "units_with_description": 19,
+   "verified": true
+  },
+  "ar-8312431": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-8312431",
+   "candidates": 5,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 2,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 1,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 2,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 3,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "da20f413c0082561cbb49765478df1fc08b8825d27435fdc17facd7328d93205",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/s41586-020-2801-z",
+      "33057222"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00001"
+    }
+   ],
+   "seconds": 25.58,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "ar-8773304": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-8773304",
+   "candidates": 7,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 3,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 3,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "9ec609befca374d1046416b1334f948ae299fe7bfb1a722c5df4b655e0a7133e",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/nature23305",
+      "28783728"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00003"
+    }
+   ],
+   "seconds": 26.56,
+   "units_with_description": 6,
+   "verified": true
+  },
+  "ar-9334428": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-9334428",
+   "candidates": 38,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 9,
+    "NO_IDENTIFIER": 28,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.63,
+   "units_with_description": 36,
+   "verified": true
+  },
+  "ar-9558": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-9558",
+   "candidates": 29,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 22,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 22,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.55,
+   "units_with_description": 9,
+   "verified": true
+  },
+  "ar-9844015": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/ar-9844015",
+   "candidates": 33,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 18
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 18
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.59,
+   "units_with_description": 33,
+   "verified": true
+  },
+  "en-11885910": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-11885910",
+   "candidates": 25,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 23,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 23,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.59,
+   "units_with_description": 25,
+   "verified": true
+  },
+  "en-13677392": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-13677392",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 4
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 4
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.32,
+   "units_with_description": 2,
+   "verified": true
+  },
+  "en-13953485": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-13953485",
+   "candidates": 5,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 4
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 4
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.57,
+   "units_with_description": 5,
+   "verified": true
+  },
+  "en-14755606": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-14755606",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.66,
+   "units_with_description": 21,
+   "verified": true
+  },
+  "en-14774943": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-14774943",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 19,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.65,
+   "units_with_description": 21,
+   "verified": true
+  },
+  "en-16824033": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-16824033",
+   "candidates": 97,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 55,
+    "NO_IDENTIFIER": 38,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 55,
+    "NO_IDENTIFIER": 38,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.69,
+   "units_with_description": 96,
+   "verified": true
+  },
+  "en-169496": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-169496",
+   "candidates": 84,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 81
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 81
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.79,
+   "units_with_description": 83,
+   "verified": true
+  },
+  "en-173905": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-173905",
+   "candidates": 138,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 30,
+    "NO_IDENTIFIER": 106,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 30,
+    "NO_IDENTIFIER": 106,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.51,
+   "units_with_description": 133,
+   "verified": true
+  },
+  "en-20975731": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-20975731",
+   "candidates": 128,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 53,
+    "NO_IDENTIFIER": 74,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 53,
+    "NO_IDENTIFIER": 74,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.0,
+   "units_with_description": 120,
+   "verified": true
+  },
+  "en-2119174": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-2119174",
+   "candidates": 276,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 115,
+    "NO_IDENTIFIER": 159,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 115,
+    "NO_IDENTIFIER": 159,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 37.02,
+   "units_with_description": 235,
+   "verified": true
+  },
+  "en-21293835": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-21293835",
+   "candidates": 12,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": true,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "DIFFERENT",
+       "position": 0,
+       "reasons": [
+        "BIB_TITLE_RELATED_OBJECT"
+       ],
+       "title": "CONFLICT",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "32fbf074fa0f014a72cc96893eb9444a0e03fc6e5e9d0d0f09f398aad509bc25",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1136/bmj.2.5914.335-a",
+      "4827125"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00003"
+    }
+   ],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 4,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.87,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "en-23443467": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-23443467",
+   "candidates": 93,
+   "changed": [],
+   "dt2_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 53,
+    "NO_IDENTIFIER": 39
+   },
+   "dt3_classes": {
+    "CONCERN_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 53,
+    "NO_IDENTIFIER": 39
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 30.3,
+   "units_with_description": 83,
+   "verified": true
+  },
+  "en-239890": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-239890",
+   "candidates": 120,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 65,
+    "NO_IDENTIFIER": 54,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 65,
+    "NO_IDENTIFIER": 54,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 32.36,
+   "units_with_description": 116,
+   "verified": true
+  },
+  "en-24931": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-24931",
+   "candidates": 254,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 95,
+    "NO_IDENTIFIER": 158,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 95,
+    "NO_IDENTIFIER": 158,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 38.0,
+   "units_with_description": 208,
+   "verified": true
+  },
+  "en-2595296": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-2595296",
+   "candidates": 245,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 171,
+    "NO_IDENTIFIER": 73,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 171,
+    "NO_IDENTIFIER": 73,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "f2c181d40e3165ed9b002912ac79d118715fb12bb0c962b881a0fcba64328bdc",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1007/s11756-021-00841-7"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00122"
+    }
+   ],
+   "seconds": 39.73,
+   "units_with_description": 210,
+   "verified": true
+  },
+  "en-27958530": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-27958530",
+   "candidates": 6,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "CONFLICT",
+       "designation": true,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [
+        "BIB_AUTHORS_DISJOINT",
+        "BIB_TITLE_RELATED_OBJECT"
+       ],
+       "title": "CONFLICT",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "d1c207214f115aca33ed843d56ebbd5da369e5d9225d50fa74dde4b8114c8181",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_AUTHORS_DISJOINT",
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1186/1743-422x-7-169",
+      "20663162"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00004"
+    }
+   ],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.91,
+   "units_with_description": 6,
+   "verified": true
+  },
+  "en-28547": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-28547",
+   "candidates": 44,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 33,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 10,
+    "NO_IDENTIFIER": 33,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "INSUFFICIENT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "COMPATIBLE",
+       "title_relation": "CONTAINED",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "79be30588a601024ba0bf76947ed3aca6048f56bdfa5fb8def2ee96834837047",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1111/hequ.12360"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00027"
+    }
+   ],
+   "seconds": 26.98,
+   "units_with_description": 40,
+   "verified": true
+  },
+  "en-28677895": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-28677895",
+   "candidates": 240,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 35,
+    "NO_IDENTIFIER": 204,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 35,
+    "NO_IDENTIFIER": 204,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 34.21,
+   "units_with_description": 188,
+   "verified": true
+  },
+  "en-29839319": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-29839319",
+   "candidates": 8,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 2,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.2,
+   "units_with_description": 8,
+   "verified": true
+  },
+  "en-3029772": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-3029772",
+   "candidates": 14,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.64,
+   "units_with_description": 14,
+   "verified": true
+  },
+  "en-30455822": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-30455822",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 11,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.83,
+   "units_with_description": 12,
+   "verified": true
+  },
+  "en-31632698": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-31632698",
+   "candidates": 14,
+   "changed": [],
+   "dt2_classes": {
+    "NO_IDENTIFIER": 13,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "dt3_classes": {
+    "NO_IDENTIFIER": 13,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "INSUFFICIENT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "DIFFERENT",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "INSUFFICIENT"
+      }
+     ],
+     "cand_ref": "f5c242a97dfc9213d74f221123284efe8bddd07b1738f97453dda6c8f7be650c",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1080/01436597.2017.1369037"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00013"
+    }
+   ],
+   "seconds": 25.5,
+   "units_with_description": 14,
+   "verified": true
+  },
+  "en-3346025": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-3346025",
+   "candidates": 63,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 57,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 5,
+    "NO_IDENTIFIER": 57,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.98,
+   "units_with_description": 50,
+   "verified": true
+  },
+  "en-33948767": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-33948767",
+   "candidates": 23,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 21,
+    "NO_IDENTIFIER": 1
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 21,
+    "NO_IDENTIFIER": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.58,
+   "units_with_description": 23,
+   "verified": true
+  },
+  "en-3474864": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-3474864",
+   "candidates": 13,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 8,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.39,
+   "units_with_description": 13,
+   "verified": true
+  },
+  "en-38028125": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-38028125",
+   "candidates": 46,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 22,
+    "NO_IDENTIFIER": 22,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 22,
+    "NO_IDENTIFIER": 22,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.88,
+   "units_with_description": 46,
+   "verified": true
+  },
+  "en-42497068": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-42497068",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.86,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "en-452461": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-452461",
+   "candidates": 70,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 54,
+    "NO_IDENTIFIER": 15,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 54,
+    "NO_IDENTIFIER": 15,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 32.13,
+   "units_with_description": 70,
+   "verified": true
+  },
+  "en-4643400": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-4643400",
+   "candidates": 68,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 58,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 58,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.1,
+   "units_with_description": 67,
+   "verified": true
+  },
+  "en-4704555": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-4704555",
+   "candidates": 6,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 4,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.62,
+   "units_with_description": 6,
+   "verified": true
+  },
+  "en-47224786": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-47224786",
+   "candidates": 10,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 1,
+    "NO_IDENTIFIER": 7,
+    "RETRACTED_WORK_CITED": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.34,
+   "units_with_description": 8,
+   "verified": true
+  },
+  "en-52240290": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-52240290",
+   "candidates": 11,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 7
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.75,
+   "units_with_description": 11,
+   "verified": true
+  },
+  "en-53151252": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-53151252",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 16,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.47,
+   "units_with_description": 17,
+   "verified": true
+  },
+  "en-53245126": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-53245126",
+   "candidates": 4,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.54,
+   "units_with_description": 4,
+   "verified": true
+  },
+  "en-58713610": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-58713610",
+   "candidates": 45,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 37,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTITY": 3
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 3,
+    "NO_IDENTIFIER": 37,
+    "RETRACTED_WORK_CITED": 1,
+    "UNRESOLVED_IDENTITY": 3
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "COMPATIBLE",
+       "title_relation": "OVERLAP",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "e1e0b8444451c45697f383fa6646f79dc77f117256d15282663cd354dd40de04",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1080/21604851.2018.1453622"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00016"
+    },
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "COMPATIBLE",
+       "title_relation": "OVERLAP",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "d8776f2ac92dcdbfa0a4cb61261fa2842a3baa5734fe37680577b219d075c84f",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1007/s12119-018-9536-0"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00017"
+    },
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "a1118c234dc0aabfd5c6d0b87c7bb491058ca1e3e5fac73ede9e16adf497ca2a",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1007/s11199-018-0962-0"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00018"
+    }
+   ],
+   "seconds": 28.63,
+   "units_with_description": 45,
+   "verified": true
+  },
+  "en-60275503": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-60275503",
+   "candidates": 55,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 45,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 45,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 30.16,
+   "units_with_description": 55,
+   "verified": true
+  },
+  "en-653532": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-653532",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 9,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.68,
+   "units_with_description": 15,
+   "verified": true
+  },
+  "en-66946131": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-66946131",
+   "candidates": 20,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 2,
+    "NO_IDENTIFIER": 17,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 2,
+    "NO_IDENTIFIER": 17,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.72,
+   "units_with_description": 18,
+   "verified": true
+  },
+  "en-67653757": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-67653757",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 12,
+    "RETRACTED_WORK_CITED": 3
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 2,
+    "NO_IDENTIFIER": 12,
+    "RETRACTED_WORK_CITED": 3
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 26.5,
+   "units_with_description": 17,
+   "verified": true
+  },
+  "en-69363482": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-69363482",
+   "candidates": 400,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 117,
+    "NO_IDENTIFIER": 282,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 117,
+    "NO_IDENTIFIER": 282,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 44.02,
+   "units_with_description": 377,
+   "verified": true
+  },
+  "en-69586004": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-69586004",
+   "candidates": 424,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 409,
+    "NO_IDENTIFIER": 13,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 409,
+    "NO_IDENTIFIER": 13,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 54.14,
+   "units_with_description": 421,
+   "verified": true
+  },
+  "en-72377785": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-72377785",
+   "candidates": 40,
+   "changed": [],
+   "dt2_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 27,
+    "NO_IDENTIFIER": 12
+   },
+   "dt3_classes": {
+    "CORRECTION_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 27,
+    "NO_IDENTIFIER": 12
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.2,
+   "units_with_description": 40,
+   "verified": true
+  },
+  "en-73261569": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-73261569",
+   "candidates": 55,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 36,
+    "UNRESOLVED_IDENTITY": 2
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 2,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 36,
+    "UNRESOLVED_IDENTITY": 2
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 1,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 2,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "98a941690498aee3da189490ffd545511ce427139eb45de4a0773020ede4cf8b",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/s41586-023-05742-0",
+      "36890373"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00028"
+    },
+    {
+     "bib": [
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 0,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 1,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 2,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      },
+      {
+       "authors": "AGREE",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "COMPATIBLE",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "SAME",
+       "position": 3,
+       "reasons": [],
+       "title": "AGREE",
+       "title_relation": "EQUAL",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "19a2b24c11596917c69bf04b53f62686e2ed0fa80699dd1e5c1ccc56a3cff0cd",
+     "dt2": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "IDENTIFIER_ROLE_COLLISION"
+      ],
+      "rule": "D-10"
+     },
+     "has_description": true,
+     "keys": [
+      "10.1038/s41586-020-2801-z",
+      "33057222"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00038"
+    }
+   ],
+   "seconds": 27.83,
+   "units_with_description": 55,
+   "verified": true
+  },
+  "en-77986589": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-77986589",
+   "candidates": 161,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 154
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 6,
+    "NO_IDENTIFIER": 154
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 31.43,
+   "units_with_description": 158,
+   "verified": true
+  },
+  "en-7974411": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-7974411",
+   "candidates": 17,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 15,
+    "NO_IDENTIFIER": 1,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.07,
+   "units_with_description": 17,
+   "verified": true
+  },
+  "en-81066568": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-81066568",
+   "candidates": 125,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 124
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NOT_FOUND_IN_CHECKED_SOURCES": 124
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 36.6,
+   "units_with_description": 122,
+   "verified": true
+  },
+  "en-83484354": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-83484354",
+   "candidates": 14,
+   "changed": [
+    {
+     "bib": [
+      {
+       "authors": "CONFLICT",
+       "designation": false,
+       "issue": "NOT_IN_RECORD",
+       "object": "MATERIAL_CONFLICT",
+       "pages": "NOT_IN_RECORD",
+       "periodical": "DIFFERENT",
+       "position": 0,
+       "reasons": [
+        "BIB_AUTHORS_DISJOINT"
+       ],
+       "title": "COMPATIBLE",
+       "title_relation": "OVERLAP",
+       "version": "bib-1",
+       "volume": "NOT_IN_RECORD",
+       "year": "SAME"
+      }
+     ],
+     "cand_ref": "3acfe2a238633fa4e40c7706697312ef380a01a0e836ba1195a4672497b82057",
+     "dt2": {
+      "class": "RETRACTED_WORK_CITED",
+      "reasons": [],
+      "rule": "D-14"
+     },
+     "dt3": {
+      "class": "UNRESOLVED_IDENTITY",
+      "reasons": [
+       "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "rule": "D-13a"
+     },
+     "has_description": true,
+     "keys": [
+      "10.17116/jnevro20161162199-108",
+      "27166488"
+     ],
+     "recorded_equals_dt3": true,
+     "unit_id": "un-00012"
+    }
+   ],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 6,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 7,
+    "NO_IDENTIFIER": 6,
+    "UNRESOLVED_IDENTITY": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.29,
+   "units_with_description": 10,
+   "verified": true
+  },
+  "en-850705": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-850705",
+   "candidates": 24,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 19,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 4,
+    "NO_IDENTIFIER": 19,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 27.36,
+   "units_with_description": 15,
+   "verified": true
+  },
+  "en-8606018": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-8606018",
+   "candidates": 47,
+   "changed": [],
+   "dt2_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 35,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOT_FOUND_IN_CHECKED_SOURCES": 11,
+    "NO_IDENTIFIER": 35,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 28.34,
+   "units_with_description": 43,
+   "verified": true
+  },
+  "en-8717578": {
+   "bundle": "docs/verification/stage-04/evaluation-p2-campaign/bundles/en-8717578",
+   "candidates": 21,
+   "changed": [],
+   "dt2_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 19,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "dt3_classes": {
+    "NOTICE_CITED": 1,
+    "NO_IDENTIFIER": 19,
+    "RETRACTED_WORK_CITED": 1
+   },
+   "lifecycle": "COMPLETED",
+   "recorded_equals_dt3": true,
+   "role_collision": [],
+   "seconds": 25.36,
+   "units_with_description": 19,
+   "verified": true
+  }
+ },
+ "seconds_per_shard": [
+  972.0,
+  916.1,
+  941.3
+ ],
+ "set": "p2",
+ "table_version": "dt-3",
+ "tool_sha256": "4f0499a62f4990d95afe8022664eb6a4b017edd6b3e4b43fa27edc65e6f1b966",
+ "totals": {
+  "candidates": 5190,
+  "candidates_with_description": 4551,
+  "changed": [
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": true,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "DIFFERENT",
+      "position": 0,
+      "reasons": [
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "title": "CONFLICT",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "32fbf074fa0f014a72cc96893eb9444a0e03fc6e5e9d0d0f09f398aad509bc25",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_TITLE_RELATED_OBJECT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1136/bmj.2.5914.335-a",
+     "4827125"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-21293835",
+    "unit_id": "un-00003"
+   },
+   {
+    "bib": [
+     {
+      "authors": "CONFLICT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "DIFFERENT",
+      "position": 0,
+      "reasons": [
+       "BIB_AUTHORS_DISJOINT"
+      ],
+      "title": "COMPATIBLE",
+      "title_relation": "OVERLAP",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "3acfe2a238633fa4e40c7706697312ef380a01a0e836ba1195a4672497b82057",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_AUTHORS_DISJOINT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.17116/jnevro20161162199-108",
+     "27166488"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-83484354",
+    "unit_id": "un-00012"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": true,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "DIFFERENT",
+      "position": 0,
+      "reasons": [
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "title": "CONFLICT",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "6bb63d938179b42261e0e760cbc9c8c9227691c0d0012214594c5e3d622515c7",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_TITLE_RELATED_OBJECT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1136/bmj.2.5914.335-a",
+     "4827125"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-1651067",
+    "unit_id": "un-00023"
+   },
+   {
+    "bib": [
+     {
+      "authors": "CONFLICT",
+      "designation": true,
+      "issue": "NOT_IN_RECORD",
+      "object": "MATERIAL_CONFLICT",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [
+       "BIB_AUTHORS_DISJOINT",
+       "BIB_TITLE_RELATED_OBJECT"
+      ],
+      "title": "CONFLICT",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "d1c207214f115aca33ed843d56ebbd5da369e5d9225d50fa74dde4b8114c8181",
+    "dt2": {
+     "class": "RETRACTED_WORK_CITED",
+     "reasons": [],
+     "rule": "D-14"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "BIBLIOGRAPHIC_OBJECT_CONFLICT",
+      "BIB_AUTHORS_DISJOINT",
+      "BIB_TITLE_RELATED_OBJECT"
+     ],
+     "rule": "D-13a"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1186/1743-422x-7-169",
+     "20663162"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-27958530",
+    "unit_id": "un-00004"
+   }
+  ],
+  "changed_by_transition": {
+   "D-14 RETRACTED_WORK_CITED -> D-13a UNRESOLVED_IDENTITY": 4
+  },
+  "changed_claims": 4,
+  "dt2_positive_pairs_by_bib_object": {
+   "COMPATIBLE": 97,
+   "INSUFFICIENT": 4,
+   "MATERIAL_CONFLICT": 4
+  },
+  "lifecycle": {
+   "COMPLETED": 99,
+   "NEEDS_RESOLUTION": 1
+  },
+  "lost_positive": 4,
+  "new_not_found": 0,
+  "new_notice_cited": 0,
+  "new_positive": 0,
+  "positive_units": {
+   "dt2": 86,
+   "dt3": 82
+  },
+  "recorded_equals_dt3_everywhere": true,
+  "revisions": 100,
+  "role_collision_candidates": [
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "756b52b191d19390f0170c894ef8fd1e4f4aaf4a77734b4b5b476b414bb941d9",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1093/nsr/nwaa036"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-8029983",
+    "unit_id": "un-00009"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 1,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 2,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 3,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "da20f413c0082561cbb49765478df1fc08b8825d27435fdc17facd7328d93205",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/s41586-020-2801-z",
+     "33057222"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-8312431",
+    "unit_id": "un-00001"
+   },
+   {
+    "bib": [
+     {
+      "authors": "INSUFFICIENT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "COMPATIBLE",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "79be30588a601024ba0bf76947ed3aca6048f56bdfa5fb8def2ee96834837047",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1111/hequ.12360"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-28547",
+    "unit_id": "un-00027"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "COMPATIBLE",
+      "title_relation": "OVERLAP",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "e1e0b8444451c45697f383fa6646f79dc77f117256d15282663cd354dd40de04",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1080/21604851.2018.1453622"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-58713610",
+    "unit_id": "un-00016"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "COMPATIBLE",
+      "title_relation": "OVERLAP",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "d8776f2ac92dcdbfa0a4cb61261fa2842a3baa5734fe37680577b219d075c84f",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1007/s12119-018-9536-0"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-58713610",
+    "unit_id": "un-00017"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "a1118c234dc0aabfd5c6d0b87c7bb491058ca1e3e5fac73ede9e16adf497ca2a",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1007/s11199-018-0962-0"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-58713610",
+    "unit_id": "un-00018"
+   },
+   {
+    "bib": [
+     {
+      "authors": "INSUFFICIENT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "COMPATIBLE",
+      "title_relation": "CONTAINED",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "3fb81f2770abb4ef42a5b0f88e06bc2a93e33f3a27c3eb8f1ff5e0a3784a321f",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1016/j.cancergen.2016.05.066"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-8177443",
+    "unit_id": "un-00008"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "9ec609befca374d1046416b1334f948ae299fe7bfb1a722c5df4b655e0a7133e",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/nature23305",
+     "28783728"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-8773304",
+    "unit_id": "un-00003"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "f2c181d40e3165ed9b002912ac79d118715fb12bb0c962b881a0fcba64328bdc",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1007/s11756-021-00841-7"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-2595296",
+    "unit_id": "un-00122"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "09f3d6e4210ab120e59b3f3121c538ef269ddb135a4cbebb7c89a2481bfcdbe2",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/nature23305",
+     "28783728"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "ar-7923503",
+    "unit_id": "un-00006"
+   },
+   {
+    "bib": [
+     {
+      "authors": "INSUFFICIENT",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "DIFFERENT",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "INSUFFICIENT"
+     }
+    ],
+    "cand_ref": "f5c242a97dfc9213d74f221123284efe8bddd07b1738f97453dda6c8f7be650c",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1080/01436597.2017.1369037"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-31632698",
+    "unit_id": "un-00013"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 1,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 2,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "98a941690498aee3da189490ffd545511ce427139eb45de4a0773020ede4cf8b",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/s41586-023-05742-0",
+     "36890373"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-73261569",
+    "unit_id": "un-00028"
+   },
+   {
+    "bib": [
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 0,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 1,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 2,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     },
+     {
+      "authors": "AGREE",
+      "designation": false,
+      "issue": "NOT_IN_RECORD",
+      "object": "COMPATIBLE",
+      "pages": "NOT_IN_RECORD",
+      "periodical": "SAME",
+      "position": 3,
+      "reasons": [],
+      "title": "AGREE",
+      "title_relation": "EQUAL",
+      "version": "bib-1",
+      "volume": "NOT_IN_RECORD",
+      "year": "SAME"
+     }
+    ],
+    "cand_ref": "19a2b24c11596917c69bf04b53f62686e2ed0fa80699dd1e5c1ccc56a3cff0cd",
+    "dt2": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "dt3": {
+     "class": "UNRESOLVED_IDENTITY",
+     "reasons": [
+      "IDENTIFIER_ROLE_COLLISION"
+     ],
+     "rule": "D-10"
+    },
+    "has_description": true,
+    "keys": [
+     "10.1038/s41586-020-2801-z",
+     "33057222"
+    ],
+    "recorded_equals_dt3": true,
+    "revision": "en-73261569",
+    "unit_id": "un-00038"
+   }
+  ],
+  "verified": 100
+ }
+}

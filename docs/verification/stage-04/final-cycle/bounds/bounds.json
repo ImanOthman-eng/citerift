@@ -821,6 +821,7 @@
     "LOOKUP observation (D-048)": {
       "bound_bytes": 224207881,
       "why": "observation v3 (E-07): rho_bound x the 16 MiB schema maximum of the budget + the largest intercept",
+      "basis": "measured, not proven: rho_bound is the measured maximum over the D-048 shapes (no analytic bound for v3; reviewer findings E-07 and F); above the blob limit the observation is BLOB_TOO_LARGE (fail closed)",
       "within_limit": true,
       "fraction_of_limit": 0.8352
     },
@@ -891,7 +892,8 @@
       "fraction_of_limit": 0.1034
     }
   },
-  "blob_limit_proven_except_ACQUIRE_observation": true,
+  "blob_limit_proven_except_ACQUIRE_and_LOOKUP_observations": true,
+  "LOOKUP_observation_within_limit_measured": true,
   "ACQUIRE_observation": "conditional on the Step 8 representation (IF-7, see its row)",
   "total_storage": {
     "mathematical_worst_case_bytes": 69365746304891,
@@ -905,7 +907,7 @@
     }
   },
   "provenance": {
-    "code_commit": "14fe6093e8ae6f0cd16268288468fa7ee8669ea1",
+    "code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
     "checked_paths": [
       "src",
       "schemas",
@@ -925,6 +927,6 @@
     ],
     "uncommitted": [],
     "tool": "docs/verification/stage-04/final-cycle/bounds/dt3_bounds.py",
-    "tool_sha256": "22edb80295ccaf5585c70ba7648c0f16a9fa044c5fa7f3d215bd302a47cb6a04"
+    "tool_sha256": "6436350ec82ff6ae02306d20ec46043a0269442dc3acb01a835b036b6a3d0882"
   }
 }
