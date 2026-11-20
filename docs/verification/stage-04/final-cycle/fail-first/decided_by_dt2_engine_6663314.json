@@ -117,7 +117,7 @@
    "reasons": []
   },
   "editorial-genre": {
-   "expect_object": "COMPATIBLE",
+   "expect_object": "MATERIAL_CONFLICT",
    "rule": "D-14",
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
@@ -177,7 +177,7 @@
    "reasons": []
   },
   "letter-genre-dev": {
-   "expect_object": "COMPATIBLE",
+   "expect_object": "MATERIAL_CONFLICT",
    "rule": "D-14",
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
@@ -272,6 +272,24 @@
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
   },
+  "at-the-size-bound": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "sixty-four-authors": {
+   "expect_object": "COMPATIBLE",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "sixty-four-authors-last-stranger": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
   "record-malformed": {
    "expect_object": "INSUFFICIENT",
    "rule": "D-14",
@@ -332,11 +350,128 @@
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
   },
+  "markup-snd-boundary": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "markup-pipe-template-boundary": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "markup-br-boundary": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "markup-ref-content-kept": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "lone-surrogate-entity": {
+   "expect_object": "INSUFFICIENT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "oversized-source": {
+   "expect_object": "INSUFFICIENT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "given-name-collision": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "vancouver-initials-never-count": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "particle-collision": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "coauthor-list-one-coincident-name": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "re-prefix": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "authors-response": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "plural-corrigenda": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "designation-in-second-title-value": {
+   "expect_object": "MATERIAL_CONFLICT",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
+  "chapter-erratum-disjoint": {
+   "expect_object": "COMPATIBLE",
+   "rule": "D-14",
+   "class": "RETRACTED_WORK_CITED",
+   "reasons": []
+  },
   "collaboration-param-ignored": {
    "expect_object": "COMPATIBLE",
    "rule": "D-14",
    "class": "RETRACTED_WORK_CITED",
    "reasons": []
   }
+ },
+ "engine_source": {
+  "commit": "66633148c8226ef5bbd20b32d15a3c8c0bb7abf7",
+  "path_in_repository": "src/"
+ },
+ "provenance": {
+  "code_commit": "14fe6093e8ae6f0cd16268288468fa7ee8669ea1",
+  "checked_paths": [
+   "src",
+   "schemas",
+   "simulations/stage04",
+   "docs/verification/stage-04/final-cycle",
+   "tests/stage04",
+   "docs/verification/stage-04/evaluation",
+   "docs/verification/stage-04/evaluation-campaign",
+   "docs/verification/stage-04/evaluation-p2-campaign",
+   "docs/verification/stage-04/corrective/regression",
+   "docs/verification/stage-04/review/step7",
+   "pyproject.toml",
+   "uv.lock"
+  ],
+  "excluded_paths": [
+   "docs/verification/stage-04/final-cycle/review"
+  ],
+  "uncommitted": [],
+  "tool": "docs/verification/stage-04/final-cycle/fail-first/fail_first.py",
+  "tool_sha256": "fdae609ad340d5d059fa3b12408bd1b54e48283e9ed53ac8609265614ed848a1"
  }
 }
