@@ -14,6 +14,7 @@ compared is INSUFFICIENT and never blocks anything. The independent reference mo
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import unicodedata
@@ -24,12 +25,18 @@ from importlib import resources
 from typing import Any
 
 import mwparserfromhell
-from mwparserfromhell.nodes import Template, Text
+from mwparserfromhell.nodes import ExternalLink, HTMLEntity, Template, Text, Wikilink
+from mwparserfromhell.wikicode import Wikicode
 
 BIB_VERSION = "bib-1"
 MAX_VALUES = 64  # spec 2.1 step 6: at most this many titles and at most this many authors
 MAX_TOTAL_CODE_POINTS = 4096  # spec 2.1 step 6: all values of all families together
+MAX_SOURCE_CODE_POINTS = 16384  # spec 2.1 step 1: a longer unit source is not parsed (resource bound; dev max 5,722)
 PROFILE_FILE = "data/bib-profile-1.json"
+# Spec 2.2: the alias profile and the parser are part of the engine: a profile with other bytes or another parser
+# version is refused (the engine fails closed) rather than silently changing verdicts under the same identity.
+PROFILE_SHA256 = "450f17a2ec492f9066825e0ec9de3f2f480398345d4593759bfb9ace45e9808f"
+PARSER_VERSION = "0.7.2"
 
 AGREE, COMPATIBLE, CONFLICT, INSUFFICIENT = "AGREE", "COMPATIBLE", "CONFLICT", "INSUFFICIENT"
 SAME, DIFFERENT, NOT_IN_RECORD = "SAME", "DIFFERENT", "NOT_IN_RECORD"
@@ -64,44 +71,26 @@ _YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
 _SPACE = re.compile(r"\s+")
 
 # Spec 4.2: designations of a related object (folded words and phrases), counted only outside the record's title.
-DESIGNATION_WORDS = frozenset(
-    {
-        "addendum",
-        "addenda",
-        "clarification",
-        "correction",
-        "corrections",
-        "corrigendum",
-        "corrigenda",
-        "erratum",
-        "errata",
-        "retraction",
-        "retractions",
-        "withdrawal",
-        "removal",
-        "comment",
-        "comments",
-        "reply",
-        "replies",
-        "تعليق",
-        "التعليق",
-        "تعقيب",
-        "التعقيب",
-        "رد",
-        "الرد",
-        "تصحيح",
-        "التصحيح",
-        "استدراك",
-        "الاستدراك",
-        "سحب",
-        "السحب",
-    }
+_DESIGNATION_TEXT = (
+    # Crossmark update types (singular and plural of each)
+    "addendum addenda clarification clarifications correction corrections corrigendum corrigenda erratum errata "
+    "retraction retractions withdrawal withdrawals removal removals "
+    # the NLM Comment publication type, its answering forms and the related-note genres named by the owner
+    "comment comments commentary commentaries reply replies response responses rejoinder rejoinders rebuttal "
+    "rebuttals discussion discussions editorial editorials letter letters re "
+    # Arabic translations of the same notions (indefinite and definite, singular and plural)
+    "تعليق التعليق تعليقات التعليقات تعقيب التعقيب تعقيبات التعقيبات رد الرد ردود الردود تصحيح التصحيح تصحيحات "
+    "التصحيحات استدراك الاستدراك سحب السحب افتتاحية الافتتاحية"
 )
+DESIGNATION_WORDS = frozenset(_DESIGNATION_TEXT.split())
 DESIGNATION_PHRASES: tuple[tuple[str, ...], ...] = (
     ("expression", "of", "concern"),
-    ("response", "to"),
+    ("expressions", "of", "concern"),
     ("تعبير", "عن", "القلق"),
 )
+# Spec 4.1: name particles, which say nothing about who the person is (folded forms).
+_PARTICLES_TEXT = "al el de del della der den di da du la le van von bin ibn abu ben dos das بن ابن ابو"
+NAME_PARTICLES = frozenset(_PARTICLES_TEXT.split())
 
 
 # Normalization (spec 3) -----------------------------------------------------------------------------------------------
@@ -127,9 +116,33 @@ def script(word: str) -> str | None:
 
 
 def name_words(value: str) -> set[str]:
-    """Spec 3: the name words of one author value (``et al`` removed; single letters and numbers are not names)."""
+    """Spec 3: the name words of one author value (``et al`` removed; single letters, numbers and name particles are
+    not names)."""
     text = _ETAL.sub(" ", fold(value))
-    return {w for w in _WORD.findall(text) if len(w) >= 2 and not w.isdecimal()}
+    return {w for w in _WORD.findall(text) if len(w) >= 2 and not w.isdecimal() and w not in NAME_PARTICLES}
+
+
+def _is_initials(token: str) -> bool:
+    """Spec 4.1: a whitespace token of a cited author value that is one to three upper-case letters once its full stops
+    and trailing commas and semicolons are removed ("KL", "J.J.", "S.M.,") is a set of initials, not a name."""
+    t = token.replace(".", "").rstrip(",;")
+    return 1 <= len(t) <= 3 and t.isalpha() and t.isupper()
+
+
+def cited_name_words(value: str) -> set[str]:
+    """Spec 4.1: the name words of one cited author value, initials removed first."""
+    return name_words(" ".join(t for t in value.split() if not _is_initials(t)))
+
+
+def record_surname_words(authors: str) -> set[str]:
+    """Spec 4.1: for each ``;``-separated record author, its name words without the first (the given name); a single
+    name word is kept. Retraction Watch writes authors given name first ("Kam L E Hon")."""
+    out: set[str] = set()
+    for part in authors.split(";"):
+        ws = [w for w in _WORD.findall(_ETAL.sub(" ", fold(part))) if len(w) >= 2 and not w.isdecimal()]
+        ws = [w for w in ws if w not in NAME_PARTICLES]
+        out.update(ws[1:] if len(ws) >= 2 else ws)
+    return out
 
 
 def _scripts(ws: set[str] | Sequence[str]) -> set[str]:
@@ -211,21 +224,21 @@ class RecordObject:
         )
 
 
+class EnvironmentNotPinned(RuntimeError):
+    """The alias profile or the parser is not the one this engine pins (spec 2.2): the engine refuses to run."""
+
+
 @cache
 def profile() -> dict[str, Any]:
-    data: dict[str, Any] = json.loads(
-        resources.files("citerift.investigation").joinpath(PROFILE_FILE).read_text(encoding="utf-8")
-    )
+    raw = resources.files("citerift.investigation").joinpath(PROFILE_FILE).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != PROFILE_SHA256:
+        raise EnvironmentNotPinned("the bib-1 alias profile is not the pinned one")
+    if mwparserfromhell.__version__ != PARSER_VERSION:
+        raise EnvironmentNotPinned(
+            f"mwparserfromhell {mwparserfromhell.__version__} is not the pinned {PARSER_VERSION}"
+        )
+    data: dict[str, Any] = json.loads(raw.decode("utf-8"))
     return data
-
-
-def profile_identity() -> dict[str, Any]:
-    """What the engine identity records of the alias profile: its version and each wiki's source revision."""
-    p = profile()
-    return {
-        "profile_version": p["profile_version"],
-        "wikis": {w: dict(v["source"]) for w, v in sorted(p["wikis"].items())},
-    }
 
 
 @cache
@@ -248,16 +261,43 @@ def _family_of(wiki: str, name: str) -> tuple[str, str] | None:
     return None
 
 
+_INLINE = (Text, HTMLEntity, Wikilink, ExternalLink)
+
+
 def _clean(value: Any) -> str | None:
-    text = value.strip_code(normalize=True, collapse=True)
-    text = _SPACE.sub(" ", text).strip()
-    return text or None
+    """Spec 2.1 step 4: node by node, a removed or replaced node (template, tag, comment, argument, heading) is a word
+    boundary; text, entities and links join their neighbours as written."""
+    parts = []
+    for node in value.nodes:
+        text = Wikicode([node]).strip_code(normalize=True, collapse=True)
+        parts.append(text if isinstance(node, _INLINE) else f" {text} ")
+    cleaned = _SPACE.sub(" ", "".join(parts)).strip()
+    return cleaned or None
+
+
+def _encodable(value: str) -> bool:
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError:  # a lone surrogate, for example from the entity &#xD800;
+        return False
+    return True
 
 
 def cited_object(text: str, wiki: str) -> CitedObject | None:
-    """Spec 2.1 steps 2 to 5 for the decoded source of one citation-template unit; None for no cited object."""
-    if wiki not in profile()["wikis"]:
+    """Spec 2.1 steps 2 to 5 for the decoded source of one citation-template unit; None for no cited object. The
+    pinned parser's C tokenizer must be active (spec 2.2; the pure-Python tokenizer can parse differently, and Stage 03
+    switches it in its worker processes): otherwise the engine refuses (reviewer finding E-11)."""
+    if not mwparserfromhell.parser.use_c:
+        raise EnvironmentNotPinned("the C tokenizer of mwparserfromhell is not active")
+    if wiki not in profile()["wikis"] or len(text) > MAX_SOURCE_CODE_POINTS:
         return None
+    try:
+        return _parsed(text, wiki)
+    except Exception:
+        return None
+
+
+def _parsed(text: str, wiki: str) -> CitedObject | None:
     code = mwparserfromhell.parse(text)
     nodes = [n for n in code.nodes if not (isinstance(n, Text) and not str(n).strip())]
     if len(nodes) != 1 or not isinstance(nodes[0], Template):
@@ -278,6 +318,8 @@ def cited_object(text: str, wiki: str) -> CitedObject | None:
         if value is not None and key in SCRIPT_KEYS:
             value = _SCRIPT_PREFIX.sub("", value, count=1).strip() or None
         if value is not None:
+            if not _encodable(value):  # spec 2.1 step 4: a value that is not Unicode text gives no cited object
+                return None
             fields[family].append(value)
 
     # Spec 2.1 step 6: above the bounds of the committed value there is no cited object (never truncated).
@@ -305,13 +347,13 @@ def cited_object(text: str, wiki: str) -> CitedObject | None:
 
 
 def authors_verdict(cited: Sequence[str], record: str | None) -> str:
-    a_c: set[str] = set().union(*(name_words(v) for v in cited)) if cited else set()
-    a_r: set[str] = set().union(*(name_words(p) for p in record.split(";"))) if record else set()
-    if a_c & a_r:
-        return AGREE
-    if _scripts(a_c) & _scripts(a_r):
-        return CONFLICT
-    return INSUFFICIENT
+    """Spec 4.1: every comparable cited author value must name a record author by a surname word."""
+    s_r = record_surname_words(record) if record else set()
+    scripts_r = _scripts(s_r)
+    comparable = [ws for ws in (cited_name_words(v) for v in cited) if _scripts(ws) & scripts_r]
+    if not comparable:
+        return INSUFFICIENT
+    return AGREE if all(ws & s_r for ws in comparable) else CONFLICT
 
 
 def _contains(outer: Sequence[str], inner: Sequence[str]) -> int:
@@ -364,26 +406,30 @@ class TitleResult:
 
 
 def title_verdict(cited: Sequence[str], record: str | None) -> TitleResult:
+    """Spec 4.2: the best relation over the values; designation over every CONTAINED or OVERLAP value (one designating
+    value suffices, fail closed)."""
     r = words(record) if record else []
-    best: tuple[str, list[str]] | None = None
+    best: str | None = None
+    designation = False
     for value in cited:
         t = words(value)
         if not t or not r:
             continue
         rel = relation(t, r)
-        if best is None or _RANK[rel] < _RANK[best[0]]:
-            best = (rel, t)
+        designation = designation or designates(t, r, rel)
+        if best is None or _RANK[rel] < _RANK[best]:
+            best = rel
     if best is None:
         return TitleResult(INSUFFICIENT, MISSING, False)
-    rel, t = best
-    designation = designates(t, r, rel)
-    if rel == EQUAL:
-        return TitleResult(AGREE, rel, False)
-    if rel in (CONTAINED, OVERLAP):
-        return TitleResult(CONFLICT if designation else COMPATIBLE, rel, designation)
-    if rel == DISJOINT:
-        return TitleResult(CONFLICT, rel, False)
-    return TitleResult(INSUFFICIENT, rel, False)
+    if designation:
+        return TitleResult(CONFLICT, best, True)
+    if best == EQUAL:
+        return TitleResult(AGREE, best, False)
+    if best in (CONTAINED, OVERLAP):
+        return TitleResult(COMPATIBLE, best, False)
+    if best == DISJOINT:
+        return TitleResult(CONFLICT, best, False)
+    return TitleResult(INSUFFICIENT, best, False)
 
 
 def year_verdict(date: str | None, year: str | None, record_year: int | None) -> str:

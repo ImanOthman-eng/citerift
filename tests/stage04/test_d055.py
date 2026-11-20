@@ -890,28 +890,38 @@ def test_logical_content_equals_the_format_3_baseline(name: str) -> None:
 
 @pytest.mark.contracts
 def test_format_4_bounds_are_recomputed_and_proven() -> None:
-    """Recompute ``d055/bounds.py`` from the format-4 records as implemented and compare with the retained
-    ``bounds.json``: every record kind within 1 MiB, the worst-case journal of a run at the Stage 03 caps within 512 MiB
-    with substantial headroom, and every blob kind except the ACQUIRE observation (IF-7, a Step 8 condition) within
-    256 MiB. Since the final corrective cycle (D-083: dt-3 evidence and claims) the retained file is
-    ``final-cycle/bounds/bounds.json``; the D-055 file stays as the dt-2 record."""
+    """Recompute the format-4 bounds from the records as implemented and compare with the retained file: every record
+    kind within 1 MiB, the worst-case journal of a run at the Stage 03 caps within 512 MiB, and every blob kind except
+    the ACQUIRE observation (IF-7, a Step 8 condition) within 256 MiB. Since the final corrective cycle (D-083: dt-3
+    evidence and claims) the derivation is ``final-cycle/bounds/dt3_bounds.py`` (the D-055 derivation run with the
+    dt-3 builders, reviewer finding D-07) and the retained file ``final-cycle/bounds/bounds.json``; the D-055 file and
+    generators stay as the dt-2 record. The lookup shape measurement (about a minute) is not repeated here: its
+    result ``E_L`` is taken from the retained file and the evidence census and journal are recomputed from it."""
     import importlib.util
 
     from citerift.investigation.journal import JOURNAL_FORMAT, MAX_JOURNAL_BYTES, MAX_RECORD_BYTES
 
-    spec = importlib.util.spec_from_file_location("d055_bounds", D055 / "bounds.py")
+    spec = importlib.util.spec_from_file_location("fc_dt3_bounds", FINAL_BOUNDS / "dt3_bounds.py")
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    kinds = module.record_kinds()
-    journal_bound = module.journal(kinds, module.entry_sizes())
     retained = json.loads((FINAL_BOUNDS / "bounds.json").read_text(encoding="utf-8"))
+    assert retained["provenance"]["uncommitted"] == []
+    kinds = module.record_kinds()
+    census_r = retained["journal"]["evidence_census_dt3"]
+    census = module.evidence_census(census_r["E_L"], census_r["deciding_lookups_max"], 20000)
+    assert census == census_r
+    assert census["E_L"] == retained["lookup_observation_v3"]["E_L_events_per_lookup_max"]
+    journal_bound = module.journal(kinds, census)
     assert retained["journal_format"] == JOURNAL_FORMAT == 4
     assert {k: v["bytes"] for k, v in kinds.items()} == {
         k: v["bytes"] for k, v in retained["record_kinds_max_bytes"].items()
     }
     assert max(v["bytes"] for v in kinds.values()) <= MAX_RECORD_BYTES
     assert journal_bound["maximal"]["journal_bytes"] == retained["journal"]["maximal"]["journal_bytes"]
-    assert journal_bound["maximal"]["journal_bytes"] * 20 <= MAX_JOURNAL_BYTES  # at least 20x headroom
+    assert journal_bound["maximal"]["journal_bytes"] <= MAX_JOURNAL_BYTES
+    # dt-3: two evidence items per event of every deciding lookup; the bound holds up to E_L_at_journal_limit events
+    # per lookup (more is refused at the append, JOURNAL_TOO_LARGE, fail closed).
+    assert journal_bound["E_L_at_journal_limit"] >= census["E_L"]
     assert retained["journal_limit_proven"] and retained["record_limit_proven"]
     assert retained["blob_limit_proven_except_ACQUIRE_observation"]

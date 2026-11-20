@@ -192,8 +192,9 @@ def walk_pages(node: Any) -> list[dict[str, Any]]:
 def campaign_articles(
     arts: Articles, bundles: dict[str, dict[str, Any]], folder: str, source: str, n: int
 ) -> dict[str, Any]:
-    """The acquired articles of one campaign, cross-checked against their bundles, packets and the lock (only the item
-    count of the lock is read)."""
+    """The acquired articles of one campaign, cross-checked against their bundles, packets and the lock. Of the lock
+    only the item ids under ``final`` are used (a count of locked items per article); their label values are loaded
+    with the file but never read (reviewer finding D-10)."""
     acq = load(f"{folder}/ACQUISITION.json")["attempts"]
     lock = load(f"{folder}/LOCK.json")
     items: dict[str, int] = {}
@@ -287,6 +288,10 @@ def fixture_identifiers() -> dict[str, Any]:
     }
 
 
+# A bundle directory named after its article (wiki, revision, optional suffix), usable as a reference token.
+ARTICLE_NAME = re.compile(r"(ar|en)-\d+(-[\w-]+)?")
+
+
 def build() -> dict[str, Any]:
     files = tracked()
     arts = Articles()
@@ -313,8 +318,10 @@ def build() -> dict[str, Any]:
     for bdir, page in bundles.items():
         tokens[bdir] = bdir
         tokens[f"{page['wiki']}-{page['revision_id']}"] = bdir
-        tokens[Path(bdir).name] = bdir
-    pattern = re.compile("|".join(sorted((re.escape(t) for t in tokens), key=len, reverse=True)))
+        if ARTICLE_NAME.fullmatch(Path(bdir).name):  # a generic directory name ("ar", "en") is not a token (D-10)
+            tokens[Path(bdir).name] = bdir
+    alternatives = "|".join(sorted((re.escape(t) for t in tokens), key=len, reverse=True))
+    pattern = re.compile(rf"(?<![\w-])(?:{alternatives})")
     for path in files:
         if not path.startswith(REF_ROOTS) or path.startswith(SELF_DIR):
             continue

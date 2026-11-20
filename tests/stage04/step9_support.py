@@ -218,9 +218,12 @@ BC_RECORD = {"title": "Synthetic title of a related object", "authors": "Ann Aut
 
 def records_of(obs: dict[str, Any], conflicting: bool, fields: Mapping[str, Any] | None = None) -> list[dict[str, Any]]:
     """The bib-1 records of an observation's events (lookup observation version 3), bound by event id and row hash.
-    ``fields`` (title, authors, journal, original_year), when given, is every event's record."""
+    ``fields`` (title, authors, journal, original_year), when given, is every event's record; the events' own
+    ``title`` and ``journal`` are set to the same values, as Stage 02 gives them."""
     if fields is None:
         fields = BC_RECORD if conflicting else {}
+    for e in obs["events"]:  # the public event carries the same title and journal (detector check, finding B-06)
+        e["title"], e["journal"] = fields.get("title"), fields.get("journal")
     return [
         {
             "event_id": e["event_id"],

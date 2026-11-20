@@ -142,3 +142,21 @@ def test_e07_a_reused_memory_root_reports_engine_identity_differs(tmp_path: Path
     assert (result["result"], result["code"], code) == ("stale", "ENGINE_IDENTITY_DIFFERS", 11)
     after = sorted((p.relative_to(root), p.read_bytes() if p.is_file() else None) for p in root.rglob("*"))
     assert after == before
+
+
+@pytest.mark.parametrize("damage", ["digest", "prev", "garbage_version_without_digest"])
+def test_e07_a_damaged_first_record_is_corrupt_not_another_engines(damage: str) -> None:
+    """Final-cycle review D-06: the engine-identity code is given only to an intact first record (its digest
+    recomputes and its prev is the genesis value); a damaged one is a corrupt journal, as before E-07."""
+    records = parse_journal((S04 / "freeze-2" / "vertical-slice" / "VS-6a" / "journal.jsonl").read_bytes()).records
+    rec = json.loads(json.dumps(records[0]))
+    if damage == "digest":
+        rec["digest"] = "0" * 64
+    elif damage == "prev":
+        rec["prev"] = "0" * 64
+    else:
+        rec["payload"]["stage04"]["table_version"] = "garbage"
+    with pytest.raises(InvariantViolation) as exc:
+        Folder(None).apply(rec)
+    assert exc.value.code != "ENGINE_IDENTITY_DIFFERS"
+    assert exc.value.code in ("RECORD_INVALID", "CHAIN_BROKEN"), exc.value.code

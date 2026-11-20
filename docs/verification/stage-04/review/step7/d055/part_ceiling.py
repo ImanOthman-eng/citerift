@@ -106,7 +106,6 @@ def maximal_candidate_entries() -> dict[str, Any]:
     for cls, disposition, qkind in (
         ("IDENTITY_CONFLICT", "ROUTE_NEEDS_RESOLUTION", "identity_conflict"),
         ("UNRESOLVED_STATUS", "ABSTAIN", None),
-        ("UNRESOLVED_IDENTITY", "ABSTAIN", None),  # D-083: D-13a
     ):
         entry = _entry(SB._claim(cls), disposition, qkind)
         found = problems(batches.candidate_batch([entry]), CANDIDATE_BATCH)
@@ -115,7 +114,6 @@ def maximal_candidate_entries() -> dict[str, Any]:
         out[cls] = entry
     both = SB._claim("IDENTITY_CONFLICT")
     both["upstream_reasons"] = SB._claim("UNRESOLVED_STATUS")["upstream_reasons"]
-    both["reasons"] = SB.D13A_REASONS  # D-083: the longest reasons list of any class
     out["sum of field maxima (not a valid entry)"] = _entry(both, "ROUTE_NEEDS_RESOLUTION", "identity_conflict")
     return out
 
@@ -154,7 +152,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "candidate": {"shape": "PAIR", "keys": [doi, pmid], "coherence": "INCOMPATIBLE"},
             "class": "IDENTITY_CONFLICT",
             "rule": "D-6",
-            "table_version": "dt-3",
+            "table_version": "dt-2",
             "status": "conflicting",
             "value": None,
             "alternatives": [
@@ -174,7 +172,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "candidate": {"shape": "DOI", "keys": [doi], "coherence": None},
             "class": "NOT_FOUND_IN_CHECKED_SOURCES",
             "rule": "D-16",
-            "table_version": "dt-3",
+            "table_version": "dt-2",
             "status": "uncertain",
             "value": "not_found_in_checked_sources",
             "alternatives": [],
@@ -185,7 +183,7 @@ def typical_entry(i: int, set_of: dict[str, str]) -> dict[str, Any]:
             "contradicting_count": 0,
         }
         disposition, qkind = "REPORT_NOT_FOUND", None
-    cid = ids.claim_id(cand, claim["class"], claim["rule"], "dt-3", claim["evidence_set"])
+    cid = ids.claim_id(cand, claim["class"], claim["rule"], "dt-2", claim["evidence_set"])
     claim = {"claim_id": cid, **claim}
     q = None if qkind is None else {"question_id": ids.question_id(cid, qkind), "claim_id": cid, "kind": qkind}
     decision = {"decision_id": ids.decision_id(cid, disposition), "claim_id": cid, "disposition": disposition}

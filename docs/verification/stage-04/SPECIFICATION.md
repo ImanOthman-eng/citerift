@@ -496,10 +496,14 @@ bib-1, specified in full in `final-cycle/BIBLIOGRAPHIC_SPEC.md` (normative; summ
   unit's `cited_bibliography` evidence; LOOKUP records, for each event of each lookup, the Stage 02 record's title,
   authors, journal and original year, bound to the event by its id and Stage 02 row digest.
 - bib-1 compares the cited object with each record of the deciding lookup without any score or threshold: authors
-  agree, conflict (no shared name word) or are insufficient; titles are equal, contained, overlapping, disjoint or not
-  comparable, and a contained or overlapping title whose extra words carry a related-object designation (the Crossmark
-  update types such as erratum, correction, retraction, withdrawal, expression of concern; comment, reply, response to;
-  and their Arabic translations; genre words such as editorial or letter are deliberately not designations) is a related object. Year and periodical are recorded, never decisive.
+  agree (every comparable cited author value names a surname of the record; given names, particles and initials never
+  count), conflict or are insufficient; titles are equal, contained, overlapping, disjoint or not comparable, and a
+  contained or overlapping title whose extra words carry a related-object designation (the Crossmark update types such
+  as erratum, correction, retraction, withdrawal, expression of concern; the note genres comment, commentary, reply,
+  response, rejoinder, rebuttal, discussion, editorial, letter and "Re:"; each in the singular and the plural, and
+  their Arabic translations) is a related object. A genre word counts only when the record's own title lacks it, so a
+  retracted letter or editorial cited with its own title is unaffected. Year and periodical are recorded, never
+  decisive. The alias profile and the parser version are pinned by digest in the engine code.
 - A pair is `MATERIAL_CONFLICT` when the authors conflict, the titles are disjoint, or the cited title designates a
   related object; it is `INSUFFICIENT` when a side lacks a comparable field; otherwise `COMPATIBLE`. `INSUFFICIENT`
   and `COMPATIBLE` change nothing: bib-1 can only remove a positive, never create, restore or move one.
@@ -1070,7 +1074,8 @@ The journal plus its blobs is the only authoritative state. On every open (run, 
 
 The **input identity vector** of an investigation: the request key; the bound root (`capture_sha256` and the
 revision identity); the extraction engine identity (extractor version, profile digest, normalizer, `config_digest`);
-the index identity (S-3.2); the Stage 04 identities (engine version, decision table version `dt-1`, plan version
+the index identity (S-3.2); the Stage 04 identities (engine version, decision table version (`dt-3` since owner
+decision D-083; `dt-1` and `dt-2` in the frozen engines), plan version
 `plan-1`, Stage 04 schema versions); the configuration and its digest (S-4.7), including the live-ACQUIRE bound
 (owner decision D-042). The report records every component (`identities`), and `stale_detected` names the changed
 ones.

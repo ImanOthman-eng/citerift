@@ -297,3 +297,67 @@ def test_a_record_bound_to_another_event_fails_closed() -> None:
     with pytest.raises(DetectFailure) as exc:
         dt1_detector(inp)
     assert exc.value.code == "ADAPTER_INCONSISTENT"
+
+
+@pytest.mark.parametrize("field", ["title", "journal"])
+def test_a_record_contradicting_its_public_event_fails_closed(field: str) -> None:
+    """Reviewer finding B-06: a record whose title or journal differs from its own public event's is refused
+    (ADAPTER_INCONSISTENT); before the fix a changed record title changed the decision to D-13a."""
+    from citerift.investigation.adapters.detect import DetectFailure
+
+    inp, _ = S9.concretize(_WithBib(_matched_doi(), *_garry()))
+    claim = dict(dt1_detector(inp).claims[0][0])
+    assert claim["rule"] == "D-13a"
+    for lookup in inp.lookup_plan["lookups"]:
+        obs = inp.read_blob(lookup["observation"])
+        obs["records"][0][field] = "Totally different words here"
+    with pytest.raises(DetectFailure) as exc:
+        dt1_detector(inp)
+    assert exc.value.code == "ADAPTER_INCONSISTENT"
+
+
+@pytest.mark.parametrize("entity", ["&#xD800;", "&#xDFFF;", "&#55296;"])
+def test_normalize_gives_no_cited_object_for_a_surrogate_entity(entity: str) -> None:
+    """Reviewer finding E-01: a numeric entity that decodes to a lone surrogate made the unit's cited_bibliography
+    evidence uncanonicalizable, and the whole NORMALIZE step failed; now that unit has no cited object (spec 2.1 step
+    4) and every other unit of the page keeps its own."""
+    from citerift.investigation.adapters.normalize import cited_description
+    from citerift.investigation.anchors import SourceArtifact
+    from citerift.investigation.canonical import canon, sha256_hex
+
+    bad = "{{cite journal |title=Retraction of X" + entity + " |last1=Hon}}"
+    good = "{{cite journal |title=Thermal drift |last1=Lindqvist}}"
+    data = (bad + "\n" + good).encode("utf-8")
+    source = SourceArtifact(data, sha256_hex(data))
+    split = len(bad.encode("utf-8"))
+
+    def unit(start: int, end: int) -> dict[str, Any]:
+        return {"kind": "citation_template", "source": {"byte_start": start, "byte_end": end}}
+
+    assert cited_description(unit(0, split), source, "en") is None
+    kept = cited_description(unit(split + 1, len(data)), source, "en")
+    assert kept is not None and kept["titles"] == ["Thermal drift"]
+    canon({"bad": cited_description(unit(0, split), source, "en"), "good": kept})
+
+
+def test_the_engine_refuses_without_the_c_tokenizer(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Reviewer finding E-11: the pure-Python tokenizer can parse differently; bib-1 refuses to describe a unit without
+    the C tokenizer (and NORMALIZE fails closed) instead of giving another description."""
+    import mwparserfromhell
+
+    assert mwparserfromhell.parser.use_c
+    monkeypatch.setattr(mwparserfromhell.parser, "use_c", False)
+    with pytest.raises(B.EnvironmentNotPinned):
+        B.cited_object("{{cite journal |title=X |last1=Y}}", "en")
+
+
+def test_both_profiles_name_the_same_module_revisions() -> None:
+    """Reviewer finding D-11: both alias profiles record the CS1 configuration revision they were extracted from and
+    its content SHA-256 (the raw module texts are not committed; any copy of those revisions can be checked)."""
+    prod = B.profile()["wikis"]
+    for wiki in ("ar", "en"):
+        ref = PROFILE["wikis"][wiki]
+        assert (ref["revid"], ref["content_sha256"]) == (
+            prod[wiki]["source"]["revid"],
+            prod[wiki]["source"]["content_sha256"],
+        )

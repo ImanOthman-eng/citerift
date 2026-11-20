@@ -107,13 +107,17 @@ def check_memory_root(path: Path | str, *, repository: Path | None = None) -> Pa
     if st.st_uid != os.geteuid():
         raise PathUnsafe("MEMORY_ROOT_UNSAFE", f"{path} is not owned by this user")
     resolved = p.resolve(strict=True)
-    for parent in (resolved, *resolved.parents):
+    # The messages name the root only, never an ancestor (reviewer finding E-03 of the final cycle: an ancestor path
+    # can carry an account or session locator that the command line's memory-root redaction does not cover).
+    for up, parent in enumerate((resolved, *resolved.parents)):
         if os.path.lexists(parent / ".git"):
-            raise PathUnsafe("MEMORY_ROOT_UNSAFE", f"{path} is inside a repository working tree ({parent})")
+            raise PathUnsafe(
+                "MEMORY_ROOT_UNSAFE", f"{path} is inside a repository working tree (.git found {up} levels up)"
+            )
     if repository is not None:
         repo = repository.resolve()
         if resolved == repo or repo in resolved.parents:
-            raise PathUnsafe("MEMORY_ROOT_UNSAFE", f"{path} is inside the repository {repo}")
+            raise PathUnsafe("MEMORY_ROOT_UNSAFE", f"{path} is inside the project repository")
     return resolved
 
 

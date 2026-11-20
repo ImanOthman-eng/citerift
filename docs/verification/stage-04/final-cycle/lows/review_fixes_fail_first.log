@@ -1,0 +1,44 @@
+# fail-first: the tests of the final-cycle review fixes E-03, E-04 (cli.py, fsutil.py) and B-06 (detector.py), run with those three files as of de7dcc2e498e778d62314333a94b8df31468eba8 (before the fixes)
+PASSED tests/stage04/test_final_lows.py::test_d05_the_fixture_manifest_names_the_selection_index_identity
+PASSED tests/stage04/test_final_lows.py::test_e05_the_command_line_never_prints_the_memory_root[world_writable]
+PASSED tests/stage04/test_final_lows.py::test_e05_the_command_line_never_prints_the_memory_root[missing_key]
+FAILED tests/stage04/test_final_lows.py::test_e03_run_with_a_request_file_never_prints_the_memory_root
+FAILED tests/stage04/test_final_lows.py::test_e03_the_memory_root_checks_never_print_an_ancestor
+FAILED tests/stage04/test_final_lows.py::test_e04_redaction_replaces_only_whole_absolute_spellings
+FAILED tests/stage04/test_final_bib.py::test_a_record_contradicting_its_public_event_fails_closed[title]
+FAILED tests/stage04/test_final_bib.py::test_a_record_contradicting_its_public_event_fails_closed[journal]
+5 failed, 3 passed in 0.29s
+# the same tests with the fixes (working tree on top of de7dcc2e498e778d62314333a94b8df31468eba8; the commit that holds the fixes is named in the LOW disposition table)
+PASSED tests/stage04/test_final_lows.py::test_d05_the_fixture_manifest_names_the_selection_index_identity
+PASSED tests/stage04/test_final_lows.py::test_e05_the_command_line_never_prints_the_memory_root[world_writable]
+PASSED tests/stage04/test_final_lows.py::test_e05_the_command_line_never_prints_the_memory_root[missing_key]
+PASSED tests/stage04/test_final_lows.py::test_e03_run_with_a_request_file_never_prints_the_memory_root
+PASSED tests/stage04/test_final_lows.py::test_e03_the_memory_root_checks_never_print_an_ancestor
+PASSED tests/stage04/test_final_lows.py::test_e04_redaction_replaces_only_whole_absolute_spellings
+PASSED tests/stage04/test_final_bib.py::test_a_record_contradicting_its_public_event_fails_closed[title]
+PASSED tests/stage04/test_final_bib.py::test_a_record_contradicting_its_public_event_fails_closed[journal]
+8 passed in 0.24s
+# fail-first: E-01 (bibliographic.py as of de7dcc2e498e778d62314333a94b8df31468eba8, before the fix)
+FAILED tests/stage04/test_final_bib.py::test_corpus_case_production_and_reference[lone-surrogate-entity]
+FAILED tests/stage04/test_final_bib.py::test_detector_decides_each_corpus_case[lone-surrogate-entity]
+FAILED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#xD800;]
+FAILED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#xDFFF;]
+FAILED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#55296;]
+5 failed, 156 deselected in 0.26s
+# E-01 with the fix
+PASSED tests/stage04/test_final_bib.py::test_corpus_case_production_and_reference[lone-surrogate-entity]
+PASSED tests/stage04/test_final_bib.py::test_detector_decides_each_corpus_case[lone-surrogate-entity]
+PASSED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#xD800;]
+PASSED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#xDFFF;]
+PASSED tests/stage04/test_final_bib.py::test_normalize_gives_no_cited_object_for_a_surrogate_entity[&#55296;]
+5 passed, 156 deselected in 0.23s
+# fail-first: D-06 (fold.py as of de7dcc2e498e778d62314333a94b8df31468eba8, before the fix)
+FAILED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[digest]
+FAILED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[prev]
+FAILED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[garbage_version_without_digest]
+3 failed, 6 deselected in 0.07s
+# D-06 with the fix
+PASSED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[digest]
+PASSED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[prev]
+PASSED tests/stage04/test_corrective_compat.py::test_e07_a_damaged_first_record_is_corrupt_not_another_engines[garbage_version_without_digest]
+3 passed, 6 deselected in 0.05s

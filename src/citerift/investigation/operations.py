@@ -232,8 +232,8 @@ ENGINE_IDENTITY_DIFFERS = "ENGINE_IDENTITY_DIFFERS"
 
 def _corrupt(exc: CorruptInvestigation) -> OperationError:
     """CORRUPT, except a journal another engine created (E-07): STALE, with its own code, so that a valid investigation
-    of an earlier engine in a reused memory root is not reported as tampered with. Either way nothing is read from it
-    and nothing is written."""
+    of an earlier engine in a reused memory root is not reported as tampered with. Either way no record of it is used
+    and nothing is written (the journal is read and parsed to find its first record)."""
     if exc.engine_identity_differs:
         return OperationError("stale", ENGINE_IDENTITY_DIFFERS, str(exc))
     return OperationError("corrupt", "INVESTIGATION_CORRUPT", str(exc))

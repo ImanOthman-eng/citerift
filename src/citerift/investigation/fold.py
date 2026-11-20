@@ -177,9 +177,24 @@ def engine_identity_differs(rec: Any) -> str | None:
     if not (isinstance(table, str) and isinstance(schema, str)):
         return None
     if ref_problems(table, _TABLE_VERSION) or ref_problems(schema, _SCHEMA_VERSION):
-        engine = stage04.get("engine_version")
-        return f"created by engine {engine!r} (table {table!r}, schema {schema!r}), not by this engine"
+        # The recorded strings are echoed shortened (final-cycle review E-06): a crafted record can be up to 1 MiB.
+        engine = repr(stage04.get("engine_version"))[:200]
+        return f"created by engine {engine} (table {table[:80]!r}, schema {schema[:80]!r}), not by this engine"
     return None
+
+
+def _chain_intact(rec: dict[str, Any]) -> bool:
+    """Final-cycle review D-06: the E-07 guard applies only to a first record whose own digest recomputes and whose
+    ``prev`` is the genesis value of the key it names; a damaged first record is left to the full checks (CORRUPT),
+    never reported as another engine's (STALE)."""
+    payload = rec.get("payload")
+    key = payload.get("investigation_key") if isinstance(payload, dict) else None
+    if not isinstance(key, str) or not isinstance(rec.get("digest"), str):
+        return False
+    try:
+        return rec["digest"] == ids.record_digest(rec) and rec.get("prev") == ids.genesis(key)
+    except Exception:  # any value that cannot be canonicalized is not an intact chain
+        return False
 
 
 class Folder:
@@ -631,7 +646,7 @@ class Folder:
             raise _violation("S-8.2", "JOURNAL_CORRUPT", "record is not an object", seq)
         if rec.get("v") != JOURNAL_FORMAT or isinstance(rec.get("v"), bool):
             raise _violation("S-8.7", "JOURNAL_VERSION_UNSUPPORTED", f"journal version {rec.get('v')!r}", seq)
-        if seq == 0:
+        if seq == 0 and _chain_intact(rec):
             differs = engine_identity_differs(rec)
             if differs is not None:
                 raise _violation("E-07", ENGINE_IDENTITY_DIFFERS, differs, seq)

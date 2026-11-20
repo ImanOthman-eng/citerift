@@ -70,6 +70,19 @@ R19. (B8) A record that is not a dict is absent; a record field of the wrong typ
     bibliographic fields" and gives INSUFFICIENT through the ordinary rules. ``cited`` that is not a dict is absent;
     non-string entries of its lists and non-string scalar fields are ignored. Absent ``authors``/``title`` strings
     behave like empty word sets.
+R20. (2.1 step 1, amendment of the final cycle's review) The 16,384 code-point bound is ``len(text)`` of the decoded
+    ``str``, checked before parsing.
+R21. (2.1 step 4, amended) "Each node's text": ``Wikicode([node]).strip_code(normalize=True, collapse=True)`` of each
+    top-level node of the argument value; Text, HTMLEntity, Wikilink and ExternalLink pieces are joined as written,
+    every other piece gets one space on each side; the whitespace collapse then applies to the joined string. Only
+    arguments whose name belongs to a family are cleaned (the others are not fields); a cleaned family value that is
+    not UTF-8 encodable gives ``C = ⊥``.
+R22. (3, 4.1 amended) Particles are removed from the name words of both sides; the initials test is on the raw
+    whitespace tokens of the cited value (``str.split()``), before folding; ``S_R`` takes the name words of each part
+    after particle removal and drops the first when at least two remain. A cited value's script set is that of its
+    cited author name words; comparability is a common script with ``S_R``.
+R23. (4.2 amended) Designation is computed for every value (``designates`` is false except for CONTAINED and
+    OVERLAP); the reported relation is the chosen value's.
 """
 
 from __future__ import annotations
@@ -82,7 +95,7 @@ from typing import Any
 
 import mwparserfromhell
 
-MODEL_VERSION = "bib-1-reference/2"
+MODEL_VERSION = "bib-1-reference/3"
 
 TITLE_KEYS = ("Title", "ScriptTitle", "TransTitle", "Chapter", "ScriptChapter", "TransChapter")
 SCRIPT_KEYS = ("ScriptTitle", "ScriptChapter")
@@ -103,12 +116,18 @@ ET_AL = re.compile(r"\bet\.?\s*al\b\.?")
 YEAR = re.compile(r"(?<!\d)(1[5-9]\d\d|20\d\d|21\d\d)(?!\d)")
 
 DW_TEXT = (
-    "addendum addenda clarification correction corrections corrigendum corrigenda erratum errata retraction "
-    "retractions withdrawal removal comment comments reply replies "
-    "تعليق التعليق تعقيب التعقيب رد الرد تصحيح التصحيح استدراك الاستدراك سحب السحب"
+    "addendum addenda clarification clarifications correction corrections corrigendum corrigenda erratum errata "
+    "retraction retractions withdrawal withdrawals removal removals "
+    "comment comments commentary commentaries reply replies response responses rejoinder rejoinders rebuttal "
+    "rebuttals discussion discussions editorial editorials letter letters re "
+    "تعليق التعليق تعليقات التعليقات تعقيب التعقيب تعقيبات التعقيبات رد الرد ردود الردود تصحيح التصحيح تصحيحات "
+    "التصحيحات استدراك الاستدراك سحب السحب افتتاحية الافتتاحية"
 )
 DW = frozenset(DW_TEXT.split(" "))
-DP = ("expression of concern", "response to", "تعبير عن القلق")
+DP = ("expression of concern", "expressions of concern", "تعبير عن القلق")
+NP_TEXT = "al el de del della der den di da du la le van von bin ibn abu ben dos das بن ابن ابو"
+NP = frozenset(NP_TEXT.split(" "))
+MAX_SOURCE = 16384
 
 RELATION_RANK = ("EQUAL", "CONTAINED", "OVERLAP", "DISJOINT", "INCOMPARABLE")
 
@@ -155,16 +174,38 @@ def _aliases_of(profile: Any, wiki: Any, key: str) -> list[str] | None:
 # Section 2.1: cited object
 
 
+JOINED = (
+    mwparserfromhell.nodes.Text,
+    mwparserfromhell.nodes.HTMLEntity,
+    mwparserfromhell.nodes.Wikilink,
+    mwparserfromhell.nodes.ExternalLink,
+)
+
+
+class _NotText(Exception):
+    """A cleaned value that cannot be encoded as UTF-8 (step 4): C = ⊥."""
+
+
 def _clean(value: Any) -> str | None:
-    """Step 4: strip_code, each run of ``\\s`` becomes one space, ``str.strip()``; empty is absent."""
-    text = value.strip_code(normalize=True, collapse=True)
-    cleaned = WHITESPACE_RUN.sub(" ", text).strip()
-    return cleaned if cleaned != "" else None
+    """Step 4: each top-level node stripped alone; a node other than text, entity or link is a word boundary; each run
+    of ``\\s`` becomes one space, ``str.strip()``; empty is absent; not UTF-8 encodable raises ``_NotText``."""
+    pieces = []
+    for node in value.nodes:
+        piece = mwparserfromhell.wikicode.Wikicode([node]).strip_code(normalize=True, collapse=True)
+        pieces.append(piece if isinstance(node, JOINED) else " " + piece + " ")
+    cleaned = WHITESPACE_RUN.sub(" ", "".join(pieces)).strip()
+    if cleaned == "":
+        return None
+    try:
+        cleaned.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise _NotText from exc
+    return cleaned
 
 
 def cited_object(text: str, wiki: str, profile: dict[str, Any]) -> dict[str, Any] | None:
     """Section 2.1 steps 2 to 5. Returns None for C = ⊥."""
-    if not isinstance(text, str):
+    if not isinstance(text, str) or len(text) > MAX_SOURCE:
         return None
     keys = TITLE_KEYS + AUTHOR_KEYS + tuple(k for keys in SINGLE_FAMILIES.values() for k in keys)
     alias_table: dict[str, list[str]] = {}
@@ -195,14 +236,26 @@ def cited_object(text: str, wiki: str, profile: dict[str, Any]) -> dict[str, Any
             if not param.showkey:
                 continue
             name = str(param.name).strip()
-            effective[name] = _clean(param.value)
+            effective[name] = param.value
+    except Exception:
+        return None
+
+    # Step 4 applies to the arguments that belong to a family (only their values are fields).
+    family_keys_all = TITLE_KEYS + AUTHOR_KEYS + tuple(k for keys in SINGLE_FAMILIES.values() for k in keys)
+    cleaned: dict[str, str | None] = {}
+    try:
+        for name, raw in effective.items():
+            if any(_name_matches(name, alias_table[key]) for key in family_keys_all):
+                cleaned[name] = _clean(raw)
+    except _NotText:
+        return None
     except Exception:
         return None
 
     def family_values(family_keys: tuple[str, ...]) -> list[tuple[str, str]]:
         """(name, value) of the effective arguments of a family, in source order, absent values left out."""
         result = []
-        for name, value in effective.items():
+        for name, value in cleaned.items():
             if value is None:
                 continue
             if any(_name_matches(name, alias_table[key]) for key in family_keys):
@@ -263,15 +316,26 @@ def script(w: str) -> str | None:
 
 def name_words(value: str) -> list[str]:
     edited = ET_AL.sub("", fold(value))
-    return [w for w in WORD.findall(edited) if len(w) >= 2 and not w.isdecimal()]
+    return [w for w in WORD.findall(edited) if len(w) >= 2 and not w.isdecimal() and w not in NP]
 
 
-def record_author_words(authors: str | None) -> set[str]:
+def _initials(token: str) -> bool:
+    core = token.replace(".", "").rstrip(",;")
+    return 1 <= len(core) <= 3 and core.isalpha() and core.isupper()
+
+
+def cited_author_words(value: str) -> set[str]:
+    return set(name_words(" ".join(tok for tok in value.split() if not _initials(tok))))
+
+
+def record_surnames(authors: str | None) -> set[str]:
+    """S_R: per ``;``-part, its name words without the first when there are at least two."""
     if authors is None:
         return set()
     result: set[str] = set()
     for part in authors.split(";"):
-        result.update(name_words(part))
+        ws = name_words(part)
+        result.update(ws[1:] if len(ws) >= 2 else ws)
     return result
 
 
@@ -284,15 +348,18 @@ def _scripts(ws: set[str] | list[str]) -> set[str]:
 
 
 def author_verdict(cited_authors: list[str], record_authors: str | None) -> str:
-    a_c: set[str] = set()
+    s_r = record_surnames(record_authors)
+    record_scripts = _scripts(s_r)
+    comparable = []
     for value in cited_authors:
-        a_c.update(name_words(value))
-    a_r = record_author_words(record_authors)
-    if a_c & a_r:
+        n = cited_author_words(value)
+        if _scripts(n) & record_scripts:
+            comparable.append(n)
+    if not comparable:
+        return "INSUFFICIENT"
+    if all(n & s_r for n in comparable):
         return "AGREE"
-    if _scripts(a_c) & _scripts(a_r):
-        return "CONFLICT"
-    return "INSUFFICIENT"
+    return "CONFLICT"
 
 
 def _is_contiguous(inner: list[str], outer: list[str]) -> bool:
@@ -345,30 +412,34 @@ def designates(rel: str, t: list[str], t_r: list[str]) -> bool:
 
 
 def title_relation(cited_titles: list[str], record_title: str | None) -> tuple[str, bool]:
-    """(relation, designation) of the chosen value."""
+    """(relation of the chosen value, whether any value designates)."""
     t_r = words(record_title)
     if not t_r:
         return "MISSING", False
-    best: tuple[int, str, list[str]] | None = None
+    best: tuple[int, str] | None = None
+    any_designates = False
     for value in cited_titles:
         t = words(value)
         if not t:
             continue
         rel = relation(t, t_r)
+        if designates(rel, t, t_r):
+            any_designates = True
         rank = RELATION_RANK.index(rel)
-        if best is None or rank < best[0]:  # strict: ties keep the first value
-            best = (rank, rel, t)
+        if best is None or rank < best[0]:
+            best = (rank, rel)
     if best is None:
         return "MISSING", False
-    _, rel, t = best
-    return rel, designates(rel, t, t_r)
+    return best[1], any_designates
 
 
 def title_verdict(rel: str, designation: bool) -> str:
+    if designation:
+        return "CONFLICT"
     if rel == "EQUAL":
         return "AGREE"
     if rel in ("CONTAINED", "OVERLAP"):
-        return "CONFLICT" if designation else "COMPATIBLE"
+        return "COMPATIBLE"
     if rel == "DISJOINT":
         return "CONFLICT"
     return "INSUFFICIENT"
@@ -476,7 +547,7 @@ def compare(cited: dict[str, Any] | None, record: dict[str, Any] | None) -> dict
 
 def _self_check() -> None:
     """The lexicon is stated as folded: fold leaves every DW entry unchanged and each DP phrase has words."""
-    for w in DW:
+    for w in DW | NP:
         if fold(w) != w or words(w) != [w]:
             raise AssertionError(w)
     for phrase in DP:

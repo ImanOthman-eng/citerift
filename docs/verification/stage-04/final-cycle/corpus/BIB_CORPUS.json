@@ -412,12 +412,14 @@
     "original_year": 2015
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
-    "designation": false
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
    },
    "origin": "synthetic",
-   "note": "a genre, not a relation: a retracted editorial is itself a work (known limit)"
+   "note": "a genre word the record's title lacks: abstain (review A-02; a retracted editorial cited with its own title is EQUAL and unaffected)"
   },
   {
    "id": "erratum",
@@ -616,14 +618,16 @@
     "original_year": 1974
    },
    "expect": {
-    "object": "COMPATIBLE",
-    "reasons": [],
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
     "authors": "AGREE",
-    "designation": false,
+    "designation": true,
     "year": "SAME"
    },
    "origin": "development:en-21293835",
-   "note": "the retracted work is itself a letter"
+   "note": "stated recall cost (spec 4.2, section 9): the retracted work is itself a letter, and the citation adds the genre word 'Letter:' that its record title lacks, so the description designates a related object and abstains"
   },
   {
    "id": "jasist-withdrawal-dev",
@@ -960,7 +964,7 @@
    "id": "sixty-four-authors",
    "category": "malformed",
    "wiki": "en",
-   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study |last1=Q1 |last2=Q2 |last3=Q3 |last4=Q4 |last5=Q5 |last6=Q6 |last7=Q7 |last8=Q8 |last9=Q9 |last10=Q10 |last11=Q11 |last12=Q12 |last13=Q13 |last14=Q14 |last15=Q15 |last16=Q16 |last17=Q17 |last18=Q18 |last19=Q19 |last20=Q20 |last21=Q21 |last22=Q22 |last23=Q23 |last24=Q24 |last25=Q25 |last26=Q26 |last27=Q27 |last28=Q28 |last29=Q29 |last30=Q30 |last31=Q31 |last32=Q32 |last33=Q33 |last34=Q34 |last35=Q35 |last36=Q36 |last37=Q37 |last38=Q38 |last39=Q39 |last40=Q40 |last41=Q41 |last42=Q42 |last43=Q43 |last44=Q44 |last45=Q45 |last46=Q46 |last47=Q47 |last48=Q48 |last49=Q49 |last50=Q50 |last51=Q51 |last52=Q52 |last53=Q53 |last54=Q54 |last55=Q55 |last56=Q56 |last57=Q57 |last58=Q58 |last59=Q59 |last60=Q60 |last61=Q61 |last62=Q62 |last63=Q63 |last64=Lindqvist}}",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study |last1=Oyelaran |last2=Brezinova |last3=Lindqvist |last4=Oyelaran |last5=Brezinova |last6=Lindqvist |last7=Oyelaran |last8=Brezinova |last9=Lindqvist |last10=Oyelaran |last11=Brezinova |last12=Lindqvist |last13=Oyelaran |last14=Brezinova |last15=Lindqvist |last16=Oyelaran |last17=Brezinova |last18=Lindqvist |last19=Oyelaran |last20=Brezinova |last21=Lindqvist |last22=Oyelaran |last23=Brezinova |last24=Lindqvist |last25=Oyelaran |last26=Brezinova |last27=Lindqvist |last28=Oyelaran |last29=Brezinova |last30=Lindqvist |last31=Oyelaran |last32=Brezinova |last33=Lindqvist |last34=Oyelaran |last35=Brezinova |last36=Lindqvist |last37=Oyelaran |last38=Brezinova |last39=Lindqvist |last40=Oyelaran |last41=Brezinova |last42=Lindqvist |last43=Oyelaran |last44=Brezinova |last45=Lindqvist |last46=Oyelaran |last47=Brezinova |last48=Lindqvist |last49=Oyelaran |last50=Brezinova |last51=Lindqvist |last52=Oyelaran |last53=Brezinova |last54=Lindqvist |last55=Oyelaran |last56=Brezinova |last57=Lindqvist |last58=Oyelaran |last59=Brezinova |last60=Lindqvist |last61=Oyelaran |last62=Brezinova |last63=Lindqvist |last64=Oyelaran}}",
    "record": {
     "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
     "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
@@ -973,7 +977,28 @@
     "authors": "AGREE"
    },
    "origin": "synthetic",
-   "note": "spec 2.1 step 6: 64 author values are described"
+   "note": "spec 2.1 step 6: 64 author values are described; every value names a record author (spec 4.1)"
+  },
+  {
+   "id": "sixty-four-authors-last-stranger",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |title=Thermal drift of synthetic lattice sensors: a field study |last1=Oyelaran |last2=Brezinova |last3=Lindqvist |last4=Oyelaran |last5=Brezinova |last6=Lindqvist |last7=Oyelaran |last8=Brezinova |last9=Lindqvist |last10=Oyelaran |last11=Brezinova |last12=Lindqvist |last13=Oyelaran |last14=Brezinova |last15=Lindqvist |last16=Oyelaran |last17=Brezinova |last18=Lindqvist |last19=Oyelaran |last20=Brezinova |last21=Lindqvist |last22=Oyelaran |last23=Brezinova |last24=Lindqvist |last25=Oyelaran |last26=Brezinova |last27=Lindqvist |last28=Oyelaran |last29=Brezinova |last30=Lindqvist |last31=Oyelaran |last32=Brezinova |last33=Lindqvist |last34=Oyelaran |last35=Brezinova |last36=Lindqvist |last37=Oyelaran |last38=Brezinova |last39=Lindqvist |last40=Oyelaran |last41=Brezinova |last42=Lindqvist |last43=Oyelaran |last44=Brezinova |last45=Lindqvist |last46=Oyelaran |last47=Brezinova |last48=Lindqvist |last49=Oyelaran |last50=Brezinova |last51=Lindqvist |last52=Oyelaran |last53=Brezinova |last54=Lindqvist |last55=Oyelaran |last56=Brezinova |last57=Lindqvist |last58=Oyelaran |last59=Brezinova |last60=Lindqvist |last61=Oyelaran |last62=Brezinova |last63=Lindqvist |last64=Quill}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "spec 2.1 step 6 and 4.1: the 64th value is described and names no record author"
   },
   {
    "id": "record-malformed",
@@ -1177,6 +1202,324 @@
    },
    "origin": "synthetic",
    "note": "known recall cost: a corporate author in an author parameter"
+  },
+  {
+   "id": "markup-snd-boundary",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study{{snd}}Comments}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-01: a removed template is a word boundary (spec 2.1 step 4), so 'Comments' stays a word"
+  },
+  {
+   "id": "markup-pipe-template-boundary",
+   "category": "reply",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift{{!}}Reply}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "OVERLAP",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-01: {{!}} is a word boundary; 'Reply' is an extra word the record title lacks"
+  },
+  {
+   "id": "markup-br-boundary",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study<br/>Comments}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-01: a tag is a word boundary"
+  },
+  {
+   "id": "markup-ref-content-kept",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study<ref>Comments</ref>}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "authors": "AGREE",
+    "title_relation": "CONTAINED",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "the pinned parser's strip_code keeps a tag's contents (an expectation that the <ref> text is dropped was wrong and corrected after the first run), and the tag is a word boundary: 'Comments' designates, fail closed"
+  },
+  {
+   "id": "lone-surrogate-entity",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study &#xD800;}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": "E-01: a numeric entity that decodes to a lone surrogate is not Unicode text (spec 2.1 step 4)"
+  },
+  {
+   "id": "oversized-source",
+   "category": "malformed",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |quote=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "INSUFFICIENT",
+    "reasons": [],
+    "cited_none": true
+   },
+   "origin": "synthetic",
+   "note": "E-02: a template source over 16,384 code points is not parsed (spec 2.1 step 1)"
+  },
+  {
+   "id": "given-name-collision",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |author=Tomas Quill |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "A-02: the record given name 'Tomas' is not a surname word (spec 3, S_R)"
+  },
+  {
+   "id": "vancouver-initials-never-count",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |vauthors=Quill ML |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "A-02: cited initials 'ML' are removed and never match the record (spec 3)"
+  },
+  {
+   "id": "particle-collision",
+   "category": "incompatible_description",
+   "wiki": "en",
+   "source": "{{cite journal |author=Al-Saud |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Hassan Al Harbi",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "A-02: the shared particle 'al' says nothing about the person (spec 3, NP)"
+  },
+  {
+   "id": "coauthor-list-one-coincident-name",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |last2=Quill |title=Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_AUTHORS_DISJOINT"
+    ],
+    "authors": "CONFLICT"
+   },
+   "origin": "synthetic",
+   "note": "A-02: every comparable cited value must name a record author (spec 4.1)"
+  },
+  {
+   "id": "re-prefix",
+   "category": "reply",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Re: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-02: 'Re:' of an answer is in the lexicon"
+  },
+  {
+   "id": "authors-response",
+   "category": "reply",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Authors' response to: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-02: 'response' is in the lexicon"
+  },
+  {
+   "id": "plural-corrigenda",
+   "category": "erratum",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Corrigenda: Thermal drift of synthetic lattice sensors: a field study}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-05: every English lexicon word is listed in the singular and the plural"
+  },
+  {
+   "id": "designation-in-second-title-value",
+   "category": "comment",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Comments on thermal drift}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "MATERIAL_CONFLICT",
+    "reasons": [
+     "BIB_TITLE_RELATED_OBJECT"
+    ],
+    "title_relation": "EQUAL",
+    "designation": true
+   },
+   "origin": "synthetic",
+   "note": "A-04: every CONTAINED or OVERLAP value is checked for designation, not only the chosen value"
+  },
+  {
+   "id": "chapter-erratum-disjoint",
+   "category": "erratum",
+   "wiki": "en",
+   "source": "{{cite journal |last1=Lindqvist |title=Thermal drift of synthetic lattice sensors: a field study |chapter=Erratum}}",
+   "record": {
+    "title": "Thermal Drift of Synthetic Lattice Sensors: A Field Study",
+    "authors": "Mara Q Lindqvist;Tomas Oyelaran;Hana Brezinova",
+    "journal": "Journal of Synthetic Instrumentation",
+    "original_year": 2015
+   },
+   "expect": {
+    "object": "COMPATIBLE",
+    "reasons": [],
+    "title_relation": "EQUAL",
+    "designation": false
+   },
+   "origin": "synthetic",
+   "note": "stated limit (spec section 9): a value DISJOINT from the record title never designates"
   },
   {
    "id": "collaboration-param-ignored",

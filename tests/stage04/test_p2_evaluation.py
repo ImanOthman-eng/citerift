@@ -112,8 +112,10 @@ def test_p2_keeps_the_historical_gates_allocation_expansion_and_retrieval() -> N
 # ------------------------------------------------------------------------------------------------ engine identity
 
 
-# Owner decision on the final corrective cycle (D-083 card, "Amend both, D-074 style"): the working tree is no longer
-# the freeze-2 engine (dt-3 replaced it), so the frozen-engine checks are proved in their historical context. P2's own
+# Final corrective cycle (D-083), PENDING OWNER DECISION (decision card "Allow the two pre-registered test files to
+# check the old engines from git?", recommended option "Amend both, D-074 style"; no owner answer is recorded yet, and
+# this amendment is reverted if the owner keeps the file byte-identical): the working tree is no longer the freeze-2
+# engine (dt-3 replaced it), so the frozen-engine checks are proved in their historical context. P2's own
 # tools at the P2 commit run, as a ``python -I`` subprocess, in a worktree of that commit with its own ``src`` first on
 # the path. P2, its files, its runs and its scores are not changed; the P2 bytes of this file are proved from git.
 
@@ -131,6 +133,36 @@ assert Path(citerift.__file__).resolve().is_relative_to(wt.resolve()), citerift.
 out = {"engine_check": C.engine_check(), "frozen_check": RN.frozen_check(C.read_json(C.PARAMETERS))}
 out["manifest_equal"] = MF.build() == C.read_json(MF.MANIFEST)
 print(json.dumps(out))
+"""
+# One mutation of P2's parameters (argv[1]: JSON ``{"path", "value", "bad_tree", "runner"}``) checked by P2's own
+# engine check (or runner guard) at the P2 commit; ``bad_tree`` makes ``rev-parse HEAD:<first checked path>`` name
+# another tree (the committed-tree branch of the check). Prints the refusal message, or null when accepted.
+MUTATION_PROBE = """
+import json, sys
+from pathlib import Path
+wt = Path.cwd()
+sys.path[:0] = [str(wt / "src"), str(wt / "docs/verification/stage-04/evaluation-p2/tools")]
+import citerift, p2_common as C, p2_run as RN
+assert Path(citerift.__file__).resolve().is_relative_to(wt.resolve()), citerift.__file__
+spec = json.loads(sys.argv[1])
+params = C.read_json(C.PARAMETERS)
+node = params
+for k in spec["path"][:-1]:
+    node = node[k]
+if spec["path"]:
+    node[spec["path"][-1]] = spec["value"]
+if spec["bad_tree"]:
+    first = params["frozen_engine"]["checked_paths"][0]
+    real = C.git
+    C.git = lambda *a: "0" * 40 if a == ("rev-parse", f"HEAD:{first}") else real(*a)
+try:
+    if spec["runner"]:
+        RN.frozen_check(params)
+    else:
+        C.engine_check(params, require_head_trees=spec["bad_tree"])
+    print(json.dumps(None))
+except (C.EngineMismatch, RN.RunnerRefused) as exc:
+    print(json.dumps(str(exc.code)))
 """
 
 
@@ -200,10 +232,33 @@ def _mutated(path: tuple[str, ...], value: Any) -> dict[str, Any]:
         (("frozen_engine", "identity", "detector_identity"), "citerift-dt1-detector/2"),
     ],
 )
-def test_engine_check_refuses_any_scientific_engine_mismatch(path: tuple[str, ...], value: str) -> None:
-    _require_history()
-    with pytest.raises(C.EngineMismatch):
-        C.engine_check(_mutated(path, value), require_head_trees=False)
+def test_engine_check_refuses_any_scientific_engine_mismatch(
+    p2_worktree: Path, path: tuple[str, ...], value: str
+) -> None:
+    """Each mutation is refused by P2's own check at the P2 commit, where the unmutated parameters are accepted
+    (reviewer finding D-04: in the dt-3 working tree every identity mutation was refused anyway)."""
+    assert _mutation(p2_worktree, (), None) is None
+    refused = _mutation(p2_worktree, path, value)
+    assert refused is not None
+    reason = {"content_commit": "frozen content commit", "tree": "tree", "freeze_manifest_digest": "manifest digest"}
+    assert reason.get(path[-1], "running engine identity") in refused, refused
+
+
+def _mutation(wt: Path, path: tuple[str, ...], value: Any, *, bad_tree: bool = False, runner: bool = False) -> Any:
+    spec = json.dumps({"path": list(path), "value": value, "bad_tree": bad_tree, "runner": runner})
+    res = subprocess.run(
+        [sys.executable, "-I", "-B", "-c", MUTATION_PROBE, spec], cwd=wt, capture_output=True, text=True, check=False
+    )
+    assert res.returncode == 0, res.stderr[-2000:]
+    return json.loads(res.stdout)
+
+
+@pytest.mark.unit
+def test_engine_check_refuses_a_different_committed_engine_tree(p2_worktree: Path) -> None:
+    """At the P2 commit, a committed tree of a checked path that differs from the frozen one is refused (the
+    ``differing`` branch; reviewer finding D-04)."""
+    refused = _mutation(p2_worktree, (), None, bad_tree=True)
+    assert refused is not None and "the engine is not the frozen one: differing ['" in refused, refused
 
 
 @pytest.mark.unit
@@ -588,12 +643,13 @@ def test_runner_refuses_an_existing_run(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_runner_refuses_another_engine_before_any_article(tmp_path: Path) -> None:
+def test_runner_refuses_another_engine_before_any_article(p2_worktree: Path) -> None:
     _require_history()
-    with pytest.raises(RN.RunnerRefused):
-        RN.frozen_check(_mutated(("frozen_engine", "content_commit"), SUPERSEDED))
-    with pytest.raises(RN.RunnerRefused):
-        RN.frozen_check(_mutated(("frozen_engine", "identity", "table_version"), "dt-1"))
+    # P2's runner guard at the P2 commit: the frozen engine is accepted there, each mutation refused (finding D-04).
+    assert _mutation(p2_worktree, (), None, runner=True) is None
+    assert _mutation(p2_worktree, ("frozen_engine", "content_commit"), SUPERSEDED, runner=True) is not None
+    refused = _mutation(p2_worktree, ("frozen_engine", "identity", "table_version"), "dt-1", runner=True)
+    assert refused is not None and "running engine identity" in refused
     with pytest.raises(RN.RunnerRefused):
         RN.frozen_check(PARAMS)  # the working tree is the dt-3 engine; the freeze-2 run guard refuses it
     with pytest.raises(RN.RunnerRefused, match="version"):

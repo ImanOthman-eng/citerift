@@ -1,0 +1,128 @@
+{
+ "cases": 50529792,
+ "cases_per_shape": {
+  "DOI": 98304,
+  "NONE": 1536,
+  "PAIR": 50331648,
+  "PMID": 98304
+ },
+ "distinct_decisions": 387,
+ "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+ "elapsed_s": 532.8,
+ "model_digest": "ca2978fdb78196dec99488371956ef50f6980dfde43f06d4c64bbc02ee2afecd",
+ "model_version": "dt3-reference/1",
+ "oracle": {
+  "cases": 50529792,
+  "cases_per_shape": {
+   "DOI": 98304,
+   "NONE": 1536,
+   "PAIR": 50331648,
+   "PMID": 98304
+  },
+  "distinct_decisions": 387,
+  "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+  "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and, within a chunk, decision_space_dt3.iter_chunk() (the dt-2 order with bc = False, then with bc = True); the value indexes dt3_decisions.json 'decisions'",
+  "files": {
+   "dt3_decisions.json": "3f6a484722ae99e64321732ed665d2f17e5ed34410295bab7a786e1b54e8a933",
+   "dt3_table.u16le.gz": "dbd6c27ac6a1089182ab41dfeba88ca10c1074fe0b049f07f5a4a5cffa105549"
+  },
+  "model_digest": "ca2978fdb78196dec99488371956ef50f6980dfde43f06d4c64bbc02ee2afecd",
+  "model_version": "dt3-reference/1",
+  "oracle_version": "dt3-oracle/1",
+  "table_raw_sha256": "e2e4e9f6e54a728760ad58ebefdde7ab430493be646cc83e758d0f4900a2f5a2",
+  "table_version": "dt-3"
+ },
+ "properties": {
+  "BC_DETERMINISM": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "deciding an equal bc case built from fresh objects gives an identical decision",
+   "violations": 0
+  },
+  "BC_EFFECT": {
+   "checked": 1456,
+   "examples": [],
+   "statement": "where bc changes a decision, the result is D-13a UNRESOLVED_IDENTITY, status uncertain, value null, disposition ABSTAIN, carrying BIBLIOGRAPHIC_OBJECT_CONFLICT and exactly the twin's pair reasons",
+   "violations": 0
+  },
+  "BC_EVERY_POSITIVE_BLOCKED": {
+   "checked": 1456,
+   "examples": [],
+   "statement": "every dt-2 D-14 positive becomes D-13a under bc",
+   "violations": 0
+  },
+  "BC_NO_NOTICE_OR_NOT_FOUND": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "bc never yields NOTICE_CITED or NOT_FOUND_IN_CHECKED_SOURCES that the twin lacks",
+   "violations": 0
+  },
+  "BC_NO_POSITIVE": {
+   "checked": 15790080,
+   "examples": [],
+   "statement": "a case with bc whose deciding lookup is matched never yields a positive finding",
+   "violations": 0
+  },
+  "BC_ONLY_REMOVES_POSITIVES": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "bc changes a decision only where the dt-2 twin is a D-14 positive (it never creates or moves any other decision: D-1 to D-13 and D-15 to D-17 keep their place, class and reasons)",
+   "violations": 0
+  },
+  "BC_REASON_IFF": {
+   "checked": 50529792,
+   "examples": [],
+   "statement": "BIBLIOGRAPHIC_OBJECT_CONFLICT is a reason exactly when bc holds and the rule is D-13a",
+   "violations": 0
+  },
+  "BC_TOTAL": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "every bc = True case is decided by exactly one rule of dt-3",
+   "violations": 0
+  },
+  "EQUIVALENCE_BC_FALSE": {
+   "checked": 25264896,
+   "examples": [],
+   "statement": "with bc = False, the dt-3 decision is the dt-2 oracle's decision for the same case",
+   "violations": 0
+  }
+ },
+ "rules": {
+  "bc|D-1": 8421632,
+  "bc|D-10": 7961,
+  "bc|D-11": 419,
+  "bc|D-12": 126,
+  "bc|D-13": 2506,
+  "bc|D-13a": 1456,
+  "bc|D-15": 18,
+  "bc|D-16": 16,
+  "bc|D-17": 4446,
+  "bc|D-2": 8421632,
+  "bc|D-3": 32,
+  "bc|D-4": 224,
+  "bc|D-5": 8135568,
+  "bc|D-6": 94096,
+  "bc|D-7": 56096,
+  "bc|D-8": 118664,
+  "bc|D-9": 4,
+  "no_bc|D-1": 8421632,
+  "no_bc|D-10": 7961,
+  "no_bc|D-11": 419,
+  "no_bc|D-12": 126,
+  "no_bc|D-13": 2506,
+  "no_bc|D-14": 1456,
+  "no_bc|D-15": 18,
+  "no_bc|D-16": 16,
+  "no_bc|D-17": 4446,
+  "no_bc|D-2": 8421632,
+  "no_bc|D-3": 32,
+  "no_bc|D-4": 224,
+  "no_bc|D-5": 8135568,
+  "no_bc|D-6": 94096,
+  "no_bc|D-7": 56096,
+  "no_bc|D-8": 118664,
+  "no_bc|D-9": 4
+ },
+ "table_version": "dt-3"
+}

@@ -59,8 +59,9 @@ def _flags(raw: Any) -> tuple[str, ...]:
 
 def _records(obs: Mapping[str, Any]) -> list[bibliographic.RecordObject | None]:
     """bib-1 records of a lookup observation, one per event in order, each bound to its public event by ``event_id``
-    and ``row_sha256``. A missing, misaligned or unbound ``records`` list is a defect of committed content: DETECT
-    fails (``ADAPTER_INCONSISTENT``), it never decides without the record side."""
+    and ``row_sha256``, and holding the same ``title`` and ``journal`` as that event (reviewer finding B-06: the public
+    event already carries both). A missing, misaligned, unbound or contradicting ``records`` list is a defect of
+    committed content: DETECT fails (``ADAPTER_INCONSISTENT``), it never decides without the record side."""
     events = obs.get("events") or []
     records = obs.get("records")
     if not isinstance(records, list) or len(records) != len(events):
@@ -73,6 +74,8 @@ def _records(obs: Mapping[str, Any]) -> list[bibliographic.RecordObject | None]:
             or r.get("row_sha256") != e.get("row_sha256")
         ):
             raise DetectFailure(dt1.ADAPTER_INCONSISTENT, "a lookup record is not bound to its event")
+        if r.get("title") != e.get("title") or r.get("journal") != e.get("journal"):
+            raise DetectFailure(dt1.ADAPTER_INCONSISTENT, "a lookup record contradicts its event")
         out.append(bibliographic.RecordObject.from_json(r))
     return out
 

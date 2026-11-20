@@ -1,0 +1,21 @@
+{
+ "cases": 50529792,
+ "cases_per_shape": {
+  "DOI": 98304,
+  "NONE": 1536,
+  "PAIR": 50331648,
+  "PMID": 98304
+ },
+ "distinct_decisions": 387,
+ "dt2_oracle_manifest_sha256": "60a21534a282dcb6269b0ec0a183c34e72e4ee8a259550311af601958196b8b0",
+ "encoding": "one little-endian uint16 per case, in the order of decision_space.chunks() and, within a chunk, decision_space_dt3.iter_chunk() (the dt-2 order with bc = False, then with bc = True); the value indexes dt3_decisions.json 'decisions'",
+ "files": {
+  "dt3_decisions.json": "3f6a484722ae99e64321732ed665d2f17e5ed34410295bab7a786e1b54e8a933",
+  "dt3_table.u16le.gz": "dbd6c27ac6a1089182ab41dfeba88ca10c1074fe0b049f07f5a4a5cffa105549"
+ },
+ "model_digest": "ca2978fdb78196dec99488371956ef50f6980dfde43f06d4c64bbc02ee2afecd",
+ "model_version": "dt3-reference/1",
+ "oracle_version": "dt3-oracle/1",
+ "table_raw_sha256": "e2e4e9f6e54a728760ad58ebefdde7ab430493be646cc83e758d0f4900a2f5a2",
+ "table_version": "dt-3"
+}

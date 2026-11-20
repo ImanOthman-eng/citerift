@@ -39,7 +39,7 @@ code  status            meaning
 10    needs_resolution  NEEDS_RESOLUTION: verified, with an open question
 11    stale             STALE, or (``verify``, ``replay``, ``export``, and ``show`` of a non-terminal investigation) an
                         input identity differs from the recorded one; also ``ENGINE_IDENTITY_DIFFERS`` (any command):
-                        another engine created the investigation (E-07), nothing is read or written
+                        another engine created the investigation (E-07), nothing is written
 12    corrupt           CORRUPT: the journal, a blob or the report graph is invalid
 13    busy              another process holds the investigation lock
 14    incomplete        CREATED or RUNNING and a step may start now (for example after a crash, before ``resume``)
@@ -62,6 +62,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import unicodedata
 from collections.abc import Callable
@@ -266,26 +267,46 @@ def _printable(line: str) -> str:
 MEMORY_ROOT_PLACEHOLDER = "<memory-root>"
 
 
+def _effective_root(args: argparse.Namespace) -> Path | None:
+    """The memory root a command works in: ``--memory-root``, or for ``run --request`` the request's ``memory_root``
+    (reviewer finding E-03 of the final cycle). A request that cannot be read gives none here; its own error is
+    raised by ``dispatch`` and names only the request file."""
+    root = getattr(args, "memory_root", None)
+    if root is not None:
+        return Path(root)
+    if getattr(args, "request", None) is None:
+        return None
+    try:
+        value = ops.read_request(args.request).get("memory_root")
+    except OperationError:
+        return None
+    return Path(value) if isinstance(value, str) and value else None
+
+
 def _redactor(args: argparse.Namespace) -> Callable[[Any], Any]:
     """Reviewer finding E-05 (owner decision D-083): what the command line prints never carries the absolute memory
-    root (an account or session locator). Every spelling of it (as given, absolute, resolved) in any output string,
-    error details included, is replaced by ``<memory-root>``; the journal and Memory itself are not changed."""
-    root = getattr(args, "memory_root", None)
+    root (an account or session locator). Every absolute spelling of the effective root (absolute, resolved) is
+    replaced by ``<memory-root>`` in any output string, error details included, where it stands as a whole path: not
+    preceded by a path character and not followed by a word character, ``~`` or ``-`` (reviewer finding E-04: a
+    relative spelling, or a bare substring match, could rewrite digests and identifiers).
+    The journal and Memory itself are not changed."""
+    root = _effective_root(args)
     if root is None:
         return lambda value: value
-    spellings: set[str] = {str(Path(root))}
+    spellings: set[str] = set()
     for spell in (Path.absolute, Path.resolve):
         try:
-            spellings.add(str(spell(Path(root))))
+            spellings.add(str(spell(root)))
         except (OSError, RuntimeError):
             continue
-    ordered = sorted((s for s in spellings if len(s) > 1), key=len, reverse=True)
+    ordered = sorted((s for s in spellings if s.startswith("/") and len(s) > 1), key=len, reverse=True)
+    if not ordered:
+        return lambda value: value
+    pattern = re.compile(r"(?<![\w.~/-])(?:" + "|".join(re.escape(s) for s in ordered) + r")(?![\w~-])")
 
     def redact(value: Any) -> Any:
         if isinstance(value, str):
-            for s in ordered:
-                value = value.replace(s, MEMORY_ROOT_PLACEHOLDER)
-            return value
+            return pattern.sub(MEMORY_ROOT_PLACEHOLDER, value)
         if isinstance(value, dict):
             return {k: redact(v) for k, v in value.items()}
         if isinstance(value, list | tuple):

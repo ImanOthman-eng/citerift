@@ -25,16 +25,25 @@ documented (year, periodical) is recorded and never decisive.
 Only units of kind `citation_template` have a cited object; every other unit has none (`C = ⊥`).
 
 1. `text` = the unit's committed source bytes `[byte_start, byte_end)`, decoded as UTF-8 (the span NORMALIZE already
-   verifies). A decoding error gives `C = ⊥`.
+   verifies). A decoding error gives `C = ⊥`. A `text` of more than 16,384 code points gives `C = ⊥` without being
+   parsed (a resource bound: the parser's time grows faster than linearly on nested markup, reviewer finding E-02;
+   the longest of the 12,694 citation templates of the 411 development revisions has 5,722 code points).
 2. Parse `text` with mwparserfromhell 0.7.2 (`mwparserfromhell.parse`). If the parsed code, ignoring whitespace-only
-   text nodes, is not exactly one Template node, `C = ⊥`.
+   text nodes, is not exactly one Template node, `C = ⊥`. Any exception raised while parsing or reading the
+   template's parameters gives `C = ⊥` (B8).
 3. Effective named arguments: for each parameter of that template in source order with `showkey` true, `name =
    str(param.name).strip()`; a later parameter of the same name replaces an earlier one (MediaWiki semantics).
    Positional parameters are ignored.
-4. Value cleaning: `value = param.value.strip_code(normalize=True, collapse=True)` (removes templates, comments,
-   tags and link markup, keeps link text, decodes HTML entities), then every run of characters matching Python's
-   `re` class `\s` (str patterns) becomes one space and the result is stripped with `str.strip()`. An empty result is
-   an absent value.
+4. Value cleaning, node by node over the top-level nodes of `param.value`: each node's text is
+   `strip_code(normalize=True, collapse=True)` of that node alone (templates and comments give nothing, tags keep their
+   contents, links keep their text, HTML entities are decoded). The text of a Text node, an HTML entity, a wikilink or
+   an external link is joined to its neighbours as written; the text of every other node (template, tag, comment,
+   argument, heading) is surrounded by one space on each side, so a removed or replaced node is a word boundary
+   (reviewer finding A-01: `Time{{snd}}Comments` and `Time<br/>Comments` are two words, not `TimeComments`). Then
+   every run of characters matching Python's `re` class `\s` (str patterns) becomes one space and the result is
+   stripped with `str.strip()`. An empty result is an absent value. If a non-empty cleaned value cannot be encoded as
+   UTF-8 (it holds a lone surrogate, which a numeric entity such as `&#xD800;` decodes to), `C = ⊥` (reviewer
+   finding E-01: such a value is not Unicode text and cannot be committed as evidence).
 5. Fields by parameter family, using the alias profile of the unit's wiki (section 2.2). A family's value list keeps
    the effective arguments in source order of their first occurrence:
    - `titles`: Title, ScriptTitle, TransTitle, Chapter, ScriptChapter, TransChapter. For ScriptTitle and
@@ -57,8 +66,14 @@ Taken from each wiki's own CS1 configuration module (`Module:Citation/CS1/Config
 en revision 1384336575 (2026-11-07T20:03:20Z), ar revision 76424085 (2026-09-03T19:50:04Z); the content SHA-256 of
 each revision is recorded in the profile. A `#` in an alias matches the empty string or a positive decimal integer
 without leading zero (`last`, `last1`, `last12`). Names are compared exactly (MediaWiki argument names are
-case-sensitive). The profile file `src/citerift/investigation/data/bib-profile-1.json` is part of the engine
-identity.
+case-sensitive). The profile file `src/citerift/investigation/data/bib-profile-1.json` and the parser version are
+pinned by the engine code (`PROFILE_SHA256`, `PARSER_VERSION`): a profile with other bytes or another parser version
+is refused (the engine raises and NORMALIZE fails closed), so neither can change a verdict without a code change, and
+every code change of the engine changes its version (reviewer findings A-03, D-02). The parser's C tokenizer must be
+active when a unit is described (the pure-Python tokenizer can parse differently, and Stage 03 switches it in its
+worker processes); otherwise the engine refuses the same way (reviewer finding E-11). `unicodedata.unidata_version` is
+not pinned: Python 3.12 has Unicode 15.0 and 3.13 has 15.1; the corpus and the differential set give the same verdicts
+on both (the test suite runs on both versions).
 
 ### 2.3 Record object R (LOOKUP)
 
@@ -74,20 +89,38 @@ null), `authors` (string or null; Retraction Watch `;`-separated full names), `j
 - `script(w)`: the first word of `unicodedata.name(c)` for the first character `c` of `w` that is not a decimal
   digit (`str.isdecimal()`) (for example `LATIN`, `ARABIC`, `CYRILLIC`, `GREEK`, `CJK`); a word of digits only,
   or whose character has no Unicode name, has no script.
+- Name particles `NP` (folded): `al el de del della der den di da du la le van von bin ibn abu ben dos das` and the
+  Arabic `بن ابن ابو`. A particle says nothing about who the person is ("Al-Saud" and "Al Harbi" share only `al`).
 - Name words of an author value: in `fold(value)` remove every match of `\bet\.?\s*al\b\.?`; then the words of length
-  at least 2 code points that are not digits only (`str.isdecimal()`). (Single letters are initials, not names.)
-- Record author words: the name words of each `;`-separated part of `R.authors`.
+  at least 2 code points that are not digits only (`str.isdecimal()`) and not in `NP`. (Single letters are initials,
+  not names.)
+- Cited author name words of one cited author value: first remove every whitespace-separated token of the value that,
+  once its full stops are removed and trailing commas and semicolons stripped, is one to three letters all upper case
+  (`str.isalpha()` and `str.isupper()`: initials such as `KL`, `J.J.`, `S.M.,`); then the name words of the rest.
+- Record surname words `S_R`: for each `;`-separated part of `R.authors`, its name words in order; without the first of
+  them when there are at least two (Retraction Watch writes the given name first: "Kam L E Hon" gives `hon`), the
+  single word otherwise.
 
 ## 4. Field verdicts
 
 ### 4.1 Authors
 
-`A_C` = union of the name words of every value of `C.authors`; `A_R` = the record author words.
+For each value `a` of `C.authors`, `N(a)` = its cited author name words. A value is *comparable* when some word of
+`N(a)` has a script that some word of `S_R` has. A value that is not comparable (no name word left, or another script
+than every record surname) gives no evidence and is set aside.
 
-- **AGREE** if `A_C ∩ A_R ≠ ∅`;
-- else **CONFLICT** if some script `s` has a word in `A_C` and a word in `A_R`;
-- else **INSUFFICIENT** (either side empty, or no common script: for example Arabic-script cited names against a
-  Latin-script record).
+- **INSUFFICIENT** if no value is comparable (no cited authors, no record authors, or no common script: for example
+  Arabic-script cited names against a Latin-script record);
+- else **AGREE** if every comparable value shares a word with `S_R` (`N(a) ∩ S_R ≠ ∅`);
+- else **CONFLICT** (some comparable cited author names no record author).
+
+Every comparable value must name a record author (reviewer finding A-02): a commenter who shares a common surname with
+one author of the work, or a co-author list of which one name happens to match, does not make the object the same;
+a given name, a particle or an initial never counts. On 20,000 seeded random pairs of snapshot records with
+different author strings (the author list of one cited as full names against the other), the rule of the first draft
+(`59f2ad0`) agrees by accident in 2,151 pairs (10.8 %), this rule in 157 (0.8 %), and a single cited full name (one
+commenter) in 665 (3.3 %), through a shared surname (`scripts/author_coincidence.py`, output
+`lows/author_coincidence.json`). The cost on genuine citations is stated in section 9.
 
 ### 4.2 Title
 
@@ -102,28 +135,40 @@ null), `authors` (string or null; Retraction Watch `;`-separated full names), `j
 The title relation is the best over all values in the order EQUAL > CONTAINED > OVERLAP > DISJOINT > INCOMPARABLE;
 with no value or an empty `T_R` it is **MISSING**. Ties between values keep the first value in field order.
 
-**Designation of a related object.** Only a chosen value whose relation is CONTAINED or OVERLAP can designate; for
+**Designation of a related object.** Only a value whose own relation is CONTAINED or OVERLAP can designate; for
 every other relation designation is false. The *extra words* are: for CONTAINED with `T_R` inside `T`, the words of
 `T` outside the leftmost occurrence of `T_R`; for CONTAINED with `T` inside `T_R`, none; for OVERLAP, the words of
 `T` that are not in `T_R`. Such a value *designates a related object* if an extra word is in the designation
 lexicon `DW`, or a phrase of `DP` occurs as consecutive words of `T` but not of `T_R`:
 
-- `DW` (folded words): `addendum addenda clarification correction corrections corrigendum corrigenda erratum errata
-  retraction retractions withdrawal removal comment comments reply replies` and the Arabic `تعليق التعليق تعقيب
-  التعقيب رد الرد تصحيح التصحيح استدراك الاستدراك سحب السحب`;
-- `DP`: `expression of concern`, `response to`, `تعبير عن القلق`.
+- `DW` (folded words), singular and plural of each notion:
+  - Crossmark update types: `addendum addenda clarification clarifications correction corrections corrigendum
+    corrigenda erratum errata retraction retractions withdrawal withdrawals removal removals`;
+  - notes on another publication and their answers: `comment comments commentary commentaries reply replies
+    response responses rejoinder rejoinders rebuttal rebuttals discussion discussions editorial editorials letter
+    letters re`;
+  - Arabic: `تعليق التعليق تعليقات التعليقات تعقيب التعقيب تعقيبات التعقيبات رد الرد ردود الردود تصحيح التصحيح
+    تصحيحات التصحيحات استدراك الاستدراك سحب السحب افتتاحية الافتتاحية`;
+- `DP`: `expression of concern`, `expressions of concern`, `تعبير عن القلق`.
 
 Sources of the lexicon: the Crossref Crossmark update types (addendum, clarification, correction, corrigendum,
 erratum, expression of concern, retraction, withdrawal, removal) name notices that update another work; the NLM
-publication type *Comment* is by definition a note on another publication, and *reply* / *response to* are its
-answering form; the Arabic words are the plain translations of the same notions. Status and genre words are
-deliberately absent: `retracted`, `withdrawn`, `removed` describe the work itself (publisher watermarks), and
-`letter`, `editorial`, `review`, `commentary` are genres a retracted work can itself have (section 2 of
-`ROOT_CAUSE_AND_ARCHITECTURE.md`). A word counts only outside the record's own title, so a record whose own title
-contains such a word (a retracted comment) is unaffected.
+publication type *Comment* is by definition a note on another publication, and *reply*, *response*, *rejoinder* and
+*rebuttal* are its answering forms (`re` is the "Re:" of an answer); *editorial*, *letter*, *commentary* and
+*discussion* are the genres of note that D-083 names (a comment, reply, editorial or erratum must not be taken for the
+retracted work). The Arabic words are the plain translations of the same notions. Every English word is listed in the
+singular and the plural (reviewer finding A-05); Arabic words in the indefinite and the definite form and, where the
+plural is a distinct word, its plural. Status words stay absent: `retracted`, `withdrawn`, `removed` describe the work
+itself (publisher watermarks). A genre word of the lexicon designates only as an extra word, so a retracted editorial
+or letter cited with its own title (EQUAL) is unaffected; one cited with a genre word its record title lacks
+("Editorial: X" against "X") abstains (a recall cost in the safe direction, section 9). For OVERLAP a word counts only
+when the record's title lacks it; for CONTAINED it counts when it lies outside the leftmost occurrence of the record's
+title (so a word that the record's title also holds can still count there).
 
-Title verdict: EQUAL → **AGREE**; CONTAINED or OVERLAP without designation → **COMPATIBLE**; DISJOINT, or
-designation → **CONFLICT**; INCOMPARABLE or MISSING → **INSUFFICIENT**.
+Every value of `C.titles` whose own relation is CONTAINED or OVERLAP is checked for designation, not only the chosen
+value: one designating value makes the title designate (a single decisive conflict suffices, fail closed; reviewer
+finding A-04). Title verdict: designation → **CONFLICT**; otherwise by the chosen relation: EQUAL → **AGREE**;
+CONTAINED or OVERLAP → **COMPATIBLE**; DISJOINT → **CONFLICT**; INCOMPARABLE or MISSING → **INSUFFICIENT**.
 
 ### 4.3 Recorded, never decisive
 
@@ -177,7 +222,10 @@ Precedence and its reasons:
   extraction; pointer `/units/i`; refs: the unit item; value: `{version: "bib-1", fields}`), the same fields also in
   the unit's entry of the candidate inputs (`bibliography`, null when none).
 - LOOKUP: the observation records `records`, one entry per event, `{event_id, row_sha256, title, authors, journal,
-  original_year}`.
+  original_year}`. DETECT refuses (`ADAPTER_INCONSISTENT`) a `records` list that is missing, not aligned with the
+  events, not bound to them by `event_id` and `row_sha256`, or whose `title` or `journal` differs from its own public
+  event's (reviewer finding B-06); `authors` and `original_year`, which the public event does not carry, are bound
+  through `row_sha256` to the Stage 02 row.
 - DETECT: for every candidate decided by D-13a or D-14, one `lookup_record` item per event of L (observation: L's
   lookup observation; pointer `/records/k`; ref: the event item; value null) and the unit's `cited_bibliography` item
   support the claim. The verdict is a pure function of these two and is recomputed by VERIFY's replay; it is not
@@ -206,3 +254,46 @@ matched as whole words, so a word with an attached clitic (`والرد`, `بال
 wholly in Arabic-Indic digits does not match the year pattern (its first digit must be an ASCII 1 or 2), so its year
 verdict is INSUFFICIENT; year is recorded only. A template above the size bound of section 2.1 step 6 has no cited
 object (INSUFFICIENT, as under dt-2).
+
+Residual false compatibility (reviewer finding A-02; the layer lowers it, it does not remove it):
+
+- A commenter whose surname is also a surname of the work's record (a single cited full name agrees by accident in
+  3.3 % of random record pairs, section 4.1), writing a note whose title holds the record's title and no word of the
+  lexicon, stays positive.
+- A `vauthors` value or an `authors` value lists several people in one value; the value agrees when any of its names
+  is a record surname, so such lists are weaker evidence than one name per parameter. Values are not split at commas
+  (splitting would also split "Surname, Given" values and cost recall on genuine citations).
+- Status words (`retracted`, `withdrawn`, `removed`) are not in the lexicon, because publisher watermarks put them
+  on the retracted work itself; a notice titled "Withdrawn: X" by the work's own authors is not recognized by bib-1
+  (dt-2's notice/original role separation and D-15 still apply when its identifiers are the notice's).
+- A value whose relation to the record title is DISJOINT never designates (section 4.2): `chapter=Erratum` beside an
+  EQUAL title is COMPATIBLE (corpus case `chapter-erratum-disjoint`).
+- The text inside a tag is kept by the pinned parser's `strip_code` (for example a `<ref>` inside a title), so it is
+  part of the cited title (corpus case `markup-ref-content-kept`; it can only add conflicts).
+
+Recall costs on genuine citations (fail closed; development evidence, never evaluation scoring):
+
+- A record that lists fewer authors than the citation (11,741 of 73,356 snapshot events list one author;
+  `lows/author_coincidence.json`): every cited co-author absent from the record gives CONFLICT (development case
+  `en-3202774`).
+- A misspelled record name (Retraction Watch "Perdersen", development `en-41008786`) or a name mixing scripts (a
+  Cyrillic letter inside a Latin name, development `en-83484354`) shares no surname word.
+- A genre word of the lexicon added by the citation to a record title that lacks it ("Letter: X" against "X",
+  development `en-21293835`), a plural or synonym in the citation's own title of a retracted comment or reply, and
+  a title wrapped in a template the cleaning removes (`{{lang|…}}` gives an empty or partial title).
+- A title in another language than the record's (INCOMPARABLE when the scripts differ, OVERLAP or DISJOINT when they
+  share a script).
+- 1,767 snapshot records hold a word of `DW` or a phrase of `DP` in their own title (the retracted work is itself a
+  comment, reply, correction or letter). Cited with its own or a shortened title it is unaffected (the word is not an
+  extra word); cited with words added around the title it can abstain.
+- Every event of the deciding lookup is compared, bridged (`linked_via`) and co-keyed ones included: a key that
+  names several objects does not establish which one the citation means, so a conflicting bridged or co-keyed record
+  makes the candidate abstain even when the record of the work actually cited agrees (reviewer finding B-05). With a
+  description copied from the first direct event's own record, 7 of the 81,743 single-key D-14 positives of the
+  snapshot abstain: PMID `3507357` through its 254 bridged conference abstracts (which Stage 02 already does not
+  count, `BRIDGED_EVIDENCE_NOT_COUNTED`), six keys through several direct records, and PMID `17381062` through a
+  related-object title between two records of the same key (reviewer B's probe; the regression gives the measured
+  effect on development citations, `REGRESSION.md`).
+
+Per-event verdicts are not stored as evidence values: the verdict is a pure function of the committed description
+and the committed records, and VERIFY recomputes it (section 7; reviewer finding A-09).

@@ -127,9 +127,14 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   (3) A wrong author list in a genuine citation of the work (for example, authors of another reference pasted in)
   makes the citation abstain: a recall cost, in the safe direction. (4) Stage 02 records with no title or no authors
   give `INSUFFICIENT`; the pinned snapshot has none with empty authors. (5) The designation lexicon is closed (English
-  and Arabic forms listed in the specification; genre words such as editorial, letter or commentary are deliberately
-  excluded because a retracted work can itself be one); an unlisted language or wording is `COMPATIBLE` when the
-  authors agree, so an editorial by the work's own authors with an overlapping title is not detected.
+  and Arabic forms listed in the specification, including the genre words editorial, letter, commentary and
+  discussion, which designate only when the record's own title lacks them); an unlisted language or wording is
+  `COMPATIBLE` when the authors agree, and a retracted letter cited as "Letter: X" against the record title "X"
+  abstains (a recall cost). (6) A commenter who shares a surname with the work's record and writes a note whose title
+  holds the record's title without a lexicon word stays positive (3.3 % accidental agreement of one full name over
+  random record pairs; `final-cycle/lows/author_coincidence.json`). (7) Every event of `L`, bridged and co-keyed ones
+  included, is compared, so a key naming several objects abstains even for a correct citation (reviewer finding B-05).
+  The full list is `final-cycle/BIBLIOGRAPHIC_SPEC.md` section 9.
   These are recall or detection limits, stated, never reclassified as performance results.
 - Gate and invariant: 04-C, 04-I; oracle property `BC_NO_POSITIVE`, `BC_ONLY_REMOVES_POSITIVES`.
 - Blocks verification: **blocks** if a material conflict ever yields a positive; residuals **disclosed**.
