@@ -1,5 +1,5 @@
 {
-  "decision": "D-055 (owner message cmsg_018VCB51nDHP6HXmLU4ea5yP7cfPWf5UN6kmKGbSHoPG1n)",
+  "decision": "D-083 (final corrective cycle); derivation of D-055 with the dt-3 builders",
   "journal_format": 4,
   "report_version": "3.0.0",
   "limits": {
@@ -118,7 +118,7 @@
     },
     "fixed_total_bytes": 1231356,
     "entries_per_run": {
-      "evidence item": 510000,
+      "evidence item": 3605950000,
       "lookup reference": 70000,
       "candidate result": 70000
     },
@@ -129,7 +129,7 @@
         "candidate result": 936
       },
       "maximal": {
-        "evidence item": 27477,
+        "evidence item": 50412,
         "lookup reference": 24751,
         "candidate result": 49114
       }
@@ -164,10 +164,10 @@
     "maximal": {
       "batch_records_one_attempt_each_step": {
         "evidence item": {
-          "entries": 510000,
-          "entry_bytes": 14013270000,
-          "batch_records": 3355,
-          "record_bytes": 1801635
+          "entries": 3605950000,
+          "entry_bytes": 1115555200000,
+          "batch_records": 267584,
+          "record_bytes": 143692608
         },
         "lookup reference": {
           "entries": 70000,
@@ -182,18 +182,629 @@
           "record_bytes": 447692
         }
       },
-      "content_bytes_one_attempt_each_step": 2470639,
-      "journal_bytes": 8643273,
-      "fraction_of_limit": 0.0161,
-      "headroom_factor": 62.1,
+      "content_bytes_one_attempt_each_step": 144361612,
+      "journal_bytes": 434316192,
+      "fraction_of_limit": 0.80898,
+      "headroom_factor": 1.2,
       "proven_within_limit": true
     },
     "format_3_per_candidate_records_one_attempt (0097a93, for comparison)": {
       "records": 280001,
       "note": "format 3 wrote one record per lookup observation, claim, decision and question: about 280,000 records per attempt at the caps (../d053/bounds.json); format 4 writes the batch records above"
-    }
+    },
+    "evidence_census_dt3": {
+      "item_bytes_by_kind_at_schema_maxima": {
+        "bundle_identity": 25330,
+        "extraction_identity": 25334,
+        "unit": 25487,
+        "use_eligibility": 25398,
+        "identifier_occurrence": 27424,
+        "work_candidate": 27477,
+        "index_identity": 25329,
+        "lookup_result": 25328,
+        "lookup_event": 25327,
+        "coherence": 25336,
+        "cited_bibliography": 50412,
+        "lookup_record": 25328
+      },
+      "E_max": 50412,
+      "E_L": 25753,
+      "deciding_lookups_max": 70000,
+      "groups": {
+        "dt-2 kinds (d053 census)": {
+          "items": 510000,
+          "item_bytes": 50412
+        },
+        "cited_bibliography (one per unit)": {
+          "items": 20000,
+          "item_bytes": 50412
+        },
+        "lookup_event + lookup_record (two per event of every deciding lookup)": {
+          "items": 3605420000,
+          "item_bytes": 302
+        }
+      },
+      "entry_bytes": 1115555200000,
+      "items": 3605950000
+    },
+    "E_L_at_journal_limit": 32030
   },
   "journal_limit_proven": true,
+  "lookup_observation_v3": {
+    "shapes": {
+      "doi_match_with_secondary_pmid/Title": {
+        "points": [
+          [
+            713566,
+            7550975
+          ],
+          [
+            2855168,
+            22613267
+          ]
+        ],
+        "rho": 7.0332,
+        "intercept_bytes": 2532330
+      },
+      "doi_match_with_secondary_pmid/Journal": {
+        "points": [
+          [
+            713566,
+            7550975
+          ],
+          [
+            2855168,
+            22613267
+          ]
+        ],
+        "rho": 7.0332,
+        "intercept_bytes": 2532330
+      },
+      "doi_match_with_secondary_pmid/Author": {
+        "points": [
+          [
+            713566,
+            2635775
+          ],
+          [
+            2855168,
+            10325267
+          ]
+        ],
+        "rho": 3.5905,
+        "intercept_bytes": 73693
+      },
+      "doi_match_with_secondary_pmid/Title+Journal": {
+        "points": [
+          [
+            1327966,
+            14923776
+          ],
+          [
+            5312768,
+            44731667
+          ]
+        ],
+        "rho": 7.4804,
+        "intercept_bytes": 4990066
+      },
+      "doi_match_with_secondary_pmid/Title+Journal+Author": {
+        "points": [
+          [
+            1942366,
+            17381376
+          ],
+          [
+            7770368,
+            54562067
+          ]
+        ],
+        "rho": 6.3797,
+        "intercept_bytes": 4989735
+      },
+      "pmid_match_bridged_doi/Title": {
+        "points": [
+          [
+            711916,
+            7547409
+          ],
+          [
+            2848568,
+            22606201
+          ]
+        ],
+        "rho": 7.0478,
+        "intercept_bytes": 2529935
+      },
+      "pmid_match_bridged_doi/Journal": {
+        "points": [
+          [
+            711916,
+            7547409
+          ],
+          [
+            2848568,
+            22606201
+          ]
+        ],
+        "rho": 7.0478,
+        "intercept_bytes": 2529935
+      },
+      "pmid_match_bridged_doi/Author": {
+        "points": [
+          [
+            711916,
+            2632209
+          ],
+          [
+            2848568,
+            10318201
+          ]
+        ],
+        "rho": 3.5972,
+        "intercept_bytes": 71296
+      },
+      "pmid_match_bridged_doi/Title+Journal": {
+        "points": [
+          [
+            1326316,
+            14920210
+          ],
+          [
+            5306168,
+            44724601
+          ]
+        ],
+        "rho": 7.4888,
+        "intercept_bytes": 4987670
+      },
+      "pmid_match_bridged_doi/Title+Journal+Author": {
+        "points": [
+          [
+            1940716,
+            17377810
+          ],
+          [
+            7763768,
+            54555001
+          ]
+        ],
+        "rho": 6.3845,
+        "intercept_bytes": 4987337
+      },
+      "notice_only/Title": {
+        "points": [
+          [
+            238312,
+            3774235
+          ],
+          [
+            953764,
+            12548980
+          ]
+        ],
+        "rho": 12.2646,
+        "intercept_bytes": 851430
+      },
+      "notice_only/Journal": {
+        "points": [
+          [
+            238312,
+            3774235
+          ],
+          [
+            953764,
+            12548980
+          ]
+        ],
+        "rho": 12.2646,
+        "intercept_bytes": 851430
+      },
+      "notice_only/Author": {
+        "points": [
+          [
+            238312,
+            1316635
+          ],
+          [
+            953764,
+            5176180
+          ]
+        ],
+        "rho": 5.3946,
+        "intercept_bytes": 31048
+      },
+      "notice_only/Title+Journal": {
+        "points": [
+          [
+            443112,
+            7460635
+          ],
+          [
+            1772964,
+            24836981
+          ]
+        ],
+        "rho": 13.0664,
+        "intercept_bytes": 1670767
+      },
+      "notice_only/Title+Journal+Author": {
+        "points": [
+          [
+            647912,
+            8689435
+          ],
+          [
+            2592164,
+            29752181
+          ]
+        ],
+        "rho": 10.8333,
+        "intercept_bytes": 1670383
+      },
+      "ambiguous_pair/Title": {
+        "points": [
+          [
+            474584,
+            7527698
+          ],
+          [
+            1898984,
+            22530039
+          ]
+        ],
+        "rho": 10.5324,
+        "intercept_bytes": 2529193
+      },
+      "ambiguous_pair/Journal": {
+        "points": [
+          [
+            474584,
+            7527698
+          ],
+          [
+            1898984,
+            22530039
+          ]
+        ],
+        "rho": 10.5324,
+        "intercept_bytes": 2529193
+      },
+      "ambiguous_pair/Author": {
+        "points": [
+          [
+            474584,
+            2612498
+          ],
+          [
+            1898984,
+            10242039
+          ]
+        ],
+        "rho": 5.3563,
+        "intercept_bytes": 70475
+      },
+      "ambiguous_pair/Title+Journal": {
+        "points": [
+          [
+            884184,
+            14900498
+          ],
+          [
+            3537384,
+            44648439
+          ]
+        ],
+        "rho": 11.2121,
+        "intercept_bytes": 4986939
+      },
+      "ambiguous_pair/Title+Journal+Author": {
+        "points": [
+          [
+            1293784,
+            17358099
+          ],
+          [
+            5175784,
+            54478839
+          ]
+        ],
+        "rho": 9.5623,
+        "intercept_bytes": 4986584
+      },
+      "pmid_role_collision/Title": {
+        "points": [
+          [
+            475564,
+            3784055
+          ],
+          [
+            1902768,
+            12605001
+          ]
+        ],
+        "rho": 6.1806,
+        "intercept_bytes": 844794
+      },
+      "pmid_role_collision/Journal": {
+        "points": [
+          [
+            475564,
+            3784055
+          ],
+          [
+            1902768,
+            12605001
+          ]
+        ],
+        "rho": 6.1806,
+        "intercept_bytes": 844794
+      },
+      "pmid_role_collision/Author": {
+        "points": [
+          [
+            475564,
+            1326455
+          ],
+          [
+            1902768,
+            5232201
+          ]
+        ],
+        "rho": 2.7366,
+        "intercept_bytes": 25007
+      },
+      "pmid_role_collision/Title+Journal": {
+        "points": [
+          [
+            885164,
+            7470455
+          ],
+          [
+            3541168,
+            24893001
+          ]
+        ],
+        "rho": 6.5597,
+        "intercept_bytes": 1664059
+      },
+      "pmid_role_collision/Title+Journal+Author": {
+        "points": [
+          [
+            1294764,
+            8699256
+          ],
+          [
+            5179568,
+            29808201
+          ]
+        ],
+        "rho": 5.4337,
+        "intercept_bytes": 1663868
+      },
+      "long_doi_notice_only/Title": {
+        "points": [
+          [
+            337412,
+            4323549
+          ],
+          [
+            1350164,
+            14040245
+          ]
+        ],
+        "rho": 9.5943,
+        "intercept_bytes": 1086301
+      },
+      "long_doi_notice_only/Journal": {
+        "points": [
+          [
+            337412,
+            4323549
+          ],
+          [
+            1350164,
+            14040245
+          ]
+        ],
+        "rho": 9.5943,
+        "intercept_bytes": 1086301
+      },
+      "long_doi_notice_only/Author": {
+        "points": [
+          [
+            337412,
+            1865949
+          ],
+          [
+            1350164,
+            6667445
+          ]
+        ],
+        "rho": 4.741,
+        "intercept_bytes": 266266
+      },
+      "long_doi_notice_only/Title+Journal": {
+        "points": [
+          [
+            542212,
+            8009949
+          ],
+          [
+            2169364,
+            26328245
+          ]
+        ],
+        "rho": 11.2579,
+        "intercept_bytes": 1905787
+      },
+      "long_doi_notice_only/Title+Journal+Author": {
+        "points": [
+          [
+            747012,
+            9238749
+          ],
+          [
+            2988564,
+            31243445
+          ]
+        ],
+        "rho": 9.8167,
+        "intercept_bytes": 1905539
+      },
+      "long_doi_match_with_collision/Title": {
+        "points": [
+          [
+            574564,
+            3986219
+          ],
+          [
+            2298768,
+            13203565
+          ]
+        ],
+        "rho": 5.3459,
+        "intercept_bytes": 914683
+      },
+      "long_doi_match_with_collision/Journal": {
+        "points": [
+          [
+            574564,
+            3986219
+          ],
+          [
+            2298768,
+            13203565
+          ]
+        ],
+        "rho": 5.3459,
+        "intercept_bytes": 914683
+      },
+      "long_doi_match_with_collision/Author": {
+        "points": [
+          [
+            574564,
+            1528619
+          ],
+          [
+            2298768,
+            5830765
+          ]
+        ],
+        "rho": 2.4951,
+        "intercept_bytes": 94996
+      },
+      "long_doi_match_with_collision/Title+Journal": {
+        "points": [
+          [
+            984164,
+            7672619
+          ],
+          [
+            3937168,
+            25491565
+          ]
+        ],
+        "rho": 6.0342,
+        "intercept_bytes": 1734000
+      },
+      "long_doi_match_with_collision/Title+Journal+Author": {
+        "points": [
+          [
+            1393764,
+            8901420
+          ],
+          [
+            5575568,
+            30406765
+          ]
+        ],
+        "rho": 5.1426,
+        "intercept_bytes": 1733849
+      },
+      "no_record_with_relevance_hits/Title": {
+        "points": [
+          [
+            7382,
+            8990
+          ],
+          [
+            29982,
+            6066
+          ]
+        ],
+        "rho": -0.1294,
+        "intercept_bytes": 9945
+      },
+      "no_record_with_relevance_hits/Journal": {
+        "points": [
+          [
+            7382,
+            8990
+          ],
+          [
+            29982,
+            6066
+          ]
+        ],
+        "rho": -0.1294,
+        "intercept_bytes": 9945
+      },
+      "no_record_with_relevance_hits/Author": {
+        "points": [
+          [
+            7382,
+            8990
+          ],
+          [
+            29982,
+            6066
+          ]
+        ],
+        "rho": -0.1294,
+        "intercept_bytes": 9945
+      },
+      "no_record_with_relevance_hits/Title+Journal": {
+        "points": [
+          [
+            7382,
+            8990
+          ],
+          [
+            29982,
+            6066
+          ]
+        ],
+        "rho": -0.1294,
+        "intercept_bytes": 9945
+      },
+      "no_record_with_relevance_hits/Title+Journal+Author": {
+        "points": [
+          [
+            7382,
+            8990
+          ],
+          [
+            29982,
+            6066
+          ]
+        ],
+        "rho": -0.1294,
+        "intercept_bytes": 9945
+      }
+    },
+    "rho_max_measured": 13.0664,
+    "rho_bound": 13.0664,
+    "rho_bound_note": "measured maximum over the D-048 shapes at 4,096-character fields; no analytic bound for v3",
+    "intercept_max_bytes": 4990066,
+    "budget_max_schema": 16777216,
+    "worst_observation_bytes": 224207881,
+    "within_blob_limit": true,
+    "blob_margin": 1.2,
+    "budget_max_from_blob_limit": 20162048,
+    "fewest_charged_bytes_per_event": 651.5,
+    "E_L_events_per_lookup_max": 25753
+  },
   "blobs": {
     "Stage 03 extraction (byte-for-byte, no wrapper)": {
       "bound_bytes": 268435456,
@@ -208,22 +819,22 @@
       "fraction_of_limit": 0.469
     },
     "LOOKUP observation (D-048)": {
-      "bound_bytes": 102311086,
-      "why": "D-048 budget, lookup_budget.json",
+      "bound_bytes": 224207881,
+      "why": "observation v3 (E-07): rho_bound x the 16 MiB schema maximum of the budget + the largest intercept",
       "within_limit": true,
-      "fraction_of_limit": 0.3811
+      "fraction_of_limit": 0.8352
     },
     "evidence batch": {
       "bound_bytes": 8388608,
-      "why": "SPEC 8.8: a batch is cut at MAX_PART_BYTES; the largest legal item fits one",
+      "why": "SPEC 8.8: a batch is cut at MAX_PART_BYTES; the largest legal dt-3 item fits one",
       "within_limit": true,
       "fraction_of_limit": 0.0312
     },
     "evidence set (one claim)": {
-      "bound_bytes": 34170256,
-      "why": "at most every evidence id of the run",
+      "bound_bytes": 3455446,
+      "why": "a D-13a or D-14 claim: two items per event of its deciding lookup plus at most 64 others",
       "within_limit": true,
-      "fraction_of_limit": 0.1273
+      "fraction_of_limit": 0.0129
     },
     "projection set": {
       "bound_bytes": 4690256,
@@ -250,10 +861,10 @@
       "fraction_of_limit": 0.0312
     },
     "report manifest": {
-      "bound_bytes": 21445115,
-      "why": "fixed fields (< 64 KiB with identities) plus one reference per chunk and per evidence batch",
+      "bound_bytes": 34876802,
+      "why": "the D-053 bound plus one reference per evidence batch of the dt-3 census",
       "within_limit": true,
-      "fraction_of_limit": 0.0799
+      "fraction_of_limit": 0.1299
     },
     "step output manifests (workflow.manifest) and VALIDATE output": {
       "bound_bytes": 65536,
@@ -272,19 +883,41 @@
       "why": "SPEC 8.9 / 8.8 (d): a batch is cut at MAX_PART_BYTES; one maximal entry fits a batch of its own",
       "within_limit": true,
       "fraction_of_limit": 0.0312
+    },
+    "candidate inputs: bibliography increment of schema 2.0.0 (E-09)": {
+      "bound_bytes": 27745824,
+      "why": "every source code point is in at most one description (strip_code leaves out nested templates; cleaning never lengthens), at most 6 bytes each, plus field names and nulls of 20,000 units; the Step 8 terms of the blob have no derived bound (stated gap; an overflow is BLOB_TOO_LARGE, fail closed)",
+      "within_limit": true,
+      "fraction_of_limit": 0.1034
     }
   },
   "blob_limit_proven_except_ACQUIRE_observation": true,
   "ACQUIRE_observation": "conditional on the Step 8 representation (IF-7, see its row)",
   "total_storage": {
-    "mathematical_worst_case_bytes": 50217163764506,
+    "mathematical_worst_case_bytes": 69365746304891,
     "mathematical_worst_case_note": "every attempt of every step at every cap with every blob at its bound: every lookup at the D-048 budget, every claim naming every evidence id, every claim entry carrying a maximal lookup's checked sources. Not reachable by a real article and index; no global cap is imposed (owner D-053/D-054). Disk exhaustion is a STORAGE_ERROR, never a silent truncation.",
-    "operational_bound_bytes": 3794312324,
+    "operational_bound_bytes": 1371711462324,
     "operational_note": "one committed run at the Stage 03 caps with typical item sizes, lookups of the pinned index's common shape (no record or one event), evidence sets of tens of ids, claim entries of about 1.5 kB; blobs are content-addressed, so a repeated attempt with equal content adds nothing.",
     "pinned_index_observation": "The largest lookup observation the pinned index gives for any key is recorded by the D-048 derivation (closure/lookup_budget.json); every observation is within the configured budget by construction, and over it the lookup is LOOKUP_EVIDENCE_LIMIT_EXCEEDED, not a blob.",
     "d055_batch_blobs": {
       "maximal_bytes_per_attempt": 5170550000,
       "typical_bytes_per_run": 81410000
     }
+  },
+  "provenance": {
+    "code_commit": "79a002352c2061b79fe66424e9bd85ee85fa1345",
+    "checked_paths": [
+      "src",
+      "schemas",
+      "simulations/stage04",
+      "docs/verification/stage-04/final-cycle",
+      "tests/stage04",
+      "docs/verification/stage-04/evaluation/tools",
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "uncommitted": [],
+    "tool": "docs/verification/stage-04/final-cycle/bounds/dt3_bounds.py",
+    "tool_sha256": "2b92aec7e50e1c5c858039e74834ddc5130158133afbf0d2b6658e6328c7395d"
   }
 }
