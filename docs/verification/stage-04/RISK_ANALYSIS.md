@@ -103,12 +103,20 @@ documents: `SPECIFICATION.md` (SPEC) and `MATHEMATICAL_MODEL.md` (MM).
   performance result. A same-work sibling record (reviewer finding C-01, 53 pairs, one campaign claim) also abstains,
   with no exemption (D-073). The cost on exposed articles is in `corrective/regression/`. If the discriminating second identifier is itself wrong in the citation, the attachment
   rests on it (as for any PAIR, R4-03). A non-cited bridged key is not checked for another record's notice role
-  (reviewer finding A-04); it cannot make a positive on its own, since Stage 02 never counts bridged records toward a
-  verified value. The final corrective cycle proved this on the whole pinned snapshot (owner decision D-083 item 6):
-  every one of the 81,743 positives of a single-key citation of each original DOI and PMID has a direct, non-ambiguous
-  event of its own class and no `BRIDGE_ONLY_SUPPORT` (0 violations); the exposure (a bridged event reached through a
-  key that some record gives as a notice) is 254 events, all under one PMID, each positive also directly supported
-  (`final-cycle/lows/a04_invariant_census.json`).
+  (reviewer finding A-04); it cannot make a positive on its own. The proof is Stage 02 rule 7f (`policy.reduce`): the
+  projection is computed from the direct assertions alone and stays `verified_fact` only when the bridges would not
+  change the value (otherwise `uncertain`, `BRIDGED_EVIDENCE_MATERIAL` or `BRIDGE_ONLY_SUPPORT`), and D-10 refuses
+  `BRIDGE_ONLY_SUPPORT` before D-14; a bridged record can only demote a positive (final-cycle review B-04). The final
+  corrective cycle confirmed it on the whole pinned snapshot (owner decision D-083 item 6): every one of the 81,743
+  positives of a single-key citation of each original DOI and PMID has a direct, non-ambiguous event of its own class
+  (the other two clauses of the check, no role-ambiguous event and no `BRIDGE_ONLY_SUPPORT`, are implied by the table,
+  since D-10 precedes D-14); 0 violations; the exposure (a bridged event reached through a key that some record gives
+  as a notice) is 254 events, all under one PMID, each positive also directly supported
+  (`final-cycle/lows/a04_invariant_census.json`, with provenance). PAIR citations are outside this shape by
+  construction: a pair query does no co-occurrence bridging (its only linked events are PMID events attached through
+  the cited PMID, `linked_via = "query_pair"`), and a direct event naming another key of the other scheme makes the
+  query `ambiguous_identity`, which becomes a witness and D-6. A detector-level test on a real Stage 02 index
+  (`tests/stage04/test_final_bib.py`, `test_a04_bridged_events_alone_never_give_a_positive`) checks the shape.
 - Gate and invariant: 04-A, 04-C; M-12.
 - Blocks verification: **blocks**.
 

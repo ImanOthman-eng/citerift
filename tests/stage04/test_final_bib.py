@@ -361,3 +361,32 @@ def test_both_profiles_name_the_same_module_revisions() -> None:
             prod[wiki]["source"]["revid"],
             prod[wiki]["source"]["content_sha256"],
         )
+
+
+def test_a04_bridged_events_alone_never_give_a_positive(tmp_path: Path) -> None:
+    """Reviewer finding B-03 (the A-04 shape at detector level, on a real Stage 02 index): the cited PMID's only
+    direct event is a correction; a retraction reaches the lookup only through the DOI the two records share
+    (co-occurrence bridging; a DOI query is not bridged through a PMID). dt-3 must not decide RETRACTED_WORK_CITED
+    (Stage 02 rule 7f does not count bridged records toward a verified value)."""
+    sys.path.insert(0, str(REPO / "tests" / "stage02"))
+    import rde_support as RS
+
+    from citerift.investigation import dt1
+    from citerift.investigation.adapters.detector import lookup_view
+    from citerift.investigation.adapters.lookup import observe
+    from citerift.investigation.lookup import DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES
+    from citerift.retraction.query import Index
+
+    rows = [
+        RS.row(**{"Record ID": "1", "RetractionNature": "Correction", "OriginalPaperDOI": "10.5555/a",
+                  "OriginalPaperPubMedID": "8"}),
+        RS.row(**{"Record ID": "2", "RetractionNature": "Retraction", "OriginalPaperDOI": "10.5555/a",
+                  "OriginalPaperPubMedID": "7"}),
+    ]  # fmt: skip
+    with Index(RS.build_rows(tmp_path, rows)) as index:
+        lk = lookup_view(observe(index, {}, None, "8", DEFAULT_LOOKUP_EVIDENCE_BUDGET_BYTES))
+    assert any(e.event_type == "retracted" and e.linked_via is not None for e in lk.events), lk.events
+    assert all(e.event_type != "retracted" for e in lk.events if e.linked_via is None)
+    out = dt1.decide(dt1.Candidate("CITED", None, "PMID", None, "8", (), False, ((dt1.Q1_PMID, lk),), None))
+    assert out.cls != "RETRACTED_WORK_CITED", out
+    assert out.rule != "D-14" or out.cls == "CORRECTION_CITED", out
