@@ -1,0 +1,278 @@
+{
+ "budget_bytes": 16777216,
+ "census": "citerift-stage04-role-collision-census/1",
+ "context": {
+  "both_schemes_equal_in_one_record": 860,
+  "events": 73356,
+  "no_notice_identifier": 3864,
+  "notice_shared": 7573,
+  "original_anchor_pmid_only": 758,
+  "original_anchor_source_record_only": 5194
+ },
+ "cross_record": {
+  "doi": {
+   "distinct_keys": 56,
+   "event_type_pairs_by_key": {
+    "original:correction / notice:correction": 2,
+    "original:correction / notice:expression_of_concern": 1,
+    "original:correction / notice:retracted": 11,
+    "original:expression_of_concern / notice:expression_of_concern": 4,
+    "original:retracted / notice:correction": 21,
+    "original:retracted / notice:expression_of_concern": 1,
+    "original:retracted / notice:reinstated": 3,
+    "original:retracted / notice:retracted": 13
+   },
+   "events_with_key_as_notice": 681,
+   "events_with_key_as_original": 328,
+   "notice_events_flagged_NOTICE_ALSO_ORIGINAL_ELSEWHERE": 681
+  },
+  "pmid": {
+   "distinct_keys": 27,
+   "event_type_pairs_by_key": {
+    "original:correction / notice:correction": 2,
+    "original:correction / notice:expression_of_concern": 2,
+    "original:correction / notice:retracted": 11,
+    "original:expression_of_concern / notice:expression_of_concern": 1,
+    "original:retracted / notice:correction": 10,
+    "original:retracted / notice:reinstated": 2,
+    "original:retracted / notice:retracted": 1
+   },
+   "events_with_key_as_notice": 61,
+   "events_with_key_as_original": 307,
+   "notice_events_flagged_NOTICE_ALSO_ORIGINAL_ELSEWHERE": 56
+  }
+ },
+ "frozen_engine_single_key_citation": {
+  "doi": {
+   "cross_record_only": {
+    "dt2_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 43
+    },
+    "frozen_dt1_outcome": {
+     "D-14 CONCERN_CITED": 2,
+     "D-14 CORRECTION_CITED": 14,
+     "D-14 RETRACTED_WORK_CITED": 27
+    },
+    "keys": 43,
+    "positive_key_examples": [
+     "10.1001/jama.296.4.396-a",
+     "10.1002/14651858.cd002285.pub2",
+     "10.1002/chem.202500777",
+     "10.1002/tox.23371",
+     "10.1007/s12652-022-04291-0",
+     "10.1016/j.actbio.2017.07.042",
+     "10.1016/j.actbio.2019.06.027",
+     "10.1016/j.biopha.2023.115061",
+     "10.1016/j.bmc.2012.08.011",
+     "10.1016/j.cam.2019.112668"
+    ],
+    "positive_keys": 43,
+    "stage02_lookup_exposure": {
+     "identifier_role=original_and_notice": 42,
+     "issue PMID_ROLE_COLLISION": 1
+    }
+   },
+   "same_and_cross": {
+    "dt2_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 13
+    },
+    "frozen_dt1_outcome": {
+     "D-14 CONCERN_CITED": 2,
+     "D-14 RETRACTED_WORK_CITED": 11
+    },
+    "keys": 13,
+    "positive_key_examples": [
+     "10.1007/s00170-017-0314-1",
+     "10.1016/b978-0-08-011869-7.50005-9",
+     "10.1016/b978-0-12-803365-4.00037-3",
+     "10.1016/j.jbiomech.2010.06.001",
+     "10.1016/j.redox.2015.01.018",
+     "10.1093/ecco-jcc/jjab227",
+     "10.1095/biolreprod.105.043331",
+     "10.1111/anec.12383",
+     "10.1111/j.1365-2036.2008.03602.x",
+     "10.1177/00207209211064046"
+    ],
+    "positive_keys": 13,
+    "stage02_lookup_exposure": {
+     "identifier_role=original_and_notice": 12,
+     "issue PMID_ROLE_COLLISION": 1
+    }
+   },
+   "same_record_only": {
+    "dt2_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 13668
+    },
+    "frozen_dt1_outcome": {
+     "D-11 UNRESOLVED_STATUS": 108,
+     "D-14 CONCERN_CITED": 53,
+     "D-14 CORRECTION_CITED": 18,
+     "D-14 RETRACTED_WORK_CITED": 13489
+    },
+    "keys": 13668,
+    "positive_key_examples": [
+     "10.1002/1096-9098(200007)74:3%3c201::aid-jso8%3e3.0.co;2-5",
+     "10.1002/1097-4652(2001)9999:9999%3c000::aid-jcp1045%3e3.0.co;2-0",
+     "10.1002/1873-3468.12600",
+     "10.1002/1873-3468.12657",
+     "10.1002/1873-3468.13754",
+     "10.1002/1878-0261.12656",
+     "10.1002/2014ja020174",
+     "10.1002/2015jc011368",
+     "10.1002/2211-5463.12158",
+     "10.1002/2211-5463.12856"
+    ],
+    "positive_keys": 13560,
+    "stage02_lookup_exposure": {
+     "identifier_role=original": 12812,
+     "issue PMID_ROLE_COLLISION": 856
+    }
+   }
+  },
+  "pmid": {
+   "cross_record_only": {
+    "dt2_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 26
+    },
+    "frozen_dt1_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 1,
+     "D-14 CORRECTION_CITED": 12,
+     "D-14 RETRACTED_WORK_CITED": 13
+    },
+    "keys": 26,
+    "positive_key_examples": [
+     "22088135",
+     "25878311",
+     "26089649",
+     "26538865",
+     "26746792",
+     "27258211",
+     "28811164",
+     "32610252",
+     "32833873",
+     "33905466"
+    ],
+    "positive_keys": 25,
+    "stage02_lookup_exposure": {
+     "identifier_role=original_and_notice": 26
+    }
+   },
+   "same_and_cross": {
+    "dt2_outcome": {
+     "D-9 UNRESOLVED_IDENTITY": 1
+    },
+    "frozen_dt1_outcome": {
+     "D-9 UNRESOLVED_IDENTITY": 1
+    },
+    "keys": 1,
+    "positive_key_examples": [],
+    "positive_keys": 0,
+    "stage02_lookup_exposure": {
+     "issue PMID_ROLE_COLLISION": 1
+    }
+   },
+   "same_record_only": {
+    "dt2_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 1051,
+     "D-9 UNRESOLVED_IDENTITY": 1
+    },
+    "frozen_dt1_outcome": {
+     "D-10 UNRESOLVED_IDENTITY": 1051,
+     "D-9 UNRESOLVED_IDENTITY": 1
+    },
+    "keys": 1052,
+    "positive_key_examples": [],
+    "positive_keys": 0,
+    "stage02_lookup_exposure": {
+     "issue PMID_ROLE_COLLISION": 1052
+    }
+   }
+  }
+ },
+ "ident_table": {
+  "doi": {
+   "keys_cross_record": 56,
+   "keys_cross_record_only": 43,
+   "keys_in_both_roles": 13724,
+   "keys_same_and_cross": 13,
+   "keys_same_record": 13681,
+   "records_involved": 14634
+  },
+  "pmid": {
+   "keys_cross_record": 27,
+   "keys_cross_record_only": 26,
+   "keys_in_both_roles": 1079,
+   "keys_same_and_cross": 1,
+   "keys_same_record": 1053,
+   "records_involved": 1562
+  }
+ },
+ "index": {
+  "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+  "policy_version": "citerift-rde-policy/1.3.0",
+  "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+  "snapshot_id": "rw-2f116e9ffed718e6",
+  "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+ },
+ "provenance": {
+  "code_commit": "14fe6093e8ae6f0cd16268288468fa7ee8669ea1",
+  "engine_sources_uncommitted": false,
+  "index": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6",
+   "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+  },
+  "tables": {
+   "current": {
+    "engine_version": "0.4.0",
+    "table_version": "dt-3"
+   },
+   "frozen": {
+    "blob": "27409702a03f04d49f5dd984b0fc6a8c6719c554",
+    "commit": "b5bf8edfcb6f7c747a9c751bd1d402858eecbcf0",
+    "table_version": "dt-1"
+   }
+  }
+ },
+ "same_record": {
+  "doi": {
+   "also_no_independent_notice_identifier": 13340,
+   "by_event_type": {
+    "correction": 38,
+    "expression_of_concern": 163,
+    "reinstated": 103,
+    "retracted": 13396
+   },
+   "by_source_label": {
+    "Correction": 38,
+    "Expression of concern": 163,
+    "Reinstatement": 103,
+    "Retraction": 13396
+   },
+   "distinct_keys": 13681,
+   "records": 13700,
+   "with_distinct_notice_pmid": 360,
+   "with_other_scheme_also_equal": 860
+  },
+  "pmid": {
+   "also_no_independent_notice_identifier": 884,
+   "by_event_type": {
+    "correction": 132,
+    "expression_of_concern": 335,
+    "reinstated": 80,
+    "retracted": 794
+   },
+   "by_source_label": {
+    "Correction": 132,
+    "Expression of concern": 335,
+    "Reinstatement": 80,
+    "Retraction": 794
+   },
+   "distinct_keys": 1053,
+   "records": 1341,
+   "with_distinct_notice_doi": 457,
+   "with_other_scheme_also_equal": 860
+  }
+ }
+}

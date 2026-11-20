@@ -27,6 +27,8 @@ import pytest
 REPO = Path(__file__).resolve().parents[2]
 S04 = "docs/verification/stage-04"
 FC = REPO / S04 / "final-cycle"
+# The corrective-cycle census tools (``corrective/census``, unchanged) rerun on dt-3; they record their own provenance.
+CENSUS = FC / "regression" / "census"
 
 # Inputs, not results: each is checked elsewhere.
 INPUTS = {
@@ -63,7 +65,7 @@ def _results() -> list[str]:
     return sorted(
         str(p.relative_to(FC))
         for p in FC.rglob("*.json")
-        if "__pycache__" not in p.parts and p.parts[len(FC.parts)] != "review"
+        if "__pycache__" not in p.parts and p.parts[len(FC.parts)] != "review" and p.parent != CENSUS
     )
 
 
@@ -147,3 +149,18 @@ def test_a_tool_refuses_a_dirty_tree_and_a_tree_that_changes_while_it_runs(monke
         fp.finish(begun, tool)
     with pytest.raises(SystemExit, match="uncommitted changes"):
         fp.start(tool)
+
+
+@pytest.mark.parametrize("name", ["CENSUS.json", "B03_CENSUS.json", "PAIR_CENSUS.json"])
+def test_the_role_collision_censuses_are_unchanged_under_dt3(name: str) -> None:
+    """D-083 item 11: the role-collision, B-03 and pair censuses of the corrective cycle (dt-2), rerun by their own
+    unchanged tools on dt-3 from a clean checkout, are equal in everything but their provenance: a single-key or
+    DOI+PMID citation carries no description, so bib-1 cannot change it (oracle-dt3: with bc False dt-3 is dt-2)."""
+    new = json.loads((CENSUS / name).read_text(encoding="utf-8"))
+    old = json.loads((REPO / S04 / "corrective" / "census" / name).read_text(encoding="utf-8"))
+    prov = new.pop("provenance")
+    old.pop("provenance")
+    assert new == old
+    assert prov["engine_sources_uncommitted"] is False
+    assert prov["tables"]["current"] == {"engine_version": "0.4.0", "table_version": "dt-3"}
+    assert _git("diff", "--name-only", prov["code_commit"], "HEAD", "--", *SAME_AS_HEAD) == ""
