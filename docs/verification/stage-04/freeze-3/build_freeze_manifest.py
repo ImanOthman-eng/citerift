@@ -85,6 +85,7 @@ EVIDENCE = {
     "performance_and_bounds": f"{FC}/PERFORMANCE_AND_BOUNDS.md",
     "storage_bounds": f"{FC}/bounds/bounds.json",
     "c07_profile": f"{FC}/lows/c07_profile.json",
+    "description_sizes": f"{FC}/lows/description_sizes.json",
     "a04_invariant_census": f"{FC}/lows/a04_invariant_census.json",
     "author_coincidence": f"{FC}/lows/author_coincidence.json",
     "development_survey": f"{FC}/lows/survey_pairs.json",
@@ -131,6 +132,10 @@ LIMITATIONS = [
     "bib-1 residual false compatibility (reviewer finding A-02): a commenter sharing a surname with the work's authors "
     "(3.3 % of random record pairs for one cited name), writing a note whose title holds the record's title and no "
     "lexicon word, stays positive; free-text references and identifier-only units have no description.",
+    "bib-1 size bounds (spec 2.1 steps 1 and 6; reviewer findings E-02 and F-02): a citation source above 16,384 code "
+    "points, a family above 64 values or a description above 4,096 code points has no description and decides as under "
+    "dt-2 (development maxima: 5,722 code points, 56 values, 1,804 code points); a crafted unit under the source bound "
+    "costs up to about 5.7 s of parser time.",
     "D-071 recall cost: a citation whose only identifier is given by the checked sources as both the original and a "
     "notice (13,681 DOIs and 1,053 PMIDs in one record, 56 DOIs and 27 PMIDs across records, in the pinned snapshot) "
     "is UNRESOLVED_IDENTITY (IDENTIFIER_ROLE_COLLISION), never positive, even when the work is truly retracted.",
@@ -148,7 +153,7 @@ LIMITATIONS = [
     "Storage: the maximal journal at the Stage 03 caps is 434,316,192 B (1.2x headroom) at 25,753 events per deciding "
     "lookup; above 32,030 events per deciding lookup a run is refused (JOURNAL_TOO_LARGE); LOOKUP observation v3 has a "
     "measured rho of 13.07 and no analytic bound; the Step 8 candidate-inputs terms have no derived bound (E-09).",
-    "C-07: the role-collision scan is quadratic in a lookup's events (2.5 s at 3,000 synthetic events; below 0.03 s "
+    "C-07: the role-collision scan is quadratic in a lookup's events (2.6 s at 3,000 synthetic events; below 0.03 s "
     "on the snapshot's largest keys); measured and retained.",
     "D-062 verification scope (D-064): each process runs verify_index_identity; Stage 02's per-event JSON-Schema pass "
     "runs only in Stage 02's complete verify; no tamper case is rejected by that pass alone.",

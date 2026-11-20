@@ -71,7 +71,21 @@ The candidates of the role-collision rule (dt-2 D-10 with `IDENTIFIER_ROLE_COLLI
 sets, with the collision kind of their keys and the bib-1 object verdicts the regression recorded for their deciding
 lookup:
 
-PLACEHOLDER_DEVELOPMENT
+| Set | Role-collision candidates | Collision kind of the key | bib-1 object verdicts of the candidate | dt-3 decision |
+|---|---|---|---|---|
+| 232 development revisions | 1 | same-record: 1 | COMPATIBLE: 1 | D-10 `UNRESOLVED_IDENTITY`: 1 |
+| 80 evaluation-1 articles | 4 | same-record: 4 | COMPATIBLE: 3; MATERIAL_CONFLICT: 1 (JASIST, `en-39868218`) | D-10 `UNRESOLVED_IDENTITY`: 4 |
+| 100 evaluation-2 articles | 13 | same-record: 13 | COMPATIBLE: 13 | D-10 `UNRESOLVED_IDENTITY`: 13 |
+
+Source: `development` in `role-collision/ROLE_COLLISION_STUDY.json`, read from the three committed regression files
+(`regression/*_REGRESSION.json`, code commit `ce8acf4`). Every one of the 18 candidates is a same-record collision,
+the case of section 2 in which bib-1 cannot discriminate. 17 are COMPATIBLE. Those include the 13 units of the P2
+campaign that the owner's note calls genuine work citations. A resolution on COMPATIBLE would make all 17 positive,
+and it would do the same for a notice citation that reproduces the record's fields. The one MATERIAL_CONFLICT is
+JASIST; it abstains under D-10 before D-13a is reached, so its outcome does not depend on bib-1.
+
+These counts are in-sample development evidence, read without any label, and are not a recall estimate. Under D-072
+the 18 candidates abstain, as under dt-2: dt-3 changes none of them.
 
 ## 5. Conclusion and limitation
 

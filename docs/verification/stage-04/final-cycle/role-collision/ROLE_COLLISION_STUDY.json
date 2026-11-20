@@ -1,0 +1,103 @@
+{
+ "development": {
+  "campaign": {
+   "by_bib1_object_verdicts": {
+    "COMPATIBLE": 3,
+    "MATERIAL_CONFLICT": 1
+   },
+   "by_collision_kind": {
+    "same_record": 4
+   },
+   "dt3_decision": {
+    "D-10 UNRESOLVED_IDENTITY": 4
+   },
+   "regression_code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+   "role_collision_candidates": 4
+  },
+  "dev": {
+   "by_bib1_object_verdicts": {
+    "COMPATIBLE": 1
+   },
+   "by_collision_kind": {
+    "same_record": 1
+   },
+   "dt3_decision": {
+    "D-10 UNRESOLVED_IDENTITY": 1
+   },
+   "regression_code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+   "role_collision_candidates": 1
+  },
+  "p2": {
+   "by_bib1_object_verdicts": {
+    "COMPATIBLE": 13
+   },
+   "by_collision_kind": {
+    "same_record": 13
+   },
+   "dt3_decision": {
+    "D-10 UNRESOLVED_IDENTITY": 13
+   },
+   "regression_code_commit": "ce8acf428e14ddc8dcb3239c1dde97693a60b036",
+   "role_collision_candidates": 13
+  }
+ },
+ "label": "DEVELOPMENT EVIDENCE ONLY (design-exposed; owner decisions D-071, D-083); no labels",
+ "provenance": {
+  "checked_paths": [
+   "src",
+   "schemas",
+   "simulations/stage04",
+   "docs/verification/stage-04/final-cycle",
+   "tests/stage04",
+   "docs/verification/stage-04/evaluation",
+   "docs/verification/stage-04/evaluation-campaign",
+   "docs/verification/stage-04/evaluation-p2-campaign",
+   "docs/verification/stage-04/corrective/regression",
+   "docs/verification/stage-04/review/step7",
+   "pyproject.toml",
+   "uv.lock"
+  ],
+  "code_commit": "947e4a26ea8091ba9a8db0f8bf786586fd2ddb7a",
+  "excluded_paths": [
+   "docs/verification/stage-04/final-cycle/review"
+  ],
+  "index": {
+   "artifact_digest": "adcf7b6547e09fc72b6379b3f616608eca8225d66e688d2b2d5a0271b0b016d9",
+   "file_sha256": "abedb94e9f7516ec8b51d5b501a787ef5461c0fad1cf369be1de9880c864ff24",
+   "semantic_digest": "7b2a2344a7f9546d2c684dfef84aa01db9e010fd9c9bf7f9343c93b5b88a5f88",
+   "snapshot_id": "rw-2f116e9ffed718e6",
+   "source_sha256": "2f116e9ffed718e6b2e37cd6ff652c091fd1971e1ad9c0639f0de16e7f50a655"
+  },
+  "tool": "docs/verification/stage-04/final-cycle/role-collision/role_collision_study.py",
+  "tool_sha256": "a74cbb3060cc35668b4b8c5929da749a9df91fa7072ddca1266fd5e64f040b0d",
+  "uncommitted": []
+ },
+ "snapshot": {
+  "doi": {
+   "cross_record_keys": 56,
+   "cross_record_keys_also_same_record": 13,
+   "cross_record_keys_by_discrimination": {
+    "every pair MATERIAL_CONFLICT": 42,
+    "some pair not": 14
+   },
+   "cross_record_keys_with_a_pair_of_verdict": {
+    "COMPATIBLE": 14,
+    "MATERIAL_CONFLICT": 44
+   },
+   "same_record_keys": 13681
+  },
+  "pmid": {
+   "cross_record_keys": 27,
+   "cross_record_keys_also_same_record": 1,
+   "cross_record_keys_by_discrimination": {
+    "every pair MATERIAL_CONFLICT": 18,
+    "some pair not": 9
+   },
+   "cross_record_keys_with_a_pair_of_verdict": {
+    "COMPATIBLE": 9,
+    "MATERIAL_CONFLICT": 19
+   },
+   "same_record_keys": 1053
+  }
+ }
+}

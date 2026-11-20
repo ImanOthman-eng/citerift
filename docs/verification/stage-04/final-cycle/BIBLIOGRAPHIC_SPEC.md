@@ -27,7 +27,8 @@ Only units of kind `citation_template` have a cited object; every other unit has
 1. `text` = the unit's committed source bytes `[byte_start, byte_end)`, decoded as UTF-8 (the span NORMALIZE already
    verifies). A decoding error gives `C = ⊥`. A `text` of more than 16,384 code points gives `C = ⊥` without being
    parsed (a resource bound: the parser's time grows faster than linearly on nested markup, reviewer finding E-02;
-   the longest of the 12,694 citation templates of the 411 development revisions has 5,722 code points).
+   over the 12,501 `citation_template` units Stage 03 extracts from the 411 development revisions with a source, the
+   longest has 5,722 code points and none is above the bound; `lows/description_sizes.json`).
 2. Parse `text` with mwparserfromhell 0.7.2 (`mwparserfromhell.parse`). If the parsed code, ignoring whitespace-only
    text nodes, is not exactly one Template node, `C = ⊥`. Any exception raised while parsing or reading the
    template's parameters gives `C = ⊥` (B8).
@@ -58,10 +59,12 @@ Only units of kind `citation_template` have a cited object; every other unit has
    A family's values are in source order of the effective arguments, not in the order of the CS1 keys.
 6. Size bound: if `titles` or `authors` has more than 64 values, or the values of all family lists of step 5 (all
    values, not only the first) have more than 4,096 code points in total, `C = ⊥` (INSUFFICIENT, never truncated,
-   since a truncated description could change a verdict). Over the 7,137 citation templates of the 411 development
-   revisions the largest description has 766 code points and 14 values in one family (`scripts/survey_pairs.py`
-   companion measurement in `PERFORMANCE_AND_BOUNDS.md`); the bound keeps the committed value of one unit under
-   about 25 KiB (at most 6 bytes of canonical JSON per code point).
+   since a truncated description could change a verdict). Over the same 12,501 development units the largest
+   description has 1,804 code points and the largest family 56 values (`lows/description_sizes.json`, from
+   `scripts/description_sizes.py`; `PERFORMANCE_AND_BOUNDS.md` section 5). The value bound is therefore close to the
+   development maximum: a citation listing more than 64 authors has no description and decides as under dt-2
+   (section 9). The bound keeps the committed value of one unit under about 25 KiB (at most 6 bytes of canonical
+   JSON per code point).
 
 ### 2.2 Parameter-alias profile (bib-profile-1)
 
@@ -276,7 +279,6 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
   EQUAL title is COMPATIBLE (corpus case `chapter-erratum-disjoint`).
 - The text inside a tag is kept by the pinned parser's `strip_code` (for example a `<ref>` inside a title), so it is
   part of the cited title (corpus case `markup-ref-content-kept`; it can only add conflicts).
-
 - A related note cited with no author parameter, or only with author values that are not comparable (another
   script, initials only of no record surname), whose title holds the record's title and a designation outside the
   lexicon ("Remarks on X"), stays positive (corpus case `related-note-no-author-residual`). Title DISJOINT is reached
@@ -285,8 +287,9 @@ Residual false compatibility (reviewer finding A-02; the layer lowers it, it doe
 - A unit without a description is decided by its identifiers exactly as under dt-2: a template above the step 1
   bound (16,384 code points, for example with a long `quote`), above the step 6 bounds, or one the parser raises on
   (corpus case `oversized-source`; reviewer finding F-02). These are resource and well-formedness bounds; the
-  development maximum is 5,722 code points. A crafted unit just under the step 1 bound can still cost seconds of
-  parser time (about 4.7 s measured by reviewer E-02/F); the performance limitation is stated in
+  development maximum is 5,722 code points, and the development maximum of one family is 56 values, against the
+  bound of 64. A crafted unit just under the step 1 bound can still cost seconds of parser time (5.7 s CPU for a
+  15,623-code-point nested unit, `lows/description_sizes.json`); the performance limitation is stated in
   `PERFORMANCE_AND_BOUNDS.md`.
 
 Recall costs on genuine citations (fail closed; development evidence, never evaluation scoring):
@@ -294,7 +297,6 @@ Recall costs on genuine citations (fail closed; development evidence, never eval
 - A title word written with a hyphenated `re-` prefix ("Re-examined", "re-analysis") gives the lexicon word `re`
   (words split at hyphens), so a citation that adds such a word to the record's title abstains (corpus case
   `re-hyphen-prefix`; reviewer finding F-05).
-
 - A record that lists fewer authors than the citation (11,741 of 73,356 snapshot events list one author;
   `lows/author_coincidence.json`): every cited co-author absent from the record gives CONFLICT (development case
   `en-3202774`).

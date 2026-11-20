@@ -13,7 +13,7 @@ target is made.
 
 ## 2. Storage bounds (D-055 re-proved for dt-3)
 
-Source: `bounds/bounds.json`, written by `bounds/dt3_bounds.py` (code commit `14fe609`). The historical dt-2
+Source: `bounds/bounds.json`, written by `bounds/dt3_bounds.py` (code commit `ce8acf4`). The historical dt-2
 derivation (`../review/step7/d055/`) is unchanged.
 
 | Quantity | dt-2 (D-055) | dt-3 | Limit |
@@ -51,30 +51,36 @@ here: an overflow is `BLOB_TOO_LARGE` (fail closed).
 
 ## 3. Decision cost of dt-3 (reviewer findings C-07 and E-10)
 
-Source: `lows/c07_profile.json`, written by `scripts/c07_profile.py` (code commit `ce5c86b`, engine identical to
-HEAD). Each figure is the median of 5 runs of `dt1.decide`.
+Source: `lows/c07_profile.json`, written by `scripts/c07_profile.py` (code commit `ce8acf4`, run alone on the
+4-vCPU container). Each figure is the median of 5 runs of `dt1.decide`.
 
 | Events per lookup (synthetic PAIR, 3 lookups, full bib-1 records) | decide |
 |---|---|
 | 10 | 0.001 s |
 | 100 | 0.013 s |
 | 300 | 0.054 s |
-| 1,000 | 0.346 s |
-| 3,000 | 2.484 s |
+| 1,000 | 0.338 s |
+| 3,000 | 2.586 s |
 
 On the snapshot's largest keys (top 5 DOIs and PMIDs by event count, decided on the production LOOKUP observation
 with a cited object), the slowest decision takes 0.026 s, at 145 events. The largest key (281 events) takes 0.00003 s
 because it is decided at D-9, before any scan.
 
+**Extrapolation (inference, not measured).** Scaled as n² from the 3,000-event point, a lookup at the storage bound's
+25,753 events would take about 190 s per decision, and one at the refusal point of 32,030 events about 295 s. Such a
+lookup does not exist on the snapshot (largest key: 281 events), but a future snapshot or a crafted index could hold
+one. The cost is CPU time inside one investigation; the decision stays correct, and it does not bypass any bound.
+
 **Disposition: measure and retain (LOW, accepted residual).** The role scan grows quadratically in a lookup's
 events. bib-1 is linear and runs twice per candidate (once for the guard, once for the evidence). On real data the
 cost is below 0.03 s per candidate. Removing the quadratic term would mean restructuring the role-collision scan
 that D-071/D-072 made normative, without differential evidence that the result is the same. D-083 item 6 allows
-retaining the term when "the real maximum remains harmless", so it is retained.
+retaining the term when "the real maximum remains harmless", so it is retained. This is a choice the owner can see
+here and in the LOW table (E-10); restructuring it later needs a differential proof against the dt-3 oracle.
 
 ## 4. How often bib-1's author rule agrees by accident (reviewer finding A-02)
 
-Source: `lows/author_coincidence.json` (`scripts/author_coincidence.py`, code commit `14fe609`). Over 20,000 seeded
+Source: `lows/author_coincidence.json` (`scripts/author_coincidence.py`, code commit `ce8acf4`). Over 20,000 seeded
 random pairs of Stage 02 records with different author strings, record a's names were cited against record b:
 
 | Rule | Pairs whose authors AGREE by accident |
@@ -88,7 +94,29 @@ Agreement never makes a positive: bib-1 can only block one (spec 1). The acciden
 measures how often a conflict goes unseen through the author field alone, not a false-positive rate of the engine.
 The title verdict and the designation check apply independently.
 
-## 5. Limitations
+## 5. Size of the cited descriptions and bib-1 parse time (reviewer findings A-08 and E-02)
+
+Source: `lows/description_sizes.json` (`scripts/description_sizes.py`, code commit `ce8acf4`, run alone). The tool
+takes the units from the Stage 03 extractor, as production does, over the 411 development revisions with a source
+(232 + 80 + 100, design-exposed; one bundle has no source). It reads no label.
+
+| Quantity | Development maximum | Bound (spec 2.1) |
+|---|---|---|
+| `citation_template` units | 12,501 (12,497 with a description) | |
+| Unit source size | 5,722 code points (0 units above the bound) | 16,384 (step 1) |
+| Description size (all family values) | 1,804 code points | 4,096 (step 6) |
+| Values in one family | 56 | 64 (step 6) |
+
+The value bound is near the development maximum. A citation that lists more than 64 authors has no description, and
+its unit decides as under dt-2 (spec section 9).
+
+bib-1 process time per page (all `cited_object` calls of one revision, that is, the bib-1 share of NORMALIZE): median
+0.0034 s, p95 0.048 s, maximum 0.200 s. This is small next to the about 18 s of `verify_index_identity` (section 1).
+A crafted unit just under the step 1 bound (nested links and templates, the shape of reviewer finding E-02) costs
+0.46 s CPU at 4,823 code points and 5.7 s at 15,623 code points. A page of such units could therefore cost minutes
+of NORMALIZE time; that is a stated performance limitation, not a correctness one (such a unit has no description).
+
+## 6. Limitations
 
 - 5 s p95: NOT_MET (D-066); D-064 unchanged.
 - The maximal journal has only 1.2x headroom at the theoretical `E_L`. Above 32,030 events per deciding lookup a
@@ -96,3 +124,5 @@ The title verdict and the designation check apply independently.
 - LOOKUP v3 has a measured rho of 13.07, with no analytic bound.
 - The decision is quadratic in a lookup's events (C-07), harmless at the real maximum.
 - The Step 8 candidate-inputs terms have no derived bound (E-09). Overflow fails closed.
+- A crafted citation just under the 16,384-code-point bound costs about 5.7 s of parser time; a citation above it,
+  or with more than 64 values in one family, has no description and decides as under dt-2.
